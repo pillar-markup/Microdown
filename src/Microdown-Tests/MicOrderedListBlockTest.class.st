@@ -2,13 +2,13 @@
 A GHMOrderedListBlockTest is a test class for testing the behavior of GHMOrderedListBlock
 "
 Class {
-	#name : #GHMOrderedListBlockTest,
+	#name : #MicOrderedListBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testEmbeddedUnordered [
+MicOrderedListBlockTest >> testEmbeddedUnordered [
 	| source root list |
 	source := 
 '1. item 1
@@ -26,7 +26,7 @@ GHMOrderedListBlockTest >> testEmbeddedUnordered [
 ]
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testSingleLevelList2 [
+MicOrderedListBlockTest >> testSingleLevelList2 [
 	| source root list |
 	source := 
 '19. item 1
@@ -41,7 +41,7 @@ expanded'.
 ]
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testSingleLevelList2WithNoIndent [
+MicOrderedListBlockTest >> testSingleLevelList2WithNoIndent [
 	"when we want a paragraph to be part of an item it should be indented "
 
 	| source root list |
@@ -63,7 +63,7 @@ part of item2'
 ]
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
+MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	| root list |
 	root :=  parser
 		parse:
@@ -77,7 +77,7 @@ GHMOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 ]
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
+MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	| root list |
 	root := parser
 		parse:
@@ -90,7 +90,7 @@ GHMOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 ]
 
 { #category : #tests }
-GHMOrderedListBlockTest >> testTwoLevelList1 [
+MicOrderedListBlockTest >> testTwoLevelList1 [
 	| source root list |
 	source := 
 '1. item 1

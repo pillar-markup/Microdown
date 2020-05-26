@@ -2,13 +2,13 @@
 A GHMParagraphBlockTest is a test class for testing the behavior of GHMParagraphBlock
 "
 Class {
-	#name : #GHMParagraphBlockTest,
+	#name : #MicParagraphBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMParagraphBlockTest >> testCanConsumeLine [
+MicParagraphBlockTest >> testCanConsumeLine [
 	"A list item does not force the creation of a new paragraph when the line is correctly indented.
 	currently the implementation does not create a paragraph as a child of list item."
 	
@@ -28,7 +28,7 @@ a paragraph in a list item'.
 ]
 
 { #category : #tests }
-GHMParagraphBlockTest >> testCanConsumeLineBasic [
+MicParagraphBlockTest >> testCanConsumeLineBasic [
 
 	| root paragraph |
 	root := parser parse: ''.
@@ -46,7 +46,7 @@ Another line'.
 ]
 
 { #category : #tests }
-GHMParagraphBlockTest >> testCanConsumeLineOtherBlocks [
+MicParagraphBlockTest >> testCanConsumeLineOtherBlocks [
 
 	| root paragraph |
 	root := parser parse: ''.
@@ -64,7 +64,7 @@ GHMParagraphBlockTest >> testCanConsumeLineOtherBlocks [
 ]
 
 { #category : #tests }
-GHMParagraphBlockTest >> testHandlingSequenceOfBasicLinesProducesAParagraph [
+MicParagraphBlockTest >> testHandlingSequenceOfBasicLinesProducesAParagraph [
 
 	| root paragraph |
 	root := parser parse: ''.
@@ -78,7 +78,7 @@ And that other line'.
 ]
 
 { #category : #tests }
-GHMParagraphBlockTest >> testSingleParagraph [
+MicParagraphBlockTest >> testSingleParagraph [
 	| root |
 	root := parser parse: 'This is
 a paragraph on two lines'.
@@ -90,7 +90,7 @@ a paragraph on two lines ]'
 ]
 
 { #category : #tests }
-GHMParagraphBlockTest >> testSingleParagraphWithIndentedText [
+MicParagraphBlockTest >> testSingleParagraphWithIndentedText [
 	| source root expected |
 	source := 'This is
    a paragraph with spaces

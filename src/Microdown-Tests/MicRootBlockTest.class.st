@@ -2,13 +2,13 @@
 A GHMRootBlockTest is a test class for testing the behavior of GHMRootBlock
 "
 Class {
-	#name : #GHMRootBlockTest,
+	#name : #MicRootBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMRootBlockTest >> testRootCanConsumeLine [
+MicRootBlockTest >> testRootCanConsumeLine [
 	"a root block can consume anything"
 	
 	| rootNode | 
@@ -18,7 +18,7 @@ GHMRootBlockTest >> testRootCanConsumeLine [
 ]
 
 { #category : #tests }
-GHMRootBlockTest >> testShowStructure [
+MicRootBlockTest >> testShowStructure [
 
 	| source root |
 	source := 'This is
@@ -26,7 +26,7 @@ a paragraph on two lines'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: (root showStructure: 0) equals:  
-'GHMRootBlock
-	GHMParagraphBlock
+'MicRootBlock
+	MicParagraphBlock
 '
 ]

@@ -1,7 +1,7 @@
-Extension { #name : #IntraBlockSplitterTest }
+Extension { #name : #MicIntraBlockSplitterTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-IntraBlockSplitterTest >> testExternalLinkAsPillar [
+MicIntraBlockSplitterTest >> testExternalLinkAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc[alias](link)cba'.
 	self assert: res second children first text equals: 'alias'.
@@ -10,7 +10,7 @@ IntraBlockSplitterTest >> testExternalLinkAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-IntraBlockSplitterTest >> testFigureAsPillar [
+MicIntraBlockSplitterTest >> testFigureAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc![alias](link)cba'.
 	self assert: res second children first text equals: 'alias'.
@@ -20,7 +20,7 @@ IntraBlockSplitterTest >> testFigureAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-IntraBlockSplitterTest >> testItalicAsPillar [
+MicIntraBlockSplitterTest >> testItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc*xyz*cba'.
 	self assert: res second children first text equals: 'xyz'.
@@ -30,7 +30,7 @@ IntraBlockSplitterTest >> testItalicAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-IntraBlockSplitterTest >> testPlainAsPillar [
+MicIntraBlockSplitterTest >> testPlainAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc'.
 	self assert: res first text equals: 'abc'.

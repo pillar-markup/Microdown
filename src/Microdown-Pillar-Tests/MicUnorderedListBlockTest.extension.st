@@ -1,7 +1,7 @@
-Extension { #name : #GHMUnorderedListBlockTest }
+Extension { #name : #MicUnorderedListBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMUnorderedListBlockTest >> testSingleLevelList2asPillar [
+MicUnorderedListBlockTest >> testSingleLevelList2asPillar [
 	| source root list item |
 	source := '- item 1
   expanded
@@ -20,7 +20,7 @@ expanded'
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMUnorderedListBlockTest >> testTwoLevelList1AsPillar [
+MicUnorderedListBlockTest >> testTwoLevelList1AsPillar [
 	| source root list secondItem subItem |
 	source := '- item 1
   - sublevel

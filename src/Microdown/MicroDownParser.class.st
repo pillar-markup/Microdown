@@ -1,6 +1,6 @@
 Class {
 	#name : #MicroDownParser,
-	#superclass : #GHMParser,
+	#superclass : #MicAbstractParser,
 	#category : #'Microdown-Parser'
 }
 

@@ -2,13 +2,13 @@
 A GHMHeaderBlockTest is a test class for testing the behavior of GHMHeaderBlock
 "
 Class {
-	#name : #GHMHeaderBlockTest,
+	#name : #MicHeaderBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMHeaderBlockTest >> testCanConsumeLine [
+MicHeaderBlockTest >> testCanConsumeLine [
 
 	| root headerString |
 	headerString := (parser headerMarkup, ' Level1').
@@ -17,14 +17,14 @@ GHMHeaderBlockTest >> testCanConsumeLine [
 ]
 
 { #category : #tests }
-GHMHeaderBlockTest >> testContents [
+MicHeaderBlockTest >> testContents [
 	| root |
 	root := parser parse: (parser headerMarkup, ' Level1').
 	self assert: root children first contents equals: '[ 1/Level1 ]'
 ]
 
 { #category : #tests }
-GHMHeaderBlockTest >> testHeaderLevel1 [
+MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
 	root := parser parse: (parser headerMarkup, ' Level1').
 	self assert: root children size equals: 1.
@@ -33,7 +33,7 @@ GHMHeaderBlockTest >> testHeaderLevel1 [
 ]
 
 { #category : #tests }
-GHMHeaderBlockTest >> testHeaderLevel1NoSpace [
+MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 	| source root |
 	source := parser headerMarkup, 'Level1'.
 	root := parser parse: source.
@@ -43,7 +43,7 @@ GHMHeaderBlockTest >> testHeaderLevel1NoSpace [
 ]
 
 { #category : #tests }
-GHMHeaderBlockTest >> testHeaderLevel4 [
+MicHeaderBlockTest >> testHeaderLevel4 [
 	| source root |
 	source := (parser headerMarkup repeat: 4), '    Level four'.
 	root := parser parse: source.

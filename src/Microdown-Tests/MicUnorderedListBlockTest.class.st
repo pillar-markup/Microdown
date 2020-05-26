@@ -2,13 +2,13 @@
 A GHMOrderedListBlockTest is a test class for testing the behavior of GHMOrderedListBlock
 "
 Class {
-	#name : #GHMUnorderedListBlockTest,
+	#name : #MicUnorderedListBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testEmbeddedOrdered [
+MicUnorderedListBlockTest >> testEmbeddedOrdered [
 	| source root list |
 	source := 
 '- item 1
@@ -26,7 +26,7 @@ GHMUnorderedListBlockTest >> testEmbeddedOrdered [
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testSingleLevelList [
+MicUnorderedListBlockTest >> testSingleLevelList [
 	| source root list |
 	source := 
 '- item 1
@@ -38,7 +38,7 @@ GHMUnorderedListBlockTest >> testSingleLevelList [
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testSingleLevelList2 [
+MicUnorderedListBlockTest >> testSingleLevelList2 [
 	| source root list |
 	source := 
 '- item 1
@@ -52,7 +52,7 @@ expanded'
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testSingleLevelListWithStar [
+MicUnorderedListBlockTest >> testSingleLevelListWithStar [
 	| source root list |
 	source := 
 '* item 1
@@ -64,7 +64,7 @@ GHMUnorderedListBlockTest >> testSingleLevelListWithStar [
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testSingleLevelMixedList [
+MicUnorderedListBlockTest >> testSingleLevelMixedList [
 	| source root list |
 	source := 
 '- item 1
@@ -77,7 +77,7 @@ GHMUnorderedListBlockTest >> testSingleLevelMixedList [
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testTwoLevelList [
+MicUnorderedListBlockTest >> testTwoLevelList [
 	| source root list |
 	source := 
 '- item 1
@@ -100,7 +100,7 @@ GHMUnorderedListBlockTest >> testTwoLevelList [
 ]
 
 { #category : #tests }
-GHMUnorderedListBlockTest >> testTwoLevelList1 [
+MicUnorderedListBlockTest >> testTwoLevelList1 [
 	| source root list |
 	source := 
 '- item 1

@@ -2,18 +2,18 @@
 An IntraBlockSplitterTest is a test class for testing the behavior of IntraBlockSplitter
 "
 Class {
-	#name : #IntraBlockSplitterTest,
+	#name : #MicIntraBlockSplitterTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-IntraBlockSplitterTest >> splitter [
+MicIntraBlockSplitterTest >> splitter [
 	^ MicIntraBlockSplitter new
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlock2 [
+MicIntraBlockSplitterTest >> testSplitBlock2 [
 	"Test with multiple annotations"
 
 	| res |
@@ -24,7 +24,7 @@ IntraBlockSplitterTest >> testSplitBlock2 [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockBold [
+MicIntraBlockSplitterTest >> testSplitBlockBold [
 	| res |
 	res := self splitter splitString: 'abc**bold**def'.
 	self
@@ -41,7 +41,7 @@ IntraBlockSplitterTest >> testSplitBlockBold [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockCode [
+MicIntraBlockSplitterTest >> testSplitBlockCode [
 	| res |
 	res := self splitter splitString: 'abc`block`def'.
 	self
@@ -51,7 +51,7 @@ IntraBlockSplitterTest >> testSplitBlockCode [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockImage [
+MicIntraBlockSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
 	| res |
@@ -63,7 +63,7 @@ IntraBlockSplitterTest >> testSplitBlockImage [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockItalics [
+MicIntraBlockSplitterTest >> testSplitBlockItalics [
 	| res |
 	res := self splitter splitString: 'abc*italics*def'.
 	self
@@ -79,7 +79,7 @@ IntraBlockSplitterTest >> testSplitBlockItalics [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockLink [
+MicIntraBlockSplitterTest >> testSplitBlockLink [
 	"Test the link annotation [LinkText](url)"
 
 	| res |
@@ -91,7 +91,7 @@ IntraBlockSplitterTest >> testSplitBlockLink [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockLinkIncomplete [
+MicIntraBlockSplitterTest >> testSplitBlockLinkIncomplete [
 	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
 	| res |
@@ -104,7 +104,7 @@ IntraBlockSplitterTest >> testSplitBlockLinkIncomplete [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockLinkInlineImage [
+MicIntraBlockSplitterTest >> testSplitBlockLinkInlineImage [
 	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
@@ -117,7 +117,7 @@ IntraBlockSplitterTest >> testSplitBlockLinkInlineImage [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
+MicIntraBlockSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 	"Test with multiple annotations"
 
 	| res |
@@ -128,7 +128,7 @@ IntraBlockSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockNested [
+MicIntraBlockSplitterTest >> testSplitBlockNested [
 	"Test with nested annotations"
 
 	| res |
@@ -139,7 +139,7 @@ IntraBlockSplitterTest >> testSplitBlockNested [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockNoAnnotation [
+MicIntraBlockSplitterTest >> testSplitBlockNoAnnotation [
 	| res |
 	res := self splitter splitString: 'abc'.
 	self assert: res first printString equals: 'abc'.
@@ -149,7 +149,7 @@ IntraBlockSplitterTest >> testSplitBlockNoAnnotation [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitBlockStrike [
+MicIntraBlockSplitterTest >> testSplitBlockStrike [
 	| res |
 	res := self splitter splitString: 'abc~strike~def'.
 	self
@@ -160,14 +160,14 @@ IntraBlockSplitterTest >> testSplitBlockStrike [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitEmpty [
+MicIntraBlockSplitterTest >> testSplitEmpty [
 	| res |
 	res := self splitter splitString: ''.
 	self assert: res first printString equals: ''
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitExclamationMark [
+MicIntraBlockSplitterTest >> testSplitExclamationMark [
 	"Test that 'bla!bla' is ok, and not a failed image, same goes for '![goo]no parenthesis'"
 
 	| res |
@@ -182,7 +182,7 @@ IntraBlockSplitterTest >> testSplitExclamationMark [
 ]
 
 { #category : #tests }
-IntraBlockSplitterTest >> testSplitNotClosed [
+MicIntraBlockSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter splitString: 'abc**xyz'.
 	self assert: res second printString equals: '[xyz]'.

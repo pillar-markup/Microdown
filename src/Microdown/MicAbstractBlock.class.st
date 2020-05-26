@@ -114,7 +114,7 @@ MicAbstractBlock >> parser [
 
 { #category : #private }
 MicAbstractBlock >> parserClass [ 
-	^ GHMParser 
+	^ MicAbstractParser 
 ]
 
 { #category : #private }

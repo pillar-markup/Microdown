@@ -1,8 +1,24 @@
 "
-# Markdown Parser and Elements
+# Microdown Parser and Elements
 
-I'm a parser for markdown implemented by K. Osterbye and maintained enhanced by S. Ducasse. 
-You are welcome to give an hand. 
+I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
+
+Microdown is a smaller mardown but more extensible. 
+It supports
+- Header
+- Lists
+- Paragraph
+- Code with arguments: key=val&key2=val2
+- Quote
+...
+But also 
+- Environment with arguments
+- Table
+- Anchor
+- Annotated paragraph
+- Math with arguments
+- and more intra block elements such as extensible markups, raw, math, and references.
+
 
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
@@ -19,12 +35,9 @@ When a new line is read we do the following:
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
 
-# Todo
-- make all the test green
-- make the parser a bit more extensible (following the design of Pillar microdown grammar)
 "
 Class {
-	#name : #ManifestGithubMarkdown,
+	#name : #ManifestMicrodown,
 	#superclass : #PackageManifest,
 	#category : #'Microdown-Manifest'
 }

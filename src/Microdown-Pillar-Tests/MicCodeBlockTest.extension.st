@@ -1,7 +1,7 @@
-Extension { #name : #GHMCodeBlockTest }
+Extension { #name : #MicCodeBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
+MicCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
 	| source root code textBody argument |
 	textBody := 'my fancy code
 is really cool'.

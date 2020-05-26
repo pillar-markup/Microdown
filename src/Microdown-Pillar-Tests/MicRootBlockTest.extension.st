@@ -1,7 +1,7 @@
-Extension { #name : #GHMRootBlockTest }
+Extension { #name : #MicRootBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMRootBlockTest >> testRootAsPillar [
+MicRootBlockTest >> testRootAsPillar [
 	| source root pillar |
 	source := '####    Level four
 ## Level 2'.

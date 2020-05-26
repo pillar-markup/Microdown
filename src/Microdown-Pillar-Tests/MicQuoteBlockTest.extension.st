@@ -1,7 +1,7 @@
-Extension { #name : #GHMQuoteBlockTest }
+Extension { #name : #MicQuoteBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMQuoteBlockTest >> testQuoteBlockAsPilar [
+MicQuoteBlockTest >> testQuoteBlockAsPilar [
 	| source root pillarNode |
 	source := '> text1
 >    text2'.

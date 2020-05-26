@@ -1,7 +1,7 @@
-Extension { #name : #GHMHeaderBlockTest }
+Extension { #name : #MicHeaderBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMHeaderBlockTest >> testHeaderLevel4AsPillar [
+MicHeaderBlockTest >> testHeaderLevel4AsPillar [
 	| source root pillar |
 	source := '####    Level four'.
 	root := parser parse: source.

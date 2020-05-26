@@ -2,13 +2,13 @@
 A GHMCodeBlockTest is a test class for testing the behavior of GHMCodeBlock
 "
 Class {
-	#name : #GHMCodeBlockTest,
+	#name : #MicCodeBlockTest,
 	#superclass : #GHMBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMCodeBlockTest >> testCanConsumeLine [ 
+MicCodeBlockTest >> testCanConsumeLine [ 
 	"This test verfies that when a code block is closed it does not consume anymore."
 	"It also show that consume is not just blindly do a line starts with the markup 
 	since often the first line is consumed by the parent of the block."
@@ -28,7 +28,7 @@ is really cool'.
 ]
 
 { #category : #tests }
-GHMCodeBlockTest >> testContents [
+MicCodeBlockTest >> testContents [
 	| source root textBody argument |
 	textBody := 'my fancy code
 is really cool'.
@@ -40,7 +40,7 @@ is really cool ]'
 ]
 
 { #category : #tests }
-GHMCodeBlockTest >> testOpenCanConsumeLine [
+MicCodeBlockTest >> testOpenCanConsumeLine [
 	| source root textBody argument line code |
 	
 	"ready for code factory"
@@ -75,7 +75,7 @@ is really cool'.
 ]
 
 { #category : #tests }
-GHMCodeBlockTest >> testSingleCodeBlock [
+MicCodeBlockTest >> testSingleCodeBlock [
 	| source root code  textBody argument |
 	textBody := 'my fancy code'.
 	argument := 'Argument'.
@@ -88,7 +88,7 @@ GHMCodeBlockTest >> testSingleCodeBlock [
 ]
 
 { #category : #tests }
-GHMCodeBlockTest >> testSingleCodeBlockListInside [
+MicCodeBlockTest >> testSingleCodeBlockListInside [
 	"This test shows that list inside a codeblock are not managed as list but as plain text."
 	
 	| source root code textBody argument |
@@ -112,7 +112,7 @@ GHMCodeBlockTest >> testSingleCodeBlockListInside [
 ]
 
 { #category : #tests }
-GHMCodeBlockTest >> testSingleCodeBlockTwoLines [
+MicCodeBlockTest >> testSingleCodeBlockTwoLines [
 	| source root code textBody argument |
 	textBody := 'my fancy code
 is really cool'.

@@ -44,7 +44,7 @@ Now the implementation for now does not create a paragraph in the list_item elem
 
 "
 Class {
-	#name : #GHMParser,
+	#name : #MicAbstractParser,
 	#superclass : #Object,
 	#instVars : [
 		'current',
@@ -54,25 +54,25 @@ Class {
 }
 
 { #category : #private }
-GHMParser class >> allBlockNodeClasses [
+MicAbstractParser class >> allBlockNodeClasses [
 	^ MicAbstractBlock allSubclasses
 	
 ]
 
 { #category : #markups }
-GHMParser class >> codeblockMarkup [
+MicAbstractParser class >> codeblockMarkup [
 
 	^ '```'
 ]
 
 { #category : #examples }
-GHMParser class >> example [
+MicAbstractParser class >> example [
 	<example>
 	(self fromUrl: 'https://raw.githubusercontent.com/kasperosterbye/PillarRichTextRender/master/README.md') inspectWithLabel: 'PillarRichTextRender/README.md'
 ]
 
 { #category : #'instance creation' }
-GHMParser class >> fromUrl: aUrl [
+MicAbstractParser class >> fromUrl: aUrl [
 	
 	^self asText:   
 		(ZnClient new 
@@ -82,38 +82,38 @@ GHMParser class >> fromUrl: aUrl [
 ]
 
 { #category : #markups }
-GHMParser class >> headerMarkup [
+MicAbstractParser class >> headerMarkup [
 
 	^ '#'
 ]
 
 { #category : #markups }
-GHMParser class >> preformattedMarkup [
+MicAbstractParser class >> preformattedMarkup [
 
 	^ '> '
 ]
 
 { #category : #markups }
-GHMParser class >> tableCellMarkup [
+MicAbstractParser class >> tableCellMarkup [
 
 	^ '|'
 ]
 
 { #category : #markups }
-GHMParser class >> unorderedListMarkups [
+MicAbstractParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
 ]
 
 { #category : #'node creation' }
-GHMParser >> blockExtensionStarterClassFrom: line [
+MicAbstractParser >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 		
 	^ nil
 ]
 
 { #category : #'node creation' }
-GHMParser >> blockStarterClassFrom: line [
+MicAbstractParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 	
 	(self blockExtensionStarterClassFrom: line)
@@ -137,18 +137,18 @@ GHMParser >> blockStarterClassFrom: line [
 ]
 
 { #category : #markups }
-GHMParser >> codeblockMarkup [ 
+MicAbstractParser >> codeblockMarkup [ 
 	^ self class codeblockMarkup 
 ]
 
 { #category : #accessing }
-GHMParser >> current [ 
+MicAbstractParser >> current [ 
 
 	^ current
 ]
 
 { #category : #parsing }
-GHMParser >> handleErrorInLine: line [
+MicAbstractParser >> handleErrorInLine: line [
 	"This implementation is temporary.
 	The right way to handle this is to insert an error node into the tree"
 	
@@ -156,7 +156,7 @@ GHMParser >> handleErrorInLine: line [
 ]
 
 { #category : #parsing }
-GHMParser >> handleLine: line [
+MicAbstractParser >> handleLine: line [
 	"The logic is the following: 
 		-first line is cleaned to avoid noise,
 		-then if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
@@ -172,34 +172,34 @@ GHMParser >> handleLine: line [
 ]
 
 { #category : #markups }
-GHMParser >> headerMarkup [ 
+MicAbstractParser >> headerMarkup [ 
 	^ self class headerMarkup 
 ]
 
 { #category : #testing }
-GHMParser >> isAList: normalized [
+MicAbstractParser >> isAList: normalized [
 	
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
 { #category : #'node creation' }
-GHMParser >> matchOrdered: line [
+MicAbstractParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
 { #category : #'node creation' }
-GHMParser >> matchUnordered: line [
+MicAbstractParser >> matchUnordered: line [
 	^ (line beginsWith: '- ') | (line beginsWith: '* ')
 		| (line beginsWith: '+ ')
 ]
 
 { #category : #parsing }
-GHMParser >> newRootBlock [
+MicAbstractParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
 { #category : #parsing }
-GHMParser >> parse: aStreamOrString [
+MicAbstractParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
 	| inStream line |
@@ -216,12 +216,12 @@ GHMParser >> parse: aStreamOrString [
 ]
 
 { #category : #markups }
-GHMParser >> preformattedMarkup [ 
+MicAbstractParser >> preformattedMarkup [ 
 	^ self class preformattedMarkup 
 ]
 
 { #category : #markups }
-GHMParser >> tableCellMarkup [
+MicAbstractParser >> tableCellMarkup [
 
 	^ self class tableCellMarkup
 ]

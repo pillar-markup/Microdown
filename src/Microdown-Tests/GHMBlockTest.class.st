@@ -24,7 +24,7 @@ GHMBlockTest >> parser [
 
 { #category : #factory }
 GHMBlockTest >> parserClass [
-	^ GHMParser
+	^ MicAbstractParser
 ]
 
 { #category : #factory }

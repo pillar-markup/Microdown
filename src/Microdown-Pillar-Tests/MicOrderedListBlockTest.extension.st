@@ -1,7 +1,7 @@
-Extension { #name : #GHMOrderedListBlockTest }
+Extension { #name : #MicOrderedListBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMOrderedListBlockTest >> testSingleLevelList2asPillar [
+MicOrderedListBlockTest >> testSingleLevelList2asPillar [
 	| source root list |
 	source := '19. item 1
     expanded

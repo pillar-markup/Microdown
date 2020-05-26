@@ -1,7 +1,7 @@
-Extension { #name : #GHMParagraphBlockTest }
+Extension { #name : #MicParagraphBlockTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-GHMParagraphBlockTest >> testSingleParagraphWithIndentedTextAsPillar [
+MicParagraphBlockTest >> testSingleParagraphWithIndentedTextAsPillar [
 	| source root expected pillar |
 	source := 'This is
    a paragraph with spaces
