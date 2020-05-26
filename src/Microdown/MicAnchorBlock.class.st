@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'label'
 	],
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #public }

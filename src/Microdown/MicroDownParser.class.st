@@ -1,7 +1,7 @@
 Class {
 	#name : #MicroDownParser,
 	#superclass : #GHMParser,
-	#category : #Microdown
+	#category : #'Microdown-Parser'
 }
 
 { #category : #markups }

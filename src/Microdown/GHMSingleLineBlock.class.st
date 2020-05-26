@@ -4,7 +4,7 @@ They do not know consumeLine: beacuse they are composed of only one line.
 "
 Class {
 	#name : #GHMSingleLineBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#category : #'Microdown-Model'
 }
 

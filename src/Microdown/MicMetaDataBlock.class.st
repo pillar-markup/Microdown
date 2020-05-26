@@ -11,7 +11,7 @@ To handle
 Class {
 	#name : #MicMetaDataBlock,
 	#superclass : #GHMStartStopMarkupBlock,
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #markups }

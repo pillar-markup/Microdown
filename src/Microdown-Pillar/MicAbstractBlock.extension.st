@@ -1,7 +1,7 @@
-Extension { #name : #GHMAbstractBlock }
+Extension { #name : #MicAbstractBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMAbstractBlock >> splitString: aString [
+MicAbstractBlock >> splitString: aString [
 	"convenience method"
 	^GHMIntraBlockSplitter new pillarFrom: aString.
 ]

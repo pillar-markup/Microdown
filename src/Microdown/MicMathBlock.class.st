@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'arguments'
 	],
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }

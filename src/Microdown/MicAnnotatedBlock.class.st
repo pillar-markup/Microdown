@@ -11,7 +11,7 @@ Since there is no need to end the block with the marker it is not that nice to h
 Class {
 	#name : #MicAnnotatedBlock,
 	#superclass : #GHMAnnotatedBlock,
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #testing }

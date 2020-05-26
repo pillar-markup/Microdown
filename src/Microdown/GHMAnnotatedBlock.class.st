@@ -1,6 +1,6 @@
 Class {
 	#name : #GHMAnnotatedBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'label',
 		'isClosed',

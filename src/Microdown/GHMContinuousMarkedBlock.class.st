@@ -11,7 +11,7 @@ For example
 "
 Class {
 	#name : #GHMContinuousMarkedBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'text'
 	],

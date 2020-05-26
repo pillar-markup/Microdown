@@ -5,7 +5,7 @@ If am divided from other paragraphs by either a blank line, or one of the other 
 "
 Class {
 	#name : #GHMParagraphBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'text'
 	],

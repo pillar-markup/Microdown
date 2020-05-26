@@ -16,7 +16,7 @@ Indentation matters and is crucial
 "
 Class {
 	#name : #GHMListBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'indent'
 	],

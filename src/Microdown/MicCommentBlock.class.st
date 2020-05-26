@@ -1,7 +1,7 @@
 Class {
 	#name : #MicCommentBlock,
 	#superclass : #GHMContinuousMarkedBlock,
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #markups }

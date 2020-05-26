@@ -8,7 +8,7 @@ The root of the parsetree is an instance of GHMRootBlock.
 See the comment in GHMParser for an overview of the algorithm used in parsing github markdown.
 "
 Class {
-	#name : #GHMAbstractBlock,
+	#name : #MicAbstractBlock,
 	#superclass : #Object,
 	#instVars : [
 		'parent',
@@ -19,12 +19,12 @@ Class {
 }
 
 { #category : #adding }
-GHMAbstractBlock >> addChild: childBlock [
+MicAbstractBlock >> addChild: childBlock [
 	children add: childBlock
 ]
 
 { #category : #public }
-GHMAbstractBlock >> addLineAndReturnNextNode: line [
+MicAbstractBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
@@ -34,59 +34,59 @@ GHMAbstractBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #public }
-GHMAbstractBlock >> blockExtensionStarterClassFrom: line [
+MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
 	^ nil
 ]
 
 { #category : #public }
-GHMAbstractBlock >> blockStarterClassFrom: line [
+MicAbstractBlock >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
 	^ self parser blockStarterClassFrom: line
 ]
 
 { #category : #public }
-GHMAbstractBlock >> canConsumeLine: line [
+MicAbstractBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
 	^ self subclassResponsibility 
 ]
 
 { #category : #adding }
-GHMAbstractBlock >> children [
+MicAbstractBlock >> children [
 	^children 
 ]
 
 { #category : #public }
-GHMAbstractBlock >> closeMe [
+MicAbstractBlock >> closeMe [
 	Transcript << 'Closing ' << self class name; cr; endEntry
 ]
 
 { #category : #debugging }
-GHMAbstractBlock >> contents [
+MicAbstractBlock >> contents [
 	^ ''
 ]
 
 { #category : #accessing }
-GHMAbstractBlock >> indent [
+MicAbstractBlock >> indent [
 	^ parent indent
 ]
 
 { #category : #initialization }
-GHMAbstractBlock >> initialize [
+MicAbstractBlock >> initialize [
 	super initialize. 
 	children := OrderedCollection new.
 ]
 
 { #category : #testing }
-GHMAbstractBlock >> listItemBlockClass [
+MicAbstractBlock >> listItemBlockClass [
 	^ GHMListItemBlock
 ]
 
 { #category : #public }
-GHMAbstractBlock >> newBlockFor: line parent: parentBlock [
+MicAbstractBlock >> newBlockFor: line parent: parentBlock [
 	| newBlockClass |
 	newBlockClass := self blockStarterClassFrom: line.
 	newBlockClass ifNil: [ ^parentBlock ].
@@ -97,33 +97,33 @@ GHMAbstractBlock >> newBlockFor: line parent: parentBlock [
 ]
 
 { #category : #accessing }
-GHMAbstractBlock >> parent [
+MicAbstractBlock >> parent [
 	^ parent
 ]
 
 { #category : #accessing }
-GHMAbstractBlock >> parent: aBlock [
+MicAbstractBlock >> parent: aBlock [
 	parent := aBlock.
 	aBlock addChild: self
 ]
 
 { #category : #private }
-GHMAbstractBlock >> parser [
+MicAbstractBlock >> parser [
 	^ parser 
 ]
 
 { #category : #private }
-GHMAbstractBlock >> parserClass [ 
+MicAbstractBlock >> parserClass [ 
 	^ GHMParser 
 ]
 
 { #category : #private }
-GHMAbstractBlock >> setParser: aParser [
+MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
 ]
 
 { #category : #debugging }
-GHMAbstractBlock >> showStructure: indent [
+MicAbstractBlock >> showStructure: indent [
 	"Produce a string representing the structure in terms of block classes of the receiver"
 	
 	| ind |

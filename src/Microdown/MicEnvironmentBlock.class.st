@@ -53,7 +53,7 @@ Class {
 		'arguments',
 		'name'
 	],
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }

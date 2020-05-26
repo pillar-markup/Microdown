@@ -3,7 +3,7 @@ May be in the future we will be able to say that SameMarkup is the same as a Sta
 "
 Class {
 	#name : #GHMStartStopMarkupBlock,
-	#superclass : #GHMAbstractBlock,
+	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'isClosed',
 		'body',

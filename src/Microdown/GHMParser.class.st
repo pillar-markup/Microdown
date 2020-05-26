@@ -55,7 +55,7 @@ Class {
 
 { #category : #private }
 GHMParser class >> allBlockNodeClasses [
-	^ GHMAbstractBlock allSubclasses
+	^ MicAbstractBlock allSubclasses
 	
 ]
 
