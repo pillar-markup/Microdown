@@ -9,7 +9,7 @@ may be in the future we should have \[ \]
 "
 Class {
 	#name : #MicMathBlock,
-	#superclass : #GHMSameStartStopMarkupBlock,
+	#superclass : #MicSameStartStopMarkupBlock,
 	#instVars : [
 		'arguments'
 	],

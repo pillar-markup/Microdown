@@ -1,7 +1,7 @@
-Extension { #name : #GHMOrderedListBlock }
+Extension { #name : #MicOrderedListBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMOrderedListBlock >> asPillar [
+MicOrderedListBlock >> asPillar [
 	^ PROrderedList new
 		setChildren: (self children collect: [ :child | child asPillar ]);
 		counter: self startIndex;

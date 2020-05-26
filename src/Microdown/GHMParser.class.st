@@ -120,19 +120,19 @@ GHMParser >> blockStarterClassFrom: line [
 		ifNotNil: [ :c | ^ c ]
 		ifNil: [ 
 		(line beginsWith: self headerMarkup)
-			ifTrue: [ ^ GHMHeaderBlock ].
+			ifTrue: [ ^ MicHeaderBlock ].
 		(line beginsWith: self codeblockMarkup)
-			ifTrue: [ ^ GHMCodeBlock ].
+			ifTrue: [ ^ MicCodeBlock ].
 		(self matchUnordered: line) "this one could be split if we move to a dictionary based structure"
-			ifTrue: [ ^ GHMUnorderedListBlock ].
+			ifTrue: [ ^ MicUnorderedListBlock ].
 		(self matchOrdered: line)
-			ifTrue: [ ^ GHMOrderedListBlock ].	"number followed by . or ). We could treat this one separated and fall back on a dictionary
+			ifTrue: [ ^ MicOrderedListBlock ].	"number followed by . or ). We could treat this one separated and fall back on a dictionary
 			By moving this into the extension for example."
 		(line beginsWith: self preformattedMarkup)
-			ifTrue: [ ^ GHMQuoteBlock ].	"or '> '??"
+			ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
 		(line beginsWith: self tableCellMarkup)
-			ifTrue: [ ^ GHMTableBlock ].	
-		 line ifNotEmpty: [ ^ GHMParagraphBlock ]
+			ifTrue: [ ^ MicTableBlock ].	
+		 line ifNotEmpty: [ ^ MicParagraphBlock ]
 				ifEmpty: [  ^ nil ]]
 ]
 
@@ -195,7 +195,7 @@ GHMParser >> matchUnordered: line [
 
 { #category : #parsing }
 GHMParser >> newRootBlock [
-	^ GHMRootBlock new
+	^ MicRootBlock new
 ]
 
 { #category : #parsing }

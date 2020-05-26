@@ -7,8 +7,8 @@ I am a header. I look like this:
 Deepest level is level 6
 "
 Class {
-	#name : #GHMHeaderBlock,
-	#superclass : #GHMSingleLineBlock,
+	#name : #MicHeaderBlock,
+	#superclass : #MicSingleLineBlock,
 	#instVars : [
 		'level',
 		'header'
@@ -17,7 +17,7 @@ Class {
 }
 
 { #category : #testing }
-GHMHeaderBlock >> addLineAndReturnNextNode: line [
+MicHeaderBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '#### my heading at forth level'"
 	level := ('(#+)' asRegex
 		matchesPrefix: line;
@@ -27,21 +27,21 @@ GHMHeaderBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #public }
-GHMHeaderBlock >> contents [ 
+MicHeaderBlock >> contents [ 
 	^ super contents , '[ ', self level printString, '/', self header, ' ]'
 ]
 
 { #category : #accessing }
-GHMHeaderBlock >> formattedCode [ 
+MicHeaderBlock >> formattedCode [ 
 	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'
 ]
 
 { #category : #accessing }
-GHMHeaderBlock >> header [
+MicHeaderBlock >> header [
 	^ header
 ]
 
 { #category : #accessing }
-GHMHeaderBlock >> level [
+MicHeaderBlock >> level [
 	^ level
 ]

@@ -2,7 +2,7 @@
 May be in the future we will be able to say that SameMarkup is the same as a StartStop with the same delimiter but for now we do not know. 
 "
 Class {
-	#name : #GHMStartStopMarkupBlock,
+	#name : #MicStartStopMarkupBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'isClosed',
@@ -13,13 +13,13 @@ Class {
 }
 
 { #category : #testing }
-GHMStartStopMarkupBlock class >> isAbstract [
+MicStartStopMarkupBlock class >> isAbstract [
 
-	^ self == GHMStartStopMarkupBlock
+	^ self == MicStartStopMarkupBlock
 ]
 
 { #category : #handle }
-GHMStartStopMarkupBlock >> addLineAndReturnNextNode: line [
+MicStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
@@ -34,23 +34,23 @@ GHMStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #accessing }
-GHMStartStopMarkupBlock >> body [
+MicStartStopMarkupBlock >> body [
 	^ body
 ]
 
 { #category : #accessing }
-GHMStartStopMarkupBlock >> body: anObject [
+MicStartStopMarkupBlock >> body: anObject [
 	^ body := anObject
 ]
 
 { #category : #handle }
-GHMStartStopMarkupBlock >> bodyFromLine: line [
+MicStartStopMarkupBlock >> bodyFromLine: line [
 	
 	body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ]
 ]
 
 { #category : #testing }
-GHMStartStopMarkupBlock >> canConsumeLine: line [
+MicStartStopMarkupBlock >> canConsumeLine: line [
 	"As soon as a line closes a code block, it does not accept anymore any line.
 	Indeed imagine 
 	
@@ -70,7 +70,7 @@ GHMStartStopMarkupBlock >> canConsumeLine: line [
 ]
 
 { #category : #testing }
-GHMStartStopMarkupBlock >> doesLineStartWithMarkup: line [
+MicStartStopMarkupBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"
 
 	^ line beginsWith: self lineStartMarkup
@@ -78,7 +78,7 @@ GHMStartStopMarkupBlock >> doesLineStartWithMarkup: line [
 ]
 
 { #category : #testing }
-GHMStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
+MicStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
 	"return if the line starts with a stop markup"
 
 	^ line beginsWith: self lineStopMarkup
@@ -86,39 +86,39 @@ GHMStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
 ]
 
 { #category : #handle }
-GHMStartStopMarkupBlock >> extractFirstLineFrom: line [
+MicStartStopMarkupBlock >> extractFirstLineFrom: line [
 	^ line copyFrom: self lineStartMarkup size + 1 to: line size
 ]
 
 { #category : #accessing }
-GHMStartStopMarkupBlock >> firstLine [
+MicStartStopMarkupBlock >> firstLine [
 	^ firstLine
 ]
 
 { #category : #accessing }
-GHMStartStopMarkupBlock >> firstLine: anObject [
+MicStartStopMarkupBlock >> firstLine: anObject [
 	firstLine := anObject
 ]
 
 { #category : #initialization }
-GHMStartStopMarkupBlock >> initialize [
+MicStartStopMarkupBlock >> initialize [
 	super initialize. 
 	isClosed := false
 ]
 
 { #category : #testing }
-GHMStartStopMarkupBlock >> isClosed [
+MicStartStopMarkupBlock >> isClosed [
 	^ isClosed		
 ]
 
 { #category : #markups }
-GHMStartStopMarkupBlock >> lineStartMarkup [
+MicStartStopMarkupBlock >> lineStartMarkup [
 
 	^ self subclassResponsibility 
 ]
 
 { #category : #markups }
-GHMStartStopMarkupBlock >> lineStopMarkup [
+MicStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self subclassResponsibility 
 ]

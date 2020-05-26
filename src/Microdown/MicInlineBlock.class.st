@@ -4,7 +4,7 @@ I represent the tree node used to handle ""intra-line-markup"", emphasis, inline
 
 "
 Class {
-	#name : #GHMInlineBlock,
+	#name : #MicInlineBlock,
 	#superclass : #Object,
 	#instVars : [
 		'string',
@@ -18,52 +18,52 @@ Class {
 }
 
 { #category : #accessing }
-GHMInlineBlock >> children [
+MicInlineBlock >> children [
 	^ children
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> children: anObject [
+MicInlineBlock >> children: anObject [
 	children := anObject
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> end [
+MicInlineBlock >> end [
 	^ end
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> end: anObject [
+MicInlineBlock >> end: anObject [
 	end := anObject
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> kind [
+MicInlineBlock >> kind [
 	^ kind
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> kind: anObject [
+MicInlineBlock >> kind: anObject [
 	kind := anObject
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> literal [
+MicInlineBlock >> literal [
 	^string copyFrom: start to: end. 
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> next [
+MicInlineBlock >> next [
 	^ next
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> next: anObject [
+MicInlineBlock >> next: anObject [
 	next := anObject
 ]
 
 { #category : #printing }
-GHMInlineBlock >> printOn: aStream [
+MicInlineBlock >> printOn: aStream [
 	children
 		ifNotNil: [ |preSpace| preSpace := false. aStream nextPut: $[.
 			children
@@ -79,32 +79,32 @@ GHMInlineBlock >> printOn: aStream [
 ]
 
 { #category : #split }
-GHMInlineBlock >> split [
+MicInlineBlock >> split [
 	"if there is any internal structure to the block, decompose it and add children"
 
 	| parts |
-	parts := GHMIntraBlockSplitter  new splitString: self printString.
+	parts := MicIntraBlockSplitter  new splitString: self printString.
 	parts size = 1 & (parts first kind = #Plain)
 		ifTrue: [ ^ self ].
 	self children: parts
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> start [
+MicInlineBlock >> start [
 	^ start
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> start: anObject [
+MicInlineBlock >> start: anObject [
 	start := anObject
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> string [
+MicInlineBlock >> string [
 	^ string
 ]
 
 { #category : #accessing }
-GHMInlineBlock >> string: anObject [
+MicInlineBlock >> string: anObject [
 	string := anObject
 ]

@@ -2,8 +2,8 @@
 I represent an ordered list of list items
 "
 Class {
-	#name : #GHMOrderedListBlock,
-	#superclass : #GHMListBlock,
+	#name : #MicOrderedListBlock,
+	#superclass : #MicListBlock,
 	#instVars : [
 		'startIndex'
 	],
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #testing }
-GHMOrderedListBlock >> addLineAndReturnNextNode: line [
+MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	"Create a new item, and insert it into me."
 	"line is on the format '1. item text'"
 
@@ -20,19 +20,19 @@ GHMOrderedListBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #testing }
-GHMOrderedListBlock >> canConsumeLine: line [
+MicOrderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
 
 	^ (super canConsumeLine: line) and: [line trim  prefixMatchesRegex: '\d+(\.|\))']
 ]
 
 { #category : #accessing }
-GHMOrderedListBlock >> startIndex [
+MicOrderedListBlock >> startIndex [
 	^ startIndex
 ]
 
 { #category : #accessing }
-GHMOrderedListBlock >> startIndexFrom: line [
+MicOrderedListBlock >> startIndexFrom: line [
 	startIndex ifNotNil: [ ^self ].
 	startIndex := line asInteger
 ]

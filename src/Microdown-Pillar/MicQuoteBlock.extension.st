@@ -1,7 +1,7 @@
-Extension { #name : #GHMQuoteBlock }
+Extension { #name : #MicQuoteBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMQuoteBlock >> asPillar [
+MicQuoteBlock >> asPillar [
 	self flag: #fixMe. 
 	"this is not an environment in Pillar but a preformatted"
 	^ PREnvironment new

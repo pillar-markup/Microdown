@@ -1,6 +1,6 @@
 Class {
 	#name : #MicAnchorBlock,
-	#superclass : #GHMSingleLineBlock,
+	#superclass : #MicSingleLineBlock,
 	#instVars : [
 		'label'
 	],

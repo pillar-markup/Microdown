@@ -82,7 +82,7 @@ MicAbstractBlock >> initialize [
 
 { #category : #testing }
 MicAbstractBlock >> listItemBlockClass [
-	^ GHMListItemBlock
+	^ MicListItemBlock
 ]
 
 { #category : #public }

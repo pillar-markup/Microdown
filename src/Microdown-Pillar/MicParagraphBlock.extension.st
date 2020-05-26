@@ -1,7 +1,7 @@
-Extension { #name : #GHMParagraphBlock }
+Extension { #name : #MicParagraphBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMParagraphBlock >> asPillar [
+MicParagraphBlock >> asPillar [
 	^ PRParagraph  new
 		setChildren: (self splitString: text);
 		yourself

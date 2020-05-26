@@ -29,8 +29,8 @@ No support for \|
 
 "
 Class {
-	#name : #GHMTableBlock,
-	#superclass : #GHMContinuousMarkedBlock,
+	#name : #MicTableBlock,
+	#superclass : #MicContinuousMarkedBlock,
 	#instVars : [
 		'rows',
 		'hasHeader'
@@ -39,7 +39,7 @@ Class {
 }
 
 { #category : #actions }
-GHMTableBlock >> addLineAndReturnNextNode: line [
+MicTableBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
 
@@ -50,7 +50,7 @@ GHMTableBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #private }
-GHMTableBlock >> closeMe [ 
+MicTableBlock >> closeMe [ 
 
 	| firstSize |
 	firstSize := rows first size.
@@ -59,14 +59,14 @@ GHMTableBlock >> closeMe [
 ]
 
 { #category : #private }
-GHMTableBlock >> cut: row toSize: firstSize [
+MicTableBlock >> cut: row toSize: firstSize [
 
 	^ row copyFrom: 1 to: firstSize 
 	
 ]
 
 { #category : #actions }
-GHMTableBlock >> extractLine: line [
+MicTableBlock >> extractLine: line [
 	"recondition line starts with |
 	
 	For now we have 
@@ -81,7 +81,7 @@ GHMTableBlock >> extractLine: line [
 ]
 
 { #category : #actions }
-GHMTableBlock >> extractLineOld: line [
+MicTableBlock >> extractLineOld: line [
 	"For now we have 
 		| something | something | 
 		or 
@@ -105,18 +105,18 @@ GHMTableBlock >> extractLineOld: line [
 ]
 
 { #category : #accessing }
-GHMTableBlock >> hasHeader [
+MicTableBlock >> hasHeader [
 	^ hasHeader
 ]
 
 { #category : #initialization }
-GHMTableBlock >> initialize [ 
+MicTableBlock >> initialize [ 
 	super initialize.
 	rows := OrderedCollection new.
 ]
 
 { #category : #testing }
-GHMTableBlock >> isHeader: line [
+MicTableBlock >> isHeader: line [
 	"Return true whether a line is a table header identification i.e., | --- | --- |"
 	
 	| authorised |
@@ -126,12 +126,12 @@ GHMTableBlock >> isHeader: line [
 ]
 
 { #category : #markups }
-GHMTableBlock >> lineMarkup [
+MicTableBlock >> lineMarkup [
 
 	^ parser tableCellMarkup
 ]
 
 { #category : #accessing }
-GHMTableBlock >> rows [
+MicTableBlock >> rows [
 	^ rows
 ]

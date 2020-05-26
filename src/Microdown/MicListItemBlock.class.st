@@ -2,7 +2,7 @@
 I represent one item in a list (ordered or non-ordered)
 "
 Class {
-	#name : #GHMListItemBlock,
+	#name : #MicListItemBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'text'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #testing }
-GHMListItemBlock >> addLineAndReturnNextNode: line [
+MicListItemBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
@@ -30,24 +30,24 @@ GHMListItemBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #testing }
-GHMListItemBlock >> canConsumeLine: line [
+MicListItemBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
 	^ line beginsWith: (' ' repeat: parent indent)
 ]
 
 { #category : #public }
-GHMListItemBlock >> contents [ 
+MicListItemBlock >> contents [ 
 	^super contents , '[ ', self text, ' ]'
 ]
 
 { #category : #testing }
-GHMListItemBlock >> isAList: normalized [
+MicListItemBlock >> isAList: normalized [
 
 	^ parser isAList: normalized
 ]
 
 { #category : #accessing }
-GHMListItemBlock >> text [
+MicListItemBlock >> text [
 	^ text
 ]

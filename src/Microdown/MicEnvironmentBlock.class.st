@@ -48,7 +48,7 @@ Point class >> x: xInteger y: yInteger
 "
 Class {
 	#name : #MicEnvironmentBlock,
-	#superclass : #GHMStartStopMarkupBlock,
+	#superclass : #MicStartStopMarkupBlock,
 	#instVars : [
 		'arguments',
 		'name'

@@ -2,8 +2,8 @@
 I am used to represent links and images which has a url.
 "
 Class {
-	#name : #GHMInlineBlockWithUrl,
-	#superclass : #GHMInlineBlock,
+	#name : #MicInlineBlockWithUrl,
+	#superclass : #MicInlineBlock,
 	#instVars : [
 		'url'
 	],
@@ -11,11 +11,11 @@ Class {
 }
 
 { #category : #accessing }
-GHMInlineBlockWithUrl >> url [
+MicInlineBlockWithUrl >> url [
 	^ url
 ]
 
 { #category : #accessing }
-GHMInlineBlockWithUrl >> url: anObject [
+MicInlineBlockWithUrl >> url: anObject [
 	url := anObject
 ]

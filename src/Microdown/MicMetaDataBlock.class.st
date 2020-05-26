@@ -10,7 +10,7 @@ To handle
 "
 Class {
 	#name : #MicMetaDataBlock,
-	#superclass : #GHMStartStopMarkupBlock,
+	#superclass : #MicStartStopMarkupBlock,
 	#category : #'Microdown-Model'
 }
 

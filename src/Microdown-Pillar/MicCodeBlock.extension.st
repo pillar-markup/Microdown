@@ -1,7 +1,7 @@
-Extension { #name : #GHMCodeBlock }
+Extension { #name : #MicCodeBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMCodeBlock >> asPillar [
+MicCodeBlock >> asPillar [
 	^ PRCodeblock new
 		language: self arguments;
 		text: self code;

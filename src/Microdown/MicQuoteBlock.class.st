@@ -15,19 +15,19 @@ are valid.
 
 "
 Class {
-	#name : #GHMQuoteBlock,
-	#superclass : #GHMContinuousMarkedBlock,
+	#name : #MicQuoteBlock,
+	#superclass : #MicContinuousMarkedBlock,
 	#category : #'Microdown-Model'
 }
 
 { #category : #testing }
-GHMQuoteBlock >> lineMarkup [
+MicQuoteBlock >> lineMarkup [
 
 	^ self parser preformattedMarkup
 ]
 
 { #category : #testing }
-GHMQuoteBlock >> todo [
+MicQuoteBlock >> todo [
 	self flag: #todo.
 	"contents should be treated. see comment"
 	^self 

@@ -10,8 +10,8 @@ line 3
 
 "
 Class {
-	#name : #GHMCodeBlock,
-	#superclass : #GHMSameStartStopMarkupBlock,
+	#name : #MicCodeBlock,
+	#superclass : #MicSameStartStopMarkupBlock,
 	#instVars : [
 		'arguments'
 	],
@@ -19,27 +19,27 @@ Class {
 }
 
 { #category : #accessing }
-GHMCodeBlock >> arguments [
+MicCodeBlock >> arguments [
 	^ firstLine
 ]
 
 { #category : #accessing }
-GHMCodeBlock >> arguments: aString [
+MicCodeBlock >> arguments: aString [
 	firstLine := aString
 ]
 
 { #category : #accessing }
-GHMCodeBlock >> code [
+MicCodeBlock >> code [
 	^ self body
 ]
 
 { #category : #public }
-GHMCodeBlock >> contents [ 
+MicCodeBlock >> contents [ 
 	^super contents , '[ ', self code, ' ]'
 ]
 
 { #category : #utils }
-GHMCodeBlock >> lineStartMarkup [
+MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	
 	^ self parser codeblockMarkup 

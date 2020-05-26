@@ -8,19 +8,19 @@ endMarkup
 My subclass should define lineMarkup
 "
 Class {
-	#name : #GHMSameStartStopMarkupBlock,
-	#superclass : #GHMStartStopMarkupBlock,
+	#name : #MicSameStartStopMarkupBlock,
+	#superclass : #MicStartStopMarkupBlock,
 	#category : #'Microdown-Model'
 }
 
 { #category : #testing }
-GHMSameStartStopMarkupBlock class >> isAbstract [
+MicSameStartStopMarkupBlock class >> isAbstract [
 
-	^ self == GHMSameStartStopMarkupBlock
+	^ self == MicSameStartStopMarkupBlock
 ]
 
 { #category : #markups }
-GHMSameStartStopMarkupBlock >> lineStopMarkup [
+MicSameStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self lineStartMarkup
 ]

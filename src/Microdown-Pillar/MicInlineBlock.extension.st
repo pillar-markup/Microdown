@@ -1,7 +1,7 @@
-Extension { #name : #GHMInlineBlock }
+Extension { #name : #MicInlineBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMInlineBlock >> asPillar [
+MicInlineBlock >> asPillar [
 	self kind = #plain
 		ifTrue: [ ^ PRText new text: self literal ].
 	(#(#bold #italics #block #strike) includes: self kind)
@@ -11,7 +11,7 @@ GHMInlineBlock >> asPillar [
 ]
 
 { #category : #'*Microdown-Pillar' }
-GHMInlineBlock class >> pillarNodeFromKind: kind [
+MicInlineBlock class >> pillarNodeFromKind: kind [
 	kind = #plain
 		ifTrue: [ ^ PRText ].
 	kind = #bold

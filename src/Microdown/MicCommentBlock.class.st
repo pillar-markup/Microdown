@@ -1,6 +1,6 @@
 Class {
 	#name : #MicCommentBlock,
-	#superclass : #GHMContinuousMarkedBlock,
+	#superclass : #MicContinuousMarkedBlock,
 	#category : #'Microdown-Model'
 }
 

@@ -1,7 +1,7 @@
-Extension { #name : #GHMUnorderedListBlock }
+Extension { #name : #MicUnorderedListBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMUnorderedListBlock >> asPillar [
+MicUnorderedListBlock >> asPillar [
 	^ PRUnorderedList new
 		setChildren: (self children collect:[:child| child asPillar]);
 		yourself

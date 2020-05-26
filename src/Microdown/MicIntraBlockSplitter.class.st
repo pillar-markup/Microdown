@@ -7,13 +7,13 @@ My main method is the #splitBlock:.
 No other method is part of the api.
 "
 Class {
-	#name : #GHMIntraBlockSplitter,
+	#name : #MicIntraBlockSplitter,
 	#superclass : #Object,
 	#category : #'Microdown-Model'
 }
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> match: size in: aString at: start [
+MicIntraBlockSplitter >> match: size in: aString at: start [
 	"return the end of the string enclosed in the marker from start to start+size.
 	If no end marker is found, return the end of string.
 	Normal example: match: 2 in: 'abc**mmm**xyz' at: 4 returns 9 (index of first * of the last two)"
@@ -25,7 +25,7 @@ GHMIntraBlockSplitter >> match: size in: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchBlockIn: aString at: start [
+MicIntraBlockSplitter >> matchBlockIn: aString at: start [
 	| end |
 	end := self match: 1 in: aString at: start.
 	^ self
@@ -37,7 +37,7 @@ GHMIntraBlockSplitter >> matchBlockIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchBoldIn: aString at: start [
+MicIntraBlockSplitter >> matchBoldIn: aString at: start [
 	| end |
 	end := self match: 2 in: aString at: start.
 	^ self
@@ -49,7 +49,7 @@ GHMIntraBlockSplitter >> matchBoldIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchImageIn: aString at: start [
+MicIntraBlockSplitter >> matchImageIn: aString at: start [
 	"image annotation ![AltText](url)"
 
 	| regex text url next |
@@ -59,7 +59,7 @@ GHMIntraBlockSplitter >> matchImageIn: aString at: start [
 	text := regex subexpression: 2.
 	url := regex subexpression: 3.
 	next := start + (regex subexpression: 1) size.
-	^ GHMInlineBlockWithUrl new
+	^ MicInlineBlockWithUrl new
 		string: aString;
 		start: start + 2;
 		end: start + 2 + text size - 1;
@@ -69,7 +69,7 @@ GHMIntraBlockSplitter >> matchImageIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchItalicsIn: aString at: start [
+MicIntraBlockSplitter >> matchItalicsIn: aString at: start [
 	| next |
 	next := self match: 1 in: aString at: start.
 	^ self
@@ -81,7 +81,7 @@ GHMIntraBlockSplitter >> matchItalicsIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
+MicIntraBlockSplitter >> matchLinkIn: aString at: start [
 	"link annotation [AltText](url)"
 
 	| index count c text url next regex |
@@ -102,7 +102,7 @@ GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
 		ifTrue:[regex subexpression: 3]
 		ifFalse: [ text ].
 	next := index+1 + (regex subexpression: 2) size.
-	^ GHMInlineBlockWithUrl new
+	^ MicInlineBlockWithUrl new
 		string: aString;
 		start: start + 1;
 		end: start + 1 + text size - 1;
@@ -112,7 +112,7 @@ GHMIntraBlockSplitter >> matchLinkIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchMarkdownIn: aString at: start [
+MicIntraBlockSplitter >> matchMarkdownIn: aString at: start [
 	| char |
 	start >= aString size
 		ifTrue: [ ^ nil ].
@@ -133,7 +133,7 @@ GHMIntraBlockSplitter >> matchMarkdownIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
+MicIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
 	| next |
 	next := self match: 1 in: aString at: start.
 	^ self
@@ -145,7 +145,7 @@ GHMIntraBlockSplitter >> matchStrikeOutIn: aString at: start [
 ]
 
 { #category : #'private-matching' }
-GHMIntraBlockSplitter >> old_matchLinkIn: aString at: start [
+MicIntraBlockSplitter >> old_matchLinkIn: aString at: start [
 	"link annotation [AltText](url)"
 
 	| regex text url next |
@@ -156,7 +156,7 @@ GHMIntraBlockSplitter >> old_matchLinkIn: aString at: start [
 	text := regex subexpression: 2.
 	url := (regex subexpression: 4) ifNotNil: [ :u | u ] ifNil: [ text ].
 	next := start + (regex subexpression: 1) size.
-	^ GHMInlineBlockWithUrl new
+	^ MicInlineBlockWithUrl new
 		string: aString;
 		start: start + 1;
 		end: start + 1 + text size - 1;
@@ -166,8 +166,8 @@ GHMIntraBlockSplitter >> old_matchLinkIn: aString at: start [
 ]
 
 { #category : #private }
-GHMIntraBlockSplitter >> spanAllOf: aString kind: kind [
-	^ GHMInlineBlock new
+MicIntraBlockSplitter >> spanAllOf: aString kind: kind [
+	^ MicInlineBlock new
 		string: aString;
 		start: 1;
 		end: aString size;
@@ -177,8 +177,8 @@ GHMIntraBlockSplitter >> spanAllOf: aString kind: kind [
 ]
 
 { #category : #private }
-GHMIntraBlockSplitter >> spanOn: aString from: start to: end next: next kind: kind [
-	^ GHMInlineBlock new
+MicIntraBlockSplitter >> spanOn: aString from: start to: end next: next kind: kind [
+	^ MicInlineBlock new
 		string: aString;
 		start: start;
 		end: end;
@@ -188,7 +188,7 @@ GHMIntraBlockSplitter >> spanOn: aString from: start to: end next: next kind: ki
 ]
 
 { #category : #public }
-GHMIntraBlockSplitter >> splitString: aString [
+MicIntraBlockSplitter >> splitString: aString [
 	"Split aString into constituent markup nodes. A string is from a single line.
 	return an array of GHMInlineBlocks"
 	| start block rest |
@@ -212,6 +212,6 @@ GHMIntraBlockSplitter >> splitString: aString [
 ]
 
 { #category : #private }
-GHMIntraBlockSplitter >> startSet [
+MicIntraBlockSplitter >> startSet [
 	^'*_~¨`[!'.
 ]

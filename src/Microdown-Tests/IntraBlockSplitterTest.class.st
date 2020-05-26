@@ -9,7 +9,7 @@ Class {
 
 { #category : #tests }
 IntraBlockSplitterTest >> splitter [
-	^ GHMIntraBlockSplitter new
+	^ MicIntraBlockSplitter new
 ]
 
 { #category : #tests }

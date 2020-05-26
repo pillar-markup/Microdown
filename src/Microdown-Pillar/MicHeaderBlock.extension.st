@@ -1,7 +1,7 @@
-Extension { #name : #GHMHeaderBlock }
+Extension { #name : #MicHeaderBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMHeaderBlock >> asPillar [
+MicHeaderBlock >> asPillar [
 	^ PRHeader new
 		level: self level;
 		setChildren: (self splitString: header);

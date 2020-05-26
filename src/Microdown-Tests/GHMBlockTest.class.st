@@ -9,12 +9,12 @@ Class {
 
 { #category : #factory }
 GHMBlockTest >> listBlockClass [
-	^ GHMListBlock
+	^ MicListBlock
 ]
 
 { #category : #factory }
 GHMBlockTest >> orderedListBlockClass [
-	^ GHMOrderedListBlock
+	^ MicOrderedListBlock
 ]
 
 { #category : #factory }
@@ -29,7 +29,7 @@ GHMBlockTest >> parserClass [
 
 { #category : #factory }
 GHMBlockTest >> rootBlockClass [
-	^ GHMRootBlock
+	^ MicRootBlock
 ]
 
 { #category : #running }

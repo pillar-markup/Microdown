@@ -1,7 +1,7 @@
-Extension { #name : #GHMRootBlock }
+Extension { #name : #MicRootBlock }
 
 { #category : #'*Microdown-Pillar' }
-GHMRootBlock >> asPillar [
+MicRootBlock >> asPillar [
 	^ PRDocument new
 		setChildren: (self children collect: [ :child | child asPillar ]);
 		yourself

@@ -15,7 +15,7 @@ I look like this:
 Indentation matters and is crucial
 "
 Class {
-	#name : #GHMListBlock,
+	#name : #MicListBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'indent'
@@ -24,7 +24,7 @@ Class {
 }
 
 { #category : #testing }
-GHMListBlock >> addLineAndReturnNextNode: inLine [
+MicListBlock >> addLineAndReturnNextNode: inLine [
 	"Create a new item, and insert it into me.
 	line is on the format 'markup text'"
 
@@ -38,7 +38,7 @@ GHMListBlock >> addLineAndReturnNextNode: inLine [
 ]
 
 { #category : #testing }
-GHMListBlock >> canConsumeLine: line [
+MicListBlock >> canConsumeLine: line [
 	"to consume this line there must be a ListItem starting at the right indentation"
 	
 	line ifEmpty: [ ^ false ].
@@ -49,12 +49,12 @@ GHMListBlock >> canConsumeLine: line [
 ]
 
 { #category : #accessing }
-GHMListBlock >> indent [
+MicListBlock >> indent [
 	^ indent
 ]
 
 { #category : #indent }
-GHMListBlock >> indentFromLine: aLine [
+MicListBlock >> indentFromLine: aLine [
 	"The line is expected to have the form: '<bullet> space+ [text]', where bullet is one of *,+,- or 1. or 1). More than one space is allowed. 
 	indentFromLine returns the position of the last character before the text.
 	The indentation returned is *the number of characters*, that is, tab counts for but one char."

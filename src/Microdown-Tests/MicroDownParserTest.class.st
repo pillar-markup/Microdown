@@ -56,7 +56,7 @@ MicroDownParserTest >> testAnchorMarkupInsideLine [
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
-	self assert: (paragraph isKindOf: GHMParagraphBlock).
+	self assert: (paragraph isKindOf: MicParagraphBlock).
 	self assert: paragraph text equals: 'this is not an anchor', parser anchorMarkup, 'label1'.
 	
 
@@ -187,7 +187,7 @@ MicroDownParserTest >> testCommentedLineMarkupInsideLine [
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
-	self assert: (paragraph isKindOf: GHMParagraphBlock).
+	self assert: (paragraph isKindOf: MicParagraphBlock).
 	self assert: paragraph text equals: 'this is not the start', parser commentedLineMarkup , 'a comment'
 	
 ]

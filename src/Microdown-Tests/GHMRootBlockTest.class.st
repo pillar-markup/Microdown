@@ -12,7 +12,7 @@ GHMRootBlockTest >> testRootCanConsumeLine [
 	"a root block can consume anything"
 	
 	| rootNode | 
-	rootNode := GHMRootBlock new.
+	rootNode := MicRootBlock new.
 	self assert: (rootNode canConsumeLine: '#').
 	self assert: (rootNode canConsumeLine: '- ')
 ]

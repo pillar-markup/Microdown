@@ -1,5 +1,5 @@
 Class {
-	#name : #GHMAnnotatedBlock,
+	#name : #MicAbstractAnnotatedBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'label',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #testing }
-GHMAnnotatedBlock >> addLineAndReturnNextNode: line [
+MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form '@@label some text
 	
 	'
@@ -29,12 +29,12 @@ GHMAnnotatedBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #accessing }
-GHMAnnotatedBlock >> body [
+MicAbstractAnnotatedBlock >> body [
 	^ body
 ]
 
 { #category : #testing }
-GHMAnnotatedBlock >> canConsumeLine: line [
+MicAbstractAnnotatedBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
 	"it can be dangerous but let us try"
@@ -42,19 +42,19 @@ GHMAnnotatedBlock >> canConsumeLine: line [
 ]
 
 { #category : #initialization }
-GHMAnnotatedBlock >> initialize [
+MicAbstractAnnotatedBlock >> initialize [
 
 	super initialize.
 	isClosed := false.
 ]
 
 { #category : #accessing }
-GHMAnnotatedBlock >> label [
+MicAbstractAnnotatedBlock >> label [
 	^ label
 ]
 
 { #category : #testing }
-GHMAnnotatedBlock >> lineMarkup [
+MicAbstractAnnotatedBlock >> lineMarkup [
 
 	^ self subclassResponsibility
 ]

@@ -10,7 +10,7 @@ For example
 
 "
 Class {
-	#name : #GHMContinuousMarkedBlock,
+	#name : #MicContinuousMarkedBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
 		'text'
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #actions }
-GHMContinuousMarkedBlock >> addLineAndReturnNextNode: line [
+MicContinuousMarkedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
 
@@ -31,19 +31,19 @@ GHMContinuousMarkedBlock >> addLineAndReturnNextNode: line [
 ]
 
 { #category : #testing }
-GHMContinuousMarkedBlock >> canConsumeLine: line [
+MicContinuousMarkedBlock >> canConsumeLine: line [
 	"return if this block can consume line i.e., it starts with sensible characters, e.g., > "
 
 	^ self doesLineStartWithMarkup: line
 ]
 
 { #category : #public }
-GHMContinuousMarkedBlock >> contents [ 
+MicContinuousMarkedBlock >> contents [ 
 	^ super contents , '[ ', self text, ' ]'
 ]
 
 { #category : #testing }
-GHMContinuousMarkedBlock >> doesLineStartWithMarkup: line [
+MicContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"
 
 	^ line beginsWith: self lineMarkup
@@ -51,17 +51,17 @@ GHMContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 ]
 
 { #category : #actions }
-GHMContinuousMarkedBlock >> extractLine: line [
+MicContinuousMarkedBlock >> extractLine: line [
 	^ (line copyFrom: self lineMarkup size + 1 to: line size) trim
 ]
 
 { #category : #markups }
-GHMContinuousMarkedBlock >> lineMarkup [
+MicContinuousMarkedBlock >> lineMarkup [
 
 	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
-GHMContinuousMarkedBlock >> text [
+MicContinuousMarkedBlock >> text [
 	^ text
 ]
