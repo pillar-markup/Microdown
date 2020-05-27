@@ -59,11 +59,7 @@ Class {
 { #category : #accessing }
 MicEnvironmentBlock >> arguments [
 	
-	^ arguments ifNil: [ | foundIndex |
-		foundIndex := firstLine indexOf: parser argumentListStartDelimiter first.
-		arguments := foundIndex = 0
-			ifTrue: [ Dictionary new ]
-			ifFalse: [ ZnResourceMetaUtils parseQueryFrom: (firstLine copyFrom: foundIndex to: firstLine size) readStream ] ]
+	^ arguments
 ]
 
 { #category : #accessing }
