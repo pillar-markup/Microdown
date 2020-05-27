@@ -59,7 +59,7 @@ MicQuoteBlockTest >> testShowStructure [
 	source := '> text1
 >    text2'.
 	root := parser parse: source.
-	self assert: (root children first showStructure: 0) equals: 'GHMQuoteBlock
+	self assert: (root children first showStructure: 0) equals: 'MicQuoteBlock
 '
 ]
 
