@@ -1,11 +1,11 @@
 Class {
-	#name : #BaselineOfGithubMarkdown,
+	#name : #BaselineOfMicrodown,
 	#superclass : #BaselineOf,
 	#category : #BaselineOfMicrodown
 }
 
 { #category : #baselines }
-BaselineOfGithubMarkdown >> baseline: spec [
+BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	
 	spec for: #'common' do: [
