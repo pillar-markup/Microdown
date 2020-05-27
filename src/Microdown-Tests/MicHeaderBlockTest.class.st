@@ -3,7 +3,7 @@ A GHMHeaderBlockTest is a test class for testing the behavior of GHMHeaderBlock
 "
 Class {
 	#name : #MicHeaderBlockTest,
-	#superclass : #GHMBlockTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 

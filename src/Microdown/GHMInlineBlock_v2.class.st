@@ -19,7 +19,7 @@ Class {
 		'kind',
 		'children'
 	],
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
 
 { #category : #'instance creation' }

@@ -3,7 +3,7 @@ A GHMCodeBlockTest is a test class for testing the behavior of GHMCodeBlock
 "
 Class {
 	#name : #MicCodeBlockTest,
-	#superclass : #GHMBlockTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 

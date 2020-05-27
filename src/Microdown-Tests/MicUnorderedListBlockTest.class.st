@@ -3,7 +3,7 @@ A GHMOrderedListBlockTest is a test class for testing the behavior of GHMOrdered
 "
 Class {
 	#name : #MicUnorderedListBlockTest,
-	#superclass : #GHMBlockTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 

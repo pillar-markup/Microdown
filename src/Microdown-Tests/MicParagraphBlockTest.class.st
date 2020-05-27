@@ -3,7 +3,7 @@ A GHMParagraphBlockTest is a test class for testing the behavior of GHMParagraph
 "
 Class {
 	#name : #MicParagraphBlockTest,
-	#superclass : #GHMBlockTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 

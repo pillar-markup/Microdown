@@ -3,7 +3,7 @@ A GHMBlockTextBlockTest is a test class for testing the behavior of GHMBlockText
 "
 Class {
 	#name : #MicQuoteBlockTest,
-	#superclass : #GHMBlockTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 

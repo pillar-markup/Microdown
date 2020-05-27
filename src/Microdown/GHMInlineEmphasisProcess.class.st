@@ -26,7 +26,7 @@ Class {
 		'associateCloserIndex',
 		'children'
 	],
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
 
 { #category : #'new & start' }
@@ -81,11 +81,13 @@ GHMInlineEmphasisProcess >> emphasisProcess [
 	firstOpenerIndex isZero 
 		ifTrue: [ ^ self addBasicTextBlocks ].
 	firstOpener := stack at: firstOpenerIndex.
+	"Case link or figure"
+	(#(#linkName #figure) includes: firstOpener type ) ifTrue: [ ^ self linkOrFigureProcess ].
 	"2. search first closer with same type, just after. If not found, pair isn't complete so we skip it and keep going."	
 	associateCloserIndex := (stack allButFirst: firstOpenerIndex) findFirst: [ :delimiter | delimiter isCloser and: delimiter type = firstOpener type].
 	associateCloserIndex isZero 
 		ifTrue: [ 
-			stack := (stack withIndexSelect: [ :value :i | (i = firstOpenerIndex) not ]).
+			self stackWithoutFirstOpenerIndex.
 			^ self emphasisProcess ].
 	"3. translate index in delimiters stack"
 	associateCloserIndex := associateCloserIndex + firstOpenerIndex.
@@ -121,6 +123,48 @@ GHMInlineEmphasisProcess >> inlineBlockClass [
 	^ GHMInlineBlock_v2
 ]
 
+{ #category : #'global process' }
+GHMInlineEmphasisProcess >> linkOrFigureProcess [
+	| urlCloserStringIndex correctSubstring correctURL |
+	"1. search the linkname closer delimiter"
+	associateCloserIndex := (stack allButFirst: firstOpenerIndex) findFirst: [ :delimiter | delimiter isCloser and: delimiter type = #linkName].
+	associateCloserIndex isZero 
+		ifTrue: [ 
+			self stackWithoutFirstOpenerIndex.
+			^ self emphasisProcess ].
+	"2. translate index in delimiters stack"
+	associateCloserIndex := associateCloserIndex + firstOpenerIndex.
+	associateCloser := stack at: associateCloserIndex.
+	"3. check we find a ( just after closer in string"
+	((string allButFirst: associateCloser index + associateCloser size - 1) beginsWith: self urlOpenerDelimiterClass markup) 
+		ifFalse: [ self stackWithoutFirstOpenerIndex. ^ self emphasisProcess ].
+	"4. search url closer"
+	urlCloserStringIndex := string indexOfSubCollection: self urlCloserDelimiterClass markup startingAt: associateCloser index 
+		ifAbsent: [ self stackWithoutFirstOpenerIndex. ^ self emphasisProcess ].
+	"5. link or figure found"
+	startIndex := firstOpener index + firstOpener size.
+	endIndex := associateCloser index - 1.
+	correctSubstring := string collect: [ :c | c ] from: startIndex to: endIndex.
+	correctURL := string collect: [ :c | c ] from: (associateCloser index + associateCloser size + self urlOpenerDelimiterClass size) to: (urlCloserStringIndex - 1).
+	"6. define children"
+	self processNestedCase.
+	result add: 
+		(GHMInlineBlockWithUrl_v2
+			from: firstOpener index
+			to: urlCloserStringIndex 
+			withKind: firstOpener type
+			withSubstring: correctSubstring
+			withChildren: children
+			withURL: correctURL).
+	"7. keep going"
+	stack := (stack withIndexSelect: [:value :i | (i between: firstOpenerIndex and: associateCloserIndex) not ]).
+	^ self emphasisProcess
+	
+	
+	
+	
+]
+
 { #category : #actions }
 GHMInlineEmphasisProcess >> processNestedCase [
 	(associateCloserIndex = (firstOpenerIndex + 1))
@@ -138,6 +182,11 @@ GHMInlineEmphasisProcess >> stack: aStack [
 	stack := aStack
 ]
 
+{ #category : #actions }
+GHMInlineEmphasisProcess >> stackWithoutFirstOpenerIndex [
+	stack := (stack withIndexSelect: [ :value :i | (i = firstOpenerIndex) not ])
+]
+
 { #category : #accessing }
 GHMInlineEmphasisProcess >> start: aStartIndex [
 	start := aStartIndex
@@ -146,4 +195,14 @@ GHMInlineEmphasisProcess >> start: aStartIndex [
 { #category : #accessing }
 GHMInlineEmphasisProcess >> string: aString [
 	string := aString
+]
+
+{ #category : #'class references' }
+GHMInlineEmphasisProcess >> urlCloserDelimiterClass [
+	^ GHMURLCloserDelimiter
+]
+
+{ #category : #'class references' }
+GHMInlineEmphasisProcess >> urlOpenerDelimiterClass [
+	^ GHMURLOpenerDelimiter 
 ]

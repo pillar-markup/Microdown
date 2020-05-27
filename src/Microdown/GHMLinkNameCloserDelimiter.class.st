@@ -4,8 +4,18 @@ I am the closer delimiter for link name.
 Class {
 	#name : #GHMLinkNameCloserDelimiter,
 	#superclass : #GHMAbstractDelimiter,
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
+
+{ #category : #accessing }
+GHMLinkNameCloserDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+GHMLinkNameCloserDelimiter class >> markup [
+	^ ']'
+]
 
 { #category : #accessing }
 GHMLinkNameCloserDelimiter >> isCloser [

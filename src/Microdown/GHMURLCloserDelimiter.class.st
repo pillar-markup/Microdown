@@ -4,8 +4,23 @@ I am the closer delimiter for URL.
 Class {
 	#name : #GHMURLCloserDelimiter,
 	#superclass : #GHMAbstractDelimiter,
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
+
+{ #category : #testing }
+GHMURLCloserDelimiter class >> isActive [
+	^ false
+]
+
+{ #category : #accessing }
+GHMURLCloserDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+GHMURLCloserDelimiter class >> markup [
+	^ ')'
+]
 
 { #category : #testing }
 GHMURLCloserDelimiter >> isActive [

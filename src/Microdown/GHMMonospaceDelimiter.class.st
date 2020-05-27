@@ -4,8 +4,18 @@ I am the delimiter for monospace/inline code format.
 Class {
 	#name : #GHMMonospaceDelimiter,
 	#superclass : #GHMAbstractDelimiter,
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
+
+{ #category : #accessing }
+GHMMonospaceDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+GHMMonospaceDelimiter class >> markup [
+	^ '`'
+]
 
 { #category : #accessing }
 GHMMonospaceDelimiter >> isCloser [

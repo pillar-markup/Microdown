@@ -1,5 +1,5 @@
 Class {
-	#name : #GHMBlockTest,
+	#name : #MicBlockTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'parser'
@@ -8,32 +8,32 @@ Class {
 }
 
 { #category : #factory }
-GHMBlockTest >> listBlockClass [
-	^ MicListBlock
+MicBlockTest >> listBlockClass [
+	^ GHMListBlock
 ]
 
 { #category : #factory }
-GHMBlockTest >> orderedListBlockClass [
+MicBlockTest >> orderedListBlockClass [
 	^ MicOrderedListBlock
 ]
 
 { #category : #factory }
-GHMBlockTest >> parser [
+MicBlockTest >> parser [
 	^ self parserClass new
 ]
 
 { #category : #factory }
-GHMBlockTest >> parserClass [
+MicBlockTest >> parserClass [
 	^ MicAbstractParser
 ]
 
 { #category : #factory }
-GHMBlockTest >> rootBlockClass [
+MicBlockTest >> rootBlockClass [
 	^ MicRootBlock
 ]
 
 { #category : #running }
-GHMBlockTest >> setUp [
+MicBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser. 

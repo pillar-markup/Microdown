@@ -4,8 +4,18 @@ I am the opener delimiter for figure name.
 Class {
 	#name : #GHMFigureNameOpenerDelimiter,
 	#superclass : #GHMAbstractDelimiter,
-	#category : #'Microdown-Model - inline'
+	#category : #'Microdown-Model'
 }
+
+{ #category : #accessing }
+GHMFigureNameOpenerDelimiter class >> isCloser [
+	^ false
+]
+
+{ #category : #accessing }
+GHMFigureNameOpenerDelimiter class >> markup [
+	^ '!['
+]
 
 { #category : #accessing }
 GHMFigureNameOpenerDelimiter >> isCloser [
