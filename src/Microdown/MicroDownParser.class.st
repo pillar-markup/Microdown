@@ -92,6 +92,8 @@ MicroDownParser >> blockExtensionStarterClassFrom: line [
 		ifTrue: [ ^ MicMathBlock ].
 	(line beginsWith: self environmentOpeningBlockMarkup)
 		ifTrue: [ ^ MicEnvironmentBlock ].	
+	(line beginsWith: self horizontalLineMarkup)
+		ifTrue: [ ^ MicHorizontalLineBlock ].
 	^ nil
 ]
 
@@ -109,6 +111,11 @@ MicroDownParser >> environmentClosingBlockMarkup [
 { #category : #markups }
 MicroDownParser >> environmentOpeningBlockMarkup [
 	^ self class environmentOpeningBlockMarkup
+]
+
+{ #category : #markups }
+MicroDownParser >> horizontalLineMarkup [
+	^ '***'
 ]
 
 { #category : #markups }

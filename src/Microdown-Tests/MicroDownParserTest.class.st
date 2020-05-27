@@ -266,6 +266,31 @@ toto'.
 	self assert: math body equals: contents
 ]
 
+{ #category : #'tests-horizontal' }
+MicroDownParserTest >> testHorizontalBlock [
+
+	| source root horizontal |
+	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr.
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	horizontal := root children first. 
+	self assert: (horizontal isKindOf: MicHorizontalLineBlock). 
+	
+]
+
+{ #category : #'tests-horizontal' }
+MicroDownParserTest >> testHorizontalBlockFollowedByList [
+
+	| source root horizontal |
+	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
+	root :=  parser parse: source.
+	self assert: root children size equals: 2.
+	horizontal := root children first. 
+	self assert: (horizontal isKindOf: MicHorizontalLineBlock). 
+	self assert: (root children second isKindOf: MicUnorderedListBlock). 
+	
+]
+
 { #category : #'tests-math' }
 MicroDownParserTest >> testMathBlock [
 
