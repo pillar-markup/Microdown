@@ -1,5 +1,5 @@
 Class {
-	#name : #MicOldPRBasicMicroDownParserTest,
+	#name : #MicToPillarBasicTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'pillarDocument'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #tests }
-MicOldPRBasicMicroDownParserTest >> parserClass [
+MicToPillarBasicTest >> parserClass [
 	^ MicroDownParser
 ]
 
 { #category : #tests }
-MicOldPRBasicMicroDownParserTest >> testCodeBlock [
+MicToPillarBasicTest >> testCodeBlock [
 
 	| document |
 	document := self parserClass new parse: '```language=pharo
@@ -24,7 +24,7 @@ MicOldPRBasicMicroDownParserTest >> testCodeBlock [
 ]
 
 { #category : #tests }
-MicOldPRBasicMicroDownParserTest >> testCodeInText [
+MicToPillarBasicTest >> testCodeInText [
 
 	| document pillarDocument |
 	document := self parserClass new parse: 'The method `foo` is fun'.
@@ -36,7 +36,7 @@ MicOldPRBasicMicroDownParserTest >> testCodeInText [
 ]
 
 { #category : #tests }
-MicOldPRBasicMicroDownParserTest >> testHeader [ 
+MicToPillarBasicTest >> testHeader [ 
 
 	| document pillarDocument |
 	document := self parserClass new parse: '# Header1
@@ -53,7 +53,7 @@ MicOldPRBasicMicroDownParserTest >> testHeader [
 ]
 
 { #category : #tests }
-MicOldPRBasicMicroDownParserTest >> testNumberedList [
+MicToPillarBasicTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
 		parse: MicroDownSnippetFactory new orderedListWithTwoItemsSample) asPillar.
