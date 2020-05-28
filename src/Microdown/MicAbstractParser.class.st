@@ -119,6 +119,12 @@ MicAbstractParser class >> tableCellMarkup [
 ]
 
 { #category : #markups }
+MicAbstractParser class >> unorderedListMarkup [
+
+	^ '- '
+]
+
+{ #category : #markups }
 MicAbstractParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
