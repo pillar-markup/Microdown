@@ -1,47 +1,50 @@
 Class {
 	#name : #MicMicroDownSnippetFactory,
 	#superclass : #Object,
+	#instVars : [
+		'parserClass'
+	],
 	#category : #'Microdown-Pillar-Tests'
 }
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorAreTrimedSample [
-	^ self grammar anchorMarkup, '  test  '
+	^ self parserClass anchorMarkup, '  test  '
 ]
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorSample [
-	^ self grammar anchorMarkup, 'test'
+	^ self parserClass anchorMarkup, 'test'
 ]
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorWithNewLineSample [
-	^ self grammar anchorMarkup, 'foo', String cr
+	^ self parserClass anchorMarkup, 'foo', String cr
 ]
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
-	^ self grammar anchorMarkup, 'foo bar'
+	^ self parserClass anchorMarkup, 'foo bar'
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> boldFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar boldMarkup
+	^ self surround: '' withMarkup: self parserClass boldMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> boldFormatSample [
-	^ self surroundWithMarkup: self grammar boldMarkup
+	^ self surroundWithMarkup: self parserClass boldMarkup
 ]
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 		st nextPutAll: param.
 		st cr.
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 	]
 ]
 
@@ -49,12 +52,12 @@ MicMicroDownSnippetFactory >> codeblock: param [
 MicMicroDownSnippetFactory >> codeblock: param body: body [
 
 	^ String streamContents: [ :st | 
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 		st nextPutAll: param.
 		st cr.
 		st nextPutAll: body.
 		st cr.
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 	]
 ]
 
@@ -62,23 +65,17 @@ MicMicroDownSnippetFactory >> codeblock: param body: body [
 MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 
 	^ String streamContents: [ :st | 
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 		st cr.
 		st nextPutAll: body.
 		st cr.
-		st nextPutAll: self grammar codeblockMarkup. 
+		st nextPutAll: self parserClass codeblockMarkup. 
 	]
-]
-
-{ #category : #utils }
-MicMicroDownSnippetFactory >> grammar [
-
-	^ MicroDownParser  
 ]
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerEmptySample [ 
-	^ self grammar headerMarkup
+	^ self parserClass headerMarkup
 ]
 
 { #category : #headers }
@@ -120,28 +117,35 @@ MicMicroDownSnippetFactory >> headerLevel6Sample [
 MicMicroDownSnippetFactory >> headerLevel: n [
 
 	^ String streamContents: [ :st |
-		 n timesRepeat: [ st nextPutAll: self grammar headerMarkup ].
+		 n timesRepeat: [ st nextPutAll: self parserClass headerMarkup ].
 		 st nextPutAll: 'Foo']
 ]
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerWithFormatSample [
-	^ self grammar headerMarkup, self boldFormatSample 
+	^ self parserClass headerMarkup, self boldFormatSample 
 ]
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerWithNewLineSample [
-	^ self grammar headerMarkup, 'Foo', String cr
+	^ self parserClass headerMarkup, 'Foo', String cr
+]
+
+{ #category : #initialization }
+MicMicroDownSnippetFactory >> initialize [
+	
+	super initialize.
+	parserClass := MicroDownParser 
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> italicFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar italicMarkup
+	^ self surround: '' withMarkup: self parserClass italicMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> italicFormatSample [
-	^ self surroundWithMarkup: self grammar italicMarkup
+	^ self surroundWithMarkup: self parserClass italicMarkup
 ]
 
 { #category : #document }
@@ -159,7 +163,7 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 { #category : #list }
 MicMicroDownSnippetFactory >> listMultiSample [
 	| unordered |
-	unordered := self grammar unorderedListMarkup.
+	unordered := self parserClass unorderedListMarkup.
 	
 	^ 	unordered, '1', String cr, 
 		unordered, unordered, '2', String cr, 
@@ -180,12 +184,12 @@ MicMicroDownSnippetFactory >> listWithCommentSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar monospaceMarkup
+	^ self surround: '' withMarkup: self parserClass monospaceMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatSample [
-	^ self surroundWithMarkup: self grammar monospaceMarkup
+	^ self surroundWithMarkup: self parserClass monospaceMarkup
 ]
 
 { #category : #document }
@@ -229,6 +233,12 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 '1. first
 2. second
 '
+]
+
+{ #category : #utils }
+MicMicroDownSnippetFactory >> parserClass [
+
+	^ MicroDownParser  
 ]
 
 { #category : #'code block' }
@@ -335,32 +345,32 @@ body: 'bla'
 
 { #category : #format }
 MicMicroDownSnippetFactory >> strikethroughFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar strikethroughMarkup
+	^ self surround: '' withMarkup: self parserClass strikethroughMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> strikethroughFormatSample [
-	^ self surroundWithMarkup: self grammar strikethroughMarkup
+	^ self surroundWithMarkup: self parserClass strikethroughMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> subscriptFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar subscriptMarkup
+	^ self surround: '' withMarkup: self parserClass subscriptMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> subscriptFormatSample [
-	^ self surroundWithMarkup: self grammar subscriptMarkup
+	^ self surroundWithMarkup: self parserClass subscriptMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> superscriptFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar superscriptMarkup
+	^ self surround: '' withMarkup: self parserClass superscriptMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> superscriptFormatSample [
-	^ self surroundWithMarkup: self grammar superscriptMarkup
+	^ self surroundWithMarkup: self parserClass superscriptMarkup
 ]
 
 { #category : #format }
@@ -375,34 +385,34 @@ MicMicroDownSnippetFactory >> surroundWithMarkup: aMarkup [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> underlineFormatEmptySample [
-	^ self surround: '' withMarkup: self grammar underlineMarkup
+	^ self surround: '' withMarkup: self parserClass underlineMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> underlineFormatSample [
-	^ self surroundWithMarkup: self grammar underlineMarkup
+	^ self surroundWithMarkup: self parserClass underlineMarkup
 ]
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListEmptySample [
-	^ self grammar unorderedListMarkup
+	^ self parserClass unorderedListMarkup
 ]
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListSample [
-	^ self grammar unorderedListMarkup, 'Foo'
+	^ self parserClass unorderedListMarkup, 'Foo'
 ]
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListWithSubListSample [
 	| listMarkup |
-	listMarkup := self grammar unorderedListMarkup.
+	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, listMarkup, 'Bar'
 ]
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
-	listMarkup := self grammar unorderedListMarkup.
+	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar'
 ]
