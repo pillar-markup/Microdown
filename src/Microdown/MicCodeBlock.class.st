@@ -13,19 +13,20 @@ Class {
 	#name : #MicCodeBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
 	#instVars : [
-		'arguments'
+		'arguments',
+		'firstTag'
 	],
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
 MicCodeBlock >> arguments [
-	^ firstLine
+	^ arguments
 ]
 
 { #category : #accessing }
 MicCodeBlock >> arguments: aString [
-	firstLine := aString
+	arguments := aString
 ]
 
 { #category : #accessing }
@@ -36,6 +37,23 @@ MicCodeBlock >> code [
 { #category : #public }
 MicCodeBlock >> contents [ 
 	^super contents , '[ ', self code, ' ]'
+]
+
+{ #category : #handle }
+MicCodeBlock >> extractFirstLineFrom: aLine [
+
+	| lineWithoutMarkup lineStream |
+	lineWithoutMarkup := super extractFirstLineFrom: aLine.
+	lineStream := lineWithoutMarkup readStream.
+	firstTag := (lineStream upTo: $=) asSymbol.
+	lineStream := lineWithoutMarkup readStream.
+	arguments := ZnResourceMetaUtils parseQueryFrom: lineStream.
+	^ lineWithoutMarkup
+]
+
+{ #category : #accessing }
+MicCodeBlock >> firstTag [
+	^ firstTag
 ]
 
 { #category : #utils }
