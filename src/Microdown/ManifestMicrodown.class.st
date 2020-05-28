@@ -3,18 +3,17 @@
 
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
 
-Microdown is a smaller mardown but more extensible. 
-It supports
+Microdown is a smaller mardown than but mardown but more extensible. 
+It supports the default
 - Header
 - Lists
 - Paragraph
 - Code with arguments: key=val&key2=val2
 - Quote
-...
+- Table
 But also 
 - Environment with arguments
-- Table
-- Anchor
+- Anchors
 - Annotated paragraph
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
