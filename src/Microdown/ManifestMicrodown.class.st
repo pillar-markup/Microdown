@@ -29,7 +29,7 @@ When a new line is read we do the following:
 	- as part of this a child of current can be made which can consume the new line
 2. If current cannot consume the new line, we close current, move current to its parent, and repeat 1.
 3. The root node can consume anything, for instance by making new nodes for storing the new line.
-4. The roor node is not closed until input is exhausted
+4. The root node is not closed until input is exhausted
 
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
