@@ -13,6 +13,12 @@ Class {
 	#category : #'Microdown-Pillar-Tests'
 }
 
+{ #category : #'tests - anchor' }
+MicToPillarMicrodownParserTest >> anchorClass [
+
+	^ PRAnchor
+]
+
 { #category : #'tests - codeblock' }
 MicToPillarMicrodownParserTest >> codeBlockClass [
 	^ PRCodeblock
@@ -79,22 +85,22 @@ MicToPillarMicrodownParserTest >> setUp [
 
 { #category : #'tests - anchor' }
 MicToPillarMicrodownParserTest >> testAnchor [
-	self parse: factory anchorSample createElementOfClass: PRAnchor
+	self parse: factory anchorSample createElementOfClass: self anchorClass
 ]
 
 { #category : #'tests - anchor' }
 MicToPillarMicrodownParserTest >> testAnchorAreTrimed [
-	self parse: factory anchorAreTrimedSample createElementOfClass: #anchor
+	self parse: factory anchorAreTrimedSample createElementOfClass: self anchorClass
 ]
 
 { #category : #'tests - anchor' }
 MicToPillarMicrodownParserTest >> testAnchorWithNewLine [
-	self parse: factory anchorWithNewLineSample createElementOfClass: #elementWithNewline
+	self parse: factory anchorWithNewLineSample createElementOfClass:  self anchorClass
 ]
 
 { #category : #'tests - anchor' }
 MicToPillarMicrodownParserTest >> testAnchorWithSpaceInside [
-	self parse: factory anchorWithSpaceInsideSample createElementOfClass: #anchor
+	self parse: factory anchorWithSpaceInsideSample createElementOfClass:  self anchorClass
 ]
 
 { #category : #'tests - format' }
