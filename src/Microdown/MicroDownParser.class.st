@@ -1,3 +1,6 @@
+"
+I'm a temporary class that should be merged in the superclass.
+"
 Class {
 	#name : #MicroDownParser,
 	#superclass : #MicAbstractParser,
