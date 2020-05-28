@@ -3,9 +3,12 @@ This test case uses the microdownSnippetFactory and test that the conversion to 
 This is why it is in this package
 
 Microdown text -> Microdown trees -> Pillar trees
+
+Te tests are just checking that object of the correct class is created. 
+Future extensions should handle the details.
 "
 Class {
-	#name : #MicToPillarMicrodownParserTest,
+	#name : #MicSurfacicMicrodownToPillarTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'factory'
@@ -14,40 +17,40 @@ Class {
 }
 
 { #category : #'tests - anchor' }
-MicToPillarMicrodownParserTest >> anchorClass [
+MicSurfacicMicrodownToPillarTest >> anchorClass [
 
 	^ PRAnchor
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> codeBlockClass [
+MicSurfacicMicrodownToPillarTest >> codeBlockClass [
 	^ PRCodeblock
 ]
 
 { #category : #accessing }
-MicToPillarMicrodownParserTest >> factory [
+MicSurfacicMicrodownToPillarTest >> factory [
 
 	^ factory
 ]
 
 { #category : #accessing }
-MicToPillarMicrodownParserTest >> factory: aFactory [
+MicSurfacicMicrodownToPillarTest >> factory: aFactory [
 
 	factory := aFactory
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> headerClass [
+MicSurfacicMicrodownToPillarTest >> headerClass [
 	^ PRHeader
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> orderedListClass [
+MicSurfacicMicrodownToPillarTest >> orderedListClass [
 	^ PROrderedList
 ]
 
 { #category : #accessing }
-MicToPillarMicrodownParserTest >> parse: sample createElementOfClass: aClass [
+MicSurfacicMicrodownToPillarTest >> parse: sample createElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
 	parser := self parserClass new. 
@@ -57,7 +60,7 @@ MicToPillarMicrodownParserTest >> parse: sample createElementOfClass: aClass [
 ]
 
 { #category : #accessing }
-MicToPillarMicrodownParserTest >> parseCreateDocument: sample [ 
+MicSurfacicMicrodownToPillarTest >> parseCreateDocument: sample [ 
 
 	| parser micDoc pillarDoc |
 	parser := self parserClass new. 
@@ -67,179 +70,179 @@ MicToPillarMicrodownParserTest >> parseCreateDocument: sample [
 ]
 
 { #category : #accessing }
-MicToPillarMicrodownParserTest >> parserClass [
+MicSurfacicMicrodownToPillarTest >> parserClass [
 	^ MicroDownParser
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> rootBlockClass [
+MicSurfacicMicrodownToPillarTest >> rootBlockClass [
 
 	^ PRDocument
 ]
 
 { #category : #running }
-MicToPillarMicrodownParserTest >> setUp [ 
+MicSurfacicMicrodownToPillarTest >> setUp [ 
 	super setUp.
 	self factory: MicMicroDownSnippetFactory new.
 ]
 
 { #category : #'tests - anchor' }
-MicToPillarMicrodownParserTest >> testAnchor [
+MicSurfacicMicrodownToPillarTest >> testAnchor [
 	self parse: factory anchorSample createElementOfClass: self anchorClass
 ]
 
 { #category : #'tests - anchor' }
-MicToPillarMicrodownParserTest >> testAnchorAreTrimed [
+MicSurfacicMicrodownToPillarTest >> testAnchorAreTrimed [
 	self parse: factory anchorAreTrimedSample createElementOfClass: self anchorClass
 ]
 
 { #category : #'tests - anchor' }
-MicToPillarMicrodownParserTest >> testAnchorWithNewLine [
+MicSurfacicMicrodownToPillarTest >> testAnchorWithNewLine [
 	self parse: factory anchorWithNewLineSample createElementOfClass:  self anchorClass
 ]
 
 { #category : #'tests - anchor' }
-MicToPillarMicrodownParserTest >> testAnchorWithSpaceInside [
+MicSurfacicMicrodownToPillarTest >> testAnchorWithSpaceInside [
 	self parse: factory anchorWithSpaceInsideSample createElementOfClass:  self anchorClass
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testBoldFormat [
+MicSurfacicMicrodownToPillarTest >> testBoldFormat [
 	self parse: factory boldFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testBoldFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testBoldFormatEmpty [
 	self parse: factory boldFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderEmpty [
+MicSurfacicMicrodownToPillarTest >> testHeaderEmpty [
 	self parse: factory headerEmptySample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderLevel1 [
+MicSurfacicMicrodownToPillarTest >> testHeaderLevel1 [
 	self parse: factory headerLevel1Sample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderLevel2 [
+MicSurfacicMicrodownToPillarTest >> testHeaderLevel2 [
 	self parse: factory headerLevel2Sample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderLevel3 [
+MicSurfacicMicrodownToPillarTest >> testHeaderLevel3 [
 	self parse: factory headerLevel3Sample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderLevel4 [
+MicSurfacicMicrodownToPillarTest >> testHeaderLevel4 [
 	self parse: factory headerLevel4Sample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderLevel5 [
+MicSurfacicMicrodownToPillarTest >> testHeaderLevel5 [
 	self parse: factory headerLevel5Sample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderWithFormat [
+MicSurfacicMicrodownToPillarTest >> testHeaderWithFormat [
 	self parse: factory headerWithFormatSample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - header' }
-MicToPillarMicrodownParserTest >> testHeaderWithNewLine [
+MicSurfacicMicrodownToPillarTest >> testHeaderWithNewLine [
 	self parse: factory headerWithNewLineSample createElementOfClass: self headerClass
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testItalicFormat [
+MicSurfacicMicrodownToPillarTest >> testItalicFormat [
 	self parse: factory italicFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testItalicFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testItalicFormatEmpty [
 	self parse: factory italicFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testLineEnd [
+MicSurfacicMicrodownToPillarTest >> testLineEnd [
 	self parseCreateDocument: factory lineEndSample 
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testLineEndwithNewline [
+MicSurfacicMicrodownToPillarTest >> testLineEndwithNewline [
 	self parseCreateDocument: factory lineEndwithNewlineSample 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testListMulti [
+MicSurfacicMicrodownToPillarTest >> testListMulti [
 	self parse: factory listMultiSample createElementOfClass: self unorderedListClass
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testListWithComment [
+MicSurfacicMicrodownToPillarTest >> testListWithComment [
 	self skip.
 	self parse: factory listWithCommentSample createElementOfClass: self orderedListClass 
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testMonospaceFormat [
+MicSurfacicMicrodownToPillarTest >> testMonospaceFormat [
 	self parse: factory monospaceFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testMonospaceFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testMonospaceFormatEmpty [
 	self parse: factory monospaceFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testNewline [
+MicSurfacicMicrodownToPillarTest >> testNewline [
 	self parseCreateDocument: factory newlineSample 
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testNewlineCR [
+MicSurfacicMicrodownToPillarTest >> testNewlineCR [
 	self parseCreateDocument: factory newlineCRSample 
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testNewlineCRLF [
+MicSurfacicMicrodownToPillarTest >> testNewlineCRLF [
 	self parseCreateDocument: factory newlineCRLFSample 
 ]
 
 { #category : #'tests - document' }
-MicToPillarMicrodownParserTest >> testNewlineLF [
+MicSurfacicMicrodownToPillarTest >> testNewlineLF [
 	self parseCreateDocument: factory newlineLFSample 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testOrderedList [
+MicSurfacicMicrodownToPillarTest >> testOrderedList [
 	self parse: factory orderedListSample createElementOfClass: self orderedListClass
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testOrderedListEmpty [
+MicSurfacicMicrodownToPillarTest >> testOrderedListEmpty [
 	self parse: factory orderedListEmptySample createElementOfClass: self orderedListClass
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testOrderedListWithTwoItems [
+MicSurfacicMicrodownToPillarTest >> testOrderedListWithTwoItems [
 	self
 		parse: factory orderedListWithTwoItemsSample
 		createElementOfClass: self orderedListClass
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScript [
+MicSurfacicMicrodownToPillarTest >> testScript [
 	self
 		parse: factory scriptSample
 		createElementOfClass: self codeBlockClass
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameter [
+MicSurfacicMicrodownToPillarTest >> testScriptParameter [
 	self skip.
 	self
 		parse: factory scriptParameterSample
@@ -247,7 +250,7 @@ MicToPillarMicrodownParserTest >> testScriptParameter [
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameterEscape [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterEscape [
 		self skip.
 	self
 		parse: factory scriptParameterEscapeSample
@@ -255,14 +258,14 @@ MicToPillarMicrodownParserTest >> testScriptParameterEscape [
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptParameterTrueByDefault [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterTrueByDefault [
 	self 
 		parse: factory scriptParameterTrueByDefaultSample 
 		createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameterValue [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterValue [
 	self skip.
 	self
 		parse: factory scriptParameterValueSample
@@ -270,17 +273,17 @@ MicToPillarMicrodownParserTest >> testScriptParameterValue [
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptParameterWithFloat [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterWithFloat [
 	self parse: factory scriptParameterWithFloatSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptParameterWithNoValues [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterWithNoValues [
 	self parse: factory scriptParameterWithNoValuesSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameterWithSpacesBeforeAndAfter [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterWithSpacesBeforeAndAfter [
 		self skip.
 	self
 		parse: factory scriptParameterWithSpacesBeforeAndAfterSample
@@ -288,7 +291,7 @@ MicToPillarMicrodownParserTest >> testScriptParameterWithSpacesBeforeAndAfter [
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameterWithoutValue [
+MicSurfacicMicrodownToPillarTest >> testScriptParameterWithoutValue [
 	self skip.
 	self
 		parse: factory scriptParameterWithoutValueSample
@@ -296,13 +299,13 @@ MicToPillarMicrodownParserTest >> testScriptParameterWithoutValue [
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParameters [
+MicSurfacicMicrodownToPillarTest >> testScriptParameters [
 	self skip.
 	self parse: factory scriptParametersSample createElementOfClass: #scriptParameters
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParametersEscape [
+MicSurfacicMicrodownToPillarTest >> testScriptParametersEscape [
 	self skip.
 	self
 		parse: factory scriptParametersEscapeSample
@@ -310,7 +313,7 @@ MicToPillarMicrodownParserTest >> testScriptParametersEscape [
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptParametersMultiple [
+MicSurfacicMicrodownToPillarTest >> testScriptParametersMultiple [
 	self skip.
 	self
 		parse: factory scriptParametersMultipleSample
@@ -318,7 +321,7 @@ MicToPillarMicrodownParserTest >> testScriptParametersMultiple [
 ]
 
 { #category : #'tests - codeblock internals' }
-MicToPillarMicrodownParserTest >> testScriptTwoParametersNoValue [
+MicSurfacicMicrodownToPillarTest >> testScriptTwoParametersNoValue [
 	self skip.
 	self
 		parse: factory scriptTwoParametersNoValueSample
@@ -326,81 +329,81 @@ MicToPillarMicrodownParserTest >> testScriptTwoParametersNoValue [
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptWithLanguage [
+MicSurfacicMicrodownToPillarTest >> testScriptWithLanguage [
 	self parse: factory scriptWithLanguageSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptWithNewLine [
+MicSurfacicMicrodownToPillarTest >> testScriptWithNewLine [
 	self parse: factory scriptWithNewLineSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptWithSpaceAtTheEnd [
+MicSurfacicMicrodownToPillarTest >> testScriptWithSpaceAtTheEnd [
 	self parse: factory scriptWithSpaceAtTheEndSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
-MicToPillarMicrodownParserTest >> testScriptWithSpacedParameters [
+MicSurfacicMicrodownToPillarTest >> testScriptWithSpacedParameters [
 	self parse: factory scriptWithSpacedParametersSample createElementOfClass: self codeBlockClass
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testStrikethroughFormat [
+MicSurfacicMicrodownToPillarTest >> testStrikethroughFormat [
 	self parse: factory strikethroughFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testStrikethroughFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testStrikethroughFormatEmpty [
 	self parse: factory strikethroughFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testSubscriptFormat [
+MicSurfacicMicrodownToPillarTest >> testSubscriptFormat [
 	self parse: factory subscriptFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testSubscriptFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testSubscriptFormatEmpty [
 	self parse: factory subscriptFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testSuperscriptFormat [
+MicSurfacicMicrodownToPillarTest >> testSuperscriptFormat [
 	self parse: factory superscriptFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
-MicToPillarMicrodownParserTest >> testSuperscriptFormatEmpty [
+MicSurfacicMicrodownToPillarTest >> testSuperscriptFormatEmpty [
 	self parse: factory superscriptFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testUnorderedList [
+MicSurfacicMicrodownToPillarTest >> testUnorderedList [
 	self parse: factory unorderedListSample createElementOfClass: self unorderedListClass 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testUnorderedListEmpty [
+MicSurfacicMicrodownToPillarTest >> testUnorderedListEmpty [
 	self parse: factory unorderedListEmptySample createElementOfClass: self unorderedListClass 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testUnorderedListWithSubList [
+MicSurfacicMicrodownToPillarTest >> testUnorderedListWithSubList [
 	self
 		parse: factory unorderedListWithSubListSample
 		createElementOfClass: self unorderedListClass 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> testUnorderedListWithTwoItems [
+MicSurfacicMicrodownToPillarTest >> testUnorderedListWithTwoItems [
 	self
 		parse: factory unorderedListWithTwoItemsSample
 		createElementOfClass: self unorderedListClass 
 ]
 
 { #category : #'tests - list' }
-MicToPillarMicrodownParserTest >> unorderedListClass [
+MicSurfacicMicrodownToPillarTest >> unorderedListClass [
 
 	^ PRUnorderedList 
 ]
