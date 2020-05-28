@@ -1,6 +1,6 @@
 Class {
 	#name : #MicOldPRMicroDownGrammarTest,
-	#superclass : #PP2CompositeNodeTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'factory'
 	],
@@ -19,20 +19,35 @@ MicOldPRMicroDownGrammarTest >> factory: aFactory [
 	factory := aFactory
 ]
 
+{ #category : #'tests - header' }
+MicOldPRMicroDownGrammarTest >> headerClass [
+	^ PRHeader
+]
+
+{ #category : #accessing }
+MicOldPRMicroDownGrammarTest >> parse: sample rule: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := parser parse: sample.
+	pillarDoc := micDoc asPillar.
+	self assert: pillarDoc children first class equals: aClass.
+]
+
 { #category : #accessing }
 MicOldPRMicroDownGrammarTest >> parserClass [
-	^ PRMicroDownGrammar
+	^ MicroDownParser
 ]
 
 { #category : #running }
 MicOldPRMicroDownGrammarTest >> setUp [ 
 	super setUp.
-	self factory: MicroDownSnippetFactory new.
+	self factory: MicMicroDownSnippetFactory new.
 ]
 
 { #category : #'tests - anchor' }
 MicOldPRMicroDownGrammarTest >> testAnchor [
-	self parse: factory anchorSample rule: #anchor
+	self parse: factory anchorSample rule: PRAnchor
 ]
 
 { #category : #'tests - anchor' }
@@ -62,42 +77,42 @@ MicOldPRMicroDownGrammarTest >> testBoldFormatEmpty [
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderEmpty [
-	self parse: factory headerEmptySample rule: #header
+	self parse: factory headerEmptySample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderLevel1 [
-	self parse: factory headerLevel1Sample rule: #header
+	self parse: factory headerLevel1Sample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderLevel2 [
-	self parse: factory headerLevel2Sample rule: #header
+	self parse: factory headerLevel2Sample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderLevel3 [
-	self parse: factory headerLevel3Sample rule: #header
+	self parse: factory headerLevel3Sample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderLevel4 [
-	self parse: factory headerLevel4Sample rule: #header
+	self parse: factory headerLevel4Sample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderLevel5 [
-	self parse: factory headerLevel5Sample rule: #header
+	self parse: factory headerLevel5Sample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderWithFormat [
-	self parse: factory headerWithFormatSample rule: #header
+	self parse: factory headerWithFormatSample rule: self headerClass
 ]
 
 { #category : #'tests - header' }
 MicOldPRMicroDownGrammarTest >> testHeaderWithNewLine [
-	self parse: factory headerWithNewLineSample rule: #elementWithNewline
+	self parse: factory headerWithNewLineSample rule: self headerClass
 ]
 
 { #category : #'tests - format' }

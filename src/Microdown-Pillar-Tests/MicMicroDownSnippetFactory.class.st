@@ -14,7 +14,7 @@ MicMicroDownSnippetFactory >> anchorAreTrimedSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorSample [
-	^ self parserClass anchorMarkup, 'test'
+	^ parserClass anchorMarkup, 'test'
 ]
 
 { #category : #anchor }
