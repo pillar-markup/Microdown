@@ -108,11 +108,13 @@ MicSurfacicMicrodownToPillarTest >> testAnchorWithSpaceInside [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormat [
+	self skip.
 	self parse: factory boldFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormatEmpty [
+	self skip.
 	self parse: factory boldFormatEmptySample createElementOfClass: #format
 ]
 
@@ -158,11 +160,13 @@ MicSurfacicMicrodownToPillarTest >> testHeaderWithNewLine [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormat [
+	self skip.
 	self parse: factory italicFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormatEmpty [
+	self skip.
 	self parse: factory italicFormatEmptySample createElementOfClass: #format
 ]
 
@@ -189,11 +193,13 @@ MicSurfacicMicrodownToPillarTest >> testListWithComment [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormat [
+	self skip.
 	self parse: factory monospaceFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormatEmpty [
+	self skip.
 	self parse: factory monospaceFormatEmptySample createElementOfClass: #format
 ]
 
@@ -350,31 +356,37 @@ MicSurfacicMicrodownToPillarTest >> testScriptWithSpacedParameters [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormat [
+	self skip.
 	self parse: factory strikethroughFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormatEmpty [
+	self skip.
 	self parse: factory strikethroughFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testSubscriptFormat [
+	self skip.
 	self parse: factory subscriptFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testSubscriptFormatEmpty [
+	self skip.
 	self parse: factory subscriptFormatEmptySample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testSuperscriptFormat [
+	self skip.
 	self parse: factory superscriptFormatSample createElementOfClass: #format
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testSuperscriptFormatEmpty [
+	self skip.
 	self parse: factory superscriptFormatEmptySample createElementOfClass: #format
 ]
 

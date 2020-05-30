@@ -24,6 +24,12 @@ MicroDownParser class >> argumentListStartDelimiter [
 ]
 
 { #category : #markups }
+MicroDownParser class >> boldMarkup [
+
+	^ '*'
+]
+
+{ #category : #markups }
 MicroDownParser class >> commentedLineMarkup [
 
 	^ '%'
@@ -98,6 +104,12 @@ MicroDownParser >> blockExtensionStarterClassFrom: line [
 	(line beginsWith: self horizontalLineMarkup)
 		ifTrue: [ ^ MicHorizontalLineBlock ].
 	^ nil
+]
+
+{ #category : #markups }
+MicroDownParser >> boldMarkup [
+
+	^ self class boldMarkup
 ]
 
 { #category : #markups }
