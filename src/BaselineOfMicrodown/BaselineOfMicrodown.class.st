@@ -16,7 +16,7 @@ BaselineOfMicrodown >> baseline: spec [
 				spec requires:  #( #'Microdown') ];
 			
 			package: #'Microdown-Pillar' with: [
-				spec requires:  #( #'Microdown' 'pillar') ];
+				spec requires:  #( #'Microdown' 'Pillar') ];
 			package: #'Microdown-Pillar-Tests' with: [
 				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ];
 			
