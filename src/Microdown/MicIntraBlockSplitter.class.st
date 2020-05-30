@@ -1,10 +1,10 @@
 "
-I am an intra-line github markdown parser.
-I handle emphasis (bold, italics, strikethrough), inlined code, links and images.
+I am an intra-line parser as part of the original implementation of K. Osterbye. I handle emphasis (bold, italics, strikethrough), inlined code, links and images.
 
 My main method is the #splitBlock:. 
 
 No other method is part of the api.
+
 "
 Class {
 	#name : #MicIntraBlockSplitter,

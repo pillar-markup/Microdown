@@ -1,6 +1,7 @@
 "
-I'm extending the markdown model to support the generation of Pillar elements. 
-I should be move to Pillar in the future.
+I'm extending the microdown object model to support the generation of Pillar elements.
+
+My main method is `asPillar`.
 "
 Class {
 	#name : #ManifestGithubMarkdownPillar,
