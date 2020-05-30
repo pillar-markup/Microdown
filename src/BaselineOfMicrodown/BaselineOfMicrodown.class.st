@@ -9,13 +9,14 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	
 	spec for: #'common' do: [
+		spec baseline: 'pillar' with: [ spec repository: 'github://pillar-markup/Pillar:dev-8/src' ].
 		spec 
 			package: #'Microdown';
 			package: #'Microdown-Tests'  with: [
 				spec requires:  #( #'Microdown') ];
 			
 			package: #'Microdown-Pillar' with: [
-				spec requires:  #( #'Microdown') ];
+				spec requires:  #( #'Microdown' 'pillar') ];
 			package: #'Microdown-Pillar-Tests' with: [
 				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ];
 			
