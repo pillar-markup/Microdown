@@ -7,5 +7,5 @@ MicAbstractParser class >> asRichText: aString [
 
 { #category : #'*Microdown-RichTextComposer' }
 MicAbstractParser class >> asText: aString [
-	^ PRRichTextComposer new start: (self class new parse: aString) asPillar
+	^ PRRichTextComposer new start: (self new parse: aString) asPillar
 ]
