@@ -1,6 +1,6 @@
 Class {
-	#name : #'GHMInlineBlockWithUrl_v2',
-	#superclass : #'GHMInlineBlock_v2',
+	#name : #MicInlineBlockWithUrl2,
+	#superclass : #MicInlineBlock2,
 	#instVars : [
 		'url'
 	],
@@ -8,16 +8,16 @@ Class {
 }
 
 { #category : #'instance creation' }
-GHMInlineBlockWithUrl_v2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
+MicInlineBlockWithUrl2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; yourself
 ]
 
 { #category : #accessing }
-GHMInlineBlockWithUrl_v2 >> url [
+MicInlineBlockWithUrl2 >> url [
 	^ url
 ]
 
 { #category : #accessing }
-GHMInlineBlockWithUrl_v2 >> url: anURL [
+MicInlineBlockWithUrl2 >> url: anURL [
 	url := anURL
 ]

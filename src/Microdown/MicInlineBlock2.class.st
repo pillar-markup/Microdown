@@ -10,7 +10,7 @@ I am characterized by:
 
 "
 Class {
-	#name : #'GHMInlineBlock_v2',
+	#name : #MicInlineBlock2,
 	#superclass : #Object,
 	#instVars : [
 		'substring',
@@ -23,48 +23,48 @@ Class {
 }
 
 { #category : #'instance creation' }
-GHMInlineBlock_v2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
+MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
 	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; yourself.
 	
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> children [
+MicInlineBlock2 >> children [
 	^ children
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> children: anArray [
+MicInlineBlock2 >> children: anArray [
 	children := anArray
 ]
 
 { #category : #printing }
-GHMInlineBlock_v2 >> childrenPrintOn [
+MicInlineBlock2 >> childrenPrintOn [
 	^ ((children asString) allButFirst: 9) allButLast
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> end [
+MicInlineBlock2 >> end [
 	^ end
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> end: anInteger [
+MicInlineBlock2 >> end: anInteger [
 	end := anInteger
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> kind [
+MicInlineBlock2 >> kind [
 	^ kind
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> kind: aKind [
+MicInlineBlock2 >> kind: aKind [
 	kind := aKind
 ]
 
 { #category : #printing }
-GHMInlineBlock_v2 >> printOn: aStream [
+MicInlineBlock2 >> printOn: aStream [
 	(self kind == #basic) 
 		ifTrue: [ 
 			aStream nextPutAll: self substring
@@ -83,21 +83,21 @@ GHMInlineBlock_v2 >> printOn: aStream [
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> start [ 	
+MicInlineBlock2 >> start [ 	
 	^ start
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> start: anInteger [
+MicInlineBlock2 >> start: anInteger [
 	start := anInteger 
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> substring [
+MicInlineBlock2 >> substring [
 	^ substring
 ]
 
 { #category : #accessing }
-GHMInlineBlock_v2 >> substring: aSubString [
+MicInlineBlock2 >> substring: aSubString [
 	substring := aSubString
 ]

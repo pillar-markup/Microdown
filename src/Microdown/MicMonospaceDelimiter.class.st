@@ -2,37 +2,37 @@
 I am the delimiter for monospace/inline code format.
 "
 Class {
-	#name : #GHMMonospaceDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicMonospaceDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMMonospaceDelimiter class >> isCloser [
+MicMonospaceDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMMonospaceDelimiter class >> markup [
+MicMonospaceDelimiter class >> markup [
 	^ '`'
 ]
 
 { #category : #accessing }
-GHMMonospaceDelimiter >> isCloser [
+MicMonospaceDelimiter >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMMonospaceDelimiter >> isOpener [
+MicMonospaceDelimiter >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-GHMMonospaceDelimiter >> markup [
+MicMonospaceDelimiter >> markup [
 	^ '`'
 ]
 
 { #category : #accessing }
-GHMMonospaceDelimiter >> type [
+MicMonospaceDelimiter >> type [
 	^ #monospace
 ]

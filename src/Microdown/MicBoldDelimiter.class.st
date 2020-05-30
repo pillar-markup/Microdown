@@ -2,37 +2,37 @@
 I am the delimiter for bold/strong format.
 "
 Class {
-	#name : #GHMBoldDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicBoldDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMBoldDelimiter class >> isCloser [
+MicBoldDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMBoldDelimiter class >> markup [
+MicBoldDelimiter class >> markup [
 	^ '**'
 ]
 
 { #category : #accessing }
-GHMBoldDelimiter >> isCloser [
+MicBoldDelimiter >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMBoldDelimiter >> isOpener [
+MicBoldDelimiter >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-GHMBoldDelimiter >> markup [
+MicBoldDelimiter >> markup [
 	^ '**'
 ]
 
 { #category : #accessing }
-GHMBoldDelimiter >> type [
+MicBoldDelimiter >> type [
 	^ #bold
 ]

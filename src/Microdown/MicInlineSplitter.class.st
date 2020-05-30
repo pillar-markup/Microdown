@@ -4,7 +4,7 @@ I represent the class which is in charge of splitting sentences to parse inline 
 To proceed: `GHMInlineSplitter new start: stringToParse`
 "
 Class {
-	#name : #GHMInlineSplitter,
+	#name : #MicInlineSplitter,
 	#superclass : #Object,
 	#instVars : [
 		'string',
@@ -17,54 +17,54 @@ Class {
 }
 
 { #category : #'class references' }
-GHMInlineSplitter >> abstractDelimiterClass [
-	^ GHMAbstractDelimiter
+MicInlineSplitter >> abstractDelimiterClass [
+	^ MicAbstractDelimiter
 ]
 
 { #category : #accessing }
-GHMInlineSplitter >> allDelimiters [
+MicInlineSplitter >> allDelimiters [
 	^ allDelimiters
 ]
 
 { #category : #process }
-GHMInlineSplitter >> delimiterFoundProcess: aDelimiterSubclass [
+MicInlineSplitter >> delimiterFoundProcess: aDelimiterSubclass [
 	delimiterStack add: (aDelimiterSubclass index: index)
 ]
 
 { #category : #process }
-GHMInlineSplitter >> emphasisProcess [
+MicInlineSplitter >> emphasisProcess [
 	resultArray := self emphasisProcessClass startWithStack: delimiterStack withString: string.
 	^ resultArray
 ]
 
 { #category : #'class references' }
-GHMInlineSplitter >> emphasisProcessClass [
-	^ GHMInlineEmphasisProcess
+MicInlineSplitter >> emphasisProcessClass [
+	^ MicInlineEmphasisProcess
 ]
 
 { #category : #accessing }
-GHMInlineSplitter >> index [
+MicInlineSplitter >> index [
 	^ index
 ]
 
 { #category : #actions }
-GHMInlineSplitter >> indexIncrement [
+MicInlineSplitter >> indexIncrement [
 	^ self indexIncrement: 1
 ]
 
 { #category : #actions }
-GHMInlineSplitter >> indexIncrement: anInteger [
+MicInlineSplitter >> indexIncrement: anInteger [
 	index := self index + anInteger
 ]
 
 { #category : #initialization }
-GHMInlineSplitter >> initialize [
+MicInlineSplitter >> initialize [
 	super initialize.
 	self initializeDelimiters
 ]
 
 { #category : #initialization }
-GHMInlineSplitter >> initializeDelimiters [
+MicInlineSplitter >> initializeDelimiters [
 	allDelimiters := Dictionary new.
 	self abstractDelimiterClass subclasses 
 		select: [ :subclass | subclass isActive ]
@@ -74,14 +74,14 @@ GHMInlineSplitter >> initializeDelimiters [
 ]
 
 { #category : #process }
-GHMInlineSplitter >> linkOrImageProcess [
+MicInlineSplitter >> linkOrImageProcess [
 	| linkNameCloserIndex |
 	"1. search the linkname closer delimiter"
 	linkNameCloserIndex := delimiterStack findLast: [ :delimiter | delimiter isOpener and: delimiter type = #linkName].
 ]
 
 { #category : #actions }
-GHMInlineSplitter >> read: aString [
+MicInlineSplitter >> read: aString [
 	| incrementation |
 	incrementation := 1.
 	aString ifEmpty: [ ^ self emphasisProcess ].
@@ -98,7 +98,7 @@ GHMInlineSplitter >> read: aString [
 ]
 
 { #category : #public }
-GHMInlineSplitter >> start: aString [
+MicInlineSplitter >> start: aString [
 	delimiterStack := Stack new.
 	resultArray := LinkedList new.
 	index := 1.

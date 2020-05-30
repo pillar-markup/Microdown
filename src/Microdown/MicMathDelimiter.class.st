@@ -2,27 +2,27 @@
 I'm a delimiter for math inline environment.
 "
 Class {
-	#name : #GHMMathDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicMathDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMMathDelimiter class >> isCloser [
+MicMathDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMMathDelimiter class >> markup [
+MicMathDelimiter class >> markup [
 	^ '$'
 ]
 
 { #category : #accessing }
-GHMMathDelimiter >> isOpener [
+MicMathDelimiter >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-GHMMathDelimiter >> type [
+MicMathDelimiter >> type [
 	^ #math
 ]

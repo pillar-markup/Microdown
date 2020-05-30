@@ -2,37 +2,37 @@
 I'm the delimiter for strikethrough format.
 "
 Class {
-	#name : #GHMStrikeDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicStrikeDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMStrikeDelimiter class >> isCloser [
+MicStrikeDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMStrikeDelimiter class >> markup [
+MicStrikeDelimiter class >> markup [
 	^ '~'
 ]
 
 { #category : #accessing }
-GHMStrikeDelimiter >> isCloser [
+MicStrikeDelimiter >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMStrikeDelimiter >> isOpener [
+MicStrikeDelimiter >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-GHMStrikeDelimiter >> markup [
+MicStrikeDelimiter >> markup [
 	^ '~'
 ]
 
 { #category : #accessing }
-GHMStrikeDelimiter >> type [
+MicStrikeDelimiter >> type [
 	^ #strike
 ]

@@ -1,7 +1,7 @@
 "
 I'm a block starting with !!text paragraph (@@note @@important in Pillar)
 
-!!note this is important so I used exclamatation mark.
+!!note This is important so I used exclamatation mark.
 
 For now I do not accept top level blocks.
 

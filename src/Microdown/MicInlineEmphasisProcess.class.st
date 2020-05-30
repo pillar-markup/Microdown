@@ -10,7 +10,7 @@ I need:
 At the end, I return an array of GHMInlineBlock which represents the initial text line.
 "
 Class {
-	#name : #GHMInlineEmphasisProcess,
+	#name : #MicInlineEmphasisProcess,
 	#superclass : #Object,
 	#instVars : [
 		'stack',
@@ -30,19 +30,19 @@ Class {
 }
 
 { #category : #'new & start' }
-GHMInlineEmphasisProcess class >> startWithStack: aStack withResult: aResultArray withStart: aStartSubstringIndex withEnd: anEndSubstringIndex withString: aString [
+MicInlineEmphasisProcess class >> startWithStack: aStack withResult: aResultArray withStart: aStartSubstringIndex withEnd: anEndSubstringIndex withString: aString [
 	| newProcess |
 	newProcess := self new stack: aStack; result: aResultArray; start: aStartSubstringIndex; end: anEndSubstringIndex; string: aString; yourself.
 	^ newProcess emphasisProcess.
 ]
 
 { #category : #'new & start' }
-GHMInlineEmphasisProcess class >> startWithStack: aStack withString: aString [
+MicInlineEmphasisProcess class >> startWithStack: aStack withString: aString [
 	^ self startWithStack: aStack withResult: LinkedList new withStart: 1 withEnd: aString size withString: aString
 ]
 
 { #category : #actions }
-GHMInlineEmphasisProcess >> addBasicTextBlocks [
+MicInlineEmphasisProcess >> addBasicTextBlocks [
 	| string_array |
 	string_array := string asArray.
 	string_array doWithIndex: [ :each :i | (i between: start and: end) ifFalse: [ string_array at: i put: nil ]  ].
@@ -52,7 +52,7 @@ GHMInlineEmphasisProcess >> addBasicTextBlocks [
 		substring := string collect: [ :c | c ] from: startIndex to: endIndex.
 		(substring isEmpty) ifFalse: [ 
 			result add: 
-				(GHMInlineBlock_v2
+				(MicInlineBlock2
 					from: startIndex
 					to: endIndex
 					withKind: #basic
@@ -64,7 +64,7 @@ GHMInlineEmphasisProcess >> addBasicTextBlocks [
 ]
 
 { #category : #actions }
-GHMInlineEmphasisProcess >> childrenInNestedCase [
+MicInlineEmphasisProcess >> childrenInNestedCase [
 	^ self class 
 		startWithStack: (stack withIndexSelect: [:value :i | i between: firstOpenerIndex + 1 and: associateCloserIndex - 1 ]) 
 		withResult: LinkedList new 
@@ -74,7 +74,7 @@ GHMInlineEmphasisProcess >> childrenInNestedCase [
 ]
 
 { #category : #'global process' }
-GHMInlineEmphasisProcess >> emphasisProcess [
+MicInlineEmphasisProcess >> emphasisProcess [
 	| correctSubstring |
 	"1. search first opener. If not found, exit case."
 	firstOpenerIndex := stack findFirst: [ :delimiter | delimiter isOpener ].
@@ -114,17 +114,17 @@ GHMInlineEmphasisProcess >> emphasisProcess [
 ]
 
 { #category : #accessing }
-GHMInlineEmphasisProcess >> end: anEndIndex [
+MicInlineEmphasisProcess >> end: anEndIndex [
 	end := anEndIndex 
 ]
 
 { #category : #actions }
-GHMInlineEmphasisProcess >> inlineBlockClass [
-	^ GHMInlineBlock_v2
+MicInlineEmphasisProcess >> inlineBlockClass [
+	^ MicInlineBlock2
 ]
 
 { #category : #'global process' }
-GHMInlineEmphasisProcess >> linkOrFigureProcess [
+MicInlineEmphasisProcess >> linkOrFigureProcess [
 	| urlCloserStringIndex correctSubstring correctURL |
 	"1. search the linkname closer delimiter"
 	associateCloserIndex := (stack allButFirst: firstOpenerIndex) findFirst: [ :delimiter | delimiter isCloser and: delimiter type = #linkName].
@@ -149,7 +149,7 @@ GHMInlineEmphasisProcess >> linkOrFigureProcess [
 	"6. define children"
 	self processNestedCase.
 	result add: 
-		(GHMInlineBlockWithUrl_v2
+		(MicInlineBlockWithUrl2
 			from: firstOpener index
 			to: urlCloserStringIndex 
 			withKind: firstOpener type
@@ -166,43 +166,43 @@ GHMInlineEmphasisProcess >> linkOrFigureProcess [
 ]
 
 { #category : #actions }
-GHMInlineEmphasisProcess >> processNestedCase [
+MicInlineEmphasisProcess >> processNestedCase [
 	(associateCloserIndex = (firstOpenerIndex + 1))
 		ifTrue: [ children := Array empty ]
 		ifFalse: [ children := self childrenInNestedCase ].
 ]
 
 { #category : #accessing }
-GHMInlineEmphasisProcess >> result: anArray [
+MicInlineEmphasisProcess >> result: anArray [
 	result := anArray
 ]
 
 { #category : #accessing }
-GHMInlineEmphasisProcess >> stack: aStack [
+MicInlineEmphasisProcess >> stack: aStack [
 	stack := aStack
 ]
 
 { #category : #actions }
-GHMInlineEmphasisProcess >> stackWithoutFirstOpenerIndex [
+MicInlineEmphasisProcess >> stackWithoutFirstOpenerIndex [
 	stack := (stack withIndexSelect: [ :value :i | (i = firstOpenerIndex) not ])
 ]
 
 { #category : #accessing }
-GHMInlineEmphasisProcess >> start: aStartIndex [
+MicInlineEmphasisProcess >> start: aStartIndex [
 	start := aStartIndex
 ]
 
 { #category : #accessing }
-GHMInlineEmphasisProcess >> string: aString [
+MicInlineEmphasisProcess >> string: aString [
 	string := aString
 ]
 
 { #category : #'class references' }
-GHMInlineEmphasisProcess >> urlCloserDelimiterClass [
-	^ GHMURLCloserDelimiter
+MicInlineEmphasisProcess >> urlCloserDelimiterClass [
+	^ MicURLCloserDelimiter
 ]
 
 { #category : #'class references' }
-GHMInlineEmphasisProcess >> urlOpenerDelimiterClass [
-	^ GHMURLOpenerDelimiter 
+MicInlineEmphasisProcess >> urlOpenerDelimiterClass [
+	^ MicURLOpenerDelimiter 
 ]

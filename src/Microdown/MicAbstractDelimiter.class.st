@@ -15,7 +15,7 @@ My index refers to the index character in global string which is parsed.
 Always instantiate me with my constructor ""index:"" to precise it.
 "
 Class {
-	#name : #GHMAbstractDelimiter,
+	#name : #MicAbstractDelimiter,
 	#superclass : #Object,
 	#instVars : [
 		'index'
@@ -24,66 +24,66 @@ Class {
 }
 
 { #category : #accessing }
-GHMAbstractDelimiter class >> index: anIndex [
+MicAbstractDelimiter class >> index: anIndex [
 	^ self new index: anIndex; yourself
 ]
 
 { #category : #testing }
-GHMAbstractDelimiter class >> isActive [
+MicAbstractDelimiter class >> isActive [
 	^ true
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter class >> isCloser [
+MicAbstractDelimiter class >> isCloser [
 	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter class >> markup [
+MicAbstractDelimiter class >> markup [
 	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter class >> size [
+MicAbstractDelimiter class >> size [
 	^ self markup size
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter >> index [
+MicAbstractDelimiter >> index [
 	^ index
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter >> index: anInteger [
+MicAbstractDelimiter >> index: anInteger [
 	index := anInteger
 ]
 
 { #category : #testing }
-GHMAbstractDelimiter >> isActive [
+MicAbstractDelimiter >> isActive [
 	^ self class isActive
 ]
 
 { #category : #testing }
-GHMAbstractDelimiter >> isCloser [
+MicAbstractDelimiter >> isCloser [
 	^ self class isCloser
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter >> isOpener [
+MicAbstractDelimiter >> isOpener [
 	^ self subclassResponsibility 
 ]
 
 { #category : #testing }
-GHMAbstractDelimiter >> markup [
+MicAbstractDelimiter >> markup [
 	^ self class markup
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter >> size [
+MicAbstractDelimiter >> size [
 	^ self class size
 ]
 
 { #category : #accessing }
-GHMAbstractDelimiter >> type [
+MicAbstractDelimiter >> type [
 	^ self subclassResponsibility 
 ]

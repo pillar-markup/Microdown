@@ -2,18 +2,18 @@
 This class contains tests about the new approach to identify inline elements inside blocks.
 "
 Class {
-	#name : #GHMInlineSplitterTest,
+	#name : #MicInlineSplitterTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMInlineSplitterTest >> splitter [
-	^ GHMInlineSplitter new
+MicInlineSplitterTest >> splitter [
+	^ MicInlineSplitter new
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlock2 [
+MicInlineSplitterTest >> testSplitBlock2 [
 	"Test with multiple annotations"
 
 	| res |
@@ -24,7 +24,7 @@ GHMInlineSplitterTest >> testSplitBlock2 [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockBold [
+MicInlineSplitterTest >> testSplitBlockBold [
 	| res |
 	res := self splitter start: 'abc**bold**def'.
 	self
@@ -41,7 +41,7 @@ GHMInlineSplitterTest >> testSplitBlockBold [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockCode [
+MicInlineSplitterTest >> testSplitBlockCode [
 	| res |
 	res := self splitter start: 'abc`block`def'.
 	self
@@ -50,7 +50,7 @@ GHMInlineSplitterTest >> testSplitBlockCode [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockImage [
+MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
 	| res |
@@ -62,7 +62,7 @@ GHMInlineSplitterTest >> testSplitBlockImage [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockItalics [
+MicInlineSplitterTest >> testSplitBlockItalics [
 	| res |
 	res := self splitter start: 'abc_italics_def'.
 	self
@@ -76,7 +76,7 @@ GHMInlineSplitterTest >> testSplitBlockItalics [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockLink [
+MicInlineSplitterTest >> testSplitBlockLink [
 	"Test the link annotation [LinkText](url)"
 
 	| res |
@@ -88,7 +88,7 @@ GHMInlineSplitterTest >> testSplitBlockLink [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockLinkIncomplete [
+MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
 	| res |
@@ -101,7 +101,7 @@ GHMInlineSplitterTest >> testSplitBlockLinkIncomplete [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockLinkInlineImage [
+MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
@@ -115,7 +115,7 @@ GHMInlineSplitterTest >> testSplitBlockLinkInlineImage [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
+MicInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 	"Test with multiple annotations"
 
 	| res |
@@ -126,7 +126,7 @@ GHMInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockNested [
+MicInlineSplitterTest >> testSplitBlockNested [
 	"Test with nested annotations"
 	| res |
 	res := self splitter start: 'abc**bold_italic_bold**xyz'.
@@ -136,7 +136,7 @@ GHMInlineSplitterTest >> testSplitBlockNested [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockNoAnnotation [
+MicInlineSplitterTest >> testSplitBlockNoAnnotation [
 	| res |
 	res := self splitter start: 'abc'.
 	self assert: res first printString equals: 'abc'.
@@ -146,7 +146,7 @@ GHMInlineSplitterTest >> testSplitBlockNoAnnotation [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitBlockStrike [
+MicInlineSplitterTest >> testSplitBlockStrike [
 	| res |
 	res := self splitter start: 'abc~strike~def'.
 	self
@@ -155,14 +155,14 @@ GHMInlineSplitterTest >> testSplitBlockStrike [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitEmpty [
+MicInlineSplitterTest >> testSplitEmpty [
 	| res |
 	res := self splitter start: ''.
 	self assert: res isEmpty
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitExclamationMark [
+MicInlineSplitterTest >> testSplitExclamationMark [
 	"Test that 'bla!bla' is ok, and not a failed image, same goes for '![goo]no parenthesis'"
 
 	| res |
@@ -177,7 +177,7 @@ GHMInlineSplitterTest >> testSplitExclamationMark [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitMathCode [
+MicInlineSplitterTest >> testSplitMathCode [
 	| res |
 	res := self splitter start: 'abc$math env$def'.
 	self
@@ -186,7 +186,7 @@ GHMInlineSplitterTest >> testSplitMathCode [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitMathRaw [
+MicInlineSplitterTest >> testSplitMathRaw [
 	| res |
 	res := self splitter start: 'abc{{someRaw}}def'.
 	self
@@ -195,7 +195,7 @@ GHMInlineSplitterTest >> testSplitMathRaw [
 ]
 
 { #category : #tests }
-GHMInlineSplitterTest >> testSplitNotClosed [
+MicInlineSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter start: 'abc**xyz'.
 	self assert: res first printString equals: 'abc**xyz'.

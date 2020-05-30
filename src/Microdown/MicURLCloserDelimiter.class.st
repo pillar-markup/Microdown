@@ -2,47 +2,47 @@
 I am the closer delimiter for URL.
 "
 Class {
-	#name : #GHMURLCloserDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicURLCloserDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #testing }
-GHMURLCloserDelimiter class >> isActive [
+MicURLCloserDelimiter class >> isActive [
 	^ false
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter class >> isCloser [
+MicURLCloserDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter class >> markup [
+MicURLCloserDelimiter class >> markup [
 	^ ')'
 ]
 
 { #category : #testing }
-GHMURLCloserDelimiter >> isActive [
+MicURLCloserDelimiter >> isActive [
 	^ false
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter >> isCloser [
+MicURLCloserDelimiter >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter >> isOpener [
+MicURLCloserDelimiter >> isOpener [
 	^ false
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter >> markup [
+MicURLCloserDelimiter >> markup [
 	^ ')'
 ]
 
 { #category : #accessing }
-GHMURLCloserDelimiter >> type [
+MicURLCloserDelimiter >> type [
 	^ #url
 ]

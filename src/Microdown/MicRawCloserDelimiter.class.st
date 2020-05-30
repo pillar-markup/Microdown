@@ -2,27 +2,27 @@
 I am the closer delimiter for raw.
 "
 Class {
-	#name : #GHMRawCloserDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicRawCloserDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMRawCloserDelimiter class >> isCloser [
+MicRawCloserDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMRawCloserDelimiter class >> markup [
+MicRawCloserDelimiter class >> markup [
 	^ '}}'
 ]
 
 { #category : #accessing }
-GHMRawCloserDelimiter >> isOpener [
+MicRawCloserDelimiter >> isOpener [
 	^ false
 ]
 
 { #category : #accessing }
-GHMRawCloserDelimiter >> type [
+MicRawCloserDelimiter >> type [
 	^ #raw
 ]

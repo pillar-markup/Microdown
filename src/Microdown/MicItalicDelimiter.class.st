@@ -2,37 +2,37 @@
 I am the delimiter for italic/emphasis format.
 "
 Class {
-	#name : #GHMItalicDelimiter,
-	#superclass : #GHMAbstractDelimiter,
+	#name : #MicItalicDelimiter,
+	#superclass : #MicAbstractDelimiter,
 	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
-GHMItalicDelimiter class >> isCloser [
+MicItalicDelimiter class >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMItalicDelimiter class >> markup [
+MicItalicDelimiter class >> markup [
 	^ '_'
 ]
 
 { #category : #accessing }
-GHMItalicDelimiter >> isCloser [
+MicItalicDelimiter >> isCloser [
 	^ true
 ]
 
 { #category : #accessing }
-GHMItalicDelimiter >> isOpener [
+MicItalicDelimiter >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-GHMItalicDelimiter >> markup [
+MicItalicDelimiter >> markup [
 	^ '_'
 ]
 
 { #category : #accessing }
-GHMItalicDelimiter >> type [
+MicItalicDelimiter >> type [
 	^ #italic
 ]
