@@ -10,6 +10,7 @@ It supports the default markdown features:
 - Table
 - Emphasis 
 - Figures and links
+
 But also 
 - Environment with arguments
 - Anchors
