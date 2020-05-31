@@ -21,7 +21,7 @@ Class {
 		'stream',
 		'parserClass'
 	],
-	#category : #Microdown
+	#category : #'Microdown-Model'
 }
 
 { #category : #building }
@@ -43,6 +43,16 @@ MicBuilder >> buildHeader: aString [
 	
 	stream
 		nextPutAll: parserClass headerMarkup ; 
+		nextPutAll: aString;
+		cr
+	
+]
+
+{ #category : #building }
+MicBuilder >> buildHeader: aString level: aNumber [
+	
+	stream
+		nextPutAll: (parserClass headerMarkup repeat: aNumber); 
 		nextPutAll: aString;
 		cr
 	

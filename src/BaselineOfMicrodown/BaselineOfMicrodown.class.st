@@ -1,3 +1,7 @@
+"
+Microdown is a minimal but extensible markup language. It is kind of compatible with githubmarkdown for a core set of feature. 
+Read comment of MicroDownParser. 
+"
 Class {
 	#name : #BaselineOfMicrodown,
 	#superclass : #BaselineOf,

@@ -1,12 +1,13 @@
 Extension { #name : #BaselineOf }
 
 { #category : #'*Microdown' }
-BaselineOf class >> asMicrodown: aBuilder [
- 
-	^ String streamContents: [:s |
-		s nextPutAll: aBuilder headerMarkup; cr.
-		s nextPutAll: aBuilder codeblockMarkup; cr.
-		"this is not good, this should be encapsulated"
-		s nextPutAll: (self sourceCodeAt: #baseline:); cr.
-		s nextPutAll: aBuilder codeblockMarkup; cr.]
+BaselineOf class >> buildMicroDownUsing: aBuilder withComment: aString [
+	
+	aBuilder 
+		buildHeader: self name;
+		buildText: 'A baseline is a kind of map to load project.';
+		buildHeader: 'Description' level: 3;
+		buildText: aString; 
+		buildHeader: 'Dependencies' level: 3;
+		buildCodeblockTag: 'pharo' withBody:  (self sourceCodeAt: #baseline:)
 ]

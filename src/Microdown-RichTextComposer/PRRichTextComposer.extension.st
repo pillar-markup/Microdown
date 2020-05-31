@@ -12,10 +12,13 @@ PRRichTextComposer class >> renderComment: aSource [
 { #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> renderComment: aString ofClass: aClass [ 
 
-	| parserClass |
-	parserClass := (self class environment at: #MicroDownParser ifAbsent: [ ^ aString ]).
-	^ parserClass 
-			asText: (aClass asMicrodown: parserClass), aString
+	| builder |
+	builder := MicroDownParser builder.
+	aClass buildMicroDownUsing: builder withComment: aString.
+	self flag: #fixMe.
+	"I do not like the asText: the interaction between parser, richtext composer should be 
+	more obvious"
+	^ MicroDownParser asText: builder contents
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
