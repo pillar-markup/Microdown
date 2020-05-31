@@ -10,3 +10,11 @@ RPackage >> asMicrodown: aBuilder [
 				cr.
 			]  
 ]
+
+{ #category : #'*Microdown' }
+RPackage >> buildMicroDownUsing: aBuilder withComment: aString [
+	
+	aBuilder 
+		buildHeader: 'Package: ', self name;
+		buildText: aString
+]

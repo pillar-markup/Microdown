@@ -39,6 +39,24 @@ MicBuilder >> buildCodeblockTag: aString withBody: aString2 [
 ]
 
 { #category : #building }
+MicBuilder >> buildHeader: aString [
+	
+	stream
+		nextPutAll: parserClass headerMarkup ; 
+		nextPutAll: aString;
+		cr
+	
+]
+
+{ #category : #building }
+MicBuilder >> buildText: aString [
+	
+	stream nextPutAll: aString.
+	stream cr.
+
+]
+
+{ #category : #accessing }
 MicBuilder >> contents [
 
 	^ stream contents
@@ -59,7 +77,7 @@ MicBuilder >> reset [
 	^ String new writeStream
 ]
 
-{ #category : #building }
+{ #category : #initialization }
 MicBuilder >> stream: aStream [
 	"This way the builder can work with others streams."
 	
