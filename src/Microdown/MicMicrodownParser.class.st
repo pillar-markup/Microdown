@@ -63,7 +63,7 @@ Now the implementation for now does not create a paragraph in the list_item elem
 
 "
 Class {
-	#name : #MicAbstractParser,
+	#name : #MicMicrodownParser,
 	#superclass : #Object,
 	#instVars : [
 		'current',
@@ -73,68 +73,68 @@ Class {
 }
 
 { #category : #private }
-MicAbstractParser class >> allBlockNodeClasses [
+MicMicrodownParser class >> allBlockNodeClasses [
 	^ MicAbstractBlock allSubclasses
 	
 ]
 
 { #category : #markups }
-MicAbstractParser class >> anchorMarkup [
+MicMicrodownParser class >> anchorMarkup [
 	^ '@@'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> annotatedParagraphMarkup [
+MicMicrodownParser class >> annotatedParagraphMarkup [
 	^ '!!'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> argumentListStartDelimiter [
+MicMicrodownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> boldMarkup [
+MicMicrodownParser class >> boldMarkup [
 
 	^ '*'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> builder [
+MicMicrodownParser class >> builder [
 	^ MicBuilder new
 ]
 
 { #category : #markups }
-MicAbstractParser class >> codeblockMarkup [
+MicMicrodownParser class >> codeblockMarkup [
 
 	^ '```'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> commentedLineMarkup [
+MicMicrodownParser class >> commentedLineMarkup [
 
 	^ '%'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> environmentClosingBlockMarkup [
+MicMicrodownParser class >> environmentClosingBlockMarkup [
 	^ '?>'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> environmentOpeningBlockMarkup [
+MicMicrodownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
 
 { #category : #examples }
-MicAbstractParser class >> example [
+MicMicrodownParser class >> example [
 	<example>
 	(self fromUrl: 'https://raw.githubusercontent.com/kasperosterbye/PillarRichTextRender/master/README.md') inspectWithLabel: 'PillarRichTextRender/README.md'
 ]
 
 { #category : #'instance creation' }
-MicAbstractParser class >> fromUrl: aUrl [
+MicMicrodownParser class >> fromUrl: aUrl [
 	
 	^self asText:   
 		(ZnClient new 
@@ -144,13 +144,13 @@ MicAbstractParser class >> fromUrl: aUrl [
 ]
 
 { #category : #markups }
-MicAbstractParser class >> headerMarkup [
+MicMicrodownParser class >> headerMarkup [
 
 	^ '#'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> mathClosingBlockMarkup [
+MicMicrodownParser class >> mathClosingBlockMarkup [
 	self flag: #fixMe. 
 	"should implement block logic for different opening and closing this way we could have 
 	a different markup."
@@ -159,127 +159,147 @@ MicAbstractParser class >> mathClosingBlockMarkup [
 ]
 
 { #category : #markups }
-MicAbstractParser class >> mathOpeningBlockMarkup [
+MicMicrodownParser class >> mathOpeningBlockMarkup [
 
 	^ '&'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> metaDataClosingBlockMarkup [
+MicMicrodownParser class >> metaDataClosingBlockMarkup [
 	^ '}'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> metaDataOpeningBlockMarkup [
+MicMicrodownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> preformattedMarkup [
+MicMicrodownParser class >> preformattedMarkup [
 
 	^ '> '
 ]
 
 { #category : #markups }
-MicAbstractParser class >> tableCellMarkup [
+MicMicrodownParser class >> tableCellMarkup [
 
 	^ '|'
 ]
 
 { #category : #markups }
-MicAbstractParser class >> unorderedListMarkup [
+MicMicrodownParser class >> unorderedListMarkup [
 
 	^ '- '
 ]
 
 { #category : #markups }
-MicAbstractParser class >> unorderedListMarkups [
+MicMicrodownParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
 ]
 
 { #category : #markups }
-MicAbstractParser >> anchorMarkup [
+MicMicrodownParser >> anchorMarkup [
 	^ self class anchorMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> annotatedParagraphMarkup [
+MicMicrodownParser >> annotatedParagraphMarkup [
 	^ self class annotatedParagraphMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> argumentListStartDelimiter [
+MicMicrodownParser >> argumentListStartDelimiter [
 	
 	^ self class argumentListStartDelimiter
 ]
 
 { #category : #'node creation' }
-MicAbstractParser >> blockExtensionStarterClassFrom: line [
+MicMicrodownParser >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 		
 	^ nil
 ]
 
 { #category : #'node creation' }
-MicAbstractParser >> blockStarterClassFrom: line [
+MicMicrodownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
-	
+
 	(self blockExtensionStarterClassFrom: line)
 		ifNotNil: [ :c | ^ c ]
-		ifNil: [ 
-		(line beginsWith: self headerMarkup)
-			ifTrue: [ ^ MicHeaderBlock ].
-		(line beginsWith: self codeblockMarkup)
-			ifTrue: [ ^ MicCodeBlock ].
-		(self matchUnordered: line) "this one could be split if we move to a dictionary based structure"
-			ifTrue: [ ^ MicUnorderedListBlock ].
-		(self matchOrdered: line)
-			ifTrue: [ ^ MicOrderedListBlock ].	"number followed by . or ). We could treat this one separated and fall back on a dictionary
-			By moving this into the extension for example."
-		(line beginsWith: self preformattedMarkup)
-			ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
-		(line beginsWith: self tableCellMarkup)
-			ifTrue: [ ^ MicTableBlock ].	
-		 line ifNotEmpty: [ ^ MicParagraphBlock ]
-				ifEmpty: [  ^ nil ]]
+		ifNil: [ (line beginsWith: self headerMarkup)
+				ifTrue: [ ^ MicHeaderBlock ].
+			(line beginsWith: self codeblockMarkup)
+				ifTrue: [ ^ MicCodeBlock ].
+			(self matchUnordered: line)
+				ifTrue: [ ^ MicUnorderedListBlock ].
+			"this one could be split if we move to a dictionary based structure"
+			(self matchOrdered: line)
+				ifTrue: [ ^ MicOrderedListBlock ].
+				"number followed by . or ). We could treat this one separated and fall back on a dictionary By moving this into the extension for example."
+			(line beginsWith: self annotatedParagraphMarkup)
+				ifTrue: [ ^ MicAnnotatedBlock ].
+			(line beginsWith: self anchorMarkup)
+				ifTrue: [ ^ MicAnchorBlock ].
+			(line beginsWith: self commentedLineMarkup)
+				ifTrue: [ ^ MicCommentBlock ].
+			(line beginsWith: self mathOpeningBlockMarkup)
+				ifTrue: [ ^ MicMathBlock ].
+			(line beginsWith: self environmentOpeningBlockMarkup)
+				ifTrue: [ ^ MicEnvironmentBlock ].
+			(line beginsWith: self horizontalLineMarkup)
+				ifTrue: [ ^ MicHorizontalLineBlock ].
+			(line beginsWith: self metaDataOpeningBlockMarkup)
+				ifTrue: [ ^ MicMetaDataBlock ].
+			(line beginsWith: self preformattedMarkup)
+				ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
+			(line beginsWith: self tableCellMarkup)
+				ifTrue: [ ^ MicTableBlock ].
+			line ifNotEmpty: [ ^ MicParagraphBlock ] ifEmpty: [ ^ nil ] ]
 ]
 
 { #category : #markups }
-MicAbstractParser >> boldMarkup [
+MicMicrodownParser >> boldMarkup [
 
 	^ self class boldMarkup
 ]
 
+{ #category : #accessing }
+MicMicrodownParser >> builder [
+	"return a little helper to build microdown correct expression"
+	
+	^ self class builder
+]
+
 { #category : #markups }
-MicAbstractParser >> codeblockMarkup [ 
+MicMicrodownParser >> codeblockMarkup [ 
 	^ self class codeblockMarkup 
 ]
 
 { #category : #markups }
-MicAbstractParser >> commentedLineMarkup [
+MicMicrodownParser >> commentedLineMarkup [
 
 	^ self class commentedLineMarkup
 ]
 
 { #category : #accessing }
-MicAbstractParser >> current [ 
+MicMicrodownParser >> current [ 
 
 	^ current
 ]
 
 { #category : #markups }
-MicAbstractParser >> environmentClosingBlockMarkup [
+MicMicrodownParser >> environmentClosingBlockMarkup [
 	^ self class environmentClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> environmentOpeningBlockMarkup [
+MicMicrodownParser >> environmentOpeningBlockMarkup [
 	^ self class environmentOpeningBlockMarkup
 ]
 
 { #category : #parsing }
-MicAbstractParser >> handleErrorInLine: line [
+MicMicrodownParser >> handleErrorInLine: line [
 		
 	^ MicParsingError new 
 		line: line;
@@ -288,7 +308,7 @@ MicAbstractParser >> handleErrorInLine: line [
 ]
 
 { #category : #parsing }
-MicAbstractParser >> handleLine: line [
+MicMicrodownParser >> handleLine: line [
 	"The logic is the following: 
 		-first line is cleaned to avoid noise,
 		-then if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
@@ -304,59 +324,59 @@ MicAbstractParser >> handleLine: line [
 ]
 
 { #category : #markups }
-MicAbstractParser >> headerMarkup [ 
+MicMicrodownParser >> headerMarkup [ 
 	^ self class headerMarkup 
 ]
 
 { #category : #markups }
-MicAbstractParser >> horizontalLineMarkup [
+MicMicrodownParser >> horizontalLineMarkup [
 	^ '***'
 ]
 
 { #category : #testing }
-MicAbstractParser >> isAList: normalized [
+MicMicrodownParser >> isAList: normalized [
 	
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
 { #category : #'node creation' }
-MicAbstractParser >> matchOrdered: line [
+MicMicrodownParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
 { #category : #'node creation' }
-MicAbstractParser >> matchUnordered: line [
+MicMicrodownParser >> matchUnordered: line [
 	^ (line beginsWith: '- ') | (line beginsWith: '* ')
 		| (line beginsWith: '+ ')
 ]
 
 { #category : #markups }
-MicAbstractParser >> mathClosingBlockMarkup [
+MicMicrodownParser >> mathClosingBlockMarkup [
 	^ self class mathClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> mathOpeningBlockMarkup [
+MicMicrodownParser >> mathOpeningBlockMarkup [
 	^ self class mathOpeningBlockMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> metaDataClosingBlockMarkup [
+MicMicrodownParser >> metaDataClosingBlockMarkup [
 	^ self class metaDataClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicAbstractParser >> metaDataOpeningBlockMarkup [
+MicMicrodownParser >> metaDataOpeningBlockMarkup [
 	^ self class metaDataOpeningBlockMarkup
 ]
 
 { #category : #parsing }
-MicAbstractParser >> newRootBlock [
+MicMicrodownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
 { #category : #parsing }
-MicAbstractParser >> parse: aStreamOrString [
+MicMicrodownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
 	| inStream line |
@@ -373,12 +393,12 @@ MicAbstractParser >> parse: aStreamOrString [
 ]
 
 { #category : #markups }
-MicAbstractParser >> preformattedMarkup [ 
+MicMicrodownParser >> preformattedMarkup [ 
 	^ self class preformattedMarkup 
 ]
 
 { #category : #markups }
-MicAbstractParser >> tableCellMarkup [
+MicMicrodownParser >> tableCellMarkup [
 
 	^ self class tableCellMarkup
 ]
