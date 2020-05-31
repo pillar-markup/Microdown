@@ -13,16 +13,16 @@ MicMathDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicMathDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicMathDelimiter class >> markup [
 	^ '$'
 ]
 
 { #category : #accessing }
-MicMathDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicMathDelimiter >> type [
+MicMathDelimiter class >> type [
 	^ #math
 ]

@@ -39,6 +39,11 @@ MicAbstractDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicAbstractDelimiter class >> isOpener [
+	^ self subclassResponsibility 
+]
+
+{ #category : #accessing }
 MicAbstractDelimiter class >> markup [
 	^ self subclassResponsibility 
 ]
@@ -46,6 +51,11 @@ MicAbstractDelimiter class >> markup [
 { #category : #accessing }
 MicAbstractDelimiter class >> size [
 	^ self markup size
+]
+
+{ #category : #accessing }
+MicAbstractDelimiter class >> type [
+	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }
@@ -68,9 +78,9 @@ MicAbstractDelimiter >> isCloser [
 	^ self class isCloser
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MicAbstractDelimiter >> isOpener [
-	^ self subclassResponsibility 
+	^ self class isOpener
 ]
 
 { #category : #testing }
@@ -85,5 +95,5 @@ MicAbstractDelimiter >> size [
 
 { #category : #accessing }
 MicAbstractDelimiter >> type [
-	^ self subclassResponsibility 
+	^ self class type
 ]

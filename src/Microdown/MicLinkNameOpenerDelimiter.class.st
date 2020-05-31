@@ -13,31 +13,16 @@ MicLinkNameOpenerDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
-MicLinkNameOpenerDelimiter class >> markup [
-	^ '['
-]
-
-{ #category : #testing }
-MicLinkNameOpenerDelimiter >> isActive [
-	^ false
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter >> isCloser [
-	^ false
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter >> isOpener [
+MicLinkNameOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
 { #category : #accessing }
-MicLinkNameOpenerDelimiter >> markup [
+MicLinkNameOpenerDelimiter class >> markup [
 	^ '['
 ]
 
 { #category : #accessing }
-MicLinkNameOpenerDelimiter >> type [
+MicLinkNameOpenerDelimiter class >> type [
 	^ #linkName
 ]

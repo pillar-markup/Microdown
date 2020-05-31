@@ -13,26 +13,16 @@ MicStrikeDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicStrikeDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicStrikeDelimiter class >> markup [
 	^ '~'
 ]
 
 { #category : #accessing }
-MicStrikeDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> markup [
-	^ '~'
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> type [
+MicStrikeDelimiter class >> type [
 	^ #strike
 ]

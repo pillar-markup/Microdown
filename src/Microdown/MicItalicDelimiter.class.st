@@ -13,26 +13,16 @@ MicItalicDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicItalicDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicItalicDelimiter class >> markup [
 	^ '_'
 ]
 
 { #category : #accessing }
-MicItalicDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicItalicDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicItalicDelimiter >> markup [
-	^ '_'
-]
-
-{ #category : #accessing }
-MicItalicDelimiter >> type [
+MicItalicDelimiter class >> type [
 	^ #italic
 ]

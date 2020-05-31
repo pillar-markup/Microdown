@@ -13,26 +13,16 @@ MicBoldDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicBoldDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicBoldDelimiter class >> markup [
 	^ '**'
 ]
 
 { #category : #accessing }
-MicBoldDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> markup [
-	^ '**'
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> type [
+MicBoldDelimiter class >> type [
 	^ #bold
 ]

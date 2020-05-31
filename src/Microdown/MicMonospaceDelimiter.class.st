@@ -13,26 +13,16 @@ MicMonospaceDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicMonospaceDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicMonospaceDelimiter class >> markup [
 	^ '`'
 ]
 
 { #category : #accessing }
-MicMonospaceDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> markup [
-	^ '`'
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> type [
+MicMonospaceDelimiter class >> type [
 	^ #monospace
 ]

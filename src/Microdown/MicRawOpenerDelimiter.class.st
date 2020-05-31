@@ -13,16 +13,16 @@ MicRawOpenerDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicRawOpenerDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicRawOpenerDelimiter class >> markup [
 	^ '{{'
 ]
 
 { #category : #accessing }
-MicRawOpenerDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicRawOpenerDelimiter >> type [
+MicRawOpenerDelimiter class >> type [
 	^ #raw
 ]

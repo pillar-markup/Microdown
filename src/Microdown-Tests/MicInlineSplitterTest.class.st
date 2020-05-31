@@ -13,6 +13,52 @@ MicInlineSplitterTest >> splitter [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacter [
+	"Test the escape \ in simple case (here, bold one)"
+
+	| res |
+	res := self splitter start: 'abc\**test**last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc**test**last'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
+	"Test the escape \ in simple case (here, bold one)"
+
+	| res |
+	res := self splitter start: '\**test**'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'**test**'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInLinkName [
+	"Test the escape \ in link description"
+
+	| res |
+	res := self splitter start: 'abc[\**test**](myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[**test**](linkName)' . 'last'}.
+	self assert: res second url equals: 'myURL'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
+	"Test the escape \ in case of nested linknames"
+
+	| res |
+	res := self splitter start: 'abc[\[nested\]](myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[[nested]](linkName)' . 'last'}.
+	self assert: res second url equals: 'myURL'
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlock2 [
 	"Test with multiple annotations"
 

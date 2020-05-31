@@ -18,31 +18,16 @@ MicURLCloserDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicURLCloserDelimiter class >> isOpener [
+	^ false
+]
+
+{ #category : #accessing }
 MicURLCloserDelimiter class >> markup [
 	^ ')'
 ]
 
-{ #category : #testing }
-MicURLCloserDelimiter >> isActive [
-	^ false
-]
-
 { #category : #accessing }
-MicURLCloserDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> isOpener [
-	^ false
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> markup [
-	^ ')'
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> type [
+MicURLCloserDelimiter class >> type [
 	^ #url
 ]

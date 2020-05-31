@@ -24,7 +24,7 @@ Class {
 
 { #category : #'instance creation' }
 MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
-	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; yourself.
+	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; cleanSubstring; yourself.
 	
 ]
 
@@ -43,6 +43,15 @@ MicInlineBlock2 >> childrenPrintOn [
 	^ ((children asString) allButFirst: 9) allButLast
 ]
 
+{ #category : #operations }
+MicInlineBlock2 >> cleanSubstring [
+	self isOnlyChild ifTrue: [ 
+		self substring: ( String streamContents: [:s | 
+			(substring splitOn: self escapeCharacter)
+				doWithIndex: [:each :i | 
+					(each isEmpty and: i>1) ifTrue: [ s << self escapeCharacter ] ifFalse: [ s << each ] ] ] ) ]
+]
+
 { #category : #accessing }
 MicInlineBlock2 >> end [
 	^ end
@@ -51,6 +60,16 @@ MicInlineBlock2 >> end [
 { #category : #accessing }
 MicInlineBlock2 >> end: anInteger [
 	end := anInteger
+]
+
+{ #category : #operations }
+MicInlineBlock2 >> escapeCharacter [
+	^ MicEscapeDelimiter markup
+]
+
+{ #category : #testing }
+MicInlineBlock2 >> isOnlyChild [
+	^ children isEmpty
 ]
 
 { #category : #accessing }

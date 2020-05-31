@@ -13,26 +13,16 @@ MicFigureNameOpenerDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicFigureNameOpenerDelimiter class >> isOpener [
+	^ true
+]
+
+{ #category : #accessing }
 MicFigureNameOpenerDelimiter class >> markup [
 	^ '!['
 ]
 
 { #category : #accessing }
-MicFigureNameOpenerDelimiter >> isCloser [
-	^ false
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> markup [
-	^ '!['
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> type [
+MicFigureNameOpenerDelimiter class >> type [
 	^ #figure
 ]

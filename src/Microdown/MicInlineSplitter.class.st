@@ -11,7 +11,8 @@ Class {
 		'resultArray',
 		'index',
 		'delimiterStack',
-		'allDelimiters'
+		'allDelimiters',
+		'incrementation'
 	],
 	#category : #'Microdown-Model'
 }
@@ -28,7 +29,9 @@ MicInlineSplitter >> allDelimiters [
 
 { #category : #process }
 MicInlineSplitter >> delimiterFoundProcess: aDelimiterSubclass [
-	delimiterStack add: (aDelimiterSubclass index: index)
+	(aDelimiterSubclass type = #escape) 
+		ifTrue: [ incrementation := incrementation + 1 ]
+		ifFalse: [ delimiterStack add: (aDelimiterSubclass index: index) ]
 ]
 
 { #category : #'class factory' }
@@ -82,14 +85,13 @@ MicInlineSplitter >> processEmphasis [
 
 { #category : #actions }
 MicInlineSplitter >> read: aString [
-	| incrementation |
 	incrementation := 1.
 	aString ifEmpty: [ ^ self processEmphasis ].
 	allDelimiters keysDo: [ :key | 
 		(aString beginsWith: key) 
 			ifTrue: [ 
-				self delimiterFoundProcess: (allDelimiters at: key).
 				incrementation := key size.
+				self delimiterFoundProcess: (allDelimiters at: key).
 			].
 	].
 	self indexIncrement: incrementation.
