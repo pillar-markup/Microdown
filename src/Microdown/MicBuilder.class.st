@@ -21,7 +21,7 @@ Class {
 		'stream',
 		'parserClass'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #building }

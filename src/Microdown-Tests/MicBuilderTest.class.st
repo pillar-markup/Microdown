@@ -12,7 +12,7 @@ Class {
 MicBuilderTest >> setUp [ 
 	super setUp.
 	builder := MicBuilder new.
-	parser := MicroDownParser new.
+	parser := MicroDownParser new. 
 ]
 
 { #category : #running }

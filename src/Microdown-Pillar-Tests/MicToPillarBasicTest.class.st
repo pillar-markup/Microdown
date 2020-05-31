@@ -56,7 +56,7 @@ MicToPillarBasicTest >> testHeader [
 MicToPillarBasicTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
-		parse: MicroDownSnippetFactory new orderedListWithTwoItemsSample) asPillar.
+		parse: MicMicroDownSnippetFactory new orderedListWithTwoItemsSample) asPillar.
 	self assert: document children first class equals: PROrderedList.
 	self
 		assert: document children first children first class
