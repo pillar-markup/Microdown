@@ -29,7 +29,8 @@ MicItalicDelimiter >> isOpener [
 
 { #category : #accessing }
 MicItalicDelimiter >> markup [
-	^ '_'
+	self flag: #fixme. "do we need it on instance side?"
+	^ self class markup
 ]
 
 { #category : #accessing }

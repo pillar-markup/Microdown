@@ -29,7 +29,8 @@ MicBoldDelimiter >> isOpener [
 
 { #category : #accessing }
 MicBoldDelimiter >> markup [
-	^ '**'
+	self flag: #fixme. "do we need it on instance side?"
+	^ self class markup
 ]
 
 { #category : #accessing }

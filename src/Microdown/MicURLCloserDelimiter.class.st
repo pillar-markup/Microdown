@@ -39,6 +39,7 @@ MicURLCloserDelimiter >> isOpener [
 
 { #category : #accessing }
 MicURLCloserDelimiter >> markup [
+	self flag: #fixme. "do we need it on instance side?"
 	^ ')'
 ]
 

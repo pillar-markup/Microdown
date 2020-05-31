@@ -34,7 +34,8 @@ MicLinkNameOpenerDelimiter >> isOpener [
 
 { #category : #accessing }
 MicLinkNameOpenerDelimiter >> markup [
-	^ '['
+	self flag: #fixme. "do we need it on instance side?"
+	^ self class markup
 ]
 
 { #category : #accessing }

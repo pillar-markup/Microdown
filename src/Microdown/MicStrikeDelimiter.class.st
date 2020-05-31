@@ -29,6 +29,7 @@ MicStrikeDelimiter >> isOpener [
 
 { #category : #accessing }
 MicStrikeDelimiter >> markup [
+	self flag: #fixme. "do we need it on instance side?"
 	^ '~'
 ]
 
