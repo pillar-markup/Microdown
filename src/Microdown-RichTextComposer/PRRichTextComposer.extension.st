@@ -1,15 +1,6 @@
 Extension { #name : #PRRichTextComposer }
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> renderComment: aSource [
-	"render aSource if it looks like it contains microdown. Otherwise just return aSource"
-	self halt.
-	^ (aSource matchesRegex: '.*(`|!!|\*\*|^#|```|^>).*') 
-			ifTrue: [ (self class environment at: #MicroDownParser ifAbsent: [ ^ aSource ]) asText: aSource ]
-			ifFalse: [ aSource ] 
-]
-
-{ #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> renderComment: aString ofClass: aClass [ 
 
 	| builder |
@@ -18,7 +9,7 @@ PRRichTextComposer class >> renderComment: aString ofClass: aClass [
 	self flag: #fixMe.
 	"I do not like the asText: the interaction between parser, richtext composer should be 
 	more obvious"
-	^ MicroDownParser asText: builder contents
+	^ [ MicroDownParser asText: builder contents ] on: MicParsingError do: [ builder contents  ]
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
@@ -30,5 +21,5 @@ PRRichTextComposer class >> renderComment: aString ofPackage: aPackage [
 	self flag: #fixMe.
 	"I do not like the asText: the interaction between parser, richtext composer should be 
 	more obvious"
-	^ MicroDownParser asText: builder contents
+		^ [ MicroDownParser asText: builder contents ] on: MicParsingError do: [ builder contents  ]
 ]

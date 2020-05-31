@@ -174,10 +174,11 @@ MicAbstractParser >> current [
 
 { #category : #parsing }
 MicAbstractParser >> handleErrorInLine: line [
-	"This implementation is temporary.
-	The right way to handle this is to insert an error node into the tree"
+		
+	^ MicParsingError new 
+		line: line;
+		signal
 	
-	self error: 'I was not able to handle this input'.
 ]
 
 { #category : #parsing }

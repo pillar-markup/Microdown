@@ -266,6 +266,21 @@ toto'.
 	self assert: math body equals: contents
 ]
 
+{ #category : #'tests-error' }
+MicroDownParserTest >> testError [
+	| root |
+	self skip. 
+	"no idea how to make it fails."
+	root :=  parser parse: '--%
+foo 
+
+![
+	! ['.
+	
+
+	
+]
+
 { #category : #'tests-horizontal' }
 MicroDownParserTest >> testHorizontalBlock [
 
