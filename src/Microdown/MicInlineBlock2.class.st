@@ -34,7 +34,7 @@ MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind wi
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #obsolete }
 MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
 	^ self new 
 			start: aStartInteger; 
