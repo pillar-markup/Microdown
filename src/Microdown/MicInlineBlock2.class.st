@@ -13,19 +13,30 @@ Class {
 	#name : #MicInlineBlock2,
 	#superclass : #Object,
 	#instVars : [
-		'substring',
 		'start',
 		'end',
 		'kind',
-		'children'
+		'children',
+		'string'
 	],
 	#category : #'Microdown-Model'
 }
 
 { #category : #'instance creation' }
-MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
-	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; cleanSubstring; yourself.
+MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren [
+	^ self new 
+			start: aStartInteger; 
+			end: anEndInteger; 
+			kind: aKind; 
+			string: aString; 
+			children: aChildren; 
+			yourself
 	
+]
+
+{ #category : #obsolete }
+MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
+	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; cleanSubstring; yourself.	
 ]
 
 { #category : #accessing }
@@ -40,7 +51,8 @@ MicInlineBlock2 >> children: anArray [
 
 { #category : #printing }
 MicInlineBlock2 >> childrenPrintOn [
-	^ ((children asString) allButFirst: 9) allButLast
+	self flag: #fixme. "why that?"
+	^ (children asString allButFirst: 9) allButLast
 ]
 
 { #category : #operations }
@@ -82,15 +94,20 @@ MicInlineBlock2 >> kind: aKind [
 	kind := aKind
 ]
 
+{ #category : #accessing }
+MicInlineBlock2 >> literal [
+	^ string copyFrom: start to: end. 
+]
+
 { #category : #printing }
 MicInlineBlock2 >> printOn: aStream [
 	(self kind == #basic) 
-		ifTrue: [ 
-			aStream nextPutAll: self substring
-		] 
+		ifTrue: [ aStream nextPutAll: self string ] 
 		ifFalse: [ 
-			|contents|
-			children ifEmpty: [ contents := self substring ] ifNotEmpty: [ contents := self childrenPrintOn ].
+			| contents |
+			contents := children 
+				ifEmpty: [ self string ] 
+				ifNotEmpty: [ self childrenPrintOn ].
 			aStream nextPut: $[;
 				nextPutAll: contents;
 				nextPut: $];
@@ -112,11 +129,21 @@ MicInlineBlock2 >> start: anInteger [
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> substring [
-	^ substring
+MicInlineBlock2 >> string [
+	^ string
 ]
 
 { #category : #accessing }
+MicInlineBlock2 >> string: aSubString [
+	string := aSubString
+]
+
+{ #category : #obsolete }
+MicInlineBlock2 >> substring [
+	^ string
+]
+
+{ #category : #obsolete }
 MicInlineBlock2 >> substring: aSubString [
-	substring := aSubString
+	string := aSubString
 ]

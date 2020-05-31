@@ -60,13 +60,13 @@ MicInlineEmphasisProcessor >> addBasicTextBlocks [
 	stringArray splitOn: nil indicesDo: [ :stIndex :eIndex | 
 		| substring |
 		substring := string collect: [ :c | c ] from: stIndex to: eIndex.
-		(substring isEmpty) ifFalse: [ 
+		substring isEmpty ifFalse: [ 
 			result add: 
 				(MicInlineBlock2
 					from: stIndex
 					to: eIndex
 					withKind: #basic
-					withSubstring: substring
+					withString: substring
 					withChildren: #())
 			 ]
 	].
@@ -166,7 +166,7 @@ MicInlineEmphasisProcessor >> processEmphasis [
 			from: firstOpener index
 			to: associateCloser index + associateCloser size - 1
 			withKind: firstOpener type
-			withSubstring: correctSubstring
+			withString: correctSubstring
 			withChildren: children).
 	"7. keep going"
 	stack := (stack withIndexSelect: [:value :i | (i between: firstOpenerIndex and: associateCloserIndex) not ]).

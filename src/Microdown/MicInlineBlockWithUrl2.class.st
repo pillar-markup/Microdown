@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+MicInlineBlockWithUrl2 class >> from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren withURL: aURL [
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren) url: aURL; yourself
+]
+
+{ #category : #obsolete }
 MicInlineBlockWithUrl2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; yourself
 ]
