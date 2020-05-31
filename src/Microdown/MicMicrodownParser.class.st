@@ -129,19 +129,8 @@ MicMicrodownParser class >> environmentOpeningBlockMarkup [
 
 { #category : #examples }
 MicMicrodownParser class >> example [
-	<example>
-	(self asText: self comment) inspectWithLabel: 'PillarRichTextRender/README.md'
-]
-
-{ #category : #'instance creation' }
-MicMicrodownParser class >> fromUrl: aUrl [
-	self flag: #fixme. 
-	"we should add parse and asText should be in richText extension"
-	^ self asText:   
-		(ZnClient new 
-			beOneShot;
-			get: aUrl;
-			entity) string.
+	<sampleInstance>
+	^ self parse: self comment
 ]
 
 { #category : #'block markup' }
@@ -173,6 +162,12 @@ MicMicrodownParser class >> metaDataClosingBlockMarkup [
 { #category : #'block markup' }
 MicMicrodownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
+]
+
+{ #category : #'instance creation' }
+MicMicrodownParser class >> parse: aString [
+
+	^ self new parse: aString
 ]
 
 { #category : #'block markup' }
