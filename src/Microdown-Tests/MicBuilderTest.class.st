@@ -26,3 +26,10 @@ MicBuilderTest >> testCodeblock [
 	self assert: tree children first class = MicCodeBlock.
 	
 ]
+
+{ #category : #running }
+MicBuilderTest >> testParseAccess [
+	
+	self assert: parser builder class equals: MicBuilder.
+	
+]

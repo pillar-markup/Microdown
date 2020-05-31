@@ -30,6 +30,11 @@ MicroDownParser class >> boldMarkup [
 ]
 
 { #category : #markups }
+MicroDownParser class >> builder [
+	^ MicBuilder new
+]
+
+{ #category : #markups }
 MicroDownParser class >> commentedLineMarkup [
 
 	^ '%'
@@ -110,6 +115,13 @@ MicroDownParser >> blockExtensionStarterClassFrom: line [
 MicroDownParser >> boldMarkup [
 
 	^ self class boldMarkup
+]
+
+{ #category : #accessing }
+MicroDownParser >> builder [
+	"return a little helper to build microdown correct expression"
+	
+	^ self class builder
 ]
 
 { #category : #markups }
