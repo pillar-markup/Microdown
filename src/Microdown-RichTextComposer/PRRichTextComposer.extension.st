@@ -12,7 +12,7 @@ PRRichTextComposer class >> renderComment: aSource [
 { #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> renderComment: aString ofClass: aClass [ 
 
-		| parserClass |
+	| parserClass |
 	parserClass := (self class environment at: #MicroDownParser ifAbsent: [ ^ aString ]).
 	^ parserClass 
 			asText: (aClass asMicrodown: parserClass), aString
