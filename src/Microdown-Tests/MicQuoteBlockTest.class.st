@@ -1,5 +1,5 @@
 "
-A GHMBlockTextBlockTest is a test class for testing the behavior of GHMBlockTextBlock
+I'm a test class for testing the behavior of MicBlockTextBlock
 "
 Class {
 	#name : #MicQuoteBlockTest,

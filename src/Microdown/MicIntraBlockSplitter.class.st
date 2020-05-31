@@ -190,7 +190,7 @@ MicIntraBlockSplitter >> spanOn: aString from: start to: end next: next kind: ki
 { #category : #public }
 MicIntraBlockSplitter >> splitString: aString [
 	"Split aString into constituent markup nodes. A string is from a single line.
-	return an array of GHMInlineBlocks"
+	return an array of inlineBlocks"
 	| start block rest |
 	start := aString indexOfAnyOf: self startSet.
 	start = 0

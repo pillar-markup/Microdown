@@ -1,5 +1,5 @@
 "
-A GHMHeaderBlockTest is a test class for testing the behavior of GHMHeaderBlock
+I'm a test class for testing the behavior of MicHeaderBlock
 "
 Class {
 	#name : #MicHeaderBlockTest,

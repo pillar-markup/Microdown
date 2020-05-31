@@ -1,5 +1,5 @@
 "
-A GHMRootBlockTest is a test class for testing the behavior of GHMRootBlock
+I'm a test class for testing the behavior of MicRootBlock
 "
 Class {
 	#name : #MicRootBlockTest,

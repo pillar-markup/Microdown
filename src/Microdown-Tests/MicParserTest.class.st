@@ -1,11 +1,11 @@
 Class {
-	#name : #GHMParserTest,
+	#name : #MicParserTest,
 	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests'
 }
 
 { #category : #tests }
-GHMParserTest >> testEmpty [
+MicParserTest >> testEmpty [
 	| source root |
 	source := ''.
 	root := parser parse: source.
@@ -14,7 +14,7 @@ GHMParserTest >> testEmpty [
 ]
 
 { #category : #tests }
-GHMParserTest >> testEmptyOnMultipleLines [
+MicParserTest >> testEmptyOnMultipleLines [
 	| source root |
 	source := '
 
@@ -26,42 +26,42 @@ GHMParserTest >> testEmptyOnMultipleLines [
 ]
 
 { #category : #tests }
-GHMParserTest >> testIsAListDash [
+MicParserTest >> testIsAListDash [
 
 	self assert: (parser isAList: '- one')
 	
 ]
 
 { #category : #tests }
-GHMParserTest >> testIsAListNumbered [
+MicParserTest >> testIsAListNumbered [
 
 	self assert: (parser isAList: '11. one')
 	
 ]
 
 { #category : #tests }
-GHMParserTest >> testIsAListPlus [
+MicParserTest >> testIsAListPlus [
 
 	self assert: (parser isAList: '+ one')
 	
 ]
 
 { #category : #tests }
-GHMParserTest >> testIsAListStar [
+MicParserTest >> testIsAListStar [
 
 	self assert: (parser isAList: '* one')
 	
 ]
 
 { #category : #tests }
-GHMParserTest >> testIsAListStar2 [
+MicParserTest >> testIsAListStar2 [
 
 	self assert: (parser isAList: '  * one' trim)
 	
 ]
 
 { #category : #tests }
-GHMParserTest >> testOnceParsedCurrentShouldBeTheRootblock [
+MicParserTest >> testOnceParsedCurrentShouldBeTheRootblock [
 
 	| source root parser |
 	source := 'This is
@@ -72,7 +72,7 @@ a paragraph on two lines'.
 ]
 
 { #category : #tests }
-GHMParserTest >> testParsingLogic [
+MicParserTest >> testParsingLogic [
 	| source root parser textBody argument line code |
 	parser := self parser.
 	

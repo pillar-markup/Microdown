@@ -1,7 +1,7 @@
 "
 I represent the class which is in charge of splitting sentences to parse inline blocks.
 
-To proceed: `GHMInlineSplitter new start: stringToParse`
+To proceed: `MicInlineSplitter new start: stringToParse`
 "
 Class {
 	#name : #MicInlineSplitter,
@@ -16,7 +16,7 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #'class references' }
+{ #category : #'class factory' }
 MicInlineSplitter >> abstractDelimiterClass [
 	^ MicAbstractDelimiter
 ]
@@ -31,15 +31,9 @@ MicInlineSplitter >> delimiterFoundProcess: aDelimiterSubclass [
 	delimiterStack add: (aDelimiterSubclass index: index)
 ]
 
-{ #category : #process }
-MicInlineSplitter >> emphasisProcess [
-	resultArray := self emphasisProcessClass startWithStack: delimiterStack withString: string.
-	^ resultArray
-]
-
-{ #category : #'class references' }
+{ #category : #'class factory' }
 MicInlineSplitter >> emphasisProcessClass [
-	^ MicInlineEmphasisProcess
+	^ MicInlineEmphasisProcessor
 ]
 
 { #category : #accessing }
@@ -70,7 +64,7 @@ MicInlineSplitter >> initializeDelimiters [
 		select: [ :subclass | subclass isActive ]
 		thenDo: [ :subclass | allDelimiters 
 										at: subclass markup 
-										put: (self class environment at: subclass name) ].
+										put: subclass ]
 ]
 
 { #category : #process }
@@ -80,11 +74,17 @@ MicInlineSplitter >> linkOrImageProcess [
 	linkNameCloserIndex := delimiterStack findLast: [ :delimiter | delimiter isOpener and: delimiter type = #linkName].
 ]
 
+{ #category : #process }
+MicInlineSplitter >> processEmphasis [
+	resultArray := self emphasisProcessClass startWithStack: delimiterStack withString: string.
+	^ resultArray
+]
+
 { #category : #actions }
 MicInlineSplitter >> read: aString [
 	| incrementation |
 	incrementation := 1.
-	aString ifEmpty: [ ^ self emphasisProcess ].
+	aString ifEmpty: [ ^ self processEmphasis ].
 	allDelimiters keysDo: [ :key | 
 		(aString beginsWith: key) 
 			ifTrue: [ 

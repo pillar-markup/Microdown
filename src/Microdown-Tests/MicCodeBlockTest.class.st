@@ -1,5 +1,5 @@
 "
-A GHMCodeBlockTest is a test class for testing the behavior of GHMCodeBlock
+I'm is a test class for testing the behavior of MicCodeBlock
 "
 Class {
 	#name : #MicCodeBlockTest,

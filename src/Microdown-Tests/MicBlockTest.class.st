@@ -9,7 +9,7 @@ Class {
 
 { #category : #factory }
 MicBlockTest >> listBlockClass [
-	^ GHMListBlock
+	^ MicListBlock
 ]
 
 { #category : #factory }

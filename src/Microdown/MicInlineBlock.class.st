@@ -73,7 +73,7 @@ MicInlineBlock >> printOn: aStream [
 			aStream nextPut: $] ]
 		ifNil:
 			[ start isNil | end isNil
-				ifTrue: [ aStream << 'Uninitialized GHMInlineBlock' ] 
+				ifTrue: [ aStream << 'Uninitialized MicInlineBlock' ] 
 				ifFalse: [  
 			start to: end do: [ :index | aStream nextPut: (string at: index) ] ]]
 ]

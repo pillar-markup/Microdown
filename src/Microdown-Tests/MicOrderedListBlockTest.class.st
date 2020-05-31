@@ -1,5 +1,5 @@
 "
-A GHMOrderedListBlockTest is a test class for testing the behavior of GHMOrderedListBlock
+I'm a test class for testing the behavior of ordered list blocks
 "
 Class {
 	#name : #MicOrderedListBlockTest,
