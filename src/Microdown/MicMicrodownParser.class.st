@@ -78,12 +78,12 @@ MicMicrodownParser class >> allBlockNodeClasses [
 	
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> anchorMarkup [
-	^ '@@'
+	^ '@'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> annotatedParagraphMarkup [
 	^ '!!'
 ]
@@ -100,29 +100,29 @@ MicMicrodownParser class >> boldMarkup [
 	^ '*'
 ]
 
-{ #category : #markups }
+{ #category : #private }
 MicMicrodownParser class >> builder [
 	^ MicBuilder new
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> codeblockMarkup [
 
 	^ '```'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> commentedLineMarkup [
 
 	^ '%'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> environmentClosingBlockMarkup [
 	^ '?>'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
@@ -130,26 +130,27 @@ MicMicrodownParser class >> environmentOpeningBlockMarkup [
 { #category : #examples }
 MicMicrodownParser class >> example [
 	<example>
-	(self fromUrl: 'https://raw.githubusercontent.com/kasperosterbye/PillarRichTextRender/master/README.md') inspectWithLabel: 'PillarRichTextRender/README.md'
+	(self asText: self comment) inspectWithLabel: 'PillarRichTextRender/README.md'
 ]
 
 { #category : #'instance creation' }
 MicMicrodownParser class >> fromUrl: aUrl [
-	
-	^self asText:   
+	self flag: #fixme. 
+	"we should add parse and asText should be in richText extension"
+	^ self asText:   
 		(ZnClient new 
 			beOneShot;
 			get: aUrl;
 			entity) string.
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> headerMarkup [
 
 	^ '#'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> mathClosingBlockMarkup [
 	self flag: #fixMe. 
 	"should implement block logic for different opening and closing this way we could have 
@@ -158,41 +159,41 @@ MicMicrodownParser class >> mathClosingBlockMarkup [
 	^ '&'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> mathOpeningBlockMarkup [
 
 	^ '&'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> metaDataClosingBlockMarkup [
 	^ '}'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> preformattedMarkup [
 
 	^ '> '
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> tableCellMarkup [
 
 	^ '|'
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> unorderedListMarkup [
 
 	^ '- '
 ]
 
-{ #category : #markups }
+{ #category : #'block markup' }
 MicMicrodownParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
@@ -217,7 +218,8 @@ MicMicrodownParser >> argumentListStartDelimiter [
 { #category : #'node creation' }
 MicMicrodownParser >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
-		
+	
+	"We may use this for item not matching a dictionary-based dispatch"
 	^ nil
 ]
 
