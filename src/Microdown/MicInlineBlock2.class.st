@@ -17,22 +17,10 @@ Class {
 		'end',
 		'kind',
 		'children',
-		'string'
+		'substring'
 	],
 	#category : #'Microdown-Model'
 }
-
-{ #category : #'instance creation' }
-MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren [
-	^ self new 
-			start: aStartInteger; 
-			end: anEndInteger; 
-			kind: aKind; 
-			string: aString; 
-			children: aChildren; 
-			yourself
-	
-]
 
 { #category : #obsolete }
 MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
@@ -59,7 +47,7 @@ MicInlineBlock2 >> childrenPrintOn [
 MicInlineBlock2 >> cleanSubstring [
 	self isOnlyChild ifTrue: [ 
 		self substring: ( String streamContents: [:s | 
-			(substring splitOn: self escapeCharacter)
+			(self substring splitOn: self escapeCharacter)
 				doWithIndex: [:each :i | 
 					(each isEmpty and: i>1) ifTrue: [ s << self escapeCharacter ] ifFalse: [ s << each ] ] ] ) ]
 ]
@@ -96,17 +84,17 @@ MicInlineBlock2 >> kind: aKind [
 
 { #category : #accessing }
 MicInlineBlock2 >> literal [
-	^ string copyFrom: start to: end. 
+	^ substring copyFrom: start to: end. 
 ]
 
 { #category : #printing }
 MicInlineBlock2 >> printOn: aStream [
 	(self kind == #basic) 
-		ifTrue: [ aStream nextPutAll: self string ] 
+		ifTrue: [ aStream nextPutAll: self substring ] 
 		ifFalse: [ 
 			| contents |
 			contents := children 
-				ifEmpty: [ self string ] 
+				ifEmpty: [ self substring ] 
 				ifNotEmpty: [ self childrenPrintOn ].
 			aStream nextPut: $[;
 				nextPutAll: contents;
@@ -128,22 +116,12 @@ MicInlineBlock2 >> start: anInteger [
 	start := anInteger 
 ]
 
-{ #category : #accessing }
-MicInlineBlock2 >> string [
-	^ string
-]
-
-{ #category : #accessing }
-MicInlineBlock2 >> string: aSubString [
-	string := aSubString
-]
-
 { #category : #obsolete }
 MicInlineBlock2 >> substring [
-	^ string
+	^ substring
 ]
 
 { #category : #obsolete }
 MicInlineBlock2 >> substring: aSubString [
-	string := aSubString
+	substring := aSubString
 ]

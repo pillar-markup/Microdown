@@ -66,7 +66,7 @@ MicInlineEmphasisProcessor >> addBasicTextBlocks [
 					from: stIndex
 					to: eIndex
 					withKind: #basic
-					withString: substring
+					withSubstring: substring
 					withChildren: #())
 			 ]
 	].
@@ -166,7 +166,7 @@ MicInlineEmphasisProcessor >> processEmphasis [
 			from: firstOpener index
 			to: associateCloser index + associateCloser size - 1
 			withKind: firstOpener type
-			withString: correctSubstring
+			withSubstring: correctSubstring
 			withChildren: children).
 	"7. keep going"
 	stack := (stack withIndexSelect: [:value :i | (i between: firstOpenerIndex and: associateCloserIndex) not ]).
