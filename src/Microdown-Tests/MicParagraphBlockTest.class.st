@@ -1,5 +1,5 @@
 "
-A GHMParagraphBlockTest is a test class for testing the behavior of GHMParagraphBlock
+I'm is a test class for testing the behavior of paragraph block.
 "
 Class {
 	#name : #MicParagraphBlockTest,
