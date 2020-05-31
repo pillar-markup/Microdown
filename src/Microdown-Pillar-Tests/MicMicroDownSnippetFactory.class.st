@@ -14,7 +14,7 @@ MicMicroDownSnippetFactory >> anchorAreTrimedSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorSample [
-	^ parserClass anchorMarkup, 'test'
+	^ self parserClass anchorMarkup, 'test'
 ]
 
 { #category : #anchor }
@@ -135,7 +135,7 @@ MicMicroDownSnippetFactory >> headerWithNewLineSample [
 MicMicroDownSnippetFactory >> initialize [
 	
 	super initialize.
-	parserClass := MicroDownParser 
+	parserClass := MicroDownParser
 ]
 
 { #category : #format }
@@ -238,7 +238,7 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 { #category : #utils }
 MicMicroDownSnippetFactory >> parserClass [
 
-	^ MicroDownParser  
+	^ MicroDownParser
 ]
 
 { #category : #'code block' }
