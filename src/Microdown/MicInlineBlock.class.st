@@ -23,8 +23,8 @@ MicInlineBlock >> children [
 ]
 
 { #category : #accessing }
-MicInlineBlock >> children: anObject [
-	children := anObject
+MicInlineBlock >> children: aCollection [
+	children := aCollection
 ]
 
 { #category : #accessing }
