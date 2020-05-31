@@ -79,9 +79,52 @@ MicAbstractParser class >> allBlockNodeClasses [
 ]
 
 { #category : #markups }
+MicAbstractParser class >> anchorMarkup [
+	^ '@@'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> annotatedParagraphMarkup [
+	^ '!!'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> argumentListStartDelimiter [
+	
+	^ '|'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> boldMarkup [
+
+	^ '*'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> builder [
+	^ MicBuilder new
+]
+
+{ #category : #markups }
 MicAbstractParser class >> codeblockMarkup [
 
 	^ '```'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> commentedLineMarkup [
+
+	^ '%'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> environmentClosingBlockMarkup [
+	^ '?>'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> environmentOpeningBlockMarkup [
+	^ '<?'
 ]
 
 { #category : #examples }
@@ -107,6 +150,31 @@ MicAbstractParser class >> headerMarkup [
 ]
 
 { #category : #markups }
+MicAbstractParser class >> mathClosingBlockMarkup [
+	self flag: #fixMe. 
+	"should implement block logic for different opening and closing this way we could have 
+	a different markup."
+	
+	^ '&'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> mathOpeningBlockMarkup [
+
+	^ '&'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> metaDataClosingBlockMarkup [
+	^ '}'
+]
+
+{ #category : #markups }
+MicAbstractParser class >> metaDataOpeningBlockMarkup [
+	^ '{'
+]
+
+{ #category : #markups }
 MicAbstractParser class >> preformattedMarkup [
 
 	^ '> '
@@ -128,6 +196,22 @@ MicAbstractParser class >> unorderedListMarkup [
 MicAbstractParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
+]
+
+{ #category : #markups }
+MicAbstractParser >> anchorMarkup [
+	^ self class anchorMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> annotatedParagraphMarkup [
+	^ self class annotatedParagraphMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> argumentListStartDelimiter [
+	
+	^ self class argumentListStartDelimiter
 ]
 
 { #category : #'node creation' }
@@ -162,14 +246,36 @@ MicAbstractParser >> blockStarterClassFrom: line [
 ]
 
 { #category : #markups }
+MicAbstractParser >> boldMarkup [
+
+	^ self class boldMarkup
+]
+
+{ #category : #markups }
 MicAbstractParser >> codeblockMarkup [ 
 	^ self class codeblockMarkup 
+]
+
+{ #category : #markups }
+MicAbstractParser >> commentedLineMarkup [
+
+	^ self class commentedLineMarkup
 ]
 
 { #category : #accessing }
 MicAbstractParser >> current [ 
 
 	^ current
+]
+
+{ #category : #markups }
+MicAbstractParser >> environmentClosingBlockMarkup [
+	^ self class environmentClosingBlockMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> environmentOpeningBlockMarkup [
+	^ self class environmentOpeningBlockMarkup
 ]
 
 { #category : #parsing }
@@ -202,6 +308,11 @@ MicAbstractParser >> headerMarkup [
 	^ self class headerMarkup 
 ]
 
+{ #category : #markups }
+MicAbstractParser >> horizontalLineMarkup [
+	^ '***'
+]
+
 { #category : #testing }
 MicAbstractParser >> isAList: normalized [
 	
@@ -217,6 +328,26 @@ MicAbstractParser >> matchOrdered: line [
 MicAbstractParser >> matchUnordered: line [
 	^ (line beginsWith: '- ') | (line beginsWith: '* ')
 		| (line beginsWith: '+ ')
+]
+
+{ #category : #markups }
+MicAbstractParser >> mathClosingBlockMarkup [
+	^ self class mathClosingBlockMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> mathOpeningBlockMarkup [
+	^ self class mathOpeningBlockMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> metaDataClosingBlockMarkup [
+	^ self class metaDataClosingBlockMarkup
+]
+
+{ #category : #markups }
+MicAbstractParser >> metaDataOpeningBlockMarkup [
+	^ self class metaDataOpeningBlockMarkup
 ]
 
 { #category : #parsing }
