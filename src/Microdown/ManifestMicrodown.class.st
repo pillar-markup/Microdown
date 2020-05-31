@@ -1,13 +1,15 @@
 "
 I define a parser and code model for MicroDown.
-Microdown is a smaller mardown than but mardown but more extensible. 
-It supports the default: 
+Microdown is a smaller mardown than but mardown, but it is more extensible. 
+It supports the default markdown features:
 - Header
 - Lists
 - Paragraph
 - Code with arguments: key=val&key2=val2
 - Quote
 - Table
+- Emphasis 
+- Figures and links
 But also 
 - Environment with arguments
 - Anchors
