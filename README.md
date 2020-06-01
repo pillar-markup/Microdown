@@ -38,7 +38,9 @@ Such packages should be moved in the future to other location (probably pillar i
 
 ## Loading
 
+```
 Metacello new
   baseline: 'Microdown';
   repository: 'github://pillar-markup/Microdown/src';
   load.
+```
