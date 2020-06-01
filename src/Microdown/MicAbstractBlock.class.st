@@ -129,3 +129,9 @@ MicAbstractBlock >> showStructure: indent [
 	ind := String tab repeat: indent.
 	^ ind, self class name, String cr, ((children collect: [:c | c showStructure: indent + 1]) joinUsing: String cr).
 ]
+
+{ #category : #'as yet unclassified' }
+MicAbstractBlock >> splitString: aString [
+	"convenience method"
+	^MicIntraBlockSplitter new pillarFrom: aString.
+]

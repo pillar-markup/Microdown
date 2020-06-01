@@ -8,7 +8,17 @@ Class {
 }
 
 { #category : #accessing }
+MicStrikeDelimiter class >> associatedInlineBlock [
+	^ MicStrikeInlineBlock 
+]
+
+{ #category : #accessing }
 MicStrikeDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+MicStrikeDelimiter class >> isOpener [
 	^ true
 ]
 
@@ -18,22 +28,6 @@ MicStrikeDelimiter class >> markup [
 ]
 
 { #category : #accessing }
-MicStrikeDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> markup [
-	self flag: #fixme. "do we need it on instance side?"
-	^ '~'
-]
-
-{ #category : #accessing }
-MicStrikeDelimiter >> type [
+MicStrikeDelimiter class >> type [
 	^ #strike
 ]

@@ -8,7 +8,17 @@ Class {
 }
 
 { #category : #accessing }
+MicBoldDelimiter class >> associatedInlineBlock [
+	^ MicBoldInlineBlock 
+]
+
+{ #category : #accessing }
 MicBoldDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+MicBoldDelimiter class >> isOpener [
 	^ true
 ]
 
@@ -18,22 +28,6 @@ MicBoldDelimiter class >> markup [
 ]
 
 { #category : #accessing }
-MicBoldDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> markup [
-	self flag: #fixme. "do we need it on instance side?"
-	^ self class markup
-]
-
-{ #category : #accessing }
-MicBoldDelimiter >> type [
+MicBoldDelimiter class >> type [
 	^ #bold
 ]

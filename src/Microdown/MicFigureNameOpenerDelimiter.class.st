@@ -8,8 +8,18 @@ Class {
 }
 
 { #category : #accessing }
+MicFigureNameOpenerDelimiter class >> associatedInlineBlock [
+	^ MicFigureInlineBlock
+]
+
+{ #category : #accessing }
 MicFigureNameOpenerDelimiter class >> isCloser [
 	^ false
+]
+
+{ #category : #accessing }
+MicFigureNameOpenerDelimiter class >> isOpener [
+	^ true
 ]
 
 { #category : #accessing }
@@ -18,22 +28,6 @@ MicFigureNameOpenerDelimiter class >> markup [
 ]
 
 { #category : #accessing }
-MicFigureNameOpenerDelimiter >> isCloser [
-	^ false
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> markup [
-		self flag: #fixme. "do we need it on instance side?"
-	^ self class markup
-]
-
-{ #category : #accessing }
-MicFigureNameOpenerDelimiter >> type [
+MicFigureNameOpenerDelimiter class >> type [
 	^ #figure
 ]

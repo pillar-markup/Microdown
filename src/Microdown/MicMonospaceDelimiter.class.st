@@ -8,7 +8,17 @@ Class {
 }
 
 { #category : #accessing }
+MicMonospaceDelimiter class >> associatedInlineBlock [
+	^ MicMonospaceInlineBlock 
+]
+
+{ #category : #accessing }
 MicMonospaceDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+MicMonospaceDelimiter class >> isOpener [
 	^ true
 ]
 
@@ -18,22 +28,6 @@ MicMonospaceDelimiter class >> markup [
 ]
 
 { #category : #accessing }
-MicMonospaceDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> markup [
-	self flag: #fixme. "do we need it on instance side?"
-	^ self class markup
-]
-
-{ #category : #accessing }
-MicMonospaceDelimiter >> type [
+MicMonospaceDelimiter class >> type [
 	^ #monospace
 ]

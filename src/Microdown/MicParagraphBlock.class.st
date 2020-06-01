@@ -29,6 +29,13 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+MicParagraphBlock >> asPillar [
+	^ PRParagraph  new
+		setChildren: (self splitString: text);
+		yourself
+]
+
 { #category : #private }
 MicParagraphBlock >> asUnindented: line [
 	"return a line where the indentation to my indentation level has been removed"

@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #accessing }
+MicURLCloserDelimiter class >> associatedInlineBlock [
+	^ nil
+]
+
 { #category : #testing }
 MicURLCloserDelimiter class >> isActive [
 	^ false
@@ -18,32 +23,16 @@ MicURLCloserDelimiter class >> isCloser [
 ]
 
 { #category : #accessing }
+MicURLCloserDelimiter class >> isOpener [
+	^ false
+]
+
+{ #category : #accessing }
 MicURLCloserDelimiter class >> markup [
 	^ ')'
 ]
 
-{ #category : #testing }
-MicURLCloserDelimiter >> isActive [
-	^ false
-]
-
 { #category : #accessing }
-MicURLCloserDelimiter >> isCloser [
-	^ true
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> isOpener [
-	^ false
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> markup [
-	self flag: #fixme. "do we need it on instance side?"
-	^ ')'
-]
-
-{ #category : #accessing }
-MicURLCloserDelimiter >> type [
+MicURLCloserDelimiter class >> type [
 	^ #url
 ]

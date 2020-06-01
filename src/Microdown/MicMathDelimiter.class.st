@@ -8,7 +8,17 @@ Class {
 }
 
 { #category : #accessing }
+MicMathDelimiter class >> associatedInlineBlock [
+	^ MicMathInlineBlock 
+]
+
+{ #category : #accessing }
 MicMathDelimiter class >> isCloser [
+	^ true
+]
+
+{ #category : #accessing }
+MicMathDelimiter class >> isOpener [
 	^ true
 ]
 
@@ -18,11 +28,6 @@ MicMathDelimiter class >> markup [
 ]
 
 { #category : #accessing }
-MicMathDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicMathDelimiter >> type [
+MicMathDelimiter class >> type [
 	^ #math
 ]

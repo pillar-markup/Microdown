@@ -8,8 +8,18 @@ Class {
 }
 
 { #category : #accessing }
+MicLinkNameOpenerDelimiter class >> associatedInlineBlock [
+	^ MicLinkInlineBlock 
+]
+
+{ #category : #accessing }
 MicLinkNameOpenerDelimiter class >> isCloser [
 	^ false
+]
+
+{ #category : #accessing }
+MicLinkNameOpenerDelimiter class >> isOpener [
+	^ true
 ]
 
 { #category : #accessing }
@@ -17,28 +27,7 @@ MicLinkNameOpenerDelimiter class >> markup [
 	^ '['
 ]
 
-{ #category : #testing }
-MicLinkNameOpenerDelimiter >> isActive [
-	^ false
-]
-
 { #category : #accessing }
-MicLinkNameOpenerDelimiter >> isCloser [
-	^ false
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter >> isOpener [
-	^ true
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter >> markup [
-	self flag: #fixme. "do we need it on instance side?"
-	^ self class markup
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter >> type [
+MicLinkNameOpenerDelimiter class >> type [
 	^ #linkName
 ]

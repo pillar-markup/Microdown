@@ -12,6 +12,96 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testBasicTextAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc'.
+	self assert: res first text equals: 'abc'.
+	self assert: res first class equals: PRText.
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testBoldAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc**xyz**cba'.
+	self assert: res second children first text equals: 'xyz'.
+	self assert: res second class equals: PRBoldFormat.
+	
+	
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacter [
+	"Test the escape \ in simple case (here, bold one)"
+
+	| res |
+	res := self splitter start: 'abc\**test**last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc**test**last'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
+	"Test the escape \ in simple case (here, bold one)"
+
+	| res |
+	res := self splitter start: '\**test**'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'**test**'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInLinkName [
+	"Test the escape \ in link description"
+
+	| res |
+	res := self splitter start: 'abc[\**test**](myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[**test**](linkName)' . 'last'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
+	"Test the escape \ in case of nested linknames"
+
+	| res |
+	res := self splitter start: 'abc[\[nested\]](myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[[nested]](linkName)' . 'last'}.
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testExternalLinkAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc[alias](link)cba'.
+	self assert: res second children first text equals: 'alias'.
+	self assert: res second class equals: PRExternalLink.
+
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testFigureAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc![alias](link)cba'.
+	self assert: res second children first text equals: 'alias'.
+	self assert: res second class equals: PRFigure
+
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testItalicAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc_xyz_cba'.
+	self assert: res second children first text equals: 'xyz'.
+	self assert: res second class equals: PRItalicFormat.
+	
+	
+]
+
 { #category : #tests }
 MicInlineSplitterTest >> testSplitBlock2 [
 	"Test with multiple annotations"
@@ -54,11 +144,13 @@ MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
 	| res |
-	res := self splitter start: 'abc![AltText](imageAddress)last'.
+	res := self splitter start: 'abc![AltText](my_directory/image.png)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[AltText](figure)' . 'last'}.
-	self assert: res second url equals: 'imageAddress'
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'my_directory'.
+	self assert: res second url segments second equals: 'image.png'	
 ]
 
 { #category : #tests }
@@ -84,7 +176,8 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[LinkText](linkName)' . 'last'}.
-	self assert: res second url equals: 'myURL'
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'myURL'
 ]
 
 { #category : #tests }
@@ -199,4 +292,13 @@ MicInlineSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter start: 'abc**xyz'.
 	self assert: res first printString equals: 'abc**xyz'.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testUrlObjectInUrlBlocks [
+
+	| res |
+	res := self splitter start: 'abc[test](myURL)last'.
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'myURL'
 ]
