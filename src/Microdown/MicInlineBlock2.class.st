@@ -39,7 +39,6 @@ MicInlineBlock2 >> children: anArray [
 
 { #category : #printing }
 MicInlineBlock2 >> childrenPrintOn [
-	self flag: #fixme. "why that?"
 	^ (children asString allButFirst: 9) allButLast
 ]
 
