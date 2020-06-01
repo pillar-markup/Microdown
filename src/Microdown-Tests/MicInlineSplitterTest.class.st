@@ -43,7 +43,6 @@ MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[**test**](linkName)' . 'last'}.
-	self assert: res second url equals: 'myURL'
 ]
 
 { #category : #tests }
@@ -55,7 +54,6 @@ MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[[nested]](linkName)' . 'last'}.
-	self assert: res second url equals: 'myURL'
 ]
 
 { #category : #tests }
@@ -100,11 +98,13 @@ MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
 	| res |
-	res := self splitter start: 'abc![AltText](imageAddress)last'.
+	res := self splitter start: 'abc![AltText](my_directory/image.png)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[AltText](figure)' . 'last'}.
-	self assert: res second url equals: 'imageAddress'
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'my_directory'.
+	self assert: res second url segments second equals: 'image.png'	
 ]
 
 { #category : #tests }
@@ -130,7 +130,8 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[LinkText](linkName)' . 'last'}.
-	self assert: res second url equals: 'myURL'
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'myURL'
 ]
 
 { #category : #tests }
@@ -245,4 +246,13 @@ MicInlineSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter start: 'abc**xyz'.
 	self assert: res first printString equals: 'abc**xyz'.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testUrlObjectInUrlBlocks [
+
+	| res |
+	res := self splitter start: 'abc[test](myURL)last'.
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'myURL'
 ]

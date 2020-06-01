@@ -7,14 +7,9 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl2 class >> from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withString: aString withChildren: aChildren) url: aURL; yourself
-]
-
 { #category : #obsolete }
 MicInlineBlockWithUrl2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; yourself
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #accessing }
@@ -25,4 +20,9 @@ MicInlineBlockWithUrl2 >> url [
 { #category : #accessing }
 MicInlineBlockWithUrl2 >> url: anURL [
 	url := anURL
+]
+
+{ #category : #transformation }
+MicInlineBlockWithUrl2 >> urlTransformation [
+	self url: (ZnUrl fromString: self url)
 ]
