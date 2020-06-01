@@ -35,3 +35,12 @@ When a new line is read we do the following:
 
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
+
+## Loading
+
+```
+Metacello new
+  baseline: 'Microdown';
+  repository: 'github://pillar-markup/Microdown/src';
+  load.
+```
