@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicLinkNameOpenerDelimiter class >> associatedInlineBlock [
+	^ MicLinkInlineBlock 
+]
+
+{ #category : #accessing }
 MicLinkNameOpenerDelimiter class >> isCloser [
 	^ false
 ]

@@ -10,7 +10,7 @@ I am characterized by:
 
 "
 Class {
-	#name : #MicInlineBlock2,
+	#name : #MicAbstractInlineBlock,
 	#superclass : #Object,
 	#instVars : [
 		'start',
@@ -22,28 +22,40 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #obsolete }
-MicInlineBlock2 class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
+{ #category : #'pillar conversion' }
+MicAbstractInlineBlock class >> associatedPRClass [
+	self subclassResponsibility 
+]
+
+{ #category : #constructor }
+MicAbstractInlineBlock class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
 	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; cleanSubstring; yourself.	
 ]
 
+{ #category : #converting }
+MicAbstractInlineBlock >> asPillar [
+	^ (self class associatedPRClass) new
+				setChildren: {(PRText new text: self substring )};
+				yourself
+]
+
 { #category : #accessing }
-MicInlineBlock2 >> children [
+MicAbstractInlineBlock >> children [
 	^ children
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> children: anArray [
+MicAbstractInlineBlock >> children: anArray [
 	children := anArray
 ]
 
 { #category : #printing }
-MicInlineBlock2 >> childrenPrintOn [
+MicAbstractInlineBlock >> childrenPrintOn [
 	^ (children asString allButFirst: 9) allButLast
 ]
 
 { #category : #operations }
-MicInlineBlock2 >> cleanSubstring [
+MicAbstractInlineBlock >> cleanSubstring [
 	self isOnlyChild ifTrue: [ 
 		self substring: ( String streamContents: [:s | 
 			(self substring splitOn: self escapeCharacter)
@@ -52,42 +64,42 @@ MicInlineBlock2 >> cleanSubstring [
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> end [
+MicAbstractInlineBlock >> end [
 	^ end
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> end: anInteger [
+MicAbstractInlineBlock >> end: anInteger [
 	end := anInteger
 ]
 
 { #category : #operations }
-MicInlineBlock2 >> escapeCharacter [
+MicAbstractInlineBlock >> escapeCharacter [
 	^ MicEscapeDelimiter markup
 ]
 
 { #category : #testing }
-MicInlineBlock2 >> isOnlyChild [
+MicAbstractInlineBlock >> isOnlyChild [
 	^ children isEmpty
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> kind [
+MicAbstractInlineBlock >> kind [
 	^ kind
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> kind: aKind [
+MicAbstractInlineBlock >> kind: aKind [
 	kind := aKind
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> literal [
+MicAbstractInlineBlock >> literal [
 	^ substring copyFrom: start to: end. 
 ]
 
 { #category : #printing }
-MicInlineBlock2 >> printOn: aStream [
+MicAbstractInlineBlock >> printOn: aStream [
 	(self kind == #basic) 
 		ifTrue: [ aStream nextPutAll: self substring ] 
 		ifFalse: [ 
@@ -106,21 +118,21 @@ MicInlineBlock2 >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> start [ 	
+MicAbstractInlineBlock >> start [ 	
 	^ start
 ]
 
 { #category : #accessing }
-MicInlineBlock2 >> start: anInteger [
+MicAbstractInlineBlock >> start: anInteger [
 	start := anInteger 
 ]
 
 { #category : #obsolete }
-MicInlineBlock2 >> substring [
+MicAbstractInlineBlock >> substring [
 	^ substring
 ]
 
 { #category : #obsolete }
-MicInlineBlock2 >> substring: aSubString [
+MicAbstractInlineBlock >> substring: aSubString [
 	substring := aSubString
 ]

@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicRawOpenerDelimiter class >> associatedInlineBlock [
+	^ MicRawInlineBlock 
+]
+
+{ #category : #accessing }
 MicRawOpenerDelimiter class >> isCloser [
 	^ false
 ]

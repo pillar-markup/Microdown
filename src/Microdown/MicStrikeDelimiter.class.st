@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicStrikeDelimiter class >> associatedInlineBlock [
+	^ MicStrikeInlineBlock 
+]
+
+{ #category : #accessing }
 MicStrikeDelimiter class >> isCloser [
 	^ true
 ]

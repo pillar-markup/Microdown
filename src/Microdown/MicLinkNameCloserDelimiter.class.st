@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicLinkNameCloserDelimiter class >> associatedInlineBlock [
+	^ nil
+]
+
+{ #category : #accessing }
 MicLinkNameCloserDelimiter class >> isCloser [
 	^ true
 ]

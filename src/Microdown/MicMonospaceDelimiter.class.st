@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicMonospaceDelimiter class >> associatedInlineBlock [
+	^ MicMonospaceInlineBlock 
+]
+
+{ #category : #accessing }
 MicMonospaceDelimiter class >> isCloser [
 	^ true
 ]

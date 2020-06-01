@@ -12,6 +12,24 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testBasicTextAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc'.
+	self assert: res first text equals: 'abc'.
+	self assert: res first class equals: PRText.
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testBoldAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc**xyz**cba'.
+	self assert: res second children first text equals: 'xyz'.
+	self assert: res second class equals: PRBoldFormat.
+	
+	
+]
+
 { #category : #tests }
 MicInlineSplitterTest >> testEscapeCharacter [
 	"Test the escape \ in simple case (here, bold one)"
@@ -54,6 +72,34 @@ MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[[nested]](linkName)' . 'last'}.
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testExternalLinkAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc[alias](link)cba'.
+	self assert: res second children first text equals: 'alias'.
+	self assert: res second class equals: PRExternalLink.
+
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testFigureAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc![alias](link)cba'.
+	self assert: res second children first text equals: 'alias'.
+	self assert: res second class equals: PRFigure
+
+]
+
+{ #category : #'pillar conversion' }
+MicInlineSplitterTest >> testItalicAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc_xyz_cba'.
+	self assert: res second children first text equals: 'xyz'.
+	self assert: res second class equals: PRItalicFormat.
+	
+	
 ]
 
 { #category : #tests }

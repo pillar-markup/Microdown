@@ -14,6 +14,11 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+MicAnchorBlock >> asPillar [ 
+	^ PRAnchor new name: self label; yourself
+]
+
 { #category : #accessing }
 MicAnchorBlock >> label [
 	^ label

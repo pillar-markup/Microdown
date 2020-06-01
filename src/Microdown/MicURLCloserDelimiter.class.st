@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #accessing }
+MicURLCloserDelimiter class >> associatedInlineBlock [
+	^ nil
+]
+
 { #category : #testing }
 MicURLCloserDelimiter class >> isActive [
 	^ false

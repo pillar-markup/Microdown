@@ -18,6 +18,13 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 	^ newBlock 
 ]
 
+{ #category : #'as yet unclassified' }
+MicRootBlock >> asPillar [
+	^ PRDocument new
+		setChildren: (self children collect: [ :child | child asPillar ]);
+		yourself
+]
+
 { #category : #testing }
 MicRootBlock >> canConsumeLine: line [
 	"The root block can always consume everything no matter what it is."

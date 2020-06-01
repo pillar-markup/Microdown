@@ -62,7 +62,7 @@ MicInlineEmphasisProcessor >> addBasicTextBlocks [
 		substring := string collect: [ :c | c ] from: stIndex to: eIndex.
 		substring isEmpty ifFalse: [ 
 			result add: 
-				(MicInlineBlock2
+				(MicBasicInlineBlock
 					from: stIndex
 					to: eIndex
 					withKind: #basic
@@ -86,11 +86,6 @@ MicInlineEmphasisProcessor >> childrenInNestedCase [
 { #category : #accessing }
 MicInlineEmphasisProcessor >> end: anEndIndex [
 	end := anEndIndex 
-]
-
-{ #category : #actions }
-MicInlineEmphasisProcessor >> inlineBlockClass [
-	^ MicInlineBlock2
 ]
 
 { #category : #'global process' }
@@ -119,7 +114,7 @@ MicInlineEmphasisProcessor >> linkOrFigureProcess [
 	"6. define children"
 	self processNestedCase.
 	result add: 
-		(MicInlineBlockWithUrl2
+		(firstOpener associatedInlineBlock
 			from: firstOpener index
 			to: urlCloserStringIndex 
 			withKind: firstOpener type
@@ -162,7 +157,7 @@ MicInlineEmphasisProcessor >> processEmphasis [
 	self processNestedCase.
 	"6. add in result_array"
 	result add: 
-		(self inlineBlockClass
+		(firstOpener associatedInlineBlock
 			from: firstOpener index
 			to: associateCloser index + associateCloser size - 1
 			withKind: firstOpener type

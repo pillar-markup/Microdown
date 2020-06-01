@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicFigureNameOpenerDelimiter class >> associatedInlineBlock [
+	^ MicFigureInlineBlock
+]
+
+{ #category : #accessing }
 MicFigureNameOpenerDelimiter class >> isCloser [
 	^ false
 ]

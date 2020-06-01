@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicMathDelimiter class >> associatedInlineBlock [
+	^ MicMathInlineBlock 
+]
+
+{ #category : #accessing }
 MicMathDelimiter class >> isCloser [
 	^ true
 ]

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+MicEscapeDelimiter class >> associatedInlineBlock [
+	^ nil
+]
+
+{ #category : #accessing }
 MicEscapeDelimiter class >> isCloser [
 	^ false
 ]

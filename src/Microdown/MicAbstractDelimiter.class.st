@@ -24,6 +24,11 @@ Class {
 }
 
 { #category : #accessing }
+MicAbstractDelimiter class >> associatedInlineBlock [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 MicAbstractDelimiter class >> index: anIndex [
 	^ self new index: anIndex; yourself
 ]
@@ -56,6 +61,11 @@ MicAbstractDelimiter class >> size [
 { #category : #accessing }
 MicAbstractDelimiter class >> type [
 	^ self subclassResponsibility 
+]
+
+{ #category : #accessing }
+MicAbstractDelimiter >> associatedInlineBlock [
+	^ self class associatedInlineBlock 
 ]
 
 { #category : #accessing }

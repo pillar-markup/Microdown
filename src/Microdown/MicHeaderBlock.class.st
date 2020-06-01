@@ -26,6 +26,14 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+MicHeaderBlock >> asPillar [
+	^ PRHeader new
+		level: self level;
+		setChildren: (self splitString: header);
+		yourself
+]
+
 { #category : #public }
 MicHeaderBlock >> contents [ 
 	^ super contents , '[ ', self level printString, '/', self header, ' ]'

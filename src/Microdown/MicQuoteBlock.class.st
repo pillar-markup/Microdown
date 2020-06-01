@@ -20,6 +20,14 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #'as yet unclassified' }
+MicQuoteBlock >> asPillar [
+
+	^ PRPreformatted new
+		setChildren: (self splitString: text);
+		yourself
+]
+
 { #category : #testing }
 MicQuoteBlock >> lineMarkup [
 

@@ -29,6 +29,16 @@ MicCodeBlock >> arguments: aString [
 	arguments := aString
 ]
 
+{ #category : #'as yet unclassified' }
+MicCodeBlock >> asPillar [
+	self flag: #fixme. "missing arguments"
+	
+	^ PRCodeblock new
+		language: self firstTag;
+		text: self code;
+		yourself
+]
+
 { #category : #accessing }
 MicCodeBlock >> code [
 	^ self body
