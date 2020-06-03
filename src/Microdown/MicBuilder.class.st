@@ -40,9 +40,10 @@ MicBuilder >> buildCodeblockTag: aString withBody: aString2 [
 
 { #category : #building }
 MicBuilder >> buildHeader: aString [
-	
+	"http://spec.commonmark.org/0.28/#atx-headings"
 	stream
 		nextPutAll: parserClass headerMarkup ; 
+		nextPut: Character space;
 		nextPutAll: aString;
 		cr
 	
@@ -53,6 +54,7 @@ MicBuilder >> buildHeader: aString level: aNumber [
 	
 	stream
 		nextPutAll: (parserClass headerMarkup repeat: aNumber); 
+		nextPut: Character space;
 		nextPutAll: aString;
 		cr
 	
