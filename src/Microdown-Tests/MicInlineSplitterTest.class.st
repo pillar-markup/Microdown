@@ -248,6 +248,17 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitCodeReferenceReference [
+	| res |
+	res := self splitter start: 'abc@Point class>>#x:y:@def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[Point class>>#x:y:](codeReference)' . 'def'}.
+	self assert: (res second isKindOf: MicCodeReferenceInlineBlock)
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitEmpty [
 	| res |
 	res := self splitter start: ''.
