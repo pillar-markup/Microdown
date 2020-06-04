@@ -133,5 +133,5 @@ MicAbstractBlock >> showStructure: indent [
 { #category : #'as yet unclassified' }
 MicAbstractBlock >> splitString: aString [
 	"convenience method"
-	^MicIntraBlockSplitter new pillarFrom: aString.
+	^ MicInlineSplitter new pillarFrom: aString.
 ]

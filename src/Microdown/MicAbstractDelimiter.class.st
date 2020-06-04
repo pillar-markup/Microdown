@@ -25,7 +25,7 @@ Class {
 
 { #category : #accessing }
 MicAbstractDelimiter class >> associatedInlineBlock [
-	self subclassResponsibility
+	^ self subclassResponsibility
 ]
 
 { #category : #accessing }

@@ -69,6 +69,9 @@ Class {
 		'current',
 		'root'
 	],
+	#classInstVars : [
+		'inlineMarkups'
+	],
 	#category : #'Microdown-Parser'
 }
 
@@ -94,10 +97,9 @@ MicroDownParser class >> argumentListStartDelimiter [
 	^ '|'
 ]
 
-{ #category : #markups }
+{ #category : #'grammar - Format' }
 MicroDownParser class >> boldMarkup [
-
-	^ '*'
+	^ self inlineMarkups at: #bold
 ]
 
 { #category : #private }
@@ -137,6 +139,25 @@ MicroDownParser class >> example [
 MicroDownParser class >> headerMarkup [
 
 	^ '#'
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> inlineMarkup: aType [
+	^ self inlineMarkups at: aType asSymbol
+]
+
+{ #category : #markups }
+MicroDownParser class >> inlineMarkups [
+	^ inlineMarkups ifNil: [ 
+		inlineMarkups := Dictionary new.
+	MicAbstractDelimiter subclasses 
+		do: [ :subclass | 
+			| role |
+			role := subclass isOpener ifTrue: [ subclass isCloser ifTrue: [ '' ] ifFalse: [ 'Opener' ] ] ifFalse: [ 'Closer' ].			
+			inlineMarkups
+										at: subclass type asString, role
+										put: subclass markup ].
+									^ inlineMarkups ]
 ]
 
 { #category : #'block markup' }

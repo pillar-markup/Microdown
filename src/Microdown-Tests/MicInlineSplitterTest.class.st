@@ -114,6 +114,17 @@ MicInlineSplitterTest >> testSplitBlock2 [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockAnchorReference [
+	| res |
+	res := self splitter start: 'abc<?anchorA?>def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[anchorA](anchorReference)' . 'def'}.
+	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock)
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockBold [
 	| res |
 	res := self splitter start: 'abc**bold**def'.
@@ -137,6 +148,17 @@ MicInlineSplitterTest >> testSplitBlockCode [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[block](monospace)' . 'def'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockCodeReference [
+	| res |
+	res := self splitter start: 'abc@Point class>>#x:y:@def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[Point class>>#x:y:](codeReference)' . 'def'}.
+	self assert: (res second isKindOf: MicCodeReferenceInlineBlock)
+
 ]
 
 { #category : #tests }
@@ -245,6 +267,17 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[strike](strike)' . 'def'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitCodeReferenceReference [
+	| res |
+	res := self splitter start: 'abc@Point class>>#x:y:@def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[Point class>>#x:y:](codeReference)' . 'def'}.
+	self assert: (res second isKindOf: MicCodeReferenceInlineBlock)
+
 ]
 
 { #category : #tests }
