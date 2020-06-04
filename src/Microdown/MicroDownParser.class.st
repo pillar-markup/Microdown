@@ -135,6 +135,11 @@ MicroDownParser class >> example [
 	^ self parse: self comment
 ]
 
+{ #category : #'grammar - Format' }
+MicroDownParser class >> figureOpenerMarkup [
+	^ self inlineMarkups at: #figureOpener
+]
+
 { #category : #'block markup' }
 MicroDownParser class >> headerMarkup [
 
@@ -160,6 +165,16 @@ MicroDownParser class >> inlineMarkups [
 									^ inlineMarkups ]
 ]
 
+{ #category : #'grammar - Format' }
+MicroDownParser class >> linkNameCloserMarkup [
+	^ self inlineMarkups at: #linkNameCloser
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> linkNameOpenerMarkup [
+	^ self inlineMarkups at: #linkNameOpener
+]
+
 { #category : #'block markup' }
 MicroDownParser class >> mathClosingBlockMarkup [
 	self flag: #fixMe. 
@@ -183,6 +198,11 @@ MicroDownParser class >> metaDataClosingBlockMarkup [
 { #category : #'block markup' }
 MicroDownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> monospaceMarkup [
+	^ self inlineMarkups at: #monospace
 ]
 
 { #category : #'instance creation' }
@@ -213,6 +233,16 @@ MicroDownParser class >> unorderedListMarkup [
 MicroDownParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> urlCloserMarkup [
+	^ self inlineMarkups at: #urlCloser
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> urlOpenerMarkup [
+	^ self inlineMarkups at: #urlOpener
 ]
 
 { #category : #markups }
