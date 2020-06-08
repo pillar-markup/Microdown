@@ -135,6 +135,11 @@ MicroDownParser class >> example [
 	^ self parse: self comment
 ]
 
+{ #category : #'grammar - Format' }
+MicroDownParser class >> figureOpenerMarkup [
+	^ self inlineMarkups at: #figureOpener
+]
+
 { #category : #'block markup' }
 MicroDownParser class >> headerMarkup [
 
@@ -158,6 +163,21 @@ MicroDownParser class >> inlineMarkups [
 										at: subclass type asString, role
 										put: subclass markup ].
 									^ inlineMarkups ]
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> italicMarkup [
+	^ self inlineMarkups at: #italic
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> linkNameCloserMarkup [
+	^ self inlineMarkups at: #linkNameCloser
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> linkNameOpenerMarkup [
+	^ self inlineMarkups at: #linkNameOpener
 ]
 
 { #category : #'block markup' }
@@ -185,6 +205,11 @@ MicroDownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
 ]
 
+{ #category : #'grammar - Format' }
+MicroDownParser class >> monospaceMarkup [
+	^ self inlineMarkups at: #monospace
+]
+
 { #category : #'instance creation' }
 MicroDownParser class >> parse: aString [
 
@@ -195,6 +220,11 @@ MicroDownParser class >> parse: aString [
 MicroDownParser class >> preformattedMarkup [
 
 	^ '> '
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> strikeMarkup [
+	^ self inlineMarkups at: #strike
 ]
 
 { #category : #'block markup' }
@@ -213,6 +243,16 @@ MicroDownParser class >> unorderedListMarkup [
 MicroDownParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> urlCloserMarkup [
+	^ self inlineMarkups at: #urlCloser
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> urlOpenerMarkup [
+	^ self inlineMarkups at: #urlOpener
 ]
 
 { #category : #markups }
