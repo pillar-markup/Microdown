@@ -166,6 +166,11 @@ MicroDownParser class >> inlineMarkups [
 ]
 
 { #category : #'grammar - Format' }
+MicroDownParser class >> italicMarkup [
+	^ self inlineMarkups at: #italic
+]
+
+{ #category : #'grammar - Format' }
 MicroDownParser class >> linkNameCloserMarkup [
 	^ self inlineMarkups at: #linkNameCloser
 ]
@@ -215,6 +220,11 @@ MicroDownParser class >> parse: aString [
 MicroDownParser class >> preformattedMarkup [
 
 	^ '> '
+]
+
+{ #category : #'grammar - Format' }
+MicroDownParser class >> strikeMarkup [
+	^ self inlineMarkups at: #strike
 ]
 
 { #category : #'block markup' }
