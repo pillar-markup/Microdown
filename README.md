@@ -20,7 +20,20 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
+## Syntax
 
+### Header
+Similar to markdonw headers are composed of `#` space text on one line.
+The headers can be from 1 to 6
+
+```
+### Header Level3
+```
+
+
+
+
+## Implementation
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
 In short, the strategy is that at any point in time, we might have a number of children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of current are open. 
