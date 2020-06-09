@@ -22,15 +22,30 @@ But also
 
 ## Syntax
 
-### Header
+### Headers
 Similar to markdonw headers are composed of `#` space text on one line.
 The headers can be from 1 to 6
 
 ```
 ### Header Level3
 ```
+There is not support for other forms of declaration. 
 
+### Anchors
+In microdown we can define anchors and reference to them (see References).
+There are three ways to create anchors
 
+- `@anchorlabel` will create an anchor to the preceeding element. 
+- Figures, mathematical environments, environment can specify label as arguments (`label`)
+- Code block can specify label as argument (argument named `label`)
+
+### Codeblock
+
+Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named.
+```language=pharo|label=code1|caption=this is my great piece of code
+codeBlockMarkupString
+   ^ '\`\`\`'
+```
 
 
 ## Implementation
