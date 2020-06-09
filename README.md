@@ -51,12 +51,12 @@ The following code is not able to display it because markdown quote block are st
     ^ '```'
     ```
 ```
-```
+````
 ```language=pharo|label=code1|caption=this is my great piece of code
 codeBlockMarkupString
    ^ '\`\`\`'
 ```
-```
+````
 
 ### Quote block
 
