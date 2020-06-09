@@ -10,7 +10,6 @@ It supports
 - Lists
 - Paragraph
 - Code with arguments: key=val&key2=val2
-- Quote
 ...
 But also 
 - Environment with arguments
@@ -58,15 +57,16 @@ codeBlockMarkupString
 ```
 ````
 
-### Quote block
-
-When a line starts with '> ' it delimits a quoteblock
-
-\> # Header 1
-
-\> This is a section. 
 
 
+## Known limits
+
+#### Quote block
+When a line starts with '> ' it delimits a quoteblock.
+However the markup is not interpeter. 
+
+#### Codeblock 
+Codeblock do not support more than for backticks.
 
 ## Implementation
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
