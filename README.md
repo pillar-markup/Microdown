@@ -41,7 +41,9 @@ There are three ways to create anchors
 
 ### Codeblock
 
-Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named.
+Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo|label=code1|caption=this is my great piece of code`
+
+The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
 
 > \`\`\`language=pharo|label=code1|caption=this is my great piece of code
 > codeBlockMarkupString
@@ -52,6 +54,9 @@ Microdown offer the same code block that markdown but arguments can be specified
 codeBlockMarkupString
    ^ '\`\`\`'
 ```
+
+
+
 
 
 ## Implementation
