@@ -42,6 +42,12 @@ There are three ways to create anchors
 ### Codeblock
 
 Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named.
+
+> ```language=pharo|label=code1|caption=this is my great piece of code
+> codeBlockMarkupString
+>   ^ '```'
+> ```
+
 ```language=pharo|label=code1|caption=this is my great piece of code
 codeBlockMarkupString
    ^ '\`\`\`'
