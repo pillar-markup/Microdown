@@ -32,7 +32,7 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 { #category : #'as yet unclassified' }
 MicListItemBlock >> asPillar [
 	^ PRListItem new
-		setChildren: (self splitString: text), (self children collect: [:child| child asPillar]);
+		setChildren: (self pillarFromString: text), (self children collect: [:child| child asPillar]);
 		yourself
 ]
 

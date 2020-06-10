@@ -24,7 +24,7 @@ Class {
 MicQuoteBlock >> asPillar [
 
 	^ PRPreformatted new
-		setChildren: (self splitString: text);
+		setChildren: (self pillarFromString: text);
 		yourself
 ]
 

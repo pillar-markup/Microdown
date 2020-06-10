@@ -37,7 +37,7 @@ MicAnnotatedBlock >> asPillar [
 
 	^ PRAnnotatedParagraph new 
 			annotation: self label; 
-			setChildren: (self splitString: self text);
+			setChildren: (self pillarFromString: self text);
 			yourself
 ]
 

@@ -32,7 +32,7 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 { #category : #'as yet unclassified' }
 MicParagraphBlock >> asPillar [
 	^ PRParagraph  new
-		setChildren: (self splitString: text);
+		setChildren: (self pillarFromString: text);
 		yourself
 ]
 

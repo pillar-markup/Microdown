@@ -30,7 +30,7 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 MicHeaderBlock >> asPillar [
 	^ PRHeader new
 		level: self level;
-		setChildren: (self splitString: header);
+		setChildren: (self pillarFromString: header);
 		yourself
 ]
 
