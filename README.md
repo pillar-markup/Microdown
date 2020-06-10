@@ -10,7 +10,6 @@ It supports
 - Lists
 - Paragraph
 - Code with arguments: key=val&key2=val2
-- Quote
 ...
 But also 
 - Environment with arguments
@@ -20,7 +19,56 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
+## Syntax
 
+### Headers
+Similar to markdonw headers are composed of `#` space text on one line.
+The headers can be from 1 to 6
+
+```
+### Header Level3
+```
+There is not support for other forms of declaration. 
+
+### Anchors
+In microdown we can define anchors and reference to them (see References).
+There are three ways to create anchors
+
+- `@anchorlabel` will create an anchor to the preceeding element. 
+- Figures, mathematical environments, environment can specify label as arguments (`label`)
+- Code block can specify label as argument (argument named `label`)
+
+### Codeblock
+
+Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo|label=code1|caption=this is my great piece of code`
+
+The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
+
+``` 
+   ```language=pharo|label=code1|caption=this is my great piece of code
+    codeBlockMarkupString
+    ^ '```'
+    ```
+```
+````
+```language=pharo|label=code1|caption=this is my great piece of code
+codeBlockMarkupString
+   ^ '\`\`\`'
+```
+````
+
+
+
+## Known limits
+
+#### Quote block
+When a line starts with '> ' it delimits a quoteblock.
+However the markup is not interpeter. 
+
+#### Codeblock 
+Codeblock do not support more than for backticks.
+
+## Implementation
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
 In short, the strategy is that at any point in time, we might have a number of children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of current are open. 
