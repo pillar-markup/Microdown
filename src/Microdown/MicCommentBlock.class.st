@@ -5,6 +5,15 @@ Class {
 }
 
 { #category : #markups }
+MicCommentBlock >> asPillar [ 
+		
+	^ PRCommentedLine new
+			text: text ;
+			yourself
+			
+]
+
+{ #category : #markups }
 MicCommentBlock >> lineMarkup [
 
 	^ parser commentedLineMarkup 
