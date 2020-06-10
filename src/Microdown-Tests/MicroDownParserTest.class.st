@@ -168,6 +168,22 @@ a second comment'
 ]
 
 { #category : #'tests-comments' }
+MicroDownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
+
+	| source root comment |
+	source := parser commentedLineMarkup , 'a comment', String cr.
+	source := source, 'a second comment'.
+	root :=  parser parse: source.
+	"we have two commented lines."
+	
+	self assert: root children size equals: 2.
+	comment := root children first. 
+	self assert: comment text equals: 'a comment'.
+	self assert: root children second text equals: 'a second comment'
+	
+]
+
+{ #category : #'tests-comments' }
 MicroDownParserTest >> testCommentSimple [
 
 	| source root comment |
