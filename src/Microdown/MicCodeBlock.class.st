@@ -2,12 +2,34 @@
 I am a code block. I look like this, starting and ending with three $`
 my 'arguments' is just the text from the fourth character up to the end of line.
 
-```arguments
-line 1
-line 2
-line 3
-``` 
+```
+ ```arguments
+ line 1
+ line 2
+ line 3
+ ``` 
+```
 
+A codeblock does not interpreter its contents. 
+You can however specify different tag and multiple argument. 
+
+```
+	```language=pharo|caption=A method&label=method 
+	pharoMotto 
+		^ 'Doing something every is the best way to make progress'
+	```
+```
+
+
+For now we do not support the use of multiple backticks. The markup is only 3 backticks. If you want to embed codeblock inside codeblock you must use an extra space. 
+
+```
+ ```
+  ```
+  A nested codeblock
+  ```
+ ```
+```
 "
 Class {
 	#name : #MicCodeBlock,

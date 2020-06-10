@@ -1,5 +1,16 @@
 "
 I'm is a test class for testing the behavior of MicCodeBlock
+
+
+For now we do not support the use of multiple backticks. 
+
+If you want to embed codeblock inside codeblock you must use an extra space. 
+
+```
+ ```
+ A nested codeblock
+ ```
+```
 "
 Class {
 	#name : #MicCodeBlockTest,
@@ -25,6 +36,29 @@ is really cool'.
 	
 	"An already closed blockNode cannot consume even plain text"
 	self deny: (root children first canConsumeLine: 'plain text')
+]
+
+{ #category : #tests }
+MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
+	"This test shows that we can write a code block inside a code block but that the later is not interpreter."
+	
+	| source root code textBody |
+	textBody := ' ``` 
+ my fancy code
+ is really cool
+ ```'.
+	source := parser codeblockMarkup,  String cr, textBody, String cr, parser codeblockMarkup. 
+	root := parser parse: source.
+	
+	self 
+		assert: root children size 
+		equals: 1.
+	code := root children first.
+	self assert: code children isEmpty.
+	self
+		assert: code code
+		equals: textBody.
+	
 ]
 
 { #category : #tests }

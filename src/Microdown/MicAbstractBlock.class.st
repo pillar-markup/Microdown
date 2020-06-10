@@ -133,5 +133,10 @@ MicAbstractBlock >> showStructure: indent [
 { #category : #'as yet unclassified' }
 MicAbstractBlock >> splitString: aString [
 	"convenience method"
+	
+	self flag: #tobefixed. 
+	"This method and pillarfrom: should be packaged as extension of Microdown-Pillar. 
+	In addition the name of this method should be changed to indicate that pillar is generated."
+	
 	^ MicInlineSplitter new pillarFrom: aString.
 ]
