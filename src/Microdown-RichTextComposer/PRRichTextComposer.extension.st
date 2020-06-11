@@ -9,7 +9,7 @@ PRRichTextComposer class >> renderComment: aString ofClass: aClass [
 	self flag: #fixMe.
 	"I do not like the asText: the interaction between parser, richtext composer should be 
 	more obvious"
-	^ [ MicroDownParser asText: builder contents ] on: MicParsingError do: [ builder contents  ]
+	^ [ MicroDownParser asText: builder contents ] on: MicParsingError, MessageNotUnderstood do: [ builder contents  ]
 ]
 
 { #category : #'*Microdown-RichTextComposer' }

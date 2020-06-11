@@ -30,6 +30,10 @@ For now we do not support the use of multiple backticks. The markup is only 3 ba
   ```
  ```
 ```
+
+#### Implementation thoughts
+The current implementation stores lines in a single text and this is a bad idea because first what if the user use lf in his text!
+Second if we want to treat lines separatedly we have to reparse it. Now we do not need it so this is good but this is just by chance!
 "
 Class {
 	#name : #MicCodeBlock,

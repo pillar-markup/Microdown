@@ -45,6 +45,9 @@ MicStartStopMarkupBlock >> body: anObject [
 
 { #category : #handle }
 MicStartStopMarkupBlock >> bodyFromLine: line [
+	self flag: #todo. 
+	"I do not think that this is a good idea to use a string to represent lines.
+	Especially since line contents is not interpreted - no formatting"
 	
 	body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ]
 ]
