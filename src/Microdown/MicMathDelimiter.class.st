@@ -1,5 +1,6 @@
 "
 I'm a delimiter for math inline environment.
+I delimits `MicMacInlineBlock`.
 "
 Class {
 	#name : #MicMathDelimiter,
