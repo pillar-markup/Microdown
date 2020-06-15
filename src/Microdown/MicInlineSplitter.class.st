@@ -2,6 +2,34 @@
 I represent the class which is in charge of splitting sentences to parse inline blocks.
 
 To proceed: `MicInlineSplitter new start: stringToParse`
+
+### Implementation: How parsing is made ? 
+- Read the string to parse and memorize all delimiters we meet in a collection
+- Start the `emphasisProcess`
+   - Search for the first opener delimiter in collection
+   - If it’s a link or a figure opener delimiter, start the `linkOrFigureProcess`
+     - Search for the associate closer
+     - Search for the following url
+     - Add it to the final array of inlines blocks
+   - Search for the associate closer
+   - Check if we have nested inline blocks (like bold in italic format)
+   - Add the found inline block to the final array of inlines blocks
+
+Note1: the escape delimiter is `\` (back slash)
+Note2: a new line in an inline paragraph doesn’t interfere with parsing. 
+The following example is totally bold:
+```
+		**Hello
+		world**
+```
+Note3: BUT a line between two lines must end the parsing process.
+The following example must not be bold:
+
+```
+		**Hello
+
+		world**
+```
 "
 Class {
 	#name : #MicInlineSplitter,

@@ -29,10 +29,3 @@ MicQuoteBlock >> lineMarkup [
 
 	^ self parser preformattedMarkup
 ]
-
-{ #category : #testing }
-MicQuoteBlock >> todo [
-	self flag: #todo.
-	"contents should be treated. see comment"
-	^self 
-]
