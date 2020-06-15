@@ -101,3 +101,14 @@ and one with tabs'.
 	root := parser parse: source.
 	self assert: root children first text equals: expected
 ]
+
+{ #category : #tests }
+MicParagraphBlockTest >> testTwoSingleParagraphs [
+	| root |
+	root := parser parse: 'This is
+	
+a paragraph on two lines'.
+	self assert: root children first text equals: 'This is'.
+	self assert: root children second text equals: 'a paragraph on two lines'.
+	
+]
