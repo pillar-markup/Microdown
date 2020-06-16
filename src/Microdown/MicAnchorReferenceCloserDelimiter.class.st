@@ -21,10 +21,10 @@ MicAnchorReferenceCloserDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicAnchorReferenceCloserDelimiter class >> markup [
-	^ '?>'
+	^ '*'
 ]
 
 { #category : #accessing }
 MicAnchorReferenceCloserDelimiter class >> type [
-	^ #anchorReference
+	^ #anchorReference 
 ]
