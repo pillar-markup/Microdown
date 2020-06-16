@@ -21,6 +21,18 @@ MicInlineSplitterTest >> testBasicTextAsPillar [
 ]
 
 { #category : #'pillar conversion' }
+MicInlineSplitterTest >> testBoldAndNestedItalicAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc**x_y_z**cba'.
+	self assert: res second class equals: PRBoldFormat.
+	self assert: res second children first text equals: 'x'.
+	self assert: res second children second class equals: PRItalicFormat.
+	self assert: res second children second children first text equals: 'y'.
+	self assert: res second children third text equals: 'z'.
+	
+]
+
+{ #category : #'pillar conversion' }
 MicInlineSplitterTest >> testBoldAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**xyz**cba'.
