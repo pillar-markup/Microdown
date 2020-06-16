@@ -120,7 +120,7 @@ MicInlineSplitterTest >> testSplitBlockAnchorReference [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[anchorA](anchorReference)' . 'def'}.
-	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock)
+	self assert: (res second isKindOf: MicAnnotationInlineBlock)
 
 ]
 
