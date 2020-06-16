@@ -67,11 +67,24 @@ ClyPackageRichTextCommentEditorToolMorph >> enable [
 	textMorph enabled: true
 ]
 
+{ #category : #rendering }
+ClyPackageRichTextCommentEditorToolMorph >> fillStatusBar [
+
+	super fillStatusBar.
+	statusBar addCommandItem: (ClyEditCommentSwitchMorph for: self).
+
+]
+
 { #category : #initialization }
 ClyPackageRichTextCommentEditorToolMorph >> initialize [
 	super initialize.
 	isRendering := true.
 
+]
+
+{ #category : #testing }
+ClyPackageRichTextCommentEditorToolMorph >> isRendering [
+	^ isRendering
 ]
 
 { #category : #rendering }

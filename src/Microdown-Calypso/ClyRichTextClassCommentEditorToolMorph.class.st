@@ -71,10 +71,23 @@ ClyRichTextClassCommentEditorToolMorph >> enable [
 ]
 
 { #category : #rendering }
+ClyRichTextClassCommentEditorToolMorph >> fillStatusBar [
+
+	super fillStatusBar.
+	statusBar addCommandItem: (ClyEditCommentSwitchMorph for: self).
+
+]
+
+{ #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> initialize [
 	super initialize.
 	isRendering := true.
 
+]
+
+{ #category : #rendering }
+ClyRichTextClassCommentEditorToolMorph >> isRendering [
+	^ isRendering
 ]
 
 { #category : #rendering }
