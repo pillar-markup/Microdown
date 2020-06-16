@@ -26,5 +26,5 @@ MicAnnotationCloserDelimiter class >> markup [
 
 { #category : #accessing }
 MicAnnotationCloserDelimiter class >> type [
-	^ #anchorReference
+	^ #annotation
 ]

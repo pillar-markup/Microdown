@@ -26,5 +26,5 @@ MicAnnotationOpenerDelimiter class >> markup [
 
 { #category : #accessing }
 MicAnnotationOpenerDelimiter class >> type [
-	^ #anchorReference
+	^ #annotation
 ]
