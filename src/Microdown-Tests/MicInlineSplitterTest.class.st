@@ -116,11 +116,22 @@ MicInlineSplitterTest >> testSplitBlock2 [
 { #category : #tests }
 MicInlineSplitterTest >> testSplitBlockAnchorReference [
 	| res |
-	res := self splitter start: 'abc<?anchorA?>def'.
+	res := self splitter start: 'abc*@anchorA*def'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[anchorA](anchorReference)' . 'def'}.
 	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock)
+
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockAnnotation [
+	| res |
+	res := self splitter start: 'abc<?an annotation?>def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[an annotation](annotation)' . 'def'}.
+	self assert: (res second isKindOf: MicAnnotationInlineBlock)
 
 ]
 
