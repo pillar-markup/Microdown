@@ -20,7 +20,7 @@ Class {
 	#instVars : [
 		'index'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

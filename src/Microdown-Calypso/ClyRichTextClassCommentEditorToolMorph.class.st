@@ -79,9 +79,11 @@ ClyRichTextClassCommentEditorToolMorph >> initialize [
 
 { #category : #rendering }
 ClyRichTextClassCommentEditorToolMorph >> renderColor [
-	^ self theme backgroundColor lightness < 0.5
-		ifTrue: [ self theme backgroundColor + (Color r: 0.0 g: 0.04 b:0.08 )]
-		ifFalse: [ self theme backgroundColor darker ]
+	| bgColor |
+	bgColor := self theme backgroundColor.
+	^ bgColor lightness < 0.5
+		ifTrue: [ bgColor + (Color r: 0.0 g: 0.04 b:0.08 )]
+		ifFalse: [ bgColor darker ]
 ]
 
 { #category : #initialization }

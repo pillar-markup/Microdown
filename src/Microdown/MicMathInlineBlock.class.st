@@ -7,7 +7,7 @@ Here is an example $V_i = C_0 - C_3$
 Class {
 	#name : #MicMathInlineBlock,
 	#superclass : #MicAbstractInlineBlock,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #'pillar conversion' }

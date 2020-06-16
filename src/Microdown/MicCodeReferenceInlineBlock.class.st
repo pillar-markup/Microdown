@@ -1,5 +1,5 @@
 Class {
 	#name : #MicCodeReferenceInlineBlock,
 	#superclass : #MicAbstractInlineBlock,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }

@@ -1,7 +1,7 @@
 Class {
 	#name : #MicAnchorReferenceCloserDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

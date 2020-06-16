@@ -5,7 +5,7 @@ In Microdown, we have `@label@`.
 Class {
 	#name : #MicInTextReferenceDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

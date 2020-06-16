@@ -4,7 +4,7 @@ I am the delimiter for monospace/inline code format.
 Class {
 	#name : #MicMonospaceDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

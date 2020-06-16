@@ -1,7 +1,7 @@
 Class {
 	#name : #MicMonospaceInlineBlock,
 	#superclass : #MicAbstractInlineBlock,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #'pillar conversion' }

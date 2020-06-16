@@ -19,7 +19,7 @@ Class {
 		'children',
 		'substring'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #'pillar conversion' }

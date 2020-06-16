@@ -26,7 +26,7 @@ Class {
 		'associateCloserIndex',
 		'children'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #'new & start' }

@@ -4,7 +4,7 @@ I am the delimiter for italic/emphasis format.
 Class {
 	#name : #MicItalicDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

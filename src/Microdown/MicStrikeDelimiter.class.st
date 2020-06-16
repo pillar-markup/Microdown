@@ -4,7 +4,7 @@ I'm the delimiter for strikethrough format.
 Class {
 	#name : #MicStrikeDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

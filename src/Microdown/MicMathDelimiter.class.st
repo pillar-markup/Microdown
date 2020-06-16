@@ -5,7 +5,7 @@ I delimits `MicMacInlineBlock`.
 Class {
 	#name : #MicMathDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #accessing }

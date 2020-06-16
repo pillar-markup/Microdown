@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'url'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-ModelInline'
 }
 
 { #category : #'pillar conversion' }
