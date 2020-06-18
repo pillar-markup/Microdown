@@ -226,6 +226,24 @@ MicroDownParserTest >> testEnvironment [
 	
 ]
 
+{ #category : #tests }
+MicroDownParserTest >> testEnvironmentCitationWithArgumentsAsPillar [
+	| source root environment environmentName contents pillar |
+	environmentName := 'cite'.
+	contents := 'Hello
+
+Pharo'.
+	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+		, String cr , contents , String cr
+		, parser environmentClosingBlockMarkup , String cr.
+	root := parser parse: source.
+	pillar := root asPillar.
+	self assert: pillar children first class equals: PRCitationAnnotation.
+	self assert: (pillar children first parameters at: 'a') equals: '1'.
+	self assert: (pillar children first parameters at: 'b') equals: '17'.
+	self assert: (pillar children first parameters at: 'c') equals: nil.
+]
+
 { #category : #'tests-environment' }
 MicroDownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 	| source root math environmentName contents |

@@ -64,6 +64,13 @@ MicEnvironmentBlock >> arguments [
 	^ arguments
 ]
 
+{ #category : #converting }
+MicEnvironmentBlock >> asPillar [
+	| classPillar |
+	classPillar := PRAbstractAnnotation findClassAcceptingTag: name ifNone: [ PRUndefinedAnnotation ].
+	^ classPillar new parameters: arguments
+]
+
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 
