@@ -81,23 +81,23 @@ MicroDownParser class >> allBlockNodeClasses [
 	
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> anchorMarkup [
 	^ '@'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> annotatedParagraphMarkup [
 	^ '!!'
 ]
 
-{ #category : #markups }
+{ #category : #'markup utils' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> boldMarkup [
 	^ self inlineMarkups at: #bold
 ]
@@ -107,24 +107,24 @@ MicroDownParser class >> builder [
 	^ MicBuilder new
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> codeblockMarkup [
 
 	^ '```'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> commentedLineMarkup [
 
 	^ '%'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> environmentClosingBlockMarkup [
 	^ '?>'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
@@ -135,57 +135,63 @@ MicroDownParser class >> example [
 	^ self parse: self comment
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> figureOpenerMarkup [
 	^ self inlineMarkups at: #figureOpener
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> headerMarkup [
 
 	^ '#'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> horizontalLineMarkup [
 	^ '***'
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> inlineMarkup: aType [
 	^ self inlineMarkups at: aType asSymbol
 ]
 
-{ #category : #markups }
+{ #category : #'markup utils' }
 MicroDownParser class >> inlineMarkups [
 	^ inlineMarkups ifNil: [ 
 		inlineMarkups := Dictionary new.
 	MicAbstractDelimiter subclasses 
 		do: [ :subclass | 
 			| role |
-			role := subclass isOpener ifTrue: [ subclass isCloser ifTrue: [ '' ] ifFalse: [ 'Opener' ] ] ifFalse: [ 'Closer' ].			
+			self flag: #fixMe. 
+			"why not pushing this logic in the class themselves? Because a delimiter knows it."
+			role := subclass isOpener 
+				ifTrue: [ subclass isCloser 
+								ifTrue: [ '' ] 
+								ifFalse: [ 'Opener' ] ] 
+				ifFalse: [ 'Closer' ].			
 			inlineMarkups
-										at: subclass type asString, role
-										put: subclass markup ].
-									^ inlineMarkups ]
+				at: subclass type asString, role
+				put: subclass markup ].
+			^ inlineMarkups ]
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> italicMarkup [
 	^ self inlineMarkups at: #italic
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> linkNameCloserMarkup [
 	^ self inlineMarkups at: #linkNameCloser
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> linkNameOpenerMarkup [
 	^ self inlineMarkups at: #linkNameOpener
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> mathClosingBlockMarkup [
 	self flag: #fixMe. 
 	"should implement block logic for different opening and closing this way we could have 
@@ -194,23 +200,23 @@ MicroDownParser class >> mathClosingBlockMarkup [
 	^ '&'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> mathOpeningBlockMarkup [
 
 	^ '&'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> metaDataClosingBlockMarkup [
 	^ '}'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> monospaceMarkup [
 	^ self inlineMarkups at: #monospace
 ]
@@ -221,41 +227,46 @@ MicroDownParser class >> parse: aString [
 	^ self new parse: aString
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> preformattedMarkup [
 
 	^ '> '
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'markup utils' }
+MicroDownParser class >> resetInlineMarkups [
+	inlineMarkups := nil
+]
+
+{ #category : #'inline block markups' }
 MicroDownParser class >> strikeMarkup [
 	^ self inlineMarkups at: #strike
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> tableCellMarkup [
 
 	^ '|'
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> unorderedListMarkup [
 
 	^ '- '
 ]
 
-{ #category : #'block markup' }
+{ #category : #'block markups' }
 MicroDownParser class >> unorderedListMarkups [
 
 	^ #('- ' '* ' '+ ')
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> urlCloserMarkup [
 	^ self inlineMarkups at: #urlCloser
 ]
 
-{ #category : #'grammar - Format' }
+{ #category : #'inline block markups' }
 MicroDownParser class >> urlOpenerMarkup [
 	^ self inlineMarkups at: #urlOpener
 ]
