@@ -193,9 +193,6 @@ MicroDownParser class >> linkNameOpenerMarkup [
 
 { #category : #'block markups' }
 MicroDownParser class >> mathClosingBlockMarkup [
-	self flag: #fixMe. 
-	"should implement block logic for different opening and closing this way we could have 
-	a different markup."
 	
 	^ '&'
 ]
@@ -235,6 +232,7 @@ MicroDownParser class >> preformattedMarkup [
 
 { #category : #'markup utils' }
 MicroDownParser class >> resetInlineMarkups [
+	"self resetInlineMarkups"
 	inlineMarkups := nil
 ]
 
