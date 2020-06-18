@@ -12,12 +12,32 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
+{ #category : #tests }
+MicInlineSplitterTest >> testAnnotationAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc<?cite|a=2&b=5?>def'.
+	self assert: res second class equals: PRCitationAnnotation.
+	self assert: (res second parameters at: 'a') equals: '2'.
+	self assert: (res second parameters at: 'b') equals: '5'.
+]
+
 { #category : #'pillar conversion' }
 MicInlineSplitterTest >> testBasicTextAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc'.
 	self assert: res first text equals: 'abc'.
 	self assert: res first class equals: PRText.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testBoldAndNestedItalicAsPillar [
+	| res |
+	res := self splitter pillarFrom: 'abc**x_y_z**cba'.
+	self assert: res second class equals: PRBoldFormat.
+	self assert: res second children first text equals: 'x'.
+	self assert: res second children second class equals: PRItalicFormat.
+	self assert: res second children second children first text equals: 'y'.
+	self assert: res second children third text equals: 'z'
 ]
 
 { #category : #'pillar conversion' }
@@ -100,6 +120,15 @@ MicInlineSplitterTest >> testItalicAsPillar [
 	self assert: res second class equals: PRItalicFormat.
 	
 	
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitAnnotation [
+	| res |
+	res := self splitter start: 'abc<?type:value|key1=val1&key2=val2?>def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[type:value|key1=val1&key2=val2](annotation)' . 'def'}.
 ]
 
 { #category : #tests }

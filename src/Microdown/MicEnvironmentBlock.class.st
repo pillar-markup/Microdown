@@ -64,15 +64,36 @@ MicEnvironmentBlock >> arguments [
 	^ arguments
 ]
 
+{ #category : #converting }
+MicEnvironmentBlock >> asPillar [
+	^ self asPillarWithTag: name withParameters: arguments
+]
+
+{ #category : #converting }
+MicEnvironmentBlock >> asPillarWithTag: aTag withParameters: aDictionnary [
+	| classPillar |
+	classPillar := PRAbstractAnnotation findClassAcceptingTag: aTag ifNone: [ PRUndefinedAnnotation ].
+	^ classPillar new parameters: aDictionnary
+]
+
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 
-	| lineWithoutMarkup lineStream |
+	| lineWithoutMarkup lineStream resultArray |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
 	lineStream := lineWithoutMarkup readStream.
-	name := lineStream upTo: parser argumentListStartDelimiter first.
-	arguments := ZnResourceMetaUtils parseQueryFrom: lineStream.
+	resultArray := self findNameAndArguments: lineStream.
+	name := resultArray first.
+	arguments := resultArray second.
 	^ lineWithoutMarkup
+]
+
+{ #category : #'as yet unclassified' }
+MicEnvironmentBlock >> findNameAndArguments: aStream [
+	| foundName foundArguments | 
+	foundName := aStream upTo: self parserClass argumentListStartDelimiter first.
+	foundArguments := ZnResourceMetaUtils parseQueryFrom: aStream.
+	^ { foundName . foundArguments } asArray
 ]
 
 { #category : #markups }
