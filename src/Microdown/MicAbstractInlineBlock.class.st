@@ -34,13 +34,13 @@ MicAbstractInlineBlock class >> from: aStartInteger to: anEndInteger withKind: a
 
 { #category : #converting }
 MicAbstractInlineBlock >> asPillar [
+
 	| childrenAsPillar |
-	
-	(self isOnlyChild) 
-		ifTrue: [ childrenAsPillar := {(PRText new text: self substring )} ] 
-		ifFalse: [ childrenAsPillar := children collect: [:e | e asPillar ] ].
+	childrenAsPillar := self isOnlyChild 
+		ifTrue: [ {(PRText new text: self substring )} ] 
+		ifFalse: [ children collect: [:e | e asPillar ] ].
 			
-	^ (self class associatedPRClass) new
+	^ self class associatedPRClass new
 				setChildren: childrenAsPillar;
 				yourself
 ]
