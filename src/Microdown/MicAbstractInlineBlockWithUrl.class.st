@@ -17,14 +17,6 @@ MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger with
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
-{ #category : #converting }
-MicAbstractInlineBlockWithUrl >> asPillar [
-	^(self class associatedPRClass) new
-		setChildren: ( (MicInlineSplitter new start: self substring) collect: [:n | n asPillar]);
-		reference: self url;
-		yourself
-]
-
 { #category : #accessing }
 MicAbstractInlineBlockWithUrl >> url [
 	^ url
