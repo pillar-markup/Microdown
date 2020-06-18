@@ -22,14 +22,15 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
-{ #category : #'pillar conversion' }
-MicAbstractInlineBlock class >> associatedPRClass [
-	self subclassResponsibility 
-]
-
 { #category : #constructor }
 MicAbstractInlineBlock class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
-	^ self new start: aStartInteger; end: anEndInteger; kind: aKind; substring: aString; children: aChildren; cleanSubstring; yourself.	
+	^ self new 
+		start: aStartInteger; 
+		end: anEndInteger; 
+		kind: aKind; 
+		substring: aString; 
+		children: aChildren; 
+		cleanSubstring; yourself.	
 ]
 
 { #category : #accessing }

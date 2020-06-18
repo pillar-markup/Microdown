@@ -8,7 +8,12 @@ MicAbstractInlineBlock >> asPillar [
 		ifTrue: [ {(PRText new text: self substring )} ] 
 		ifFalse: [ children collect: [:e | e asPillar ] ].
 			
-	^ self class associatedPRClass new
+	^ self class associatedPillarClass new
 				setChildren: childrenAsPillar;
 				yourself
+]
+
+{ #category : #'*Microdown-Pillar' }
+MicAbstractInlineBlock class >> associatedPillarClass [
+	self subclassResponsibility 
 ]

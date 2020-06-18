@@ -9,8 +9,3 @@ Class {
 	#superclass : #MicAbstractInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
-
-{ #category : #'pillar conversion' }
-MicMathInlineBlock class >> associatedPRClass [
-	^ PRMathInTextAnnotation 
-]
