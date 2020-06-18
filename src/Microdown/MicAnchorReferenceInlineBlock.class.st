@@ -1,6 +1,9 @@
 "
-I represent a reference to a section, figure, environment.
+I represent a reference to a section, figure, environment. I follow the pattern `*@`, label, `*`
 
+```
+See *@fig1
+```
 
 "
 Class {
