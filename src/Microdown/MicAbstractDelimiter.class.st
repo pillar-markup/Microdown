@@ -98,6 +98,15 @@ MicAbstractDelimiter >> markup [
 	^ self class markup
 ]
 
+{ #category : #printing }
+MicAbstractDelimiter >> printOn: aStream [
+	| name |
+	name := self class name.
+	aStream nextPutAll: (self class name copyFrom: 4 to: name size - 'Delimiter' size ).
+	aStream nextPut: $:; space ; nextPutAll: self markup
+	
+]
+
 { #category : #accessing }
 MicAbstractDelimiter >> size [
 	^ self class size
