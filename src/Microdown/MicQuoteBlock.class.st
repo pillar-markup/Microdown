@@ -16,14 +16,6 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #'as yet unclassified' }
-MicQuoteBlock >> asPillar [
-
-	^ PRPreformatted new
-		setChildren: (self pillarFromString: text);
-		yourself
-]
-
 { #category : #testing }
 MicQuoteBlock >> lineMarkup [
 

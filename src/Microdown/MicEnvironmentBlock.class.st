@@ -65,11 +65,6 @@ MicEnvironmentBlock >> arguments [
 ]
 
 { #category : #converting }
-MicEnvironmentBlock >> asPillar [
-	^ self asPillarWithTag: name withParameters: arguments
-]
-
-{ #category : #converting }
 MicEnvironmentBlock >> asPillarWithTag: aTag withParameters: aDictionnary [
 	| classPillar |
 	classPillar := PRAbstractAnnotation findClassAcceptingTag: aTag ifNone: [ PRUndefinedAnnotation ].

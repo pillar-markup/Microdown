@@ -12,7 +12,28 @@ I look like this:
   - sublist item 2.2
 - bullet list item 3
 
-Indentation matters and is crucial
+Indentation (two spaces) matters and is crucial.
+
+```
+- item 1
+  - subitem 1.1
+  - subitem 2.1
+- item 2
+  - subitem 2.1
+    - subsubitem 2.1.1
+  - subitem 2.2
+```
+ produces 
+
+- item 1
+  - subitem 1.1
+  - subitem 2.1
+- item 2
+  - subitem 2.1
+    - subsubitem 2.1.1
+  - subitem 2.2
+
+
 "
 Class {
 	#name : #MicListBlock,

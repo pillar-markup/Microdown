@@ -32,15 +32,6 @@ MicAnnotatedBlock >> addLineAndReturnNextNode: line [
 		ifNotNil: [ body := body , String cr , line ]
 ]
 
-{ #category : #'as yet unclassified' }
-MicAnnotatedBlock >> asPillar [ 
-
-	^ PRAnnotatedParagraph new 
-			annotation: self label; 
-			setChildren: (self pillarFromString: self text);
-			yourself
-]
-
 { #category : #testing }
 MicAnnotatedBlock >> canConsumeLine: line [
 	"return if this block can consume line"

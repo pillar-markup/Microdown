@@ -19,14 +19,6 @@ MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	^ super addLineAndReturnNextNode: line
 ]
 
-{ #category : #'as yet unclassified' }
-MicOrderedListBlock >> asPillar [
-	^ PROrderedList new
-		setChildren: (self children collect: [ :child | child asPillar ]);
-		counter: self startIndex;
-		yourself
-]
-
 { #category : #testing }
 MicOrderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"

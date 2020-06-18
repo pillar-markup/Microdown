@@ -29,13 +29,6 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 		ifFalse: [ text := text , String cr , normalized ]
 ]
 
-{ #category : #'as yet unclassified' }
-MicListItemBlock >> asPillar [
-	^ PRListItem new
-		setChildren: (self pillarFromString: text), (self children collect: [:child| child asPillar]);
-		yourself
-]
-
 { #category : #testing }
 MicListItemBlock >> canConsumeLine: line [
 	"return if this block can consume line"
@@ -43,7 +36,7 @@ MicListItemBlock >> canConsumeLine: line [
 	^ line beginsWith: (' ' repeat: parent indent)
 ]
 
-{ #category : #public }
+{ #category : #debugging }
 MicListItemBlock >> contents [ 
 	^super contents , '[ ', self text, ' ]'
 ]
