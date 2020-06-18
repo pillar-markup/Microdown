@@ -45,3 +45,10 @@ MicHeaderBlock >> header [
 MicHeaderBlock >> level [
 	^ level
 ]
+
+{ #category : #printing }
+MicHeaderBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Section: '.
+	aStream nextPutAll: header
+]

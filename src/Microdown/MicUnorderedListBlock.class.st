@@ -13,3 +13,10 @@ MicUnorderedListBlock >> canConsumeLine: line [
 	
 	^ (super canConsumeLine: line) and: [line trim matchesRegex: '(^\* |^- | ^\+).*']
 ]
+
+{ #category : #printing }
+MicUnorderedListBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'UnorderedList'.
+	
+]

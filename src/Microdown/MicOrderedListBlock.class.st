@@ -26,6 +26,13 @@ MicOrderedListBlock >> canConsumeLine: line [
 	^ (super canConsumeLine: line) and: [line trim  prefixMatchesRegex: '\d+(\.|\))']
 ]
 
+{ #category : #printing }
+MicOrderedListBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'OrderedList'.
+	
+]
+
 { #category : #accessing }
 MicOrderedListBlock >> startIndex [
 	^ startIndex

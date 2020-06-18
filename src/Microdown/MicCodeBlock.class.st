@@ -88,3 +88,10 @@ MicCodeBlock >> lineStartMarkup [
 	
 	^ self parser codeblockMarkup 
 ]
+
+{ #category : #printing }
+MicCodeBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Code: '.
+	aStream nextPutAll: (self code asString contractTo: 100)
+]

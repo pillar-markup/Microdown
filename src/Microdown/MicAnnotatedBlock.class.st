@@ -51,6 +51,13 @@ MicAnnotatedBlock >> lineMarkup [
 	^ parser annotatedParagraphMarkup
 ]
 
+{ #category : #printing }
+MicAnnotatedBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Annotated: '.
+	aStream nextPutAll: (self text asString contractTo: 100)
+]
+
 { #category : #accessing }
 MicAnnotatedBlock >> text [ 
 

@@ -62,6 +62,13 @@ MicParagraphBlock >> isRightlyIndented: line [
 	^ line beginsWith: (' ' repeat: self indent)
 ]
 
+{ #category : #printing }
+MicParagraphBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Paragraph: '.
+	aStream nextPutAll: (self text asString contractTo: 100)
+]
+
 { #category : #accessing }
 MicParagraphBlock >> text [
 	^ text

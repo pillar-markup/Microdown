@@ -15,3 +15,10 @@ MicHorizontalLineBlock >> addLineAndReturnNextNode: line [
 
 	^ self
 ]
+
+{ #category : #printing }
+MicHorizontalLineBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Horizontal line'.
+	
+]

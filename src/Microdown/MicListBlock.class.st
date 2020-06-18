@@ -5,7 +5,6 @@ Unordered list line starts with `-`,  ordered list starts with number.
 An empty or a wrong indent closes me.
 
 Here is an example:
-
 - bullet list item 1
 - bullet list item 2
   1. sublist ordered item 2.1
@@ -13,7 +12,6 @@ Here is an example:
 - bullet list item 3
 
 Indentation (two spaces) matters and is crucial. 
-
 Here is an example
 ```
 - item 1
@@ -24,8 +22,7 @@ xx- subitem 2.1
 xxxx- subsubitem 2.1.1
 xx- subitem 2.2
 ```
- produces 
-
+produces:
 - item 1
   - subitem 1.1
   - subitem 2.1
@@ -33,6 +30,14 @@ xx- subitem 2.2
   - subitem 2.1
     - subsubitem 2.1.1
   - subitem 2.2
+
+Now an ordered list can also contain an unordered list.
+1. first
+2. second 
+   - subitem 2.1
+   - subitem 2.2
+3. third
+
 
 
 "

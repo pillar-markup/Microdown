@@ -25,3 +25,10 @@ MicMetaDataBlock >> lineStopMarkup [
 
 	^ parser metaDataClosingBlockMarkup 
 ]
+
+{ #category : #markups }
+MicMetaDataBlock >> printOn: aStream [
+
+	aStream nextPutAll: 'Metadata: '.
+	aStream nextPutAll: (self body asString contractTo: 100)
+]
