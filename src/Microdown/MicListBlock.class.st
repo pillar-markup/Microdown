@@ -1,27 +1,28 @@
 "
 I am an abstract class for the two kind of lists, ordered and unordered.
 When I created I automatically add a listitem as my child.
+Unordered list line starts with `-`,  ordered list starts with number.
+An empty or a wrong indent closes me.
 
-An empty or a wrong indent close me.
-
-I look like this:
+Here is an example:
 
 - bullet list item 1
 - bullet list item 2
-  - sublist item 2.1
-  - sublist item 2.2
+  1. sublist ordered item 2.1
+  3. sublist ordered item 2.2
 - bullet list item 3
 
-Indentation (two spaces) matters and is crucial.
+Indentation (two spaces) matters and is crucial. 
 
+Here is an example
 ```
 - item 1
-  - subitem 1.1
-  - subitem 2.1
+xx- subitem 1.1
+xx- subitem 2.1
 - item 2
-  - subitem 2.1
-    - subsubitem 2.1.1
-  - subitem 2.2
+xx- subitem 2.1
+xxxx- subsubitem 2.1.1
+xx- subitem 2.2
 ```
  produces 
 
