@@ -146,6 +146,11 @@ MicroDownParser class >> headerMarkup [
 	^ '#'
 ]
 
+{ #category : #'block markup' }
+MicroDownParser class >> horizontalLineMarkup [
+	^ '***'
+]
+
 { #category : #'grammar - Format' }
 MicroDownParser class >> inlineMarkup: aType [
 	^ self inlineMarkups at: aType asSymbol
@@ -388,7 +393,7 @@ MicroDownParser >> headerMarkup [
 
 { #category : #markups }
 MicroDownParser >> horizontalLineMarkup [
-	^ '***'
+	^ self class horizontalLineMarkup
 ]
 
 { #category : #testing }

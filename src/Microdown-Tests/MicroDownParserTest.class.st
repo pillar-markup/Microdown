@@ -340,6 +340,22 @@ MicroDownParserTest >> testHorizontalBlockFollowedByList [
 	
 ]
 
+{ #category : #'tests - horizontal line' }
+MicroDownParserTest >> testHorizontalLineBlock [
+	| source root horizontal |
+	source := parser horizontalLineMarkup, 'label1'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	horizontal := root children first. 
+	self assert: (horizontal isKindOf: MicHorizontalLineBlock)
+	
+	
+
+
+
+
+]
+
 { #category : #'tests-math' }
 MicroDownParserTest >> testMathBlock [
 
