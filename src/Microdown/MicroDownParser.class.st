@@ -86,6 +86,16 @@ MicroDownParser class >> anchorMarkup [
 	^ '@'
 ]
 
+{ #category : #'inline block markups' }
+MicroDownParser class >> anchorReferenceCloserMarkup [
+	^ self inlineMarkups at: #anchorReferenceCloser
+]
+
+{ #category : #'inline block markups' }
+MicroDownParser class >> anchorReferenceOpenerMarkup [
+	^ self inlineMarkups at: #anchorReferenceOpener
+]
+
 { #category : #'block markups' }
 MicroDownParser class >> annotatedParagraphMarkup [
 	^ '!!'
@@ -129,6 +139,11 @@ MicroDownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
 
+{ #category : #'inline block markups' }
+MicroDownParser class >> escapeMarkup [
+	^ self inlineMarkups at: #escapeCloser
+]
+
 { #category : #examples }
 MicroDownParser class >> example [
 	<sampleInstance>
@@ -160,11 +175,12 @@ MicroDownParser class >> inlineMarkup: aType [
 MicroDownParser class >> inlineMarkups [
 	^ inlineMarkups ifNil: [ 
 		inlineMarkups := Dictionary new.
-	MicAbstractDelimiter subclasses 
-		do: [ :subclass | 
+		MicAbstractDelimiter subclasses 
+			do: [ :subclass | 
 			| role |
 			self flag: #fixMe. 
 			"why not pushing this logic in the class themselves? Because a delimiter knows it."
+			"for example for there is also a problem with escape which is neither a closer and opener"
 			role := subclass isOpener 
 				ifTrue: [ subclass isCloser 
 								ifTrue: [ '' ] 
