@@ -115,8 +115,8 @@ MicInlineSplitter >> processEmphasis [
 MicInlineSplitter >> read: aString [
 	incrementation := 1.
 	aString ifEmpty: [ ^ self processEmphasis ].
-	allDelimiters keysDo: [ :key | 
-		(aString beginsWith: key) 
+	allDelimiters keys sorted do: [ :key | 
+ 		(aString beginsWith: key) 
 			ifTrue: [ 
 				incrementation := key size.
 				self delimiterFoundProcess: (allDelimiters at: key).
