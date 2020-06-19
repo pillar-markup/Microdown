@@ -122,7 +122,7 @@ MicInlineEmphasisProcessor >> linkOrFigureProcess [
 			withChildren: children
 			withURL: correctURL).
 	"7. keep going"
-	stack := (stack withIndexSelect: [:value :i | (i between: firstOpenerIndex and: associateCloserIndex) not ]).
+	stack := (stack withIndexSelect: [:value :i | (i between: firstOpenerIndex and: urlCloserStringIndex) not ]).
 	^ self processEmphasis
 	
 	

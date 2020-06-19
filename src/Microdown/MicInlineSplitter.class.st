@@ -42,7 +42,7 @@ Class {
 		'allDelimiters',
 		'incrementation'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #'class factory' }
@@ -98,11 +98,10 @@ MicInlineSplitter >> initializeDelimiters [
 										put: subclass ]
 ]
 
-{ #category : #process }
-MicInlineSplitter >> linkOrImageProcess [
-	| linkNameCloserIndex |
-	"1. search the linkname closer delimiter"
-	linkNameCloserIndex := delimiterStack findLast: [ :delimiter | delimiter isOpener and: delimiter type = #linkName].
+{ #category : #public }
+MicInlineSplitter >> pillarFrom: aString [
+	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
+	^ (self start: aString) collect: [ :node | node asPillar ]
 ]
 
 { #category : #process }
