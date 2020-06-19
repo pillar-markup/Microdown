@@ -191,17 +191,6 @@ MicInlineSplitterTest >> testSplitBlockCode [
 ]
 
 { #category : #tests }
-MicInlineSplitterTest >> testSplitBlockCodeReference [
-	| res |
-	res := self splitter start: 'abc@Point class>>#x:y:@def'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[Point class>>#x:y:](codeReference)' . 'def'}.
-	self assert: (res second isKindOf: MicCodeReferenceInlineBlock)
-
-]
-
-{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
@@ -307,17 +296,6 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[strike](strike)' . 'def'}.
-]
-
-{ #category : #tests }
-MicInlineSplitterTest >> testSplitCodeReferenceReference [
-	| res |
-	res := self splitter start: 'abc@Point class>>#x:y:@def'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[Point class>>#x:y:](codeReference)' . 'def'}.
-	self assert: (res second isKindOf: MicCodeReferenceInlineBlock)
-
 ]
 
 { #category : #tests }
