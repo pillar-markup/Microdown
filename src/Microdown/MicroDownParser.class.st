@@ -230,6 +230,12 @@ MicroDownParser class >> monospaceMarkup [
 	^ self inlineMarkups at: #monospace
 ]
 
+{ #category : #'block markups' }
+MicroDownParser class >> orderedListSemiMarkup [
+
+	^ '. '
+]
+
 { #category : #'instance creation' }
 MicroDownParser class >> parse: aString [
 
@@ -459,6 +465,11 @@ MicroDownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
+{ #category : #markups }
+MicroDownParser >> orderedListSemiMarkup [
+	^ self class orderedListSemiMarkup
+]
+
 { #category : #parsing }
 MicroDownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
@@ -485,4 +496,9 @@ MicroDownParser >> preformattedMarkup [
 MicroDownParser >> tableCellMarkup [
 
 	^ self class tableCellMarkup
+]
+
+{ #category : #markups }
+MicroDownParser >> unorderedListMarkup [
+	^ self class unorderedListMarkup
 ]
