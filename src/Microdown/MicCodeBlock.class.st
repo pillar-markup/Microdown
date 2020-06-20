@@ -67,7 +67,10 @@ MicCodeBlock >> contents [
 
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
-
+	"language=Pharo&label=fig1&caption=La vie est belle"
+	"The first tag is language.
+	its value is Pharo."
+	
 	| lineWithoutMarkup lineStream |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
 	lineStream := lineWithoutMarkup readStream.
