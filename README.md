@@ -29,7 +29,7 @@ But also
    code
    ```
    > Boring quote block 
-	> Don't use me!
+   > Don't use me!
 
    ![Pharo is cool](http://pharo.org)
 
