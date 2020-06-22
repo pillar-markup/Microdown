@@ -63,6 +63,25 @@ part of item2'
 ]
 
 { #category : #tests }
+MicOrderedListBlockTest >> testSingleLevelListWithItemSpawning [
+	| root list |
+	root :=  parser
+		parse:
+'1. first item
+   with a follow up 
+   and another one. 
+2. second item
+   follow up of second item'.
+	list := root children first.
+	self assert: list children size equals: 2.
+	self assert: list class equals: self orderedListBlockClass.
+	self assert: list startIndex equals: 1. 
+	self assert: list children second text equals: 'second item
+follow up of second item'.
+	
+]
+
+{ #category : #tests }
 MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	| root list |
 	root :=  parser
@@ -87,6 +106,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumberingWithEmptyLines 
 
 
 2. second item'.
+	self assert: root children size equals: 1.
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
