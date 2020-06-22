@@ -27,11 +27,13 @@ But also
    \`\`\`language=Pharo&caption=Beautiful&label=Fig1
    code
    \`\`\`
+   
+   
    > Boring quote block 
    > Don't use me!
 
    ![Pharo is cool](http://pharo.org)
-
+	
    - list
    1. ordered list 
 
@@ -86,7 +88,7 @@ More to come...
 
 #### Quote block
 When a line starts with '> ' it delimits a quoteblock.
-However the markup is not interpeter. 
+However the markup is not interpreted. 
 
 #### Codeblock 
 Codeblock do not support more than for backticks.
@@ -115,3 +117,5 @@ Metacello new
   repository: 'github://pillar-markup/Microdown/src';
   load.
 ```
+
+
