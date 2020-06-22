@@ -26,6 +26,25 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 ]
 
 { #category : #tests }
+MicOrderedListBlockTest >> testNotSpawingNewParagraph [
+	| root list |
+	root :=  parser
+		parse:
+'1. first item
+   with a follow up 
+   and another one. 
+2. second item
+   follow up of second item'.
+	list := root children first.
+	self assert: list children size equals: 2.
+	self assert: list class equals: self orderedListBlockClass.
+	self assert: list startIndex equals: 1. 
+	self assert: list children second text equals: 'second item
+follow up of second item'.
+	
+]
+
+{ #category : #tests }
 MicOrderedListBlockTest >> testSingleLevelList2 [
 	| source root list |
 	source := 
@@ -60,25 +79,6 @@ expanded as new paragraph
 	
 	self assert: root children last children first text equals: 'item 2
 part of item2'
-]
-
-{ #category : #tests }
-MicOrderedListBlockTest >> testSingleLevelListWithItemSpawning [
-	| root list |
-	root :=  parser
-		parse:
-'1. first item
-   with a follow up 
-   and another one. 
-2. second item
-   follow up of second item'.
-	list := root children first.
-	self assert: list children size equals: 2.
-	self assert: list class equals: self orderedListBlockClass.
-	self assert: list startIndex equals: 1. 
-	self assert: list children second text equals: 'second item
-follow up of second item'.
-	
 ]
 
 { #category : #tests }
@@ -127,6 +127,25 @@ MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	self assert: list class equals: self orderedListBlockClass.
 	self assert: list startIndex equals: 11. 
 	self assert: list children second text equals: 'item 2'
+]
+
+{ #category : #tests }
+MicOrderedListBlockTest >> testSpawingNewParagraph [
+	| root |
+	root :=  parser
+		parse:
+'1. first item
+   with a follow up
+a new paragraph. 
+2. second list first item
+   follow up of second item'.
+	self assert: root children size equals: 3. 
+	self assert: root children first children first text equals: 'first item
+with a follow up'.
+	self assert: root children third startIndex equals: 2.
+	self assert: root children third children first text equals: 'second list first item
+follow up of second item'.
+	
 ]
 
 { #category : #tests }
