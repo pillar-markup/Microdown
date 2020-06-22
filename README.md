@@ -20,7 +20,6 @@ But also
 - and more intra block elements such as extensible markups, raw, math, and references.
 
 ## Core Syntax in 2 seconds
-### Syntax essence is 2 seconds
 
 ```
    #Header
@@ -42,6 +41,7 @@ But also
    References: *@ref*
 ```
 
+## Full Syntax
 Under writing...
 
 ### Headers
@@ -80,7 +80,7 @@ codeBlockMarkupString
 ```
 ````
 
-
+More to come...
 
 ## Known limits
 
