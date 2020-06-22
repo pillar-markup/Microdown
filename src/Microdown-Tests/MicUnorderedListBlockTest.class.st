@@ -45,10 +45,98 @@ MicUnorderedListBlockTest >> testSingleLevelList2 [
   expanded
 - item 2'.
 	root := parser parse: source.
+	self assert: root children size equals: 1.
+	"root contains only a list."
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list children first text equals: 'item 1
 expanded'
+]
+
+{ #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListSplitWithEmptyLine [
+	| source root list |
+	source := 
+'- item 1
+- item 2
+
+- item 3 of the same list'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	"root contains a list"
+	
+	list := root children first.
+	self assert: list children size equals: 3.
+	self assert: list children first text equals: 'item 1'.
+	self assert: list children third text equals: 'item 3 of the same list'.
+
+
+]
+
+{ #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListSplitWithMultipleEmptyLines [
+	| source root list |
+	source := 
+'- item 1
+- item 2
+
+
+
+
+- item 3 of the same list'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	"root contains a list"
+	
+	list := root children first.
+	self assert: list children size equals: 3.
+	self assert: list children first text equals: 'item 1'.
+	self assert: list children third text equals: 'item 3 of the same list'.
+
+
+]
+
+{ #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListStartingWithoutSpaceSplitParagraph [
+	| source root list |
+	source := 
+'- item 1
+  expanded
+and here
+- item 2'.
+	root := parser parse: source.
+	self assert: root children size equals: 3.
+	"root contains a list, a paragraph and another list"
+	
+	list := root children first.
+	self assert: list children size equals: 1.
+	self assert: list children first text equals: 'item 1
+expanded'.
+	self assert: root children third children first text equals: 'item 2'.
+
+
+]
+
+{ #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListStartingWithoutSpaceSplitParagraph2 [
+	| source root list |
+	source := 
+'- item 1
+  expanded
+  same indentation no new paragraph
+- item 2'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	"root contains a list"
+	
+	list := root children first.
+	self assert: list children size equals: 2.
+	self assert: list children first text equals: 'item 1
+expanded
+same indentation no new paragraph'.
+	self assert: list children second text equals: 'item 2'.
+
+
 ]
 
 { #category : #tests }

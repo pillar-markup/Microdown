@@ -56,6 +56,9 @@ MicListBlock >> addLineAndReturnNextNode: inLine [
 	line is on the format 'markup text'"
 
 	| line |
+	inLine ifEmpty: [ ^ self ].
+	"A list accept an empty - like that it avoids to close the block (the list) and we can have space between list item.
+	Now we do nothing with empty so just do not create new item or whatever."
 	line := inLine trim.
 	self indentFromLine: line.
 	^ self listItemBlockClass new
@@ -68,7 +71,6 @@ MicListBlock >> addLineAndReturnNextNode: inLine [
 MicListBlock >> canConsumeLine: line [
 	"to consume this line there must be a ListItem starting at the right indentation"
 	
-	line ifEmpty: [ ^ false ].
 	(parent indent = 0
 		or: [ line beginsWith: (' ' repeat: parent indent) ])
 		ifFalse: [ ^ false ].
