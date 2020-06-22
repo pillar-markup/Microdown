@@ -19,7 +19,29 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
-## Syntax
+## Core Syntax in 2 seconds
+### Syntax essence is 2 seconds
+
+```
+   #Header
+
+   ```language=Pharo&caption=Beautiful&label=Fig1
+   code
+   ```
+   > Boring quote block 
+	> Don't use me!
+
+   ![Pharo is cool](http://pharo.org)
+
+   - list
+   1. ordered list 
+
+  `in text` but for pharo hyper links  to class, method and package
+  `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+   References: *@ref*
+```
+
 Under writing...
 
 ### Headers
