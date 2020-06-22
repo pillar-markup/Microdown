@@ -140,6 +140,23 @@ same indentation no new paragraph'.
 ]
 
 { #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListWithItemSpawning [
+	| root list |
+	root :=  parser
+		parse:
+'- first item
+  with a follow up 
+  and another one. 
+- second item
+  follow up of second item'.
+	list := root children first.
+	self assert: list children size equals: 2.
+	self assert: list children second text equals: 'second item
+follow up of second item'.
+	
+]
+
+{ #category : #tests }
 MicUnorderedListBlockTest >> testSingleLevelListWithStar [
 	| source root list |
 	source := 
