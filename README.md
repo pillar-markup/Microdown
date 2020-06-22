@@ -22,25 +22,24 @@ But also
 ## Core Syntax in 2 seconds
 
 ```
-   #Header
+   	#Header
 
 	```language=Pharo&caption=Beautiful&label=Fig1
    	code
 	```
    
-   
-   > Boring quote block 
-   > Don't use me!
+   	> Boring quote block 
+   	> Don't use me!
 
-   ![Pharo is cool](http://pharo.org)
+   	![Pharo is cool](http://pharo.org)
 	
-   - list
-   1. ordered list 
+   	- list
+   	1. ordered list 
 
-  `in text` but for pharo hyper links  to class, method and package
-  `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+  	`in text` and for Pharo hyperlinks to class, method and package: 
+  	`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
 
-   References: *@ref*
+  	References: *@ref*
 ```
 
 ## Full Syntax
