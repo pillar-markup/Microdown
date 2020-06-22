@@ -25,9 +25,9 @@ But also
 ```
    #Header
 
-   ```language=Pharo&caption=Beautiful&label=Fig1
+   \`\`\`language=Pharo&caption=Beautiful&label=Fig1
    code
-   ```
+   \`\`\`
    > Boring quote block 
    > Don't use me!
 
