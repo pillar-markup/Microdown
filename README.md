@@ -11,6 +11,7 @@ It supports
 - Paragraph
 - Code with arguments: key=val&key2=val2
 ...
+
 But also 
 - Environment with arguments
 - Table
@@ -19,7 +20,30 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
-## Syntax
+## Core Syntax in 2 seconds
+
+```
+   	#Header
+
+	```language=Pharo&caption=Beautiful&label=Fig1
+   	code
+	```
+   
+   	> Boring quote block 
+   	> Don't use me!
+
+   	![Pharo is cool](http://pharo.org)
+	
+   	- list
+   	1. ordered list 
+
+  	`in text` and for Pharo hyperlinks to class, method and package: 
+  	`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+  	References: *@ref*
+```
+
+## Full Syntax
 Under writing...
 
 ### Headers
@@ -58,13 +82,13 @@ codeBlockMarkupString
 ```
 ````
 
-
+More to come...
 
 ## Known limits
 
 #### Quote block
 When a line starts with '> ' it delimits a quoteblock.
-However the markup is not interpeter. 
+However the markup is not interpreted. 
 
 #### Codeblock 
 Codeblock do not support more than for backticks.
@@ -93,3 +117,5 @@ Metacello new
   repository: 'github://pillar-markup/Microdown/src';
   load.
 ```
+
+
