@@ -72,6 +72,25 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
+	self assert: list startIndex equals: 1. 
+	self assert: list children second text equals: 'second item'.
+	
+]
+
+{ #category : #tests }
+MicOrderedListBlockTest >> testSingleLevelListWithNormalNumberingWithEmptyLines [
+	| root list |
+	root :=  parser
+		parse:
+'1. first item
+
+
+
+2. second item'.
+	list := root children first.
+	self assert: list children size equals: 2.
+	self assert: list class equals: self orderedListBlockClass.
+	self assert: list startIndex equals: 1. 
 	self assert: list children second text equals: 'second item'.
 	
 ]
@@ -86,6 +105,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
+	self assert: list startIndex equals: 11. 
 	self assert: list children second text equals: 'item 2'
 ]
 

@@ -17,10 +17,9 @@ MicOrderedListBlock >> addLineAndReturnNextNode: line [
 
 	line ifEmpty: [ ^ self ].
 	self startIndexFrom: line.
-	self flag: #fixme. "I do not really get the logic of the start index. 
-	Especially when I have the second item
-		33. ok this is 33
-		2. so it should be 34."
+	"the startindex is for the list and not for the item. 
+	So it is stored once during the creation of the list and just before 
+	the creation of the first item."
 	^ super addLineAndReturnNextNode: line
 ]
 
