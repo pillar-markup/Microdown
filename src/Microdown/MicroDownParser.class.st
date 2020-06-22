@@ -18,6 +18,35 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
+
+### Syntax essence is 2 seconds
+
+```
+   #Header
+
+   ```language=Pharo&caption=Beautiful&label=Fig1
+   code
+   ```
+   > Boring quote block 
+	> Don't use me!
+
+   ![Pharo is cool](http://pharo.org)
+
+   - list
+   1. ordered list 
+
+  `in text` but for pharo hyper links  to class, method and package
+  `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+   References: *@ref*
+```
+
+
+
+
+
+### Implementation
+
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
 In short, the strategy is that at any point in time, we might have a number of children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of current are open. 

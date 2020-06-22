@@ -18,6 +18,31 @@ But also
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
 
+### Syntax essence is 2 seconds
+
+```
+   #Header
+
+   ```language=Pharo&caption=Beautiful&label=Fig1
+   code
+   ```
+   > Boring quote block 
+	> Don't use me!
+
+   ![Pharo is cool](http://pharo.org)
+
+   - list
+   1. ordered list 
+
+  `in text` but for pharo hyper links  to class, method and package
+  `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+   References: *@ref*
+```
+
+
+
+### Implementation notes
 
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
@@ -34,6 +59,7 @@ When a new line is read we do the following:
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
 
+### Acknowledgments
 I was implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown parsing of K. Osterbye. 
 "
 Class {
