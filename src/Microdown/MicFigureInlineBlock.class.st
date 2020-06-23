@@ -2,20 +2,16 @@ Class {
 	#name : #MicFigureInlineBlock,
 	#superclass : #MicAbstractInlineBlockWithUrl,
 	#instVars : [
-		'label',
 		'parameters'
 	],
 	#category : #'Microdown-ModelInline'
 }
 
-{ #category : #accessing }
-MicFigureInlineBlock >> label [
-	^ label
-]
-
-{ #category : #accessing }
-MicFigureInlineBlock >> label: aLabel [
-	label := aLabel
+{ #category : #converting }
+MicFigureInlineBlock >> asPillar [
+	| aPRFigure |
+	aPRFigure := super asPillar.
+	^ aPRFigure label: self substring; parameters: self parameters; yourself
 ]
 
 { #category : #accessing }
@@ -26,4 +22,12 @@ MicFigureInlineBlock >> parameters [
 { #category : #accessing }
 MicFigureInlineBlock >> parameters: someParameters [
 	parameters := someParameters
+]
+
+{ #category : #transformation }
+MicFigureInlineBlock >> urlTransformation [
+	| resultArray |
+	resultArray := MicArgumentsSplitter findNameAndArguments: self url readStream.
+	self url: (ZnUrl fromString: resultArray first).
+	self parameters: resultArray second
 ]

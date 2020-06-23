@@ -127,6 +127,18 @@ MicroDownParser class >> annotatedParagraphMarkup [
 ]
 
 { #category : #'markup utils' }
+MicroDownParser class >> argumentListDelimiter [
+	
+	^ '&'
+]
+
+{ #category : #'markup utils' }
+MicroDownParser class >> argumentListEqualsDelimiter [
+	
+	^ '='
+]
+
+{ #category : #'markup utils' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
