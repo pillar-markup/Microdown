@@ -2,5 +2,7 @@ Extension { #name : #MicEnvironmentBlock }
 
 { #category : #'*Microdown-Pillar' }
 MicEnvironmentBlock >> asPillar [
-	^ self asPillarWithTag: name withParameters: arguments
+	| classPillar |
+	classPillar := PRAbstractAnnotation findClassAcceptingTag: name ifNone: [ PRUndefinedAnnotation ].
+	^ classPillar new parameters: arguments
 ]
