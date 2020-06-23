@@ -1,3 +1,13 @@
+"
+I am a **figure**.
+
+My syntax is: `!\[my name](url|label=value1&caption=value2&width=value3)`
+
+My arguments are:
+- substring (_from superclass `#MicAbstractInlineBlockWithUrl`_): it's my printed name
+- url
+- parameters: a `#ZnMultiValueDictionary` which collect all keys and values
+"
 Class {
 	#name : #MicFigureInlineBlock,
 	#superclass : #MicAbstractInlineBlockWithUrl,
