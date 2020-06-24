@@ -3,7 +3,7 @@ I'm a copy of Pillar textual canvas. I should be fusioned in my subclass.
 We should revisit the API because parsing lines is a not really good design.
 "
 Class {
-	#name : #PRAbstractMicrodownTextualBuilder,
+	#name : #MicAbstractMicrodownTextualBuilder,
 	#superclass : #Object,
 	#instVars : [
 		'stream',
@@ -14,25 +14,25 @@ Class {
 }
 
 { #category : #'instance creation' }
-PRAbstractMicrodownTextualBuilder class >> on: aStream [ 
+MicAbstractMicrodownTextualBuilder class >> on: aStream [ 
 	^ self new
 		setStream: aStream;
 		yourself
 ]
 
 { #category : #formatting }
-PRAbstractMicrodownTextualBuilder >> bold: aText [
+MicAbstractMicrodownTextualBuilder >> bold: aText [
 
 	self writeText: aText surroundBy: parserClass boldMarkup
 ]
 
 { #category : #initialization }
-PRAbstractMicrodownTextualBuilder >> flush [
+MicAbstractMicrodownTextualBuilder >> flush [
 	stream flush
 ]
 
 { #category : #initialization }
-PRAbstractMicrodownTextualBuilder >> initialize [
+MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
 	parserClass := MicroDownParser.
@@ -40,81 +40,81 @@ PRAbstractMicrodownTextualBuilder >> initialize [
 ]
 
 { #category : #formatting }
-PRAbstractMicrodownTextualBuilder >> italic: aText [
+MicAbstractMicrodownTextualBuilder >> italic: aText [
 
 	self writeText: aText surroundBy: parserClass italicMarkup
 ]
 
 { #category : #testing }
-PRAbstractMicrodownTextualBuilder >> lastIsNewLine [
+MicAbstractMicrodownTextualBuilder >> lastIsNewLine [
 	^ lastIsNewLine
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> line: aString [
+MicAbstractMicrodownTextualBuilder >> line: aString [
 	self
 		nextPutAll: aString;
 		newLine
 ]
 
 { #category : #formatting }
-PRAbstractMicrodownTextualBuilder >> monospace: aText [
+MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
 	self writeText: aText surroundBy: parserClass monospaceMarkup
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> newLine [
+MicAbstractMicrodownTextualBuilder >> newLine [
 	self raw: String cr.
 	lastIsNewLine := true
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> nextPut: aCharacter [
+MicAbstractMicrodownTextualBuilder >> nextPut: aCharacter [
 	stream nextPut: aCharacter.
 	lastIsNewLine := false
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> nextPutAll: aString [
+MicAbstractMicrodownTextualBuilder >> nextPutAll: aString [
 	
 	aString do: [ :char | self nextPut: char ]
 ]
 
 { #category : #'writing low-level' }
-PRAbstractMicrodownTextualBuilder >> potentialNewLine [
+MicAbstractMicrodownTextualBuilder >> potentialNewLine [
 	lastIsNewLine ifFalse: [ self newLine ]
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> raw: aString [
+MicAbstractMicrodownTextualBuilder >> raw: aString [
 	stream << aString
 ]
 
 { #category : #initialization }
-PRAbstractMicrodownTextualBuilder >> setStream: aStream [ 
+MicAbstractMicrodownTextualBuilder >> setStream: aStream [ 
 	stream := aStream
 ]
 
 { #category : #'writing text' }
-PRAbstractMicrodownTextualBuilder >> space [
+MicAbstractMicrodownTextualBuilder >> space [
 	stream space
 ]
 
 { #category : #formatting }
-PRAbstractMicrodownTextualBuilder >> strike: aText [
+MicAbstractMicrodownTextualBuilder >> strike: aText [
 
 	self writeText: aText surroundBy: parserClass strikeMarkup
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> text: aText [
+MicAbstractMicrodownTextualBuilder >> text: aText [
 	self raw: aText
 	
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aString [ 
+MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aString [ 
 	
 	self
 		writeLinkDuring: aBlockClosure
@@ -123,7 +123,7 @@ PRAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination:
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aDestination title: aTitle [ 
+MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aDestination title: aTitle [ 
 
 	self raw: '['.
 	aBlockClosure ensure: [ 
@@ -142,13 +142,13 @@ PRAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination:
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeNewLine [
+MicAbstractMicrodownTextualBuilder >> writeNewLine [
 	self raw: String cr
 	
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeText: aText beginsWith: aMarkup [
+MicAbstractMicrodownTextualBuilder >> writeText: aText beginsWith: aMarkup [
 	self
 		raw: aMarkup;
 		raw: String space;
@@ -156,12 +156,12 @@ PRAbstractMicrodownTextualBuilder >> writeText: aText beginsWith: aMarkup [
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: aMarkup [
+MicAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: aMarkup [
 	self writeText: aText surroundBy: aMarkup and: aMarkup
 ]
 
 { #category : #writing }
-PRAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: anOpenerMarkup and: aCloserMarkup [
+MicAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: anOpenerMarkup and: aCloserMarkup [
 	self
 		raw: anOpenerMarkup;
 		raw: aText;

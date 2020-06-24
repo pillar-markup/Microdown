@@ -5,8 +5,8 @@ Using my API clients can generate text in Microdown format.
 I should replace MicBuilder and probably be moved to Microdown project.
 "
 Class {
-	#name : #PRMicrodownTextualBuilder,
-	#superclass : #PRAbstractMicrodownTextualBuilder,
+	#name : #MicMicrodownTextualBuilder,
+	#superclass : #MicAbstractMicrodownTextualBuilder,
 	#instVars : [
 		'prefixStack'
 	],
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #annotated }
-PRMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
+MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	"!!Important 
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
@@ -28,7 +28,7 @@ PRMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 ]
 
 { #category : #annotated }
-PRMicrodownTextualBuilder >> annotatedAnnotation: annotation [
+MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 	"I'm made to be followed by a paragraph. I manage the space between the annotation/label and the paragraph."
 	
 	"!!Important there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
@@ -41,7 +41,7 @@ PRMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 ]
 
 { #category : #'code block' }
-PRMicrodownTextualBuilder >> codeblock: aString [ 
+MicMicrodownTextualBuilder >> codeblock: aString [ 
 	self flag: #fixme. 
 	"missing first line stuff"
 	self raw: parserClass codeblockMarkup.
@@ -52,7 +52,7 @@ PRMicrodownTextualBuilder >> codeblock: aString [
 ]
 
 { #category : #'code block' }
-PRMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
+MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self flag: #fixme. 
 	"missing first line stuff and we need a block for value of keys
 	because we can write ```language=pharo&caption=The **bold** and `mono`
@@ -68,7 +68,7 @@ PRMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 ]
 
 { #category : #header }
-PRMicrodownTextualBuilder >> comment: aText [
+MicMicrodownTextualBuilder >> comment: aText [
 	self 
 		withLinesIn: aText 
 		do: [ :line | self writeText: line beginsWith: (parserClass commentedLineMarkup), String space ] 		separatedBy: [ self newLine ]
@@ -76,12 +76,12 @@ PRMicrodownTextualBuilder >> comment: aText [
 ]
 
 { #category : #accessing }
-PRMicrodownTextualBuilder >> contents [
+MicMicrodownTextualBuilder >> contents [
 	^ stream contents
 ]
 
 { #category : #header }
-PRMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [ 
+MicMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [ 
 
 	self
 		raw: (parserClass headerMarkup repeat: anInteger);
@@ -90,7 +90,7 @@ PRMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [
 ]
 
 { #category : #references }
-PRMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
+MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 	self 
 		writeText: aDescription 
 		surroundBy: parserClass linkNameOpenerMarkup 
@@ -102,7 +102,7 @@ PRMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 ]
 
 { #category : #figure }
-PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
+MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
 	self flag: #fixme.
 	"missing parameter and need a builder like in header."
 	self 
@@ -116,7 +116,7 @@ PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
 ]
 
 { #category : #figure }
-PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription withParameters: aZnDictionary [
+MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription withParameters: aZnDictionary [
 	| stringToAdd |
 	aZnDictionary 
 		ifEmpty: [ self figure: aFigureUrl withDescription: aDescription ] 
@@ -130,7 +130,7 @@ PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription wi
 ]
 
 { #category : #header }
-PRMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
+MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 	self newLine.
 	self raw: (parserClass headerMarkup repeat: anInteger).
    self raw: String space.
@@ -139,21 +139,21 @@ PRMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 ]
 
 { #category : #header }
-PRMicrodownTextualBuilder >> horizontalLine [
+MicMicrodownTextualBuilder >> horizontalLine [
 	self raw: parserClass horizontalLineMarkup.
    self newLine
 
 ]
 
 { #category : #initialization }
-PRMicrodownTextualBuilder >> initialize [
+MicMicrodownTextualBuilder >> initialize [
 	super initialize.
 	prefixStack := OrderedCollection new.
 	
 ]
 
 { #category : #references }
-PRMicrodownTextualBuilder >> internalLink: aLabel [
+MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 
 		writeText: aLabel 
 		surroundBy: parserClass anchorReferenceOpenerMarkup 
@@ -162,13 +162,13 @@ PRMicrodownTextualBuilder >> internalLink: aLabel [
 ]
 
 { #category : #list }
-PRMicrodownTextualBuilder >> item: aBlock [
+MicMicrodownTextualBuilder >> item: aBlock [
 
 	aBlock value
 ]
 
 { #category : #'ugly line handling' }
-PRMicrodownTextualBuilder >> lines: aString [
+MicMicrodownTextualBuilder >> lines: aString [
 	"Output aString and take care of line ending within aString."
 	| str |
 	str := aString readStream.
@@ -181,7 +181,7 @@ PRMicrodownTextualBuilder >> lines: aString [
 ]
 
 { #category : #'ugly line handling' }
-PRMicrodownTextualBuilder >> nextPutAllLines: aString [
+MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 	self 
 		withLinesIn: aString 
 		do: [ :line | self nextPutAll: line ] 
@@ -189,7 +189,7 @@ PRMicrodownTextualBuilder >> nextPutAllLines: aString [
 ]
 
 { #category : #list }
-PRMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
+MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
 	
@@ -205,25 +205,25 @@ PRMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 ]
 
 { #category : #'private utils' }
-PRMicrodownTextualBuilder >> popPrefix [
+MicMicrodownTextualBuilder >> popPrefix [
 	
 	prefixStack removeLast
 ]
 
 { #category : #'private utils' }
-PRMicrodownTextualBuilder >> pushPrefix: aString [ 
+MicMicrodownTextualBuilder >> pushPrefix: aString [ 
 	
 	prefixStack addLast: aString
 ]
 
 { #category : #'quote block' }
-PRMicrodownTextualBuilder >> quoteBlock: aText [
+MicMicrodownTextualBuilder >> quoteBlock: aText [
 
 	self writeText: aText beginsWith: parserClass preformattedMarkup
 ]
 
 { #category : #'writing low-level' }
-PRMicrodownTextualBuilder >> raw: aString [
+MicMicrodownTextualBuilder >> raw: aString [
 	"We have in the prefix potentially many nesting level '> ', '```' and for each new line 
 	we want to make sure that prefixes are written prior to aString.
 	
@@ -240,13 +240,13 @@ PRMicrodownTextualBuilder >> raw: aString [
 ]
 
 { #category : #'ugly line handling' }
-PRMicrodownTextualBuilder >> rawLines: aString [
+MicMicrodownTextualBuilder >> rawLines: aString [
 	"Output aString and take care of line ending within aString."
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
 ]
 
 { #category : #list }
-PRMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
+MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
 	self
@@ -255,7 +255,7 @@ PRMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 ]
 
 { #category : #'ugly line handling' }
-PRMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
+MicMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
 	"this method shows that the PRCommentedLine class is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
 	| str |
 	str := aString readStream.
@@ -269,7 +269,7 @@ PRMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anothe
 ]
 
 { #category : #'writing during' }
-PRMicrodownTextualBuilder >> writeIndentedCodeBlockDuring: aBlockClosure [ 
+MicMicrodownTextualBuilder >> writeIndentedCodeBlockDuring: aBlockClosure [ 
 	"The logic of writeIndentedCodeBlockDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
@@ -280,12 +280,12 @@ It means that within the context of a visitor the visitText: method should do it
 ]
 
 { #category : #list }
-PRMicrodownTextualBuilder >> writeOrderedListIndex: anInteger [
+MicMicrodownTextualBuilder >> writeOrderedListIndex: anInteger [
 	self raw: anInteger asString, parserClass orderedListSemiMarkup
 ]
 
 { #category : #'writing during' }
-PRMicrodownTextualBuilder >> writePrefix: aString forEachLineDuring: aBlockClosure [ 
+MicMicrodownTextualBuilder >> writePrefix: aString forEachLineDuring: aBlockClosure [ 
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
@@ -294,7 +294,7 @@ It means that within the context of a visitor the visitText: method should do it
 ]
 
 { #category : #'writing during' }
-PRMicrodownTextualBuilder >> writeQuoteCodeBlockDuring: aBlockClosure [ 
+MicMicrodownTextualBuilder >> writeQuoteCodeBlockDuring: aBlockClosure [ 
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."

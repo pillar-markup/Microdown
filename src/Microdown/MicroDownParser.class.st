@@ -151,7 +151,7 @@ MicroDownParser class >> boldMarkup [
 
 { #category : #private }
 MicroDownParser class >> builder [
-	^ PRMicrodownTextualBuilder new
+	^ MicMicrodownTextualBuilder new
 ]
 
 { #category : #'block markups' }
