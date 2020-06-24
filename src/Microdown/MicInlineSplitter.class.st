@@ -42,7 +42,7 @@ Class {
 		'allDelimiters',
 		'incrementation'
 	],
-	#category : #'Microdown-Model'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #'class factory' }
@@ -105,6 +105,12 @@ MicInlineSplitter >> linkOrImageProcess [
 	linkNameCloserIndex := delimiterStack findLast: [ :delimiter | delimiter isOpener and: delimiter type = #linkName].
 ]
 
+{ #category : #'as yet unclassified' }
+MicInlineSplitter >> pillarFrom: aString [
+	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
+	^ (self start: aString) collect: [ :node | node asPillar ]
+]
+
 { #category : #process }
 MicInlineSplitter >> processEmphasis [
 	resultArray := self emphasisProcessClass startWithStack: delimiterStack withString: string.
@@ -115,7 +121,7 @@ MicInlineSplitter >> processEmphasis [
 MicInlineSplitter >> read: aString [
 	incrementation := 1.
 	aString ifEmpty: [ ^ self processEmphasis ].
-	allDelimiters keys sorted do: [ :key | 
+	allDelimiters keys do: [ :key | 
  		(aString beginsWith: key) 
 			ifTrue: [ 
 				incrementation := key size.
