@@ -4,6 +4,8 @@ Extension { #name : #Trait }
 Trait >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	aBuilder 
-		buildHeader: 'Trait: ', self name;
-		buildText: aString
+		header: [:b | 
+					b text: 'Trait: '.
+					b text: self name] withLevel: 1;
+		text: aString
 ]

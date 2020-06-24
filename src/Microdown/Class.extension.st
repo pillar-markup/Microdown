@@ -4,6 +4,8 @@ Extension { #name : #Class }
 Class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	aBuilder 
-		buildHeader: 'Class: ', self name;
-		buildText: aString
+		header: [:b | 
+					b text: 'Class: '.
+					b text: self name] withLevel: 1;
+		text: aString
 ]

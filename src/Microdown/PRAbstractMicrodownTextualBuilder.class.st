@@ -1,5 +1,6 @@
 "
-I'm a copy of Pillar textual canvas. I should be fusioned in my subclass and probably be moved to the microdown project because I'm not linked to Pillar.
+I'm a copy of Pillar textual canvas. I should be fusioned in my subclass.
+We should revisit the API because parsing lines is a not really good design.
 "
 Class {
 	#name : #PRAbstractMicrodownTextualBuilder,
@@ -33,6 +34,7 @@ PRAbstractMicrodownTextualBuilder >> flush [
 { #category : #initialization }
 PRAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
+	stream := (String new: 1000) writeStream.
 	parserClass := MicroDownParser.
 	lastIsNewLine := true
 ]

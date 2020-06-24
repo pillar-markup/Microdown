@@ -26,7 +26,7 @@ But also
    ```language=Pharo&caption=Beautiful&label=Fig1
    code
    ```
-   > Boring quote block 
+	> Boring quote block 
 	> Don't use me!
 
    ![Pharo is cool](http://pharo.org)
@@ -37,7 +37,7 @@ But also
   `in text` but for pharo hyper links  to class, method and package
   `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
 
-   References: *@ref*
+   References: *@ref@*
 ```
 
 

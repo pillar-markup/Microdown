@@ -51,6 +51,22 @@ PRMicrodownTextualBuilder >> codeblock: aString [
 	self raw: parserClass codeblockMarkup.
 ]
 
+{ #category : #'code block' }
+PRMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
+	self flag: #fixme. 
+	"missing first line stuff and we need a block for value of keys
+	because we can write ```language=pharo&caption=The **bold** and `mono`
+	...
+	"
+
+	self raw: parserClass codeblockMarkup.
+	self raw: aTag.	
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass codeblockMarkup.
+]
+
 { #category : #header }
 PRMicrodownTextualBuilder >> comment: aText [
 	self 
@@ -115,9 +131,11 @@ PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription wi
 
 { #category : #header }
 PRMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
+	self newLine.
 	self raw: (parserClass headerMarkup repeat: anInteger).
    self raw: String space.
-   aBloc value: self
+   aBloc value: self.
+	self newLine
 ]
 
 { #category : #header }
