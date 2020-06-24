@@ -102,9 +102,13 @@ PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
 { #category : #figure }
 PRMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription withParameters: aZnDictionary [
 	| stringToAdd |
-	aZnDictionary ifEmpty: [ self figure: aFigureUrl withDescription: aDescription ] ifNotEmpty: [
-		stringToAdd := String empty.
-		aZnDictionary keysAndValuesDo: [ :key :value | stringToAdd := stringToAdd, parserClass argumentListDelimiter, key asString, parserClass argumentListEqualsDelimiter, value asString ].
+	aZnDictionary 
+		ifEmpty: [ self figure: aFigureUrl withDescription: aDescription ] 
+		ifNotEmpty: [
+			self flag: #fixme.
+			"we should avoid to concatenate all such string and use the builder internals."
+			stringToAdd := String empty.
+			aZnDictionary keysAndValuesDo: [ :key :value | stringToAdd := stringToAdd, parserClass argumentListDelimiter, key asString, parserClass argumentListEqualsDelimiter, value asString ].
 		stringToAdd := parserClass argumentListStartDelimiter, stringToAdd allButFirst.
 		self figure: aFigureUrl, stringToAdd withDescription: aDescription ]
 ]
