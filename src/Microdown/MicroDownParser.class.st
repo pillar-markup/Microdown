@@ -1,51 +1,90 @@
 "
 # Microdown Parser and Elements
 
-I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
+I'm a parser for Microdown, implemented by S. Ducasse, L. Dargaud and G. Polito (2020). It is based on K. Osterbye's work on GitHubMarkdown. 
 
-Microdown is a smaller mardown than mardown but more extensible. 
-It supports the default
-- Header
-- Lists
-- Paragraph
-- Code with arguments: key=val&key2=val2
-- Quote
-- Table
-But also 
-- Environment with arguments
-- Anchors
-- Annotated paragraph
-- Math with arguments
-- and more intra block elements such as extensible markups, raw, math, and references.
+Microdown covers Markdown basis syntax, with great Pillar's features. It's more extensible too.
 
+## MicroDown Syntax in a Nutshell!
 
-### Syntax essence is 2 seconds
+**Headers** (up to 6 levels) >>>> `# Header level 1`
 
+**Unordered list**
 ```
-   #Header
+- item a
+- item b
+```
+**Ordered list**
+```
+1. item one
+2. item two
+```
+**Codeblok with arguments**
+```
+ ```language=Pharo&caption=Beautiful&label=Fig1
+ some piece of code
+ ```
+```
+**Anchor and its reference** >>>> `\@anchor` and its reference in text with `\*@anchor@*`
 
-   ```language=Pharo&caption=Beautiful&label=Fig1
-   code
-   ```
-   > Boring quote block 
-	> Don't use me!
-
-   ![Pharo is cool](http://pharo.org)
-
-   - list
-   1. ordered list 
-
-  `in text` but for pharo hyper links  to class, method and package
-  `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
-
-   References: *@ref*
+**Math environment** (rendered with LaTex in Pharo)
+- inline: $math$ >>>> `\$math$`
+- block: 
+```
+ $
+ \frac{3}
+ $
+```
+**Annotated paragraph**
+``` 
+ !!note Then you can write your note
+ on several lines, like a normal paragraph
+```
+**Quote** to indent some lines
+```
+> This is
+> A nice quote
+```
+**Environment** (called Annotation for inline)
+- inline: `\<?keyword|key1=value1&key2=value2?>`
+- block: 
+```
+ <?keyword|key1=value1&key2=value2
+ type your content
+ ?>
+```
+**Metadata** as a block
+```
+ { 
+ type your metadata
+ }
 ```
 
+**Table** **@tocomment**
 
+**Horizontal line** >>> `***` alone on a line will define a separator in your text **@todo**
 
+**Comments** don't appear after parsing >>> `% A commented line`
 
+**Inline formats**
+- **bold** >>>> `/**bold**`
+- _italic_ >>>> `\_italic_`
+- `monospace` aka inline code >>>> `\`monospace\``
 
-### Implementation
+_Note: inline escape character is back slash: \\ ._
+_Note: text in monospace is analyzed for you to generate hypertext Pharo code objects! Isn't it so cool to write a great doc? It is! Click on them!_
+- `Point` for classes
+- `Point class` for class side
+- `Point>>#setX:setY:` for methods
+- `#'Microdown-Tests'` for packages
+
+**Raw** for your other code (inline) >>>> `\{{ some code }}`
+
+**Link** >>>> `\[link's name](url|key1=value1&key2=value2)`
+
+**Figure** >>>> `\!\[figure's name](url|key1=value1&key2=value2)`
+
+## Implementation
 
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
