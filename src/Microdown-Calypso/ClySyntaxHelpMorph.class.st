@@ -55,14 +55,8 @@ ClySyntaxHelpMorph >> label [
 ]
 
 { #category : #building }
-ClySyntaxHelpMorph >> syntax [ 
-
-	^ 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.' asText, String cr, self syntaxRaw, String cr, ([MicroDownParser asText: self syntaxRaw ] on: MicParsingError, MessageNotUnderstood  do: [ '' ])
-]
-
-{ #category : #building }
-ClySyntaxHelpMorph >> syntaxRaw [
-	
+ClySyntaxHelpMorph >> rawMicrodownSyntax [
+	"should use the textual builder!!!"
 	^ '#Header
 
 
@@ -71,17 +65,25 @@ ClySyntaxHelpMorph >> syntaxRaw [
 ```
 
 
-![http://pharo.org](http://pharo.org)
+A link: [http://pharo.org](http://pharo.org)
 
 - item 1
-  on 
-  multiple lines
-   1. sub item 1 
-   3. sub item 2
+  1. sub item 1 
+  3. sub item 2
 - item 2
 
 
 `in text` but for pharo hyper links  to class, method and package
 `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages).
 '
+]
+
+{ #category : #building }
+ClySyntaxHelpMorph >> syntax [ 
+
+	"^ 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.' asText, String cr, String cr, self syntaxRaw, String cr, ([MicroDownParser asText: self syntaxRaw ] on: MicParsingError, MessageNotUnderstood  do: [ '' ])"
+	
+	"^ 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.' asText, String cr asText, String cr asText, self rawMicrodownSyntax, String cr asText, (MicroDownParser asText: self rawMicrodownSyntax )"
+	
+	^ ('The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.', String cr, String cr, self rawMicrodownSyntax, String cr) asText, ([MicroDownParser asText: self rawMicrodownSyntax ] on: MicParsingError, MessageNotUnderstood  do: [ '' ])
 ]
