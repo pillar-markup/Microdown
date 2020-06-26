@@ -77,7 +77,7 @@ ClySyntaxHelpMorph >> syntaxRaw [
   on 
   multiple lines
    1. sub item 1 
-   33. sub item 2
+   3. sub item 2
 - item 2
 
 

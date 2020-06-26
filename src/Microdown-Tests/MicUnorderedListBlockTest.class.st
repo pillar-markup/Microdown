@@ -26,6 +26,57 @@ MicUnorderedListBlockTest >> testEmbeddedOrdered [
 ]
 
 { #category : #tests }
+MicUnorderedListBlockTest >> testMixing2 [
+	| source root list1 list2 |
+	source := 
+'
+- item 1
+  - sub item 1.1
+  - sub item 1.2
+- item 2
+
+1. item1
+   - sub item 1
+   - sub item 2
+3. item 2
+'.
+	root := parser parse: source.
+	self assert: root children size equals: 2. 
+	list1 := root children first.
+	self assert: list1 children size equals: 2.
+	self assert: list1 children second text equals: 'item 2'.
+	
+	list2 := root children second.
+	self assert: list2 children size equals: 2.
+	self assert: list2 children second text equals: 'item 2'.
+]
+
+{ #category : #tests }
+MicUnorderedListBlockTest >> testMixingOrderedInsideUnorderedWithParagraph [
+	| source root list1  |
+	source := 
+'
+- item 1
+  on 
+  multiple lines
+   1. sub item 1 
+   3. sub item 2
+- item 2
+'.
+	root := parser parse: source.
+	self assert: root children size equals: 1. 
+	list1 := root children first.
+	self assert: list1 children size equals: 2.
+	self assert: list1 children second text equals: 'item 2'.
+	
+	self assert: list1 children first text equals: 'item 1
+on 
+multiple lines
+ 1. sub item 1 
+ 3. sub item 2'.
+]
+
+{ #category : #tests }
 MicUnorderedListBlockTest >> testSingleLevelList [
 	| source root list |
 	source := 
