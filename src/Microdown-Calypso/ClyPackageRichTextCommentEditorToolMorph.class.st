@@ -72,6 +72,7 @@ ClyPackageRichTextCommentEditorToolMorph >> fillStatusBar [
 
 	super fillStatusBar.
 	statusBar addCommandItem: (ClyEditCommentSwitchMorph for: self).
+	statusBar addCommandItem: (ClySyntaxHelpMorph for: self).
 
 ]
 

@@ -1,0 +1,87 @@
+"
+```
+ClySyntaxHelpMorph new openInWorld 
+```
+"
+Class {
+	#name : #ClySyntaxHelpMorph,
+	#superclass : #ClyStatusBarItemMorph,
+	#instVars : [
+		'button'
+	],
+	#category : #'Microdown-Calypso'
+}
+
+{ #category : #building }
+ClySyntaxHelpMorph >> action [
+
+	| window text | 
+	window := SystemWindow labelled: 'Microdown Syntax Summary'.
+	window extent: 500@600.
+	text := self buildText.
+	text setText: self syntax.
+	window addMorph: text frame: (0 @ 0 corner: 1 @ 1).
+	window openInWorld
+]
+
+{ #category : #building }
+ClySyntaxHelpMorph >> build [
+	
+	button := PluggableButtonMorph
+		on: self 
+		getState: nil
+		action:  #action 
+		label: #label 
+		menu: nil. 	
+	self addMorph: button
+]
+
+{ #category : #building }
+ClySyntaxHelpMorph >> buildText [ 
+ 
+	| textModel scrolledText |
+	textModel := RubScrolledTextModel new interactionModel: self.
+	scrolledText := textModel newScrolledText
+		beReadOnly;
+		beWrapped;
+		yourself.
+	scrolledText textArea font: StandardFonts codeFont.
+	^ scrolledText
+]
+
+{ #category : #accessing }
+ClySyntaxHelpMorph >> label [
+	^ 'Syntax Help'
+]
+
+{ #category : #building }
+ClySyntaxHelpMorph >> syntax [ 
+
+	^ 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.' asText, String cr, self syntaxRaw, String cr, ([MicroDownParser asText: self syntaxRaw ] on: MicParsingError, MessageNotUnderstood  do: [ '' ])
+]
+
+{ #category : #building }
+ClySyntaxHelpMorph >> syntaxRaw [
+	
+	^ '#Header
+
+
+```language=Pharo&caption=Beautiful&label=Fig1
+   1000 factorial / 999 factorial
+```
+
+
+![http://pharo.org](http://pharo.org)
+
+- item 1
+  on 
+  multiple lines
+   1. sub item 1 
+   33. sub item 2
+- item 2
+
+
+`in text` but for pharo hyper links  to class, method and package
+`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages).
+'
+]
