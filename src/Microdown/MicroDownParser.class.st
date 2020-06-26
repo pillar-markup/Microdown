@@ -19,27 +19,29 @@ But also
 - and more intra block elements such as extensible markups, raw, math, and references.
 
 
-### Syntax essence is 2 seconds
+### In Pharo Image Syntax Essence in 2 seconds
 
-```
-   #Header
+```language=undefined
 
-   ```language=Pharo&caption=Beautiful&label=Fig1
-   code
-   ```
-   > Boring quote block 
+	#Header
+
+	```language=Pharo&caption=Beautiful&label=Fig1
+	code
+	```
+	> Boring quote block 
 	> Don't use me!
 
-   ![Pharo is cool](http://pharo.org)
+   [Pharo is cool](http://pharo.org)
 
-   - list
-   1. ordered list 
+   - item 1
+     1. sub item 1 
+     3. sub item 2
+   - item 2 
 
   `in text` but for pharo hyper links  to class, method and package
   `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
-
-   References: *@ref*
 ```
+
 
 
 
