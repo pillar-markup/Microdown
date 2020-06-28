@@ -8,6 +8,22 @@ Class {
 }
 
 { #category : #tests }
+MicParagraphBlockTest >> testBoldMultipleLinesWithNewLine [
+	"**Hello 
+	
+	Pharo**"
+
+	| root |
+	root := parser parse: '**Hello is ... cut for real
+
+a paragraph on two lines**'.
+	self halt.
+	self assert: root children first text equals: '**Hello is ... cut for real'.
+	self assert: root children second text equals: 'a paragraph on two lines**'.
+	
+]
+
+{ #category : #tests }
 MicParagraphBlockTest >> testCanConsumeLine [
 	"A list item does not force the creation of a new paragraph when the line is correctly indented.
 	currently the implementation does not create a paragraph as a child of list item."

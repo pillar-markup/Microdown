@@ -8,7 +8,8 @@ Class {
 	#name : #MicMicrodownTextualBuilder,
 	#superclass : #MicAbstractMicrodownTextualBuilder,
 	#instVars : [
-		'prefixStack'
+		'prefixStack',
+		'i'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -23,7 +24,8 @@ MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 		raw: parserClass annotatedParagraphMarkup;
 		raw: annotation; 
 		raw: String space;
-		raw: aText
+		raw: aText.
+	self newLine
 
 ]
 
@@ -185,18 +187,35 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 ]
 
 { #category : #'element - list' }
+MicMicrodownTextualBuilder >> orderedItem: aBlock [
+	self writeOrderedListIndex: 1.
+	aBlock value.
+	self newLine.
+]
+
+{ #category : #'element - list' }
+MicMicrodownTextualBuilder >> orderedItem: aBlock startingAt: aNumber [
+
+	self writeOrderedListIndex: aNumber.
+	aBlock value.
+	self newLine.
+]
+
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
 	
 	
-	self
-		writePrefix: parserClass orderedListSemiMarkup
-		forEachLineDuring: [ |i|
-									i := 1.
-									self writeOrderedListIndex: i.
-									aBlockClosure value.
-									i := i + 1].
+	aBlockClosure value.
+	"for now we do not care to generate 
+	1. 
+	2.
+	
+	but 
+	1. 
+	1.
+	because this is the same"
 		
 ]
 

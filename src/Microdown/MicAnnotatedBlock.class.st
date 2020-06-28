@@ -5,7 +5,8 @@ I'm a block starting with !!text paragraph (@@note @@important in Pillar)
 
 For now I do not accept top level blocks.
 
-Since there is no need to end the block with the marker it is not that nice to have it as subclass of SameStartEndMarkupDelimitedBlock.
+1. one
+1. Two
 
 "
 Class {
