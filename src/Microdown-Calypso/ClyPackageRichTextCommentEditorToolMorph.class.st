@@ -26,7 +26,7 @@ ClyPackageRichTextCommentEditorToolMorph class >> browserTabActivation2 [
 { #category : #rendering }
 ClyPackageRichTextCommentEditorToolMorph >> asRenderedText [
 	self flag: #fixme. "super bad usage"
-	^ PRRichTextComposer renderComment: super editingText asText asString ofPackage: self editingPackage
+	^ PRRichTextComposer renderComment: super editingText asText asString of: self editingPackage
 ]
 
 { #category : #rendering }
