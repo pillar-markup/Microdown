@@ -26,7 +26,7 @@ ClyEditCommentSwitchMorph >> build [
 
 { #category : #accessing }
 ClyEditCommentSwitchMorph >> definitionTypeLabel [
-	^ 'Edit / View comment'
+	^ 'Toggle Edit / View comment'
 ]
 
 { #category : #building }

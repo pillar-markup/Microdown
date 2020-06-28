@@ -77,7 +77,7 @@ is really cool ]'
 MicCodeBlockTest >> testFirstTagNoValue [
 
 	"
-	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+	```language&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
     ^ Morph new color: self
 	```
@@ -127,13 +127,13 @@ Color >> asMorph
 	| source root code  textBody argument |
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
-	argument := 'language=pharo'.
+	argument := 'language=PharoMethod'.
 	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
 	self assert: code firstTag equals: #language.
-	self assert: (code arguments at:#language) equals: 'pharo'
+	self assert: (code arguments at:#language) equals: 'PharoMethod'
 ]
 
 { #category : #tests }

@@ -29,7 +29,7 @@ ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
 
 	self flag: #fixme. "this is strange to have a super here."
 	
-	^ PRRichTextComposer renderComment: super editingText asText asString ofClass: self editingClass
+	^ PRRichTextComposer renderComment: super editingText asText asString of: self editingClass
 ]
 
 { #category : #rendering }
@@ -75,6 +75,7 @@ ClyRichTextClassCommentEditorToolMorph >> fillStatusBar [
 
 	super fillStatusBar.
 	statusBar addCommandItem: (ClyEditCommentSwitchMorph for: self).
+	statusBar addCommandItem: (ClySyntaxHelpMorph for: self).
 
 ]
 
