@@ -13,12 +13,12 @@ Class {
 	#category : #'Microdown-Parser'
 }
 
-{ #category : #annotated }
+{ #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	"!!Important 
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
-
+	self flag: #fixme. "Should have the same API than paragraph for the paragraph"
 	self
 		raw: parserClass annotatedParagraphMarkup;
 		raw: annotation; 
@@ -27,7 +27,7 @@ MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 
 ]
 
-{ #category : #annotated }
+{ #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 	"I'm made to be followed by a paragraph. I manage the space between the annotation/label and the paragraph."
 	
@@ -40,7 +40,7 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 
 ]
 
-{ #category : #'code block' }
+{ #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString [ 
 	self flag: #fixme. 
 	"missing first line stuff"
@@ -51,7 +51,7 @@ MicMicrodownTextualBuilder >> codeblock: aString [
 	self raw: parserClass codeblockMarkup.
 ]
 
-{ #category : #'code block' }
+{ #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self flag: #fixme. 
 	"missing first line stuff and we need a block for value of keys
@@ -67,7 +67,7 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self raw: parserClass codeblockMarkup.
 ]
 
-{ #category : #header }
+{ #category : #'element - header' }
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
 		withLinesIn: aText 
@@ -75,12 +75,7 @@ MicMicrodownTextualBuilder >> comment: aText [
 	
 ]
 
-{ #category : #accessing }
-MicMicrodownTextualBuilder >> contents [
-	^ stream contents
-]
-
-{ #category : #header }
+{ #category : #'element - header' }
 MicMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [ 
 
 	self
@@ -89,7 +84,7 @@ MicMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [
 	aBlockClosure value
 ]
 
-{ #category : #references }
+{ #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 	self 
 		writeText: aDescription 
@@ -101,7 +96,7 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 		and: parserClass urlCloserMarkup
 ]
 
-{ #category : #figure }
+{ #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
 	self flag: #fixme.
 	"missing parameter and need a builder like in header."
@@ -115,7 +110,7 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
 		and: parserClass urlCloserMarkup
 ]
 
-{ #category : #figure }
+{ #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription withParameters: aZnDictionary [
 	| stringToAdd |
 	aZnDictionary 
@@ -129,7 +124,7 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription w
 		self figure: aFigureUrl, stringToAdd withDescription: aDescription ]
 ]
 
-{ #category : #header }
+{ #category : #'element - header' }
 MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 	self newLine.
 	self raw: (parserClass headerMarkup repeat: anInteger).
@@ -138,7 +133,7 @@ MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 	self newLine
 ]
 
-{ #category : #header }
+{ #category : #'element - header' }
 MicMicrodownTextualBuilder >> horizontalLine [
 	self raw: parserClass horizontalLineMarkup.
    self newLine
@@ -152,7 +147,7 @@ MicMicrodownTextualBuilder >> initialize [
 	
 ]
 
-{ #category : #references }
+{ #category : #'element - references' }
 MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 
 		writeText: aLabel 
@@ -161,10 +156,11 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 	
 ]
 
-{ #category : #list }
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> item: aBlock [
 
-	aBlock value
+	aBlock value.
+	self newLine.
 ]
 
 { #category : #'ugly line handling' }
@@ -188,7 +184,7 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 		separatedBy: [ self newLine ]
 ]
 
-{ #category : #list }
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
@@ -204,6 +200,13 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 		
 ]
 
+{ #category : #'element - paragraph' }
+MicMicrodownTextualBuilder >> paragraph: aBlock [
+
+	aBlock value. 
+	self newLine
+]
+
 { #category : #'private utils' }
 MicMicrodownTextualBuilder >> popPrefix [
 	
@@ -216,7 +219,7 @@ MicMicrodownTextualBuilder >> pushPrefix: aString [
 	prefixStack addLast: aString
 ]
 
-{ #category : #'quote block' }
+{ #category : #'element - quote block' }
 MicMicrodownTextualBuilder >> quoteBlock: aText [
 
 	self writeText: aText beginsWith: parserClass preformattedMarkup
@@ -245,7 +248,7 @@ MicMicrodownTextualBuilder >> rawLines: aString [
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
 ]
 
-{ #category : #list }
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
@@ -279,7 +282,7 @@ It means that within the context of a visitor the visitText: method should do it
 		forEachLineDuring: aBlockClosure.
 ]
 
-{ #category : #list }
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> writeOrderedListIndex: anInteger [
 	self raw: anInteger asString, parserClass orderedListSemiMarkup
 ]

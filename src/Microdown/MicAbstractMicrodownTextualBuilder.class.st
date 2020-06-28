@@ -26,6 +26,11 @@ MicAbstractMicrodownTextualBuilder >> bold: aText [
 	self writeText: aText surroundBy: parserClass boldMarkup
 ]
 
+{ #category : #accessing }
+MicAbstractMicrodownTextualBuilder >> contents [
+	^ stream contents
+]
+
 { #category : #initialization }
 MicAbstractMicrodownTextualBuilder >> flush [
 	stream flush
