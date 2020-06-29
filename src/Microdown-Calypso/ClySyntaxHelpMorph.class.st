@@ -74,7 +74,7 @@ A link: [http://pharo.org](http://pharo.org)
 
 **Bold**, _italic_, `monospace`
 
-In pharo hyper links  to ,  and 
+In Pharo hyperlinks to: 
 - class `Point`, 
 - method `Point class`, `Point>>#setX:setY:`, and 
 - package `#’Microdown-Tests’ (for packages).
