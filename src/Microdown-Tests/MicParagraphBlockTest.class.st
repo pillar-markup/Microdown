@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #tests }
-MicParagraphBlockTest >> testBoldMultipleLinesWithNewLine [
+MicParagraphBlockTest >> testANewLineCreatesANewParagraph [
 	"**Hello 
 	
 	Pharo**"
@@ -17,10 +17,27 @@ MicParagraphBlockTest >> testBoldMultipleLinesWithNewLine [
 	root := parser parse: '**Hello is ... cut for real
 
 a paragraph on two lines**'.
-	self halt.
+
 	self assert: root children first text equals: '**Hello is ... cut for real'.
 	self assert: root children second text equals: 'a paragraph on two lines**'.
 	
+]
+
+{ #category : #tests }
+MicParagraphBlockTest >> testBoldMultipleLinesWithNewLine [
+
+	| root |
+	root := parser parse: '**Hello is ... cut for real
+another line** and more 
+
+a paragraph on two lines**'.
+
+	self assert: root children first text equals: '**Hello is ... cut for real
+another line** and more'.
+	self assert: root children second text equals: 'a paragraph on two lines**'.
+	
+	self assert: (MicInlineSplitter new start: root children first text) first kind equals: #bold.
+	self assert: (MicInlineSplitter new start: root children second text) first kind equals: #basic.
 ]
 
 { #category : #tests }

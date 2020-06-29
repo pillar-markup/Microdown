@@ -3,6 +3,10 @@ I'm a textual builder of microdown.
 Using my API clients can generate text in Microdown format.
 
 I should replace MicBuilder and probably be moved to Microdown project.
+
+
+#### Known limits 
+Nested lists are probably not well managed.
 "
 Class {
 	#name : #MicMicrodownTextualBuilder,

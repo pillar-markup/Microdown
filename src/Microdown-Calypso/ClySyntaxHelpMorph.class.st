@@ -17,7 +17,7 @@ ClySyntaxHelpMorph >> action [
 
 	| window text | 
 	window := SystemWindow labelled: 'Microdown Syntax Summary'.
-	window extent: 500@600.
+	window extent: 800@600.
 	text := self buildText.
 	text setText: self syntax.
 	window addMorph: text frame: (0 @ 0 corner: 1 @ 1).
@@ -57,13 +57,20 @@ ClySyntaxHelpMorph >> label [
 { #category : #building }
 ClySyntaxHelpMorph >> rawMicrodownSyntax [
 	"should use the textual builder!!!"
-	^ '#Header
+	^ '
+
+*** 
+Horizontal 
+*** 
+
+#Header
 
 
 ```language=Pharo&caption=Beautiful&label=Fig1
    1000 factorial / 999 factorial
 ```
 
+![Pharologo](https://files.pharo.org/media/logo/logo.png)
 
 A link: [http://pharo.org](http://pharo.org)
 
@@ -72,12 +79,15 @@ A link: [http://pharo.org](http://pharo.org)
   3. sub item 2
 - item 2
 
+
 **Bold**, _italic_, `monospace`
 
 In Pharo hyperlinks to: 
 - class `Point`, 
 - method `Point class`, `Point>>#setX:setY:`, and 
 - package `#’Microdown-Tests’ (for packages).
+
+You can edit this file clicking on `ClySyntaxHelpMorph>>#rawMicrodownSyntax`.
 '
 ]
 
