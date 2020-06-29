@@ -33,6 +33,11 @@ MicAbstractInlineBlock class >> from: aStartInteger to: anEndInteger withKind: a
 		cleanSubstring; yourself.	
 ]
 
+{ #category : #testing }
+MicAbstractInlineBlock class >> isEvaluated [
+	^ true
+]
+
 { #category : #accessing }
 MicAbstractInlineBlock >> children [
 	^ children

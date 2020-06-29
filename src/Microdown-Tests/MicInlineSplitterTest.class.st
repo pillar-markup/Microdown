@@ -13,6 +13,16 @@ MicInlineSplitterTest >> splitter [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
+	"When isEvaluated class method returns false, like anchor reference's case, inline inside shoudn't be evaluated"
+	| res |
+	res := self splitter start: 'abc*@def**not bold**ghi@*xyz'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[def**not bold**ghi](anchorReference)' . 'xyz'}
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testAnnotationAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc<?cite|a=2&b=5?>def'.
@@ -123,6 +133,36 @@ MicInlineSplitterTest >> testItalicAsPillar [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testMathUnevaluated [
+	"When isEvaluated class method returns false, like math's case, inline inside shoudn't be evaluated"
+	| res |
+	res := self splitter start: 'abc$def**not bold**ghi$xyz'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[def**not bold**ghi](math)' . 'xyz'}
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testMonospaceUnevaluated [
+	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
+	| res |
+	res := self splitter start: 'abc`def**not bold**ghi`xyz'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[def**not bold**ghi](monospace)' . 'xyz'}
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testRawUnevaluated [
+	"When isEvaluated class method returns false, like raw's case, inline inside shoudn't be evaluated"
+	| res |
+	res := self splitter start: 'abc{{def**not bold**ghi}}xyz'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[def**not bold**ghi](raw)' . 'xyz'}
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitAnnotation [
 	| res |
 	res := self splitter start: 'abc<?type:value|key1=val1&key2=val2?>def'.
@@ -150,16 +190,6 @@ MicInlineSplitterTest >> testSplitBlockAnchorReference [
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[anchorA](anchorReference)' . 'def'}.
 	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock)
-
-]
-
-{ #category : #tests }
-MicInlineSplitterTest >> testSplitBlockAnchorReferenceWithBold [
-	| res |
-	res := self splitter start: 'abc*@an**ch**orA@*def'.
-	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock).
-	self assert: (res second children second isKindOf: MicBoldInlineBlock).
-	self assert: (res second children second substring) equals: 'ch'.
 
 ]
 

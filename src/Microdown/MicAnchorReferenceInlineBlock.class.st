@@ -11,3 +11,8 @@ Class {
 	#superclass : #MicAbstractInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #testing }
+MicAnchorReferenceInlineBlock class >> isEvaluated [
+	^ false
+]

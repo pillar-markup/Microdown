@@ -172,7 +172,7 @@ MicInlineEmphasisProcessor >> processEmphasis [
 
 { #category : #actions }
 MicInlineEmphasisProcessor >> processNestedCase [
-	children := (associateCloserIndex = (firstOpenerIndex + 1))
+	children := ((associateCloserIndex = (firstOpenerIndex + 1)) or: (firstOpener associatedInlineBlock isEvaluated) not)
 		ifTrue: [ #() ]
 		ifFalse: [ self childrenInNestedCase ]
 ]

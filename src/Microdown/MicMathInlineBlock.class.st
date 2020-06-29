@@ -9,3 +9,8 @@ Class {
 	#superclass : #MicAbstractInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #testing }
+MicMathInlineBlock class >> isEvaluated [
+	^ false
+]
