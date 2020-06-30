@@ -131,7 +131,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'current',
-		'root'
+		'root',
+		'dispatchTable'
 	],
 	#classInstVars : [
 		'inlineMarkups'
@@ -354,7 +355,19 @@ MicroDownParser class >> unorderedListMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> unorderedListMarkups [
 
-	^ #('- ' '* ' '+ ')
+	^ { self unorderedListPlusMarkup . self unorderedListMarkup . self unorderedListStarMarkup}
+]
+
+{ #category : #'block markups' }
+MicroDownParser class >> unorderedListPlusMarkup [
+
+	^ '+ '
+]
+
+{ #category : #'block markups' }
+MicroDownParser class >> unorderedListStarMarkup [
+
+	^ '* '
 ]
 
 { #category : #'inline block markups' }
@@ -517,8 +530,9 @@ MicroDownParser >> matchOrdered: line [
 
 { #category : #'node creation' }
 MicroDownParser >> matchUnordered: line [
-	^ (line beginsWith: '- ') | (line beginsWith: '* ')
-		| (line beginsWith: '+ ')
+	^ ( line beginsWith: self unorderedListPlusMarkup ) 
+		| ( line beginsWith: self unorderedListStarMarkup ) 
+		| ( line beginsWith: self unorderedListMarkup )
 ]
 
 { #category : #markups }
@@ -582,4 +596,16 @@ MicroDownParser >> tableCellMarkup [
 { #category : #markups }
 MicroDownParser >> unorderedListMarkup [
 	^ self class unorderedListMarkup
+]
+
+{ #category : #markups }
+MicroDownParser >> unorderedListPlusMarkup [
+
+	^ self class unorderedListPlusMarkup
+]
+
+{ #category : #markups }
+MicroDownParser >> unorderedListStarMarkup [
+
+	^ self class unorderedListStarMarkup
 ]
