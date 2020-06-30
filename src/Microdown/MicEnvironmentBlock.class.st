@@ -67,12 +67,11 @@ MicEnvironmentBlock >> arguments [
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 
-	| lineWithoutMarkup lineStream resultArray |
+	| lineWithoutMarkup argumentsSplitter |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	lineStream := lineWithoutMarkup readStream.
-	resultArray := MicArgumentsSplitter findNameAndArguments: lineStream.
-	name := resultArray first.
-	arguments := resultArray second.
+	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
+	name := argumentsSplitter name.
+	arguments := argumentsSplitter arguments.
 	^ lineWithoutMarkup
 ]
 
