@@ -342,7 +342,7 @@ MicroDownParserTest >> testHorizontalBlockFollowedByList [
 	
 ]
 
-{ #category : #'tests - horizontal line' }
+{ #category : #'tests-horizontal line' }
 MicroDownParserTest >> testHorizontalLineBlock [
 	| source root horizontal |
 	source := parser horizontalLineMarkup, 'label1'.
@@ -454,5 +454,38 @@ MicroDownParserTest >> testMetaDataMultipleLines [
 	self assert: math body equals: '"author": "S Ducasse",
 "title": "Ze Great Book from Frenchies"'
 	"note that the closing is not part of the body"
+	
+]
+
+{ #category : #'tests-horizontal line' }
+MicroDownParserTest >> testParseLineWithOneCharacter [ 
+	
+	| document |
+	document := parser parse: '
+a'.
+	self assert: document children size equals: 1. 
+	self assert: document children first class equals: MicParagraphBlock. 
+	
+]
+
+{ #category : #'tests-horizontal line' }
+MicroDownParserTest >> testParseLineWithThreeCharacters [ 
+	
+	| document |
+	document := parser parse: '
+a`a'.
+	self assert: document children size equals: 1. 
+	self assert: document children first class equals: MicParagraphBlock. 
+	
+]
+
+{ #category : #'tests-horizontal line' }
+MicroDownParserTest >> testParseLineWithTwoCharacters [ 
+	
+	| document |
+	document := parser parse: '
+aa'.
+	self assert: document children size equals: 1. 
+	self assert: document children first class equals: MicParagraphBlock. 
 	
 ]

@@ -38,7 +38,7 @@ MicToPillarBasicTest >> testCodeInText [
 { #category : #tests }
 MicToPillarBasicTest >> testHeader [ 
 
-	| document pillarDocument |
+	| document |
 	document := self parserClass new parse: '# Header1
 	
 ## Header 2

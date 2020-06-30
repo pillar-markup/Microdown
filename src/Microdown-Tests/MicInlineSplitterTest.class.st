@@ -12,7 +12,6 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
-
 { #category : #tests }
 MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 	"When isEvaluated class method returns false, like anchor reference's case, inline inside shoudn't be evaluated"
@@ -22,7 +21,6 @@ MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[def**not bold**ghi](anchorReference)' . 'xyz'}
 ]
-
 
 { #category : #'pillar conversion' }
 MicInlineSplitterTest >> testBasicTextAsPillar [

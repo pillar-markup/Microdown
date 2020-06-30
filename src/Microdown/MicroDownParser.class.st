@@ -397,48 +397,23 @@ MicroDownParser >> argumentListStartDelimiter [
 ]
 
 { #category : #'node creation' }
-MicroDownParser >> blockExtensionStarterClassFrom: line [
-	"return the class of a block which can start with line, or nil if none"
-	
-	"We may use this for item not matching a dictionary-based dispatch"
-	^ nil
-]
-
-{ #category : #'node creation' }
 MicroDownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
-	(self blockExtensionStarterClassFrom: line)
-		ifNotNil: [ :c | ^ c ]
-		ifNil: [ (line beginsWith: self headerMarkup)
-				ifTrue: [ ^ MicHeaderBlock ].
-			(line beginsWith: self codeblockMarkup)
-				ifTrue: [ ^ MicCodeBlock ].
-			(self matchUnordered: line)
-				ifTrue: [ ^ MicUnorderedListBlock ].
-			"this one could be split if we move to a dictionary based structure"
-			(self matchOrdered: line)
-				ifTrue: [ ^ MicOrderedListBlock ].
-				"number followed by . or ). We could treat this one separated and fall back on a dictionary By moving this into the extension for example."
-			(line beginsWith: self annotatedParagraphMarkup)
-				ifTrue: [ ^ MicAnnotatedBlock ].
-			(line beginsWith: self anchorMarkup)
-				ifTrue: [ ^ MicAnchorBlock ].
-			(line beginsWith: self commentedLineMarkup)
-				ifTrue: [ ^ MicCommentBlock ].
-			(line beginsWith: self mathOpeningBlockMarkup)
-				ifTrue: [ ^ MicMathBlock ].
-			(line beginsWith: self environmentOpeningBlockMarkup)
-				ifTrue: [ ^ MicEnvironmentBlock ].
-			(line beginsWith: self horizontalLineMarkup)
-				ifTrue: [ ^ MicHorizontalLineBlock ].
-			(line beginsWith: self metaDataOpeningBlockMarkup)
-				ifTrue: [ ^ MicMetaDataBlock ].
-			(line beginsWith: self preformattedMarkup)
-				ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
-			(line beginsWith: self tableCellMarkup)
-				ifTrue: [ ^ MicTableBlock ].
-			line ifNotEmpty: [ ^ MicParagraphBlock ] ifEmpty: [ ^ nil ] ]
+	line ifEmpty: [ ^ nil ].
+	(self matchOrdered: line)
+		ifTrue: [ ^ MicOrderedListBlock ]
+		ifFalse: [ 
+			"the max length of a markup is 3 even if header can be #####"
+			1 to: 3 do: [:i |
+				line size < i
+					ifTrue: [ ^ MicParagraphBlock ].
+  				dispatchTable
+    		 		 at: (line first: i)
+      				ifPresent: [ :blockClass | ^ blockClass ] ]].
+	line 
+		ifNotEmpty: [ ^ MicParagraphBlock ] 
+	
 ]
 
 { #category : #markups }
@@ -515,6 +490,28 @@ MicroDownParser >> headerMarkup [
 { #category : #markups }
 MicroDownParser >> horizontalLineMarkup [
 	^ self class horizontalLineMarkup
+]
+
+{ #category : #initialization }
+MicroDownParser >> initialize [
+
+	super initialize.
+	dispatchTable := Dictionary new.
+	"should use a registration with classes, but later"
+	dispatchTable at: self anchorMarkup put: MicAnchorBlock.
+	dispatchTable at: self headerMarkup put: MicHeaderBlock.
+	dispatchTable at: self codeblockMarkup put: MicCodeBlock.
+	dispatchTable at: self annotatedParagraphMarkup put: MicAnnotatedBlock.
+	dispatchTable at: self commentedLineMarkup put: MicCommentBlock.
+	dispatchTable at: self horizontalLineMarkup put: MicHorizontalLineBlock.
+	dispatchTable at: self mathOpeningBlockMarkup put: MicMathBlock.
+	dispatchTable at: self environmentOpeningBlockMarkup put: MicEnvironmentBlock.
+	dispatchTable at: self metaDataOpeningBlockMarkup put: MicMetaDataBlock.
+	dispatchTable at: self unorderedListPlusMarkup put: MicUnorderedListBlock.
+	dispatchTable at: self unorderedListMarkup put: MicUnorderedListBlock.
+	dispatchTable at: self unorderedListStarMarkup put: MicUnorderedListBlock.
+	dispatchTable at: self preformattedMarkup put: MicQuoteBlock.
+	dispatchTable at: self tableCellMarkup put: MicTableBlock.
 ]
 
 { #category : #testing }
