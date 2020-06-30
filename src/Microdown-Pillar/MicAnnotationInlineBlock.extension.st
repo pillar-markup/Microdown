@@ -2,12 +2,11 @@ Extension { #name : #MicAnnotationInlineBlock }
 
 { #category : #'*Microdown-Pillar' }
 MicAnnotationInlineBlock >> asPillar [
-	| lineStream resultArray classPillar |
+	| argumentsSplitter classPillar |
 	
-	lineStream := substring readStream.
-	resultArray := MicArgumentsSplitter findNameAndArguments: lineStream.
-	name := resultArray first.
-	arguments := resultArray second.
+	argumentsSplitter := MicArgumentsSplitter withString: substring.
+	name := argumentsSplitter name.
+	arguments := argumentsSplitter arguments.
 	
 	classPillar := PRAbstractAnnotation findClassAcceptingTag: name ifNone: [ PRUndefinedAnnotation ].
 	^ classPillar new parameters: arguments

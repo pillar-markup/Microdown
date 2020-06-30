@@ -36,8 +36,8 @@ MicFigureInlineBlock >> parameters: someParameters [
 
 { #category : #transformation }
 MicFigureInlineBlock >> urlTransformation [
-	| resultArray |
-	resultArray := MicArgumentsSplitter findNameAndArguments: self url readStream.
-	self url: (ZnUrl fromString: resultArray first).
-	self parameters: resultArray second
+	| argumentsSplitter |
+	argumentsSplitter := MicArgumentsSplitter withStream: self url readStream.
+	self url: (ZnUrl fromString: argumentsSplitter name).
+	self parameters: argumentsSplitter arguments
 ]

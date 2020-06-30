@@ -1,18 +1,46 @@
 Class {
 	#name : #MicArgumentsSplitter,
 	#superclass : #Object,
+	#instVars : [
+		'arguments',
+		'firstTag',
+		'name',
+		'stream'
+	],
 	#category : #'Microdown-Parser'
 }
 
-{ #category : #process }
-MicArgumentsSplitter class >> findNameAndArguments: aStream [
-	| foundName foundArguments | 
-	foundName := aStream upTo: self parserClass argumentListStartDelimiter first.
-	foundArguments := ZnResourceMetaUtils parseQueryFrom: aStream.
-	^ { foundName . foundArguments } asArray
+{ #category : #'as yet unclassified' }
+MicArgumentsSplitter class >> withStream: aStream [
+	^ self new stream: aStream; yourself
+]
+
+{ #category : #'as yet unclassified' }
+MicArgumentsSplitter class >> withString: aString [
+	^ self new stream: (aString readStream); yourself
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter class >> parserClass [
+MicArgumentsSplitter >> arguments [
+	^ arguments ifNil: [ ^ arguments := ZnResourceMetaUtils parseQueryFrom: stream ]
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> firstTag [ 
+	^ firstTag ifNil: [ ^ firstTag := (stream upTo: $=) asSymbol; yourself ]
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> name [
+	^ name ifNil: [ ^ name := (stream upTo: self parserClass argumentListStartDelimiter first) contents asString; yourself ]
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> parserClass [
 	^ MicroDownParser 
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> stream: aStream [
+	stream := aStream
 ]
