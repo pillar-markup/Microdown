@@ -12,6 +12,7 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
+
 { #category : #tests }
 MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 	"When isEvaluated class method returns false, like anchor reference's case, inline inside shoudn't be evaluated"
@@ -22,14 +23,6 @@ MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 		equals: {'abc' . '[def**not bold**ghi](anchorReference)' . 'xyz'}
 ]
 
-{ #category : #tests }
-MicInlineSplitterTest >> testAnnotationAsPillar [
-	| res |
-	res := self splitter pillarFrom: 'abc<?cite|a=2&b=5?>def'.
-	self assert: res second class equals: PRCitationAnnotation.
-	self assert: (res second parameters at: 'a') equals: '2'.
-	self assert: (res second parameters at: 'b') equals: '5'.
-]
 
 { #category : #'pillar conversion' }
 MicInlineSplitterTest >> testBasicTextAsPillar [
@@ -56,8 +49,6 @@ MicInlineSplitterTest >> testBoldAsPillar [
 	res := self splitter pillarFrom: 'abc**xyz**cba'.
 	self assert: res second children first text equals: 'xyz'.
 	self assert: res second class equals: PRBoldFormat.
-	
-	
 ]
 
 { #category : #tests }
