@@ -71,12 +71,11 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	"The first tag is language.
 	its value is Pharo."
 	
-	| lineWithoutMarkup lineStream |
+	| lineWithoutMarkup argumentsSplitter |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	lineStream := lineWithoutMarkup readStream.
-	firstTag := (lineStream upTo: $=) asSymbol.
-	lineStream := lineWithoutMarkup readStream.
-	arguments := ZnResourceMetaUtils parseQueryFrom: lineStream.
+	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
+	firstTag := argumentsSplitter firstTag.
+	arguments := argumentsSplitter arguments.
 	^ lineWithoutMarkup
 ]
 
