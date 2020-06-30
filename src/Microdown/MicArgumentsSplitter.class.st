@@ -27,7 +27,10 @@ MicArgumentsSplitter >> arguments [
 
 { #category : #accessing }
 MicArgumentsSplitter >> firstTag [ 
-	^ firstTag ifNil: [ ^ firstTag := (stream upTo: $=) asSymbol; yourself ]
+	^ firstTag ifNil: [ 
+		firstTag := (stream upTo: $=) asSymbol. 
+		stream position: 0.
+		^ firstTag ]
 ]
 
 { #category : #accessing }
