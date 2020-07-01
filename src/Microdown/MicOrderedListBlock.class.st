@@ -1,5 +1,28 @@
 "
-I represent an ordered list of list items
+I represent an ordered list of list items.
+
+#### Example
+
+Typing 
+```
+1. first
+2. second
+   on multiple line 
+1. third
+Not in third
+1. first item of a new list
+```
+
+produces
+1. first
+1. second
+   on multiple line 
+1. third
+Not in third
+1. first item of a new list
+
+Notice how the following line of the second item is indented with the previous one.
+
 "
 Class {
 	#name : #MicOrderedListBlock,

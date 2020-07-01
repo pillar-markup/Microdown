@@ -6,6 +6,7 @@ RPackage >> buildMicroDownUsing: aBuilder withComment: aString [
 	self class environment at: self name 
 		ifPresent: [ :cls | aBuilder 
 			header:  [ :b | b text: self name ] withLevel: 1;
+			horizontalLine;
 			text: 'A baseline is a kind of map to load project.';
 			header: [:b | b text: 'Description'] withLevel: 3;
 			text: aString; 
@@ -16,6 +17,7 @@ RPackage >> buildMicroDownUsing: aBuilder withComment: aString [
 						header: [ :b | 
 								b text: 'Package: '. 
 								b text: self name] withLevel: 1;
+						horizontalLine;
 						text: aString ]
 	
 ]
