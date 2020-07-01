@@ -4,6 +4,9 @@
 
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
 
+
+
+
 Microdown is a smaller mardown but more extensible. 
 It supports
 - Header
@@ -19,6 +22,10 @@ But also
 - Annotated paragraph
 - Math with arguments
 - and more intra block elements such as extensible markups, raw, math, and references.
+
+
+![Microdown within the Pharo IDE.](screen.png)
+
 
 ## Core Syntax in 2 seconds
 
