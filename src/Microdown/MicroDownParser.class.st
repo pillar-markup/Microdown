@@ -416,6 +416,41 @@ MicroDownParser >> blockStarterClassFrom: line [
 	
 ]
 
+{ #category : #'node creation' }
+MicroDownParser >> blockStarterClassFromOld: line [
+	"return the class of a block which can start with line, or nil if none"
+
+	(line beginsWith: self headerMarkup)
+		ifTrue: [ ^ MicHeaderBlock ].
+	(line beginsWith: self codeblockMarkup)
+		ifTrue: [ ^ MicCodeBlock ].
+	(self matchUnordered: line)
+		ifTrue: [ ^ MicUnorderedListBlock ].
+			"this one could be split if we move to a dictionary based structure"
+	(self matchOrdered: line)
+		ifTrue: [ ^ MicOrderedListBlock ].
+				"number followed by . or ). We could treat this one separated and fall back on a dictionary By moving this into the extension for example."
+	(line beginsWith: self annotatedParagraphMarkup)
+		ifTrue: [ ^ MicAnnotatedBlock ].
+	(line beginsWith: self anchorMarkup)
+		ifTrue: [ ^ MicAnchorBlock ].
+	(line beginsWith: self commentedLineMarkup)
+		ifTrue: [ ^ MicCommentBlock ].
+	(line beginsWith: self mathOpeningBlockMarkup)
+		ifTrue: [ ^ MicMathBlock ].
+	(line beginsWith: self environmentOpeningBlockMarkup)
+		ifTrue: [ ^ MicEnvironmentBlock ].
+	(line beginsWith: self horizontalLineMarkup)
+		ifTrue: [ ^ MicHorizontalLineBlock ].
+	(line beginsWith: self metaDataOpeningBlockMarkup)
+		ifTrue: [ ^ MicMetaDataBlock ].
+	(line beginsWith: self preformattedMarkup)
+		ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
+	(line beginsWith: self tableCellMarkup)
+		ifTrue: [ ^ MicTableBlock ].
+	line ifNotEmpty: [ ^ MicParagraphBlock ] ifEmpty: [ ^ nil ]
+]
+
 { #category : #markups }
 MicroDownParser >> boldMarkup [
 
