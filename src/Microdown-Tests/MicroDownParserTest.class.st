@@ -227,8 +227,8 @@ MicroDownParserTest >> testEnvironment [
 ]
 
 { #category : #tests }
-MicroDownParserTest >> testEnvironmentCitationWithArgumentsAsPillar [
-	| source root environmentName contents pillar |
+MicroDownParserTest >> testEnvironmentCitationWithArguments [
+	| source root environmentName contents child |
 	environmentName := 'cite'.
 	contents := 'Hello
 
@@ -238,12 +238,14 @@ Pharo'.
 		, String cr , contents , String cr
 		, parser environmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
-	pillar := root asPillar.
-	self flag: #fixme.
-	self assert: pillar children first class equals: PRCitationAnnotation.
-	self assert: (pillar children first parameters at: 'a') equals: '1'.
-	self assert: (pillar children first parameters at: 'b') equals: '17'.
-	self assert: (pillar children first parameters at: 'c') equals: nil.
+	child := root children first.
+	self assert: (child isKindOf: MicEnvironmentBlock).
+	self assert: child name equals: environmentName.
+	self assert: child body equals: contents.
+	
+	self assert: (child arguments at: 'a') equals: '1'.
+	self assert: (child arguments at: 'b') equals: '17'.
+	self assert: (child arguments at: 'c') equals: nil
 ]
 
 { #category : #'tests-environment' }
