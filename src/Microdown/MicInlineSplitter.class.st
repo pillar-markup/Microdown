@@ -156,7 +156,6 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener withOpener: ope
 					correctSubstring := string collect: [ :c | c ] from: startIndex to: endIndex.
 					correctURL := string collect: [ :c | c ] from: (closer index + closer size + self urlOpenerDelimiterClass size) to: (urlCloserIndex - 1).
 					"Add found inline block"
-					self halt.
 					result add: 
 						(opener associatedInlineBlock
 							from: opener index
