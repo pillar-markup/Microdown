@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Tests'
 }
 
-{ #category : #tests }
+{ #category : #access }
 MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
