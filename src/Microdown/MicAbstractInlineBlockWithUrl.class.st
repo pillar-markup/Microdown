@@ -12,6 +12,11 @@ MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger with
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
+{ #category : #obsolete }
+MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty) url: aURL; urlTransformation; yourself
+]
+
 { #category : #accessing }
 MicAbstractInlineBlockWithUrl >> url [
 	^ url
