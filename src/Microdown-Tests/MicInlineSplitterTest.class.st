@@ -278,13 +278,12 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
-	self skip.
 	res := self splitter
 		start: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[[alttext](figure)](linkName)' . 'last'}.
-	self assert: res second children second url equals: 'imageurl'
+		equals: {'abc' . '[ [alttext](figure) ](linkName)' . 'last'}.
+	self assert: res second children second url segments first equals: 'imageurl'
 ]
 
 { #category : #'tests - OK for now' }

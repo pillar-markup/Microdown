@@ -199,13 +199,20 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 					correctSubstring := string collect: [ :c | c ] from: startIndex to: endIndex.
 					correctURL := string collect: [ :c | c ] from: (closer index + closer size + self urlOpenerDelimiterClass size) to: (urlCloserIndex - 1).
 					"Add found inline block"
-					result add: 
-						(opener associatedInlineBlock
-							from: opener index
-							to: urlCloserIndex 
-							withKind: opener type
-							withSubstring: correctSubstring
-							withURL: correctURL).
+			(openersStack size > 1)
+				ifTrue: [ 
+					(openersStack size - 1 > nestedLevel)
+						ifTrue: [ 
+							children 
+								ifEmpty: [ children add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL) ]
+								ifNotEmpty: [ children last add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL) ] ]
+						ifFalse: [ children add: ((self newInlineBlockWithoutChildrenWithCloser: urlCloserIndex) url: correctURL) ].
+				]
+				ifFalse: [ 
+					result add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL).
+					children := LinkedList new.
+				].
+			nestedLevel := openersStack size - 1.
 				"Delete openers above in stack, considered as unclosed so ignored"
 				self popFrom: 1 to: indexOfAssociateOpener.
 				incrementation := urlCloserIndex - index
@@ -243,10 +250,36 @@ MicInlineSplitter >> newInlineBlock [
 ]
 
 { #category : #'instance creation' }
+MicInlineSplitter >> newInlineBlockWithCloser: aCloserIndex [
+	| inlineBlockClass |
+	inlineBlockClass := opener associatedInlineBlock.
+	(inlineBlockClass isEvaluated) 
+		ifTrue: [ 
+			^ inlineBlockClass
+				from: opener index
+				to: aCloserIndex
+				withKind: opener type
+				withSubstring: correctSubstring
+				withChildren: children asArray
+		 ]
+		ifFalse: [ ^ self newInlineBlockWithoutChildren ]
+	
+]
+
+{ #category : #'instance creation' }
 MicInlineSplitter >> newInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: closer index + closer size - 1
+			withKind: opener type
+			withSubstring: correctSubstring
+]
+
+{ #category : #'instance creation' }
+MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
+	^ opener associatedInlineBlock
+			from: opener index
+			to: aCloserIndex
 			withKind: opener type
 			withSubstring: correctSubstring
 ]
@@ -291,7 +324,7 @@ MicInlineSplitter >> resultProcess [
 	result do: [ :e | 
 		| startSubstring endSubstring |
 		startSubstring := string indexOfSubCollection: e substring startingAt: e start.
-		endSubstring := startSubstring + e substring size - 1.		
+		endSubstring := startSubstring + e substring size - 1 .
 		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
 ]
