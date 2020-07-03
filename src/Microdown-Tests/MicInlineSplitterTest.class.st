@@ -309,6 +309,16 @@ MicInlineSplitterTest >> testSplitBlockNested [
 ]
 
 { #category : #'tests - OK for now' }
+MicInlineSplitterTest >> testSplitBlockNested2 [
+	"Test with nested annotations"
+	| res |
+	res := self splitter start: 'abc**bold_italic_bold_italic2_bold**xyz'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[bold [italic](italic) bold [italic2](italic) bold](bold)' . 'xyz'}
+]
+
+{ #category : #'tests - OK for now' }
 MicInlineSplitterTest >> testSplitBlockNoAnnotation [
 	| res |
 	res := self splitter start: 'abc'.
