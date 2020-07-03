@@ -165,24 +165,29 @@ MicInlineSplitter >> initializeDelimiters [
 
 { #category : #'as yet unclassified' }
 MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks [
-	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new
+	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: 1 to: string size
 ]
 
 { #category : #'as yet unclassified' }
-MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks withFinalArray: finalArray [
-	anArrayOfInlineBlocks ifEmpty: [ ^ finalArray ].
+MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
+	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: startIndex to: endIndex
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks withFinalArray: finalArray from: startIndex to: endIndex [
+	anArrayOfInlineBlocks ifEmpty: [ ^ finalArray asArray ].
 	(anArrayOfInlineBlocks size = 1) ifTrue: [ 
 		| element |
 		element := anArrayOfInlineBlocks first.
-		finalArray ifEmpty: [ self addABasicTextFrom: 1 to: element start - 1 toFinalArray: finalArray ].
+		finalArray ifEmpty: [ self addABasicTextFrom: startIndex to: element start - 1 toFinalArray: finalArray ].
 		finalArray add: element.
-		self addABasicTextFrom: element end + 1 to: string size toFinalArray: finalArray.
-		^ self insertBasicText: Array empty withFinalArray: finalArray
+		self addABasicTextFrom: element end + 1 to: endIndex toFinalArray: finalArray.
+		^ self insertBasicText: Array empty withFinalArray: finalArray from: startIndex to: endIndex
 	].
-	finalArray ifEmpty: [ self addABasicTextFrom: 1 to: anArrayOfInlineBlocks first start - 1toFinalArray: finalArray ].
+	finalArray ifEmpty: [ self addABasicTextFrom: startIndex to: anArrayOfInlineBlocks first start - 1 toFinalArray: finalArray ].
 	finalArray add: anArrayOfInlineBlocks first.
 	self addABasicTextFrom: anArrayOfInlineBlocks first end + 1 to: anArrayOfInlineBlocks second start - 1 toFinalArray: finalArray.
-	^ self insertBasicText: anArrayOfInlineBlocks allButFirst withFinalArray: finalArray
+	^ self insertBasicText: anArrayOfInlineBlocks allButFirst withFinalArray: finalArray from: startIndex to: endIndex
 	
 	
 	
@@ -293,7 +298,11 @@ MicInlineSplitter >> read: aString [
 MicInlineSplitter >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
 	result ifEmpty: [ ^ (self newBasicInlineBlockFrom: 1 to: string size) asArray ].
-	result do: [ :e | e children: (self insertBasicText: e children ) ].
+	result do: [ :e | 
+		| startSubstring endSubstring |
+		startSubstring := string indexOfSubCollection: e substring startingAt: e start.
+		endSubstring := startSubstring + e substring size - 1.		
+		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
 ]
 
