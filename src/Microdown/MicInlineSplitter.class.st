@@ -76,23 +76,13 @@ MicInlineSplitter >> allDelimiters [
 
 { #category : #process }
 MicInlineSplitter >> bothCase [
-	openersStack 
-		ifEmpty: [ 
-			"It's the first opener"
-			self pushNewOpener
-		]
-		ifNotEmpty: [ 
-			(openersStack top type = delimiterSubclassFound type)
-			ifTrue: [ 
-				"We consider the delimiter as a closer of last opened inline block"
-				self addInlineBlock
-			 ]
-			ifFalse: [ 
-				"We consider the delimiter as a new opener"
-				self pushNewOpener
-			 ]
-		]
-	
+	(openersStack isEmpty or: [ (openersStack top type = delimiterSubclassFound type) not ])
+		ifTrue: [ 
+			"We consider the delimiter as a new opener or it's the first opener"
+			self pushNewOpener ]
+		ifFalse: [ 
+			"We consider the delimiter as a closer of last opened inline block"
+			self addInlineBlock ]
 ]
 
 { #category : #process }
