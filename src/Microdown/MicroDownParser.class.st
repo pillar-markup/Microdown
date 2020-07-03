@@ -93,21 +93,12 @@ In short, the strategy is that at any point in time, we might have a number of c
 When a new line is read we do the following:
 
 1. Check if the new line can be consumed by current.
-   - as part of this a child of current can be made which can consume the new line
-2. If current cannot consume the new line, we close current, move current to its parent, and repeat 1.
-3. The root node can consume anything, for instance by making new nodes for storing the new line.
-4. The roor node is not closed until input is exhausted
-
-I do not accept lazy definition. I do not accept three different ways to do the same. Except for bulleted list where `*` and `-` are accepted. 
-
-When a new line is read we do the following:
-
-1. Check if the new line can be consumed by current.
    - as part of this, a child of current can be made which can consume the new line. for example when consuming \`\`\` the root block node will create, a new code block that will become current and consume the body of the \`\`\` element then close. 
 2. If current cannot consume the new line, we close current, move current to its parent, and repeat 1.
 3. The root node can consume anything, for instance by making new nodes for storing the new line.
 4. The root node is not closed until input is exhausted.
 
+I do not accept lazy definition. I do not accept three different ways to do the same. Except for bulleted list where `*` and `-` are accepted. 
 
 The spec says:
 ```
