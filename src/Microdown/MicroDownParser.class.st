@@ -1,7 +1,8 @@
 "
 # Microdown Parser and Elements
 
-I'm a parser for Microdown, implemented by S. Ducasse, L. Dargaud and G. Polito (2020). It is based on K. Osterbye's work on GitHubMarkdown. 
+I'm a parser for Microdown, implemented by S. Ducasse, L. Dargaud and G. Polito (2020). 
+It is based on K. Osterbye's work on GitHubMarkdown. 
 
 Microdown covers Markdown basis syntax, with great Pillar's features. It's more extensible too.
 
@@ -12,27 +13,56 @@ Microdown covers Markdown basis syntax, with great Pillar's features. It's more 
 **Unordered list**
 ```
 - item a
+  on another line
 - item b
+   - item b1
+   - item b2
+- item c
 ```
+
+produces
+
+- item a
+  on another line
+- item b
+   - item b1
+   - item b2
+- item c
+
 **Ordered list**
 ```
 1. item one
+   1. subitem
 2. item two
 ```
-**Codeblok with arguments**
+produces 
+
+1. item one
+   1. subitem
+2. item two
+
+
+**Codeblock with arguments**
 ```
  ```language=Pharo&caption=Beautiful&label=Fig1
  some piece of code
  ```
 ```
+
+produces 
+
+```language=Pharo&caption=Beautiful&label=Fig1
+some piece of code
+```
+
 **Anchor and its reference** >>>> `\@anchor` and its reference in text with `\*@anchor@*`
 
 **Math environment** (rendered with LaTex in Pharo)
-- inline: $math$ >>>> `\$math$`
+- inline: $\cos(\theta_i+C_3)$ >>>> `\$\cos(\theta_i+C_3)$`
 - block: 
 ```
  $
- \frac{3}
+ \cos(\theta_i+C_3)
  $
 ```
 **Annotated paragraph**
@@ -67,7 +97,7 @@ Microdown covers Markdown basis syntax, with great Pillar's features. It's more 
 **Comments** don't appear after parsing >>> `% A commented line`
 
 **Inline formats**
-- **bold** >>>> `/**bold**`
+- **bold** >>>> `**bold**`
 - _italic_ >>>> `\_italic_`
 - `monospace` aka inline code >>>> `\`monospace\``
 
@@ -83,6 +113,12 @@ _Note: text in monospace is analyzed for you to generate hypertext Pharo code ob
 **Link** >>>> `\[link's name](url|key1=value1&key2=value2)`
 
 **Figure** >>>> `\!\[figure's name](url|key1=value1&key2=value2)`
+
+`![Pharo logo](https://files.pharo.org/media/logo/logo.png)`
+produces
+
+![Pharo logo](https://files.pharo.org/media/logo/logo.png)
+
 
 ## Implementation
 
