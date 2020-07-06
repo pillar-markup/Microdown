@@ -51,12 +51,12 @@ If you are new to baselines and Metacello, check out the [Baselines](https://git
 
 ## Core Syntax in 2 seconds
 
-```Markdown
+~~~Markdown
 #Header
 
- ```language=Pharo&caption=Beautiful&label=Fig1
+```language=Pharo&caption=Beautiful&label=Fig1
 code
- ```
+```
 
 > Boring quote block 
 > Don't use me!
@@ -70,7 +70,7 @@ code
 `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
 
 References: *@ref*
-```
+~~~
 
 ## Full Syntax
 Under writing...
