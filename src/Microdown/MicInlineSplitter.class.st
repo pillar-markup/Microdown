@@ -94,7 +94,7 @@ MicInlineSplitter >> closerOnlyCase [
 	typesToFind := (#(#linkName #figure) includes: delimiterSubclassFound type ) 
 		ifTrue: [#(#linkName #figure)] 
 		ifFalse: [ Array braceWith: delimiterSubclassFound type ].
-	indexOfAssociateOpener := openersStack findFirst: [ :opener | typesToFind includes: opener type ].
+	indexOfAssociateOpener := openersStack findFirst: [ :each | typesToFind includes: each type ].
 	(indexOfAssociateOpener > 0) ifTrue: [ self addInlineBlock: indexOfAssociateOpener ]
 ]
 
