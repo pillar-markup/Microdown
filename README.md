@@ -54,9 +54,9 @@ If you are new to baselines and Metacello, check out the [Baselines](https://git
 ```Markdown
 #Header
 
-` ``` `language=Pharo&caption=Beautiful&label=Fig1
+ ```language=Pharo&caption=Beautiful&label=Fig1
 code
-`` ``` ``
+ ```
 
 > Boring quote block 
 > Don't use me!
