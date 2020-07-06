@@ -79,9 +79,9 @@ Under writing...
 Similar to markdonw headers are composed of `#` space text on one line.
 The headers can be from 1 to 6
 
-```
+~~~Markdown
 ### Header Level3
-```
+~~~
 There is not support for other forms of declaration. 
 
 ### Anchors
@@ -98,18 +98,18 @@ Microdown offer the same code block that markdown but arguments can be specified
 
 The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
 
-``` 
-   ```language=pharo|label=code1|caption=this is my great piece of code
-    codeBlockMarkupString
-    ^ '```'
-    ```
+~~~Markdown 
+```language=pharo|label=code1|caption=this is my great piece of code
+codeBlockMarkupString
+^ '```'
 ```
-````
+~~~
+~~~Markdown
 ```language=pharo|label=code1|caption=this is my great piece of code
 codeBlockMarkupString
    ^ '\`\`\`'
 ```
-````
+~~~
 
 More to come...
 
