@@ -70,6 +70,8 @@ code
 `Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
 
 References: *@ref*
+
+Math: $ a^2 + b^2 = c^2 $
 ~~~
 
 ## Full Syntax
