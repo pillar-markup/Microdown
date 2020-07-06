@@ -51,25 +51,25 @@ If you are new to baselines and Metacello, check out the [Baselines](https://git
 
 ## Core Syntax in 2 seconds
 
-```
-   	#Header
+```Markdown
+#Header
 
-	```language=Pharo&caption=Beautiful&label=Fig1
-   	code
-	```
-   
-   	> Boring quote block 
-   	> Don't use me!
+`` ``` ``language=Pharo&caption=Beautiful&label=Fig1
+code
+`` ``` ``
 
-   	![Pharo is cool](http://pharo.org)
-	
-   	- list
-   	1. ordered list 
+> Boring quote block 
+> Don't use me!
 
-  	`in text` and for Pharo hyperlinks to class, method and package: 
-  	`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+![Pharo is cool](http://pharo.org)
 
-  	References: *@ref*
+- list
+1. ordered list 
+
+`in text` and for Pharo hyperlinks to class, method and package: 
+`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
+
+References: *@ref*
 ```
 
 ## Full Syntax
