@@ -132,7 +132,7 @@ you should use
 ```
 Metacello new
   baseline: 'PillarMicro';
-  repository: 'github://pillar-markup/Pillar/src';
+  repository: 'github://pillar-markup/pillar:dev-8/src';
   load.
 ```
 
