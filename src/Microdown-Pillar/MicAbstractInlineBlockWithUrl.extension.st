@@ -3,7 +3,7 @@ Extension { #name : #MicAbstractInlineBlockWithUrl }
 { #category : #'*Microdown-Pillar' }
 MicAbstractInlineBlockWithUrl >> asPillar [
 	^ self class associatedPillarClass new
-		setChildren: ((MicInlineSplitterOld new start: self substring) collect: [:n | n asPillar]);
+		setChildren: ((MicInlineSplitter new start: self substring) collect: [:n | n asPillar]);
 		reference: self url;
 		yourself
 ]

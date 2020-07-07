@@ -9,12 +9,7 @@ Class {
 
 { #category : #obsolete }
 MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; yourself
-]
-
-{ #category : #obsolete }
-MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty) url: aURL; yourself
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #accessing }
@@ -24,5 +19,10 @@ MicAbstractInlineBlockWithUrl >> url [
 
 { #category : #accessing }
 MicAbstractInlineBlockWithUrl >> url: anURL [
-	url := (anURL isKindOf: ZnUrl) ifTrue: [anURL] ifFalse: [ ZnUrl fromString: anURL ]
+	url := anURL
+]
+
+{ #category : #transformation }
+MicAbstractInlineBlockWithUrl >> urlTransformation [
+	self url: (ZnUrl fromString: self url)
 ]

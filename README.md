@@ -118,6 +118,7 @@ Such packages should be moved in the future to other location (probably pillar i
 
 ## Loading
 
+
 ```
 Metacello new
   baseline: 'Microdown';
@@ -125,4 +126,5 @@ Metacello new
   load.
 ```
 
+The Microdown-Pillar package should probably be moved to Pillar project. So that this package is just about parsing and building a microdown model.
 
