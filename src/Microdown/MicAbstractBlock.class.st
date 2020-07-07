@@ -134,5 +134,5 @@ MicAbstractBlock >> showStructure: indent [
 MicAbstractBlock >> splitString: aString [
 	self flag: #fixMe.
 	"rename me as handleDecorations: and it should be private interface."
-	^ MicInlineSplitter new start: aString
+	^ MicInlineSplitterOld new start: aString
 ]
