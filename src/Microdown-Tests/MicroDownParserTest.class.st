@@ -306,16 +306,15 @@ toto'.
 
 { #category : #'tests-error' }
 MicroDownParserTest >> testError [
-	| root |
-	self skip. 
-	"no idea how to make it fails."
-	root :=  parser parse: '--%
-foo 
 
-![
-	! ['.
-	
+	self should: [ parser parse: '
 
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: MicParsingError 
 	
 ]
 
