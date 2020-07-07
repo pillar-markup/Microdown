@@ -136,4 +136,5 @@ Metacello new
   load.
 ```
 
+The Microdown-Pillar package should probably be moved to Pillar project. So that this package is just about parsing and building a microdown model.
 
