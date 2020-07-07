@@ -19,19 +19,19 @@ Class {
 	#category : #'Microdown-Parser'
 }
 
-{ #category : #'class factory' }
+{ #category : #accessing }
 MicInlineSplitter >> abstractDelimiterClass [
 	^ MicAbstractDelimiter
 ]
 
-{ #category : #adding }
+{ #category : #'handle basic text' }
 MicInlineSplitter >> addABasicTextFrom: start to: end toFinalArray: aFinalArray [
 	(start > end) 
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
 ]
 
-{ #category : #adding }
+{ #category : #process }
 MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 	| startIndex endIndex |
 	opener := openersStack at: indexOfAssociateOpener.
@@ -63,7 +63,7 @@ MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 		]
 ]
 
-{ #category : #'class factory' }
+{ #category : #accessing }
 MicInlineSplitter >> allDelimiters [
 	^ allDelimiters
 ]
@@ -118,17 +118,17 @@ MicInlineSplitter >> delimiterFoundProcess [
 
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MicInlineSplitter >> indexIncrement [
 	^ self indexIncrement: 1
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MicInlineSplitter >> indexIncrement: anInteger [
 	index := index + anInteger
 ]
 
-{ #category : #'class factory' }
+{ #category : #initialization }
 MicInlineSplitter >> initialize [
 	super initialize.
 	self initializeDelimiters.
@@ -139,7 +139,7 @@ MicInlineSplitter >> initialize [
 	index := 1
 ]
 
-{ #category : #'class factory' }
+{ #category : #initialization }
 MicInlineSplitter >> initializeDelimiters [
 	allDelimiters := Dictionary new.
 	self abstractDelimiterClass subclasses 
@@ -149,17 +149,17 @@ MicInlineSplitter >> initializeDelimiters [
 										put: subclass ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle basic text' }
 MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks [
 	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: 1 to: string size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle basic text' }
 MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
 	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: startIndex to: endIndex
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handle basic text' }
 MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks withFinalArray: finalArray from: startIndex to: endIndex [
 	anArrayOfInlineBlocks ifEmpty: [ ^ finalArray asArray ].
 	(anArrayOfInlineBlocks size = 1) ifTrue: [ 
@@ -285,24 +285,24 @@ MicInlineSplitter >> openerOnlyCase [
 	self pushNewOpener
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #public }
 MicInlineSplitter >> pillarFrom: aString [
 	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
 	^ (self start: aString) collect: [ :node | node asPillar ]
 ]
 
-{ #category : #process }
+{ #category : #actions }
 MicInlineSplitter >> popFrom: aStartIndex to: anEndIndex [
 	aStartIndex to: anEndIndex do: [ :i | openersStack pop ]
 	
 ]
 
-{ #category : #process }
+{ #category : #actions }
 MicInlineSplitter >> pushNewOpener [
 	openersStack push: (delimiterSubclassFound index: index)
 ]
 
-{ #category : #'meta-object-protocol' }
+{ #category : #actions }
 MicInlineSplitter >> read: aString [
 	incrementation := 1.
 	aString ifEmpty: [ ^ self resultProcess ].
@@ -331,19 +331,19 @@ MicInlineSplitter >> resultProcess [
 	^ self insertBasicText: result
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 MicInlineSplitter >> start: aString [
 	aString ifEmpty: [ ^ Array empty ].
 	string := aString.
 	^ self read: aString
 ]
 
-{ #category : #'class references' }
+{ #category : #accessing }
 MicInlineSplitter >> urlCloserDelimiterClass [
 	^ MicURLCloserDelimiter
 ]
 
-{ #category : #'class references' }
+{ #category : #accessing }
 MicInlineSplitter >> urlOpenerDelimiterClass [
 	^ MicURLOpenerDelimiter 
 ]
