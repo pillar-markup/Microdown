@@ -490,3 +490,19 @@ aa'.
 	self assert: document children first class equals: MicParagraphBlock. 
 	
 ]
+
+{ #category : #'tests-table' }
+MicroDownParserTest >> testSimpleTable [
+
+	self skip.
+	self flag: #fixMe.
+	self shouldnt: [ parser parse: '
+
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: MicParsingError 
+	
+]
