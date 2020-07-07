@@ -118,21 +118,11 @@ Such packages should be moved in the future to other location (probably pillar i
 
 ## Loading
 
-Pay attention due to loop in baselines we cannot get the full version with pillar with this expression
 
 ```
 Metacello new
   baseline: 'Microdown';
   repository: 'github://pillar-markup/Microdown/src';
-  load.
-```
-
-you should use 
-
-```
-Metacello new
-  baseline: 'PillarMicro';
-  repository: 'github://pillar-markup/pillar:dev-8/src';
   load.
 ```
 
