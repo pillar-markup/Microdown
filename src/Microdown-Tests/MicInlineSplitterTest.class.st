@@ -12,7 +12,7 @@ MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 	"When isEvaluated class method returns false, like anchor reference's case, inline inside shoudn't be evaluated"
 	| res |
@@ -49,7 +49,7 @@ MicInlineSplitterTest >> testBoldAsPillar [
 	self assert: res second class equals: PRBoldFormat.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testEscapeCharacter [
 	"Test the escape \ in simple case (here, bold one)"
 
@@ -60,7 +60,7 @@ MicInlineSplitterTest >> testEscapeCharacter [
 		equals: {'abc**test**last'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
 	"Test the escape \ in simple case (here, bold one)"
 
@@ -71,7 +71,7 @@ MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
 		equals: {'**test**'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	"Test the escape \ in link description"
 
@@ -82,7 +82,18 @@ MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 		equals: {'abc' . '[**test**](linkName)' . 'last'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInNestedCase [
+	"Test the escape \ in case of nested formats"
+
+	| res |
+	res := self splitter start: 'abc_\**not bold** italic_last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[**not bold** italic](italic)' . 'last'}.
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 	"Test the escape \ in case of nested linknames"
 
@@ -121,7 +132,7 @@ MicInlineSplitterTest >> testItalicAsPillar [
 	
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testMathUnevaluated [
 	"When isEvaluated class method returns false, like math's case, inline inside shoudn't be evaluated"
 	| res |
@@ -131,7 +142,7 @@ MicInlineSplitterTest >> testMathUnevaluated [
 		equals: {'abc' . '[def**not bold**ghi](math)' . 'xyz'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testMonospaceUnevaluated [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
 	| res |
@@ -141,7 +152,7 @@ MicInlineSplitterTest >> testMonospaceUnevaluated [
 		equals: {'abc' . '[def**not bold**ghi](monospace)' . 'xyz'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testRawUnevaluated [
 	"When isEvaluated class method returns false, like raw's case, inline inside shoudn't be evaluated"
 	| res |
@@ -151,7 +162,7 @@ MicInlineSplitterTest >> testRawUnevaluated [
 		equals: {'abc' . '[def**not bold**ghi](raw)' . 'xyz'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitAnnotation [
 	| res |
 	res := self splitter start: 'abc<?type:value|key1=val1&key2=val2?>def'.
@@ -160,7 +171,7 @@ MicInlineSplitterTest >> testSplitAnnotation [
 		equals: {'abc' . '[type:value|key1=val1&key2=val2](annotation)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlock2 [
 	"Test with multiple annotations"
 
@@ -171,7 +182,7 @@ MicInlineSplitterTest >> testSplitBlock2 [
 		equals: {'abc' . '[abc](bold)' . 'xyz' . '[xyz](monospace)' . 'last'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockAnchorReference [
 	| res |
 	res := self splitter start: 'abc*@anchorA@*def'.
@@ -182,7 +193,7 @@ MicInlineSplitterTest >> testSplitBlockAnchorReference [
 
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockAnnotation [
 	| res |
 	res := self splitter start: 'abc<?an annotation?>def'.
@@ -193,7 +204,7 @@ MicInlineSplitterTest >> testSplitBlockAnnotation [
 
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockBold [
 	| res |
 	res := self splitter start: 'abc**bold**def'.
@@ -210,7 +221,7 @@ MicInlineSplitterTest >> testSplitBlockBold [
 
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockCode [
 	| res |
 	res := self splitter start: 'abc`block`def'.
@@ -219,7 +230,7 @@ MicInlineSplitterTest >> testSplitBlockCode [
 		equals: {'abc' . '[block](monospace)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
@@ -233,7 +244,7 @@ MicInlineSplitterTest >> testSplitBlockImage [
 	self assert: res second url segments second equals: 'image.png'	
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockItalics [
 	| res |
 	res := self splitter start: 'abc_italics_def'.
@@ -247,7 +258,7 @@ MicInlineSplitterTest >> testSplitBlockItalics [
 		equals: {'abc' . '[ ita lics ](italic)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockLink [
 	"Test the link annotation [LinkText](url)"
 
@@ -273,7 +284,7 @@ MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 	self assert: res second url equals: 'LinkText'
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 	"Test the link annotation [![alttext](imageurl)](url)"
 
@@ -282,11 +293,11 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 		start: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[ [alttext](figure) ](linkName)' . 'last'}.
-	self assert: res second children second url segments first equals: 'imageurl'
+		equals: {'abc' . '[[alttext](figure)](linkName)' . 'last'}.
+	self assert: res second children first url segments first equals: 'imageurl'
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 	"Test with multiple annotations"
 
@@ -297,7 +308,7 @@ MicInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 		equals: {'abc' . '[abc](bold)' . 'xyz' . '[xyz](monospace)' . 'last'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockNested [
 	"Test with nested annotations"
 	| res |
@@ -307,17 +318,17 @@ MicInlineSplitterTest >> testSplitBlockNested [
 		equals: {'abc' . '[bold [italic](italic) bold](bold)' . 'xyz'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockNested2 [
-	"Test with nested annotations"
+	"Test with nested annotations 2"
 	| res |
-	res := self splitter start: 'abc**bold_italic_bold_italic2_bold**xyz'.
+	res := self splitter start: 'abc**x_y_z**cba'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[bold [italic](italic) bold [italic2](italic) bold](bold)' . 'xyz'}
+		equals: {'abc' . '[x [y](italic) z](bold)' . 'cba'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockNoAnnotation [
 	| res |
 	res := self splitter start: 'abc'.
@@ -327,7 +338,7 @@ MicInlineSplitterTest >> testSplitBlockNoAnnotation [
 	self assert: res first printString equals: 'abc def gh'.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockStrike [
 	| res |
 	res := self splitter start: 'abc~strike~def'.
@@ -336,14 +347,14 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 		equals: {'abc' . '[strike](strike)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitEmpty [
 	| res |
 	res := self splitter start: ''.
 	self assert: res isEmpty
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitExclamationMark [
 	"Test that 'bla!bla' is ok, and not a failed image, same goes for '![goo]no parenthesis'"
 
@@ -358,7 +369,7 @@ MicInlineSplitterTest >> testSplitExclamationMark [
 		equals: {'![goo]no parenthesis'}
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitMathCode [
 	| res |
 	res := self splitter start: 'abc$math env$def'.
@@ -367,7 +378,7 @@ MicInlineSplitterTest >> testSplitMathCode [
 		equals: {'abc' . '[math env](math)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitMathRaw [
 	| res |
 	res := self splitter start: 'abc{{someRaw}}def'.
@@ -376,14 +387,14 @@ MicInlineSplitterTest >> testSplitMathRaw [
 		equals: {'abc' . '[someRaw](raw)' . 'def'}.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter start: 'abc**xyz'.
 	self assert: res first printString equals: 'abc**xyz'.
 ]
 
-{ #category : #'tests - OK for now' }
+{ #category : #tests }
 MicInlineSplitterTest >> testUrlObjectInUrlBlocks [
 
 	| res |

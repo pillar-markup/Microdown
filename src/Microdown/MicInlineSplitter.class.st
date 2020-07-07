@@ -26,15 +26,9 @@ MicInlineSplitter >> abstractDelimiterClass [
 
 { #category : #adding }
 MicInlineSplitter >> addABasicTextFrom: start to: end toFinalArray: aFinalArray [
-	(start = end) 
+	(start > end) 
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
-]
-
-{ #category : #adding }
-MicInlineSplitter >> addInlineBlock [
-	"The found closer should match with the last opener, found at the top of openersStack e.g. at index 1"
-	self addInlineBlock: 1
 ]
 
 { #category : #adding }
@@ -49,10 +43,12 @@ MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 			startIndex := opener index + opener size.
 			endIndex := closer index - 1.
 			correctSubstring := string collect: [ :c | c ] from: startIndex to: endIndex.
+			"Delete openers above in stack, considered as unclosed so ignored"
+			self popFrom: 1 to: indexOfAssociateOpener.
 			"Add found inline block"
-			(openersStack size > 1)
+			(openersStack size > 0)
 				ifTrue: [ 
-					(openersStack size - 1 > nestedLevel)
+					(openersStack size > nestedLevel)
 						ifTrue: [ 
 							children 
 								ifEmpty: [ children add: self newInlineBlock ]
@@ -63,9 +59,7 @@ MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 					result add: self newInlineBlock.
 					children := LinkedList new.
 				].
-			nestedLevel := openersStack size - 1.
-			"Delete openers above in stack, considered as unclosed so ignored"
-			self popFrom: 1 to: indexOfAssociateOpener
+			nestedLevel := openersStack size.
 		]
 ]
 
@@ -76,13 +70,15 @@ MicInlineSplitter >> allDelimiters [
 
 { #category : #process }
 MicInlineSplitter >> bothCase [
-	(openersStack isEmpty or: [ (openersStack top type = delimiterSubclassFound type) not ])
+	| indexOfAssociateOpener |
+	indexOfAssociateOpener := openersStack findFirst: [ :each | delimiterSubclassFound type = each type ].
+	(openersStack isEmpty or: [ indexOfAssociateOpener = 0])
 		ifTrue: [ 
 			"We consider the delimiter as a new opener or it's the first opener"
 			self pushNewOpener ]
 		ifFalse: [ 
 			"We consider the delimiter as a closer of last opened inline block"
-			self addInlineBlock ]
+			self addInlineBlock: indexOfAssociateOpener ]
 ]
 
 { #category : #process }
@@ -198,10 +194,12 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 					endIndex := closer index - 1.
 					correctSubstring := string collect: [ :c | c ] from: startIndex to: endIndex.
 					correctURL := string collect: [ :c | c ] from: (closer index + closer size + self urlOpenerDelimiterClass size) to: (urlCloserIndex - 1).
+					"Delete openers above in stack, considered as unclosed so ignored"
+					self popFrom: 1 to: indexOfAssociateOpener.
 					"Add found inline block"
-			(openersStack size > 1)
+			(openersStack size > 0)
 				ifTrue: [ 
-					(openersStack size - 1 > nestedLevel)
+					(openersStack size > nestedLevel)
 						ifTrue: [ 
 							children 
 								ifEmpty: [ children add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL) ]
@@ -212,10 +210,8 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 					result add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL).
 					children := LinkedList new.
 				].
-			nestedLevel := openersStack size - 1.
-				"Delete openers above in stack, considered as unclosed so ignored"
-				self popFrom: 1 to: indexOfAssociateOpener.
-				incrementation := urlCloserIndex - index
+			incrementation := urlCloserIndex - index.
+			nestedLevel := openersStack size.
 				]
 				ifFalse: [ "do nothing" ]
 		]
@@ -287,6 +283,12 @@ MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 { #category : #process }
 MicInlineSplitter >> openerOnlyCase [
 	self pushNewOpener
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineSplitter >> pillarFrom: aString [
+	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
+	^ (self start: aString) collect: [ :node | node asPillar ]
 ]
 
 { #category : #process }
