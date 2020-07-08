@@ -306,16 +306,15 @@ toto'.
 
 { #category : #'tests-error' }
 MicroDownParserTest >> testError [
-	| root |
-	self skip. 
-	"no idea how to make it fails."
-	root :=  parser parse: '--%
-foo 
 
-![
-	! ['.
-	
+	self should: [ parser parse: '
 
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: MicParsingError 
 	
 ]
 
@@ -489,5 +488,21 @@ MicroDownParserTest >> testParseLineWithTwoCharacters [
 aa'.
 	self assert: document children size equals: 1. 
 	self assert: document children first class equals: MicParagraphBlock. 
+	
+]
+
+{ #category : #'tests-table' }
+MicroDownParserTest >> testSimpleTable [
+
+	self skip.
+	self flag: #fixMe.
+	self shouldnt: [ parser parse: '
+
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: MicParsingError 
 	
 ]
