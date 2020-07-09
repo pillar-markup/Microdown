@@ -1,5 +1,5 @@
 "
-I'm block that represent an anchor to a section. 
+I'm block that represents an anchor to a section. This way text can refer to the anchor to refer to the section. 
 
 ```
 # A section
