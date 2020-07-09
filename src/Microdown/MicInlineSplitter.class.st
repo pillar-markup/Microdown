@@ -202,12 +202,12 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 					(openersStack size > nestedLevel)
 						ifTrue: [ 
 							children 
-								ifEmpty: [ children add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL) ]
-								ifNotEmpty: [ children last add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL) ] ]
-						ifFalse: [ children add: ((self newInlineBlockWithoutChildrenWithCloser: urlCloserIndex) url: correctURL) ].
+								ifEmpty: [ children add: (self newURLInlineBlockWithCloser: urlCloserIndex) ]
+								ifNotEmpty: [ children last add: (self newURLInlineBlockWithCloser: urlCloserIndex) ] ]
+						ifFalse: [ children add: (self newURLInlineBlockWithoutChildrenWithCloser: urlCloserIndex) ].
 				]
 				ifFalse: [ 
-					result add: ((self newInlineBlockWithCloser: urlCloserIndex) url: correctURL).
+					result add: (self newURLInlineBlockWithCloser: urlCloserIndex).
 					children := LinkedList new.
 				].
 			incrementation := urlCloserIndex - index.
@@ -278,6 +278,62 @@ MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 			to: aCloserIndex
 			withKind: opener type
 			withSubstring: correctSubstring
+]
+
+{ #category : #'instance creation' }
+MicInlineSplitter >> newURLInlineBlock [
+	| inlineBlockClass |
+	inlineBlockClass := opener associatedInlineBlock.
+	(inlineBlockClass isEvaluated) 
+		ifTrue: [ 
+			^ inlineBlockClass
+				from: opener index
+				to: closer index + closer size - 1
+				withKind: opener type
+				withSubstring: correctSubstring
+				withChildren: children asArray
+				withURL: correctURL
+		 ]
+		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
+	
+]
+
+{ #category : #'instance creation' }
+MicInlineSplitter >> newURLInlineBlockWithCloser: aCloserIndex [
+	| inlineBlockClass |
+	inlineBlockClass := opener associatedInlineBlock.
+	(inlineBlockClass isEvaluated) 
+		ifTrue: [ 
+			^ inlineBlockClass
+				from: opener index
+				to: aCloserIndex
+				withKind: opener type
+				withSubstring: correctSubstring
+				withChildren: children asArray
+				withURL: correctURL
+		 ]
+		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
+	
+]
+
+{ #category : #'instance creation' }
+MicInlineSplitter >> newURLInlineBlockWithoutChildren [
+	^ opener associatedInlineBlock
+			from: opener index
+			to: closer index + closer size - 1
+			withKind: opener type
+			withSubstring: correctSubstring
+			withURL: correctURL
+]
+
+{ #category : #'instance creation' }
+MicInlineSplitter >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
+	^ opener associatedInlineBlock
+			from: opener index
+			to: aCloserIndex
+			withKind: opener type
+			withSubstring: correctSubstring
+			withURL: correctURL
 ]
 
 { #category : #process }
