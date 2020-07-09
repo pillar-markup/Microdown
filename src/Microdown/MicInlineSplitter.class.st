@@ -372,7 +372,7 @@ MicInlineSplitter >> read: aString [
 { #category : #process }
 MicInlineSplitter >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
-	result ifEmpty: [ ^ (self newBasicInlineBlockFrom: 1 to: string size) asArray ].
+	result ifEmpty: [ ^ { (self newBasicInlineBlockFrom: 1 to: string size)} ].
 	result do: [ :e | 
 		| startSubstring endSubstring |
 		startSubstring := string indexOfSubCollection: e substring startingAt: e start.
