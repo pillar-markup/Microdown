@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Tests'
 }
 
-{ #category : #tests }
+{ #category : #access }
 MicInlineSplitterTest >> splitter [
 	^ MicInlineSplitter new
 ]
@@ -30,7 +30,7 @@ MicInlineSplitterTest >> testBasicTextAsPillar [
 	self assert: res first class equals: PRText.
 ]
 
-{ #category : #tests }
+{ #category : #'pillar conversion' }
 MicInlineSplitterTest >> testBoldAndNestedItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**x_y_z**cba'.
@@ -80,6 +80,17 @@ MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[**test**](linkName)' . 'last'}.
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testEscapeCharacterInNestedCase [
+	"Test the escape \ in case of nested formats"
+
+	| res |
+	res := self splitter start: 'abc_\**not bold** italic_last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[**not bold** italic](italic)' . 'last'}.
 ]
 
 { #category : #tests }
@@ -260,7 +271,7 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self assert: res second url segments first equals: 'myURL'
 ]
 
-{ #category : #tests }
+{ #category : #fails }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
@@ -278,13 +289,12 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
-	self skip.
 	res := self splitter
 		start: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[[alttext](figure)](linkName)' . 'last'}.
-	self assert: res second children second url equals: 'imageurl'
+	self assert: res second children first url segments first equals: 'imageurl'
 ]
 
 { #category : #tests }
@@ -306,6 +316,16 @@ MicInlineSplitterTest >> testSplitBlockNested [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[bold [italic](italic) bold](bold)' . 'xyz'}
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockNested2 [
+	"Test with nested annotations 2"
+	| res |
+	res := self splitter start: 'abc**x_y_z**cba'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[x [y](italic) z](bold)' . 'cba'}
 ]
 
 { #category : #tests }
