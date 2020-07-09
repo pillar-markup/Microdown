@@ -1,5 +1,5 @@
 "
-I represent the class which is in charge of splitting sentences to parse inline blocks.
+I'm in charge of splitting sentences to parse inline blocks - I'm an implementation using another implementation. We may remove me once the current one is really validated. I use the MicInlineEmphasisProcessor. 
 
 To proceed: `MicInlineSplitter new start: stringToParse`
 
@@ -103,12 +103,6 @@ MicInlineSplitterOld >> linkOrImageProcess [
 	| linkNameCloserIndex |
 	"1. search the linkname closer delimiter"
 	linkNameCloserIndex := delimiterStack findLast: [ :delimiter | delimiter isOpener and: delimiter type = #linkName].
-]
-
-{ #category : #'as yet unclassified' }
-MicInlineSplitterOld >> pillarFrom: aString [
-	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
-	^ (self start: aString) collect: [ :node | node asPillar ]
 ]
 
 { #category : #process }

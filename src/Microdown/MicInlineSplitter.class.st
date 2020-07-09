@@ -26,7 +26,7 @@ MicInlineSplitter >> abstractDelimiterClass [
 
 { #category : #'handle basic text' }
 MicInlineSplitter >> addABasicTextFrom: start to: end toFinalArray: aFinalArray [
-	(start > end) 
+	start > end
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
 ]
@@ -46,7 +46,7 @@ MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 			"Delete openers above in stack, considered as unclosed so ignored"
 			self popFrom: 1 to: indexOfAssociateOpener.
 			"Add found inline block"
-			(openersStack size > 0)
+			openersStack size > 0
 				ifTrue: [ 
 					(openersStack size > nestedLevel)
 						ifTrue: [ 
@@ -339,12 +339,6 @@ MicInlineSplitter >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 { #category : #process }
 MicInlineSplitter >> openerOnlyCase [
 	self pushNewOpener
-]
-
-{ #category : #public }
-MicInlineSplitter >> pillarFrom: aString [
-	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
-	^ (self start: aString) collect: [ :node | node asPillar ]
 ]
 
 { #category : #actions }
