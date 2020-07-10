@@ -1,3 +1,12 @@
+"
+My subclasses manage figures and links.
+
+```
+![Pharologo](https://files.pharo.org/media/logo/logo.png
+```
+
+![Pharologo](https://files.pharo.org/media/logo/logo.png)
+"
 Class {
 	#name : #MicAbstractInlineBlockWithUrl,
 	#superclass : #MicAbstractInlineBlock,
