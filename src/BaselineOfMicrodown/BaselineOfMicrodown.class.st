@@ -39,6 +39,6 @@ BaselineOfMicrodown >> pillar: spec [
 	spec project: 'PillarModel' copyFrom: 'Pillar' with: [ 
 			spec loads: #('Pillar-Model') ].
 	
-	spec project: 'PillarRichTextComposer' with: [ 
+	spec project: 'PillarRichTextComposer' copyFrom: 'Pillar' with: [ 
 			spec loads: #('rich text exporter') ].
 ]
