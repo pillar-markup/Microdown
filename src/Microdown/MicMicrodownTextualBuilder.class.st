@@ -182,6 +182,27 @@ MicMicrodownTextualBuilder >> lines: aString [
 	 ]
 ]
 
+{ #category : #'element - metadata' }
+MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
+
+	self metaDataFromAssociation: aDictionary associations
+]
+
+{ #category : #'element - metadata' }
+MicMicrodownTextualBuilder >> metaDataFromAssociation: aCollection [ 
+	stream nextPutAll: '{ '; cr.
+	aCollection do: [ :each | 
+		stream nextPut: $".
+		stream nextPutAll: each key. 
+		stream nextPutAll: '" : "'.
+		stream nextPutAll: each value. 
+		stream nextPut: $".
+		]
+		separatedBy: [ stream nextPutAll: ' , '].
+	
+	stream cr ; nextPutAll: '}'.
+]
+
 { #category : #'ugly line handling' }
 MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 	self 
