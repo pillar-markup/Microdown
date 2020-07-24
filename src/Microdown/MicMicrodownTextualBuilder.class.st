@@ -132,7 +132,7 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription w
 
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
-	self newLine.
+
 	self raw: (parserClass headerMarkup repeat: anInteger).
    self raw: String space.
    aBloc value: self.
