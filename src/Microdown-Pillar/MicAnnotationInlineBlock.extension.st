@@ -12,3 +12,8 @@ MicAnnotationInlineBlock >> asPillar [
 	classPillar := PRAbstractAnnotation findClassAcceptingTag: name ifNone: [ PRUndefinedAnnotation ].
 	^ classPillar new parameters: arguments
 ]
+
+{ #category : #'*Microdown-Pillar' }
+MicAnnotationInlineBlock class >> hasAssociatedPillarClass [
+	^ false
+]
