@@ -8,7 +8,7 @@ MicAbstractInlineBlock >> asPillar [
 		ifTrue: [ {(PRText new text: self substring )} ] 
 		ifFalse: [ children collect: [:e | e asPillar ] ].
 	self class hasAssociatedPillarClass
-		ifTrue: [ ^ self class associatedPillarClass new
+		ifTrue: [ ^ self associatedPillarClass new
 				setChildren: childrenAsPillar;
 				yourself]
 ]
@@ -22,6 +22,11 @@ MicAbstractInlineBlock class >> associatedPillarClass [
 	"This method is not defined as abstract because some classes do not have a direct class.
 	and require. A solution would be to move this prototocol to instance side because 
 	we have the information."
+]
+
+{ #category : #'*Microdown-Pillar' }
+MicAbstractInlineBlock >> associatedPillarClass [
+	^ self class associatedPillarClass 
 ]
 
 { #category : #'*Microdown-Pillar' }
