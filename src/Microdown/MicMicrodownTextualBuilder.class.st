@@ -80,15 +80,6 @@ MicMicrodownTextualBuilder >> comment: aText [
 	
 ]
 
-{ #category : #'element - header' }
-MicMicrodownTextualBuilder >> duringHeaderLevel: anInteger do: aBlockClosure [ 
-
-	self
-		raw: (parserClass headerMarkup repeat: anInteger);
-		raw: String space.
-	aBlockClosure value
-]
-
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 	self 
@@ -131,10 +122,7 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription w
 
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
-
-	self raw: (parserClass headerMarkup repeat: anInteger).
-   self raw: String space.
-   aBloc value: self.
+	self rawHeader: aBloc withLevel: anInteger.
 	self newLine
 ]
 
@@ -298,6 +286,15 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aText [
 		raw: aText.
 	
 
+]
+
+{ #category : #'writing low-level' }
+MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
+
+	self raw: (parserClass headerMarkup repeat: anInteger).
+   self raw: String space.
+   aBloc value: self.
+	
 ]
 
 { #category : #'ugly line handling' }
