@@ -1,8 +1,11 @@
 "
-I'm a textual builder of microdown. 
-Using my API clients can generate text in Microdown format.
+I'm a textual builder for Microdown: Using my API clients can generate text in Microdown format.
 
-I should replace MicBuilder and probably be moved to Microdown project.
+
+I have two kinds of clients.
+- some to generate using high level Microdown blocks and text.
+  for example using `paragraph: aBlock` I will generate a block and do not force the user to think about newline.
+- some to generate pieces of text. For example the Pillar writer will invoke the raw version. For example `rawParagraph: aBlock` just issue a paragraph without taken care about new line.
 
 
 #### Known limits 
@@ -24,11 +27,7 @@ MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
 	self flag: #fixme. "Should have the same API than paragraph for the paragraph"
-	self
-		raw: parserClass annotatedParagraphMarkup;
-		raw: annotation; 
-		raw: String space;
-		raw: aText.
+	self rawAnnotated: annotation paragraph: aText. 
 	self newLine
 
 ]
@@ -246,7 +245,7 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 { #category : #'element - paragraph' }
 MicMicrodownTextualBuilder >> paragraph: aBlock [
 
-	aBlock value. 
+	self rawParagraph: aBlock.
 	self newLine
 ]
 
@@ -277,6 +276,7 @@ MicMicrodownTextualBuilder >> raw: aString [
 	raw can be invoked for multiple reasons. Now the logic of writeIndentedCodeBlockDuring: only works if 
 	this raw is invoked. 
 	"
+	aString = String tab ifTrue: [ self halt. ].
 	lastIsNewLine ifTrue: [ 
 		prefixStack do: [ :each |
 			super raw: each ].
@@ -285,10 +285,35 @@ MicMicrodownTextualBuilder >> raw: aString [
 	lastIsNewLine := false
 ]
 
+{ #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aText [
+	"!!Important 
+	
+	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
+	self flag: #fixme. "Should have the same API than paragraph for the paragraph"
+	self
+		raw: parserClass annotatedParagraphMarkup;
+		raw: annotation; 
+		raw: String space;
+		raw: aText.
+	
+
+]
+
 { #category : #'ugly line handling' }
 MicMicrodownTextualBuilder >> rawLines: aString [
 	"Output aString and take care of line ending within aString."
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
+]
+
+{ #category : #'writing low-level' }
+MicMicrodownTextualBuilder >> rawParagraph: aBlock [
+
+	aBlock value
+	
+
+	
+	
 ]
 
 { #category : #'element - list' }
