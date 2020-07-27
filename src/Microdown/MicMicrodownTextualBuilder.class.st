@@ -50,9 +50,19 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString [ 
-	self flag: #fixme. 
-	"missing first line stuff"
+	self codeblock: aString firstLineAssociations: #() 
+]
+
+{ #category : #'element - code block' }
+MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
+
 	self raw: parserClass codeblockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '=';
+						raw: each value value 
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
 	self newLine.
 	self raw: aString.
 	self newLine.
