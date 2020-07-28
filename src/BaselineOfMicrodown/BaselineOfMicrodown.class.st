@@ -29,8 +29,8 @@ BaselineOfMicrodown >> baseline: spec [
 				spec requires:  #('Microdown' #'Microdown-Pillar' 'PillarFoundation' ) ].
 		
 		spec 
-			group: 'default' with: #('Microdown');
-			group: 'pillar' with: #('Microdown-Pillar') ]
+			group: 'default' with: #('Microdown' 'Microdown-Tests' 'pillar' );
+			group: 'pillar' with: #('Microdown-Pillar' 'Microdown-Pillar-Tests') ]
 
 ]
 
