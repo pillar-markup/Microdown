@@ -22,11 +22,11 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Pillar' with: [
 				spec requires:  #( #'Microdown' 'PillarCore') ];
 			package: #'Microdown-Pillar-Tests' with: [
-				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ]";
+				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ];
 			package: #'Microdown-Calypso' with: [
 				spec requires:  #(#'Microdown-Pillar' 'Microdown-RichTextComposer') ];
 			package: #'Microdown-RichTextComposer' with: [
-				spec requires:  #('Microdown' #'Microdown-Pillar' 'PillarRichTextComposer' ) ]"
+				spec requires:  #('Microdown' #'Microdown-Pillar' 'PillarRichTextComposerPillarFoundation' ) ]
 			]
 
 ]
@@ -35,5 +35,9 @@ BaselineOfMicrodown >> baseline: spec [
 BaselineOfMicrodown >> pillar: spec [
 	spec baseline: 'PillarCore' with: [ 
 		spec repository: 'github://pillar-markup/PillarFoundation/src' ].
+	
+	spec baseline: 'PillarFoundation' with: [ 
+		spec repository: 'github://pillar-markup/PillarFoundation/src';
+		loads: #('richtext') ].
 		
 ]
