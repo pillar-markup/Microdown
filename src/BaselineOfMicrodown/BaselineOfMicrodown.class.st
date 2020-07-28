@@ -26,7 +26,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Calypso' with: [
 				spec requires:  #(#'Microdown-Pillar' 'Microdown-RichTextComposer') ];
 			package: #'Microdown-RichTextComposer' with: [
-				spec requires:  #('Microdown' #'Microdown-Pillar' 'PillarRichTextComposerPillarFoundation' ) ]
+				spec requires:  #('Microdown' #'Microdown-Pillar' 'PillarFoundation' ) ]
 			]
 
 ]
