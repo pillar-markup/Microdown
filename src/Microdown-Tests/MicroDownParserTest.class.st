@@ -425,24 +425,43 @@ MicroDownParserTest >> testMetaData [
 ]
 
 { #category : #'tests-metaData' }
+MicroDownParserTest >> testMetaData2 [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	metadata := root children first. 
+	self assert: (metadata isKindOf: MicMetaDataBlock). 
+	self assert: metadata body equals: '"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"'
+	"note that the closing is not part of the body"
+	
+]
+
+{ #category : #'tests-metaData' }
 MicroDownParserTest >> testMetaDataEatsOtherBlocks [
 
-	| source root math |
+	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse"', String cr,
 	parser headerMarkup, 'newheader here'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicMetaDataBlock). 
-	self assert: math body equals: '"author": "S Ducasse"',String cr, parser headerMarkup, 'newheader here'.
+	metadata := root children first. 
+	self assert: (metadata isKindOf: MicMetaDataBlock). 
+	self assert: metadata body equals: '"author": "S Ducasse"',String cr, parser headerMarkup, 'newheader here'.
 	
 ]
 
 { #category : #'tests-metaData' }
 MicroDownParserTest >> testMetaDataMultipleLines [
 
-	| source root math |
+	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse",', String cr,
 	 '"title": "Ze Great Book from Frenchies"', String cr,
@@ -450,9 +469,9 @@ MicroDownParserTest >> testMetaDataMultipleLines [
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicMetaDataBlock). 
-	self assert: math body equals: '"author": "S Ducasse",
+	metadata := root children first. 
+	self assert: (metadata isKindOf: MicMetaDataBlock). 
+	self assert: metadata body equals: '"author": "S Ducasse",
 "title": "Ze Great Book from Frenchies"'
 	"note that the closing is not part of the body"
 	

@@ -1,5 +1,8 @@
 "
-Right now pillar does not represent metadata as PR object but as plain ston objects. This is clearly not well done. It means that for the conversion to pillar we have no clue what to. May be we should drop MicMetaDataBlock altogether.
+Pillar, when parsing Pillar files, does not represent metadata as PR object but as plain ston objects. PRMetadata got introduced to support the migration from Pillar to Microdown. 
+We will have to learn from doing the migration. 
+
+In Microdown, metadata is a block level expressed as follows:  
 
 ```
 {
@@ -9,6 +12,8 @@ Right now pillar does not represent metadata as PR object but as plain ston obje
     ""slidesid"": ""W1-LiveA-EN""
 }
 ```
+
+This class should be packaged in a separate package because it requires the Pillar extension for books (i.e., package `#'Pillar-Model'`).
 "
 Class {
 	#name : #MicMetaDataBlock,
