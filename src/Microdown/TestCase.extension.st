@@ -7,6 +7,7 @@ TestCase class >> buildMicroDownUsing: aBuilder withComment: aString [
 		horizontalLine;
 		header: [ :b | b text: 'Description' ] withLevel: 3;
 		text: aString;
+		newLine;
 		header: [ :b | b text: 'Tests' ] withLevel: 3;
 		text: 'This test suite defines ';
 		text: self allTestSelectors size asString;
