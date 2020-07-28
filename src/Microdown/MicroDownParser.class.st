@@ -110,9 +110,9 @@ _Note: text in monospace is analyzed for you to generate hypertext Pharo code ob
 
 **Raw** for your other code (inline) >>>> `\{{ some code }}`
 
-**Link** >>>> `\[link's name](url|key1=value1&key2=value2)`
+**Link** >>>> `\[link's name](url?key1=value1&key2=value2)`
 
-**Figure** >>>> `\!\[figure's name](url|key1=value1&key2=value2)`
+**Figure** >>>> `\!\[figure's name](url?key1=value1&key2=value2)`
 
 `![Pharo logo](https://files.pharo.org/media/logo/logo.png)`
 produces
@@ -208,7 +208,7 @@ MicroDownParser class >> argumentListEqualsDelimiter [
 { #category : #'markup utils' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
-	^ '|'
+	^ '?'
 ]
 
 { #category : #'inline block markups' }

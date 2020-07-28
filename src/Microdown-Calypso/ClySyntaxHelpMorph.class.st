@@ -70,7 +70,7 @@ Horizontal
    1000 factorial / 999 factorial
 ```
 
-![Pharologo](https://files.pharo.org/media/logo/logo.png|size=80&caption=Our great figure.)
+![Pharologo](https://files.pharo.org/media/logo/logo.png?size=80&caption=Our great figure.)
 
 A link: [http://pharo.org](http://pharo.org)
 
