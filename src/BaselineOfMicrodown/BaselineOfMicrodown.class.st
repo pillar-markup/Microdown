@@ -30,7 +30,8 @@ BaselineOfMicrodown >> baseline: spec [
 		
 		spec 
 			group: 'default' with: #('Microdown' 'Microdown-Tests' 'pillar' );
-			group: 'pillar' with: #('Microdown-Pillar' 'Microdown-Pillar-Tests') ]
+			group: 'pillar' with: #('Microdown-Pillar' 'Microdown-Pillar-Tests');
+			group: 'richtext' with: #('Microdown-RichTextComposer') ]
 
 ]
 
