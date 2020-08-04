@@ -38,7 +38,8 @@ BaselineOfMicrodown >> baseline: spec [
 { #category : #baselines }
 BaselineOfMicrodown >> pillar: spec [
 	spec baseline: 'PillarCore' with: [ 
-		spec repository: 'github://pillar-markup/PillarFoundation/src' ].
+		spec repository: 'github://pillar-markup/PillarFoundation/src';
+		loads: #('Pillar-Tests-Core') ].
 	
 	spec baseline: 'PillarFoundation' with: [ 
 		spec repository: 'github://pillar-markup/PillarFoundation/src';
