@@ -5,10 +5,5 @@ SmalltalkCISpec {
       #directory : 'src',
       #platforms : [ #pharo ]
     }
-  ],
-  #testing : {
-    #coverage : {
-      #packages : [ 'Microdown' , 'Microdown-Pillar' ]
-    }
-  }
+  ]
 }
