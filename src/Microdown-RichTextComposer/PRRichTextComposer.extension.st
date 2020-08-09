@@ -124,20 +124,6 @@ foo: arg
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillarLatexMath [
-	<example>
-	(PRRichTextComposer  asText:
-'!!!Latex mathematics 
-It is possible to render latex math:
-[[[language=latexMath
-V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
-]]]
-Cool eh?
-') inspect
-]
-
-{ #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> microdown [
 	^ MicroDownParser 
 	
@@ -161,9 +147,6 @@ PRRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	| builder |
 	builder := MicroDownParser builder.
 	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
-	self flag: #fixMe.
-	"I do not like the asText: the interaction between parser, richtext composer should be 
-	more obvious"
 	self notRendering 	
 		ifTrue: [ ^ aString ].
 	
