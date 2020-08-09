@@ -15,115 +15,111 @@ and this is just *first* line
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar10 [
+PRRichTextComposer class >> exampleMicrodown11 [
 	<example>
-	(self asText:
-					'
-[[[language=PharoMethod
-1 + 2 * 3
-]]]
+	(self microdownAsRichText:
+'###Latex mathematics 
+It is possible to render latex math via a web services. Future version will cache the resulting expressions. 
+
+$
+V_i = C_0 - C_3
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
+$
+
+Cool eh?
 ') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar2 [
+PRRichTextComposer class >> exampleMicrodown3 [
 	<example>
-	(self asText:
-					'!!!Description lists
-this is just ""first"" line
-# Here is frist enumaration
-#;blue
-#:color of the sky
-#:and my true love''s eyes
-#;red
-#:color of the fire') inspect
-]
+	(self microdownAsRichText:
+					'## Code Blocks
+this is just _first_ line
 
-{ #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar3 [
-	<example>
-	(self asText:
-					'!!!Code sections
-this is just ""first"" line
-[[[
+```
 Metacello new
    baseline: ''PillarRichTextExporter'';
    repository: ''github://kasperosterbye/PillarRichTextRender'';
    load.
-]]]') inspect
+```') inspect
+
+
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar4 [
+PRRichTextComposer class >> exampleMicrodown4 [
 	<example>
-	(self asText:
-					'!!!Annotations
-this is just ""first"" line
-@@todo remember to do annotations
+	(self microdownAsRichText:
+					'##Annotations
+this is just _first_ line
+
+!!todo remember to do annotations
 and this is the second line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar5 [
+PRRichTextComposer class >> exampleMicrodown5 [
 	<example>
-	(self asText:
-					'!!!Links
-this is just ""first"" line
+	(self microdownAsRichText:
+					'###Links
+This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
-*Pharo>http://pharo.org/*
+[Click me to go to http://pharo.org](http://pharo.org/)
 
-*String>browse://String*
+Here are direct links to classes and method
+- `String`
+- `String>>#trim`
 
-*String»trim>browse://String>>#trim*
-
-and this is the second line') inspect
+And this is another line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar6 [
+PRRichTextComposer class >> exampleMicrodown6 [
 	<example>
-	(self asText:
-					'!!!Figures
-this is just ""first"" line
+	(self microdownAsRichText:
+					'###Figures
+This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
+At max you should get one request per picture.
 
-+Pharologo>https://files.pharo.org/media/logo/logo.png+
+![Pharologo](https://files.pharo.org/media/logo/logo.png)
 
-and this is the second line') inspect
+And this is the last line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar7 [
+PRRichTextComposer class >> exampleMicrodown7 [
 	<example>
-	(self asText:
-					'!First section
+	(self microdownAsRichText:
+					'#First section
 
-# ==Point== should open a class browser on Point.
-# ==Point class== should open a class browser on Point.
-# ==Point >> setX:setY:== should open a browser on the correspoding method.
-# ==Pillar\-ExporterRichText== should open a browser on the package.
+1. `Point` should open a class browser on Point.
+2. `Point class` should open a class browser on Point.
+3. `Point >> setX:setY:` should open a browser on the correspoding method.
+4. `#''Pillar-ExporterRichText''` should open a browser on the package.
+5. But `Borrrrrken` does not display the same.
 ') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar8 [
+PRRichTextComposer class >> exampleMicrodown8 [
 	<example>
-	(self asText:
-					'
-[[[language=PharoExpression
+	(self microdownAsRichText:
+					'```language=PharoExpression
 1 + 2 * 3  
-]]]
+```
 ') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> examplePillar9 [
+PRRichTextComposer class >> exampleMicrodown9 [
 	<example>
-	(self asText:
-					'
-[[[language=PharoMethod
+	(self microdownAsRichText:
+'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
+```language=PharoMethod
 foo: arg
 	^ arg + self
-]]]
+```
 ') inspect
 ]
 
