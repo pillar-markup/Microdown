@@ -1,6 +1,6 @@
 # Microdown Parser and Elements
 
-[![Build Status](https://travis-ci.com/pillar-markup/Microdown.svg?branch=master)](https://travis-ci.com/pillar-markup/Microdown)
+[![Build Status](https://travis-ci.com/pillar-markup/Microdown.svg?branch=dev)](https://travis-ci.com/pillar-markup/Microdown)
 
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
 
