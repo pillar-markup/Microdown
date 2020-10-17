@@ -1,7 +1,8 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'Microdown',
+      #baseline : 'MicrodownDev',
+      #onConflict : #useIncoming,
       #directory : 'src',
       #platforms : [ #pharo ]
     }
