@@ -150,5 +150,5 @@ PRRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	self notRendering 	
 		ifTrue: [ ^ aString ].
 	
-	^ [ MicroDownParser asText: builder contents ] on: MicParsingError, MessageNotUnderstood, SubclassResponsibility  do: [ builder contents  ]
+	^ [ MicroDownParser asText: builder contents ] on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility  do: [ builder contents  ]
 ]
