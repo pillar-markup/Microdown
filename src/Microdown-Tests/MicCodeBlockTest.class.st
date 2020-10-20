@@ -136,6 +136,32 @@ Color >> asMorph
 	self assert: (code arguments at:#language) equals: 'PharoMethod'
 ]
 
+{ #category : #'tests - deviation' }
+MicCodeBlockTest >> testFourBackQuotes [
+
+	| codeBlock |
+	codeBlock := parser parse: '```` 
+something in the way
+````'.
+
+	self assert: codeBlock children first body equals: 'something in the way'
+]
+
+{ #category : #'tests - deviation' }
+MicCodeBlockTest >> testFourBackQuotesOnMultipleLines [
+
+	| codeBlock |
+	codeBlock := parser parse: '````pharo
+something in the way
+pif
+glop or pas glop
+````'.
+
+	self assert: codeBlock children first body equals: 'something in the way
+pif
+glop or pas glop'
+]
+
 { #category : #tests }
 MicCodeBlockTest >> testNoFirstTag [
 
