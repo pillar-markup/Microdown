@@ -9,22 +9,13 @@ BaselineOfMicrodownCommentRenderer >> baseline: spec [
 	<baseline>
 	
 	spec for: #'common' do: [
-		spec baseline: 'Pillar' with: [ spec 
-				loads: #('rich text exporter');
-				repository: 'github://pillar-markup/pillar:v8.0.12/src' ].
+		spec baseline: 'Microdown' with: [ spec 
+				repository: self packageRepositoryURL ].
 		spec 
-			package: #'Microdown';
-			package: #'Microdown-Tests'  with: [
-				spec requires:  #( #'Microdown') ];
-			
-			package: #'Microdown-Pillar' with: [
-				spec requires:  #( #'Microdown' 'Pillar') ];
-			package: #'Microdown-Pillar-Tests' with: [
-				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ];
 			package: #'Microdown-Calypso' with: [
-				spec requires:  #(#'Microdown-Pillar' 'Microdown-RichTextComposer') ];
+				spec requires:  #('Microdown-RichTextComposer') ];
 			package: #'Microdown-RichTextComposer' with: [
-				spec requires:  #('Microdown' #'Microdown-Pillar') ]
+				spec requires:  #('Microdown') ]
 			]
 
 ]
