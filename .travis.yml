@@ -6,9 +6,13 @@ os:
   - linux
   - osx
 
+matrix: 
+  - Config=.smalltalk.ston
+  - Config=.smalltalk.CommentRender.ston
+
 # Select compatible Smalltalk image(s)
 smalltalk:
-
-
   - Pharo64-8.0
-  - Pharo64-9.0
+
+script: 
+  - smalltalkci ${Config}
