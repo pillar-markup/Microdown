@@ -3,9 +3,13 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #baseline : 'MicrodownCommentRendererDev',
       #onConflict : #useIncoming,
+
       #directory : 'src',
       #platforms : [ #pharo ]
     }
- ]
+  ],
+  #testing : {
+      #failOnZeroTests : false
+ } 
 }
 
