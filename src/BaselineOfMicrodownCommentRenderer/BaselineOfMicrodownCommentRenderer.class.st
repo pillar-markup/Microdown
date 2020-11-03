@@ -1,17 +1,17 @@
 Class {
-	#name : #BaselineOfMicrodownDev,
+	#name : #BaselineOfMicrodownCommentRenderer,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodownDev
+	#category : #BaselineOfMicrodownCommentRenderer
 }
 
 { #category : #baselines }
-BaselineOfMicrodownDev >> baseline: spec [
+BaselineOfMicrodownCommentRenderer >> baseline: spec [
 	<baseline>
 	
 	spec for: #'common' do: [
 		spec baseline: 'Pillar' with: [ spec 
 				loads: #('rich text exporter');
-				repository: 'github://pillar-markup/pillar:dev-8/src' ].
+				repository: 'github://pillar-markup/pillar:v8.0.12/src' ].
 		spec 
 			package: #'Microdown';
 			package: #'Microdown-Tests'  with: [
@@ -24,9 +24,7 @@ BaselineOfMicrodownDev >> baseline: spec [
 			package: #'Microdown-Calypso' with: [
 				spec requires:  #(#'Microdown-Pillar' 'Microdown-RichTextComposer') ];
 			package: #'Microdown-RichTextComposer' with: [
-				spec requires:  #('Microdown' #'Microdown-Pillar') ];
-			package: #'Microdown-RichTextComposer-Tests' with: [
-				spec requires:  #(#'Microdown-RichTextComposer') ]
+				spec requires:  #('Microdown' #'Microdown-Pillar') ]
 			]
 
 ]
