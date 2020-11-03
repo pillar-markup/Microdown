@@ -1,20 +1,16 @@
-"
-Microdown is a minimal but extensible markup language. It is kind of compatible with githubmarkdown for a core set of feature. 
-Read comment of MicroDownParser. 
-"
 Class {
-	#name : #BaselineOfMicrodown,
+	#name : #BaselineOfMicrodownDev,
 	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodown
+	#category : #BaselineOfMicrodownDev
 }
 
 { #category : #baselines }
-BaselineOfMicrodown >> baseline: spec [
+BaselineOfMicrodownDev >> baseline: spec [
 	<baseline>
 	
 	spec for: #'common' do: [
 		spec baseline: 'PillarDocumentModel' with: [ spec 
-				repository: 'github://pillar-markup/pillar:v8.0.12/src' ].
+				repository: 'github://pillar-markup/pillar:dev-8/src' ].
 		spec 
 			package: #'Microdown';
 			package: #'Microdown-Tests' with: [ spec requires:  #( #'Microdown') ];
