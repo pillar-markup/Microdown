@@ -3,9 +3,8 @@
 ![https://github.com/pillar-markup/Microdown/workflows/currentStablePharo/badge.svg](https://github.com/pillar-markup/Microdown/workflows/currentStablePharo/badge.svg)
 ![https://github.com/pillar-markup/Microdown/workflows/matrix/badge.svg](https://github.com/pillar-markup/Microdown/workflows/matrix/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/pillar-markup/MicroDown/badge.svg?branch=dev)](https://coveralls.io/github/pillar-markup/MicroDown?branch=dev)
-I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown of K. Osterbye. 
 
-
+I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
 
 
 Microdown is a smaller mardown but more extensible. 
