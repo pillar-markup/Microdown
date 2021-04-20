@@ -2,10 +2,13 @@ Extension { #name : #MicCodeBlock }
 
 { #category : #'*Microdown-Pillar' }
 MicCodeBlock >> asPillar [
-	self flag: #fixme. "missing arguments"
 	
-	^ PRCodeblock new
-		language: self firstTag;
-		text: self code;
-		yourself
+	| prBlock |
+	prBlock := PRCodeblock new.
+	prBlock text: self code.
+	self arguments keysAndValuesDo: [ :k :v |
+		prBlock parameterAt: k put: v
+		 ].
+	^ prBlock
+		
 ]
