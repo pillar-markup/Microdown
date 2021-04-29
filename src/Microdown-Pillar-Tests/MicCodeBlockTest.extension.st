@@ -14,5 +14,5 @@ is really cool'.
 		equals:
 			'my fancy code
 is really cool'.
-	self assert: code language originalName equals: 'ArgumentGoesHere'
+	self assert: (code parameters at: #ArgumentGoesHere) isNil
 ]
