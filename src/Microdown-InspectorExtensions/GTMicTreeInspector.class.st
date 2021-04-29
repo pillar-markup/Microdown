@@ -1,3 +1,19 @@
+"
+Inspect the following code to see a MicTree in the inspector
+
+```
+| text micTree|
+text := '# Section 1
+blabla
+## Section 2
+blabla
+# Section 3
+blabla
+'.
+micTree := MicroDownParser parse: text.
+GTMicTreeInspector new: micTree
+```
+"
 Class {
 	#name : #GTMicTreeInspector,
 	#superclass : #Object,
