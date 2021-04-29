@@ -1,5 +1,5 @@
 Class {
-	#name : #GTMicroDownAST,
+	#name : #GTMicTreeInspector,
 	#superclass : #Object,
 	#instVars : [
 		'micTree'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-GTMicroDownAST class >> new: aTree [
+GTMicTreeInspector class >> new: aTree [
 	^ self new micTree: aTree
 ]
 
 { #category : #'as yet unclassified' }
-GTMicroDownAST >> inspectionMicTree [
-	<inspectorPresentationOrder: 35 title: 'AST'>
+GTMicTreeInspector >> inspectionMicTree [
+	<inspectorPresentationOrder: 35 title: 'MicTree'>
 
 	^ SpTreePresenter new 
 		roots: { micTree };
@@ -23,15 +23,16 @@ GTMicroDownAST >> inspectionMicTree [
 			String
 				streamContents: [ :stream | 
 					stream
-						nextPutAll: each class name
-						"nextPut: $(;
-						nextPutAll: ((each formattedCode truncateTo: 50) copyReplaceAll: String cr with: String space);
-						nextPut: $)"
+						nextPutAll: each class name.
+						each class = MicHeaderBlock ifTrue: 
+							[ stream nextPutAll: '( level ';
+							nextPutAll: each level asString;
+							nextPutAll: ' )' ].
 			 ] ];
 		yourself
 ]
 
 { #category : #accessing }
-GTMicroDownAST >> micTree: aTree [
+GTMicTreeInspector >> micTree: aTree [
 	micTree := aTree
 ]
