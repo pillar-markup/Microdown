@@ -10,12 +10,7 @@ MicAbstractBlock >> inspectionMicTree [
 		display: [ :each | 
 			String
 				streamContents: [ :stream | 
-					stream
-						nextPutAll: each class name.
-						each class = MicHeaderBlock ifTrue: 
-							[ stream nextPutAll: '( level ';
-							nextPutAll: each level asString;
-							nextPutAll: ' )' ].
+					each displayStringOn: stream						
 			 ] ];
 		yourself
 ]
