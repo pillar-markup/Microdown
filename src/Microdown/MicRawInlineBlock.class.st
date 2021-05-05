@@ -15,3 +15,15 @@ Class {
 MicRawInlineBlock class >> isEvaluated [
 	^ false
 ]
+
+{ #category : #accessing }
+MicRawInlineBlock >> closingDelimiter [
+
+	^ MicRawCloserDelimiter markup
+]
+
+{ #category : #accessing }
+MicRawInlineBlock >> openingDelimiter [
+
+	^ MicRawOpenerDelimiter markup
+]

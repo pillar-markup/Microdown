@@ -89,3 +89,15 @@ MicroDownInlineParserTest >> testMonospaces [
 	self assert: elements second kind equals: 'monospace'.
 	self assert: elements second openingDelimiter equals: '`'
 ]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testRaws [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{raws}}def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'raws'.
+	self assert: elements second kind equals: 'raw'.
+	self assert: elements second openingDelimiter equals: '{{'.
+	self assert: elements second closingDelimiter equals: '}}'
+]
