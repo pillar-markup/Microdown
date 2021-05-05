@@ -44,6 +44,7 @@ MDAsPillar >> visitMicEnvironmentBlock: aMicEnvironmentBlock [
 
 { #category : #visiting }
 MDAsPillar >> visitMicFigureBlock: aMicFigureBlock [
+	"this method don't work for the moment"
 	| aPRFigure |
 	aPRFigure := self accept: super.
 	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
