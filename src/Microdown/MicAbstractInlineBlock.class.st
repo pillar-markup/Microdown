@@ -117,7 +117,8 @@ MicAbstractInlineBlock >> printOn: aStream [
 			contents := children 
 				ifEmpty: [ self substring ] 
 				ifNotEmpty: [ self childrenPrintOn ].
-			aStream nextPut: $[;
+			aStream nextPut: $!;
+				nextPut: $[;
 				nextPutAll: contents;
 				nextPut: $];
 				nextPut: $(;

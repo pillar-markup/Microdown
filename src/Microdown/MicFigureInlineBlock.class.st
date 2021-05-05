@@ -34,6 +34,33 @@ MicFigureInlineBlock >> parameters: someParameters [
 	parameters := someParameters
 ]
 
+{ #category : #printing }
+MicFigureInlineBlock >> printOn: aStream [
+	(self kind == #basic) 
+		ifTrue: [ aStream nextPutAll: self substring ] 
+		ifFalse: [ 
+			| contents |
+			contents := children 
+				ifEmpty: [ self substring ] 
+				ifNotEmpty: [ self childrenPrintOn ].
+			aStream nextPut: $!;
+				nextPut: $[;
+				nextPutAll: contents;
+				nextPut: $];
+				nextPut: $(;
+				nextPutAll: url asString.
+			parameters 
+				ifNotEmpty: [ | params |
+					params := ''.
+					aStream nextPut: $?.
+					parameters keysAndValuesDo: [ :key :value | params := params , key asString  , '=' , value asString , '&'  ].
+					params byteAt: params size put: $?.
+					aStream nextPutAll: params].
+			aStream nextPut: $) 
+		]
+			
+]
+
 { #category : #transformation }
 MicFigureInlineBlock >> urlTransformation [
 	| argumentsSplitter |
