@@ -25,6 +25,18 @@ MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testAnchor [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchors@*def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'anchors'.
+	self assert: elements second kind equals: 'anchorReference'.
+	self assert: elements second openingDelimiter equals: '*@'.
+	self assert: elements second closingDelimiter equals: '@*'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testBolds [
 	| elements |
 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def').
@@ -49,7 +61,6 @@ MicroDownInlineParserTest >> testItalics [
 { #category : #tests }
 MicroDownInlineParserTest >> testMonospaces [
 	| elements |
-	self skip.
 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc`monospaces`def').
 	self assert: elements size equals: 3.
 	self assert: elements first substring equals: 'abc'.
