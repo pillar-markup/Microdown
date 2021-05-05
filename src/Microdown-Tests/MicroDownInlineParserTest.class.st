@@ -69,6 +69,18 @@ MicroDownInlineParserTest >> testEscape [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testFigure [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc![caption](url?parameters=value)def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'caption'.
+	self assert: elements second kind equals: 'figure'.
+	self assert: elements second openingDelimiter equals: '!['.
+	self assert: elements second closingDelimiter equals: ')'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testItalics [
 	| elements |
 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_italics_def').
@@ -77,6 +89,18 @@ MicroDownInlineParserTest >> testItalics [
 	self assert: elements second substring equals: 'italics'.
 	self assert: elements second kind equals: 'italic'.
 	self assert: elements second openingDelimiter equals: '_'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testLink [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[caption](url?parameters=value)def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'caption'.
+	self assert: elements second kind equals: 'linkName'.
+	self assert: elements second openingDelimiter equals: '['.
+	self assert: elements second closingDelimiter equals: ')'
 ]
 
 { #category : #tests }

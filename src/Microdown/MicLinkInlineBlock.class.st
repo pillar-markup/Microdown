@@ -6,3 +6,9 @@ Class {
 	#superclass : #MicAbstractInlineBlockWithUrl,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #accessing }
+MicLinkInlineBlock >> openingDelimiter [
+
+	^ MicLinkNameOpenerDelimiter markup
+]

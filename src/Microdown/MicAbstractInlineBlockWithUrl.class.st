@@ -27,6 +27,12 @@ MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger with
 ]
 
 { #category : #accessing }
+MicAbstractInlineBlockWithUrl >> closingDelimiter [
+
+	^ MicURLCloserDelimiter markup
+]
+
+{ #category : #accessing }
 MicAbstractInlineBlockWithUrl >> url [
 	^ url
 ]
