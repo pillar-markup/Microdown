@@ -101,3 +101,14 @@ MicroDownInlineParserTest >> testRaws [
 	self assert: elements second openingDelimiter equals: '{{'.
 	self assert: elements second closingDelimiter equals: '}}'
 ]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testStrikes [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc~strikes~def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'strikes'.
+	self assert: elements second kind equals: 'strike'.
+	self assert: elements second openingDelimiter equals: '~'
+]

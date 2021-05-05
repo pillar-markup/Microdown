@@ -6,3 +6,15 @@ Class {
 	#superclass : #MicAbstractInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #accessing }
+MicStrikeInlineBlock >> closingDelimiter [
+
+	^ MicStrikeDelimiter markup
+]
+
+{ #category : #accessing }
+MicStrikeInlineBlock >> openingDelimiter [
+
+	^ MicStrikeDelimiter markup
+]
