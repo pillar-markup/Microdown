@@ -6,3 +6,15 @@ Class {
 	#superclass : #MicAbstractInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #'as yet unclassified' }
+MicBoldInlineBlock >> closingDelimiter [
+
+	^ MicBoldDelimiter markup
+]
+
+{ #category : #'as yet unclassified' }
+MicBoldInlineBlock >> openingDelimiter [
+
+	^ MicBoldDelimiter markup
+]

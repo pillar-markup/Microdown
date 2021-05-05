@@ -11,3 +11,15 @@ Class {
 MicMonospaceInlineBlock class >> isEvaluated [
 	^ false
 ]
+
+{ #category : #'as yet unclassified' }
+MicMonospaceInlineBlock >> closingDelimiter [
+
+	^ MicMonospaceDelimiter markup
+]
+
+{ #category : #'as yet unclassified' }
+MicMonospaceInlineBlock >> openingDelimiter [
+
+	^ MicMonospaceDelimiter markup
+]
