@@ -37,6 +37,18 @@ MicroDownInlineParserTest >> testAnchor [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testAnnotations [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.?>def').
+	self assert: elements size equals: 3.
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements second substring equals: 'footnote | value=A foonote is anannotation.'.
+	self assert: elements second kind equals: 'annotation'.
+	self assert: elements second openingDelimiter equals: '<?'.
+	self assert: elements second closingDelimiter equals: '?>'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testBolds [
 	| elements |
 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def').
@@ -45,6 +57,15 @@ MicroDownInlineParserTest >> testBolds [
 	self assert: elements second substring equals: 'bolds'.
 	self assert: elements second kind equals: 'bold'.
 	self assert: elements second openingDelimiter equals: '**'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testEscape [
+	| elements |
+	elements := (self parseAndReturnElementsOfParagraphFor: 'abc\_bolds_def').
+	self assert: elements size equals: 1.
+	self assert: elements first substring equals: 'abc_bolds_def'.
+	self assert: elements first kind equals: 'basic'.
 ]
 
 { #category : #tests }

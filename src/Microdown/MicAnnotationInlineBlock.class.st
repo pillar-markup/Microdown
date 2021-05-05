@@ -25,6 +25,18 @@ MicAnnotationInlineBlock >> arguments [
 ]
 
 { #category : #accessing }
+MicAnnotationInlineBlock >> closingDelimiter [
+
+	^ MicAnnotationCloserDelimiter markup
+]
+
+{ #category : #accessing }
 MicAnnotationInlineBlock >> name [
 	^ name
+]
+
+{ #category : #accessing }
+MicAnnotationInlineBlock >> openingDelimiter [
+
+	^ MicAnnotationOpenerDelimiter markup
 ]
