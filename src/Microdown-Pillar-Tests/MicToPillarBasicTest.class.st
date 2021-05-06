@@ -2,7 +2,8 @@ Class {
 	#name : #MicToPillarBasicTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'pillarDocument'
+		'pillarDocument',
+		'visitor'
 	],
 	#category : #'Microdown-Pillar-Tests'
 }
@@ -12,6 +13,13 @@ MicToPillarBasicTest >> parserClass [
 	^ MicroDownParser
 ]
 
+{ #category : #running }
+MicToPillarBasicTest >> setUp [
+	super setUp.
+	visitor := MDAsPillar new
+	"Put here a common initialization logic for tests"
+]
+
 { #category : #tests }
 MicToPillarBasicTest >> testCodeBlock [
 
@@ -19,7 +27,7 @@ MicToPillarBasicTest >> testCodeBlock [
 	document := self parserClass new parse: '```language=pharo
 	1-2 
 ```'.
-	self assert: document asPillar children first class equals: PRCodeblock.
+	self assert: (document accept: visitor) children first class equals: PRCodeblock.
 	
 ]
 
@@ -28,7 +36,7 @@ MicToPillarBasicTest >> testCodeInText [
 
 	| document |
 	document := self parserClass new parse: 'The method `foo` is fun'.
-	pillarDocument := document asPillar.
+	pillarDocument := document accept: visitor.
 	self assert: pillarDocument children first class equals: PRParagraph.
 	self assert: pillarDocument children first children second class equals: PRMonospaceFormat 
 	
@@ -44,7 +52,7 @@ MicToPillarBasicTest >> testHeader [
 ## Header 2
 	
 ### Header 3'.
-	pillarDocument := document asPillar.
+	pillarDocument := document accept: visitor.
 	"we could have use Grammar headerMarkup to build the text but this is clearer like that"
 	self assert: pillarDocument children first class equals: PRHeader.
 	self assert: pillarDocument children third class equals: PRHeader.
@@ -56,7 +64,7 @@ MicToPillarBasicTest >> testHeader [
 MicToPillarBasicTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
-		parse: MicMicroDownSnippetFactory new orderedListWithTwoItemsSample) asPillar.
+		parse: MicMicroDownSnippetFactory new orderedListWithTwoItemsSample) accept: visitor.
 	self assert: document children first class equals: PROrderedList.
 	self
 		assert: document children first children first class
