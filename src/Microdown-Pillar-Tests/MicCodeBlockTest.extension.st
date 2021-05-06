@@ -8,7 +8,7 @@ is really cool'.
 	argument := 'ArgumentGoesHere'.
 	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
 	root := self parser parse: source.
-	code := root children first asPillar.
+	code := root children first accept: visitor.
 	self
 		assert: code text
 		equals:

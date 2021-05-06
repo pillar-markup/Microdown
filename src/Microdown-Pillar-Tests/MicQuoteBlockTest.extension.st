@@ -7,7 +7,7 @@ MicQuoteBlockTest >> testQuoteBlockAsPilar [
 >    text2'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	pillarNode := root children first asPillar.
+	pillarNode := root children first accept: visitor.
 	self assert: pillarNode class equals: PRPreformatted.
 	self
 		assert: pillarNode text

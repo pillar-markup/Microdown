@@ -2,7 +2,8 @@ Class {
 	#name : #MicBlockTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'parser'
+		'parser',
+		'visitor'
 	],
 	#category : #'Microdown-Tests'
 }
@@ -37,4 +38,5 @@ MicBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser. 
+	visitor := MDAsPillar new
 ]

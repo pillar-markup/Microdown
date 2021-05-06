@@ -7,7 +7,7 @@ MicUnorderedListBlockTest >> testSingleLevelList2asPillar [
   expanded
 - item 2'.
 	root := parser parse: source.
-	list := root children first asPillar.
+	list := root children first accept: visitor.
 	self assert: list class equals: PRUnorderedList.
 	self assert: list children size equals: 2.
 	item := list children first.
@@ -26,7 +26,7 @@ MicUnorderedListBlockTest >> testTwoLevelList1AsPillar [
   - sublevel
 - item 2'.
 	root := parser parse: source.
-	list := root children first asPillar.
+	list := root children first accept: visitor.
 	secondItem := list children second.
 	self assert: secondItem class equals: PRListItem.
 	self assert: secondItem children first class equals: PRText.

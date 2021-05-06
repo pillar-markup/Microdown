@@ -115,7 +115,7 @@ MDAsPillar >> visitMicQuoteBlock: aMicQuoteBlock [
 { #category : #visiting }
 MDAsPillar >> visitMicRootBlock: aMicRootBlock [
 	^ PRDocument new
-		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
+		setChildren: (aMicRootBlock children collect: [ :child | child accept: self ]);
 		yourself
 ]
 

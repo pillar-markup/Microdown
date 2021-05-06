@@ -10,7 +10,7 @@ V_i = C_0 - C_3
 	
 '.
 	root := parser parse: source.
-	pillar := root children first asPillar.
+	pillar := root children first accept: visitor.
 	self assert: pillar class equals: PRMathEnvironment.
 	self assert: pillar children first class equals: PRText.
 	

@@ -7,7 +7,7 @@ MicOrderedListBlockTest >> testSingleLevelList2asPillar [
     expanded
 7.  item 2'.
 	root := parser parse: source.
-	list := root children first asPillar.
+	list := root children first accept: visitor.
 	self assert: list class equals: PROrderedList .
 	self assert: list children size equals: 2.
 	self
