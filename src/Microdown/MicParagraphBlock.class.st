@@ -17,6 +17,11 @@ MicParagraphBlock class >> opensBy: aLine [
 	^ aLine notEmpty 
 ]
 
+{ #category : #visiting }
+MicParagraphBlock >> accept: aVisitor [
+	^ aVisitor visitMicParagraphBlock: self
+]
+
 { #category : #parsing }
 MicParagraphBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 

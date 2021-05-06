@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicRootBlock >> accept: aVisitor [
+	^ aVisitor visitMicRootBlock: self
+]
+
 { #category : #testing }
 MicRootBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 

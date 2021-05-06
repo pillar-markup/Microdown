@@ -10,6 +10,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicListItemBlock >> accept: aVisitor [
+	^ aVisitor visitMicListItemBlock: self
+]
+
 { #category : #testing }
 MicListItemBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 

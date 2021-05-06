@@ -33,6 +33,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicOrderedListBlock >> accept: aVisitor [
+	^ aVisitor visitMicOrderedListBlock: self
+]
+
 { #category : #testing }
 MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	"Create a new item, and insert it into me."

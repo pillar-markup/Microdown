@@ -49,6 +49,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicUnorderedListBlock >> accept: aVisitor [
+	^ aVisitor visitMicUnorderedListBlock: self
+]
+
 { #category : #testing }
 MicUnorderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"

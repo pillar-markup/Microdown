@@ -9,6 +9,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicHorizontalLineBlock >> accept: aVisitor [
+	^ aVisitor visitMicHorizontalLineBlock: self
+]
+
 { #category : #public }
 MicHorizontalLineBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '*** useless and ignored text '"
