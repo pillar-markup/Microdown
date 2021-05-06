@@ -10,6 +10,12 @@ MDAsPillar >> visitMicAnchorBlock: aMicAnchorBlock [
 ]
 
 { #category : #visiting }
+MDAsPillar >> visitMicAnchorReferenceBlock: aMicAnchorReferenceBlock [
+	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
+	
+]
+
+{ #category : #visiting }
 MDAsPillar >> visitMicAnnotatedBlock: aMicAnnotatedBlock [
 	^ PRAnnotatedParagraph new 
 			annotation: aMicAnnotatedBlock label; 

@@ -17,6 +17,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicFigureInlineBlock >> accept: aVisitor [
+	^ aVisitor visitMicFigureBlock: self
+]
+
 { #category : #converting }
 MicFigureInlineBlock >> asPillar [
 	| aPRFigure |

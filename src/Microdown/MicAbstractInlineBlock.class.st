@@ -49,6 +49,11 @@ MicAbstractInlineBlock class >> isEvaluated [
 	^ true
 ]
 
+{ #category : #visiting }
+MicAbstractInlineBlock >> accept: aVisitor [
+	^ aVisitor visitMicFormatBlock: self
+]
+
 { #category : #accessing }
 MicAbstractInlineBlock >> children [
 	^ children

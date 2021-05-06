@@ -17,6 +17,11 @@ MicAnchorReferenceInlineBlock class >> isEvaluated [
 	^ false
 ]
 
+{ #category : #visiting }
+MicAnchorReferenceInlineBlock >> accept: aVisitor [
+	^ aVisitor visitMicAnchorReferenceBlock: self
+]
+
 { #category : #'as yet unclassified' }
 MicAnchorReferenceInlineBlock >> closingDelimiter [ 
 
