@@ -37,6 +37,7 @@ MDAsPillar >> visitMicCommentBlock: aMicCommentBlock [
 
 { #category : #visiting }
 MDAsPillar >> visitMicEnvironmentBlock: aMicEnvironmentBlock [
+
 	| classPillar |
 	classPillar := PRAbstractAnnotation findClassAcceptingTag: aMicEnvironmentBlock name ifNone: [ PRUndefinedAnnotation ].
 	^ classPillar new parameters: aMicEnvironmentBlock arguments
@@ -44,6 +45,7 @@ MDAsPillar >> visitMicEnvironmentBlock: aMicEnvironmentBlock [
 
 { #category : #visiting }
 MDAsPillar >> visitMicFigureBlock: aMicFigureBlock [
+
 	| aPRFigure |
 	aPRFigure := self visitMicFormatBlock: aMicFigureBlock.
 	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
@@ -51,6 +53,7 @@ MDAsPillar >> visitMicFigureBlock: aMicFigureBlock [
 
 { #category : #visiting }
 MDAsPillar >> visitMicFormatBlock: aMicFormatBlock [
+
 	| childrenAsPillar |
 	childrenAsPillar := aMicFormatBlock isOnlyChild 
 		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
