@@ -43,7 +43,7 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testEnvironmentBlockAsPillar [
+MicConverterVisitorTest >> testEnvironmentBlock [
 	| source root pillar |
 	source := '<?environment|name=aName?>'.
 	root := self parserClass new parse: source.
@@ -70,7 +70,7 @@ MicConverterVisitorTest >> testHeader [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testHorizontalLineBlockAsPillar [
+MicConverterVisitorTest >> testHorizontalLineBlock [
 	| source root pillar |
 	source := '***
 	'.
