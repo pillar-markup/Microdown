@@ -118,8 +118,7 @@ MicSurfacicMicrodownToPillarTest >> testAnchorWithSpaceInside [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormat [
-	self skip.
-	self parse: factory boldFormatSample createElementOfClass: #format
+	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
 
 { #category : #'tests - format' }
