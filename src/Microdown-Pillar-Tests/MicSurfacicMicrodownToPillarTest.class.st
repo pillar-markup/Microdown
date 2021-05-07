@@ -195,7 +195,6 @@ MicSurfacicMicrodownToPillarTest >> testListMulti [
 
 { #category : #'tests - list' }
 MicSurfacicMicrodownToPillarTest >> testListWithComment [
-	self skip.
 	self parse: factory listWithCommentSample createElementOfClass: self orderedListClass 
 ]
 
