@@ -108,6 +108,17 @@ MicroDownInlineParserTest >> testLink [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testMath [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc$V_i = C_0 - C_3$def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: 'V_i = C_0 - C_3'.
+ 	self assert: elements second kind equals: 'math'.
+ 	self assert: elements second openingDelimiter equals: '$'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testMonospaces [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc`monospaces`def').

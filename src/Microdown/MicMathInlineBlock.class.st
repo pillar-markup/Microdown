@@ -34,3 +34,15 @@ Class {
 MicMathInlineBlock class >> isEvaluated [
 	^ false
 ]
+
+{ #category : #accessing }
+MicMathInlineBlock >> closingDelimiter [
+
+ 	^ MicMathDelimiter markup
+]
+
+{ #category : #accessing }
+MicMathInlineBlock >> openingDelimiter [
+
+ 	^ MicMathDelimiter markup
+]
