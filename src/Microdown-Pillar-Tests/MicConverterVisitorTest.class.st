@@ -43,6 +43,16 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testEnvironmentBlockAsPillar [
+	| source root pillar |
+	source := '<?environment|name=aName?>'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRUndefinedAnnotation
+	
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testHeader [ 
 
 	| document |
