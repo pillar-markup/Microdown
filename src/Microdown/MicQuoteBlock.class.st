@@ -16,6 +16,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicQuoteBlock >> accept: aVisitor [
+ 	^ aVisitor visitQuoteBlock: self
+]
+
 { #category : #testing }
 MicQuoteBlock >> lineMarkup [
 

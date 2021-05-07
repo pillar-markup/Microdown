@@ -14,6 +14,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicAnnotatedBlock >> accept: aVisitor [
+ 	^ aVisitor visitAnnotatedBlock: self
+]
+
 { #category : #testing }
 MicAnnotatedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form '@@label some text

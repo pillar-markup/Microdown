@@ -45,6 +45,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicCodeBlock >> accept: aVisitor [
+ 	^ aVisitor visitCodeBlock: self
+]
+
 { #category : #accessing }
 MicCodeBlock >> arguments [
 	^ arguments

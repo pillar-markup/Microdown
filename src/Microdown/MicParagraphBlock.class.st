@@ -18,6 +18,11 @@ MicParagraphBlock class >> opensBy: aLine [
 ]
 
 { #category : #parsing }
+MicParagraphBlock >> accept: aVisitor [
+ 	^ aVisitor visitParagraphBlock: self
+]
+
+{ #category : #parsing }
 MicParagraphBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.

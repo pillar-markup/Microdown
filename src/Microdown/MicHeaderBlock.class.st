@@ -32,6 +32,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicHeaderBlock >> accept: aVisitor [ 
+ 	^ aVisitor visitHeaderBlock: self
+]
+
 { #category : #testing }
 MicHeaderBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '#### my heading at forth level'"

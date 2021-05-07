@@ -11,17 +11,22 @@ Class {
 { #category : #baselines }
 BaselineOfMicrodown >> baseline: spec [
 	<baseline>
-	
 	spec for: #'common' do: [
-		spec baseline: 'PillarDocumentModel' with: [ spec 
-				repository: 'github://pillar-markup/pillar:v8.0.12/src' ].
+		spec baseline: 'Pillar' with: [ spec 
+				repository: self packageRepositoryURL ].
 		spec 
 			package: #'Microdown';
-			package: #'Microdown-Tests' with: [ spec requires:  #( #'Microdown') ];
-			package: #'Microdown-Pillar' with: [ spec requires:  #( #'Microdown' #'PillarDocumentModel') ];
-			package: #'Microdown-Pillar-Tests' with: [
-				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ]
-		 ]
+			package: #'Microdown-Tests'  with: [
+				spec requires:  #( #'Microdown') ];
 			
+			package: #'Microdown-Pillar' with: [
+				spec requires:  #( #'Microdown' 'Pillar') ];
+			package: #'Microdown-Pillar-Tests' with: [
+				spec requires:  #(#'Microdown-Pillar' #'Microdown-Tests') ];
+			package: #'Microdown-Calypso' with: [
+				spec requires:  #(#'Microdown-Pillar' 'Microdown-RichTextComposer') ];
+			package: #'Microdown-RichTextComposer' with: [
+				spec requires:  #('Microdown' #'Microdown-Pillar') ]
+			]
 
 ]

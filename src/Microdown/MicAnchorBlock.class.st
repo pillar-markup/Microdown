@@ -15,6 +15,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicAnchorBlock >> accept: aVisitor [
+ 	^ aVisitor visitAnchorBlock: self
+]
+
 { #category : #public }
 MicAnchorBlock >> addLineAndReturnNextNode: line [
 	"# bla

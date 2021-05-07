@@ -50,6 +50,11 @@ Class {
 }
 
 { #category : #testing }
+MicUnorderedListBlock >> accept: aVisitor [
+ 	^ aVisitor visitUnorderedListBlock: self
+]
+
+{ #category : #testing }
 MicUnorderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
 
