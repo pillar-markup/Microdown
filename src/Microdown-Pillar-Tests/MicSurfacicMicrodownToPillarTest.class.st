@@ -201,8 +201,7 @@ MicSurfacicMicrodownToPillarTest >> testListWithComment [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormat [
-	self skip.
-	self parse: factory monospaceFormatSample createElementOfClass: #format
+	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
 ]
 
 { #category : #'tests - format' }
