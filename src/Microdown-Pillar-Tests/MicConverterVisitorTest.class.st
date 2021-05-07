@@ -73,3 +73,15 @@ MicConverterVisitorTest >> testNumberedList [
 		assert: document children first children second class
 		equals: PRListItem
 ]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testRoot [
+	| source root pillar |
+	source := '####    Level four
+## Level 2'.
+	root := self parserClass new parse: source.
+	pillar := root accept: visitor.
+	self assert: pillar class equals: PRDocument.
+	self assert: pillar children second class equals: PRHeader.
+	self assert: pillar children first level equals: 4
+]
