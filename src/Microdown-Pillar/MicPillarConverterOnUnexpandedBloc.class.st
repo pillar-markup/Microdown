@@ -49,7 +49,7 @@ MicPillarConverterOnUnexpandedBloc >> visitMicEnvironmentBlock: aMicEnvironmentB
 { #category : #visiting }
 MicPillarConverterOnUnexpandedBloc >> visitMicFigureBlock: aMicFigureBlock [
  	| aPRFigure |
- 	aPRFigure := self accept: super.
+ 	aPRFigure := super visit: self.
  	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
 ]
 
