@@ -91,6 +91,22 @@ MicConverterVisitorTest >> testNumberedList [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testQuoteBlock [
+	| source root pillarNode |
+	source := '> text1
+>    text2'.
+	root := self parserClass new parse: source.
+	self assert: root children size equals: 1.
+	pillarNode := root children first accept: visitor.
+	self assert: pillarNode class equals: PRPreformatted.
+	self
+		assert: pillarNode text
+		equals:
+			'text1
+text2'
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testRoot [
 	| source root pillar |
 	source := '####    Level four
