@@ -3,6 +3,7 @@ Extension { #name : #MicCodeBlockTest }
 { #category : #'*Microdown-Pillar-Tests' }
 MicCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
 	| source root code textBody argument |
+	self skip.
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
