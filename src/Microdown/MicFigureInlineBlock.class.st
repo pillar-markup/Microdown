@@ -18,6 +18,11 @@ Class {
 }
 
 { #category : #converting }
+MicFigureInlineBlock >> accept: aVisitor [
+ 	^ aVisitor visitFigureBlock: self
+]
+
+{ #category : #converting }
 MicFigureInlineBlock >> asPillar [
 	| aPRFigure |
 	aPRFigure := super asPillar.

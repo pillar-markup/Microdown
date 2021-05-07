@@ -13,6 +13,11 @@ MicPillarConverterOnUnexpandedBloc >> visitAnchorBlock: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
 ]
 
+{ #category : #'visiting inline' }
+MicPillarConverterOnUnexpandedBloc >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
+ 	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
+]
+
 { #category : #visiting }
 MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
