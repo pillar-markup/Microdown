@@ -9,12 +9,12 @@ Class {
 }
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicAnchorBlock: aMicAnchorBlock [
+MicPillarConverterOnUnexpandedBloc >> visitAnchorBlock: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicAnnotatedBlock: aMicAnnotatedBlock [
+MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
  			annotation: aMicAnnotatedBlock label; 
  			setChildren: (aMicAnnotatedBlock pillarFromString: aMicAnnotatedBlock text);
@@ -22,7 +22,7 @@ MicPillarConverterOnUnexpandedBloc >> visitMicAnnotatedBlock: aMicAnnotatedBlock
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicCodeBlock: aMicCodeBlock [
+MicPillarConverterOnUnexpandedBloc >> visitCodeBlock: aMicCodeBlock [
  	| prBlock |
  	prBlock := PRCodeblock new.
  	prBlock text: aMicCodeBlock code.
@@ -33,28 +33,28 @@ MicPillarConverterOnUnexpandedBloc >> visitMicCodeBlock: aMicCodeBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicCommentBlock: aMicCommentBlock [
+MicPillarConverterOnUnexpandedBloc >> visitCommentBlock: aMicCommentBlock [
  	^ PRCommentedLine new
  			text: aMicCommentBlock text ;
  			yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicEnvironmentBlock: aMicEnvironmentBlock [
+MicPillarConverterOnUnexpandedBloc >> visitEnvironmentBlock: aMicEnvironmentBlock [
  	| classPillar |
  	classPillar := PRAbstractAnnotation findClassAcceptingTag: aMicEnvironmentBlock name ifNone: [ PRUndefinedAnnotation ].
  	^ classPillar new parameters: aMicEnvironmentBlock arguments
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicFigureBlock: aMicFigureBlock [
+MicPillarConverterOnUnexpandedBloc >> visitFigureBlock: aMicFigureBlock [
  	| aPRFigure |
  	aPRFigure := super visit: self.
  	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicFormatBlock: aMicFormatBlock [
+MicPillarConverterOnUnexpandedBloc >> visitFormatBlock: aMicFormatBlock [
  	| childrenAsPillar |
  	childrenAsPillar := aMicFormatBlock isOnlyChild 
  		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
@@ -65,7 +65,7 @@ MicPillarConverterOnUnexpandedBloc >> visitMicFormatBlock: aMicFormatBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicHeaderBlock: aMicHeaderBlock [
+MicPillarConverterOnUnexpandedBloc >> visitHeaderBlock: aMicHeaderBlock [
  	^ PRHeader new
  		level: aMicHeaderBlock level;
  		setChildren: (aMicHeaderBlock pillarFromString: aMicHeaderBlock header);
@@ -73,12 +73,12 @@ MicPillarConverterOnUnexpandedBloc >> visitMicHeaderBlock: aMicHeaderBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicHorizontalLineBlock: aMicHorizontalLineBlock [
+MicPillarConverterOnUnexpandedBloc >> visitHorizontalLineBlock: aMicHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicListItemBlock: aMicListItemBlock [
+MicPillarConverterOnUnexpandedBloc >> visitListItemBlock: aMicListItemBlock [
  	^ PRListItem new
  		setChildren: (aMicListItemBlock pillarFromString: aMicListItemBlock text), (aMicListItemBlock children collect: [:child| child asPillar]);
  		yourself
@@ -86,14 +86,14 @@ MicPillarConverterOnUnexpandedBloc >> visitMicListItemBlock: aMicListItemBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicMathBlock: aMicMathBlock [
+MicPillarConverterOnUnexpandedBloc >> visitMathBlock: aMicMathBlock [
  	^ PRMathEnvironment new 
  		add: (PRText content: aMicMathBlock body);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicOrderedListBlock: aMicOrderedListBlock [
+MicPillarConverterOnUnexpandedBloc >> visitOrderedListBlock: aMicOrderedListBlock [
  	^ PROrderedList new
  		setChildren: (aMicOrderedListBlock children collect: [ :child | child asPillar ]);
  		counter: aMicOrderedListBlock startIndex;
@@ -101,21 +101,21 @@ MicPillarConverterOnUnexpandedBloc >> visitMicOrderedListBlock: aMicOrderedListB
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicParagraphBlock: aMicParagraphBlock [
+MicPillarConverterOnUnexpandedBloc >> visitParagraphBlock: aMicParagraphBlock [
  	^ PRParagraph  new
  		setChildren: (aMicParagraphBlock pillarFromString: aMicParagraphBlock text);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicQuoteBlock: aMicQuoteBlock [
+MicPillarConverterOnUnexpandedBloc >> visitQuoteBlock: aMicQuoteBlock [
  	^ PRPreformatted new
  		setChildren: (aMicQuoteBlock pillarFromString: aMicQuoteBlock text);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicRootBlock: aMicRootBlock [
+MicPillarConverterOnUnexpandedBloc >> visitRootBlock: aMicRootBlock [
  	^ PRDocument new
  		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
  		yourself
@@ -123,12 +123,12 @@ MicPillarConverterOnUnexpandedBloc >> visitMicRootBlock: aMicRootBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicTextBlock: aMicTextBlock [
+MicPillarConverterOnUnexpandedBloc >> visitTextBlock: aMicTextBlock [
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMicUnorderedListBlock: aMicUnorderedListBlock [
+MicPillarConverterOnUnexpandedBloc >> visitUnorderedListBlock: aMicUnorderedListBlock [
  	^ PRUnorderedList new
  		setChildren: (aMicUnorderedListBlock children collect:[:child| child asPillar]);
  		yourself
