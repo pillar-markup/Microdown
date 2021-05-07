@@ -58,6 +58,11 @@ MicAbstractBlock >> children [
 	^children 
 ]
 
+{ #category : #adding }
+MicAbstractBlock >> children: aCollection [
+ 	children := aCollection
+]
+
 { #category : #public }
 MicAbstractBlock >> closeMe [
 	"I'm hook for closing elements. By default do nothing."
