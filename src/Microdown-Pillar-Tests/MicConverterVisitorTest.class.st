@@ -20,6 +20,15 @@ MicConverterVisitorTest >> setUp [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testAnchorBlock [
+	| source root pillar |
+	source := '@anchor'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRAnchor
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testCodeBlock [
 
 	| document |
