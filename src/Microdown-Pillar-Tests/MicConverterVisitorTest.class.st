@@ -60,6 +60,17 @@ MicConverterVisitorTest >> testHeader [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testHorizontalLineBlockAsPillar [
+	| source root pillar |
+	source := '***
+	'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRHorizontalRule
+	
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
 	| source root pillar |
 	source := '
