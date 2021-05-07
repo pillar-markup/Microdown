@@ -26,6 +26,12 @@ MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger with
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
+{ #category : #accessing }
+MicAbstractInlineBlockWithUrl >> closingDelimiter [
+
+ 	^ MicURLCloserDelimiter markup
+]
+
 { #category : #printing }
 MicAbstractInlineBlockWithUrl >> printOn: aStream [
 	(self kind == #basic) 

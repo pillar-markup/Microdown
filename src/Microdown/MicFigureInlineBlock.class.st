@@ -25,6 +25,12 @@ MicFigureInlineBlock >> asPillar [
 ]
 
 { #category : #accessing }
+MicFigureInlineBlock >> openingDelimiter [
+
+ 	^ MicFigureNameOpenerDelimiter markup
+]
+
+{ #category : #accessing }
 MicFigureInlineBlock >> parameters [
 	^ parameters 
 ]

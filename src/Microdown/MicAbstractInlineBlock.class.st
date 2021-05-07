@@ -146,3 +146,8 @@ MicAbstractInlineBlock >> substring [
 MicAbstractInlineBlock >> substring: aSubString [
 	substring := aSubString
 ]
+
+{ #category : #obsolete }
+MicAbstractInlineBlock >> text [
+ 	^ substring
+]
