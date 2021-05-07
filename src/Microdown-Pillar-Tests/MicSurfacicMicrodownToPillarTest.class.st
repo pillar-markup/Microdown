@@ -50,6 +50,16 @@ MicSurfacicMicrodownToPillarTest >> orderedListClass [
 ]
 
 { #category : #accessing }
+MicSurfacicMicrodownToPillarTest >> parse: sample createChildElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := parser parse: sample.
+	pillarDoc := micDoc asPillar.
+	self assert: pillarDoc children first children first class equals: aClass.
+]
+
+{ #category : #accessing }
 MicSurfacicMicrodownToPillarTest >> parse: sample createElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
