@@ -4,7 +4,7 @@ I am the delimiter for bold/strong format.
 Class {
 	#name : #MicBoldDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-ModelInline'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #accessing }

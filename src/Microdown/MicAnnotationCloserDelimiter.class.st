@@ -8,7 +8,7 @@ See *@fig1*
 Class {
 	#name : #MicAnnotationCloserDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-ModelInline'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #accessing }

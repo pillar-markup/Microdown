@@ -4,7 +4,7 @@ I am the opener delimiter for raw.
 Class {
 	#name : #MicRawOpenerDelimiter,
 	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-ModelInline'
+	#category : #'Microdown-Parser'
 }
 
 { #category : #accessing }
