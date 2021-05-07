@@ -169,8 +169,7 @@ MicSurfacicMicrodownToPillarTest >> testHeaderWithNewLine [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormat [
-	self skip.
-	self parse: factory italicFormatSample createElementOfClass: #format
+	self parse: factory italicFormatSample createChildElementOfClass: PRItalicFormat
 ]
 
 { #category : #'tests - format' }
