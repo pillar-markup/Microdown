@@ -16,3 +16,15 @@ Class {
 MicAnchorReferenceInlineBlock class >> isEvaluated [
 	^ false
 ]
+
+{ #category : #'as yet unclassified' }
+MicAnchorReferenceInlineBlock >> closingDelimiter [
+
+ 	^ MicAnchorReferenceCloserDelimiter markup
+]
+
+{ #category : #'as yet unclassified' }
+MicAnchorReferenceInlineBlock >> openingDelimiter [
+
+ 	^ MicAnchorReferenceOpenerDelimiter markup
+]
