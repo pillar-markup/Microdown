@@ -87,6 +87,24 @@ MicConverterVisitorTest >> testRoot [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testSingleLevelOrderedList2 [
+	| source root list |
+	source := '19. item 1
+    expanded
+7.  item 2'.
+	root := self parserClass new parse: source.
+	list := root children first accept: visitor.
+	self assert: list class equals: PROrderedList .
+	self assert: list children size equals: 2.
+	self
+		assert: list children first text
+		equals:
+			'item 1
+expanded'.
+	self assert: list counter equals: 19
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testSingleLevelUnorderedList2 [
 	| source root list item |
 	source := '- item 1
