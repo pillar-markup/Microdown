@@ -77,6 +77,15 @@ MicroDownInlineParserTest >> testBoldsAndNestedItalics [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testBoldsWithoutClosure [ 
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**boldsdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc**boldsdef'
+ 
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testEscape [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc\_bolds_def').
@@ -120,6 +129,14 @@ MicroDownInlineParserTest >> testItalicsAndNestedBolds [
  	self assert: elements second substring equals: 'italics'.
  	self assert: elements second kind equals: 'italic'.
  	self assert: elements second openingDelimiter equals: '_'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testItalicsWithoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_italicsdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc_italicsdef'
 ]
 
 { #category : #tests }
