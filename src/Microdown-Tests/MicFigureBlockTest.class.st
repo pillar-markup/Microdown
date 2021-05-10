@@ -21,3 +21,10 @@ MicFigureBlockTest >> testPrintOn [
 	figure := (splitter new start: '![caption](aUrl)') first.
 	self assert: figure asString equals: '![caption](/aUrl)'
 ]
+
+{ #category : #tests }
+MicFigureBlockTest >> testPrintOnWithParameters [
+	| figure |
+	figure := (splitter new start: '![caption](aUrl|label=1&title=testFigure)') first.
+	self assert: figure asString equals: '![caption](/aUrl|title=testFigure&label=1 )'
+]
