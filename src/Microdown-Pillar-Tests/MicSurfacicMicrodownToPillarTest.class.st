@@ -124,8 +124,11 @@ MicSurfacicMicrodownToPillarTest >> testBoldFormat [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormatEmpty [
+	| boldBlock |
 	self skip.
-	self parse: factory boldFormatEmptySample createElementOfClass: #format
+	"the parser parse '****' and return a HorizontalBlock"
+	boldBlock := self parse: factory boldFormatEmptySample createChildElementOfClass: PRBoldFormat.
+	self assert: boldBlock text equals: ''
 ]
 
 { #category : #'tests - header' }
