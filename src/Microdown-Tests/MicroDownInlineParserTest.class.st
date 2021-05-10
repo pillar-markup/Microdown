@@ -77,6 +77,19 @@ MicroDownInlineParserTest >> testBoldsAndNestedItalics [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testBoldsAndNestedItalicsWithClosureAfterOpenItalics [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds**_def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: '_bolds'.
+	self assert: elements third substring equals: '_def'.
+ 	self assert: elements second kind equals: 'bold'.
+ 	self assert: elements second openingDelimiter equals: '**'
+ 
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testBoldsWithoutClosure [ 
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**boldsdef').
@@ -129,6 +142,19 @@ MicroDownInlineParserTest >> testItalicsAndNestedBolds [
  	self assert: elements second substring equals: 'italics'.
  	self assert: elements second kind equals: 'italic'.
  	self assert: elements second openingDelimiter equals: '_'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testItalicsAndNestedBoldsWithClosureAfterOpenBolds [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics_**def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: '**italics'.
+	self assert: elements third substring equals: '**def'.
+ 	self assert: elements second kind equals: 'italic'.
+ 	self assert: elements second openingDelimiter equals: '_'
+ 
 ]
 
 { #category : #tests }
