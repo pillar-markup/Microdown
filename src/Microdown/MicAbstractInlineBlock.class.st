@@ -108,25 +108,6 @@ MicAbstractInlineBlock >> literal [
 	^ substring copyFrom: start to: end. 
 ]
 
-{ #category : #printing }
-MicAbstractInlineBlock >> printOn: aStream [
-	(self kind == #basic) 
-		ifTrue: [ aStream nextPutAll: self substring ] 
-		ifFalse: [ 
-			| contents |
-			contents := children 
-				ifEmpty: [ self substring ] 
-				ifNotEmpty: [ self childrenPrintOn ].
-			aStream nextPut: $[;
-				nextPutAll: contents;
-				nextPut: $];
-				nextPut: $(;
-				nextPutAll: self kind;
-				nextPut: $) 
-		]
-			
-]
-
 { #category : #accessing }
 MicAbstractInlineBlock >> start [ 	
 	^ start
