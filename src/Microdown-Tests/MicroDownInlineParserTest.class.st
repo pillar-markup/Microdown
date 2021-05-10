@@ -38,6 +38,14 @@ MicroDownInlineParserTest >> testAnchor [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testAnchorWithoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchorsdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc*@anchorsdef'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testAnnotations [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.?>def').
@@ -47,6 +55,15 @@ MicroDownInlineParserTest >> testAnnotations [
  	self assert: elements second kind equals: 'annotation'.
  	self assert: elements second openingDelimiter equals: '<?'.
  	self assert: elements second closingDelimiter equals: '?>'
+ 
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testAnnotationsWithoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.def').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc<?footnote | value=A foonote is anannotation.def'
  
 ]
 
@@ -201,6 +218,15 @@ MicroDownInlineParserTest >> testMonospaces [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testMonospacesWithoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc`monospacesdef'
+
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testRaws [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{raws}}def').
@@ -213,6 +239,14 @@ MicroDownInlineParserTest >> testRaws [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testRawsWitoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{rawsdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc{{rawsdef'
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testStrikes [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc~strikes~def').
@@ -221,4 +255,13 @@ MicroDownInlineParserTest >> testStrikes [
  	self assert: elements second substring equals: 'strikes'.
  	self assert: elements second kind equals: 'strike'.
  	self assert: elements second openingDelimiter equals: '~'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testStrikesWithoutClosure [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc~strikesdef'.
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc~strikesdef'
+
 ]
