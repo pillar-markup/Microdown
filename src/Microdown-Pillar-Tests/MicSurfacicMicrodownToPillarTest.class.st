@@ -368,14 +368,14 @@ MicSurfacicMicrodownToPillarTest >> testScriptWithSpacedParameters [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormat [
-	self skip.
-	self parse: factory strikethroughFormatSample createElementOfClass: #format
+	self parse: factory strikethroughFormatSample createChildElementOfClass: PRStrikethroughFormat
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormatEmpty [
-	self skip.
-	self parse: factory strikethroughFormatEmptySample createElementOfClass: #format
+	| strikeBlock |
+	strikeBlock := self parse: factory strikethroughFormatEmptySample createChildElementOfClass: PRStrikethroughFormat.
+	self assert: strikeBlock text equals: ''
 ]
 
 { #category : #'tests - format' }
