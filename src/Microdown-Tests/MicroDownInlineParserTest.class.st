@@ -63,6 +63,20 @@ MicroDownInlineParserTest >> testBolds [
 ]
 
 { #category : #tests }
+MicroDownInlineParserTest >> testBoldsAndNestedItalics [ 
+ 	| elements |
+	self skip.
+	"MicBoldInline substring return _bolds_ but we wait to obtain bolds"
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: 'bolds'.
+ 	self assert: elements second kind equals: 'bold'.
+ 	self assert: elements second openingDelimiter equals: '**'
+ 
+]
+
+{ #category : #tests }
 MicroDownInlineParserTest >> testEscape [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc\_bolds_def').
@@ -88,6 +102,19 @@ MicroDownInlineParserTest >> testFigure [
 MicroDownInlineParserTest >> testItalics [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_italics_def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: 'italics'.
+ 	self assert: elements second kind equals: 'italic'.
+ 	self assert: elements second openingDelimiter equals: '_'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testItalicsAndNestedBolds [
+ 	| elements |
+	self skip.
+	"MicItalicInline substring return **italics** but we wait to obtain italics"
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'italics'.
