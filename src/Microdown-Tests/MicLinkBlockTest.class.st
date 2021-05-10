@@ -17,7 +17,7 @@ MicLinkBlockTest >> setUp [
 
 { #category : #tests }
 MicLinkBlockTest >> testPrintOn [
-	| figure |
-	figure := (splitter new start: '[caption](aUrl)') first.
-	self assert: figure asString equals: '[caption](/aUrl)'
+	| link |
+	link := (splitter new start: '[caption](aUrl)') first.
+	self assert: link asString equals: '[caption](/aUrl)'
 ]
