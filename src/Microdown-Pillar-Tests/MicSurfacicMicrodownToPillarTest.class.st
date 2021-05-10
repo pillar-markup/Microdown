@@ -175,8 +175,9 @@ MicSurfacicMicrodownToPillarTest >> testItalicFormat [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormatEmpty [
-	self skip.
-	self parse: factory italicFormatEmptySample createElementOfClass: #format
+	| italicBlock |
+	italicBlock := self parse: factory italicFormatEmptySample createChildElementOfClass: PRItalicFormat.
+	self assert: italicBlock text equals: ''
 ]
 
 { #category : #'tests - document' }
