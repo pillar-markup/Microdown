@@ -57,6 +57,7 @@ MicSurfacicMicrodownToPillarTest >> parse: sample createChildElementOfClass: aCl
 	micDoc := parser parse: sample.
 	pillarDoc := micDoc asPillar.
 	self assert: pillarDoc children first children first class equals: aClass.
+	^ pillarDoc children first children first
 ]
 
 { #category : #accessing }
@@ -205,8 +206,9 @@ MicSurfacicMicrodownToPillarTest >> testMonospaceFormat [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormatEmpty [
-	self skip.
-	self parse: factory monospaceFormatEmptySample createElementOfClass: #format
+	| monospaceBloc |
+	monospaceBloc := self parse: factory monospaceFormatEmptySample createChildElementOfClass: PRMonospaceFormat.
+	self assert: monospaceBloc text equals: ''
 ]
 
 { #category : #'tests - document' }
