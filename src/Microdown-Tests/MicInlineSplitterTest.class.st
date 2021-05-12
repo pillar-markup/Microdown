@@ -296,6 +296,19 @@ MicInlineSplitterTest >> testSplitBlockMath [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockMathWithParameters [
+	| res |
+	self skip.
+	"Can we use parameters with MicMathInlineBlock ?"
+	res := self splitter start: 'abc$	V_i = C_0 - C_3	|title=math&label=42$def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[	V_i = C_0 - C_3	](math)' . 'def'}.
+	self assert: (res second isKindOf: MicMathInlineBlock)
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 	"Test with multiple annotations"
 
