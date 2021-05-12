@@ -52,7 +52,7 @@ MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	res := self splitter start: 'abc[\**test**](myURL)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[**test**](linkName)' . 'last'}.
+		equals: {'abc' . '[**test**](/myURL)' . 'last'}.
 ]
 
 { #category : #'tests - escape' }
@@ -74,7 +74,7 @@ MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 	res := self splitter start: 'abc[\[nested\]](myURL)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[[nested]](linkName)' . 'last'}.
+		equals: {'abc' . '[[nested]](/myURL)' . 'last'}.
 ]
 
 { #category : #'tests - monospace' }
@@ -221,7 +221,7 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	res := self splitter start: 'abc[LinkText](myURL)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[LinkText](linkName)' . 'last'}.
+		equals: {'abc' . '[LinkText](/myURL)' . 'last'}.
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'myURL'
 ]
