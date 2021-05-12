@@ -186,6 +186,17 @@ MicInlineSplitterTest >> testSplitBlockCode [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigure [
+	| res |
+	res := self splitter start: 'abc![aCaption](aFigURL)def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '![aCaption](/aFigURL)' . 'def'}.
+	self assert: (res second isKindOf: MicFigureInlineBlock)
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
@@ -251,6 +262,17 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[![alttext](/imageurl)](urllink)' . 'last'}.
 	self assert: res second children first url segments first equals: 'imageurl'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockMath [
+	| res |
+	res := self splitter start: 'abc$	V_i = C_0 - C_3	$def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[	V_i = C_0 - C_3	](math)' . 'def'}.
+	self assert: (res second isKindOf: MicMathInlineBlock)
+
 ]
 
 { #category : #tests }
