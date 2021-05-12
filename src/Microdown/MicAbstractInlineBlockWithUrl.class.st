@@ -44,9 +44,9 @@ MicAbstractInlineBlockWithUrl >> printOn: aStream [
 			aStream nextPut: $[;
 				nextPutAll: contents;
 				nextPut: $];
-				nextPut: $(;
-				nextPutAll: url asString;
-				nextPut: $) 
+				nextPut: $(.
+			url printOn: aStream.
+			aStream nextPut: $) 
 		]
 ]
 
