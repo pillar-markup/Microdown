@@ -160,6 +160,20 @@ MicInlineSplitterTest >> testSplitBlockAnnotation [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockAnnotationWithParameters [
+	| res |
+	self skip.
+	"arguments of annotion is nil"
+	res := self splitter start: 'abc<?an annotation|key=cite&label=42?>def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '[an annotation|key=cite&label=42](annotation)' . 'def'}.
+	self assert: (res second isKindOf: MicAnnotationInlineBlock).
+	self assert: res second arguments asDictionary equals: (Dictionary newFrom: { 'key'->'cite' . 'label' -> '42' })
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockBold [
 	| res |
 	res := self splitter start: 'abc**bold**def'.
