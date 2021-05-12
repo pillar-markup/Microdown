@@ -2,7 +2,7 @@ Class {
 	#name : #MicLinkBlockTest,
 	#superclass : #MicBlockTest,
 	#instVars : [
-		'splitter'
+		'splitterClass'
 	],
 	#category : #'Microdown-Tests'
 }
@@ -12,12 +12,12 @@ MicLinkBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser. 
-	splitter := MicInlineSplitter
+	splitterClass := MicInlineSplitter
 ]
 
 { #category : #tests }
 MicLinkBlockTest >> testPrintOn [
 	| link |
-	link := (splitter new start: '[caption](aUrl)') first.
+	link := (splitterClass new start: '[caption](aUrl)') first.
 	self assert: link asString equals: '[caption](/aUrl)'
 ]

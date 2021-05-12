@@ -2,7 +2,7 @@ Class {
 	#name : #MicFigureBlockTest,
 	#superclass : #MicBlockTest,
 	#instVars : [
-		'splitter'
+		'splitterClass'
 	],
 	#category : #'Microdown-Tests'
 }
@@ -12,19 +12,19 @@ MicFigureBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser.
-	splitter := MicInlineSplitter 
+	splitterClass := MicInlineSplitter 
 ]
 
 { #category : #tests }
 MicFigureBlockTest >> testPrintOn [
 	| figure |
-	figure := (splitter new start: '![caption](aUrl)') first.
+	figure := (splitterClass new start: '![caption](aUrl)') first.
 	self assert: figure asString equals: '![caption](/aUrl)'
 ]
 
 { #category : #tests }
 MicFigureBlockTest >> testPrintOnWithParameters [
 	| figure |
-	figure := (splitter new start: '![caption](aUrl|label=1&title=testFigure)') first.
+	figure := (splitterClass new start: '![caption](aUrl|label=1&title=testFigure)') first.
 	self assert: figure asString equals: '![caption](/aUrl|title=testFigure&label=1 )'
 ]
