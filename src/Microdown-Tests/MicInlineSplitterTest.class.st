@@ -238,7 +238,8 @@ MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
-	self assert: res second parameters asDictionary  equals: (Dictionary newFrom: { 'label'->'42' . 'width'->'90' })
+	self assert: (res second parameters at: 'label') equals: '42'.
+	self assert: (res second parameters at: 'width') equals: '90'
 ]
 
 { #category : #tests }
