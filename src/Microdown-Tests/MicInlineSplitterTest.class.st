@@ -187,29 +187,6 @@ MicInlineSplitterTest >> testSplitBlockCode [
 
 { #category : #tests }
 MicInlineSplitterTest >> testSplitBlockFigure [
-	| res |
-	res := self splitter start: 'abc![aCaption](aFigURL)def'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '![aCaption](/aFigURL)' . 'def'}.
-	self assert: (res second isKindOf: MicFigureInlineBlock)
-
-]
-
-{ #category : #tests }
-MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
-	| res |
-	res := self splitter start: 'abc![aCaption](aFigURL|label=42&width=90)def'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '![aCaption](/aFigURL|label=42&width=90 )' . 'def'}.
-	self assert: (res second isKindOf: MicFigureInlineBlock).
-	self assert: res second parameters asDictionary  equals: (Dictionary newFrom: { 'label'->'42' . 'width'->'90' })
-
-]
-
-{ #category : #tests }
-MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
 	| res |
@@ -217,9 +194,26 @@ MicInlineSplitterTest >> testSplitBlockImage [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '![AltText](/my_directory/image.png)' . 'last'}.
+	self assert: (res second isKindOf: MicFigureInlineBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'	
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
+	"Test the image annotation ![AltText](url)"
+
+	| res |
+	res := self splitter start: 'abc![AltText](my_directory/image.png|label=42&width=90)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '![AltText](/my_directory/image.png|label=42&width=90 )' . 'last'}.
+	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'my_directory'.
+	self assert: res second url segments second equals: 'image.png'.
+	self assert: res second parameters asDictionary  equals: (Dictionary newFrom: { 'label'->'42' . 'width'->'90' })
 ]
 
 { #category : #tests }
