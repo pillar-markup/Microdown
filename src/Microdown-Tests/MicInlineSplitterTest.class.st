@@ -197,6 +197,18 @@ MicInlineSplitterTest >> testSplitBlockFigure [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
+	| res |
+	res := self splitter start: 'abc![aCaption](aFigURL|label=42&width=90)def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '![aCaption](/aFigURL|label=42&width=90 )' . 'def'}.
+	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: res second parameters asDictionary  equals: (Dictionary newFrom: { 'label'->'42' . 'width'->'90' })
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockImage [
 	"Test the image annotation ![AltText](url)"
 
