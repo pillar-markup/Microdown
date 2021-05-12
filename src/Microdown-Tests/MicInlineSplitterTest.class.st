@@ -290,7 +290,7 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 		start: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[![alttext](/imageurl)](urllink)' . 'last'}.
+		equals: {'abc' . '[![alttext](/imageurl)](/url)' . 'last'}.
 	self assert: res second children first url segments first equals: 'imageurl'
 ]
 
