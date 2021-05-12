@@ -20,6 +20,26 @@ V_i = C_0 - C_3
 ]
 
 { #category : #tests }
+MicMathBlockTest >> testMathBlockWithBadClosure [
+
+	| root |
+	self skip.
+	"a MicMathBlock can use the MicMathInlineBlock delimiter"
+	root := (MicroDownParser new parse: '
+
+&key=cite&label=42
+V_i = C_0 - C_3 
+$
+').
+	self assert: root children first printString equals: '
+
+$key=cite&label=42
+V_i = C_0 - C_3 
+$
+'.
+]
+
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParameters [
 
 	| root math |
