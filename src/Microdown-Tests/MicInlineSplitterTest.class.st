@@ -160,6 +160,16 @@ MicInlineSplitterTest >> testSplitBlockAnnotation [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockAnnotationWithBadClosure [
+	| res |
+	res := self splitter start: 'abc<?an annotation>def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc<?an annotation>def'}.
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockAnnotationWithParameters [
 	| res |
 	self skip.
