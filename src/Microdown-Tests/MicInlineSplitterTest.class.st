@@ -226,6 +226,29 @@ MicInlineSplitterTest >> testSplitBlockFigure [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithBadClosure [
+	"Test the image annotation ![AltText](url)"
+
+	| res |
+	res := self splitter start: 'abc![AltText]last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc![AltText]last'}.
+
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithBracketInsteadOfParentheses [
+	"Test the image annotation ![AltText](url)"
+
+	| res |
+	res := self splitter start: 'abc![AltText][my_directory/image.png]last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc![AltText][my_directory/image.png]last'}
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
 	"Test the image annotation ![AltText](url)"
 
@@ -240,6 +263,17 @@ MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
 	self assert: res second url segments second equals: 'image.png'.
 	self assert: (res second parameters at: 'label') equals: '42'.
 	self assert: (res second parameters at: 'width') equals: '90'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithParenthesesInsteadOfBracket [
+	"Test the image annotation ![AltText](url)"
+
+	| res |
+	res := self splitter start: 'abc!(AltText)(my_directory/image.png)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc!(AltText)(my_directory/image.png)last'}
 ]
 
 { #category : #tests }
