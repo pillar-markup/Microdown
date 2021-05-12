@@ -189,7 +189,7 @@ MicInlineSplitterTest >> testSplitBlockAnnotationWithParametersWithBlank [
 	| res |
 	self skip.
 	"arguments of annotion is nil"
-	res := self splitter start: 'abc<?an annotation|key=cite&label=42?>def'.
+	res := self splitter start: 'abc<?an annotation|key=&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[an annotation|key=&label=42](annotation)' . 'def'}.
@@ -277,6 +277,23 @@ MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
 	self assert: (res second parameters at: 'label') equals: '42'.
+	self assert: (res second parameters at: 'width') equals: '90'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockFigureWithParametersWithBlank [
+	"Test the image annotation ![AltText](url)"
+
+	| res |
+	res := self splitter start: 'abc![AltText](my_directory/image.png|label=&width=90)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc' . '![AltText](/my_directory/image.png|label=&width=90 )' . 'last'}.
+	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: res second url class equals: ZnUrl.
+	self assert: res second url segments first equals: 'my_directory'.
+	self assert: res second url segments second equals: 'image.png'.
+	self assert: (res second parameters at: 'label') equals: ''.
 	self assert: (res second parameters at: 'width') equals: '90'
 ]
 
