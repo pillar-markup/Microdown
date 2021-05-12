@@ -22,14 +22,16 @@ V_i = C_0 - C_3
 { #category : #tests }
 MicMathBlockTest >> testMathBlockWithParameters [
 
-	| root |
-	"what is the utility of arguments"
+	| root math |
 	root := (MicroDownParser new parse: '
 
 &key=cite&label=42
 V_i = C_0 - C_3 
 &
 ').
-	self assert: root children first class equals: MicMathBlock.
-	self assert: root children first firstLine equals: 'key=cite&label=42' 
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: (math arguments at: 'key') equals: 'cite'.
+	self assert: (math arguments at: 'label') equals: '42'
 ]
