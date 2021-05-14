@@ -363,6 +363,28 @@ MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockLinkWithBracketInsteadOfParentheses [
+	"Test the link annotation [LinkText](url)"
+
+	| res |
+	res := self splitter start: 'abc[LinkText][myURL]last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc[LinkText][myURL]last'}
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testSplitBlockLinkWithParenthesesInsteadOfBracket [
+	"Test the link annotation [LinkText](url)"
+
+	| res |
+	res := self splitter start: 'abc(LinkText)(myURL)last'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc(LinkText)(myURL)last'}
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockMath [
 	| res |
 	res := self splitter start: 'abc$	V_i = C_0 - C_3	$def'.
