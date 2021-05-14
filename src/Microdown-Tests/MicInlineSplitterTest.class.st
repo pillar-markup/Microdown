@@ -84,7 +84,8 @@ MicInlineSplitterTest >> testEscapeMonospace [
 	res := self splitter start: 'abc`\`monospace\``efg'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[`monospace`](monospace)' . 'efg'}
+		equals: {'abc' . '[`monospace`](monospace)' . 'efg'}.
+	self assert: res second class equals: MicMonospaceInlineBlock
 ]
 
 { #category : #tests }
