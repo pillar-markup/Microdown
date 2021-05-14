@@ -45,17 +45,6 @@ MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
 ]
 
 { #category : #'tests - escape' }
-MicInlineSplitterTest >> testEscapeCharacterBeforeAnEscapeCharacter [
-	"we should have just one escape"
-	| res |
-	self skip.
-	res := self splitter start: '\\'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'\'}.
-]
-
-{ #category : #'tests - escape' }
 MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	"Test the escape \ in link description"
 
@@ -533,6 +522,17 @@ MicInlineSplitterTest >> testSplitNotClosed [
 	| res |
 	res := self splitter start: 'abc**xyz'.
 	self assert: res first printString equals: 'abc**xyz'.
+]
+
+{ #category : #'tests - escape' }
+MicInlineSplitterTest >> testTwoConsecutiveEscapeCharacter [
+	"we should have just one escape"
+	| res |
+	self skip.
+	res := self splitter start: '\\'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'\'}.
 ]
 
 { #category : #tests }
