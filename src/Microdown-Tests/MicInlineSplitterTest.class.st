@@ -457,6 +457,15 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockStrikeWithBadClosure [
+	| res |
+	res := self splitter start: 'abc~strikeédef'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc~strikeédef'}.
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitEmpty [
 	| res |
 	res := self splitter start: ''.
