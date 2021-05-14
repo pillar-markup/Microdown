@@ -88,6 +88,16 @@ MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 		equals: {'abc' . '[[nested]](/myURL)' . 'last'}.
 ]
 
+{ #category : #'tests - escape' }
+MicInlineSplitterTest >> testEscapeCharacterWithNoCharacterAfter [
+	| res |
+	self skip.
+	res := self splitter start: '**bold**\'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'**bold**\'}.
+]
+
 { #category : #'tests - monospace' }
 MicInlineSplitterTest >> testEscapeMonospace [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
