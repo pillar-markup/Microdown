@@ -45,6 +45,17 @@ MicInlineSplitterTest >> testEscapeCharacterAtBeginning [
 ]
 
 { #category : #'tests - escape' }
+MicInlineSplitterTest >> testEscapeCharacterBeforeAnEscapeCharacter [
+	"we should have just one escape"
+	| res |
+	self skip.
+	res := self splitter start: '\\'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'\'}.
+]
+
+{ #category : #'tests - escape' }
 MicInlineSplitterTest >> testEscapeCharacterInLinkName [
 	"Test the escape \ in link description"
 
@@ -105,7 +116,8 @@ MicInlineSplitterTest >> testMonospaceUnevaluated [
 	res := self splitter start: 'abc`def**not bold**ghi`xyz'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[def**not bold**ghi](monospace)' . 'xyz'}
+		equals: {'abc' . '[def**not bold**ghi](monospace)' . 'xyz'}.
+	self assert: res second class equals: MicMonospaceInlineBlock
 ]
 
 { #category : #tests }
