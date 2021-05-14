@@ -374,6 +374,16 @@ MicInlineSplitterTest >> testSplitBlockMath [
 ]
 
 { #category : #tests }
+MicInlineSplitterTest >> testSplitBlockMathWithBadClosure [
+	| res |
+	res := self splitter start: 'abc$	V_i = C_0 - C_3	&def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: {'abc$	V_i = C_0 - C_3	&def'}.
+
+]
+
+{ #category : #tests }
 MicInlineSplitterTest >> testSplitBlockMultipleSequenceAnnotation [
 	"Test with multiple annotations"
 
