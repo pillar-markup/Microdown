@@ -453,6 +453,7 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[strike](strike)' . 'def'}.
+	self assert: res second class equals: MicStrikeInlineBlock
 ]
 
 { #category : #tests }
