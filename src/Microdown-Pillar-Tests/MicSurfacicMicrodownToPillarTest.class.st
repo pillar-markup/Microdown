@@ -50,6 +50,17 @@ MicSurfacicMicrodownToPillarTest >> orderedListClass [
 ]
 
 { #category : #accessing }
+MicSurfacicMicrodownToPillarTest >> parse: sample createChildElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := parser parse: sample.
+	pillarDoc := micDoc asPillar.
+	self assert: pillarDoc children first children first class equals: aClass.
+	^ pillarDoc children first children first
+]
+
+{ #category : #accessing }
 MicSurfacicMicrodownToPillarTest >> parse: sample createElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
@@ -108,14 +119,16 @@ MicSurfacicMicrodownToPillarTest >> testAnchorWithSpaceInside [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormat [
-	self skip.
-	self parse: factory boldFormatSample createElementOfClass: #format
+	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testBoldFormatEmpty [
+	| boldBlock |
 	self skip.
-	self parse: factory boldFormatEmptySample createElementOfClass: #format
+	"the parser parse '****' and return a HorizontalBlock"
+	boldBlock := self parse: factory boldFormatEmptySample createChildElementOfClass: PRBoldFormat.
+	self assert: boldBlock text equals: ''
 ]
 
 { #category : #'tests - header' }
@@ -160,14 +173,14 @@ MicSurfacicMicrodownToPillarTest >> testHeaderWithNewLine [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormat [
-	self skip.
-	self parse: factory italicFormatSample createElementOfClass: #format
+	self parse: factory italicFormatSample createChildElementOfClass: PRItalicFormat
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testItalicFormatEmpty [
-	self skip.
-	self parse: factory italicFormatEmptySample createElementOfClass: #format
+	| italicBlock |
+	italicBlock := self parse: factory italicFormatEmptySample createChildElementOfClass: PRItalicFormat.
+	self assert: italicBlock text equals: ''
 ]
 
 { #category : #'tests - document' }
@@ -187,20 +200,19 @@ MicSurfacicMicrodownToPillarTest >> testListMulti [
 
 { #category : #'tests - list' }
 MicSurfacicMicrodownToPillarTest >> testListWithComment [
-	self skip.
 	self parse: factory listWithCommentSample createElementOfClass: self orderedListClass 
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormat [
-	self skip.
-	self parse: factory monospaceFormatSample createElementOfClass: #format
+	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testMonospaceFormatEmpty [
-	self skip.
-	self parse: factory monospaceFormatEmptySample createElementOfClass: #format
+	| monospaceBloc |
+	monospaceBloc := self parse: factory monospaceFormatEmptySample createChildElementOfClass: PRMonospaceFormat.
+	self assert: monospaceBloc text equals: ''
 ]
 
 { #category : #'tests - document' }
@@ -356,14 +368,14 @@ MicSurfacicMicrodownToPillarTest >> testScriptWithSpacedParameters [
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormat [
-	self skip.
-	self parse: factory strikethroughFormatSample createElementOfClass: #format
+	self parse: factory strikethroughFormatSample createChildElementOfClass: PRStrikethroughFormat
 ]
 
 { #category : #'tests - format' }
 MicSurfacicMicrodownToPillarTest >> testStrikethroughFormatEmpty [
-	self skip.
-	self parse: factory strikethroughFormatEmptySample createElementOfClass: #format
+	| strikeBlock |
+	strikeBlock := self parse: factory strikethroughFormatEmptySample createChildElementOfClass: PRStrikethroughFormat.
+	self assert: strikeBlock text equals: ''
 ]
 
 { #category : #'tests - format' }

@@ -345,12 +345,12 @@ body: 'bla'
 
 { #category : #format }
 MicMicroDownSnippetFactory >> strikethroughFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass strikethroughMarkup
+	^ self surround: '' withMarkup: self parserClass strikeMarkup
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> strikethroughFormatSample [
-	^ self surroundWithMarkup: self parserClass strikethroughMarkup
+	^ self surroundWithMarkup: self parserClass strikeMarkup
 ]
 
 { #category : #format }

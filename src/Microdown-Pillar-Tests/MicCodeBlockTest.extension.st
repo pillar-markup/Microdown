@@ -4,6 +4,8 @@ Extension { #name : #MicCodeBlockTest }
 MicCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
 	| source root code textBody argument |
 	self skip.
+	"if you parse [[[smalltalk you obtain smalltalk->true but if convert ```smalltalk with asPillar you obtain smalltalk->nil"
+	"the probleme resolved in language of PRCodeBlock but there is always a pb in the PRParser or asPillar"
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
