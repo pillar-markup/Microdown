@@ -25,7 +25,7 @@ MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - anchors' }
 MicroDownInlineParserTest >> testAnchor [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchors@*def').
@@ -37,7 +37,7 @@ MicroDownInlineParserTest >> testAnchor [
  	self assert: elements second closingDelimiter equals: '@*'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - anchors' }
 MicroDownInlineParserTest >> testAnchorWithoutClosure [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchorsdef').
@@ -45,45 +45,63 @@ MicroDownInlineParserTest >> testAnchorWithoutClosure [
  	self assert: elements first substring equals: 'abc*@anchorsdef'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - annotations' }
+MicroDownInlineParserTest >> testAnnotationBasic [
+ 	| elements annotation |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
+	"pay attention an annotation is inside a paragraph (else this is an environment)"
+	annotation := elements second.
+	
+ 	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
+	
+	self halt.
+ 	self assert: annotation kind equals: 'annotation'.
+ 	self assert: annotation openingDelimiter equals: '<?'.
+ 	self assert: annotation closingDelimiter equals: '?>'
+ 
+]
+
+{ #category : #'tests - annotations' }
 MicroDownInlineParserTest >> testAnnotations [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.?>def').
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.?>def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: 'footnote | value=A foonote is anannotation.'.
+ 	self assert: elements second substring equals: 'footnote | value=A foonote is annotation.'.
  	self assert: elements second kind equals: 'annotation'.
  	self assert: elements second openingDelimiter equals: '<?'.
  	self assert: elements second closingDelimiter equals: '?>'
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - annotations' }
 MicroDownInlineParserTest >> testAnnotationsWithoutClosure [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.def'.
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc<?footnote | value=A foonote is anannotation.def'
  
 ]
 
-{ #category : #tests }
-MicroDownInlineParserTest >> testBolds [ 
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testBold [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
+	
  	self assert: elements second substring equals: 'bolds'.
  	self assert: elements second kind equals: 'bold'.
+	
  	self assert: elements second openingDelimiter equals: '**'
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests to make green' }
 MicroDownInlineParserTest >> testBoldsAndNestedItalics [ 
  	| elements |
 	self skip.
-	"MicBoldInline substring return _bolds_ but we wait to obtain bolds"
+	"MicBoldInline substring return _bolds_ but we were expecting to obtain bolds and to have it wrapped in italics"
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
@@ -93,10 +111,11 @@ MicroDownInlineParserTest >> testBoldsAndNestedItalics [
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testBoldsAndNestedItalicsWithClosureAfterOpenItalics [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds**_def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc**_bolds**_def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: '_bolds'.
@@ -106,10 +125,11 @@ MicroDownInlineParserTest >> testBoldsAndNestedItalicsWithClosureAfterOpenItalic
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testBoldsWithoutClosure [ 
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**boldsdef').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc**boldsdef'.
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc**boldsdef'
  
@@ -125,22 +145,43 @@ MicroDownInlineParserTest >> testEscape [
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - figure' }
 MicroDownInlineParserTest >> testFigure [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc![caption](url?parameters=value)def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc![caption](url?parameters=value)def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: 'caption'.
+ 	self assert: elements second caption equals: 'caption'.
  	self assert: elements second kind equals: 'figure'.
+	
+	self flag: #tofix.
+	"the path should be correctly managed."
+	
  	self assert: elements second openingDelimiter equals: '!['.
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #tests }
-MicroDownInlineParserTest >> testItalics [
+{ #category : #'tests - figure' }
+MicroDownInlineParserTest >> testFigureWithParameters [
+ 	| elements figure |
+ 	elements := self parseAndReturnElementsOfParagraphFor: '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?label=fig2&width=80)'.
+ 	self assert: elements size equals: 1.
+ 	figure := elements first.
+ 	self assert: figure caption equals: 'caption terminating with a .'.
+ 	self assert: figure kind equals: 'figure'.
+	self flag: #tofix.
+	"parameters are empty and it look like the path is not parsed!"
+	self assert: figure parameters size equals: 2. 
+	
+	
+	
+
+]
+
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testItalic [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_italics_def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc_italics_def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'italics'.
@@ -148,11 +189,11 @@ MicroDownInlineParserTest >> testItalics [
  	self assert: elements second openingDelimiter equals: '_'
 ]
 
-{ #category : #tests }
+{ #category : #'tests to make green' }
 MicroDownInlineParserTest >> testItalicsAndNestedBolds [
  	| elements |
 	self skip.
-	"MicItalicInline substring return **italics** but we wait to obtain italics"
+	"MicItalicInline substring return **italics** but we expected to have italic wrapped in bold"
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
@@ -161,10 +202,11 @@ MicroDownInlineParserTest >> testItalicsAndNestedBolds [
  	self assert: elements second openingDelimiter equals: '_'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testItalicsAndNestedBoldsWithClosureAfterOpenBolds [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics_**def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc_**italics_**def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: '**italics'.
@@ -174,22 +216,42 @@ MicroDownInlineParserTest >> testItalicsAndNestedBoldsWithClosureAfterOpenBolds 
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testItalicsWithoutClosure [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_italicsdef').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc_italicsdef'.
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc_italicsdef'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - link' }
 MicroDownInlineParserTest >> testLink [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[caption](url?parameters=value)def').
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[Pharo.Org](http://www.pharo.org)def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: 'caption'.
+	
+ 	self assert: elements second caption equals: 'Pharo.Org'.
  	self assert: elements second kind equals: 'linkName'.
+	self assert: elements second url printString equals: 'http://www.pharo.org/'.
+	
+	
+ 	self assert: elements second openingDelimiter equals: '['.
+ 	self assert: elements second closingDelimiter equals: ')'
+]
+
+{ #category : #'tests - link' }
+MicroDownInlineParserTest >> testLinkWithParameters [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[GH Ducasse](https://github.com/Ducasse?tab=repositories)def').
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: 'GH Ducasse'.
+ 	self assert: elements second kind equals: 'linkName'.
+	
+	self assert: elements second url printString equals: 'https://github.com/Ducasse?tab=repositories'.
+	
  	self assert: elements second openingDelimiter equals: '['.
  	self assert: elements second closingDelimiter equals: ')'
 ]
@@ -205,10 +267,11 @@ MicroDownInlineParserTest >> testMath [
  	self assert: elements second openingDelimiter equals: '$'
 ]
 
-{ #category : #tests }
-MicroDownInlineParserTest >> testMonospaces [
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testMonospace [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc`monospaces`def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospaces`def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'monospaces'.
@@ -217,10 +280,10 @@ MicroDownInlineParserTest >> testMonospaces [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testMonospacesWithoutClosure [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef'.
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc`monospacesdef'
 
@@ -294,10 +357,11 @@ MicroDownInlineParserTest >> testRawsWitoutClosure [
  	self assert: elements first substring equals: 'abc{{rawsdef'
 ]
 
-{ #category : #tests }
-MicroDownInlineParserTest >> testStrikes [
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testStrike [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc~strikes~def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc~strikes~def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'strikes'.
@@ -305,8 +369,9 @@ MicroDownInlineParserTest >> testStrikes [
  	self assert: elements second openingDelimiter equals: '~'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - format' }
 MicroDownInlineParserTest >> testStrikesWithoutClosure [
+
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc~strikesdef'.
  	self assert: elements size equals: 1.

@@ -279,7 +279,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	
+	self flag: #tofix. "we should check that we get the name of the environment."
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
 	self assert: (environment arguments at: 'c') equals: nil.

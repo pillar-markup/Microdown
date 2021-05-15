@@ -26,6 +26,11 @@ MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger with
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
+{ #category : #transformation }
+MicAbstractInlineBlockWithUrl >> caption [ 
+	^ self substring
+]
+
 { #category : #accessing }
 MicAbstractInlineBlockWithUrl >> closingDelimiter [
 
