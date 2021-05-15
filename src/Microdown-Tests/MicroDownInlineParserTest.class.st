@@ -25,6 +25,19 @@ MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
  
 ]
 
+{ #category : #tests }
+MicroDownInlineParserTest >> rawTestingFor: aString [
+
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{', aString, '}}def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: aString.
+ 	self assert: elements second kind equals: 'raw'.
+ 	self assert: elements second openingDelimiter equals: '{{'.
+ 	self assert: elements second closingDelimiter equals: '}}'
+]
+
 { #category : #'tests - anchors' }
 MicroDownInlineParserTest >> testAnchor [
  	| elements |
@@ -48,6 +61,7 @@ MicroDownInlineParserTest >> testAnchorWithoutClosure [
 { #category : #'tests - annotations' }
 MicroDownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
+	self skip.
  	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
 	"pay attention an annotation is inside a paragraph (else this is an environment)"
 	annotation := elements second.
@@ -135,10 +149,11 @@ MicroDownInlineParserTest >> testBoldsWithoutClosure [
  
 ]
 
-{ #category : #tests }
+{ #category : #'tests - others' }
 MicroDownInlineParserTest >> testEscape [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc\_bolds_def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc\_bolds_def'.
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc_bolds_def'.
  	self assert: elements first kind equals: 'basic'.
@@ -256,7 +271,7 @@ MicroDownInlineParserTest >> testLinkWithParameters [
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - others' }
 MicroDownInlineParserTest >> testMath [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc$V_i = C_0 - C_3$def').
@@ -290,11 +305,22 @@ MicroDownInlineParserTest >> testMonospacesWithoutClosure [
 ]
 
 { #category : #tests }
-MicroDownInlineParserTest >> testRaws [
+MicroDownInlineParserTest >> testRawWitoutClosure [
+
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{raws}}def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{rawsdef'.
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc{{rawsdef'
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testRaws [
+
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{raws}}def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
+	
  	self assert: elements second substring equals: 'raws'.
  	self assert: elements second kind equals: 'raw'.
  	self assert: elements second openingDelimiter equals: '{{'.
@@ -302,59 +328,25 @@ MicroDownInlineParserTest >> testRaws [
 ]
 
 { #category : #tests }
-MicroDownInlineParserTest >> testRawsWithBolds [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{**raws**}}def').
- 	self assert: elements size equals: 3.
- 	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: '**raws**'.
- 	self assert: elements second kind equals: 'raw'.
- 	self assert: elements second openingDelimiter equals: '{{'.
- 	self assert: elements second closingDelimiter equals: '}}'
+MicroDownInlineParserTest >> testRawsWithBold [
+
+ 	self rawTestingFor: '**bold**'
 ]
 
 { #category : #tests }
-MicroDownInlineParserTest >> testRawsWithItalics [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{_raws_}}def').
- 	self assert: elements size equals: 3.
- 	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: '_raws_'.
- 	self assert: elements second kind equals: 'raw'.
- 	self assert: elements second openingDelimiter equals: '{{'.
- 	self assert: elements second closingDelimiter equals: '}}'
+MicroDownInlineParserTest >> testRawsWithItalic [
+
+ 	self rawTestingFor: '_italic_'
 ]
 
 { #category : #tests }
-MicroDownInlineParserTest >> testRawsWithMonospaces [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{`raws`}}def').
- 	self assert: elements size equals: 3.
- 	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: '`raws`'.
- 	self assert: elements second kind equals: 'raw'.
- 	self assert: elements second openingDelimiter equals: '{{'.
- 	self assert: elements second closingDelimiter equals: '}}'
+MicroDownInlineParserTest >> testRawsWithMonospace [
+ 	self rawTestingFor: '`monononono`'
 ]
 
 { #category : #tests }
-MicroDownInlineParserTest >> testRawsWithStrikes [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{~raws~}}def').
- 	self assert: elements size equals: 3.
- 	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: '~raws~'.
- 	self assert: elements second kind equals: 'raw'.
- 	self assert: elements second openingDelimiter equals: '{{'.
- 	self assert: elements second closingDelimiter equals: '}}'
-]
-
-{ #category : #tests }
-MicroDownInlineParserTest >> testRawsWitoutClosure [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc{{rawsdef').
- 	self assert: elements size equals: 1.
- 	self assert: elements first substring equals: 'abc{{rawsdef'
+MicroDownInlineParserTest >> testRawsWithStrike [
+ 	self rawTestingFor: '~strikkkkk~'
 ]
 
 { #category : #'tests - format' }
