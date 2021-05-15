@@ -20,6 +20,15 @@ MicConverterVisitorTest >> setUp [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testAnchorBlock [
+	| source root pillar |
+	source := '@anchor'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRAnchor
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testCodeBlock [
 
 	| document |
@@ -43,6 +52,16 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testEnvironmentBlock [
+	| source root pillar |
+	source := '<?environment|name=aName?>'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRUndefinedAnnotation
+	
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testHeader [ 
 
 	| document |
@@ -60,6 +79,33 @@ MicConverterVisitorTest >> testHeader [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testHorizontalLineBlock [
+	| source root pillar |
+	source := '***
+	'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRHorizontalRule
+	
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testMathBlock [
+	| source root pillar |
+	source := '
+&
+V_i = C_0 - C_3
+&
+	
+'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRMathEnvironment.
+	self assert: pillar children first class equals: PRText.
+	
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
@@ -72,4 +118,104 @@ MicConverterVisitorTest >> testNumberedList [
 	self
 		assert: document children first children second class
 		equals: PRListItem
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testQuoteBlock [
+	| source root pillarNode |
+	source := '> text1
+>    text2'.
+	root := self parserClass new parse: source.
+	self assert: root children size equals: 1.
+	pillarNode := root children first accept: visitor.
+	self assert: pillarNode class equals: PRPreformatted.
+	self
+		assert: pillarNode text
+		equals:
+			'text1
+text2'
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testRoot [
+	| source root pillar |
+	source := '####    Level four
+## Level 2'.
+	root := self parserClass new parse: source.
+	pillar := root accept: visitor.
+	self assert: pillar class equals: PRDocument.
+	self assert: pillar children second class equals: PRHeader.
+	self assert: pillar children first level equals: 4
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testSingleLevelOrderedList2 [
+	| source root list |
+	source := '19. item 1
+    expanded
+7.  item 2'.
+	root := self parserClass new parse: source.
+	list := root children first accept: visitor.
+	self assert: list class equals: PROrderedList .
+	self assert: list children size equals: 2.
+	self
+		assert: list children first text
+		equals:
+			'item 1
+expanded'.
+	self assert: list counter equals: 19
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testSingleLevelUnorderedList2 [
+	| source root list item |
+	source := '- item 1
+  expanded
+- item 2'.
+	root := self parserClass new parse: source.
+	list := root children first accept: visitor.
+	self assert: list class equals: PRUnorderedList.
+	self assert: list children size equals: 2.
+	item := list children first.
+	self assert: item class equals: PRListItem.
+	self
+		assert: item children first text
+		equals:
+			'item 1
+expanded'
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testSingleParagraphWithIndentedText [
+	| source root expected pillar |
+	source := 'This is
+   a paragraph with spaces
+	and one with tabs'.
+	expected := 'This is
+a paragraph with spaces
+and one with tabs'.
+	root := self parserClass new parse: source.
+	pillar := root children first accept: visitor.
+	self assert: pillar class equals: PRParagraph.
+	self assert: pillar children first class equals: PRText.
+	self assert: pillar children first text equals: expected
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testTwoLevelUnorderedList1 [
+	| source root list secondItem subItem |
+	source := '- item 1
+  - sublevel
+- item 2'.
+	root := self parserClass new parse: source.
+	list := root children first accept: visitor.
+	secondItem := list children second.
+	self assert: secondItem class equals: PRListItem.
+	self assert: secondItem children first class equals: PRText.
+	self assert: secondItem children first text equals: 'item 2'.
+	subItem := list children first children second.
+	self assert: subItem class equals: PRUnorderedList.
+	self
+		assert: subItem children first text
+		equals: 'sublevel'	"item 1"	"unorded list"	"sub item"
 ]

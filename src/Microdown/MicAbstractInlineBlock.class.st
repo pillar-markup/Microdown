@@ -110,6 +110,7 @@ MicAbstractInlineBlock >> literal [
 
 { #category : #printing }
 MicAbstractInlineBlock >> printOn: aStream [
+
 	(self kind == #basic) 
 		ifTrue: [ aStream nextPutAll: self substring ] 
 		ifFalse: [ 
@@ -124,7 +125,6 @@ MicAbstractInlineBlock >> printOn: aStream [
 				nextPutAll: self kind;
 				nextPut: $) 
 		]
-			
 ]
 
 { #category : #accessing }
