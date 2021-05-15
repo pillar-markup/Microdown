@@ -58,14 +58,14 @@ MicFigureInlineBlock >> printOn: aStream [
  				nextPut: $[;
  				nextPutAll: contents;
  				nextPut: $];
- 				nextPut: $(;
- 				nextPutAll: url asString.
+ 				nextPut: $(.
+ 				url printOn: aStream.
  			parameters 
  				ifNotEmpty: [ | params |
  					params := ''.
- 					aStream nextPut: $?.
+ 					aStream nextPut: $|.
  					parameters keysAndValuesDo: [ :key :value | params := params , key asString  , '=' , value asString , '&'  ].
- 					params byteAt: params size put: $?.
+ 					params byteAt: params size put: Character space.
  					aStream nextPutAll: params].
  			aStream nextPut: $) 
  		]

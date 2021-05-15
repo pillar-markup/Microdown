@@ -18,3 +18,57 @@ V_i = C_0 - C_3
 ').
 	self assert: root children first class equals: MicMathBlock 
 ]
+
+{ #category : #tests }
+MicMathBlockTest >> testMathBlockWithBadClosure [
+
+	| root |
+	self skip.
+	"a MicMathBlock can use the MicMathInlineBlock delimiter"
+	root := (MicroDownParser new parse: '
+
+&key=cite&label=42
+V_i = C_0 - C_3 
+$
+').
+	self assert: root children first printString equals: '
+
+$key=cite&label=42
+V_i = C_0 - C_3 
+$
+'.
+]
+
+{ #category : #tests }
+MicMathBlockTest >> testMathBlockWithParameters [
+
+	| root math |
+	root := (MicroDownParser new parse: '
+
+&key=cite&label=42
+V_i = C_0 - C_3 
+&
+').
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: (math arguments at: 'key') equals: 'cite'.
+	self assert: (math arguments at: 'label') equals: '42'
+]
+
+{ #category : #tests }
+MicMathBlockTest >> testMathBlockWithParametersWithBlank [
+
+	| root math |
+	root := (MicroDownParser new parse: '
+
+&key=&label=42
+V_i = C_0 - C_3 
+&
+').
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math firstLine equals: 'key=&label=42'.
+	self assert: (math arguments at: 'key') equals: ''.
+	self assert: (math arguments at: 'label') equals: '42'
+]
