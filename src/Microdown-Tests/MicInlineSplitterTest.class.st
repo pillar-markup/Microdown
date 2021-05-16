@@ -77,7 +77,7 @@ MicInlineSplitterTest >> testEscapeCharacterInNestedLinkName [
 		equals: {'abc' . '[[nested]](/myURL)' . 'last'}.
 ]
 
-{ #category : #'tests - escape' }
+{ #category : #'tests to make green again' }
 MicInlineSplitterTest >> testEscapeCharacterWithNoCharacterAfter [
 	| res |
 	self skip.
@@ -347,7 +347,7 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self assert: res second url segments first equals: 'myURL'
 ]
 
-{ #category : #fails }
+{ #category : #'tests to make green again' }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
@@ -524,7 +524,7 @@ MicInlineSplitterTest >> testSplitNotClosed [
 	self assert: res first printString equals: 'abc**xyz'.
 ]
 
-{ #category : #'tests - escape' }
+{ #category : #'tests to make green again' }
 MicInlineSplitterTest >> testTwoConsecutiveEscapeCharacter [
 	"we should have just one escape"
 	| res |
@@ -542,4 +542,14 @@ MicInlineSplitterTest >> testUrlObjectInUrlBlocks [
 	res := self splitter start: 'abc[test](myURL)last'.
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'myURL'
+]
+
+{ #category : #'tests to make green again' }
+MicInlineSplitterTest >> testUrlObjectInUrlBlocks2 [
+
+	| res |
+	res := self splitter start: 'abc[pulse](https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests)last'.
+	self assert: res second url class equals: ZnUrl.
+	self flag: #tofix. "substring just returns pulse???"
+	self assert: res second url segments first equals: 'Ducasse'.
 ]
