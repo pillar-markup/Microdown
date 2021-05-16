@@ -35,6 +35,7 @@ MicroDownParserTest >> testAnchorBlock [
 
 { #category : #'tests-anchor' }
 MicroDownParserTest >> testAnchorBlockFollowingEachOther [
+
 	| source root annotated |
 	source := parser anchorMarkup, 'label1', String cr.
 	source := source, parser anchorMarkup, 'label2'.
@@ -51,6 +52,7 @@ MicroDownParserTest >> testAnchorBlockFollowingEachOther [
 
 { #category : #'tests-anchor' }
 MicroDownParserTest >> testAnchorMarkupInsideLine [
+
 	| source root paragraph |
 	source := 'this is not an anchor', parser anchorMarkup, 'label1'.
 	root := parser parse: source.
@@ -64,6 +66,7 @@ MicroDownParserTest >> testAnchorMarkupInsideLine [
 
 { #category : #'tests-annotated-paragraph' }
 MicroDownParserTest >> testAnnotatedBlock [
+
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
 	root :=  parser parse: source.
@@ -279,7 +282,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self flag: #tofix. "we should check that we get the name of the environment."
+	self assert: environment name equals: 'card'.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
 	self assert: (environment arguments at: 'c') equals: nil.
@@ -396,7 +399,7 @@ support(I) \geq minsup \}'
 MicroDownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup, 'label=equation&doNiceMath' , String cr, 
+	source := parser mathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
 	parser mathClosingBlockMarkup, String cr.
 
@@ -404,7 +407,7 @@ MicroDownParserTest >> testMathBlockWithArguments [
 	self assert: root children size equals: 1.
 	math := root children first.
 	self assert: (math arguments at: 'label') equals: 'equation'.
-	self assert: (math arguments at: 'doNiceMath') equals: nil
+	self assert: (math arguments at: 'caption') equals: 'doNiceMath'
 ]
 
 { #category : #'tests-metaData' }
@@ -510,7 +513,7 @@ aa'.
 	
 ]
 
-{ #category : #'tests - breaking class comments' }
+{ #category : #'tests-breaking class comments' }
 MicroDownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
 	
