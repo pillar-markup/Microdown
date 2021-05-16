@@ -315,16 +315,28 @@ MicroDownInlineParserTest >> testRawWitoutClosure [
 
 { #category : #tests }
 MicroDownInlineParserTest >> testRaws [
+	self rawTestingFor: 'anything'
+]
 
- 	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{raws}}def'.
- 	self assert: elements size equals: 3.
- 	self assert: elements first substring equals: 'abc'.
+{ #category : #'tests to make green' }
+MicroDownInlineParserTest >> testRawsDoesNotHandleWellCurly [
+	self skip.
+	self rawTestingFor: 'anything}'.
 	
- 	self assert: elements second substring equals: 'raws'.
- 	self assert: elements second kind equals: 'raw'.
- 	self assert: elements second openingDelimiter equals: '{{'.
- 	self assert: elements second closingDelimiter equals: '}}'
+]
+
+{ #category : #'tests to make green' }
+MicroDownInlineParserTest >> testRawsDoesNotHandleWellEscape [
+	self skip.
+	self rawTestingFor: 'anything\*foo'.
+	
+]
+
+{ #category : #tests }
+MicroDownInlineParserTest >> testRawsHandleWellCurlyIfNotLast [
+	
+	self rawTestingFor: 'anything}88'.
+
 ]
 
 { #category : #tests }
