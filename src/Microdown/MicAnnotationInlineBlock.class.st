@@ -40,3 +40,12 @@ MicAnnotationInlineBlock >> openingDelimiter [
 
  	^ MicAnnotationOpenerDelimiter markup
 ]
+
+{ #category : #accessing }
+MicAnnotationInlineBlock >> printOn: aStream [
+
+	aStream nextPutAll: self openingDelimiter.
+	Halt once.
+	aStream nextPutAll: self substring.
+	aStream nextPutAll: self closingDelimiter.
+]

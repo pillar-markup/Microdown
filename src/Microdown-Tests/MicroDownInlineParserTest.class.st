@@ -58,7 +58,7 @@ MicroDownInlineParserTest >> testAnchorRefernce [
  	self assert: elements second closingDelimiter equals: '@*'
 ]
 
-{ #category : #'tests - annotations' }
+{ #category : #'tests to make green' }
 MicroDownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
 	self skip.
@@ -76,9 +76,18 @@ MicroDownInlineParserTest >> testAnnotationBasic [
 ]
 
 { #category : #'tests - annotations' }
+MicroDownInlineParserTest >> testAnnotationPrintString [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.&width=90?>def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second printString equals: '<?footnote|value=A foonote is annotation.&width=90?>'.
+ 
+]
+
+{ #category : #'tests - annotations' }
 MicroDownInlineParserTest >> testAnnotations [
  	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.?>def').
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.?>def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'footnote | value=A foonote is annotation.'.
