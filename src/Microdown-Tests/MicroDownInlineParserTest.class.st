@@ -39,7 +39,15 @@ MicroDownInlineParserTest >> rawTestingFor: aString [
 ]
 
 { #category : #'tests - anchors' }
-MicroDownInlineParserTest >> testAnchor [
+MicroDownInlineParserTest >> testAnchorReferenceWithoutClosure [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchorsdef').
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: 'abc*@anchorsdef'
+]
+
+{ #category : #'tests - anchors' }
+MicroDownInlineParserTest >> testAnchorRefernce [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchors@*def').
  	self assert: elements size equals: 3.
@@ -48,14 +56,6 @@ MicroDownInlineParserTest >> testAnchor [
  	self assert: elements second kind equals: 'anchorReference'.
  	self assert: elements second openingDelimiter equals: '*@'.
  	self assert: elements second closingDelimiter equals: '@*'
-]
-
-{ #category : #'tests - anchors' }
-MicroDownInlineParserTest >> testAnchorWithoutClosure [
- 	| elements |
- 	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchorsdef').
- 	self assert: elements size equals: 1.
- 	self assert: elements first substring equals: 'abc*@anchorsdef'
 ]
 
 { #category : #'tests - annotations' }
