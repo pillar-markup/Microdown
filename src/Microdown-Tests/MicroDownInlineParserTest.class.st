@@ -25,6 +25,16 @@ MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
  
 ]
 
+{ #category : #'tests - header' }
+MicroDownInlineParserTest >> parser [
+	^ self parserClass new 
+]
+
+{ #category : #'tests - header' }
+MicroDownInlineParserTest >> parserClass [ 
+	^ MicroDownParser 
+]
+
 { #category : #tests }
 MicroDownInlineParserTest >> rawTestingFor: aString [
 
@@ -221,6 +231,31 @@ MicroDownInlineParserTest >> testFigureWithParameters [
 	
 	
 
+]
+
+{ #category : #'tests - header' }
+MicroDownInlineParserTest >> testHeaderLevel4 [
+	| source root |
+	source := (self parser headerMarkup repeat: 4), '    Level four'.
+	root := self parser parse: source.
+	self assert: root children size equals: 1.
+	self assert: root children first headerString equals: 'Level four'.
+	self assert: root children first level equals: 4
+]
+
+{ #category : #'tests - header' }
+MicroDownInlineParserTest >> testHeaderLevel4WithBold [
+
+	| source root |
+	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
+	root := self parser parse: source.
+	self assert: root children size equals: 1.
+	self assert: root children first children first substring equals: 'Level '.
+	self assert: root children first children second substring equals: 'four'.
+	self assert: root children first children third substring equals: ' '.
+	self assert: root children first children fourth substring equals: 'mono'.
+	self assert: root children first children fifth substring equals: ' end'.
+	self assert: root children first level equals: 4.
 ]
 
 { #category : #'tests - format' }

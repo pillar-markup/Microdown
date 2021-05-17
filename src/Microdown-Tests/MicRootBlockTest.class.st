@@ -28,5 +28,25 @@ a paragraph on two lines'.
 	self assert: (root showStructure: 0) equals:  
 'MicRootBlock
 	MicParagraphBlock
+		MicBasicInlineBlock
+'
+]
+
+{ #category : #tests }
+MicRootBlockTest >> testShowStructure2 [
+
+	| source root |
+	source := 'This is
+a paragraph on **two** lines'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	self assert: (root showStructure: 0) equals:  
+'MicRootBlock
+	MicParagraphBlock
+		MicBasicInlineBlock
+
+		MicBoldInlineBlock
+
+		MicBasicInlineBlock
 '
 ]

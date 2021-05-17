@@ -4,6 +4,13 @@ Extension { #name : #MicHeaderBlock }
 MicHeaderBlock >> asPillar [
 	^ PRHeader new
 		level: self level;
-		setChildren: (self pillarFromString: header);
+		setChildren: (children collect: [:each | each asPillar ]);
 		yourself
+]
+
+{ #category : #'*Microdown-Pillar' }
+MicHeaderBlock >> closeMe [
+	super closeMe.
+	children := (MicInlineSplitter new start: children)
+
 ]

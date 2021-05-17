@@ -26,8 +26,7 @@ Class {
 	#name : #MicHeaderBlock,
 	#superclass : #MicSingleLineBlock,
 	#instVars : [
-		'level',
-		'header'
+		'level'
 	],
 	#category : #'Microdown-Model'
 }
@@ -43,23 +42,33 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	level := ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
-	header := (line copyFrom: level + 1 to: line size) trim.
+	children := (line copyFrom: level + 1 to: line size) trim.
 	^ self
 ]
 
 { #category : #public }
 MicHeaderBlock >> contents [ 
-	^ super contents , '[ ', self level printString, '/', self header, ' ]'
+	^ super contents , '[ ', self level printString, '/', self headerString, ' ]'
 ]
 
 { #category : #accessing }
 MicHeaderBlock >> formattedCode [ 
-	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'
+	^super formattedCode , '[ ', self level printString, '/', self headerString, ' ]'
 ]
 
 { #category : #accessing }
 MicHeaderBlock >> header [
-	^ header
+	"should not be used anymore it should be children"
+	
+	^ self headerString
+	
+]
+
+{ #category : #accessing }
+MicHeaderBlock >> headerString [
+
+	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
+	
 ]
 
 { #category : #accessing }
@@ -70,6 +79,6 @@ MicHeaderBlock >> level [
 { #category : #printing }
 MicHeaderBlock >> printOn: aStream [
 
-	aStream nextPutAll: 'Section: '.
-	aStream nextPutAll: header
+	aStream nextPutAll: 'Header: '.
+	aStream nextPutAll: self headerString
 ]
