@@ -120,6 +120,27 @@ MicroDownInlineParserTest >> testBold [
  
 ]
 
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testBoldsAndCorrectNestedItalics [
+
+ 	| elements bold italic |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc**_italicitalic_**def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+	bold := elements second.
+	italic := bold children first.
+	self assert: bold kind equals: 'bold'.
+	self assert: italic kind equals: 'italic'.
+		
+ 	self assert: italic substring equals: 'italicitalic'.
+	self flag: #fixme. 
+	"self assert: bold substring equals: 'italicitalic'"
+ 	
+	
+
+ 
+]
+
 { #category : #'tests to make green' }
 MicroDownInlineParserTest >> testBoldsAndNestedItalics [ 
  	| elements |
