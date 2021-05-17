@@ -19,6 +19,17 @@ Class {
 }
 
 { #category : #tests }
+MicCodeBlockTest >> testBody [
+	| source root textBody |
+	textBody := 'my fancy code
+is really cool'.
+	source := parser codeblockMarkup, String cr, textBody, String cr, parser codeblockMarkup. 
+	root := parser parse: source.
+	self assert: root children first body equals: textBody.
+	
+]
+
+{ #category : #tests }
 MicCodeBlockTest >> testCanConsumeLine [ 
 	"This test verfies that when a code block is closed it does not consume anymore."
 	"It also show that consume is not just blindly do a line starts with the markup 
@@ -211,6 +222,46 @@ Ending text'.
 ]
 
 { #category : #tests }
+MicCodeBlockTest >> testHasCaption [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source root code  textBody argument |
+	textBody := 'Color >> asMorph
+    ^ Morph new color: self'.
+	argument := 'language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor'.
+	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	root := self parser parse: source.
+	
+	code := root children first.
+	self assert: code hasCaption
+]
+
+{ #category : #tests }
+MicCodeBlockTest >> testHasNOCaption [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source root code  textBody argument |
+	textBody := 'Color >> asMorph
+    ^ Morph new color: self'.
+	argument := 'language=pharo&label=scr:asMorphInColor'.
+	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	root := self parser parse: source.
+	
+	code := root children first.
+	self deny: code hasCaption
+]
+
+{ #category : #tests }
 MicCodeBlockTest >> testNoFirstTag [
 
 	"
@@ -285,8 +336,40 @@ Color >> asMorph
 	code := root children first.
 	self assert: code code equals: textBody.
 	self assert: (code arguments at:#language) equals: 'pharo'.
-	self assert: (code arguments at:#caption) equals: 'Getting a morph for an instance of ==Color=='.
+	self assert: code captionElements first substring equals: 'Getting a morph for an instance of ==Color=='.
 	self assert: (code arguments at:#label) equals: 'scr:asMorphInColor'.
+]
+
+{ #category : #tests }
+MicCodeBlockTest >> testSingleBlockWithArgumentsWithFormat [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source root code  textBody argument |
+	textBody := 'Color >> asMorph
+    ^ Morph new color: self'.
+	argument := 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor'.
+	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	root := self parser parse: source.
+
+	
+	code := root children first.
+	self assert: code code equals: textBody.
+	self assert: code firstTag equals: #language.
+	self assert: (code arguments at: #language) equals: 'pharo'.
+	
+	self assert: code captionString equals: 'Color is a class.'.
+	self assert: code captionElements first kind equals: 'monospace'.
+	self assert: code captionElements first substring equals: 'Color'.
+	
+	self assert: code captionElements second kind equals: 'basic'.
+	self assert: code captionElements second substring equals: ' is a class.'.
+	
+	self assert: code label equals: 'scr:asMorphInColor'.
 ]
 
 { #category : #tests }

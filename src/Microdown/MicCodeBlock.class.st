@@ -56,8 +56,27 @@ MicCodeBlock >> arguments [
 ]
 
 { #category : #accessing }
-MicCodeBlock >> arguments: aString [
-	arguments := aString
+MicCodeBlock >> arguments: aDictionary [
+	arguments := aDictionary
+]
+
+{ #category : #visiting }
+MicCodeBlock >> captionElements [
+	^ arguments at: #caption ifAbsent: [ #() ]
+]
+
+{ #category : #visiting }
+MicCodeBlock >> captionString [
+	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
+]
+
+{ #category : #visiting }
+MicCodeBlock >> closeMe [ 
+	
+	super closeMe.
+	arguments at: #caption 
+		ifPresent: [:cp| arguments at: #caption put: (MicInlineSplitter new start: cp) ]
+		
 ]
 
 { #category : #accessing }
@@ -87,6 +106,16 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 { #category : #accessing }
 MicCodeBlock >> firstTag [
 	^ firstTag
+]
+
+{ #category : #accessing }
+MicCodeBlock >> hasCaption [
+	^ arguments at: #caption ifPresent: [ true ] ifAbsent: [ false ] 
+]
+
+{ #category : #visiting }
+MicCodeBlock >> label [
+	^ arguments at: #label ifAbsent: [ '' ]
 ]
 
 { #category : #utils }
