@@ -1,4 +1,4 @@
-name: currentStablePharo
+name: currentDev
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - dev
   workflow_dispatch:
   
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v1
         id: smalltalkci
         with:
-          smalltalk-version: Pharo64-8.0
+          smalltalk-version: Pharo64-9.0
       - run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-version }}
         shell: bash
         timeout-minutes: 15
