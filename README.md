@@ -1,6 +1,6 @@
 # Microdown Parser and Elements
 
-![https://github.com/pillar-markup/Microdown/workflows/currentStablePharo/badge.svg](https://github.com/pillar-markup/Microdown/workflows/currentStablePharo/badge.svg)
+![https://github.com/pillar-markup/Microdown/workflows/currentDev/badge.svg](https://github.com/pillar-markup/Microdown/workflows/currentDev/badge.svg)
 ![https://github.com/pillar-markup/Microdown/workflows/matrix/badge.svg](https://github.com/pillar-markup/Microdown/workflows/matrix/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/pillar-markup/MicroDown/badge.svg?branch=dev)](https://coveralls.io/github/pillar-markup/MicroDown?branch=dev)
 
