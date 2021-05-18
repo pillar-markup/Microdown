@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicBoldDelimiter class >> associatedInlineBlock [
-	^ MicBoldInlineBlock 
+	^ MicBoldFormatBlock 
 ]
 
 { #category : #accessing }

@@ -7,29 +7,29 @@ See *@fig1@*
 
 "
 Class {
-	#name : #MicAnchorReferenceInlineBlock,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicAnchorReferenceBlock,
+	#superclass : #MicInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
 
 { #category : #testing }
-MicAnchorReferenceInlineBlock class >> isEvaluated [
+MicAnchorReferenceBlock class >> isEvaluated [
 	^ false
 ]
 
 { #category : #'as yet unclassified' }
-MicAnchorReferenceInlineBlock >> accept: aVisitor [
+MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReferenceBlock: self
 ]
 
 { #category : #'as yet unclassified' }
-MicAnchorReferenceInlineBlock >> closingDelimiter [
+MicAnchorReferenceBlock >> closingDelimiter [
 
  	^ MicAnchorReferenceCloserDelimiter markup
 ]
 
 { #category : #'as yet unclassified' }
-MicAnchorReferenceInlineBlock >> openingDelimiter [
+MicAnchorReferenceBlock >> openingDelimiter [
 
  	^ MicAnchorReferenceOpenerDelimiter markup
 ]

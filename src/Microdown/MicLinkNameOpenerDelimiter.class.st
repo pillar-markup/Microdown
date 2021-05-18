@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicLinkNameOpenerDelimiter class >> associatedInlineBlock [
-	^ MicLinkInlineBlock 
+	^ MicLinkBlock 
 ]
 
 { #category : #accessing }

@@ -1,11 +1,11 @@
-Extension { #name : #MicBasicInlineBlock }
+Extension { #name : #MicTextBlock }
 
 { #category : #'*Microdown-Pillar' }
-MicBasicInlineBlock >> asPillar [
+MicTextBlock >> asPillar [
 	^ PRText new text: self substring ; yourself 
 ]
 
 { #category : #'*Microdown-Pillar' }
-MicBasicInlineBlock >> associatedPillarClass [
+MicTextBlock >> associatedPillarClass [
 	"special case"
 ]

@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicRawCloserDelimiter class >> associatedInlineBlock [
-	^ MicRawInlineBlock 
+	^ MicRawBlock 
 ]
 
 { #category : #accessing }

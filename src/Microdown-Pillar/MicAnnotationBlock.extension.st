@@ -1,7 +1,7 @@
-Extension { #name : #MicAnnotationInlineBlock }
+Extension { #name : #MicAnnotationBlock }
 
 { #category : #'*Microdown-Pillar' }
-MicAnnotationInlineBlock >> asPillar [
+MicAnnotationBlock >> asPillar [
 
 	| argumentsSplitter |
 	argumentsSplitter := MicArgumentsSplitter withString: substring.
@@ -14,7 +14,7 @@ MicAnnotationInlineBlock >> asPillar [
 ]
 
 { #category : #'*Microdown-Pillar' }
-MicAnnotationInlineBlock >> associatedPillarClass [ 
+MicAnnotationBlock >> associatedPillarClass [ 
 
 	^  PRAbstractAnnotation findClassAcceptingTag: name ifNone: [ PRUndefinedAnnotation ]
 	

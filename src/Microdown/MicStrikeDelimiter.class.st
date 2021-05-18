@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicStrikeDelimiter class >> associatedInlineBlock [
-	^ MicStrikeInlineBlock 
+	^ MicStrikeFormatBlock 
 ]
 
 { #category : #accessing }

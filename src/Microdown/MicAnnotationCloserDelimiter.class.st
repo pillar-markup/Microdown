@@ -13,7 +13,7 @@ Class {
 
 { #category : #accessing }
 MicAnnotationCloserDelimiter class >> associatedInlineBlock [
-	^ MicAnnotationInlineBlock 
+	^ MicAnnotationBlock 
 ]
 
 { #category : #accessing }

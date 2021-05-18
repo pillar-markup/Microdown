@@ -6,7 +6,7 @@ Class {
 
 { #category : #accessing }
 MicAnnotationOpenerDelimiter class >> associatedInlineBlock [
-	^ MicAnnotationInlineBlock 
+	^ MicAnnotationBlock 
 ]
 
 { #category : #accessing }

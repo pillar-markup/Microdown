@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicItalicDelimiter class >> associatedInlineBlock [
-	^ MicItalicInlineBlock 
+	^ MicItalicFormatBlock 
 ]
 
 { #category : #accessing }

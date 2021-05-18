@@ -6,24 +6,24 @@ Raw lets the user place anything (so don't use it).
 ```
 "
 Class {
-	#name : #MicRawInlineBlock,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicRawBlock,
+	#superclass : #MicInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
 
 { #category : #testing }
-MicRawInlineBlock class >> isEvaluated [
+MicRawBlock class >> isEvaluated [
 	^ false
 ]
 
 { #category : #accessing }
-MicRawInlineBlock >> closingDelimiter [
+MicRawBlock >> closingDelimiter [
 
  	^ MicRawCloserDelimiter markup
 ]
 
 { #category : #accessing }
-MicRawInlineBlock >> openingDelimiter [
+MicRawBlock >> openingDelimiter [
 
  	^ MicRawOpenerDelimiter markup
 ]

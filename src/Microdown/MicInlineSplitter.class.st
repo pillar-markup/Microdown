@@ -220,7 +220,7 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 
 { #category : #'instance creation' }
 MicInlineSplitter >> newBasicInlineBlockFrom: stIndex to: eIndex [
-	^ (MicBasicInlineBlock
+	^ (MicTextBlock
 			from: stIndex
 			to: eIndex
 			withKind: #basic

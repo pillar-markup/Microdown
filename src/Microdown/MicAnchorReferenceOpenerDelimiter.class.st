@@ -13,7 +13,7 @@ Class {
 
 { #category : #accessing }
 MicAnchorReferenceOpenerDelimiter class >> associatedInlineBlock [
-	^ MicAnchorReferenceInlineBlock 
+	^ MicAnchorReferenceBlock 
 ]
 
 { #category : #accessing }

@@ -105,7 +105,7 @@ MicInlineSplitterTest >> testEscapeMonospace [
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[`monospace`](monospace)'.
 		'efg' }.
-	self assert: res second class equals: MicMonospaceInlineBlock
+	self assert: res second class equals: MicMonospaceFormatBlock
 ]
 
 { #category : #tests }
@@ -132,7 +132,7 @@ MicInlineSplitterTest >> testMonospaceUnevaluated [
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[def**not bold**ghi](monospace)'.
 			'xyz' }.
-	self assert: res second class equals: MicMonospaceInlineBlock
+	self assert: res second class equals: MicMonospaceFormatBlock
 ]
 
 { #category : #tests }
@@ -182,7 +182,7 @@ MicInlineSplitterTest >> testSplitBlockAnchorReference [
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[anchorA](anchorReference)'.
 		'def' }.
-	self assert: (res second isKindOf: MicAnchorReferenceInlineBlock)
+	self assert: (res second isKindOf: MicAnchorReferenceBlock)
 ]
 
 { #category : #'tests to make green again' }
@@ -194,7 +194,7 @@ MicInlineSplitterTest >> testSplitBlockAnnotation [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[an annotation](annotation)' . 'def'}.
-	self assert: (res second isKindOf: MicAnnotationInlineBlock)
+	self assert: (res second isKindOf: MicAnnotationBlock)
 
 ]
 
@@ -217,7 +217,7 @@ MicInlineSplitterTest >> testSplitBlockAnnotationWithParameters [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[an annotation|key=cite&label=42](annotation)' . 'def'}.
-	self assert: (res second isKindOf: MicAnnotationInlineBlock).
+	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
 	self assert: (res second arguments at: 'label') equals: '42'
 
@@ -232,7 +232,7 @@ MicInlineSplitterTest >> testSplitBlockAnnotationWithParametersWithBlank [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: {'abc' . '[an annotation|key=&label=42](annotation)' . 'def'}.
-	self assert: (res second isKindOf: MicAnnotationInlineBlock).
+	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
 	self assert: (res second arguments at: 'label') equals: '42'
 
@@ -277,7 +277,7 @@ MicInlineSplitterTest >> testSplitBlockFigure [
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '![AltText](/my_directory/image.png)'.
 			'last' }.
-	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'
@@ -321,7 +321,7 @@ MicInlineSplitterTest >> testSplitBlockFigureWithParameters [
 		equals:
 			{ 'abc'. '![AltText](/my_directory/image.png|label=42&width=90 )'.
 			'last' }.
-	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
@@ -342,7 +342,7 @@ MicInlineSplitterTest >> testSplitBlockFigureWithParametersWithBlank [
 		equals:
 			{ 'abc'. '![AltText](/my_directory/image.png|label=&width=90 )'.
 			'last' }.
-	self assert: (res second isKindOf: MicFigureInlineBlock).
+	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
@@ -522,7 +522,7 @@ MicInlineSplitterTest >> testSplitBlockStrike [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[strike](strike)'. 'def' }.
-	self assert: res second class equals: MicStrikeInlineBlock
+	self assert: res second class equals: MicStrikeFormatBlock
 ]
 
 { #category : #tests }

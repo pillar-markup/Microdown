@@ -1,7 +1,7 @@
-Extension { #name : #MicAbstractInlineBlockWithUrl }
+Extension { #name : #MicInlineBlockWithUrl }
 
 { #category : #'*Microdown-Pillar' }
-MicAbstractInlineBlockWithUrl >> asPillar [
+MicInlineBlockWithUrl >> asPillar [
 	^ self associatedPillarClass new
 		setChildren: (( self inlineParse: self substring) collect: [:n | n asPillar]);
 		reference: self url;

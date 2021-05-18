@@ -28,7 +28,7 @@ a paragraph on two lines'.
 	self assert: (root showStructure: 0) equals:  
 'MicRootBlock
 	MicParagraphBlock
-		MicBasicInlineBlock
+		MicTextBlock
 '
 ]
 
@@ -43,10 +43,10 @@ a paragraph on **two** lines'.
 	self assert: (root showStructure: 0) equals:  
 'MicRootBlock
 	MicParagraphBlock
-		MicBasicInlineBlock
+		MicTextBlock
 
-		MicBoldInlineBlock
+		MicBoldFormatBlock
 
-		MicBasicInlineBlock
+		MicTextBlock
 '
 ]

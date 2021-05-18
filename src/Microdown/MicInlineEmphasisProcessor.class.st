@@ -62,7 +62,7 @@ MicInlineEmphasisProcessor >> addBasicTextBlocks [
 		substring := string collect: [ :c | c ] from: stIndex to: eIndex.
 		substring isEmpty ifFalse: [ 
 			result add: 
-				(MicBasicInlineBlock
+				(MicTextBlock
 					from: stIndex
 					to: eIndex
 					withKind: #basic

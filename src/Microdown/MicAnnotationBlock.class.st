@@ -10,8 +10,8 @@ The following is a citation annotation with as parameters the name variable boun
 
 "
 Class {
-	#name : #MicAnnotationInlineBlock,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicAnnotationBlock,
+	#superclass : #MicInlineBlock,
 	#instVars : [
 		'name',
 		'arguments'
@@ -20,29 +20,29 @@ Class {
 }
 
 { #category : #accessing }
-MicAnnotationInlineBlock >> arguments [
+MicAnnotationBlock >> arguments [
 	^ arguments
 ]
 
 { #category : #accessing }
-MicAnnotationInlineBlock >> closingDelimiter [
+MicAnnotationBlock >> closingDelimiter [
 
  	^ MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #accessing }
-MicAnnotationInlineBlock >> name [
+MicAnnotationBlock >> name [
 	^ name
 ]
 
 { #category : #accessing }
-MicAnnotationInlineBlock >> openingDelimiter [
+MicAnnotationBlock >> openingDelimiter [
 
  	^ MicAnnotationOpenerDelimiter markup
 ]
 
 { #category : #accessing }
-MicAnnotationInlineBlock >> printOn: aStream [
+MicAnnotationBlock >> printOn: aStream [
 
 	aStream nextPutAll: self openingDelimiter.
 	aStream nextPutAll: self substring.

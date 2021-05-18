@@ -9,8 +9,8 @@ My arguments are:
 - parameters: a `#ZnMultiValueDictionary` which collect all keys and values
 "
 Class {
-	#name : #MicFigureInlineBlock,
-	#superclass : #MicAbstractInlineBlockWithUrl,
+	#name : #MicFigureBlock,
+	#superclass : #MicInlineBlockWithUrl,
 	#instVars : [
 		'parameters'
 	],
@@ -18,35 +18,35 @@ Class {
 }
 
 { #category : #converting }
-MicFigureInlineBlock >> accept: aVisitor [
+MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigureBlock: self
 ]
 
 { #category : #converting }
-MicFigureInlineBlock >> asPillar [
+MicFigureBlock >> asPillar [
 	| aPRFigure |
 	aPRFigure := super asPillar.
 	^ aPRFigure label: self substring; parameters: self parameters; yourself
 ]
 
 { #category : #accessing }
-MicFigureInlineBlock >> openingDelimiter [
+MicFigureBlock >> openingDelimiter [
 
  	^ MicFigureNameOpenerDelimiter markup
 ]
 
 { #category : #accessing }
-MicFigureInlineBlock >> parameters [
+MicFigureBlock >> parameters [
 	^ parameters 
 ]
 
 { #category : #accessing }
-MicFigureInlineBlock >> parameters: someParameters [
+MicFigureBlock >> parameters: someParameters [
 	parameters := someParameters
 ]
 
 { #category : #printing }
-MicFigureInlineBlock >> printOn: aStream [
+MicFigureBlock >> printOn: aStream [
  	(self kind == #basic) 
  		ifTrue: [ aStream nextPutAll: self substring ] 
  		ifFalse: [ 
@@ -72,7 +72,7 @@ MicFigureInlineBlock >> printOn: aStream [
 ]
 
 { #category : #transformation }
-MicFigureInlineBlock >> urlTransformation [
+MicFigureBlock >> urlTransformation [
 	| argumentsSplitter |
 	argumentsSplitter := MicArgumentsSplitter withStream: self url readStream.
 	self url: (ZnUrl fromString: argumentsSplitter name).

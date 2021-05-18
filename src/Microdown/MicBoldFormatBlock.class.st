@@ -2,19 +2,19 @@
 I represent a bold text section. I'm delimited using `**` as in `**bold**` to obtain **bold**.
 "
 Class {
-	#name : #MicBoldInlineBlock,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicBoldFormatBlock,
+	#superclass : #MicInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
 
 { #category : #'as yet unclassified' }
-MicBoldInlineBlock >> closingDelimiter [
+MicBoldFormatBlock >> closingDelimiter [
 
  	^ MicBoldDelimiter markup
 ]
 
 { #category : #'as yet unclassified' }
-MicBoldInlineBlock >> openingDelimiter [
+MicBoldFormatBlock >> openingDelimiter [
 
  	^ MicBoldDelimiter markup
 ]

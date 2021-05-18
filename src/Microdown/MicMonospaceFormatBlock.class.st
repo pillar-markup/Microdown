@@ -2,24 +2,24 @@
 I represent a monospaced text section. I'm delimited using `\`` as in `\`monospace\`` to obtain `monospace`.
 "
 Class {
-	#name : #MicMonospaceInlineBlock,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicMonospaceFormatBlock,
+	#superclass : #MicInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
 
 { #category : #testing }
-MicMonospaceInlineBlock class >> isEvaluated [
+MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
 ]
 
 { #category : #'as yet unclassified' }
-MicMonospaceInlineBlock >> closingDelimiter [
+MicMonospaceFormatBlock >> closingDelimiter [
 
  	^ MicMonospaceDelimiter markup
 ]
 
 { #category : #'as yet unclassified' }
-MicMonospaceInlineBlock >> openingDelimiter [
+MicMonospaceFormatBlock >> openingDelimiter [
 
  	^ MicMonospaceDelimiter markup
 ]

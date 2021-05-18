@@ -8,8 +8,8 @@ My subclasses manage figures and links.
 ![Pharologo](https://files.pharo.org/media/logo/logo.png)
 "
 Class {
-	#name : #MicAbstractInlineBlockWithUrl,
-	#superclass : #MicAbstractInlineBlock,
+	#name : #MicInlineBlockWithUrl,
+	#superclass : #MicInlineBlock,
 	#instVars : [
 		'url'
 	],
@@ -17,28 +17,28 @@ Class {
 }
 
 { #category : #obsolete }
-MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #obsolete }
-MicAbstractInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
 { #category : #transformation }
-MicAbstractInlineBlockWithUrl >> caption [ 
+MicInlineBlockWithUrl >> caption [ 
 	^ self substring
 ]
 
 { #category : #accessing }
-MicAbstractInlineBlockWithUrl >> closingDelimiter [
+MicInlineBlockWithUrl >> closingDelimiter [
 
  	^ MicURLCloserDelimiter markup
 ]
 
 { #category : #printing }
-MicAbstractInlineBlockWithUrl >> printOn: aStream [
+MicInlineBlockWithUrl >> printOn: aStream [
 	(self kind == #basic) 
 		ifTrue: [ aStream nextPutAll: self substring ] 
 		ifFalse: [ 
@@ -56,16 +56,16 @@ MicAbstractInlineBlockWithUrl >> printOn: aStream [
 ]
 
 { #category : #accessing }
-MicAbstractInlineBlockWithUrl >> url [
+MicInlineBlockWithUrl >> url [
 	^ url
 ]
 
 { #category : #accessing }
-MicAbstractInlineBlockWithUrl >> url: anURL [
+MicInlineBlockWithUrl >> url: anURL [
 	url := anURL
 ]
 
 { #category : #transformation }
-MicAbstractInlineBlockWithUrl >> urlTransformation [
+MicInlineBlockWithUrl >> urlTransformation [
 	self url: (ZnUrl fromString: self url)
 ]
