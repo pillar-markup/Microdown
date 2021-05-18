@@ -45,7 +45,7 @@ MicListItemBlock >> canConsumeLine: line [
 MicListItemBlock >> closeMe [
 
 	super closeMe.
-	text := MicInlineSplitter new parse: text
+	text := self inlineParse: text
 ]
 
 { #category : #debugging }

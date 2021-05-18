@@ -136,10 +136,3 @@ MicAbstractBlock >> showStructure: indent [
 	ind := String tab repeat: indent.
 	^ ind, self class name, String cr, ((children collect: [:c | c showStructure: indent + 1]) joinUsing: String cr).
 ]
-
-{ #category : #public }
-MicAbstractBlock >> splitString: aString [
-	self flag: #fixMe.
-	"rename me as handleDecorations: and it should be private interface."
-	^ MicInlineSplitter new parse: aString
-]

@@ -29,5 +29,5 @@ MicEnvironmentBlock >> closeMe [
 	"this is a temporary solution because normally the parser should populate body with MicBlocks.
 	Right now just make sure that we have structured text = inline elements. "
 	body ifNotNil: [ 
-		body := MicInlineSplitter new parse: body ]
+		body :=  self inlineParse: body ]
 ]

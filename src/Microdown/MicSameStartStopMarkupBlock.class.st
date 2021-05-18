@@ -42,7 +42,7 @@ MicSameStartStopMarkupBlock >> closeMe [
 	
 	super closeMe.
 	self arguments at: #caption 
-		ifPresent: [:cp| arguments at: #caption put: (MicInlineSplitter new parse: cp) ]
+		ifPresent: [:cp| arguments at: #caption put: (self inlineParse: cp) ]
 		
 ]
 

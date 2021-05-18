@@ -11,5 +11,5 @@ MicParagraphBlock >> asPillar [
 MicParagraphBlock >> closeMe [
 
 	super closeMe.
-	self children: (MicInlineSplitter new parse: text)
+	self children: (self inlineParse: text)
 ]

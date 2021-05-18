@@ -11,6 +11,6 @@ MicHeaderBlock >> asPillar [
 { #category : #'*Microdown-Pillar' }
 MicHeaderBlock >> closeMe [
 	super closeMe.
-	children := (MicInlineSplitter new parse: children)
+	children :=  self inlineParse: children
 
 ]
