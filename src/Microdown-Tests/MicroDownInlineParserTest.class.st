@@ -15,7 +15,7 @@ MicroDownInlineParserTest >> parse: aString [
 	| contents doc elements |
 	doc := self parserClass parse: aString.
 	contents := doc children first text.
-	elements := MicInlineSplitter new start: contents.
+	elements := MicInlineSplitter new parse: contents.
 	doc children: { (MicParagraphBlock new children: elements) }.
 	^ doc
 ]

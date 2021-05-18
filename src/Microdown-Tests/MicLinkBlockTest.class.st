@@ -17,7 +17,8 @@ MicLinkBlockTest >> setUp [
 
 { #category : #tests }
 MicLinkBlockTest >> testPrintOn [
+
 	| link |
-	link := (splitterClass new start: '[caption](aUrl)') first.
+	link := (splitterClass new parse: '[caption](aUrl)') first.
 	self assert: link asString equals: '[caption](/aUrl)'
 ]

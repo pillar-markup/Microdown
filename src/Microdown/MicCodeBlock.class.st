@@ -61,13 +61,13 @@ MicCodeBlock >> arguments: aDictionary [
 ]
 
 { #category : #visiting }
-MicCodeBlock >> captionElements [
-	^ arguments at: #caption ifAbsent: [ #() ]
+MicCodeBlock >> caption [
+	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
 ]
 
 { #category : #visiting }
-MicCodeBlock >> captionString [
-	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
+MicCodeBlock >> captionElements [
+	^ arguments at: #caption ifAbsent: [ #() ]
 ]
 
 { #category : #visiting }
@@ -75,7 +75,7 @@ MicCodeBlock >> closeMe [
 	
 	super closeMe.
 	arguments at: #caption 
-		ifPresent: [:cp| arguments at: #caption put: (MicInlineSplitter new start: cp) ]
+		ifPresent: [:cp| arguments at: #caption put: (MicInlineSplitter new parse: cp) ]
 		
 ]
 

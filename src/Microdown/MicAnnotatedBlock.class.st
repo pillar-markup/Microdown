@@ -51,7 +51,7 @@ MicAnnotatedBlock >> canConsumeLine: line [
 { #category : #accessing }
 MicAnnotatedBlock >> closeMe [
 	super closeMe.
-	body := MicInlineSplitter new start: body
+	body := MicInlineSplitter new parse: body
 ]
 
 { #category : #accessing }

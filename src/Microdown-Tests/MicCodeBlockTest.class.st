@@ -362,7 +362,7 @@ Color >> asMorph
 	self assert: code firstTag equals: #language.
 	self assert: (code arguments at: #language) equals: 'pharo'.
 	
-	self assert: code captionString equals: 'Color is a class.'.
+	self assert: code caption equals: 'Color is a class.'.
 	self assert: code captionElements first kind equals: 'monospace'.
 	self assert: code captionElements first substring equals: 'Color'.
 	

@@ -32,12 +32,22 @@ another line** and more
 
 a paragraph on two lines**'.
 
-	self assert: root children first text equals: '**Hello is ... cut for real
+	self
+		assert: root children first text
+		equals: '**Hello is ... cut for real
 another line** and more'.
-	self assert: root children second text equals: 'a paragraph on two lines**'.
-	
-	self assert: (MicInlineSplitter new start: root children first text) first kind equals: #bold.
-	self assert: (MicInlineSplitter new start: root children second text) first kind equals: #basic.
+	self
+		assert: root children second text
+		equals: 'a paragraph on two lines**'.
+
+	self
+		assert:
+		(MicInlineSplitter new parse: root children first text) first kind
+		equals: #bold.
+	self
+		assert:
+		(MicInlineSplitter new parse: root children second text) first kind
+		equals: #basic
 ]
 
 { #category : #tests }

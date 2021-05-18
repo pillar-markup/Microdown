@@ -42,12 +42,10 @@ MicListItemBlock >> canConsumeLine: line [
 ]
 
 { #category : #visiting }
-MicListItemBlock >> closeMe [ 
-	
+MicListItemBlock >> closeMe [
 
 	super closeMe.
-	text := MicInlineSplitter new start: text
-	
+	text := MicInlineSplitter new parse: text
 ]
 
 { #category : #debugging }

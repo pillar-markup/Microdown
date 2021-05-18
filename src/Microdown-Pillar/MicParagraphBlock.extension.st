@@ -8,7 +8,8 @@ MicParagraphBlock >> asPillar [
 ]
 
 { #category : #'*Microdown-Pillar' }
-MicParagraphBlock >> closeMe [ 
+MicParagraphBlock >> closeMe [
+
 	super closeMe.
-	self children: (MicInlineSplitter new start: text).
+	self children: (MicInlineSplitter new parse: text)
 ]

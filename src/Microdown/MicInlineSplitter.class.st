@@ -341,6 +341,13 @@ MicInlineSplitter >> openerOnlyCase [
 	self pushNewOpener
 ]
 
+{ #category : #public }
+MicInlineSplitter >> parse: aString [
+	aString ifEmpty: [ ^ Array empty ].
+	string := aString.
+	^ self read: aString
+]
+
 { #category : #actions }
 MicInlineSplitter >> popFrom: aStartIndex to: anEndIndex [
 	aStartIndex to: anEndIndex do: [ :i | openersStack pop ]
@@ -383,9 +390,8 @@ MicInlineSplitter >> resultProcess [
 
 { #category : #public }
 MicInlineSplitter >> start: aString [
-	aString ifEmpty: [ ^ Array empty ].
-	string := aString.
-	^ self read: aString
+	self deprecated: 'Use parse: instead' transformWith: '`@receiver start: `@arg' -> '`@receiver parse: `@arg'.
+	^ self parse: aString
 ]
 
 { #category : #accessing }

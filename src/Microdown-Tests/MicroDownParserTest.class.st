@@ -226,24 +226,6 @@ MicroDownParserTest >> testCommentedLineMarkupInsideLine [
 	
 ]
 
-{ #category : #'tests-environment' }
-MicroDownParserTest >> testEnvironment [
-
-	| source root math environmentName |
-	environmentName := 'card'.
-	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
-	 'blbababbab bababba', String cr,
-	parser environmentClosingBlockMarkup, String cr.
-
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicEnvironmentBlock). 
-	self assert: math name equals: environmentName.
-	self assert: math body equals: 'blbababbab bababba'
-	
-]
-
 { #category : #tests }
 MicroDownParserTest >> testEnvironmentCitationWithArguments [
 	| source root environmentName contents child |
@@ -270,47 +252,8 @@ Pharo'.
 MicroDownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 	| source root math environmentName contents |
 	environmentName := 'card'.
-	contents := '```smalltalk
+	contents := '- smalltalk
 ^ self foo'.
-	source := parser environmentOpeningBlockMarkup , environmentName
-		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
-	root := parser parse: source.
-	self assert: root children size equals: 1.
-	math := root children first.
-	self assert: (math isKindOf: MicEnvironmentBlock).
-	self assert: math name equals: environmentName.
-	self assert: math body equals: contents
-]
-
-{ #category : #'tests-environment' }
-MicroDownParserTest >> testEnvironmentWithArguments [
-	| source root environment environmentName contents |
-	environmentName := 'card'.
-	contents := 'blbababbab
-bababba
-
-toto'.
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
-		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
-	root := parser parse: source.
-	self assert: root children size equals: 1.
-	environment := root children first.
-	self assert: environment name equals: 'card'.
-	self assert: (environment arguments at: 'a') equals: '1'.
-	self assert: (environment arguments at: 'b') equals: '17'.
-	self assert: (environment arguments at: 'c') equals: nil.
-]
-
-{ #category : #'tests-environment' }
-MicroDownParserTest >> testEnvironmentWithMultipleLines [
-	| source root math environmentName contents |
-	environmentName := 'card'.
-	contents := 'blbababbab
-bababba
-
-toto'.
 	source := parser environmentOpeningBlockMarkup , environmentName
 		, String cr , contents , String cr
 		, parser environmentClosingBlockMarkup , String cr.

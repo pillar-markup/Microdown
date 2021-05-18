@@ -40,7 +40,7 @@ MicStartStopMarkupBlock >> body [
 
 { #category : #accessing }
 MicStartStopMarkupBlock >> body: anObject [
-	^ body := anObject
+	body := anObject
 ]
 
 { #category : #handle }

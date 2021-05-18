@@ -1,6 +1,18 @@
 "
 An environment is delimited by a start and end markup and it can have an argument list. 
-This class needs another pass.
+By default I do not handle any form of formatting in the potential arguments.
+
+## Syntax
+
+
+```
+<?
+
+?>
+```
+
+
+This class needs another pass to support nested mic elements inside its delimiter.
 
 In Pillar
 ```
@@ -9,7 +21,6 @@ blah blah
 ${end:column}$
 ```
 
-Working on
 ```
 ${begin:card}$
 
@@ -21,13 +32,7 @@ I will be interpreted as part of the card.
 ${end:card}$ 
 ```
 
-In Microdown 
 
-```
-<?
-
-?>
-```
 
 
 
