@@ -21,9 +21,6 @@ V_i = C_0 - C_3
 Class {
 	#name : #MicMathBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
-	#instVars : [
-		'arguments'
-	],
 	#category : #'Microdown-Model'
 }
 

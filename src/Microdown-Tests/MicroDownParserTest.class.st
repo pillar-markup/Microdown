@@ -365,7 +365,7 @@ MicroDownParserTest >> testMathBlockWithArguments [
 	self assert: root children size equals: 1.
 	math := root children first.
 	self assert: (math arguments at: 'label') equals: 'equation'.
-	self assert: (math arguments at: 'caption') equals: 'doNiceMath'
+	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
 ]
 
 { #category : #'tests-metaData' }

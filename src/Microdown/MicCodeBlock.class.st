@@ -39,7 +39,6 @@ Class {
 	#name : #MicCodeBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
 	#instVars : [
-		'arguments',
 		'firstTag'
 	],
 	#category : #'Microdown-Model'
@@ -53,30 +52,6 @@ MicCodeBlock >> accept: aVisitor [
 { #category : #accessing }
 MicCodeBlock >> arguments [
 	^ arguments
-]
-
-{ #category : #accessing }
-MicCodeBlock >> arguments: aDictionary [
-	arguments := aDictionary
-]
-
-{ #category : #visiting }
-MicCodeBlock >> caption [
-	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
-]
-
-{ #category : #visiting }
-MicCodeBlock >> captionElements [
-	^ arguments at: #caption ifAbsent: [ #() ]
-]
-
-{ #category : #visiting }
-MicCodeBlock >> closeMe [ 
-	
-	super closeMe.
-	arguments at: #caption 
-		ifPresent: [:cp| arguments at: #caption put: (MicInlineSplitter new parse: cp) ]
-		
 ]
 
 { #category : #accessing }
@@ -106,11 +81,6 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 { #category : #accessing }
 MicCodeBlock >> firstTag [
 	^ firstTag
-]
-
-{ #category : #accessing }
-MicCodeBlock >> hasCaption [
-	^ arguments at: #caption ifPresent: [ true ] ifAbsent: [ false ] 
 ]
 
 { #category : #visiting }
