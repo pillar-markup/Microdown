@@ -8,7 +8,7 @@ See the comment of `MicroDownParser` for an overview of the algorithm used in bu
 "
 Class {
 	#name : #MicAbstractBlock,
-	#superclass : #Object,
+	#superclass : #MicElement,
 	#instVars : [
 		'parent',
 		'children',

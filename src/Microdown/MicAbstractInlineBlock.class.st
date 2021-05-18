@@ -11,7 +11,7 @@ I am characterized by:
 "
 Class {
 	#name : #MicAbstractInlineBlock,
-	#superclass : #Object,
+	#superclass : #MicElement,
 	#instVars : [
 		'start',
 		'end',
