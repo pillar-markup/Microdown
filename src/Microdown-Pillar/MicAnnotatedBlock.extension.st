@@ -5,6 +5,6 @@ MicAnnotatedBlock >> asPillar [
 
 	^ PRAnnotatedParagraph new 
 			annotation: self label; 
-			setChildren: (self pillarFromString: self text);
+			setChildren: (self pillarFrom: self textElements);
 			yourself
 ]

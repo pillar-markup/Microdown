@@ -73,7 +73,7 @@ MicroDownParserTest >> testAnnotatedBlock [
 	self assert: root children size equals: 1.
 	annotated := root children first. 
 	self assert: annotated label equals: 'important'.
-	self assert: annotated body equals: 'this is an important paragraph on one line.'
+	self assert: annotated text equals: 'this is an important paragraph on one line.'
 	
 
 ]
@@ -95,14 +95,14 @@ important point because...!') readStream.
 	self assert: annotated parent equals: root.  
 	
 	self assert: annotated label equals: 'important'.
-	self assert: annotated text equals: 'this is an'.
+	self assert: (annotated instVarNamed: 'body') equals: 'this is an'.
 	
 	"third the second line"
 	line := source nextLine.
 	self assert: (annotated canConsumeLine: line).
 	annotated := parser handleLine: line.
 	self assert: parser current equals: annotated.
-	self assert: annotated text equals: 'this is an
+	self assert: (annotated instVarNamed: 'body') equals: 'this is an
 important point because...!'.
 	
 ]
@@ -119,6 +119,21 @@ paragraph on two lines.'.
 	self assert: annotated text equals: 'this is an important
 paragraph on two lines.'
 
+]
+
+{ #category : #'tests-annotated-paragraph' }
+MicroDownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
+	| source root annotated |
+	source := parser annotatedParagraphMarkup , 'important **this** is an _important_ 
+paragraph on two lines.'.
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	annotated := root children first. 
+	self assert: annotated label equals: 'important'.
+	self assert: annotated text equals: 'this is an important
+paragraph on two lines.'.
+	self assert: annotated textElements first kind equals: 'bold'.
+	self assert: annotated textElements third kind equals: 'italic'.
 ]
 
 { #category : #'tests-annotated-paragraph' }
@@ -142,7 +157,7 @@ MicroDownParserTest >> testAnnotatedBlockWithListParserLogic [
 	self assert: annotated parent equals: root.  
 	
 	self assert: annotated label equals: 'important'.
-	self assert: annotated text equals: 'this is a point'.
+	self assert: (annotated instVarNamed: 'body') equals: 'this is a point'.
 	
 	"third the second line"
 	line := source nextLine.
@@ -150,7 +165,7 @@ MicroDownParserTest >> testAnnotatedBlockWithListParserLogic [
 	self assert: (annotated canConsumeLine: line).
 	annotated := parser handleLine: line.
 	self assert: parser current equals: annotated.
-	self assert: annotated text equals: 'this is a point
+	self assert: (annotated instVarNamed: 'body') equals: 'this is a point
 - one'.
 
 

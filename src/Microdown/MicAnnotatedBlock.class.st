@@ -1,10 +1,13 @@
 "
-MicroDownParserrting with `!!paragraph` (such as `@@note` `@@important` in Pillar).
+I represent a paragraph with the title. My title can only contain a string while my body can contain formatted text.
+
+I'm created with `!!paragraph` (such as `@@note` `@@important` in Pillar).
 
 !!note This is important so I used exclamatation mark.
 
 ### Known limits. 
 We should revisit the implementation because there is something unclear. 
+Currently we cannot add list for example inside a annotatedBlock.
 See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pillar-markup/MicroDown/issues/54)
 
 "
@@ -46,13 +49,19 @@ MicAnnotatedBlock >> canConsumeLine: line [
 ]
 
 { #category : #accessing }
+MicAnnotatedBlock >> closeMe [
+	super closeMe.
+	body := MicInlineSplitter new start: body
+]
+
+{ #category : #accessing }
 MicAnnotatedBlock >> label [
 	^ label
 ]
 
 { #category : #testing }
 MicAnnotatedBlock >> lineMarkup [
-
+	"Normally !!"
 	^ parser annotatedParagraphMarkup
 ]
 
@@ -60,11 +69,18 @@ MicAnnotatedBlock >> lineMarkup [
 MicAnnotatedBlock >> printOn: aStream [
 
 	aStream nextPutAll: 'Annotated: '.
-	aStream nextPutAll: (self text asString contractTo: 100)
+	self textElements do: [ :each | aStream nextPutAll: each substring  ]
+	
 ]
 
 { #category : #accessing }
-MicAnnotatedBlock >> text [ 
+MicAnnotatedBlock >> text [
+
+	^ String streamContents: [ :s | self textElements do: [ :each | s nextPutAll: each substring ] ]
+]
+
+{ #category : #accessing }
+MicAnnotatedBlock >> textElements [
 
 	^ self body
 ]

@@ -32,3 +32,30 @@ MDTODO >> todo2 [
 	MicInlineSplitter start: -> parse:
 	'
 ]
+
+{ #category : #'as yet unclassified' }
+MDTODO >> todo3 [
+
+	'
+	- label in figure is used as an anchor for future ref following latex vocabulary.
+	- annotated paragraph used label as title. 
+	=> solution
+		label in annotation should be called title first.
+		then if we want we can decide to rename the label in figure/math....
+	
+	
+	
+	'
+]
+
+{ #category : #'as yet unclassified' }
+MDTODO >> todo4 [
+
+	'
+	Create a test for annotatedBlock asPillar. 
+	Copy a bit from list tests.
+	
+	
+	
+	'
+]
