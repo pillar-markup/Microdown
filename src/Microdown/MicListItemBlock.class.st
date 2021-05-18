@@ -41,6 +41,15 @@ MicListItemBlock >> canConsumeLine: line [
 	^ line beginsWith: (' ' repeat: parent indent)
 ]
 
+{ #category : #visiting }
+MicListItemBlock >> closeMe [ 
+	
+
+	super closeMe.
+	text := MicInlineSplitter new start: text
+	
+]
+
 { #category : #debugging }
 MicListItemBlock >> contents [ 
 	^super contents , '[ ', self text, ' ]'
@@ -61,5 +70,12 @@ MicListItemBlock >> printOn: aStream [
 
 { #category : #accessing }
 MicListItemBlock >> text [
-	^ text
+	"Returns a string we should rename text into textString"
+	^ String streamContents: [ :s | self textElements do: [:each | s nextPutAll: each substring ]]
+]
+
+{ #category : #accessing }
+MicListItemBlock >> textElements [ 
+	
+	^ text 
 ]

@@ -53,8 +53,10 @@ MicParagraphBlockTest >> testCanConsumeLine [
 	self deny: (listitem canConsumeLine: 'a paragraph in a list item').
 	
 	parser handleLine: '  a paragraph in a list item'.
-	self assert: parser current equals: listitem.  
-	self assert: listitem text equals: 'This is
+	self assert: parser current equals: listitem.
+	"pay attention here at this point the closeMe hook as not being executed yet.
+	So text is a string and not an array of textElements."  
+	self assert: (listitem instVarNamed: 'text') equals: 'This is
 a paragraph in a list item'.
 	
 

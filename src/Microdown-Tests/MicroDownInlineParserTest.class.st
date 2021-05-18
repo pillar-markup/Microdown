@@ -9,13 +9,15 @@ Class {
 
 { #category : #parsing }
 MicroDownInlineParserTest >> parse: aString [
- 	"self new parse: 'foo_abbb_zz' "
- 	| contents doc elements |
- 	doc := (MicroDownParser parse: aString).
- 	contents := doc  children first text.
- 	elements := MicInlineSplitter new start: contents.
- 	doc children: { (MicParagraphBlock new children: elements)}. 
- 	^ doc
+
+	"self new parse: 'foo_abbb_zz' "
+
+	| contents doc elements |
+	doc := self parserClass parse: aString.
+	contents := doc children first text.
+	elements := MicInlineSplitter new start: contents.
+	doc children: { (MicParagraphBlock new children: elements) }.
+	^ doc
 ]
 
 { #category : #parsing }
@@ -25,12 +27,12 @@ MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
  
 ]
 
-{ #category : #'tests - header' }
+{ #category : #parsing }
 MicroDownInlineParserTest >> parser [
 	^ self parserClass new 
 ]
 
-{ #category : #'tests - header' }
+{ #category : #parsing }
 MicroDownInlineParserTest >> parserClass [ 
 	^ MicroDownParser 
 ]
