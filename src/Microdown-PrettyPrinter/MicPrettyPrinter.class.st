@@ -5,37 +5,34 @@ Class {
 }
 
 { #category : #'inline block' }
-MicPrettyPrinter >> visitBold: aMicBold [
-	| text |
-	text := aMicBold class asString.
-	text := text, ' "' , aMicBold substring , '"'.
-	^ text
+MicPrettyPrinter >> blockPrint: aMicText [
 
+	| text |
+	text := aMicText class asString.
+	text := text , ' "' , aMicText substring , '"'.
+	^ text
+]
+
+{ #category : #'inline block' }
+MicPrettyPrinter >> visitBold: aMicBold [
+
+	^ self blockPrint: aMicBold
 ]
 
 { #category : #'inline block' }
 MicPrettyPrinter >> visitItalic: aMicItalic [
-	| text |
-	text := aMicItalic class asString.
-	text := text, ' "' , aMicItalic substring , '"'.
-	^ text
 
+	^ self blockPrint: aMicItalic
 ]
 
 { #category : #'inline block' }
 MicPrettyPrinter >> visitStrike: aMicStrike [
-	| text |
-	text := aMicStrike class asString.
-	text := text, ' "' , aMicStrike substring , '"'.
-	^ text
 
+	^ self blockPrint: aMicStrike
 ]
 
 { #category : #'inline block' }
 MicPrettyPrinter >> visitText: aMicText [
-	| text |
-	text := aMicText class asString.
-	text := text, ' "' , aMicText substring , '"'.
-	^ text
 
+	^ self blockPrint: aMicText
 ]
