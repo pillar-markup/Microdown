@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicItalicFormatBlock >> accept: aVisitor [
+	^ aVisitor visitItalic: self
+]
+
 { #category : #'as yet unclassified' }
 MicItalicFormatBlock >> closingDelimiter [
 

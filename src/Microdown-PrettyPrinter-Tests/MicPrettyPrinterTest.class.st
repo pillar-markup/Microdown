@@ -52,6 +52,9 @@ MicPrettyPrinterTest >> testPrintMicFigureBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicItalicFormatBlock [
+	| micItalic |
+	micItalic := (parser parse: factory italicFormatSample) children first children first.
+	self assert: (micItalic accept: visitor) equals: 'MicItalicFormatBlock "Foo"'
 
 ]
 
