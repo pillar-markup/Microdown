@@ -80,7 +80,9 @@ MicPrettyPrinterTest >> testPrintMicRawFormatBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicStrikeFormatBlock [
-
+	| micStrike |
+	micStrike := (parser parse: factory strikethroughFormatSample) children first children first.
+	self assert: (micStrike accept: visitor) equals: 'MicStrikeFormatBlock "Foo"'
 ]
 
 { #category : #'tests-inline block' }

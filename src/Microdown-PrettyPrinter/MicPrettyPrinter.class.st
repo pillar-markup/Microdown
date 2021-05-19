@@ -23,6 +23,15 @@ MicPrettyPrinter >> visitItalic: aMicItalic [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitStrike: aMicStrike [
+	| text |
+	text := aMicStrike class asString.
+	text := text, ' "' , aMicStrike substring , '"'.
+	^ text
+
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitText: aMicText [
 	| text |
 	text := aMicText class asString.
