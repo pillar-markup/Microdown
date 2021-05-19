@@ -34,7 +34,7 @@ MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> annotationSample [
-	^ '<?Foo | value=aFoo&label=42?>'
+	^ 'abc<?Foo | value=aFoo&label=42?>def'
 ]
 
 { #category : #format }

@@ -35,11 +35,12 @@ MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 
 { #category : #'inline block' }
 MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
-	| text |
+	"arguments with parameters is nil like the name"
+	"| text |
 	text := aMicAnnotation class asString , String space.
-	text := text , self parametersPrint: aMicAnnotation parameters asDictionary.
-	text := text , ' "' , aMicAnnotation name , '"'.
-	^ text 
+	text := text , (self parametersPrint: aMicAnnotation parameters asDictionary).
+	text := text , ' ""' , aMicAnnotation name , '""'."
+	^ self blockPrint: aMicAnnotation
 	
 ]
 
