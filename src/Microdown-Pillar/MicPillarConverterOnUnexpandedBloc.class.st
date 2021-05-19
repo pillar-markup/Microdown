@@ -14,7 +14,7 @@ MicPillarConverterOnUnexpandedBloc >> visitAnchorBlock: aMicAnchorBlock [
 ]
 
 { #category : #'visiting inline' }
-MicPillarConverterOnUnexpandedBloc >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
+MicPillarConverterOnUnexpandedBloc >> visitAnchorReference: aMicAnchorReferenceBlock [
  	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
 ]
 
@@ -52,7 +52,7 @@ MicPillarConverterOnUnexpandedBloc >> visitEnvironmentBlock: aMicEnvironmentBloc
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitFigureBlock: aMicFigureBlock [
+MicPillarConverterOnUnexpandedBloc >> visitFigure: aMicFigureBlock [
  	| aPRFigure |
  	aPRFigure := super visit: self.
  	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
