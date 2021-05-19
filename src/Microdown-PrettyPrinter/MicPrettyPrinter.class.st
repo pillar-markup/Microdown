@@ -5,6 +5,15 @@ Class {
 }
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitBold: aMicBold [
+	| text |
+	text := aMicBold class asString.
+	text := text, ' "' , aMicBold substring , '"'.
+	^ text
+
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitText: aMicText [
 	| text |
 	text := aMicText class asString.

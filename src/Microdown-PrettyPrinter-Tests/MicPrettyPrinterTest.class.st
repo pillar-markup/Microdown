@@ -39,6 +39,9 @@ MicPrettyPrinterTest >> testPrintMicAnnotationBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicBoldFormatBlock [
+	| micBold |
+	micBold := (parser parse: factory boldFormatSample) children first children first.
+	self assert: (micBold accept: visitor) equals: 'MicBoldFormatBlock "Foo"'
 
 ]
 
