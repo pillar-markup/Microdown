@@ -75,6 +75,12 @@ MicPrettyPrinter >> visitLink: aMicLink [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitMathInline: aMicMathInline [
+
+	^ self blockPrint: aMicMathInline
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitMonospace: aMicMonospace [
 
 	^ self blockPrint: aMicMonospace

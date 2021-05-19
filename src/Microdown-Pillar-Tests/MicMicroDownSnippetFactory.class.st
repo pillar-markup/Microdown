@@ -202,6 +202,11 @@ MicMicroDownSnippetFactory >> listWithCommentSample [
 2. Bar'
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> mathInlineSample [
+	^ '$V_i = C_0 - C_3$'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass monospaceMarkup

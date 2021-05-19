@@ -79,7 +79,9 @@ MicPrettyPrinterTest >> testPrintMicLinkBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicMathInlineBlock [
-
+	| micMathInline |
+	micMathInline := (parser parse: factory mathInlineSample) children first children first.
+	self assert: (micMathInline accept: visitor) equals: 'MicMathInlineBlock "V_i = C_0 - C_3"'
 ]
 
 { #category : #'tests-inline block' }
