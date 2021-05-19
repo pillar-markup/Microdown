@@ -6,3 +6,8 @@ Class {
 	#superclass : #MicInlineBlock,
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #visiting }
+MicTextBlock >> accept: aVisitor [
+	^ aVisitor visitText: self
+]

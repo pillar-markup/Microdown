@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'factory',
-		'visitor'
+		'visitor',
+		'parser'
 	],
 	#category : #'Microdown-PrettyPrinter-Tests'
 }
@@ -22,7 +23,8 @@ MicPrettyPrinterTest >> factory: aFactory [
 MicPrettyPrinterTest >> setUp [
 	super setUp.
 	factory := MicMicroDownSnippetFactory new.
-	visitor := MicPrettyPrinter new
+	visitor := MicPrettyPrinter new.
+	parser := MicroDownParser new
 ]
 
 { #category : #'tests-inline block' }
@@ -77,5 +79,8 @@ MicPrettyPrinterTest >> testPrintMicStrikeFormatBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicTextBlock [
+	| micText |
+	micText := (parser parse: factory headerLevel3Sample) children first children first.
+	self assert: (micText accept: visitor) equals: 'MicTextBlock "Foo"'.
 
 ]
