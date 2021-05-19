@@ -13,6 +13,11 @@ MicMicroDownSnippetFactory >> anchorAreTrimedSample [
 ]
 
 { #category : #anchor }
+MicMicroDownSnippetFactory >> anchorReferenceSample [
+	^ '*@Foo@*'
+]
+
+{ #category : #anchor }
 MicMicroDownSnippetFactory >> anchorSample [
 	^ self parserClass anchorMarkup, 'test'
 ]
@@ -241,7 +246,7 @@ MicMicroDownSnippetFactory >> parserClass [
 	^ MicroDownParser
 ]
 
-{ #category : #anchor }
+{ #category : #format }
 MicMicroDownSnippetFactory >> rawFormatSample [
 	^ 'a{{Foo}}b'
 ]

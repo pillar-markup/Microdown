@@ -14,6 +14,12 @@ MicPrettyPrinter >> blockPrint: aMicText [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
+
+	^ self blockPrint: aMicAnchorReference
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitBold: aMicBold [
 
 	^ self blockPrint: aMicBold

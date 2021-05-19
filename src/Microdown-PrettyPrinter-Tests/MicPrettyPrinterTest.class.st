@@ -29,6 +29,10 @@ MicPrettyPrinterTest >> setUp [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
+	| micAnchorReference |
+	micAnchorReference := (parser parse: factory anchorReferenceSample) children first children first.
+	self assert: (micAnchorReference accept: visitor) equals: 'MicAnchorReferenceBlock "Foo"'.
+
 
 ]
 

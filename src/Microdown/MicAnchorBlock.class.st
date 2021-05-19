@@ -17,7 +17,7 @@ Class {
 
 { #category : #visiting }
 MicAnchorBlock >> accept: aVisitor [
- 	^ aVisitor visitAnchorBlock: self
+ 	^ aVisitor visitAnchorReference: self
 ]
 
 { #category : #public }
