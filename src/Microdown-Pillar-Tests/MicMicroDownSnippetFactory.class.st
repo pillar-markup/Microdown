@@ -83,6 +83,11 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicroDownSnippetFactory >> figureSample [
+	^ '![Foo](anUrl|label=figureTest&size=80)'
+]
+
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerEmptySample [ 
 	^ self parserClass headerMarkup

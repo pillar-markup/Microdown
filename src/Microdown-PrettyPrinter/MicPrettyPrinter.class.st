@@ -50,6 +50,17 @@ MicPrettyPrinter >> visitBold: aMicBold [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitFigure: aMicFigure [
+	| text |
+	text := aMicFigure class asString , String space.
+	text := text , (self parametersPrint: aMicFigure parameters asDictionary).
+	text := text , ' url:' , aMicFigure url asString.
+	text := text , ' "' , aMicFigure substring , '"'.
+	^ text 
+	
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitItalic: aMicItalic [
 
 	^ self blockPrint: aMicItalic

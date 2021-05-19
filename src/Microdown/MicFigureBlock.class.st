@@ -19,7 +19,7 @@ Class {
 
 { #category : #converting }
 MicFigureBlock >> accept: aVisitor [
- 	^ aVisitor visitFigureBlock: self
+ 	^ aVisitor visitFigure: self
 ]
 
 { #category : #converting }

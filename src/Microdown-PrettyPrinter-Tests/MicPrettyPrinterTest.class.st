@@ -55,6 +55,9 @@ MicPrettyPrinterTest >> testPrintMicBoldFormatBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicFigureBlock [
+	| micFigure |
+	micFigure := (parser parse: factory figureSample) children first children first.
+	self assert: (micFigure accept: visitor) equals: 'MicFigureBlock parameters:label=figureTest&size=80 url:/anUrl "Foo"'
 
 ]
 
