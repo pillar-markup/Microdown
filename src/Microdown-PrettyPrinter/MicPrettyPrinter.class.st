@@ -32,6 +32,14 @@ MicPrettyPrinter >> visitItalic: aMicItalic [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitLink: aMicLink [
+	| text |
+	text := aMicLink class asString.
+	text := text, ' url:' , aMicLink url asString , ' "' , aMicLink substring , '"'.
+	^ text
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitMonospace: aMicMonospace [
 
 	^ self blockPrint: aMicMonospace

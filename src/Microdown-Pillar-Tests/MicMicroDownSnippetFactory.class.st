@@ -165,6 +165,11 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 	^ String lf
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicroDownSnippetFactory >> linkSample [
+	^ '[Foo](anUrl)'
+]
+
 { #category : #list }
 MicMicroDownSnippetFactory >> listMultiSample [
 	| unordered |

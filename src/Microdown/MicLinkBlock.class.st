@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicLinkBlock >> accept: aVisitor [
+	^ aVisitor visitLink: self
+]
+
 { #category : #accessing }
 MicLinkBlock >> openingDelimiter [
 

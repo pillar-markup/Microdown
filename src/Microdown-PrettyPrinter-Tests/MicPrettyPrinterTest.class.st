@@ -64,6 +64,9 @@ MicPrettyPrinterTest >> testPrintMicItalicFormatBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicLinkBlock [
+	| micLink |
+	micLink := (parser parse: factory linkSample) children first children first.
+	self assert: (micLink accept: visitor) equals: 'MicLinkBlock url:/anUrl "Foo"'
 
 ]
 
