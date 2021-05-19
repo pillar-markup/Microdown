@@ -14,9 +14,33 @@ MicPrettyPrinter >> blockPrint: aMicText [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> parametersPrint: aDictionnary [
+
+	| text lastKey |
+	lastKey := aDictionnary keys last.
+	text := 'parameters:'.
+	aDictionnary keysAndValuesDo: [ :k :v |
+		text := text , k ,'=', v.
+		k = lastKey 
+			ifFalse: [ 
+				text := text , '&' ]].
+	^ text
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 
 	^ self blockPrint: aMicAnchorReference
+]
+
+{ #category : #'inline block' }
+MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
+	| text |
+	text := aMicAnnotation class asString , String space.
+	text := text , self parametersPrint: aMicAnnotation parameters asDictionary.
+	text := text , ' "' , aMicAnnotation name , '"'.
+	^ text 
+	
 ]
 
 { #category : #'inline block' }

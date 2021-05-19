@@ -38,7 +38,11 @@ MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicAnnotationBlock [
-
+	| micAnnotation |
+	self skip.
+	"parser return a MicEnvironment"
+	micAnnotation := (parser parse: factory annotationSample) children first.
+	self assert: (micAnnotation accept: visitor) equals: 'MicAnnotationBlock parameters:value=aFoo&label=42 "Foo"'
 ]
 
 { #category : #'tests-inline block' }

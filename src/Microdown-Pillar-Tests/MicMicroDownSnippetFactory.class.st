@@ -32,6 +32,11 @@ MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
 	^ self parserClass anchorMarkup, 'foo bar'
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> annotationSample [
+	^ '<?Foo | value=aFoo&label=42?>'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> boldFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass boldMarkup
