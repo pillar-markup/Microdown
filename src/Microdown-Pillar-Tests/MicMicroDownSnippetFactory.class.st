@@ -241,6 +241,11 @@ MicMicroDownSnippetFactory >> parserClass [
 	^ MicroDownParser
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> rawFormatSample [
+	^ 'a{{Foo}}b'
+]
+
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParameterEscapeSample [
 	^ 'value\==foo'

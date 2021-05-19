@@ -16,6 +16,11 @@ MicRawBlock class >> isEvaluated [
 	^ false
 ]
 
+{ #category : #visiting }
+MicRawBlock >> accept: aVisitor [
+	^ aVisitor visitRaw: self
+]
+
 { #category : #accessing }
 MicRawBlock >> closingDelimiter [
 

@@ -74,8 +74,10 @@ MicPrettyPrinterTest >> testPrintMicMonospaceFormatBlock [
 ]
 
 { #category : #'tests-inline block' }
-MicPrettyPrinterTest >> testPrintMicRawFormatBlock [
-
+MicPrettyPrinterTest >> testPrintMicRawBlock [
+	| micRaw |
+	micRaw := (parser parse: factory rawFormatSample) children first children second.
+	self assert: (micRaw accept: visitor) equals: 'MicRawBlock "Foo"'
 ]
 
 { #category : #'tests-inline block' }
