@@ -26,6 +26,12 @@ MicPrettyPrinter >> visitItalic: aMicItalic [
 ]
 
 { #category : #'inline block' }
+MicPrettyPrinter >> visitMonospace: aMicMonospace [
+
+	^ self blockPrint: aMicMonospace
+]
+
+{ #category : #'inline block' }
 MicPrettyPrinter >> visitRaw: aMicRaw [
 
 	^ self blockPrint: aMicRaw

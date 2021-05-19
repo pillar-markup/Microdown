@@ -70,7 +70,9 @@ MicPrettyPrinterTest >> testPrintMicMathInlineBlock [
 
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicMonospaceFormatBlock [
-
+	| micMonospace |
+	micMonospace := (parser parse: factory monospaceFormatSample) children first children first.
+	self assert: (micMonospace accept: visitor) equals: 'MicMonospaceFormatBlock "Foo"'
 ]
 
 { #category : #'tests-inline block' }
