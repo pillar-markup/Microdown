@@ -27,6 +27,14 @@ MicPrettyPrinter >> parametersPrint: aDictionnary [
 	^ text
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitAnchor: aAnchor [
+	| text |
+	text := aAnchor class asString.
+	text := text , ' "' , aAnchor label , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 

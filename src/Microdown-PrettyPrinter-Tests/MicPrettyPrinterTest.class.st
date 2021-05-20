@@ -29,6 +29,9 @@ MicPrettyPrinterTest >> setUp [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintAnchor [
+	| micAnchor |
+	micAnchor := (parser parse: factory anchorSample) children first.
+	self assert: (micAnchor accept: visitor) equals: 'MicAnchorBlock "test"'
 ]
 
 { #category : #'tests-block' }
