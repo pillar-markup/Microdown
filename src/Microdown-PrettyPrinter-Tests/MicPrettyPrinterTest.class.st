@@ -188,6 +188,12 @@ MicPrettyPrinterTest >> testPrintRoot [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintTable [
+	| micTable |
+	self skip.
+	self flag: #fixMe.
+	"to fix when MicTable will be fix"
+	micTable := (parser parse: factory tableSample).
+	self assert: (micTable accept: visitor) equals: 'MicTableBlock'
 ]
 
 { #category : #'tests-block' }
