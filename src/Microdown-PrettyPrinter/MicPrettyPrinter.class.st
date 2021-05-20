@@ -90,6 +90,16 @@ MicPrettyPrinter >> visitComment: aComment [
 	^ text
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitEnvironment: aEnvironment [
+
+	| text |
+	text := (self classPrint: aEnvironment) , String space.
+	text := text , (self parametersPrint: aEnvironment arguments asDictionary).
+	text := text , ' "' , aEnvironment name , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitFigure: aMicFigure [
 
