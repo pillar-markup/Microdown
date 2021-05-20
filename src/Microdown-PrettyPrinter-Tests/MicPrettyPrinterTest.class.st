@@ -177,6 +177,9 @@ MicPrettyPrinterTest >> testPrintParagraph [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintQuote [
+	| micQuote |
+	micQuote := (parser parse: factory quoteSample) children first.
+	self assert: (micQuote accept: visitor) equals: 'MicQuoteBlock "Foo"'
 ]
 
 { #category : #'tests-block' }
