@@ -183,4 +183,7 @@ MicPrettyPrinterTest >> testPrintTable [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintUnorderedList [
+	| micUnorderedList |
+	micUnorderedList := (parser parse: factory unorderedListSample) children first.
+	self assert: (micUnorderedList accept: visitor) equals: 'MicUnorderedListBlock'
 ]
