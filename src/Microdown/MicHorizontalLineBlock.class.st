@@ -11,7 +11,7 @@ Class {
 
 { #category : #visiting }
 MicHorizontalLineBlock >> accept: aVisitor [ 
- 	^ aVisitor visitHorizontalLineBlock: self
+ 	^ aVisitor visitHorizontalLine: self
 ]
 
 { #category : #public }

@@ -12,7 +12,7 @@ Class {
 
 { #category : #visiting }
 MicListItemBlock >> accept: aVisitor [
- 	^ aVisitor visitListItemBlock: self
+ 	^ aVisitor visitListItem: self
 ]
 
 { #category : #testing }
