@@ -59,6 +59,15 @@ MicPrettyPrinter >> visitBold: aMicBold [
 ]
 
 { #category : #'visit-block' }
+MicPrettyPrinter >> visitCode: aCode [
+	| text |
+	text := aCode class asString.
+	text := text , ' parameters:' , aCode firstLine. 
+	text := text , ' "' , aCode body , '"'.
+	^ text
+]
+
+{ #category : #'visit-block' }
 MicPrettyPrinter >> visitComment: aComment [
 	| text |
 	text := aComment class asString.

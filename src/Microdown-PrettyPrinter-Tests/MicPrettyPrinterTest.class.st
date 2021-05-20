@@ -36,6 +36,9 @@ MicPrettyPrinterTest >> testPrintAnchor [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintCode [
+	| micCode |
+	micCode := (parser parse: (factory codeblock: 'smalltalk&label=42' body: 'Foo')) children first.
+	self assert: (micCode accept: visitor) equals: 'MicCodeBlock parameters:smalltalk&label=42 "Foo"'
 ]
 
 { #category : #'tests-block' }

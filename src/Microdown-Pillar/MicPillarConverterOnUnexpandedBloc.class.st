@@ -27,7 +27,7 @@ MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitCodeBlock: aMicCodeBlock [
+MicPillarConverterOnUnexpandedBloc >> visitCode: aMicCodeBlock [
  	| prBlock |
  	prBlock := PRCodeblock new.
  	prBlock text: aMicCodeBlock code.

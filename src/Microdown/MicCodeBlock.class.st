@@ -46,7 +46,7 @@ Class {
 
 { #category : #visiting }
 MicCodeBlock >> accept: aVisitor [
- 	^ aVisitor visitCodeBlock: self
+ 	^ aVisitor visitCode: self
 ]
 
 { #category : #accessing }
