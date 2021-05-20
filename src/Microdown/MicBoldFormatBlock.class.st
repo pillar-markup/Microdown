@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicBoldFormatBlock >> accept: aVisitor [
+	^ aVisitor visitBold: self
+]
+
 { #category : #'as yet unclassified' }
 MicBoldFormatBlock >> closingDelimiter [
 

@@ -8,6 +8,17 @@ Class {
 	#category : #'Microdown-Pillar-Visitor'
 }
 
+{ #category : #formatting }
+MicPillarConverter >> formatBlock: aMicFormatBlock [
+	| childrenAsPillar |
+	childrenAsPillar := aMicFormatBlock isOnlyChild 
+		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
+		ifFalse: [ aMicFormatBlock children collect: [:e | e accept: self ] ].
+	 ^ aMicFormatBlock associatedPillarClass new
+				setChildren: childrenAsPillar;
+				yourself
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitAnchor: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
@@ -24,6 +35,11 @@ MicPillarConverter >> visitAnnotated: aMicAnnotatedBlock [
  			annotation: aMicAnnotatedBlock label; 
  			setChildren: (aMicAnnotatedBlock pillarFromString: aMicAnnotatedBlock text);
  			yourself
+]
+
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitBold: aMicBold [
+ 	^ self formatBlock: aMicBold
 ]
 
 { #category : #visiting }
