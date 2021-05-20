@@ -118,6 +118,11 @@ MicPillarConverter >> visitMath: aMicMathBlock [
  		yourself
 ]
 
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitMonospace: aMicMonospace [
+ 	^ self formatBlock: aMicMonospace
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitOrderedList: aMicOrderedListBlock [
  	^ PROrderedList new
