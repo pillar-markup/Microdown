@@ -170,6 +170,9 @@ MicPrettyPrinterTest >> testPrintOrderedList [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintParagraph [
+	| micParagraph |
+	micParagraph := (parser parse: factory paragraphSample) children first.
+	self assert: (micParagraph accept: visitor) equals: 'MicParagraphBlock'
 ]
 
 { #category : #'tests-block' }
