@@ -120,7 +120,7 @@ MicPillarConverterOnUnexpandedBloc >> visitQuoteBlock: aMicQuoteBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitRootBlock: aMicRootBlock [
+MicPillarConverterOnUnexpandedBloc >> visitRoot: aMicRootBlock [
  	^ PRDocument new
  		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
  		yourself
