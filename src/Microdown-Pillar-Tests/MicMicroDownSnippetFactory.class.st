@@ -234,6 +234,14 @@ Foo
 &'
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> metaDataSample [
+	^ '{
+"author": "Foo"
+}
+'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass monospaceMarkup
