@@ -93,6 +93,11 @@ MicMicroDownSnippetFactory >> commentSample [
 	^ '%Foo'
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> environmentSample [
+	^ '<?Foo|value=aFoo&label=42'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> figureSample [
 	^ '![Foo](anUrl|label=figureTest&size=80)'

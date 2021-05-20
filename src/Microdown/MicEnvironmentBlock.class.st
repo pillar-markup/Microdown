@@ -72,7 +72,7 @@ Class {
 
 { #category : #visiting }
 MicEnvironmentBlock >> accept: aVisitor [
- 	^ aVisitor visitEnvironmentBlock: self
+ 	^ aVisitor visitEnvironment: self
 ]
 
 { #category : #accessing }
