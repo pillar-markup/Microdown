@@ -106,7 +106,7 @@ MicPillarConverterOnUnexpandedBloc >> visitOrderedList: aMicOrderedListBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitParagraphBlock: aMicParagraphBlock [
+MicPillarConverterOnUnexpandedBloc >> visitParagraph: aMicParagraphBlock [
  	^ PRParagraph  new
  		setChildren: (aMicParagraphBlock pillarFromString: aMicParagraphBlock text);
  		yourself
