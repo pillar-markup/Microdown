@@ -175,6 +175,9 @@ MicPrettyPrinterTest >> testPrintQuote [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintRoot [
+	| micRoot |
+	micRoot := (parser parse: factory headerLevel3Sample).
+	self assert: (micRoot accept: visitor) equals: 'MicRootBlock'
 ]
 
 { #category : #'tests-block' }
