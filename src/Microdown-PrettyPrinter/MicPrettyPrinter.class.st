@@ -8,9 +8,15 @@ Class {
 MicPrettyPrinter >> blockPrint: aMicText [
 
 	| text |
-	text := aMicText class asString.
+	text := self classPrint: aMicText.
 	text := text , ' "' , aMicText substring , '"'.
 	^ text
+]
+
+{ #category : #build }
+MicPrettyPrinter >> classPrint: aMicFigure [
+
+	^ aMicFigure class asString
 ]
 
 { #category : #build }
@@ -29,8 +35,9 @@ MicPrettyPrinter >> parametersPrint: aDictionnary [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitAnchor: aAnchor [
+
 	| text |
-	text := aAnchor class asString.
+	text := self classPrint: aAnchor.
 	text := text , ' "' , aAnchor label , '"'.
 	^ text
 ]
@@ -43,7 +50,8 @@ MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitAnnotated: aAnnotated [
-	^ aAnnotated class asString
+
+	^ self classPrint: aAnnotated
 ]
 
 { #category : #'visit-inline block' }
@@ -65,44 +73,49 @@ MicPrettyPrinter >> visitBold: aMicBold [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitCode: aCode [
+
 	| text |
-	text := aCode class asString.
-	text := text , ' parameters:' , aCode firstLine. 
+	text := self classPrint: aCode.
+	text := text , ' parameters:' , aCode firstLine.
 	text := text , ' "' , aCode body , '"'.
 	^ text
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitComment: aComment [
+
 	| text |
-	text := aComment class asString.
+	text := self classPrint: aComment.
 	text := text , ' "' , aComment text , '"'.
 	^ text
 ]
 
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitFigure: aMicFigure [
+
 	| text |
-	text := aMicFigure class asString , String space.
-	text := text , (self parametersPrint: aMicFigure parameters asDictionary).
+	text := (self classPrint: aMicFigure) , String space.
+	text := text
+	        , (self parametersPrint: aMicFigure parameters asDictionary).
 	text := text , ' url:' , aMicFigure url asString.
 	text := text , ' "' , aMicFigure substring , '"'.
-	^ text 
-	
+	^ text
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitHeader: aHeader [
+
 	| text |
-	text := aHeader class asString.
-	text := text , ' level:' , (aHeader level asString).
+	text := self classPrint: aHeader.
+	text := text , ' level:' , aHeader level asString.
 	text := text , ' "' , aHeader header , '"'.
 	^ text
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitHorizontalLine: aHorizontalLine [
-	^ aHorizontalLine class asString
+
+	^ self classPrint: aHorizontalLine
 ]
 
 { #category : #'visit-inline block' }
@@ -113,16 +126,19 @@ MicPrettyPrinter >> visitItalic: aMicItalic [
 
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitLink: aMicLink [
+
 	| text |
-	text := aMicLink class asString.
-	text := text, ' url:' , aMicLink url asString , ' "' , aMicLink substring , '"'.
+	text := self classPrint: aMicLink.
+	text := text , ' url:' , aMicLink url asString , ' "'
+	        , aMicLink substring , '"'.
 	^ text
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitListItem: aListItem [
+
 	| text |
-	text := aListItem class asString.
+	text := self classPrint: aListItem.
 	text := text , ' "' , aListItem text , '"'.
 	^ text
 ]
@@ -141,18 +157,21 @@ MicPrettyPrinter >> visitMonospace: aMicMonospace [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitOrderedList: aOrderedList [
-	^ aOrderedList class asString
+
+	^ self classPrint: aOrderedList
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitParagraph: aParagraph [
-	^ aParagraph class asString
+
+	^ self classPrint: aParagraph
 ]
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitQuote: aQuote [
+
 	| text |
-	text := aQuote class asString.
+	text := self classPrint: aQuote.
 	text := text , ' "' , aQuote text , '"'.
 	^ text
 ]
@@ -165,7 +184,8 @@ MicPrettyPrinter >> visitRaw: aMicRaw [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitRoot: aRoot [
-	^ aRoot class asString
+
+	^ self classPrint: aRoot
 ]
 
 { #category : #'visit-inline block' }
@@ -176,7 +196,8 @@ MicPrettyPrinter >> visitStrike: aMicStrike [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitTable: aTable [
-	^ aTable class asString
+
+	^ self classPrint: aTable
 ]
 
 { #category : #'visit-inline block' }
@@ -187,5 +208,6 @@ MicPrettyPrinter >> visitText: aMicText [
 
 { #category : #'visit-block' }
 MicPrettyPrinter >> visitUnorderedList: aUnorderedList [
-	^ aUnorderedList class asString
+
+	^ self classPrint: aUnorderedList
 ]
