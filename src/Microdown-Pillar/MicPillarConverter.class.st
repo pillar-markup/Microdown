@@ -127,8 +127,8 @@ MicPillarConverter >> visitRoot: aMicRootBlock [
 
 ]
 
-{ #category : #visiting }
-MicPillarConverter >> visitTextBlock: aMicTextBlock [
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitText: aMicTextBlock [
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
