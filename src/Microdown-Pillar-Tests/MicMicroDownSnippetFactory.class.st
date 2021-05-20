@@ -146,6 +146,11 @@ MicMicroDownSnippetFactory >> headerWithNewLineSample [
 	^ self parserClass headerMarkup, 'Foo', String cr
 ]
 
+{ #category : #headers }
+MicMicroDownSnippetFactory >> horizontalLineSample [
+	^ parserClass horizontalLineMarkup
+]
+
 { #category : #initialization }
 MicMicroDownSnippetFactory >> initialize [
 	

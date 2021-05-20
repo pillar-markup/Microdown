@@ -78,7 +78,7 @@ MicPillarConverterOnUnexpandedBloc >> visitHeader: aMicHeaderBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitHorizontalLineBlock: aMicHorizontalLineBlock [
+MicPillarConverterOnUnexpandedBloc >> visitHorizontalLine: aMicHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 

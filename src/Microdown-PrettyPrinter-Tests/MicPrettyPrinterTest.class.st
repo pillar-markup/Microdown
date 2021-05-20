@@ -48,6 +48,9 @@ MicPrettyPrinterTest >> testPrintHeader [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintHorizontalLine [
+	| micHorizontalLine |
+	micHorizontalLine := (parser parse: factory horizontalLineSample) children first.
+	self assert: (micHorizontalLine accept: visitor) equals: 'MicHorizontalLineBlock'
 ]
 
 { #category : #'tests-block' }

@@ -70,6 +70,11 @@ MicPrettyPrinter >> visitHeader: aHeader [
 	^ text
 ]
 
+{ #category : #block }
+MicPrettyPrinter >> visitHorizontalLine: aHorizontalLine [
+	^ aHorizontalLine class asString
+]
+
 { #category : #'inline block' }
 MicPrettyPrinter >> visitItalic: aMicItalic [
 
