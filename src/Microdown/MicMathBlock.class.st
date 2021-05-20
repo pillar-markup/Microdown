@@ -26,7 +26,7 @@ Class {
 
 { #category : #markups }
 MicMathBlock >> accept: aVisitor [ 
- 	^ aVisitor visitMathBlock: self
+ 	^ aVisitor visitMath: self
 ]
 
 { #category : #accessing }

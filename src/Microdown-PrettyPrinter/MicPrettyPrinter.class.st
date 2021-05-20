@@ -143,6 +143,16 @@ MicPrettyPrinter >> visitListItem: aListItem [
 	^ text
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitMath: aMath [
+
+	| text |
+	text := (self classPrint: aMath) , String space.
+	text := text , (self parametersPrint: aMath arguments asDictionary).
+	text := text , ' "' , aMath body , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitMathInline: aMicMathInline [
 
