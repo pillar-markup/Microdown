@@ -163,6 +163,9 @@ MicPrettyPrinterTest >> testPrintMicTextBlock [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintOrderedList [
+	| micOrderedList |
+	micOrderedList := (parser parse: factory orderedListSample) children first.
+	self assert: (micOrderedList accept: visitor) equals: 'MicOrderedListBlock'
 ]
 
 { #category : #'tests-block' }
