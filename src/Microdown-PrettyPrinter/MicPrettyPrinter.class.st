@@ -140,6 +140,11 @@ MicPrettyPrinter >> visitRaw: aMicRaw [
 	^ self blockPrint: aMicRaw
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitRoot: aRoot [
+	^ aRoot class asString
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitStrike: aMicStrike [
 
