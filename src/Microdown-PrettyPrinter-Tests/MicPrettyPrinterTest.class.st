@@ -49,6 +49,13 @@ MicPrettyPrinterTest >> testPrintComment [
 ]
 
 { #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintEnvironment [
+	| micEnvironment |
+	micEnvironment := (parser parse: factory environmentSample) children first.
+	self assert: (micEnvironment accept: visitor) equals: 'MicEnvironmentBlock parameters:value=aFoo&label=42 "Foo"'
+]
+
+{ #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintHeader [
 | micHeader |
 	micHeader := (parser parse: factory headerLevel3Sample) children first.
