@@ -13,7 +13,7 @@ Class {
 
 { #category : #visiting }
 MicCommentBlock >> accept: aVisitor [
- 	^ aVisitor visitCommentBlock: self
+ 	^ aVisitor visitComment: self
 ]
 
 { #category : #markups }

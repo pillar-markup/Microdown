@@ -38,7 +38,7 @@ MicPillarConverterOnUnexpandedBloc >> visitCodeBlock: aMicCodeBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitCommentBlock: aMicCommentBlock [
+MicPillarConverterOnUnexpandedBloc >> visitComment: aMicCommentBlock [
  	^ PRCommentedLine new
  			text: aMicCommentBlock text ;
  			yourself

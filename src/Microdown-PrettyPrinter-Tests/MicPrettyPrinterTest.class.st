@@ -37,6 +37,9 @@ MicPrettyPrinterTest >> testPrintCode [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintComment [
+	| micComment |
+	micComment := (parser parse: factory commentSample) children first.
+	self assert: (micComment accept: visitor) equals: 'MicCommentBlock "Foo"'
 ]
 
 { #category : #'tests-block' }

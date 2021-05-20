@@ -83,7 +83,12 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #block }
+MicMicroDownSnippetFactory >> commentSample [
+	^ '%Foo'
+]
+
+{ #category : #format }
 MicMicroDownSnippetFactory >> figureSample [
 	^ '![Foo](anUrl|label=figureTest&size=80)'
 ]
@@ -180,7 +185,7 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 	^ String lf
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #format }
 MicMicroDownSnippetFactory >> linkSample [
 	^ '[Foo](anUrl)'
 ]

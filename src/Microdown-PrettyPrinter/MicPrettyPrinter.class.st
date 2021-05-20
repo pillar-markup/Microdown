@@ -50,6 +50,14 @@ MicPrettyPrinter >> visitBold: aMicBold [
 	^ self blockPrint: aMicBold
 ]
 
+{ #category : #block }
+MicPrettyPrinter >> visitComment: aComment [
+	| text |
+	text := aComment class asString.
+	text := text , ' "' , aComment text , '"'.
+	^ text
+]
+
 { #category : #'inline block' }
 MicPrettyPrinter >> visitFigure: aMicFigure [
 	| text |
