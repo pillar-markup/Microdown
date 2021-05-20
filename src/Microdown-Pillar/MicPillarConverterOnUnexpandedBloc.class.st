@@ -45,7 +45,7 @@ MicPillarConverterOnUnexpandedBloc >> visitComment: aMicCommentBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitEnvironmentBlock: aMicEnvironmentBlock [
+MicPillarConverterOnUnexpandedBloc >> visitEnvironment: aMicEnvironmentBlock [
  	| classPillar |
  	classPillar := PRAbstractAnnotation findClassAcceptingTag: aMicEnvironmentBlock name ifNone: [ PRUndefinedAnnotation ].
  	^ classPillar new parameters: aMicEnvironmentBlock arguments
