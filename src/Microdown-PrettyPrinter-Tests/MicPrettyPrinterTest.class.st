@@ -84,6 +84,9 @@ MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintMicAnnotated [
+	| micAnnotated |
+	micAnnotated := (parser parse: factory annotatedSample) children first.
+	self assert: (micAnnotated accept: visitor) equals: 'MicAnnotatedBlock'
 ]
 
 { #category : #'tests-inline block' }
