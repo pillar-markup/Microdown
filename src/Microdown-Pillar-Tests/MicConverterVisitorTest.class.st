@@ -3,10 +3,22 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'pillarDocument',
-		'visitor'
+		'visitor',
+		'factory'
 	],
 	#category : #'Microdown-Pillar-Tests'
 }
+
+{ #category : #parsing }
+MicConverterVisitorTest >> parse: sample createChildElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := (parser parse: sample) children first children first.
+	pillarDoc := micDoc accept: visitor.
+	self assert: pillarDoc class equals: aClass.
+	^ pillarDoc
+]
 
 { #category : #tests }
 MicConverterVisitorTest >> parserClass [
@@ -16,7 +28,8 @@ MicConverterVisitorTest >> parserClass [
 { #category : #initialization }
 MicConverterVisitorTest >> setUp [
  	super setUp.
- 	visitor := MicPillarConverter new
+ 	visitor := MicPillarConverter new.
+	factory := MicMicroDownSnippetFactory new.
 ]
 
 { #category : #tests }
@@ -26,6 +39,11 @@ MicConverterVisitorTest >> testAnchorBlock [
 	root := self parserClass new parse: source.
 	pillar := root children first accept: visitor.
 	self assert: pillar class equals: PRAnchor
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testBoldFormat [
+	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
 
 { #category : #tests }
