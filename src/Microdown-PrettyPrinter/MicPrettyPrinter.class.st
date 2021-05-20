@@ -134,6 +134,11 @@ MicPrettyPrinter >> visitMonospace: aMicMonospace [
 	^ self blockPrint: aMicMonospace
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitOrderedList: aOrderedList [
+	^ aOrderedList class asString
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitRaw: aMicRaw [
 
@@ -158,6 +163,6 @@ MicPrettyPrinter >> visitText: aMicText [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitUnorderedList: aUnorderedLis [
-	^ aUnorderedLis class asString
+MicPrettyPrinter >> visitUnorderedList: aUnorderedList [
+	^ aUnorderedList class asString
 ]
