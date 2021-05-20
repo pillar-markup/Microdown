@@ -91,7 +91,7 @@ MicPillarConverterOnUnexpandedBloc >> visitListItem: aMicListItemBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMathBlock: aMicMathBlock [
+MicPillarConverterOnUnexpandedBloc >> visitMath: aMicMathBlock [
  	^ PRMathEnvironment new 
  		add: (PRText content: aMicMathBlock body);
  		yourself
