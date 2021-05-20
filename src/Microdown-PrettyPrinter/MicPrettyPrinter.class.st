@@ -151,3 +151,8 @@ MicPrettyPrinter >> visitText: aMicText [
 
 	^ self blockPrint: aMicText
 ]
+
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitUnorderedList: aUnorderedLis [
+	^ aUnorderedLis class asString
+]

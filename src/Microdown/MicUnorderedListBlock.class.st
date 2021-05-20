@@ -51,7 +51,7 @@ Class {
 
 { #category : #testing }
 MicUnorderedListBlock >> accept: aVisitor [
- 	^ aVisitor visitUnorderedListBlock: self
+ 	^ aVisitor visitUnorderedList: self
 ]
 
 { #category : #testing }
