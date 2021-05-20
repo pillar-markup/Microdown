@@ -83,6 +83,13 @@ MicPrettyPrinterTest >> testPrintMath [
 	self assert: (micMath  accept: visitor) equals: 'MicMathBlock parameters:label=42 "Foo"'
 ]
 
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintMetaData [
+	| micMetaData |
+	micMetaData := (parser parse: factory metaDataSample) children first.
+	self assert: (micMetaData accept: visitor) equals: 'MicMetaDataBlock parameters: ""author": "Foo""'
+]
+
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
 	| micAnchorReference |
