@@ -113,7 +113,7 @@ MicPillarConverterOnUnexpandedBloc >> visitParagraph: aMicParagraphBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitQuoteBlock: aMicQuoteBlock [
+MicPillarConverterOnUnexpandedBloc >> visitQuote: aMicQuoteBlock [
  	^ PRPreformatted new
  		setChildren: (aMicQuoteBlock pillarFromString: aMicQuoteBlock text);
  		yourself
