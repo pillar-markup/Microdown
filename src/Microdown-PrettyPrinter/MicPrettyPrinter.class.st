@@ -139,6 +139,11 @@ MicPrettyPrinter >> visitOrderedList: aOrderedList [
 	^ aOrderedList class asString
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitParagraph: aParagraph [
+	^ aParagraph class asString
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitRaw: aMicRaw [
 
