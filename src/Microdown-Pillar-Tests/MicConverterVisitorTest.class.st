@@ -16,7 +16,7 @@ MicConverterVisitorTest >> parserClass [
 { #category : #initialization }
 MicConverterVisitorTest >> setUp [
  	super setUp.
- 	visitor := MicPillarConverterOnUnexpandedBloc new
+ 	visitor := MicPillarConverter new
 ]
 
 { #category : #tests }

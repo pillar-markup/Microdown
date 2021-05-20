@@ -3,23 +3,23 @@ This visitor is about to disappeared. It was created just to make sure that we c
 Now this visitor is working on non expanded code blocks.
 "
 Class {
-	#name : #MicPillarConverterOnUnexpandedBloc,
+	#name : #MicPillarConverter,
 	#superclass : #MicrodownVisitor,
 	#category : #'Microdown-Pillar-Visitor'
 }
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitAnchorBlock: aMicAnchorBlock [
+MicPillarConverter >> visitAnchorBlock: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
 ]
 
 { #category : #'visiting inline' }
-MicPillarConverterOnUnexpandedBloc >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
+MicPillarConverter >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
  	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
+MicPillarConverter >> visitAnnotatedBlock: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
  			annotation: aMicAnnotatedBlock label; 
  			setChildren: (aMicAnnotatedBlock pillarFromString: aMicAnnotatedBlock text);
@@ -27,7 +27,7 @@ MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitCodeBlock: aMicCodeBlock [
+MicPillarConverter >> visitCodeBlock: aMicCodeBlock [
  	| prBlock |
  	prBlock := PRCodeblock new.
  	prBlock text: aMicCodeBlock code.
@@ -38,28 +38,28 @@ MicPillarConverterOnUnexpandedBloc >> visitCodeBlock: aMicCodeBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitCommentBlock: aMicCommentBlock [
+MicPillarConverter >> visitCommentBlock: aMicCommentBlock [
  	^ PRCommentedLine new
  			text: aMicCommentBlock text ;
  			yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitEnvironmentBlock: aMicEnvironmentBlock [
+MicPillarConverter >> visitEnvironmentBlock: aMicEnvironmentBlock [
  	| classPillar |
  	classPillar := PRAbstractAnnotation findClassAcceptingTag: aMicEnvironmentBlock name ifNone: [ PRUndefinedAnnotation ].
  	^ classPillar new parameters: aMicEnvironmentBlock arguments
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitFigureBlock: aMicFigureBlock [
+MicPillarConverter >> visitFigureBlock: aMicFigureBlock [
  	| aPRFigure |
  	aPRFigure := super visit: self.
  	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitFormatBlock: aMicFormatBlock [
+MicPillarConverter >> visitFormatBlock: aMicFormatBlock [
  	| childrenAsPillar |
  	childrenAsPillar := aMicFormatBlock isOnlyChild 
  		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
@@ -70,7 +70,7 @@ MicPillarConverterOnUnexpandedBloc >> visitFormatBlock: aMicFormatBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitHeaderBlock: aMicHeaderBlock [
+MicPillarConverter >> visitHeaderBlock: aMicHeaderBlock [
  	^ PRHeader new
  		level: aMicHeaderBlock level;
  		setChildren: (aMicHeaderBlock pillarFromString: aMicHeaderBlock header);
@@ -78,12 +78,12 @@ MicPillarConverterOnUnexpandedBloc >> visitHeaderBlock: aMicHeaderBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitHorizontalLineBlock: aMicHorizontalLineBlock [
+MicPillarConverter >> visitHorizontalLineBlock: aMicHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitListItemBlock: aMicListItemBlock [
+MicPillarConverter >> visitListItemBlock: aMicListItemBlock [
  	^ PRListItem new
  		setChildren: (aMicListItemBlock pillarFromString: aMicListItemBlock text), (aMicListItemBlock children collect: [:child| child asPillar]);
  		yourself
@@ -91,14 +91,14 @@ MicPillarConverterOnUnexpandedBloc >> visitListItemBlock: aMicListItemBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitMathBlock: aMicMathBlock [
+MicPillarConverter >> visitMathBlock: aMicMathBlock [
  	^ PRMathEnvironment new 
  		add: (PRText content: aMicMathBlock body);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitOrderedListBlock: aMicOrderedListBlock [
+MicPillarConverter >> visitOrderedListBlock: aMicOrderedListBlock [
  	^ PROrderedList new
  		setChildren: (aMicOrderedListBlock children collect: [ :child | child asPillar ]);
  		counter: aMicOrderedListBlock startIndex;
@@ -106,21 +106,21 @@ MicPillarConverterOnUnexpandedBloc >> visitOrderedListBlock: aMicOrderedListBloc
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitParagraphBlock: aMicParagraphBlock [
+MicPillarConverter >> visitParagraphBlock: aMicParagraphBlock [
  	^ PRParagraph  new
  		setChildren: (aMicParagraphBlock pillarFromString: aMicParagraphBlock text);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitQuoteBlock: aMicQuoteBlock [
+MicPillarConverter >> visitQuoteBlock: aMicQuoteBlock [
  	^ PRPreformatted new
  		setChildren: (aMicQuoteBlock pillarFromString: aMicQuoteBlock text);
  		yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitRootBlock: aMicRootBlock [
+MicPillarConverter >> visitRootBlock: aMicRootBlock [
  	^ PRDocument new
  		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
  		yourself
@@ -128,12 +128,12 @@ MicPillarConverterOnUnexpandedBloc >> visitRootBlock: aMicRootBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitTextBlock: aMicTextBlock [
+MicPillarConverter >> visitTextBlock: aMicTextBlock [
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitUnorderedListBlock: aMicUnorderedListBlock [
+MicPillarConverter >> visitUnorderedListBlock: aMicUnorderedListBlock [
  	^ PRUnorderedList new
  		setChildren: (aMicUnorderedListBlock children collect:[:child| child asPillar]);
  		yourself
