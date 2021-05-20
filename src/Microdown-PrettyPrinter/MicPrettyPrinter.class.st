@@ -161,6 +161,11 @@ MicPrettyPrinter >> visitStrike: aMicStrike [
 	^ self blockPrint: aMicStrike
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitTable: aTable [
+	^ aTable class asString
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitText: aMicText [
 

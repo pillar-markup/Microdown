@@ -38,6 +38,11 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #visiting }
+MicTableBlock >> accept: aVisitor [
+	^ aVisitor visitTable: self
+]
+
 { #category : #actions }
 MicTableBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
