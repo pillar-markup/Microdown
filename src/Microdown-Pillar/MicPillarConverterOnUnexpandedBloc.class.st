@@ -83,7 +83,7 @@ MicPillarConverterOnUnexpandedBloc >> visitHorizontalLine: aMicHorizontalLineBlo
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitListItemBlock: aMicListItemBlock [
+MicPillarConverterOnUnexpandedBloc >> visitListItem: aMicListItemBlock [
  	^ PRListItem new
  		setChildren: (aMicListItemBlock pillarFromString: aMicListItemBlock text), (aMicListItemBlock children collect: [:child| child asPillar]);
  		yourself

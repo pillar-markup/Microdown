@@ -114,6 +114,14 @@ MicPrettyPrinter >> visitLink: aMicLink [
 	^ text
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitListItem: aListItem [
+	| text |
+	text := aListItem class asString.
+	text := text , ' "' , aListItem text , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitMathInline: aMicMathInline [
 

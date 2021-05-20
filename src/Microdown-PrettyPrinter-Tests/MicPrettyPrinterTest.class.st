@@ -64,6 +64,9 @@ MicPrettyPrinterTest >> testPrintHorizontalLine [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintListItem [
+	| micListItem |
+	micListItem := (parser parse: factory listMultiSample) children first children first.
+	self assert: (micListItem accept: visitor) equals: 'MicListItemBlock "1"'
 ]
 
 { #category : #'tests-block' }
