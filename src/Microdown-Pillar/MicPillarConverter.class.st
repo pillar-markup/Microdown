@@ -98,6 +98,11 @@ MicPillarConverter >> visitHorizontalLine: aMicHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitItalic: aMicItalic [
+ 	^ self formatBlock: aMicItalic
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitListItem: aMicListItemBlock [
  	^ PRListItem new
