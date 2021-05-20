@@ -144,6 +144,14 @@ MicPrettyPrinter >> visitParagraph: aParagraph [
 	^ aParagraph class asString
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitQuote: aQuote [
+	| text |
+	text := aQuote class asString.
+	text := text , ' "' , aQuote text , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitRaw: aMicRaw [
 
