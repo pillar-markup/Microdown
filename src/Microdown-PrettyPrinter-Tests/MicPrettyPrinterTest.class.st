@@ -71,6 +71,9 @@ MicPrettyPrinterTest >> testPrintListItem [
 
 { #category : #'tests-block' }
 MicPrettyPrinterTest >> testPrintMath [
+	| micMath |
+	micMath := (parser parse: factory mathParametersSample) children first.
+	self assert: (micMath  accept: visitor) equals: 'MicMathBlock parameters:label=42 "Foo"'
 ]
 
 { #category : #'tests-inline block' }
