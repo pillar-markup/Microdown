@@ -222,6 +222,13 @@ MicMicroDownSnippetFactory >> mathInlineSample [
 	^ '$V_i = C_0 - C_3$'
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> mathParametersSample [
+	^ '&label=42
+Foo
+&'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass monospaceMarkup
