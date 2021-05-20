@@ -201,6 +201,15 @@ and one with tabs'.
 	self assert: pillar children first text equals: expected
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testText [
+	| source root pillar |
+	source := 'Foo'.
+	root := (self parserClass new parse: source) children first children first.
+	pillar := root accept: visitor.
+	self assert: pillar class equals: PRText
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testTwoLevelUnorderedList1 [
 	| source root list secondItem subItem |
