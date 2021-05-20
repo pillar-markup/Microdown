@@ -98,7 +98,7 @@ MicPillarConverterOnUnexpandedBloc >> visitMathBlock: aMicMathBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitOrderedListBlock: aMicOrderedListBlock [
+MicPillarConverterOnUnexpandedBloc >> visitOrderedList: aMicOrderedListBlock [
  	^ PROrderedList new
  		setChildren: (aMicOrderedListBlock children collect: [ :child | child asPillar ]);
  		counter: aMicOrderedListBlock startIndex;
