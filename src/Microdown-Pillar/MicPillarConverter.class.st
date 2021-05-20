@@ -149,6 +149,11 @@ MicPillarConverter >> visitRoot: aMicRootBlock [
 ]
 
 { #category : #'visiting inline' }
+MicPillarConverter >> visitStrike: aMicStrike [
+ 	^ self formatBlock: aMicStrike
+]
+
+{ #category : #'visiting inline' }
 MicPillarConverter >> visitText: aMicTextBlock [
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
