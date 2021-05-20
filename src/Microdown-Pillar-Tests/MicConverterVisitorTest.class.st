@@ -135,6 +135,18 @@ V_i = C_0 - C_3
 	
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMonospaceFormat [
+	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMonospaceFormatEmpty [
+	| monospaceBloc |
+	monospaceBloc := self parse: factory monospaceFormatEmptySample createChildElementOfClass: PRMonospaceFormat.
+	self assert: monospaceBloc text equals: ''
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testNumberedList [
 	| document |
