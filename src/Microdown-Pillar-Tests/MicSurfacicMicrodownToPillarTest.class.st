@@ -378,30 +378,6 @@ MicSurfacicMicrodownToPillarTest >> testStrikethroughFormatEmpty [
 	self assert: strikeBlock text equals: ''
 ]
 
-{ #category : #'tests - format' }
-MicSurfacicMicrodownToPillarTest >> testSubscriptFormat [
-	self skip.
-	self parse: factory subscriptFormatSample createElementOfClass: #format
-]
-
-{ #category : #'tests - format' }
-MicSurfacicMicrodownToPillarTest >> testSubscriptFormatEmpty [
-	self skip.
-	self parse: factory subscriptFormatEmptySample createElementOfClass: #format
-]
-
-{ #category : #'tests - format' }
-MicSurfacicMicrodownToPillarTest >> testSuperscriptFormat [
-	self skip.
-	self parse: factory superscriptFormatSample createElementOfClass: #format
-]
-
-{ #category : #'tests - format' }
-MicSurfacicMicrodownToPillarTest >> testSuperscriptFormatEmpty [
-	self skip.
-	self parse: factory superscriptFormatEmptySample createElementOfClass: #format
-]
-
 { #category : #'tests - list' }
 MicSurfacicMicrodownToPillarTest >> testUnorderedList [
 	self parse: factory unorderedListSample createElementOfClass: self unorderedListClass 
