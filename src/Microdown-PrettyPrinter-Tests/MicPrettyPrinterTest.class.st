@@ -27,6 +27,37 @@ MicPrettyPrinterTest >> setUp [
 	parser := MicroDownParser new
 ]
 
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintAnchor [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintCode [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintComment [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintHeader [
+| micHeader |
+	micHeader := (parser parse: factory headerLevel3Sample) children first.
+	self assert: (micHeader accept: visitor) equals: 'MicHeaderBlock level:3 "Foo"'
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintHorizontalLine [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintListItem [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintMath [
+]
+
 { #category : #'tests-inline block' }
 MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
 	| micAnchorReference |
@@ -34,6 +65,10 @@ MicPrettyPrinterTest >> testPrintMicAnchorReferenceBlock [
 	self assert: (micAnchorReference accept: visitor) equals: 'MicAnchorReferenceBlock "Foo"'.
 
 
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintMicAnnotated [
 ]
 
 { #category : #'tests-inline block' }
@@ -109,4 +144,28 @@ MicPrettyPrinterTest >> testPrintMicTextBlock [
 	micText := (parser parse: factory headerLevel3Sample) children first children first.
 	self assert: (micText accept: visitor) equals: 'MicTextBlock "Foo"'.
 
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintOrderedList [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintParagraph [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintQuote [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintRoot [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintTable [
+]
+
+{ #category : #'tests-block' }
+MicPrettyPrinterTest >> testPrintUnorderedList [
 ]

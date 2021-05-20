@@ -70,7 +70,7 @@ MicPillarConverterOnUnexpandedBloc >> visitFormatBlock: aMicFormatBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitHeaderBlock: aMicHeaderBlock [
+MicPillarConverterOnUnexpandedBloc >> visitHeader: aMicHeaderBlock [
  	^ PRHeader new
  		level: aMicHeaderBlock level;
  		setChildren: (aMicHeaderBlock pillarFromString: aMicHeaderBlock header);

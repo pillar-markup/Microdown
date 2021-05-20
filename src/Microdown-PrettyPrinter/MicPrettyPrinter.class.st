@@ -61,6 +61,15 @@ MicPrettyPrinter >> visitFigure: aMicFigure [
 	
 ]
 
+{ #category : #block }
+MicPrettyPrinter >> visitHeader: aHeader [
+	| text |
+	text := aHeader class asString.
+	text := text , ' level:' , (aHeader level asString).
+	text := text , ' "' , aHeader header , '"'.
+	^ text
+]
+
 { #category : #'inline block' }
 MicPrettyPrinter >> visitItalic: aMicItalic [
 
