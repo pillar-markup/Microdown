@@ -232,6 +232,18 @@ and one with tabs'.
 ]
 
 { #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testStrikethroughFormat [
+	self parse: factory strikethroughFormatSample createChildElementOfClass: PRStrikethroughFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testStrikethroughFormatEmpty [
+	| strikeBlock |
+	strikeBlock := self parse: factory strikethroughFormatEmptySample createChildElementOfClass: PRStrikethroughFormat.
+	self assert: strikeBlock text equals: ''
+]
+
+{ #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testText [
 	| source root pillar |
 	source := 'Foo'.
