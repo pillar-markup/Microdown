@@ -4,7 +4,7 @@ Class {
 	#category : #'Microdown-PrettyPrinter'
 }
 
-{ #category : #'inline block' }
+{ #category : #build }
 MicPrettyPrinter >> blockPrint: aMicText [
 
 	| text |
@@ -13,7 +13,7 @@ MicPrettyPrinter >> blockPrint: aMicText [
 	^ text
 ]
 
-{ #category : #'inline block' }
+{ #category : #build }
 MicPrettyPrinter >> parametersPrint: aDictionnary [
 
 	| text lastKey |
@@ -27,13 +27,13 @@ MicPrettyPrinter >> parametersPrint: aDictionnary [
 	^ text
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 
 	^ self blockPrint: aMicAnchorReference
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
 	"arguments with parameters is nil like the name"
 	"| text |
@@ -44,13 +44,13 @@ MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
 	
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitBold: aMicBold [
 
 	^ self blockPrint: aMicBold
 ]
 
-{ #category : #block }
+{ #category : #'visit-block' }
 MicPrettyPrinter >> visitComment: aComment [
 	| text |
 	text := aComment class asString.
@@ -58,7 +58,7 @@ MicPrettyPrinter >> visitComment: aComment [
 	^ text
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitFigure: aMicFigure [
 	| text |
 	text := aMicFigure class asString , String space.
@@ -69,7 +69,7 @@ MicPrettyPrinter >> visitFigure: aMicFigure [
 	
 ]
 
-{ #category : #block }
+{ #category : #'visit-block' }
 MicPrettyPrinter >> visitHeader: aHeader [
 	| text |
 	text := aHeader class asString.
@@ -78,18 +78,18 @@ MicPrettyPrinter >> visitHeader: aHeader [
 	^ text
 ]
 
-{ #category : #block }
+{ #category : #'visit-block' }
 MicPrettyPrinter >> visitHorizontalLine: aHorizontalLine [
 	^ aHorizontalLine class asString
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitItalic: aMicItalic [
 
 	^ self blockPrint: aMicItalic
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitLink: aMicLink [
 	| text |
 	text := aMicLink class asString.
@@ -97,31 +97,31 @@ MicPrettyPrinter >> visitLink: aMicLink [
 	^ text
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitMathInline: aMicMathInline [
 
 	^ self blockPrint: aMicMathInline
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitMonospace: aMicMonospace [
 
 	^ self blockPrint: aMicMonospace
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitRaw: aMicRaw [
 
 	^ self blockPrint: aMicRaw
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitStrike: aMicStrike [
 
 	^ self blockPrint: aMicStrike
 ]
 
-{ #category : #'inline block' }
+{ #category : #'visit-inline block' }
 MicPrettyPrinter >> visitText: aMicText [
 
 	^ self blockPrint: aMicText
