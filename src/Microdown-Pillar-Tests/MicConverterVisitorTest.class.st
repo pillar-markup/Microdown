@@ -107,6 +107,18 @@ MicConverterVisitorTest >> testHorizontalLineBlock [
 	
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testItalicFormat [
+	self parse: factory italicFormatSample createChildElementOfClass: PRItalicFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testItalicFormatEmpty [
+	| italicBlock |
+	italicBlock := self parse: factory italicFormatEmptySample createChildElementOfClass: PRItalicFormat.
+	self assert: italicBlock text equals: ''
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
 	| source root pillar |
