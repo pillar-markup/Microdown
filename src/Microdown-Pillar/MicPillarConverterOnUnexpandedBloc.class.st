@@ -19,7 +19,7 @@ MicPillarConverterOnUnexpandedBloc >> visitAnchorReference: aMicAnchorReferenceB
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitAnnotatedBlock: aMicAnnotatedBlock [
+MicPillarConverterOnUnexpandedBloc >> visitAnnotated: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
  			annotation: aMicAnnotatedBlock label; 
  			setChildren: (aMicAnnotatedBlock pillarFromString: aMicAnnotatedBlock text);
