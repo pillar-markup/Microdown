@@ -270,6 +270,11 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 '
 ]
 
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphSample [
+	^ 'Foo'
+]
+
 { #category : #utils }
 MicMicroDownSnippetFactory >> parserClass [
 
