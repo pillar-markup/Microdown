@@ -133,7 +133,7 @@ MicPillarConverterOnUnexpandedBloc >> visitTextBlock: aMicTextBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitUnorderedListBlock: aMicUnorderedListBlock [
+MicPillarConverterOnUnexpandedBloc >> visitUnorderedList: aMicUnorderedListBlock [
  	^ PRUnorderedList new
  		setChildren: (aMicUnorderedListBlock children collect:[:child| child asPillar]);
  		yourself
