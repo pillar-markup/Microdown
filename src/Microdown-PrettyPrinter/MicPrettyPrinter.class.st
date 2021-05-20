@@ -41,6 +41,11 @@ MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
 	^ self blockPrint: aMicAnchorReference
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitAnnotated: aAnnotated [
+	^ aAnnotated class asString
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
 	"arguments with parameters is nil like the name"
