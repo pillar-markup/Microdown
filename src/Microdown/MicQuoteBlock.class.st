@@ -18,7 +18,7 @@ Class {
 
 { #category : #visiting }
 MicQuoteBlock >> accept: aVisitor [
- 	^ aVisitor visitQuoteBlock: self
+ 	^ aVisitor visitQuote: self
 ]
 
 { #category : #testing }

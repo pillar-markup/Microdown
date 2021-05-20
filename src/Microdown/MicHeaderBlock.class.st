@@ -33,7 +33,7 @@ Class {
 
 { #category : #visiting }
 MicHeaderBlock >> accept: aVisitor [ 
- 	^ aVisitor visitHeaderBlock: self
+ 	^ aVisitor visitHeader: self
 ]
 
 { #category : #testing }

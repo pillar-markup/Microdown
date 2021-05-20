@@ -12,6 +12,11 @@ MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
 ]
 
+{ #category : #visiting }
+MicMonospaceFormatBlock >> accept: aVisitor [
+	^ aVisitor visitMonospace: self
+]
+
 { #category : #'as yet unclassified' }
 MicMonospaceFormatBlock >> closingDelimiter [
 

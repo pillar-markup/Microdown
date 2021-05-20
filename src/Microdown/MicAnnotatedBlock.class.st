@@ -19,7 +19,7 @@ Class {
 
 { #category : #visiting }
 MicAnnotatedBlock >> accept: aVisitor [
- 	^ aVisitor visitAnnotatedBlock: self
+ 	^ aVisitor visitAnnotated: self
 ]
 
 { #category : #testing }

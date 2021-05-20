@@ -9,7 +9,7 @@ Class {
 
 { #category : #visiting }
 MicRootBlock >> accept: aVisitor [
- 	^ aVisitor visitRootBlock: self
+ 	^ aVisitor visitRoot: self
 ]
 
 { #category : #testing }

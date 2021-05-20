@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicStrikeFormatBlock >> accept: aVisitor [
+	^ aVisitor visitStrike: self
+]
+
 { #category : #accessing }
 MicStrikeFormatBlock >> closingDelimiter [
 

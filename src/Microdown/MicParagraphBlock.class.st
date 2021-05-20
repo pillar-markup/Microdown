@@ -19,7 +19,7 @@ MicParagraphBlock class >> opensBy: aLine [
 
 { #category : #parsing }
 MicParagraphBlock >> accept: aVisitor [
- 	^ aVisitor visitParagraphBlock: self
+ 	^ aVisitor visitParagraph: self
 ]
 
 { #category : #parsing }

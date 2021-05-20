@@ -13,6 +13,11 @@ MicMicroDownSnippetFactory >> anchorAreTrimedSample [
 ]
 
 { #category : #anchor }
+MicMicroDownSnippetFactory >> anchorReferenceSample [
+	^ '*@Foo@*'
+]
+
+{ #category : #anchor }
 MicMicroDownSnippetFactory >> anchorSample [
 	^ self parserClass anchorMarkup, 'test'
 ]
@@ -25,6 +30,16 @@ MicMicroDownSnippetFactory >> anchorWithNewLineSample [
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
 	^ self parserClass anchorMarkup, 'foo bar'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> annotatedSample [
+	^ '!! Foo'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> annotationSample [
+	^ 'abc<?Foo | value=aFoo&label=42?>def'
 ]
 
 { #category : #format }
@@ -71,6 +86,21 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 		st cr.
 		st nextPutAll: self parserClass codeblockMarkup. 
 	]
+]
+
+{ #category : #block }
+MicMicroDownSnippetFactory >> commentSample [
+	^ '%Foo'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> environmentSample [
+	^ '<?Foo|value=aFoo&label=42'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> figureSample [
+	^ '![Foo](anUrl|label=figureTest&size=80)'
 ]
 
 { #category : #headers }
@@ -131,6 +161,11 @@ MicMicroDownSnippetFactory >> headerWithNewLineSample [
 	^ self parserClass headerMarkup, 'Foo', String cr
 ]
 
+{ #category : #headers }
+MicMicroDownSnippetFactory >> horizontalLineSample [
+	^ parserClass horizontalLineMarkup
+]
+
 { #category : #initialization }
 MicMicroDownSnippetFactory >> initialize [
 	
@@ -160,6 +195,11 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 	^ String lf
 ]
 
+{ #category : #format }
+MicMicroDownSnippetFactory >> linkSample [
+	^ '[Foo](anUrl)'
+]
+
 { #category : #list }
 MicMicroDownSnippetFactory >> listMultiSample [
 	| unordered |
@@ -180,6 +220,26 @@ MicMicroDownSnippetFactory >> listWithCommentSample [
 	^ '1. Foo
 %Comment
 2. Bar'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> mathInlineSample [
+	^ '$V_i = C_0 - C_3$'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> mathParametersSample [
+	^ '&label=42
+Foo
+&'
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> metaDataSample [
+	^ '{
+"author": "Foo"
+}
+'
 ]
 
 { #category : #format }
@@ -235,10 +295,25 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 '
 ]
 
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphSample [
+	^ 'Foo'
+]
+
 { #category : #utils }
 MicMicroDownSnippetFactory >> parserClass [
 
 	^ MicroDownParser
+]
+
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> quoteSample [
+	^ '> Foo'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> rawFormatSample [
+	^ 'a{{Foo}}b'
 ]
 
 { #category : #'code block' }

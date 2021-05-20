@@ -19,7 +19,7 @@ MicAnchorReferenceBlock class >> isEvaluated [
 
 { #category : #'as yet unclassified' }
 MicAnchorReferenceBlock >> accept: aVisitor [
- 	^ aVisitor visitAnchorReferenceBlock: self
+ 	^ aVisitor visitAnchorReference: self
 ]
 
 { #category : #'as yet unclassified' }

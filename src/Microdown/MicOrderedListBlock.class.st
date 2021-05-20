@@ -35,7 +35,7 @@ Class {
 
 { #category : #accessing }
 MicOrderedListBlock >> accept: aVisitor [
- 	^ aVisitor visitOrderedListBlock: self
+ 	^ aVisitor visitOrderedList: self
 ]
 
 { #category : #testing }
