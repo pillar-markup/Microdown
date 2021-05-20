@@ -281,6 +281,11 @@ MicMicroDownSnippetFactory >> parserClass [
 	^ MicroDownParser
 ]
 
+{ #category : #anchor }
+MicMicroDownSnippetFactory >> quoteSample [
+	^ '> Foo'
+]
+
 { #category : #format }
 MicMicroDownSnippetFactory >> rawFormatSample [
 	^ 'a{{Foo}}b'
