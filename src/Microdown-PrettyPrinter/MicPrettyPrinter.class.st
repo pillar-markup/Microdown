@@ -169,6 +169,16 @@ MicPrettyPrinter >> visitMathInline: aMicMathInline [
 	^ self blockPrint: aMicMathInline
 ]
 
+{ #category : #'visit-block' }
+MicPrettyPrinter >> visitMetaData: aMetaData [
+
+	| text |
+	text := self classPrint: aMetaData.
+	text := text , ' parameters:' , aMetaData firstLine.
+	text := text , ' "' , aMetaData body , '"'.
+	^ text
+]
+
 { #category : #'visit-inline block' }
 MicPrettyPrinter >> visitMonospace: aMicMonospace [
 
