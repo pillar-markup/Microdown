@@ -155,6 +155,12 @@ MicConverterVisitorTest >> testLink [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testListItem [
+	self parse: factory listMultiSample createChildElementOfClass: PRListItem
+	
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
 	| source root pillar |
 	source := '
