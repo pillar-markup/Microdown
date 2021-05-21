@@ -154,9 +154,14 @@ MicPillarConverter >> visitListItem: aMicListItemBlock [
 
 { #category : #visiting }
 MicPillarConverter >> visitMath: aMicMathBlock [
- 	^ PRMathEnvironment new 
- 		add: (PRText content: aMicMathBlock body);
- 		yourself
+ 	| captionElements |
+	captionElements := aMicMathBlock arguments at: 'caption' ifAbsent: [ nil ]. 
+	captionElements isNotNil 
+		ifTrue: [ aMicMathBlock arguments at: 'caption' put: (aMicMathBlock pillarFrom: captionElements) ].
+	^ PRMathEnvironment new 
+	 	parameters: aMicMathBlock arguments;   
+		add: (PRText content: aMicMathBlock body);
+		yourself
 ]
 
 { #category : #'visiting inline' }
