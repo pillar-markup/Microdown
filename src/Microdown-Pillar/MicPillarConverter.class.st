@@ -170,6 +170,12 @@ MicPillarConverter >> visitMathInline: aMicMathInline [
 ]
 
 { #category : #'visiting inline' }
+MicPillarConverter >> visitMetaData: aMicMetaData [
+ 	^ PRMetadata new 
+			metadata: (STON fromString: '{', aMicMetaData body, '}'); yourself
+]
+
+{ #category : #'visiting inline' }
 MicPillarConverter >> visitMonospace: aMicMonospace [
  	^ self formatBlock: aMicMonospace
 ]
