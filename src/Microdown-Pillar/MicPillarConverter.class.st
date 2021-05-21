@@ -146,6 +146,11 @@ MicPillarConverter >> visitMath: aMicMathBlock [
 ]
 
 { #category : #'visiting inline' }
+MicPillarConverter >> visitMathInline: aMicMathInline [
+ 	^ self formatBlock: aMicMathInline
+]
+
+{ #category : #'visiting inline' }
 MicPillarConverter >> visitMonospace: aMicMonospace [
  	^ self formatBlock: aMicMonospace
 ]
