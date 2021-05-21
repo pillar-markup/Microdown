@@ -45,9 +45,9 @@ MicPillarConverter >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
 { #category : #visiting }
 MicPillarConverter >> visitAnnotated: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
- 			annotation: aMicAnnotatedBlock label; 
- 			setChildren: (aMicAnnotatedBlock pillarFromString: aMicAnnotatedBlock text);
- 			yourself
+			annotation: aMicAnnotatedBlock label; 
+			setChildren: (aMicAnnotatedBlock pillarFrom: aMicAnnotatedBlock textElements);
+			yourself
 ]
 
 { #category : #'visiting inline' }
