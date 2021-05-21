@@ -30,6 +30,11 @@ MicAnnotationBlock >> arguments [
 ]
 
 { #category : #accessing }
+MicAnnotationBlock >> arguments: anArguments [
+	arguments := anArguments
+]
+
+{ #category : #accessing }
 MicAnnotationBlock >> closingDelimiter [
 
  	^ MicAnnotationCloserDelimiter markup
@@ -38,6 +43,11 @@ MicAnnotationBlock >> closingDelimiter [
 { #category : #accessing }
 MicAnnotationBlock >> name [
 	^ name
+]
+
+{ #category : #accessing }
+MicAnnotationBlock >> name: aName [
+	name := aName
 ]
 
 { #category : #accessing }
