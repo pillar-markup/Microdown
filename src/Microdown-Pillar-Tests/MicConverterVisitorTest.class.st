@@ -177,6 +177,11 @@ V_i = C_0 - C_3
 ]
 
 { #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMathInline [
+	self parse: factory mathInlineSample createChildElementOfClass: PRMathInTextAnnotation
+]
+
+{ #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testMonospaceFormat [
 	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
 ]
