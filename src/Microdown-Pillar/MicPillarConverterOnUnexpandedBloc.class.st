@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitAnchorBlock: aMicAnchorBlock [
+MicPillarConverterOnUnexpandedBloc >> visitAnchor: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
 ]
 
