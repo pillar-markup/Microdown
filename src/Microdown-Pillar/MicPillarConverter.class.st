@@ -66,13 +66,23 @@ MicPillarConverter >> visitBold: aMicBold [
 
 { #category : #visiting }
 MicPillarConverter >> visitCode: aMicCodeBlock [
- 	| prBlock |
- 	prBlock := PRCodeblock new.
- 	prBlock text: aMicCodeBlock code.
- 	aMicCodeBlock arguments keysAndValuesDo: [ :k :v |
- 		prBlock parameterAt: k put: v
- 		 ].
- 	^ prBlock
+ 	| prBlock par pillars |
+	prBlock := PRCodeblock new.
+	prBlock text: aMicCodeBlock code.
+
+	aMicCodeBlock arguments keysAndValuesDo: [ :k :v | 
+		prBlock parameterAt: k put: v ].
+	
+	aMicCodeBlock hasCaption
+		ifTrue: [ 
+			prBlock parameters removeKey: #caption.
+			par := PRParagraph new.
+			pillars := aMicCodeBlock captionElements collect: [ :each | each accept: self ].
+			pillars do: [ :each | par add: each ].
+			prBlock setCaption: par ]
+		ifFalse: [ 
+			prBlock caption "Yes this is not an accessor but something with side effect" ].
+	^ prBlock
 ]
 
 { #category : #visiting }
