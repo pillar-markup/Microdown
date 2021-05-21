@@ -31,6 +31,17 @@ MicConverterVisitorTest >> parse: sample createChildSecondElementOfClass: aClass
 	^ pillarDoc
 ]
 
+{ #category : #parsing }
+MicConverterVisitorTest >> parse: sample createElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := (parser parse: sample) children first.
+	pillarDoc := micDoc accept: visitor.
+	self assert: pillarDoc class equals: aClass.
+	^ pillarDoc
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> parserClass [
 	^ MicroDownParser
@@ -55,6 +66,11 @@ MicConverterVisitorTest >> testAnchorBlock [
 { #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testAnchorReference [
 	self parse: factory anchorReferenceSample createChildElementOfClass: PRInternalLink
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testAnnotated [
+	self parse: factory annotatedSample createElementOfClass: PRAnnotatedParagraph
 ]
 
 { #category : #'tests-inline blocks' }
