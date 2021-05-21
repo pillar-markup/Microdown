@@ -162,17 +162,7 @@ MicConverterVisitorTest >> testListItem [
 
 { #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
-	| source root pillar |
-	source := '
-&
-V_i = C_0 - C_3
-&
-	
-'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRMathEnvironment.
-	self assert: pillar children first class equals: PRText.
+	self parse: factory mathParametersSample createElementOfClass: PRMathEnvironment
 	
 ]
 
