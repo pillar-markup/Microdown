@@ -19,6 +19,14 @@ MicPillarConverter >> formatBlock: aMicFormatBlock [
 				yourself
 ]
 
+{ #category : #formatting }
+MicPillarConverter >> urlBlock: aMicUrlBlock [
+	^ aMicUrlBlock associatedPillarClass new
+		setChildren: (( aMicUrlBlock inlineParse: aMicUrlBlock substring) collect: [:n | n accept: self]);
+		reference: aMicUrlBlock url;
+		yourself
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitAnchor: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
@@ -81,10 +89,10 @@ MicPillarConverter >> visitEnvironment: aMicEnvironmentBlock [
  	^ classPillar new parameters: aMicEnvironmentBlock arguments
 ]
 
-{ #category : #visiting }
-MicPillarConverter >> visitFigureBlock: aMicFigureBlock [
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitFigure: aMicFigureBlock [
  	| aPRFigure |
- 	aPRFigure := super visit: self.
+ 	aPRFigure := self urlBlock: aMicFigureBlock.
  	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
 ]
 
