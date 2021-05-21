@@ -91,13 +91,8 @@ MicConverterVisitorTest >> testBoldFormatEmpty [
 
 { #category : #tests }
 MicConverterVisitorTest >> testCodeBlock [
+	self parse: (factory codeblock: 'language=pharo' body: '1-2 ') createElementOfClass: PRCodeblock
 
-	| document |
-	document := self parserClass new parse: '```language=pharo
-	1-2 
-```'.
-	self assert: (document accept: visitor) children first class equals: PRCodeblock.
-	
 ]
 
 { #category : #tests }
