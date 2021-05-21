@@ -46,6 +46,16 @@ MicConverterVisitorTest >> testBoldFormat [
 	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testBoldFormatEmpty [
+	| boldBlock |
+	self skip.
+	self flag: #fixme.
+	"the parser parse '****' and return a HorizontalBlock"
+	boldBlock := self parse: factory boldFormatEmptySample createChildElementOfClass: PRBoldFormat.
+	self assert: boldBlock text equals: ''
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testCodeBlock [
 
@@ -176,6 +186,11 @@ MicConverterVisitorTest >> testQuoteBlock [
 		equals:
 			'text1
 text2'
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testRawFormat [
+	self parse: factory rawFormatSample createChildElementOfClass: PRRaw
 ]
 
 { #category : #tests }
