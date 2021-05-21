@@ -25,6 +25,11 @@ MicPillarConverter >> visitAnchor: aMicAnchorBlock [
 ]
 
 { #category : #'visiting inline' }
+MicPillarConverter >> visitAnchorReference: aMicAnchorReference [
+	^ PRInternalLink new anchor: aMicAnchorReference substring; yourself
+]
+
+{ #category : #'visiting inline' }
 MicPillarConverter >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
  	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
 ]
