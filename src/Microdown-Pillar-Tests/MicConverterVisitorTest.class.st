@@ -110,6 +110,11 @@ MicConverterVisitorTest >> testEnvironmentBlock [
 	
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testFigure [
+	self parse: factory figureSample createChildElementOfClass: PRFigure
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testHeader [ 
 
