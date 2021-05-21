@@ -38,6 +38,15 @@ MicPillarConverter >> visitAnnotated: aMicAnnotatedBlock [
 ]
 
 { #category : #'visiting inline' }
+MicPillarConverter >> visitAnnotation: aMicAnnotation [
+	| argumentsSplitter |
+	argumentsSplitter := MicArgumentsSplitter withString: aMicAnnotation substring.
+	aMicAnnotation name: argumentsSplitter  name.
+	aMicAnnotation arguments: argumentsSplitter arguments.
+	^ aMicAnnotation associatedPillarClass new parameters: aMicAnnotation arguments
+]
+
+{ #category : #'visiting inline' }
 MicPillarConverter >> visitBold: aMicBold [
  	^ self formatBlock: aMicBold
 ]
