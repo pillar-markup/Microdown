@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicRootBlock >> accept: aVisitor [
  	^ aVisitor visitRoot: self
 ]

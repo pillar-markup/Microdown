@@ -35,6 +35,11 @@ MicMathInlineBlock class >> isEvaluated [
 	^ false
 ]
 
+{ #category : #visiting }
+MicMathInlineBlock >> accept: aVisitor [
+	^ aVisitor visitMathInline: self
+]
+
 { #category : #accessing }
 MicMathInlineBlock >> closingDelimiter [
 

@@ -19,6 +19,11 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicAnnotationBlock >> accept: aVisitor [
+	^ aVisitor visitAnnotation: self
+]
+
 { #category : #accessing }
 MicAnnotationBlock >> arguments [
 	^ arguments
