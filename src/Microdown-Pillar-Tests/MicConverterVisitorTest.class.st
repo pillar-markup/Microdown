@@ -128,19 +128,7 @@ MicConverterVisitorTest >> testFigure [
 
 { #category : #tests }
 MicConverterVisitorTest >> testHeader [ 
-
-	| document |
-	document := self parserClass new parse: '# Header1
-	
-## Header 2
-	
-### Header 3'.
-	pillarDocument := document accept: visitor.
-	"we could have use Grammar headerMarkup to build the text but this is clearer like that"
-	self assert: pillarDocument children first class equals: PRHeader.
-	self assert: pillarDocument children third class equals: PRHeader.
-	self assert: pillarDocument children fifth class equals: PRHeader
-	
+	self parse: factory headerLevel3Sample createElementOfClass: PRHeader
 ]
 
 { #category : #tests }
