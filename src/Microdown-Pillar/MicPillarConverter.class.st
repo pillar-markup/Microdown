@@ -125,6 +125,11 @@ MicPillarConverter >> visitItalic: aMicItalic [
  	^ self formatBlock: aMicItalic
 ]
 
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitLink: aMicLink [
+ 	^ self urlBlock: aMicLink
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitListItem: aMicListItemBlock [
  	^ PRListItem new
