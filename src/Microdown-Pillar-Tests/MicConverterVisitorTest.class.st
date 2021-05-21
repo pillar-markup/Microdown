@@ -155,6 +155,11 @@ MicConverterVisitorTest >> testItalicFormatEmpty [
 	self assert: italicBlock text equals: ''
 ]
 
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testLink [
+	self parse: factory linkSample createChildElementOfClass: PRExternalLink
+]
+
 { #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
 	| source root pillar |
