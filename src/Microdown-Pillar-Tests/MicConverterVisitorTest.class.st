@@ -133,12 +133,7 @@ MicConverterVisitorTest >> testHeader [
 
 { #category : #tests }
 MicConverterVisitorTest >> testHorizontalLineBlock [
-	| source root pillar |
-	source := '***
-	'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRHorizontalRule
+	self parse: factory horizontalLineSample createElementOfClass: PRHorizontalRule
 	
 ]
 
