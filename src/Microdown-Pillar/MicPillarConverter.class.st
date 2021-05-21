@@ -183,9 +183,9 @@ MicPillarConverter >> visitMonospace: aMicMonospace [
 { #category : #visiting }
 MicPillarConverter >> visitOrderedList: aMicOrderedListBlock [
  	^ PROrderedList new
- 		setChildren: (aMicOrderedListBlock children collect: [ :child | child asPillar ]);
- 		counter: aMicOrderedListBlock startIndex;
- 		yourself
+		setChildren: (aMicOrderedListBlock children collect: [ :child | child accept: self ]);
+		counter: aMicOrderedListBlock startIndex;
+		yourself
 ]
 
 { #category : #visiting }
@@ -229,6 +229,6 @@ MicPillarConverter >> visitText: aMicTextBlock [
 { #category : #visiting }
 MicPillarConverter >> visitUnorderedList: aMicUnorderedListBlock [
  	^ PRUnorderedList new
- 		setChildren: (aMicUnorderedListBlock children collect:[:child| child asPillar]);
+ 		setChildren: (aMicUnorderedListBlock children collect:[:child| child accept: self]);
  		yourself
 ]
