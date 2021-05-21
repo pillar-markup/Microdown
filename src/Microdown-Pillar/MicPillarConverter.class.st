@@ -211,7 +211,7 @@ MicPillarConverter >> visitRaw: aMicRaw [
 { #category : #visiting }
 MicPillarConverter >> visitRoot: aMicRootBlock [
  	^ PRDocument new
- 		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
+ 		setChildren: (aMicRootBlock children collect: [ :child | child accept: self ]);
  		yourself
 
 ]
