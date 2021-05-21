@@ -108,6 +108,11 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testComment [
+	self parse: factory commentSample createElementOfClass: PRCommentedLine
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testEnvironmentBlock [
 	| source root pillar |
 	source := '<?environment|name=aName?>'.
