@@ -305,6 +305,15 @@ MicConverterVisitorTest >> testStrikethroughFormatEmpty [
 	self assert: strikeBlock text equals: ''
 ]
 
+{ #category : #tests }
+MicConverterVisitorTest >> testTableBlock [
+	self skip.
+	self flag: #fixme.
+	"to fix when MicTable will be fix"
+	self parse: factory tableSample createElementOfClass: PRDocument
+	
+]
+
 { #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testText [
 	| source root pillar |
