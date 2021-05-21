@@ -53,6 +53,11 @@ MicConverterVisitorTest >> testAnchorBlock [
 ]
 
 { #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testAnchorReference [
+	self parse: factory anchorReferenceSample createChildElementOfClass: PRInternalLink
+]
+
+{ #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testAnnotation [
 	self parse: factory annotationSample createChildSecondElementOfClass: PRUndefinedAnnotation
 ]
