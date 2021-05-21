@@ -146,8 +146,9 @@ MicPillarConverter >> visitLink: aMicLink [
 { #category : #visiting }
 MicPillarConverter >> visitListItem: aMicListItemBlock [
  	^ PRListItem new
- 		setChildren: (aMicListItemBlock pillarFromString: aMicListItemBlock text), (aMicListItemBlock children collect: [:child| child asPillar]);
- 		yourself
+		setChildren: (aMicListItemBlock pillarFrom: aMicListItemBlock textElements), (aMicListItemBlock children collect: [:child| child accept: self]);
+		yourself;
+		yourself
 
 ]
 
