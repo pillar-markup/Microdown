@@ -53,6 +53,11 @@ MicConverterVisitorTest >> testAnchorBlock [
 ]
 
 { #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testAnnotation [
+	self parse: factory annotationSample createChildSecondElementOfClass: PRUndefinedAnnotation
+]
+
+{ #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testBoldFormat [
 	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
