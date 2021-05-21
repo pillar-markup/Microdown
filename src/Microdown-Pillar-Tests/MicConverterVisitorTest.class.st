@@ -171,6 +171,12 @@ MicConverterVisitorTest >> testMathInline [
 	self parse: factory mathInlineSample createChildElementOfClass: PRMathInTextAnnotation
 ]
 
+{ #category : #tests }
+MicConverterVisitorTest >> testMetaDataBlock [
+	self parse: factory metaDataSample createElementOfClass: PRMetadata
+	
+]
+
 { #category : #'tests-inline blocks' }
 MicConverterVisitorTest >> testMonospaceFormat [
 	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
