@@ -94,9 +94,12 @@ MicPillarConverter >> visitComment: aMicCommentBlock [
 
 { #category : #visiting }
 MicPillarConverter >> visitEnvironment: aMicEnvironmentBlock [
- 	| classPillar |
- 	classPillar := PRAbstractAnnotation findClassAcceptingTag: aMicEnvironmentBlock name ifNone: [ PRUndefinedAnnotation ].
- 	^ classPillar new parameters: aMicEnvironmentBlock arguments
+ 	| env |
+	env := PREnvironment new 
+			name: aMicEnvironmentBlock name;
+			parameters: aMicEnvironmentBlock arguments; yourself.
+	env add: (PRParagraph withAll: (aMicEnvironmentBlock pillarFrom: aMicEnvironmentBlock bodyElements)).
+	^ env
 ]
 
 { #category : #'visiting inline' }
