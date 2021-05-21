@@ -145,6 +145,12 @@ MicPillarConverter >> visitQuote: aMicQuoteBlock [
  		yourself
 ]
 
+{ #category : #'visiting inline' }
+MicPillarConverter >> visitRaw: aMicRaw [
+	^  self formatBlock: aMicRaw
+	
+]
+
 { #category : #visiting }
 MicPillarConverter >> visitRoot: aMicRootBlock [
  	^ PRDocument new
