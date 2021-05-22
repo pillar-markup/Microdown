@@ -56,6 +56,14 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> bold: aText [
+
+	self raw: parserClass boldMarkup.
+	self raw: aText.
+	self raw: parserClass boldMarkup.
+]
+
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString [ 
 	self codeblock: aString firstLineAssociations: #() 

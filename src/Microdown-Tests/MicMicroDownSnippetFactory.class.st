@@ -159,12 +159,17 @@ MicMicroDownSnippetFactory >> headerLevel: n [
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerWithFormatSample [
-	^ self parserClass headerMarkup, self space, self boldFormatSample , self newLine
+	^ self parserClass headerMarkup, self space, self boldFormatSample
 ]
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerWithFormatSampleWithNewLine [
 	^ self headerWithFormatSample, self newLine
+]
+
+{ #category : #headers }
+MicMicroDownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
+	^ self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
 ]
 
 { #category : #headers }

@@ -36,25 +36,45 @@ MicTextualMicrodownExporterTest >> setUp [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testAnchor [
+	| micAnchor |
+	micAnchor := (parser parse: factory anchorSample).
+	self assert: (visitor visit: micAnchor) first asString equals: parser anchorMarkup
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchorAutomatic [
+
 	self verifyObtain: factory anchorSample
 ]
 
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
+	
 	self verifyObtain: factory headerWithFormatSampleWithNewLine
 ]
 
 { #category : #'tests-header' }
-MicTextualMicrodownExporterTest >> testPlainHeader [
-	self verifyObtain: factory headerLevel3SampleWithNewLine 
+MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
+
+	self verifyObtain: factory headerWithNestedFormatSampleWithNewLine.
+
 ]
 
-{ #category : #'tests-anchor' }
-MicTextualMicrodownExporterTest >> testPrintAnchor [
-	| micAnchor |
-	micAnchor := (parser parse: factory anchorSample).
-	self assert: (visitor visit: micAnchor) first asString equals: parser anchorMarkup
+{ #category : #'tests-header' }
+MicTextualMicrodownExporterTest >> testNestedHeader [
+
+	| header res |
+	header := (parser parse: factory headerWithNestedFormatSampleWithNewLine).
+	res := (visitor visit: header).
+	self assert: (res at: res size -1)  asString equals: parser italicMarkup.
+	self assert: (res copyFrom: res size -3 to: res size - 2) equals: parser boldMarkup
+]
+
+{ #category : #'tests-header' }
+MicTextualMicrodownExporterTest >> testPlainHeader [
+
+	self verifyObtain: factory headerLevel3SampleWithNewLine 
 ]
 
 { #category : #utils }

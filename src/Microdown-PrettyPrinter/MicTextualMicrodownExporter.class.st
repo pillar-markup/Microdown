@@ -58,14 +58,27 @@ MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 	builder anchor: anAnchor label
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
-	self halt.
+	builder bold: aBoldFormat substring
 ]
 
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 
-	builder header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] withLevel: aHeader level
+	builder 
+		header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] 
+		withLevel: aHeader level
+]
+
+{ #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
+	
+	builder italic: aMicItalicFormatBlock substring
+]
+
+{ #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitText: aMicTextBlock [ 
+	builder text: aMicTextBlock substring
 ]
