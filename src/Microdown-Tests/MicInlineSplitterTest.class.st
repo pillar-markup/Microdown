@@ -4,7 +4,7 @@ This class contains tests about the new approach to identify inline elements ins
 Class {
 	#name : #MicInlineSplitterTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #access }

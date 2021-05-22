@@ -4,7 +4,7 @@ I'm is a test class for testing the behavior of paragraph block.
 Class {
 	#name : #MicParagraphBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #tests }

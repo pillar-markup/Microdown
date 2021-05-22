@@ -1,5 +1,5 @@
 Class {
 	#name : #MicAnchorBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }

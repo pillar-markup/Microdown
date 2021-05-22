@@ -35,16 +35,16 @@ MicTextualMicrodownExporterTest >> setUp [
 	parser := MicroDownParser new
 ]
 
-{ #category : #'tests-block' }
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 	self verifyObtain: factory anchorSample
 ]
 
-{ #category : #'tests-block' }
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testPrintAnchor [
 	| micAnchor |
 	micAnchor := (parser parse: factory anchorSample).
-	self assert: (visitor visit: micAnchor) equals: factory anchorSample
+	self assert: (visitor visit: micAnchor) first asString equals: parser anchorMarkup
 ]
 
 { #category : #'tests-block' }

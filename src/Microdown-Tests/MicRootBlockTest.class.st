@@ -4,7 +4,7 @@ I'm a test class for testing the behavior of MicRootBlock
 Class {
 	#name : #MicRootBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #tests }
