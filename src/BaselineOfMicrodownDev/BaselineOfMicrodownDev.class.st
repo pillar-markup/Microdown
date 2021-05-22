@@ -21,7 +21,7 @@ BaselineOfMicrodownDev >> baseline: spec [
 			package: #'Microdown-PrettyPrinter'
 			with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-PrettyPrinter-Tests'
-			with: [ spec requires: #( #'Microdown-PrettyPrinter') ];
+			with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
 			package: #'Microdown-Pillar'
 			with: [ spec requires: #( #Microdown #PillarDocumentModel ) ];
 			package: #'Microdown-Pillar-Tests'

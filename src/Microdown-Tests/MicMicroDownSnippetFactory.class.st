@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'parserClass'
 	],
-	#category : #'Microdown-Pillar-Tests'
+	#category : #'Microdown-Tests'
 }
 
 { #category : #anchor }
