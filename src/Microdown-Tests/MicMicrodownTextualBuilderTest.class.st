@@ -23,5 +23,5 @@ MicMicrodownTextualBuilderTest >> setUp [
 { #category : #initialization }
 MicMicrodownTextualBuilderTest >> testAnchor [
 
-	self assert: (builder anchor: 'Anchor') contents equals: '@Anchor'
+	self assert: (builder anchor: 'Anchor') contents equals: parser anchorMarkup, 'Anchor'
 ]
