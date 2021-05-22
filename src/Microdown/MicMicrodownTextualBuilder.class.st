@@ -25,6 +25,14 @@ Class {
 }
 
 { #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> anchor: aLabel [
+
+	self raw: parserClass anchorMarkup.
+	self raw: aLabel.
+
+]
+
+{ #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	"!!Important 
 	

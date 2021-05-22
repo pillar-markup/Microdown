@@ -1,11 +1,15 @@
 Class {
-	#name : #MicPrettyPrinter,
+	#name : #MicTextualMicrodownExporter,
 	#superclass : #MicrodownVisitor,
+	#instVars : [
+		'stream',
+		'builder'
+	],
 	#category : #'Microdown-PrettyPrinter'
 }
 
 { #category : #build }
-MicPrettyPrinter >> blockPrint: aMicText [
+MicTextualMicrodownExporter >> blockPrint: aMicText [
 
 	| text |
 	text := self classPrint: aMicText.
@@ -14,13 +18,21 @@ MicPrettyPrinter >> blockPrint: aMicText [
 ]
 
 { #category : #build }
-MicPrettyPrinter >> classPrint: aMicFigure [
+MicTextualMicrodownExporter >> classPrint: aMicFigure [
 
 	^ aMicFigure class asString
 ]
 
+{ #category : #initialization }
+MicTextualMicrodownExporter >> initialize [ 
+	super initialize.
+	stream := (String new: 10000) writeStream.
+	builder := MicroDownParser builder.
+	builder setStream: stream.
+]
+
 { #category : #build }
-MicPrettyPrinter >> parametersPrint: aDictionnary [
+MicTextualMicrodownExporter >> parametersPrint: aDictionnary [
 
 	| text lastKey |
 	lastKey := aDictionnary keys last.
@@ -33,29 +45,33 @@ MicPrettyPrinter >> parametersPrint: aDictionnary [
 	^ text
 ]
 
-{ #category : #'visit-block' }
-MicPrettyPrinter >> visitAnchor: aAnchor [
+{ #category : #API }
+MicTextualMicrodownExporter >> visit: aMicElement [
 
-	| text |
-	text := self classPrint: aAnchor.
-	text := text , ' "' , aAnchor label , '"'.
-	^ text
+	aMicElement accept: self.
+	^ stream contents
+]
+
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitAnchor: anAnchor [
+	
+	builder anchor: anAnchor label
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
+MicTextualMicrodownExporter >> visitAnchorReference: aMicAnchorReference [
 
 	^ self blockPrint: aMicAnchorReference
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitAnnotated: aAnnotated [
+MicTextualMicrodownExporter >> visitAnnotated: aAnnotated [
 
 	^ self classPrint: aAnnotated
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
+MicTextualMicrodownExporter >> visitAnnotation: aMicAnnotation [
 	"arguments with parameters is nil like the name"
 	"| text |
 	text := aMicAnnotation class asString , String space.
@@ -66,13 +82,13 @@ MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitBold: aMicBold [
+MicTextualMicrodownExporter >> visitBold: aMicBold [
 
 	^ self blockPrint: aMicBold
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitCode: aCode [
+MicTextualMicrodownExporter >> visitCode: aCode [
 
 	| text |
 	text := self classPrint: aCode.
@@ -82,7 +98,7 @@ MicPrettyPrinter >> visitCode: aCode [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitComment: aComment [
+MicTextualMicrodownExporter >> visitComment: aComment [
 
 	| text |
 	text := self classPrint: aComment.
@@ -91,7 +107,7 @@ MicPrettyPrinter >> visitComment: aComment [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitEnvironment: aEnvironment [
+MicTextualMicrodownExporter >> visitEnvironment: aEnvironment [
 
 	| text |
 	text := (self classPrint: aEnvironment) , String space.
@@ -101,7 +117,7 @@ MicPrettyPrinter >> visitEnvironment: aEnvironment [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitFigure: aMicFigure [
+MicTextualMicrodownExporter >> visitFigure: aMicFigure [
 
 	| text |
 	text := (self classPrint: aMicFigure) , String space.
@@ -113,7 +129,7 @@ MicPrettyPrinter >> visitFigure: aMicFigure [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitHeader: aHeader [
+MicTextualMicrodownExporter >> visitHeader: aHeader [
 
 	| text |
 	text := self classPrint: aHeader.
@@ -123,19 +139,19 @@ MicPrettyPrinter >> visitHeader: aHeader [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitHorizontalLine: aHorizontalLine [
+MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 
 	^ self classPrint: aHorizontalLine
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitItalic: aMicItalic [
+MicTextualMicrodownExporter >> visitItalic: aMicItalic [
 
 	^ self blockPrint: aMicItalic
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitLink: aMicLink [
+MicTextualMicrodownExporter >> visitLink: aMicLink [
 
 	| text |
 	text := self classPrint: aMicLink.
@@ -145,7 +161,7 @@ MicPrettyPrinter >> visitLink: aMicLink [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitListItem: aListItem [
+MicTextualMicrodownExporter >> visitListItem: aListItem [
 
 	| text |
 	text := self classPrint: aListItem.
@@ -154,7 +170,7 @@ MicPrettyPrinter >> visitListItem: aListItem [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitMath: aMath [
+MicTextualMicrodownExporter >> visitMath: aMath [
 
 	| text |
 	text := (self classPrint: aMath) , String space.
@@ -164,13 +180,13 @@ MicPrettyPrinter >> visitMath: aMath [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitMathInline: aMicMathInline [
+MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 
 	^ self blockPrint: aMicMathInline
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitMetaData: aMetaData [
+MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 
 	| text |
 	text := self classPrint: aMetaData.
@@ -180,25 +196,25 @@ MicPrettyPrinter >> visitMetaData: aMetaData [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitMonospace: aMicMonospace [
+MicTextualMicrodownExporter >> visitMonospace: aMicMonospace [
 
 	^ self blockPrint: aMicMonospace
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitOrderedList: aOrderedList [
+MicTextualMicrodownExporter >> visitOrderedList: aOrderedList [
 
 	^ self classPrint: aOrderedList
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitParagraph: aParagraph [
+MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 
 	^ self classPrint: aParagraph
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitQuote: aQuote [
+MicTextualMicrodownExporter >> visitQuote: aQuote [
 
 	| text |
 	text := self classPrint: aQuote.
@@ -207,37 +223,38 @@ MicPrettyPrinter >> visitQuote: aQuote [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitRaw: aMicRaw [
+MicTextualMicrodownExporter >> visitRaw: aMicRaw [
 
 	^ self blockPrint: aMicRaw
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitRoot: aRoot [
+MicTextualMicrodownExporter >> visitRoot: aRoot [
 
-	^ self classPrint: aRoot
+	aRoot children do: [ :each | each accept: self ]
+	
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitStrike: aMicStrike [
+MicTextualMicrodownExporter >> visitStrike: aMicStrike [
 
 	^ self blockPrint: aMicStrike
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitTable: aTable [
+MicTextualMicrodownExporter >> visitTable: aTable [
 
 	^ self classPrint: aTable
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitText: aMicText [
+MicTextualMicrodownExporter >> visitText: aMicText [
 
 	^ self blockPrint: aMicText
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitUnorderedList: aUnorderedList [
+MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 
 	^ self classPrint: aUnorderedList
 ]
