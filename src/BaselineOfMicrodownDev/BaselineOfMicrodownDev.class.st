@@ -15,15 +15,15 @@ BaselineOfMicrodownDev >> baseline: spec [
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
-			with: [ spec requires: #( #Microdown ) ];
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-Pharo-Tools'
-			with: [ spec requires: #( #Microdown ) ];
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-PrettyPrinter'
-			with: [ spec requires: #( #Microdown ) ];
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-PrettyPrinter-Tests'
-			with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
+				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
 			package: #'Microdown-Pillar'
-			with: [ spec requires: #( #Microdown #PillarDocumentModel ) ];
+				with: [ spec requires: #( #Microdown #PillarDocumentModel ) ];
 			package: #'Microdown-Pillar-Tests'
-			with: [ spec requires: #( #'Microdown-Pillar' #'Microdown-Tests' ) ] ]
+				with: [ spec requires: #( #'Microdown-Pillar' #'Microdown-Tests' ) ] ]
 ]
