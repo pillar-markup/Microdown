@@ -38,7 +38,7 @@ MicTextualMicrodownExporterTest >> setUp [
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchor [
 	| micAnchor |
-	micAnchor := (parser parse: factory anchorSample).
+	micAnchor := parser parse: factory anchorSample.
 	self assert: (visitor visit: micAnchor) first asString equals: parser anchorMarkup
 ]
 
@@ -65,8 +65,8 @@ MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
 	| header res |
-	header := (parser parse: factory headerWithNestedFormatSampleWithNewLine).
-	res := (visitor visit: header).
+	header := parser parse: factory headerWithNestedFormatSampleWithNewLine.
+	res := visitor visit: header.
 	self assert: (res at: res size -1)  asString equals: parser italicMarkup.
 	self assert: (res copyFrom: res size -3 to: res size - 2) equals: parser boldMarkup
 ]
@@ -80,7 +80,7 @@ MicTextualMicrodownExporterTest >> testPlainHeader [
 { #category : #utils }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
-	micElement := (parser parse: aString).
+	micElement := parser parse: aString.
 	self assert: (visitor visit: micElement) equals: aString
 ]
 
