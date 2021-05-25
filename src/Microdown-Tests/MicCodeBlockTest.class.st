@@ -32,7 +32,7 @@ Color >> asMorph
     ^ Morph new color: self', String cr, parser codeblockMarkup. 
 
 	code := (self parser parse: source) children first.
-	associations :=  { ('language' -> 'pharo') . ('caption' -> { MicMonospaceFormatBlock new substring: 'Color' ; kind: #monospace . MicTextBlock new substring: ' is a class.'; kind: #basic }) . ('label' -> 'scr:asMorphInColor') }.
+	associations :=  { ('language' -> 'pharo') . ('caption' -> { MicMonospaceFormatBlock new substring: 'Color' . MicTextBlock new substring: ' is a class.' }) . ('label' -> 'scr:asMorphInColor') }.
 	
 	self 
 		assert: code argumentAssociations first 

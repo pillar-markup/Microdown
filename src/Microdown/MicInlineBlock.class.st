@@ -15,7 +15,6 @@ Class {
 	#instVars : [
 		'start',
 		'end',
-		'kind',
 		'children',
 		'substring'
 	],
@@ -103,11 +102,6 @@ MicInlineBlock >> isOnlyChild [
 MicInlineBlock >> kind [
 	"we are deprecating the state"
 	^ self error
-]
-
-{ #category : #accessing }
-MicInlineBlock >> kind: aKind [
-	kind := aKind
 ]
 
 { #category : #accessing }
