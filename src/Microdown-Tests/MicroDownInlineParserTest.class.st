@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'parser'
 	],
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #parsing }
@@ -245,7 +245,7 @@ MicroDownInlineParserTest >> testHeaderLevel4 [
 	source := (self parser headerMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first headerString equals: 'Level four'.
+	self assert: root children first header equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 

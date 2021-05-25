@@ -587,6 +587,12 @@ MicroDownParser >> isAList: normalized [
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
+{ #category : #markups }
+MicroDownParser >> italicMarkup [
+
+	^ self class italicMarkup
+]
+
 { #category : #'node creation' }
 MicroDownParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'

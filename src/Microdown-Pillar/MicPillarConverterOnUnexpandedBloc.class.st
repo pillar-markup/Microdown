@@ -8,6 +8,11 @@ Class {
 	#category : #'Microdown-Pillar-Visitor'
 }
 
+{ #category : #visiting }
+MicPillarConverterOnUnexpandedBloc >> visitAnchor: aMicAnchorBlock [
+ 	^ PRAnchor new name: aMicAnchorBlock label; yourself
+]
+
 { #category : #'visiting inline' }
 MicPillarConverterOnUnexpandedBloc >> visitAnchorReference: aMicAnchorReferenceBlock [
  	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself

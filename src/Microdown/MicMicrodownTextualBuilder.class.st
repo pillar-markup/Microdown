@@ -25,6 +25,14 @@ Class {
 }
 
 { #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> anchor: aLabel [
+
+	self raw: parserClass anchorMarkup.
+	self raw: aLabel.
+
+]
+
+{ #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	"!!Important 
 	
@@ -46,6 +54,14 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 		raw: String space
 	
 
+]
+
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> bold: aText [
+
+	self raw: parserClass boldMarkup.
+	self raw: aText.
+	self raw: parserClass boldMarkup.
 ]
 
 { #category : #'element - code block' }

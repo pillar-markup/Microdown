@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'parserClass'
 	],
-	#category : #'Microdown-Pillar-Tests'
+	#category : #'Microdown-Tests-Snippets'
 }
 
 { #category : #anchor }
@@ -37,7 +37,7 @@ MicMicroDownSnippetFactory >> annotatedSample [
 	^ '!! Foo'
 ]
 
-{ #category : #anchor }
+{ #category : #annotations }
 MicMicroDownSnippetFactory >> annotationSample [
 	^ 'abc<?Foo | value=aFoo&label=42?>def'
 ]
@@ -126,6 +126,12 @@ MicMicroDownSnippetFactory >> headerLevel3Sample [
 ]
 
 { #category : #headers }
+MicMicroDownSnippetFactory >> headerLevel3SampleWithNewLine [
+
+	^ (self headerLevel: 3), self newLine
+]
+
+{ #category : #headers }
 MicMicroDownSnippetFactory >> headerLevel4Sample [
 
 	^ self headerLevel: 4
@@ -148,12 +154,22 @@ MicMicroDownSnippetFactory >> headerLevel: n [
 
 	^ String streamContents: [ :st |
 		 n timesRepeat: [ st nextPutAll: self parserClass headerMarkup ].
-		 st nextPutAll: 'Foo']
+		 st nextPutAll: ' Foo']
 ]
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> headerWithFormatSample [
-	^ self parserClass headerMarkup, self boldFormatSample 
+	^ self parserClass headerMarkup, self space, self boldFormatSample
+]
+
+{ #category : #headers }
+MicMicroDownSnippetFactory >> headerWithFormatSampleWithNewLine [
+	^ self headerWithFormatSample, self newLine
+]
+
+{ #category : #headers }
+MicMicroDownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
+	^ self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
 ]
 
 { #category : #headers }
@@ -250,6 +266,17 @@ MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
 { #category : #format }
 MicMicroDownSnippetFactory >> monospaceFormatSample [
 	^ self surroundWithMarkup: self parserClass monospaceMarkup
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> nestedBoldFormatSample [
+	"self new nestedBoldFormatSample"
+	^ self surround: (self surround: 'Foo' withMarkup: self parserClass boldMarkup) withMarkup: self parserClass italicMarkup  
+]
+
+{ #category : #utils }
+MicMicroDownSnippetFactory >> newLine [
+	^  String cr
 ]
 
 { #category : #document }
@@ -416,6 +443,12 @@ MicMicroDownSnippetFactory >> scriptWithSpaceAtTheEndSample [
 MicMicroDownSnippetFactory >> scriptWithSpacedParametersSample [
 	^ self codeblock:   ' foo = true | bar = 2 '
 body: 'bla'
+]
+
+{ #category : #utils }
+MicMicroDownSnippetFactory >> space [ 
+
+	^ String space
 ]
 
 { #category : #format }

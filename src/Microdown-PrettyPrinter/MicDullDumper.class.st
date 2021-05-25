@@ -1,11 +1,11 @@
 Class {
-	#name : #MicPrettyPrinter,
+	#name : #MicDullDumper,
 	#superclass : #MicrodownVisitor,
 	#category : #'Microdown-PrettyPrinter'
 }
 
 { #category : #build }
-MicPrettyPrinter >> blockPrint: aMicText [
+MicDullDumper >> blockPrint: aMicText [
 
 	| text |
 	text := self classPrint: aMicText.
@@ -14,13 +14,13 @@ MicPrettyPrinter >> blockPrint: aMicText [
 ]
 
 { #category : #build }
-MicPrettyPrinter >> classPrint: aMicFigure [
+MicDullDumper >> classPrint: aMicFigure [
 
 	^ aMicFigure class asString
 ]
 
 { #category : #build }
-MicPrettyPrinter >> parametersPrint: aDictionnary [
+MicDullDumper >> parametersPrint: aDictionnary [
 
 	| text lastKey |
 	lastKey := aDictionnary keys last.
@@ -34,7 +34,7 @@ MicPrettyPrinter >> parametersPrint: aDictionnary [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitAnchor: aAnchor [
+MicDullDumper >> visitAnchor: aAnchor [
 
 	| text |
 	text := self classPrint: aAnchor.
@@ -43,19 +43,19 @@ MicPrettyPrinter >> visitAnchor: aAnchor [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitAnchorReference: aMicAnchorReference [
+MicDullDumper >> visitAnchorReference: aMicAnchorReference [
 
 	^ self blockPrint: aMicAnchorReference
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitAnnotated: aAnnotated [
+MicDullDumper >> visitAnnotated: aAnnotated [
 
 	^ self classPrint: aAnnotated
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
+MicDullDumper >> visitAnnotation: aMicAnnotation [
 	"arguments with parameters is nil like the name"
 	"| text |
 	text := aMicAnnotation class asString , String space.
@@ -66,13 +66,13 @@ MicPrettyPrinter >> visitAnnotation: aMicAnnotation [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitBold: aMicBold [
+MicDullDumper >> visitBold: aMicBold [
 
 	^ self blockPrint: aMicBold
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitCode: aCode [
+MicDullDumper >> visitCode: aCode [
 
 	| text |
 	text := self classPrint: aCode.
@@ -82,7 +82,7 @@ MicPrettyPrinter >> visitCode: aCode [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitComment: aComment [
+MicDullDumper >> visitComment: aComment [
 
 	| text |
 	text := self classPrint: aComment.
@@ -91,7 +91,7 @@ MicPrettyPrinter >> visitComment: aComment [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitEnvironment: aEnvironment [
+MicDullDumper >> visitEnvironment: aEnvironment [
 
 	| text |
 	text := (self classPrint: aEnvironment) , String space.
@@ -101,7 +101,7 @@ MicPrettyPrinter >> visitEnvironment: aEnvironment [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitFigure: aMicFigure [
+MicDullDumper >> visitFigure: aMicFigure [
 
 	| text |
 	text := (self classPrint: aMicFigure) , String space.
@@ -113,7 +113,7 @@ MicPrettyPrinter >> visitFigure: aMicFigure [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitHeader: aHeader [
+MicDullDumper >> visitHeader: aHeader [
 
 	| text |
 	text := self classPrint: aHeader.
@@ -123,19 +123,19 @@ MicPrettyPrinter >> visitHeader: aHeader [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitHorizontalLine: aHorizontalLine [
+MicDullDumper >> visitHorizontalLine: aHorizontalLine [
 
 	^ self classPrint: aHorizontalLine
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitItalic: aMicItalic [
+MicDullDumper >> visitItalic: aMicItalic [
 
 	^ self blockPrint: aMicItalic
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitLink: aMicLink [
+MicDullDumper >> visitLink: aMicLink [
 
 	| text |
 	text := self classPrint: aMicLink.
@@ -145,7 +145,7 @@ MicPrettyPrinter >> visitLink: aMicLink [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitListItem: aListItem [
+MicDullDumper >> visitListItem: aListItem [
 
 	| text |
 	text := self classPrint: aListItem.
@@ -154,7 +154,7 @@ MicPrettyPrinter >> visitListItem: aListItem [
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitMath: aMath [
+MicDullDumper >> visitMath: aMath [
 
 	| text |
 	text := (self classPrint: aMath) , String space.
@@ -164,13 +164,13 @@ MicPrettyPrinter >> visitMath: aMath [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitMathInline: aMicMathInline [
+MicDullDumper >> visitMathInline: aMicMathInline [
 
 	^ self blockPrint: aMicMathInline
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitMetaData: aMetaData [
+MicDullDumper >> visitMetaData: aMetaData [
 
 	| text |
 	text := self classPrint: aMetaData.
@@ -180,25 +180,25 @@ MicPrettyPrinter >> visitMetaData: aMetaData [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitMonospace: aMicMonospace [
+MicDullDumper >> visitMonospace: aMicMonospace [
 
 	^ self blockPrint: aMicMonospace
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitOrderedList: aOrderedList [
+MicDullDumper >> visitOrderedList: aOrderedList [
 
 	^ self classPrint: aOrderedList
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitParagraph: aParagraph [
+MicDullDumper >> visitParagraph: aParagraph [
 
 	^ self classPrint: aParagraph
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitQuote: aQuote [
+MicDullDumper >> visitQuote: aQuote [
 
 	| text |
 	text := self classPrint: aQuote.
@@ -207,37 +207,37 @@ MicPrettyPrinter >> visitQuote: aQuote [
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitRaw: aMicRaw [
+MicDullDumper >> visitRaw: aMicRaw [
 
 	^ self blockPrint: aMicRaw
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitRoot: aRoot [
+MicDullDumper >> visitRoot: aRoot [
 
 	^ self classPrint: aRoot
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitStrike: aMicStrike [
+MicDullDumper >> visitStrike: aMicStrike [
 
 	^ self blockPrint: aMicStrike
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitTable: aTable [
+MicDullDumper >> visitTable: aTable [
 
 	^ self classPrint: aTable
 ]
 
 { #category : #'visit-inline block' }
-MicPrettyPrinter >> visitText: aMicText [
+MicDullDumper >> visitText: aMicText [
 
 	^ self blockPrint: aMicText
 ]
 
 { #category : #'visit-block' }
-MicPrettyPrinter >> visitUnorderedList: aUnorderedList [
+MicDullDumper >> visitUnorderedList: aUnorderedList [
 
 	^ self classPrint: aUnorderedList
 ]

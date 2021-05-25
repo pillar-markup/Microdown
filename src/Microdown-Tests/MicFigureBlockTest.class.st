@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'splitterClass'
 	],
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #running }

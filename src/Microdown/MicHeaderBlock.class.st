@@ -48,26 +48,26 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 
 { #category : #public }
 MicHeaderBlock >> contents [ 
-	^ super contents , '[ ', self level printString, '/', self headerString, ' ]'
+	^ super contents , '[ ', self level printString, '/', self header, ' ]'
 ]
 
 { #category : #accessing }
 MicHeaderBlock >> formattedCode [ 
-	^super formattedCode , '[ ', self level printString, '/', self headerString, ' ]'
+	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'
 ]
 
 { #category : #accessing }
 MicHeaderBlock >> header [
-	"should not be used anymore it should be children"
 	
-	^ self headerString
+	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
+	
 	
 ]
 
 { #category : #accessing }
-MicHeaderBlock >> headerString [
-
-	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
+MicHeaderBlock >> headerElements [
+	
+	^ self children
 	
 ]
 
@@ -80,5 +80,5 @@ MicHeaderBlock >> level [
 MicHeaderBlock >> printOn: aStream [
 
 	aStream nextPutAll: 'Header: '.
-	aStream nextPutAll: self headerString
+	aStream nextPutAll: self header
 ]

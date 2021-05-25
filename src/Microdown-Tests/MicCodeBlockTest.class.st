@@ -15,7 +15,7 @@ If you want to embed codeblock inside codeblock you must use an extra space.
 Class {
 	#name : #MicCodeBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests'
+	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #tests }
