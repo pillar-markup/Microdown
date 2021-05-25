@@ -22,7 +22,14 @@ MicArgumentsSplitter class >> withString: aString [
 
 { #category : #accessing }
 MicArgumentsSplitter >> arguments [
-	^ arguments ifNil: [ ^ arguments := ZnResourceMetaUtils parseQueryFrom: stream ]
+	^ arguments ifNil: [ ^ arguments := self parseQuery ]
+]
+
+{ #category : #'query parsing' }
+MicArgumentsSplitter >> decodePercentForQuery: string [
+	^ ZnPercentEncoder new 
+		decodePlusAsSpace: true; 
+		decode: string
 ]
 
 { #category : #accessing }
@@ -36,6 +43,40 @@ MicArgumentsSplitter >> firstTag [
 { #category : #accessing }
 MicArgumentsSplitter >> name [
 	^ name ifNil: [ ^ name := (stream upTo: self parserClass argumentListStartDelimiter first) contents asString; yourself ]
+]
+
+{ #category : #'query parsing' }
+MicArgumentsSplitter >> parseQuery [
+
+	| string index fields |
+	fields := OrderedDictionary new.
+	[ stream atEnd ] whileFalse: [
+		string := stream upTo: $&.
+		index := string indexOf: $=.
+		index > 0
+			ifFalse: [ fields at: (self decodePercentForQuery: string) put: nil ]
+			ifTrue: [
+				fields
+					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1))
+					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
+	^ fields
+]
+
+{ #category : #'query parsing' }
+MicArgumentsSplitter >> parseQueryFrom: aStream [
+
+	| string index fields |
+	fields := OrderedDictionary new.
+	[ aStream atEnd ] whileFalse: [
+		string := aStream upTo: $&.
+		index := string indexOf: $=.
+		index > 0
+			ifFalse: [ fields at: (self decodePercentForQuery: string) put: nil ]
+			ifTrue: [
+				fields
+					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1))
+					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
+	^ fields
 ]
 
 { #category : #accessing }

@@ -48,6 +48,11 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 	self verifyObtain: factory anchorSample
 ]
 
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testCodeBlock [ 
+	self verifyObtain: factory scriptWithSpacedParametersSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
@@ -56,7 +61,7 @@ MicTextualMicrodownExporterTest >> testHeaderWithBold [
 
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
-
+	
 	self verifyObtain: factory headerWithNestedFormatSampleWithNewLine.
 
 ]
@@ -81,7 +86,7 @@ MicTextualMicrodownExporterTest >> testPlainHeader [
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
 	micElement := parser parse: aString.
-	self assert: (visitor visit: micElement) equals: aString
+	self assert: (visitor visit: micElement) equals: aString, String cr
 ]
 
 { #category : #accessing }

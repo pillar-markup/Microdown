@@ -64,6 +64,15 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 	builder bold: aBoldFormat substring
 ]
 
+{ #category : #visiting }
+MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
+	
+	 builder
+		  codeblock: aMicCodeBlock body
+		  firstLineAssociations: aMicCodeBlock argumentAssociations
+
+]
+
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 
@@ -79,6 +88,7 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 ]
 
 { #category : #'visit - format' }
-MicTextualMicrodownExporter >> visitText: aMicTextBlock [ 
+MicTextualMicrodownExporter >> visitText: aMicTextBlock [
+
 	builder text: aMicTextBlock substring
 ]

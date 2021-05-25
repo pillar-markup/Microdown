@@ -88,6 +88,14 @@ MicInlineBlock >> escapeCharacter [
 	^ MicEscapeDelimiter markup
 ]
 
+{ #category : #initialization }
+MicInlineBlock >> initialize [
+
+	super initialize. 
+	children := #().
+	
+]
+
 { #category : #testing }
 MicInlineBlock >> isOnlyChild [
 	^ children isEmpty
