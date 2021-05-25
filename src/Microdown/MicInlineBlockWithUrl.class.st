@@ -18,12 +18,17 @@ Class {
 
 { #category : #obsolete }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
+	^ (self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #obsolete }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
+]
+
+{ #category : #obsolete }
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren withURL: aURL [
+	^ (self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #transformation }

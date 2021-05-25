@@ -18,6 +18,12 @@ MicItalicFormatBlock >> closingDelimiter [
  	^ MicItalicDelimiter markup
 ]
 
+{ #category : #accessing }
+MicItalicFormatBlock >> kind [
+
+	^ #italic
+]
+
 { #category : #'as yet unclassified' }
 MicItalicFormatBlock >> openingDelimiter [
 

@@ -50,7 +50,7 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
-	self verifyObtain: factory scriptWithSpacedParametersSample
+	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
 ]
 
 { #category : #'tests-header' }
@@ -86,7 +86,7 @@ MicTextualMicrodownExporterTest >> testPlainHeader [
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
 	micElement := parser parse: aString.
-	self assert: (visitor visit: micElement) equals: aString, String cr
+	self assert: (visitor visit: micElement) equals: aString
 ]
 
 { #category : #accessing }

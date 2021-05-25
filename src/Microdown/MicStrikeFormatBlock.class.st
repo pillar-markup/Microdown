@@ -19,6 +19,11 @@ MicStrikeFormatBlock >> closingDelimiter [
 ]
 
 { #category : #accessing }
+MicStrikeFormatBlock >> kind [ 
+	^ #strike
+]
+
+{ #category : #accessing }
 MicStrikeFormatBlock >> openingDelimiter [
 
  	^ MicStrikeDelimiter markup

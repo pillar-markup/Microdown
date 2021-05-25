@@ -223,7 +223,6 @@ MicInlineSplitter >> newBasicInlineBlockFrom: stIndex to: eIndex [
 	^ (MicTextBlock
 			from: stIndex
 			to: eIndex
-			withKind: #basic
 			withSubstring: (string collect: [ :c | c ] from: stIndex to: eIndex)
 			withChildren: Array empty)
 ]
@@ -237,7 +236,6 @@ MicInlineSplitter >> newInlineBlock [
 			^ inlineBlockClass
 				from: opener index
 				to: closer index + closer size - 1
-				withKind: opener type
 				withSubstring: correctSubstring
 				withChildren: children asArray
 		 ]
@@ -254,7 +252,6 @@ MicInlineSplitter >> newInlineBlockWithCloser: aCloserIndex [
 			^ inlineBlockClass
 				from: opener index
 				to: aCloserIndex
-				withKind: opener type
 				withSubstring: correctSubstring
 				withChildren: children asArray
 		 ]
@@ -267,7 +264,6 @@ MicInlineSplitter >> newInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: closer index + closer size - 1
-			withKind: opener type
 			withSubstring: correctSubstring
 ]
 
@@ -276,7 +272,6 @@ MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: aCloserIndex
-			withKind: opener type
 			withSubstring: correctSubstring
 ]
 

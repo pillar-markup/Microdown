@@ -17,13 +17,18 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #internal }
 MicMonospaceFormatBlock >> closingDelimiter [
 
  	^ MicMonospaceDelimiter markup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+MicMonospaceFormatBlock >> kind [
+	^ #monospace
+]
+
+{ #category : #internal }
 MicMonospaceFormatBlock >> openingDelimiter [
 
  	^ MicMonospaceDelimiter markup

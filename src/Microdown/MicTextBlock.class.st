@@ -11,3 +11,9 @@ Class {
 MicTextBlock >> accept: aVisitor [
 	^ aVisitor visitText: self
 ]
+
+{ #category : #accessing }
+MicTextBlock >> kind [
+
+	^ #basic
+]

@@ -36,6 +36,12 @@ MicAnnotationBlock >> closingDelimiter [
 ]
 
 { #category : #accessing }
+MicAnnotationBlock >> kind [
+
+	^ #annotation
+]
+
+{ #category : #accessing }
 MicAnnotationBlock >> name [
 	^ name
 ]

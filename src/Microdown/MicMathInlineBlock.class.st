@@ -47,6 +47,12 @@ MicMathInlineBlock >> closingDelimiter [
 ]
 
 { #category : #accessing }
+MicMathInlineBlock >> kind [
+
+ 	^ #math
+]
+
+{ #category : #accessing }
 MicMathInlineBlock >> openingDelimiter [
 
  	^ MicMathDelimiter markup
