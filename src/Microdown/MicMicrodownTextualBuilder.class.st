@@ -337,7 +337,7 @@ MicMicrodownTextualBuilder >> rawLines: aString [
 { #category : #'writing low-level' }
 MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 
-	aBlock value
+	self raw: aBlock value
 	
 
 	
