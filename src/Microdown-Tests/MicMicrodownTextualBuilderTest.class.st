@@ -115,6 +115,12 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testQuote [
+
+	self assert: (builder quoteBlock: 'aQuote') contents equals: parser class preformattedMarkup, ' aQuote'
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testRawFormat [
 
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
