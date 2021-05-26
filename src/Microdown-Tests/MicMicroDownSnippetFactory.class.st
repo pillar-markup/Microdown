@@ -328,8 +328,27 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 ]
 
 { #category : #format }
+MicMicroDownSnippetFactory >> paragraphBoldSample [
+	^ 'this is a **paragraph**
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphItalicSample [
+	^ 'this is a _paragraph_
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphNestedSample [
+	^ 'this is a **_paragraph_**
+'
+]
+
+{ #category : #format }
 MicMicroDownSnippetFactory >> paragraphSample [
-	^ 'Foo'
+	^ 'Foo
+'
 ]
 
 { #category : #utils }
