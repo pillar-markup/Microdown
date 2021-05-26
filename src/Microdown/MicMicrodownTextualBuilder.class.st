@@ -262,9 +262,9 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 ]
 
 { #category : #'element - paragraph' }
-MicMicrodownTextualBuilder >> paragraph: aBlock [
+MicMicrodownTextualBuilder >> paragraph: aString [
 
-	self rawParagraph: aBlock.
+	self raw: aString.
 	self newLine
 ]
 
@@ -332,16 +332,6 @@ MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 MicMicrodownTextualBuilder >> rawLines: aString [
 	"Output aString and take care of line ending within aString."
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
-]
-
-{ #category : #'writing low-level' }
-MicMicrodownTextualBuilder >> rawParagraph: aBlock [
-
-	self raw: aBlock value
-	
-
-	
-	
 ]
 
 { #category : #'element - list' }

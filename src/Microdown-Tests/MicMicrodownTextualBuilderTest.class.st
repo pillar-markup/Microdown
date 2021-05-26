@@ -87,5 +87,5 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
-	self assert: (builder paragraph: ['This is **_a Paragraph_**']) contents equals: 'This is **_a Paragraph_**', String cr
+	self assert: (builder paragraph: 'This is **_a Paragraph_**') contents equals: 'This is **_a Paragraph_**', String cr
 ]
