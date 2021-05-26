@@ -41,12 +41,11 @@ MicMicrodownTextualBuilder >> anchorReference: aText [
 ]
 
 { #category : #'element - annotated' }
-MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
+MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aBlock [
 	"!!Important 
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
-	self flag: #fixme. "Should have the same API than paragraph for the paragraph"
-	self rawAnnotated: annotation paragraph: aText. 
+	self rawAnnotated: annotation paragraph: aBlock. 
 	self newLine
 
 ]
@@ -318,16 +317,15 @@ MicMicrodownTextualBuilder >> raw: aString [
 ]
 
 { #category : #'element - annotated' }
-MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aText [
+MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 	"!!Important 
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
-	self flag: #fixme. "Should have the same API than paragraph for the paragraph"
 	self
 		raw: parserClass annotatedParagraphMarkup;
 		raw: annotation; 
 		raw: String space;
-		raw: aText.
+		rawParagraph: aBlock
 	
 
 ]
