@@ -209,6 +209,14 @@ MicMicrodownTextualBuilder >> lines: aString [
 	 ]
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> mathInline: aText [
+
+	self raw: MicMathDelimiter markup.
+	self raw: aText.
+	self raw: MicMathDelimiter markup.
+]
+
 { #category : #'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
 
