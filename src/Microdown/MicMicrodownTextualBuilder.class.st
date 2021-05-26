@@ -106,7 +106,7 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
 		withLinesIn: aText 
-		do: [ :line | self writeText: line beginsWith: (parserClass commentedLineMarkup), String space ] 		separatedBy: [ self newLine ]
+		do: [ :line | self writeText: line beginsWith: (parserClass commentedLineMarkup) ] 		separatedBy: [ self newLine ]
 	
 ]
 
