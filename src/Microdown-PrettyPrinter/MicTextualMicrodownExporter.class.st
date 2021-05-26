@@ -64,6 +64,13 @@ MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 	builder anchorReference: anAnchorReference substring
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
+
+	builder 
+		annotated: anAnnotated label paragraph:  [:b | anAnnotated body do: [ :each | each accept: self ] ] 
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
