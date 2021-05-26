@@ -35,7 +35,8 @@ MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> annotatedSample [
-	^ '!! Foo'
+	^ '!!label Foo
+'
 ]
 
 { #category : #annotations }
