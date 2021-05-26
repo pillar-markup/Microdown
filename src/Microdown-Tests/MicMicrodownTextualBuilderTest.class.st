@@ -115,6 +115,12 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testRawFormat [
+
+	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
 	self assert: (builder strike: 'Strike') contents equals: '~Strike~'
