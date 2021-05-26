@@ -112,6 +112,12 @@ MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
+
+	builder strike: aStrikeFormat substring
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 	builder text: aMicTextBlock substring
