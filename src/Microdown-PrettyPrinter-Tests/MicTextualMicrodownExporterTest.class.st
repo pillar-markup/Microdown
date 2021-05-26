@@ -102,6 +102,11 @@ MicTextualMicrodownExporterTest >> testParagraphWithItalic [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithMonospace [
+	self verifyObtain: factory paragraphMonospaceSample
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testParagraphWithNested [
 	self verifyObtain: factory paragraphNestedSample
 ]
