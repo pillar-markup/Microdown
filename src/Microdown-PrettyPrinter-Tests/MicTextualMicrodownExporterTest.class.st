@@ -157,6 +157,11 @@ MicTextualMicrodownExporterTest >> testRawFormat [
 	self verifyObtain: factory rawFormatSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testRoot [
+	self verifyObtain: factory rootSample
+]
+
 { #category : #utils }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
