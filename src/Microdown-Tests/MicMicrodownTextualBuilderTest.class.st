@@ -59,6 +59,12 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 ]
 
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testComment [
+
+	self assert: (builder comment: 'Comment') contents equals: parser commentedLineMarkup, ' Comment'
+]
+
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
