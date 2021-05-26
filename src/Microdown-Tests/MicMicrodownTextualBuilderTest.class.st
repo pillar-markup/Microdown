@@ -96,6 +96,18 @@ MicMicrodownTextualBuilderTest >> testFigureWithBold [
 ]
 
 { #category : #'tests - header' }
+MicMicrodownTextualBuilderTest >> testFigureWithParameters [
+	| descriptionBlock dictionnary |
+	descriptionBlock := [:b | b text: 'it is a beatifull figure'].
+	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
+	self 
+		assert: (builder 
+							figure: 'anUrl' withDescription: descriptionBlock withParameters:  dictionnary;				
+							contents) contents 
+		equals: '![it is a beatifull figure](anUrl|label=aLabel&size=80)'
+]
+
+{ #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
 	self 
