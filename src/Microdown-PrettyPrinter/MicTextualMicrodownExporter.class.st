@@ -118,6 +118,12 @@ MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitQuote: aQuote [
+
+	builder quoteBlock: aQuote text
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 
 	builder rawFormat: aRawFormat substring
