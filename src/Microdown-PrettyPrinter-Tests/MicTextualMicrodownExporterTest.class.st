@@ -53,6 +53,11 @@ MicTextualMicrodownExporterTest >> testCodeBlock [
 	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testComment [
+	self verifyObtain: factory commentSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
