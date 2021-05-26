@@ -168,6 +168,20 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
 ]
 
+{ #category : #'tests - header' }
+MicMicrodownTextualBuilderTest >> testRoot [
+	| descriptionBlock dictionnary |
+	descriptionBlock := [:b | b text: 'it is a beatifull figure'].
+	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
+	self 
+		assert: (builder 
+							root: [ :b | b paragraph: [:v | builder text: 'aParagraph'].
+											 b figure: 'anUrl' withDescription: descriptionBlock withParameters:  dictionnary ] ;				
+							contents) contents 
+		equals: 'aParagraph
+![it is a beatifull figure](anUrl|label=aLabel&size=80)'
+]
+
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
