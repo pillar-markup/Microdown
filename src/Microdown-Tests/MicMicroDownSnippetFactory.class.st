@@ -377,7 +377,8 @@ MicMicroDownSnippetFactory >> quoteSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> rawFormatSample [
-	^ 'a{{Foo}}b'
+	^ 'a{{Foo}}b
+'
 ]
 
 { #category : #'code block' }
