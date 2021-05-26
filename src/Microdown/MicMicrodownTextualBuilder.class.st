@@ -377,6 +377,12 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 			self raw: parserClass argumentListDelimiter ] ]
 ]
 
+{ #category : #'ugly line handling' }
+MicMicrodownTextualBuilder >> root: aBlock [
+	
+	aBlock value: self
+]
+
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
