@@ -48,6 +48,11 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 	self verifyObtain: factory anchorSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testAnchorReference [
+	self verifyObtain: factory anchorReferenceSample
+]
+
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
 	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
