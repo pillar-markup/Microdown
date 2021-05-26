@@ -141,17 +141,18 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBl
 ]
 
 { #category : #'element - figure' }
-MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription withParameters: aZnDictionary [
-	| stringToAdd |
-	aZnDictionary 
-		ifEmpty: [ self figure: aFigureUrl withDescription: aDescription ] 
-		ifNotEmpty: [
-			self flag: #fixme.
-			"we should avoid to concatenate all such string and use the builder internals."
-			stringToAdd := String empty.
-			aZnDictionary keysAndValuesDo: [ :key :value | stringToAdd := stringToAdd, parserClass argumentListDelimiter, key asString, parserClass argumentListEqualsDelimiter, value asString ].
-		stringToAdd := parserClass argumentListStartDelimiter, stringToAdd allButFirst.
-		self figure: aFigureUrl, stringToAdd withDescription: aDescription ]
+MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock withParameters: aZnDictionary [
+
+	aZnDictionary
+		ifEmpty: [ 
+		self figure: aFigureUrl withDescription: aDescriptionBlock ]
+		ifNotEmpty: [ 
+			self rawFigureDescription: aDescriptionBlock.
+			self raw: parserClass urlOpenerMarkup.
+			self raw: aFigureUrl.
+			self raw: parserClass argumentListStartDelimiter.
+			self rawParameters: aZnDictionary.
+			self raw: parserClass urlCloserMarkup ]
 ]
 
 { #category : #'element - header' }
@@ -365,6 +366,17 @@ MicMicrodownTextualBuilder >> rawLines: aString [
 MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 
 	aBlock value: self
+]
+
+{ #category : #'element - figure' }
+MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
+
+	aZnDictionary keysAndValuesDo: [ :key :value | 
+		self raw: key.
+		self raw: parserClass argumentListEqualsDelimiter.
+		self raw: value.
+		key = aZnDictionary keys last ifFalse: [ 
+			self raw: parserClass argumentListDelimiter ] ]
 ]
 
 { #category : #'element - list' }
