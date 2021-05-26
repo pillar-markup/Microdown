@@ -127,6 +127,11 @@ MicTextualMicrodownExporterTest >> testPlainHeader [
 	self verifyObtain: factory headerLevel3SampleWithNewLine 
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testRawFormat [
+	self verifyObtain: factory rawFormatSample
+]
+
 { #category : #utils }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
