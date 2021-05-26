@@ -357,6 +357,12 @@ MicMicroDownSnippetFactory >> paragraphSample [
 '
 ]
 
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphStrikeSample [
+	^ 'this is a ~paragraph~
+'
+]
+
 { #category : #utils }
 MicMicroDownSnippetFactory >> parserClass [
 
