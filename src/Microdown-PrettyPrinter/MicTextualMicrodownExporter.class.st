@@ -106,6 +106,12 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
+
+	builder mathInline: aMicMathInline substring
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 	builder monospace: aMonospaceFormat substring
