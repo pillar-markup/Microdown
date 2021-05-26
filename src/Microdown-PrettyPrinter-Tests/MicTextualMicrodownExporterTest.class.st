@@ -128,6 +128,11 @@ MicTextualMicrodownExporterTest >> testPlainHeader [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testQuote [
+	self verifyObtain: factory quoteSample
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testRawFormat [
 	self verifyObtain: factory rawFormatSample
 ]
