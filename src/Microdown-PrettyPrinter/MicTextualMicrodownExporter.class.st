@@ -87,9 +87,8 @@ MicTextualMicrodownExporter >> visitComment: aComment [
 
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
-	self flag: #fixme.
-	"if we are just a text there is not MicText in Children"
-	builder figure: aFigure url path withDescription: [:b | aFigure children do: [:each | each accept: self ]] withParameters: aFigure parameters . 
+
+	builder figure: aFigure url path withDescription: [:b | b raw: aFigure substring] withParameters: aFigure parameters . 
 ]
 
 { #category : #'visit-block' }
