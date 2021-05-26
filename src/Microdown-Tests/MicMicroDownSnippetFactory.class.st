@@ -372,7 +372,7 @@ MicMicroDownSnippetFactory >> parserClass [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> quoteSample [
-	^ '> Foo'
+	^ '>  Foo'
 ]
 
 { #category : #format }
