@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #'tests-codeblock' }
+MicMicrodownTextualBuilderTest >> exampleMathTextMultipleLines [
+	^ 'y = 3
+x = 2 + y'
+]
+
+{ #category : #'tests-codeblock' }
 MicMicrodownTextualBuilderTest >> exampleTextMultipleLines [
 	^ 'Hello
 Pharo'
@@ -136,6 +142,33 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 MicMicrodownTextualBuilderTest >> testItalic [
 
 	self assert: (builder italic: 'Italic') contents equals: '_Italic_'
+]
+
+{ #category : #'tests-codeblock' }
+MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
+
+	"```language2=Pharo&caption=`Color` is cool
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           mathblock: self exampleMathTextMultipleLines
+		           firstLineAssociations: { 
+				           ('label' -> 'Math').
+				           ('caption' -> '`Math` is cool') };
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'&label=Math&caption=`Math` is cool
+', self exampleMathTextMultipleLines, 
+
+'
+&
+'
+
 ]
 
 { #category : #'tests - anchor' }
