@@ -77,6 +77,12 @@ MicMicrodownTextualBuilderTest >> testComment [
 	self assert: (builder comment: 'Comment') contents equals: parser commentedLineMarkup, ' Comment'
 ]
 
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testExternalLink [
+
+	self assert: (builder externalLink: 'anUrl' withDescription: 'aDescription' ) contents equals: '[aDescription](anUrl)'
+]
+
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
