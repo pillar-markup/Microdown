@@ -74,6 +74,11 @@ MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [
 ]
 
 { #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitComment: aComment [
+	builder comment: aComment text
+]
+
+{ #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 
 	builder 
