@@ -99,6 +99,12 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 	builder italic: aMicItalicFormatBlock substring
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitParagraph: aParagraph [
+	builder 
+		paragraph: [ :b | aParagraph children do: [:each |each accept: self]]
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
