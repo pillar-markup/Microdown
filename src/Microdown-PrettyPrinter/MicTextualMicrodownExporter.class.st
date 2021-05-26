@@ -59,6 +59,12 @@ MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
+
+	builder anchorReference: anAnchorReference substring
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
 	builder bold: aBoldFormat substring
