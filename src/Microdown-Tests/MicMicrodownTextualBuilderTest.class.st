@@ -103,6 +103,12 @@ MicMicrodownTextualBuilderTest >> testItalic [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testMathInline [
+
+	self assert: (builder mathInline: 'x = 2 + y') contents equals: '$x = 2 + y$'
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
 	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
