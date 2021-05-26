@@ -111,6 +111,11 @@ MicTextualMicrodownExporterTest >> testParagraphWithNested [
 	self verifyObtain: factory paragraphNestedSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithStrike [
+	self verifyObtain: factory paragraphStrikeSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testPlainHeader [
 
