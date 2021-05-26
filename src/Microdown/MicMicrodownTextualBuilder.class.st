@@ -327,6 +327,14 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aText [
 
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> rawFormat: aText [
+
+	self raw: MicRawOpenerDelimiter markup.
+	self raw: aText.
+	self raw: MicRawCloserDelimiter markup.
+]
+
 { #category : #'writing low-level' }
 MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 
