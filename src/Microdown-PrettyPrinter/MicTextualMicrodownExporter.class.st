@@ -124,6 +124,14 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 	builder externalLink: aLink url path  withDescription: aLink substring 
 ]
 
+{ #category : #visiting }
+MicTextualMicrodownExporter >> visitMath: aMicMath [
+	 builder
+		  mathblock: aMicMath body
+		  firstLineAssociations: aMicMath argumentAssociations
+
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 
