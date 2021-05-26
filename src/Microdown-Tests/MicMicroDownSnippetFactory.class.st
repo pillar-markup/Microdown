@@ -385,6 +385,16 @@ MicMicroDownSnippetFactory >> rawFormatSample [
 '
 ]
 
+{ #category : #document }
+MicMicroDownSnippetFactory >> rootSample [
+	| stream |
+	stream := (String new: 10000) writeStream.
+	stream nextPutAll: self headerLevel2Sample;
+	nextPutAll: self paragraphNestedSample;
+	nextPutAll: self figureSample.
+	^ stream contents
+]
+
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParameterEscapeSample [
 	^ 'value\==foo'
