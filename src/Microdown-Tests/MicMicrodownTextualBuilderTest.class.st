@@ -32,6 +32,12 @@ MicMicrodownTextualBuilderTest >> testAnchor [
 	self assert: (builder anchor: 'Anchor') contents equals: parser anchorMarkup, 'Anchor'
 ]
 
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testBold [
+
+	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
+]
+
 { #category : #'tests-codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
@@ -85,7 +91,25 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testItalic [
+
+	self assert: (builder italic: 'Italic') contents equals: '_Italic_'
+]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testMonospace [
+
+	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
 	self assert: (builder paragraph: [:v | builder text: 'aParagraph']) contents equals: 'aParagraph', String cr
+]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testStrike [
+
+	self assert: (builder strike: 'Strike') contents equals: '~Strike~'
 ]
