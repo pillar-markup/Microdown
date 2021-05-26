@@ -75,6 +75,7 @@ MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [
 
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitComment: aComment [
+
 	builder comment: aComment text
 ]
 
@@ -84,6 +85,12 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 	builder 
 		header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] 
 		withLevel: aHeader level
+]
+
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
+
+	builder horizontalLine
 ]
 
 { #category : #'visit - format' }
