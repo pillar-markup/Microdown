@@ -33,6 +33,12 @@ MicMicrodownTextualBuilderTest >> testAnchor [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testAnchorReference [
+
+	self assert: (builder anchorReference: 'AnchorReference') contents equals: parser class anchorReferenceOpenerMarkup, 'AnchorReference', parser class anchorReferenceCloserMarkup
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testBold [
 
 	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
