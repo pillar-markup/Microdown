@@ -219,7 +219,8 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> linkSample [
-	^ '[Foo](anUrl)'
+	^ '[Foo](anUrl)
+'
 ]
 
 { #category : #list }
