@@ -96,6 +96,11 @@ MicTextualMicrodownExporterTest >> testLink [
 	self verifyObtain: factory linkSample
 ]
 
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testMathBlock [ 
+	self verifyObtain: factory mathParametersSample, String cr
+]
+
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testMathInline [
 	self verifyObtain: factory mathInlineSample
