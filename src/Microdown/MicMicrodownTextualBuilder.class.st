@@ -213,6 +213,23 @@ MicMicrodownTextualBuilder >> mathInline: aText [
 	self raw: MicMathDelimiter markup.
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
+
+	self raw: parserClass mathOpeningBlockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '=';
+						raw: each value value 
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass mathClosingBlockMarkup.
+	self newLine.
+]
+
 { #category : #'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
 
