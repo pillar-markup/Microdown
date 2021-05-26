@@ -184,7 +184,7 @@ MicMicroDownSnippetFactory >> headerWithNewLineSample [
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> horizontalLineSample [
-	^ parserClass horizontalLineMarkup
+	^ parserClass horizontalLineMarkup, String cr
 ]
 
 { #category : #initialization }
