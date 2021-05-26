@@ -84,6 +84,18 @@ MicMicrodownTextualBuilderTest >> testExternalLink [
 ]
 
 { #category : #'tests - header' }
+MicMicrodownTextualBuilderTest >> testFigureWithBold [
+
+	self 
+		assert: (builder 
+							figure: 'anUrl' withDescription: [:b | b text: 'it is a'.
+																			  b bold: 'beatifull'.
+																			  b text: 'figure'];				
+							contents) contents 
+		equals: '![it is a**beatifull**figure](anUrl)'
+]
+
+{ #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
 	self 
