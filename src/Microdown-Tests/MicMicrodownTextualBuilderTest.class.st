@@ -77,3 +77,9 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 		equals: parser headerMarkup , ' Hello _Pharo_ is cool
 '
 ]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testHorizontalLine [
+
+	self assert: (builder horizontalLine) contents equals: parser horizontalLineMarkup, String cr
+]
