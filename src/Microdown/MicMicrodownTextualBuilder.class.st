@@ -32,6 +32,14 @@ MicMicrodownTextualBuilder >> anchor: aLabel [
 
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> anchorReference: aText [
+
+	self raw: parserClass anchorReferenceOpenerMarkup.
+	self raw: aText.
+	self raw: parserClass anchorReferenceCloserMarkup.
+]
+
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aText [
 	"!!Important 
