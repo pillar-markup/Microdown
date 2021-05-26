@@ -154,6 +154,13 @@ MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 	builder rawFormat: aRawFormat substring
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitRoot: aRoot [
+
+	builder 
+		root: [:b | aRoot children do: [ :each | each accept: self ] ] 
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
