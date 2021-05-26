@@ -131,13 +131,9 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 ]
 
 { #category : #'element - figure' }
-MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescription [
-	self flag: #fixme.
-	"missing parameter and need a builder like in header."
+MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock [
 	self 
-		writeText: aDescription 
-		surroundBy: parserClass figureOpenerMarkup 
-		and: parserClass linkNameCloserMarkup.
+		rawFigureDescription: aDescriptionBlock.
 	self 
 		writeText: aFigureUrl 
 		surroundBy: parserClass urlOpenerMarkup 
@@ -333,6 +329,13 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aText [
 		raw: aText.
 	
 
+]
+
+{ #category : #'element - figure' }
+MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
+	self raw: parserClass figureOpenerMarkup.
+	aBlock value: self.
+	self raw: parserClass linkNameCloserMarkup.
 ]
 
 { #category : #'element - format' }
