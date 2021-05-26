@@ -340,6 +340,12 @@ MicMicroDownSnippetFactory >> paragraphItalicSample [
 ]
 
 { #category : #format }
+MicMicroDownSnippetFactory >> paragraphMonospaceSample [
+	^ 'this is a `paragraph`
+'
+]
+
+{ #category : #format }
 MicMicroDownSnippetFactory >> paragraphNestedSample [
 	^ 'this is a **_paragraph_**
 '
