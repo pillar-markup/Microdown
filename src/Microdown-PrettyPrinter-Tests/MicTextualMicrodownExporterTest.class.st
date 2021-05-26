@@ -71,6 +71,11 @@ MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testHorizontalLine [
+	self verifyObtain: factory horizontalLineSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
