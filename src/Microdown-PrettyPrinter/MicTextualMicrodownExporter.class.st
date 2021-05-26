@@ -106,6 +106,12 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitLink: aLink [
+
+	builder externalLink: aLink url path  withDescription: aLink substring 
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 
 	builder mathInline: aMicMathInline substring
