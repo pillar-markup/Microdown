@@ -63,6 +63,11 @@ MicTextualMicrodownExporterTest >> testComment [
 	self verifyObtain: factory commentSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigure [
+	self verifyObtain: factory figureSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
