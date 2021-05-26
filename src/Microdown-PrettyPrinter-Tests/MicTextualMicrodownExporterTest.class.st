@@ -86,6 +86,26 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 	self assert: (res copyFrom: res size -3 to: res size - 2) equals: parser boldMarkup
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraph [
+	self verifyObtain: factory paragraphSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithBold [
+	self verifyObtain: factory paragraphBoldSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithItalic [
+	self verifyObtain: factory paragraphItalicSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithNested [
+	self verifyObtain: factory paragraphNestedSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testPlainHeader [
 
