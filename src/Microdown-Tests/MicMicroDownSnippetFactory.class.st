@@ -106,7 +106,8 @@ MicMicroDownSnippetFactory >> environmentSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> figureSample [
-	^ '![Foo](anUrl|label=figureTest&size=80)'
+	^ '![_Foo_](anUrl|label=figureTest&size=80)
+'
 ]
 
 { #category : #headers }
