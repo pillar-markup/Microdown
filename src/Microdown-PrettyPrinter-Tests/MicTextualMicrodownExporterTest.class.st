@@ -82,6 +82,11 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLink [
+	self verifyObtain: factory linkSample
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testMathInline [
 	self verifyObtain: factory mathInlineSample
 ]
