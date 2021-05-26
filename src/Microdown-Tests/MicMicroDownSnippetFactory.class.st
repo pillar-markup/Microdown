@@ -95,7 +95,7 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 
 { #category : #block }
 MicMicroDownSnippetFactory >> commentSample [
-	^ '%Foo'
+	^ '% Foo'
 ]
 
 { #category : #anchor }
