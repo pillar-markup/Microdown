@@ -81,6 +81,11 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 	self verifyObtain: factory horizontalLineSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testMathInline [
+	self verifyObtain: factory mathInlineSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
