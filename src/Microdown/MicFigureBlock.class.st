@@ -22,13 +22,6 @@ MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
-{ #category : #converting }
-MicFigureBlock >> asPillar [
-	| aPRFigure |
-	aPRFigure := super asPillar.
-	^ aPRFigure label: self substring; parameters: self parameters; yourself
-]
-
 { #category : #accessing }
 MicFigureBlock >> kind [
 

@@ -21,11 +21,6 @@ MicRawBlock >> accept: aVisitor [
 	^ aVisitor visitRaw: self
 ]
 
-{ #category : #converting }
-MicRawBlock >> asPillar [
-	^ PRRaw new text: self substring ; yourself 
-]
-
 { #category : #accessing }
 MicRawBlock >> closingDelimiter [
 
