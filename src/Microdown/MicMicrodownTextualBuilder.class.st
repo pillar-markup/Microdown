@@ -188,7 +188,7 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 MicMicrodownTextualBuilder >> item: aBlock [
 
 	self raw: (self startOfUnorderedListForLevel: currentLevel).
-	aBlock value.
+	aBlock value: self.
 	self potentialNewLine.
 ]
 
@@ -261,7 +261,7 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> orderedItem: aBlock [
 	self writeStartOfOrderedListIndex: 1.
-	aBlock value.
+	aBlock value: self.
 	self newLine.
 ]
 
@@ -278,7 +278,7 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
 	
-	aBlockClosure value.
+	aBlockClosure value: self.
 	"for now we do not care to generate 
 	1. 
 	2.
@@ -416,7 +416,7 @@ MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	"self
 		writePrefix: (self startOfUnorderedListForLevel: currentLevel)
 		forEachLineDuring: aBlockClosure."
-	aBlockClosure value.
+	aBlockClosure value: self.
 	currentLevel := currentLevel - 1.
 ]
 
