@@ -192,6 +192,17 @@ MicMicrodownTextualBuilderTest >> testMonospace [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testOrderedList [
+
+	self 
+		assert: (builder orderedListDuring: [ :b | {'item1' . 'item2' . 'item3' } do: [ :each | b orderedItem: [:bu | bu text: each] ] ]) contents
+		equals: '1. item1
+1. item2
+1. item3
+'
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
 	self assert: (builder paragraph: [:v | builder text: 'aParagraph']) contents equals: 'aParagraph', String cr
@@ -227,4 +238,15 @@ MicMicrodownTextualBuilderTest >> testRoot [
 MicMicrodownTextualBuilderTest >> testStrike [
 
 	self assert: (builder strike: 'Strike') contents equals: '~Strike~'
+]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testUnorderedList [
+
+	self 
+		assert: (builder unorderedListDuring: [ :b | {'item1' . 'item2' . 'item3' } do: [ :each | b item: [:bu | bu text: each] ] ]) contents
+		equals: '- item1
+- item2
+- item3
+'
 ]
