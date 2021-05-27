@@ -124,6 +124,12 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 	builder externalLink: aLink url path  withDescription: aLink substring 
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitListItem: anItem [
+
+	builder item: [ :b | anItem textElements do: [ :each |each accept: self ] ]
+]
+
 { #category : #visiting }
 MicTextualMicrodownExporter >> visitMath: aMicMath [
 	 builder
@@ -142,6 +148,18 @@ MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 	builder monospace: aMonospaceFormat substring
+]
+
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
+
+	builder unorderedListDuring: [ :b | anOrderedList children do: [ :each |self visitOrderedListItem: each ] ]
+]
+
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
+
+	builder orderedItem: [ :b | anItem textElements do: [ :each |each accept: self ] ]
 ]
 
 { #category : #'visit-block' }
@@ -179,4 +197,10 @@ MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 	builder text: aMicTextBlock substring
+]
+
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
+
+	builder unorderedListDuring: [ :b | aUnorderedList children do: [ :each |each accept: self ] ]
 ]
