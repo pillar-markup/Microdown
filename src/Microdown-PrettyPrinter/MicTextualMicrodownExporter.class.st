@@ -92,6 +92,12 @@ MicTextualMicrodownExporter >> visitComment: aComment [
 	builder comment: aComment text
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
+
+	builder environment: anEnvironment name body: [ :b | anEnvironment bodyElements do: [ :each | each accept: self ] ] arguments: anEnvironment arguments
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 
