@@ -63,6 +63,24 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 
 ]
 
+{ #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollection [
+
+	self raw: MicAnnotationOpenerDelimiter markup.
+	self space.
+	self raw: aString.
+	associationCollection ifNotEmpty: [ self raw: '|'.
+		associationCollection 
+			do: [ :each | 
+				self raw: each key.
+				self raw: '='.
+				self raw: each value ]
+			separatedBy: [ self raw: '&' ]			
+		 ].
+	self space.
+	self raw: MicAnnotationCloserDelimiter markup.
+]
+
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> bold: aText [
 
@@ -162,17 +180,17 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBl
 ]
 
 { #category : #'element - figure' }
-MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock withParameters: aZnDictionary [
+MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock withParameters: anOrderedDictionary [
 
-	aZnDictionary
+	anOrderedDictionary
 		ifEmpty: [ 
-		self figure: aFigureUrl withDescription: aDescriptionBlock ]
+			self figure: aFigureUrl withDescription: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
 			self raw: aFigureUrl.
 			self raw: parserClass argumentListStartDelimiter.
-			self rawParameters: aZnDictionary.
+			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
 ]
 
@@ -210,7 +228,7 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 MicMicrodownTextualBuilder >> item: aBlock [
 
 	self raw: (self startOfUnorderedListForLevel: currentLevel).
-	aBlock value: self.
+	aBlock value.
 	self potentialNewLine.
 ]
 
@@ -283,7 +301,7 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> orderedItem: aBlock [
 	self writeStartOfOrderedListIndex: 1.
-	aBlock value: self.
+	aBlock value.
 	self newLine.
 ]
 
@@ -300,7 +318,7 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
 	
-	aBlockClosure value: self.
+	aBlockClosure value.
 	"for now we do not care to generate 
 	1. 
 	2.
@@ -372,7 +390,7 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 	self raw: parserClass figureOpenerMarkup.
-	aBlock value: self.
+	aBlock value.
 	self raw: parserClass linkNameCloserMarkup.
 ]
 
@@ -399,10 +417,14 @@ MicMicrodownTextualBuilder >> rawLines: aString [
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
 ]
 
-{ #category : #'element - paragraph' }
+{ #category : #'writing low-level' }
 MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 
-	aBlock value: self
+	aBlock value
+	
+
+	
+	
 ]
 
 { #category : #'element - figure' }
@@ -419,7 +441,7 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 { #category : #'ugly line handling' }
 MicMicrodownTextualBuilder >> root: aBlock [
 	
-	aBlock value: self
+	aBlock value
 ]
 
 { #category : #'element - list' }
@@ -438,7 +460,7 @@ MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	"self
 		writePrefix: (self startOfUnorderedListForLevel: currentLevel)
 		forEachLineDuring: aBlockClosure."
-	aBlockClosure value: self.
+	aBlockClosure value.
 	currentLevel := currentLevel - 1.
 ]
 

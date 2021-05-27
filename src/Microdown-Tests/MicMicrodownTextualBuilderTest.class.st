@@ -47,7 +47,7 @@ MicMicrodownTextualBuilderTest >> testAnchorReference [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnnotated [
 
-	self assert: (builder annotated: 'anAnnotation' paragraph:  [:v | builder text: 'anAnnotatedParagraph']) contents equals: '!!anAnnotation anAnnotatedParagraph', String cr
+	self assert: (builder annotated: 'anAnnotation' paragraph:  [ builder text: 'anAnnotatedParagraph' ]) contents equals: '!!anAnnotation anAnnotatedParagraph', String cr
 ]
 
 { #category : #'tests - anchor' }
@@ -55,7 +55,15 @@ MicMicrodownTextualBuilderTest >> testAnnotation [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
-		equals: '<?anAnnotationName | label=aLabel&value=42 ?>', String cr
+		equals: '<? anAnnotationName|label=aLabel&value=42 ?>'
+]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
+
+	self 
+		assert: (builder annotation: 'anAnnotationName' arguments: {}) contents 
+		equals: '<? anAnnotationName ?>'
 ]
 
 { #category : #'tests - anchor' }
@@ -127,21 +135,22 @@ MicMicrodownTextualBuilderTest >> testFigureWithBold [
 
 	self 
 		assert: (builder 
-							figure: 'anUrl' withDescription: [:b | b text: 'it is a'.
-																			  b bold: 'beatifull'.
-																			  b text: 'figure'];				
+							figure: 'anUrl' withDescription: [ builder text: 'it is a'.
+																			  builder bold: 'beatifull'.
+																			  builder text: 'figure'];				
 							contents) contents 
 		equals: '![it is a**beatifull**figure](anUrl)'
 ]
 
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testFigureWithParameters [
-	| descriptionBlock dictionnary |
-	descriptionBlock := [:b | b text: 'it is a beatifull figure'].
+	| dictionnary |
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
 	self 
 		assert: (builder 
-							figure: 'anUrl' withDescription: descriptionBlock withParameters:  dictionnary;				
+							figure: 'anUrl' 
+							withDescription: [builder text: 'it is a beatifull figure'] 
+							withParameters:  dictionnary;				
 							contents) contents 
 		equals: '![it is a beatifull figure](anUrl|label=aLabel&size=80)'
 ]
@@ -222,7 +231,9 @@ MicMicrodownTextualBuilderTest >> testMonospace [
 MicMicrodownTextualBuilderTest >> testOrderedList [
 
 	self 
-		assert: (builder orderedListDuring: [ :b | {'item1' . 'item2' . 'item3' } do: [ :each | b orderedItem: [:bu | bu text: each] ] ]) contents
+		assert: (builder orderedListDuring: [  {'item1' . 'item2' . 'item3' } 
+							do: [ :each | builder 
+												orderedItem: [ builder text: each] ] ]) contents
 		equals: '1. item1
 1. item2
 1. item3
@@ -232,7 +243,7 @@ MicMicrodownTextualBuilderTest >> testOrderedList [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
-	self assert: (builder paragraph: [:v | builder text: 'aParagraph']) contents equals: 'aParagraph', String cr
+	self assert: (builder paragraph: [ builder text: 'aParagraph' ]) contents equals: 'aParagraph', String cr
 ]
 
 { #category : #'tests - anchor' }
@@ -250,15 +261,17 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testRoot [
 	| descriptionBlock dictionnary |
-	descriptionBlock := [:b | b text: 'it is a beatifull figure'].
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
 	self 
 		assert: (builder 
-							root: [ :b | b paragraph: [:v | builder text: 'aParagraph'].
-											 b figure: 'anUrl' withDescription: descriptionBlock withParameters:  dictionnary ] ;				
+							root: [ builder paragraph: [ builder text: 'aParagraph' ].
+									builder 
+										figure: 'anUrl' 
+										withDescription: [ builder text: 'it is a beautifull figure'] 
+										withParameters:  dictionnary ] ;				
 							contents) contents 
 		equals: 'aParagraph
-![it is a beatifull figure](anUrl|label=aLabel&size=80)'
+![it is a beautifull figure](anUrl|label=aLabel&size=80)'
 ]
 
 { #category : #'tests - anchor' }
@@ -271,7 +284,7 @@ MicMicrodownTextualBuilderTest >> testStrike [
 MicMicrodownTextualBuilderTest >> testUnorderedList [
 
 	self 
-		assert: (builder unorderedListDuring: [ :b | {'item1' . 'item2' . 'item3' } do: [ :each | b item: [:bu | bu text: each] ] ]) contents
+		assert: (builder unorderedListDuring: [  {'item1' . 'item2' . 'item3' } do: [ :each | builder item: [ builder text: each] ] ]) contents
 		equals: '- item1
 - item2
 - item3

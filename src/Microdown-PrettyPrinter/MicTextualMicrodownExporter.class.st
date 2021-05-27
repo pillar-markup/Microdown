@@ -68,7 +68,7 @@ MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
 	builder 
-		annotated: anAnnotated label paragraph:  [:b | anAnnotated body do: [ :each | each accept: self ] ] 
+		annotated: anAnnotated label paragraph:  [ anAnnotated body do: [ :each | each accept: self ] ] 
 ]
 
 { #category : #'visit - format' }
@@ -101,7 +101,10 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 
-	builder figure: aFigure url path withDescription: [:b | b raw: aFigure substring] withParameters: aFigure parameters . 
+	builder 
+		figure: aFigure url path 
+		withDescription: [ builder raw: aFigure substring ] 
+		withParameters: aFigure parameters
 ]
 
 { #category : #'visit-block' }
@@ -133,7 +136,7 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 
-	builder item: [ :b | anItem textElements do: [ :each |each accept: self ] ]
+	builder item: [ anItem textElements do: [ :each |each accept: self ] ]
 ]
 
 { #category : #visiting }
@@ -164,19 +167,19 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
-	builder unorderedListDuring: [ :b | anOrderedList children do: [ :each |self visitOrderedListItem: each ] ]
+	builder unorderedListDuring: [ anOrderedList children do: [ :each |self visitOrderedListItem: each ] ]
 ]
 
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
 
-	builder orderedItem: [ :b | anItem textElements do: [ :each |each accept: self ] ]
+	builder orderedItem: [ anItem textElements do: [ :each |each accept: self ] ]
 ]
 
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 	builder 
-		paragraph: [ :b | aParagraph children do: [:each |each accept: self]]
+		paragraph: [ aParagraph children do: [:each |each accept: self]]
 ]
 
 { #category : #'visit - format' }
@@ -195,7 +198,7 @@ MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 MicTextualMicrodownExporter >> visitRoot: aRoot [
 
 	builder 
-		root: [:b | aRoot children do: [ :each | each accept: self ] ] 
+		root: [ aRoot children do: [ :each | each accept: self ] ] 
 ]
 
 { #category : #'visit - format' }
@@ -213,5 +216,5 @@ MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 
-	builder unorderedListDuring: [ :b | aUnorderedList children do: [ :each |each accept: self ] ]
+	builder unorderedListDuring: [ aUnorderedList children do: [ :each |each accept: self ] ]
 ]

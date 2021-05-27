@@ -133,8 +133,10 @@ MicDumperTest >> testPrintMicBoldFormatBlock [
 MicDumperTest >> testPrintMicFigureBlock [
 	| micFigure |
 	micFigure := (parser parse: factory figureSample) children first children first.
-	self assert: (micFigure accept: visitor) equals: 'MicFigureBlock parameters:label=figureTest&size=80 url:/anUrl "Foo"'
-
+	self 
+		assert: (micFigure accept: visitor)  
+		equals: 	'MicFigureBlock parameters:label=figureTest&size=80 url:/anUrl "_Foo_"'
+	
 ]
 
 { #category : #'tests-inline block' }
