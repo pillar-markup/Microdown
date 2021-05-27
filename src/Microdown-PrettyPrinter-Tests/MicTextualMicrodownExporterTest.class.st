@@ -69,6 +69,11 @@ MicTextualMicrodownExporterTest >> testComment [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testEnvironment [
+	self verifyObtain: factory environmentSample
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testFigure [
 	self verifyObtain: factory figureSample
 ]
