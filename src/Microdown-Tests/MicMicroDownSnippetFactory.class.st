@@ -102,7 +102,9 @@ MicMicroDownSnippetFactory >> commentSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> environmentSample [
-	^ '<?Foo|value=aFoo&label=42'
+	^ '<?Foo|value=aFoo&label=42
+Foo
+?>'
 ]
 
 { #category : #format }
