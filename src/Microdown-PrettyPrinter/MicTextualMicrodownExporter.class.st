@@ -144,6 +144,11 @@ MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 	builder mathInline: aMicMathInline substring
 ]
 
+{ #category : #'visit-block' }
+MicTextualMicrodownExporter >> visitMetaData: aMetaData [
+	builder metaDataFromAssociations: aMetaData body
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
