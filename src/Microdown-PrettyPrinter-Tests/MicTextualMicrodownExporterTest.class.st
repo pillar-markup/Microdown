@@ -106,6 +106,15 @@ MicTextualMicrodownExporterTest >> testMathInline [
 	self verifyObtain: factory mathInlineSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testMetaData [
+	self skip.
+	self flag: #fixme.
+	"the builder wait a collection of associotion or a dictionnary but a metaData has not that"
+
+	self verifyObtain: factory metaDataSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
