@@ -238,7 +238,7 @@ MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [
 
 { #category : #'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [ 
-	self raw: '{ '; newLine.
+	self raw: '{'; newLine.
 	aCollection do: [ :each | 
 		self raw: '"';
 		raw: each key; 
