@@ -51,6 +51,14 @@ MicMicrodownTextualBuilderTest >> testAnnotated [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testAnnotation [
+
+	self 
+		assert: (builder annotation: 'anAnnotationName' arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
+		equals: '<?anAnnotationName | label=aLabel&value=42 ?>', String cr
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testBold [
 
 	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
