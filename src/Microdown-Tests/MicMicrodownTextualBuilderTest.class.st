@@ -98,6 +98,25 @@ MicMicrodownTextualBuilderTest >> testComment [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testEnvironment [
+
+	self 
+		assert: (builder environment: 'anEnvironmentName' arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
+		equals: '<?anEnvironmentName|label=aLabel&value=42
+?>'
+]
+
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testEnvironmentWithBody [
+
+	self 
+		assert: (builder environment: 'anEnvironmentName' body: [:b | b text: 'aText'] arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
+		equals: '<?anEnvironmentName|label=aLabel&value=42
+aText
+?>'
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testExternalLink [
 
 	self assert: (builder externalLink: 'anUrl' withDescription: 'aDescription' ) contents equals: '[aDescription](anUrl)'
