@@ -117,6 +117,28 @@ MicMicrodownTextualBuilder >> comment: aText [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
+	self raw: parserClass environmentOpeningBlockMarkup.
+	self raw: aName.
+	self raw: parserClass argumentListStartDelimiter.
+	self rawParameters: aCol asDictionary.
+	self newLine.
+	self raw: parserClass environmentClosingBlockMarkup
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCol [
+	self raw: parserClass environmentOpeningBlockMarkup.
+	self raw: aName.
+	self raw: parserClass argumentListStartDelimiter.
+	self rawParameters: aCol asDictionary.
+	self newLine.
+	aBodyBlock value: self.
+	self newLine.
+	self raw: parserClass environmentClosingBlockMarkup
+]
+
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 	self 
