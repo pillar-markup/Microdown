@@ -114,9 +114,7 @@ MicConverterVisitorTest >> testComment [
 
 { #category : #tests }
 MicConverterVisitorTest >> testEnvironmentBlock [
-	self skip.
-	self flag: #fixme.
-	"pillarFrom collect send to nil"
+
 	self parse: factory environmentSample createElementOfClass: PREnvironment
 	
 ]
