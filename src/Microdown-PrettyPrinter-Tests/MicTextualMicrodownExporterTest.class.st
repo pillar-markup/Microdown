@@ -48,9 +48,34 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 	self verifyObtain: factory anchorSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testAnchorReference [
+	self verifyObtain: factory anchorReferenceSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testAnnotated [
+	self verifyObtain: factory annotatedSample
+]
+
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
 	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testComment [
+	self verifyObtain: factory commentSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testEnvironment [
+	self verifyObtain: factory environmentSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigure [
+	self verifyObtain: factory figureSample
 ]
 
 { #category : #'tests-header' }
@@ -66,6 +91,35 @@ MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testHorizontalLine [
+	self verifyObtain: factory horizontalLineSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLink [
+	self verifyObtain: factory linkSample
+]
+
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testMathBlock [ 
+	self verifyObtain: factory mathParametersSample, String cr
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testMathInline [
+	self verifyObtain: factory mathInlineSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testMetaData [
+	self skip.
+	self flag: #fixme.
+	"the builder wait a collection of associotion or a dictionnary but a metaData has not that"
+
+	self verifyObtain: factory metaDataSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
@@ -76,10 +130,67 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 	self assert: (res copyFrom: res size -3 to: res size - 2) equals: parser boldMarkup
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedList [
+
+	self verifyObtain: factory orderedListWithTwoItemsSample 
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraph [
+	self verifyObtain: factory paragraphSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithBold [
+	self verifyObtain: factory paragraphBoldSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithItalic [
+	self verifyObtain: factory paragraphItalicSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithMonospace [
+	self verifyObtain: factory paragraphMonospaceSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithNested [
+	self verifyObtain: factory paragraphNestedSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testParagraphWithStrike [
+	self verifyObtain: factory paragraphStrikeSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testPlainHeader [
 
 	self verifyObtain: factory headerLevel3SampleWithNewLine 
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testQuote [
+	self verifyObtain: factory quoteSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testRawFormat [
+	self verifyObtain: factory rawFormatSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testRoot [
+	self verifyObtain: factory rootSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedList [
+
+	self verifyObtain: factory unorderedListWithTwoItemsSample
 ]
 
 { #category : #utils }

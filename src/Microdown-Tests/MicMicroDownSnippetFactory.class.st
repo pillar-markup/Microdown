@@ -14,7 +14,8 @@ MicMicroDownSnippetFactory >> anchorAreTrimedSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> anchorReferenceSample [
-	^ '*@Foo@*'
+	^ '*@Foo@*
+'
 ]
 
 { #category : #anchor }
@@ -34,7 +35,8 @@ MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> annotatedSample [
-	^ '!! Foo'
+	^ '!!label Foo
+'
 ]
 
 { #category : #annotations }
@@ -95,17 +97,20 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 
 { #category : #block }
 MicMicroDownSnippetFactory >> commentSample [
-	^ '%Foo'
+	^ '% Foo'
 ]
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> environmentSample [
-	^ '<?Foo|value=aFoo&label=42'
+	^ '<?Foo|value=aFoo&label=42
+Foo
+?>'
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> figureSample [
-	^ '![Foo](anUrl|label=figureTest&size=80)'
+	^ '![_Foo_](anUrl|label=figureTest&size=80)
+'
 ]
 
 { #category : #headers }
@@ -184,7 +189,7 @@ MicMicroDownSnippetFactory >> headerWithNewLineSample [
 
 { #category : #headers }
 MicMicroDownSnippetFactory >> horizontalLineSample [
-	^ parserClass horizontalLineMarkup
+	^ parserClass horizontalLineMarkup, String cr
 ]
 
 { #category : #initialization }
@@ -218,7 +223,8 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> linkSample [
-	^ '[Foo](anUrl)'
+	^ '[Foo](anUrl)
+'
 ]
 
 { #category : #list }
@@ -245,7 +251,8 @@ MicMicroDownSnippetFactory >> listWithCommentSample [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> mathInlineSample [
-	^ '$V_i = C_0 - C_3$'
+	^ '$V_i = C_0 - C_3$
+'
 ]
 
 { #category : #anchor }
@@ -315,7 +322,8 @@ MicMicroDownSnippetFactory >> orderedListEmptySample [
 
 { #category : #list }
 MicMicroDownSnippetFactory >> orderedListSample [
-	^ '1. Foo'
+	^ '1. Foo
+'
 ]
 
 { #category : #list }
@@ -323,13 +331,44 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
 '1. first
-2. second
+1. second
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphBoldSample [
+	^ 'this is a **paragraph**
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphItalicSample [
+	^ 'this is a _paragraph_
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphMonospaceSample [
+	^ 'this is a `paragraph`
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphNestedSample [
+	^ 'this is a **_paragraph_**
 '
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> paragraphSample [
-	^ 'Foo'
+	^ 'Foo
+'
+]
+
+{ #category : #format }
+MicMicroDownSnippetFactory >> paragraphStrikeSample [
+	^ 'this is a ~paragraph~
+'
 ]
 
 { #category : #utils }
@@ -340,12 +379,23 @@ MicMicroDownSnippetFactory >> parserClass [
 
 { #category : #anchor }
 MicMicroDownSnippetFactory >> quoteSample [
-	^ '> Foo'
+	^ '>  Foo'
 ]
 
 { #category : #format }
 MicMicroDownSnippetFactory >> rawFormatSample [
-	^ 'a{{Foo}}b'
+	^ 'a{{Foo}}b
+'
+]
+
+{ #category : #document }
+MicMicroDownSnippetFactory >> rootSample [
+	| stream |
+	stream := (String new: 10000) writeStream.
+	stream nextPutAll: self headerLevel2Sample;
+	nextPutAll: self paragraphNestedSample;
+	nextPutAll: self figureSample.
+	^ stream contents
 ]
 
 { #category : #'code block' }
@@ -509,7 +559,8 @@ MicMicroDownSnippetFactory >> unorderedListEmptySample [
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListSample [
-	^ self parserClass unorderedListMarkup, 'Foo'
+	^ self parserClass unorderedListMarkup, 'Foo
+'
 ]
 
 { #category : #list }
@@ -523,5 +574,6 @@ MicMicroDownSnippetFactory >> unorderedListWithSubListSample [
 MicMicroDownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar'
+	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar
+'
 ]

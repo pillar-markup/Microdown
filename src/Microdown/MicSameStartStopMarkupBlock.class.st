@@ -23,6 +23,11 @@ MicSameStartStopMarkupBlock class >> isAbstract [
 ]
 
 { #category : #accessing }
+MicSameStartStopMarkupBlock >> argumentAssociations [
+	^ arguments associations
+]
+
+{ #category : #accessing }
 MicSameStartStopMarkupBlock >> arguments: aDictionary [
 	arguments := aDictionary
 ]

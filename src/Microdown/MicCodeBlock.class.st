@@ -50,11 +50,6 @@ MicCodeBlock >> accept: aVisitor [
 ]
 
 { #category : #accessing }
-MicCodeBlock >> argumentAssociations [
-	^ arguments associations
-]
-
-{ #category : #accessing }
 MicCodeBlock >> arguments [
 	^ arguments
 ]
