@@ -19,6 +19,11 @@ MicBoldFormatBlock >> closingDelimiter [
 ]
 
 { #category : #'as yet unclassified' }
+MicBoldFormatBlock >> kind [
+	^ #bold
+]
+
+{ #category : #'as yet unclassified' }
 MicBoldFormatBlock >> openingDelimiter [
 
  	^ MicBoldDelimiter markup

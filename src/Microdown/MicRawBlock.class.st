@@ -28,6 +28,12 @@ MicRawBlock >> closingDelimiter [
 ]
 
 { #category : #accessing }
+MicRawBlock >> kind [
+
+ 	^ #raw
+]
+
+{ #category : #accessing }
 MicRawBlock >> openingDelimiter [
 
  	^ MicRawOpenerDelimiter markup

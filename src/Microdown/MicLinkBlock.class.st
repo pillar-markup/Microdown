@@ -13,6 +13,12 @@ MicLinkBlock >> accept: aVisitor [
 ]
 
 { #category : #accessing }
+MicLinkBlock >> kind [
+
+ 	^ #linkName
+]
+
+{ #category : #accessing }
 MicLinkBlock >> openingDelimiter [
 
  	^ MicLinkNameOpenerDelimiter markup

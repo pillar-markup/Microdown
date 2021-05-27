@@ -53,6 +53,11 @@ MicMicroDownSnippetFactory >> boldFormatSample [
 ]
 
 { #category : #'code block' }
+MicMicroDownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
+	^ self codeblock: 'foo=#(1 2 true)'
+]
+
+{ #category : #'code block' }
 MicMicroDownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
@@ -65,7 +70,7 @@ MicMicroDownSnippetFactory >> codeblock: param [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> codeblock: param body: body [
-
+	
 	^ String streamContents: [ :st | 
 		st nextPutAll: self parserClass codeblockMarkup. 
 		st nextPutAll: param.
@@ -371,11 +376,6 @@ MicMicroDownSnippetFactory >> scriptParameterWithFloatSample [
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithLiteralArraySample [
-	^ self codeblock: 'foo=#(1 2 true)'
-]
-
-{ #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParameterWithNoValuesSample [
 	^ self codeblock: 'foo=' body: 'bar'
 
@@ -383,7 +383,7 @@ MicMicroDownSnippetFactory >> scriptParameterWithNoValuesSample [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParameterWithSpacesBeforeAndAfterSample [
-	^ ' foo = true | bar = 2 
+	^ ' foo = true & bar = 2 
 '
 ]
 
@@ -394,13 +394,13 @@ MicMicroDownSnippetFactory >> scriptParameterWithoutValueSample [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParametersEscapeSample [
-	^ 'value=foo\||bar
+	^ 'value=foo\&&bar
 '
 ]
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParametersMultipleSample [
-	^ 'value=foo|bar
+	^ 'value=foo&bar
 '
 ]
 
@@ -417,7 +417,7 @@ MicMicroDownSnippetFactory >> scriptSample [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptTwoParametersNoValueSample [
-	^ 'foo|bar
+	^ 'foo&bar
 '
 ]
 
@@ -441,8 +441,9 @@ MicMicroDownSnippetFactory >> scriptWithSpaceAtTheEndSample [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptWithSpacedParametersSample [
-	^ self codeblock:   ' foo = true | bar = 2 '
-body: 'bla'
+	^ self 
+		codeblock:   ' foo = true & bar = 2 '
+		body: 'bla'
 ]
 
 { #category : #utils }

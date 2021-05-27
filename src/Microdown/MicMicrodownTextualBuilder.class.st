@@ -83,6 +83,7 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
 	self raw: aString.
 	self newLine.
 	self raw: parserClass codeblockMarkup.
+	self newLine.
 ]
 
 { #category : #'element - code block' }

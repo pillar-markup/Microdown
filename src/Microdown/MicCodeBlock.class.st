@@ -50,6 +50,11 @@ MicCodeBlock >> accept: aVisitor [
 ]
 
 { #category : #accessing }
+MicCodeBlock >> argumentAssociations [
+	^ arguments associations
+]
+
+{ #category : #accessing }
 MicCodeBlock >> arguments [
 	^ arguments
 ]
@@ -81,6 +86,17 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 { #category : #accessing }
 MicCodeBlock >> firstTag [
 	^ firstTag
+]
+
+{ #category : #accessing }
+MicCodeBlock >> firstTagValue [
+	^ arguments at: self firstTag ifAbsent: [ '' ]
+]
+
+{ #category : #accessing }
+MicCodeBlock >> hasFirstTag [
+
+	^ firstTag isNotEmpty
 ]
 
 { #category : #visiting }

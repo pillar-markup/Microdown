@@ -18,6 +18,37 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testAssociations [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code associations |
+	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	associations :=  { ('language' -> 'pharo') . ('caption' -> { MicMonospaceFormatBlock new substring: 'Color' ; kind: #monospace . MicTextBlock new substring: ' is a class.'; kind: #basic }) . ('label' -> 'scr:asMorphInColor') }.
+	
+	self 
+		assert: code argumentAssociations first 
+		equals: associations first.
+	self 
+		assert: code argumentAssociations second value first value substring
+		equals: associations second value first substring.
+	self 
+		assert: code argumentAssociations second value first value kind
+		equals: associations second value first kind.	
+		
+	self 
+		assert: code argumentAssociations third 
+		equals: associations third
+]
+
 { #category : #tests }
 MicCodeBlockTest >> testBody [
 	| source root textBody |
@@ -84,7 +115,7 @@ is really cool'.
 is really cool ]'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagNoValue [
 
 	"
@@ -105,7 +136,7 @@ Color >> asMorph
 	self assert: (code arguments at:#language) isNil
 ]
 
-{ #category : #tests }
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagNoValueButContainSpace [
 	"this is not really good but right now we have it like that."
 	"
@@ -126,7 +157,17 @@ Color >> asMorph
 	self assert: (code arguments at:#'lang uage') isNil
 ]
 
-{ #category : #tests }
+{ #category : #'tests - first tag' }
+MicCodeBlockTest >> testFirstTagValue [
+
+	| source codeBlock |
+	source := parser codeblockMarkup, 'language=12', String cr, 'Color >> asMorph
+    ^ Morph new color: self' , String cr, parser codeblockMarkup. 
+   codeBlock :=(self parser parse: source) children first.
+	self assert:  codeBlock firstTagValue equals: '12'.
+]
+
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagWithValue [
 
 	"
@@ -239,6 +280,27 @@ Color >> asMorph
 	
 	code := root children first.
 	self assert: code hasCaption
+]
+
+{ #category : #'tests - first tag' }
+MicCodeBlockTest >> testHasFirstTag [
+
+	| source codeBlock |
+	source := parser codeblockMarkup, 'language=PharoMethod', String cr, 'Color >> asMorph
+    ^ Morph new color: self' , String cr, parser codeblockMarkup. 
+   codeBlock :=(self parser parse: source) children first.
+	self assert:  codeBlock hasFirstTag.
+	self assert:  codeBlock firstTag equals: 'language'.
+]
+
+{ #category : #'tests - first tag' }
+MicCodeBlockTest >> testHasFirstTagWithNoFirstTag [
+
+	| source codeBlock |
+	source := parser codeblockMarkup, String cr,  'my fancy code
+is really cool', String cr, parser codeblockMarkup. 
+	codeBlock := (parser parse: source) children first.
+	self assert: codeBlock firstTagValue equals: ''
 ]
 
 { #category : #tests }

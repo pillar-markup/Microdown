@@ -30,6 +30,12 @@ MicFigureBlock >> asPillar [
 ]
 
 { #category : #accessing }
+MicFigureBlock >> kind [
+
+ 	^ #figure
+]
+
+{ #category : #accessing }
 MicFigureBlock >> openingDelimiter [
 
  	^ MicFigureNameOpenerDelimiter markup

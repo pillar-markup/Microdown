@@ -65,7 +65,6 @@ MicInlineEmphasisProcessor >> addBasicTextBlocks [
 				(MicTextBlock
 					from: stIndex
 					to: eIndex
-					withKind: #basic
 					withSubstring: substring
 					withChildren: #())
 			 ]
@@ -160,7 +159,6 @@ MicInlineEmphasisProcessor >> processEmphasis [
 		(firstOpener associatedInlineBlock
 			from: firstOpener index
 			to: associateCloser index + associateCloser size - 1
-			withKind: firstOpener type
 			withSubstring: correctSubstring
 			withChildren: children).
 	"7. keep going"

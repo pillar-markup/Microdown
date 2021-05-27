@@ -28,6 +28,12 @@ MicAnchorReferenceBlock >> closingDelimiter [
  	^ MicAnchorReferenceCloserDelimiter markup
 ]
 
+{ #category : #initialization }
+MicAnchorReferenceBlock >> kind [
+
+	^ #anchorReference
+]
+
 { #category : #'as yet unclassified' }
 MicAnchorReferenceBlock >> openingDelimiter [
 

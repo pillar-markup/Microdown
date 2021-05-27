@@ -48,6 +48,11 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 	self verifyObtain: factory anchorSample
 ]
 
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testCodeBlock [ 
+	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
@@ -56,7 +61,7 @@ MicTextualMicrodownExporterTest >> testHeaderWithBold [
 
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
-
+	
 	self verifyObtain: factory headerWithNestedFormatSampleWithNewLine.
 
 ]

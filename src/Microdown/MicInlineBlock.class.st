@@ -23,22 +23,20 @@ Class {
 }
 
 { #category : #constructor }
-MicInlineBlock class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString [
+MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString [
 	^ self new 
 		start: aStartInteger; 
 		end: anEndInteger; 
-		kind: aKind; 
 		substring: aString; 
 		children: Array empty; 
 		cleanSubstring; yourself.	
 ]
 
 { #category : #constructor }
-MicInlineBlock class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren [
+MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 	^ self new 
 		start: aStartInteger; 
 		end: anEndInteger; 
-		kind: aKind; 
 		substring: aString; 
 		children: aChildren; 
 		cleanSubstring; yourself.	
@@ -88,6 +86,14 @@ MicInlineBlock >> escapeCharacter [
 	^ MicEscapeDelimiter markup
 ]
 
+{ #category : #initialization }
+MicInlineBlock >> initialize [
+
+	super initialize. 
+	children := #().
+	
+]
+
 { #category : #testing }
 MicInlineBlock >> isOnlyChild [
 	^ children isEmpty
@@ -95,7 +101,8 @@ MicInlineBlock >> isOnlyChild [
 
 { #category : #accessing }
 MicInlineBlock >> kind [
-	^ kind
+	"we are deprecating the state"
+	^ self error
 ]
 
 { #category : #accessing }
