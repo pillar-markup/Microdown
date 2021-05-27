@@ -320,7 +320,8 @@ MicMicroDownSnippetFactory >> orderedListEmptySample [
 
 { #category : #list }
 MicMicroDownSnippetFactory >> orderedListSample [
-	^ '1. Foo'
+	^ '1. Foo
+'
 ]
 
 { #category : #list }
@@ -328,7 +329,7 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
 '1. first
-2. second
+1. second
 '
 ]
 
@@ -556,7 +557,8 @@ MicMicroDownSnippetFactory >> unorderedListEmptySample [
 
 { #category : #list }
 MicMicroDownSnippetFactory >> unorderedListSample [
-	^ self parserClass unorderedListMarkup, 'Foo'
+	^ self parserClass unorderedListMarkup, 'Foo
+'
 ]
 
 { #category : #list }
@@ -570,5 +572,6 @@ MicMicroDownSnippetFactory >> unorderedListWithSubListSample [
 MicMicroDownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar'
+	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar
+'
 ]
