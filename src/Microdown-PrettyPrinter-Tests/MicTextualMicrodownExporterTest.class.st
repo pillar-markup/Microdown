@@ -117,6 +117,12 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedList [
+
+	self verifyObtain: factory orderedListWithTwoItemsSample 
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testParagraph [
 	self verifyObtain: factory paragraphSample
 ]
@@ -165,6 +171,12 @@ MicTextualMicrodownExporterTest >> testRawFormat [
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testRoot [
 	self verifyObtain: factory rootSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedList [
+
+	self verifyObtain: factory unorderedListWithTwoItemsSample
 ]
 
 { #category : #utils }
