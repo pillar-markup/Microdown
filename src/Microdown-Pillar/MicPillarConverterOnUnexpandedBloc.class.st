@@ -59,17 +59,6 @@ MicPillarConverterOnUnexpandedBloc >> visitFigure: aMicFigureBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitFormatBlock: aMicFormatBlock [
- 	| childrenAsPillar |
- 	childrenAsPillar := aMicFormatBlock isOnlyChild 
- 		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
- 		ifFalse: [ aMicFormatBlock children collect: [:e | e asPillar ] ].
- 	 ^ aMicFormatBlock associatedPillarClass new
- 				setChildren: childrenAsPillar;
- 				yourself
-]
-
-{ #category : #visiting }
 MicPillarConverterOnUnexpandedBloc >> visitHeader: aMicHeaderBlock [
  	^ PRHeader new
  		level: aMicHeaderBlock level;
@@ -125,11 +114,6 @@ MicPillarConverterOnUnexpandedBloc >> visitRoot: aMicRootBlock [
  		setChildren: (aMicRootBlock children collect: [ :child | child asPillar ]);
  		yourself
 
-]
-
-{ #category : #visiting }
-MicPillarConverterOnUnexpandedBloc >> visitTextBlock: aMicTextBlock [
- 	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
 { #category : #visiting }

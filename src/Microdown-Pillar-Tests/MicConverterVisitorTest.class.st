@@ -3,10 +3,44 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'pillarDocument',
-		'visitor'
+		'visitor',
+		'factory'
 	],
 	#category : #'Microdown-Pillar-Tests'
 }
+
+{ #category : #parsing }
+MicConverterVisitorTest >> parse: sample createChildElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := (parser parse: sample) children first children first.
+	pillarDoc := micDoc accept: visitor.
+	self assert: pillarDoc class equals: aClass.
+	^ pillarDoc
+]
+
+{ #category : #parsing }
+MicConverterVisitorTest >> parse: sample createChildSecondElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := (parser parse: sample) children first children second.
+	pillarDoc := micDoc accept: visitor.
+	self assert: pillarDoc class equals: aClass.
+	^ pillarDoc
+]
+
+{ #category : #parsing }
+MicConverterVisitorTest >> parse: sample createElementOfClass: aClass [
+
+	| parser micDoc pillarDoc |
+	parser := self parserClass new. 
+	micDoc := (parser parse: sample) children first.
+	pillarDoc := micDoc accept: visitor.
+	self assert: pillarDoc class equals: aClass.
+	^ pillarDoc
+]
 
 { #category : #tests }
 MicConverterVisitorTest >> parserClass [
@@ -16,27 +50,49 @@ MicConverterVisitorTest >> parserClass [
 { #category : #initialization }
 MicConverterVisitorTest >> setUp [
  	super setUp.
- 	visitor := MicPillarConverterOnUnexpandedBloc new
+ 	visitor := MicPillarConverter new.
+	factory := MicMicroDownSnippetFactory new.
 ]
 
 { #category : #tests }
 MicConverterVisitorTest >> testAnchorBlock [
-	| source root pillar |
-	source := '@anchor'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRAnchor
+	self parse: factory anchorSample createElementOfClass: PRAnchor
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testAnchorReference [
+	self parse: factory anchorReferenceSample createChildElementOfClass: PRInternalLink
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testAnnotated [
+	self parse: factory annotatedSample createElementOfClass: PRAnnotatedParagraph
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testAnnotation [
+	self parse: factory annotationSample createChildSecondElementOfClass: PRUndefinedAnnotation
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testBoldFormat [
+	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testBoldFormatEmpty [
+	| boldBlock |
+	self skip.
+	self flag: #fixme.
+	"the parser parse '****' and return a HorizontalBlock"
+	boldBlock := self parse: factory boldFormatEmptySample createChildElementOfClass: PRBoldFormat.
+	self assert: boldBlock text equals: ''
 ]
 
 { #category : #tests }
 MicConverterVisitorTest >> testCodeBlock [
+	self parse: (factory codeblock: 'language=pharo' body: '1-2 ') createElementOfClass: PRCodeblock
 
-	| document |
-	document := self parserClass new parse: '```language=pharo
-	1-2 
-```'.
-	self assert: (document accept: visitor) children first class equals: PRCodeblock.
-	
 ]
 
 { #category : #tests }
@@ -52,57 +108,83 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
+MicConverterVisitorTest >> testComment [
+	self parse: factory commentSample createElementOfClass: PRCommentedLine
+]
+
+{ #category : #tests }
 MicConverterVisitorTest >> testEnvironmentBlock [
-	| source root pillar |
-	source := '<?environment|name=aName?>'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRUndefinedAnnotation
+
+	self parse: factory environmentSample createElementOfClass: PREnvironment
 	
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testFigure [
+	self parse: factory figureSample createChildElementOfClass: PRFigure
 ]
 
 { #category : #tests }
 MicConverterVisitorTest >> testHeader [ 
-
-	| document |
-	document := self parserClass new parse: '# Header1
-	
-## Header 2
-	
-### Header 3'.
-	pillarDocument := document accept: visitor.
-	"we could have use Grammar headerMarkup to build the text but this is clearer like that"
-	self assert: pillarDocument children first class equals: PRHeader.
-	self assert: pillarDocument children third class equals: PRHeader.
-	self assert: pillarDocument children fifth class equals: PRHeader
-	
+	self parse: factory headerLevel3Sample createElementOfClass: PRHeader
 ]
 
 { #category : #tests }
 MicConverterVisitorTest >> testHorizontalLineBlock [
-	| source root pillar |
-	source := '***
-	'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRHorizontalRule
+	self parse: factory horizontalLineSample createElementOfClass: PRHorizontalRule
+	
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testItalicFormat [
+	self parse: factory italicFormatSample createChildElementOfClass: PRItalicFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testItalicFormatEmpty [
+	| italicBlock |
+	italicBlock := self parse: factory italicFormatEmptySample createChildElementOfClass: PRItalicFormat.
+	self assert: italicBlock text equals: ''
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testLink [
+	self parse: factory linkSample createChildElementOfClass: PRExternalLink
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testListItem [
+	self parse: factory listMultiSample createChildElementOfClass: PRListItem
 	
 ]
 
 { #category : #tests }
 MicConverterVisitorTest >> testMathBlock [
-	| source root pillar |
-	source := '
-&
-V_i = C_0 - C_3
-&
+	self parse: factory mathParametersSample createElementOfClass: PRMathEnvironment
 	
-'.
-	root := self parserClass new parse: source.
-	pillar := root children first accept: visitor.
-	self assert: pillar class equals: PRMathEnvironment.
-	self assert: pillar children first class equals: PRText.
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMathInline [
+	self parse: factory mathInlineSample createChildElementOfClass: PRMathInTextAnnotation
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testMetaDataBlock [
+	self parse: factory metaDataSample createElementOfClass: PRMetadata
 	
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMonospaceFormat [
+	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testMonospaceFormatEmpty [
+	| monospaceBloc |
+	monospaceBloc := self parse: factory monospaceFormatEmptySample createChildElementOfClass: PRMonospaceFormat.
+	self assert: monospaceBloc text equals: ''
 ]
 
 { #category : #tests }
@@ -134,6 +216,14 @@ MicConverterVisitorTest >> testQuoteBlock [
 		equals:
 			'text1
 text2'
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testRawFormat [
+	self skip.
+	self flag: #fixme.
+	"PRRaw don't understand setChildren"
+	self parse: factory rawFormatSample createChildSecondElementOfClass: PRRaw
 ]
 
 { #category : #tests }
@@ -199,6 +289,36 @@ and one with tabs'.
 	self assert: pillar class equals: PRParagraph.
 	self assert: pillar children first class equals: PRText.
 	self assert: pillar children first text equals: expected
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testStrikethroughFormat [
+	self parse: factory strikethroughFormatSample createChildElementOfClass: PRStrikethroughFormat
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testStrikethroughFormatEmpty [
+	| strikeBlock |
+	strikeBlock := self parse: factory strikethroughFormatEmptySample createChildElementOfClass: PRStrikethroughFormat.
+	self assert: strikeBlock text equals: ''
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testTableBlock [
+	self skip.
+	self flag: #fixme.
+	"to fix when MicTable will be fix"
+	self parse: factory tableSample createElementOfClass: PRDocument
+	
+]
+
+{ #category : #'tests-inline blocks' }
+MicConverterVisitorTest >> testText [
+	| source root pillar |
+	source := 'Foo'.
+	root := (self parserClass new parse: source) children first children first.
+	pillar := root accept: visitor.
+	self assert: pillar class equals: PRText
 ]
 
 { #category : #tests }
