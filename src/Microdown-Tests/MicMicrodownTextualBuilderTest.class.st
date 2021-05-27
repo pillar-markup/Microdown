@@ -178,6 +178,14 @@ MicMicrodownTextualBuilderTest >> testMathInline [
 ]
 
 { #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testMetaData [
+
+	self 
+		assert: (builder metaDataFromAssociations: {'label'->'aLabel' . 'size'->'142'}) contents 
+		equals: parser metaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , parser metaDataClosingBlockMarkup
+]
+
+{ #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
 	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
