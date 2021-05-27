@@ -94,7 +94,8 @@ MicPillarConverter >> visitComment: aMicCommentBlock [
 
 { #category : #visiting }
 MicPillarConverter >> visitEnvironment: aMicEnvironmentBlock [
- 	| env |
+	
+	| env |
 	env := PREnvironment new 
 			name: aMicEnvironmentBlock name;
 			parameters: aMicEnvironmentBlock arguments; yourself.
@@ -204,7 +205,7 @@ MicPillarConverter >> visitQuote: aMicQuoteBlock [
 
 { #category : #'visiting inline' }
 MicPillarConverter >> visitRaw: aMicRaw [
-	^  self formatBlock: aMicRaw
+	^ PRRaw new text: aMicRaw substring ; yourself 
 	
 ]
 
