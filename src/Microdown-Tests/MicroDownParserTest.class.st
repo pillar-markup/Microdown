@@ -279,6 +279,31 @@ MicroDownParserTest >> testError [
 	
 ]
 
+{ #category : #'tests - header' }
+MicroDownParserTest >> testHeaderLevel4 [
+	| source root |
+	source := (self parser headerMarkup repeat: 4), '    Level four'.
+	root := self parser parse: source.
+	self assert: root children size equals: 1.
+	self assert: root children first header equals: 'Level four'.
+	self assert: root children first level equals: 4
+]
+
+{ #category : #'tests - header' }
+MicroDownParserTest >> testHeaderLevel4WithBold [
+
+	| source root |
+	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
+	root := self parser parse: source.
+	self assert: root children size equals: 1.
+	self assert: root children first children first substring equals: 'Level '.
+	self assert: root children first children second substring equals: 'four'.
+	self assert: root children first children third substring equals: ' '.
+	self assert: root children first children fourth substring equals: 'mono'.
+	self assert: root children first children fifth substring equals: ' end'.
+	self assert: root children first level equals: 4.
+]
+
 { #category : #'tests-horizontal' }
 MicroDownParserTest >> testHorizontalBlock [
 

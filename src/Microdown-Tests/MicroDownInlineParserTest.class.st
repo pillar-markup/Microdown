@@ -9,7 +9,6 @@ Class {
 
 { #category : #parsing }
 MicroDownInlineParserTest >> parse: aString [
-
 	"self new parse: 'foo_abbb_zz' "
 
 	| contents doc elements |
@@ -37,7 +36,7 @@ MicroDownInlineParserTest >> parserClass [
 	^ MicroDownParser 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> rawTestingFor: aString [
 
  	| elements |
@@ -239,31 +238,6 @@ MicroDownInlineParserTest >> testFigureWithParameters [
 
 ]
 
-{ #category : #'tests - header' }
-MicroDownInlineParserTest >> testHeaderLevel4 [
-	| source root |
-	source := (self parser headerMarkup repeat: 4), '    Level four'.
-	root := self parser parse: source.
-	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level four'.
-	self assert: root children first level equals: 4
-]
-
-{ #category : #'tests - header' }
-MicroDownInlineParserTest >> testHeaderLevel4WithBold [
-
-	| source root |
-	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
-	root := self parser parse: source.
-	self assert: root children size equals: 1.
-	self assert: root children first children first substring equals: 'Level '.
-	self assert: root children first children second substring equals: 'four'.
-	self assert: root children first children third substring equals: ' '.
-	self assert: root children first children fourth substring equals: 'mono'.
-	self assert: root children first children fifth substring equals: ' end'.
-	self assert: root children first level equals: 4.
-]
-
 { #category : #'tests - format' }
 MicroDownInlineParserTest >> testItalic [
  	| elements |
@@ -375,7 +349,7 @@ MicroDownInlineParserTest >> testMonospacesWithoutClosure [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawWitoutClosure [
 
  	| elements |
@@ -384,7 +358,7 @@ MicroDownInlineParserTest >> testRawWitoutClosure [
  	self assert: elements first substring equals: 'abc{{rawsdef'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRaws [
 	self rawTestingFor: 'anything'
 ]
@@ -403,31 +377,31 @@ MicroDownInlineParserTest >> testRawsDoesNotHandleWellEscape [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawsHandleWellCurlyIfNotLast [
 	
 	self rawTestingFor: 'anything}88'.
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawsWithBold [
 
  	self rawTestingFor: '**bold**'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawsWithItalic [
 
  	self rawTestingFor: '_italic_'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawsWithMonospace [
  	self rawTestingFor: '`monononono`'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - raw' }
 MicroDownInlineParserTest >> testRawsWithStrike [
  	self rawTestingFor: '~strikkkkk~'
 ]
