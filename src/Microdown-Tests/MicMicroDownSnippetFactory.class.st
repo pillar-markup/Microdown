@@ -426,6 +426,11 @@ MicMicroDownSnippetFactory >> scriptParameterWithFloatSample [
 ]
 
 { #category : #'code block' }
+MicMicroDownSnippetFactory >> scriptParameterWithLiteralArraySample [
+	^ self codeblock: 'foo=#(1 2 true)'
+]
+
+{ #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParameterWithNoValuesSample [
 	^ self codeblock: 'foo=' body: 'bar'
 

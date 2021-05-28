@@ -2,12 +2,12 @@ Extension { #name : #MicroDownParser }
 
 { #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> asRichText: aString [
-	^PRRichTextComposer new start: (MicroDownParser new parse: aString) asPillar
+	^BCRichTextComposer new start: (MicroDownParser new parse: aString) asPillar
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> asText: aString [
-	^ PRRichTextComposer new start: (self new parse: aString) asPillar
+	^ BCRichTextComposer new start: (self new parse: aString) asPillar
 ]
 
 { #category : #'*Microdown-RichTextComposer' }

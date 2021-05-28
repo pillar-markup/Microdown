@@ -170,12 +170,8 @@ BCCodeSemanticActionTest >> testReferenceToANonExistingMethodBecauseOfBogusClass
 BCCodeSemanticActionTest >> testReferenceToANonExistingMethodBecauseOfNoSymbol [
 
 	| text |
-	self skip.
-	"for now scantoken convert 'setX:setY: into #setX:setY:'
-	so I cannot distinguish"
-
 	text := (PRMonospaceFormat with:
-		         (PRText content: 'Point >> setX:setY:')) children first
+		         (PRText content: 'Point >> setX:setY2:')) children first
 		        text.
 	self assert: (self semanticActionClass from: text) entity isNil
 ]
