@@ -243,7 +243,7 @@ MicInlineSplitter >> newInlineBlock [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #unused }
 MicInlineSplitter >> newInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
@@ -265,9 +265,10 @@ MicInlineSplitter >> newInlineBlockWithoutChildren [
 			from: opener index
 			to: closer index + closer size - 1
 			withSubstring: correctSubstring
+			
 ]
 
-{ #category : #'instance creation' }
+{ #category : #unused }
 MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 	^ opener associatedInlineBlock
 			from: opener index
@@ -275,7 +276,7 @@ MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 			withSubstring: correctSubstring
 ]
 
-{ #category : #'instance creation' }
+{ #category : #unused }
 MicInlineSplitter >> newURLInlineBlock [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.

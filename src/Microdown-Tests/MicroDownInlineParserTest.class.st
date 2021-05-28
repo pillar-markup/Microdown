@@ -1,3 +1,6 @@
+"
+The logic is to call the main parser so that the inline elements are in the blocks as after the closeMe phase of a Block (this is where the inline block are parsed). 
+"
 Class {
 	#name : #MicroDownInlineParserTest,
 	#superclass : #TestCase,
@@ -22,6 +25,7 @@ MicroDownInlineParserTest >> parse: aString [
 { #category : #parsing }
 MicroDownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [ 
  	"self new parse: 'foo_abbb_zz' "
+	
  	^ (self parse: aString) children first children
  
 ]
@@ -446,17 +450,39 @@ MicroDownInlineParserTest >> testStrikesWithoutClosure [
 
 ]
 
-{ #category : #'tests - format' }
-MicroDownInlineParserTest >> testStructure [
+{ #category : #'tests - structure' }
+MicroDownInlineParserTest >> testStructureOfAnchorReference [
 
- 	| elements bold italic |
-
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc'.
-	self assert: elements first substring equals: 'abc'.
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: '  *@anchorReference@*') first.
+	self assert: element text equals: 'anchorReference'.
+	self assert: element children equals: #()
 	
 ]
 
-{ #category : #'tests - format' }
+{ #category : #'tests - structure' }
+MicroDownInlineParserTest >> testStructureOfAnnotation [
+
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: '  <?annotation?>') first.
+	self halt.
+	self assert: element text equals: 'annotation'.
+	self assert: element children equals: #()
+	
+]
+
+{ #category : #'tests - structure' }
+MicroDownInlineParserTest >> testStructureOfAnnotationWithParameters [
+
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: '  <?inputFile|path=PharoTour.mic?>') first.
+	self assert: element name equals: 'inputFile'.
+	self halt.
+	self assert: element children equals: #()
+	
+]
+
+{ #category : #'tests - structure' }
 MicroDownInlineParserTest >> testStructureOfBoldNestedText [
 
  	| element |
@@ -467,7 +493,7 @@ MicroDownInlineParserTest >> testStructureOfBoldNestedText [
 	
 ]
 
-{ #category : #'tests - format' }
+{ #category : #'tests - structure' }
 MicroDownInlineParserTest >> testStructureOfBoldSimpleText [
 
  	| element |
@@ -477,12 +503,11 @@ MicroDownInlineParserTest >> testStructureOfBoldSimpleText [
 	
 ]
 
-{ #category : #'tests - format' }
+{ #category : #'tests - structure' }
 MicroDownInlineParserTest >> testStructureOfPlainText [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: 'abc') first.
 	self assert: element text equals: 'abc'.
 	self assert: element children equals: #()
-	
 ]

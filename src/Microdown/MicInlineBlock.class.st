@@ -28,7 +28,9 @@ MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aStr
 		end: anEndInteger; 
 		substring: aString; 
 		children: Array empty; 
-		cleanSubstring; yourself.	
+		cleanSubstring; 
+		closeMe;
+		yourself.	
 ]
 
 { #category : #constructor }
@@ -38,7 +40,9 @@ MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aStr
 		end: anEndInteger; 
 		substring: aString; 
 		children: aChildren; 
-		cleanSubstring; yourself.	
+		cleanSubstring; 
+		closeMe; 
+		yourself.	
 ]
 
 { #category : #testing }
@@ -68,6 +72,11 @@ MicInlineBlock >> cleanSubstring [
 			(self substring splitOn: self escapeCharacter)
 				doWithIndex: [:each :i | 
 					(each isEmpty and: i>1) ifTrue: [ s << self escapeCharacter ] ifFalse: [ s << each ] ] ] ) ]
+]
+
+{ #category : #printing }
+MicInlineBlock >> closeMe [
+	"Hook to perform post creation action. The name is the same as for blocks."
 ]
 
 { #category : #accessing }
