@@ -23,6 +23,11 @@ MicTextualMicrodownExporter >> classPrint: aMicFigure [
 	^ aMicFigure class asString
 ]
 
+{ #category : #accessing }
+MicTextualMicrodownExporter >> contents [ 
+	^ stream contents
+]
+
 { #category : #initialization }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
