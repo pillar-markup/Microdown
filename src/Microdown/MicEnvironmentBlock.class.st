@@ -87,7 +87,7 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 	| lineWithoutMarkup argumentsSplitter |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
 	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	name := argumentsSplitter name.
+	name := argumentsSplitter name trimBoth.
 	arguments := argumentsSplitter arguments.
 	^ lineWithoutMarkup
 ]

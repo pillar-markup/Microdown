@@ -60,7 +60,7 @@ MicTextualMicrodownExporterTest >> testAnnotated [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
-	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
+	self verifyObtain: factory scriptParametersSample, String cr
 ]
 
 { #category : #'tests-anchor' }

@@ -22,6 +22,11 @@ MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
+{ #category : #visiting }
+MicFigureBlock >> closeMe [ 
+	self flag: #back. "self halt"
+]
+
 { #category : #accessing }
 MicFigureBlock >> kind [
 

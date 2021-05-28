@@ -40,6 +40,11 @@ MicMathInlineBlock >> accept: aVisitor [
 	^ aVisitor visitMathInline: self
 ]
 
+{ #category : #visiting }
+MicMathInlineBlock >> closeMe [ 
+	self flag: #back. "self halt"
+]
+
 { #category : #accessing }
 MicMathInlineBlock >> closingDelimiter [
 

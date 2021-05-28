@@ -110,13 +110,13 @@ MicroDownInlineParserTest >> testAnnotationBasic [
 
 { #category : #'tests - annotations' }
 MicroDownInlineParserTest >> testAnnotationPrintString [
- 	| elements |
-	self skip.
-	self flag: #fixMe.
+ 	
+	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.&width=90?>def'.
  	self assert: elements size equals: 3.
- 	self assert: elements second printString equals: '<?footnote|value=A foonote is annotation.&width=90?>'.
- 
+ 	self assert: elements second text equals: 'footnote | value=A foonote is annotation.&width=90'.
+	self assert: elements second name equals: 'footnote'.
+	self assert: elements second arguments keys equals: #('value' 'width'). 
 ]
 
 { #category : #'tests - annotations' }
@@ -179,12 +179,10 @@ MicroDownInlineParserTest >> testBoldsAndCorrectNestedItalics [
 { #category : #'tests to make green' }
 MicroDownInlineParserTest >> testBoldsAndNestedItalics [ 
  	| elements |
-	self skip.
-	"MicBoldInline substring return _bolds_ but we were expecting to obtain bolds and to have it wrapped in italics"
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: 'bolds'.
+ 	self assert: elements second text equals: '_bolds_'.
  	self assert: elements second kind equals: 'bold'.
  	self assert: elements second openingDelimiter equals: '**'
  
@@ -244,8 +242,7 @@ MicroDownInlineParserTest >> testFigure [
 { #category : #'tests to make green' }
 MicroDownInlineParserTest >> testFigureWithParameters [
  	| elements figure |
-		self skip.
-	self flag: #fixMe.
+	self skip.
  	elements := self parseAndReturnElementsOfParagraphFor: '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?label=fig2&width=80)'.
  	self assert: elements size equals: 1.
  	figure := elements first.
@@ -274,12 +271,10 @@ MicroDownInlineParserTest >> testItalic [
 { #category : #'tests to make green' }
 MicroDownInlineParserTest >> testItalicsAndNestedBolds [
  	| elements |
-	self skip.
-	"MicItalicInline substring return **italics** but we expected to have italic wrapped in bold"
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second substring equals: 'italics'.
+ 	self assert: elements second text equals: '**italics**'.
  	self assert: elements second kind equals: 'italic'.
  	self assert: elements second openingDelimiter equals: '_'
 ]
@@ -465,8 +460,8 @@ MicroDownInlineParserTest >> testStructureOfAnnotation [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '  <?annotation?>') first.
-	self halt.
 	self assert: element text equals: 'annotation'.
+	self assert: element name equals: 'annotation'.
 	self assert: element children equals: #()
 	
 ]
@@ -477,8 +472,9 @@ MicroDownInlineParserTest >> testStructureOfAnnotationWithParameters [
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '  <?inputFile|path=PharoTour.mic?>') first.
 	self assert: element name equals: 'inputFile'.
-	self halt.
-	self assert: element children equals: #()
+	self assert: element children equals: #().
+	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
+	self assert: (element arguments at: 'path') equals: 'PharoTour.mic'
 	
 ]
 

@@ -461,8 +461,9 @@ MicMicroDownSnippetFactory >> scriptParametersMultipleSample [
 
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptParametersSample [
-	^ 'value=foo
-'
+	^ self 
+		codeblock:   'foo=true&bar=2'
+		body: 'bla'
 ]
 
 { #category : #'code block' }
@@ -497,7 +498,7 @@ MicMicroDownSnippetFactory >> scriptWithSpaceAtTheEndSample [
 { #category : #'code block' }
 MicMicroDownSnippetFactory >> scriptWithSpacedParametersSample [
 	^ self 
-		codeblock:   ' foo = true & bar = 2 '
+		codeblock:   ' foo = true & bar = 2'
 		body: 'bla'
 ]
 

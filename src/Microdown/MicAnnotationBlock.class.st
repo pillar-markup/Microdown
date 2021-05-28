@@ -34,6 +34,14 @@ MicAnnotationBlock >> arguments: anArguments [
 	arguments := anArguments
 ]
 
+{ #category : #visiting }
+MicAnnotationBlock >> closeMe [ 
+	| splitter |
+	splitter := MicArgumentsSplitter withString: substring.
+	name := splitter name trimBoth.
+	arguments := splitter arguments.
+]
+
 { #category : #accessing }
 MicAnnotationBlock >> closingDelimiter [
 

@@ -54,10 +54,10 @@ MicArgumentsSplitter >> parseQuery [
 		string := stream upTo: $&.
 		index := string indexOf: $=.
 		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) put: nil ]
+			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
 			ifTrue: [
 				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1))
+					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
 					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
 	^ fields
 ]
@@ -71,10 +71,10 @@ MicArgumentsSplitter >> parseQueryFrom: aStream [
 		string := aStream upTo: $&.
 		index := string indexOf: $=.
 		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) put: nil ]
+			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
 			ifTrue: [
 				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1))
+					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
 					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
 	^ fields
 ]
