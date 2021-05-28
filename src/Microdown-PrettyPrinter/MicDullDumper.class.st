@@ -19,6 +19,11 @@ MicDullDumper >> classPrint: aMicFigure [
 	^ aMicFigure class asString
 ]
 
+{ #category : #initialization }
+MicDullDumper >> initialize [ 
+	super initialize
+]
+
 { #category : #build }
 MicDullDumper >> parametersPrint: aDictionnary [
 

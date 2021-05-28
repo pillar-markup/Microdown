@@ -163,20 +163,18 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 		writeText: aDescription 
 		surroundBy: parserClass linkNameOpenerMarkup 
 		and: parserClass linkNameCloserMarkup.
-	self 
-		writeText: aURL 
-		surroundBy: parserClass urlOpenerMarkup 
-		and: parserClass urlCloserMarkup
+	self raw: parserClass urlOpenerMarkup.
+			self raw: aURL asString.
+			self raw: parserClass urlCloserMarkup.
 ]
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock [
 	self 
 		rawFigureDescription: aDescriptionBlock.
-	self 
-		writeText: aFigureUrl 
-		surroundBy: parserClass urlOpenerMarkup 
-		and: parserClass urlCloserMarkup
+	self raw: parserClass urlOpenerMarkup.
+			self raw: aFigureUrl asString.
+			self raw: parserClass urlCloserMarkup.
 ]
 
 { #category : #'element - figure' }
@@ -188,7 +186,7 @@ MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBl
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
-			self raw: aFigureUrl.
+			self raw: aFigureUrl asString.
 			self raw: parserClass argumentListStartDelimiter.
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
