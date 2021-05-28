@@ -109,7 +109,7 @@ Foo
 
 { #category : #format }
 MicMicroDownSnippetFactory >> figureSample [
-	^ '![_Foo_](anUrl|label=figureTest&size=80)
+	^ '![_Foo_](/anUrl|label=figureTest&size=80)
 '
 ]
 
@@ -223,7 +223,7 @@ MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
 
 { #category : #format }
 MicMicroDownSnippetFactory >> linkSample [
-	^ '[Foo](anUrl)
+	^ '[Foo](/anUrl)
 '
 ]
 
