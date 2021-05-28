@@ -49,6 +49,24 @@ MicroDownInlineParserTest >> rawTestingFor: aString [
  	self assert: elements second closingDelimiter equals: '}}'
 ]
 
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
+
+ 	| elements bold italic |
+	self skip.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc**_italicAndBold_ boldOnly**def'.
+ 	self assert: elements size equals: 3.
+
+	"we can ask text to any element" 
+	self assert: elements first substring equals: 'abc'.
+	self assert: elements first text equals: 'abc'.
+	
+	bold := elements second.
+	self assert: bold elements size equals: 2.
+	self assert: bold elements second text equals: ' boldOnly'
+	
+]
+
 { #category : #'tests - anchors' }
 MicroDownInlineParserTest >> testAnchorReferenceWithoutClosure [
  	| elements |
@@ -426,4 +444,45 @@ MicroDownInlineParserTest >> testStrikesWithoutClosure [
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc~strikesdef'
 
+]
+
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testStructure [
+
+ 	| elements bold italic |
+
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc'.
+	self assert: elements first substring equals: 'abc'.
+	
+]
+
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testStructureOfBoldNestedText [
+
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: '**_abc_def**') first.
+	self assert: element text equals: '_abc_def'.
+	self assert: element children first text equals: 'abc'.
+	self assert: element children second text equals: 'def'.
+	
+]
+
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testStructureOfBoldSimpleText [
+
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: '**abc def**') first.
+	self assert: element text equals: 'abc def'.
+	self assert: element children equals: #()
+	
+]
+
+{ #category : #'tests - format' }
+MicroDownInlineParserTest >> testStructureOfPlainText [
+
+ 	| element |
+ 	element := (self parseAndReturnElementsOfParagraphFor: 'abc') first.
+	self assert: element text equals: 'abc'.
+	self assert: element children equals: #()
+	
 ]
