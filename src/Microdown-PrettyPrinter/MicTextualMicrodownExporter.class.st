@@ -101,7 +101,7 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 	builder 
-		figure: aFigure url asString 
+		figure: aFigure url 
 		withDescription: [ builder raw: aFigure substring ] 
 		withParameters: aFigure parameters
 ]
@@ -129,7 +129,7 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitLink: aLink [
 
-	builder externalLink: aLink url asString  withDescription: aLink substring 
+	builder externalLink: aLink url  withDescription: aLink substring 
 ]
 
 { #category : #'visit-block' }
