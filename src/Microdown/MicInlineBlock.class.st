@@ -157,7 +157,7 @@ MicInlineBlock >> substring: aSubString [
 	substring := aSubString
 ]
 
-{ #category : #obsolete }
+{ #category : #accessing }
 MicInlineBlock >> text [
  	^ substring
 ]
