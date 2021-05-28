@@ -3,6 +3,7 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #baseline : 'MicrodownDev',
       #onConflict : #useIncoming,
+      #ignoreImage : true,
       #directory : 'src',
       #platforms : [ #pharo ]
     }
