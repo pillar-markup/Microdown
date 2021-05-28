@@ -260,7 +260,7 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testRoot [
-	| descriptionBlock dictionnary |
+	| dictionnary |
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
 	self 
 		assert: (builder 
