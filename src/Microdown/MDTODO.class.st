@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MDTODO >> todo01 [
+
+	^ 'remove all the method around structure and contents
+	This should be job of the textual displayer'
+]
+
+{ #category : #'as yet unclassified' }
 MDTODO >> todo1 [
 
 	'
@@ -22,14 +29,6 @@ MDTODO >> todo1 [
 	to access wrapped element. 
 		**_foo_** children first  
 	>>> BoldText(_foo_)
-	'
-]
-
-{ #category : #'as yet unclassified' }
-MDTODO >> todo2 [
-
-	'
-	MicInlineSplitter start: -> parse:
 	'
 ]
 
