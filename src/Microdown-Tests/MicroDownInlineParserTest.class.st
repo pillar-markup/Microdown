@@ -32,7 +32,7 @@ MicrodownInlineParserTest >> parser [
 
 { #category : #parsing }
 MicrodownInlineParserTest >> parserClass [ 
-	^ MicrodownParser2 
+	^ MicroDownParser 
 ]
 
 { #category : #'tests - raw' }

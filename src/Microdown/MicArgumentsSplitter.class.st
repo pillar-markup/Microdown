@@ -85,7 +85,7 @@ MicArgumentsSplitter >> parseQueryFrom: aStream [
 
 { #category : #accessing }
 MicArgumentsSplitter >> parserClass [
-	^ MicrodownParser2 
+	^ MicroDownParser 
 ]
 
 { #category : #accessing }

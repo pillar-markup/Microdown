@@ -125,7 +125,7 @@ foo: arg
 
 { #category : #'*Microdown-RichTextComposer' }
 BCRichTextComposer class >> microdown [
-	^ MicrodownParser2 
+	^ MicroDownParser 
 	
 ]
 
@@ -145,13 +145,13 @@ BCRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	Else aString."
 	
 	| builder |
-	builder := MicrodownParser2 builder.
+	builder := MicroDownParser builder.
 	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
 	self notRendering 	
 		ifTrue: [ ^ aString ].
 	self captureErrors 
-		ifFalse: [ ^ MicrodownParser2 asText: builder contents ].
-	^ [ MicrodownParser2 asText: builder contents ] 
+		ifFalse: [ ^ MicroDownParser asText: builder contents ].
+	^ [ MicroDownParser asText: builder contents ] 
 			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
 			do: [ builder contents  ]
 ]
