@@ -7,7 +7,7 @@ Raw lets the user place anything (so don't use it).
 "
 Class {
 	#name : #MicRawBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

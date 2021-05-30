@@ -3,7 +3,7 @@ I represent a bold text section. I'm delimited using `**` as in `**bold**` to ob
 "
 Class {
 	#name : #MicBoldFormatBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

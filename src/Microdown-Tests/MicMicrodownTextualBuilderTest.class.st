@@ -12,13 +12,13 @@ Class {
 	#category : #'Microdown-Tests-Builder'
 }
 
-{ #category : #'tests-codeblock' }
+{ #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> exampleMathTextMultipleLines [
 	^ 'y = 3
 x = 2 + y'
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> exampleTextMultipleLines [
 	^ 'Hello
 Pharo'
@@ -72,7 +72,7 @@ MicMicrodownTextualBuilderTest >> testBold [
 	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -130,29 +130,44 @@ MicMicrodownTextualBuilderTest >> testExternalLink [
 	self assert: (builder externalLink: 'anUrl' withDescription: 'aDescription' ) contents equals: '[aDescription](anUrl)'
 ]
 
-{ #category : #'tests - header' }
+{ #category : #'tests - figure' }
+MicMicrodownTextualBuilderTest >> testFigureInPresenceOfParagraph [
+	| dictionnary |
+	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
+	self 
+		assert: (builder 
+							root: [ builder paragraph: [ builder text: 'This is some text forming a paragraph and then there is figure.' ].
+									builder 
+										figureURLString: 'http://www.pharo.org/files/ouf.png' 
+										withCaption: [ builder text: 'it is a beautifull figure'] 
+										withParameters:  dictionnary ] ;				
+							contents) contents 
+		equals: 'This is some text forming a paragraph and then there is figure.
+![it is a beautifull figure](http://www.pharo.org/files/ouf.png?label=aLabel&size=80)'
+]
+
+{ #category : #'tests - figure' }
 MicMicrodownTextualBuilderTest >> testFigureWithBold [
 
 	self 
 		assert: (builder 
-							figure: 'anUrl' withDescription: [ builder text: 'it is a'.
-																			  builder bold: 'beatifull'.
-																			  builder text: 'figure'];				
+						figureURLString: 'http://www.pharo.org/light.jpeg' 
+						withCaption: [ builder text: 'it is a';  bold: 'beautifull'; text: 'figure' ];				
 							contents) contents 
-		equals: '![it is a**beatifull**figure](anUrl)'
+		equals: '![it is a**beautifull**figure](http://www.pharo.org/light.jpeg)'
 ]
 
-{ #category : #'tests - header' }
+{ #category : #'tests - figure' }
 MicMicrodownTextualBuilderTest >> testFigureWithParameters [
 	| dictionnary |
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
 	self 
 		assert: (builder 
-							figure: 'anUrl' 
-							withDescription: [builder text: 'it is a beatifull figure'] 
+							figureURLString: 'http://www.pharo.org/flo.png' 
+							withCaption: [builder text: 'it is a beautifull figure'] 
 							withParameters:  dictionnary;				
 							contents) contents 
-		equals: '![it is a beatifull figure](anUrl|label=aLabel&size=80)'
+		equals: '![it is a beautifull figure](http://www.pharo.org/flo.png?label=aLabel&size=80)'
 ]
 
 { #category : #'tests - header' }
@@ -180,7 +195,7 @@ MicMicrodownTextualBuilderTest >> testItalic [
 	self assert: (builder italic: 'Italic') contents equals: '_Italic_'
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -256,22 +271,6 @@ MicMicrodownTextualBuilderTest >> testQuote [
 MicMicrodownTextualBuilderTest >> testRawFormat [
 
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
-]
-
-{ #category : #'tests - header' }
-MicMicrodownTextualBuilderTest >> testRoot [
-	| dictionnary |
-	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
-	self 
-		assert: (builder 
-							root: [ builder paragraph: [ builder text: 'aParagraph' ].
-									builder 
-										figure: 'anUrl' 
-										withDescription: [ builder text: 'it is a beautifull figure'] 
-										withParameters:  dictionnary ] ;				
-							contents) contents 
-		equals: 'aParagraph
-![it is a beautifull figure](anUrl|label=aLabel&size=80)'
 ]
 
 { #category : #'tests - anchor' }

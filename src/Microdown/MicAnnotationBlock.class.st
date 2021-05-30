@@ -11,7 +11,7 @@ The following is a citation annotation with as parameters the name variable boun
 "
 Class {
 	#name : #MicAnnotationBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'name',
 		'arguments'

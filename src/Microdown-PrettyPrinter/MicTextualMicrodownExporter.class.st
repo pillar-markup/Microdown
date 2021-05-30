@@ -105,10 +105,11 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
-	builder 
-		figure: aFigure url 
-		withDescription: [ builder raw: aFigure substring ] 
-		withParameters: aFigure parameters
+	
+	builder
+		figureURL: aFigure url
+		withCaption: [ aFigure captionElements do: [:each | each accept: self ]]
+		
 ]
 
 { #category : #'visit-block' }

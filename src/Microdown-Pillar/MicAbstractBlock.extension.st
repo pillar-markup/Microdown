@@ -9,5 +9,5 @@ MicAbstractBlock >> pillarFrom: aCollectionOfMicElements [
 { #category : #'*Microdown-Pillar' }
 MicAbstractBlock >> pillarFromString: aString [
 	
-	^ MicInlineSplitter new pillarFrom: aString
+	^ MicInlineParser new pillarFrom: aString
 ]

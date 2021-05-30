@@ -12,7 +12,8 @@ Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
 	#instVars : [
-		'parameters'
+		'parameters',
+		'caption'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -22,9 +23,38 @@ MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
+{ #category : #accessing }
+MicFigureBlock >> arguments [
+	^ parameters
+]
+
+{ #category : #accessing }
+MicFigureBlock >> arguments: aDictionary [
+	parameters := aDictionary
+]
+
+{ #category : #accessing }
+MicFigureBlock >> caption [
+	^ String streamContents: [:st | caption do: [ :each | st nextPutAll: each text ] ] 
+]
+
+{ #category : #accessing }
+MicFigureBlock >> captionElements [ 
+	^ caption 
+]
+
 { #category : #visiting }
 MicFigureBlock >> closeMe [ 
-	self flag: #back. "self halt"
+	
+	| dictionary |
+	dictionary := OrderedDictionary new. 
+	url := (ZnUrl fromString: url).
+	url query ifNotNil: [ :q |
+		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
+	self arguments: dictionary.
+	caption := self inlineParse: substring.
+	
+	
 ]
 
 { #category : #accessing }
@@ -41,44 +71,25 @@ MicFigureBlock >> openingDelimiter [
 
 { #category : #accessing }
 MicFigureBlock >> parameters [
+	self deprecated: 'Use arguments instead' transformWith: '`@rec parameters' -> '`@rec arguments'.
 	^ parameters 
 ]
 
 { #category : #accessing }
 MicFigureBlock >> parameters: someParameters [
+	self deprecated: 'Use arguments: instead' transformWith: '`@rec parameters: `@arg' -> '`@rec arguments: `@arg'.
 	parameters := someParameters
 ]
 
 { #category : #printing }
 MicFigureBlock >> printOn: aStream [
- 	(self kind == #basic) 
- 		ifTrue: [ aStream nextPutAll: self substring ] 
- 		ifFalse: [ 
- 			| contents |
- 			contents := children 
- 				ifEmpty: [ self substring ] 
- 				ifNotEmpty: [ self childrenPrintOn ].
- 			aStream nextPut: $!;
- 				nextPut: $[;
- 				nextPutAll: contents;
- 				nextPut: $];
- 				nextPut: $(.
- 				url printOn: aStream.
- 			parameters 
- 				ifNotEmpty: [ | params |
- 					params := ''.
- 					aStream nextPut: $|.
- 					parameters keysAndValuesDo: [ :key :value | params := params , key asString  , '=' , value asString , '&'  ].
- 					params byteAt: params size put: Character space.
- 					aStream nextPutAll: params].
- 			aStream nextPut: $) 
- 		]
-]
-
-{ #category : #transformation }
-MicFigureBlock >> urlTransformation [
-	| argumentsSplitter |
-	argumentsSplitter := MicArgumentsSplitter withStream: self url readStream.
-	self url: (ZnUrl fromString: argumentsSplitter name).
-	self parameters: argumentsSplitter arguments
+ 	
+ 		aStream nextPut: $!;
+ 			nextPut: $[;
+ 			nextPutAll: self caption;
+ 			nextPut: $];
+ 			nextPut: $(.
+		url printOn: aStream. 
+		aStream nextPut: $).
+ 		
 ]

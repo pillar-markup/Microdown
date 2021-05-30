@@ -9,7 +9,7 @@ Class {
 
 { #category : #access }
 MicInlineSplitterTest >> splitter [
-	^ MicInlineSplitter new
+	^ MicInlineParser new
 ]
 
 { #category : #'tests - anchors' }
@@ -209,42 +209,44 @@ MicInlineSplitterTest >> testFigureWithBracketInsteadOfParentheses [
 
 { #category : #'tests - figure' }
 MicInlineSplitterTest >> testFigureWithParameters [
+
 	"Test the image annotation ![AltText](url)"
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png|label=42&width=90)last'.
+		       'abc![AltText](my_directory/image.png?label=42&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](/my_directory/image.png|label=42&width=90 )'.
+			{ 'abc'. '![AltText](/my_directory/image.png?label=42&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
-	self assert: (res second parameters at: 'label') equals: '42'.
-	self assert: (res second parameters at: 'width') equals: '90'
+	self assert: (res second arguments at: 'label') equals: '42'.
+	self assert: (res second arguments at: 'width') equals: '90'
 ]
 
 { #category : #'tests - figure' }
 MicInlineSplitterTest >> testFigureWithParametersWithBlank [
+
 	"Test the image annotation ![AltText](url)"
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png|label=&width=90)last'.
+		       'abc![AltText](my_directory/image.png?label=&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](/my_directory/image.png|label=&width=90 )'.
+			{ 'abc'. '![AltText](/my_directory/image.png?label=&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: res second url class equals: ZnUrl.
 	self assert: res second url segments first equals: 'my_directory'.
 	self assert: res second url segments second equals: 'image.png'.
-	self assert: (res second parameters at: 'label') equals: ''.
-	self assert: (res second parameters at: 'width') equals: '90'
+	self assert: (res second arguments at: 'label') equals: ''.
+	self assert: (res second arguments at: 'width') equals: '90'
 ]
 
 { #category : #'tests - figure' }

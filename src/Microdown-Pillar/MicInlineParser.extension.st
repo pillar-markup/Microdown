@@ -1,7 +1,7 @@
-Extension { #name : #MicInlineSplitter }
+Extension { #name : #MicInlineParser }
 
 { #category : #'*Microdown-Pillar' }
-MicInlineSplitter >> pillarFrom: aString [
+MicInlineParser >> pillarFrom: aString [
 
 	"return a collection of pillar nodes which can be used in setChildren: of the owner of aString"
 

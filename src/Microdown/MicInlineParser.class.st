@@ -1,5 +1,8 @@
+"
+I'm a parser of block text. I'm responsible to generate text, annotation, format, link, url kind of objects.
+"
 Class {
-	#name : #MicInlineSplitter,
+	#name : #MicInlineParser,
 	#superclass : #Object,
 	#instVars : [
 		'openersStack',
@@ -20,19 +23,19 @@ Class {
 }
 
 { #category : #accessing }
-MicInlineSplitter >> abstractDelimiterClass [
+MicInlineParser >> abstractDelimiterClass [
 	^ MicAbstractDelimiter
 ]
 
 { #category : #'handle basic text' }
-MicInlineSplitter >> addABasicTextFrom: start to: end toFinalArray: aFinalArray [
+MicInlineParser >> addABasicTextFrom: start to: end toFinalArray: aFinalArray [
 	start > end
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
 ]
 
 { #category : #process }
-MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
+MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
 	| startIndex endIndex |
 	opener := openersStack at: indexOfAssociateOpener.
 	closer := delimiterSubclassFound index: index.
@@ -64,12 +67,12 @@ MicInlineSplitter >> addInlineBlock: indexOfAssociateOpener [
 ]
 
 { #category : #accessing }
-MicInlineSplitter >> allDelimiters [
+MicInlineParser >> allDelimiters [
 	^ allDelimiters
 ]
 
 { #category : #process }
-MicInlineSplitter >> bothCase [
+MicInlineParser >> bothCase [
 	| indexOfAssociateOpener |
 	indexOfAssociateOpener := openersStack findFirst: [ :each | delimiterSubclassFound type = each type ].
 	(openersStack isEmpty or: [ indexOfAssociateOpener = 0])
@@ -82,7 +85,7 @@ MicInlineSplitter >> bothCase [
 ]
 
 { #category : #process }
-MicInlineSplitter >> closerOnlyCase [
+MicInlineParser >> closerOnlyCase [
 	"IF delimiter found is a closer which can close an opened inline block
 	THEN we add the associate inline block
 	ELSE we ignore it"
@@ -95,7 +98,7 @@ MicInlineSplitter >> closerOnlyCase [
 ]
 
 { #category : #process }
-MicInlineSplitter >> delimiterFoundProcess [
+MicInlineParser >> delimiterFoundProcess [
 	"Case 0: it's an escape character"
 	(delimiterSubclassFound type = #escape) 
 		ifTrue: [ incrementation := incrementation + 1 ]
@@ -119,17 +122,17 @@ MicInlineSplitter >> delimiterFoundProcess [
 ]
 
 { #category : #actions }
-MicInlineSplitter >> indexIncrement [
+MicInlineParser >> indexIncrement [
 	^ self indexIncrement: 1
 ]
 
 { #category : #actions }
-MicInlineSplitter >> indexIncrement: anInteger [
+MicInlineParser >> indexIncrement: anInteger [
 	index := index + anInteger
 ]
 
 { #category : #initialization }
-MicInlineSplitter >> initialize [
+MicInlineParser >> initialize [
 	super initialize.
 	self initializeDelimiters.
 	openersStack := Stack new.
@@ -140,7 +143,7 @@ MicInlineSplitter >> initialize [
 ]
 
 { #category : #initialization }
-MicInlineSplitter >> initializeDelimiters [
+MicInlineParser >> initializeDelimiters [
 	allDelimiters := Dictionary new.
 	self abstractDelimiterClass subclasses 
 		select: [ :subclass | subclass isActive ]
@@ -150,17 +153,17 @@ MicInlineSplitter >> initializeDelimiters [
 ]
 
 { #category : #'handle basic text' }
-MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks [
+MicInlineParser >> insertBasicText: anArrayOfInlineBlocks [
 	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: 1 to: string size
 ]
 
 { #category : #'handle basic text' }
-MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
+MicInlineParser >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
 	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: startIndex to: endIndex
 ]
 
 { #category : #'handle basic text' }
-MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks withFinalArray: finalArray from: startIndex to: endIndex [
+MicInlineParser >> insertBasicText: anArrayOfInlineBlocks withFinalArray: finalArray from: startIndex to: endIndex [
 	anArrayOfInlineBlocks ifEmpty: [ ^ finalArray asArray ].
 	(anArrayOfInlineBlocks size = 1) ifTrue: [ 
 		| element |
@@ -180,7 +183,7 @@ MicInlineSplitter >> insertBasicText: anArrayOfInlineBlocks withFinalArray: fina
 ]
 
 { #category : #process }
-MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
+MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 	"IF we find a ( just after and a ) after again
 	THEN we add the associate link or figure inline block
 	ELSE we ignore it"
@@ -219,7 +222,7 @@ MicInlineSplitter >> linkOrFigureProcess: indexOfAssociateOpener [
 ]
 
 { #category : #'instance creation' }
-MicInlineSplitter >> newBasicInlineBlockFrom: stIndex to: eIndex [
+MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 	^ (MicTextBlock
 			from: stIndex
 			to: eIndex
@@ -228,7 +231,7 @@ MicInlineSplitter >> newBasicInlineBlockFrom: stIndex to: eIndex [
 ]
 
 { #category : #'instance creation' }
-MicInlineSplitter >> newInlineBlock [
+MicInlineParser >> newInlineBlock [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
 	(inlineBlockClass isEvaluated) 
@@ -244,7 +247,7 @@ MicInlineSplitter >> newInlineBlock [
 ]
 
 { #category : #unused }
-MicInlineSplitter >> newInlineBlockWithCloser: aCloserIndex [
+MicInlineParser >> newInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
 	(inlineBlockClass isEvaluated) 
@@ -260,7 +263,7 @@ MicInlineSplitter >> newInlineBlockWithCloser: aCloserIndex [
 ]
 
 { #category : #'instance creation' }
-MicInlineSplitter >> newInlineBlockWithoutChildren [
+MicInlineParser >> newInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: closer index + closer size - 1
@@ -269,33 +272,15 @@ MicInlineSplitter >> newInlineBlockWithoutChildren [
 ]
 
 { #category : #unused }
-MicInlineSplitter >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
+MicInlineParser >> newInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: aCloserIndex
 			withSubstring: correctSubstring
 ]
 
-{ #category : #unused }
-MicInlineSplitter >> newURLInlineBlock [
-	| inlineBlockClass |
-	inlineBlockClass := opener associatedInlineBlock.
-	(inlineBlockClass isEvaluated) 
-		ifTrue: [ 
-			^ inlineBlockClass
-				from: opener index
-				to: closer index + closer size - 1
-				withKind: opener type
-				withSubstring: correctSubstring
-				withChildren: children asArray
-				withURL: correctURL
-		 ]
-		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
-	
-]
-
 { #category : #'instance creation' }
-MicInlineSplitter >> newURLInlineBlockWithCloser: aCloserIndex [
+MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
 	(inlineBlockClass isEvaluated) 
@@ -313,7 +298,7 @@ MicInlineSplitter >> newURLInlineBlockWithCloser: aCloserIndex [
 ]
 
 { #category : #'instance creation' }
-MicInlineSplitter >> newURLInlineBlockWithoutChildren [
+MicInlineParser >> newURLInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: closer index + closer size - 1
@@ -323,7 +308,7 @@ MicInlineSplitter >> newURLInlineBlockWithoutChildren [
 ]
 
 { #category : #'instance creation' }
-MicInlineSplitter >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
+MicInlineParser >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 	^ opener associatedInlineBlock
 			from: opener index
 			to: aCloserIndex
@@ -333,30 +318,30 @@ MicInlineSplitter >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 ]
 
 { #category : #process }
-MicInlineSplitter >> openerOnlyCase [
+MicInlineParser >> openerOnlyCase [
 	self pushNewOpener
 ]
 
 { #category : #public }
-MicInlineSplitter >> parse: aString [
+MicInlineParser >> parse: aString [
 	aString ifEmpty: [ ^ Array empty ].
 	string := aString.
 	^ self read: aString
 ]
 
 { #category : #actions }
-MicInlineSplitter >> popFrom: aStartIndex to: anEndIndex [
+MicInlineParser >> popFrom: aStartIndex to: anEndIndex [
 	aStartIndex to: anEndIndex do: [ :i | openersStack pop ]
 	
 ]
 
 { #category : #actions }
-MicInlineSplitter >> pushNewOpener [
+MicInlineParser >> pushNewOpener [
 	openersStack push: (delimiterSubclassFound index: index)
 ]
 
 { #category : #actions }
-MicInlineSplitter >> read: aString [
+MicInlineParser >> read: aString [
 	incrementation := 1.
 	aString ifEmpty: [ ^ self resultProcess ].
 	allDelimiters keys do: [ :key | 
@@ -373,7 +358,7 @@ MicInlineSplitter >> read: aString [
 ]
 
 { #category : #process }
-MicInlineSplitter >> resultProcess [
+MicInlineParser >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
 	result ifEmpty: [ ^ { (self newBasicInlineBlockFrom: 1 to: string size)} ].
 	result do: [ :e | 
@@ -385,17 +370,17 @@ MicInlineSplitter >> resultProcess [
 ]
 
 { #category : #public }
-MicInlineSplitter >> start: aString [
+MicInlineParser >> start: aString [
 	self deprecated: 'Use parse: instead' transformWith: '`@receiver start: `@arg' -> '`@receiver parse: `@arg'.
 	^ self parse: aString
 ]
 
 { #category : #accessing }
-MicInlineSplitter >> urlCloserDelimiterClass [
+MicInlineParser >> urlCloserDelimiterClass [
 	^ MicURLCloserDelimiter
 ]
 
 { #category : #accessing }
-MicInlineSplitter >> urlOpenerDelimiterClass [
+MicInlineParser >> urlOpenerDelimiterClass [
 	^ MicURLOpenerDelimiter 
 ]

@@ -3,7 +3,7 @@ I represent an italic text section. I'm delimited using `_` as in `_italic_` to 
 "
 Class {
 	#name : #MicItalicFormatBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

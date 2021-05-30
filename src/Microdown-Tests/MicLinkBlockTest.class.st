@@ -12,7 +12,7 @@ MicLinkBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser. 
-	splitterClass := MicInlineSplitter
+	splitterClass := MicInlineParser
 ]
 
 { #category : #tests }

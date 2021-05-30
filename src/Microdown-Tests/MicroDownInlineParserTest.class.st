@@ -14,12 +14,7 @@ Class {
 MicroDownInlineParserTest >> parse: aString [
 	"self new parse: 'foo_abbb_zz' "
 
-	| contents doc elements |
-	doc := self parserClass parse: aString.
-	contents := doc children first text.
-	elements := MicInlineSplitter new parse: contents.
-	doc children: { (MicParagraphBlock new children: elements) }.
-	^ doc
+	^ self parserClass parse: aString
 ]
 
 { #category : #parsing }
@@ -241,20 +236,15 @@ MicroDownInlineParserTest >> testFigure [
 
 { #category : #'tests to make green' }
 MicroDownInlineParserTest >> testFigureWithParameters [
- 	| elements figure |
-	self skip.
- 	elements := self parseAndReturnElementsOfParagraphFor: '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?label=fig2&width=80)'.
- 	self assert: elements size equals: 1.
- 	figure := elements first.
- 	self assert: figure caption equals: 'caption terminating with a .'.
- 	self assert: figure kind equals: 'figure'.
-	self flag: #tofix.
-	"parameters are empty and it look like the path is not parsed!"
-	self assert: figure parameters size equals: 2. 
-	
-	
-	
 
+	| elements figure |
+	elements := self parseAndReturnElementsOfParagraphFor:
+		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?label=fig2&width=80)'.
+	self assert: elements size equals: 1.
+	figure := elements first.
+	self assert: figure caption equals: 'caption terminating with a .'.
+	self assert: figure captionElements first text equals: 'caption terminating with a .'.
+	self assert: figure arguments keys size equals: 2
 ]
 
 { #category : #'tests - format' }

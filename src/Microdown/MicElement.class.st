@@ -7,6 +7,6 @@ Class {
 { #category : #public }
 MicElement >> inlineParse: aString [
 
-	^ MicInlineSplitter new parse: aString
+	^ MicInlineParser new parse: aString
 
 ]

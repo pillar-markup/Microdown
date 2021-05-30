@@ -8,7 +8,7 @@ See *@fig1@*
 "
 Class {
 	#name : #MicAnchorReferenceBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

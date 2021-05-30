@@ -10,7 +10,7 @@ I am characterized by:
 
 "
 Class {
-	#name : #MicInlineBlock,
+	#name : #MicInlineElement,
 	#superclass : #MicElement,
 	#instVars : [
 		'start',
@@ -22,7 +22,7 @@ Class {
 }
 
 { #category : #constructor }
-MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString [
+MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString [
 	^ self new 
 		start: aStartInteger; 
 		end: anEndInteger; 
@@ -34,7 +34,7 @@ MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aStr
 ]
 
 { #category : #constructor }
-MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
+MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 	^ self new 
 		start: aStartInteger; 
 		end: anEndInteger; 
@@ -46,27 +46,27 @@ MicInlineBlock class >> from: aStartInteger to: anEndInteger withSubstring: aStr
 ]
 
 { #category : #testing }
-MicInlineBlock class >> isEvaluated [
+MicInlineElement class >> isEvaluated [
 	^ true
 ]
 
 { #category : #accessing }
-MicInlineBlock >> children [
+MicInlineElement >> children [
 	^ children
 ]
 
 { #category : #accessing }
-MicInlineBlock >> children: anArray [
+MicInlineElement >> children: anArray [
 	children := anArray
 ]
 
 { #category : #printing }
-MicInlineBlock >> childrenPrintOn [
+MicInlineElement >> childrenPrintOn [
 	^ (children asString allButFirst: 9) allButLast
 ]
 
 { #category : #operations }
-MicInlineBlock >> cleanSubstring [
+MicInlineElement >> cleanSubstring [
 	self isOnlyChild ifTrue: [ 
 		self substring: ( String streamContents: [:s | 
 			(self substring splitOn: self escapeCharacter)
@@ -75,27 +75,27 @@ MicInlineBlock >> cleanSubstring [
 ]
 
 { #category : #printing }
-MicInlineBlock >> closeMe [
+MicInlineElement >> closeMe [
 	"Hook to perform post creation action. The name is the same as for blocks."
 ]
 
 { #category : #accessing }
-MicInlineBlock >> end [
+MicInlineElement >> end [
 	^ end
 ]
 
 { #category : #accessing }
-MicInlineBlock >> end: anInteger [
+MicInlineElement >> end: anInteger [
 	end := anInteger
 ]
 
 { #category : #operations }
-MicInlineBlock >> escapeCharacter [
+MicInlineElement >> escapeCharacter [
 	^ MicEscapeDelimiter markup
 ]
 
 { #category : #initialization }
-MicInlineBlock >> initialize [
+MicInlineElement >> initialize [
 
 	super initialize. 
 	children := #().
@@ -103,23 +103,23 @@ MicInlineBlock >> initialize [
 ]
 
 { #category : #testing }
-MicInlineBlock >> isOnlyChild [
+MicInlineElement >> isOnlyChild [
 	^ children isEmpty
 ]
 
 { #category : #accessing }
-MicInlineBlock >> kind [
+MicInlineElement >> kind [
 	"we are deprecating the state"
 	^ self error
 ]
 
 { #category : #accessing }
-MicInlineBlock >> literal [
+MicInlineElement >> literal [
 	^ substring copyFrom: start to: end. 
 ]
 
 { #category : #printing }
-MicInlineBlock >> printOn: aStream [
+MicInlineElement >> printOn: aStream [
 
 	(self kind == #basic) 
 		ifTrue: [ aStream nextPutAll: self substring ] 
@@ -138,7 +138,7 @@ MicInlineBlock >> printOn: aStream [
 ]
 
 { #category : #debugging }
-MicInlineBlock >> showStructure: indent [
+MicInlineElement >> showStructure: indent [
 	"Produce a string representing the structure in terms of block classes of the receiver"
 	
 	| ind |
@@ -147,26 +147,26 @@ MicInlineBlock >> showStructure: indent [
 ]
 
 { #category : #accessing }
-MicInlineBlock >> start [ 	
+MicInlineElement >> start [ 	
 	^ start
 ]
 
 { #category : #accessing }
-MicInlineBlock >> start: anInteger [
+MicInlineElement >> start: anInteger [
 	start := anInteger 
 ]
 
 { #category : #obsolete }
-MicInlineBlock >> substring [
+MicInlineElement >> substring [
 	^ substring
 ]
 
 { #category : #obsolete }
-MicInlineBlock >> substring: aSubString [
+MicInlineElement >> substring: aSubString [
 	substring := aSubString
 ]
 
 { #category : #accessing }
-MicInlineBlock >> text [
+MicInlineElement >> text [
  	^ substring
 ]
