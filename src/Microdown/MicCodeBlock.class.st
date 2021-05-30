@@ -59,11 +59,6 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #public }
-MicCodeBlock >> contents [ 
-	^super contents , '[ ', self code, ' ]'
-]
-
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"

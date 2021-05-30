@@ -48,11 +48,6 @@ MicListItemBlock >> closeMe [
 	text := self inlineParse: text
 ]
 
-{ #category : #debugging }
-MicListItemBlock >> contents [ 
-	^super contents , '[ ', self text, ' ]'
-]
-
 { #category : #testing }
 MicListItemBlock >> isAList: normalized [
 

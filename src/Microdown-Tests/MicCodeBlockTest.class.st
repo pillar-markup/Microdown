@@ -103,18 +103,6 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	
 ]
 
-{ #category : #tests }
-MicCodeBlockTest >> testContents [
-	| source root textBody argument |
-	textBody := 'my fancy code
-is really cool'.
-	argument := 'ArgumentGoesHere'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
-	root := parser parse: source.
-	self assert: root children first contents equals: '[ my fancy code
-is really cool ]'
-]
-
 { #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagNoValue [
 

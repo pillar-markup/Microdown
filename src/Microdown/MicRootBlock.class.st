@@ -30,12 +30,6 @@ MicRootBlock >> canConsumeLine: line [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
-MicRootBlock >> contents [ 
-	"not clear what tesxt is."
-	^super contents , '[ ', (self showStructure: 0), ' ]'
-]
-
 { #category : #accessing }
 MicRootBlock >> indent [
 	^0

@@ -44,11 +44,6 @@ MicContinuousMarkedBlock >> canConsumeLine: line [
 	^ self doesLineStartWithMarkup: line
 ]
 
-{ #category : #public }
-MicContinuousMarkedBlock >> contents [ 
-	^ super contents , '[ ', self text, ' ]'
-]
-
 { #category : #testing }
 MicContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"

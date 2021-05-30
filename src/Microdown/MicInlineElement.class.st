@@ -137,15 +137,6 @@ MicInlineElement >> printOn: aStream [
 		]
 ]
 
-{ #category : #debugging }
-MicInlineElement >> showStructure: indent [
-	"Produce a string representing the structure in terms of block classes of the receiver"
-	
-	| ind |
-	ind := String tab repeat: indent.
-	^ ind, self class name, String cr, (children collect: [:c | c showStructure: indent + 1]).
-]
-
 { #category : #accessing }
 MicInlineElement >> start [ 	
 	^ start

@@ -70,11 +70,6 @@ MicAbstractBlock >> closeMe [
 	^ self
 ]
 
-{ #category : #debugging }
-MicAbstractBlock >> contents [
-	^ ''
-]
-
 { #category : #accessing }
 MicAbstractBlock >> indent [
 	^ parent indent
@@ -126,13 +121,4 @@ MicAbstractBlock >> parserClass [
 { #category : #private }
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
-]
-
-{ #category : #debugging }
-MicAbstractBlock >> showStructure: indent [
-	"Produce a string representing the structure in terms of block classes of the receiver"
-	
-	| ind |
-	ind := String tab repeat: indent.
-	^ ind, self class name, String cr, ((children collect: [:c | c showStructure: indent + 1]) joinUsing: String cr).
 ]
