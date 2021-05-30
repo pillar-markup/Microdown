@@ -1,5 +1,5 @@
 Class {
-	#name : #MicroDownParserTest,
+	#name : #MicrodownParserTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'parser'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #running }
-MicroDownParserTest >> parser [ 
+MicrodownParserTest >> parser [ 
 
-	^ MicroDownParser new
+	^ MicrodownParser new
 ]
 
 { #category : #running }
-MicroDownParserTest >> setUp [
+MicrodownParserTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
 	
 	super setUp.
@@ -22,7 +22,7 @@ MicroDownParserTest >> setUp [
 ]
 
 { #category : #'tests-anchor' }
-MicroDownParserTest >> testAnchorBlock [
+MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
 	source := parser anchorMarkup, 'label1'.
 	root := parser parse: source.
@@ -34,7 +34,7 @@ MicroDownParserTest >> testAnchorBlock [
 ]
 
 { #category : #'tests-anchor' }
-MicroDownParserTest >> testAnchorBlockFollowingEachOther [
+MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 
 	| source root annotated |
 	source := parser anchorMarkup, 'label1', String cr.
@@ -51,7 +51,7 @@ MicroDownParserTest >> testAnchorBlockFollowingEachOther [
 ]
 
 { #category : #'tests-anchor' }
-MicroDownParserTest >> testAnchorMarkupInsideLine [
+MicrodownParserTest >> testAnchorMarkupInsideLine [
 
 	| source root paragraph |
 	source := 'this is not an anchor', parser anchorMarkup, 'label1'.
@@ -65,7 +65,7 @@ MicroDownParserTest >> testAnchorMarkupInsideLine [
 ]
 
 { #category : #'tests-annotated-paragraph' }
-MicroDownParserTest >> testAnnotatedBlock [
+MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
@@ -79,7 +79,7 @@ MicroDownParserTest >> testAnnotatedBlock [
 ]
 
 { #category : #'tests-annotated-paragraph' }
-MicroDownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
+MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
 	source := (parser annotatedParagraphMarkup , 'important this is an 
@@ -108,7 +108,7 @@ important point because...!'.
 ]
 
 { #category : #'tests-annotated-paragraph' }
-MicroDownParserTest >> testAnnotatedBlockOnTwoLines [
+MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important this is an important 
 paragraph on two lines.'.
@@ -122,7 +122,7 @@ paragraph on two lines.'
 ]
 
 { #category : #'tests-annotated-paragraph' }
-MicroDownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
+MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important **this** is an _important_ 
 paragraph on two lines.'.
@@ -137,7 +137,7 @@ paragraph on two lines.'.
 ]
 
 { #category : #'tests-annotated-paragraph' }
-MicroDownParserTest >> testAnnotatedBlockWithListParserLogic [
+MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
 	self flag: #fixme.
@@ -172,7 +172,7 @@ MicroDownParserTest >> testAnnotatedBlockWithListParserLogic [
 ]
 
 { #category : #'tests-comments' }
-MicroDownParserTest >> testCommentOnMultipleLines [
+MicrodownParserTest >> testCommentOnMultipleLines [
 
 	| source root comment |
 	source := parser commentedLineMarkup , 'a comment', String cr.
@@ -186,7 +186,7 @@ a second comment'
 ]
 
 { #category : #'tests-comments' }
-MicroDownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
+MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 
 	| source root comment |
 	source := parser commentedLineMarkup , 'a comment', String cr.
@@ -202,7 +202,7 @@ MicroDownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 ]
 
 { #category : #'tests-comments' }
-MicroDownParserTest >> testCommentSimple [
+MicrodownParserTest >> testCommentSimple [
 
 	| source root comment |
 	source := parser commentedLineMarkup , 'a comment'.
@@ -214,7 +214,7 @@ MicroDownParserTest >> testCommentSimple [
 ]
 
 { #category : #'tests-comments' }
-MicroDownParserTest >> testCommentedLineMarkupInsideLine [
+MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 
 	| source root paragraph |
 	source := 'this is not the start', parser commentedLineMarkup , 'a comment'.
@@ -227,7 +227,7 @@ MicroDownParserTest >> testCommentedLineMarkupInsideLine [
 ]
 
 { #category : #tests }
-MicroDownParserTest >> testEnvironmentCitationWithArguments [
+MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	| source root environmentName contents child |
 	environmentName := 'cite'.
 	contents := 'Hello
@@ -249,7 +249,7 @@ Pharo'.
 ]
 
 { #category : #'tests-environment' }
-MicroDownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
+MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 	| source root math environmentName contents |
 	environmentName := 'card'.
 	contents := '- smalltalk
@@ -266,7 +266,7 @@ MicroDownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 ]
 
 { #category : #'tests-error' }
-MicroDownParserTest >> testError [
+MicrodownParserTest >> testError [
 
 	self should: [ parser parse: '
 
@@ -280,7 +280,7 @@ MicroDownParserTest >> testError [
 ]
 
 { #category : #'tests - header' }
-MicroDownParserTest >> testHeaderLevel4 [
+MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
 	source := (self parser headerMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
@@ -290,7 +290,7 @@ MicroDownParserTest >> testHeaderLevel4 [
 ]
 
 { #category : #'tests - header' }
-MicroDownParserTest >> testHeaderLevel4WithBold [
+MicrodownParserTest >> testHeaderLevel4WithBold [
 
 	| source root |
 	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
@@ -305,7 +305,7 @@ MicroDownParserTest >> testHeaderLevel4WithBold [
 ]
 
 { #category : #'tests-horizontal' }
-MicroDownParserTest >> testHorizontalBlock [
+MicrodownParserTest >> testHorizontalBlock [
 
 	| source root horizontal |
 	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr.
@@ -317,7 +317,7 @@ MicroDownParserTest >> testHorizontalBlock [
 ]
 
 { #category : #'tests-horizontal' }
-MicroDownParserTest >> testHorizontalBlockFollowedByList [
+MicrodownParserTest >> testHorizontalBlockFollowedByList [
 
 	| source root horizontal |
 	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
@@ -330,7 +330,7 @@ MicroDownParserTest >> testHorizontalBlockFollowedByList [
 ]
 
 { #category : #'tests-horizontal line' }
-MicroDownParserTest >> testHorizontalLineBlock [
+MicrodownParserTest >> testHorizontalLineBlock [
 	| source root horizontal |
 	source := parser horizontalLineMarkup, 'label1'.
 	root := parser parse: source.
@@ -346,7 +346,7 @@ MicroDownParserTest >> testHorizontalLineBlock [
 ]
 
 { #category : #'tests-math' }
-MicroDownParserTest >> testMathBlock [
+MicrodownParserTest >> testMathBlock [
 
 	| source root math |
 	source := parser mathOpeningBlockMarkup , String cr, 
@@ -362,7 +362,7 @@ MicroDownParserTest >> testMathBlock [
 ]
 
 { #category : #'tests-math' }
-MicroDownParserTest >> testMathBlockOnMulitpleLines [
+MicrodownParserTest >> testMathBlockOnMulitpleLines [
 
 	| source root math |
 	source := parser mathOpeningBlockMarkup , String cr, 
@@ -379,7 +379,7 @@ support(I) \geq minsup \}'
 ]
 
 { #category : #'tests-math' }
-MicroDownParserTest >> testMathBlockWithArguments [
+MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
 	source := parser mathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
@@ -394,7 +394,7 @@ MicroDownParserTest >> testMathBlockWithArguments [
 ]
 
 { #category : #'tests-metaData' }
-MicroDownParserTest >> testMetaData [
+MicrodownParserTest >> testMetaData [
 
 	| source root math |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
@@ -411,7 +411,7 @@ MicroDownParserTest >> testMetaData [
 ]
 
 { #category : #'tests-metaData' }
-MicroDownParserTest >> testMetaData2 [
+MicrodownParserTest >> testMetaData2 [
 
 	| source root metadata |
 	source := '{
@@ -430,7 +430,7 @@ MicroDownParserTest >> testMetaData2 [
 ]
 
 { #category : #'tests-metaData' }
-MicroDownParserTest >> testMetaDataEatsOtherBlocks [
+MicrodownParserTest >> testMetaDataEatsOtherBlocks [
 
 	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
@@ -445,7 +445,7 @@ MicroDownParserTest >> testMetaDataEatsOtherBlocks [
 ]
 
 { #category : #'tests-metaData' }
-MicroDownParserTest >> testMetaDataMultipleLines [
+MicrodownParserTest >> testMetaDataMultipleLines [
 
 	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
@@ -464,7 +464,7 @@ MicroDownParserTest >> testMetaDataMultipleLines [
 ]
 
 { #category : #'tests-horizontal line' }
-MicroDownParserTest >> testParseLineWithOneCharacter [ 
+MicrodownParserTest >> testParseLineWithOneCharacter [ 
 	
 	| document |
 	document := parser parse: '
@@ -475,7 +475,7 @@ a'.
 ]
 
 { #category : #'tests-horizontal line' }
-MicroDownParserTest >> testParseLineWithThreeCharacters [ 
+MicrodownParserTest >> testParseLineWithThreeCharacters [ 
 	
 	| document |
 	document := parser parse: '
@@ -486,7 +486,7 @@ a`a'.
 ]
 
 { #category : #'tests-horizontal line' }
-MicroDownParserTest >> testParseLineWithTwoCharacters [ 
+MicrodownParserTest >> testParseLineWithTwoCharacters [ 
 	
 	| document |
 	document := parser parse: '
@@ -497,7 +497,7 @@ aa'.
 ]
 
 { #category : #'tests-breaking class comments' }
-MicroDownParserTest >> testRBPatternVariableNode [
+MicrodownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
 	
 	paragraph1 := parser parse: 'The @ character can be combined with the name to match lists of items. If combined with the . character, then it will match a list of statement nodes (0 or more). If used without the . or # character, then it matches anything except for a list of statements. Combining the @ with the # is not supported.'.
@@ -515,7 +515,7 @@ MicroDownParserTest >> testRBPatternVariableNode [
 ]
 
 { #category : #'tests-table' }
-MicroDownParserTest >> testSimpleTable [
+MicrodownParserTest >> testSimpleTable [
 
 	self skip.
 	self flag: #fixMe.

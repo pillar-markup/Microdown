@@ -30,9 +30,9 @@ MicTextualMicrodownExporterTest >> factory: aFactory [
 { #category : #running }
 MicTextualMicrodownExporterTest >> setUp [
 	super setUp.
-	factory := MicMicroDownSnippetFactory new.
+	factory := MicMicrodownSnippetFactory new.
 	visitor := self visitorClass new.
-	parser := MicroDownParser new
+	parser := MicrodownParser new
 ]
 
 { #category : #'tests-anchor' }

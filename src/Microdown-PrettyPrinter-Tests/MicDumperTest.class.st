@@ -30,9 +30,9 @@ MicDumperTest >> factory: aFactory [
 { #category : #running }
 MicDumperTest >> setUp [
 	super setUp.
-	factory := MicMicroDownSnippetFactory new.
+	factory := MicMicrodownSnippetFactory new.
 	visitor := MicDullDumper new.
-	parser := MicroDownParser new
+	parser := MicrodownParser new
 ]
 
 { #category : #'tests-block' }

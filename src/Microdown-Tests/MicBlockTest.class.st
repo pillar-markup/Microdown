@@ -24,7 +24,7 @@ MicBlockTest >> parser [
 
 { #category : #factory }
 MicBlockTest >> parserClass [
-	^ MicroDownParser
+	^ MicrodownParser
 ]
 
 { #category : #factory }

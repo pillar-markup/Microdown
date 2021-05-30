@@ -1,5 +1,5 @@
 Class {
-	#name : #MicMicroDownSnippetFactory,
+	#name : #MicMicrodownSnippetFactory,
 	#superclass : #Object,
 	#instVars : [
 		'parserClass'
@@ -8,59 +8,59 @@ Class {
 }
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> anchorAreTrimedSample [
+MicMicrodownSnippetFactory >> anchorAreTrimedSample [
 	^ self parserClass anchorMarkup, '  test  '
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> anchorReferenceSample [
+MicMicrodownSnippetFactory >> anchorReferenceSample [
 	^ '*@Foo@*
 '
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> anchorSample [
+MicMicrodownSnippetFactory >> anchorSample [
 	^ self parserClass anchorMarkup, 'test'
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> anchorWithNewLineSample [
+MicMicrodownSnippetFactory >> anchorWithNewLineSample [
 	^ self parserClass anchorMarkup, 'foo', String cr
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> anchorWithSpaceInsideSample [
+MicMicrodownSnippetFactory >> anchorWithSpaceInsideSample [
 	^ self parserClass anchorMarkup, 'foo bar'
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> annotatedSample [
+MicMicrodownSnippetFactory >> annotatedSample [
 	^ '!!label Foo
 '
 ]
 
 { #category : #annotations }
-MicMicroDownSnippetFactory >> annotationSample [
+MicMicrodownSnippetFactory >> annotationSample [
 	^ 'abc<?Foo | value=aFoo&label=42?>def'
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> boldFormatEmptySample [
+MicMicrodownSnippetFactory >> boldFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass boldMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> boldFormatSample [
+MicMicrodownSnippetFactory >> boldFormatSample [
 	^ self surroundWithMarkup: self parserClass boldMarkup
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
+MicMicrodownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
 	^ self codeblock: 'foo=#(1 2 true)'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> codeblock: param [ 
+MicMicrodownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
 		st nextPutAll: self parserClass codeblockMarkup. 
@@ -71,7 +71,7 @@ MicMicroDownSnippetFactory >> codeblock: param [
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> codeblock: param body: body [
+MicMicrodownSnippetFactory >> codeblock: param body: body [
 	
 	^ String streamContents: [ :st | 
 		st nextPutAll: self parserClass codeblockMarkup. 
@@ -84,7 +84,7 @@ MicMicroDownSnippetFactory >> codeblock: param body: body [
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
+MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 
 	^ String streamContents: [ :st | 
 		st nextPutAll: self parserClass codeblockMarkup. 
@@ -96,71 +96,71 @@ MicMicroDownSnippetFactory >> codeblockNoParamBody: body [
 ]
 
 { #category : #block }
-MicMicroDownSnippetFactory >> commentSample [
+MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> environmentSample [
+MicMicrodownSnippetFactory >> environmentSample [
 	^ '<?Foo|value=aFoo&label=42
 Foo
 ?>'
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> figureSample [
+MicMicrodownSnippetFactory >> figureSample [
 	^ '![_Foo_](/anUrl?label=figureTest&size=80)
 '
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerEmptySample [ 
+MicMicrodownSnippetFactory >> headerEmptySample [ 
 	^ self parserClass headerMarkup
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel1Sample [
+MicMicrodownSnippetFactory >> headerLevel1Sample [
 	^ self headerLevel: 1
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel2Sample [
+MicMicrodownSnippetFactory >> headerLevel2Sample [
 
 	^ self headerLevel: 2
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel3Sample [
+MicMicrodownSnippetFactory >> headerLevel3Sample [
 
 	^ self headerLevel: 3
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel3SampleWithNewLine [
+MicMicrodownSnippetFactory >> headerLevel3SampleWithNewLine [
 
 	^ (self headerLevel: 3), self newLine
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel4Sample [
+MicMicrodownSnippetFactory >> headerLevel4Sample [
 
 	^ self headerLevel: 4
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel5Sample [
+MicMicrodownSnippetFactory >> headerLevel5Sample [
 
 	^ self headerLevel: 5
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel6Sample [
+MicMicrodownSnippetFactory >> headerLevel6Sample [
 
 	^ self headerLevel: 6
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerLevel: n [
+MicMicrodownSnippetFactory >> headerLevel: n [
 
 	^ String streamContents: [ :st |
 		 n timesRepeat: [ st nextPutAll: self parserClass headerMarkup ].
@@ -168,67 +168,67 @@ MicMicroDownSnippetFactory >> headerLevel: n [
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerWithFormatSample [
+MicMicrodownSnippetFactory >> headerWithFormatSample [
 	^ self parserClass headerMarkup, self space, self boldFormatSample
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerWithFormatSampleWithNewLine [
+MicMicrodownSnippetFactory >> headerWithFormatSampleWithNewLine [
 	^ self headerWithFormatSample, self newLine
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
+MicMicrodownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
 	^ self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> headerWithNewLineSample [
+MicMicrodownSnippetFactory >> headerWithNewLineSample [
 	^ self parserClass headerMarkup, 'Foo', String cr
 ]
 
 { #category : #headers }
-MicMicroDownSnippetFactory >> horizontalLineSample [
+MicMicrodownSnippetFactory >> horizontalLineSample [
 	^ parserClass horizontalLineMarkup, String cr
 ]
 
 { #category : #initialization }
-MicMicroDownSnippetFactory >> initialize [
+MicMicrodownSnippetFactory >> initialize [
 	
 	super initialize.
-	parserClass := MicroDownParser
+	parserClass := MicrodownParser
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> italicFormatEmptySample [
+MicMicrodownSnippetFactory >> italicFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass italicMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> italicFormatSample [
+MicMicrodownSnippetFactory >> italicFormatSample [
 	^ self surroundWithMarkup: self parserClass italicMarkup
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> lineEndSample [
+MicMicrodownSnippetFactory >> lineEndSample [
 
 	^  ''
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> lineEndwithNewlineSample [
+MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 
 	^ String lf
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> linkSample [
+MicMicrodownSnippetFactory >> linkSample [
 	^ '[Foo](/anUrl)
 '
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> listMultiSample [
+MicMicrodownSnippetFactory >> listMultiSample [
 	| unordered |
 	unordered := self parserClass unorderedListMarkup.
 	
@@ -243,27 +243,27 @@ MicMicroDownSnippetFactory >> listMultiSample [
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> listWithCommentSample [
+MicMicrodownSnippetFactory >> listWithCommentSample [
 	^ '1. Foo
 %Comment
 2. Bar'
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> mathInlineSample [
+MicMicrodownSnippetFactory >> mathInlineSample [
 	^ '$V_i = C_0 - C_3$
 '
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> mathParametersSample [
+MicMicrodownSnippetFactory >> mathParametersSample [
 	^ '&label=42
 Foo
 &'
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> metaDataSample [
+MicMicrodownSnippetFactory >> metaDataSample [
 	^ '{
 "author": "Foo"
 }
@@ -271,63 +271,63 @@ MicMicroDownSnippetFactory >> metaDataSample [
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> monospaceFormatEmptySample [
+MicMicrodownSnippetFactory >> monospaceFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass monospaceMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> monospaceFormatSample [
+MicMicrodownSnippetFactory >> monospaceFormatSample [
 	^ self surroundWithMarkup: self parserClass monospaceMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> nestedBoldFormatSample [
+MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 	"self new nestedBoldFormatSample"
 	^ self surround: (self surround: 'Foo' withMarkup: self parserClass boldMarkup) withMarkup: self parserClass italicMarkup  
 ]
 
 { #category : #utils }
-MicMicroDownSnippetFactory >> newLine [
+MicMicrodownSnippetFactory >> newLine [
 	^  String cr
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> newlineCRLFSample [
+MicMicrodownSnippetFactory >> newlineCRLFSample [
 
 	^ String crlf
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> newlineCRSample [
+MicMicrodownSnippetFactory >> newlineCRSample [
 
 	^ String cr
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> newlineLFSample [
+MicMicrodownSnippetFactory >> newlineLFSample [
 
 	^ String lf
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> newlineSample [
+MicMicrodownSnippetFactory >> newlineSample [
 
 	^ Smalltalk os lineEnding
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> orderedListEmptySample [
+MicMicrodownSnippetFactory >> orderedListEmptySample [
 	^ '1. '
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> orderedListSample [
+MicMicrodownSnippetFactory >> orderedListSample [
 	^ '1. Foo
 '
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
 '1. first
@@ -336,60 +336,60 @@ MicMicroDownSnippetFactory >> orderedListWithTwoItemsSample [
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphBoldSample [
+MicMicrodownSnippetFactory >> paragraphBoldSample [
 	^ 'this is a **paragraph**
 '
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphItalicSample [
+MicMicrodownSnippetFactory >> paragraphItalicSample [
 	^ 'this is a _paragraph_
 '
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphMonospaceSample [
+MicMicrodownSnippetFactory >> paragraphMonospaceSample [
 	^ 'this is a `paragraph`
 '
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphNestedSample [
+MicMicrodownSnippetFactory >> paragraphNestedSample [
 	^ 'this is a **_paragraph_**
 '
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphSample [
+MicMicrodownSnippetFactory >> paragraphSample [
 	^ 'Foo
 '
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> paragraphStrikeSample [
+MicMicrodownSnippetFactory >> paragraphStrikeSample [
 	^ 'this is a ~paragraph~
 '
 ]
 
 { #category : #utils }
-MicMicroDownSnippetFactory >> parserClass [
+MicMicrodownSnippetFactory >> parserClass [
 
-	^ MicroDownParser
+	^ MicrodownParser
 ]
 
 { #category : #anchor }
-MicMicroDownSnippetFactory >> quoteSample [
+MicMicrodownSnippetFactory >> quoteSample [
 	^ '>  Foo'
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> rawFormatSample [
+MicMicrodownSnippetFactory >> rawFormatSample [
 	^ 'a{{Foo}}b
 '
 ]
 
 { #category : #document }
-MicMicroDownSnippetFactory >> rootSample [
+MicMicrodownSnippetFactory >> rootSample [
 	| stream |
 	stream := (String new: 10000) writeStream.
 	stream nextPutAll: self headerLevel2Sample;
@@ -399,96 +399,96 @@ MicMicroDownSnippetFactory >> rootSample [
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterEscapeSample [
+MicMicrodownSnippetFactory >> scriptParameterEscapeSample [
 	^ 'value\==foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterSample [
+MicMicrodownSnippetFactory >> scriptParameterSample [
 	^ 'value=foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterTrueByDefaultSample [
+MicMicrodownSnippetFactory >> scriptParameterTrueByDefaultSample [
 	^ self codeblock: 'foo' body: 'bar'
 	
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterValueSample [
+MicMicrodownSnippetFactory >> scriptParameterValueSample [
 	^ '=foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithFloatSample [
+MicMicrodownSnippetFactory >> scriptParameterWithFloatSample [
 	^ self codeblock: 'ratio=0.8' body: 'bar'
 	
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithLiteralArraySample [
+MicMicrodownSnippetFactory >> scriptParameterWithLiteralArraySample [
 	^ self codeblock: 'foo=#(1 2 true)'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithNoValuesSample [
+MicMicrodownSnippetFactory >> scriptParameterWithNoValuesSample [
 	^ self codeblock: 'foo=' body: 'bar'
 
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithSpacesBeforeAndAfterSample [
+MicMicrodownSnippetFactory >> scriptParameterWithSpacesBeforeAndAfterSample [
 	^ ' foo = true & bar = 2 
 '
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParameterWithoutValueSample [
+MicMicrodownSnippetFactory >> scriptParameterWithoutValueSample [
 	^ 'foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParametersEscapeSample [
+MicMicrodownSnippetFactory >> scriptParametersEscapeSample [
 	^ 'value=foo\&&bar
 '
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParametersMultipleSample [
+MicMicrodownSnippetFactory >> scriptParametersMultipleSample [
 	^ 'value=foo&bar
 '
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptParametersSample [
+MicMicrodownSnippetFactory >> scriptParametersSample [
 	^ self 
 		codeblock:   'foo=true&bar=2'
 		body: 'bla'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptSample [
+MicMicrodownSnippetFactory >> scriptSample [
 	^ self codeblockNoParamBody: 'foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptTwoParametersNoValueSample [
+MicMicrodownSnippetFactory >> scriptTwoParametersNoValueSample [
 	^ 'foo&bar
 '
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptWithLanguageSample [
+MicMicrodownSnippetFactory >> scriptWithLanguageSample [
 	^ self codeblock: 'language=smalltalk' body: 'foo'
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptWithNewLineSample [
+MicMicrodownSnippetFactory >> scriptWithNewLineSample [
 	^ (self codeblockNoParamBody: 'foo'), String cr
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptWithSpaceAtTheEndSample [
+MicMicrodownSnippetFactory >> scriptWithSpaceAtTheEndSample [
 		
 	 ^ (self codeblockNoParamBody: 'foo'), '  '.
 
@@ -496,88 +496,88 @@ MicMicroDownSnippetFactory >> scriptWithSpaceAtTheEndSample [
 ]
 
 { #category : #'code block' }
-MicMicroDownSnippetFactory >> scriptWithSpacedParametersSample [
+MicMicrodownSnippetFactory >> scriptWithSpacedParametersSample [
 	^ self 
 		codeblock:   ' foo = true & bar = 2'
 		body: 'bla'
 ]
 
 { #category : #utils }
-MicMicroDownSnippetFactory >> space [ 
+MicMicrodownSnippetFactory >> space [ 
 
 	^ String space
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> strikethroughFormatEmptySample [
+MicMicrodownSnippetFactory >> strikethroughFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass strikeMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> strikethroughFormatSample [
+MicMicrodownSnippetFactory >> strikethroughFormatSample [
 	^ self surroundWithMarkup: self parserClass strikeMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> subscriptFormatEmptySample [
+MicMicrodownSnippetFactory >> subscriptFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass subscriptMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> subscriptFormatSample [
+MicMicrodownSnippetFactory >> subscriptFormatSample [
 	^ self surroundWithMarkup: self parserClass subscriptMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> superscriptFormatEmptySample [
+MicMicrodownSnippetFactory >> superscriptFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass superscriptMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> superscriptFormatSample [
+MicMicrodownSnippetFactory >> superscriptFormatSample [
 	^ self surroundWithMarkup: self parserClass superscriptMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> surround: aWord withMarkup: aMarkup [
+MicMicrodownSnippetFactory >> surround: aWord withMarkup: aMarkup [
 	^ (aMarkup, aWord, aMarkup) asString
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> surroundWithMarkup: aMarkup [
+MicMicrodownSnippetFactory >> surroundWithMarkup: aMarkup [
 	^ self surround: 'Foo' withMarkup: aMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> underlineFormatEmptySample [
+MicMicrodownSnippetFactory >> underlineFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass underlineMarkup
 ]
 
 { #category : #format }
-MicMicroDownSnippetFactory >> underlineFormatSample [
+MicMicrodownSnippetFactory >> underlineFormatSample [
 	^ self surroundWithMarkup: self parserClass underlineMarkup
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> unorderedListEmptySample [
+MicMicrodownSnippetFactory >> unorderedListEmptySample [
 	^ self parserClass unorderedListMarkup
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> unorderedListSample [
+MicMicrodownSnippetFactory >> unorderedListSample [
 	^ self parserClass unorderedListMarkup, 'Foo
 '
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> unorderedListWithSubListSample [
+MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, listMarkup, 'Bar'
 ]
 
 { #category : #list }
-MicMicroDownSnippetFactory >> unorderedListWithTwoItemsSample [
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar

@@ -27,8 +27,8 @@ Pharo'
 { #category : #initialization }
 MicMicrodownTextualBuilderTest >> setUp [
 	super setUp.
-	factory := MicMicroDownSnippetFactory new.
-	parser := MicroDownParser new.
+	factory := MicMicrodownSnippetFactory new.
+	parser := MicrodownParser new.
 	builder := parser builder
 ]
 
