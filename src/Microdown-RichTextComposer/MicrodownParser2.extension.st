@@ -1,23 +1,23 @@
-Extension { #name : #MicrodownParser }
+Extension { #name : #MicrodownParser2 }
 
 { #category : #'*Microdown-RichTextComposer' }
-MicrodownParser class >> asRichText: aString [
-	^BCRichTextComposer new start: (MicrodownParser new parse: aString) asPillar
+MicrodownParser2 class >> asRichText: aString [
+	^BCRichTextComposer new start: (MicrodownParser2 new parse: aString) asPillar
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-MicrodownParser class >> asText: aString [
+MicrodownParser2 class >> asText: aString [
 	^ BCRichTextComposer new start: (self new parse: aString) asPillar
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-MicrodownParser class >> exampleAsRichText [
+MicrodownParser2 class >> exampleAsRichText [
 	<script>
 	^ (self asText: self comment) inspectWithLabel: 'PillarRichTextRender/README.md'
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-MicrodownParser class >> fromUrl: aUrl [
+MicrodownParser2 class >> fromUrl: aUrl [
 	self flag: #fixme. 
 	"we should add parse and asText should be in richText extension"
 	^ self asText:   

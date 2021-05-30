@@ -40,7 +40,7 @@ MicAbstractMicrodownTextualBuilder >> flush [
 MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
-	parserClass := MicrodownParser.
+	parserClass := MicrodownParser2.
 	lastIsNewLine := true
 ]
 

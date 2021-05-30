@@ -32,7 +32,7 @@ MicTextualMicrodownExporter >> contents [
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
 	stream := (String new: 10000) writeStream.
-	builder := MicrodownParser builder.
+	builder := MicrodownParser2 builder.
 	builder setStream: stream.
 ]
 

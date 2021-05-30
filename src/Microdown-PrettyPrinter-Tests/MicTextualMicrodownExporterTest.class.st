@@ -32,7 +32,7 @@ MicTextualMicrodownExporterTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
 	visitor := self visitorClass new.
-	parser := MicrodownParser new
+	parser := MicrodownParser2 new
 ]
 
 { #category : #'tests-anchor' }

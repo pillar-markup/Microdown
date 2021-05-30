@@ -8,7 +8,7 @@ Class {
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &
 V_i = C_0 - C_3
@@ -24,7 +24,7 @@ MicMathBlockTest >> testMathBlockWithBadClosure [
 
 	| root |
 	"a MicMathBlock can use the MicMathInlineBlock delimiter"
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &key=cite&label=42
 V_i = C_0 - C_3 
@@ -38,7 +38,7 @@ $'.
 MicMathBlockTest >> testMathBlockWithParameters [
 
 	| root math |
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &key=cite&label=42
 V_i = C_0 - C_3 
@@ -55,7 +55,7 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithParametersCaption [
 
 	| root math |
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &key=cite&label=42&caption=Ze great formula
 V_i = C_0 - C_3 
@@ -74,7 +74,7 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 
 	| root math |
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &key=cite&label=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
@@ -94,7 +94,7 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithParametersWithBlank [
 
 	| root math |
-	root := (MicrodownParser new parse: '
+	root := (MicrodownParser2 new parse: '
 
 &key=&label=42
 V_i = C_0 - C_3 

@@ -82,7 +82,7 @@ MicSurfacicMicrodownToPillarTest >> parseCreateDocument: sample [
 
 { #category : #accessing }
 MicSurfacicMicrodownToPillarTest >> parserClass [
-	^ MicrodownParser   
+	^ MicrodownParser2   
 ]
 
 { #category : #'tests - document' }

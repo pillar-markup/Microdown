@@ -32,7 +32,7 @@ MicDumperTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
 	visitor := MicDullDumper new.
-	parser := MicrodownParser new
+	parser := MicrodownParser2 new
 ]
 
 { #category : #'tests-block' }

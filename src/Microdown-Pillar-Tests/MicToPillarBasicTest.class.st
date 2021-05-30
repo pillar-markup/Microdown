@@ -9,7 +9,7 @@ Class {
 
 { #category : #tests }
 MicToPillarBasicTest >> parserClass [
-	^ MicrodownParser
+	^ MicrodownParser2
 ]
 
 { #category : #tests }

@@ -97,5 +97,5 @@ ClySyntaxHelpMorph >> syntax [
 	
 	"^ 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'The following is rendered below.' asText, String cr asText, String cr asText, self rawMicrodownSyntax, String cr asText, (MicroDownParser asText: self rawMicrodownSyntax )"
 	
-	^ (([MicrodownParser asText: self rawMicrodownSyntax ] on: MicParsingError, MessageNotUnderstood  do: [ '''' ]) , 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'Here is the corresponding text in Microdown.', String cr, String cr, self rawMicrodownSyntax, String cr) asText
+	^ (([MicrodownParser2 asText: self rawMicrodownSyntax ] on: MicParsingError, MessageNotUnderstood  do: [ '''' ]) , 'The Pharo in image version offers: header, paragraph, codeblock, lists, hyperlinks and many format (bold, monospace, italic, links, .... A larger version is available for books.', String cr, 'Here is the corresponding text in Microdown.', String cr, String cr, self rawMicrodownSyntax, String cr) asText
 ]

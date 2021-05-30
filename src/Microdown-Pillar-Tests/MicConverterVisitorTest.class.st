@@ -44,7 +44,7 @@ MicConverterVisitorTest >> parse: sample createElementOfClass: aClass [
 
 { #category : #tests }
 MicConverterVisitorTest >> parserClass [
-	^ MicrodownParser
+	^ MicrodownParser2
 ]
 
 { #category : #initialization }

@@ -196,7 +196,7 @@ MicMicrodownSnippetFactory >> horizontalLineSample [
 MicMicrodownSnippetFactory >> initialize [
 	
 	super initialize.
-	parserClass := MicrodownParser
+	parserClass := MicrodownParser2
 ]
 
 { #category : #format }
@@ -374,7 +374,7 @@ MicMicrodownSnippetFactory >> paragraphStrikeSample [
 { #category : #utils }
 MicMicrodownSnippetFactory >> parserClass [
 
-	^ MicrodownParser
+	^ MicrodownParser2
 ]
 
 { #category : #anchor }
