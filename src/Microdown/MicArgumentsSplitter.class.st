@@ -1,3 +1,7 @@
+"
+I'm responsible to handle `'width=80&anchor=here'` and in particular to identify the first tag of such expression since it is important for code block.
+I copied two utility method from Zinc to make sure that the resulting dictionary is ordered.
+"
 Class {
 	#name : #MicArgumentsSplitter,
 	#superclass : #Object,
