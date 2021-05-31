@@ -101,6 +101,11 @@ MicTextualMicrodownExporterTest >> testLink [
 	self verifyObtain: factory linkSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLinkWithBold [
+	self verifyObtain: factory linkBoldSample
+]
+
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testMathBlock [ 
 	self verifyObtain: factory mathParametersSample, String cr

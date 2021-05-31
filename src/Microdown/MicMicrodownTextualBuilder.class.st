@@ -157,11 +157,10 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 ]
 
 { #category : #'element - references' }
-MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
-	self 
-		writeText: aDescription 
-		surroundBy: parserClass linkNameOpenerMarkup 
-		and: parserClass linkNameCloserMarkup.
+MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
+	self raw: parserClass linkNameOpenerMarkup .
+	aDescriptionBlock value.
+	self raw: parserClass linkNameCloserMarkup.
 	self raw: parserClass urlOpenerMarkup.
 			self raw: aURL asString.
 			self raw: parserClass urlCloserMarkup.

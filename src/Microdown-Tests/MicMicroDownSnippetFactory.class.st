@@ -222,6 +222,12 @@ MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 ]
 
 { #category : #format }
+MicMicrodownSnippetFactory >> linkBoldSample [
+	^ '[_Foo_](/anUrl)
+'
+]
+
+{ #category : #format }
 MicMicrodownSnippetFactory >> linkSample [
 	^ '[Foo](/anUrl)
 '

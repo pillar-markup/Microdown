@@ -137,7 +137,8 @@ MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitLink: aLink [
 
-	builder externalLink: aLink url  withDescription: aLink substring 
+	builder externalLink: aLink url withDescription: [ aLink children do: [ :each | each accept: self ].
+		aLink children ifEmpty: [builder text: aLink substring] ]
 ]
 
 { #category : #'visit-block' }

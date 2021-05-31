@@ -69,7 +69,7 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testBold [
 
-	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
+	self assert: (builder bold: [builder text: 'Bold']) contents equals: '**Bold**'
 ]
 
 { #category : #'tests - codeblock' }
@@ -127,7 +127,7 @@ aText
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testExternalLink [
 
-	self assert: (builder externalLink: 'anUrl' withDescription: 'aDescription' ) contents equals: '[aDescription](anUrl)'
+	self assert: (builder externalLink: 'anUrl' withDescription: [ builder text: 'aDescription'] ) contents equals: '[aDescription](anUrl)'
 ]
 
 { #category : #'tests - figure' }
@@ -152,7 +152,7 @@ MicMicrodownTextualBuilderTest >> testFigureWithBold [
 	self 
 		assert: (builder 
 						figureURLString: 'http://www.pharo.org/light.jpeg' 
-						withCaption: [ builder text: 'it is a';  bold: 'beautifull'; text: 'figure' ];				
+						withCaption: [ builder text: 'it is a';  bold: [ builder text:'beautifull']; text: 'figure' ];				
 							contents) contents 
 		equals: '![it is a**beautifull**figure](http://www.pharo.org/light.jpeg)'
 ]
@@ -176,7 +176,7 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 	self 
 		assert: (builder 
 							header: [ :b | b text: 'Hello '.
-											 b italic: 'Pharo'.
+											 b italic: [builder text: 'Pharo'].
 											 b text: ' is cool']  withLevel: 1;				
 							contents) contents 
 		equals: parser headerMarkup , ' Hello _Pharo_ is cool
@@ -192,7 +192,7 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testItalic [
 
-	self assert: (builder italic: 'Italic') contents equals: '_Italic_'
+	self assert: (builder italic: [ builder text: 'Italic' ]) contents equals: '_Italic_'
 ]
 
 { #category : #'tests - codeblock' }
@@ -239,7 +239,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
-	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
+	self assert: (builder monospace: [ builder text: 'Monospace']) contents equals: '`Monospace`'
 ]
 
 { #category : #'tests - anchor' }
@@ -283,7 +283,7 @@ MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
-	self assert: (builder strike: 'Strike') contents equals: '~Strike~'
+	self assert: (builder strike: [ builder text: 'Strike']) contents equals: '~Strike~'
 ]
 
 { #category : #'tests - anchor' }
