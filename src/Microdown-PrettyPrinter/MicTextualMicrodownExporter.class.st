@@ -85,10 +85,11 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
 { #category : #visiting }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
-	
+	self halt.
 	 builder
 		  codeblock: aMicCodeBlock body
 		  firstLineAssociations: aMicCodeBlock argumentAssociations
+		  withCaption: [ aMicCodeBlock captionElements do: [ :each |each accept: self ] ]
 
 ]
 
