@@ -108,8 +108,38 @@ Foo
 ]
 
 { #category : #format }
-MicMicrodownSnippetFactory >> figureSample [
+MicMicrodownSnippetFactory >> figureBoldSample [
+	^ '![**Foo**](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureItalicSample [
 	^ '![_Foo_](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureMonospaceSample [
+	^ '![`Foo`](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureNestedSample [
+	^ '![**Foo_**](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureSample [
+	^ '![Foo](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureStrikeSample [
+	^ '![~Foo~](/anUrl?label=figureTest&size=80)
 '
 ]
 

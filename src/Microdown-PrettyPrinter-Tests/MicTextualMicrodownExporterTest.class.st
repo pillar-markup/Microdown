@@ -83,6 +83,31 @@ MicTextualMicrodownExporterTest >> testFigure [
 	self verifyObtain: factory figureSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigureWithBold [
+	self verifyObtain: factory figureBoldSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigureWithItalic [
+	self verifyObtain: factory figureItalicSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigureWithMonospace [
+	self verifyObtain: factory figureMonospaceSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigureWithNested [
+	self verifyObtain: factory figureNestedSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testFigureWithStrike [
+	self verifyObtain: factory figureStrikeSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
