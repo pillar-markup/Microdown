@@ -258,6 +258,13 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
 ]
 
+{ #category : #tests }
+MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
+	
+	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock } asDictionary.
+	self assert: builder contents equals: 'label=42&size=MicTextBlock'
+]
+
 { #category : #'tests - header' }
 MicMicrodownTextualBuilderTest >> testRoot [
 	| dictionnary |
