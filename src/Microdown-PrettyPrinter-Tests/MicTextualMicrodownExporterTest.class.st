@@ -201,6 +201,36 @@ MicTextualMicrodownExporterTest >> testOrderedList [
 ]
 
 { #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedListWithBold [
+
+	self verifyObtain: factory orderedListWithTwoItemsBoldSample  
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedListWithItalic [
+
+	self verifyObtain: factory orderedListWithTwoItemsItalicSample  
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedListWithMonospace [
+
+	self verifyObtain: factory orderedListWithTwoItemsMonospaceSample  
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedListWithNested [
+
+	self verifyObtain: factory orderedListWithTwoItemsNestedSample  
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testOrderedListWithStrike [
+
+	self verifyObtain: factory orderedListWithTwoItemsStrikeSample  
+]
+
+{ #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testParagraph [
 	self verifyObtain: factory paragraphSample
 ]

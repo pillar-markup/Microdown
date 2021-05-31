@@ -394,10 +394,55 @@ MicMicrodownSnippetFactory >> orderedListSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
+	
+	^ 
+'1. **first**
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
+	
+	^ 
+'1. _first_
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
+	
+	^ 
+'1. `first`
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsNestedSample [
+	
+	^ 
+'1. **_first_**
+1. second
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
 '1. first
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
+	
+	^ 
+'1. ~first~
 1. second
 '
 ]
