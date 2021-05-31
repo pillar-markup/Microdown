@@ -106,6 +106,30 @@ MicTextualMicrodownExporterTest >> testLinkWithBold [
 	self verifyObtain: factory linkBoldSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLinkWithItalic [
+	self verifyObtain: factory linkItalicSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLinkWithMonospace [
+	self verifyObtain: factory linkMonospaceSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLinkWithNested [
+	
+	self skip.
+	self flag: #fixme.
+	"the link have three children **, italicBlock, boldBlock for [**_Foo_**]"
+	self verifyObtain: factory linkNestedSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testLinkWithStrike [
+	self verifyObtain: factory linkStrikeSample
+]
+
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testMathBlock [ 
 	self verifyObtain: factory mathParametersSample, String cr
