@@ -497,6 +497,13 @@ MicMicrodownSnippetFactory >> scriptParametersSample [
 ]
 
 { #category : #'code block' }
+MicMicrodownSnippetFactory >> scriptParametersWithCaptionSample [
+	^ self 
+		codeblock:   'foo=true&caption=`Color` is beautifull'
+		body: 'bla'
+]
+
+{ #category : #'code block' }
 MicMicrodownSnippetFactory >> scriptSample [
 	^ self codeblockNoParamBody: 'foo'
 ]

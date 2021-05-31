@@ -73,6 +73,32 @@ MicMicrodownTextualBuilderTest >> testBold [
 ]
 
 { #category : #'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeBlock [
+
+	"```language2=Pharo&caption=`Color` is cool
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           firstLineAssociations: { 
+				           ('language2' -> 'Pharo') };
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
+]
+
+{ #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -85,7 +111,8 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 		           codeblock: self exampleTextMultipleLines
 		           firstLineAssociations: { 
 				           ('language2' -> 'Pharo').
-				           ('caption' -> '`Color` is cool') };
+				           ('caption' -> '`Color` is cool') }
+					  withCaption: [ builder text: '`Color` is cool' ];
 		           contents.
 	self 
 		assert: mictext 
