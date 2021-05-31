@@ -317,6 +317,25 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 	self newLine.
 ]
 
+{ #category : #'element - math' }
+MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
+
+	self raw: parserClass mathOpeningBlockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '='.
+						each key = #caption
+							ifTrue: [ aCaptionBlock value ]
+							ifFalse: [ self raw: each value value  ]
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass mathClosingBlockMarkup.
+	self newLine.
+]
+
 { #category : #'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
 
