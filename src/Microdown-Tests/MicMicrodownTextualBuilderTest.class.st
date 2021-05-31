@@ -124,10 +124,52 @@ aText
 ?>'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLink [
 
-	self assert: (builder externalLink: 'anUrl' withDescription: [ builder text: 'aDescription'] ) contents equals: '[aDescription](anUrl)'
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription: [ builder text: 'aDescription'] ) contents 
+		equals: '[aDescription](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithBold [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder bold: [ builder text: 'aDescription']] ) contents 
+		equals: '[**aDescription**](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithItalic [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder italic: [ builder text: 'aDescription']] ) contents 
+		equals: '[_aDescription_](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithMonospace [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder monospace: [ builder text: 'aDescription']] ) contents 
+		equals: '[`aDescription`](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithNested [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder bold: [ builder italic: [ builder text: 'aDescription']]] ) contents 
+		equals: '[**_aDescription_**](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithStrike [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder strike: [ builder text: 'aDescription']] ) 
+		contents equals: '[~aDescription~](anUrl)'
 ]
 
 { #category : #'tests - figure' }
