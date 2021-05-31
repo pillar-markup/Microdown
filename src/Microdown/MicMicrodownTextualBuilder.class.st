@@ -193,6 +193,22 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 ]
 
 { #category : #'element - figure' }
+MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
+	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
+	
+	anOrderedDictionary
+		ifEmpty: [ 
+			self figureURL: aUrl withCaption: aDescriptionBlock ]
+		ifNotEmpty: [ 
+			self rawFigureDescription: aDescriptionBlock.
+			self raw: parserClass urlOpenerMarkup.
+			self raw: aUrl asString.
+			self raw: parserClass argumentListOfFigureStartDelimiter.
+			self rawParameters: anOrderedDictionary.
+			self raw: parserClass urlCloserMarkup ]
+]
+
+{ #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock [
 	"aString can be 'http://www.pharo.org or http://www.pharo.org?width=80&language=en'"
 	
