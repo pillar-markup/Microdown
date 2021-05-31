@@ -30,7 +30,7 @@ MicTextualMicrodownExporterTest >> factory: aFactory [
 { #category : #running }
 MicTextualMicrodownExporterTest >> setUp [
 	super setUp.
-	factory := MicMicroDownSnippetFactory new.
+	factory := MicMicrodownSnippetFactory new.
 	visitor := self visitorClass new.
 	parser := MicroDownParser new
 ]
@@ -60,7 +60,7 @@ MicTextualMicrodownExporterTest >> testAnnotated [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
-	self verifyObtain: factory scriptWithSpacedParametersSample, String cr
+	self verifyObtain: factory scriptParametersSample, String cr
 ]
 
 { #category : #'tests-anchor' }

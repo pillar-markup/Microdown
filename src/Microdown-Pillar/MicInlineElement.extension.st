@@ -1,7 +1,7 @@
-Extension { #name : #MicInlineBlock }
+Extension { #name : #MicInlineElement }
 
 { #category : #'*Microdown-Pillar' }
-MicInlineBlock >> asPillar [
+MicInlineElement >> asPillar [
 
 	| childrenAsPillar |
 	childrenAsPillar := self isOnlyChild 
@@ -13,6 +13,6 @@ MicInlineBlock >> asPillar [
 ]
 
 { #category : #'*Microdown-Pillar' }
-MicInlineBlock >> associatedPillarClass [
+MicInlineElement >> associatedPillarClass [
 	^ self subclassResponsibility
 ]

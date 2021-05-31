@@ -206,6 +206,12 @@ MicroDownParser class >> argumentListEqualsDelimiter [
 ]
 
 { #category : #'markup utils' }
+MicroDownParser class >> argumentListOfFigureStartDelimiter [
+	
+	^ '?'
+]
+
+{ #category : #'markup utils' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
@@ -420,6 +426,12 @@ MicroDownParser >> anchorMarkup [
 { #category : #markups }
 MicroDownParser >> annotatedParagraphMarkup [
 	^ self class annotatedParagraphMarkup
+]
+
+{ #category : #markups }
+MicroDownParser >> argumentListOfFigureStartDelimiter [
+	
+	^ self class argumentListOfFigureStartDelimiter
 ]
 
 { #category : #markups }

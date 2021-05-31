@@ -3,7 +3,7 @@ I represent a monospaced text section. I'm delimited using `\`` as in `\`monospa
 "
 Class {
 	#name : #MicMonospaceFormatBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

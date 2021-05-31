@@ -16,37 +16,3 @@ MicRootBlockTest >> testRootCanConsumeLine [
 	self assert: (rootNode canConsumeLine: '#').
 	self assert: (rootNode canConsumeLine: '- ')
 ]
-
-{ #category : #tests }
-MicRootBlockTest >> testShowStructure [
-
-	| source root |
-	source := 'This is
-a paragraph on two lines'.
-	root := parser parse: source.
-	self assert: root children size equals: 1.
-	self assert: (root showStructure: 0) equals:  
-'MicRootBlock
-	MicParagraphBlock
-		MicTextBlock
-'
-]
-
-{ #category : #tests }
-MicRootBlockTest >> testShowStructure2 [
-
-	| source root |
-	source := 'This is
-a paragraph on **two** lines'.
-	root := parser parse: source.
-	self assert: root children size equals: 1.
-	self assert: (root showStructure: 0) equals:  
-'MicRootBlock
-	MicParagraphBlock
-		MicTextBlock
-
-		MicBoldFormatBlock
-
-		MicTextBlock
-'
-]

@@ -42,11 +42,11 @@ another line** and more'.
 
 	self
 		assert:
-		(MicInlineSplitter new parse: root children first text) first kind
+		(MicInlineParser new parse: root children first text) first kind
 		equals: #bold.
 	self
 		assert:
-		(MicInlineSplitter new parse: root children second text) first kind
+		(MicInlineParser new parse: root children second text) first kind
 		equals: #basic
 ]
 
@@ -128,9 +128,10 @@ MicParagraphBlockTest >> testSingleParagraph [
 	root := parser parse: 'This is
 a paragraph on two lines'.
 	self 
-		assert: root children first contents 
-		equals: '[ This is
-a paragraph on two lines ]'
+		assert: root children first class equals: MicParagraphBlock.
+	self assert: root children first children first text equals: 'This is
+a paragraph on two lines'.
+
 
 ]
 

@@ -11,7 +11,7 @@ The following is a citation annotation with as parameters the name variable boun
 "
 Class {
 	#name : #MicAnnotationBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'name',
 		'arguments'
@@ -32,6 +32,14 @@ MicAnnotationBlock >> arguments [
 { #category : #accessing }
 MicAnnotationBlock >> arguments: anArguments [
 	arguments := anArguments
+]
+
+{ #category : #visiting }
+MicAnnotationBlock >> closeMe [ 
+	| splitter |
+	splitter := MicArgumentsSplitter withString: substring.
+	name := splitter name trimBoth.
+	arguments := splitter arguments.
 ]
 
 { #category : #accessing }

@@ -46,11 +46,6 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
-{ #category : #public }
-MicHeaderBlock >> contents [ 
-	^ super contents , '[ ', self level printString, '/', self header, ' ]'
-]
-
 { #category : #accessing }
 MicHeaderBlock >> formattedCode [ 
 	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'

@@ -3,7 +3,7 @@ I'm a special inline block representing the fact that there is not markup.
 "
 Class {
 	#name : #MicTextBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

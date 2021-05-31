@@ -1,7 +1,7 @@
-Extension { #name : #PRRichTextComposer }
+Extension { #name : #BCRichTextComposer2 }
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown1 [
+BCRichTextComposer2 classSide >> exampleMicrodown1 [
 	<example>
 	(self microdownAsRichText: '### First section
 and this is just *first* line 
@@ -15,7 +15,7 @@ and this is just *first* line
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown11 [
+BCRichTextComposer2 classSide >> exampleMicrodown11 [
 	<example>
 	(self microdownAsRichText:
 '###Latex mathematics 
@@ -31,7 +31,7 @@ Cool eh?
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown3 [
+BCRichTextComposer2 classSide >> exampleMicrodown3 [
 	<example>
 	(self microdownAsRichText:
 					'## Code Blocks
@@ -48,7 +48,7 @@ Metacello new
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown4 [
+BCRichTextComposer2 classSide >> exampleMicrodown4 [
 	<example>
 	(self microdownAsRichText:
 					'##Annotations
@@ -59,7 +59,7 @@ and this is the second line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown5 [
+BCRichTextComposer2 classSide >> exampleMicrodown5 [
 	<example>
 	(self microdownAsRichText:
 					'###Links
@@ -75,7 +75,7 @@ And this is another line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown6 [
+BCRichTextComposer2 classSide >> exampleMicrodown6 [
 	<example>
 	(self microdownAsRichText:
 					'###Figures
@@ -88,7 +88,7 @@ And this is the last line') inspect
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown7 [
+BCRichTextComposer2 classSide >> exampleMicrodown7 [
 	<example>
 	(self microdownAsRichText:
 					'#First section
@@ -102,7 +102,7 @@ PRRichTextComposer class >> exampleMicrodown7 [
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown8 [
+BCRichTextComposer2 classSide >> exampleMicrodown8 [
 	<example>
 	(self microdownAsRichText:
 					'```language=PharoExpression
@@ -112,7 +112,7 @@ PRRichTextComposer class >> exampleMicrodown8 [
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> exampleMicrodown9 [
+BCRichTextComposer2 classSide >> exampleMicrodown9 [
 	<example>
 	(self microdownAsRichText:
 'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
@@ -124,23 +124,23 @@ foo: arg
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> microdown [
+BCRichTextComposer2 classSide >> microdown [
 	^ MicroDownParser 
 	
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> microdownAsDocument: aString [
+BCRichTextComposer2 classSide >> microdownAsDocument: aString [
 	^ (self microdown parse: aString ) asPillar
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> microdownAsRichText: aString [
+BCRichTextComposer2 classSide >> microdownAsRichText: aString [
 	^ (self new start: (self microdown parse: aString ) asPillar)
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-PRRichTextComposer class >> renderComment: aString of: aClassOrPackage [ 
+BCRichTextComposer2 classSide >> renderComment: aString of: aClassOrPackage [ 
 	"Return aString as part of the templated class comment, when rendering is on.
 	Else aString."
 	

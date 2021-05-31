@@ -9,26 +9,29 @@ My subclasses manage figures and links.
 "
 Class {
 	#name : #MicInlineBlockWithUrl,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'url'
 	],
 	#category : #'Microdown-ModelInline'
 }
 
-{ #category : #obsolete }
+{ #category : #'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
+	^ self new 
+		start: aStartInteger; 
+		end: anEndInteger; 
+		substring: aString; 
+		children: aChildren; 
+		cleanSubstring; 
+		url: aURL;
+		closeMe; 
+		yourself
 ]
 
-{ #category : #obsolete }
+{ #category : #'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
-]
-
-{ #category : #obsolete }
-MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren) url: aURL; urlTransformation; yourself
 ]
 
 { #category : #transformation }
@@ -68,9 +71,4 @@ MicInlineBlockWithUrl >> url [
 { #category : #accessing }
 MicInlineBlockWithUrl >> url: anURL [
 	url := anURL
-]
-
-{ #category : #transformation }
-MicInlineBlockWithUrl >> urlTransformation [
-	self url: (ZnUrl fromString: self url)
 ]

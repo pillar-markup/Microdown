@@ -94,7 +94,7 @@ MicSurfacicMicrodownToPillarTest >> rootBlockClass [
 { #category : #running }
 MicSurfacicMicrodownToPillarTest >> setUp [ 
 	super setUp.
-	self factory: MicMicroDownSnippetFactory new.
+	self factory: MicMicrodownSnippetFactory new.
 ]
 
 { #category : #'tests - anchor' }

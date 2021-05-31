@@ -51,7 +51,7 @@ MicConverterVisitorTest >> parserClass [
 MicConverterVisitorTest >> setUp [
  	super setUp.
  	visitor := MicPillarConverter new.
-	factory := MicMicroDownSnippetFactory new.
+	factory := MicMicrodownSnippetFactory new.
 ]
 
 { #category : #tests }
@@ -191,7 +191,7 @@ MicConverterVisitorTest >> testMonospaceFormatEmpty [
 MicConverterVisitorTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
-		parse: MicMicroDownSnippetFactory new orderedListWithTwoItemsSample).
+		parse: MicMicrodownSnippetFactory new orderedListWithTwoItemsSample).
 	document := document accept: visitor.
 	self assert: document children first class equals: PROrderedList.
 	self

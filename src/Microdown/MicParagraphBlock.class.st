@@ -53,11 +53,6 @@ MicParagraphBlock >> canConsumeLine: line [
 	^ (self blockStarterClassFrom: unIndented) = self class
 ]
 
-{ #category : #public }
-MicParagraphBlock >> contents [ 
-	^super contents , '[ ', self text, ' ]'
-]
-
 { #category : #private }
 MicParagraphBlock >> isRightlyIndented: line [
 	"test if line has the appropriate number of spaces at first"

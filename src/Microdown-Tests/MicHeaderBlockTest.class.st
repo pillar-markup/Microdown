@@ -17,13 +17,6 @@ MicHeaderBlockTest >> testCanConsumeLine [
 ]
 
 { #category : #tests }
-MicHeaderBlockTest >> testContents [
-	| root |
-	root := parser parse: (parser headerMarkup, ' Level1').
-	self assert: root children first contents equals: '[ 1/Level1 ]'
-]
-
-{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
 	root := parser parse: (parser headerMarkup, ' Level1').

@@ -83,7 +83,7 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollecti
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> bold: aText [
-
+	
 	self raw: parserClass boldMarkup.
 	self raw: aText.
 	self raw: parserClass boldMarkup.
@@ -135,7 +135,7 @@ MicMicrodownTextualBuilder >> comment: aText [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
 	self raw: parserClass environmentOpeningBlockMarkup.
 	self raw: aName.
@@ -145,7 +145,7 @@ MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
 	self raw: parserClass environmentClosingBlockMarkup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCol [
 	self raw: parserClass environmentOpeningBlockMarkup.
 	self raw: aName.
@@ -169,25 +169,36 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
 ]
 
 { #category : #'element - figure' }
-MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock [
-	self 
-		rawFigureDescription: aDescriptionBlock.
+MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
+
+	self rawFigureDescription: aDescriptionBlock.
 	self raw: parserClass urlOpenerMarkup.
-			self raw: aFigureUrl asString.
-			self raw: parserClass urlCloserMarkup.
+	self raw: aUrl asString. 
+	self raw: parserClass urlCloserMarkup
 ]
 
 { #category : #'element - figure' }
-MicMicrodownTextualBuilder >> figure: aFigureUrl withDescription: aDescriptionBlock withParameters: anOrderedDictionary [
+MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock [
+	"aString can be 'http://www.pharo.org or http://www.pharo.org?width=80&language=en'"
+	
+	self rawFigureDescription: aDescriptionBlock.
+	self raw: parserClass urlOpenerMarkup.
+	self raw: aString.
+	self raw: parserClass urlCloserMarkup.
+]
 
+{ #category : #'element - figure' }
+MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
+	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
+	
 	anOrderedDictionary
 		ifEmpty: [ 
-			self figure: aFigureUrl withDescription: aDescriptionBlock ]
+			self figureURLString: aString withCaption: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
-			self raw: aFigureUrl asString.
-			self raw: parserClass argumentListStartDelimiter.
+			self raw: aString.
+			self raw: parserClass argumentListOfFigureStartDelimiter.
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
 ]
@@ -251,7 +262,7 @@ MicMicrodownTextualBuilder >> mathInline: aText [
 	self raw: MicMathDelimiter markup.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 
 	self raw: parserClass mathOpeningBlockMarkup.
@@ -387,6 +398,7 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
+
 	self raw: parserClass figureOpenerMarkup.
 	aBlock value.
 	self raw: parserClass linkNameCloserMarkup.
@@ -427,7 +439,8 @@ MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
-
+	"should be better to use do: separatedBy:"
+	
 	aZnDictionary keysAndValuesDo: [ :key :value | 
 		self raw: key.
 		self raw: parserClass argumentListEqualsDelimiter.

@@ -3,7 +3,7 @@ I represent a strike text section. I'm delimited using `~` as in `~strike~` to o
 "
 Class {
 	#name : #MicStrikeFormatBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#category : #'Microdown-ModelInline'
 }
 

@@ -37,11 +37,6 @@ MicPillarConverter >> visitAnchorReference: aMicAnchorReference [
 	^ PRInternalLink new anchor: aMicAnchorReference substring; yourself
 ]
 
-{ #category : #'visiting inline' }
-MicPillarConverter >> visitAnchorReferenceBlock: aMicAnchorReferenceBlock [
- 	^ PRInternalLink new anchor: aMicAnchorReferenceBlock substring; yourself
-]
-
 { #category : #visiting }
 MicPillarConverter >> visitAnnotated: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
@@ -105,9 +100,13 @@ MicPillarConverter >> visitEnvironment: aMicEnvironmentBlock [
 
 { #category : #'visiting inline' }
 MicPillarConverter >> visitFigure: aMicFigureBlock [
- 	| aPRFigure |
- 	aPRFigure := self urlBlock: aMicFigureBlock.
- 	^ aPRFigure label: aMicFigureBlock substring; parameters: aMicFigureBlock parameters; yourself
+
+	| aPRFigure |
+	aPRFigure := self urlBlock: aMicFigureBlock.
+	^ aPRFigure
+		  label: aMicFigureBlock substring;
+		  parameters: aMicFigureBlock arguments;
+		  yourself
 ]
 
 { #category : #visiting }

@@ -28,7 +28,7 @@ MicDullDumper >> initialize [
 MicDullDumper >> parametersPrint: aDictionnary [
 
 	| text lastKey |
-	lastKey := aDictionnary keys last.
+	lastKey := aDictionnary keys.
 	text := 'parameters:'.
 	aDictionnary keysAndValuesDo: [ :k :v |
 		text := text , k ,'=', v.
@@ -111,7 +111,7 @@ MicDullDumper >> visitFigure: aMicFigure [
 	| text |
 	text := (self classPrint: aMicFigure) , String space.
 	text := text
-	        , (self parametersPrint: aMicFigure parameters asDictionary).
+	        , (self parametersPrint: aMicFigure arguments asDictionary).
 	text := text , ' url:' , aMicFigure url asString.
 	text := text , ' "' , aMicFigure substring , '"'.
 	^ text
