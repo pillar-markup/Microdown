@@ -63,6 +63,11 @@ MicTextualMicrodownExporterTest >> testCodeBlock [
 	self verifyObtain: factory scriptParametersSample, String cr
 ]
 
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testCodeBlockWithCaption [
+	self verifyObtain: factory scriptParametersWithCaptionSample, String cr
+]
+
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testComment [
 	self verifyObtain: factory commentSample
