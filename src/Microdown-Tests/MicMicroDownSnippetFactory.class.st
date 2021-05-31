@@ -293,6 +293,13 @@ Foo
 ]
 
 { #category : #anchor }
+MicMicrodownSnippetFactory >> mathParametersWithCaptionSample [
+	^ '&caption=`Math` is good&label=42
+Foo
+&'
+]
+
+{ #category : #anchor }
 MicMicrodownSnippetFactory >> metaDataSample [
 	^ '{
 "author": "Foo"
@@ -499,7 +506,7 @@ MicMicrodownSnippetFactory >> scriptParametersSample [
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> scriptParametersWithCaptionSample [
 	^ self 
-		codeblock:   'foo=true&caption=`Color` is beautifull'
+		codeblock:   'caption=`Color` is beautifull&bar=2'
 		body: 'bla'
 ]
 
