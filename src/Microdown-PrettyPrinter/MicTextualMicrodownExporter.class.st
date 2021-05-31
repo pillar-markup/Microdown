@@ -153,6 +153,7 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 	 builder
 		  mathblock: aMicMath body
 		  firstLineAssociations: aMicMath argumentAssociations
+		  withCaption: [ aMicMath captionElements do: [ :each |each accept: self ] ]
 
 ]
 

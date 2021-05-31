@@ -140,6 +140,11 @@ MicTextualMicrodownExporterTest >> testMathBlock [
 	self verifyObtain: factory mathParametersSample, String cr
 ]
 
+{ #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testMathBlockWithCaption [
+	self verifyObtain: factory mathParametersWithCaptionSample, String cr
+]
+
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testMathInline [
 	self verifyObtain: factory mathInlineSample
