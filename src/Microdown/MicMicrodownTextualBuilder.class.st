@@ -82,10 +82,9 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollecti
 ]
 
 { #category : #'element - format' }
-MicMicrodownTextualBuilder >> bold: aText [
-	
+MicMicrodownTextualBuilder >> bold: aBlock [
 	self raw: parserClass boldMarkup.
-	self raw: aText.
+	aBlock value.
 	self raw: parserClass boldMarkup.
 ]
 
@@ -233,6 +232,13 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 	
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> italic: aBlock [
+	self raw: parserClass italicMarkup.
+	aBlock value.
+	self raw: parserClass italicMarkup.
+]
+
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> item: aBlock [
 
@@ -297,6 +303,13 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 		]
 		separatedBy: [ self raw: ' , '].
 	self newLine; raw: '}'.
+]
+
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> monospace: aBlock [
+	self raw: parserClass monospaceMarkup.
+	aBlock value.
+	self raw: parserClass monospaceMarkup.
 ]
 
 { #category : #'ugly line handling' }
@@ -459,6 +472,13 @@ MicMicrodownTextualBuilder >> root: aBlock [
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 	^ ('  ' repeat: aNumber) , parserClass unorderedListMarkup
+]
+
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> strike: aBlock [
+	self raw: parserClass strikeMarkup.
+	aBlock value.
+	self raw: parserClass strikeMarkup.
 ]
 
 { #category : #'element - list' }
