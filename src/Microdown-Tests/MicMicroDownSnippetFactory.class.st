@@ -696,9 +696,49 @@ MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsBoldSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '**Foo**', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsItalicSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '_Foo_', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsMonospaceSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '`Foo`', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '~Foo~', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsStrikeSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '~Foo~', String cr, listMarkup, 'Bar
 '
 ]

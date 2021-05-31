@@ -287,6 +287,36 @@ MicTextualMicrodownExporterTest >> testUnorderedList [
 	self verifyObtain: factory unorderedListWithTwoItemsSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedListWithBold [
+
+	self verifyObtain: factory unorderedListWithTwoItemsBoldSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedListWithItalic [
+
+	self verifyObtain: factory unorderedListWithTwoItemsItalicSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedListWithMonospace [
+
+	self verifyObtain: factory unorderedListWithTwoItemsMonospaceSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedListWithNested [
+
+	self verifyObtain: factory unorderedListWithTwoItemsNestedSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testUnorderedListWithStrike [
+
+	self verifyObtain: factory unorderedListWithTwoItemsStrikeSample
+]
+
 { #category : #utils }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
