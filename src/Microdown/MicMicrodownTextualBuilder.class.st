@@ -95,12 +95,29 @@ MicMicrodownTextualBuilder >> codeblock: aString [
 
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
-
 	self raw: parserClass codeblockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '=';
 						raw: each value value 
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass codeblockMarkup.
+	self newLine.
+]
+
+{ #category : #'element - code block' }
+MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
+	self raw: parserClass codeblockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '='.
+						each key = #caption 
+							ifTrue: [ aCaptionBlock value ]
+						 	ifFalse: [ self raw: each value value  ]
 						"so that we can put format such as bold in the value"]
 			separatedBy: [ self raw: '&' ].
 	self newLine.
