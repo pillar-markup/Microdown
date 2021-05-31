@@ -277,7 +277,8 @@ MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 		           mathblock: self exampleMathTextMultipleLines
 		           firstLineAssociations: { 
 				           ('label' -> 'Math').
-				           ('caption' -> '`Math` is cool') };
+				           ('caption' -> '`Math` is cool') }
+					  withCaption: [ builder text: '`Math` is cool'];
 		           contents.
 	self 
 		assert: mictext 
