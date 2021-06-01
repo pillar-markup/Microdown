@@ -78,6 +78,11 @@ MicTextualMicrodownExporterTest >> testEnvironment [
 	self verifyObtain: factory environmentSample
 ]
 
+{ #category : #'tests - environment' }
+MicTextualMicrodownExporterTest >> testEnvironmentWithInnerBlock [
+	self verifyObtain: factory environmentWithInnerBlockSample
+]
+
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testFigure [
 	self verifyObtain: factory figureSample
