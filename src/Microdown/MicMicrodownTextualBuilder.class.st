@@ -82,10 +82,9 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollecti
 ]
 
 { #category : #'element - format' }
-MicMicrodownTextualBuilder >> bold: aText [
-	
+MicMicrodownTextualBuilder >> bold: aBlock [
 	self raw: parserClass boldMarkup.
-	self raw: aText.
+	aBlock value.
 	self raw: parserClass boldMarkup.
 ]
 
@@ -96,12 +95,29 @@ MicMicrodownTextualBuilder >> codeblock: aString [
 
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
-
 	self raw: parserClass codeblockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '=';
 						raw: each value value 
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass codeblockMarkup.
+	self newLine.
+]
+
+{ #category : #'element - code block' }
+MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
+	self raw: parserClass codeblockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '='.
+						each key = #caption 
+							ifTrue: [ aCaptionBlock value ]
+						 	ifFalse: [ self raw: each value value  ]
 						"so that we can put format such as bold in the value"]
 			separatedBy: [ self raw: '&' ].
 	self newLine.
@@ -158,11 +174,10 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 ]
 
 { #category : #'element - references' }
-MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescription [
-	self 
-		writeText: aDescription 
-		surroundBy: parserClass linkNameOpenerMarkup 
-		and: parserClass linkNameCloserMarkup.
+MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
+	self raw: parserClass linkNameOpenerMarkup .
+	aDescriptionBlock value.
+	self raw: parserClass linkNameCloserMarkup.
 	self raw: parserClass urlOpenerMarkup.
 			self raw: aURL asString.
 			self raw: parserClass urlCloserMarkup.
@@ -175,6 +190,22 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 	self raw: parserClass urlOpenerMarkup.
 	self raw: aUrl asString. 
 	self raw: parserClass urlCloserMarkup
+]
+
+{ #category : #'element - figure' }
+MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
+	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
+	
+	anOrderedDictionary
+		ifEmpty: [ 
+			self figureURL: aUrl withCaption: aDescriptionBlock ]
+		ifNotEmpty: [ 
+			self rawFigureDescription: aDescriptionBlock.
+			self raw: parserClass urlOpenerMarkup.
+			self raw: aUrl asString.
+			self raw: parserClass argumentListOfFigureStartDelimiter.
+			self rawParameters: anOrderedDictionary.
+			self raw: parserClass urlCloserMarkup ]
 ]
 
 { #category : #'element - figure' }
@@ -233,6 +264,13 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 	
 ]
 
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> italic: aBlock [
+	self raw: parserClass italicMarkup.
+	aBlock value.
+	self raw: parserClass italicMarkup.
+]
+
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> item: aBlock [
 
@@ -279,6 +317,25 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 	self newLine.
 ]
 
+{ #category : #'element - math' }
+MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
+
+	self raw: parserClass mathOpeningBlockMarkup.
+	aCol do: [ :each | self 
+						raw: each key;
+						raw: '='.
+						each key = #caption
+							ifTrue: [ aCaptionBlock value ]
+							ifFalse: [ self raw: each value value  ]
+						"so that we can put format such as bold in the value"]
+			separatedBy: [ self raw: '&' ].
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: parserClass mathClosingBlockMarkup.
+	self newLine.
+]
+
 { #category : #'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
 
@@ -297,6 +354,13 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 		]
 		separatedBy: [ self raw: ' , '].
 	self newLine; raw: '}'.
+]
+
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> monospace: aBlock [
+	self raw: parserClass monospaceMarkup.
+	aBlock value.
+	self raw: parserClass monospaceMarkup.
 ]
 
 { #category : #'ugly line handling' }
@@ -459,6 +523,13 @@ MicMicrodownTextualBuilder >> root: aBlock [
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 	^ ('  ' repeat: aNumber) , parserClass unorderedListMarkup
+]
+
+{ #category : #'element - format' }
+MicMicrodownTextualBuilder >> strike: aBlock [
+	self raw: parserClass strikeMarkup.
+	aBlock value.
+	self raw: parserClass strikeMarkup.
 ]
 
 { #category : #'element - list' }

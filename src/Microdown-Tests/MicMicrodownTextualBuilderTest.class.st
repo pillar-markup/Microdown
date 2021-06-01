@@ -69,7 +69,33 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testBold [
 
-	self assert: (builder bold: 'Bold') contents equals: '**Bold**'
+	self assert: (builder bold: [builder text: 'Bold']) contents equals: '**Bold**'
+]
+
+{ #category : #'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeBlock [
+
+	"```language2=Pharo&caption=`Color` is cool
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           firstLineAssociations: { 
+				           ('language2' -> 'Pharo') };
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
 ]
 
 { #category : #'tests - codeblock' }
@@ -85,7 +111,8 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 		           codeblock: self exampleTextMultipleLines
 		           firstLineAssociations: { 
 				           ('language2' -> 'Pharo').
-				           ('caption' -> '`Color` is cool') };
+				           ('caption' -> '`Color` is cool') }
+					  withCaption: [ builder text: '`Color` is cool' ];
 		           contents.
 	self 
 		assert: mictext 
@@ -124,10 +151,52 @@ aText
 ?>'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLink [
 
-	self assert: (builder externalLink: 'anUrl' withDescription: 'aDescription' ) contents equals: '[aDescription](anUrl)'
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription: [ builder text: 'aDescription'] ) contents 
+		equals: '[aDescription](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithBold [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder bold: [ builder text: 'aDescription']] ) contents 
+		equals: '[**aDescription**](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithItalic [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder italic: [ builder text: 'aDescription']] ) contents 
+		equals: '[_aDescription_](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithMonospace [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder monospace: [ builder text: 'aDescription']] ) contents 
+		equals: '[`aDescription`](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithNested [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder bold: [ builder italic: [ builder text: 'aDescription']]] ) contents 
+		equals: '[**_aDescription_**](anUrl)'
+]
+
+{ #category : #'tests - references' }
+MicMicrodownTextualBuilderTest >> testExternalLinkWithStrike [
+
+	self 
+		assert: (builder externalLink: 'anUrl' withDescription:[ builder strike: [ builder text: 'aDescription']] ) 
+		contents equals: '[~aDescription~](anUrl)'
 ]
 
 { #category : #'tests - figure' }
@@ -152,7 +221,7 @@ MicMicrodownTextualBuilderTest >> testFigureWithBold [
 	self 
 		assert: (builder 
 						figureURLString: 'http://www.pharo.org/light.jpeg' 
-						withCaption: [ builder text: 'it is a';  bold: 'beautifull'; text: 'figure' ];				
+						withCaption: [ builder text: 'it is a';  bold: [ builder text:'beautifull']; text: 'figure' ];				
 							contents) contents 
 		equals: '![it is a**beautifull**figure](http://www.pharo.org/light.jpeg)'
 ]
@@ -176,7 +245,7 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 	self 
 		assert: (builder 
 							header: [ :b | b text: 'Hello '.
-											 b italic: 'Pharo'.
+											 b italic: [builder text: 'Pharo'].
 											 b text: ' is cool']  withLevel: 1;				
 							contents) contents 
 		equals: parser headerMarkup , ' Hello _Pharo_ is cool
@@ -192,7 +261,7 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testItalic [
 
-	self assert: (builder italic: 'Italic') contents equals: '_Italic_'
+	self assert: (builder italic: [ builder text: 'Italic' ]) contents equals: '_Italic_'
 ]
 
 { #category : #'tests - codeblock' }
@@ -208,7 +277,8 @@ MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 		           mathblock: self exampleMathTextMultipleLines
 		           firstLineAssociations: { 
 				           ('label' -> 'Math').
-				           ('caption' -> '`Math` is cool') };
+				           ('caption' -> '`Math` is cool') }
+					  withCaption: [ builder text: '`Math` is cool'];
 		           contents.
 	self 
 		assert: mictext 
@@ -239,7 +309,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
-	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
+	self assert: (builder monospace: [ builder text: 'Monospace']) contents equals: '`Monospace`'
 ]
 
 { #category : #'tests - anchor' }
@@ -273,10 +343,17 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
 ]
 
+{ #category : #tests }
+MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
+	
+	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock } asDictionary.
+	self assert: builder contents equals: 'label=42&size=MicTextBlock'
+]
+
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
-	self assert: (builder strike: 'Strike') contents equals: '~Strike~'
+	self assert: (builder strike: [ builder text: 'Strike']) contents equals: '~Strike~'
 ]
 
 { #category : #'tests - anchor' }

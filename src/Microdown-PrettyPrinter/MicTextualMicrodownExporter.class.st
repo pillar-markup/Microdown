@@ -79,15 +79,17 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
-	builder bold: aBoldFormat substring
+	builder bold: [ aBoldFormat children do: [ :each | each accept: self ].
+		aBoldFormat children ifEmpty: [builder text: aBoldFormat substring] ]
 ]
 
 { #category : #visiting }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
-	
+
 	 builder
 		  codeblock: aMicCodeBlock body
 		  firstLineAssociations: aMicCodeBlock argumentAssociations
+		  withCaption: [ aMicCodeBlock captionElements do: [ :each |each accept: self ] ]
 
 ]
 
@@ -129,13 +131,15 @@ MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitItalic: aMicItalicFormatBlock [
 	
-	builder italic: aMicItalicFormatBlock substring
+	builder italic: [aMicItalicFormatBlock children do: [:each |each accept: self].
+		aMicItalicFormatBlock children ifEmpty: [builder text: aMicItalicFormatBlock substring]]
 ]
 
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitLink: aLink [
 
-	builder externalLink: aLink url  withDescription: aLink substring 
+	builder externalLink: aLink url withDescription: [ aLink children do: [ :each | each accept: self ].
+		aLink children ifEmpty: [builder text: aLink substring] ]
 ]
 
 { #category : #'visit-block' }
@@ -149,6 +153,7 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 	 builder
 		  mathblock: aMicMath body
 		  firstLineAssociations: aMicMath argumentAssociations
+		  withCaption: [ aMicMath captionElements do: [ :each |each accept: self ] ]
 
 ]
 
@@ -166,7 +171,8 @@ MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
-	builder monospace: aMonospaceFormat substring
+	builder monospace: [ aMonospaceFormat  children do: [ :each | each accept: self ].
+		aMonospaceFormat children ifEmpty: [builder text: aMonospaceFormat substring]]
 ]
 
 { #category : #'visit-block' }
@@ -209,7 +215,8 @@ MicTextualMicrodownExporter >> visitRoot: aRoot [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
-	builder strike: aStrikeFormat substring
+	builder strike: [ aStrikeFormat children do: [ :each | each accept: self ].
+		aStrikeFormat children ifEmpty: [builder text: aStrikeFormat substring]]
 ]
 
 { #category : #'visit - format' }
