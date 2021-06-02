@@ -89,14 +89,12 @@ MicrodownInlineParserTest >> testAnchorRefernce [
 { #category : #'tests to make green' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
-	self skip.
  	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
 	"pay attention an annotation is inside a paragraph (else this is an environment)"
 	annotation := elements second.
 	
  	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
 	
-	self halt.
  	self assert: annotation kind equals: 'annotation'.
  	self assert: annotation openingDelimiter equals: '<?'.
  	self assert: annotation closingDelimiter equals: '?>'
