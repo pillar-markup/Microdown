@@ -137,6 +137,21 @@ paragraph on two lines.'.
 ]
 
 { #category : #'tests-annotated-paragraph' }
+MicrodownParserTest >> testAnnotatedBlockTextElements [
+
+	| source root annotated |
+	source := parser annotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	annotated := root children first. 
+	self assert: root children first textElements first class equals: MicTextBlock.
+	self assert: root children first textElements second class equals: MicBoldFormatBlock.
+	self assert: root children first textElements third class equals: MicTextBlock
+	
+
+]
+
+{ #category : #'tests-annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |

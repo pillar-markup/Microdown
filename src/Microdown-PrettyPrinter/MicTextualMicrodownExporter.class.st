@@ -84,6 +84,12 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
+
+	builder annotation: anAnnotation name arguments: anAnnotation arguments
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
 	builder bold: [ 

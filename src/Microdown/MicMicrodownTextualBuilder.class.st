@@ -63,20 +63,20 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 ]
 
 { #category : #'element - annotated' }
-MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollection [
+MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 	self raw: MicAnnotationOpenerDelimiter markup.
 	self space.
 	self raw: aString.
-	associationCollection ifNotEmpty: [ self raw: '|'.
-		associationCollection 
-			do: [ :each | 
-				self raw: each key.
+	aDictionary ifNotEmpty: [ self raw: ' | '.
+		aDictionary 
+			keysAndValuesDo: [ :key :value | 
+				self raw: key.
 				self raw: '='.
-				self raw: each value ]
-			separatedBy: [ self raw: '&' ]			
+				self raw: value.
+				key = aDictionary keys last
+					ifFalse: [ self raw: '&' ]	]	
 		 ].
-	self space.
 	self raw: MicAnnotationCloserDelimiter markup.
 ]
 
