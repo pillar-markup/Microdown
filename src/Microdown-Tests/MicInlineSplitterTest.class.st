@@ -39,32 +39,33 @@ MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 
 { #category : #'tests - annotation' }
 MicInlineSplitterTest >> testAnnotationWithParameters [
+
 	| res |
-	self skip.
-	"arguments of annotion is nil"
-	res := self splitter start: 'abc<?an annotation|key=cite&label=42?>def'.
+	res := self splitter parse:
+		       'abc<?an annotation|key=cite&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation|key=cite&label=42](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation|key=cite&label=42?>'.
+			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
 	self assert: (res second arguments at: 'label') equals: '42'
-
 ]
 
 { #category : #'tests - annotation' }
 MicInlineSplitterTest >> testAnnotationWithParametersWithBlank [
+
 	| res |
 	self skip.
 	"arguments of annotion is nil"
-	res := self splitter start: 'abc<?an annotation|key=&label=42?>def'.
+	res := self splitter parse: 'abc<?an annotation|key=&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation|key=&label=42](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation|key=&label=42?>'.
+			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
 	self assert: (res second arguments at: 'label') equals: '42'
-
 ]
 
 { #category : #'tests - formats' }
