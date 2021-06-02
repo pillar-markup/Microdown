@@ -425,27 +425,25 @@ MicInlineSplitterTest >> testSequenceOfFormats [
 
 { #category : #'tests to make green again' }
 MicInlineSplitterTest >> testSplitAnnotation [
+
 	| res |
-	self skip.
-	self flag: #fixMe.
-	
-	res := self splitter start: 'abc<?type:value|key1=val1&key2=val2?>def'.
+	res := self splitter parse:
+		       'abc<?type:value|key1=val1&key2=val2?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[type:value|key1=val1&key2=val2](annotation)' . 'def'}.
+		equals: { 'abc'. '<?type:value|key1=val1&key2=val2?>'.
+			'def' }
 ]
 
 { #category : #'tests to make green again' }
 MicInlineSplitterTest >> testSplitBlockAnnotation [
+
 	| res |
-	self skip.
-	self flag: #fixMe.
-	res := self splitter start: 'abc<?an annotation?>def'.
+	res := self splitter parse: 'abc<?an annotation?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation?>'. 'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock)
-
 ]
 
 { #category : #'tests - link' }
