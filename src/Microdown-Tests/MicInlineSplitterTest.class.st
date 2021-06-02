@@ -461,29 +461,30 @@ MicInlineSplitterTest >> testSplitBlockLink [
 
 { #category : #'tests to make green again' }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
+
 	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
 	| res |
 	self skip.
-	res := self splitter start: 'abc[LinkText]last'.
+	res := self splitter parse: 'abc[LinkText]last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[LinkText](linkName)' . 'last'}.
-	self assert: res second url equals: 'LinkText'
+		equals: { 'abc[LinkText]last' }.
+	self assert: res first class equals: MicTextBlock
 ]
 
 { #category : #'tests - link' }
 MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
-	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
-	self skip.
-	res := self splitter
-		start: 'abc[![alttext](imageurl)](url)last'.
+	res := self splitter parse: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[![alttext](/imageurl)](/url)' . 'last'}.
-	self assert: res second children first url segments first equals: 'imageurl'
+		equals: { 'abc'. '[![alttext](/imageurl)](/url)'.
+			'last' }.
+	self
+		assert: res second children first url segments first
+		equals: 'imageurl'
 ]
 
 { #category : #'tests - link' }
