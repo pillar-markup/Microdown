@@ -56,8 +56,6 @@ MicInlineSplitterTest >> testAnnotationWithParameters [
 MicInlineSplitterTest >> testAnnotationWithParametersWithBlank [
 
 	| res |
-	self skip.
-	"arguments of annotion is nil"
 	res := self splitter parse: 'abc<?an annotation|key=&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
@@ -462,10 +460,7 @@ MicInlineSplitterTest >> testSplitBlockLink [
 { #category : #'tests to make green again' }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 
-	"Test the annotation [LinkText] -> should return a link with url as linktext"
-
 	| res |
-	self skip.
 	res := self splitter parse: 'abc[LinkText]last'.
 	self
 		assert: (res collect: [ :x | x printString ])
