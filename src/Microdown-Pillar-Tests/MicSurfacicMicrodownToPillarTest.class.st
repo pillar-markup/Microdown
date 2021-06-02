@@ -259,35 +259,11 @@ MicSurfacicMicrodownToPillarTest >> testScript [
 		createElementOfClass: self codeBlockClass
 ]
 
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameter [
-	self skip.
-	self
-		parse: factory scriptParameterSample
-		createElementOfClass: #parameterUntilNewline
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameterEscape [
-		self skip.
-	self
-		parse: factory scriptParameterEscapeSample
-		createElementOfClass: #parameterUntilNewline
-]
-
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptParameterTrueByDefault [
 	self 
 		parse: factory scriptParameterTrueByDefaultSample 
 		createElementOfClass: self codeBlockClass 
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameterValue [
-	self skip.
-	self
-		parse: factory scriptParameterValueSample
-		createElementOfClass: #parameterValueUntilNewline
 ]
 
 { #category : #'tests - codeblock' }
@@ -298,52 +274,6 @@ MicSurfacicMicrodownToPillarTest >> testScriptParameterWithFloat [
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptParameterWithNoValues [
 	self parse: factory scriptParameterWithNoValuesSample createElementOfClass: self codeBlockClass 
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameterWithSpacesBeforeAndAfter [
-		self skip.
-	self
-		parse: factory scriptParameterWithSpacesBeforeAndAfterSample
-		createElementOfClass: #scriptParameters
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameterWithoutValue [
-	self skip.
-	self
-		parse: factory scriptParameterWithoutValueSample
-		createElementOfClass: #parameterUntilNewline
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParameters [
-	self skip.
-	self parse: factory scriptParametersSample createElementOfClass: #scriptParameters
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParametersEscape [
-	self skip.
-	self
-		parse: factory scriptParametersEscapeSample
-		createElementOfClass: #scriptParameters
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptParametersMultiple [
-	self skip.
-	self
-		parse: factory scriptParametersMultipleSample
-		createElementOfClass: #scriptParameters
-]
-
-{ #category : #'tests - codeblock internals' }
-MicSurfacicMicrodownToPillarTest >> testScriptTwoParametersNoValue [
-	self skip.
-	self
-		parse: factory scriptTwoParametersNoValueSample
-		createElementOfClass: #scriptParameters
 ]
 
 { #category : #'tests - codeblock' }
