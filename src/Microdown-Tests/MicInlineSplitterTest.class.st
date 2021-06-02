@@ -601,3 +601,21 @@ MicInlineSplitterTest >> testUrlObjectInUrlBlocks2 [
 	self flag: #tofix. "substring just returns pulse???"
 	self assert: res second url segments first equals: 'Ducasse'
 ]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testWrappedElementOnBold [
+	| mic |
+	self skip.
+	"should be work when format block will have MicText in their children"
+	mic := (self splitter parse: '**bold**') first.
+	self assert: mic wrappedElement class equals: MicTextBlock.
+	self assert: mic wrappedElement substring equals: 'bold'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testWrappedElementOnNested [
+	| mic |
+	mic := (self splitter parse: '**_italic_**') first.
+	self assert: mic wrappedElement class equals: MicItalicFormatBlock.
+	self assert: mic wrappedElement substring equals: 'italic'
+]
