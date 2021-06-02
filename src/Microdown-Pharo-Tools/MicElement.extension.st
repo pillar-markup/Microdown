@@ -1,7 +1,7 @@
-Extension { #name : #MicAbstractBlock }
+Extension { #name : #MicElement }
 
 { #category : #'*Microdown-Pharo-Tools' }
-MicAbstractBlock >> inspectionMicTree [
+MicElement >> inspectionMicTree [
 	"
 	(MicroDownParser parse: '# hello 
 Yes microdown is cool') inspect
