@@ -51,8 +51,7 @@ MicrodownInlineParserTest >> rawTestingFor: aString [
 { #category : #'tests - format' }
 MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 
- 	| elements bold italic |
-	self skip.
+ 	| elements bold |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc**_italicAndBold_ boldOnly**def'.
  	self assert: elements size equals: 3.
 
@@ -61,8 +60,8 @@ MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 	self assert: elements first text equals: 'abc'.
 	
 	bold := elements second.
-	self assert: bold elements size equals: 2.
-	self assert: bold elements second text equals: ' boldOnly'
+	self assert: bold children size equals: 2.
+	self assert: bold children second text equals: ' boldOnly'
 	
 ]
 
