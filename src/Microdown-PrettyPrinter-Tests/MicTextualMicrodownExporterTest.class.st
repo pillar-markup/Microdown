@@ -58,6 +58,11 @@ MicTextualMicrodownExporterTest >> testAnnotated [
 	self verifyObtain: factory annotatedSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testAnnotation [
+	self verifyObtain: factory annotationSample
+]
+
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
 	self verifyObtain: factory scriptParametersSample, String cr
