@@ -91,7 +91,7 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 		self fixBlockWithoutMicText: aBoldFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	 builder
@@ -158,7 +158,7 @@ MicTextualMicrodownExporter >> visitListItem: anItem [
 	builder item: [ anItem textElements do: [ :each |each accept: self ] ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitMath: aMicMath [
 	 builder
 		  mathblock: aMicMath body
