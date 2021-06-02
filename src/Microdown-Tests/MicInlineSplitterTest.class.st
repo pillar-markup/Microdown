@@ -421,7 +421,7 @@ MicInlineSplitterTest >> testSequenceOfFormats [
 		'last' }
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - annotation' }
 MicInlineSplitterTest >> testSplitAnnotation [
 
 	| res |
@@ -433,7 +433,7 @@ MicInlineSplitterTest >> testSplitAnnotation [
 			'def' }
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - annotation' }
 MicInlineSplitterTest >> testSplitBlockAnnotation [
 
 	| res |
@@ -457,7 +457,7 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self assert: res second url segments first equals: 'myURL'
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - link' }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
 
 	| res |
