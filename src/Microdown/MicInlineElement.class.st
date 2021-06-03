@@ -161,8 +161,3 @@ MicInlineElement >> substring: aSubString [
 MicInlineElement >> text [
  	^ substring
 ]
-
-{ #category : #accessing }
-MicInlineElement >> wrappedElement [
-	^ children first
-]
