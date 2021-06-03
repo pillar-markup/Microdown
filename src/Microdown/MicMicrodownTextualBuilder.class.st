@@ -98,7 +98,7 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '=';
-						raw: each value value 
+						raw: each value value asString
 						"so that we can put format such as bold in the value"]
 			separatedBy: [ self raw: '&' ].
 	self newLine.
