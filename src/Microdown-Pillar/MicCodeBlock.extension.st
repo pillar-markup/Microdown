@@ -8,10 +8,11 @@ MicCodeBlock >> asPillar [
 	prBlock text: self code.
 
 	self arguments keysAndValuesDo: [ :k :v | 
-		v isEmptyOrNil 
-			ifTrue: [ prBlock parameterAt: k put: true ]
-			ifFalse: [ prBlock parameterAt: k put: v ]
-		 ].
+		(arguments includesKey: #language)
+			ifFalse: [ arguments keys first = k 
+				ifTrue: [ prBlock parameterAt: 'language' put: k ]
+				 ifFalse:  [ prBlock parameterAt: k put: v ]  ]
+			ifTrue: [prBlock parameterAt: k put: v ]].
 	
 	self hasCaption
 		ifTrue: [ 
