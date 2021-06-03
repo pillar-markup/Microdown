@@ -9,7 +9,7 @@ MicCodeBlock >> asPillar [
 
 	self arguments keysAndValuesDo: [ :k :v | 
 		(arguments includesKey: #language)
-			ifFalse: [ arguments keys first = k 
+			ifFalse: [ (arguments keys first = k and: v isEmptyOrNil)
 				ifTrue: [ prBlock parameterAt: 'language' put: k ]
 				 ifFalse:  [ prBlock parameterAt: k put: v ]  ]
 			ifTrue: [prBlock parameterAt: k put: v ]].
