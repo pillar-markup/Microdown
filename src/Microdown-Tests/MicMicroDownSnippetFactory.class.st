@@ -35,13 +35,15 @@ MicMicrodownSnippetFactory >> anchorWithSpaceInsideSample [
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> annotatedSample [
-	^ '!!label Foo
+	^ '!!label 
+Foo _bar_
 '
 ]
 
 { #category : #annotations }
 MicMicrodownSnippetFactory >> annotationSample [
-	^ 'abc<?Foo | value=aFoo&label=42?>def'
+	^ 'abc<? Foo | value=aFoo&label=42 ?>def
+'
 ]
 
 { #category : #format }
@@ -107,9 +109,52 @@ Foo
 ?>'
 ]
 
+{ #category : #anchor }
+MicMicrodownSnippetFactory >> environmentWithInnerBlockSample [
+	^ '<?Foo|value=aFoo&label=42
+This is a **paragraph**
+
+```language=Smalltalk&caption=`Color` is cool
+This is a codeBlock
+```
+[ this is an _url_ ](/anExternalLink)
+
+?>'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureBoldSample [
+	^ '![**Foo**](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureItalicSample [
+	^ '![_Foo_](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureMonospaceSample [
+	^ '![`Foo`](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureNestedSample [
+	^ '![**Foo_**](/anUrl?label=figureTest&size=80)
+'
+]
+
 { #category : #format }
 MicMicrodownSnippetFactory >> figureSample [
-	^ '![_Foo_](/anUrl?label=figureTest&size=80)
+	^ '![Foo](/anUrl?label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> figureStrikeSample [
+	^ '![~Foo~](/anUrl?label=figureTest&size=80)
 '
 ]
 
@@ -364,10 +409,55 @@ MicMicrodownSnippetFactory >> orderedListSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
+	
+	^ 
+'1. **first**
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
+	
+	^ 
+'1. _first_
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
+	
+	^ 
+'1. `first`
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsNestedSample [
+	
+	^ 
+'1. **_first_**
+1. second
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
 '1. first
+1. second
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
+	
+	^ 
+'1. ~first~
 1. second
 '
 ]
@@ -621,9 +711,49 @@ MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsBoldSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '**Foo**', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsItalicSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '_Foo_', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsMonospaceSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '`Foo`', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '~Foo~', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
 	^ listMarkup, 'Foo', String cr, listMarkup, 'Bar
+'
+]
+
+{ #category : #list }
+MicMicrodownSnippetFactory >> unorderedListWithTwoItemsStrikeSample [
+	| listMarkup |
+	listMarkup := self parserClass unorderedListMarkup.
+	^ listMarkup, '~Foo~', String cr, listMarkup, 'Bar
 '
 ]

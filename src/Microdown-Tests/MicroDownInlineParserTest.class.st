@@ -51,8 +51,7 @@ MicrodownInlineParserTest >> rawTestingFor: aString [
 { #category : #'tests - format' }
 MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 
- 	| elements bold italic |
-	self skip.
+ 	| elements bold |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc**_italicAndBold_ boldOnly**def'.
  	self assert: elements size equals: 3.
 
@@ -61,8 +60,8 @@ MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 	self assert: elements first text equals: 'abc'.
 	
 	bold := elements second.
-	self assert: bold elements size equals: 2.
-	self assert: bold elements second text equals: ' boldOnly'
+	self assert: bold children size equals: 2.
+	self assert: bold children second text equals: ' boldOnly'
 	
 ]
 
@@ -89,14 +88,12 @@ MicrodownInlineParserTest >> testAnchorRefernce [
 { #category : #'tests to make green' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
-	self skip.
  	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
 	"pay attention an annotation is inside a paragraph (else this is an environment)"
 	annotation := elements second.
 	
  	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
 	
-	self halt.
  	self assert: annotation kind equals: 'annotation'.
  	self assert: annotation openingDelimiter equals: '<?'.
  	self assert: annotation closingDelimiter equals: '?>'
@@ -372,8 +369,15 @@ MicrodownInlineParserTest >> testRaws [
 
 { #category : #'tests to make green' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
-	self skip.
-	self rawTestingFor: 'anything}'.
+	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{', 'anything}', '}}def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements first substring equals: 'abc'.
+ 	self assert: elements second substring equals: 'anything'.
+	self assert: elements third substring equals: '}def'.
+ 	self assert: elements second kind equals: 'raw'.
+ 	self assert: elements second openingDelimiter equals: '{{'.
+ 	self assert: elements second closingDelimiter equals: '}}'
 	
 ]
 

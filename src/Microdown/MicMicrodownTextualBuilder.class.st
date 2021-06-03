@@ -18,7 +18,6 @@ Class {
 	#superclass : #MicAbstractMicrodownTextualBuilder,
 	#instVars : [
 		'prefixStack',
-		'i',
 		'currentLevel'
 	],
 	#category : #'Microdown-Parser'
@@ -64,20 +63,20 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 ]
 
 { #category : #'element - annotated' }
-MicMicrodownTextualBuilder >> annotation: aString arguments: associationCollection [
+MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 	self raw: MicAnnotationOpenerDelimiter markup.
 	self space.
 	self raw: aString.
-	associationCollection ifNotEmpty: [ self raw: '|'.
-		associationCollection 
-			do: [ :each | 
-				self raw: each key.
+	aDictionary ifNotEmpty: [ self raw: ' | '.
+		aDictionary 
+			keysAndValuesDo: [ :key :value | 
+				self raw: key.
 				self raw: '='.
-				self raw: each value ]
-			separatedBy: [ self raw: '&' ]			
+				self raw: value.
+				key = aDictionary keys last
+					ifFalse: [ self raw: '&' ]	]	
 		 ].
-	self space.
 	self raw: MicAnnotationCloserDelimiter markup.
 ]
 
@@ -202,7 +201,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
-			self raw: aUrl asString.
+			self raw: '/', aUrl segments first.
 			self raw: parserClass argumentListOfFigureStartDelimiter.
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]

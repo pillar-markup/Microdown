@@ -39,32 +39,31 @@ MicInlineSplitterTest >> testAnchorReferenceUnevaluated [
 
 { #category : #'tests - annotation' }
 MicInlineSplitterTest >> testAnnotationWithParameters [
+
 	| res |
-	self skip.
-	"arguments of annotion is nil"
-	res := self splitter start: 'abc<?an annotation|key=cite&label=42?>def'.
+	res := self splitter parse:
+		       'abc<?an annotation|key=cite&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation|key=cite&label=42](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation|key=cite&label=42?>'.
+			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
 	self assert: (res second arguments at: 'label') equals: '42'
-
 ]
 
 { #category : #'tests - annotation' }
 MicInlineSplitterTest >> testAnnotationWithParametersWithBlank [
+
 	| res |
-	self skip.
-	"arguments of annotion is nil"
-	res := self splitter start: 'abc<?an annotation|key=&label=42?>def'.
+	res := self splitter parse: 'abc<?an annotation|key=&label=42?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation|key=&label=42](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation|key=&label=42?>'.
+			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
 	self assert: (res second arguments at: 'label') equals: '42'
-
 ]
 
 { #category : #'tests - formats' }
@@ -422,29 +421,27 @@ MicInlineSplitterTest >> testSequenceOfFormats [
 		'last' }
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - annotation' }
 MicInlineSplitterTest >> testSplitAnnotation [
+
 	| res |
-	self skip.
-	self flag: #fixMe.
-	
-	res := self splitter start: 'abc<?type:value|key1=val1&key2=val2?>def'.
+	res := self splitter parse:
+		       'abc<?type:value|key1=val1&key2=val2?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[type:value|key1=val1&key2=val2](annotation)' . 'def'}.
+		equals: { 'abc'. '<?type:value|key1=val1&key2=val2?>'.
+			'def' }
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - annotation' }
 MicInlineSplitterTest >> testSplitBlockAnnotation [
+
 	| res |
-	self skip.
-	self flag: #fixMe.
-	res := self splitter start: 'abc<?an annotation?>def'.
+	res := self splitter parse: 'abc<?an annotation?>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[an annotation](annotation)' . 'def'}.
+		equals: { 'abc'. '<?an annotation?>'. 'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock)
-
 ]
 
 { #category : #'tests - link' }
@@ -460,31 +457,29 @@ MicInlineSplitterTest >> testSplitBlockLink [
 	self assert: res second url segments first equals: 'myURL'
 ]
 
-{ #category : #'tests to make green again' }
+{ #category : #'tests - link' }
 MicInlineSplitterTest >> testSplitBlockLinkIncomplete [
-	"Test the annotation [LinkText] -> should return a link with url as linktext"
 
 	| res |
-	self skip.
-	res := self splitter start: 'abc[LinkText]last'.
+	res := self splitter parse: 'abc[LinkText]last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[LinkText](linkName)' . 'last'}.
-	self assert: res second url equals: 'LinkText'
+		equals: { 'abc[LinkText]last' }.
+	self assert: res first class equals: MicTextBlock
 ]
 
 { #category : #'tests - link' }
 MicInlineSplitterTest >> testSplitBlockLinkInlineImage [
-	"Test the link annotation [![alttext](imageurl)](url)"
 
 	| res |
-	self skip.
-	res := self splitter
-		start: 'abc[![alttext](imageurl)](url)last'.
+	res := self splitter parse: 'abc[![alttext](imageurl)](url)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[![alttext](/imageurl)](/url)' . 'last'}.
-	self assert: res second children first url segments first equals: 'imageurl'
+		equals: { 'abc'. '[![alttext](/imageurl)](/url)'.
+			'last' }.
+	self
+		assert: res second children first url segments first
+		equals: 'imageurl'
 ]
 
 { #category : #'tests - link' }
@@ -600,4 +595,22 @@ MicInlineSplitterTest >> testUrlObjectInUrlBlocks2 [
 	self assert: res second url class equals: ZnUrl.
 	self flag: #tofix. "substring just returns pulse???"
 	self assert: res second url segments first equals: 'Ducasse'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testWrappedElementOnBold [
+	| mic |
+	self skip.
+	"should be work when format block will have MicText in their children"
+	mic := (self splitter parse: '**bold**') first.
+	self assert: mic wrappedElement class equals: MicTextBlock.
+	self assert: mic wrappedElement substring equals: 'bold'
+]
+
+{ #category : #tests }
+MicInlineSplitterTest >> testWrappedElementOnNested [
+	| mic |
+	mic := (self splitter parse: '**_italic_**') first.
+	self assert: mic wrappedElement class equals: MicItalicFormatBlock.
+	self assert: mic wrappedElement substring equals: 'italic'
 ]
