@@ -511,6 +511,21 @@ aa'.
 	
 ]
 
+{ #category : #tests }
+MicrodownParserTest >> testParseText [
+	
+	| mic |
+	mic := parser parse: 'this is a paragraph
+```
+this is a code block
+```'  asText.
+	self assert: mic children size equals: 2.
+	self assert: mic children first class equals: MicParagraphBlock.
+	self assert: mic children first text equals: 'this is a paragraph'.
+	self assert: mic children second class equals: MicCodeBlock.
+	self assert: mic children second body equals: 'this is a code block'
+]
+
 { #category : #'tests-breaking class comments' }
 MicrodownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
