@@ -129,7 +129,7 @@ MicPillarConverter >> visitHeader: aMicHeaderBlock [
 ]
 
 { #category : #visiting }
-MicPillarConverter >> visitHorizontalLine: aMicHorizontalLineBlock [
+MicPillarConverter >> visitHorizontalLine: anHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 
