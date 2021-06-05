@@ -45,8 +45,14 @@ MicrodownVisitor >> visitAnnotation: anAnnotation [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitBold: aFormat [
 
-	aFormat children do: [ :each | each accept: self ].
+	self visitChildrenOf: aFormat.
 	self fixBlockWithoutMicText: aFormat
+]
+
+{ #category : #'visiting - inline elements' }
+MicrodownVisitor >> visitChildrenOf: aFormat [
+
+	aFormat children do: [ :each | each accept: self ]
 ]
 
 { #category : #visiting }
@@ -86,14 +92,14 @@ MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitItalic: aFormat [
 
-	aFormat children do: [ :each | each accept: self ].
+	self visitChildrenOf: aFormat.
 	self fixBlockWithoutMicText: aFormat
 ]
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
-	aLink children do: [ :each | each accept: self ].
+	self visitChildrenOf: aLink.
 	self fixBlockWithoutMicText: aLink
 ]
 
@@ -121,7 +127,7 @@ MicrodownVisitor >> visitMetaData: aMetaData [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitMonospace: aFormat [
 
-	aFormat children do: [ :each | each accept: self ].
+	self visitChildrenOf: aFormat.
 	self fixBlockWithoutMicText: aFormat
 ]
 
@@ -139,7 +145,8 @@ MicrodownVisitor >> visitOrderedListItem: anItem [
 
 { #category : #visiting }
 MicrodownVisitor >> visitParagraph: aParagraph [
-	^ aParagraph children do: [:each | each accept: self ]
+
+	^ self visitChildrenOf: aParagraph
 ]
 
 { #category : #visiting }
@@ -156,13 +163,13 @@ MicrodownVisitor >> visitRaw: aRawFormat [
 { #category : #visiting }
 MicrodownVisitor >> visitRoot: aRoot [
 
-	^ aRoot children do: [ :each | each accept: self ]
+	^ self visitChildrenOf: aRoot
 ]
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitStrike: aFormat [
 
-	aFormat children do: [ :each | each accept: self ].
+	self visitChildrenOf: aFormat.
 	self fixBlockWithoutMicText: aFormat
 ]
 
@@ -173,5 +180,5 @@ MicrodownVisitor >> visitText: aMicTextBlock [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitUnorderedList: aUnorderedList [
 
-	^ aUnorderedList children do: [ :each | each accept: self ]
+	^ self visitChildrenOf: aUnorderedList
 ]
