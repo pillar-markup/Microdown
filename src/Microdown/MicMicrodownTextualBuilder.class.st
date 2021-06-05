@@ -201,7 +201,10 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
-			self raw: '/', aUrl segments first.
+			aUrl scheme ifNotNil: [ :sch | self raw: sch asString, '://' ].
+			aUrl authority ifNotNil: [ :auth | self raw: auth asString ].
+			self raw: '/'.
+			aUrl segments ifNotNil: [:segs | segs do: [:each | self raw: each asString]].
 			self raw: parserClass argumentListOfFigureStartDelimiter.
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
