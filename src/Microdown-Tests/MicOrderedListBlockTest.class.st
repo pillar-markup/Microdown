@@ -164,3 +164,8 @@ MicOrderedListBlockTest >> testTwoLevelList1 [
 			children first "sub item"
 			text equals: 'sublevel'
 ]
+
+{ #category : #tests }
+MicOrderedListBlockTest >> testedClass [ 
+	^ MicOrderedListBlock 
+]

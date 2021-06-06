@@ -158,3 +158,8 @@ a paragraph on two lines'.
 	self assert: root children second text equals: 'a paragraph on two lines'.
 	
 ]
+
+{ #category : #tests }
+MicParagraphBlockTest >> testedClass [ 
+	^ MicParagraphBlock 
+]

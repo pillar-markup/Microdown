@@ -1,6 +1,6 @@
 Class {
 	#name : #MicLinkBlockTest,
-	#superclass : #MicBlockTest,
+	#superclass : #MicElementTest,
 	#instVars : [
 		'splitterClass'
 	],
@@ -21,4 +21,9 @@ MicLinkBlockTest >> testPrintOn [
 	| link |
 	link := (splitterClass new parse: '[caption](aUrl)') first.
 	self assert: link asString equals: '[caption](/aUrl)'
+]
+
+{ #category : #tests }
+MicLinkBlockTest >> testedClass [ 
+	^ MicHorizontalLineBlock
 ]

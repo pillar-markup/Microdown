@@ -89,3 +89,8 @@ text2'.
 	list := root children second.
 	self assert: list children size equals: 3
 ]
+
+{ #category : #tests }
+MicQuoteBlockTest >> testedClass [ 
+	^ MicQuoteBlock 
+]

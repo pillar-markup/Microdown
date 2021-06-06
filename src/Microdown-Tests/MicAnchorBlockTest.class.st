@@ -12,3 +12,8 @@ MicAnchorBlockTest >> testModifyLabel [
 	mic label: 'label2'.
 	self assert: mic label equals: 'label2'.
 ]
+
+{ #category : #tests }
+MicAnchorBlockTest >> testedClass [ 
+	^ MicAnchorBlock 
+]

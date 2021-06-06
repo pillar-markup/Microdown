@@ -54,3 +54,8 @@ MicHeaderBlockTest >> testHeaderLevel6 [
 	self assert: root children first header equals: 'Level six'.
 	self assert: root children first level equals: 6
 ]
+
+{ #category : #running }
+MicHeaderBlockTest >> testedClass [ 
+	^ MicHeaderBlock  
+]

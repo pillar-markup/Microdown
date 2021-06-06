@@ -106,3 +106,8 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: ''.
 	self assert: (math arguments at: 'label') equals: '42'
 ]
+
+{ #category : #tests }
+MicMathBlockTest >> testedClass [ 
+	^ MicMathBlock 
+]

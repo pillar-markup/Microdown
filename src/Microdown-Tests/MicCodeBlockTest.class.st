@@ -490,3 +490,8 @@ something in the way
 
 	self assert: codeBlock children first body equals: 'something in the way'
 ]
+
+{ #category : #tests }
+MicCodeBlockTest >> testedClass [ 
+	^ MicCodeBlock 
+]

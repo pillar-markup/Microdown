@@ -16,3 +16,8 @@ MicRootBlockTest >> testRootCanConsumeLine [
 	self assert: (rootNode canConsumeLine: '#').
 	self assert: (rootNode canConsumeLine: '- ')
 ]
+
+{ #category : #tests }
+MicRootBlockTest >> testedClass [ 
+	^ MicRootBlock 
+]

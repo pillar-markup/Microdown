@@ -12,7 +12,8 @@ Class {
 	#instVars : [
 		'parent',
 		'children',
-		'parser'
+		'parser',
+		'properties'
 	],
 	#category : #'Microdown-Model'
 }
@@ -70,6 +71,13 @@ MicAbstractBlock >> closeMe [
 	^ self
 ]
 
+{ #category : #properties }
+MicAbstractBlock >> hasProperty: aKey [
+	"Test if the property aKey is present."
+	
+	^ self properties notNil and: [ self properties includesKey: aKey ]
+]
+
 { #category : #accessing }
 MicAbstractBlock >> indent [
 	^ parent indent
@@ -116,6 +124,66 @@ MicAbstractBlock >> parser [
 { #category : #private }
 MicAbstractBlock >> parserClass [ 
 	^ MicroDownParser 
+]
+
+{ #category : #properties }
+MicAbstractBlock >> properties [
+	^ properties ifNil: [ properties := Dictionary new ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> propertiesCopy [
+	self properties ifNil: [ ^ nil ].
+	^ self properties collect: [ :each | each copy ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> propertyAt: aKey [
+	"Answer the property value associated with aKey."
+	
+	^ self propertyAt: aKey ifAbsent: [ MicPropertyError signal: 'Property not found' ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> propertyAt: aKey ifAbsent: aBlock [
+	"Answer the property value associated with aKey or, if aKey isn't found, answer the result of evaluating aBlock."
+	
+	^ self properties isNil
+		ifTrue: [ aBlock value ]
+		ifFalse: [ self properties at: aKey ifAbsent: aBlock ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> propertyAt: aKey ifAbsentPut: aBlock [
+	"Answer the property associated with aKey or, if aKey isn't found store the result of evaluating aBlock as new value."
+	
+	^ self propertyAt: aKey ifAbsent: [ self propertyAt: aKey put: aBlock value ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> propertyAt: aKey put: anObject [
+	"Set the property at aKey to be anObject. If aKey is not found, create a new entry for aKey and set is value to anObject. Answer anObject."
+
+	^ (properties ifNil: [ properties := (IdentityDictionary new: 1) ])
+		at: aKey put: anObject
+]
+
+{ #category : #properties }
+MicAbstractBlock >> removeProperty: aKey [
+	"Remove the property with aKey. Answer the property or raise an error if aKey isn't found."
+	
+	^ self removeProperty: aKey ifAbsent: [ MicPropertyError signal: 'Property not found' ]
+]
+
+{ #category : #properties }
+MicAbstractBlock >> removeProperty: aKey ifAbsent: aBlock [
+	"Remove the property with aKey. Answer the value or, if aKey isn't found, answer the result of evaluating aBlock."
+	
+	| answer |
+	self properties ifNil: [ ^ aBlock value ].
+	answer := self properties removeKey: aKey ifAbsent: aBlock.
+	self properties isEmpty ifTrue: [ properties := nil ].
+	^ answer
 ]
 
 { #category : #private }

@@ -110,3 +110,8 @@ toto'.
 	self assert: math name equals: environmentName.
 	self assert: math body equals: contents
 ]
+
+{ #category : #tests }
+MicEnvironmentBlockTest >> testedClass [ 
+	^ MicEnvironmentBlock  
+]

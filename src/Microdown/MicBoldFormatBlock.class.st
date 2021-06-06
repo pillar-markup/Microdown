@@ -12,18 +12,18 @@ MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utils }
 MicBoldFormatBlock >> closingDelimiter [
 
  	^ MicBoldDelimiter markup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utils }
 MicBoldFormatBlock >> kind [
 	^ #bold
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utils }
 MicBoldFormatBlock >> openingDelimiter [
 
  	^ MicBoldDelimiter markup

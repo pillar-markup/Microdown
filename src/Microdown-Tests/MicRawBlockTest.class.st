@@ -1,6 +1,6 @@
 Class {
 	#name : #MicRawBlockTest,
-	#superclass : #MicBlockTest,
+	#superclass : #MicElementTest,
 	#category : #'Microdown-Tests-Parser'
 }
 
