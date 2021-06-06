@@ -293,9 +293,11 @@ BCRichTextComposerTest >> testOrderedList [
 ]
 
 { #category : #'tests - Preformatted' }
-BCRichTextComposerTest >> testPreformatted [
+BCRichTextComposerTest >> testParagrahNotFormat [
 	| runs richText |
-	richText := self richTextFor: sample preformatted.
+	richText := self richTextFor: (self microElementsFrom: '
+foo
+barwith a space').
 	"
 a Text for '
 foo

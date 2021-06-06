@@ -465,7 +465,7 @@ BCRichTextComposer >> rawImageFrom: aURL [
 		
 ]
 
-{ #category : #'visiting - document' }
+{ #category : #images }
 BCRichTextComposer >> renderMathExpression: aString [
 	
 	canvas << (self class latexMathStylerFor: aString)
@@ -515,14 +515,9 @@ BCRichTextComposer >> visit: aDocument [
 	^ canvas contents
 ]
 
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitAnchor: anObject [
-	canvas << '>>> Anchors not supported in RichText Pillar <<<' asText
-]
-
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	
+	self halt.
 	canvas newLineIfNotAlready.
 	canvas newLine.
 	canvas
@@ -539,17 +534,6 @@ BCRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	canvas newLine.
 ]
 
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitAnnotation: anAnnotation [
-	canvas << '>>> Annotations not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitBeginEnvironmentAnnotation: aBeginEnvironmentAnnotation [
-
-	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
-]
-
 { #category : #'visiting -  format' }
 BCRichTextComposer >> visitBold: anObject [
 	canvas 
@@ -558,18 +542,9 @@ BCRichTextComposer >> visitBold: anObject [
 	
 ]
 
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitCitation: aCitation [
-	canvas << '>>> Citations not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitCitationAnnotation: aCitation [
-	canvas << '>>> Citations not supported in RichText Pillar <<<' asText
-]
-
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitCodeblock: aCodeBlock [
+	self halt.
 	canvas newLineIfNotAlready.
 	canvas newLine.
 	canvas
@@ -584,59 +559,9 @@ BCRichTextComposer >> visitCodeblock: aCodeBlock [
 
 ]
 
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitColumn: aColumn [
-	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitColumnAnnotation: aColumnAnnotation [
-	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitColumns: aColumns [
-	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitColumnsAnnotation: aColumnsAnnotation [
-	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - list' }
-BCRichTextComposer >> visitDataItem: anItem [
-	canvas newLineIfNotAlready.
-	self visitDocumentGroup: anItem
-]
-
-{ #category : #'visiting - list' }
-BCRichTextComposer >> visitDefinitionList: anObject [
-	canvas indentIn: [ self visitUnorderedList: anObject ]
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitDocListAnnotation: aPRDocListAnnotation [
-	canvas << '>>> DocLists not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - document' }
-BCRichTextComposer >> visitEmptyParagraph: anObject [
-	canvas newLine
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitEndColumnsAnnotation: aEndColumnsAnnotation [
-	canvas << '>>> Columns not supported in RichText Pillar <<<' asText
-]
-
-{ #category : #'visiting - unsupported' }
-BCRichTextComposer >> visitEndEnvironmentAnnotation: aEndEnvironmentAnnotation [
-	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
-]
-
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitEnvironment: anObject [
+	self halt.
 	self flag: #fixme.
 	"What is this textBlock idea? Clean!"
 	anObject name = 'textBlock'
@@ -652,6 +577,7 @@ BCRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitExternalLink: aLink [
 	| attribute target url |
+	self halt.
 	target := aLink reference.
 	url := target asUrl.
 	attribute := nil.
@@ -670,6 +596,7 @@ BCRichTextComposer >> visitExternalLink: aLink [
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitFigure: aFigure [
 	| anchoredImage |
+	self halt.
 	"Try to read a png file (only one supported right now), else use alt text"
 	
 	"for now I cancel the catching of all exceptions because it is a blackhole."
@@ -694,8 +621,8 @@ BCRichTextComposer >> visitHeader: aHeader [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitHorizontalRule: anHorizontalLine [
-
+BCRichTextComposer >> visitHorizontalLine: anHorizontalLine [
+	self halt.
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -710,6 +637,7 @@ BCRichTextComposer >> visitItalic: anObject [
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitListItem: anItem [
 	| bullet |
+	self halt.
 	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
 	bullet := (anItem propertyAt: #kind) = #ordered
 		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
@@ -722,11 +650,11 @@ BCRichTextComposer >> visitListItem: anItem [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitMathEnvironment:  aPRMathEnvironment [
-	"we could plug some math rendering for Polymath following the implementation of Kasper.
-	See PRCodeblockStylerExtensions"
+BCRichTextComposer >> visitMathEnvironment:  aMicMathEnvironment [
+
 	| text |
-	text := aPRMathEnvironment text. 
+	self halt.
+	text := aMicMathEnvironment text. 
 	(OffLine | text isNil)
 		ifTrue: [ text 
 						ifNotNil: [ canvas << '&'; cr; << text; << '&']
@@ -737,13 +665,11 @@ BCRichTextComposer >> visitMathEnvironment:  aPRMathEnvironment [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitMathInTextAnnotation: aPRMathInTextAnnotation [ 
-	"we could plug some math rendering for Polymath following the implementation of Kasper.
-	See PRCodeblockStylerExtensions"
-	
+BCRichTextComposer >> visitMathInline: aMicMathInline [ 
+	self halt.
 	OffLine 
-		ifTrue: [ canvas << '$', aPRMathInTextAnnotation text, '$' ]
-		ifFalse: [ canvas << (self class latexMathStylerFor: aPRMathInTextAnnotation text)]
+		ifTrue: [ canvas << '$', aMicMathInline text, '$' ]
+		ifFalse: [ canvas << (self class latexMathStylerFor: aMicMathInline text)]
 ]
 
 { #category : #'visiting -  format' }
@@ -766,6 +692,7 @@ BCRichTextComposer >> visitMonospace: anObject [
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitOrderedList: anObject [
 	| counter |
+	self halt.
 	canvas indentIn: [counter := 1.
 		anObject children
 			do: [ :item | 
@@ -780,6 +707,7 @@ BCRichTextComposer >> visitOrderedList: anObject [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitParagraph: anObject [
+	
 	"canvas newLineIfNotAlready."
 	canvas newLine.
 	super visitParagraph: anObject.
@@ -791,22 +719,6 @@ BCRichTextComposer >> visitParameters: anObject [
 	"do nothing for now"
 	
 	^ self
-]
-
-{ #category : #'visiting - document' }
-BCRichTextComposer >> visitPreformatted: aPreformatted [
-
-	canvas newLineIfNotAlready.
-	canvas newLine.
-	canvas
-		indentIn: [ 
-			aPreformatted children do: [ :each | 
-				canvas << (self class textStyler: each text).
-				canvas newLine ].
-			"This is not really correct since the text should be interpreted."
-			"canvas << (PRRichTextCodeblockStyler textStyler: aPreformatted text)"].
-		
-	canvas newLine
 ]
 
 { #category : #'visiting -  format' }
@@ -822,16 +734,6 @@ BCRichTextComposer >> visitStrikethroughFormat: anObject [
 	canvas includeAttribute: TextEmphasis struckOut in: [ self visitFormat: anObject ]
 ]
 
-{ #category : #'visiting - list' }
-BCRichTextComposer >> visitTermItem: anItem [
-	canvas newLineIfNotAlready.
-	canvas
-		includeAttribute: (TextIndent tabs: canvas nesting - 1)
-		in: [ canvas
-				includeAttribute: TextEmphasis bold
-				in: [ self visitDocumentGroup: anItem ] ]
-]
-
 { #category : #'visiting -  format' }
 BCRichTextComposer >> visitText: anObject [
 
@@ -842,6 +744,7 @@ BCRichTextComposer >> visitText: anObject [
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitUnorderedList: anObject [
+	self halt.
 	canvas
 		indentIn: [ anObject children
 				do: [ :item | 

@@ -175,9 +175,11 @@ MicrodownVisitor >> visitStrike: aFormat [
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitText: aMicTextBlock [
+
+	self fixBlockWithoutMicText: aMicTextBlock
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : #visiting }
 MicrodownVisitor >> visitUnorderedList: aUnorderedList [
 
 	^ self visitChildrenOf: aUnorderedList
