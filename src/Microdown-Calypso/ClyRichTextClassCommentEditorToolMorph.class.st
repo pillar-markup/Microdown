@@ -29,7 +29,7 @@ ClyRichTextClassCommentEditorToolMorph >> asRenderedText [
 
 	self flag: #fixme. "this is strange to have a super here."
 	
-	^ BCRichTextComposer renderComment: super editingText asText asString of: self editingClass
+	^ PRRichTextComposer renderComment: super editingText asText asString of: self editingClass
 ]
 
 { #category : #rendering }

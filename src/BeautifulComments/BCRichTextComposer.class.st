@@ -3,7 +3,7 @@ I am a visitor that produces rich text (class Text) based on a pillar document m
 I am implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
 a not rendering mode, and a not catching exceptions (to ease debugging).
 
-The main API is the method: `PRRichTextComposer class>>#renderComment:of:`.
+The main API is the method: `BCRichTextComposer class>>#renderComment:of:`.
 
 Web-based images or LaTeX rendering requires network access and are cached.
 
@@ -16,7 +16,7 @@ For the LaTeX rendering, internet connexion is required.
 You can also turn it off/on doing
 
 ```
-PRRichTextComposer putOffLine
+BCRichTextComposer putOffLine
 ```
 
 In addition, images fetched via http requests are cached to avoid multiple http requests.
@@ -59,6 +59,9 @@ Class {
 		'NotRendering',
 		'OffLine',
 		'Stylers'
+	],
+	#classInstVars : [
+		'imageCache'
 	],
 	#category : #BeautifulComments
 }
@@ -178,6 +181,11 @@ BCRichTextComposer class >> imageAt: urlString put: aForm [
 	ImageCache at: urlString put: aForm
 ]
 
+{ #category : #accessing }
+BCRichTextComposer class >> imageCache [
+	^ imageCache ifNil: [ imageCache := LRUCache new ]
+]
+
 { #category : #'class initialization' }
 BCRichTextComposer class >> initialize [ 
 	"self initialize"
@@ -204,6 +212,47 @@ BCRichTextComposer class >> languageStylerFor: aLanguage [
 	^ Stylers
 		at: aLanguage asLowercase
 		ifAbsent: [ self languageStylerFor: 'default' ]
+]
+
+{ #category : #examples }
+BCRichTextComposer class >> latexExample [
+	<example>
+	(BCRichTextComposer new start: 
+		(PRMathInTextAnnotation new 
+		add: (PRText new text:
+'V_i = C_0 - C_3
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')))
+
+ inspect
+]
+
+{ #category : #styling }
+BCRichTextComposer class >> latexMathStylerFor: aString [
+	"<codeblockStylerFor:'latexMath'>
+	
+	this is totally bogus: this method does not return a styler but just an image."
+	
+	| expressionUrl |
+	expressionUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
+	^self loadExternalImageFromURL: expressionUrl errorText: 'Latex error'.
+]
+
+{ #category : #private }
+BCRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc [
+	"I return a Text instance with an loaded from a url"
+	
+	| anchoredImage |
+	self flag: #cleanAndRevisit.
+	anchoredImage := self imageCache 
+		at: aUrl 
+		ifAbsentPut: [ 
+			[ anchoredImage := (String value: 1) asText
+					addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: aUrl)).
+				anchoredImage ] 
+			on: Exception 
+			do: [ errorDesc asText addAttribute: TextColor red ]
+		].
+	^ anchoredImage 
 ]
 
 { #category : #'styler - declaration' }
@@ -413,7 +462,7 @@ BCRichTextComposer >> rawImageFrom: aURL [
 { #category : #'visiting - document' }
 BCRichTextComposer >> renderMathExpression: aString [
 	
-	canvas << (BCCodeblockStylerExtensions latexMathStylerFor: aString)
+	canvas << (self class latexMathStylerFor: aString)
 ]
 
 { #category : #visiting }
@@ -497,6 +546,14 @@ BCRichTextComposer >> visitAnnotation: anAnnotation [
 BCRichTextComposer >> visitBeginEnvironmentAnnotation: aBeginEnvironmentAnnotation [
 
 	canvas << '>>> Environments not supported in RichText Pillar <<<' asText
+]
+
+{ #category : #'visiting -  format' }
+BCRichTextComposer >> visitBold: anObject [
+	canvas 
+		includeAttribute: TextEmphasis bold 
+		in: [self visitFormat: anObject]
+	
 ]
 
 { #category : #'visiting -  format' }
@@ -690,7 +747,7 @@ BCRichTextComposer >> visitMathInTextAnnotation: aPRMathInTextAnnotation [
 	
 	OffLine 
 		ifTrue: [ canvas << '$', aPRMathInTextAnnotation text, '$' ]
-		ifFalse: [ canvas << (BCCodeblockStylerExtensions latexMathStylerFor: aPRMathInTextAnnotation text)]
+		ifFalse: [ canvas << (self class latexMathStylerFor: aPRMathInTextAnnotation text)]
 ]
 
 { #category : #'visiting -  format' }
