@@ -27,9 +27,22 @@ BCDisplayer >> buildText [
 { #category : #'instance creation' }
 BCDisplayer >> contents [ 
 	^ BCRichTextComposer new visit: (MicroDownParser new parse: '## Section Level 2
-	
-Followed by a nice paragraph
+## About Paragraphs	
+Followed by a nice paragraph 
 on multiple lines
+
+And another **paragraph** (written in bold) just for the _fun_ (the fun must be in italic) and some ~strike~. 
+
+# Section Level 1
+## Section Level 2
+### Section Level 3
+#### Section Level 4
+##### Section Level 5
+###### Section Level 6
+
+# About monospace
+
+This is `monospace` and this is `Point>>#degrees` and ` Point `
 
 ')
 ]

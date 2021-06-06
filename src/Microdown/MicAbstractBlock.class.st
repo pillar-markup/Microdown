@@ -122,8 +122,3 @@ MicAbstractBlock >> parserClass [
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
 ]
-
-{ #category : #'as yet unclassified' }
-MicAbstractBlock >> wrappedElement [
-	^ children first
-]

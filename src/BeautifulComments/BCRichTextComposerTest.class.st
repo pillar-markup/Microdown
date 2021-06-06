@@ -282,9 +282,13 @@ BCRichTextComposerTest >> testNestedList [
 
 { #category : #'tests - List' }
 BCRichTextComposerTest >> testOrderedList [ 
-	| runs string |
-	runs := self runsOf: sample orderedList.
-	string := self stringOf: sample orderedList.
+	| runs string elts |
+	elts := (self microElementsFrom: '1. First item
+2. Second item
+   on two lines
+3. Third item').
+	runs := self runsOf: elts.
+	string := self stringOf: elts.
 	self assert: runs first first class equals: TextIndent.
 	self assert: runs first first amount equals: 1.
 	self assert: runs runs equals: #(3 7 1 3 7 1) asArray.
@@ -292,8 +296,8 @@ BCRichTextComposerTest >> testOrderedList [
 	self assert: (string at: 12) equals: $2.
 ]
 
-{ #category : #'tests - Preformatted' }
-BCRichTextComposerTest >> testParagrahNotFormat [
+{ #category : #'tests - paragraph' }
+BCRichTextComposerTest >> testParagraphNotFormat [
 	| runs richText |
 	richText := self richTextFor: (self microElementsFrom: '
 foo
@@ -361,8 +365,13 @@ BCRichTextComposerTest >> testTextFormat [
 
 { #category : #'tests - List' }
 BCRichTextComposerTest >> testUnorderedList [ 
-	| runs |
-	runs := self runsOf: sample unorderedList.
+	| runs string elts |
+	elts := (self microElementsFrom: '- First item
+- Second item
+   on two lines
+- Third item').
+	runs := self runsOf: elts.
+	string := self stringOf: elts.
 	self assert: runs first first class equals: TextIndent.
 	self assert: runs first first amount equals: 1.
 	self assert: runs runs equals: #(2 6 1 2 6 1) asArray.

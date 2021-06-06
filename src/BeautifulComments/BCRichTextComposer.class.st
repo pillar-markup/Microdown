@@ -497,6 +497,12 @@ BCRichTextComposer >> theme [
 	^  Smalltalk ui theme
 ]
 
+{ #category : #accessing }
+BCRichTextComposer >> todo [ 
+	^ 'there is too much hspace after a section when it is followed by a paragraph. 
+This also because people will not want to to not let a newline between the header and paragraph when writing the text.'
+]
+
 { #category : #'images internal' }
 BCRichTextComposer >> unsuccessfulRequestFromUrl: aUrl [
 	
