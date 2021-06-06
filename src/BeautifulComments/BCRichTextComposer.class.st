@@ -217,7 +217,7 @@ BCRichTextComposer class >> languageStylerFor: aLanguage [
 { #category : #examples }
 BCRichTextComposer class >> latexExample [
 	<example>
-	(BCRichTextComposer new start: 
+	(BCRichTextComposer new visit: 
 		(PRMathInTextAnnotation new 
 		add: (PRText new text:
 'V_i = C_0 - C_3
@@ -465,13 +465,6 @@ BCRichTextComposer >> renderMathExpression: aString [
 	canvas << (self class latexMathStylerFor: aString)
 ]
 
-{ #category : #visiting }
-BCRichTextComposer >> start: aDocument [
-	canvas := BCRichTextCanvas new.
-	self visit: aDocument.
-	^ canvas contents
-]
-
 { #category : #accessing }
 BCRichTextComposer >> subscriptColor [
 	^ subscriptColor 
@@ -509,8 +502,11 @@ BCRichTextComposer >> unsuccessfulRequestFromUrl: aUrl [
 ]
 
 { #category : #visiting }
-BCRichTextComposer >> visit: anObject [
-	anObject accept: self
+BCRichTextComposer >> visit: aDocument [
+	
+	canvas := BCRichTextCanvas new.
+	super visit: aDocument.
+	^ canvas contents
 ]
 
 { #category : #'visiting - unsupported' }
@@ -695,7 +691,7 @@ BCRichTextComposer >> visitHeader: aHeader [
 	canvas newLine.
 	canvas
 		includeAttribute: (self class headerLevelFont: aHeader level)
-		in: [ self visitDocumentGroup: aHeader ].
+		in: [ super visitHeader: aHeader ].
 	canvas newLine
 ]
 

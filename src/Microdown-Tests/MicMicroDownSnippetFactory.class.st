@@ -102,6 +102,11 @@ MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
 ]
 
+{ #category : #utils }
+MicMicrodownSnippetFactory >> documentFrom: aString [
+	^ parserClass new parse: aString
+]
+
 { #category : #anchor }
 MicMicrodownSnippetFactory >> environmentSample [
 	^ '<?Foo|value=aFoo&label=42

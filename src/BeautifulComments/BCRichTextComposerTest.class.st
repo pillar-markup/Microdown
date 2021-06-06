@@ -2,7 +2,8 @@ Class {
 	#name : #BCRichTextComposerTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'sample'
+		'sample',
+		'parser'
 	],
 	#category : #BeautifulComments
 }
@@ -41,37 +42,49 @@ BCRichTextComposerTest >> figure: aFigureLink [
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel1 [
-	^ BCRichTextComposer headerLevelFont: 1
+
+	^ self composerClass headerLevelFont: 1
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel2 [
-	^ BCRichTextComposer headerLevelFont: 2
+
+	^ self composerClass headerLevelFont: 2
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel3 [
-	^ BCRichTextComposer headerLevelFont: 3
+
+	^ self composerClass headerLevelFont: 3
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel4 [
-	^ BCRichTextComposer headerLevelFont: 4
+
+	^ self composerClass headerLevelFont: 4
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel5 [
-	^ BCRichTextComposer headerLevelFont: 5
+
+	^ self composerClass headerLevelFont: 5
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> headerLevel6 [
-	^ BCRichTextComposer headerLevelFont: 6
+
+	^ self composerClass headerLevelFont: 6
 ]
 
 { #category : #'tests - Format' }
 BCRichTextComposerTest >> italicFormat [
 	^ TextEmphasis italic
+]
+
+{ #category : #'tests - Header' }
+BCRichTextComposerTest >> microElementsFrom: aString [
+	^ sample documentFrom: aString.
+	
 ]
 
 { #category : #'tests - Format' }
@@ -80,20 +93,22 @@ BCRichTextComposerTest >> monospaceFormat [
 ]
 
 { #category : #helpers }
-BCRichTextComposerTest >> richTextFor: aPRDocument [
-	^ self composer start: aPRDocument
+BCRichTextComposerTest >> richTextFor: aDocument [
+
+	^ self composer visit: aDocument
 ]
 
 { #category : #helpers }
-BCRichTextComposerTest >> runsOf: aPRDocument [
-
-	^ (self richTextFor: aPRDocument) runs
+BCRichTextComposerTest >> runsOf: aDocument [
+	
+	^ (self richTextFor: aDocument) runs
 ]
 
 { #category : #running }
 BCRichTextComposerTest >> setUp [
 	super setUp.
-	sample := PRDocumentSample new.
+	sample := MicMicrodownSnippetFactory new.
+	parser := MicroDownParser new.
 ]
 
 { #category : #'skipped tests' }
@@ -148,13 +163,15 @@ BCRichTextComposerTest >> testCodeBlock [
 
 { #category : #'skipped tests' }
 BCRichTextComposerTest >> testExternaLink [
+
 	| pillarLink target obj1 obj2 raised |
 	self skip.
 	raised := false.
-	[ pillarLink := '*SitePharo>https://get.pharo.org/64/*'.
+	[ 
+	pillarLink := '*SitePharo>https://get.pharo.org/64/*'.
 	target := 'https://get.pharo.org/64/'.
 
-	obj1 := ((BCRichTextComposer asText: pillarLink) runs at: 1) first.
+	obj1 := ((self composerClass asText: pillarLink) runs at: 1) first.
 	obj2 := self externalLink: target ]
 		on: Error
 		do: [ raised := true ].
@@ -165,13 +182,15 @@ BCRichTextComposerTest >> testExternaLink [
 
 { #category : #'skipped tests' }
 BCRichTextComposerTest >> testFigure [
+
 	| link pillarLink obj1 obj2 raised |
 	self skip.
 	raised := false.
-	[ pillarLink := '+Pharologo>https://files.pharo.org/media/logo/logo.png+'.
+	[ 
+	pillarLink := '+Pharologo>https://files.pharo.org/media/logo/logo.png+'.
 	link := 'https://files.pharo.org/media/logo/logo.png'.
 
-	obj1 := ((BCRichTextComposer asText: pillarLink) runs at: 1) first.
+	obj1 := ((self composerClass asText: pillarLink) runs at: 1) first.
 	obj2 := self figure: link ]
 		on: Error
 		do: [ raised := true ].
@@ -182,34 +201,50 @@ BCRichTextComposerTest >> testFigure [
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel1 [
-	sample := sample headerLevel1.
-	self assert: sample hasChildren.
-	self assertWriting: sample include: self headerLevel1
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel1Sample) 
+		include: self headerLevel1
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel2 [
-	self assertWriting: sample headerLevel2 include: self headerLevel2
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel2Sample) 
+		include: self headerLevel2
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel3 [
-	self assertWriting: sample headerLevel3 include: self headerLevel3
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel3Sample) 
+		include: self headerLevel3
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel4 [
-	self assertWriting: sample headerLevel4 include: self headerLevel4
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel4Sample) 
+		include: self headerLevel4
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel5 [
-	self assertWriting: sample headerLevel5 include: self headerLevel5
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel5Sample) 
+		include: self headerLevel5
 ]
 
 { #category : #'tests - Header' }
 BCRichTextComposerTest >> testHeaderLevel6 [
-	self assertWriting: sample headerLevel6 include: self headerLevel6
+
+	self 
+		assertWriting: (self microElementsFrom: sample headerLevel6Sample) 
+		include: self headerLevel6
 ]
 
 { #category : #'tests - Format' }
@@ -291,16 +326,16 @@ BCRichTextComposerTest >> testStrikethroughFormat [
 BCRichTextComposerTest >> testStylersAreRegistered [
 
 	| defaultStyler |
-	defaultStyler := (BCRichTextComposer languageStylerFor: 'blblbl').
-	self assert: defaultStyler selector equals: #defaultStyler:.
+	defaultStyler := self composerClass languageStylerFor: 'blblbl'.
+	self assert: defaultStyler selector equals: #defaultStyler:
 ]
 
 { #category : #'tests - stylers' }
 BCRichTextComposerTest >> testStylersForText [
 
 	| defaultStyler |
-	defaultStyler := (BCRichTextComposer languageStylerFor: 'text').
-	self assert: defaultStyler selector equals: #textStyler:.
+	defaultStyler := self composerClass languageStylerFor: 'text'.
+	self assert: defaultStyler selector equals: #textStyler:
 ]
 
 { #category : #'skipped tests' }
