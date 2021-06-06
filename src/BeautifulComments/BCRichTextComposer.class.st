@@ -398,6 +398,12 @@ BCRichTextComposer >> defaultSuperscriptColor [
 	^ TextColor blue
 ]
 
+{ #category : #'visiting -  format' }
+BCRichTextComposer >> fixBlockWithoutMicText: anInlineBlock [
+
+	canvas << anInlineBlock substring asText
+]
+
 { #category : #'images internal' }
 BCRichTextComposer >> imageOffLineFromUrl: aUrl [
 	"we are off but the image is there so we return it,"
@@ -548,15 +554,7 @@ BCRichTextComposer >> visitBeginEnvironmentAnnotation: aBeginEnvironmentAnnotati
 BCRichTextComposer >> visitBold: anObject [
 	canvas 
 		includeAttribute: TextEmphasis bold 
-		in: [self visitFormat: anObject]
-	
-]
-
-{ #category : #'visiting -  format' }
-BCRichTextComposer >> visitBoldFormat: anObject [
-	canvas 
-		includeAttribute: TextEmphasis bold 
-		in: [self visitFormat: anObject]
+		in: [ super visitBold: anObject ]
 	
 ]
 
@@ -703,8 +701,10 @@ BCRichTextComposer >> visitHorizontalRule: anHorizontalLine [
 ]
 
 { #category : #'visiting -  format' }
-BCRichTextComposer >> visitItalicFormat: anObject [
-	canvas includeAttribute: TextEmphasis italic in: [ self visitFormat: anObject ]
+BCRichTextComposer >> visitItalic: anObject [
+	canvas 
+		includeAttribute: TextEmphasis italic 
+		in: [ super visitItalic: anObject ]
 ]
 
 { #category : #'visiting - list' }
@@ -747,7 +747,7 @@ BCRichTextComposer >> visitMathInTextAnnotation: aPRMathInTextAnnotation [
 ]
 
 { #category : #'visiting -  format' }
-BCRichTextComposer >> visitMonospaceFormat: anObject [
+BCRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
 	backgroundColor := self monospaceBackgroundColor.
@@ -757,11 +757,10 @@ BCRichTextComposer >> visitMonospaceFormat: anObject [
 	canvas 
 		includeAttribute: (TextBackgroundColor color: backgroundColor) 
 		in: [ 
-			sem := PRSemanticAction from: anObject text.
+			sem := BCSemanticAction from: anObject text.
 			sem hasEntity 
-				ifTrue: [ canvas 
-								includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) in: [self visitFormat: anObject ] ]
-				ifFalse: [ self visitFormat: anObject]].  
+				ifTrue: [ canvas includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) in: [ super visitMonospace: anObject ] ]
+				ifFalse: [ super visitMonospace: anObject]].  
 ]
 
 { #category : #'visiting - list' }
@@ -811,22 +810,16 @@ BCRichTextComposer >> visitPreformatted: aPreformatted [
 ]
 
 { #category : #'visiting -  format' }
+BCRichTextComposer >> visitStrike: anObject [
+
+	canvas 
+		includeAttribute: TextEmphasis struckOut 
+		in: [ super visitStrike: anObject ]
+]
+
+{ #category : #'visiting -  format' }
 BCRichTextComposer >> visitStrikethroughFormat: anObject [
 	canvas includeAttribute: TextEmphasis struckOut in: [ self visitFormat: anObject ]
-]
-
-{ #category : #'visiting -  format' }
-BCRichTextComposer >> visitSubscriptFormat: anObject [
-	canvas
-		includeAttribute: self subscriptColor
-		in: [ self visitFormat: anObject ]
-]
-
-{ #category : #'visiting -  format' }
-BCRichTextComposer >> visitSuperscriptFormat: anObject [
-	canvas
-		includeAttribute: self superscriptColor
-		in: [ self visitFormat: anObject ]
 ]
 
 { #category : #'visiting - list' }
@@ -839,15 +832,12 @@ BCRichTextComposer >> visitTermItem: anItem [
 				in: [ self visitDocumentGroup: anItem ] ]
 ]
 
-{ #category : #'visiting - document' }
-BCRichTextComposer >> visitText: anObject [
-	canvas << anObject text asText
-		" - should not be necessary addAttribute: (TextIndent tabs: canvas nesting)"
-]
-
 { #category : #'visiting -  format' }
-BCRichTextComposer >> visitUnderlineFormat: anObject [
-	canvas includeAttribute: TextEmphasis underlined in: [ self visitFormat: anObject ]
+BCRichTextComposer >> visitText: anObject [
+
+	canvas 
+		includeAttribute: TextEmphasis normal 
+		in: [ super visitText: anObject ]
 ]
 
 { #category : #'visiting - list' }

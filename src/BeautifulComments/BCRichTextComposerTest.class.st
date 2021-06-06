@@ -13,7 +13,7 @@ BCRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute 
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> boldFormat [
 	^ TextEmphasis bold
 ]
@@ -40,56 +40,61 @@ BCRichTextComposerTest >> figure: aFigureLink [
 	^ TextAnchor new anchoredMorph: (ZnEasy getPng: url)
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel1 [
 
 	^ self composerClass headerLevelFont: 1
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel2 [
 
 	^ self composerClass headerLevelFont: 2
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel3 [
 
 	^ self composerClass headerLevelFont: 3
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel4 [
 
 	^ self composerClass headerLevelFont: 4
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel5 [
 
 	^ self composerClass headerLevelFont: 5
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> headerLevel6 [
 
 	^ self composerClass headerLevelFont: 6
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> italicFormat [
 	^ TextEmphasis italic
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> microElementsFrom: aString [
 	^ sample documentFrom: aString.
 	
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> monospaceFormat [
 	^ TextBackgroundColor color: Smalltalk ui theme settings windowColor
+]
+
+{ #category : #'tests - format' }
+BCRichTextComposerTest >> normalFormat [
+	^ TextEmphasis normal
 ]
 
 { #category : #helpers }
@@ -127,15 +132,15 @@ BCRichTextComposerTest >> subscriptFormat [
 	^ TextColor red
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> testBoldFormat [
 
-	self assertWriting: sample bold include: self boldFormat
+	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
 { #category : #'tests - CodeBlock' }
@@ -199,7 +204,7 @@ BCRichTextComposerTest >> testFigure [
 	self assert: obj1 class name equals: #TextAnchor
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel1 [
 
 	self 
@@ -207,7 +212,7 @@ BCRichTextComposerTest >> testHeaderLevel1 [
 		include: self headerLevel1
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel2 [
 
 	self 
@@ -215,7 +220,7 @@ BCRichTextComposerTest >> testHeaderLevel2 [
 		include: self headerLevel2
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel3 [
 
 	self 
@@ -223,7 +228,7 @@ BCRichTextComposerTest >> testHeaderLevel3 [
 		include: self headerLevel3
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel4 [
 
 	self 
@@ -231,7 +236,7 @@ BCRichTextComposerTest >> testHeaderLevel4 [
 		include: self headerLevel4
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel5 [
 
 	self 
@@ -239,7 +244,7 @@ BCRichTextComposerTest >> testHeaderLevel5 [
 		include: self headerLevel5
 ]
 
-{ #category : #'tests - Header' }
+{ #category : #'tests - header' }
 BCRichTextComposerTest >> testHeaderLevel6 [
 
 	self 
@@ -247,15 +252,10 @@ BCRichTextComposerTest >> testHeaderLevel6 [
 		include: self headerLevel6
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> testItalicFormat [
-	self assertWriting: sample italic include: self italicFormat
-]
+	self assertWriting: (self microElementsFrom: sample italicFormatSample) include: self italicFormat
 
-{ #category : #'tests - Format' }
-BCRichTextComposerTest >> testMonospaceFormat [ 
-	self skip. 
-	self assertWriting: sample monospace include: self monospaceFormat
 ]
 
 { #category : #'skipped tests' }
@@ -348,6 +348,15 @@ BCRichTextComposerTest >> testSubscriptFormat [
 	
 ]
 
+{ #category : #'tests - format' }
+BCRichTextComposerTest >> testTextFormat [
+	self flag: #tofix.
+	self skip.
+	self 
+		assertWriting: (self microElementsFrom: 'Hello Pharo') 
+		include: self normalFormat
+]
+
 { #category : #'tests - List' }
 BCRichTextComposerTest >> testUnorderedList [ 
 	| runs |
@@ -357,7 +366,7 @@ BCRichTextComposerTest >> testUnorderedList [
 	self assert: runs runs equals: #(2 6 1 2 6 1) asArray.
 ]
 
-{ #category : #'tests - Format' }
+{ #category : #'tests - format' }
 BCRichTextComposerTest >> underlineFormat [
 	^ TextEmphasis underlined
 ]
