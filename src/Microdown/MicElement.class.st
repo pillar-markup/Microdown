@@ -6,6 +6,7 @@ Class {
 
 { #category : #converting }
 MicElement >> asPillar [ 
+	self deprecated: 'Use accept: MicPillarConverter instead' transformWith: '`@receiver asPillar' -> '`@receiver accept: MicPillarConverter new'.
 	^ self accept: MicPillarConverter new
 ]
 
