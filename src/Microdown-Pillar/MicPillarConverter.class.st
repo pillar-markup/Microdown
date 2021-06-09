@@ -144,7 +144,10 @@ MicPillarConverter >> visitItalic: aMicItalic [
 
 { #category : #'visiting inline' }
 MicPillarConverter >> visitLink: aMicLink [
- 	^ self urlBlock: aMicLink
+ 	^ aMicLink associatedPillarClass new
+		setChildren: (( aMicLink inlineParse: aMicLink substring) collect: [:n | n asPillar]);
+		reference: aMicLink url;
+		yourself
 ]
 
 { #category : #visiting }
