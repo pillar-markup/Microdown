@@ -61,22 +61,25 @@ MicPillarConverter >> visitBold: aMicBold [
 
 { #category : #visiting }
 MicPillarConverter >> visitCode: aMicCodeBlock [
- 	| prBlock par pillars |
+
+	| prBlock par pillars |
 	prBlock := PRCodeblock new.
 	prBlock text: aMicCodeBlock code.
 
 	aMicCodeBlock arguments keysAndValuesDo: [ :k :v | 
 		(aMicCodeBlock arguments includesKey: #language)
-			ifFalse: [ (aMicCodeBlock arguments keys first = k and: v isEmptyOrNil)
-				ifTrue: [ prBlock parameterAt: 'language' put: k ]
-				 ifFalse:  [ prBlock parameterAt: k put: v ]  ]
-			ifTrue: [prBlock parameterAt: k put: v ]].
-	
+			ifFalse: [ 
+				(aMicCodeBlock arguments keys first = k and: v isEmptyOrNil)
+					ifTrue: [ prBlock parameterAt: 'language' put: k ]
+					ifFalse: [ prBlock parameterAt: k put: v ] ]
+			ifTrue: [ prBlock parameterAt: k put: v ] ].
+
 	aMicCodeBlock hasCaption
 		ifTrue: [ 
 			prBlock parameters removeKey: #caption.
 			par := PRParagraph new.
-			pillars := aMicCodeBlock captionElements collect: [ :each | each asPillar ].
+			pillars := aMicCodeBlock captionElements collect: [ :each | 
+				           each accept: MicPillarConverter new ].
 			pillars do: [ :each | par add: each ].
 			prBlock setCaption: par ]
 		ifFalse: [ 
@@ -144,10 +147,13 @@ MicPillarConverter >> visitItalic: aMicItalic [
 
 { #category : #'visiting inline' }
 MicPillarConverter >> visitLink: aMicLink [
- 	^ aMicLink associatedPillarClass new
-		setChildren: (( aMicLink inlineParse: aMicLink substring) collect: [:n | n asPillar]);
-		reference: aMicLink url;
-		yourself
+
+	^ aMicLink associatedPillarClass new
+		  setChildren:
+			  ((aMicLink inlineParse: aMicLink substring) collect: [ :n | 
+					   n accept: MicPillarConverter new ]);
+		  reference: aMicLink url;
+		  yourself
 ]
 
 { #category : #visiting }
