@@ -121,7 +121,7 @@ MicPillarConverter >> visitFormatBlock: aMicFormatBlock [
  	| childrenAsPillar |
  	childrenAsPillar := aMicFormatBlock isOnlyChild 
  		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
- 		ifFalse: [ aMicFormatBlock children collect: [:e | e asPillar ] ].
+ 		ifFalse: [ aMicFormatBlock children collect: [:e | e accept: self ] ].
  	 ^ aMicFormatBlock associatedPillarClass new
  				setChildren: childrenAsPillar;
  				yourself
