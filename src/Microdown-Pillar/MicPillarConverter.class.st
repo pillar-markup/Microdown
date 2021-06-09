@@ -66,13 +66,17 @@ MicPillarConverter >> visitCode: aMicCodeBlock [
 	prBlock text: aMicCodeBlock code.
 
 	aMicCodeBlock arguments keysAndValuesDo: [ :k :v | 
-		prBlock parameterAt: k put: v ].
+		(aMicCodeBlock arguments includesKey: #language)
+			ifFalse: [ (aMicCodeBlock arguments keys first = k and: v isEmptyOrNil)
+				ifTrue: [ prBlock parameterAt: 'language' put: k ]
+				 ifFalse:  [ prBlock parameterAt: k put: v ]  ]
+			ifTrue: [prBlock parameterAt: k put: v ]].
 	
 	aMicCodeBlock hasCaption
 		ifTrue: [ 
 			prBlock parameters removeKey: #caption.
 			par := PRParagraph new.
-			pillars := aMicCodeBlock captionElements collect: [ :each | each accept: self ].
+			pillars := aMicCodeBlock captionElements collect: [ :each | each asPillar ].
 			pillars do: [ :each | par add: each ].
 			prBlock setCaption: par ]
 		ifFalse: [ 
