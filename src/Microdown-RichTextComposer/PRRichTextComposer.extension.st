@@ -131,12 +131,12 @@ PRRichTextComposer class >> microdown [
 
 { #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> microdownAsDocument: aString [
-	^ (self microdown parse: aString ) asPillar
+	^ (self microdown parse: aString ) accept: MicPillarConverter new
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
 PRRichTextComposer class >> microdownAsRichText: aString [
-	^ (self new start: (self microdown parse: aString ) asPillar)
+	^ (self new start: ((self microdown parse: aString ) accept: MicPillarConverter new))
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
