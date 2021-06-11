@@ -603,14 +603,14 @@ MicInlineSplitterTest >> testWrappedElementOnBold [
 	self skip.
 	"should be work when format block will have MicText in their children"
 	mic := (self splitter parse: '**bold**') first.
-	self assert: mic wrappedElement class equals: MicTextBlock.
-	self assert: mic wrappedElement substring equals: 'bold'
+	self assert: mic wrappedElements first class equals: MicTextBlock.
+	self assert: mic wrappedElements first substring equals: 'bold'
 ]
 
 { #category : #tests }
 MicInlineSplitterTest >> testWrappedElementOnNested [
 	| mic |
 	mic := (self splitter parse: '**_italic_**') first.
-	self assert: mic wrappedElement class equals: MicItalicFormatBlock.
-	self assert: mic wrappedElement substring equals: 'italic'
+	self assert: mic wrappedElements first class equals: MicItalicFormatBlock.
+	self assert: mic wrappedElements first  substring equals: 'italic'
 ]
