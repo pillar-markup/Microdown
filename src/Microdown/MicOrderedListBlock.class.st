@@ -33,7 +33,7 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #accessing }
+{ #category : #visiting }
 MicOrderedListBlock >> accept: aVisitor [
  	^ aVisitor visitOrderedList: self
 ]
@@ -57,13 +57,6 @@ MicOrderedListBlock >> canConsumeLine: line [
 	
 	line ifEmpty: [ ^ true ].
 	^ (super canConsumeLine: line) and: [line trim  prefixMatchesRegex: '\d+(\.|\))']
-]
-
-{ #category : #printing }
-MicOrderedListBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'OrderedList'.
-	
 ]
 
 { #category : #accessing }

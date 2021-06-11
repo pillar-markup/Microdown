@@ -26,10 +26,3 @@ MicQuoteBlock >> lineMarkup [
 
 	^ self parser preformattedMarkup
 ]
-
-{ #category : #printing }
-MicQuoteBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Quote: '.
-	aStream nextPutAll: (self text asString contractTo: 100)
-]

@@ -24,7 +24,7 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #markups }
+{ #category : #visiting }
 MicMathBlock >> accept: aVisitor [ 
  	^ aVisitor visitMath: self
 ]

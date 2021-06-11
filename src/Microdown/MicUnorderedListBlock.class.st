@@ -49,7 +49,7 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #testing }
+{ #category : #visiting }
 MicUnorderedListBlock >> accept: aVisitor [
  	^ aVisitor visitUnorderedList: self
 ]
@@ -60,11 +60,4 @@ MicUnorderedListBlock >> canConsumeLine: line [
 
 	line ifEmpty: [ ^ true ].
 	^ (super canConsumeLine: line) and: [line trim matchesRegex: '(^\* |^- | ^\+).*']
-]
-
-{ #category : #printing }
-MicUnorderedListBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'UnorderedList'.
-	
 ]

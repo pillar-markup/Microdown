@@ -48,7 +48,7 @@ MicAnnotatedBlock >> canConsumeLine: line [
 	^ line isNotEmpty 
 ]
 
-{ #category : #accessing }
+{ #category : #'parse support' }
 MicAnnotatedBlock >> closeMe [
 	super closeMe.
 	body := self inlineParse: body
@@ -63,14 +63,6 @@ MicAnnotatedBlock >> label [
 MicAnnotatedBlock >> lineMarkup [
 	"Normally !!"
 	^ parser annotatedParagraphMarkup
-]
-
-{ #category : #printing }
-MicAnnotatedBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Annotated: '.
-	self textElements do: [ :each | aStream nextPutAll: each substring  ]
-	
 ]
 
 { #category : #accessing }

@@ -17,7 +17,7 @@ MicParagraphBlock class >> opensBy: aLine [
 	^ aLine notEmpty 
 ]
 
-{ #category : #parsing }
+{ #category : #visiting }
 MicParagraphBlock >> accept: aVisitor [
  	^ aVisitor visitParagraph: self
 ]
@@ -53,6 +53,13 @@ MicParagraphBlock >> canConsumeLine: line [
 	^ (self blockStarterClassFrom: unIndented) = self class
 ]
 
+{ #category : #'parse support' }
+MicParagraphBlock >> closeMe [
+
+	super closeMe.
+	self children: (self inlineParse: text)
+]
+
 { #category : #private }
 MicParagraphBlock >> isRightlyIndented: line [
 	"test if line has the appropriate number of spaces at first"
@@ -60,13 +67,6 @@ MicParagraphBlock >> isRightlyIndented: line [
 	self indent = 0
 		ifTrue: [ ^ true ].
 	^ line beginsWith: (' ' repeat: self indent)
-]
-
-{ #category : #printing }
-MicParagraphBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Paragraph: '.
-	aStream nextPutAll: (self text asString contractTo: 100)
 ]
 
 { #category : #accessing }

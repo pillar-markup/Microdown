@@ -54,7 +54,7 @@ MicTableBlock >> addLineAndReturnNextNode: line [
 	
 ]
 
-{ #category : #private }
+{ #category : #'parse support' }
 MicTableBlock >> closeMe [ 
 
 	| firstSize |
@@ -80,30 +80,6 @@ MicTableBlock >> extractLine: line [
 		| something | something"
 		
 		^ (line findBetweenSubstrings: #($|)) collect: [ :each | each trim ]
-		
-				
-		
-]
-
-{ #category : #actions }
-MicTableBlock >> extractLineOld: line [
-	"For now we have 
-		| something | something | 
-		or 
-		| something | something"
-		| acc rowElements cLine |
-		acc := ''.
-		rowElements := OrderedCollection new. 
-		cLine := line allButFirst.
-		cLine do: [ :each | 
-				each = $|  
-					ifTrue: [ rowElements add: acc trim. acc := ''  ]
-					ifFalse: [ acc := acc, (String with: each) ]
-						 ].
-		(line last = $|)
-			ifFalse: [ rowElements add: acc trim ].
-		^ rowElements 			
-					
 		
 				
 		

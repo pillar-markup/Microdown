@@ -38,10 +38,3 @@ MicAnchorBlock >> label [
 MicAnchorBlock >> label: anObject [
 	label := anObject
 ]
-
-{ #category : #printing }
-MicAnchorBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Anchor: '.
-	aStream nextPutAll: label
-]

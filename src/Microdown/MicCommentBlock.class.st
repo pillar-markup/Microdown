@@ -21,10 +21,3 @@ MicCommentBlock >> lineMarkup [
 
 	^ parser commentedLineMarkup 
 ]
-
-{ #category : #markups }
-MicCommentBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Comment: '.
-	aStream nextPutAll: (self text asString contractTo: 100)
-]

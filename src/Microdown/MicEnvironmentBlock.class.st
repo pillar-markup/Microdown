@@ -81,6 +81,27 @@ MicEnvironmentBlock >> arguments [
 	^ arguments
 ]
 
+{ #category : #'parse support' }
+MicEnvironmentBlock >> body [
+
+	^ String streamContents: [:s |  self bodyElements do: [ :each | s nextPutAll: each substring ] ]
+]
+
+{ #category : #'parse support' }
+MicEnvironmentBlock >> bodyElements [
+
+	^ body
+]
+
+{ #category : #'parse support' }
+MicEnvironmentBlock >> closeMe [
+
+	"this is a temporary solution because normally the parser should populate body with MicBlocks.
+	Right now just make sure that we have structured text = inline elements. "
+	body ifNotNil: [ 
+		body :=  self inlineParse: body ]
+]
+
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 

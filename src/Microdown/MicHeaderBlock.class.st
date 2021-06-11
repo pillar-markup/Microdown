@@ -70,10 +70,3 @@ MicHeaderBlock >> headerElements [
 MicHeaderBlock >> level [
 	^ level
 ]
-
-{ #category : #printing }
-MicHeaderBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'Header: '.
-	aStream nextPutAll: self header
-]

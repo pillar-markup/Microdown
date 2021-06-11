@@ -54,13 +54,6 @@ MicListItemBlock >> isAList: normalized [
 	^ parser isAList: normalized
 ]
 
-{ #category : #debugging }
-MicListItemBlock >> printOn: aStream [
-
-	aStream nextPutAll: 'List Item: '.
-	aStream nextPutAll: (self text asString contractTo: 100)
-]
-
 { #category : #accessing }
 MicListItemBlock >> text [
 	"Returns a string we should rename text into textString"
