@@ -1,17 +1,6 @@
 Extension { #name : #MicEnvironmentBlock }
 
 { #category : #'*Microdown-Pillar' }
-MicEnvironmentBlock >> asPillar [
-	
-	| env |
-	env := PREnvironment new 
-			name: self name;
-			parameters: arguments; yourself.
-	env add: (PRParagraph withAll: (self pillarFrom: self bodyElements)).
-	^ env
-]
-
-{ #category : #'*Microdown-Pillar' }
 MicEnvironmentBlock >> body [
 
 	^ String streamContents: [:s |  self bodyElements do: [ :each | s nextPutAll: each substring ] ]
