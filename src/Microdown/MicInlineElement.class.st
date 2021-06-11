@@ -121,20 +121,17 @@ MicInlineElement >> literal [
 { #category : #printing }
 MicInlineElement >> printOn: aStream [
 
-	(self kind == #basic) 
-		ifTrue: [ aStream nextPutAll: self substring ] 
-		ifFalse: [ 
-			| contents |
-			contents := children 
-				ifEmpty: [ self substring ] 
-				ifNotEmpty: [ self childrenPrintOn ].
-			aStream nextPut: $[;
+	| contents |
+	contents := children 
+		ifEmpty: [ self substring ] 
+		ifNotEmpty: [ self childrenPrintOn ].
+	aStream nextPut: $[;
 				nextPutAll: contents;
 				nextPut: $];
 				nextPut: $(;
 				nextPutAll: self kind;
 				nextPut: $) 
-		]
+
 ]
 
 { #category : #accessing }
