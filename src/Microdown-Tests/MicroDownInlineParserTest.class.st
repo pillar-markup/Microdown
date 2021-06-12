@@ -174,7 +174,7 @@ MicrodownInlineParserTest >> testBoldsAndNestedItalics [
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second text equals: '_bolds_'.
+ 	self assert: elements second substring equals: '_bolds_'.
  	self assert: elements second kind equals: 'bold'.
  	self assert: elements second openingDelimiter equals: '**'
  
@@ -261,7 +261,7 @@ MicrodownInlineParserTest >> testItalicsAndNestedBolds [
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
- 	self assert: elements second text equals: '**italics**'.
+ 	self assert: elements second substring equals: '**italics**'.
  	self assert: elements second kind equals: 'italic'.
  	self assert: elements second openingDelimiter equals: '_'
 ]
@@ -477,9 +477,9 @@ MicrodownInlineParserTest >> testStructureOfBoldNestedText [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '**_abc_def**') first.
-	self assert: element text equals: '_abc_def'.
-	self assert: element children first text equals: 'abc'.
-	self assert: element children second text equals: 'def'.
+	self assert: element substring equals: '_abc_def'.
+	self assert: element children first substring equals: 'abc'.
+	self assert: element children second substring equals: 'def'.
 	
 ]
 
@@ -488,7 +488,7 @@ MicrodownInlineParserTest >> testStructureOfBoldSimpleText [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '**abc def**') first.
-	self assert: element text equals: 'abc def'.
+	self assert: element substring equals: 'abc def'.
 	self assert: element children equals: #()
 	
 ]
