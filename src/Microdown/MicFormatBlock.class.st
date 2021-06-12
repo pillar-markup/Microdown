@@ -12,11 +12,6 @@ MicFormatBlock >> text [
 ]
 
 { #category : #accessing }
-MicFormatBlock >> wrappedElement [
-	^ children first
-]
-
-{ #category : #accessing }
 MicFormatBlock >> wrappedElements [
 	^ children
 ]
