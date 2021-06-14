@@ -600,11 +600,9 @@ MicInlineSplitterTest >> testUrlObjectInUrlBlocks2 [
 { #category : #tests }
 MicInlineSplitterTest >> testWrappedElementOnBold [
 	| mic |
-	self skip.
-	"should be work when format block will have MicText in their children"
 	mic := (self splitter parse: '**bold**') first.
-	self assert: mic wrappedElements first class equals: MicTextBlock.
-	self assert: mic wrappedElements first substring equals: 'bold'
+	self assert: mic class equals: MicBoldFormatBlock.
+	self assert: mic substring equals: 'bold'
 ]
 
 { #category : #tests }
@@ -612,5 +610,6 @@ MicInlineSplitterTest >> testWrappedElementOnNested [
 	| mic |
 	mic := (self splitter parse: '**_italic_**') first.
 	self assert: mic wrappedElements first class equals: MicItalicFormatBlock.
-	self assert: mic wrappedElements first  substring equals: 'italic'
+	self assert: mic wrappedElements first substring equals: 'italic'.
+	self flag: #fixeMe. "should check that we do not have empty mictext"
 ]
