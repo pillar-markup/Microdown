@@ -1,5 +1,18 @@
 "
-I'm an abstract block for blocks requiring a systematic simple character or character sequences at the beginning of each line. 
+I'm an abstract block for blocks requiring a systematic simple character or character sequences at the beginning of each line. The text of the lines are accumulated for now as line without the markup separated by a newline. 
+
+For example 
+```
+% comment 1
+% comment 2
+```
+produces a single comment object with text as follows:
+
+```
+comment 1
+comment 2
+```
+
 
 For example 
 ```

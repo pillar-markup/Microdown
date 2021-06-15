@@ -10,13 +10,15 @@ Class {
 { #category : #tests }
 MicQuoteBlockTest >> testBasicQuoteBlock [
 	| source root |
-	self skip.
-	"strange it looks like we drop text2"
-	source := '> text1
->    text2'.
+	source := '> test1
+> test 2'.
 	root := parser parse: source.
-	self assert: root children first class equals: MicCodeBlock.
-	self assert: root children first
+
+	self assert: root children first class equals: MicQuoteBlock.
+	self assert: root children first text  equals: 'test1
+test 2'.
+	self flag: #tofix.
+"note that this is wrong because the body of a quoteblock is a paragraph and can containsTruePositive: formatting else this is just a code block"
 ]
 
 { #category : #tests }

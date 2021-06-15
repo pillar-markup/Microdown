@@ -559,3 +559,15 @@ MicrodownParserTest >> testSimpleTable [
 	] raise: MicParsingError 
 	
 ]
+
+{ #category : #'tests - comments' }
+MicrodownParserTest >> testTwoCommentBlock [
+	| source root |
+	source := '% test1
+% test 2'.
+	root := parser parse: source.
+
+	self assert: root children first class equals: MicCommentBlock.
+	self assert: root children first text equals: 'test1
+test 2'
+]
