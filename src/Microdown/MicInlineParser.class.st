@@ -159,7 +159,6 @@ MicInlineParser >> initializeDelimiters [
 		thenDo: [ :subclass | allDelimiters 
 										at: subclass markup 
 										put: subclass ].
-	allDelimiters removeKey: '\'.
 	keys := allDelimiters keys.
 ]
 
