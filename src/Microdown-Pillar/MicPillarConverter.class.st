@@ -129,6 +129,7 @@ MicPillarConverter >> visitFormatBlock: aMicFormatBlock [
 
 { #category : #visiting }
 MicPillarConverter >> visitHeader: aMicHeaderBlock [
+
  	^ PRHeader new
 		level: aMicHeaderBlock level;
 		setChildren: (aMicHeaderBlock children collect: [:each | each accept: self ]);

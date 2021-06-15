@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #testing }
+MicMonospaceFormatBlock class >> cleanSubstring [
+	"does nothing on purpose"
+]
+
+{ #category : #testing }
 MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
 ]

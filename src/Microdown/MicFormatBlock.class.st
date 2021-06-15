@@ -4,6 +4,20 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #visiting }
+MicFormatBlock >> closeMe [
+	
+	| text |
+	
+	children ifEmpty: [
+			text :=  (MicTextBlock
+							from: start
+							to: end
+							withSubstring: substring
+							withChildren: Array empty).
+			self children: { text } ]
+]
+
 { #category : #accessing }
 MicFormatBlock >> text [
 	self flag: #fixMe. 

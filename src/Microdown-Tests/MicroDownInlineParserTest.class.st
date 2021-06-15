@@ -60,9 +60,12 @@ MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 	self assert: elements first text equals: 'abc'.
 	
 	bold := elements second.
+	self assert: bold class equals: MicBoldFormatBlock.
 	self assert: bold children size equals: 2.
-	self assert: bold children second text equals: ' boldOnly'
-	
+	self assert: bold children first class equals: MicItalicFormatBlock.
+	self assert: bold children first children first class equals: MicTextBlock.
+	self assert: bold children second text equals: ' boldOnly'.
+	self assert: bold children second class equals: MicTextBlock.
 ]
 
 { #category : #'tests - anchors' }
@@ -139,9 +142,12 @@ MicrodownInlineParserTest >> testBold [
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
+	self assert: elements first class equals: MicTextBlock.
 	
  	self assert: elements second substring equals: 'bolds'.
+	self assert: elements second class equals: MicBoldFormatBlock.
  	self assert: elements second kind equals: 'bold'.
+	self assert: elements second children first class equals: MicTextBlock.
 	
  	self assert: elements second openingDelimiter equals: '**'
  
@@ -477,9 +483,14 @@ MicrodownInlineParserTest >> testStructureOfBoldNestedText [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '**_abc_def**') first.
+	self assert: element class equals: MicBoldFormatBlock.
 	self assert: element substring equals: '_abc_def'.
 	self assert: element children first substring equals: 'abc'.
+	self assert: element children first class equals: MicItalicFormatBlock.
 	self assert: element children second substring equals: 'def'.
+	self assert: element children second class equals: MicTextBlock.
+	self assert: element children first children first class equals: MicTextBlock.
+	
 	
 ]
 
@@ -488,8 +499,10 @@ MicrodownInlineParserTest >> testStructureOfBoldSimpleText [
 
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: '**abc def**') first.
+	self assert: element class equals: MicBoldFormatBlock.
 	self assert: element substring equals: 'abc def'.
-	self assert: element children equals: #()
+	self assert: element children size equals: 1.
+	self assert: element children first class equals: MicTextBlock.
 	
 ]
 
@@ -499,5 +512,6 @@ MicrodownInlineParserTest >> testStructureOfPlainText [
  	| element |
  	element := (self parseAndReturnElementsOfParagraphFor: 'abc') first.
 	self assert: element text equals: 'abc'.
+	self assert: element class equals: MicTextBlock.
 	self assert: element children equals: #()
 ]

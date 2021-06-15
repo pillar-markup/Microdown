@@ -1,7 +1,7 @@
-Extension { #name : #MicInlineSplitterTest }
+Extension { #name : #MicInlineParserTest }
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testBasicTextAsPillar [
+MicInlineParserTest >> testBasicTextAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc'.
 	self assert: res first text equals: 'abc'.
@@ -9,7 +9,7 @@ MicInlineSplitterTest >> testBasicTextAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testBoldAndNestedItalicAsPillar [
+MicInlineParserTest >> testBoldAndNestedItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**x_y_z**cba'.
 	self assert: res second class equals: PRBoldFormat.
@@ -20,7 +20,7 @@ MicInlineSplitterTest >> testBoldAndNestedItalicAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testBoldAsPillar [
+MicInlineParserTest >> testBoldAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**xyz**cba'.
 	self assert: res second children first text equals: 'xyz'.
@@ -28,7 +28,7 @@ MicInlineSplitterTest >> testBoldAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testExternalLinkAsPillar [
+MicInlineParserTest >> testExternalLinkAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc[alias](link)cba'.
 	self assert: res second children first text equals: 'alias'.
@@ -37,7 +37,7 @@ MicInlineSplitterTest >> testExternalLinkAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testFigureAsPillar [
+MicInlineParserTest >> testFigureAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc![alias](link)cba'.
 	self assert: res second children first text equals: 'alias'.
@@ -46,7 +46,7 @@ MicInlineSplitterTest >> testFigureAsPillar [
 ]
 
 { #category : #'*Microdown-Pillar-Tests' }
-MicInlineSplitterTest >> testItalicAsPillar [
+MicInlineParserTest >> testItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc_xyz_cba'.
 	self assert: res second children first text equals: 'xyz'.

@@ -66,7 +66,7 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 		equals: '<? anAnnotationName?>'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testBold [
 
 	self assert: (builder bold: [builder text: 'Bold']) contents equals: '**Bold**'
@@ -245,7 +245,7 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 	self 
 		assert: (builder 
 							header: [ :b | b text: 'Hello '.
-											 b italic: [builder text: 'Pharo'].
+											 b italic: [ builder text: 'Pharo' ].
 											 b text: ' is cool']  withLevel: 1;				
 							contents) contents 
 		equals: parser headerMarkup , ' Hello _Pharo_ is cool
@@ -258,7 +258,7 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 	self assert: (builder horizontalLine) contents equals: parser horizontalLineMarkup, String cr
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testItalic [
 
 	self assert: (builder italic: [ builder text: 'Italic' ]) contents equals: '_Italic_'
@@ -306,7 +306,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 		equals: parser metaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , parser metaDataClosingBlockMarkup
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
 	self assert: (builder monospace: [ builder text: 'Monospace']) contents equals: '`Monospace`'
@@ -350,10 +350,22 @@ MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 	self assert: builder contents equals: 'label=42&size=MicTextBlock'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
 	self assert: (builder strike: [ builder text: 'Strike']) contents equals: '~Strike~'
+]
+
+{ #category : #'tests - format' }
+MicMicrodownTextualBuilderTest >> testStrikeInHeader [
+	
+	self assert: (builder 
+							header: [ :b | b text: 'Hello '.
+											 b strike: [ b text: 'Pharo' ].
+											 b text: ' is cool']  withLevel: 1;				
+							contents)
+			equals: '# Hello ~Pharo~ is cool
+'
 ]
 
 { #category : #'tests - anchor' }

@@ -74,9 +74,10 @@ MicInlineElement >> cleanSubstring [
 					(each isEmpty and: i>1) ifTrue: [ s << self escapeCharacter ] ifFalse: [ s << each ] ] ] ) ]
 ]
 
-{ #category : #printing }
+{ #category : #visiting }
 MicInlineElement >> closeMe [
 	"Hook to perform post creation action. The name is the same as for blocks."
+	
 ]
 
 { #category : #accessing }

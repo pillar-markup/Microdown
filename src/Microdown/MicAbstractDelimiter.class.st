@@ -60,7 +60,7 @@ MicAbstractDelimiter class >> isOpener [
 
 { #category : #testing }
 MicAbstractDelimiter class >> isOpenerOnly [
-	^ self isCloser not and: self isOpener
+	^ self isCloser not and: [ self isOpener ]
 ]
 
 { #category : #accessing }

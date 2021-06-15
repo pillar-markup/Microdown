@@ -134,7 +134,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 
 { #category : #'visit-block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
-
+	"self halt."
 	builder 
 		header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] 
 		withLevel: aHeader level

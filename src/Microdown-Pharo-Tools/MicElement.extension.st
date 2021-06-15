@@ -6,7 +6,7 @@ MicElement >> inspectionMicTree [
 	(MicroDownParser parse: '# hello 
 Yes microdown is cool') inspect
 	"
-	<inspectorPresentationOrder: 35 title: 'MicTree'>
+	<inspectorPresentationOrder: 930 title: 'MicTree'>
 	^ SpTreePresenter new
 		  roots: { self };
 		  children: [ :aNode | aNode children ];

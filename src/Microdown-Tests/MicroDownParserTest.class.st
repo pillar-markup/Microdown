@@ -21,7 +21,7 @@ MicrodownParserTest >> setUp [
 	parser := self parser
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
 	source := parser anchorMarkup, 'label1'.
@@ -33,7 +33,7 @@ MicrodownParserTest >> testAnchorBlock [
 
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 
 	| source root annotated |
@@ -50,7 +50,7 @@ MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorMarkupInsideLine [
 
 	| source root paragraph |
@@ -64,7 +64,7 @@ MicrodownParserTest >> testAnchorMarkupInsideLine [
 
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
@@ -78,7 +78,7 @@ MicrodownParserTest >> testAnnotatedBlock [
 
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
@@ -107,7 +107,7 @@ important point because...!'.
 	
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important this is an important 
@@ -121,7 +121,7 @@ paragraph on two lines.'
 
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
 	source := parser annotatedParagraphMarkup , 'important **this** is an _important_ 
@@ -136,7 +136,7 @@ paragraph on two lines.'.
 	self assert: annotated textElements third kind equals: 'italic'.
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 	| source root annotated |
@@ -151,7 +151,7 @@ MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 ]
 
-{ #category : #'tests-annotated-paragraph' }
+{ #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
@@ -186,7 +186,7 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 
 ]
 
-{ #category : #'tests-comments' }
+{ #category : #'tests - comments' }
 MicrodownParserTest >> testCommentOnMultipleLines [
 
 	| source root comment |
@@ -200,7 +200,7 @@ a second comment'
 	
 ]
 
-{ #category : #'tests-comments' }
+{ #category : #'tests - comments' }
 MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 
 	| source root comment |
@@ -216,7 +216,7 @@ MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 	
 ]
 
-{ #category : #'tests-comments' }
+{ #category : #'tests - comments' }
 MicrodownParserTest >> testCommentSimple [
 
 	| source root comment |
@@ -228,7 +228,7 @@ MicrodownParserTest >> testCommentSimple [
 	
 ]
 
-{ #category : #'tests-comments' }
+{ #category : #'tests - comments' }
 MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 
 	| source root paragraph |
@@ -263,7 +263,7 @@ Pharo'.
 	self assert: (child arguments at: 'c') equals: nil
 ]
 
-{ #category : #'tests-environment' }
+{ #category : #'tests - environment' }
 MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 	| source root math environmentName contents |
 	environmentName := 'card'.
@@ -280,7 +280,7 @@ MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 	self assert: math body equals: contents
 ]
 
-{ #category : #'tests-error' }
+{ #category : #'tests - error' }
 MicrodownParserTest >> testError [
 
 	self should: [ parser parse: '
@@ -319,7 +319,7 @@ MicrodownParserTest >> testHeaderLevel4WithBold [
 	self assert: root children first level equals: 4.
 ]
 
-{ #category : #'tests-horizontal' }
+{ #category : #'tests - horizontal' }
 MicrodownParserTest >> testHorizontalBlock [
 
 	| source root horizontal |
@@ -331,7 +331,7 @@ MicrodownParserTest >> testHorizontalBlock [
 	
 ]
 
-{ #category : #'tests-horizontal' }
+{ #category : #'tests - horizontal' }
 MicrodownParserTest >> testHorizontalBlockFollowedByList [
 
 	| source root horizontal |
@@ -344,7 +344,7 @@ MicrodownParserTest >> testHorizontalBlockFollowedByList [
 	
 ]
 
-{ #category : #'tests-horizontal line' }
+{ #category : #'tests - horizontal line' }
 MicrodownParserTest >> testHorizontalLineBlock [
 	| source root horizontal |
 	source := parser horizontalLineMarkup, 'label1'.
@@ -360,7 +360,7 @@ MicrodownParserTest >> testHorizontalLineBlock [
 
 ]
 
-{ #category : #'tests-math' }
+{ #category : #'tests - math' }
 MicrodownParserTest >> testMathBlock [
 
 	| source root math |
@@ -376,7 +376,7 @@ MicrodownParserTest >> testMathBlock [
 	
 ]
 
-{ #category : #'tests-math' }
+{ #category : #'tests - math' }
 MicrodownParserTest >> testMathBlockOnMulitpleLines [
 
 	| source root math |
@@ -393,7 +393,7 @@ support(I) \geq minsup \}'
 	
 ]
 
-{ #category : #'tests-math' }
+{ #category : #'tests - math' }
 MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
@@ -408,7 +408,7 @@ MicrodownParserTest >> testMathBlockWithArguments [
 	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
 ]
 
-{ #category : #'tests-metaData' }
+{ #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaData [
 
 	| source root math |
@@ -425,7 +425,7 @@ MicrodownParserTest >> testMetaData [
 	
 ]
 
-{ #category : #'tests-metaData' }
+{ #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaData2 [
 
 	| source root metadata |
@@ -444,7 +444,7 @@ MicrodownParserTest >> testMetaData2 [
 	
 ]
 
-{ #category : #'tests-metaData' }
+{ #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaDataEatsOtherBlocks [
 
 	| source root metadata |
@@ -459,7 +459,7 @@ MicrodownParserTest >> testMetaDataEatsOtherBlocks [
 	
 ]
 
-{ #category : #'tests-metaData' }
+{ #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaDataMultipleLines [
 
 	| source root metadata |
@@ -478,7 +478,7 @@ MicrodownParserTest >> testMetaDataMultipleLines [
 	
 ]
 
-{ #category : #'tests-horizontal line' }
+{ #category : #'tests - horizontal line' }
 MicrodownParserTest >> testParseLineWithOneCharacter [ 
 	
 	| document |
@@ -489,7 +489,7 @@ a'.
 	
 ]
 
-{ #category : #'tests-horizontal line' }
+{ #category : #'tests - horizontal line' }
 MicrodownParserTest >> testParseLineWithThreeCharacters [ 
 	
 	| document |
@@ -500,7 +500,7 @@ a`a'.
 	
 ]
 
-{ #category : #'tests-horizontal line' }
+{ #category : #'tests - horizontal line' }
 MicrodownParserTest >> testParseLineWithTwoCharacters [ 
 	
 	| document |
@@ -526,7 +526,7 @@ this is a code block
 	self assert: mic children second body equals: 'this is a code block'
 ]
 
-{ #category : #'tests-breaking class comments' }
+{ #category : #'tests - breaking class comments' }
 MicrodownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
 	
@@ -544,7 +544,7 @@ MicrodownParserTest >> testRBPatternVariableNode [
 '
 ]
 
-{ #category : #'tests-table' }
+{ #category : #'tests - table' }
 MicrodownParserTest >> testSimpleTable [
 
 	self skip.
