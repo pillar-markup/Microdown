@@ -11,7 +11,8 @@ Class {
 	#name : #MicInlineBlockWithUrl,
 	#superclass : #MicInlineElement,
 	#instVars : [
-		'url'
+		'url',
+		'caption'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -34,9 +35,14 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
-{ #category : #transformation }
-MicInlineBlockWithUrl >> caption [ 
-	^ self substring
+{ #category : #accessing }
+MicInlineBlockWithUrl >> caption [
+	^ String streamContents: [:st | caption do: [ :each | st nextPutAll: each text ] ] 
+]
+
+{ #category : #visiting }
+MicInlineBlockWithUrl >> captionElements [ 
+	^ caption 
 ]
 
 { #category : #accessing }

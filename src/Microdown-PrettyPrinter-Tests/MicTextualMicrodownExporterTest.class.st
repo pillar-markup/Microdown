@@ -163,9 +163,6 @@ MicTextualMicrodownExporterTest >> testLinkWithMonospace [
 { #category : #'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithNested [
 	
-	self skip.
-	self flag: #fixme.
-	"the link have three children **, italicBlock, boldBlock for [**_Foo_**]"
 	self verifyObtain: factory linkNestedSample
 ]
 

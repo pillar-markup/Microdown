@@ -12,8 +12,7 @@ Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
 	#instVars : [
-		'parameters',
-		'caption'
+		'parameters'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -31,16 +30,6 @@ MicFigureBlock >> arguments [
 { #category : #accessing }
 MicFigureBlock >> arguments: aDictionary [
 	parameters := aDictionary
-]
-
-{ #category : #accessing }
-MicFigureBlock >> caption [
-	^ String streamContents: [:st | caption do: [ :each | st nextPutAll: each text ] ] 
-]
-
-{ #category : #accessing }
-MicFigureBlock >> captionElements [ 
-	^ caption 
 ]
 
 { #category : #visiting }

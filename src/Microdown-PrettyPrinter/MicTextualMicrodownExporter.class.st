@@ -28,13 +28,6 @@ MicTextualMicrodownExporter >> contents [
 	^ stream contents
 ]
 
-{ #category : #'visit - format' }
-MicTextualMicrodownExporter >> fixBlockWithoutMicText: aBoldFormat [
-
-	^ aBoldFormat children ifEmpty: [ 
-		  builder text: aBoldFormat substring ]
-]
-
 { #category : #initialization }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
@@ -64,7 +57,7 @@ MicTextualMicrodownExporter >> visit: aMicElement [
 	^ stream contents
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 	
 	builder anchor: anAnchor label
@@ -76,7 +69,7 @@ MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 	builder anchorReference: anAnchorReference substring
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
 	builder 
@@ -93,12 +86,10 @@ MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
-	builder bold: [ 
-		aBoldFormat children do: [ :each | each accept: self ].
-		self fixBlockWithoutMicText: aBoldFormat ]
+	builder bold: [ super visitBold: aBoldFormat ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	 builder
@@ -108,13 +99,13 @@ MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [
 
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitComment: aComment [
 
 	builder comment: aComment text
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 
 	builder 
@@ -132,7 +123,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 		
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 	"self halt."
 	builder 
@@ -140,7 +131,7 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 		withLevel: aHeader level
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 
 	builder horizontalLine
@@ -160,13 +151,13 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 
 	builder item: [ super visitListItem: anItem ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitMath: aMicMath [
 
 	 builder
@@ -182,7 +173,7 @@ MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 	builder mathInline: aMicMathInline substring
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 
 	builder metaDataFromAssociations: aMetaData body
@@ -194,19 +185,19 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 	builder monospace: [ super visitMonospace: aMonospaceFormat ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
 	builder unorderedListDuring: [ super visitOrderedList: anOrderedList ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
 
 	builder orderedItem: [ super visitOrderedListItem: anItem ]
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 	builder 
 		paragraph: [ super visitParagraph: aParagraph ]
@@ -224,7 +215,7 @@ MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 	builder rawFormat: aRawFormat substring
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitRoot: aRoot [
 
 	builder 
@@ -234,17 +225,16 @@ MicTextualMicrodownExporter >> visitRoot: aRoot [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
-	builder strike: [ 
-		super visitStrike: aStrikeFormat ]
+	builder strike: [ super visitStrike: aStrikeFormat ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 	builder text: aMicTextBlock substring
 ]
 
-{ #category : #'visit-block' }
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 
 	builder unorderedListDuring: [ super visitUnorderedList: aUnorderedList ]

@@ -46,7 +46,7 @@ MicrodownVisitor >> visitAnnotation: anAnnotation [
 MicrodownVisitor >> visitBold: aFormat [
 
 	self visitChildrenOf: aFormat.
-	self fixBlockWithoutMicText: aFormat
+
 ]
 
 { #category : #'visiting - inline elements' }
@@ -93,14 +93,14 @@ MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
 MicrodownVisitor >> visitItalic: aFormat [
 
 	self visitChildrenOf: aFormat.
-	self fixBlockWithoutMicText: aFormat
+
 ]
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
-	self visitChildrenOf: aLink.
-	self fixBlockWithoutMicText: aLink
+	aLink captionElements do: [:each | each accept: self ].
+
 ]
 
 { #category : #visiting }
@@ -128,7 +128,7 @@ MicrodownVisitor >> visitMetaData: aMetaData [
 MicrodownVisitor >> visitMonospace: aFormat [
 
 	self visitChildrenOf: aFormat.
-	self fixBlockWithoutMicText: aFormat
+
 ]
 
 { #category : #visiting }
@@ -170,13 +170,13 @@ MicrodownVisitor >> visitRoot: aRoot [
 MicrodownVisitor >> visitStrike: aFormat [
 
 	self visitChildrenOf: aFormat.
-	self fixBlockWithoutMicText: aFormat
+
 ]
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitText: aMicTextBlock [
 
-	self fixBlockWithoutMicText: aMicTextBlock
+	self subclassResponsibility
 ]
 
 { #category : #visiting }
