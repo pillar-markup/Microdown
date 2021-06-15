@@ -398,12 +398,6 @@ BCRichTextComposer >> defaultSuperscriptColor [
 	^ TextColor blue
 ]
 
-{ #category : #'visiting -  format' }
-BCRichTextComposer >> fixBlockWithoutMicText: anInlineBlock [
-
-	canvas << anInlineBlock substring asText
-]
-
 { #category : #'images internal' }
 BCRichTextComposer >> imageOffLineFromUrl: aUrl [
 	"we are off but the image is there so we return it,"
@@ -741,11 +735,11 @@ BCRichTextComposer >> visitStrikethroughFormat: anObject [
 ]
 
 { #category : #'visiting -  format' }
-BCRichTextComposer >> visitText: anObject [
+BCRichTextComposer >> visitText: anInlineBlock [
 
 	canvas 
 		includeAttribute: TextEmphasis normal 
-		in: [ super visitText: anObject ]
+		in: [ canvas << anInlineBlock substring asText ]
 ]
 
 { #category : #'visiting - list' }
