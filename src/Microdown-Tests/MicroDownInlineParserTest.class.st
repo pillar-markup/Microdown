@@ -88,7 +88,7 @@ MicrodownInlineParserTest >> testAnchorRefernce [
  	self assert: elements second closingDelimiter equals: '@*'
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
  	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
@@ -174,7 +174,7 @@ MicrodownInlineParserTest >> testBoldsAndCorrectNestedItalics [
  
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - format' }
 MicrodownInlineParserTest >> testBoldsAndNestedItalics [ 
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
@@ -221,6 +221,26 @@ MicrodownInlineParserTest >> testEscape [
  
 ]
 
+{ #category : #tests }
+MicrodownInlineParserTest >> testEscapeAsLastCharacterDoesNotBreak [
+	
+	| elts  |
+	elts  := self parseAndReturnElementsOfParagraphFor:  'ch\'.
+	self assert: elts size equals: 1.
+	self assert: elts first class  equals: MicTextBlock.
+	self assert: elts first substring  equals: 'ch\'.
+	
+	elts  := self parseAndReturnElementsOfParagraphFor:  'ch\\'.
+	self assert: elts size equals: 1.
+	self assert: elts first class  equals: MicTextBlock.
+	self assert: elts first substring  equals: 'ch\\'.
+	
+	elts  := self parseAndReturnElementsOfParagraphFor:  'ch\a'.
+	self assert: elts size equals: 1.
+	self assert: elts first class  equals: MicTextBlock.
+	self assert: elts first substring  equals: 'cha'.
+]
+
 { #category : #'tests - figure' }
 MicrodownInlineParserTest >> testFigure [
  	| elements |
@@ -237,7 +257,7 @@ MicrodownInlineParserTest >> testFigure [
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - figure' }
 MicrodownInlineParserTest >> testFigureWithParameters [
 
 	| elements figure |
@@ -261,7 +281,7 @@ MicrodownInlineParserTest >> testItalic [
  	self assert: elements second openingDelimiter equals: '_'
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - format' }
 MicrodownInlineParserTest >> testItalicsAndNestedBolds [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
@@ -373,7 +393,7 @@ MicrodownInlineParserTest >> testRaws [
 	self rawTestingFor: 'anything'
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - raw' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
 	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{', 'anything}', '}}def'.

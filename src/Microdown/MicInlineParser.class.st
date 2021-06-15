@@ -349,7 +349,7 @@ MicInlineParser >> pushNewOpener [
 
 { #category : #actions }
 MicInlineParser >> read: aString [
-
+	| next |
 	incrementation := 1.
 	aString ifEmpty: [ ^ self resultProcess ].
 	self identifyMarkupFor: aString.
@@ -358,7 +358,10 @@ MicInlineParser >> read: aString [
 	aString first = $\ ifTrue: [ 
 		incrementation := incrementation + 1 ].
 	self indexIncrement: incrementation.
-	^ self read: (aString allButFirst: incrementation)
+	aString size > incrementation 
+		ifTrue: [ next := (aString allButFirst: incrementation)]
+		ifFalse: [next := ''].
+	^ self read: next.
 ]
 
 { #category : #process }
