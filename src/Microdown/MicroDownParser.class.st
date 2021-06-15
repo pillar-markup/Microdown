@@ -249,11 +249,6 @@ MicroDownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
 
-{ #category : #'inline block markups' }
-MicroDownParser class >> escapeMarkup [
-	^ self inlineMarkups at: #escapeCloser
-]
-
 { #category : #examples }
 MicroDownParser class >> example [
 	<sampleInstance>

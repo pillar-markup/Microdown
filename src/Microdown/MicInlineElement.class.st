@@ -92,7 +92,7 @@ MicInlineElement >> end: anInteger [
 
 { #category : #operations }
 MicInlineElement >> escapeCharacter [
-	^ MicEscapeDelimiter markup
+	^ '\'
 ]
 
 { #category : #initialization }
