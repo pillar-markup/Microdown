@@ -543,17 +543,18 @@ BCRichTextComposer >> visitBold: anObject [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitCodeblock: aCodeBlock [
-	self halt.
+BCRichTextComposer >> visitCode: aCodeBlock [
+	
 	canvas newLineIfNotAlready.
 	canvas newLine.
 	canvas
 		indentIn: [  
 			canvas
 				indentIn: [ 
+					
 					canvas << (self class  
-						style: aCodeBlock text 
-						asLanguage: aCodeBlock language originalName)
+						style: aCodeBlock body 
+						asLanguage: aCodeBlock firstTag)
 			] ].
 	canvas newLine.
 
@@ -637,7 +638,7 @@ BCRichTextComposer >> visitItalic: anObject [
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitListItem: anItem [
 	| bullet |
-	self halt.
+
 	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
 	bullet := (anItem propertyAt: #kind) = #ordered
 		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
@@ -645,7 +646,7 @@ BCRichTextComposer >> visitListItem: anItem [
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
 	canvas newLineIfNotAlready.
 	canvas << bullet.
-	self visitDocumentGroup: anItem.
+	super visitListItem: anItem.
 	"canvas newLineIfNotAlready."
 ]
 
@@ -692,7 +693,6 @@ BCRichTextComposer >> visitMonospace: anObject [
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitOrderedList: anObject [
 	| counter |
-	self halt.
 	canvas indentIn: [counter := 1.
 		anObject children
 			do: [ :item | 
@@ -730,11 +730,6 @@ BCRichTextComposer >> visitStrike: anObject [
 ]
 
 { #category : #'visiting -  format' }
-BCRichTextComposer >> visitStrikethroughFormat: anObject [
-	canvas includeAttribute: TextEmphasis struckOut in: [ self visitFormat: anObject ]
-]
-
-{ #category : #'visiting -  format' }
 BCRichTextComposer >> visitText: anInlineBlock [
 
 	canvas 
@@ -744,7 +739,7 @@ BCRichTextComposer >> visitText: anInlineBlock [
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitUnorderedList: anObject [
-	self halt.
+
 	canvas
 		indentIn: [ anObject children
 				do: [ :item | 

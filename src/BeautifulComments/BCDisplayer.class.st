@@ -11,6 +11,12 @@ Class {
 	#category : #BeautifulComments
 }
 
+{ #category : #'grammar - Script' }
+BCDisplayer class >> script [ 
+	<script>
+	BCDisplayer new open
+]
+
 { #category : #'instance creation' }
 BCDisplayer >> buildText [ 
  
@@ -43,6 +49,17 @@ And another **paragraph** (written in bold) just for the _fun_ (the fun must be 
 # About monospace
 
 This is `monospace` and this is `Point>>#degrees` and ` Point `
+
+# Code
+
+```
+1 + 2
+3 + 4
+```
+
+
+
+
 
 ')
 ]
