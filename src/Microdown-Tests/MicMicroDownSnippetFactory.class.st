@@ -556,6 +556,7 @@ MicMicrodownSnippetFactory >> rootSample [
 	| stream |
 	stream := (String new: 10000) writeStream.
 	stream nextPutAll: self headerLevel2Sample;
+	nextPutAll: String cr;
 	nextPutAll: self paragraphNestedSample;
 	nextPutAll: self figureSample.
 	^ stream contents
