@@ -14,7 +14,8 @@ MicMicrodownSnippetFactory >> anchorAreTrimedSample [
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> anchorReferenceSample [
-	^ '*@Foo@*
+	^ '
+*@Foo@*
 '
 ]
 
