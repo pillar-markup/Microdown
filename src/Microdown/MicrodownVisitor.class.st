@@ -105,8 +105,9 @@ MicrodownVisitor >> visitLink: aLink [
 
 { #category : #visiting }
 MicrodownVisitor >> visitListItem: anItem [
+	anItem textElements do: [ :each |each accept: self ].
+	^ anItem children do: [ :each |each accept: self ].
 
-	^ anItem textElements do: [ :each |each accept: self ]
 ]
 
 { #category : #visiting }
