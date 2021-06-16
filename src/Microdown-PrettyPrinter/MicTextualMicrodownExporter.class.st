@@ -29,12 +29,19 @@ MicTextualMicrodownExporter >> contents [
 	^ stream contents
 ]
 
+{ #category : #accessing }
+MicTextualMicrodownExporter >> inList [
+	^ inList
+
+]
+
 { #category : #initialization }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
 	stream := (String new: 10000) writeStream.
 	builder := MicroDownParser builder.
 	builder setStream: stream.
+	inList := false
 ]
 
 { #category : #build }
@@ -49,6 +56,18 @@ MicTextualMicrodownExporter >> parametersPrint: aDictionnary [
 			ifFalse: [ 
 				text := text , '&' ]].
 	^ text
+]
+
+{ #category : #setting }
+MicTextualMicrodownExporter >> setFalseInList [
+	inList := false
+
+]
+
+{ #category : #setting }
+MicTextualMicrodownExporter >> setTrueInList [
+	inList := true
+
 ]
 
 { #category : #API }
