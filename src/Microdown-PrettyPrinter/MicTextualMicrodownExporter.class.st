@@ -3,7 +3,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'stream',
-		'builder'
+		'builder',
+		'inList'
 	],
 	#category : #'Microdown-PrettyPrinter'
 }
@@ -92,6 +93,7 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
+	builder newLine.
 	 builder
 		  codeblock: aMicCodeBlock body
 		  firstLineAssociations: aMicCodeBlock argumentAssociations
@@ -117,6 +119,7 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
+	builder newLine.
 	builder
 		figureURL: aFigure url
 		withCaption: [ super visitFigure: aFigure ]
@@ -125,7 +128,8 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
-	"self halt."
+	
+	builder newLine.
 	builder 
 		header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] 
 		withLevel: aHeader level
@@ -199,6 +203,8 @@ MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitParagraph: aParagraph [
+
+	builder newLine.
 	builder 
 		paragraph: [ super visitParagraph: aParagraph ]
 ]
