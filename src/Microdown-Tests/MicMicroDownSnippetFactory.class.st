@@ -428,12 +428,14 @@ MicMicrodownSnippetFactory >> newlineSample [
 
 { #category : #list }
 MicMicrodownSnippetFactory >> orderedListEmptySample [
-	^ '1. '
+	^ '
+1. '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> orderedListSample [
-	^ '1. Foo
+	^ '
+1. Foo
 '
 ]
 
@@ -441,7 +443,8 @@ MicMicrodownSnippetFactory >> orderedListSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
 	
 	^ 
-'1. **first**
+'
+1. **first**
 1. second
 '
 ]
@@ -450,7 +453,8 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
 	
 	^ 
-'1. _first_
+'
+1. _first_
 1. second
 '
 ]
@@ -459,7 +463,8 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
 	
 	^ 
-'1. `first`
+'
+1. `first`
 1. second
 '
 ]
@@ -468,7 +473,8 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsNestedSample [
 	
 	^ 
-'1. **_first_**
+'
+1. **_first_**
 1. second
 '
 ]
@@ -477,7 +483,8 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsNestedSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
-'1. first
+'
+1. first
 1. second
 '
 ]
@@ -486,7 +493,8 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
 	
 	^ 
-'1. ~first~
+'
+1. ~first~
 1. second
 '
 ]
