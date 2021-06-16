@@ -493,37 +493,43 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphBoldSample [
-	^ 'this is a **paragraph**
+	^ '
+this is a **paragraph**
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphItalicSample [
-	^ 'this is a _paragraph_
+	^ '
+this is a _paragraph_
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphMonospaceSample [
-	^ 'this is a `paragraph`
+	^ '
+this is a `paragraph`
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphNestedSample [
-	^ 'this is a **_paragraph_**
+	^ '
+this is a **_paragraph_**
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphSample [
-	^ 'Foo
+	^ '
+Foo
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphStrikeSample [
-	^ 'this is a ~paragraph~
+	^ '
+this is a ~paragraph~
 '
 ]
 
