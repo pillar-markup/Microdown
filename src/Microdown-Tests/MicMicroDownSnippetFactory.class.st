@@ -182,48 +182,48 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerEmptySample [ 
-	^ self parserClass headerMarkup
+	^ String cr,self parserClass headerMarkup
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel1Sample [
-	^ self headerLevel: 1
+	^ String cr, (self headerLevel: 1)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel2Sample [
 
-	^ self headerLevel: 2
+	^ String cr, (self headerLevel: 2)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel3Sample [
 
-	^ self headerLevel: 3
+	^ String cr, (self headerLevel: 3)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel3SampleWithNewLine [
 
-	^ (self headerLevel: 3), self newLine
+	^ String cr,(self headerLevel: 3), self newLine
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel4Sample [
 
-	^ self headerLevel: 4
+	^ String cr,(self headerLevel: 4)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel5Sample [
 
-	^ self headerLevel: 5
+	^ String cr,(self headerLevel: 5)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel6Sample [
 
-	^ self headerLevel: 6
+	^ String cr,(self headerLevel: 6)
 ]
 
 { #category : #headers }
@@ -236,7 +236,7 @@ MicMicrodownSnippetFactory >> headerLevel: n [
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithFormatSample [
-	^ self parserClass headerMarkup, self space, self boldFormatSample
+	^ String cr,self parserClass headerMarkup, self space, self boldFormatSample
 ]
 
 { #category : #headers }
@@ -246,12 +246,12 @@ MicMicrodownSnippetFactory >> headerWithFormatSampleWithNewLine [
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
-	^ self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
+	^ String cr, self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithNewLineSample [
-	^ self parserClass headerMarkup, 'Foo', String cr
+	^ String cr,self parserClass headerMarkup, 'Foo', String cr
 ]
 
 { #category : #headers }
