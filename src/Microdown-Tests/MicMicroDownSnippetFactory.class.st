@@ -290,37 +290,43 @@ MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkBoldSample [
-	^ '[**Foo**](/anUrl)
+	^ '
+[**Foo**](/anUrl)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkItalicSample [
-	^ '[_Foo_](/anUrl)
+	^ '
+[_Foo_](/anUrl)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkMonospaceSample [
-	^ '[`Foo`](/anUrl)
+	^ '
+[`Foo`](/anUrl)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkNestedSample [
-	^ '[**_Foo_**](/anUrl)
+	^ '
+[**_Foo_**](/anUrl)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkSample [
-	^ '[Foo](/anUrl)
+	^ '
+[Foo](/anUrl)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> linkStrikeSample [
-	^ '[~Foo~](/anUrl)
+	^ '
+[~Foo~](/anUrl)
 '
 ]
 
