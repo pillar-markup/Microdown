@@ -46,7 +46,7 @@ Here is a figure and a link: [http://pharo.org](http://pharo.org).
 
 ![Pharologo without mic parameters.](https://files.pharo.org/media/logo/logo.png)
 
-![Pharologo with mic parameters.](https://files.pharo.org/media/logo/logo.png|size=80&caption=Our great figure.)
+![Pharologo with mic parameters.](https://files.pharo.org/media/logo/logo.png?size=80&caption=Our great figure.)
 
 
 

@@ -564,25 +564,6 @@ BCRichTextComposer >> visitEnvironment: anObject [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitExternalLink: aLink [
-	| attribute target url |
-	self halt.
-	target := aLink reference.
-	url := target asUrl.
-	attribute := nil.
-	(#(http https) includes: url scheme )
-		ifTrue: [ attribute := "PRExternalLinkTextAction url: target"
-			 	TextAction new actOnClickBlock: [WebBrowser openOn: target]].
-	url scheme = #browse
-		ifTrue:
-			[ attribute := TextAction new actOnClickBlock: [ self class browse: target ] ].
-	attribute
-		ifNotNil:
-			[ canvas includeAttribute: attribute in: [ self visitLink: aLink ] ]
-		ifNil: [ self visitLink: aLink ]
-]
-
-{ #category : #'visiting - document' }
 BCRichTextComposer >> visitFigure: aFigure [
 	"Try to read a png file (only one supported right now), else use alt text"
 	| anchoredImage |
@@ -613,7 +594,7 @@ BCRichTextComposer >> visitHeader: aHeader [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitHorizontalLine: anHorizontalLine [
-	self halt.
+	
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -623,6 +604,18 @@ BCRichTextComposer >> visitItalic: anObject [
 	canvas 
 		includeAttribute: TextEmphasis italic 
 		in: [ super visitItalic: anObject ]
+]
+
+{ #category : #'visiting - document' }
+BCRichTextComposer >> visitLink: aLink [
+	| attribute |
+	attribute := nil.
+	(#(http https) includes: aLink url scheme )
+		ifTrue: [ attribute := TextAction new actOnClickBlock: [ WebBrowser openOn: aLink url printString ]].
+	attribute
+		ifNotNil:
+			[ canvas includeAttribute: attribute in: [ super visitLink: aLink ] ]
+		ifNil: [ super visitLink: aLink ]
 ]
 
 { #category : #'visiting - list' }
@@ -657,7 +650,7 @@ BCRichTextComposer >> visitMathEnvironment:  aMicMathEnvironment [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitMathInline: aMicMathInline [ 
-	self halt.
+	
 	OffLine 
 		ifTrue: [ canvas << '$', aMicMathInline text, '$' ]
 		ifFalse: [ canvas << (self class latexMathStylerFor: aMicMathInline text)]
@@ -674,11 +667,10 @@ BCRichTextComposer >> visitMonospace: anObject [
 	canvas 
 		includeAttribute: (TextBackgroundColor color: backgroundColor) 
 		in: [ 
-			self haltIf: [ anObject text = 'Point' ].
 			sem := BCSemanticAction from: anObject text.
 			sem hasEntity 
 				ifTrue: [ canvas 
-								includeAttribute: (TextAction new actOnClickBlock: [ self halt. sem entity browse ]) 
+								includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) 
 								in: [ super visitMonospace: anObject ] ]
 				ifFalse: [ super visitMonospace: anObject]].  
 ]
@@ -724,10 +716,8 @@ BCRichTextComposer >> visitStrike: anObject [
 
 { #category : #'visiting -  format' }
 BCRichTextComposer >> visitText: anInlineBlock [
-
-	canvas 
-		includeAttribute: TextEmphasis normal 
-		in: [ canvas << anInlineBlock substring asText ]
+	"we should set attribute because it would override link and others."
+	canvas << anInlineBlock substring asText
 ]
 
 { #category : #'visiting - list' }
