@@ -354,7 +354,8 @@ MicMicrodownSnippetFactory >> listWithCommentSample [
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> mathInlineSample [
-	^ '$V_i = C_0 - C_3$
+	^ '
+$V_i = C_0 - C_3$
 '
 ]
 
