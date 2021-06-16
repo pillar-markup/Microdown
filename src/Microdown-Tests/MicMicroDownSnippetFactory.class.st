@@ -26,7 +26,8 @@ MicMicrodownSnippetFactory >> anchorSample [
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> anchorWithNewLineSample [
-	^ self parserClass anchorMarkup, 'foo', String cr
+
+	^ self parserClass anchorMarkup , 'foo' , self newLine
 ]
 
 { #category : #anchor }
@@ -60,7 +61,8 @@ MicMicrodownSnippetFactory >> boldFormatSample [
 
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
-	^ String cr, self codeblock: 'foo=#(1 2 true)'
+
+	^ self newLine , self codeblock: 'foo=#(1 2 true)'
 ]
 
 { #category : #'code block' }
@@ -181,49 +183,51 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 ]
 
 { #category : #headers }
-MicMicrodownSnippetFactory >> headerEmptySample [ 
-	^ String cr,self parserClass headerMarkup
+MicMicrodownSnippetFactory >> headerEmptySample [
+
+	^ self newLine , self parserClass headerMarkup
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel1Sample [
-	^ String cr, (self headerLevel: 1)
+
+	^ self newLine , (self headerLevel: 1)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel2Sample [
 
-	^ String cr, (self headerLevel: 2)
+	^ self newLine , (self headerLevel: 2)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel3Sample [
 
-	^ String cr, (self headerLevel: 3)
+	^ self newLine , (self headerLevel: 3)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel3SampleWithNewLine [
 
-	^ String cr,(self headerLevel: 3), self newLine
+	^ self newLine , (self headerLevel: 3) , self newLine
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel4Sample [
 
-	^ String cr,(self headerLevel: 4)
+	^ self newLine , (self headerLevel: 4)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel5Sample [
 
-	^ String cr,(self headerLevel: 5)
+	^ self newLine , (self headerLevel: 5)
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerLevel6Sample [
 
-	^ String cr,(self headerLevel: 6)
+	^ self newLine , (self headerLevel: 6)
 ]
 
 { #category : #headers }
@@ -236,7 +240,9 @@ MicMicrodownSnippetFactory >> headerLevel: n [
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithFormatSample [
-	^ String cr,self parserClass headerMarkup, self space, self boldFormatSample
+
+	^ self newLine , self parserClass headerMarkup , self space
+	  , self boldFormatSample
 ]
 
 { #category : #headers }
@@ -246,17 +252,21 @@ MicMicrodownSnippetFactory >> headerWithFormatSampleWithNewLine [
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
-	^ String cr, self parserClass headerMarkup, self space, self nestedBoldFormatSample , self newLine
+
+	^ self newLine , self parserClass headerMarkup , self space
+	  , self nestedBoldFormatSample , self newLine
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerWithNewLineSample [
-	^ String cr,self parserClass headerMarkup, 'Foo', String cr
+
+	^ self newLine , self parserClass headerMarkup , 'Foo' , self newLine
 ]
 
 { #category : #headers }
 MicMicrodownSnippetFactory >> horizontalLineSample [
-	^ parserClass horizontalLineMarkup, String cr
+
+	^ parserClass horizontalLineMarkup , self newLine
 ]
 
 { #category : #initialization }
@@ -332,17 +342,16 @@ MicMicrodownSnippetFactory >> linkStrikeSample [
 
 { #category : #list }
 MicMicrodownSnippetFactory >> listMultiSample [
+
 	| unordered |
 	unordered := self parserClass unorderedListMarkup.
-	
-	^ 	unordered, '1', String cr, 
-		unordered, unordered, '2', String cr, 
-		unordered, unordered, unordered, '3', String cr,
-		unordered, unordered, '4', String cr,
-		unordered, unordered, '5', String cr,	
-		unordered, unordered, '6', String cr,
-		unordered, '7', String cr,	
-		unordered, '2. 8'
+
+	^ unordered , '1' , self newLine , unordered , unordered , '2'
+	  , self newLine , unordered , unordered , unordered , '3'
+	  , self newLine , unordered , unordered , '4' , self newLine
+	  , unordered , unordered , '5' , self newLine , unordered
+	  , unordered , '6' , self newLine , unordered , '7' , self newLine
+	  , unordered , '2. 8'
 ]
 
 { #category : #list }
@@ -411,7 +420,7 @@ MicMicrodownSnippetFactory >> newlineCRLFSample [
 { #category : #document }
 MicMicrodownSnippetFactory >> newlineCRSample [
 
-	^ String cr
+	^ self newLine
 ]
 
 { #category : #document }
@@ -561,12 +570,14 @@ a{{Foo}}b
 
 { #category : #document }
 MicMicrodownSnippetFactory >> rootSample [
+
 	| stream |
 	stream := (String new: 10000) writeStream.
-	stream nextPutAll: self headerLevel2Sample;
-	nextPutAll: String cr;
-	nextPutAll: self paragraphNestedSample;
-	nextPutAll: self figureSample.
+	stream
+		nextPutAll: self headerLevel2Sample;
+		nextPutAll: self newLine;
+		nextPutAll: self paragraphNestedSample;
+		nextPutAll: self figureSample.
 	^ stream contents
 ]
 
@@ -663,7 +674,8 @@ MicMicrodownSnippetFactory >> scriptWithLanguageSample [
 
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> scriptWithNewLineSample [
-	^ (self codeblockNoParamBody: 'foo'), String cr
+
+	^ (self codeblockNoParamBody: 'foo') , self newLine
 ]
 
 { #category : #'code block' }
@@ -744,61 +756,76 @@ MicMicrodownSnippetFactory >> unorderedListEmptySample [
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListSample [
-	^ String cr, self parserClass unorderedListMarkup, 'Foo
+
+	^ self newLine , self parserClass unorderedListMarkup , 'Foo
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, 'Foo', String cr, listMarkup, listMarkup, 'Bar'
+	^ self newLine , listMarkup , 'Foo' , self newLine , listMarkup
+	  , listMarkup , 'Bar'
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsBoldSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, '**Foo**', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , '**Foo**' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsItalicSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, '_Foo_', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , '_Foo_' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsMonospaceSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, '`Foo`', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , '`Foo`' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, '~Foo~', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , '~Foo~' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, 'Foo', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , 'Foo' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
 
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsStrikeSample [
+
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ String cr, listMarkup, '~Foo~', String cr, listMarkup, 'Bar
+	^ self newLine , listMarkup , '~Foo~' , self newLine , listMarkup
+	  , 'Bar
 '
 ]
