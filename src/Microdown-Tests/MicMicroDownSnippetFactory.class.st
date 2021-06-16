@@ -60,13 +60,14 @@ MicMicrodownSnippetFactory >> boldFormatSample [
 
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
-	^ self codeblock: 'foo=#(1 2 true)'
+	^ String cr, self codeblock: 'foo=#(1 2 true)'
 ]
 
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
+		st cr.
 		st nextPutAll: self parserClass codeblockMarkup. 
 		st nextPutAll: param.
 		st cr.
@@ -78,6 +79,7 @@ MicMicrodownSnippetFactory >> codeblock: param [
 MicMicrodownSnippetFactory >> codeblock: param body: body [
 	
 	^ String streamContents: [ :st | 
+		st cr.
 		st nextPutAll: self parserClass codeblockMarkup. 
 		st nextPutAll: param.
 		st cr.
@@ -91,6 +93,7 @@ MicMicrodownSnippetFactory >> codeblock: param body: body [
 MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 
 	^ String streamContents: [ :st | 
+		st cr.
 		st nextPutAll: self parserClass codeblockMarkup. 
 		st cr.
 		st nextPutAll: body.
