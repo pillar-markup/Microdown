@@ -261,6 +261,13 @@ MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
-
-	builder unorderedListDuring: [ super visitUnorderedList: aUnorderedList ]
+	
+	| block |
+	block := [  ].
+	self inList ifFalse: 
+		[ builder newLine.
+		 self setTrueInList.
+		 block := [ self setFalseInList ] ].
+	builder unorderedListDuring: [ super visitUnorderedList: aUnorderedList ].
+	block value
 ]
