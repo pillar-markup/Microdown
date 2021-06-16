@@ -546,7 +546,8 @@ MicMicrodownSnippetFactory >> quoteSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> rawFormatSample [
-	^ 'a{{Foo}}b
+	^ '
+a{{Foo}}b
 '
 ]
 
