@@ -211,8 +211,14 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
-	builder newLine.
-	builder unorderedListDuring: [ super visitOrderedList: anOrderedList ]
+	| block |
+	block := [  ].
+	self inList ifFalse: 
+		[ builder newLine.
+		 self setTrueInList.
+		 block := [ self setFalseInList ] ].
+	builder unorderedListDuring: [ super visitOrderedList: anOrderedList ].
+	block value
 ]
 
 { #category : #'visit - block' }
