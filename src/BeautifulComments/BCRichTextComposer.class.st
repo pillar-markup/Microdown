@@ -67,20 +67,6 @@ Class {
 }
 
 { #category : #private }
-BCRichTextComposer class >> browse: urlString [
-	"urlString is of the form: browse://Class or browse://Class>>#method"
-	"self browse: 'browse://Class'"
-	"self browse: 'browse://Point>>#x'"
-	| parts sem |
-	parts := urlString substrings: '/'.  
-	sem := PRSemanticAction from: parts second.
-	sem hasEntity 
-		ifTrue: [ sem entity browse ].
-	
-
-]
-
-{ #category : #private }
 BCRichTextComposer class >> bulletForLevel: level [
 	| kind |
 	kind := level % 2.
@@ -217,6 +203,7 @@ BCRichTextComposer class >> languageStylerFor: aLanguage [
 { #category : #examples }
 BCRichTextComposer class >> latexExample [
 	<example>
+	self flag: #todo. "to fix we should use a MicInlineMath... here"
 	(BCRichTextComposer new visit: 
 		(PRMathInTextAnnotation new 
 		add: (PRText new text:
@@ -243,6 +230,7 @@ BCRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc 
 	
 	| anchoredImage |
 	self flag: #cleanAndRevisit.
+	"there is duplication in the visitFigure: method!!!"
 	anchoredImage := self imageCache 
 		at: aUrl 
 		ifAbsentPut: [ 
@@ -596,18 +584,20 @@ BCRichTextComposer >> visitExternalLink: aLink [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitFigure: aFigure [
-	| anchoredImage |
-	self halt.
 	"Try to read a png file (only one supported right now), else use alt text"
+	| anchoredImage |
+
+	
 	
 	"for now I cancel the catching of all exceptions because it is a blackhole."
 	"[" 
 	anchoredImage := (String value: 1) asText
-		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure reference)).
+		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure url)).
 		canvas << anchoredImage 
 		"] 
 		on: Exception  
 		do: [self visitAll: aFigure children]."
+	"pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
 ]
 
 { #category : #'visiting - document' }
@@ -684,9 +674,12 @@ BCRichTextComposer >> visitMonospace: anObject [
 	canvas 
 		includeAttribute: (TextBackgroundColor color: backgroundColor) 
 		in: [ 
+			self haltIf: [ anObject text = 'Point' ].
 			sem := BCSemanticAction from: anObject text.
 			sem hasEntity 
-				ifTrue: [ canvas includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) in: [ super visitMonospace: anObject ] ]
+				ifTrue: [ canvas 
+								includeAttribute: (TextAction new actOnClickBlock: [ self halt. sem entity browse ]) 
+								in: [ super visitMonospace: anObject ] ]
 				ifFalse: [ super visitMonospace: anObject]].  
 ]
 

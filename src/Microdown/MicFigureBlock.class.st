@@ -1,12 +1,15 @@
 "
 I am a **figure**.
 
-My syntax is: `!\[my name](url|label=value1&caption=value2&width=value3)`
+My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)`
 
-My arguments are:
-- substring (_from superclass `#MicAbstractInlineBlockWithUrl`_): it's my printed name
-- url
-- parameters: a `#ZnMultiValueDictionary` which collect all keys and values
+You should get the following picture: 
+![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)
+
+What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micanchor and micwitdh. 
+But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
+
+So we will use ? and we will prefix all the microdown specific parameters with mic. 
 "
 Class {
 	#name : #MicFigureBlock,
@@ -81,4 +84,9 @@ MicFigureBlock >> printOn: aStream [
 		url printOn: aStream. 
 		aStream nextPut: $).
  		
+]
+
+{ #category : #accessing }
+MicFigureBlock >> query [
+	^ url query
 ]
