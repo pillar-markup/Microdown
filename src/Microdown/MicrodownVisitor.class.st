@@ -103,10 +103,11 @@ MicrodownVisitor >> visitLink: aLink [
 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - list' }
 MicrodownVisitor >> visitListItem: anItem [
 
-	^ anItem textElements do: [ :each |each accept: self ]
+	anItem textElements do: [ :each | each accept: self ].
+	self visitChildrenOf: anItem
 ]
 
 { #category : #visiting }
@@ -131,16 +132,16 @@ MicrodownVisitor >> visitMonospace: aFormat [
 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
 
 	^ anOrderedList children do: [ :each | self visitOrderedListItem: each ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - list' }
 MicrodownVisitor >> visitOrderedListItem: anItem [
 
-	^ anItem textElements do: [ :each | each accept: self ] 
+	^ self visitListItem: anItem
 ]
 
 { #category : #visiting }
@@ -179,8 +180,14 @@ MicrodownVisitor >> visitText: aMicTextBlock [
 	self subclassResponsibility
 ]
 
-{ #category : #visiting }
-MicrodownVisitor >> visitUnorderedList: aUnorderedList [
+{ #category : #'visiting - list' }
+MicrodownVisitor >> visitUnorderedList: anUnorderedList [
 
-	^ self visitChildrenOf: aUnorderedList
+	^ anUnorderedList children do: [ :each | self visitUnorderedListItem: each ]
+]
+
+{ #category : #'visiting - list' }
+MicrodownVisitor >> visitUnorderedListItem: anUnorderedList [
+	^ self visitListItem: anUnorderedList
+	
 ]

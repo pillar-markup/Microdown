@@ -621,8 +621,7 @@ BCRichTextComposer >> visitLink: aLink [
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitListItem: anItem [
 	| bullet |
-
-	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
+	"The depth counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
 	bullet := (anItem propertyAt: #kind) = #ordered
 		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
 		ifFalse: [ (anItem propertyAt: #bullet) asText , String tab ].
@@ -677,6 +676,7 @@ BCRichTextComposer >> visitMonospace: anObject [
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitOrderedList: anObject [
+	"here we annotate items with their kind and the depth"
 	| counter |
 	canvas indentIn: [counter := 1.
 		anObject children
@@ -724,7 +724,8 @@ BCRichTextComposer >> visitText: anInlineBlock [
 BCRichTextComposer >> visitUnorderedList: anObject [
 
 	canvas
-		indentIn: [ anObject children
+		indentIn: [ 
+			anObject children
 				do: [ :item | 
 					item propertyAt: #kind put: #unordered.
 					item

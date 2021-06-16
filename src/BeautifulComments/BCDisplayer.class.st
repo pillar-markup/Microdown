@@ -34,7 +34,15 @@ BCDisplayer >> buildText [
 BCDisplayer >> contents [
 
 	^ '
-#Microdown is quite cool
+	
+# About lists
+
+- unordered1
+	- subunordered1
+	- subunordered2
+- unordered2
+	
+# Microdown is quite cool
 
 Here is some code 
 
