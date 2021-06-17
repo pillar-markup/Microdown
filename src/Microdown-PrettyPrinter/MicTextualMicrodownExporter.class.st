@@ -224,7 +224,7 @@ MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
 
-	builder orderedItem: [ super visitOrderedListItem: anItem ]
+	builder orderedItem: [ super visitListItem: anItem ]
 ]
 
 { #category : #'visit - block' }
