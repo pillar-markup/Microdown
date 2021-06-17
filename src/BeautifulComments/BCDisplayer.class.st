@@ -38,10 +38,18 @@ BCDisplayer >> contents [
 # About lists
 
 - unordered1
-  - subunordered1
-  - subunordered2
+  10. subunordered1
+  11. subunordered2
 - unordered2
-	
+
+# About maths 
+
+&
+V_i = C_0 - C_3
+&
+
+
+
 # Microdown is quite cool
 
 Here is some code 

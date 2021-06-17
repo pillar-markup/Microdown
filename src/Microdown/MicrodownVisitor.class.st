@@ -113,7 +113,7 @@ MicrodownVisitor >> visitListItem: anItem [
 { #category : #visiting }
 MicrodownVisitor >> visitMath: aMicMath [
 
-	aMicMath captionElements do: [ :each |each accept: self ]
+	aMicMath captionElements do: [ :each | each accept: self ]
 
 ]
 
