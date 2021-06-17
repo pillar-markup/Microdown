@@ -69,6 +69,20 @@ MicTextualMicrodownExporterTest >> testCodeBlock [
 ]
 
 { #category : #'tests-codeblock' }
+MicTextualMicrodownExporterTest >> testCodeBlockNewLine [
+	
+	| mic |
+	mic := parser parse: '```
+	this is a codeblock
+```'.
+	self assert: (mic accept: visitor) contents equals: '
+```
+ this is a codeblock
+```
+'
+]
+
+{ #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlockWithCaption [
 	self verifyObtain: factory scriptParametersWithCaptionSample, String cr
 ]
@@ -98,6 +112,18 @@ MicTextualMicrodownExporterTest >> testFigure [
 ]
 
 { #category : #'tests - figure' }
+MicTextualMicrodownExporterTest >> testFigureNewLine [
+	
+	| mic |
+	"there is two newLine because a figure is a inlineblock which is in a paragraph"
+	mic := parser parse: '![aCaption](anUrl)'.
+	self assert: (mic accept: visitor) contents equals: '
+
+![aCaption](/anUrl)
+'
+]
+
+{ #category : #'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithBold [
 	self verifyObtain: factory figureBoldSample
 ]
@@ -120,6 +146,19 @@ MicTextualMicrodownExporterTest >> testFigureWithNested [
 { #category : #'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithStrike [
 	self verifyObtain: factory figureStrikeSample
+]
+
+{ #category : #'tests-header' }
+MicTextualMicrodownExporterTest >> testHeaderNewLine [
+
+	| mic |
+	mic := parser parse: '# header 1
+# header 2'.
+	self assert: (mic accept: visitor) contents equals: '
+# header 1
+
+# header 2
+'
 ]
 
 { #category : #'tests-header' }
@@ -212,6 +251,18 @@ MicTextualMicrodownExporterTest >> testOrderedList [
 ]
 
 { #category : #'tests - list' }
+MicTextualMicrodownExporterTest >> testOrderedListNewLine [
+
+	| mic |
+	mic := parser parse: '1. item1
+1. item2'.
+	self assert: (mic accept: visitor) contents equals: '
+1. item1
+1. item2
+'
+]
+
+{ #category : #'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithBold [
 
 	self verifyObtain: factory orderedListWithTwoItemsBoldSample  
@@ -244,6 +295,16 @@ MicTextualMicrodownExporterTest >> testOrderedListWithStrike [
 { #category : #'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraph [
 	self verifyObtain: factory paragraphSample
+]
+
+{ #category : #'tests - paragraph' }
+MicTextualMicrodownExporterTest >> testParagraphNewLine [
+	
+	| mic |
+	mic := parser parse: 'blabla1'.
+	self assert: (mic accept: visitor) contents equals: '
+blabla1
+'
 ]
 
 { #category : #'tests - paragraph' }
@@ -296,6 +357,50 @@ MicTextualMicrodownExporterTest >> testRoot [
 MicTextualMicrodownExporterTest >> testUnorderedList [
 
 	self verifyObtain: factory unorderedListWithTwoItemsSample
+]
+
+{ #category : #'tests - list' }
+MicTextualMicrodownExporterTest >> testUnorderedListNestedNewLine [
+
+	| mic |
+	mic := parser parse: '- item 1
+  - item 1.1
+  - item 1.2
+- item 2'.
+	self assert: (mic accept: visitor) contents equals: '
+- item 1
+  - item 1.1
+  - item 1.2
+- item 2
+'
+]
+
+{ #category : #'tests - list' }
+MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrderedNewLine [
+
+	| mic |
+	mic := parser parse: '- item 1
+  1. item 1.1
+  1. item 1.2
+- item 2'.
+	self assert: (mic accept: visitor) contents equals: '
+- item 1
+  1. item 1.1
+  1. item 1.2
+- item 2
+'
+]
+
+{ #category : #'tests - list' }
+MicTextualMicrodownExporterTest >> testUnorderedListNewLine [
+
+	| mic |
+	mic := parser parse: '- item1
+- item2'.
+	self assert: (mic accept: visitor) contents equals: '
+- item1
+- item2
+'
 ]
 
 { #category : #'tests - list' }
