@@ -647,21 +647,6 @@ BCRichTextComposer >> visitMath:  aMicMathEnvironment [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitMathEnvironment:  aMicMathEnvironment [
-
-	| text |
-	self halt.
-	text := aMicMathEnvironment text. 
-	(OffLine | text isNil)
-		ifTrue: [ text 
-						ifNotNil: [ canvas << '&'; cr; << text; << '&']
-						ifNil: [ canvas << '&'; cr; << 'Your math environment is strange its body is nil'; << '&' ] ]
-		ifFalse: [ canvas cr.
-					canvas indentIn: [ self renderMathExpression: text ].
-					 canvas cr ]
-]
-
-{ #category : #'visiting - document' }
 BCRichTextComposer >> visitMathInline: aMicMathInline [ 
 	
 	OffLine 

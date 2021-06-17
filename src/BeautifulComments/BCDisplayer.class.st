@@ -44,9 +44,11 @@ BCDisplayer >> contents [
 
 # About maths 
 
+You can use an environment or a simple expression in text $C_0 - C_3$. 
 &
 V_i = C_0 - C_3
 &
+
 
 
 
