@@ -380,9 +380,6 @@ MicMicrodownTextualBuilder >> orderedItem: aBlock [
 	aBlock value.
 	self potentialNewLine.
 	
-	"self writeStartOfOrderedListIndex: 1.
-	aBlock value.
-	self newLine."
 ]
 
 { #category : #'element - list' }
