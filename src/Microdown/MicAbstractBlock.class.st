@@ -71,6 +71,12 @@ MicAbstractBlock >> closeMe [
 	^ self
 ]
 
+{ #category : #public }
+MicAbstractBlock >> computeNestedLevel [ 
+
+	^ 0
+]
+
 { #category : #properties }
 MicAbstractBlock >> hasProperty: aKey [
 	"Test if the property aKey is present."
@@ -92,6 +98,13 @@ MicAbstractBlock >> initialize [
 { #category : #testing }
 MicAbstractBlock >> listItemBlockClass [
 	^ MicListItemBlock
+]
+
+{ #category : #public }
+MicAbstractBlock >> nestedLevel [ 
+	"Return the nesting level of main blocks. Basically only list increases this."
+	
+	^ 0
 ]
 
 { #category : #public }

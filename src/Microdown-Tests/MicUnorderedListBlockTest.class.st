@@ -100,6 +100,59 @@ multiple lines
  3. sub item 2'.
 ]
 
+{ #category : #'tests - nested' }
+MicUnorderedListBlockTest >> testNestedLevel [
+	| source root list |
+	source := 
+'- item 1
+  - sublevel
+- item 2'.
+	root := parser parse: source.
+	list := root children first.
+	self assert: list children size equals: 2.
+	
+	self assert: list children first text equals: 'item 1'.
+	self assert: list children first nestedLevel equals: 1.
+	
+	"this is the inner list"
+	self assert: list children first children first nestedLevel equals: 2.
+	
+	"this is the inner list first item"
+	self assert: list children first children first children first text equals: 'sublevel'.
+	self assert: list children first children first children first nestedLevel equals: 2.
+	
+
+]
+
+{ #category : #'tests - nested' }
+MicUnorderedListBlockTest >> testNestedLevel2 [
+	| source root list |
+	source := 
+'- item 1
+  - sublevel
+    - subsublevel
+  - sublevel2
+- item 2'.
+	root := parser parse: source.
+	list := root children first.
+	self assert: list children size equals: 2.
+	
+	self assert: list children first text equals: 'item 1'.
+	self assert: list children first nestedLevel equals: 1.
+	
+	"this is the inner list"
+	self assert: list children first children first nestedLevel equals: 2.
+	
+	"this is the inner list first item"
+	self assert: list children first children first children first text equals: 'sublevel'.
+	self assert: list children first children first children first nestedLevel equals: 2.
+	self assert: list children first children first children second text equals: 'sublevel2'.
+	
+	self assert: list children first children first children first children first nestedLevel equals: 3.
+	self assert: list children first children first children first children first children first nestedLevel equals: 3.
+
+]
+
 { #category : #tests }
 MicUnorderedListBlockTest >> testSingleLevelList [
 	| source root list |

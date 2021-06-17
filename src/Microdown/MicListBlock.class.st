@@ -45,7 +45,8 @@ Class {
 	#name : #MicListBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
-		'indent'
+		'indent',
+		'nestedLevel'
 	],
 	#category : #'Microdown-Model'
 }
@@ -78,6 +79,18 @@ MicListBlock >> canConsumeLine: line [
 ]
 
 { #category : #accessing }
+MicListBlock >> closeMe [
+	super closeMe.
+	nestedLevel := self computeNestedLevel
+]
+
+{ #category : #indent }
+MicListBlock >> computeNestedLevel [
+	
+	^ self parent computeNestedLevel + 1
+]
+
+{ #category : #accessing }
 MicListBlock >> indent [
 	^ indent
 ]
@@ -93,4 +106,11 @@ MicListBlock >> indentFromLine: aLine [
 	regEx := '(\S+)(\s*)' asRegex.
 	regEx matchesPrefix: aLine.
 	indent := parent indent + (regEx subexpression: 1) size
+]
+
+{ #category : #indent }
+MicListBlock >> nestedLevel [
+	"Return the nesting level of main blocks. Basically only list increases this."
+	
+	^ nestedLevel
 ]

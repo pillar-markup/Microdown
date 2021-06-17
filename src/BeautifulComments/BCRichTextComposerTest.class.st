@@ -143,7 +143,7 @@ BCRichTextComposerTest >> testBoldFormat [
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
-{ #category : #'tests - CodeBlock' }
+{ #category : #'tests - codeBlock' }
 BCRichTextComposerTest >> testCodeBlock [
 	| runs richText |
 	self skip.
@@ -280,7 +280,7 @@ BCRichTextComposerTest >> testNestedList [
 	
 ]
 
-{ #category : #'tests - List' }
+{ #category : #'tests - list' }
 BCRichTextComposerTest >> testNestedUnorderedListAreCorrectlyNumbered [
 	| elts list |
 	elts := (self microElementsFrom: '- unordered1
@@ -298,7 +298,7 @@ BCRichTextComposerTest >> testNestedUnorderedListAreCorrectlyNumbered [
 	
 ]
 
-{ #category : #'tests - List' }
+{ #category : #'tests - list' }
 BCRichTextComposerTest >> testOrderedList [ 
 	| runs string elts |
 	elts := (self microElementsFrom: '1. First item
@@ -377,7 +377,7 @@ BCRichTextComposerTest >> testTextFormat [
 		include: self normalFormat
 ]
 
-{ #category : #'tests - List' }
+{ #category : #'tests - list' }
 BCRichTextComposerTest >> testUnorderedList [ 
 	| runs string elts |
 	elts := (self microElementsFrom: '- First item

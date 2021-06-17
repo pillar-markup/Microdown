@@ -43,15 +43,28 @@ MicListItemBlock >> canConsumeLine: line [
 
 { #category : #visiting }
 MicListItemBlock >> closeMe [
-
 	super closeMe.
-	text := self inlineParse: text
+	text := self inlineParse: text.
+	
+]
+
+{ #category : #accessing }
+MicListItemBlock >> computeNestedLevel [
+	"An item has the same nested level than its parent."
+	^ self parent computeNestedLevel
 ]
 
 { #category : #testing }
 MicListItemBlock >> isAList: normalized [
 
 	^ parser isAList: normalized
+]
+
+{ #category : #accessing }
+MicListItemBlock >> nestedLevel [
+	"Return the nesting level of main blocks. Basically only list increases this."
+	
+	^ self parent nestedLevel 
 ]
 
 { #category : #accessing }
