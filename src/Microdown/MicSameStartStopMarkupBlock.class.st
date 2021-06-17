@@ -46,7 +46,7 @@ MicSameStartStopMarkupBlock >> captionElements [
 MicSameStartStopMarkupBlock >> closeMe [ 
 	
 	super closeMe.
-	arguments at: #caption 
+	self arguments at: #caption 
 		ifPresent: [:cp| arguments at: #caption put: (self inlineParse: cp) ]
 		
 ]
