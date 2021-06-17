@@ -574,7 +574,11 @@ BCRichTextComposer >> visitFigure: aFigure [
 	"[" 
 	anchoredImage := (String value: 1) asText
 		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure url)).
-		canvas << anchoredImage 
+		canvas << anchoredImage.
+		canvas newLine.
+		canvas 
+			includeAttribute: TextEmphasis bold 
+			in: [ canvas tab; tab; tab; << aFigure caption asText ]
 		"] 
 		on: Exception  
 		do: [self visitAll: aFigure children]."

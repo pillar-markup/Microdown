@@ -87,3 +87,8 @@ BCRichTextCanvas >> newLineIfNotAlready [
 		ifFalse: [ self newLineBody ].
 	crAtEnd := true
 ]
+
+{ #category : #private }
+BCRichTextCanvas >> tab [
+	self << String tab asText
+]

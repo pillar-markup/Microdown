@@ -44,12 +44,17 @@ BCDisplayer >> contents [
 
 # About maths 
 
-You can use an environment or a simple expression in text $C_0 - C_3$. 
+You can use an environment or a simple expression in text such as $C_0 - C_3$ or $f(a) = \\frac{1}{2\\pi i} \\oint_{\\gamma} \\frac{f(z)}{z - a} dz$.
+
+Here are some example of environments:
+
 &
 V_i = C_0 - C_3
 &
 
-
+&
+\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^{n}x^{2n+1}}{(2n+1)!}
+&
 
 
 # Microdown is quite cool
