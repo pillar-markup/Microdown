@@ -383,7 +383,6 @@ MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrderedNewLine [
   1. item 1.1
   1. item 1.2
 - item 2'.
-	self halt.
 	self assert: (mic accept: visitor) contents equals: '
 - item 1
   1. item 1.1
