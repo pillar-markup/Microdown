@@ -522,6 +522,12 @@ MicMicrodownTextualBuilder >> root: aBlock [
 ]
 
 { #category : #'element - list' }
+MicMicrodownTextualBuilder >> startOfOrderedListForLevel: aNumber [
+
+	^ ('  ' repeat: aNumber) ,'1', parserClass orderedListSemiMarkup
+]
+
+{ #category : #'element - list' }
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 	^ ('  ' repeat: aNumber) , parserClass unorderedListMarkup
