@@ -244,15 +244,11 @@ MicrodownInlineParserTest >> testEscapeAsLastCharacterDoesNotBreak [
 { #category : #'tests - figure' }
 MicrodownInlineParserTest >> testFigure [
  	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc![caption](url?parameters=value)def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc![caption](http://www.pharo.org?parameters=value)def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second caption equals: 'caption'.
  	self assert: elements second kind equals: 'figure'.
-	
-	self flag: #tofix.
-	"the path should be correctly managed."
-	
  	self assert: elements second openingDelimiter equals: '!['.
  	self assert: elements second closingDelimiter equals: ')'
 ]
@@ -262,7 +258,7 @@ MicrodownInlineParserTest >> testFigureWithParameters [
 
 	| elements figure |
 	elements := self parseAndReturnElementsOfParagraphFor:
-		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?label=fig2&width=80)'.
+		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?micAnchor=fig2&micWidth=80)'.
 	self assert: elements size equals: 1.
 	figure := elements first.
 	self assert: figure caption equals: 'caption terminating with a .'.

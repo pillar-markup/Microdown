@@ -67,20 +67,6 @@ Class {
 }
 
 { #category : #private }
-BCRichTextComposer class >> browse: urlString [
-	"urlString is of the form: browse://Class or browse://Class>>#method"
-	"self browse: 'browse://Class'"
-	"self browse: 'browse://Point>>#x'"
-	| parts sem |
-	parts := urlString substrings: '/'.  
-	sem := PRSemanticAction from: parts second.
-	sem hasEntity 
-		ifTrue: [ sem entity browse ].
-	
-
-]
-
-{ #category : #private }
 BCRichTextComposer class >> bulletForLevel: level [
 	| kind |
 	kind := level % 2.
@@ -217,6 +203,7 @@ BCRichTextComposer class >> languageStylerFor: aLanguage [
 { #category : #examples }
 BCRichTextComposer class >> latexExample [
 	<example>
+	self flag: #todo. "to fix we should use a MicInlineMath... here"
 	(BCRichTextComposer new visit: 
 		(PRMathInTextAnnotation new 
 		add: (PRText new text:
@@ -243,6 +230,7 @@ BCRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc 
 	
 	| anchoredImage |
 	self flag: #cleanAndRevisit.
+	"there is duplication in the visitFigure: method!!!"
 	anchoredImage := self imageCache 
 		at: aUrl 
 		ifAbsentPut: [ 
@@ -576,38 +564,21 @@ BCRichTextComposer >> visitEnvironment: anObject [
 ]
 
 { #category : #'visiting - document' }
-BCRichTextComposer >> visitExternalLink: aLink [
-	| attribute target url |
-	self halt.
-	target := aLink reference.
-	url := target asUrl.
-	attribute := nil.
-	(#(http https) includes: url scheme )
-		ifTrue: [ attribute := "PRExternalLinkTextAction url: target"
-			 	TextAction new actOnClickBlock: [WebBrowser openOn: target]].
-	url scheme = #browse
-		ifTrue:
-			[ attribute := TextAction new actOnClickBlock: [ self class browse: target ] ].
-	attribute
-		ifNotNil:
-			[ canvas includeAttribute: attribute in: [ self visitLink: aLink ] ]
-		ifNil: [ self visitLink: aLink ]
-]
-
-{ #category : #'visiting - document' }
 BCRichTextComposer >> visitFigure: aFigure [
-	| anchoredImage |
-	self halt.
 	"Try to read a png file (only one supported right now), else use alt text"
+	| anchoredImage |
+
+	
 	
 	"for now I cancel the catching of all exceptions because it is a blackhole."
 	"[" 
 	anchoredImage := (String value: 1) asText
-		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure reference)).
+		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure url)).
 		canvas << anchoredImage 
 		"] 
 		on: Exception  
 		do: [self visitAll: aFigure children]."
+	"pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
 ]
 
 { #category : #'visiting - document' }
@@ -623,7 +594,7 @@ BCRichTextComposer >> visitHeader: aHeader [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitHorizontalLine: anHorizontalLine [
-	self halt.
+	
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -635,11 +606,22 @@ BCRichTextComposer >> visitItalic: anObject [
 		in: [ super visitItalic: anObject ]
 ]
 
+{ #category : #'visiting - document' }
+BCRichTextComposer >> visitLink: aLink [
+	| attribute |
+	attribute := nil.
+	(#(http https) includes: aLink url scheme )
+		ifTrue: [ attribute := TextAction new actOnClickBlock: [ WebBrowser openOn: aLink url printString ]].
+	attribute
+		ifNotNil:
+			[ canvas includeAttribute: attribute in: [ super visitLink: aLink ] ]
+		ifNil: [ super visitLink: aLink ]
+]
+
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitListItem: anItem [
 	| bullet |
-
-	"I stored the counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
+	"The depth counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
 	bullet := (anItem propertyAt: #kind) = #ordered
 		ifTrue: [ (anItem propertyAt: #counter) asString asText , String tab ]
 		ifFalse: [ (anItem propertyAt: #bullet) asText , String tab ].
@@ -667,7 +649,7 @@ BCRichTextComposer >> visitMathEnvironment:  aMicMathEnvironment [
 
 { #category : #'visiting - document' }
 BCRichTextComposer >> visitMathInline: aMicMathInline [ 
-	self halt.
+	
 	OffLine 
 		ifTrue: [ canvas << '$', aMicMathInline text, '$' ]
 		ifFalse: [ canvas << (self class latexMathStylerFor: aMicMathInline text)]
@@ -686,12 +668,15 @@ BCRichTextComposer >> visitMonospace: anObject [
 		in: [ 
 			sem := BCSemanticAction from: anObject text.
 			sem hasEntity 
-				ifTrue: [ canvas includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) in: [ super visitMonospace: anObject ] ]
+				ifTrue: [ canvas 
+								includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) 
+								in: [ super visitMonospace: anObject ] ]
 				ifFalse: [ super visitMonospace: anObject]].  
 ]
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitOrderedList: anObject [
+	"here we annotate items with their kind and the depth"
 	| counter |
 	canvas indentIn: [counter := 1.
 		anObject children
@@ -731,17 +716,16 @@ BCRichTextComposer >> visitStrike: anObject [
 
 { #category : #'visiting -  format' }
 BCRichTextComposer >> visitText: anInlineBlock [
-
-	canvas 
-		includeAttribute: TextEmphasis normal 
-		in: [ canvas << anInlineBlock substring asText ]
+	"we should set attribute because it would override link and others."
+	canvas << anInlineBlock substring asText
 ]
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitUnorderedList: anObject [
 
 	canvas
-		indentIn: [ anObject children
+		indentIn: [ 
+			anObject children
 				do: [ :item | 
 					item propertyAt: #kind put: #unordered.
 					item

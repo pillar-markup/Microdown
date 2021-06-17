@@ -62,13 +62,13 @@ ClySyntaxHelpMorph >> rawMicrodownSyntax [
 
 Here is some code 
 
-```language=Pharo&caption=Beautiful&label=Fig1
+```language=Pharo&caption=Beautiful&anchor=Fig1
    1000 factorial / 999 factorial
 ```
 
 Here is a figure and a link: [http://pharo.org](http://pharo.org).
 
-![Pharologo](https://files.pharo.org/media/logo/logo.png|size=80&caption=Our great figure.)
+![Pharologo](https://files.pharo.org/media/logo/logo.png?size=80&anchor=figLogo.)
 
 
 

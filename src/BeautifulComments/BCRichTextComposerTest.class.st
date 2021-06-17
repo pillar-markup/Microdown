@@ -281,6 +281,24 @@ BCRichTextComposerTest >> testNestedList [
 ]
 
 { #category : #'tests - List' }
+BCRichTextComposerTest >> testNestedUnorderedListAreCorrectlyNumbered [
+	| elts list |
+	elts := (self microElementsFrom: '- unordered1
+  - subunordered1
+  - subunordered2
+  - subunordered3
+- unordered2').
+	BCRichTextComposer new visit: elts. 
+	self assert: elts children size equals: 1.
+	self assert: elts children first class equals: MicUnorderedListBlock.
+	list := elts children first.
+	self assert: list children size equals: 2.
+	self assert: list children first children first children size equals: 3.
+	self assert: (list children first children first children first propertyAt: #counter) equals: 2
+	
+]
+
+{ #category : #'tests - List' }
 BCRichTextComposerTest >> testOrderedList [ 
 	| runs string elts |
 	elts := (self microElementsFrom: '1. First item
@@ -311,11 +329,7 @@ barwith a space
 "
 	runs := richText runs.
 	self assertEmpty: runs first.
-	self assert: runs second first class equals: TextIndent.
-	self assert: runs second first amount equals: 1.
-	self assert: runs runs equals: #(1 3 1 15 1 1).
-	self assert: richText string first equals: Character cr.
-	self assert: richText string second equals: $f
+
 ]
 
 { #category : #'skipped tests' }
