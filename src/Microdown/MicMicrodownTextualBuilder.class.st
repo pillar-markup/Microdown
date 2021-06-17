@@ -375,9 +375,14 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> orderedItem: aBlock [
-	self writeStartOfOrderedListIndex: 1.
+
+	self raw: (self startOfOrderedListForLevel: currentLevel).
 	aBlock value.
-	self newLine.
+	self potentialNewLine.
+	
+	"self writeStartOfOrderedListIndex: 1.
+	aBlock value.
+	self newLine."
 ]
 
 { #category : #'element - list' }
@@ -392,8 +397,9 @@ MicMicrodownTextualBuilder >> orderedItem: aBlock startingAt: aNumber [
 MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
-	
+	currentLevel := currentLevel + 1.
 	aBlockClosure value.
+	currentLevel := currentLevel - 1.
 	"for now we do not care to generate 
 	1. 
 	2.
