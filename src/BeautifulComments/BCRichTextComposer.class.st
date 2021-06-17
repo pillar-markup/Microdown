@@ -537,13 +537,20 @@ BCRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLine.
 	canvas
 		indentIn: [  
+			aCodeBlock hasCaption 
+				ifTrue: [ 
+					canvas 
+					includeAttribute: TextEmphasis bold 
+					in: [ canvas  << aCodeBlock caption asText; newLine.
+							canvas <<  '------------------------------------------------------' asText; newLine ]].
 			canvas
 				indentIn: [ 
-					
 					canvas << (self class  
 						style: aCodeBlock body 
 						asLanguage: aCodeBlock firstTag)
 			] ].
+	canvas
+		indentIn: [  canvas newLine; <<  '------------------------------------------------------' asText].
 	canvas newLine.
 
 ]
@@ -633,7 +640,7 @@ BCRichTextComposer >> visitListItem: anItem [
 	canvas newLineIfNotAlready.
 	canvas << bullet.
 	super visitListItem: anItem.
-	"canvas newLineIfNotAlready."
+
 ]
 
 { #category : #'visiting - document' }
@@ -681,6 +688,7 @@ BCRichTextComposer >> visitMonospace: anObject [
 BCRichTextComposer >> visitOrderedList: anObject [
 	"here we annotate items with their kind and the depth"
 	| counter |
+	canvas newLineIfNotAlready.
 	canvas indentIn: [counter := 1.
 		anObject children
 			do: [ :item | 
@@ -725,7 +733,7 @@ BCRichTextComposer >> visitText: anInlineBlock [
 
 { #category : #'visiting - list' }
 BCRichTextComposer >> visitUnorderedList: anObject [
-
+	canvas newLineIfNotAlready.
 	canvas
 		indentIn: [ 
 			anObject children

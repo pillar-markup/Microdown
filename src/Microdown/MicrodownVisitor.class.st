@@ -188,6 +188,7 @@ MicrodownVisitor >> visitUnorderedList: anUnorderedList [
 
 { #category : #'visiting - list' }
 MicrodownVisitor >> visitUnorderedListItem: anUnorderedList [
+
 	^ self visitListItem: anUnorderedList
 	
 ]

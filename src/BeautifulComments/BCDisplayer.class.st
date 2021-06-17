@@ -35,14 +35,30 @@ BCDisplayer >> contents [
 
 	^ '
 	
-# About lists
+# Lists
 
-- unordered1
-  10. subunordered1
-  11. subunordered2
-- unordered2
+- easy 
+- peasy
+- nice
 
-# About maths 
+And some others 
+
+10. Ordered item
+   	- unordered1
+   - unordered2
+11. Ordered item
+
+
+Here is a list:
+- item 1
+  1. sub item 1
+     pillou pilpu, yes we are on the second line
+     and the third line.
+  3. sub item 2
+- item 2
+
+
+# Math support
 
 You can use an environment or a simple expression in text such as $C_0 - C_3$ or $f(a) = \\frac{1}{2\\pi i} \\oint_{\\gamma} \\frac{f(z)}{z - a} dz$.
 
@@ -57,14 +73,14 @@ V_i = C_0 - C_3
 &
 
 
-# Microdown is quite cool
+# Code 
 
-Here is some code 
-
-```language=Pharo&caption=Beautiful&label=Fig1
-   1000 factorial / 999 factorial
+```language=Pharo&caption=A beautiful code snippet&label=Fig1
+1000 factorial / 999 factorial
+>>> 1000
 ```
 
+# Figures 
 Here is a figure and a link: [http://pharo.org](http://pharo.org).
 
 ![Pharologo without mic parameters.](https://files.pharo.org/media/logo/logo.png)
@@ -73,12 +89,7 @@ Here is a figure and a link: [http://pharo.org](http://pharo.org).
 
 
 
-Here is a list:
-- item 1
-  1. sub item 1 
-  3. sub item 2
-- item 2
-
+# Formats and hyperlinks
 
 **Bold**, _italic_, `monospace`
 
@@ -87,7 +98,7 @@ In Pharo, Microdown supports hyperlinks to:
 - methodes e.g., `Point class`, `Point>>#setX:setY:`, and 
 - packages e.g., `#''Microdown-Tests''` (for packages).
 
-You can edit this file clicking on `ClySyntaxHelpMorph>>#rawMicrodownSyntax`.
+
 '
 ]
 

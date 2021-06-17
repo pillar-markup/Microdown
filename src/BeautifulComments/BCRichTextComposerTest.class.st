@@ -283,18 +283,17 @@ BCRichTextComposerTest >> testNestedList [
 { #category : #'tests - list' }
 BCRichTextComposerTest >> testNestedUnorderedListAreCorrectlyNumbered [
 	| elts list |
-	elts := (self microElementsFrom: '- unordered1
-  - subunordered1
-  - subunordered2
-  - subunordered3
-- unordered2').
+	elts := (self microElementsFrom: '1. unordered1
+1. subunordered1
+2. subunordered2
+3. subunordered3
+4. unordered2').
 	BCRichTextComposer new visit: elts. 
 	self assert: elts children size equals: 1.
-	self assert: elts children first class equals: MicUnorderedListBlock.
+	self assert: elts children first class equals: MicOrderedListBlock.
 	list := elts children first.
-	self assert: list children size equals: 2.
-	self assert: list children first children first children size equals: 3.
-	self assert: (list children first children first children first propertyAt: #counter) equals: 2
+	self assert: list children size equals: 5.
+	self assert: (list children second propertyAt: #counter) equals: '2.'
 	
 ]
 
@@ -309,9 +308,9 @@ BCRichTextComposerTest >> testOrderedList [
 	string := self stringOf: elts.
 	self assert: runs first first class equals: TextIndent.
 	self assert: runs first first amount equals: 1.
-	self assert: runs runs equals: #(3 7 1 3 7 1) asArray.
+	self assert: runs runs equals: #(3 10 1 3 24 1 3 10 1).
 	self assert: string first equals: $1.
-	self assert: (string at: 12) equals: $2.
+	self assert: (string at: 12) equals: $e.
 ]
 
 { #category : #'tests - paragraph' }
@@ -388,7 +387,7 @@ BCRichTextComposerTest >> testUnorderedList [
 	string := self stringOf: elts.
 	self assert: runs first first class equals: TextIndent.
 	self assert: runs first first amount equals: 1.
-	self assert: runs runs equals: #(2 6 1 2 6 1) asArray.
+	self assert: runs runs equals: #(2 10 1 2 25 1 2 10 1)
 ]
 
 { #category : #'tests - format' }
