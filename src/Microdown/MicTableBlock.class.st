@@ -60,7 +60,8 @@ MicTableBlock >> closeMe [
 	| firstSize |
 	firstSize := rows first size.
 	rows := rows collect: [ :each | self cut: each toSize: firstSize ].
-	
+	self flag: #todo.
+	"we should call the inlineParse on each cell."
 ]
 
 { #category : #private }

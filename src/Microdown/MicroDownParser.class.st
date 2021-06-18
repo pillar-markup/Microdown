@@ -666,6 +666,16 @@ MicroDownParser >> preformattedMarkup [
 	^ self class preformattedMarkup 
 ]
 
+{ #category : #accessing }
+MicroDownParser >> setCurrent: aBlock [
+	"aBlock parent = current 
+		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].
+	note for me: we could just inforce this. aBlock parent: current.
+	No this is not correct since 
+	the parent of an item list is the list and this is the list that is parent of environment."	
+	current := aBlock
+]
+
 { #category : #markups }
 MicroDownParser >> tableCellMarkup [
 

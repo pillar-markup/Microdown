@@ -29,7 +29,7 @@ MicStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 	firstLine
 		ifNil:
 			[ firstLine := self extractFirstLineFrom: line ]
-		ifNotNil: [ self bodyFromLine: line ].
+		ifNotNil: [ ^ self bodyFromLine: line ].
 	^ self
 ]
 

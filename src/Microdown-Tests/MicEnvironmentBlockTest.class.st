@@ -10,28 +10,30 @@ MicEnvironmentBlockTest >> testEnvironment [
 blbababbab bababba
 ?>
 '" 
-	| source root math environmentName |
+	| source root env environmentName |
 	environmentName := 'card'.
 	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
 	 'blbababbab bababba', String cr,
 	parser environmentClosingBlockMarkup, String cr.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicEnvironmentBlock). 
-	self assert: math name equals: environmentName.
-	self assert: math body equals: 'blbababbab bababba'
+	env := root children first. 
+	self assert: (env isKindOf: MicEnvironmentBlock). 
+	self assert: env name equals: environmentName.
+	self assert: env children first children first text equals: 'blbababbab bababba
+?>'
 	
 ]
 
 { #category : #tests }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
-	"'<?card
-blbababbab bababba
+	"'<?slide
+- item 1 
+- item 2
 ?>
 '" 
-	| source root math environmentName |
-	environmentName := 'card'.
+	| source root env environmentName |
+	environmentName := 'slide'.
 	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
 	 '- item1 
 - item 2
@@ -41,18 +43,16 @@ blbababbab bababba', String cr,
 	root :=  parser parse: source.
 	
 	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicEnvironmentBlock). 
-	self assert: math name equals: environmentName.
+	env := root children first. 
+	self assert: (env isKindOf: MicEnvironmentBlock). 
+	self assert: env name equals: environmentName.
 	
-	"sadly enough environment does not accept/parse its body.
-	We just get a dull string!!!!
-	"
-	self flag: #fixme.
-	self assert: math body equals: '- item1 
-- item 2
-
-blbababbab bababba'
+	self assert: env children size equals: 2.
+	self assert: env children first class equals: MicUnorderedListBlock.
+	self assert: env children first children size equals: 2.
+	self assert: env children first children first class equals: MicListItemBlock.
+	self assert: env children second class equals: MicParagraphBlock.
+	self assert: env children second children first class equals: MicTextBlock.
 	
 ]
 
@@ -85,6 +85,55 @@ toto'.
 ]
 
 { #category : #tests }
+MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
+ 
+	| root env |
+	root :=  parser parse: '<?slide
+
+This is a nice piece of code
+```
+1000 factorial /999 factorial
+>>> 1000
+```
+isn''t it
+?>
+'.
+	
+	self assert: root children size equals: 1.
+	env := root children first. 	
+	self assert: env children size equals: 3.
+	self assert: env children first class equals: MicParagraphBlock.
+	self assert: env children second class equals: MicCodeBlock.
+	self assert: env children third class equals: MicParagraphBlock.
+	
+]
+
+{ #category : #tests }
+MicEnvironmentBlockTest >> testEnvironmentWithFormat [
+	"'<?slide
+- item 1 
+- item 2
+?>
+'" 
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
+	 '- item1 **bold**
+- item 2
+
+blbababbab bababba', String cr,
+	parser environmentClosingBlockMarkup, String cr.
+	root :=  parser parse: source.
+	
+	self assert: root children size equals: 1.
+	env := root children first. 
+
+	self assert: env children first children first class equals: MicListItemBlock.
+	self assert: env children first children first textElements second class equals: MicBoldFormatBlock 
+	
+]
+
+{ #category : #tests }
 MicEnvironmentBlockTest >> testEnvironmentWithMultipleLines [
 	"'<?card
 blbababbab
@@ -94,7 +143,7 @@ toto
 ?>
 '"
 	
-	| source root math environmentName contents |
+	| source root env environmentName contents |
 	environmentName := 'card'.
 	contents := 'blbababbab
 bababba
@@ -105,10 +154,14 @@ toto'.
 		, parser environmentClosingBlockMarkup , String cr.
 	root := parser parse: source .
 	self assert: root children size equals: 1.
-	math := root children first.
-	self assert: (math isKindOf: MicEnvironmentBlock).
-	self assert: math name equals: environmentName.
-	self assert: math body equals: contents
+	env := root children first.
+	self assert: (env isKindOf: MicEnvironmentBlock).
+	self assert: env name equals: environmentName.
+	self assert: env children size equals: 2.
+	self assert: env children first class equals: MicParagraphBlock.
+	self assert: env children second class equals: MicParagraphBlock.
+	self assert: env children second text equals: 'toto
+?>'.
 ]
 
 { #category : #tests }

@@ -94,13 +94,22 @@ MicEnvironmentBlock >> bodyElements [
 ]
 
 { #category : #'parse support' }
+MicEnvironmentBlock >> bodyFromLine: line [
+	
+	| newBlock |
+	newBlock := (self newBlockFor: line parent: self).
+	self parser setCurrent: newBlock.
+	^ newBlock
+]
+
+{ #category : #'parse support' }
 MicEnvironmentBlock >> closeMe [
 
 	"this is a temporary solution because normally the parser should populate body with MicBlocks.
 	Right now just make sure that we have structured text = inline elements. "
-	body ifNotNil: [ 
+	"body ifNotNil: [ 
 		body :=  self inlineParse: body ].
-	children := body
+	children := body"
 ]
 
 { #category : #accessing }
