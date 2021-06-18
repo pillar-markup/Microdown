@@ -118,6 +118,8 @@ Such packages should be moved in the future to other location (probably pillar i
 
 ## Loading
 
+To load the latest stable version load the version 1.0.5. It will load the version of Pillar that is in sync. 
+
 ```
 Metacello new
   baseline: 'Microdown';
@@ -125,4 +127,13 @@ Metacello new
   load.
 ```
 
+We are about to release a version 2.0.0 of Microdown with enhanced model, visitor... planned for mid July 2021.
+It is used for example by the BeautifulComments project. You can load this alpha version.
+
+```
+Metacello new
+  baseline: 'Microdown';
+  repository: 'github://pillar-markup/MicrodownDev/src';
+  load.
+ ```
 
