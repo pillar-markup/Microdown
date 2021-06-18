@@ -117,7 +117,9 @@ MicMicrodownSnippetFactory >> documentFrom: aString [
 { #category : #anchor }
 MicMicrodownSnippetFactory >> environmentSample [
 	^ '<?Foo|value=aFoo&label=42
+
 Foo
+
 ?>'
 ]
 

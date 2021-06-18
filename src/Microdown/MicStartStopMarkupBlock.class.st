@@ -23,7 +23,7 @@ MicStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-
+	
 	isClosed
 		ifTrue: [ ^ self ].
 	firstLine
@@ -61,9 +61,8 @@ MicStartStopMarkupBlock >> canConsumeLine: line [
 	a line 
 	>
 	The first line was accepted by its parent (a root block and the code block got created.
-	then a line was accepting since done was false...
-	then the closing line was reached and the code block got closed.)
-	
+	then a line was accepted...
+	then the closing line was reached and the code block got closed.)	
 	"
 
 	isClosed

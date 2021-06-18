@@ -246,17 +246,16 @@ MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	| source root environmentName contents child |
 	environmentName := 'cite'.
 	contents := 'Hello
-
 Pharo'.
 
 	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
-		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+		, String cr , contents , String cr, String cr, 
+		parser environmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
 	child := root children first.
 	self assert: (child isKindOf: MicEnvironmentBlock).
 	self assert: child name equals: environmentName.
-	self assert: child body equals: contents.
+	self assert: child children first text equals: contents.
 	
 	self assert: (child arguments at: 'a') equals: '1'.
 	self assert: (child arguments at: 'b') equals: '17'.
@@ -265,19 +264,22 @@ Pharo'.
 
 { #category : #'tests - environment' }
 MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
-	| source root math environmentName contents |
+	| source root env environmentName contents |
 	environmentName := 'card'.
 	contents := '- smalltalk
-^ self foo'.
+^ self foo
+
+this is the end.'.
 	source := parser environmentOpeningBlockMarkup , environmentName
-		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+		, String cr , contents , String cr.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	math := root children first.
-	self assert: (math isKindOf: MicEnvironmentBlock).
-	self assert: math name equals: environmentName.
-	self assert: math body equals: contents
+	env := root children first.
+	self assert: (env isKindOf: MicEnvironmentBlock).
+	self assert: env name equals: environmentName.
+	self assert: env children size equals: 3.
+	self assert: env children third text equals: 'this is the end.'.
+	
 ]
 
 { #category : #'tests - error' }

@@ -75,6 +75,23 @@ MicEnvironmentBlock >> accept: aVisitor [
  	^ aVisitor visitEnvironment: self
 ]
 
+{ #category : #adding }
+MicEnvironmentBlock >> addLineAndReturnNextNode: line [
+	"add line to this node. 
+	Notice, the action is allowed to create new nodes in the block tree.
+	Returns the node to handle next line - typically self."
+	
+	isClosed
+		ifTrue: [ ^ self ].
+	(self doesLineStartWithStopMarkup: line)
+		ifTrue: [ ^ self ].
+	firstLine
+		ifNil:
+			[ firstLine := self extractFirstLineFrom: line ]
+		ifNotNil: [ ^ self bodyFromLine: line ].
+	^ self
+]
+
 { #category : #accessing }
 MicEnvironmentBlock >> arguments [
 	
@@ -90,7 +107,7 @@ MicEnvironmentBlock >> body [
 { #category : #'parse support' }
 MicEnvironmentBlock >> bodyElements [
 
-	^ body
+	^ children
 ]
 
 { #category : #'parse support' }
@@ -131,7 +148,7 @@ MicEnvironmentBlock >> lineStartMarkup [
 
 { #category : #markups }
 MicEnvironmentBlock >> lineStopMarkup [
-
+	
 	^ parser environmentClosingBlockMarkup 
 ]
 

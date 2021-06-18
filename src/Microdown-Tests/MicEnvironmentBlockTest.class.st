@@ -26,6 +26,20 @@ blbababbab bababba
 ]
 
 { #category : #tests }
+MicEnvironmentBlockTest >> testEnvironmentClosingNotEatingClosingCharacter [
+
+	
+	| root env |
+	root := parser parse: '<?card
+to
+
+?>'.
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: env children first text equals: 'to'.
+]
+
+{ #category : #tests }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
 - item 1 
@@ -162,6 +176,29 @@ toto'.
 	self assert: env children second class equals: MicParagraphBlock.
 	self assert: env children second text equals: 'toto
 ?>'.
+]
+
+{ #category : #tests }
+MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
+	"
+'"
+	
+	| root |
+
+	root := parser parse: 'What a super day for a ride.
+	
+<?card
+Sunn Special S3
+
+?>
+
+Yes this is a good idea.'.
+	
+	self assert: root children size equals: 3.
+	self assert: root children second children first text equals: 'Sunn Special S3'.
+	self assert: root children third text  equals: 'Yes this is a good idea.'.
+	
+
 ]
 
 { #category : #tests }
