@@ -99,7 +99,7 @@ MicAbstractMicrodownTextualBuilder >> raw: aString [
 ]
 
 { #category : #initialization }
-MicAbstractMicrodownTextualBuilder >> setLine: aLine [
+MicAbstractMicrodownTextualBuilder >> setNewLineCharacterString: aLine [
 	line := aLine
 ]
 
