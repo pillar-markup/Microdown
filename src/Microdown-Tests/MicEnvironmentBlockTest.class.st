@@ -20,8 +20,7 @@ blbababbab bababba
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
 	self assert: env name equals: environmentName.
-	self assert: env children first children first text equals: 'blbababbab bababba
-?>'
+	self assert: env children first children first text equals: 'blbababbab bababba'
 	
 ]
 
@@ -174,8 +173,24 @@ toto'.
 	self assert: env children size equals: 2.
 	self assert: env children first class equals: MicParagraphBlock.
 	self assert: env children second class equals: MicParagraphBlock.
-	self assert: env children second text equals: 'toto
+	self assert: env children second text equals: 'toto'.
+]
+
+{ #category : #tests }
+MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
+
+	
+	| root env |
+	root := parser parse: '<?card
+Here we are a paragraph and the paragraph should not eat the end of the
+environment, else we force writer to enter a new line to declare the end of
+the paragraph.
 ?>'.
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: env children first text equals: 'Here we are a paragraph and the paragraph should not eat the end of the
+environment, else we force writer to enter a new line to declare the end of
+the paragraph.'.
 ]
 
 { #category : #tests }

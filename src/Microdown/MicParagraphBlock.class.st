@@ -46,10 +46,13 @@ MicParagraphBlock >> canConsumeLine: line [
 	"A paragraph is closed by an empty line, "
 
 	| unIndented |
-	line ifEmpty: [ ^ false ].
+	"if we are closing block that can contain other elements then do not consume their ends."
+	(line isEmpty or: [ #('?>') includes: line]) 
+		ifTrue: [ ^ false ].
 	(self isRightlyIndented: line)
 		ifFalse: [ ^ false ].
 	unIndented := self asUnindented: line.
+	"if the line was the start of a new block then paragraph does not consume it"
 	^ (self blockStarterClassFrom: unIndented) = self class
 ]
 
