@@ -42,7 +42,7 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
 	parserClass := MicroDownParser.
-	line := String lf.
+	line := String cr.
 	lastIsNewLine := true
 ]
 
