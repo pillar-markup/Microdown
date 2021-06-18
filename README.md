@@ -121,7 +121,7 @@ Such packages should be moved in the future to other location (probably pillar i
 ```
 Metacello new
   baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown/src';
+  repository: 'github://pillar-markup/Microdown:v1.0.5/src';
   load.
 ```
 
