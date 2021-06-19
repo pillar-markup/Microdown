@@ -26,9 +26,9 @@ BaselineOfMicrodownDev >> baseline: spec [
 				with: [ spec requires: #( #Microdown #PillarDocumentModel ) ];
 			package: #'Microdown-Pillar-Tests'
 				with: [ spec requires: #( #'Microdown-Pillar' #'Microdown-Tests' ) ].
-		spec
+		"spec
 			group: 'Microdown' with: #('Microdown' #'Microdown-PrettyPrinter');
 			group: 'Microdown-Pillar' with: #('Microdown' #'Microdown-Pillar' #'Microdown-Pillar-Tests');
 			group: 'Tests' with: #('Microdown-Tests' #'Microdown-PrettyPrinter-Tests');
-			group: 'All' with: #('Microdown' 'Tests' #'Microdown-Pharo-Tools') ]
+			group: 'All' with: #('Microdown' 'Tests' #'Microdown-Pharo-Tools') ]" ]
 ]
