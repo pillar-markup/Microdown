@@ -132,8 +132,10 @@ It is used for example by the BeautifulComments project. You can load this alpha
 
 ```
 Metacello new
-  baseline: 'Microdown';
-  repository: 'github://pillar-markup/MicrodownDev/src';
-  load.
+	baseline: 'MicrodownDev';
+	repository: 'github://pillar-markup/Microdown:dev/src';
+	onConflict: [ :ex | ex useIncoming ];
+	onUpgrade: [ :ex | ex useIncoming ];
+	load.
  ```
 
