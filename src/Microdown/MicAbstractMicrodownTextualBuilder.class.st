@@ -8,7 +8,8 @@ Class {
 	#instVars : [
 		'stream',
 		'parserClass',
-		'lastIsNewLine'
+		'lastIsNewLine',
+		'line'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -41,6 +42,7 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
 	parserClass := MicroDownParser.
+	line := String cr.
 	lastIsNewLine := true
 ]
 
@@ -70,7 +72,7 @@ MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
 { #category : #'writing text' }
 MicAbstractMicrodownTextualBuilder >> newLine [
-	self raw: String cr.
+	self raw: line.
 	lastIsNewLine := true
 ]
 
@@ -94,6 +96,11 @@ MicAbstractMicrodownTextualBuilder >> potentialNewLine [
 { #category : #'writing text' }
 MicAbstractMicrodownTextualBuilder >> raw: aString [
 	stream << aString
+]
+
+{ #category : #initialization }
+MicAbstractMicrodownTextualBuilder >> setNewLineCharacterString: aLine [
+	line := aLine
 ]
 
 { #category : #initialization }
