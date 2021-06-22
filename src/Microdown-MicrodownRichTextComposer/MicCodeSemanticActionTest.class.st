@@ -139,8 +139,8 @@ MicCodeSemanticActionTest >> testReferenceToANonExistingPackage [
 MicCodeSemanticActionTest >> testReferenceToAPackage [
 
 	self
-		assert: (self semanticActionClass from: #'''BeautifulComments''') entity name
-		equals: 'BeautifulComments'
+		assert: (self semanticActionClass from: #'''Microdown''') entity name
+		equals: 'Microdown'
 ]
 
 { #category : #'tests - class' }
