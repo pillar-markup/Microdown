@@ -21,10 +21,19 @@ MicPillarConverter >> formatBlock: aMicFormatBlock [
 
 { #category : #formatting }
 MicPillarConverter >> urlBlock: aMicUrlBlock [
+	
+	| queries urlString |
+	queries := aMicUrlBlock url query.
+	aMicUrlBlock url query: nil.
+	"UGLY we remove the query dicrtionary just to print."
+	urlString := aMicUrlBlock url asString.
+	aMicUrlBlock url query: queries.
 	^ aMicUrlBlock associatedPillarClass new
-		setChildren: (( aMicUrlBlock inlineParse: aMicUrlBlock substring) collect: [:n | n accept: self]);
-		reference: aMicUrlBlock url;
-		yourself
+		  setChildren:
+			  ((aMicUrlBlock inlineParse: aMicUrlBlock substring) collect: [ :n | 
+					   n accept: self ]);
+		  reference: urlString;
+		  yourself
 ]
 
 { #category : #visiting }
@@ -152,8 +161,8 @@ MicPillarConverter >> visitLink: aMicLink [
 	^ aMicLink associatedPillarClass new
 		  setChildren:
 			  ((aMicLink inlineParse: aMicLink substring) collect: [ :n | 
-					   n accept: MicPillarConverter new ]);
-		  reference: aMicLink url;
+					   n accept: self ]);
+		  reference: aMicLink url asString;
 		  yourself
 ]
 

@@ -132,7 +132,7 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 
 	builder 
 		environment: anEnvironment name 
-		body: [ :b | super visitEnvironment: anEnvironment ] 
+		body: [ super visitEnvironment: anEnvironment ] 
 		arguments: anEnvironment arguments
 ]
 
@@ -151,7 +151,7 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
 	builder newLine.
 	builder 
-		header: [:b | aHeader headerElements do: [ :each | each accept: self ] ] 
+		header: [ aHeader headerElements do: [ :each | each accept: self ] ] 
 		withLevel: aHeader level
 ]
 

@@ -167,19 +167,20 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 	self raw: parserClass argumentListStartDelimiter.
 	self rawParameters: aCol asDictionary.
 	self newLine.
-	aBodyBlock value: self.
+	aBodyBlock value.
 	self newLine.
 	self raw: parserClass environmentClosingBlockMarkup
 ]
 
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
+
 	self raw: parserClass linkNameOpenerMarkup .
 	aDescriptionBlock value.
 	self raw: parserClass linkNameCloserMarkup.
 	self raw: parserClass urlOpenerMarkup.
-			self raw: aURL asString.
-			self raw: parserClass urlCloserMarkup.
+	self raw: aURL asString.
+	self raw: parserClass urlCloserMarkup.
 ]
 
 { #category : #'element - figure' }
@@ -486,7 +487,7 @@ MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 
 	self raw: (parserClass headerMarkup repeat: anInteger).
    self raw: String space.
-   aBloc value: self.
+   aBloc value
 	
 ]
 

@@ -145,7 +145,9 @@ MicMicrodownTextualBuilderTest >> testEnvironment [
 MicMicrodownTextualBuilderTest >> testEnvironmentWithBody [
 
 	self 
-		assert: (builder environment: 'anEnvironmentName' body: [:b | b text: 'aText'] arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
+		assert: (builder environment: 'anEnvironmentName' 
+					body: [ builder text: 'aText'] 
+					arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
 		equals: '<?anEnvironmentName|label=aLabel&value=42
 aText
 ?>'
@@ -244,9 +246,9 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
 	self 
 		assert: (builder 
-							header: [ :b | b text: 'Hello '.
-											 b italic: [ builder text: 'Pharo' ].
-											 b text: ' is cool']  withLevel: 1;				
+							header: [ builder text: 'Hello ';
+											 italic: [ builder text: 'Pharo' ];
+											 text: ' is cool']  withLevel: 1;				
 							contents) contents 
 		equals: parser headerMarkup , ' Hello _Pharo_ is cool
 '
@@ -360,9 +362,10 @@ MicMicrodownTextualBuilderTest >> testStrike [
 MicMicrodownTextualBuilderTest >> testStrikeInHeader [
 	
 	self assert: (builder 
-							header: [ :b | b text: 'Hello '.
-											 b strike: [ b text: 'Pharo' ].
-											 b text: ' is cool']  withLevel: 1;				
+							header: [ builder 
+											text: 'Hello ';
+											strike: [ builder text: 'Pharo' ]; 
+											text: ' is cool']  withLevel: 1;				
 							contents)
 			equals: '# Hello ~Pharo~ is cool
 '
