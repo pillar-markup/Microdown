@@ -421,6 +421,38 @@ MicInlineParserTest >> testParseEmptyText [
 	self assert: res isEmpty
 ]
 
+{ #category : #'tests - link' }
+MicInlineParserTest >> testParseMissingStartURL [
+	"Test the link annotation [LinkText]url)"
+
+	| res |
+	res := self splitter parse: '[Pharo is cool])'.
+	self assert: res first class = MicTextBlock.
+]
+
+{ #category : #'tests - link' }
+MicInlineParserTest >> testParseMissingStartURLInPresenceOfNestedFormat [
+	"Test the link annotation [LinkText]url) _*foo*_"
+
+	| res |
+	res := self splitter parse: '[LinkText]htt) 
+	_*foo*_'.
+	self assert: res first class = MicTextBlock.
+
+]
+
+{ #category : #'tests - link' }
+MicInlineParserTest >> testParseShitInMiddleURL [
+	"Test the link annotation [Pharo is cool]khkjhjkh klhkjhkh (http://pharo.org)"
+
+	| res |
+	res := self splitter parse:
+		       '[Pharo is cool]khkjhjkh klhkjhkh (http://pharo.org)'.
+
+	self assert: res first class = MicTextBlock.
+	self assert: res size equals: 1
+]
+
 { #category : #'tests - raw' }
 MicInlineParserTest >> testRaw [
 

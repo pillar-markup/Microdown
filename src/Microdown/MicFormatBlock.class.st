@@ -4,6 +4,12 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicFormatBlock >> add: aChild [
+
+	children := children asOrderedCollection add: aChild; yourself
+]
+
 { #category : #visiting }
 MicFormatBlock >> closeMe [
 	
