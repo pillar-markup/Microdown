@@ -21,6 +21,6 @@ jobs:
         id: smalltalkci
         with:
           smalltalk-version: Pharo64-9.0
-      - run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-version }}
+      - run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
         shell: bash
         timeout-minutes: 15
