@@ -83,6 +83,13 @@ MicInlineParserTest >> testBold [
 	self assert: res second kind equals: #bold
 ]
 
+{ #category : #tests }
+MicInlineParserTest >> testCurlyBraceDoesNotLeadToProblem [
+	| mic |
+	mic := (self splitter parse:  ' jhkjhk { a }') first.
+	self assert: mic substring equals:  ' jhkjhk { a }'
+]
+
 { #category : #'tests - escape' }
 MicInlineParserTest >> testEscapeCharacter [
 	"Test the escape \ in simple case (here, bold one)"
@@ -354,6 +361,14 @@ MicInlineParserTest >> testMonospace [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'ab'. '[block](monospace)'. 'de' }
+]
+
+{ #category : #'tests - formats' }
+MicInlineParserTest >> testMonospaceDoesNotTreatNestedElements [
+
+	| res |
+	res := self splitter parse: '`[* foo *])`'.
+	self assert: res first substring equals: '[* foo *])'
 ]
 
 { #category : #'tests - formats' }
