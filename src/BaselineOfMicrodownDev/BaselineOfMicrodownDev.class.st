@@ -20,6 +20,8 @@ BaselineOfMicrodownDev >> baseline: spec [
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-MicrodownRichTextComposer'
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-PrettyPrinter-Tests'
 				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
 			package: #'Microdown-Pillar'
@@ -29,6 +31,7 @@ BaselineOfMicrodownDev >> baseline: spec [
 		spec
 			group: 'Core' with: #('Microdown' #'Microdown-PrettyPrinter');
 			group: 'Pillar' with: #('Microdown' #'Microdown-Pillar' #'Microdown-Pillar-Tests');
+			group: 'RichText' with: #(#'Microdown-MicrodownRichTextComposer');
 			group: 'Tests' with: #('Microdown-Tests' #'Microdown-PrettyPrinter-Tests');
 			group: 'All' with: #('Microdown' 'Tests' #'Microdown-Pharo-Tools') ]
 ]
