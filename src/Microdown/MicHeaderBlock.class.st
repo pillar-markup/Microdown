@@ -46,6 +46,13 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : #'parse support' }
+MicHeaderBlock >> closeMe [
+	super closeMe.
+	children :=  self inlineParse: children
+
+]
+
 { #category : #accessing }
 MicHeaderBlock >> formattedCode [ 
 	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'
