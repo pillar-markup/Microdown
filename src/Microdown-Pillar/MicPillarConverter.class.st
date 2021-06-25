@@ -69,6 +69,14 @@ MicPillarConverter >> visitBold: aMicBold [
 ]
 
 { #category : #visiting }
+MicPillarConverter >> visitCell: aCell [
+	| cell |
+	cell := PRTableCell new.
+	aCell do: [ :each | cell add: (each accept: self)  ].
+	^ cell
+]
+
+{ #category : #visiting }
 MicPillarConverter >> visitCode: aMicCodeBlock [
 
 	| prBlock par pillars |
@@ -239,9 +247,29 @@ MicPillarConverter >> visitRoot: aMicRootBlock [
 
 ]
 
+{ #category : #visiting }
+MicPillarConverter >> visitRow: aRow in: aTable at: i [
+
+	| row |
+	row := PRTableRow new.
+	i = 1 
+		ifTrue: [ aRow do: [ :cell | row add: ((self visitCell: cell) heading: true) ] ] 
+		ifFalse: [ aRow do: [ :cell | row add: (self visitCell: cell) ] ].
+	^ row
+]
+
 { #category : #'visiting inline' }
 MicPillarConverter >> visitStrike: aMicStrike [
  	^ self formatBlock: aMicStrike
+]
+
+{ #category : #visiting }
+MicPillarConverter >> visitTable: aTable [
+	| table |
+	table := PRTable new.
+	aTable rows doWithIndex: [ :row : i | 
+		table add: (self visitRow: row in: aTable at: i)].
+	^ table
 ]
 
 { #category : #'visiting inline' }

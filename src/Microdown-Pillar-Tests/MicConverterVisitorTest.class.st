@@ -305,11 +305,14 @@ MicConverterVisitorTest >> testStrikethroughFormatEmpty [
 
 { #category : #tests }
 MicConverterVisitorTest >> testTableBlock [
-	self skip.
-	self flag: #fixme.
-	"to fix when MicTable will be fix"
-	self parse: factory tableSample createElementOfClass: PRDocument
-	
+
+	self parse: factory simpleTable createElementOfClass: PRTable
+]
+
+{ #category : #tests }
+MicConverterVisitorTest >> testTableFormatBlock [
+
+	self parse: factory simpleTableMoreFormat createElementOfClass: PRTable
 ]
 
 { #category : #'tests-inline blocks' }
