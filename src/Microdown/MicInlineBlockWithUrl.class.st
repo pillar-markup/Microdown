@@ -19,20 +19,15 @@ Class {
 
 { #category : #'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ self new 
+	^ self new
 		start: aStartInteger; 
 		end: anEndInteger; 
 		substring: aString; 
-		children: aChildren; 
+		children: aChildren;
 		cleanSubstring; 
 		url: aURL;
 		closeMe; 
 		yourself
-]
-
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
 { #category : #accessing }
@@ -45,28 +40,9 @@ MicInlineBlockWithUrl >> captionElements [
 	^ caption 
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> closingDelimiter [
-
- 	^ MicURLCloserDelimiter markup
-]
-
-{ #category : #printing }
-MicInlineBlockWithUrl >> printOn: aStream [
-	(self kind == #basic) 
-		ifTrue: [ aStream nextPutAll: self substring ] 
-		ifFalse: [ 
-			| contents |
-			contents := children 
-				ifEmpty: [ self substring ] 
-				ifNotEmpty: [ self childrenPrintOn ].
-			aStream nextPut: $[;
-				nextPutAll: contents;
-				nextPut: $];
-				nextPut: $(.
-			url printOn: aStream.
-			aStream nextPut: $) 
-		]
+{ #category : #'instance creation' }
+MicInlineBlockWithUrl >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
 { #category : #accessing }
@@ -75,6 +51,6 @@ MicInlineBlockWithUrl >> url [
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl >> url: anURL [
-	url := anURL
+MicInlineBlockWithUrl >> url: anUrl [
+	url := anUrl
 ]
