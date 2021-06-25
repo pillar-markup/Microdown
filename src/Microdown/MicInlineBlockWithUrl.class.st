@@ -19,15 +19,20 @@ Class {
 
 { #category : #'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ self new
+	^ self new 
 		start: aStartInteger; 
 		end: anEndInteger; 
 		substring: aString; 
-		children: aChildren;
+		children: aChildren; 
 		cleanSubstring; 
 		url: aURL;
 		closeMe; 
 		yourself
+]
+
+{ #category : #'instance creation' }
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
+	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
 { #category : #accessing }
@@ -44,11 +49,6 @@ MicInlineBlockWithUrl >> captionElements [
 MicInlineBlockWithUrl >> closingDelimiter [
 
  	^ MicURLCloserDelimiter markup
-]
-
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
 { #category : #printing }
@@ -75,6 +75,6 @@ MicInlineBlockWithUrl >> url [
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl >> url: anUrl [
-	url := anUrl
+MicInlineBlockWithUrl >> url: anURL [
+	url := anURL
 ]
