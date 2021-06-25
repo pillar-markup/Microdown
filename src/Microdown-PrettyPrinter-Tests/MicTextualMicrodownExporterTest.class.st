@@ -397,6 +397,26 @@ MicTextualMicrodownExporterTest >> testRoot [
 	self verifyObtain: factory rootSample
 ]
 
+{ #category : #tests }
+MicTextualMicrodownExporterTest >> testSimpleTable [
+	self verifyObtain: factory simpleTable
+]
+
+{ #category : #tests }
+MicTextualMicrodownExporterTest >> testSimpleTableWithFormatting [
+	self verifyObtain: factory simpleTableFormat
+]
+
+{ #category : #tests }
+MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithShortRow [
+	self verifyObtain: factory simpleTableShortRow
+]
+
+{ #category : #tests }
+MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithSomeElements [
+	self verifyObtain: factory simpleTableMoreFormat
+]
+
 { #category : #'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedList [
 

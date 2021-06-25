@@ -24,6 +24,14 @@ MicTextualMicrodownExporter >> blockPrint: aMicText [
 	^ text
 ]
 
+{ #category : #API }
+MicTextualMicrodownExporter >> buildRowHeader: row [
+
+	builder newLine.
+	row do: [ :cell | builder headCell ].
+	^ builder raw: '|'
+]
+
 { #category : #build }
 MicTextualMicrodownExporter >> classPrint: aMicFigure [
 
@@ -266,10 +274,27 @@ MicTextualMicrodownExporter >> visitRoot: aRoot [
 		root: [ super visitRoot: aRoot ] 
 ]
 
+{ #category : #API }
+MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
+
+	row do: [ :cell | 
+		builder cell: [ cell do: [ :child | child accept: self ] ] ].
+	builder raw: '|'.
+	^ (aTable hasHeader and: i = 1) ifTrue: [ self buildRowHeader: row ]
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
 	builder strike: [ super visitStrike: aStrikeFormat ]
+]
+
+{ #category : #API }
+MicTextualMicrodownExporter >> visitTable: aTable [
+
+	aTable rows doWithIndex: [ :row :i | 
+		builder newLine.
+		self visitRow: row in: aTable at: i ]
 ]
 
 { #category : #'visit - block' }
