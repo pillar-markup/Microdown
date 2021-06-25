@@ -40,6 +40,12 @@ MicInlineBlockWithUrl >> captionElements [
 	^ caption 
 ]
 
+{ #category : #accessing }
+MicInlineBlockWithUrl >> closingDelimiter [
+
+ 	^ MicURLCloserDelimiter markup
+]
+
 { #category : #'instance creation' }
 MicInlineBlockWithUrl >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
