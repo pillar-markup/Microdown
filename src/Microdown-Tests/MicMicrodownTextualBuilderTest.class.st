@@ -72,6 +72,17 @@ MicMicrodownTextualBuilderTest >> testBold [
 	self assert: (builder bold: [builder text: 'Bold']) contents equals: '**Bold**'
 ]
 
+{ #category : #tests }
+MicMicrodownTextualBuilderTest >> testCell [
+
+	self
+		assert: (builder
+		cell: [ 
+			builder text: 'this is '.
+			builder bold: [ builder text: 'bold' ] ]) contents
+		equals: '| this is **bold** '
+]
+
 { #category : #'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlock [
 
@@ -239,6 +250,11 @@ MicMicrodownTextualBuilderTest >> testFigureWithParameters [
 							withParameters:  dictionnary;				
 							contents) contents 
 		equals: '![it is a beautifull figure](http://www.pharo.org/flo.png?label=aLabel&size=80)'
+]
+
+{ #category : #tests }
+MicMicrodownTextualBuilderTest >> testHeadCell [
+	self assert: builder headCell contents equals: '| --- '
 ]
 
 { #category : #'tests - header' }
