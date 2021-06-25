@@ -51,6 +51,24 @@ MicInlineBlockWithUrl >> from: aStartInteger to: anEndInteger withKind: aKind wi
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
+{ #category : #printing }
+MicInlineBlockWithUrl >> printOn: aStream [
+	(self kind == #basic) 
+		ifTrue: [ aStream nextPutAll: self substring ] 
+		ifFalse: [ 
+			| contents |
+			contents := children 
+				ifEmpty: [ self substring ] 
+				ifNotEmpty: [ self childrenPrintOn ].
+			aStream nextPut: $[;
+				nextPutAll: contents;
+				nextPut: $];
+				nextPut: $(.
+			url printOn: aStream.
+			aStream nextPut: $) 
+		]
+]
+
 { #category : #accessing }
 MicInlineBlockWithUrl >> url [
 	^ url

@@ -164,7 +164,7 @@ MicMicrodownSnippetFactory >> figureMonospaceSample [
 MicMicrodownSnippetFactory >> figureNestedSample [
 	^ '
 
-![**Foo_**](/anUrl?label=figureTest&size=80)
+![**Foo\_**](/anUrl?label=figureTest&size=80)
 '
 ]
 

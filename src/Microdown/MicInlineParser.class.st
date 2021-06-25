@@ -373,7 +373,7 @@ MicInlineParser >> resultProcess [
 		| startSubstring endSubstring |
 		e substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := string indexOfSubCollection: e substring startingAt: e start.
+			ifFalse: [  	startSubstring := (string indexOfSubCollection: e substring startingAt: e start) max: 1.
 		endSubstring := startSubstring + e substring size - 1 ].
 		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
