@@ -9,6 +9,12 @@ Class {
 	#category : #'Microdown-PrettyPrinter'
 }
 
+{ #category : #'visit - format' }
+MicTextualMicrodownExporter >> backSlasher [
+
+	^ MicrodownBackSlasher new
+]
+
 { #category : #build }
 MicTextualMicrodownExporter >> blockPrint: aMicText [
 
@@ -111,6 +117,11 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 ]
 
 { #category : #'visit - block' }
+MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
+	aChildren do: [ :each | self visitTextWithoutBackslash: each ]
+]
+
+{ #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	builder newLine.
@@ -206,7 +217,7 @@ MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
-	builder monospace: [ super visitMonospace: aMonospaceFormat ]
+	builder monospace: [ self visitChildrenWithoutBackslash: aMonospaceFormat children ]
 ]
 
 { #category : #'visit - block' }
@@ -264,6 +275,11 @@ MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
+	builder text:  (self backSlasher backSlashString: aMicTextBlock substring)
+]
+
+{ #category : #visiting }
+MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock substring
 ]
 
