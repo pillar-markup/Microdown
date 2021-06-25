@@ -60,15 +60,14 @@ MicTableBlock >> closeMe [
 	| firstSize |
 	firstSize := rows first size.
 	rows := rows collect: [ :each | self cut: each toSize: firstSize ].
-	self flag: #todo.
-	"we should call the inlineParse on each cell."
+	rows := rows collect: [ :each | 
+		        each collect: [ :e | self inlineParse: e ] ].
 ]
 
 { #category : #private }
 MicTableBlock >> cut: row toSize: firstSize [
 
-	^ row copyFrom: 1 to: firstSize 
-	
+	^ row copyFrom: 1 to: ( row size min: firstSize)
 ]
 
 { #category : #actions }
@@ -95,6 +94,7 @@ MicTableBlock >> hasHeader [
 MicTableBlock >> initialize [ 
 	super initialize.
 	rows := OrderedCollection new.
+	hasHeader := false
 ]
 
 { #category : #testing }

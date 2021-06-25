@@ -284,7 +284,8 @@ this is the end.'.
 
 { #category : #'tests - error' }
 MicrodownParserTest >> testError [
-
+	self skip. 
+	"see if we have an error"
 	self should: [ parser parse: '
 
 | aaab | jkhjh |
@@ -549,17 +550,92 @@ MicrodownParserTest >> testRBPatternVariableNode [
 { #category : #'tests - table' }
 MicrodownParserTest >> testSimpleTable [
 
-	self skip.
-	self flag: #fixMe.
-	self shouldnt: [ parser parse: '
+	| mic |
+	mic := (parser parse: '
 
 | aaab | jkhjh |
-| --- |
+| --- | --- |
+| bar | rab |
+
+') children first.
+	self assert: mic class equals: MicTableBlock.
+	self assert: mic rows size equals: 2.
+	self assert: mic rows first size equals: 2.
+	self assert: mic rows first first first class equals: MicTextBlock
+]
+
+{ #category : #'tests - table' }
+MicrodownParserTest >> testSimpleTableWithFormatting [
+
+	| mic |
+	mic := (parser parse: '
+
+| **aaab** | jkhjh |
+| --- | --- |
+| bar | rab |
+
+') children first.
+	self assert: mic class equals: MicTableBlock.
+	self assert: mic rows size equals: 2.
+	self assert: mic rows first size equals: 2.
+	self assert: mic rows first first first class equals: MicBoldFormatBlock
+]
+
+{ #category : #'tests - table' }
+MicrodownParserTest >> testSimpleTableWithFormattingWithSomeElements [
+
+	| mic |
+	mic := (parser parse: '
+
+| **aaab** bbbc _cccd_| jkhjh |
+| --- | --- |
+| bar | rab |
+
+') children first.
+	self assert: mic class equals: MicTableBlock.
+	self assert: mic rows size equals: 2.
+	self assert: mic rows first size equals: 2.
+	self
+		assert: mic rows first first first class
+		equals: MicBoldFormatBlock.
+	self assert: mic rows first first second class equals: MicTextBlock.
+	self
+		assert: mic rows first first third class
+		equals: MicItalicFormatBlock
+]
+
+{ #category : #'tests - table' }
+MicrodownParserTest >> testSimpleTableWithMoreLongRow [
+
+	| mic |
+	mic := (parser parse: '
+
+| aaab | jkhjh |
+| --- | --- |
+| bar | rab | long |
+
+') children first.
+	self assert: mic class equals: MicTableBlock.
+	self assert: mic rows size equals: 2.
+	self assert: mic rows first size equals: 2.
+	self assert: mic rows first first first class equals: MicTextBlock
+]
+
+{ #category : #'tests - table' }
+MicrodownParserTest >> testSimpleTableWithShortRow [
+
+	| mic |
+	mic := (parser parse: '
+
+| aaab | jkhjh |
+| --- | --- |
 | bar |
 
-'
-	] raise: MicParsingError 
-	
+') children first.
+	self assert: mic class equals: MicTableBlock.
+	self assert: mic rows size equals: 2.
+	self assert: mic rows first size equals: 2.
+	self assert: mic rows first first first class equals: MicTextBlock
 ]
 
 { #category : #'tests - comments' }

@@ -695,6 +695,38 @@ MicMicrodownSnippetFactory >> scriptWithSpacedParametersSample [
 		body: 'bla'
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTable [
+	^ '
+| aaab | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableFormat [
+	^ '
+| **aaab** | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableMoreFormat [
+	^ '
+| **aaab** bbbc _cccd_ | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableShortRow [
+	^ '
+| aaab | jkhjh |
+| --- | --- |
+| bar |'
+]
+
 { #category : #utils }
 MicMicrodownSnippetFactory >> space [ 
 
