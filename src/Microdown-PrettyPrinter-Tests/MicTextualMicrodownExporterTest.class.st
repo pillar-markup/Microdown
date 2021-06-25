@@ -116,10 +116,10 @@ MicTextualMicrodownExporterTest >> testFigureNewLine [
 	
 	| mic |
 	"there is two newLine because a figure is a inlineblock which is in a paragraph"
-	mic := parser parse: '![aCaption](anUrl)'.
+	mic := parser parse: '![Pharo is is cool](http://pharo.org/)'.
 	self assert: (mic accept: visitor) contents equals: '
 
-![aCaption](/anUrl)
+![Pharo is is cool](http://pharo.org/)
 '
 ]
 
@@ -131,6 +131,18 @@ MicTextualMicrodownExporterTest >> testFigureWithBold [
 { #category : #'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithItalic [
 	self verifyObtain: factory figureItalicSample
+]
+
+{ #category : #'tests - figure' }
+MicTextualMicrodownExporterTest >> testFigureWithMicroDownMarkup [
+
+	| mic |
+	"there is two newLine because a figure is a inlineblock which is in a paragraph"
+	mic := parser parse: '![Pharo is \~is c\**ool](http://pharo.org/)'.
+	self assert: (mic accept: visitor) contents equals: '
+
+![Pharo is \~is c\**ool](http://pharo.org/)
+'
 ]
 
 { #category : #'tests - figure' }
@@ -168,6 +180,17 @@ MicTextualMicrodownExporterTest >> testHeaderWithBold [
 ]
 
 { #category : #'tests-header' }
+MicTextualMicrodownExporterTest >> testHeaderWithMicroDownMarkup [
+
+	| mic |
+	mic := parser parse: '# header\~ 1
+'.
+	self assert: (mic accept: visitor) contents equals: '
+# header\~ 1
+'
+]
+
+{ #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 	
 	self verifyObtain: factory headerWithNestedFormatSampleWithNewLine.
@@ -192,6 +215,17 @@ MicTextualMicrodownExporterTest >> testLinkWithBold [
 { #category : #'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithItalic [
 	self verifyObtain: factory linkItalicSample
+]
+
+{ #category : #'tests - link' }
+MicTextualMicrodownExporterTest >> testLinkWithMicroDownMarkup [
+
+	| mic |
+	"there is two newLine because a figure is a inlineblock which is in a paragraph"
+	mic := parser parse: '[Pharo is \~is c\**ool](http://pharo.org/)'.
+	self assert: (mic accept: visitor) contents equals: '
+[Pharo is \~is c\**ool](http://pharo.org/)
+'
 ]
 
 { #category : #'tests - link' }
@@ -315,6 +349,16 @@ MicTextualMicrodownExporterTest >> testParagraphWithBold [
 { #category : #'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithItalic [
 	self verifyObtain: factory paragraphItalicSample
+]
+
+{ #category : #'tests - paragraph' }
+MicTextualMicrodownExporterTest >> testParagraphWithMicroDownMarkup [
+
+	| mic |
+	mic := parser parse: 'blab\~l\**a*1'.
+	self assert: (mic accept: visitor) contents equals: '
+blab\~l\**a*1
+'
 ]
 
 { #category : #'tests - paragraph' }
