@@ -9,6 +9,12 @@ Class {
 	#category : #'Microdown-PrettyPrinter'
 }
 
+{ #category : #'visit - format' }
+MicTextualMicrodownExporter >> backSlasher [
+
+	^ MicrodownBackSlasher new
+]
+
 { #category : #build }
 MicTextualMicrodownExporter >> blockPrint: aMicText [
 
@@ -16,6 +22,14 @@ MicTextualMicrodownExporter >> blockPrint: aMicText [
 	text := self classPrint: aMicText.
 	text := text , ' "' , aMicText substring , '"'.
 	^ text
+]
+
+{ #category : #API }
+MicTextualMicrodownExporter >> buildRowHeader: row [
+
+	builder newLine.
+	row do: [ :cell | builder headCell ].
+	^ builder raw: '|'
 ]
 
 { #category : #build }
@@ -108,6 +122,11 @@ MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
 	builder bold: [ super visitBold: aBoldFormat ]
+]
+
+{ #category : #'visit - block' }
+MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
+	aChildren do: [ :each | self visitTextWithoutBackslash: each ]
 ]
 
 { #category : #'visit - block' }
@@ -206,7 +225,7 @@ MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
-	builder monospace: [ super visitMonospace: aMonospaceFormat ]
+	builder monospace: [ self visitChildrenWithoutBackslash: aMonospaceFormat children ]
 ]
 
 { #category : #'visit - block' }
@@ -255,15 +274,37 @@ MicTextualMicrodownExporter >> visitRoot: aRoot [
 		root: [ super visitRoot: aRoot ] 
 ]
 
+{ #category : #API }
+MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
+
+	row do: [ :cell | 
+		builder cell: [ cell do: [ :child | child accept: self ] ] ].
+	builder raw: '|'.
+	^ (aTable hasHeader and: i = 1) ifTrue: [ self buildRowHeader: row ]
+]
+
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
 	builder strike: [ super visitStrike: aStrikeFormat ]
 ]
 
+{ #category : #API }
+MicTextualMicrodownExporter >> visitTable: aTable [
+
+	aTable rows doWithIndex: [ :row :i | 
+		builder newLine.
+		self visitRow: row in: aTable at: i ]
+]
+
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
+	builder text:  (self backSlasher backSlashString: aMicTextBlock substring)
+]
+
+{ #category : #visiting }
+MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock substring
 ]
 

@@ -164,7 +164,7 @@ MicMicrodownSnippetFactory >> figureMonospaceSample [
 MicMicrodownSnippetFactory >> figureNestedSample [
 	^ '
 
-![**Foo_**](/anUrl?label=figureTest&size=80)
+![**Foo\_**](/anUrl?label=figureTest&size=80)
 '
 ]
 
@@ -693,6 +693,38 @@ MicMicrodownSnippetFactory >> scriptWithSpacedParametersSample [
 	^ self 
 		codeblock:   ' foo = true & bar = 2'
 		body: 'bla'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTable [
+	^ '
+| aaab | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableFormat [
+	^ '
+| **aaab** | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableMoreFormat [
+	^ '
+| **aaab** bbbc _cccd_ | jkhjh |
+| --- | --- |
+| bar | rab |'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableShortRow [
+	^ '
+| aaab | jkhjh |
+| --- | --- |
+| bar |'
 ]
 
 { #category : #utils }

@@ -87,6 +87,13 @@ MicMicrodownTextualBuilder >> bold: aBlock [
 	self raw: parserClass boldMarkup.
 ]
 
+{ #category : #accessing }
+MicMicrodownTextualBuilder >> cell: aCellBlock [
+	self raw: '| '.
+	aCellBlock value.
+	self raw: ' '
+]
+
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString [ 
 	self codeblock: aString firstLineAssociations: #() 
@@ -235,6 +242,11 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 			self raw: parserClass argumentListOfFigureStartDelimiter.
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
+]
+
+{ #category : #accessing }
+MicMicrodownTextualBuilder >> headCell [
+	self raw: '| --- '.
 ]
 
 { #category : #'element - header' }
