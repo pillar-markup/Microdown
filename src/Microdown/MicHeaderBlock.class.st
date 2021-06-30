@@ -77,3 +77,12 @@ MicHeaderBlock >> headerElements [
 MicHeaderBlock >> level [
 	^ level
 ]
+
+{ #category : #accessing }
+MicHeaderBlock >> level: anInteger [
+	level := anInteger
+	
+
+
+
+]
