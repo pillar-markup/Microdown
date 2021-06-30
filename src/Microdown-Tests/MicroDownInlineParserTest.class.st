@@ -91,15 +91,15 @@ MicrodownInlineParserTest >> testAnchorRefernce [
 { #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'needed <?footnote | value=A foonote is annotation.?>'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'needed ', MicAnnotationOpenerDelimiter markup ,'footnote | value=A foonote is annotation.', MicAnnotationCloserDelimiter markup.
 	"pay attention an annotation is inside a paragraph (else this is an environment)"
 	annotation := elements second.
 	
  	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
 	
  	self assert: annotation kind equals: 'annotation'.
- 	self assert: annotation openingDelimiter equals: '<?'.
- 	self assert: annotation closingDelimiter equals: '?>'
+ 	self assert: annotation openingDelimiter equals: '<<'.
+ 	self assert: annotation closingDelimiter equals: '>>'
  
 ]
 
@@ -107,7 +107,7 @@ MicrodownInlineParserTest >> testAnnotationBasic [
 MicrodownInlineParserTest >> testAnnotationPrintString [
  	
 	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.&width=90?>def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<<footnote | value=A foonote is annotation.&width=90>>def'.
  	self assert: elements size equals: 3.
  	self assert: elements second text equals: 'footnote | value=A foonote is annotation.&width=90'.
 	self assert: elements second name equals: 'footnote'.
@@ -117,13 +117,13 @@ MicrodownInlineParserTest >> testAnnotationPrintString [
 { #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotations [
  	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is annotation.?>def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<<footnote | value=A foonote is annotation.>>def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'footnote | value=A foonote is annotation.'.
  	self assert: elements second kind equals: 'annotation'.
- 	self assert: elements second openingDelimiter equals: '<?'.
- 	self assert: elements second closingDelimiter equals: '?>'
+ 	self assert: elements second openingDelimiter equals: '<<'.
+ 	self assert: elements second closingDelimiter equals: '>>'
  
 ]
 
@@ -475,7 +475,7 @@ MicrodownInlineParserTest >> testStructureOfAnchorReference [
 MicrodownInlineParserTest >> testStructureOfAnnotation [
 
  	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: '  <?annotation?>') first.
+ 	element := (self parseAndReturnElementsOfParagraphFor: MicAnnotationOpenerDelimiter markup , 'annotation' , MicAnnotationCloserDelimiter markup ) first.
 	self assert: element text equals: 'annotation'.
 	self assert: element name equals: 'annotation'.
 	self assert: element children equals: #()
@@ -486,7 +486,7 @@ MicrodownInlineParserTest >> testStructureOfAnnotation [
 MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
 
  	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: '  <?inputFile|path=PharoTour.mic?>') first.
+ 	element := (self parseAndReturnElementsOfParagraphFor: MicAnnotationOpenerDelimiter markup , 'inputFile|path=PharoTour.mic' , MicAnnotationCloserDelimiter markup ) first.
 	self assert: element name equals: 'inputFile'.
 	self assert: element children equals: #().
 	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
