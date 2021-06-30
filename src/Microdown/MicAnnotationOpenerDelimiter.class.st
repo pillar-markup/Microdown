@@ -21,7 +21,8 @@ MicAnnotationOpenerDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicAnnotationOpenerDelimiter class >> markup [
-	^ '<?'
+
+	^ '<<'
 ]
 
 { #category : #accessing }
