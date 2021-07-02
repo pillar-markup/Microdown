@@ -66,18 +66,15 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 	self raw: MicAnnotationOpenerDelimiter markup.
-	self space.
 	self raw: aString.
-	aDictionary ifNotEmpty: [ self raw: ' | '.
-		aDictionary 
-			keysAndValuesDo: [ :key :value | 
-				self raw: key.
-				self raw: '='.
-				self raw: value.
-				key = aDictionary keys last
-					ifFalse: [ self raw: '&' ]	]	
-		 ].
-	self raw: MicAnnotationCloserDelimiter markup.
+	aDictionary ifNotEmpty: [ 
+		self raw: ' | '.
+		aDictionary keysAndValuesDo: [ :key :value | 
+			self raw: key.
+			self raw: '='.
+			self raw: value.
+			key = aDictionary keys last ifFalse: [ self raw: '&' ] ] ].
+	self raw: MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #'element - format' }
