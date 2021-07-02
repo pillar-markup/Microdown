@@ -2,7 +2,7 @@
 I'm a little utils to display come ""rich text"".
 
 ```
-BCDisplayer new open
+MicDisplayer new open
 ```
 "
 Class {
