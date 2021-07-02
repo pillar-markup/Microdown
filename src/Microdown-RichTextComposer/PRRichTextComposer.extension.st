@@ -145,10 +145,12 @@ PRRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	Else aString."
 	
 	| builder |
-	builder := MicroDownParser builder.
-	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
 	self notRendering 	
 		ifTrue: [ ^ aString ].
+		
+	builder := MicroDownParser builder.
+	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
+	
 	self captureErrors 
 		ifFalse: [ ^ MicroDownParser asText: builder contents ].
 	^ [ MicroDownParser asText: builder contents ] 
