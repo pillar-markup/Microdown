@@ -98,8 +98,8 @@ MicrodownInlineParserTest >> testAnnotationBasic [
  	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
 	
  	self assert: annotation kind equals: 'annotation'.
- 	self assert: annotation openingDelimiter equals: '<<'.
- 	self assert: annotation closingDelimiter equals: '>>'
+ 	self assert: annotation openingDelimiter equals: MicAnnotationOpenerDelimiter markup.
+ 	self assert: annotation closingDelimiter equals: MicAnnotationCloserDelimiter markup
  
 ]
 
@@ -107,7 +107,7 @@ MicrodownInlineParserTest >> testAnnotationBasic [
 MicrodownInlineParserTest >> testAnnotationPrintString [
  	
 	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<<footnote | value=A foonote is annotation.&width=90>>def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc',MicAnnotationOpenerDelimiter markup,'footnote | value=A foonote is annotation.&width=90',MicAnnotationCloserDelimiter markup,'def'.
  	self assert: elements size equals: 3.
  	self assert: elements second text equals: 'footnote | value=A foonote is annotation.&width=90'.
 	self assert: elements second name equals: 'footnote'.
@@ -117,13 +117,13 @@ MicrodownInlineParserTest >> testAnnotationPrintString [
 { #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotations [
  	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc<<footnote | value=A foonote is annotation.>>def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc',MicAnnotationOpenerDelimiter markup,'footnote | value=A foonote is annotation.',MicAnnotationCloserDelimiter markup,'def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'footnote | value=A foonote is annotation.'.
  	self assert: elements second kind equals: 'annotation'.
- 	self assert: elements second openingDelimiter equals: '<<'.
- 	self assert: elements second closingDelimiter equals: '>>'
+ 	self assert: elements second openingDelimiter equals: MicAnnotationOpenerDelimiter markup.
+ 	self assert: elements second closingDelimiter equals: MicAnnotationCloserDelimiter markup
  
 ]
 

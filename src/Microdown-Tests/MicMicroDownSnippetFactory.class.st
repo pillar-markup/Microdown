@@ -46,7 +46,7 @@ Foo _bar_
 MicMicrodownSnippetFactory >> annotationSample [
 
 	^ '
-abc<< Foo | value=aFoo&label=42 >>def
+abc', MicAnnotationOpenerDelimiter markup , 'Foo | value=aFoo&label=42 ', MicAnnotationCloserDelimiter markup ,'def
 '
 ]
 

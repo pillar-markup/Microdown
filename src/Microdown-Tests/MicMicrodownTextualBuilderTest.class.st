@@ -55,7 +55,7 @@ MicMicrodownTextualBuilderTest >> testAnnotation [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {'label'->'aLabel' . 'value' -> '42'} asDictionary) contents 
-		equals: '<< anAnnotationName | label=aLabel&value=42>>'
+		equals: MicAnnotationOpenerDelimiter markup,' anAnnotationName | label=aLabel&value=42',MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #'tests - anchor' }
@@ -63,7 +63,7 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {} ) contents 
-		equals: '<< anAnnotationName>>'
+		equals: MicAnnotationOpenerDelimiter markup,' anAnnotationName',MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #'tests - format' }
