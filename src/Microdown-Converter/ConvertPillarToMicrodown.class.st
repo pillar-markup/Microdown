@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+ConvertPillarToMicrodown class >> convertPillarBookToMicBook: aBookFolder [
+	"self convertPillarBookToMicBook: FileSystem workingDirectory / 'Booklet-Smacc'"
+	(aBookFolder isFile and: aBookFolder extension = 'pillar') ifTrue: [ 
+		^ self convertPillarFileToTwoMicFile: aBookFolder pathString].
+	aBookFolder isDirectory ifTrue: [ 
+		aBookFolder children do: [ :each | 
+		self convertPillarBookToMicBook: each] ]
+	
+]
+
+{ #category : #'as yet unclassified' }
 ConvertPillarToMicrodown class >> convertPillarFileToMicFile: aStringPath [
 	"self convertPillarFileToMicFile: 'PharoByExample80/Chapters/UnderstandingMessage/UnderstandingMessage.pillar'"
 	

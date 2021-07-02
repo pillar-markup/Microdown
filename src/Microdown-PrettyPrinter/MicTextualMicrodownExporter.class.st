@@ -148,11 +148,12 @@ MicTextualMicrodownExporter >> visitComment: aComment [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
-
-	builder 
-		environment: anEnvironment name 
-		body: [ super visitEnvironment: anEnvironment ] 
-		arguments: anEnvironment arguments
+	builder newLine.
+	builder
+		environment: anEnvironment name
+		body: [ super visitEnvironment: anEnvironment ]
+		arguments: anEnvironment arguments.
+	
 ]
 
 { #category : #'visit - format' }
