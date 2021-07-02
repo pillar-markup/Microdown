@@ -42,10 +42,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 
 	| res |
 	res := self splitter parse:
-		       'abc<?an annotation|key=cite&label=42?>def'.
+		       'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '<?an annotation|key=cite&label=42?>'.
+		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42', MicAnnotationCloserDelimiter markup.
 			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
@@ -56,10 +56,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 MicInlineParserTest >> testAnnotationWithParametersWithBlank [
 
 	| res |
-	res := self splitter parse: 'abc<?an annotation|key=&label=42?>def'.
+	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '<?an annotation|key=&label=42?>'.
+		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup.
 			'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
@@ -508,10 +508,10 @@ MicInlineParserTest >> testSplitAnnotation [
 
 	| res |
 	res := self splitter parse:
-		       'abc<?type:value|key1=val1&key2=val2?>def'.
+		       'abc',MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '<?type:value|key1=val1&key2=val2?>'.
+		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup.
 			'def' }
 ]
 
@@ -519,10 +519,10 @@ MicInlineParserTest >> testSplitAnnotation [
 MicInlineParserTest >> testSplitBlockAnnotation [
 
 	| res |
-	res := self splitter parse: 'abc<?an annotation?>def'.
+	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '<?an annotation?>'. 'def' }.
+		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup. 'def' }.
 	self assert: (res second isKindOf: MicAnnotationBlock)
 ]
 

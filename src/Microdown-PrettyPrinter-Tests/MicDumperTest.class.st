@@ -120,7 +120,7 @@ MicDumperTest >> testPrintMicAnnotated [
 MicDumperTest >> testPrintMicAnnotationBlock [
 	| micAnnotation |
 	micAnnotation := (parser parse: factory annotationSample) children first children second.
-	self assert: (micAnnotation accept: visitor) equals: 'MicAnnotationBlock " Foo | value=aFoo&label=42 "'
+	self assert: (micAnnotation accept: visitor) equals: 'MicAnnotationBlock "Foo | value=aFoo&label=42 "'
 ]
 
 { #category : #'tests-inline block' }
