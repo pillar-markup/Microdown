@@ -4,10 +4,13 @@ I represent an annotation delimted by `<?` and '?>`: a tag with parameters.
 The following is a citation annotation with as parameters the name variable bound to the string 'Duca99a'.
 
 ```
-<?citation|name=Duca99a?>
+?{citation|name=Duca99a}?
 ```
 
+```
+MicroDownParser parse: '?{citation|name=Duca99a}?'
 
+```
 "
 Class {
 	#name : #MicAnnotationBlock,
@@ -18,6 +21,32 @@ Class {
 	],
 	#category : #'Microdown-ModelInline'
 }
+
+{ #category : #'instance creation' }
+MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
+	
+	| splitter tag klass |
+	splitter := MicArgumentsSplitter withString: aString.
+	tag := splitter name trimBoth.
+	self flag: #fixme.
+	"we should pass the splitter and not reparse it in closeMe"
+	
+	klass := self subclasses detect: [ :each | each tag = tag ] ifNone: [ self ].
+
+	^ klass new 
+		start: aStartInteger; 
+		end: anEndInteger; 
+		substring: aString; 
+		children: aChildren; 
+		cleanSubstring; 
+		closeMe; 
+		yourself.	
+]
+
+{ #category : #accessing }
+MicAnnotationBlock class >> tag [
+	^ #empty
+]
 
 { #category : #visiting }
 MicAnnotationBlock >> accept: aVisitor [
