@@ -721,9 +721,9 @@ MicRichTextComposer >> visitFigure: aFigure [
 		ifTrue: [ 
 			anchoredImage := FileSystem workingDirectory / url path 
 				                 binaryReadStreamDo: [ :stream | 
-				                 PNGReadWriter formFromStream: stream ] ]
+				                 ImageReadWriter formFromStream: stream ] ]
 		ifFalse: [ anchoredImage := self cachedImageFromUrl: url ].
-	anchoredImage := self resizeImage: anchoredImage of: aFigure .
+	anchoredImage := self resizeImage: anchoredImage of: aFigure.
 	anchoredImage := (String value: 1) asText addAttribute:
 		                 (TextAnchor new anchoredMorph: anchoredImage).
 	canvas << anchoredImage.
