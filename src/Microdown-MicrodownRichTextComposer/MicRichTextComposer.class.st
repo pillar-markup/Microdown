@@ -702,24 +702,38 @@ MicRichTextComposer >> visitEnvironment: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitFigure: aFigure [
-	"Try to read a png file (only one supported right now), else use alt text"
-	| anchoredImage |
 
-	
-	
-	"for now I cancel the catching of all exceptions because it is a blackhole."
-	"[" 
-	anchoredImage := (String value: 1) asText
-		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure url)).
-		canvas << anchoredImage.
-		canvas newLine.
-		canvas 
-			includeAttribute: TextEmphasis bold 
-			in: [ canvas tab; tab; tab; << aFigure caption asText ]
-		"] 
+	"Try to read a png file (only one supported right now), else use alt text"
+
+	| anchoredImage url |
+	"for now I cancel the catching of all exceptions because it is a blackhole.""[""anchoredImage := (String value: 1) asText addAttribute:
+		                 (TextAnchor new anchoredMorph:
+			                  (self cachedImageFromUrl: aFigure url))."
+	url := aFigure url.
+	url scheme = 'file'
+		ifTrue: [ 
+			anchoredImage := FileSystem workingDirectory / url path 
+				                 binaryReadStreamDo: [ :stream | 
+				                 PNGReadWriter formFromStream: stream ].
+			aFigure arguments at: #size ifPresent: [ :s | 
+				anchoredImage := anchoredImage scaledToSize:
+					                 s asNumber @ s asNumber ].
+			anchoredImage := (String value: 1) asText addAttribute:
+				                 (TextAnchor new anchoredMorph: anchoredImage) ]
+		ifFalse: [ 
+			anchoredImage := (String value: 1) asText addAttribute:
+				                 (TextAnchor new anchoredMorph:
+					                  (self cachedImageFromUrl: url)) ].
+	canvas << anchoredImage.
+	canvas newLine.
+	canvas includeAttribute: TextEmphasis bold in: [ "] 
 		on: Exception  
-		do: [self visitAll: aFigure children]."
-	"pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
+		do: [self visitAll: aFigure children].""pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
+		canvas
+			tab;
+			tab;
+			tab;
+			<< aFigure caption asText ]
 ]
 
 { #category : #'visiting - document' }
