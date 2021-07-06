@@ -709,7 +709,7 @@ MicRichTextComposer >> visitEnvironment: anObject [
 						'is not supported in RichText Pillar <<<') asText]
 ]
 
-{ #category : #'visiting - document' }
+{ #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
 	"Try to read a png file (only one supported right now), else use alt text"
@@ -717,12 +717,12 @@ MicRichTextComposer >> visitFigure: aFigure [
 	| anchoredImage url |
 	"for now I cancel the catching of all exceptions because it is a blackhole."
 	url := aFigure url.
-	url scheme = 'file'
-		ifTrue: [ 
-			anchoredImage := FileSystem workingDirectory / url path 
+	anchoredImage := url scheme = 'file'
+		                 ifTrue: [ 
+			                 FileSystem workingDirectory / url path 
 				                 binaryReadStreamDo: [ :stream | 
 				                 ImageReadWriter formFromStream: stream ] ]
-		ifFalse: [ anchoredImage := self cachedImageFromUrl: url ].
+		                 ifFalse: [ self cachedImageFromUrl: url ].
 	anchoredImage := self resizeImage: anchoredImage of: aFigure.
 	anchoredImage := (String value: 1) asText addAttribute:
 		                 (TextAnchor new anchoredMorph: anchoredImage).
