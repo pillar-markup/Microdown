@@ -64,3 +64,7 @@ MicUpdateFileInclusionReference >> visitInternalLink: anInternalLink [
 		ifTrue: [ anInternalLink reference: (self newReferenceFor: anInternalLink) ].
 	super visitInternalLink: anInternalLink
 ]
+
+{ #category : #visiting }
+MicUpdateFileInclusionReference >> visitText: aText [
+]
