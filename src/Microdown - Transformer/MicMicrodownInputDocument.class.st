@@ -19,5 +19,5 @@ MicMicrodownInputDocument >> parsedDocument [
 { #category : #accessing }
 MicMicrodownInputDocument >> parserClass [
 	
-	^ MicAbstractBlock new parser 
+	^ MicAbstractBlock new parserClass
 ]
