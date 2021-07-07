@@ -132,7 +132,7 @@ MicCodeBlock >> initialize [
 { #category : #'public access' }
 MicCodeBlock >> isEvaluated [ 
 	arguments at: #eval ifAbsent: [ ^ false ].
-	^ true
+	^ arguments at: #eval
 ]
 
 { #category : #visiting }

@@ -33,7 +33,7 @@ MicCodeblockEvaluatorTest >> executePhase: anInput with: aConfig [
 
 { #category : #private }
 MicCodeblockEvaluatorTest >> testScriptWithEvalThatDoesntReturnAParagraph [
-	| input expected |
+	| input |
 	input := MicRootBlock new
 		addChild:
 			(MicParagraphBlock new
@@ -42,10 +42,33 @@ MicCodeblockEvaluatorTest >> testScriptWithEvalThatDoesntReturnAParagraph [
 								eval: true; 
 								yourself);
 				yourself) yourself.
-	expected := MicRootBlock new
+	self executePhase: input with: self configuration.
+	self assert: input children first class equals: MicParagraphBlock.
+	self assert: input children first children first class equals: MicUnorderedListBlock.
+	self assert: input children first children first children first class equals: MicListItemBlock
+]
+
+{ #category : #tests }
+MicCodeblockEvaluatorTest >> testScriptWithProblematicEval [
+	| input |
+	input := MicRootBlock new
 		addChild:
-			(MicParagraphBlock new
-				addChild: (MicUnorderedListBlock new addChild: (MicListItemBlock new textElements: { (MicTextBlock new substring: 'test') } ));
-				yourself) yourself.
-	self assert: (self executePhase: input with: self configuration) equals: expected
+				((MicCodeBlock new body: 'Object SomethingThatIsNotAMethod')
+						eval: true;
+						yourself);
+		yourself.
+	self assert: (self executePhase: input with: self configuration) equals: input
+]
+
+{ #category : #tests }
+MicCodeblockEvaluatorTest >> testScriptWithoutEval [
+	| input |
+	input := MicRootBlock new
+		addChild:
+				((MicCodeBlock new body: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo''')
+						eval: false;
+						yourself);
+		yourself.
+	self assert: input children first class equals: MicCodeBlock.
+	self assert: input children first body equals: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
 ]
