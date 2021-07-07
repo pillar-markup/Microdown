@@ -7,7 +7,7 @@ Class {
 { #category : #registration }
 MicMicrodownInputDocument class >> doesHandleExtension: anExtension [
 
-	^ anExtension = 'pillar'
+	^ anExtension = 'mic'
 ]
 
 { #category : #accessing }
