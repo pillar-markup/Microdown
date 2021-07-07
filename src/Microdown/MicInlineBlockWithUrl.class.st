@@ -37,12 +37,12 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 
 { #category : #accessing }
 MicInlineBlockWithUrl >> caption [
-	^ String streamContents: [:st | caption do: [ :each | st nextPutAll: each text ] ] 
+	^ String streamContents: [:st | self captionElements do: [ :each | st nextPutAll: each text ] ] 
 ]
 
 { #category : #visiting }
 MicInlineBlockWithUrl >> captionElements [ 
-	^ caption 
+	^ caption ifNil: [ OrderedCollection new ]
 ]
 
 { #category : #accessing }
