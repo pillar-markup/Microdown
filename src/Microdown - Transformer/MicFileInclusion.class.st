@@ -87,7 +87,7 @@ MicFileInclusion >> visitInputFileAnnotation: anInputFileAnnotation [
 	includedMicrodownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 	
 	cleanMicrodownAST := (MicCleanAnnotationInParagraphTransformer new
-		configuration: self configuration;
+		"configuration: self configuration;"
 		start: includedMicrodownAST).
 	
 	"Execute a file inclusion step recursively" 
