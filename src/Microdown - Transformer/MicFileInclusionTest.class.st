@@ -7,13 +7,13 @@ Class {
 	#category : #'Microdown - Transformer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MicFileInclusionTest >> cleanFilesystem [
 
 	filesystem := FileSystem memory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MicFileInclusionTest >> generateFilesystemExample [
 
 	| file |
@@ -32,4 +32,30 @@ MicFileInclusionTest >> setUp [
 	super setUp.
 	
 	filesystem := FileSystem memory
+]
+
+{ #category : #tests }
+MicFileInclusionTest >> testGenerateFilesystemIsGood [
+	self cleanFilesystem.
+	self generateFilesystemExample.
+	self assert: (filesystem workingDirectory / 'anExample.mic') contents equals: '# Foo
+Pharo is cool
+
+```
+	this is a code
+```
+'
+]
+
+{ #category : #tests }
+MicFileInclusionTest >> testMicFileInclusionTransformMicInputFile [
+	| micFileInclusion mic |
+	self flag: #completeMe.
+	self cleanFilesystem.
+	self generateFilesystemExample.
+	micFileInclusion := MicFileInclusion new.
+	micFileInclusion topFile: filesystem workingDirectory.
+	mic := (MicroDownParser new parse: '?{inputfile|path=anExample.mic}?').
+	micFileInclusion start: mic.
+	self halt.
 ]
