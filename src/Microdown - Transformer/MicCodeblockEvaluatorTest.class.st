@@ -13,6 +13,15 @@ MicCodeblockEvaluatorTest >> actualClass [
 ]
 
 { #category : #tests }
+MicCodeblockEvaluatorTest >> executePhase: anInput [
+
+	^ (self actualClass
+		executeOn:
+			(MicCompilationContext withDocument: anInput))
+		input
+]
+
+{ #category : #tests }
 MicCodeblockEvaluatorTest >> executePhase: anInput with: aConfig [
 
 	^ (self actualClass
@@ -32,7 +41,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 								eval: true; 
 								yourself);
 				yourself) yourself.
-	self executePhase: input with: nil.
+	self executePhase: input.
 	self assert: input children first class equals: MicParagraphBlock.
 	self assert: input children first children first class equals: MicUnorderedListBlock.
 	self assert: input children first children first children first class equals: MicListItemBlock
@@ -47,7 +56,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 						eval: true;
 						yourself);
 		yourself.
-	self assert: (self executePhase: input with: nil) equals: input
+	self assert: (self executePhase: input) equals: input
 ]
 
 { #category : #tests }

@@ -11,18 +11,22 @@ Class {
 { #category : #execution }
 MicNodeTransformer class >> executeOn: aMicContext [
 	self new
-		configuration: aMicContext configuration;
+		"configuration: aMicContext configuration;"
 		start: aMicContext input.
 	^ aMicContext
 ]
 
 { #category : #accessing }
 MicNodeTransformer >> configuration [
+	self halt.
+	"may be delete this later"
 	^ configuration
 ]
 
 { #category : #accessing }
 MicNodeTransformer >> configuration: anObject [
+	self halt.
+	"may be delete this later"
 	configuration := anObject.
 
 ]

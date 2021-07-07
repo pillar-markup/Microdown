@@ -19,6 +19,13 @@ MicCompilationContext class >> isAbstract [
 ]
 
 { #category : #'instance creation' }
+MicCompilationContext class >> withDocument: aDocument [
+	^ self new
+		input: aDocument;
+		yourself
+]
+
+{ #category : #'instance creation' }
 MicCompilationContext class >> withDocument: aDocument withConfiguration: aConfiguration [
 	^ self new
 		input: aDocument;
