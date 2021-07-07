@@ -4,6 +4,12 @@ Class {
 	#category : #'Microdown - Transformer'
 }
 
+{ #category : #registration }
+MicMicrodownInputDocument class >> doesHandleExtension: anExtension [
+
+	^ anExtension = 'pillar'
+]
+
 { #category : #accessing }
 MicMicrodownInputDocument >> parsedDocument [
 
