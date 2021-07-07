@@ -11,3 +11,21 @@ Class {
 MicInputFileAnnotationBlock class >> tag [ 
 	^ #inputfile
 ]
+
+{ #category : #visiting }
+MicInputFileAnnotationBlock >> accept: aVisitor [
+	aVisitor visitInputFileAnnotation: self
+]
+
+{ #category : #accessing }
+MicInputFileAnnotationBlock >> fileWithConfiguration: aConfiguration [
+	"I search my file."
+
+	^ aConfiguration baseDirectory resolve: self path
+]
+
+{ #category : #accessing }
+MicInputFileAnnotationBlock >> path [
+
+	^ self arguments at: 'path'
+]
