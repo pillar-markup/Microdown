@@ -1,11 +1,11 @@
 Class {
 	#name : #MicCompilationContext,
-	#superclass : #PRObject,
+	#superclass : #MicElement,
 	#instVars : [
 		'configuration',
 		'input'
 	],
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - Transformer'
 }
 
 { #category : #'instance creation' }

@@ -12,27 +12,17 @@ MicCodeblockEvaluatorTest >> actualClass [
 	^ MicCodeblockEvaluator 
 ]
 
-{ #category : #accessing }
-MicCodeblockEvaluatorTest >> configuration [
-	^ self configurationClass new
-]
-
-{ #category : #accessing }
-MicCodeblockEvaluatorTest >> configurationClass [
-	^ ConfigurationForPillar
-]
-
 { #category : #tests }
 MicCodeblockEvaluatorTest >> executePhase: anInput with: aConfig [
 
 	^ (self actualClass
 		executeOn:
-			(PRCompilationContext withDocument: anInput withConfiguration: aConfig))
+			(MicCompilationContext withDocument: anInput withConfiguration: aConfig))
 		input
 ]
 
 { #category : #private }
-MicCodeblockEvaluatorTest >> testScriptWithEvalThatDoesntReturnAParagraph [
+MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 	| input |
 	input := MicRootBlock new
 		addChild:
@@ -42,14 +32,14 @@ MicCodeblockEvaluatorTest >> testScriptWithEvalThatDoesntReturnAParagraph [
 								eval: true; 
 								yourself);
 				yourself) yourself.
-	self executePhase: input with: self configuration.
+	self executePhase: input with: nil.
 	self assert: input children first class equals: MicParagraphBlock.
 	self assert: input children first children first class equals: MicUnorderedListBlock.
 	self assert: input children first children first children first class equals: MicListItemBlock
 ]
 
 { #category : #tests }
-MicCodeblockEvaluatorTest >> testScriptWithProblematicEval [
+MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 	| input |
 	input := MicRootBlock new
 		addChild:
@@ -57,11 +47,11 @@ MicCodeblockEvaluatorTest >> testScriptWithProblematicEval [
 						eval: true;
 						yourself);
 		yourself.
-	self assert: (self executePhase: input with: self configuration) equals: input
+	self assert: (self executePhase: input with: nil) equals: input
 ]
 
 { #category : #tests }
-MicCodeblockEvaluatorTest >> testScriptWithoutEval [
+MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 	| input |
 	input := MicRootBlock new
 		addChild:
