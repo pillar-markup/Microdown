@@ -59,6 +59,40 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
+{ #category : #evaluation }
+MicCodeBlock >> eval: aString [
+	arguments := arguments copyWith: 'eval' -> aString
+]
+
+{ #category : #'public access' }
+MicCodeBlock >> evaluate [
+	| content |
+	content := self evaluationString.
+	^ [ (MicAbstractBlock new parserClass new parse: content) children ]
+		on: Error
+		do: [ :e | MicBoldFormatBlock with: (MicTextBlock new substring: e messageText) ]
+]
+
+{ #category : #'public access' }
+MicCodeBlock >> evaluationString [
+	^ String
+		streamContents: [ :stream | 
+			| evaluator |
+			evaluator := MicCodeblockEvaluatorEnv new
+				setStream: stream;
+				yourself.
+			[ self class compiler
+				source: self body;
+				logged: false;
+				receiver: evaluator;
+				evaluate ]
+				on: Error
+				do: [ :e | 
+					stream
+						nextPutAll: '= ';
+						nextPutAll: e description ] ]
+]
+
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
@@ -87,6 +121,18 @@ MicCodeBlock >> firstTagValue [
 MicCodeBlock >> hasFirstTag [
 
 	^ firstTag isNotEmpty
+]
+
+{ #category : #initialization }
+MicCodeBlock >> initialize [
+	super initialize.
+	arguments := OrderedDictionary new.
+]
+
+{ #category : #'public access' }
+MicCodeBlock >> isEvaluated [ 
+	arguments at: #eval ifAbsent: [ ^ false ].
+	^ true
 ]
 
 { #category : #visiting }
