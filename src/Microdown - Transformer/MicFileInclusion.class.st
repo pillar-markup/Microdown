@@ -1,3 +1,6 @@
+"
+MicFileInclusion replace the MicInputfileBlock by the nodes obtain during the parse of file.
+"
 Class {
 	#name : #MicFileInclusion,
 	#superclass : #MicNodeTransformer,
@@ -78,29 +81,27 @@ MicFileInclusion >> validateInclusionOfFile: aFileReference [
 ]
 
 { #category : #'visiting-document' }
-MicFileInclusion >> visitInputFileAnnotation: anInputFileAnnotation [
+MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
-	| includedFile includedMicrodownAST cleanMicrodownAST |
+	| includedFile microdownAST |
 	includedFile := topFile parent resolve: anInputFileAnnotation path.
 	self validateInclusionOfFile: includedFile.
 	
-	includedMicrodownAST := (MicInputDocument forFile: includedFile) parsedDocument.
+	microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 	
-	cleanMicrodownAST := (MicCleanAnnotationInParagraphTransformer new
-		"configuration: self configuration;"
-		start: includedMicrodownAST).
+	MicCleanAnnotationInParagraph new visit: microdownAST.
 	
 	"Execute a file inclusion step recursively" 
-	includedMicrodownAST := MicFileInclusion new
+	microdownAST := MicFileInclusion new
 		topFile: includedFile;
 		inProcessFiles: (inProcessFiles copyWith: topFile);
-		start: cleanMicrodownAST.
+		start: microdownAST.
 	
 	"If we include a file, we need to update all references to external files in it.
 	References that were before relative to the included document, should be now relative to the container document."
 	MicUpdateFileInclusionReference
-		start: includedMicrodownAST
+		start: microdownAST
 		with: (includedFile parent relativeTo: topFile parent) pillarPrintString.
 	
-	self replace: includedMicrodownAST children.
+	self replace: microdownAST children.
 ]
