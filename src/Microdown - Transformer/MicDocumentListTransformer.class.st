@@ -40,7 +40,7 @@ MicDocumentListTransformer >> addLinkToDocument: aDocument [
 	aDocument
 		add:
 			((PRInternalLink reference: self filesDirectory , '/' , self currentFile basename)
-				addAll: {(PRText content: 'Read more')};
+				addAll: {(MicTextBlock new text: 'Read more')};
 				yourself)
 ]
 
@@ -95,12 +95,12 @@ MicDocumentListTransformer >> filesDirectory [
 MicDocumentListTransformer >> generateFileUsingTemplateFromDocument: aDocument [
 	| conf htmlDoc |
 	"Read configurations"
-	conf := ConfigurationForPillar newFromDictionary: aDocument properties.
+	conf := ConfigurationForMicrodown newFromDictionary: aDocument properties.
 	self halt.
 	conf parent: self configuration.
 
 	"Write the  document in HTML, It means that this template is only for HTML generation"
-	conf at: #content put: (PRHTMLWriter write: aDocument).
+	conf at: #content put: (MicHTMLWriter write: aDocument).
 	conf at: #link put: self currentDocumentInternalLink referenceAsHTML.
 	
 	htmlDoc := (MustacheTemplate on: (self workingDirectory resolve: self availableTemplates first) contents) value: conf.
@@ -119,9 +119,9 @@ MicDocumentListTransformer >> sort: aCollectionOfReferences limit: anInteger by:
 	| references |
 	references := aCollectionOfReferences first: anInteger.
 	aString = 'date'
-		ifTrue: [ ^ PRDocumentListDateSorter with: references ].
+		ifTrue: [ ^ MicDocumentListDateSorter with: references ].
 	aString = 'name'
-		ifTrue: [ ^ PRDocumentListNameSorter with: references ].
+		ifTrue: [ ^ MicDocumentListNameSorter with: references ].
 	^ references
 ]
 
