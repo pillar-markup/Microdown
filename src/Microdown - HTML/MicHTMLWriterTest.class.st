@@ -28,11 +28,51 @@ MicHTMLWriterTest >> testBold [
 </p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - header' }
+MicHTMLWriterTest >> testHeaderLevel1HTML [
+	| mic |
+	mic := parser parse: factory headerLevel1Sample.
+	self assert: (writer start: mic) contents equals: '<h1>Foo</h1>
+'
+]
+
+{ #category : #'tests - header' }
+MicHTMLWriterTest >> testHeaderLevel2HTML [
+	| mic |
+	mic := parser parse: factory headerLevel2Sample.
+	self assert: (writer start: mic) contents equals: '<h2>Foo</h2>
+'
+]
+
+{ #category : #'tests - header' }
 MicHTMLWriterTest >> testHeaderLevel3HTML [
 	| mic |
 	mic := parser parse: factory headerLevel3Sample.
 	self assert: (writer start: mic) contents equals: '<h3>Foo</h3>
+'
+]
+
+{ #category : #'tests - header' }
+MicHTMLWriterTest >> testHeaderLevel4HTML [
+	| mic |
+	mic := parser parse: factory headerLevel4Sample.
+	self assert: (writer start: mic) contents equals: '<h4>Foo</h4>
+'
+]
+
+{ #category : #'tests - header' }
+MicHTMLWriterTest >> testHeaderLevel5HTML [
+	| mic |
+	mic := parser parse: factory headerLevel5Sample.
+	self assert: (writer start: mic) contents equals: '<h5>Foo</h5>
+'
+]
+
+{ #category : #'tests - header' }
+MicHTMLWriterTest >> testHeaderLevel6HTML [
+	| mic |
+	mic := parser parse: factory headerLevel6Sample.
+	self assert: (writer start: mic) contents equals: '<h6>Foo</h6>
 '
 ]
 
@@ -61,6 +101,36 @@ MicHTMLWriterTest >> testNested [
 	self assert: (writer start: mic) contents equals: '<p>
 <em><strong>Foo</strong></em>
 </p>'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testOrderedList [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsSample.
+	self assert: (writer start: mic) contents equals: '<ol><li>first</li>
+<li>second</li>
+</ol>
+'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testOrderedListBold [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsBoldSample.
+	self assert: (writer start: mic) contents equals: '<ol><li><strong>first</strong></li>
+<li>second</li>
+</ol>
+'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testOrderedListNested [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsNestedSample.
+	self assert: (writer start: mic) contents equals: '<ol><li><strong><em>first</em></strong></li>
+<li>second</li>
+</ol>
+'
 ]
 
 { #category : #'tests - paragraph' }
@@ -124,4 +194,37 @@ MicHTMLWriterTest >> testStrike [
 	self assert: (writer start: mic) contents equals: '<p>
 <s>Foo</s>
 </p>'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testUnorderedList [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsSample.
+	self assert: (writer start: mic) contents equals: '<ul>
+<li>Foo</li>
+<li>Bar</li>
+</ul>
+'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testUnorderedListBold [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsBoldSample.
+	self assert: (writer start: mic) contents equals: '<ul>
+<li><strong>Foo</strong></li>
+<li>Bar</li>
+</ul>
+'
+]
+
+{ #category : #'tests - lists' }
+MicHTMLWriterTest >> testUnorderedListNested [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsNestedSample.
+	self assert: (writer start: mic) contents equals: '<ul>
+<li><s><em>Foo</em></s></li>
+<li>Bar</li>
+</ul>
+'
 ]

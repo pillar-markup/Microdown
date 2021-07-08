@@ -842,7 +842,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
 
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ self newLine , listMarkup , '~Foo~' , self newLine , listMarkup
+	^ self newLine , listMarkup , '~_Foo_~' , self newLine , listMarkup
 	  , 'Bar
 '
 ]
