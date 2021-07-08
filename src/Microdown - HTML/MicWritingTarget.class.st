@@ -30,24 +30,24 @@ MicWritingTarget >> outputDirectoryName [
 ]
 
 { #category : #preparation }
-MicWritingTarget >> prepareForExecutionOn: aPRProject [
+MicWritingTarget >> prepareForExecutionOn: aMicProject [
 	| configuration outputDirectory outputFormat target source |
 	"As a temporary solution, remove the old results folder before building the document.
 	This should be replaced by a smarter solution replacing only modified files"
-	aPRProject wipeout.
-	configuration := self createConfigurationFrom: aPRProject.
+	aMicProject wipeout.
+	configuration := self createConfigurationFrom: aMicProject.
 	
 	outputFormat := configuration propertyAt: #_outputFormat.
-	target := aPRProject outputDirectory  / outputFormat outputDirectoryName resolve: (Path from: '_support').
-	source := aPRProject baseDirectory /  '_support'.
+	target := aMicProject outputDirectory  / outputFormat outputDirectoryName resolve: (Path from: '_support').
+	source := aMicProject baseDirectory /  '_support'.
 	
-	PRCopyPhase new
+	MicCopyPhase new
 		sourceDirectory: source;
 		destinationDirectory: target;
 		executeOn: nil "We used a configuration context here that is not needed anymore".
 		
-	outputDirectory := aPRProject outputDirectory / self outputDirectoryName.
-	aPRProject baseDirectory children
+	outputDirectory := aMicProject outputDirectory / self outputDirectoryName.
+	aMicProject baseDirectory children
 		do: [ :each | 
 			((each basename beginsWith: '_') or: [ each basename beginsWith: '.' ])
 				ifFalse: [ each copyAllTo: outputDirectory / each basename ] ]
