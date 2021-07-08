@@ -135,19 +135,19 @@ MicDocumentListTransformerTest >> testAnnotationCreateGoodLinks [
 MicDocumentListTransformerTest >> testAnnotationIsReplacedByFilesContents [
 	| doc documentGroup sections |
 	"${docList:path=blogs|limit=3}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'limit' put: '3';
 					yourself);
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -183,17 +183,17 @@ MicDocumentListTransformerTest >> testAnnotationWithEmptyMultipleMustacheTemplat
 MicDocumentListTransformerTest >> testAnnotationWithLowLimitShouldOnlyTakeLimitNumberOfFilesInPath [
 	| doc documentGroup links |
 	"${docList:path=blogs|limit=2}$"
-	doc := PRDocument new
-		add: (PRText new text: 'You');
-		add:
-			(PRDocumentListAnnotation new
+	doc := MicRootBlock new
+		addChild: (MicTextBlock new substring: 'You');
+		addChild:
+			(MicDocumentList new
 				parameterAt: 'path' put: 'blogs';
 				parameterAt: 'limit' put: '2';
 				yourself);
 		yourself.
 
 
-	(PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -232,17 +232,17 @@ MicDocumentListTransformerTest >> testAnnotationWithMultipleMustacheTemplateShou
 MicDocumentListTransformerTest >> testAnnotationWithTooHighLimitShouldOnlyTakeNumberOfFilesInPath [
 	| doc documentGroup links |
 	"${docList:path=blogs|limit=5}$"
-	doc := PRDocument new
-		add: (PRText new text: 'You');
-		add:
-			(PRDocumentListAnnotation new
+	doc := MicRootBlock new
+		addChild: (MicTextBlock new substring: 'You');
+		addChild:
+			(MicDocumentList new
 				parameterAt: 'path' put: 'blogs';
 				parameterAt: 'limit' put: '5';
 				yourself);
 		yourself.
 
 
-	(PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -305,19 +305,19 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongTemplateExtensionShould
 MicDocumentListTransformerTest >> testAnnotationWithoutLimitParameterShouldTakeDefaultLimitValue [
 	| doc documentGroup sections links |
 	"${docList:path=blogs|sort=name}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'sort' put: 'name';
 					yourself);
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -337,19 +337,19 @@ MicDocumentListTransformerTest >> testAnnotationWithoutLimitParameterShouldTakeD
 MicDocumentListTransformerTest >> testAnnotationWithoutSortParameterShouldListFilesInArbitraryOrder [
 	| doc documentGroup sections |
 	"${docList:path=blogs|limit=2}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'limit' put: '2';
 					yourself);
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	sections := documentGroup children.
@@ -381,12 +381,12 @@ MicDocumentListTransformerTest >> testAnnotationWithoutSpecifyingPathShouldRaise
 MicDocumentListTransformerTest >> testFilesAreSortedByBaseName [
 	| doc documentGroup sections |
 	"${docList:path=blogs|sort=name|limit=3}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'limit' put: '3';
 					parameterAt: 'sort' put: 'name';
@@ -394,7 +394,7 @@ MicDocumentListTransformerTest >> testFilesAreSortedByBaseName [
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -411,12 +411,12 @@ MicDocumentListTransformerTest >> testFilesAreSortedByBaseName [
 MicDocumentListTransformerTest >> testFilesAreSortedByModificationDate [
 	| doc documentGroup sections |
 	"${docList:path=blogs|limit=3|sort=date}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'limit' put: '3';
 					parameterAt: 'sort' put: 'date';
@@ -424,7 +424,7 @@ MicDocumentListTransformerTest >> testFilesAreSortedByModificationDate [
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
