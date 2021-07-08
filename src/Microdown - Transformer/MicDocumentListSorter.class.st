@@ -8,6 +8,21 @@ Class {
 	#category : #'Microdown - Transformer'
 }
 
+{ #category : #'instance creation' }
+MicDocumentListSorter class >> with: aCollection [
+	^ self new
+		files: aCollection;
+		sort
+]
+
+{ #category : #'instance creation' }
+MicDocumentListSorter class >> with: aCollection order: aString [
+	^ self new
+		files: aCollection;
+		direction: aString;
+		sort
+]
+
 { #category : #accessing }
 MicDocumentListSorter >> direction [
 	^ direction
