@@ -1,7 +1,7 @@
 Class {
 	#name : #MicDocumentListNameSorter,
 	#superclass : #MicDocumentListSorter,
-	#category : #'Microdown - Transformer'
+	#category : #'Microdown - HTML'
 }
 
 { #category : #initialization }

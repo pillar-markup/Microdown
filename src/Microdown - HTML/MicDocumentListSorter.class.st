@@ -5,7 +5,7 @@ Class {
 		'direction',
 		'files'
 	],
-	#category : #'Microdown - Transformer'
+	#category : #'Microdown - HTML'
 }
 
 { #category : #'instance creation' }

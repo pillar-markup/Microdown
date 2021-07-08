@@ -7,7 +7,7 @@ Class {
 		'filesDirectory',
 		'availableTemplates'
 	],
-	#category : #'Microdown - Transformer'
+	#category : #'Microdown - HTML'
 }
 
 { #category : #'instance-creation' }
@@ -25,22 +25,22 @@ MicDocumentListTransformer >> addAbstractOfCurrentFileToDocument: aDocument inAn
 	abstractOfCurrentFile := MicroDownParser new parse: self currentFile contents.
 	"arbitrary value for children"
 	abstractOfCurrentFile
-		setChildren: {(MicTextBlock new text: (abstractOfCurrentFile text truncateWithElipsisTo: aMicDocListAnnotation summaryMaxSize))}.
+		children: {(MicTextBlock new substring: (abstractOfCurrentFile text truncateWithElipsisTo: aMicDocListAnnotation summaryMaxSize))}.
 	^ self availableTemplates
 		ifNotEmpty: [ | previousContent |
 			previousContent := aDocument text.
 			aDocument
 				text: previousContent , (self generateFileUsingTemplateFromDocument: abstractOfCurrentFile) ]
-		ifEmpty: [ aDocument addAll: abstractOfCurrentFile children.
+		ifEmpty: [ abstractOfCurrentFile children do: [ :each | aDocument addChild: each ].
 			self addLinkToDocument: aDocument ]
 ]
 
 { #category : #adding }
 MicDocumentListTransformer >> addLinkToDocument: aDocument [
 	aDocument
-		add:
+		addChild:
 			((PRInternalLink reference: self filesDirectory , '/' , self currentFile basename)
-				addAll: {(MicTextBlock new text: 'Read more')};
+				addAll: {(MicTextBlock new substring: 'Read more')};
 				yourself)
 ]
 
@@ -127,7 +127,6 @@ MicDocumentListTransformer >> sort: aCollectionOfReferences limit: anInteger by:
 
 { #category : #visiting }
 MicDocumentListTransformer >> visitDocListAnnotation: aMicDocListAnnotation [
-
 	self replace: { (self createDocList: aMicDocListAnnotation) }
 ]
 
