@@ -26,7 +26,6 @@ MicNodeTransformer class >> withContext: aContext [
 
 { #category : #accessing }
 MicNodeTransformer >> configuration [
-	self halt.
 	"may be delete this later"
 	^ configuration
 ]

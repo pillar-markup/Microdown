@@ -519,7 +519,8 @@ ConfigurationForMicrodown >> mainDocument: aValue [
 { #category : #accessing }
 ConfigurationForMicrodown >> newLine [
 	"generated code"
-	^ self propertyAt: #newLine ifAbsent: [Smalltalk os lineEnding]
+	self flag: 'see how use the comment'.
+	^ self propertyAt: #newLine ifAbsent: [ String cr "Smalltalk os lineEnding"]
 ]
 
 { #category : #accessing }
