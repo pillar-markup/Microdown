@@ -28,6 +28,32 @@ MicHTMLWriterTest >> testBold [
 </p>'
 ]
 
+{ #category : #tests }
+MicHTMLWriterTest >> testFigure [
+	| mic |
+	mic := parser parse: factory figureSample.
+	self assert: (writer start: mic) contents equals: '<p>
+<a id="/anUrl?label=figureTest&size=80"></a>
+<figure>
+	<img src="/anUrl?label=figureTest&size=80" alt=""/>
+	<figcaption>Foo</figcaption>
+</figure>
+</p>'
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testFigureBold [
+	| mic |
+	mic := parser parse: factory figureBoldSample.
+	self assert: (writer start: mic) contents equals: '<p>
+<a id="/anUrl?label=figureTest&size=80"></a>
+<figure>
+	<img src="/anUrl?label=figureTest&size=80" alt="**Foo**"/>
+	<figcaption><strong>Foo</strong></figcaption>
+</figure>
+</p>'
+]
+
 { #category : #'tests - header' }
 MicHTMLWriterTest >> testHeaderLevel1HTML [
 	| mic |
@@ -82,6 +108,24 @@ MicHTMLWriterTest >> testItalic [
 	mic := parser parse: factory italicFormatSample.
 	self assert: (writer start: mic) contents equals: '<p>
 <em>Foo</em>
+</p>'
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testLink [
+	| mic |
+	mic := parser parse: factory linkSample.
+	self assert: (writer start: mic) contents equals: '<p>
+<a href="/anUrl">Foo</a>
+</p>'
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testLinkBold [
+	| mic |
+	mic := parser parse: factory linkBoldSample.
+	self assert: (writer start: mic) contents equals: '<p>
+<a href="/anUrl"><strong>Foo</strong></a>
 </p>'
 ]
 
