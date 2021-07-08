@@ -286,10 +286,10 @@ MicHTMLWriter >> visitInternalLink: anInternalLink [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitItalicFormat: aFormat [
+MicHTMLWriter >> visitItalic: aFormat [
 	canvas tag
 		name: 'em';
-		with: [ super visitItalicFormat: aFormat ]
+		with: [ super visitItalic: aFormat ]
 
 ]
 
@@ -310,7 +310,7 @@ MicHTMLWriter >> visitMailLink: aLink [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitMonospaceFormat: aFormat [
+MicHTMLWriter >> visitMonospace: aFormat [
 	canvas tag
 		name: 'code';
 		with: [ super visitBold: aFormat ]
@@ -357,10 +357,10 @@ MicHTMLWriter >> visitSection: aSection [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitStrikethroughFormat: aFormat [
+MicHTMLWriter >> visitStrike: aFormat [
 	canvas tag
 		name: 's';
-		with: [ super visitStrikethroughFormat: aFormat ]
+		with: [ super visitStrike: aFormat ]
 ]
 
 { #category : #'visiting-document' }
