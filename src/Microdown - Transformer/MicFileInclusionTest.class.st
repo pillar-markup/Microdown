@@ -50,12 +50,13 @@ Pharo is cool
 { #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFile [
 	| micFileInclusion mic |
-	self flag: #completeMe.
 	self cleanFilesystem.
 	self generateFilesystemExample.
 	micFileInclusion := MicFileInclusion new.
 	micFileInclusion topFile: filesystem workingDirectory.
 	mic := (MicroDownParser new parse: '?{inputfile|path=anExample.mic}?').
 	micFileInclusion start: mic.
-	self halt.
+	self assert: mic children first children first class equals: MicHeaderBlock.
+	self assert: mic children first children second class equals: MicParagraphBlock.
+	self assert: mic children first children third class equals: MicCodeBlock
 ]
