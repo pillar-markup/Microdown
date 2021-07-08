@@ -86,8 +86,8 @@ MicDocumentWriter >> configuration: aConfiguration [
 	stream ifNotNil: [ stream configuration: aConfiguration ]
 ]
 
-{ #category : #streaming }
-MicDocumentWriter >> contents [
+{ #category : #accessing }
+MicDocumentWriter >> contents [ 
 	^ stream contents
 ]
 
@@ -195,8 +195,8 @@ MicDocumentWriter >> visitRaw: aRaw [
 { #category : #'visiting-document' }
 MicDocumentWriter >> visitText: aText [
 	writingRaw
-		ifTrue: [ canvas rawLines: aText text ]
-		ifFalse: [ canvas nextPutAllLines: aText text ]
+		ifTrue: [ canvas rawLines: aText substring ]
+		ifFalse: [ canvas nextPutAllLines: aText substring ]
 ]
 
 { #category : #visiting }
@@ -241,12 +241,13 @@ MicDocumentWriter >> writeCounterForFigure: aFigure [
 
 { #category : #helpers }
 MicDocumentWriter >> writeCounterForHeader: aHeader [
-	| headerConf |
+	"| headerConf |
 	headerConf := self configuration levelConfigurationFor: aHeader.
 	(headerConf numbering and: [ aHeader counter isValidCounter and: [ headerConf size > 0 ] ])
 		ifFalse: [ ^ self ].
-	canvas nextPutAll: (headerConf printCounter: aHeader counter elements).
-	self writeCounterDefinitionSeparator
+	canvas nextPutAll: (headerConf printCounter: aHeader children).
+	self writeCounterDefinitionSeparator"
+	^ self
 ]
 
 { #category : #helpers }
