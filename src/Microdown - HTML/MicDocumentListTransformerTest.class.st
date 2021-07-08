@@ -75,7 +75,7 @@ MicDocumentListTransformerTest >> createFilesIn: aDirectory [
 		writeStreamDo: [ :stream |
 			stream nextPutAll: MicDocumentListTransformerTest fileContentsOne ].
 		
-	(aDirectory / PRDocumentListTransformerTest fileNameTwo)
+	(aDirectory / MicDocumentListTransformerTest fileNameTwo)
 		writeStreamDo: [ :stream |
 			stream nextPutAll: MicDocumentListTransformerTest fileContentsTwo ].
 		
@@ -99,7 +99,7 @@ MicDocumentListTransformerTest >> setUp [
 	| workingDirectory |
 	super setUp.
 	testingFileSystem := FileSystem memory workingDirectory.
-	workingDirectory := (testingFileSystem / PRDocumentListTransformerTest directoryNameForTest) ensureCreateDirectory.
+	workingDirectory := (testingFileSystem / MicDocumentListTransformerTest directoryNameForTest) ensureCreateDirectory.
 	self createFilesIn: workingDirectory.
 ]
 
@@ -120,15 +120,15 @@ MicDocumentListTransformerTest >> testAnnotationCreateGoodLinks [
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
 	sections := documentGroup children.
 
 	self assert: sections size equals: 6.
-	self assert: (sections at: 2) reference  equals: 'blogs/blog1.pillar'.
-	self assert: (sections at: 6) reference  equals: 'blogs/blog3.pillar'.
+	self assert: (sections at: 2) reference  equals: 'blogs/blog1.mic'.
+	self assert: (sections at: 6) reference  equals: 'blogs/blog3.mic'.
 ]
 
 { #category : #private }
@@ -147,7 +147,7 @@ MicDocumentListTransformerTest >> testAnnotationIsReplacedByFilesContents [
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -174,7 +174,7 @@ MicDocumentListTransformerTest >> testAnnotationWithEmptyMultipleMustacheTemplat
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	self deny: (doc children allSatisfy: [ :each | each class = MicRawBlock ])
 ]
@@ -193,7 +193,7 @@ MicDocumentListTransformerTest >> testAnnotationWithLowLimitShouldOnlyTakeLimitN
 		yourself.
 
 
-	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -223,7 +223,7 @@ MicDocumentListTransformerTest >> testAnnotationWithMultipleMustacheTemplateShou
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	self assert: (doc children anySatisfy: [ :each | each class = MicRawBlock ])
 ]
@@ -242,7 +242,7 @@ MicDocumentListTransformerTest >> testAnnotationWithTooHighLimitShouldOnlyTakeNu
 		yourself.
 
 
-	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -269,7 +269,7 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongPathShouldReturnEmptyDo
 		yourself.
 
 
-	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -296,7 +296,7 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongTemplateExtensionShould
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	self deny: (doc children allSatisfy: [ :each | each class = MicRawBlock ])
 ]
@@ -317,7 +317,7 @@ MicDocumentListTransformerTest >> testAnnotationWithoutLimitParameterShouldTakeD
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -349,7 +349,7 @@ MicDocumentListTransformerTest >> testAnnotationWithoutSortParameterShouldListFi
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	sections := documentGroup children.
@@ -374,7 +374,7 @@ MicDocumentListTransformerTest >> testAnnotationWithoutSpecifyingPathShouldRaise
 				yourself.
 				
 				
-	self should: [((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc)] raise: Error
+	self should: [((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc)] raise: Error
 ]
 
 { #category : #private }
@@ -394,7 +394,7 @@ MicDocumentListTransformerTest >> testFilesAreSortedByBaseName [
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
@@ -424,7 +424,7 @@ MicDocumentListTransformerTest >> testFilesAreSortedByModificationDate [
 				yourself.
 				
 				
-	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (MicProject on: testingFileSystem)) start: doc).
 	
 	documentGroup := doc children second.
 	
