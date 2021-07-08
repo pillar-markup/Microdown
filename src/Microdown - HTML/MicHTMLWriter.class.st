@@ -56,21 +56,23 @@ MicHTMLWriter >> createAnchorWith: anId [
 
 { #category : #private }
 MicHTMLWriter >> exportImgFor: aFigure [
+
 	| img |
 	img := canvas emptyTag
-		name: 'img';
-		parameterAt: 'src' put: (aFigure localFileOrExternalReference);
-		yourself.
-	aFigure parameters
+		       name: 'img';
+		       parameterAt: 'src' put: aFigure localFileOrExternalReference;
+		       yourself.
+	aFigure arguments
 		at: 'width'
-		ifPresent: [ :width | img parameterAt: 'width' put: width asString , '%' ].
-	aFigure hasLabel ifTrue:[
+		ifPresent: [ :width | 
+		img parameterAt: 'width' put: width asString , '%' ].
+	"aFigure hasLabel ifTrue:[
 		img
 			parameterAt: 'id'
-			put: aFigure label ].
-	img
-		parameterAt: 'alt'
-		put: (aFigure hasChildren ifTrue: [ aFigure substring ] ifFalse: [ '' ]).
+			put: aFigure label ]."
+	img parameterAt: 'alt' put: (aFigure children size > 0
+			 ifTrue: [ aFigure substring ]
+			 ifFalse: [ '' ]).
 	img closeTag
 ]
 
@@ -199,20 +201,12 @@ MicHTMLWriter >> visitColumns: aColumns [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitExternalLink: anExternalLink [
-	canvas tag
-		name: 'a';
-		parameterAt: 'href' put: anExternalLink localFileOrExternalReference;
-		with: anExternalLink alias
-]
-
-{ #category : #'visiting-document' }
 MicHTMLWriter >> visitFigure: aFigure [
-	(aFigure hasLabel not and: [ aFigure hasCaption not ])
+	( aFigure hasCaption not )
 		ifTrue: [ 
 			self exportImgFor: aFigure.
 			^ self ].
-	aFigure label ifNotNil: [ :label | self createAnchorWith: label ].
+	aFigure url asString ifNotNil: [ :label | self createAnchorWith: label ].
 	canvas newLine.
 	canvas tag
 		name: 'figure';
@@ -227,7 +221,7 @@ MicHTMLWriter >> visitFigure: aFigure [
 				name: 'figcaption';
 				with:
 						[ 
-					aFigure label ifNotNil: [ self writeCounterForFigure: aFigure ].
+					"aFigure label ifNotNil: [ self writeCounterForFigure: aFigure ]."
 					super visitFigure: aFigure ].
 			canvas newLine ]
 ]
@@ -291,6 +285,17 @@ MicHTMLWriter >> visitItalic: aFormat [
 		name: 'em';
 		with: [ super visitItalic: aFormat ]
 
+]
+
+{ #category : #'visiting-document' }
+MicHTMLWriter >> visitLink: anExternalLink [
+	|visitor|
+	visitor := self class new.
+	anExternalLink captionElements do: [ :each | each accept: visitor ].
+	canvas tag
+		name: 'a';
+		parameterAt: 'href' put: anExternalLink localFileOrExternalReference;
+		with: visitor contents
 ]
 
 { #category : #'visiting-document' }
