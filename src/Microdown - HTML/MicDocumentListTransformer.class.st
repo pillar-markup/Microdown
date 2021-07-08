@@ -30,7 +30,7 @@ MicDocumentListTransformer >> addAbstractOfCurrentFileToDocument: aDocument inAn
 		ifNotEmpty: [ | previousContent |
 			previousContent := aDocument text.
 			aDocument
-				text: previousContent , (self generateFileUsingTemplateFromDocument: abstractOfCurrentFile) ]
+				substring: previousContent , (self generateFileUsingTemplateFromDocument: abstractOfCurrentFile) ]
 		ifEmpty: [ abstractOfCurrentFile children do: [ :each | aDocument addChild: each ].
 			self addLinkToDocument: aDocument ]
 ]
@@ -39,8 +39,8 @@ MicDocumentListTransformer >> addAbstractOfCurrentFileToDocument: aDocument inAn
 MicDocumentListTransformer >> addLinkToDocument: aDocument [
 	aDocument
 		addChild:
-			((PRInternalLink reference: self filesDirectory , '/' , self currentFile basename)
-				addAll: {(MicTextBlock new substring: 'Read more')};
+			((MicAnchorReferenceBlock new reference: self filesDirectory , '/' , self currentFile basename)
+				children: {(MicTextBlock new substring: 'Read more')};
 				yourself)
 ]
 
@@ -78,7 +78,7 @@ MicDocumentListTransformer >> createDocList: aMicDocListAnnotation [
 { #category : #adding }
 MicDocumentListTransformer >> currentDocumentInternalLink [
 	
-	^ PRInternalLink reference: self filesDirectory , '/' , self currentFile basename
+	^ MicAnchorReferenceBlock new reference: self filesDirectory , '/' , self currentFile basename
 ]
 
 { #category : #visiting }
@@ -96,7 +96,6 @@ MicDocumentListTransformer >> generateFileUsingTemplateFromDocument: aDocument [
 	| conf htmlDoc |
 	"Read configurations"
 	conf := ConfigurationForMicrodown newFromDictionary: aDocument properties.
-	self halt.
 	conf parent: self configuration.
 
 	"Write the  document in HTML, It means that this template is only for HTML generation"
