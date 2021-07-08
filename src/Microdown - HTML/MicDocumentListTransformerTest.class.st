@@ -163,20 +163,20 @@ MicDocumentListTransformerTest >> testAnnotationWithEmptyMultipleMustacheTemplat
 	| doc |
 	"${docList:path=blogs}$"
 	self createTemplateFile.
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					yourself);
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
-	self deny: (doc children allSatisfy: [ :each | each class = PRRaw ])
+	self deny: (doc children allSatisfy: [ :each | each class = MicRawBlock ])
 ]
 
 { #category : #private }
@@ -209,12 +209,12 @@ MicDocumentListTransformerTest >> testAnnotationWithMultipleMustacheTemplateShou
 	| doc |
 	"${docList:path=blogs|sort=name|limit=3|templates=#('templates/docArticle.mustache' 'templates/me.mustache')}$"
 	self createTemplateFile.
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'sort' put: 'name';
 					parameterAt: 'limit' put: '3';
@@ -223,9 +223,9 @@ MicDocumentListTransformerTest >> testAnnotationWithMultipleMustacheTemplateShou
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
-	self assert: (doc children anySatisfy: [ :each | each class = PRRaw ])
+	self assert: (doc children anySatisfy: [ :each | each class = MicRawBlock ])
 ]
 
 { #category : #private }
@@ -258,10 +258,10 @@ MicDocumentListTransformerTest >> testAnnotationWithTooHighLimitShouldOnlyTakeNu
 MicDocumentListTransformerTest >> testAnnotationWithWrongPathShouldReturnEmptyDocumentGroup [
 	| doc documentGroup sections |
 	"${docList:path=wrongDirectory|limit=3|sort=name}$"
-	doc := PRDocument new
-		add: (PRText new text: 'You');
-		add:
-			(PRDocumentListAnnotation new
+	doc := MicRootBlock new
+		addChild: (MicTextBlock new substring: 'You');
+		addChild:
+			(MicDocumentList new
 				parameterAt: 'path' put: 'wrongDirectory';
 				parameterAt: 'limit' put: '3';
 				parameterAt: 'sort' put: 'name';
@@ -269,7 +269,7 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongPathShouldReturnEmptyDo
 		yourself.
 
 
-	(PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
+	(MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc.
 
 	documentGroup := doc children second.
 
@@ -282,12 +282,12 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongTemplateExtensionShould
 	| doc |
 	"${docList:path=blogs|sort=name|limit=3|templates=#('templates/docArticle.avi')}$"
 	self createTemplateFile.
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'path' put: 'blogs';
 					parameterAt: 'sort' put: 'name';
 					parameterAt: 'limit' put: '3';
@@ -296,9 +296,9 @@ MicDocumentListTransformerTest >> testAnnotationWithWrongTemplateExtensionShould
 				yourself.
 				
 				
-	((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
+	((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc).
 	
-	self deny: (doc children allSatisfy: [ :each | each class = PRRaw ])
+	self deny: (doc children allSatisfy: [ :each | each class = MicRawBlock ])
 ]
 
 { #category : #private }
@@ -362,19 +362,19 @@ MicDocumentListTransformerTest >> testAnnotationWithoutSortParameterShouldListFi
 MicDocumentListTransformerTest >> testAnnotationWithoutSpecifyingPathShouldRaiseError [
 	| doc |
 	"${docList:sort=name|limit=5}$"
-	doc := PRDocument new 
-				add: 
-				(PRText new 
-					text: 'You');
-				add:
-				(PRDocumentListAnnotation new 
+	doc := MicRootBlock new 
+				addChild: 
+				(MicTextBlock new 
+					substring: 'You');
+				addChild:
+				(MicDocumentList new 
 					parameterAt: 'limit' put: '5';
 					parameterAt: 'sort' put: 'name';
 					yourself);
 				yourself.
 				
 				
-	self should: [((PRDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc)] raise: Error
+	self should: [((MicDocumentListTransformer withContext: (PRProject on: testingFileSystem)) start: doc)] raise: Error
 ]
 
 { #category : #private }

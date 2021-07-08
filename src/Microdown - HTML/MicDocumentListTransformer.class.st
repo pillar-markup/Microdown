@@ -58,7 +58,7 @@ MicDocumentListTransformer >> createDocList: aMicDocListAnnotation [
 	document := MicRootBlock new.
 	
 	availableTemplates := self lookForAvailableTemplates: aMicDocListAnnotation templates.
-	self availableTemplates ifNotEmpty: [ document := MicRawBlock new text: '' ].
+	self availableTemplates ifNotEmpty: [ document := MicRawBlock new substring: '' ].
 	
 	filesDirectory := aMicDocListAnnotation path.
 	(workingDirectory resolve: self filesDirectory) exists
