@@ -197,7 +197,7 @@ MicDocumentListTransformerTest >> testAnnotationWithLowLimitShouldOnlyTakeLimitN
 
 	documentGroup := doc children second.
 
-	links := documentGroup children select: [ :each | each class = PRInternalLink ].
+	links := documentGroup children select: [ :each | each class = MicAnchorReferenceBlock ].
 
 	self deny: links size equals: 3.
 
@@ -246,7 +246,7 @@ MicDocumentListTransformerTest >> testAnnotationWithTooHighLimitShouldOnlyTakeNu
 
 	documentGroup := doc children second.
 
-	links := documentGroup children select: [ :each | each class = PRInternalLink ].
+	links := documentGroup children select: [ :each | each class = MicAnchorReferenceBlock ].
 
 	self deny: links size equals: 5.
 
@@ -323,7 +323,7 @@ MicDocumentListTransformerTest >> testAnnotationWithoutLimitParameterShouldTakeD
 	
 	sections := documentGroup children.
 
-	links := sections select: [ :each | each class = PRInternalLink ].
+	links := sections select: [ :each | each class = MicAnchorReferenceBlock ].
 
 	self assert: sections size equals: 6.
 	
