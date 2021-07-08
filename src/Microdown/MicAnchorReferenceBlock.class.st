@@ -9,6 +9,9 @@ See *@fig1@*
 Class {
 	#name : #MicAnchorReferenceBlock,
 	#superclass : #MicInlineElement,
+	#instVars : [
+		'reference'
+	],
 	#category : #'Microdown-ModelInline'
 }
 
@@ -38,4 +41,24 @@ MicAnchorReferenceBlock >> kind [
 MicAnchorReferenceBlock >> openingDelimiter [
 
  	^ MicAnchorReferenceOpenerDelimiter markup
+]
+
+{ #category : #accessing }
+MicAnchorReferenceBlock >> reference [
+	^ reference
+]
+
+{ #category : #accessing }
+MicAnchorReferenceBlock >> reference: aReference [
+	reference := aReference
+]
+
+{ #category : #'as yet unclassified' }
+MicAnchorReferenceBlock >> referenceAsHTML [	
+	| ref |
+	ref := self reference.
+	(ref endsWith: '.mic')
+		ifTrue: [ ref := (ref copyUpToLast: $.) , '.html' ]
+		ifFalse: [ PRLinkWarning signal: 'Reference : ' , ref , ' should end with .pillar or .pier' ].
+	^ ref
 ]
