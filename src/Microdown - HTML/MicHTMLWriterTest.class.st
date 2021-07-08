@@ -20,6 +20,15 @@ MicHTMLWriterTest >> setUp [
 ]
 
 { #category : #tests }
+MicHTMLWriterTest >> testBold [
+	| mic |
+	mic := parser parse: factory boldFormatSample.
+	self assert: (writer start: mic) contents equals: '<p>
+<strong>Foo</strong>
+</p>'
+]
+
+{ #category : #tests }
 MicHTMLWriterTest >> testHeaderLevel3HTML [
 	| mic |
 	mic := parser parse: factory headerLevel3Sample.
@@ -33,5 +42,14 @@ MicHTMLWriterTest >> testParagraph [
 	mic := parser parse: factory paragraphSample.
 	self assert: (writer start: mic) contents equals: '<p>
 Foo
+</p>'
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testParagraphWithBold [
+	| mic |
+	mic := parser parse: factory paragraphBoldSample.
+	self assert: (writer start: mic) contents equals: '<p>
+this is a <strong>paragraph</strong>
 </p>'
 ]

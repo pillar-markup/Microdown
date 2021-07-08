@@ -144,10 +144,10 @@ MicHTMLWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitBoldFormat: aFormat [
+MicHTMLWriter >> visitBold: aFormat [
 	canvas tag
 		name: 'strong';
-		with: [ super visitBoldFormat: aFormat ]
+		with: [ super visitBold: aFormat ]
 ]
 
 { #category : #'visiting-document' }
@@ -313,7 +313,7 @@ MicHTMLWriter >> visitMailLink: aLink [
 MicHTMLWriter >> visitMonospaceFormat: aFormat [
 	canvas tag
 		name: 'code';
-		with: [ super visitBoldFormat: aFormat ]
+		with: [ super visitBold: aFormat ]
 ]
 
 { #category : #'visiting-document' }
@@ -335,8 +335,7 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 		ifFalse: [ 
 			canvas tag
 				name: 'p';
-				with: [ 
-							canvas newLine.
+				with: [ canvas newLine.
 							super visitParagraph: aParagraph.
 							canvas newLine ] ]
 ]
