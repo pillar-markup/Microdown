@@ -9,6 +9,12 @@ Class {
 	#category : #'Microdown - HTML'
 }
 
+{ #category : #testing }
+MicArchetype class >> isAbstract [
+
+	^ false
+]
+
 { #category : #accessing }
 MicArchetype >> directory [
 
