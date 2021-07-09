@@ -76,6 +76,13 @@ MicHTMLWriter >> exportImgFor: aFigure [
 	img closeTag
 ]
 
+{ #category : #'visiting-document' }
+MicHTMLWriter >> generateLanguage: aCodeBlock for: code [
+
+	aCodeBlock language ifNotNil: [ 
+		code parameterAt: 'class' put: aCodeBlock language ]
+]
+
 { #category : #private }
 MicHTMLWriter >> internalLinkWillBeRender: anInternalLink [
 	(anInternalLink hasReference and: [ anInternalLink hasAnchor not ])
@@ -150,6 +157,32 @@ MicHTMLWriter >> visitBold: aFormat [
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aFormat ]
+]
+
+{ #category : #'visiting-document' }
+MicHTMLWriter >> visitCode: aCodeBlock [
+
+	canvas tag
+		name: 'figure';
+		with: [ 
+			canvas tag
+				name: 'pre';
+				with: [ 
+					| code |
+					code := canvas tag
+						        name: 'code';
+						        yourself.
+						
+					aCodeBlock arguments ifNotEmpty: [ 
+						self generateLanguage: aCodeBlock for: code].
+					code with: [ canvas lines: aCodeBlock body ].
+					
+					aCodeBlock arguments ifNotEmpty: [
+						canvas tag
+							name: 'figcaption';
+							with: [ aCodeBlock hasCaption ifTrue: [ 
+										self visitAll: aCodeBlock captionElements ] ] ] ] ].
+	canvas newLine
 ]
 
 { #category : #'visiting-document' }
