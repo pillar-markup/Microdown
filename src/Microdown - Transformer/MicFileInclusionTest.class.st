@@ -70,6 +70,18 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFile [
 ]
 
 { #category : #tests }
+MicFileInclusionTest >> testMicFileInclusionTransformMicInputFileDoesNotExist [
+	| micFileInclusion mic |
+	self cleanFilesystem.
+	self generateFilesystemExample.
+	micFileInclusion := MicFileInclusion new.
+	micFileInclusion topFile: filesystem workingDirectory.
+	mic := (MicroDownParser new parse: '?{inputfile|path=anExample3.mic}?').
+	micFileInclusion start: mic.
+	self assert: mic children first children first class equals: MicInputfileBlock.
+]
+
+{ #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFiles [
 	| micFileInclusion mic |
 	self cleanFilesystem.
