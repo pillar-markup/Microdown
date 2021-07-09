@@ -187,6 +187,11 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 '
 ]
 
+{ #category : #anchor }
+MicMicrodownSnippetFactory >> footnoteSample [
+	^ MicAnnotationOpenerDelimiter markup ,'footnote|note=Pharo is cool', MicAnnotationCloserDelimiter markup
+]
+
 { #category : #headers }
 MicMicrodownSnippetFactory >> headerEmptySample [
 
