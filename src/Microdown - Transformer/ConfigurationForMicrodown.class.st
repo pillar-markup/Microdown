@@ -1,7 +1,7 @@
 Class {
 	#name : #ConfigurationForMicrodown,
 	#superclass : #ChrysalMicrodownConfiguration,
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - Transformer'
 }
 
 { #category : #description }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'printer'
 	],
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - Transformer'
 }
 
 { #category : #accessing }
