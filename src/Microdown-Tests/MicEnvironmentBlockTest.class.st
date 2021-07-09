@@ -4,7 +4,7 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironment [
 	"'<?card
 blbababbab bababba
@@ -24,7 +24,7 @@ blbababbab bababba
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentClosingNotEatingClosingCharacter [
 
 	
@@ -38,7 +38,7 @@ to
 	self assert: env children first text equals: 'to'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
 - item 1 
@@ -69,7 +69,7 @@ blbababbab bababba', String cr,
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithArguments [
 	 "'<?card|a=1&b=17&c
 blbababbab
@@ -97,7 +97,7 @@ toto'.
 	self assert: (environment arguments at: 'c') equals: nil.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
@@ -121,7 +121,7 @@ isn''t it
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithFormat [
 	"'<?slide
 - item 1 
@@ -146,7 +146,7 @@ blbababbab bababba', String cr,
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithMultipleLines [
 	"'<?card
 blbababbab
@@ -176,7 +176,7 @@ toto'.
 	self assert: env children second text equals: 'toto'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
 
 	
@@ -193,7 +193,7 @@ environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	"
 '"
@@ -216,7 +216,7 @@ Yes this is a good idea.'.
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testedClass [ 
 	^ MicEnvironmentBlock  
 ]
