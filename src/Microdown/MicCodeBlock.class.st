@@ -120,6 +120,13 @@ MicCodeBlock >> label [
 	^ arguments at: #label ifAbsent: [ '' ]
 ]
 
+{ #category : #accessing }
+MicCodeBlock >> language [
+	arguments ifNotEmpty: [ 
+		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
+		^ arguments at: #language ]
+]
+
 { #category : #utils }
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
