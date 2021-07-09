@@ -86,8 +86,8 @@ MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 	| includedFile microdownAST |
 	includedFile := topFile parent resolve: anInputFileAnnotation path.
 	self validateInclusionOfFile: includedFile.
-	
-	microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
+	 includedFile ifExists:[
+		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 	
 	MicCleanAnnotationInParagraph new visit: microdownAST.
 	
@@ -103,5 +103,6 @@ MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 		start: microdownAST
 		with: (includedFile parent relativeTo: topFile parent) pillarPrintString.
 	
-	self replace: microdownAST children.
+	self replace: microdownAST children]
+	
 ]
