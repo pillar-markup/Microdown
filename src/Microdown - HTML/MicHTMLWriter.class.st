@@ -153,34 +153,6 @@ MicHTMLWriter >> visitBold: aFormat [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitCodeblock: aCodeBlock [
-	canvas tag
-		name: 'figure';
-		with: [ 
-					canvas tag
-						name: 'pre';
-						with: [ 
-									| code language |
-									code := canvas tag
-										name: 'code';
-										yourself.
-									language := self languageForScript: aCodeBlock.
-									language isSyntaxHighlightingPossible
-										ifTrue: [ code parameterAt: 'class' put: language printString ].
-									code with: [ canvas lines: aCodeBlock text ] ].
-					canvas tag
-						name: 'figcaption';
-						with: [ 
-									aCodeBlock hasLabel
-										ifTrue: [ 
-											self createAnchorWith: aCodeBlock label.
-											self writeCounterForScript: aCodeBlock ].
-									aCodeBlock hasCaption
-										ifTrue: [ self visitAll: aCodeBlock caption children ] ] ].
-	canvas newLine
-]
-
-{ #category : #'visiting-document' }
 MicHTMLWriter >> visitColumn: aColumn [
 	canvas tag
 		name: 'div';
@@ -369,20 +341,6 @@ MicHTMLWriter >> visitStrike: aFormat [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitSubscriptFormat: aFormat [
-	canvas tag
-		name: 'sub';
-		with: [ super visitSubscriptFormat: aFormat ]
-]
-
-{ #category : #'visiting-document' }
-MicHTMLWriter >> visitSuperscriptFormat: aFormat [
-	canvas tag
-		name: 'sup';
-		with: [ super visitSuperscriptFormat: aFormat ]
-]
-
-{ #category : #'visiting-document' }
 MicHTMLWriter >> visitTable: aTable [
 	canvas tag
 		name: 'table';
@@ -416,21 +374,6 @@ MicHTMLWriter >> visitTableRow: aRow [
 		name: 'tr';
 		with: [ super visitTableRow: aRow ].
 	canvas newLine
-]
-
-{ #category : #'visiting-document' }
-MicHTMLWriter >> visitTermItem: anItem [
-	canvas tag
-		name: 'dt';
-		with: [ self visitAll: anItem children ].
-	canvas newLine
-]
-
-{ #category : #'visiting-document' }
-MicHTMLWriter >> visitUnderlineFormat: aFormat [
-	canvas tag
-		name: 'u';
-		with: [ super visitUnderlineFormat: aFormat ]
 ]
 
 { #category : #'visiting-document' }
