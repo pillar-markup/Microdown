@@ -28,7 +28,31 @@ MicHTMLWriterTest >> testBold [
 </p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - codeblock' }
+MicHTMLWriterTest >> testCodeblock [
+	| mic |
+	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
+	self assert: (writer start: mic) contents equals: '<figure><pre><code>this is a code</code></pre></figure>
+'
+]
+
+{ #category : #'tests - codeblock' }
+MicHTMLWriterTest >> testCodeblockWithCaption [
+	| mic |
+	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
+	self assert: (writer start: mic) contents equals: '<figure><pre><code class="caption">this is a code</code><figcaption>Pharo is <strong>cool</strong></figcaption></pre></figure>
+'
+]
+
+{ #category : #'tests - codeblock' }
+MicHTMLWriterTest >> testCodeblockWithParameters [
+	| mic |
+	mic := parser parse: (factory codeblock: 'language=Smalltalk&size=42' body: 'this is a code').
+	self assert: (writer start: mic) contents equals: '<figure><pre><code class="Smalltalk">this is a code</code><figcaption></figcaption></pre></figure>
+'
+]
+
+{ #category : #'tests - references' }
 MicHTMLWriterTest >> testFigure [
 	| mic |
 	mic := parser parse: factory figureSample.
@@ -41,7 +65,7 @@ MicHTMLWriterTest >> testFigure [
 </p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - references' }
 MicHTMLWriterTest >> testFigureBold [
 	| mic |
 	mic := parser parse: factory figureBoldSample.
@@ -52,6 +76,18 @@ MicHTMLWriterTest >> testFigureBold [
 	<figcaption><strong>Foo</strong></figcaption>
 </figure>
 </p>'
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testFootnote [
+	| mic |
+	mic := parser parse: (factory footnoteSample).
+	self assert: (writer start: mic) contents equals: '<p>
+<sup><a href="#footnote1">[1]</a></sup>
+</p>
+<hr></hr>
+<sup id="footnote1">[1] Pharo is cool</sup><br/>
+'
 ]
 
 { #category : #'tests - header' }
@@ -111,7 +147,7 @@ MicHTMLWriterTest >> testItalic [
 </p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - references' }
 MicHTMLWriterTest >> testLink [
 	| mic |
 	mic := parser parse: factory linkSample.
@@ -120,7 +156,7 @@ MicHTMLWriterTest >> testLink [
 </p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - references' }
 MicHTMLWriterTest >> testLinkBold [
 	| mic |
 	mic := parser parse: factory linkBoldSample.
