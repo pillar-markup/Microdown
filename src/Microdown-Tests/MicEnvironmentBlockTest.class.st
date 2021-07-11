@@ -38,6 +38,24 @@ to
 	self assert: env children first text equals: 'to'.
 ]
 
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
+
+	| source root env environmentName |
+	environmentName := 'slideXXX'.
+	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
+	 'this is the slide body', String cr,
+	parser environmentClosingBlockMarkup, String cr.
+	
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	env := root children first. 
+	self assert: (env isKindOf: MicEnvironmentBlock). 
+	self assert: env name equals: environmentName.
+	self assert: env children first children first text equals: 'this is the slide body'
+	
+]
+
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
@@ -118,6 +136,24 @@ isn''t it
 	self assert: env children first class equals: MicParagraphBlock.
 	self assert: env children second class equals: MicCodeBlock.
 	self assert: env children third class equals: MicParagraphBlock.
+	
+]
+
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := parser environmentOpeningBlockMarkup ,  environmentName, String cr, 
+	 'this is the slide body', String cr,
+	parser environmentClosingBlockMarkup, String cr.
+	
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	env := root children first. 
+	self assert: (env isKindOf: MicSlideBlock). 
+	self assert: env name equals: environmentName.
+	self assert: env children first children first text equals: 'this is the slide body'
 	
 ]
 
