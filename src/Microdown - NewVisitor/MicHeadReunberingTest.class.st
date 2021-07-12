@@ -1,7 +1,7 @@
 Class {
 	#name : #MicHeadReunberingTest,
 	#superclass : #TestCase,
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - NewVisitor'
 }
 
 { #category : #private }

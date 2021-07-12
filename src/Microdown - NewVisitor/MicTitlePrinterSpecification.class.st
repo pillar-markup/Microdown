@@ -11,7 +11,7 @@ Class {
 		'printer',
 		'renderAs'
 	],
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - NewVisitor'
 }
 
 { #category : #'accessing - defaults' }

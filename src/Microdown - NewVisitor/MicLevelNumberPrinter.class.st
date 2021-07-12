@@ -1,7 +1,7 @@
 Class {
 	#name : #MicLevelNumberPrinter,
 	#superclass : #MicTitlePrinterSpecification,
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - NewVisitor'
 }
 
 { #category : #'rendering-element' }

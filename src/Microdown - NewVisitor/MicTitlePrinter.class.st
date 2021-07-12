@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'StrategyMapping'
 	],
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - NewVisitor'
 }
 
 { #category : #accessing }

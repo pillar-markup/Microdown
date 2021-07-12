@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'configuration'
 	],
-	#category : #'Microdown - HeadReunbering'
+	#category : #'Microdown - NewVisitor'
 }
 
 { #category : #execution }
