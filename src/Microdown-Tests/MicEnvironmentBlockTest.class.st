@@ -56,6 +56,30 @@ MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 	
 ]
 
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentWiathArgsWithCorrespondingClassIsCreated [
+
+		| source root environment environmentName contents |
+	environmentName := 'slide'.
+	contents := 'blbababbab
+bababba
+
+toto'.
+	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+		, String cr , contents , String cr
+		, parser environmentClosingBlockMarkup , String cr.
+		
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	environment := root children first.
+	self assert: environment name equals: 'slide'.
+	self assert: environment class equals: MicSlideBlock.
+	self assert: (environment arguments at: 'a') equals: '1'.
+	self assert: (environment arguments at: 'b') equals: '17'.
+	self assert: (environment arguments at: 'c') equals: nil.
+	
+]
+
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
@@ -227,6 +251,30 @@ the paragraph.
 	self assert: env children first text equals: 'Here we are a paragraph and the paragraph should not eat the end of the
 environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
+]
+
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
+
+		| source root environment environmentName contents |
+	environmentName := ' slide'.
+	contents := 'blbababbab
+bababba
+
+toto'.
+	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+		, String cr , contents , String cr
+		, parser environmentClosingBlockMarkup , String cr.
+		
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	environment := root children first.
+	self assert: environment name equals: 'slide'.
+	self assert: environment class equals: MicSlideBlock.
+	self assert: (environment arguments at: 'a') equals: '1'.
+	self assert: (environment arguments at: 'b') equals: '17'.
+	self assert: (environment arguments at: 'c') equals: nil.
+	
 ]
 
 { #category : #'tests - default environment' }

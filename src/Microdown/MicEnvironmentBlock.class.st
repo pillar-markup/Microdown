@@ -77,7 +77,7 @@ MicEnvironmentBlock class >> alternateBlockClassFor: line [
 	
 	"We know that the two first characters are <? else we would be invoked"
 	| tag |
-	tag := (line allButFirst: 2) copyUpTo: $|.
+	tag := ((line allButFirst: 2) copyUpTo: $|) trimBoth.
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 	
 	
