@@ -59,11 +59,6 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #evaluation }
-MicCodeBlock >> eval: aString [
-	arguments := arguments copyWith: 'eval' -> aString
-]
-
 { #category : #'public access' }
 MicCodeBlock >> evaluate [
 	| content |
