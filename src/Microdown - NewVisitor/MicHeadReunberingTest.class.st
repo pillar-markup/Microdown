@@ -46,6 +46,12 @@ MicHeadReunberingTest >> executePhase: anInput with: aConfig [
 ]
 
 { #category : #tests }
+MicHeadReunberingTest >> testNegativeOffset [
+
+	self checkWithOffset: -4
+]
+
+{ #category : #tests }
 MicHeadReunberingTest >> testPositiveOffset [
 
 	self checkWithOffset: 2
