@@ -1,5 +1,5 @@
 Class {
-	#name : #MicScriptLineNumber,
+	#name : #MicCodeblockLineNumber,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'stream',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #adding }
-MicScriptLineNumber >> add: aString untilNewLineAt: firstOccurence withNumber: number [
+MicCodeblockLineNumber >> add: aString untilNewLineAt: firstOccurence withNumber: number [
 
 	| length |
 	length := firstOccurence + self configuration newLine size -1.
@@ -18,7 +18,7 @@ MicScriptLineNumber >> add: aString untilNewLineAt: firstOccurence withNumber: n
 ]
 
 { #category : #adding }
-MicScriptLineNumber >> add: aString withNumber: number [
+MicCodeblockLineNumber >> add: aString withNumber: number [
 
 	stream
 		<< number asString;
@@ -27,7 +27,7 @@ MicScriptLineNumber >> add: aString withNumber: number [
 ]
 
 { #category : #adding }
-MicScriptLineNumber >> addLineNumberTo: aCodeblock [
+MicCodeblockLineNumber >> addLineNumberTo: aCodeblock [
 	"I add a numerotation at each line of a script."
 
 	| text firstOccurence number |
@@ -45,30 +45,30 @@ MicScriptLineNumber >> addLineNumberTo: aCodeblock [
 ]
 
 { #category : #accessing }
-MicScriptLineNumber >> configuration [
+MicCodeblockLineNumber >> configuration [
 	^ configuration
 ]
 
 { #category : #accessing }
-MicScriptLineNumber >> configuration: aConfiguration [
+MicCodeblockLineNumber >> configuration: aConfiguration [
 	configuration := aConfiguration
 ]
 
 { #category : #testing }
-MicScriptLineNumber >> hasLineNumber: aCodeblock [
+MicCodeblockLineNumber >> hasLineNumber: aCodeblock [
 	^ aCodeblock arguments 
 			at: 'lineNumber' 
 			ifPresent: [ :lN | lN = 'true' or: [ lN ] ] ifAbsent: [ false ]
 ]
 
 { #category : #initialization }
-MicScriptLineNumber >> initialize [
+MicCodeblockLineNumber >> initialize [
 	super initialize.
 	stream := MicOutputStream on: (String new writeStream). 
 ]
 
 { #category : #'visiting-document' }
-MicScriptLineNumber >> visitCode: aCodeblock [
+MicCodeblockLineNumber >> visitCode: aCodeblock [
 	(self hasLineNumber: aCodeblock)
 		ifTrue: [ self addLineNumberTo: aCodeblock ]
 ]

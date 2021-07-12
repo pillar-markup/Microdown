@@ -9,7 +9,7 @@ Class {
 
 { #category : #private }
 MicCodeblockLineNumberTest >> actualClass [
-	^ MicScriptLineNumber 
+	^ MicCodeblockLineNumber 
 ]
 
 { #category : #tests }
@@ -21,7 +21,7 @@ MicCodeblockLineNumberTest >> configuration [
 MicCodeblockLineNumberTest >> setUp [
 	super setUp.
 	instance := self actualInstance.
-	visitor := MicScriptLineNumber new.
+	visitor := MicCodeblockLineNumber new.
 	visitor configuration: self configuration
 ]
 
