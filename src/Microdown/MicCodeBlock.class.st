@@ -70,7 +70,7 @@ MicCodeBlock >> evaluate [
 	content := self evaluationString.
 	^ [ (MicAbstractBlock new parserClass new parse: content) children ]
 		on: Error
-		do: [ :e | MicBoldFormatBlock with: (MicTextBlock new substring: e messageText) ]
+		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
 ]
 
 { #category : #handle }
