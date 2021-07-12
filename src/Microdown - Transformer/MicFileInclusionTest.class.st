@@ -101,3 +101,24 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFiles [
 	self assert: mic children second children second children size equals: 2.
 	self assert: mic children second children third class equals: MicCodeBlock
 ]
+
+{ #category : #tests }
+MicFileInclusionTest >> testMicFileInclusionTransformMicInputFilesWithoutNewline [
+	| micFileInclusion mic |
+	self cleanFilesystem.
+	self generateFilesystemExample.
+	micFileInclusion := MicFileInclusion new.
+	micFileInclusion topFile: filesystem workingDirectory.
+	mic := (MicroDownParser new parse: '?{inputfile|path=anExample1.mic}?
+?{inputfile|path=anExample2.mic}?').
+	micFileInclusion start: mic.
+	self assert: mic children first children first class equals: MicHeaderBlock.
+	self assert: mic children first children second class equals: MicParagraphBlock.
+	self assert: mic children first children third class equals: MicCodeBlock.
+	
+	self assert: mic children first children fourth class equals: MicTextBlock.
+	
+	self assert: mic children first children fifth class equals: MicHeaderBlock.
+	self assert: mic children first children sixth class equals: MicParagraphBlock.
+	self assert: mic children first children seventh class equals: MicCodeBlock
+]
