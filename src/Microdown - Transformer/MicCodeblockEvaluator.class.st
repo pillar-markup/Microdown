@@ -1,3 +1,8 @@
+"
+This transformer compile the code content by a codeblock which have the parameters eval at true.
+
+
+"
 Class {
 	#name : #MicCodeblockEvaluator,
 	#superclass : #MicNodeTransformer,

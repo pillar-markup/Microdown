@@ -1,3 +1,6 @@
+"
+This visitor do a reunbering of Header which can use to do LaTeX with Microdown
+"
 Class {
 	#name : #MicHeadReunbering,
 	#superclass : #MicrodownVisitor,

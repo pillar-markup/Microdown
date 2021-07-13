@@ -1,5 +1,27 @@
 "
 MicFileInclusion replace the MicInputfileBlock by the nodes obtain during the parse of file.
+
+For a file name example.mic which contains :
+
+# Foo
+
+this is a paragraph
+
+```
+ this is a code
+```
+
+the transformer transform `?{fileinput?path=example.mic}?` by : 
+
+# Foo
+
+this is a paragraph
+
+```
+ this is a code
+```
+
+And if the path does not exist the transformer do nothing
 "
 Class {
 	#name : #MicFileInclusion,
