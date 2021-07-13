@@ -4,7 +4,7 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironment [
 	"'<?card
 blbababbab bababba
@@ -24,7 +24,7 @@ blbababbab bababba
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentClosingNotEatingClosingCharacter [
 
 	
@@ -38,7 +38,49 @@ to
 	self assert: env children first text equals: 'to'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
+
+	| source root env environmentName |
+	environmentName := 'slideXXX'.
+	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
+	 'this is the slide body', String cr,
+	parser environmentClosingBlockMarkup, String cr.
+	
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	env := root children first. 
+	self assert: (env isKindOf: MicEnvironmentBlock). 
+	self assert: env name equals: environmentName.
+	self assert: env children first children first text equals: 'this is the slide body'
+	
+]
+
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentWiathArgsWithCorrespondingClassIsCreated [
+
+		| source root environment environmentName contents |
+	environmentName := 'slide'.
+	contents := 'blbababbab
+bababba
+
+toto'.
+	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+		, String cr , contents , String cr
+		, parser environmentClosingBlockMarkup , String cr.
+		
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	environment := root children first.
+	self assert: environment name equals: 'slide'.
+	self assert: environment class equals: MicSlideBlock.
+	self assert: (environment arguments at: 'a') equals: '1'.
+	self assert: (environment arguments at: 'b') equals: '17'.
+	self assert: (environment arguments at: 'c') equals: nil.
+	
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
 - item 1 
@@ -69,7 +111,7 @@ blbababbab bababba', String cr,
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithArguments [
 	 "'<?card|a=1&b=17&c
 blbababbab
@@ -97,7 +139,7 @@ toto'.
 	self assert: (environment arguments at: 'c') equals: nil.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
@@ -121,7 +163,25 @@ isn''t it
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := parser environmentOpeningBlockMarkup ,  environmentName, String cr, 
+	 'this is the slide body', String cr,
+	parser environmentClosingBlockMarkup, String cr.
+	
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	env := root children first. 
+	self assert: (env isKindOf: MicSlideBlock). 
+	self assert: env name equals: environmentName.
+	self assert: env children first children first text equals: 'this is the slide body'
+	
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithFormat [
 	"'<?slide
 - item 1 
@@ -146,7 +206,7 @@ blbababbab bababba', String cr,
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithMultipleLines [
 	"'<?card
 blbababbab
@@ -176,7 +236,7 @@ toto'.
 	self assert: env children second text equals: 'toto'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
 
 	
@@ -193,7 +253,31 @@ environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - extensions' }
+MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
+
+		| source root environment environmentName contents |
+	environmentName := ' slide'.
+	contents := 'blbababbab
+bababba
+
+toto'.
+	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+		, String cr , contents , String cr
+		, parser environmentClosingBlockMarkup , String cr.
+		
+	root := parser parse: source.
+	self assert: root children size equals: 1.
+	environment := root children first.
+	self assert: environment name equals: 'slide'.
+	self assert: environment class equals: MicSlideBlock.
+	self assert: (environment arguments at: 'a') equals: '1'.
+	self assert: (environment arguments at: 'b') equals: '17'.
+	self assert: (environment arguments at: 'c') equals: nil.
+	
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	"
 '"
@@ -216,7 +300,7 @@ Yes this is a good idea.'.
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testedClass [ 
 	^ MicEnvironmentBlock  
 ]
