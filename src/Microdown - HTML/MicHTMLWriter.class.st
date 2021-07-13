@@ -201,7 +201,7 @@ MicHTMLWriter >> visitColumns: aColumns [
 		name: 'div';
 		parameterAt: 'class' put: 'columns';
 		parameterAt: 'style' put: 'margin:0px auto; width:100%';
-		with: [ super visitColumns: aColumns ].
+		with: [ "super visitColumns: aColumns" 'fix later' ].
 	canvas newLine
 ]
 
