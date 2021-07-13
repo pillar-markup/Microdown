@@ -62,6 +62,14 @@ MicHTMLWriterTest >> testColumn [
 </p>'
 ]
 
+{ #category : #tests }
+MicHTMLWriterTest >> testColumns [
+	| mic |
+	mic := parser parse: (factory columnsSample).
+	self assert: (writer start: mic) contents equals: '<div class="columns" style="margin:0px auto; width:100%"></div>
+'
+]
+
 { #category : #'tests - references' }
 MicHTMLWriterTest >> testFigure [
 	| mic |
