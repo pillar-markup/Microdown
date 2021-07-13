@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MicColumnBlock class >> tag [
+	^ #column
+]
+
+{ #category : #accessing }
 MicColumnBlock >> accept: aVisitor [
 	^ aVisitor visitColumn: self
 ]
