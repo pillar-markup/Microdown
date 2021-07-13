@@ -52,6 +52,16 @@ MicHTMLWriterTest >> testCodeblockWithParameters [
 '
 ]
 
+{ #category : #tests }
+MicHTMLWriterTest >> testColumn [
+	| mic |
+	mic := parser parse: (factory columnSample).
+	self assert: (writer start: mic) contents equals: '<p>
+<div class="column" style="float:left; margin:0; width:42%;"></div>
+
+</p>'
+]
+
 { #category : #'tests - references' }
 MicHTMLWriterTest >> testFigure [
 	| mic |
