@@ -105,6 +105,11 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnSample [
+	^ '?{column|width=42}?'
+]
+
 { #category : #block }
 MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
