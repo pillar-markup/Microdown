@@ -110,6 +110,12 @@ MicMicrodownSnippetFactory >> columnSample [
 	^ '?{column|width=42}?'
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnsSample [
+	^ '<?columns|width=42
+?>'
+]
+
 { #category : #block }
 MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
