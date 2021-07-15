@@ -352,6 +352,7 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 
 { #category : #'visiting-document' }
 MicHTMLWriter >> visitPreformatted: aPreformatted [
+	self flag: 'useless?'.
 	canvas tag
 		name: 'pre';
 		with: [ aPreformatted children do: [ :child | self visit: child ] separatedBy: [ canvas newLine ] ]
