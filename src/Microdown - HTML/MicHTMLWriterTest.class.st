@@ -339,6 +339,34 @@ MicHTMLWriterTest >> testStrike [
 </p>'
 ]
 
+{ #category : #'tests - table' }
+MicHTMLWriterTest >> testTable [
+	| mic |
+	mic := parser parse: (factory tableSample).
+	self assert: (writer start: mic) contents equals: '<table style="border: solid thin"><tr><th style="text-align: center">aaab</th>
+<th style="text-align: center">jkhjh</th>
+</tr>
+<tr><td style="text-align: center">bar</td>
+<td style="text-align: center">rab</td>
+</tr>
+</table>
+'
+]
+
+{ #category : #'tests - table' }
+MicHTMLWriterTest >> testTableWhithoutHeader [
+	| mic |
+	mic := parser parse: (factory simpleTableWithoutHeaderTable).
+	self assert: (writer start: mic) contents equals: '<table style="border: solid thin"><tr><td style="text-align: center">aaab</td>
+<td style="text-align: center">jkhjh</td>
+</tr>
+<tr><td style="text-align: center">bar</td>
+<td style="text-align: center">rab</td>
+</tr>
+</table>
+'
+]
+
 { #category : #'tests - lists' }
 MicHTMLWriterTest >> testUnorderedList [
 	| mic |
