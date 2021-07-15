@@ -56,17 +56,31 @@ MicHTMLWriterTest >> testCodeblockWithParameters [
 MicHTMLWriterTest >> testColumn [
 	| mic |
 	mic := parser parse: (factory columnSample).
-	self assert: (writer start: mic) contents equals: '<p>
-<div class="column" style="float:left; margin:0; width:42%;"></div>
-
-</p>'
+	self assert: (writer start: mic) contents equals: '<div class="column" style="float:left; margin:0; width:42%;"><p>
+this is a <strong>text</strong>
+</p></div>
+'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - columns' }
 MicHTMLWriterTest >> testColumns [
 	| mic |
 	mic := parser parse: (factory columnsSample).
 	self assert: (writer start: mic) contents equals: '<div class="columns" style="margin:0px auto; width:100%"></div>
+'
+]
+
+{ #category : #'tests - columns' }
+MicHTMLWriterTest >> testColumnsWithChildren [
+	| mic |
+	mic := parser parse: (factory columnsWithChildrenSample).
+	self assert: (writer start: mic) contents equals: '<div class="columns" style="margin:0px auto; width:100%"><div class="column" style="float:left; margin:0; width:42%;"><p>
+this is a <strong>text</strong>
+</p></div>
+<div class="column" style="float:left; margin:0; width:42%;"><p>
+this is a <strong>text</strong>
+</p></div>
+</div>
 '
 ]
 
