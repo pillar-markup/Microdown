@@ -191,7 +191,7 @@ MicHTMLWriter >> visitColumn: aColumn [
 		name: 'div';
 		parameterAt: 'class' put: 'column';
 		parameterAt: 'style' put: 'float:left; margin:0; width:' , aColumn width asString , '%;';
-		with: [ "super visitColumn: aColumn" 'fix later' ].
+		with: [ self visitAll: aColumn children ].
 	canvas newLine
 ]
 
@@ -201,7 +201,7 @@ MicHTMLWriter >> visitColumns: aColumns [
 		name: 'div';
 		parameterAt: 'class' put: 'columns';
 		parameterAt: 'style' put: 'margin:0px auto; width:100%';
-		with: [ "super visitColumns: aColumns" 'fix later' ].
+		with: [ self visitAll: aColumns children ].
 	canvas newLine
 ]
 
