@@ -107,12 +107,22 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 
 { #category : #'as yet unclassified' }
 MicMicrodownSnippetFactory >> columnSample [
-	^ '?{column|width=42}?'
+	^ '<?column|width=42
+	this is a **text**
+?>'
 ]
 
 { #category : #'as yet unclassified' }
 MicMicrodownSnippetFactory >> columnsSample [
 	^ '<?columns|width=42
+?>'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnsWithChildrenSample [
+	^ '<?columns|width=42
+', self columnSample ,'
+', self columnSample,'
 ?>'
 ]
 
