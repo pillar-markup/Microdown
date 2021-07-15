@@ -20,6 +20,13 @@ MicHTMLWriterTest >> setUp [
 ]
 
 { #category : #tests }
+MicHTMLWriterTest >> testAnchor [
+	| mic |
+	mic := parser parse: (factory anchorSample).
+	self assert: (writer start: mic) contents equals: '<a id="test"></a>'
+]
+
+{ #category : #tests }
 MicHTMLWriterTest >> testAnnotated [
 	| mic |
 	mic := parser parse: (factory annotatedSample).
