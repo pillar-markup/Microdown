@@ -129,7 +129,7 @@ MicHTMLWriter >> start: anObject [
 
 { #category : #'visiting-document' }
 MicHTMLWriter >> visitAnchor: anAnchor [
-	self createAnchorWith: anAnchor name
+	self createAnchorWith: anAnchor label
 ]
 
 { #category : #'visiting-document' }
