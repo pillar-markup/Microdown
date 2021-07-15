@@ -19,6 +19,14 @@ MicHTMLWriterTest >> setUp [
 	factory := MicMicrodownSnippetFactory new
 ]
 
+{ #category : #tests }
+MicHTMLWriterTest >> testAnnotated [
+	| mic |
+	mic := parser parse: (factory annotatedSample).
+	self assert: (writer start: mic) contents equals: '<p class="label">
+Foo <em>bar</em></p>'
+]
+
 { #category : #'tests - formats' }
 MicHTMLWriterTest >> testBold [
 	| mic |
