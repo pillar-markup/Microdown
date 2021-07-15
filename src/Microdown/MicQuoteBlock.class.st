@@ -21,6 +21,13 @@ MicQuoteBlock >> accept: aVisitor [
  	^ aVisitor visitQuote: self
 ]
 
+{ #category : #visiting }
+MicQuoteBlock >> closeMe [
+	super closeMe.
+	
+	children := MicInlineParser new parse: text
+]
+
 { #category : #testing }
 MicQuoteBlock >> lineMarkup [
 
