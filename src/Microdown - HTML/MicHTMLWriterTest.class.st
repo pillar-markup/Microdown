@@ -307,6 +307,13 @@ this is a <s>paragraph</s>
 </p>'
 ]
 
+{ #category : #tests }
+MicHTMLWriterTest >> testQuote [
+	| mic |
+	mic := parser parse: (factory quoteSample).
+	self assert: (writer start: mic) contents equals: '<pre>Foo</pre>'
+]
+
 { #category : #'tests - formats' }
 MicHTMLWriterTest >> testStrike [
 	| mic |
