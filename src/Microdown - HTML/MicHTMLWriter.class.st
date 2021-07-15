@@ -133,7 +133,7 @@ MicHTMLWriter >> visitAnchor: anAnchor [
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
+MicHTMLWriter >> visitAnnotated: anAnnotatedParagraph [
 	"Annotations need to be defined as CSS styles. For example...
 		@@note 
 		@@dothis
@@ -143,13 +143,10 @@ MicHTMLWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 		p.dothis{colour:red}
 		</style></head> 
 	"
-
 	canvas tag
 		name: 'p';
-		parameterAt: 'class' put: anAnnotatedParagraph annotation;
-		with: [ 
-					"We call #visitParagraph: directly because we don't want 'self visitParagraph:' to be executed."
-					super visitParagraph: anAnnotatedParagraph ]
+		parameterAt: 'class' put: anAnnotatedParagraph label;
+		with: [ self visitAll: anAnnotatedParagraph body ]
 ]
 
 { #category : #'visiting-document' }
