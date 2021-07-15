@@ -1,6 +1,6 @@
 Class {
 	#name : #MicColumnBlock,
-	#superclass : #MicAnnotationBlock,
+	#superclass : #MicEnvironmentBlock,
 	#instVars : [
 		'width'
 	],
