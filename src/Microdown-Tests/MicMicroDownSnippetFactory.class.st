@@ -756,6 +756,13 @@ MicMicrodownSnippetFactory >> simpleTableShortRow [
 | bar |'
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableWithoutHeaderTable [
+	^ '
+| aaab | jkhjh |
+| bar | rab |'
+]
+
 { #category : #utils }
 MicMicrodownSnippetFactory >> space [ 
 
@@ -800,6 +807,14 @@ MicMicrodownSnippetFactory >> surround: aWord withMarkup: aMarkup [
 { #category : #format }
 MicMicrodownSnippetFactory >> surroundWithMarkup: aMarkup [
 	^ self surround: 'Foo' withMarkup: aMarkup
+]
+
+{ #category : #sample }
+MicMicrodownSnippetFactory >> tableSample [
+	^ '| aaab | jkhjh |
+| --- | --- |
+| bar | rab |
+'
 ]
 
 { #category : #format }
