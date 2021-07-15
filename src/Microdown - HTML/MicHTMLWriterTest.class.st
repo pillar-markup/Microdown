@@ -27,6 +27,15 @@ MicHTMLWriterTest >> testAnchor [
 ]
 
 { #category : #tests }
+MicHTMLWriterTest >> testAnchorReference [
+	| mic |
+	self skip.
+	mic := parser parse: (factory anchorReferenceSample).
+	self assert: (writer start: mic) contents equals: '
+	'
+]
+
+{ #category : #tests }
 MicHTMLWriterTest >> testAnnotated [
 	| mic |
 	mic := parser parse: (factory annotatedSample).
