@@ -375,34 +375,55 @@ MicHTMLWriter >> visitTable: aTable [
 	canvas tag
 		name: 'table';
 		parameterAt: 'style' put: 'border: solid thin';
-		with: [ super visitTable: aTable ].
+		with: [ aTable rows doWithIndex: [:row :i | self visitTableRow: row withHead:aTable hasHeader at: i]  ].
 	canvas newLine
 ]
 
 { #category : #'visiting-document' }
 MicHTMLWriter >> visitTableCell: aCell [
 	| tagName tag |
-	tagName := aCell isHeading
-		ifTrue: [ 'th' ]
-		ifFalse: [ 'td' ].
+	tagName := 'td'.
 	tag := canvas tag name: tagName.
-	aCell isAligned
+	tag parameterAt: 'style' put: 'text-align: center'.
+	"aCell isAligned
 		ifTrue: [ 
 			aCell isAlignedLeft
 				ifTrue: [ tag parameterAt: 'style' put: 'text-align: left' ].
 			aCell isAlignedCenter
 				ifTrue: [ tag parameterAt: 'style' put: 'text-align: center' ].
 			aCell isAlignedRight
-				ifTrue: [ tag parameterAt: 'style' put: 'text-align: right' ] ].
-	tag with: [ super visitTableCell: aCell ].
+				ifTrue: [ tag parameterAt: 'style' put: 'text-align: right' ] ]."
+	tag with: [ self visitAll: aCell ].
 	canvas newLine
 ]
 
 { #category : #'visiting-document' }
-MicHTMLWriter >> visitTableRow: aRow [
-	canvas tag
+MicHTMLWriter >> visitTableCellHead: aCell [
+	| tagName tag |
+	tagName := 'th'.
+	tag := canvas tag name: tagName.
+	tag parameterAt: 'style' put: 'text-align: center'.
+	"aCell isAligned
+		ifTrue: [ 
+			aCell isAlignedLeft
+				ifTrue: [ tag parameterAt: 'style' put: 'text-align: left' ].
+			aCell isAlignedCenter
+				ifTrue: [ tag parameterAt: 'style' put: 'text-align: center' ].
+			aCell isAlignedRight
+				ifTrue: [ tag parameterAt: 'style' put: 'text-align: right' ] ]."
+	tag with: [ self visitAll: aCell ].
+	canvas newLine
+]
+
+{ #category : #'visiting-document' }
+MicHTMLWriter >> visitTableRow: aRow withHead: aBool at: anIndex [
+	(aBool and: [ anIndex = 1 ])
+		ifTrue: [ canvas tag
 		name: 'tr';
-		with: [ super visitTableRow: aRow ].
+		with: [ aRow do: [ :cell | self visitTableCellHead: cell ] ] ] 
+		ifFalse: [ canvas tag
+		name: 'tr';
+		with: [ aRow do: [ :cell | self visitTableCell: cell ] ] ].
 	canvas newLine
 ]
 
