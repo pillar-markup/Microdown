@@ -18,6 +18,13 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #public }
+MicAbstractBlock class >> alternateBlockClassFor: line [
+	"This hook supports extensions of environments. 
+	we get <?slide ... and we do not create an environment but a slideBlock"
+	^ self
+]
+
 { #category : #adding }
 MicAbstractBlock >> addChild: childBlock [
 	children add: childBlock
@@ -44,7 +51,7 @@ MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 MicAbstractBlock >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
-	^ self parser blockStarterClassFrom: line
+	^ (self parser blockStarterClassFrom: line) ifNotNil: [ :c | c alternateBlockClassFor: line ]
 ]
 
 { #category : #public }

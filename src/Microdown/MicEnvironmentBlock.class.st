@@ -70,6 +70,20 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #public }
+MicEnvironmentBlock class >> alternateBlockClassFor: line [
+	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
+	"line is of the form <?slide|title=Schedule"
+	
+	"We know that the two first characters are <? else we would be invoked"
+	| tag |
+	tag := ((line allButFirst: 2) copyUpTo: $|) trimBoth.
+	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+	
+	
+	
+]
+
 { #category : #visiting }
 MicEnvironmentBlock >> accept: aVisitor [
  	^ aVisitor visitEnvironment: self
