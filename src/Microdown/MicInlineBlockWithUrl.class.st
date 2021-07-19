@@ -31,6 +31,20 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 ]
 
 { #category : #'instance creation' }
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL withParser: aParser [
+	^ self new 
+		start: aStartInteger; 
+		end: anEndInteger; 
+		substring: aString; 
+		children: aChildren; 
+		cleanSubstring; 
+		url: aURL;
+		parser: aParser;
+		closeMe; 
+		yourself
+]
+
+{ #category : #'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
