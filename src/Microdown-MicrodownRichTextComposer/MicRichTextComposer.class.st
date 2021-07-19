@@ -587,7 +587,8 @@ MicRichTextComposer >> renderMathExpression: aString [
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
 	| anchoredImage |
-	aFigure arguments at: #size ifPresent: [ :s | 
+	anchoredImage := anImage.
+	aFigure arguments at: #width ifPresent: [ :s | 
 		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
 	^ anchoredImage
 ]
