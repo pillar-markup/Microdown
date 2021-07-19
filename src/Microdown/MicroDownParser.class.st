@@ -159,7 +159,8 @@ Class {
 	#instVars : [
 		'current',
 		'root',
-		'dispatchTable'
+		'dispatchTable',
+		'currentSystem'
 	],
 	#classInstVars : [
 		'inlineMarkups'
@@ -520,6 +521,11 @@ MicroDownParser >> current [
 	^ current
 ]
 
+{ #category : #accessing }
+MicroDownParser >> currentSystem [
+	^ currentSystem
+]
+
 { #category : #markups }
 MicroDownParser >> environmentClosingBlockMarkup [
 	^ self class environmentClosingBlockMarkup
@@ -659,6 +665,15 @@ MicroDownParser >> parse: aStreamOrString [
 		whileFalse: [ current closeMe.
 			current := current parent ].
 	^ root
+]
+
+{ #category : #markups }
+MicroDownParser >> parseDocument: aFileReference [
+	| currentPath |
+	currentPath := ''.
+	aFileReference pathSegments allButLast do: [ :each | currentPath := currentPath , '/' , each ].
+	currentSystem := FileSystem workingDirectory / currentPath.
+	^ self parse: aFileReference contents
 ]
 
 { #category : #markups }
