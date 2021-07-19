@@ -12,7 +12,8 @@ Class {
 	#superclass : #MicInlineElement,
 	#instVars : [
 		'url',
-		'caption'
+		'caption',
+		'parser'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -63,6 +64,21 @@ MicInlineBlockWithUrl >> captionElements [
 MicInlineBlockWithUrl >> closingDelimiter [
 
  	^ MicURLCloserDelimiter markup
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> currentSystem [ 
+	^ parser currentSystem
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> parser [ 
+	^ parser
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> parser: aParser [
+	parser := aParser
 ]
 
 { #category : #printing }
