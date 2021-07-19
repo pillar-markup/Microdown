@@ -59,15 +59,6 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #'public access' }
-MicCodeBlock >> evaluate [
-	| content |
-	content := self evaluationString.
-	^ [ (MicAbstractBlock new parserClass new parse: content) children ]
-		on: Error
-		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
-]
-
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
@@ -98,28 +89,9 @@ MicCodeBlock >> hasFirstTag [
 	^ firstTag isNotEmpty
 ]
 
-{ #category : #initialization }
-MicCodeBlock >> initialize [
-	super initialize.
-	arguments := OrderedDictionary new.
-]
-
-{ #category : #'public access' }
-MicCodeBlock >> isEvaluated [ 
-	arguments at: #eval ifAbsent: [ ^ false ].
-	^ arguments at: #eval
-]
-
 { #category : #visiting }
 MicCodeBlock >> label [
 	^ arguments at: #label ifAbsent: [ '' ]
-]
-
-{ #category : #accessing }
-MicCodeBlock >> language [
-	arguments ifNotEmpty: [ 
-		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
-		^ arguments at: #language ]
 ]
 
 { #category : #utils }

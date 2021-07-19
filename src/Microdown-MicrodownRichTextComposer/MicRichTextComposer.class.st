@@ -583,15 +583,6 @@ MicRichTextComposer >> renderMathExpression: aString [
 	canvas << (self class latexMathStylerFor: aString)
 ]
 
-{ #category : #'visiting - document' }
-MicRichTextComposer >> resizeImage: anImage of: aFigure [
-
-	| anchoredImage |
-	aFigure arguments at: #size ifPresent: [ :s | 
-		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
-	^ anchoredImage
-]
-
 { #category : #accessing }
 MicRichTextComposer >> subscriptColor [
 	^ subscriptColor 
@@ -709,33 +700,26 @@ MicRichTextComposer >> visitEnvironment: anObject [
 						'is not supported in RichText Pillar <<<') asText]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : #'visiting - document' }
 MicRichTextComposer >> visitFigure: aFigure [
-
 	"Try to read a png file (only one supported right now), else use alt text"
+	| anchoredImage |
 
-	| anchoredImage url |
+	
+	
 	"for now I cancel the catching of all exceptions because it is a blackhole."
-	url := aFigure url.
-	anchoredImage := url scheme = 'file'
-		                 ifTrue: [ 
-			                 FileSystem workingDirectory / url path 
-				                 binaryReadStreamDo: [ :stream | 
-				                 ImageReadWriter formFromStream: stream ] ]
-		                 ifFalse: [ self cachedImageFromUrl: url ].
-	anchoredImage := self resizeImage: anchoredImage of: aFigure.
-	anchoredImage := (String value: 1) asText addAttribute:
-		                 (TextAnchor new anchoredMorph: anchoredImage).
-	canvas << anchoredImage.
-	canvas newLine.
-	canvas includeAttribute: TextEmphasis bold in: [  ].
-	"	on: Exception
-		do: [ self visitChildrenOf: aFigure ]. pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
-	canvas
-		tab;
-		tab;
-		tab;
-		<< aFigure caption asText
+	"[" 
+	anchoredImage := (String value: 1) asText
+		addAttribute: (TextAnchor new anchoredMorph: (self cachedImageFromUrl: aFigure url)).
+		canvas << anchoredImage.
+		canvas newLine.
+		canvas 
+			includeAttribute: TextEmphasis bold 
+			in: [ canvas tab; tab; tab; << aFigure caption asText ]
+		"] 
+		on: Exception  
+		do: [self visitAll: aFigure children]."
+	"pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
 ]
 
 { #category : #'visiting - document' }

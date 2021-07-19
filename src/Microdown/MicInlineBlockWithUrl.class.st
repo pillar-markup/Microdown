@@ -35,34 +35,20 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
-{ #category : #private }
-MicInlineBlockWithUrl class >> localFileOrExternalReference: aString [
-	| localFileIndicator |
-	localFileIndicator := 'file://'.
-	^ (aString beginsWith: localFileIndicator)
-			ifTrue: [ aString allButFirst: localFileIndicator size ]
-			ifFalse: [ aString ]
-]
-
 { #category : #accessing }
 MicInlineBlockWithUrl >> caption [
-	^ String streamContents: [:st | self captionElements do: [ :each | st nextPutAll: each text ] ] 
+	^ String streamContents: [:st | caption do: [ :each | st nextPutAll: each text ] ] 
 ]
 
 { #category : #visiting }
 MicInlineBlockWithUrl >> captionElements [ 
-	^ caption ifNil: [ OrderedCollection new ]
+	^ caption 
 ]
 
 { #category : #accessing }
 MicInlineBlockWithUrl >> closingDelimiter [
 
  	^ MicURLCloserDelimiter markup
-]
-
-{ #category : #accessing }
-MicInlineBlockWithUrl >> localFileOrExternalReference [
-	^ self class localFileOrExternalReference: url asString
 ]
 
 { #category : #printing }

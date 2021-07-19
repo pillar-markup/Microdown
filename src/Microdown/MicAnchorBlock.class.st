@@ -29,12 +29,6 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
-{ #category : #testing }
-MicAnchorBlock >> hasLabel [ 
-	label ifNil: [ ^ false ].
-	^ true
-]
-
 { #category : #accessing }
 MicAnchorBlock >> label [
 	^ label
