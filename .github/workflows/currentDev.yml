@@ -20,7 +20,7 @@ jobs:
       - uses: hpi-swa/setup-smalltalkCI@v1
         id: smalltalkci
         with:
-          smalltalk-image: Pharo64-10
+          smalltalk-image: Pharo64-9.0
       - run: smalltalkci -s ${{ steps.smalltalkci.outputs.smalltalk-image }}
         shell: bash
         timeout-minutes: 15
