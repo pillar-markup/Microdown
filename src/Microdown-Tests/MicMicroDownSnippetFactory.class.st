@@ -105,6 +105,27 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnSample [
+	^ '<?column|width=42
+	this is a **text**
+?>'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnsSample [
+	^ '<?columns|width=42
+?>'
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> columnsWithChildrenSample [
+	^ '<?columns|width=42
+', self columnSample ,'
+', self columnSample,'
+?>'
+]
+
 { #category : #block }
 MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
@@ -185,6 +206,11 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 
 ![~Foo~](/anUrl?label=figureTest&size=80)
 '
+]
+
+{ #category : #anchor }
+MicMicrodownSnippetFactory >> footnoteSample [
+	^ MicAnnotationOpenerDelimiter markup ,'footnote|note=Pharo is cool', MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #headers }
@@ -730,6 +756,13 @@ MicMicrodownSnippetFactory >> simpleTableShortRow [
 | bar |'
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> simpleTableWithoutHeaderTable [
+	^ '
+| aaab | jkhjh |
+| bar | rab |'
+]
+
 { #category : #utils }
 MicMicrodownSnippetFactory >> space [ 
 
@@ -774,6 +807,14 @@ MicMicrodownSnippetFactory >> surround: aWord withMarkup: aMarkup [
 { #category : #format }
 MicMicrodownSnippetFactory >> surroundWithMarkup: aMarkup [
 	^ self surround: 'Foo' withMarkup: aMarkup
+]
+
+{ #category : #sample }
+MicMicrodownSnippetFactory >> tableSample [
+	^ '| aaab | jkhjh |
+| --- | --- |
+| bar | rab |
+'
 ]
 
 { #category : #format }
@@ -842,7 +883,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
 
 	| listMarkup |
 	listMarkup := self parserClass unorderedListMarkup.
-	^ self newLine , listMarkup , '~Foo~' , self newLine , listMarkup
+	^ self newLine , listMarkup , '~_Foo_~' , self newLine , listMarkup
 	  , 'Bar
 '
 ]
