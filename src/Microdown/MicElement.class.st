@@ -6,7 +6,9 @@ Class {
 
 { #category : #public }
 MicElement >> inlineParse: aString [
-
-	^ MicInlineParser new parse: aString
+	| inlineParser |
+	inlineParser := MicInlineParser new.
+	inlineParser currentSystem: self parser currentSystem.
+	^  inlineParser parse: aString
 
 ]
