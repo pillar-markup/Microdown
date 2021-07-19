@@ -210,3 +210,11 @@ MicAbstractBlock >> removeProperty: aKey ifAbsent: aBlock [
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
 ]
+
+{ #category : #accessing }
+MicAbstractBlock >> text [
+	| text |
+	text := ''.
+	children do: [ :each | text := text , each text ].
+	^ text
+]

@@ -24,6 +24,12 @@ MicrodownVisitor >> visit: aMicElement [
 	^ aMicElement accept: self
 ]
 
+{ #category : #'visiting main API' }
+MicrodownVisitor >> visitAll: aCollection [
+
+	aCollection do: [ :each | each accept: self ]
+]
+
 { #category : #visiting }
 MicrodownVisitor >> visitAnchor: anAnchor [
 ]
