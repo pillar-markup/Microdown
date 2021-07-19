@@ -40,7 +40,7 @@ MicFigureBlock >> closeMe [
 	
 	| dictionary |
 	dictionary := OrderedDictionary new. 
-	url := (ZnUrl fromString: url).
+	url := (ZnUrl fromString: url asString).
 	url query ifNotNil: [ :q |
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
