@@ -62,7 +62,7 @@ MicCodeBlock >> evaluationString [
 				setStream: stream;
 				yourself.
 			[ self class compiler
-				source: self text;
+				source: self body;
 				logged: false;
 				receiver: evaluator;
 				evaluate ]
