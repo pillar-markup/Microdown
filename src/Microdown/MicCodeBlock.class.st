@@ -61,7 +61,7 @@ MicCodeBlock >> code [
 
 { #category : #evaluation }
 MicCodeBlock >> eval: aString [
-	arguments := arguments copyWith: 'eval' -> aString
+	arguments at: 'eval' put: aString
 ]
 
 { #category : #handle }
