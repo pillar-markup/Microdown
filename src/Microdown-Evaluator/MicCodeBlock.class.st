@@ -44,22 +44,7 @@ Class {
 	#category : #'Microdown-Evaluator'
 }
 
-{ #category : #visiting }
-MicCodeBlock >> accept: aVisitor [
- 	^ aVisitor visitCode: self
-]
-
-{ #category : #accessing }
-MicCodeBlock >> arguments [
-	^ arguments
-]
-
-{ #category : #accessing }
-MicCodeBlock >> code [
-	^ self body
-]
-
-{ #category : #'public access' }
+{ #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> evaluate [
 	| content |
 	content := self evaluationString.
@@ -68,7 +53,7 @@ MicCodeBlock >> evaluate [
 		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
 ]
 
-{ #category : #evaluation }
+{ #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> evaluationString [
 	^ String
 		streamContents: [ :stream | 
@@ -86,65 +71,4 @@ MicCodeBlock >> evaluationString [
 					stream
 						nextPutAll: '= ';
 						nextPutAll: e description ] ]
-]
-
-{ #category : #handle }
-MicCodeBlock >> extractFirstLineFrom: aLine [
-	"language=Pharo&label=fig1&caption=La vie est belle"
-	"The first tag is language.
-	its value is Pharo."
-	
-	| lineWithoutMarkup argumentsSplitter |
-	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	firstTag := argumentsSplitter firstTag.
-	arguments := argumentsSplitter arguments.
-	^ lineWithoutMarkup
-]
-
-{ #category : #accessing }
-MicCodeBlock >> firstTag [
-	^ firstTag
-]
-
-{ #category : #accessing }
-MicCodeBlock >> firstTagValue [
-	^ arguments at: self firstTag ifAbsent: [ '' ]
-]
-
-{ #category : #accessing }
-MicCodeBlock >> hasFirstTag [
-
-	^ firstTag isNotEmpty
-]
-
-{ #category : #initialization }
-MicCodeBlock >> initialize [
-	super initialize.
-	arguments := OrderedDictionary new.
-]
-
-{ #category : #'public access' }
-MicCodeBlock >> isEvaluated [ 
-	arguments at: #eval ifAbsent: [ ^ false ].
-	^ arguments at: #eval
-]
-
-{ #category : #visiting }
-MicCodeBlock >> label [
-	^ arguments at: #label ifAbsent: [ '' ]
-]
-
-{ #category : #accessing }
-MicCodeBlock >> language [
-	arguments ifNotEmpty: [ 
-		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
-		^ arguments at: #language ]
-]
-
-{ #category : #utils }
-MicCodeBlock >> lineStartMarkup [
-	"a code block is delimited by ``` "
-	
-	^ self parser codeblockMarkup 
 ]

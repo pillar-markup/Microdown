@@ -33,7 +33,6 @@ MicCodeblockEvaluatorTest >> executePhase: anInput with: aConfig [
 { #category : #private }
 MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 	| input |
-	self skip.
 	input := MicRootBlock new
 		addChild:
 			(MicParagraphBlock new
@@ -51,7 +50,6 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 { #category : #tests }
 MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 	| input |
-	self skip.
 	input := MicRootBlock new
 		addChild:
 				((MicCodeBlock new body: 'Object SomethingThatIsNotAMethod')
@@ -64,7 +62,6 @@ MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 { #category : #tests }
 MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 	| input |
-	self skip.
 	input := MicRootBlock new
 		addChild:
 				((MicCodeBlock new body: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo''')
