@@ -668,12 +668,12 @@ MicroDownParser >> parse: aStreamOrString [
 	^ root
 ]
 
-{ #category : #markups }
+{ #category : #parsing }
 MicroDownParser >> parseDocument: aFileReference [
 	| currentPath |
 	currentPath := ''.
 	aFileReference pathSegments allButLast do: [ :each | currentPath := currentPath , '/' , each ].
-	currentSystem := FileSystem workingDirectory / currentPath.
+	currentSystem := aFileReference fileSystem workingDirectory / currentPath.
 	^ self parse: aFileReference contents
 ]
 
