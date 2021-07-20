@@ -663,13 +663,17 @@ MicroDownParser >> parse: aStreamOrString [
 
 { #category : #parsing }
 MicroDownParser >> parseDocument: aFileReference [
+	| micTree |
 	aFileReference isFile 
 		ifTrue: [ 
 			| currentPath |
+			micTree := self parse: aFileReference contents.
 			currentPath := ''.
 			aFileReference pathSegments allButLast do: [ :each | currentPath := currentPath , '/' , each ].
-			currentSystem := aFileReference fileSystem workingDirectory / currentPath.
-			^ self parse: aFileReference contents ]
+			micTree propertyAt: #originPath put: aFileReference fileSystem workingDirectory / currentPath.
+			^ micTree ]
+		ifFalse: [ 
+			^ self parse: 'Your file is not valid' ]
 	
 ]
 
