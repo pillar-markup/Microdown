@@ -46,6 +46,7 @@ Class {
 
 { #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> evaluate [
+
 	| content |
 	content := self evaluationString.
 	^ [ (MicAbstractBlock new parserClass new parse: content) children ]
@@ -55,6 +56,7 @@ MicCodeBlock >> evaluate [
 
 { #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> evaluationString [
+
 	^ String
 		streamContents: [ :stream | 
 			| evaluator |
