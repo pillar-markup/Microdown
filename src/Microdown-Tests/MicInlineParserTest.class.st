@@ -90,6 +90,13 @@ MicInlineParserTest >> testCurlyBraceDoesNotLeadToProblem [
 	self assert: mic substring equals:  ' jhkjhk { a }'
 ]
 
+{ #category : #tests }
+MicInlineParserTest >> testCurrentSystemByDefault [ 
+	
+	self assert: self splitter currentSystem equals: FileSystem workingDirectory
+	
+]
+
 { #category : #'tests - escape' }
 MicInlineParserTest >> testEscapeCharacter [
 	"Test the escape \ in simple case (here, bold one)"
