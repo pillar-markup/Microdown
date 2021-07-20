@@ -121,7 +121,7 @@ MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 	References that were before relative to the included document, should be now relative to the container document."
 	MicUpdateFileInclusionReference
 		start: microdownAST
-		with: (includedFile parent relativeTo: topFile parent) pillarPrintString.
+		with: (includedFile parent relativeTo: topFile parent) microdownPrintString.
 	
 	self replace: microdownAST children]
 	
