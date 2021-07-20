@@ -12,7 +12,6 @@ Class {
 MicElement >> inlineParse: aString [
 	| inlineParser childrenCol |
 	inlineParser := MicInlineParser new.
-	inlineParser currentSystem: self parser currentSystem.
 	childrenCol := inlineParser parse: aString.
 	childrenCol do: [ :each | each parent: self ].
 	^  childrenCol
