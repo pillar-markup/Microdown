@@ -500,6 +500,17 @@ a paragraph' ].
 	self assert: parser currentSystem equals: system / 'folder'
 ]
 
+{ #category : #tests }
+MicrodownParserTest >> testParseDocumentParseFolder [
+
+	| folder system |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	folder := system / 'folder'.
+	parser parseDocument: folder.
+	self assert: parser currentSystem equals: FileSystem workingDirectory
+]
+
 { #category : #'tests - horizontal line' }
 MicrodownParserTest >> testParseLineWithOneCharacter [ 
 	
