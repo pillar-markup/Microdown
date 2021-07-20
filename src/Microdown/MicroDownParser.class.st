@@ -523,6 +523,7 @@ MicroDownParser >> current [
 
 { #category : #accessing }
 MicroDownParser >> currentSystem [
+	currentSystem ifNil: [ ^ FileSystem workingDirectory ].
 	^ currentSystem
 ]
 
