@@ -242,6 +242,12 @@ MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 ]
 
 { #category : #tests }
+MicrodownParserTest >> testCurrentSystemByDefault [
+
+	self assert: parser currentSystem equals: FileSystem workingDirectory
+]
+
+{ #category : #tests }
 MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	| source root environmentName contents child |
 	environmentName := 'cite'.
@@ -479,6 +485,19 @@ MicrodownParserTest >> testMetaDataMultipleLines [
 "title": "Ze Great Book from Frenchies"'
 	"note that the closing is not part of the body"
 	
+]
+
+{ #category : #tests }
+MicrodownParserTest >> testParseDocument [
+
+	| file system |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+a paragraph' ].
+	parser parseDocument: file.
+	self assert: parser currentSystem equals: system / 'folder'
 ]
 
 { #category : #'tests - horizontal line' }
