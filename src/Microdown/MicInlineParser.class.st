@@ -18,8 +18,7 @@ Class {
 		'correctSubstring',
 		'correctURL',
 		'keys',
-		'delimiterClass',
-		'currentSystem'
+		'delimiterClass'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -97,17 +96,6 @@ MicInlineParser >> closerOnlyCase [
 		ifFalse: [ Array braceWith: delimiterClass type ].
 	indexOfAssociateOpener := openersStack findFirst: [ :each | typesToFind includes: each type ].
 	(indexOfAssociateOpener > 0) ifTrue: [ self addInlineBlock: indexOfAssociateOpener ]
-]
-
-{ #category : #accessing }
-MicInlineParser >> currentSystem [
-	currentSystem ifNil: [ ^ FileSystem workingDirectory ].
-	^ currentSystem
-]
-
-{ #category : #accessing }
-MicInlineParser >> currentSystem: aFileReference [
-	currentSystem := aFileReference
 ]
 
 { #category : #process }

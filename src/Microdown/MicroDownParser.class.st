@@ -159,8 +159,7 @@ Class {
 	#instVars : [
 		'current',
 		'root',
-		'dispatchTable',
-		'currentSystem'
+		'dispatchTable'
 	],
 	#classInstVars : [
 		'inlineMarkups'
@@ -519,12 +518,6 @@ MicroDownParser >> commentedLineMarkup [
 MicroDownParser >> current [ 
 
 	^ current
-]
-
-{ #category : #accessing }
-MicroDownParser >> currentSystem [
-	currentSystem ifNil: [ ^ FileSystem workingDirectory ].
-	^ currentSystem
 ]
 
 { #category : #markups }
