@@ -49,6 +49,12 @@ MicFigureBlock >> closeMe [
 	
 ]
 
+{ #category : #testing }
+MicFigureBlock >> hasCaption [ 	
+	caption ifNil: [ ^ false ].
+	^ true
+]
+
 { #category : #accessing }
 MicFigureBlock >> kind [
 

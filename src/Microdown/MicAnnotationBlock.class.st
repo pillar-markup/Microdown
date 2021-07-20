@@ -77,6 +77,12 @@ MicAnnotationBlock >> closingDelimiter [
  	^ MicAnnotationCloserDelimiter markup
 ]
 
+{ #category : #initialization }
+MicAnnotationBlock >> initialize [ 
+	super initialize.
+	arguments := OrderedDictionary new
+]
+
 { #category : #accessing }
 MicAnnotationBlock >> kind [
 
@@ -97,6 +103,11 @@ MicAnnotationBlock >> name: aName [
 MicAnnotationBlock >> openingDelimiter [
 
  	^ MicAnnotationOpenerDelimiter markup
+]
+
+{ #category : #accessing }
+MicAnnotationBlock >> parameterAt: aKey put: aValue [
+	^ arguments at: aKey put: aValue
 ]
 
 { #category : #accessing }
