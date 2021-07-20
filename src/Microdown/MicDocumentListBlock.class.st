@@ -1,40 +1,40 @@
 Class {
-	#name : #MicDocumentList,
+	#name : #MicDocumentListBlock,
 	#superclass : #MicAnnotationBlock,
 	#category : #'Microdown-Extensions'
 }
 
 { #category : #accessing }
-MicDocumentList class >> tag [ 
+MicDocumentListBlock class >> tag [ 
 	^ #documentlist
 ]
 
 { #category : #visiting }
-MicDocumentList >> accept: aVisitor [
+MicDocumentListBlock >> accept: aVisitor [
 
 	^ aVisitor visitDocListAnnotation: self
 ]
 
 { #category : #visiting }
-MicDocumentList >> limit [
+MicDocumentListBlock >> limit [
 
 	^ self arguments at: #limit ifAbsent: [ '3' ]
 ]
 
 { #category : #visiting }
-MicDocumentList >> path [
+MicDocumentListBlock >> path [
 
 	^ self arguments at: #path
 ]
 
 { #category : #visiting }
-MicDocumentList >> sort [
+MicDocumentListBlock >> sort [
 
 	^ self arguments at: #sort ifAbsent: [ '' ]
 ]
 
 { #category : #visiting }
-MicDocumentList >> summaryMaxSize [
+MicDocumentListBlock >> summaryMaxSize [
 
 	^ self arguments at: #summaryMaxSize
 		ifPresent: [ :size | size asInteger ]
@@ -42,7 +42,7 @@ MicDocumentList >> summaryMaxSize [
 ]
 
 { #category : #visiting }
-MicDocumentList >> templates [
+MicDocumentListBlock >> templates [
 
 	^ self arguments at: #templates ifAbsent: [ #() ]
 ]
