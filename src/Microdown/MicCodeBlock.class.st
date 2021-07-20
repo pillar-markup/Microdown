@@ -68,6 +68,26 @@ MicCodeBlock >> evaluate [
 		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
 ]
 
+{ #category : #evaluation }
+MicCodeBlock >> evaluationString [
+	^ String
+		streamContents: [ :stream | 
+			| evaluator |
+			evaluator := MicCodeblockEvaluatorEnv new
+				setStream: stream;
+				yourself.
+			[ self class compiler
+				source: self body;
+				logged: false;
+				receiver: evaluator;
+				evaluate ]
+				on: Error
+				do: [ :e | 
+					stream
+						nextPutAll: '= ';
+						nextPutAll: e description ] ]
+]
+
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
