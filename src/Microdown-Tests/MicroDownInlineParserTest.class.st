@@ -221,7 +221,7 @@ MicrodownInlineParserTest >> testCurrentSystemInInlineParser [
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](file://folder/file.mic)' ].
 	mic := parser parseDocument: file.
-	self assert: mic children second children first currentSystem equals: system / 'folder'
+	self assert: mic children second children first originPath equals: system / 'folder'
 ]
 
 { #category : #'tests - others' }

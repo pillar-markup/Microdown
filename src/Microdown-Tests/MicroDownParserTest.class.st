@@ -242,12 +242,6 @@ MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 ]
 
 { #category : #tests }
-MicrodownParserTest >> testCurrentSystemByDefault [
-
-	self assert: parser currentSystem equals: FileSystem workingDirectory
-]
-
-{ #category : #tests }
 MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	| source root environmentName contents child |
 	environmentName := 'cite'.
@@ -487,28 +481,37 @@ MicrodownParserTest >> testMetaDataMultipleLines [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - path' }
+MicrodownParserTest >> testOriginPathIsAbsent [
+	| mic |
+	mic := parser parse: '# section
+a paragraph'.
+	self assert: mic originPath equals: FileSystem workingDirectory
+]
+
+{ #category : #'tests - path' }
 MicrodownParserTest >> testParseDocument [
 
-	| file system |
+	| file system mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 a paragraph' ].
-	parser parseDocument: file.
-	self assert: parser currentSystem equals: system / 'folder'
+	mic := parser parseDocument: file.
+	self assert: mic originPath equals: system / 'folder'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - path' }
 MicrodownParserTest >> testParseDocumentParseFolder [
 
-	| folder system |
+	| folder system mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	folder := system / 'folder'.
-	parser parseDocument: folder.
-	self assert: parser currentSystem equals: FileSystem workingDirectory
+	mic := parser parseDocument: folder.
+	self assert: mic children first text equals: 'Your file is not valid'.
+	self assert: mic originPath equals: FileSystem workingDirectory
 ]
 
 { #category : #'tests - horizontal line' }
