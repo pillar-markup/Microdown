@@ -76,11 +76,6 @@ MicInlineBlockWithUrl >> closingDelimiter [
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl >> currentSystem [ 
-	^ parser currentSystem
-]
-
-{ #category : #accessing }
 MicInlineBlockWithUrl >> localFileOrExternalReference [
 	^ self class localFileOrExternalReference: url asString
 ]
