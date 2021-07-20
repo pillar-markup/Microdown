@@ -96,4 +96,5 @@ MicNodeTransformer >> visitRoot: aGroup [
 
 { #category : #execution }
 MicNodeTransformer >> visitText: aText [
+	"do nothing"
 ]
