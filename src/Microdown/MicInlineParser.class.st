@@ -101,6 +101,7 @@ MicInlineParser >> closerOnlyCase [
 
 { #category : #accessing }
 MicInlineParser >> currentSystem [
+	currentSystem ifNil: [ ^ FileSystem workingDirectory ].
 	^ currentSystem
 ]
 
