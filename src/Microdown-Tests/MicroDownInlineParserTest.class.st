@@ -220,7 +220,7 @@ MicrodownInlineParserTest >> testCurrentSystemInInlineParser [
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](file://folder/file.mic)' ].
-	mic := parser parseDocument: file.
+	mic := parser parseFile: file.
 	self assert: mic children second children first originPath equals: system / 'folder'
 ]
 
