@@ -210,20 +210,6 @@ MicrodownInlineParserTest >> testBoldsWithoutClosure [
  
 ]
 
-{ #category : #tests }
-MicrodownInlineParserTest >> testCurrentSystemInInlineParser [
-
-	| file system mic |
-	parser := self parser.
-	system := FileSystem memory workingDirectory.
-	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](file://folder/file.mic)' ].
-	mic := parser parseFile: file.
-	self assert: mic children second children first originPath equals: system / 'folder'
-]
-
 { #category : #'tests - others' }
 MicrodownInlineParserTest >> testEscape [
 
@@ -387,6 +373,20 @@ MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc`monospacesdef'
 
+]
+
+{ #category : #'tests - path' }
+MicrodownInlineParserTest >> testOriginPathInInlineParser [
+
+	| file system mic |
+	parser := self parser.
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](file://folder/file.mic)' ].
+	mic := parser parseFile: file.
+	self assert: mic children second children first originPath equals: system / 'folder'
 ]
 
 { #category : #'tests - raw' }
