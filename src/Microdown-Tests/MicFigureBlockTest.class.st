@@ -27,7 +27,7 @@ MicFigureBlockTest >> testCaption [
 { #category : #'tests - testing' }
 MicFigureBlockTest >> testIsNotRelativeFilePath [
 	| figure |
-	figure := (splitterClass new parse: '![caption](file://Users/name/figures/test.mic)') first.
+	figure := (splitterClass new parse: '![caption](file:///Users/name/figures/test.mic)') first.
 	self assert: figure isRelativeFilePath not
 ]
 

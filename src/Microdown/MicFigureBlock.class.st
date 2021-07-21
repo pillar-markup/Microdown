@@ -66,7 +66,7 @@ MicFigureBlock >> isImageFile [
 
 { #category : #testing }
 MicFigureBlock >> isRelativeFilePath [
-	^ self url scheme = 'file' and: [ (self url host asLowercase = 'users') not ]
+	^ self url scheme = 'file' and: [ (self url asString beginsWith: 'file:///') not ]
 ]
 
 { #category : #accessing }
