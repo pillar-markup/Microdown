@@ -55,6 +55,20 @@ MicFigureBlock >> hasCaption [
 	^ true
 ]
 
+{ #category : #testing }
+MicFigureBlock >> isImageFile [
+	"Answer whether the file name indicates an image file."
+
+	url asString ifNil: [^false].
+	^#('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
+		includes: url asString asFileReference extension asLowercase
+]
+
+{ #category : #testing }
+MicFigureBlock >> isRelativeFilePath [
+	^ self url scheme = 'file' and: [ (self url host asLowercase = 'users') not ]
+]
+
 { #category : #accessing }
 MicFigureBlock >> kind [
 
