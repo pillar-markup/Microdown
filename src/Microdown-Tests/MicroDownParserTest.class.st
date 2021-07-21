@@ -503,6 +503,17 @@ a paragraph' ].
 ]
 
 { #category : #'tests - path' }
+MicrodownParserTest >> testParseFileParseFilesDoesNotExist [
+
+	| file system mic |
+	system := FileSystem memory workingDirectory.
+	file := system / 'test.mic'.
+	mic := parser parseFile: file.
+	self assert: mic children first text equals: 'Your file is not valid'.
+	self assert: mic originPath equals: FileSystem workingDirectory
+]
+
+{ #category : #'tests - path' }
 MicrodownParserTest >> testParseFileParseFolder [
 
 	| folder system mic |
