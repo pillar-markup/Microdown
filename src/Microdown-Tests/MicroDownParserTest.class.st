@@ -490,7 +490,7 @@ a paragraph'.
 ]
 
 { #category : #'tests - path' }
-MicrodownParserTest >> testParseDocument [
+MicrodownParserTest >> testParseFile [
 
 	| file system mic |
 	system := FileSystem memory workingDirectory.
@@ -503,7 +503,7 @@ a paragraph' ].
 ]
 
 { #category : #'tests - path' }
-MicrodownParserTest >> testParseDocumentParseFolder [
+MicrodownParserTest >> testParseFileParseFolder [
 
 	| folder system mic |
 	system := FileSystem memory workingDirectory.
