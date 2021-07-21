@@ -6,11 +6,10 @@ Class {
 
 { #category : #visiting }
 MicResolvePath >> visitFigure: aFigure [
-	aFigure scheme = 'file' 
+	aFigure url scheme = 'file' 
 		ifTrue: [ 
 			aFigure isRelativeFilePath 
-				ifTrue: [ aFigure propertyAt: #originPath put: aFigure originPath / ( aFigure url host ,'/', aFigure url path) ] 
-				ifFalse: [ aFigure propertyAt: #originPath put: FileSystem workingDirectory / ( aFigure url host ,'/', aFigure url path) ]
+				ifTrue: [ aFigure url: (aFigure originPath / ( aFigure url host ,'/', aFigure url path)) asUrl ]
 			].
 	^ aFigure
 ]
