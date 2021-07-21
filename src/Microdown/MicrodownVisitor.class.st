@@ -176,7 +176,7 @@ MicrodownVisitor >> visitStrike: aFormat [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitText: aMicTextBlock [
 
-	self subclassResponsibility
+	"do nothing"
 ]
 
 { #category : #'visiting - list' }
