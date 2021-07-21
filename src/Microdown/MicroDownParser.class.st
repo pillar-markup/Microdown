@@ -662,7 +662,7 @@ MicroDownParser >> parse: aStreamOrString [
 ]
 
 { #category : #parsing }
-MicroDownParser >> parseDocument: aFileReference [
+MicroDownParser >> parseFile: aFileReference [
 	| micTree |
 	aFileReference isFile 
 		ifTrue: [ 
