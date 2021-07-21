@@ -25,6 +25,27 @@ MicFigureBlockTest >> testCaption [
 ]
 
 { #category : #tests }
+MicFigureBlockTest >> testIsNotValidImage [
+	| figure |
+	figure := (splitterClass new parse: '![caption](file://figures/test.mic)') first.
+	self assert: figure isImageFile not
+]
+
+{ #category : #tests }
+MicFigureBlockTest >> testIsNotValidImageWithFolder [
+	| figure |
+	figure := (splitterClass new parse: '![caption](file://figures/)') first.
+	self assert: figure isImageFile not
+]
+
+{ #category : #tests }
+MicFigureBlockTest >> testIsValidImage [
+	| figure |
+	figure := (splitterClass new parse: '![caption](file://figures/test.png)') first.
+	self assert: figure isImageFile
+]
+
+{ #category : #tests }
 MicFigureBlockTest >> testPrintOn [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
