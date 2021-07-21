@@ -18,18 +18,19 @@ MicResolvePathTest >> setUp [
 ]
 
 { #category : #tests }
-MicResolvePathTest >> testResolveAbsolutePath [
-| file mic |
+MicResolvePathTest >> testResolveNotRelativePath [
+| file mic urlBefore |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](file:///folder/image.png)' ].
 	mic := parser parseFile: file.
+	urlBefore := mic children second children first url asString.
 	self assert: mic children second children first isRelativeFilePath not.
 	resolver visit: mic.
 	self assert: mic children second children first isRelativeFilePath not.
-	self assert: mic children second children first url asString equals: 'file:///folder/image.png'
+	self assert: mic children second children first url asString equals: urlBefore
 	
 ]
 
