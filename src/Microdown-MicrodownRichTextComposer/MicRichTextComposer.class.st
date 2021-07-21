@@ -721,7 +721,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	anchoredImage := url scheme = 'file'
 		                 ifTrue: [ 
 								  self flag: 'fix url host'.
-			                 aFigure currentSystem / (url host ,'/', url path)
+			                 aFigure originPath fileSystem / (url path)
 				                 binaryReadStreamDo: [ :stream | 
 				                 ImageReadWriter formFromStream: stream ] ]
 		                 ifFalse: [ self cachedImageFromUrl: url ].
