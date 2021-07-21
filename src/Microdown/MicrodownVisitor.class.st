@@ -11,13 +11,6 @@ Class {
 	#category : #'Microdown-Visitor'
 }
 
-{ #category : #'visiting - inline elements' }
-MicrodownVisitor >> fixBlockWithoutMicText: anInlineBlock [
-	"I'm a hack because formatBloc so far do not wrap a MicTextBlock but a plain string"
-	
-	^ self subclassResponsibility
-]
-
 { #category : #'visiting main API' }
 MicrodownVisitor >> visit: aMicElement [
 
@@ -183,7 +176,7 @@ MicrodownVisitor >> visitStrike: aFormat [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitText: aMicTextBlock [
 
-	self subclassResponsibility
+	"do nothing"
 ]
 
 { #category : #'visiting - list' }

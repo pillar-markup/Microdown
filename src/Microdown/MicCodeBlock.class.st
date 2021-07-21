@@ -59,9 +59,9 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #accessing }
+{ #category : #evaluation }
 MicCodeBlock >> eval: aString [
-	arguments := arguments copyWith: 'eval' -> aString
+	arguments at: 'eval' put: aString
 ]
 
 { #category : #handle }
