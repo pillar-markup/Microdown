@@ -1,5 +1,6 @@
 "
-I'm a visitor handling references to file. In particular
+MicPathResolver use the originPath of the figure to create an absolutePath for the figure.
+The originPath is define during when we use parseFile: else originPath take per default the FileSystem workingDirectory
 "
 Class {
 	#name : #MicPathResolver,
