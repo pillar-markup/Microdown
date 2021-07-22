@@ -298,6 +298,7 @@ MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 				withSubstring: correctSubstring
 				withChildren: children asArray
 				withURL: correctURL
+				withParser: self
 		 ]
 		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
 	

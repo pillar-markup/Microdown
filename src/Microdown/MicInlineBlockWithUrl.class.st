@@ -12,7 +12,8 @@ Class {
 	#superclass : #MicInlineElement,
 	#instVars : [
 		'url',
-		'caption'
+		'caption',
+		'parser'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -26,6 +27,20 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 		children: aChildren; 
 		cleanSubstring; 
 		url: aURL;
+		closeMe; 
+		yourself
+]
+
+{ #category : #'instance creation' }
+MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL withParser: aParser [
+	^ self new 
+		start: aStartInteger; 
+		end: anEndInteger; 
+		substring: aString; 
+		children: aChildren; 
+		cleanSubstring; 
+		url: aURL;
+		parser: aParser;
 		closeMe; 
 		yourself
 ]
@@ -63,6 +78,16 @@ MicInlineBlockWithUrl >> closingDelimiter [
 { #category : #accessing }
 MicInlineBlockWithUrl >> localFileOrExternalReference [
 	^ self class localFileOrExternalReference: url asString
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> parser [ 
+	^ parser
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> parser: aParser [
+	parser := aParser
 ]
 
 { #category : #printing }
