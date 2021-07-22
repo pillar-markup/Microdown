@@ -375,6 +375,20 @@ MicrodownInlineParserTest >> testMonospacesWithoutClosure [
 
 ]
 
+{ #category : #'tests - path' }
+MicrodownInlineParserTest >> testOriginPathInInlineParser [
+
+	| file system mic |
+	parser := self parser.
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](file://folder/file.mic)' ].
+	mic := parser parseFile: file.
+	self assert: mic children second children first originPath equals: system / 'folder'
+]
+
 { #category : #'tests - raw' }
 MicrodownInlineParserTest >> testRawWitoutClosure [
 

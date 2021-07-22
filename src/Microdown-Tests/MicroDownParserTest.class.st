@@ -481,6 +481,50 @@ MicrodownParserTest >> testMetaDataMultipleLines [
 	
 ]
 
+{ #category : #'tests - path' }
+MicrodownParserTest >> testOriginPathIsAbsent [
+	| mic |
+	mic := parser parse: '# section
+a paragraph'.
+	self assert: mic originPath equals: FileSystem workingDirectory
+]
+
+{ #category : #'tests - path' }
+MicrodownParserTest >> testParseFile [
+
+	| file system mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+a paragraph' ].
+	mic := parser parseFile: file.
+	self assert: mic originPath equals: system / 'folder'
+]
+
+{ #category : #'tests - path' }
+MicrodownParserTest >> testParseFileParseFilesDoesNotExist [
+
+	| file system mic |
+	system := FileSystem memory workingDirectory.
+	file := system / 'test.mic'.
+	mic := parser parseFile: file.
+	self assert: mic children first text equals: 'Your file is not valid'.
+	self assert: mic originPath equals: FileSystem workingDirectory
+]
+
+{ #category : #'tests - path' }
+MicrodownParserTest >> testParseFileParseFolder [
+
+	| folder system mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	folder := system / 'folder'.
+	mic := parser parseFile: folder.
+	self assert: mic children first text equals: 'Your file is not valid'.
+	self assert: mic originPath equals: FileSystem workingDirectory
+]
+
 { #category : #'tests - horizontal line' }
 MicrodownParserTest >> testParseLineWithOneCharacter [ 
 	
