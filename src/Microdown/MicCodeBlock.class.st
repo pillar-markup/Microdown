@@ -64,6 +64,16 @@ MicCodeBlock >> eval: aString [
 	arguments at: 'eval' put: aString
 ]
 
+{ #category : #'as yet unclassified' }
+MicCodeBlock >> evaluate [
+
+	| content |
+	content := self evaluationString.
+	^ [ (MicAbstractBlock new parserClass new parse: content) children ]
+		on: Error
+		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
+]
+
 { #category : #evaluation }
 MicCodeBlock >> evaluationString [
 	^ String
