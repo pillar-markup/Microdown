@@ -119,6 +119,11 @@ MicInlineElement >> literal [
 	^ substring copyFrom: start to: end. 
 ]
 
+{ #category : #accessing }
+MicInlineElement >> parent: aParent [
+	parent := aParent
+]
+
 { #category : #printing }
 MicInlineElement >> printOn: aStream [
 

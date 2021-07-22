@@ -587,7 +587,8 @@ MicRichTextComposer >> renderMathExpression: aString [
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
 	| anchoredImage |
-	aFigure arguments at: #size ifPresent: [ :s | 
+	anchoredImage := anImage.
+	aFigure arguments at: #width ifPresent: [ :s | 
 		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
 	^ anchoredImage
 ]
@@ -711,24 +712,29 @@ MicRichTextComposer >> visitEnvironment: anObject [
 
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
-
 	"Try to read a png file (only one supported right now), else use alt text"
-
+	aFigure isImageFile ifTrue: [
 	| anchoredImage url |
 	"for now I cancel the catching of all exceptions because it is a blackhole."
 	url := aFigure url.
 	anchoredImage := url scheme = 'file'
 		                 ifTrue: [ 
-			                 FileSystem workingDirectory / url path 
-				                 binaryReadStreamDo: [ :stream | 
-				                 ImageReadWriter formFromStream: stream ] ]
+									(aFigure originPath fileSystem / (url path)) isFile
+										ifTrue: [ 
+											aFigure originPath fileSystem / (url path)
+				                 		binaryReadStreamDo: [ :stream | 
+				                 		ImageReadWriter formFromStream: stream ] 
+											]
+							        ]
 		                 ifFalse: [ self cachedImageFromUrl: url ].
-	anchoredImage := self resizeImage: anchoredImage of: aFigure.
-	anchoredImage := (String value: 1) asText addAttribute:
+	anchoredImage ifNotNil: [ 
+		anchoredImage := self resizeImage: anchoredImage of: aFigure.
+		anchoredImage := (String value: 1) asText addAttribute:
 		                 (TextAnchor new anchoredMorph: anchoredImage).
-	canvas << anchoredImage.
+		canvas << anchoredImage ].
+	
 	canvas newLine.
-	canvas includeAttribute: TextEmphasis bold in: [  ].
+	canvas includeAttribute: TextEmphasis bold in: [  ]].
 	"	on: Exception
 		do: [ self visitChildrenOf: aFigure ]. pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
 	canvas
