@@ -51,3 +51,13 @@ MicPathResolverTest >> testResolveRelativePath [
 	self assert: mic children second children first isRelativeFilePath not
 	
 ]
+
+{ #category : #tests }
+MicPathResolverTest >> testResolveRelativePathWithParse [
+	| mic |
+	mic := parser parse: '![caption](file://toto.png)'.
+	self assert: mic children first children first isRelativeFilePath.
+	resolver visit: mic.
+	self assert: mic children first children first isRelativeFilePath not
+	
+]
