@@ -31,7 +31,7 @@ MicDumperTest >> factory: aFactory [
 MicDumperTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
-	visitor := MicDullDumper new.
+	visitor := MicDumper new.
 	parser := MicroDownParser new
 ]
 
