@@ -1,9 +1,6 @@
 Class {
 	#name : #MicCodeblockEvaluatorTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'replacement'
-	],
 	#category : #'Microdown-Evaluator-Tests'
 }
 
