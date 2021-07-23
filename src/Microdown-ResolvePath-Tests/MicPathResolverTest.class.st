@@ -28,6 +28,7 @@ MicPathResolverTest >> testResolveNotRelativePath [
 ![caption](file:///folder/image.png)' ].
 
 	mic := parser parseFile: file.
+	resolver visit: mic.
 	urlBefore := mic children second children first url asString.
 	self assert: mic children second children first isRelativeFilePath not.
 	
