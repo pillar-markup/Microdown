@@ -62,7 +62,7 @@ MicFigureBlock >> isImageFile [
 
 	url asString ifNil: [^false].
 	^#('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
-		includes: url asString asFileReference extension asLowercase
+		includes: url path asFileReference extension asLowercase
 ]
 
 { #category : #testing }
