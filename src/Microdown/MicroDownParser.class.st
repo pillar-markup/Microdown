@@ -658,6 +658,7 @@ MicroDownParser >> parse: aStreamOrString [
 	[ current = root ]
 		whileFalse: [ current closeMe.
 			current := current parent ].
+	self resolver visit: root.
 	^ root
 ]
 
@@ -671,6 +672,7 @@ MicroDownParser >> parseFile: aFileReference [
 			currentPath := ''.
 			aFileReference pathSegments allButLast do: [ :each | currentPath := currentPath , '/' , each ].
 			micTree propertyAt: #originPath put: aFileReference fileSystem workingDirectory / currentPath.
+			self resolver visit: micTree.
 			^ micTree ]
 		ifFalse: [ 
 			^ self parse: 'Your file is not valid' ]
@@ -680,6 +682,11 @@ MicroDownParser >> parseFile: aFileReference [
 { #category : #markups }
 MicroDownParser >> preformattedMarkup [ 
 	^ self class preformattedMarkup 
+]
+
+{ #category : #accessing }
+MicroDownParser >> resolver [
+	^ MicPathResolver new
 ]
 
 { #category : #accessing }
