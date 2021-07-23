@@ -1,5 +1,5 @@
 Class {
-	#name : #MicResolvePathTest,
+	#name : #MicPathResolverTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'resolver',
@@ -10,24 +10,27 @@ Class {
 }
 
 { #category : #running }
-MicResolvePathTest >> setUp [
+MicPathResolverTest >> setUp [
 	super setUp.
-	resolver := MicResolvePath new.
+	resolver := MicPathResolver new.
 	system := FileSystem memory workingDirectory.
 	parser := MicroDownParser new
 ]
 
 { #category : #tests }
-MicResolvePathTest >> testResolveNotRelativePath [
-| file mic urlBefore |
+MicPathResolverTest >> testResolveNotRelativePath [
+	
+	| file mic urlBefore |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](file:///folder/image.png)' ].
+
 	mic := parser parseFile: file.
 	urlBefore := mic children second children first url asString.
 	self assert: mic children second children first isRelativeFilePath not.
+	
 	resolver visit: mic.
 	self assert: mic children second children first isRelativeFilePath not.
 	self assert: mic children second children first url asString equals: urlBefore
@@ -35,7 +38,7 @@ MicResolvePathTest >> testResolveNotRelativePath [
 ]
 
 { #category : #tests }
-MicResolvePathTest >> testResolveRelativePath [
+MicPathResolverTest >> testResolveRelativePath [
 | file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
