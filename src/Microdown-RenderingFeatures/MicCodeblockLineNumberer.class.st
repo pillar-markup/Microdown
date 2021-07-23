@@ -1,19 +1,3 @@
-"
-This visitor create a numerotation of line for content of codeblock body.
-
-For that :
-
-```
- this is a code
- blabla
-```
-
-We obtain :
-```
- 1this is a code
- 2blabla
-```
-"
 Class {
 	#name : #MicCodeblockLineNumberer,
 	#superclass : #MicrodownVisitor,

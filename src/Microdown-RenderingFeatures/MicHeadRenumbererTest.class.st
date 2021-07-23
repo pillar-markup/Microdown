@@ -7,7 +7,7 @@ Class {
 { #category : #private }
 MicHeadRenumbererTest >> actualClass [
 
-	^ MicHeaderRenunberer
+	^ MicHeaderRenumberer
 ]
 
 { #category : #private }

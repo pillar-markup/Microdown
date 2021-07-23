@@ -1,8 +1,9 @@
 Class {
 	#name : #MicCodeblockLineNumbererTest,
-	#superclass : #PRNodeTransformerTest,
+	#superclass : #TestCase,
 	#instVars : [
-		'visitor'
+		'visitor',
+		'instance'
 	],
 	#category : #'Microdown-RenderingFeatures'
 }
@@ -20,7 +21,7 @@ MicCodeblockLineNumbererTest >> configuration [
 { #category : #running }
 MicCodeblockLineNumbererTest >> setUp [
 	super setUp.
-	instance := self actualInstance.
+	instance := self actualClass new.
 	visitor := MicCodeblockLineNumberer new.
 	visitor configuration: self configuration
 ]

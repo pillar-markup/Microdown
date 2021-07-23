@@ -1,8 +1,5 @@
-"
-This visitor do a reunbering of Header which can use to do LaTeX with Microdown
-"
 Class {
-	#name : #MicHeaderRenunberer,
+	#name : #MicHeaderRenumberer,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'configuration'
@@ -11,7 +8,7 @@ Class {
 }
 
 { #category : #execution }
-MicHeaderRenunberer class >> executeOn: aContext [
+MicHeaderRenumberer class >> executeOn: aContext [
 
 	self new
 		configuration: aContext configuration;
@@ -20,30 +17,32 @@ MicHeaderRenunberer class >> executeOn: aContext [
 ]
 
 { #category : #accessing }
-MicHeaderRenunberer >> configuration [
+MicHeaderRenumberer >> configuration [
 
 	configuration
 ]
 
 { #category : #accessing }
-MicHeaderRenunberer >> configuration: anObject [
+MicHeaderRenumberer >> configuration: anObject [
 
 	configuration := anObject.
 ]
 
 { #category : #visiting }
-MicHeaderRenunberer >> visit: aMicRoot [
+MicHeaderRenumberer >> visit: aMicRoot [
 
 	| conf |
-	conf := ConfigurationForMicrodown newFromDictionary: aMicRoot properties.
+	"conf := ConfigurationForMicrodown newFromDictionary: aMicRoot properties."
+	conf := MicMinimalConfiguration new.
 	conf parent: configuration.
 	self configuration: conf.
 	super visit: aMicRoot.
+	
 	^ aMicRoot
 ]
 
 { #category : #visiting }
-MicHeaderRenunberer >> visitHeader: aHeader [
+MicHeaderRenumberer >> visitHeader: aHeader [
 
 	aHeader level: aHeader level + configuration headingLevelOffset
 ]
