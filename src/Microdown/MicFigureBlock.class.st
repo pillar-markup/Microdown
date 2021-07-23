@@ -45,7 +45,6 @@ MicFigureBlock >> closeMe [
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
 	caption := self inlineParse: substring.
-	self resolver visit: self
 	
 	
 ]
