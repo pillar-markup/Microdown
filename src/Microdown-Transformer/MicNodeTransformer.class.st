@@ -93,7 +93,3 @@ MicNodeTransformer >> visitRoot: aGroup [
 					self visit: child.
 					replacement pop]). 
 ]
-
-{ #category : #execution }
-MicNodeTransformer >> visitText: aText [
-]
