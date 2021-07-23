@@ -1,23 +1,30 @@
-"
-I'm a super simple configuration object. I exposed a subset of the configuration of Pillar configuration objects.
-I'm a kind of configuration mock for aspects that are tested.
-
-When Microdown is used in Pillar, the PRConfiguration will be used instead of this one. 
-
-"
 Class {
 	#name : #MicMinimalConfiguration,
 	#superclass : #Object,
 	#instVars : [
-		'newLine'
+		'newLine',
+		'headingLevelOffset'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : #'Microdown-Utils'
 }
+
+{ #category : #accessing }
+MicMinimalConfiguration >> headingLevelOffset [
+
+	^ headingLevelOffset
+]
+
+{ #category : #accessing }
+MicMinimalConfiguration >> headingLevelOffset: anObject [
+
+	headingLevelOffset := anObject
+]
 
 { #category : #initialization }
 MicMinimalConfiguration >> initialize [ 
 	super initialize.
-	newLine := String cr
+	newLine := String cr.
+	headingLevelOffset := 0
 ]
 
 { #category : #accessing }
