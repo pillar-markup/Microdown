@@ -1,3 +1,6 @@
+"
+I'm a little wrapper on stream to provide a nicer API. In particular I help not hardcoding line ending everywhere.
+"
 Class {
 	#name : #MicOutputStream,
 	#superclass : #Object,
@@ -5,15 +8,8 @@ Class {
 		'stream',
 		'configuration'
 	],
-	#category : #'Microdown - HTML'
+	#category : #'Microdown-Utils'
 }
-
-{ #category : #'instance creation' }
-MicOutputStream class >> on: aWriteStream [ 
-	^ self new
-		setStream: aWriteStream;
-		yourself
-]
 
 { #category : #streaming }
 MicOutputStream >> << anObject [
@@ -23,13 +19,13 @@ MicOutputStream >> << anObject [
 ]
 
 { #category : #accessing }
-MicOutputStream >> configuration [
-	^ configuration ifNil: [ configuration := ConfigurationForMicrodown new ]
+MicOutputStream >> configuration [ 
+	^ configuration
 ]
 
 { #category : #accessing }
 MicOutputStream >> configuration: aConfiguration [
-	^ configuration := aConfiguration
+	configuration := aConfiguration 
 ]
 
 { #category : #streaming }
@@ -40,6 +36,12 @@ MicOutputStream >> contents [
 { #category : #accessing }
 MicOutputStream >> flush [
 	stream flush
+]
+
+{ #category : #initialization }
+MicOutputStream >> initialize [ 
+	super initialize.
+	configuration := MicMinimalConfiguration new.
 ]
 
 { #category : #testing }

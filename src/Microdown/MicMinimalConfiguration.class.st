@@ -5,7 +5,7 @@ Class {
 		'newLine',
 		'headingLevelOffset'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : #'Microdown-Utils'
 }
 
 { #category : #accessing }
