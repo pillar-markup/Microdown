@@ -45,6 +45,7 @@ MicFigureBlock >> closeMe [
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
 	caption := self inlineParse: substring.
+	self resolver visit: self
 	
 	
 ]
@@ -109,4 +110,9 @@ MicFigureBlock >> printOn: aStream [
 { #category : #accessing }
 MicFigureBlock >> query [
 	^ url query
+]
+
+{ #category : #accessing }
+MicFigureBlock >> resolver [
+	MicPathResolver new
 ]
