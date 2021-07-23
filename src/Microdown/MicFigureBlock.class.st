@@ -113,5 +113,5 @@ MicFigureBlock >> query [
 
 { #category : #accessing }
 MicFigureBlock >> resolver [
-	MicPathResolver new
+	^ MicPathResolver new
 ]
