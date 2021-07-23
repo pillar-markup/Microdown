@@ -8,6 +8,12 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #initialization }
+MicElement >> initialize [
+	super initialize.
+	properties := OrderedDictionary new
+]
+
 { #category : #public }
 MicElement >> inlineParse: aString [
 	| inlineParser childrenCol |
