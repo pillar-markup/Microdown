@@ -11,6 +11,12 @@ Class {
 	#category : #'Microdown-Utils'
 }
 
+{ #category : #'instance creation' }
+MicOutputStream class >> on: aStream [
+
+	^ self new setStream: aStream; yourself
+]
+
 { #category : #streaming }
 MicOutputStream >> << anObject [
 	anObject isBlock
