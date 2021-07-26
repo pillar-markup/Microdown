@@ -1,6 +1,7 @@
 "
 `MicPathResolver` uses the originPath of the figure to create an absolutePath for the figure.
 The originPath is defined when we use the `MicroDownParser>>#parseFile:` else originPath takes per default the FileSystem workingDirectory.
+The `MicPathResolver` replace the  url by an absolute file path and it keep the original url in originUrl in the properties of figure
 "
 Class {
 	#name : #MicPathResolver,
