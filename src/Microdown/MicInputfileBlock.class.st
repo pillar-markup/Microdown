@@ -26,7 +26,7 @@ MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 
 { #category : #testing }
 MicInputfileBlock >> isRelativeFilePath [
-	^ (self path beginsWith: 'file:///') not
+	^ (self path beginsWith: '/') not
 ]
 
 { #category : #accessing }
