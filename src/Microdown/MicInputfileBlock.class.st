@@ -20,7 +20,7 @@ MicInputfileBlock >> accept: aVisitor [
 { #category : #accessing }
 MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 	"I search my file."
-
+	self flag: 'can be better to use the MicPathResolver'.
 	^ aConfiguration baseDirectory resolve: self path
 ]
 
