@@ -28,7 +28,7 @@ MicPathResolverTest >> testResolveNotRelativePath [
 ![caption](file:///folder/image.png)' ].
 
 	mic := parser parseFile: file.
-	urlBefore := mic children second children first url asString.
+	urlBefore := 'file:///folder/image.png'.
 	self assert: mic children second children first isRelativeFilePath not.
 	
 	self assert: mic children second children first isRelativeFilePath not.
@@ -46,10 +46,7 @@ MicPathResolverTest >> testResolveNotRelativePathWithInputfile [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=/chapters/withStyle.mic}?' ].
 
 	mic := parser parseFile: file.
-	urlBefore := mic children first children first path.
-	self assert: mic children first children first isRelativeFilePath not.
-	
-	resolver visit: mic.
+	urlBefore := '/chapters/withStyle.mic'.
 	self assert: mic children first children first isRelativeFilePath not.
 	self assert: mic children first children first path equals: urlBefore
 	
@@ -76,8 +73,6 @@ MicPathResolverTest >> testResolveRelativePathWithInputfile [
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=chapters/withStyle.mic}?' ].
 	mic := parser parseFile: file.
-	self assert: mic children first children first isRelativeFilePath.
-	resolver visit: mic.
 	self assert: mic children first children first isRelativeFilePath not
 	
 ]
