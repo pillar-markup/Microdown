@@ -27,5 +27,6 @@ MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 { #category : #accessing }
 MicInputfileBlock >> path [
 
-	^ self arguments at: 'path'
+	^ self arguments at: 'path' 
+		ifAbsent: [ ^ 'path is absent' ]
 ]
