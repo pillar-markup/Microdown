@@ -35,3 +35,9 @@ MicInputfileBlock >> path [
 	^ self arguments at: 'path' 
 		ifAbsent: [ ^ 'path is absent' ]
 ]
+
+{ #category : #accessing }
+MicInputfileBlock >> path: aPath [
+
+	arguments at: 'path' put: aPath
+]
