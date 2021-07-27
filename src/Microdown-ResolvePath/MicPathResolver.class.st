@@ -14,3 +14,11 @@ MicPathResolver >> visitFigure: aFigure [
 			ifTrue: [ aFigure url: (aFigure originPath / ( aFigure url host ,'/', aFigure url path)) asUrl ].
 	^ aFigure
 ]
+
+{ #category : #visiting }
+MicPathResolver >> visitInputfile: anInputFile [
+	anInputFile propertyAt: #originalPath put: anInputFile path.
+	 anInputFile isRelativeFilePath
+			ifTrue: [ anInputFile path: (anInputFile originPath / anInputFile path ) pathString ].
+	^ anInputFile
+]
