@@ -26,6 +26,28 @@ MicLaTeXWriterTest >> testBold [
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testCodeblock [
+	| mic |
+	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
+	self assert: (writer visit: mic) contents equals: '
+\begin{listing}
+this is a code
+\end{listing}
+'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testCodeblockWithCaption [
+	| mic |
+	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
+	self assert: (writer visit: mic) contents equals: '
+\begin{listing}[caption={Pharo is \textbf{cool}}, language=caption]
+this is a code
+\end{listing}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testItalic [
 	| mic |
