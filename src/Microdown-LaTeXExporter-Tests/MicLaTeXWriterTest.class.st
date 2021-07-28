@@ -44,6 +44,51 @@ MicLaTeXWriterTest >> testMonospace [
 '
 ]
 
+{ #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraph [
+	| mic |
+	mic := parser parse: factory paragraphSample.
+	self assert: (	writer visit: mic) contents equals: '
+Foo
+'
+]
+
+{ #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraphWithBold [
+	| mic |
+	mic := parser parse: factory paragraphBoldSample.
+	self assert: (writer visit: mic) contents equals: '
+this is a \textbf{paragraph}
+'
+]
+
+{ #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraphWithItalic [
+	| mic |
+	mic := parser parse: factory paragraphItalicSample.
+	self assert: (writer visit: mic) contents equals: '
+this is a \textit{paragraph}
+'
+]
+
+{ #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraphWithMonospace [
+	| mic |
+	mic := parser parse: factory paragraphMonospaceSample.
+	self assert: (writer visit: mic) contents equals: '
+this is a \code{paragraph}
+'
+]
+
+{ #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraphWithNested [
+	| mic |
+	mic := parser parse: factory paragraphNestedSample.
+	self assert: (writer visit: mic) contents equals: '
+this is a \textbf{\textit{paragraph}}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testStrike [
 	| mic |
