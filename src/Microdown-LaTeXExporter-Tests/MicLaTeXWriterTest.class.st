@@ -25,3 +25,30 @@ MicLaTeXWriterTest >> testBold [
 \textbf{Foo}
 '
 ]
+
+{ #category : #running }
+MicLaTeXWriterTest >> testItalic [
+	| mic |
+	mic := parser parse: factory italicFormatSample.
+	self assert: (writer visit: mic) contents equals: '
+\textit{Foo}
+'
+]
+
+{ #category : #running }
+MicLaTeXWriterTest >> testMonospace [
+	| mic |
+	mic := parser parse: factory monospaceFormatSample.
+	self assert: (writer visit: mic) contents equals: '
+\code{Foo}
+'
+]
+
+{ #category : #running }
+MicLaTeXWriterTest >> testStrike [
+	| mic |
+	mic := parser parse: factory strikethroughFormatSample.
+	self assert: (writer visit: mic) contents equals: '
+\sout{Foo}
+'
+]
