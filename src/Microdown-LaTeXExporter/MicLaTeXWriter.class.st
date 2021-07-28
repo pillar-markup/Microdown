@@ -314,13 +314,9 @@ MicLaTeXWriter >> visitParagraph: aParagraph [
 MicLaTeXWriter >> visitQuote: aQuote [
 	canvas environment
 		name: 'verbatim';
-		with: [ 
-					self
-						writeRawDuring: [ 
-							aQuote children
-								do: [ :child | 
-									self visit: child.
-									canvas newLine ] ] ]
+		with: [ aQuote children do: [ :child | 
+						self visit: child.
+						canvas newLine ] ]
 ]
 
 { #category : #'inline - blocks' }

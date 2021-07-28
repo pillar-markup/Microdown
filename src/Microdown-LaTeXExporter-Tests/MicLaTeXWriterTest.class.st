@@ -89,6 +89,17 @@ this is a \textbf{\textit{paragraph}}
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testQuote [
+	| mic |
+	mic := parser parse: (factory quoteSample).
+	self assert: (writer visit: mic) contents equals: '
+\begin{verbatim}
+Foo
+\end{verbatim}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testStrike [
 	| mic |
