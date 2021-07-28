@@ -99,6 +99,25 @@ MicLaTeXWriterTest >> testItalic [
 '
 ]
 
+{ #category : #'tests - references' }
+MicLaTeXWriterTest >> testLink [
+	| mic |
+	mic := parser parse: factory linkSample.
+	self assert: (writer visit: mic) contents equals: '
+\href{/anUrl}{Foo}\footnote{\url{/anUrl}}
+'
+]
+
+{ #category : #'tests - references' }
+MicLaTeXWriterTest >> testLinkBold [
+	| mic |
+	self flag: 'caption do not use bold in the caption'.
+	mic := parser parse: factory linkBoldSample.
+	self assert: (writer visit: mic) contents equals: '
+\href{/anUrl}{**Foo**}\footnote{\url{/anUrl}}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testMonospace [
 	| mic |
