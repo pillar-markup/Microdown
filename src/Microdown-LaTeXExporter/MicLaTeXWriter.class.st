@@ -78,6 +78,15 @@ MicLaTeXWriter >> getLevelFor: aHeader [
 	^ aHeader level
 ]
 
+{ #category : #blocks }
+MicLaTeXWriter >> getStringForAll: aCollection [
+	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
+		| visitor |
+		visitor := self class new.
+		aCollection do: [ :object | visitor visit: object ].
+		^ visitor contents
+]
+
 { #category : #'visiting-document' }
 MicLaTeXWriter >> getTypeOfSectionFor: aHeader [
 	| sections level section |
@@ -189,18 +198,16 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	| env parameters |
 	parameters := OrderedCollection new.
 	aCodeBlock hasCaption
-		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock caption children), '}' ].
-	aCodeBlock hasLabel
-		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
-	(self languageForScript: aCodeBlock) isSyntaxHighlightingPossible
-		ifTrue:
-			[ parameters add: 'language=' , (self languageForScript: aCodeBlock) printString ].
+		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
+	aCodeBlock language
+		ifNotEmpty:
+			[ parameters add: 'language=' , aCodeBlock language asString ].
 	env := canvas environment
 		name: 'listing';
 		yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
 	env
-		with: [ self writeRawDuring: [ super visitCode: aCodeBlock ].
+		with: [ canvas nextPutAllLines: aCodeBlock body.
 			canvas newLine ]
 ]
 
