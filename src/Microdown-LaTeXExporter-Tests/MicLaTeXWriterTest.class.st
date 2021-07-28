@@ -44,6 +44,42 @@ MicLaTeXWriterTest >> testMonospace [
 '
 ]
 
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testOrderedList [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{enumerate}
+\item first
+\item second
+\end{enumerate}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testOrderedListBold [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsBoldSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{enumerate}
+\item \textbf{first}
+\item second
+\end{enumerate}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testOrderedListNested [
+	| mic |
+	mic := parser parse: factory orderedListWithTwoItemsNestedSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{enumerate}
+\item \textbf{\textit{first}}
+\item second
+\end{enumerate}
+'
+]
+
 { #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraph [
 	| mic |
@@ -106,5 +142,41 @@ MicLaTeXWriterTest >> testStrike [
 	mic := parser parse: factory strikethroughFormatSample.
 	self assert: (writer visit: mic) contents equals: '
 \sout{Foo}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testUnorderedList [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{itemize}
+\item Foo
+\item Bar
+\end{itemize}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testUnorderedListBold [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsBoldSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{itemize}
+\item \textbf{Foo}
+\item Bar
+\end{itemize}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testUnorderedListNested [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsNestedSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{itemize}
+\item \sout{\textit{Foo}}
+\item Bar
+\end{itemize}
 '
 ]
