@@ -17,7 +17,7 @@ MicLaTeXWriterTest >> setUp [
 	factory := MicMicrodownSnippetFactory new
 ]
 
-{ #category : #running }
+{ #category : #'tests - formats' }
 MicLaTeXWriterTest >> testBold [
 	| mic |
 	mic := parser parse: factory boldFormatSample.
@@ -26,7 +26,7 @@ MicLaTeXWriterTest >> testBold [
 '
 ]
 
-{ #category : #running }
+{ #category : #'tests - formats' }
 MicLaTeXWriterTest >> testItalic [
 	| mic |
 	mic := parser parse: factory italicFormatSample.
@@ -35,7 +35,7 @@ MicLaTeXWriterTest >> testItalic [
 '
 ]
 
-{ #category : #running }
+{ #category : #'tests - formats' }
 MicLaTeXWriterTest >> testMonospace [
 	| mic |
 	mic := parser parse: factory monospaceFormatSample.
@@ -44,7 +44,7 @@ MicLaTeXWriterTest >> testMonospace [
 '
 ]
 
-{ #category : #running }
+{ #category : #'tests - formats' }
 MicLaTeXWriterTest >> testStrike [
 	| mic |
 	mic := parser parse: factory strikethroughFormatSample.
