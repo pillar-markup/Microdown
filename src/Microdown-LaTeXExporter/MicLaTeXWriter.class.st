@@ -2,7 +2,8 @@ Class {
 	#name : #MicLaTeXWriter,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
-		'canvas'
+		'canvas',
+		'stream'
 	],
 	#category : #'Microdown-LaTeXExporter'
 }
@@ -40,13 +41,18 @@ MicLaTeXWriter class >> writerName [
 
 { #category : #accessing }
 MicLaTeXWriter >> canvasClass [
-	^ PRLaTeXCanvas
+	^ PRLaTeXCanvas initialize
 ]
 
 { #category : #templating }
 MicLaTeXWriter >> chapterTemplateName [
 	
 	^ 'latexChapterTemplate'
+]
+
+{ #category : #accessing }
+MicLaTeXWriter >> contents [
+	^ stream contents
 ]
 
 { #category : #helpers }
@@ -87,6 +93,13 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
 		parameter: [ canvas raw: (aFigure localFileOrExternalReference) ]
+]
+
+{ #category : #initialization }
+MicLaTeXWriter >> initialize [ 
+	super initialize.
+	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	canvas := self canvasClass on: stream
 ]
 
 { #category : #protected }
@@ -353,6 +366,11 @@ MicLaTeXWriter >> visitTableRow: aRow [
 		ifTrue: [ 
 			canvas command name: 'midrule'.
 			canvas newLine ]
+]
+
+{ #category : #visiting }
+MicLaTeXWriter >> visitText: aText [
+	canvas nextPutAllLines: aText substring
 ]
 
 { #category : #'visiting-document' }
