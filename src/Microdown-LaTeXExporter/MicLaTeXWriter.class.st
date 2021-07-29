@@ -338,14 +338,14 @@ MicLaTeXWriter >> visitStrike: aStrike [
 MicLaTeXWriter >> visitTable: aTable [
 	| environment |
 	environment := canvas environment name: self tabularEnvironment.
-	aTable rowCount = 0
+	aTable rows size = 0
 		ifTrue: [ environment with: [  ].
 			^ self ].
 	environment parameter: aTable latexSpecification.
 	environment
 		with: [ canvas command name: 'toprule'.
 			canvas newLine.
-			super visitTable: aTable.
+			aTable rows doWithIndex: [ :row :i | self visitTableRow: row with: aTable hasHeader at: i].
 			canvas command name: 'bottomrule'.
 			canvas newLine ]
 ]
@@ -363,12 +363,29 @@ MicLaTeXWriter >> visitTableCell: aCell [
 ]
 
 { #category : #blocks }
+MicLaTeXWriter >> visitTableCell: aCell with: aBool [
+	self writeTableCellContent: aCell with: aBool 
+]
+
+{ #category : #blocks }
 MicLaTeXWriter >> visitTableRow: aRow [
 	self visitAll: aRow children separatedBy: [ canvas raw: ' & ' ].
 	canvas
 		raw: ' \\';
 		newLine.
 	aRow isHeading
+		ifTrue: [ 
+			canvas command name: 'midrule'.
+			canvas newLine ]
+]
+
+{ #category : #blocks }
+MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
+	aRow do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] separatedBy: [ canvas raw: ' & ' ].
+	canvas
+		raw: ' \\';
+		newLine.
+	(aBool and: [ anIndex = 1 ])
 		ifTrue: [ 
 			canvas command name: 'midrule'.
 			canvas newLine ]
@@ -423,4 +440,14 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 				name: 'textbf';
 				parameter: [ super visitTableCell: aCell ] ]
 		ifFalse: [ super visitTableCell: aCell ]
+]
+
+{ #category : #blocks }
+MicLaTeXWriter >> writeTableCellContent: aCell with: aBool [
+	^ aBool
+		ifTrue: [ 
+			canvas command
+				name: 'textbf';
+				parameter: [ self visitAll: aCell ] ]
+		ifFalse: [ self visitAll: aCell ]
 ]
