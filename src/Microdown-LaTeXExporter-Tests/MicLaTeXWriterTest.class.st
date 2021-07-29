@@ -299,6 +299,35 @@ MicLaTeXWriterTest >> testStrike [
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testTable [
+	| mic |
+	mic := parser parse: (factory tableSample).
+	self assert: (writer visit: mic) contents equals: '
+\begin{tabular}{ll}
+\toprule
+\textbf{aaab} & \textbf{jkhjh} \\
+\midrule
+bar & rab \\
+\bottomrule
+\end{tabular}
+'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testTableWhithoutHeader [
+	| mic |
+	mic := parser parse: (factory simpleTableWithoutHeaderTable).
+	self assert: (writer visit: mic) contents equals: '
+\begin{tabular}{ll}
+\toprule
+aaab & jkhjh \\
+bar & rab \\
+\bottomrule
+\end{tabular}
+'
+]
+
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedList [
 	| mic |
