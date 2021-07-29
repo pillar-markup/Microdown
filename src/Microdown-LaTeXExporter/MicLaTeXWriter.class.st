@@ -202,6 +202,8 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	aCodeBlock language
 		ifNotEmpty:
 			[ parameters add: 'language=' , aCodeBlock language asString ].
+	(aCodeBlock arguments includesKey: 'label')
+		ifTrue: [ parameters add: 'label=' , (aCodeBlock arguments at: 'label') ].
 	env := canvas environment
 		name: 'listing';
 		yourself.
