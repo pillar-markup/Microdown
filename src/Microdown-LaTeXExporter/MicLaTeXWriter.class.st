@@ -233,7 +233,8 @@ MicLaTeXWriter >> visitFigure: aFigure [
 						parameter: [ 
 							self
 								writeCaptionOfExternalLink: aFigure;
-								writeLabelOfExternalLink: aFigure ] ] ]
+								writeLabelOfExternalLink: aFigure ].
+							canvas newLine ] ]
 ]
 
 { #category : #'inline - blocks' }
