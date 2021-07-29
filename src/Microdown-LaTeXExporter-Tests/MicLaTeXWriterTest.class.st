@@ -151,6 +151,16 @@ MicLaTeXWriterTest >> testHeaderLevel6 [
 	self assert: (writer visit: mic) contents equals: '\paragraph{Foo}'
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testHorizontalLine [
+	| mic |
+	mic := parser parse: (factory horizontalLineSample).
+	self assert: (writer visit: mic) contents equals: '
+
+\rule{\textwidth}{0.1pt}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testItalic [
 	| mic |
