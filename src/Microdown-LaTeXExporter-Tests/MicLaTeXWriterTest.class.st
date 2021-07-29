@@ -27,6 +27,15 @@ MicLaTeXWriterTest >> testBold [
 ]
 
 { #category : #tests }
+MicLaTeXWriterTest >> testCitation [
+	| mic |
+	mic := parser parse: '?{citation|ref=Pharo is cool}?'.
+	self assert: (writer visit: mic) contents equals: '
+\cite{Pharo is cool}
+'
+]
+
+{ #category : #tests }
 MicLaTeXWriterTest >> testCodeblock [
 	| mic |
 	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
