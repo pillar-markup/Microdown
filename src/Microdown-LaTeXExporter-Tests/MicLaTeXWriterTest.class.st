@@ -59,6 +59,38 @@ this is a code
 '
 ]
 
+{ #category : #'tests - references' }
+MicLaTeXWriterTest >> testFigure [
+	| mic |
+	mic := parser parse: factory figureSample.
+	self assert: (writer visit: mic) contents equals: '
+
+\begin{figure}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{/anUrl?label=figureTest&size=80}\caption{\label{figureTest}}
+\end{center}
+\end{figure}
+
+'
+]
+
+{ #category : #'tests - references' }
+MicLaTeXWriterTest >> testFigureBold [
+	| mic |
+	mic := parser parse: factory figureBoldSample.
+	self assert: (writer visit: mic) contents equals: '
+
+\begin{figure}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{/anUrl?label=figureTest&size=80}\caption{\textbf{Foo}\label{figureTest}}
+\end{center}
+\end{figure}
+
+'
+]
+
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel1 [
 	| mic |
