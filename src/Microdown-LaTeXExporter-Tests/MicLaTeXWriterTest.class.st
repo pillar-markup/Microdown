@@ -91,6 +91,15 @@ MicLaTeXWriterTest >> testFigureBold [
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testFootnote [
+	| mic |
+	mic := parser parse: (factory footnoteSample).
+	self assert: (writer visit: mic) contents equals: '
+\footnote{Pharo is cool}
+'
+]
+
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel1 [
 	| mic |
