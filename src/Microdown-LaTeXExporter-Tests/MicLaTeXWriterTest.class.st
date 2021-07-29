@@ -48,6 +48,17 @@ this is a code
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testCodeblockWithLabel [
+	| mic |
+	mic := parser parse: (factory codeblock: 'label=Pharo is cool' body: 'this is a code').
+	self assert: (writer visit: mic) contents equals: '
+\begin{listing}[language=label, label=Pharo is cool]
+this is a code
+\end{listing}
+'
+]
+
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel1 [
 	| mic |
