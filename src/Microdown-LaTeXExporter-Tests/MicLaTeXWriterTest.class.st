@@ -113,42 +113,48 @@ MicLaTeXWriterTest >> testFootnote [
 MicLaTeXWriterTest >> testHeaderLevel1 [
 	| mic |
 	mic := parser parse: factory headerLevel1Sample.
-	self assert: (writer visit: mic) contents equals: '\part{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\part{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel2 [
 	| mic |
 	mic := parser parse: factory headerLevel2Sample.
-	self assert: (writer visit: mic) contents equals: '\chapter{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\chapter{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel3 [
 	| mic |
 	mic := parser parse: factory headerLevel3Sample.
-	self assert: (writer visit: mic) contents equals: '\section{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\section{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel4 [
 	| mic |
 	mic := parser parse: factory headerLevel4Sample.
-	self assert: (writer visit: mic) contents equals: '\subsection{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\subsection{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel5 [
 	| mic |
 	mic := parser parse: factory headerLevel5Sample.
-	self assert: (writer visit: mic) contents equals: '\subsubsection{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\subsubsection{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel6 [
 	| mic |
 	mic := parser parse: factory headerLevel6Sample.
-	self assert: (writer visit: mic) contents equals: '\paragraph{Foo}'
+	self assert: (writer visit: mic) contents equals: '
+\paragraph{Foo}'
 ]
 
 { #category : #tests }

@@ -245,6 +245,7 @@ MicLaTeXWriter >> visitFootnote: aFootnote [
 { #category : #blocks }
 MicLaTeXWriter >> visitHeader: aHeader [
 	| section |
+	canvas newLine.
 	section := self getTypeOfSectionFor: aHeader.
 	canvas command
 		name: section;
