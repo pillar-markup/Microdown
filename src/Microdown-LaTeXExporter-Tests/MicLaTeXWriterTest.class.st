@@ -369,3 +369,13 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 \end{itemize}
 '
 ]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testUrlsAreProtected [
+	self assert: (writer protectUrl: '#') equals: '\#'.
+	self assert: (writer protectUrl: '~') equals: '~'.
+	self assert: (writer protectUrl: '&') equals: '&'.
+	self assert: (writer protectUrl: '%') equals: '\%'.
+	self assert: (writer protectUrl: '\') equals: '\\'.
+	self assert: (writer protectUrl: '\~#%') equals: '\\~\#\%'.
+]
