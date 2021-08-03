@@ -208,6 +208,14 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 '
 ]
 
+{ #category : #format }
+MicMicrodownSnippetFactory >> fileFigureSample [
+	^ '
+
+![Foo](file://image.png/?label=figureTest&size=80)
+'
+]
+
 { #category : #anchor }
 MicMicrodownSnippetFactory >> footnoteSample [
 	^ MicAnnotationOpenerDelimiter markup ,'footnote|note=Pharo is cool', MicAnnotationCloserDelimiter markup
