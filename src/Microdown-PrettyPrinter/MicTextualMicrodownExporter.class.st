@@ -161,7 +161,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
 	builder newLine.
 	builder
-		figureURL: aFigure url
+		figureURL: aFigure originUrl
 		withCaption: [ super visitFigure: aFigure ]
 		
 ]
