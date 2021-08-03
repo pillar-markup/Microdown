@@ -315,6 +315,13 @@ MicMicrodownSnippetFactory >> initialize [
 	parserClass := MicroDownParser
 ]
 
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> inputfileSample [
+	^ '
+?{inputfile | path=Chapters/text.mic}?
+'
+]
+
 { #category : #format }
 MicMicrodownSnippetFactory >> italicFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass italicMarkup
