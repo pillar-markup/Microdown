@@ -30,6 +30,12 @@ MicInputfileBlock >> isRelativeFilePath [
 ]
 
 { #category : #accessing }
+MicInputfileBlock >> originalPath [
+	^ properties at: #originalPath ifAbsent: [ 
+		^ self path ]
+]
+
+{ #category : #accessing }
 MicInputfileBlock >> path [
 
 	^ self arguments at: 'path' 
