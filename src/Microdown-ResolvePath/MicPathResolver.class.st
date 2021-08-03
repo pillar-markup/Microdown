@@ -21,8 +21,9 @@ MicPathResolver >> visitFigure: aFigure [
 
 { #category : #visiting }
 MicPathResolver >> visitInputfile: anInputFile [
-	anInputFile propertyAt: #originalPath put: anInputFile path.
+	anInputFile path: (anInputFile propertyAt: #originalPath  ifAbsent: [ 
+		anInputFile propertyAt: #originalPath put: anInputFile path ]).
 	 anInputFile isRelativeFilePath
-			ifTrue: [ anInputFile path: (anInputFile originPath / anInputFile path ) pathString ].
+			ifTrue: [ anInputFile path: (anInputFile originPath / anInputFile originalPath ) pathString ].
 	^ anInputFile
 ]
