@@ -1,15 +1,11 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'MicrodownCommentRendererDev',
+      #baseline : 'Microdown',
       #onConflict : #useIncoming,
-
+      #ignoreImage : true,
       #directory : 'src',
       #platforms : [ #pharo ]
     }
-  ],
-  #testing : {
-      #failOnZeroTests : false
- } 
+  ]
 }
-
