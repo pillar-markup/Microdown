@@ -81,6 +81,12 @@ MicFigureBlock >> openingDelimiter [
  	^ MicFigureNameOpenerDelimiter markup
 ]
 
+{ #category : #'as yet unclassified' }
+MicFigureBlock >> originUrl [
+	^ self properties at: #originUrl ifAbsent: [ 
+		^ url ]
+]
+
 { #category : #accessing }
 MicFigureBlock >> parameters [
 	self deprecated: 'Use arguments instead' transformWith: '`@rec parameters' -> '`@rec arguments'.
