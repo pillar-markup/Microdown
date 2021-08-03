@@ -160,6 +160,11 @@ MicTextualMicrodownExporterTest >> testFigureWithStrike [
 	self verifyObtain: factory figureStrikeSample
 ]
 
+{ #category : #'tests - figure' }
+MicTextualMicrodownExporterTest >> testFileFigure [
+	self verifyObtain: factory fileFigureSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderNewLine [
 
