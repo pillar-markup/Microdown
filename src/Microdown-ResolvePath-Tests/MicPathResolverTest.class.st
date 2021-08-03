@@ -45,7 +45,8 @@ MicPathResolverTest >> testResolveRelativePath [
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](file://figures/image.png)' ].
 	mic := parser parseFile: file.
-	self assert: mic children second children first isRelativeFilePath not
+	self assert: mic children second children first isRelativeFilePath not.
+	self assert: mic children second children first url asString equals: 'file:///folder/figures/image.png'
 	
 ]
 
