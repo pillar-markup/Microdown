@@ -207,6 +207,11 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 	self verifyObtain: factory horizontalLineSample
 ]
 
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testInputfile [
+	self verifyObtain: factory inputfileSample
+]
+
 { #category : #'tests - link' }
 MicTextualMicrodownExporterTest >> testLink [
 	self verifyObtain: factory linkSample
