@@ -12,7 +12,8 @@ Class {
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
 	| originUrl |
-	originUrl := aFigure url.
+	originUrl := aFigure originUrl.
+	aFigure url: originUrl.
 	(aFigure url scheme = 'file' and: [ aFigure isRelativeFilePath  ])
 			ifTrue: [ aFigure url:(aFigure originPath / ( aFigure url host ,'/', aFigure url path)) asUrl ].
 	aFigure propertyAt: #originUrl put: originUrl.
