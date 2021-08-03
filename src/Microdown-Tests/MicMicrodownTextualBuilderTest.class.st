@@ -276,6 +276,14 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 	self assert: (builder horizontalLine) contents equals: parser horizontalLineMarkup, String cr
 ]
 
+{ #category : #'tests - anchor' }
+MicMicrodownTextualBuilderTest >> testInputfile [
+
+	self 
+		assert: (builder inputfile: 'Chapters/image.png') contents 
+		equals: MicAnnotationOpenerDelimiter markup,'inputfile | path=Chapters/image.png',MicAnnotationCloserDelimiter markup
+]
+
 { #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testItalic [
 
