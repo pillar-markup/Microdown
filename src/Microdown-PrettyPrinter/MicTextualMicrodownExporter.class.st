@@ -182,6 +182,13 @@ MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 ]
 
 { #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitInputfile: anInputfile [
+
+	
+	 builder inputfile: anInputfile originalPath
+]
+
+{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitItalic: anItalicFormatBlock [
 
 	builder italic: [ super visitItalic: anItalicFormatBlock ]
