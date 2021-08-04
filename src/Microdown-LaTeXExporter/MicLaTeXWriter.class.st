@@ -318,9 +318,17 @@ MicLaTeXWriter >> visitMonospace: aMonospace [
 
 { #category : #blocks }
 MicLaTeXWriter >> visitOrderedList: aList [
-	canvas environment
-		name: 'enumerate';
-		with: [ super visitOrderedList: aList ]
+	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
+	canvas newLine.
+	self tabList.
+	canvas raw: '\begin{enumerate}'.
+	canvas newLine.
+	nbListTab := nbListTab + 1.
+	super visitOrderedList: aList.
+	nbListTab := nbListTab - 1.
+	self tabList.
+	canvas raw: '\end{enumerate}'.
+	canvas newLine.
 ]
 
 { #category : #blocks }
