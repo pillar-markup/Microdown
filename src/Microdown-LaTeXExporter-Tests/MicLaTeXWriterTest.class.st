@@ -370,6 +370,24 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 '
 ]
 
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testUnorderedNestedListNested [
+	| mic |
+	mic := parser parse: factory nestedUnorderedListSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{itemize}
+\item Foo
+\item Bar
+\begin{itemize}
+\item B
+\item a
+\item r
+\end{itemize}
+
+\end{itemize}
+'
+]
+
 { #category : #tests }
 MicLaTeXWriterTest >> testUrlsAreProtected [
 	self assert: (writer protectUrl: '#') equals: '\#'.

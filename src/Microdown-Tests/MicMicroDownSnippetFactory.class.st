@@ -437,6 +437,17 @@ MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 	^ self surround: (self surround: 'Foo' withMarkup: self parserClass boldMarkup) withMarkup: self parserClass italicMarkup  
 ]
 
+{ #category : #list }
+MicMicrodownSnippetFactory >> nestedUnorderedListSample [
+	^ '
+- Foo
+- Bar
+		- B
+		- a
+		- r
+'
+]
+
 { #category : #utils }
 MicMicrodownSnippetFactory >> newLine [
 	^  String cr
