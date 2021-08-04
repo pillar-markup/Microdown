@@ -340,8 +340,8 @@ MicLaTeXWriterTest >> testUnorderedList [
 	mic := parser parse: factory unorderedListWithTwoItemsSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{itemize}
-\item Foo
-\item Bar
+    \item Foo
+    \item Bar
 \end{itemize}
 '
 ]
@@ -352,8 +352,8 @@ MicLaTeXWriterTest >> testUnorderedListBold [
 	mic := parser parse: factory unorderedListWithTwoItemsBoldSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{itemize}
-\item \textbf{Foo}
-\item Bar
+    \item \textbf{Foo}
+    \item Bar
 \end{itemize}
 '
 ]
@@ -364,8 +364,8 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 	mic := parser parse: factory unorderedListWithTwoItemsNestedSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{itemize}
-\item \sout{\textit{Foo}}
-\item Bar
+    \item \sout{\textit{Foo}}
+    \item Bar
 \end{itemize}
 '
 ]
@@ -376,13 +376,13 @@ MicLaTeXWriterTest >> testUnorderedNestedListNested [
 	mic := parser parse: factory nestedUnorderedListSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{itemize}
-\item Foo
-\item Bar
-\begin{itemize}
-\item B
-\item a
-\item r
-\end{itemize}
+    \item Foo
+    \item Bar
+    \begin{itemize}
+        \item B
+        \item a
+        \item r
+    \end{itemize}
 
 \end{itemize}
 '
