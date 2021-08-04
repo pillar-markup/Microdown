@@ -17,6 +17,22 @@ MicLaTeXWriterTest >> setUp [
 	factory := MicMicrodownSnippetFactory new
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testAnchor [
+	| mic |
+	mic := parser parse: (factory anchorSample).
+	self assert: (writer visit: mic) contents equals: '\label{test}'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testAnchorReference [
+	| mic |
+	mic := parser parse: (factory anchorReferenceSample).
+	self assert: (writer visit: mic) contents equals: '
+\ref{Foo}
+'
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testBold [
 	| mic |
