@@ -210,8 +210,8 @@ MicLaTeXWriterTest >> testOrderedList [
 	mic := parser parse: factory orderedListWithTwoItemsSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{enumerate}
-\item first
-\item second
+    \item first
+    \item second
 \end{enumerate}
 '
 ]
@@ -222,8 +222,8 @@ MicLaTeXWriterTest >> testOrderedListBold [
 	mic := parser parse: factory orderedListWithTwoItemsBoldSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{enumerate}
-\item \textbf{first}
-\item second
+    \item \textbf{first}
+    \item second
 \end{enumerate}
 '
 ]
@@ -234,9 +234,27 @@ MicLaTeXWriterTest >> testOrderedListNested [
 	mic := parser parse: factory orderedListWithTwoItemsNestedSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{enumerate}
-\item \textbf{\textit{first}}
-\item second
+    \item \textbf{\textit{first}}
+    \item second
 \end{enumerate}
+'
+]
+
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testOrderedNestedListNested [
+	| mic |
+	mic := parser parse: factory nestedOrderedListSample.
+	self assert: (writer visit: mic) contents equals: '
+\begin{itemize}
+    \item Foo
+    \item Bar
+    \begin{enumerate}
+        \item B
+        \item a
+        \item r
+    \end{enumerate}
+
+\end{itemize}
 '
 ]
 

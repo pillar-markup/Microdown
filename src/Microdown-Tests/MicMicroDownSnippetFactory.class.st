@@ -438,6 +438,17 @@ MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> nestedOrderedListSample [
+	^ '
+- Foo
+- Bar
+		1. B
+		1. a
+		1. r
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 	^ '
 - Foo
