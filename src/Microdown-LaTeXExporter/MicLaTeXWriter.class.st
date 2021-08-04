@@ -143,7 +143,7 @@ MicLaTeXWriter >> tabularEnvironment [
 MicLaTeXWriter >> visitAnchor: anAnchor [
 	canvas command
 		name: 'label';
-		parameter: anAnchor name
+		parameter: anAnchor label
 ]
 
 { #category : #'inline - blocks' }
