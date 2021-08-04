@@ -3,7 +3,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'stream'
+		'stream',
+		'nbListTab'
 	],
 	#category : #'Microdown-LaTeXExporter'
 }
@@ -108,7 +109,8 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 MicLaTeXWriter >> initialize [ 
 	super initialize.
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream
+	canvas := self canvasClass on: stream.
+	nbListTab := -1
 ]
 
 { #category : #protected }
@@ -124,6 +126,12 @@ MicLaTeXWriter >> protectUrl: aString [
 { #category : #helpers }
 MicLaTeXWriter >> sectioningCommands [
 	^ #('part' 'chapter' 'section' 'subsection' 'subsubsection' 'paragraph' 'subparagraph')
+]
+
+{ #category : #blocks }
+MicLaTeXWriter >> tabList [
+
+	0 to: nbListTab do: [ :nothing | canvas raw: '    ' ]
 ]
 
 { #category : #protected }
@@ -286,6 +294,7 @@ MicLaTeXWriter >> visitLink: aLink [
 
 { #category : #blocks }
 MicLaTeXWriter >> visitListItem: anItem [
+	self tabList.
 	canvas command name: 'item'.
 	canvas space.
 	canvas raw: [ super visitListItem: anItem ].
@@ -406,9 +415,17 @@ MicLaTeXWriter >> visitUnderlineFormat: aFormat [
 
 { #category : #blocks }
 MicLaTeXWriter >> visitUnorderedList: aList [
-	canvas environment
-		name: 'itemize';
-		with: [ super visitUnorderedList: aList ]
+	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
+	canvas newLine.
+	self tabList.
+	canvas raw: '\begin{itemize}'.
+	canvas newLine.
+	nbListTab := nbListTab + 1.
+	super visitUnorderedList: aList.
+	nbListTab := nbListTab - 1.
+	self tabList.
+	canvas raw: '\end{itemize}'.
+	canvas newLine.
 ]
 
 { #category : #helpers }
