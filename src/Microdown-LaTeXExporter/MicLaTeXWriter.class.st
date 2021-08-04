@@ -71,7 +71,7 @@ MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 	canvas command
 		name: 'ref';
-		parameter: [ canvas raw: anInternalLink anchor ]
+		parameter: [ canvas raw: anInternalLink substring ]
 ]
 
 { #category : #'visiting-document' }
@@ -148,6 +148,9 @@ MicLaTeXWriter >> visitAnchor: anAnchor [
 
 { #category : #'inline - blocks' }
 MicLaTeXWriter >> visitAnchorReference: anAchorReference [
+	self flag: 'it is still the pillar method' .
+	self createLinkToLabelWithoutAlias: anAchorReference
+	"
 	(anAchorReference reference isNil or: [ self configuration separateOutputFiles not ])
 		ifTrue: [ 
 			anAchorReference hasAlias
@@ -167,14 +170,14 @@ MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 		ifFalse: [ 
 			anAchorReference hasAlias
 				ifTrue: [ 
-					self flag: #todo.	"If we don't render the link we can put it as Footer. We need to do it."
+					self flag: #todo.	""If we don't render the link we can put it as Footer. We need to do it.""
 					canvas nextPutAll: anAchorReference alias ]
 				ifFalse: [ 
 					PRLinkWarning
 						signal:
 							(PRPillarWriter write: anAchorReference)
 								,
-									' will not be exported because LaTeX doesn''t support the inter-files links. Please add an Alias to keep this internal link.' ] ]
+									' will not be exported because LaTeX doesn''t support the inter-files links. Please add an Alias to keep this internal link.' ] ]"
 ]
 
 { #category : #'visiting-document' }
