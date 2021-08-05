@@ -160,6 +160,11 @@ MicTextualMicrodownExporterTest >> testFigureWithStrike [
 	self verifyObtain: factory figureStrikeSample
 ]
 
+{ #category : #'tests - figure' }
+MicTextualMicrodownExporterTest >> testFileFigure [
+	self verifyObtain: factory fileFigureSample
+]
+
 { #category : #'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderNewLine [
 
@@ -200,6 +205,11 @@ MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testHorizontalLine [
 	self verifyObtain: factory horizontalLineSample
+]
+
+{ #category : #'tests-anchor' }
+MicTextualMicrodownExporterTest >> testInputfile [
+	self verifyObtain: factory inputfileSample
 ]
 
 { #category : #'tests - link' }

@@ -106,7 +106,7 @@ MicFileInclusion >> validateInclusionOfFile: aFileReference [
 MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	| includedFile microdownAST |
-	includedFile := topFile parent resolve: anInputFileAnnotation path.
+	includedFile := topFile / anInputFileAnnotation path.
 	self validateInclusionOfFile: includedFile.
 	 includedFile ifExists:[
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.

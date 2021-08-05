@@ -79,6 +79,11 @@ MicrodownVisitor >> visitFigure: aFigure [
 ]
 
 { #category : #visiting }
+MicrodownVisitor >> visitFootnote: aFootnote [
+	"subclassResponsibility"
+]
+
+{ #category : #visiting }
 MicrodownVisitor >> visitHeader: aHeader [
 
 	^  aHeader headerElements do: [ :each | each accept: self ]
@@ -86,6 +91,11 @@ MicrodownVisitor >> visitHeader: aHeader [
 
 { #category : #visiting }
 MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitInputfile: anInputfile [
+	"subclassResponsibility"
 ]
 
 { #category : #'visiting - inline elements' }
@@ -171,6 +181,11 @@ MicrodownVisitor >> visitStrike: aFormat [
 
 	self visitChildrenOf: aFormat.
 
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitTable: aTable [
+	"subclassResponsibility"
 ]
 
 { #category : #'visiting - inline elements' }

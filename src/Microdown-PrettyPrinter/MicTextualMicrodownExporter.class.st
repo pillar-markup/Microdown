@@ -161,7 +161,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
 	builder newLine.
 	builder
-		figureURL: aFigure url
+		figureURL: aFigure originUrl
 		withCaption: [ super visitFigure: aFigure ]
 		
 ]
@@ -179,6 +179,13 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 
 	builder horizontalLine
+]
+
+{ #category : #'visit - format' }
+MicTextualMicrodownExporter >> visitInputfile: anInputfile [
+
+	
+	 builder inputfile: anInputfile originalPath
 ]
 
 { #category : #'visit - format' }

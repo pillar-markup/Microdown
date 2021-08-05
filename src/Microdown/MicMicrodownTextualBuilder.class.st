@@ -267,6 +267,15 @@ MicMicrodownTextualBuilder >> initialize [
 	
 ]
 
+{ #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> inputfile: aPathString [
+
+	self raw: MicAnnotationOpenerDelimiter markup.
+	self raw: 'inputfile | path='.
+	self raw: aPathString.
+	self raw: MicAnnotationCloserDelimiter markup
+]
+
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 

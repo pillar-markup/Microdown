@@ -208,6 +208,14 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 '
 ]
 
+{ #category : #format }
+MicMicrodownSnippetFactory >> fileFigureSample [
+	^ '
+
+![Foo](file://image.png/?label=figureTest&size=80)
+'
+]
+
 { #category : #anchor }
 MicMicrodownSnippetFactory >> footnoteSample [
 	^ MicAnnotationOpenerDelimiter markup ,'footnote|note=Pharo is cool', MicAnnotationCloserDelimiter markup
@@ -305,6 +313,13 @@ MicMicrodownSnippetFactory >> initialize [
 	
 	super initialize.
 	parserClass := MicroDownParser
+]
+
+{ #category : #'as yet unclassified' }
+MicMicrodownSnippetFactory >> inputfileSample [
+	^ '
+?{inputfile | path=Chapters/text.mic}?
+'
 ]
 
 { #category : #format }

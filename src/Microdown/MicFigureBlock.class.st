@@ -61,7 +61,7 @@ MicFigureBlock >> isImageFile [
 
 	url asString ifNil: [^false].
 	^#('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
-		includes: url asString asFileReference extension asLowercase
+		includes: url path asFileReference extension asLowercase
 ]
 
 { #category : #testing }
@@ -79,6 +79,12 @@ MicFigureBlock >> kind [
 MicFigureBlock >> openingDelimiter [
 
  	^ MicFigureNameOpenerDelimiter markup
+]
+
+{ #category : #'as yet unclassified' }
+MicFigureBlock >> originUrl [
+	^ self properties at: #originUrl ifAbsent: [ 
+		^ url ]
 ]
 
 { #category : #accessing }
@@ -109,4 +115,9 @@ MicFigureBlock >> printOn: aStream [
 { #category : #accessing }
 MicFigureBlock >> query [
 	^ url query
+]
+
+{ #category : #accessing }
+MicFigureBlock >> resolver [
+	^ MicPathResolver new
 ]
