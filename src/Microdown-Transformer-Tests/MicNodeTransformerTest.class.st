@@ -22,7 +22,7 @@ MicNodeTransformerTest >> testDeleteNode [
 this is a paragraph
 ```'.
 	self assert: mic children first class equals: MicCodeBlock.
-	transformer start: mic.
+	transformer visit: mic.
 	self assert: mic children size equals: 0
 ]
 
@@ -32,7 +32,7 @@ MicNodeTransformerTest >> testReplaceNodeByAnotherNode [
 	| mic |
 	mic := MicroDownParser new parse: 'this is a paragraph'.
 	self assert: mic children first class equals: MicParagraphBlock.
-	transformer start: mic.
+	transformer visit: mic.
 	self assert: mic children first class equals: MicTextBlock.
 	self assert: mic children first substring equals: 'test'
 ]
