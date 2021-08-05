@@ -145,7 +145,8 @@ MicCodeBlock >> label [
 MicCodeBlock >> language [
 	arguments ifNotEmpty: [ 
 		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
-		^ arguments at: #language ]
+		^ arguments at: #language ].
+	^ ''
 ]
 
 { #category : #utils }

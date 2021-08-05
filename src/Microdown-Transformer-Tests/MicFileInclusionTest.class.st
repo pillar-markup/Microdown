@@ -65,6 +65,7 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFile [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
 	micFileInclusion start: mic.
+
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
 	self assert: mic children first children third class equals: MicCodeBlock
@@ -78,7 +79,7 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFileDoesNotExist [
 	micFileInclusion := MicFileInclusion new.
 	micFileInclusion topFile: filesystem workingDirectory.
 	mic := (MicroDownParser new parse: '?{inputfile|path=anExample3.mic}?').
-	micFileInclusion start: mic.
+	micFileInclusion visit: mic.
 	self assert: mic children first children first class equals: MicInputfileBlock.
 ]
 
@@ -91,10 +92,10 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFiles [
 	micFileInclusion topFile: filesystem workingDirectory.
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
-
 ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
 	micFileInclusion start: mic.
+
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
 	self assert: mic children first children third class equals: MicCodeBlock.
@@ -112,11 +113,13 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFilesWithoutNewline
 	self generateFilesystemExample.
 	micFileInclusion := MicFileInclusion new.
 	micFileInclusion topFile: filesystem workingDirectory.
+
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
 	micFileInclusion start: mic.
+
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
 	self assert: mic children first children third class equals: MicCodeBlock.

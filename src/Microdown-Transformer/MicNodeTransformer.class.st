@@ -66,19 +66,19 @@ MicNodeTransformer >> replace: newNodes [
 ]
 
 { #category : #execution }
-MicNodeTransformer >> start: anObject [
+MicNodeTransformer >> visit: anObject [
 	super visit: anObject.
 	^ anObject
 ]
 
 { #category : #execution }
-MicNodeTransformer >> visit: aGroup [
+MicNodeTransformer >> visitAll: aGroup [
 	aGroup
 		children:
 			(aGroup children
 				flatCollect: [ :child | 
 					replacement push: {child}.
-					self visit: child.
+					self visitAll: child.
 					replacement pop]). 
 	aGroup accept: self.
 ]
@@ -90,6 +90,6 @@ MicNodeTransformer >> visitRoot: aGroup [
 			(aGroup children
 				flatCollect: [ :child | 
 					replacement push: {child}.
-					self visit: child.
+					self visitAll: child.
 					replacement pop]). 
 ]

@@ -20,7 +20,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 								eval: true; 
 								yourself);
 				yourself) yourself.
-	self actualClass new start: input.
+	self actualClass new visit: input.
 	self assert: input children first class equals: MicParagraphBlock.
 	self assert: input children first children first class equals: MicUnorderedListBlock.
 	self assert: input children first children first children first class equals: MicListItemBlock
@@ -35,7 +35,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 						eval: true;
 						yourself);
 		yourself.
-	self assert: (self actualClass new start: input) equals: input
+	self assert: (self actualClass new visit: input) equals: input
 ]
 
 { #category : #tests }
@@ -47,7 +47,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 						eval: false;
 						yourself);
 		yourself.
-	self actualClass new start: input.
+	self actualClass new visit: input.
 	self assert: input children first class equals: MicCodeBlock.
 	self assert: input children first body equals: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
 ]
