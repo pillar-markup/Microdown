@@ -84,15 +84,15 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 { #category : #tests }
 MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 
-	| micFileInclusion mic file |
-	micFileInclusion := MicFileIncluder new.
-	micFileInclusion topFile: filesystem workingDirectory.
+	| includer mic file |
+	includer := MicFileIncluder new.
+	includer topFile: filesystem workingDirectory.
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
-	micFileInclusion visit: mic.
+	includer visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
@@ -110,11 +110,11 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 { #category : #tests }
 MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesNotExist [
 
-	| micFileInclusion mic |
-	micFileInclusion := MicFileIncluder new.
-	micFileInclusion topFile: filesystem workingDirectory.
+	| includer mic |
+	includer := MicFileIncluder new.
+	includer topFile: filesystem workingDirectory.
 	mic := (MicroDownParser new parse: '?{inputfile|path=anExample3.mic}?').
-	micFileInclusion visit: mic.
+	includer visit: mic.
 	self assert: mic children first children first class equals: MicInputfileBlock.
 ]
 
@@ -136,6 +136,7 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	
 	self assert: mic children second children first class equals: MicHeaderBlock.
 	self assert: mic children second children second class equals: MicParagraphBlock.
+	self halt.
 	self assert: mic children second children second children size equals: 2.
 	self assert: mic children second children third class equals: MicCodeBlock
 ]
