@@ -43,6 +43,24 @@ MicFileIncluderTest >> setUp [
 ]
 
 { #category : #tests }
+MicFileIncluderTest >> testBeforeIncludingTheInputFile [
+
+	| includer root file|
+	includer := MicFileIncluder new.
+	includer topFile: filesystem workingDirectory.
+	
+	file := filesystem workingDirectory / 'test.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
+	root := MicroDownParser new parseFile: file.
+	
+	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
+	self assert: root children first class equals: MicParagraphBlock.
+	self assert: root children first children first class equals: MicInputfileBlock.
+	
+
+]
+
+{ #category : #tests }
 MicFileIncluderTest >> testGenerateFilesystemIsGood [
 	
 	self assert: (filesystem workingDirectory / 'anExample1.mic') contents equals: '# Foo
@@ -65,20 +83,54 @@ Pharo is **cool**
 { #category : #tests }
 MicFileIncluderTest >> testIncluderIncludesInputFile [
 
-	| includer mic file|
+	| includer root file|
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
 	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
+	root := (MicroDownParser new parseFile: file).
+	
+	includer visit: root.
+	"even if inputFile was in a paragraph this raises the question of where do we put the expansion. 
+	For example putting a header inside a paragraph does not make sense. 
+	I feel that I would prefer to have a top level expander in addition to an in place expander."
+
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first header equals: 'Foo'.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock.
+
+
+
+]
+
+{ #category : #tests }
+MicFileIncluderTest >> testIncluderIncludesInputFilesWithNewline [
+
+	| includer mic file |
+	includer := MicFileIncluder new.
+	includer topFile: filesystem workingDirectory.
+
+	file := filesystem workingDirectory / 'test.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
+
+
+?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
 	includer visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
-	self assert: mic children first children first header equals: 'Foo'.
 	self assert: mic children first children second class equals: MicParagraphBlock.
 	self assert: mic children first children third class equals: MicCodeBlock.
-
+	
+	self assert: mic children first children fourth class equals: MicTextBlock.
+	
+	self assert: mic children first children fifth class equals: MicHeaderBlock.
+	self assert: mic children first children fifth header equals: 'Bar'.
+	self assert: mic children first children fifth level equals: 2.
+	self assert: mic children first children sixth class equals: MicParagraphBlock.
+	self assert: mic children first children seventh class equals: MicCodeBlock
 ]
 
 { #category : #tests }
@@ -89,8 +141,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 	includer topFile: filesystem workingDirectory.
 
 	file := filesystem workingDirectory / 'test.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
-?{inputfile|path=anExample2.mic}?' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
 	includer visit: mic.
 
@@ -121,22 +172,21 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 { #category : #tests }
 MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 
-	| micFileInclusion mic file |
-	micFileInclusion := MicFileIncluder new.
-	micFileInclusion topFile: filesystem workingDirectory.
+	| includer root file |
+	includer := MicFileIncluder new.
+	includer topFile: filesystem workingDirectory.
 	file := filesystem workingDirectory / 'test.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
-?{inputfile|path=anExample2.mic}?' ].
-	mic := (MicroDownParser new parseFile: file).
-	micFileInclusion visit: mic.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
+	root := MicroDownParser new parseFile: file.
+	includer visit: root.
 
-	self assert: mic children first children first class equals: MicHeaderBlock.
-	self assert: mic children first children second class equals: MicParagraphBlock.
-	self assert: mic children first children third class equals: MicCodeBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock.
 	
-	self assert: mic children second children first class equals: MicHeaderBlock.
-	self assert: mic children second children second class equals: MicParagraphBlock.
+	self assert: root children second children first class equals: MicHeaderBlock.
+	self assert: root children second children second class equals: MicParagraphBlock.
 	self halt.
-	self assert: mic children second children second children size equals: 2.
-	self assert: mic children second children third class equals: MicCodeBlock
+	self assert: root children second children second children size equals: 2.
+	self assert: root children second children third class equals: MicCodeBlock
 ]
