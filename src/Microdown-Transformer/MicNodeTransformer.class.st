@@ -1,3 +1,9 @@
+"
+I'm a special visitor that replaces a node by another one. 
+
+I'm used for example to replace a codeblock by the result of the evaluation of the code block body.
+Another important example is how to input a file in another one.
+"
 Class {
 	#name : #MicNodeTransformer,
 	#superclass : #MicrodownVisitor,
@@ -26,14 +32,13 @@ MicNodeTransformer class >> withContext: aContext [
 
 { #category : #accessing }
 MicNodeTransformer >> configuration [
-	"may be delete this later"
+
 	^ configuration
 ]
 
 { #category : #accessing }
 MicNodeTransformer >> configuration: anObject [
-	self halt.
-	"may be delete this later"
+
 	configuration := anObject.
 
 ]
@@ -47,22 +52,34 @@ MicNodeTransformer >> delete [
 { #category : #execution }
 MicNodeTransformer >> executeOn: aMicContext [
 	
-	self start: aMicContext input.
+	self visit: aMicContext input.
 	^ aMicContext
 ]
 
 { #category : #enumerating }
 MicNodeTransformer >> initialize [
+
 	super initialize.
 	replacement := Stack new
 ]
 
 { #category : #enumerating }
 MicNodeTransformer >> replace: newNodes [
-	"When we do a transformation I replace the current node by his transformation."
+	"When we do a transformation I replace the current node by its transformation."
 
 	replacement pop.
 	replacement push: newNodes
+]
+
+{ #category : #execution }
+MicNodeTransformer >> replaceChildren: aGroup [
+	aGroup
+		children:
+			(aGroup children
+				flatCollect: [ :child | 
+					replacement push: {child}.
+					self visitAll: child.
+					replacement pop]). 
 ]
 
 { #category : #execution }
@@ -73,23 +90,11 @@ MicNodeTransformer >> visit: anObject [
 
 { #category : #execution }
 MicNodeTransformer >> visitAll: aGroup [
-	aGroup
-		children:
-			(aGroup children
-				flatCollect: [ :child | 
-					replacement push: {child}.
-					self visitAll: child.
-					replacement pop]). 
+	self replaceChildren: aGroup.
 	aGroup accept: self.
 ]
 
 { #category : #execution }
 MicNodeTransformer >> visitRoot: aGroup [
-	aGroup
-		children:
-			(aGroup children
-				flatCollect: [ :child | 
-					replacement push: {child}.
-					self visitAll: child.
-					replacement pop]). 
+	self replaceChildren: aGroup 
 ]

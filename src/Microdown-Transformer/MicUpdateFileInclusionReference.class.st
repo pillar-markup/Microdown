@@ -16,7 +16,7 @@ MicUpdateFileInclusionReference class >> isAbstract [
 MicUpdateFileInclusionReference class >> start: aDocument with: aPath [
 	^ self new
 		path: aPath;
-		start: aDocument
+		visit: aDocument
 ]
 
 { #category : #'instance creation' }
@@ -40,7 +40,7 @@ MicUpdateFileInclusionReference >> path: aPath [
 ]
 
 { #category : #visiting }
-MicUpdateFileInclusionReference >> start: anObject [
+MicUpdateFileInclusionReference >> visit: anObject [
 	super visit: anObject.
 	^ anObject
 ]
@@ -63,8 +63,4 @@ MicUpdateFileInclusionReference >> visitInternalLink: anInternalLink [
 	anInternalLink hasReference  
 		ifTrue: [ anInternalLink reference: (self newReferenceFor: anInternalLink) ].
 	super visitInternalLink: anInternalLink
-]
-
-{ #category : #visiting }
-MicUpdateFileInclusionReference >> visitText: aText [
 ]

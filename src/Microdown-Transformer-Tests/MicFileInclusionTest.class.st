@@ -30,7 +30,7 @@ Pharo is cool
 Pharo is **cool**
 
 ```
-	this is a code
+	this is a code 2
 ```
 ' ]
 ]
@@ -38,45 +38,53 @@ Pharo is **cool**
 { #category : #running }
 MicFileInclusionTest >> setUp [
 	super setUp.
-	filesystem := FileSystem memory
+	self cleanFilesystem.
+	self generateFilesystemExample.
 ]
 
 { #category : #tests }
 MicFileInclusionTest >> testGenerateFilesystemIsGood [
-	self cleanFilesystem.
-	self generateFilesystemExample.
+	
 	self assert: (filesystem workingDirectory / 'anExample1.mic') contents equals: '# Foo
 Pharo is cool
 
 ```
 	this is a code
 ```
-'
+'.
+
+	self assert: (filesystem workingDirectory / 'anExample2.mic') contents equals: '## Bar
+Pharo is **cool**
+
+```
+	this is a code 2
+```
+' 
 ]
 
 { #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFile [
+
 	| micFileInclusion mic file|
-	self cleanFilesystem.
-	self generateFilesystemExample.
-	micFileInclusion := MicFileInclusion new.
+	micFileInclusion := MicFileIncluder new.
 	micFileInclusion topFile: filesystem workingDirectory.
+	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
-	micFileInclusion start: mic.
+	micFileInclusion visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
-	self assert: mic children first children third class equals: MicCodeBlock
+	self assert: mic children first children third class equals: MicCodeBlock.
+
 ]
 
 { #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFileDoesNotExist [
+
 	| micFileInclusion mic |
-	self cleanFilesystem.
-	self generateFilesystemExample.
-	micFileInclusion := MicFileInclusion new.
+	micFileInclusion := MicFileIncluder new.
 	micFileInclusion topFile: filesystem workingDirectory.
 	mic := (MicroDownParser new parse: '?{inputfile|path=anExample3.mic}?').
 	micFileInclusion visit: mic.
@@ -85,16 +93,15 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFileDoesNotExist [
 
 { #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFiles [
+
 	| micFileInclusion mic file |
-	self cleanFilesystem.
-	self generateFilesystemExample.
-	micFileInclusion := MicFileInclusion new.
+	micFileInclusion := MicFileIncluder new.
 	micFileInclusion topFile: filesystem workingDirectory.
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
-	micFileInclusion start: mic.
+	micFileInclusion visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.
@@ -108,17 +115,16 @@ MicFileInclusionTest >> testMicFileInclusionTransformMicInputFiles [
 
 { #category : #tests }
 MicFileInclusionTest >> testMicFileInclusionTransformMicInputFilesWithoutNewline [
+
 	| micFileInclusion mic file |
-	self cleanFilesystem.
-	self generateFilesystemExample.
-	micFileInclusion := MicFileInclusion new.
+	micFileInclusion := MicFileIncluder new.
 	micFileInclusion topFile: filesystem workingDirectory.
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
 	mic := (MicroDownParser new parseFile: file).
-	micFileInclusion start: mic.
+	micFileInclusion visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
 	self assert: mic children first children second class equals: MicParagraphBlock.

@@ -54,6 +54,10 @@ MicrodownVisitor >> visitChildrenOf: aFormat [
 	aFormat children do: [ :each | each accept: self ]
 ]
 
+{ #category : #'visiting - extensions' }
+MicrodownVisitor >> visitCitation: aVisitor [
+]
+
 { #category : #visiting }
 MicrodownVisitor >> visitCode: aCodeBlock [ 
 	 

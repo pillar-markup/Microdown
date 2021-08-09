@@ -24,7 +24,7 @@ this is a paragraph
 And if the path does not exist the transformer do nothing
 "
 Class {
-	#name : #MicFileInclusion,
+	#name : #MicFileIncluder,
 	#superclass : #MicNodeTransformer,
 	#instVars : [
 		'shouldTransform',
@@ -38,57 +38,57 @@ Class {
 }
 
 { #category : #configuration }
-MicFileInclusion >> doNotTransform [
+MicFileIncluder >> doNotTransform [
 	shouldTransform := false
 ]
 
 { #category : #accessing }
-MicFileInclusion >> expansionTask: aMicExpandInclusionsTask [ 
+MicFileIncluder >> expansionTask: aMicExpandInclusionsTask [ 
 	expansionTask := aMicExpandInclusionsTask
 ]
 
 { #category : #accessing }
-MicFileInclusion >> goal: aGoal [ 
+MicFileIncluder >> goal: aGoal [ 
 	goal := aGoal
 ]
 
 { #category : #accessing }
-MicFileInclusion >> inProcessFiles: aCollection [ 
+MicFileIncluder >> inProcessFiles: aCollection [ 
 	inProcessFiles := aCollection
 ]
 
 { #category : #initialization }
-MicFileInclusion >> initialize [
+MicFileIncluder >> initialize [
 
 	super initialize.
 	inProcessFiles := #()
 ]
 
 { #category : #'visiting-document' }
-MicFileInclusion >> input: anInputDocument [
+MicFileIncluder >> input: anInputDocument [
 
 	input := anInputDocument
 ]
 
 { #category : #testing }
-MicFileInclusion >> isFileInclusionPhase [
+MicFileIncluder >> isFileInclusionPhase [
 	
 	^ true
 ]
 
 { #category : #testing }
-MicFileInclusion >> shouldTransform [
+MicFileIncluder >> shouldTransform [
 	^ shouldTransform ifNil: [ shouldTransform := true ]
 ]
 
 { #category : #accessing }
-MicFileInclusion >> topFile: aFileReference [
+MicFileIncluder >> topFile: aFileReference [
 
 	topFile := aFileReference
 ]
 
 { #category : #validation }
-MicFileInclusion >> validateInclusionOfFile: aFileReference [ 
+MicFileIncluder >> validateInclusionOfFile: aFileReference [ 
 	
 	aFileReference = topFile ifTrue: [ 
 		MicCyclicFileInclusionError new
@@ -103,7 +103,7 @@ MicFileInclusion >> validateInclusionOfFile: aFileReference [
 ]
 
 { #category : #'visiting-document' }
-MicFileInclusion >> visitInputfile: anInputFileAnnotation [
+MicFileIncluder >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	| includedFile microdownAST |
 	includedFile := topFile / anInputFileAnnotation path.
@@ -112,7 +112,7 @@ MicFileInclusion >> visitInputfile: anInputFileAnnotation [
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 	
 	"Execute a file inclusion step recursively" 
-	microdownAST := MicFileInclusion new
+	MicFileIncluder new
 		topFile: includedFile;
 		inProcessFiles: (inProcessFiles copyWith: topFile);
 		visit: microdownAST.
