@@ -106,31 +106,31 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 ]
 
 { #category : #tests }
-MicFileIncluderTest >> testIncluderIncludesInputFilesWithNewline [
-
-	| includer mic file |
+MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
+	"As a general remark I do not like that the input can produce document that are not correct from a parser 
+	point of view. For example we should have a paragraph containing an header and this is what the transformation of the includer is doing."
+	| includer root file |
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
-
-
 ?{inputfile|path=anExample2.mic}?' ].
-	mic := (MicroDownParser new parseFile: file).
-	includer visit: mic.
+	root := (MicroDownParser new parseFile: file).
+	includer visit: root.
 
-	self assert: mic children first children first class equals: MicHeaderBlock.
-	self assert: mic children first children second class equals: MicParagraphBlock.
-	self assert: mic children first children third class equals: MicCodeBlock.
+	self assert: root children size equals: 1.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first header equals: 'Foo'.
+	self assert: root children first children first level equals: 1.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock.
 	
-	self assert: mic children first children fourth class equals: MicTextBlock.
-	
-	self assert: mic children first children fifth class equals: MicHeaderBlock.
-	self assert: mic children first children fifth header equals: 'Bar'.
-	self assert: mic children first children fifth level equals: 2.
-	self assert: mic children first children sixth class equals: MicParagraphBlock.
-	self assert: mic children first children seventh class equals: MicCodeBlock
+	self assert: root children first children fifth class equals: MicHeaderBlock.
+	self assert: root children first children fifth header equals: 'Bar'.
+	self assert: root children first children fifth level equals: 2.
+	self assert: root children first children sixth class equals: MicParagraphBlock.
+	self assert: root children first children seventh class equals: MicCodeBlock
 ]
 
 { #category : #tests }
@@ -171,12 +171,14 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 
 { #category : #tests }
 MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
-
+	"This test works because we have two paragraphs each one containing an inputfile."
 	| includer root file |
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
 	file := filesystem workingDirectory / 'test.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? 
+
+?{inputfile|path=anExample2.mic}?' ].
 	root := MicroDownParser new parseFile: file.
 	includer visit: root.
 
@@ -186,7 +188,7 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	
 	self assert: root children second children first class equals: MicHeaderBlock.
 	self assert: root children second children second class equals: MicParagraphBlock.
-	self halt.
+	
 	self assert: root children second children second children size equals: 2.
 	self assert: root children second children third class equals: MicCodeBlock
 ]
