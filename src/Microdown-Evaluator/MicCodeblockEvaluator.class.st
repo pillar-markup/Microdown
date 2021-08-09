@@ -12,5 +12,5 @@ Class {
 { #category : #visiting }
 MicCodeblockEvaluator >> visitCode: aCodeBlock [
 	aCodeBlock isEvaluated
-		ifTrue: [ self replace: aCodeBlock evaluate ]
+		ifTrue: [ self replaceCurrentNodeBy: aCodeBlock evaluate ]
 ]

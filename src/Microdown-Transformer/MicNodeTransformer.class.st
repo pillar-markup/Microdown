@@ -46,7 +46,8 @@ MicNodeTransformer >> configuration: anObject [
 { #category : #enumerating }
 MicNodeTransformer >> delete [
 	"When we do a transformation I replace the current node by nothing."
-	self replace: {  }
+	
+	self replaceCurrentNodeBy: {  }
 ]
 
 { #category : #execution }
@@ -63,16 +64,8 @@ MicNodeTransformer >> initialize [
 	replacement := Stack new
 ]
 
-{ #category : #enumerating }
-MicNodeTransformer >> replace: newNodes [
-	"When we do a transformation I replace the current node by its transformation."
-
-	replacement pop.
-	replacement push: newNodes
-]
-
 { #category : #execution }
-MicNodeTransformer >> replaceChildren: aGroup [
+MicNodeTransformer >> replaceChildrenOf: aGroup [
 	aGroup
 		children:
 			(aGroup children
@@ -80,6 +73,14 @@ MicNodeTransformer >> replaceChildren: aGroup [
 					replacement push: {child}.
 					self visitAll: child.
 					replacement pop]). 
+]
+
+{ #category : #enumerating }
+MicNodeTransformer >> replaceCurrentNodeBy: newNodes [
+	"When we do a transformation I replace the current node by its transformation."
+
+	replacement pop.
+	replacement push: newNodes
 ]
 
 { #category : #execution }
@@ -90,11 +91,11 @@ MicNodeTransformer >> visit: anObject [
 
 { #category : #execution }
 MicNodeTransformer >> visitAll: aGroup [
-	self replaceChildren: aGroup.
+	self replaceChildrenOf: aGroup.
 	aGroup accept: self.
 ]
 
 { #category : #execution }
 MicNodeTransformer >> visitRoot: aGroup [
-	self replaceChildren: aGroup 
+	self replaceChildrenOf: aGroup 
 ]

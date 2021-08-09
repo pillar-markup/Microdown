@@ -43,16 +43,6 @@ MicFileIncluder >> doNotTransform [
 ]
 
 { #category : #accessing }
-MicFileIncluder >> expansionTask: aMicExpandInclusionsTask [ 
-	expansionTask := aMicExpandInclusionsTask
-]
-
-{ #category : #accessing }
-MicFileIncluder >> goal: aGoal [ 
-	goal := aGoal
-]
-
-{ #category : #accessing }
 MicFileIncluder >> inProcessFiles: aCollection [ 
 	inProcessFiles := aCollection
 ]
@@ -68,12 +58,6 @@ MicFileIncluder >> initialize [
 MicFileIncluder >> input: anInputDocument [
 
 	input := anInputDocument
-]
-
-{ #category : #testing }
-MicFileIncluder >> isFileInclusionPhase [
-	
-	^ true
 ]
 
 { #category : #testing }
@@ -105,14 +89,15 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 { #category : #'visiting-document' }
 MicFileIncluder >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
+	
 	| includedFile microdownAST |
 	includedFile := topFile / anInputFileAnnotation path.
 	self validateInclusionOfFile: includedFile.
-	 includedFile ifExists:[
+	includedFile ifExists:[
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 	
 	"Execute a file inclusion step recursively" 
-	MicFileIncluder new
+	self class new
 		topFile: includedFile;
 		inProcessFiles: (inProcessFiles copyWith: topFile);
 		visit: microdownAST.
@@ -123,6 +108,6 @@ MicFileIncluder >> visitInputfile: anInputFileAnnotation [
 		start: microdownAST
 		with: (includedFile parent relativeTo: topFile parent) microdownPrintString.
 	
-	self replace: microdownAST children]
+	self replaceCurrentNodeBy: microdownAST children]
 	
 ]
