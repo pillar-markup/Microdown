@@ -5,7 +5,7 @@ Copied from Pillar
 "
 Class {
 	#name : #MicExportBrush,
-	#superclass : #PRBasicObject,
+	#superclass : #Object,
 	#instVars : [
 		'stream'
 	],

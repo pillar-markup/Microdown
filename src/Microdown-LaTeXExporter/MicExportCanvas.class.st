@@ -5,7 +5,7 @@ Copied from Pillar
 "
 Class {
 	#name : #MicExportCanvas,
-	#superclass : #PRBasicObject,
+	#superclass : #Object,
 	#instVars : [
 		'stream',
 		'currentBrush'
