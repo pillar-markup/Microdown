@@ -38,6 +38,12 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-Transformer' ) ];
 			package: #'Microdown-Evaluator-Tests'
 				with: [ spec requires: #( #'Microdown-Evaluator' ) ];
+				
+			package: #'Microdown-LaTeXExporter'
+				with: [ spec requires: #( #Microdown ) ];
+
+			package: #'Microdown-LaTeXExporter-Tests'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
@@ -56,11 +62,13 @@ BaselineOfMicrodown >> baseline: spec [
 				);
 			group: 'RichText' with: #('Core' #'Microdown-MicrodownRichTextComposer' );
 			group: 'Extensions' 
-			with: #(
+			with: #(   
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
 				#'Microdown-PrettyPrinter-Tests'
+				#'Microdown-LaTeXExporter'
+				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
 			group: 'All' 
