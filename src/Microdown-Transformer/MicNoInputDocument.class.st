@@ -1,3 +1,6 @@
+"
+I represent unknown file extension.
+"
 Class {
 	#name : #MicNoInputDocument,
 	#superclass : #MicInputDocument,

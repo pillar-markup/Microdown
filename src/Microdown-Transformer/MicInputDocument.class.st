@@ -1,3 +1,7 @@
+"
+I'm a little file wrapper so that we can mix pillar and microdown file within a document.
+As such I'm responsible to determine how my instances are parsed.
+"
 Class {
 	#name : #MicInputDocument,
 	#superclass : #Object,
