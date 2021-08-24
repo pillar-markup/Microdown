@@ -674,7 +674,7 @@ MicroDownParser >> parseFile: aFileReference [
 			self flag: #tocheck.
 			"working directory does not feel correct here because the file can be in another location than 
 			the pillar image."
-			micTree propertyAt: #originPath put: aFileReference path fileSystem workingDirectory / currentPath.
+			micTree propertyAt: #originPath put: aFileReference fileSystem workingDirectory / currentPath.
 			self resolver visit: micTree.
 			^ micTree ]
 		ifFalse: [ 

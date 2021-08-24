@@ -93,7 +93,6 @@ this is a code
 MicLaTeXWriterTest >> testFigure [
 	| mic |
 	mic := parser parse: factory figureSample.
-	self assert: (writer visit: mic) contents equals: '
 	self flag: #tofix.
 	"we should give something similar to 
 	
@@ -104,6 +103,9 @@ MicLaTeXWriterTest >> testFigure [
 \end{center}
 \end{figure}
 "
+
+	self assert: (writer visit: mic) contents equals: '
+
 \begin{figure}
 
 \begin{center}
