@@ -24,7 +24,7 @@ MicMicrodownTextualBuilderTest >> exampleTextMultipleLines [
 Pharo'
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicMicrodownTextualBuilderTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.

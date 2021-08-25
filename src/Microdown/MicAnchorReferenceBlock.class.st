@@ -56,9 +56,10 @@ MicAnchorReferenceBlock >> reference: aReference [
 { #category : #'as yet unclassified' }
 MicAnchorReferenceBlock >> referenceAsHTML [	
 	| ref |
+	self flag: #todo.
 	ref := self reference.
 	(ref endsWith: '.mic')
 		ifTrue: [ ref := (ref copyUpToLast: $.) , '.html' ]
-		ifFalse: [ PRLinkWarning signal: 'Reference : ' , ref , ' should end with .pillar or .pier' ].
+		ifFalse: [ Error signal: 'Reference : ' , ref , ' should end with .pillar or .pier' ].
 	^ ref
 ]

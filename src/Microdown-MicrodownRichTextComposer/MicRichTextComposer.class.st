@@ -326,14 +326,12 @@ MicRichTextComposer class >> languageStylerFor: aLanguage [
 { #category : #examples }
 MicRichTextComposer class >> latexExample [
 	<example>
-	self flag: #todo. "to fix we should use a MicInlineMath... here"
-	(MicRichTextComposer new visit: 
-		(PRMathInTextAnnotation new 
-		add: (PRText new text:
-'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')))
 
- inspect
+	(MicRichTextComposer new visit: 
+		(MicMathInlineBlock new 
+		substring:
+'V_i = C_0 - C_3
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
 ]
 
 { #category : #styler }
@@ -444,6 +442,23 @@ MicRichTextComposer class >> putOffline [
 MicRichTextComposer class >> putOnline [
 
 	self offline: false
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [ 
+	"Return aString as part of the templated class comment, when rendering is on.
+	Else aString."
+	
+	| builder |
+	builder := MicroDownParser builder.
+	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
+	self notRendering 	
+		ifTrue: [ ^ aString ].
+	self captureErrors 
+		ifFalse: [ ^ self microdownAsRichText: builder contents ].
+	^ [ self microdownAsRichText: builder contents ] 
+			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
+			do: [ builder contents  ]
 ]
 
 { #category : #'class initialization' }
@@ -697,8 +712,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitEnvironment: anObject [
-	self halt.
-	self flag: #fixme.
+	self error: 'It was a halt'.
 	"What is this textBlock idea? Clean!"
 	anObject name = 'textBlock'
 		ifTrue:[
