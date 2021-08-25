@@ -505,7 +505,10 @@ MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 
 	self raw: (parserClass headerMarkup repeat: anInteger).
    self raw: String space.
-   aBloc value
+	self flag: #todo. 
+	"in this future once we are sure no one use header: [:b | b...] but [abuilder ..
+	we should replace aBloc cull: self by aBloc value"
+   aBloc cull: self 
 	
 ]
 
