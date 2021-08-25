@@ -1,9 +1,6 @@
 Class {
 	#name : #MicCodeSemanticActionTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'sample'
-	],
 	#category : #'Microdown-MicrodownRichTextComposer'
 }
 
