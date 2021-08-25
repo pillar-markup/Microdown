@@ -1,9 +1,6 @@
 Class {
 	#name : #MicColumnBlock,
 	#superclass : #MicEnvironmentBlock,
-	#instVars : [
-		'width'
-	],
 	#category : #'Microdown-Extensions'
 }
 

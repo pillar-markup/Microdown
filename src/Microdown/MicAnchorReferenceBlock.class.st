@@ -20,12 +20,12 @@ MicAnchorReferenceBlock class >> isEvaluated [
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicAnchorReferenceBlock >> closingDelimiter [
 
  	^ MicAnchorReferenceCloserDelimiter markup
@@ -37,7 +37,7 @@ MicAnchorReferenceBlock >> kind [
 	^ #anchorReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicAnchorReferenceBlock >> openingDelimiter [
 
  	^ MicAnchorReferenceOpenerDelimiter markup
@@ -53,7 +53,7 @@ MicAnchorReferenceBlock >> reference: aReference [
 	reference := aReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicAnchorReferenceBlock >> referenceAsHTML [	
 	| ref |
 	self flag: #todo.

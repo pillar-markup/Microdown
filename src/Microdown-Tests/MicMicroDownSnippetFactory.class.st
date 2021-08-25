@@ -105,20 +105,20 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> columnSample [
 	^ '<?column|width=42
 	this is a **text**
 ?>'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> columnsSample [
 	^ '<?columns|width=42
 ?>'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> columnsWithChildrenSample [
 	^ '<?columns|width=42
 ', self columnSample ,'
@@ -131,7 +131,7 @@ MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicMicrodownSnippetFactory >> documentFrom: aString [
 	^ parserClass new parse: aString
 ]
@@ -315,7 +315,7 @@ MicMicrodownSnippetFactory >> initialize [
 	parserClass := MicroDownParser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> inputfileSample [
 	^ '
 ?{inputfile | path=Chapters/text.mic}?
@@ -474,7 +474,7 @@ MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 '
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicMicrodownSnippetFactory >> newLine [
 	^  String cr
 ]
@@ -618,7 +618,7 @@ this is a ~paragraph~
 '
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicMicrodownSnippetFactory >> parserClass [
 
 	^ MicroDownParser
@@ -761,7 +761,7 @@ MicMicrodownSnippetFactory >> scriptWithSpacedParametersSample [
 		body: 'bla'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> simpleTable [
 	^ '
 | aaab | jkhjh |
@@ -769,7 +769,7 @@ MicMicrodownSnippetFactory >> simpleTable [
 | bar | rab |'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> simpleTableFormat [
 	^ '
 | **aaab** | jkhjh |
@@ -777,7 +777,7 @@ MicMicrodownSnippetFactory >> simpleTableFormat [
 | bar | rab |'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> simpleTableMoreFormat [
 	^ '
 | **aaab** bbbc _cccd_ | jkhjh |
@@ -785,7 +785,7 @@ MicMicrodownSnippetFactory >> simpleTableMoreFormat [
 | bar | rab |'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> simpleTableShortRow [
 	^ '
 | aaab | jkhjh |
@@ -793,14 +793,14 @@ MicMicrodownSnippetFactory >> simpleTableShortRow [
 | bar |'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #sample }
 MicMicrodownSnippetFactory >> simpleTableWithoutHeaderTable [
 	^ '
 | aaab | jkhjh |
 | bar | rab |'
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicMicrodownSnippetFactory >> space [ 
 
 	^ String space

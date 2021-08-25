@@ -107,11 +107,6 @@ MicTableBlock >> isHeader: line [
 	
 ]
 
-{ #category : #'as yet unclassified' }
-MicTableBlock >> latexSpecification [
-	^ String new: rows first size withAll: $l
-]
-
 { #category : #markups }
 MicTableBlock >> lineMarkup [
 

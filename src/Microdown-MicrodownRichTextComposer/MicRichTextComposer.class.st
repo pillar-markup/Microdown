@@ -660,7 +660,7 @@ MicRichTextComposer >> visit: aDocument [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	self halt.
+	self error: 'this was a halt.'.
 	canvas newLineIfNotAlready.
 	canvas newLine.
 	canvas
