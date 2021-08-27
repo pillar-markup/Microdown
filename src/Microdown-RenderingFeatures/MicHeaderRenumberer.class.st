@@ -29,16 +29,10 @@ MicHeaderRenumberer >> configuration: anObject [
 ]
 
 { #category : #visiting }
-MicHeaderRenumberer >> visit: aMicRoot [
+MicHeaderRenumberer >> initialize [ 
 
-	| conf |
-	"conf := ConfigurationForMicrodown newFromDictionary: aMicRoot properties."
-	conf := MicMinimalConfiguration new.
-	conf parent: configuration.
-	self configuration: conf.
-	super visit: aMicRoot.
+	configuration := MicMinimalConfiguration new.
 	
-	^ aMicRoot
 ]
 
 { #category : #visiting }

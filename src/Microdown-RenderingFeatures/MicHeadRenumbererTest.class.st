@@ -33,7 +33,7 @@ MicHeadRenumbererTest >> configuration [
 { #category : #tests }
 MicHeadRenumbererTest >> configurationClass [
 
-	^ ConfigurationForMicrodown
+	^ MicMinimalConfiguration 
 ]
 
 { #category : #tests }

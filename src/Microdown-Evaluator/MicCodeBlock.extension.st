@@ -1,6 +1,14 @@
 Extension { #name : #MicCodeBlock }
 
 { #category : #'*Microdown-Evaluator' }
+MicCodeBlock >> eval: aString [
+
+	self flag: #tofix.
+	"I do not get what is the use of this method."
+	arguments at: 'eval' put: aString
+]
+
+{ #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> evaluate [
 
 	| content |
