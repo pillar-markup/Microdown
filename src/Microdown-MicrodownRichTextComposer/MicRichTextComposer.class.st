@@ -84,7 +84,7 @@ MicRichTextComposer class >> captureErrors [
 
 { #category : #'class initialization' }
 MicRichTextComposer class >> captureErrors: aBoolean [
-	
+	"self captureErrors: false"
 	CaptureErrors := aBoolean
 ]
 
@@ -412,7 +412,7 @@ MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
 	(aBuilder group: #comments)
 		label: 'Comment rendering';  
 		parent: #appearance;
-		description: 'All settings concerned with the notifications popup look''n feel';
+		description: 'All settings concerned with the control of nice comment rendering';
 		with: [
 		(aBuilder setting: #offline)
 			label: 'To enable offline mode';
@@ -427,7 +427,11 @@ MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
 				default: false;
 				target: self;
 				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
-			
+			(aBuilder setting: #captureErrors)
+				label: 'To disable rendering error capture';
+				default: true;
+				target: self;
+				description: 'By default if there is an error during the rendering of the comments, various errors are trapped. If you want to get such errors to debug the system, you should turn off this settings.'. 
 			
 			]
 ]
@@ -584,11 +588,11 @@ MicRichTextComposer >> rawImageFrom: aURL [
 	self class captureErrors
 		ifFalse: [ ^ block value ].
 
-	^ [ block
+	^ [[ block
 		on: ZnHttpUnsuccessful 
 		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
 			on: ZnUnexpectedContentType 
-			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]
+			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
 		
 ]
 

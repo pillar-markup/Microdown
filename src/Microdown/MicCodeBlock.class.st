@@ -59,11 +59,6 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #evaluation }
-MicCodeBlock >> eval: aString [
-	arguments at: 'eval' put: aString
-]
-
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
