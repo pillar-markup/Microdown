@@ -126,6 +126,14 @@ MicAbstractMicrodownTextualBuilder >> text: aText [
 ]
 
 { #category : #writing }
+MicAbstractMicrodownTextualBuilder >> writeDuring: aBlock surroundBy: anOpenerMarkup and: aCloserMarkup [
+
+	self raw: anOpenerMarkup.
+	aBlock value.
+	self raw: aCloserMarkup
+]
+
+{ #category : #writing }
 MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aString [ 
 	
 	self

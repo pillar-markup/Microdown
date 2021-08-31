@@ -21,8 +21,9 @@ TestCase class >> buildMicroDownUsing: aBuilder withComment: aString [
 	number = 1
 		ifFalse: [ aBuilder text: 's'  ]. 
 	aBuilder text: ':'.
+
 	aBuilder 	
 		newLine;
 		unorderedListDuring: [ self testSelectors
-				do: [ :each | aBuilder item: [ aBuilder monospace: self class instanceSide name , '>>#' , each ] ] ]
+				do: [ :each | aBuilder item: [ aBuilder monospace: (self class instanceSide name , '>>#' , each) asString ] ]]
 ]

@@ -6,11 +6,18 @@ I only work with in image entity.
 
 ```language=PharoExpression
 | sem |
-sem := MicSemanticAction from: 'Point class>>#setX:setY:'.
+sem := MicSemanticAction from: 'Point class>>#x:y:'.
 sem hasEntity
 >>> true
 sem browse
 ```
+
+The following entities can be referenced. 
+
+- A class: `Point`
+- A method `Point>>#degrees` as well as a class method `Point class>>x:y:`
+- A package: `Microdown`
+
 "
 Class {
 	#name : #MicSemanticAction,
