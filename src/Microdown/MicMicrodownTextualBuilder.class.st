@@ -377,13 +377,6 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 	self newLine; raw: '}'.
 ]
 
-{ #category : #'element - format' }
-MicMicrodownTextualBuilder >> monospace: aBlock [
-	self raw: parserClass monospaceMarkup.
-	aBlock value.
-	self raw: parserClass monospaceMarkup.
-]
-
 { #category : #'ugly line handling' }
 MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 	self 

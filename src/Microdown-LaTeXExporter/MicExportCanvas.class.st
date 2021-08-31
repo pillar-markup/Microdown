@@ -1,5 +1,5 @@
 "
-I am the place where the visitors will write stuff. I output everything to a stream. Eventhough I have some streaming capabilities (#nextPutAll:, #raw:, ...), my clients should use brushes as much as possible instead. This is because the brushes will take the responsibility to write correct text for the clients.
+I am the place where the visitors will write stuff. I output everything to a stream. Eventhough I have some streaming capabilities (`nextPutAll:`, `raw:`, ...), my clients should use brushes as much as possible instead. This is because the brushes will take the responsibility to write correct text for the clients.
 
 Copied from Pillar
 "

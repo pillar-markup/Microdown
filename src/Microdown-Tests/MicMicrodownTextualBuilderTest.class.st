@@ -192,7 +192,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithItalic [
 MicMicrodownTextualBuilderTest >> testExternalLinkWithMonospace [
 
 	self 
-		assert: (builder externalLink: 'anUrl' withDescription:[ builder monospace: [ builder text: 'aDescription']] ) contents 
+		assert: (builder externalLink: 'anUrl' withDescription: [ builder monospace: 'aDescription'] ) contents 
 		equals: '[`aDescription`](anUrl)'
 ]
 
@@ -335,7 +335,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 { #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
-	self assert: (builder monospace: [ builder text: 'Monospace']) contents equals: '`Monospace`'
+	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
 ]
 
 { #category : #'tests - anchor' }

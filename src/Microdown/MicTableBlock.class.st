@@ -2,23 +2,28 @@
 Support table with a simple and more relax setup than github.
 A table is not forced to have a header definition.
 
+```
 | aaab | jkhjh |
 | --- |
 | bar |
+```
 
 or 
+```
 |aaab|jkhjh|
 |---|
 |bar|
-
-or 
+```
+or
+```
 | aaa | bbb |
 |ccc |ddd |
-
+```
 or 
+```
 | aaa | bbb
 | cc | ddd
-
+```
 Block-level elements cannot be inserted in a table.
 
 When a table contains a header it is the first row and all rows should have that size else they are cut. 

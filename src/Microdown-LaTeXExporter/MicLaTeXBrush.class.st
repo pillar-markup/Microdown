@@ -1,5 +1,5 @@
 "
-command and environment LaTeX brushes common superclass.
+Command and environment LaTeX brushes common superclass.
 "
 Class {
 	#name : #MicLaTeXBrush,
