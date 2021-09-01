@@ -44,7 +44,7 @@ MicPathResolver >> visitFigure: aFigure [
 
 	(aFigure url isFile and: [ aFigure url isRelative ])
 			ifTrue: [ 
-				aFigure url: (aFigure url asFileReference asResolvedBy: self root) asUrl.
+				aFigure url: (aFigure url asFileReference asResolvedBy: self root).
 				^ aFigure ].
 			
 	 (aFigure url isRelative)

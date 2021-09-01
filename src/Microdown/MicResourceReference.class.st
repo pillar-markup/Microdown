@@ -51,7 +51,15 @@ MicResourceReference class >> fromString: aString [
 
 { #category : #convertin }
 MicResourceReference >> asFileReference [
-	^ url asFileReference
+	"We do not use here the URL because 
+		'chapter/figures/m.pillar' asUrl asFileReference produces an absolute file 
+		>>	(File @ /chapter/figures/m.pillar) while it should be a relative one.  
+		
+		'chapter/figures/m.pillar' asFileReference 
+		>> File @ chapter/figures/m.pillar
+		"
+		
+	^ originalString asFileReference
 ]
 
 { #category : #resolving }
@@ -106,7 +114,7 @@ MicResourceReference >> isRelative [
 { #category : #testing }
 MicResourceReference >> printOn: aStream [
 
-	url printOn: aStream
+	aStream print: originalString 
 ]
 
 { #category : #querying }
@@ -117,8 +125,8 @@ MicResourceReference >> query [
 { #category : #accessing }
 MicResourceReference >> string: aString [
 
-	originalString := aString.
-	url := ZnUrl fromString: aString.
+	originalString := aString trimBoth.
+	url := ZnUrl fromString: originalString.
 	 
 ]
 

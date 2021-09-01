@@ -22,18 +22,18 @@ MicPathResolverTest >> setUp [
 { #category : #tests }
 MicPathResolverTest >> testResolveNotRelativePath [
 	
-	| file mic urlBefore |
+	| file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
 ![caption](folder/image.png)' ].
 
-	mic := microdown treeFromFile: file.
-	urlBefore := 'folder/image.png'.
-	self assert: mic children second children first url printString equals: '/folder/image.png'.
+	mic := microdown 
+		resolverRoot: system; 
+		treeFromFile: file.
 	
-	self assert: mic children second children first url asString equals: urlBefore
+	self assert: mic children second children first url asString equals: 'memory:///folder/image.png'
 	
 ]
 

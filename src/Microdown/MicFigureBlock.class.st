@@ -64,12 +64,14 @@ MicFigureBlock >> isImageFile [
 
 { #category : #testing }
 MicFigureBlock >> isRelativeFilePath [
+	self flag: #toRemove.
 	^ self url isFile and: [ (self url asString beginsWith: 'file:///') not ]
 ]
 
 { #category : #accessing }
 MicFigureBlock >> kind [
-
+	self flag: #todo. 
+	"remove me"
  	^ #figure
 ]
 
@@ -113,9 +115,4 @@ MicFigureBlock >> printOn: aStream [
 { #category : #accessing }
 MicFigureBlock >> query [
 	^ url query
-]
-
-{ #category : #accessing }
-MicFigureBlock >> resolver [
-	^ MicPathResolver new
 ]
