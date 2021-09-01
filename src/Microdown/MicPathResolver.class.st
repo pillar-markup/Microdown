@@ -48,7 +48,7 @@ MicPathResolver >> visitFigure: aFigure [
 				^ aFigure ].
 			
 	 (aFigure url isRelative)
-			ifTrue: [ aFigure url: (aFigure url asUrl inContextOf: self root) asUrl ].
+			ifTrue: [ aFigure url: (aFigure url inContextOf: self root) asUrl ].
 	^ aFigure
 ]
 

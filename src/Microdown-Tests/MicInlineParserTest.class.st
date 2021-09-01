@@ -211,9 +211,8 @@ MicInlineParserTest >> testFigure [
 		equals: { 'abc'. '![AltText](/my_directory/image.png)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: res second url class equals: ZnUrl.
-	self assert: res second url segments first equals: 'my_directory'.
-	self assert: res second url segments second equals: 'image.png'
+	self assert: res second url class equals: MicResourceReference.
+	
 ]
 
 { #category : #'tests - figure' }
@@ -242,9 +241,7 @@ MicInlineParserTest >> testFigureWithParameters [
 			{ 'abc'. '![AltText](/my_directory/image.png?label=42&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: res second url class equals: ZnUrl.
-	self assert: res second url segments first equals: 'my_directory'.
-	self assert: res second url segments second equals: 'image.png'.
+	self assert: res second url class equals: MicResourceReference.
 	self assert: (res second arguments at: 'label') equals: '42'.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -263,9 +260,7 @@ MicInlineParserTest >> testFigureWithParametersWithBlank [
 			{ 'abc'. '![AltText](/my_directory/image.png?label=&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: res second url class equals: ZnUrl.
-	self assert: res second url segments first equals: 'my_directory'.
-	self assert: res second url segments second equals: 'image.png'.
+	self assert: res second url class equals: MicResourceReference.
 	self assert: (res second arguments at: 'label') equals: ''.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -535,8 +530,8 @@ MicInlineParserTest >> testSplitBlockLink [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[LinkText](/myURL)'. 'last' }.
-	self assert: res second url class equals: ZnUrl.
-	self assert: res second url segments first equals: 'myURL'
+	self assert: res second url class equals: MicResourceReference.
+
 ]
 
 { #category : #'tests - link' }
@@ -559,9 +554,7 @@ MicInlineParserTest >> testSplitBlockLinkInlineImage [
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[![alttext](/imageurl)](/url)'.
 			'last' }.
-	self
-		assert: res second children first url segments first
-		equals: 'imageurl'
+
 ]
 
 { #category : #'tests - link' }
@@ -664,8 +657,8 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks [
 
 	| res |
 	res := self splitter parse: 'abc[test](myURL)last'.
-	self assert: res second url class equals: ZnUrl.
-	self assert: res second url segments first equals: 'myURL'
+	self assert: res second url class equals: MicResourceReference.
+
 ]
 
 { #category : #'tests to make green again' }
@@ -674,9 +667,9 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks2 [
 	| res |
 	res := self splitter parse:
 		       'abc[pulse](https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests)last'.
-	self assert: res second url class equals: ZnUrl.
+	self assert: res second url class equals: MicResourceReference.
 	self flag: #tofix. "substring just returns pulse???"
-	self assert: res second url segments first equals: 'Ducasse'
+	self assert: res second url printString  equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
 ]
 
 { #category : #tests }
