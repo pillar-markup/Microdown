@@ -17,11 +17,6 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #Microdown;
 			package: #'Microdown-Tests'
 				with: [ spec requires: #( #Microdown ) ];
-			
-			package: #'Microdown-ResolvePath'
-				with: [ spec requires: #( #'Microdown' ) ];	
-			package: #'Microdown-ResolvePath-Tests'
-				with: [ spec requires: #( #'Microdown-ResolvePath' ) ];
 		
 			package: #'Microdown-Pharo-Tools'
 				with: [ spec requires: #( #Microdown ) ];
@@ -57,8 +52,6 @@ BaselineOfMicrodown >> baseline: spec [
 			with: #(
 				#'Microdown'
 				#'Microdown-Tests'
-				#'Microdown-ResolvePath' 
-				#'Microdown-ResolvePath-Tests' 
 				);
 			group: 'RichText' with: #('Core' #'Microdown-MicrodownRichTextComposer' );
 			group: 'Extensions' 

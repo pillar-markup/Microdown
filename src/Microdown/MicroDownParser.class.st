@@ -658,7 +658,6 @@ MicroDownParser >> parse: aStreamOrString [
 	[ current = root ]
 		whileFalse: [ current closeMe.
 			current := current parent ].
-	self resolver visit: root.
 	^ root
 ]
 
