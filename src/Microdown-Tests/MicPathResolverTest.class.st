@@ -27,13 +27,12 @@ MicPathResolverTest >> testResolveNotRelativePath [
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](file:///folder/image.png)' ].
+![caption](folder/image.png)' ].
 
 	mic := microdown treeFromFile: file.
-	urlBefore := 'file:///folder/image.png'.
-	self assert: mic children second children first isRelativeFilePath not.
+	urlBefore := 'folder/image.png'.
+	self assert: mic children second children first url printString equals: '/folder/image.png'.
 	
-	self assert: mic children second children first isRelativeFilePath not.
 	self assert: mic children second children first url asString equals: urlBefore
 	
 ]

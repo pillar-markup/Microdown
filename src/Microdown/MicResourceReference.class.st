@@ -61,12 +61,19 @@ MicResourceReference >> inContextOf: aZnUrl [
 
 { #category : #testing }
 MicResourceReference >> isAbsolute [
-	^ url isAbsolute
+	"We consider as absolute a resource reference defined as:
+	'/Chapter/figures/m.mic' by opposition to 'Chapter/figures/m.mic'"
+
+	url hasHost ifTrue: [ ^ true ].
+	^ originalString first = $/
+		ifTrue: [ true ]
+		ifFalse: [ false. ]
+	
 ]
 
 { #category : #testing }
 MicResourceReference >> isFile [
-	^ url isFile
+	^ url isFile or: [ url hasHost not ]
 ]
 
 { #category : #testing }
@@ -87,7 +94,13 @@ MicResourceReference >> isImageFile [
 
 { #category : #testing }
 MicResourceReference >> isRelative [
-	^ url isRelative
+	"We consider 'chapter/figures/f.mic' as relative and any http:// to be absolute."
+	
+	url hasHost ifTrue: [ ^ false ].
+	^ originalString first = $/
+		ifFalse: [ true ]
+		ifTrue: [ false ]
+	
 ]
 
 { #category : #testing }
