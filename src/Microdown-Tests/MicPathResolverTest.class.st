@@ -111,10 +111,11 @@ MicPathResolverTest >> testResolveRelativeFileWithFileSystem [
 		assert: mic children second children first resources urlOrReference class 
 		equals: FileReference.
 	self 
-		assert: mic children second children first resources urlOrReference fullName 
-		equals: 'documentation/image.png'.
+		assert: mic children second children first resources urlOrReference absolutePath printString
+		equals: 'memory:///documentation/image.png'.
 	
 	
+	"Now we try with a working directory and we check that we get a resolved path."
 	
 	mic := microdown 
 		resolverRoot: FileSystem workingDirectory ;
@@ -123,7 +124,8 @@ MicPathResolverTest >> testResolveRelativeFileWithFileSystem [
 	self 
 		assert: mic children second children first resources urlOrReference class equals: FileReference.
 	self 
-		assert: mic children second children first resources urlOrReference path  equals: Path * 'documentation' / 'image.png'
+		assert: (mic children second children first resources urlOrReference absolutePath asString splitOn: $/) size >  #('documentation' 'image.png') size.
+		
 	
 ]
 
