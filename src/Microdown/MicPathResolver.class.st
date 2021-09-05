@@ -34,15 +34,13 @@ MicPathResolver >> root: aRoot [
 
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
-	| originUrl |
-	originUrl := aFigure originUrl.
-	aFigure propertyAt: #originUrl put: originUrl.
 	
+	self halt.
 	"if this http:/ or https:// then this an absolute so no need to resolve it. Tell me otherwise"
 	(aFigure resources isHttp | aFigure resources isHttps)
 		ifTrue: [ ^ aFigure ].
 
-	(aFigure resources isFile and: [ aFigure resources isRelative ])
+	aFigure resources isFile
 			ifTrue: [ 
 				aFigure resources: (aFigure resources resolvedBy: self root).
 				^ aFigure ].
@@ -51,8 +49,7 @@ MicPathResolver >> visitFigure: aFigure [
 
 { #category : #visiting }
 MicPathResolver >> visitInputfile: anInputFile [
-	anInputFile path: (anInputFile propertyAt: #originalPath  ifAbsent: [ 
-		anInputFile propertyAt: #originalPath put: anInputFile path ]).
+	self halt.
 	 anInputFile isRelativeFilePath
 			ifTrue: [ anInputFile path: (anInputFile originPath asResolvedBy: self root) pathString ].
 	^ anInputFile

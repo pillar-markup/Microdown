@@ -174,10 +174,16 @@ MicResourceReference >> resolvedBy: aRoot [
 	
 	hasBeenResolved
 		ifFalse: [ urlOrFileReference hasHost ifTrue: [ ^ self ]].
+	"we stored an url and this url does an host so it is in the form http://www.pharo.org
+	so we consider it as ok and an absolute reference."
 	
-	(originalString first = $/)
-		ifTrue: [ urlOrFileReference := originalString allButFirst asFileReference asResolvedBy: aRoot ]
-		ifFalse: [ urlOrFileReference := FileReference fileSystem: aRoot path: (Path from: originalString) ].
+	"Now if the file name (because this is not an http but still internally represented by an URL) 
+	starts with a / then we remove it"
+	self halt.
+	
+	urlOrFileReference :=  aRoot / originalString.
+	"urlOrFileReference := FileReference fileSystem: aRoot path: (Path from: originalString)."
+	"but this expression seems wrong but I have no idea why."
 	
 	hasBeenResolved := true.
 ]
