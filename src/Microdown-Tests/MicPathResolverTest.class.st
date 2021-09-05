@@ -19,6 +19,41 @@ MicPathResolverTest >> setUp [
 	microdown := Microdown new
 ]
 
+{ #category : #'verified tests' }
+MicPathResolverTest >> testNotCallingResolver [
+	"Using the parser only should not resolve the path, here we only call parse."
+	
+	| mic |
+	mic := parser parse: '![caption](figures/blop/toto.png)'.
+	self assert: mic children first children first resources isRelative.
+	
+	mic := microdown parse: '![caption](/figures/blop/toto.png)'.
+	self assert: mic children first children first class equals: MicFigureBlock.
+	self assert: mic children first children first resources isAbsolute.
+	self assert: mic children first children first resources printString equals: '/figures/blop/toto.png'.
+
+	
+]
+
+{ #category : #'file reference tests' }
+MicPathResolverTest >> testResolveAbsoluteResourcesAgainstRootFileSystem [
+	| file mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](/documentation/image.png)' ].
+
+	mic := microdown 
+		resolverRoot: system;
+		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources urlOrReference fullName 
+		equals: 'memory:///documentation/image.png'
+	
+]
+
 { #category : #tests }
 MicPathResolverTest >> testResolveNotRelativePath [
 	
@@ -27,13 +62,14 @@ MicPathResolverTest >> testResolveNotRelativePath [
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](folder/image.png)' ].
+![caption](/folder/figures/image.png)' ].
 
 	mic := microdown 
 		resolverRoot: system; 
 		treeFromFile: file.
-	
-	self assert: mic children second children first url asString equals: 'memory:///folder/image.png'
+		
+	self assert: mic children second children first resources asString equals: '/folder/figures/image.png'.
+	self assert: mic children second children first resources isFile
 	
 ]
 
@@ -45,7 +81,7 @@ MicPathResolverTest >> testResolveNotRelativePathWithInputfile [
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=/chapters/withStyle.mic}?' ].
-
+	self halt.
 	mic := microdown treeFromFile: file.
 	urlBefore := '/chapters/withStyle.mic'.
 	self assert: mic children first children first isRelativeFilePath not.
@@ -54,64 +90,45 @@ MicPathResolverTest >> testResolveNotRelativePathWithInputfile [
 ]
 
 { #category : #tests }
-MicPathResolverTest >> testResolveRelativePath [
+MicPathResolverTest >> testResolveRelativeFileWithFileSystem [
 	| file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
 	file := system / 'folder/file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](file:///figures/image.png)' ].
+![caption](documentation/image.png)' ].
 
 	mic := microdown 
-		resolverRoot: system  / 'folder';
+		resolverRoot: system;
 		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources asString 
+		equals: 'documentation/image.png'.
+	"does not prove anything since printString is cheating and returning the string and not using the underlying object."
 	
-	self assert: mic children second children first url isAbsolute.
-	self assert: mic children second children first url asString equals: 'file:///folder/figures/image.png'
+	self 
+		assert: mic children second children first resources urlOrReference class 
+		equals: FileReference.
+	self 
+		assert: mic children second children first resources urlOrReference fullName 
+		equals: 'documentation/image.png'.
+	
+	
+	
+	mic := microdown 
+		resolverRoot: FileSystem workingDirectory ;
+		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources urlOrReference class equals: FileReference.
+	self 
+		assert: mic children second children first resources urlOrReference path  equals: Path * 'documentation' / 'image.png'
 	
 ]
 
 { #category : #tests }
-MicPathResolverTest >> testResolveRelativePathOld [
-| file mic |
-	system := FileSystem memory workingDirectory.
-	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](file://figures/image.png)' ].
-	mic := parser parseFile: file.
-	self assert: mic children second children first isRelativeFilePath not.
-	self assert: mic children second children first url asString equals: 'file:///folder/figures/image.png'
-	
-]
-
-{ #category : #tests }
-MicPathResolverTest >> testResolveRelativePathWithInputfile [
-	| file mic |
-	system := FileSystem memory workingDirectory.
-	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=chapters/withStyle.mic}?' ].
-	mic := microdown treeFromFile: file.
-	self assert: mic children first children first isRelativeFilePath not
-	
-]
-
-{ #category : #tests }
-MicPathResolverTest >> testResolveRelativePathWithParse [
-	"Using the parser only should not resolve the path."
-	
-	| mic |
-	mic := parser parse: '![caption](file://toto.png)'.
-	self assert: mic children first children first url isAbsolute.
-	
-	mic := microdown parse: '![caption](file://toto.png)'.
-	self assert: mic children first children first url isAbsolute
-	
-]
-
-{ #category : #tests }
-MicPathResolverTest >> testResolveRelativeURL [
+MicPathResolverTest >> testResolveRelativeFileWithURL [
 	| file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
@@ -125,6 +142,77 @@ MicPathResolverTest >> testResolveRelativeURL [
 
 	self 
 		assert: mic children second children first url asString 
+		equals: 'http://www.pharo.org/documentation/image.png'
+	
+]
+
+{ #category : #tests }
+MicPathResolverTest >> testResolveRelativePathWithInputfile [
+	| file mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=chapters/withStyle.mic}?' ].
+	mic := microdown treeFromFile: file.
+	self assert: mic children first children first isRelativeFilePath not.
+	self assert: mic children first children first resources printString
+	
+]
+
+{ #category : #'file reference tests' }
+MicPathResolverTest >> testResolveRelativeResourcesAgainstRootFileSystem [
+	| file mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](documentation/image.png)' ].
+
+	mic := microdown 
+		resolverRoot: system;
+		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources asString 
+		equals: 'memory:///documentation/image.png'
+	
+]
+
+{ #category : #'file reference tests' }
+MicPathResolverTest >> testResolveRelativeResourcesAgainstSubFolders [
+	| file mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](documentation/image.png)' ].
+
+	"now we resolved against folder and not the root of the filesystem"
+	mic := microdown 
+		resolverRoot: system / 'folder' ;
+		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources asString 
+		equals: 'memory:///folder/documentation/image.png'
+	
+]
+
+{ #category : #tests }
+MicPathResolverTest >> testResolveRelativeURL2 [
+	| file mic |
+	system := FileSystem memory workingDirectory.
+	(system / 'folder') createDirectory.
+	file := system / 'folder/file.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](documentation/image.png)' ].
+
+	mic := microdown 
+		resolverRoot: 'http://www.pharo.org' asUrl;
+		treeFromFile: file.
+
+	self 
+		assert: mic children second children first resources asString 
 		equals: 'http://www.pharo.org/documentation/image.png'
 	
 ]

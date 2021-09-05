@@ -6,10 +6,13 @@ My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/log
 You should get the following picture: 
 ![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)
 
-What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micanchor and micwitdh. 
-But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
+I have a resources, i.e. an object referencing either a file (in relative or absolute manner) or an Url, that refers to a given image object.
 
-So we will use ? and we will prefix all the microdown specific parameters with mic. 
+### Implementation notes
+
+What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micAnchor and micWitdh. 
+But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
+Therefore we use ? and we prefix all the microdown specific parameters with mic so that we can identify them. 
 "
 Class {
 	#name : #MicFigureBlock,
@@ -81,7 +84,7 @@ MicFigureBlock >> openingDelimiter [
  	^ MicFigureNameOpenerDelimiter markup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicFigureBlock >> originUrl [
 	^ self properties at: #originUrl ifAbsent: [ 
 		^ url ]
@@ -115,4 +118,16 @@ MicFigureBlock >> printOn: aStream [
 { #category : #accessing }
 MicFigureBlock >> query [
 	^ url query
+]
+
+{ #category : #accessing }
+MicFigureBlock >> resources [ 
+
+	^ url 
+]
+
+{ #category : #accessing }
+MicFigureBlock >> resources: micResources [
+
+	url := micResources
 ]

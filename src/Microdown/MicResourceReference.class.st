@@ -13,6 +13,9 @@ For inputfile and figures we can accept
 - an Url http://server/m.mic or http://server/m.png
 - a relative path e.g., figures/m.png
 
+## Implementation
+
+url is misleading as an instance variable names since it can be either an url or a file reference.
 
 ## Warning
 
@@ -34,8 +37,9 @@ Class {
 	#name : #MicResourceReference,
 	#superclass : #Object,
 	#instVars : [
-		'url',
-		'originalString'
+		'originalString',
+		'hasBeenResolved',
+		'urlOrFileReference'
 	],
 	#category : #'Microdown-Core'
 }
@@ -49,8 +53,9 @@ MicResourceReference class >> fromString: aString [
 		
 ]
 
-{ #category : #convertin }
+{ #category : #converting }
 MicResourceReference >> asFileReference [
+	"Pay attention does not resolve the reference."
 	"We do not use here the URL because 
 		'chapter/figures/m.pillar' asUrl asFileReference produces an absolute file 
 		>>	(File @ /chapter/figures/m.pillar) while it should be a relative one.  
@@ -62,9 +67,35 @@ MicResourceReference >> asFileReference [
 	^ originalString asFileReference
 ]
 
-{ #category : #resolving }
-MicResourceReference >> inContextOf: aZnUrl [ 
-	^ url inContextOf: aZnUrl
+{ #category : #testing }
+MicResourceReference >> hasBeenEncodedAsFile [
+	"Return true is the user did not use http.... but /tmp or tmp"
+	
+	
+	^ hasBeenResolved 
+		ifTrue: [ true ]
+		ifFalse: [ urlOrFileReference isFile or: [ urlOrFileReference hasHost not ]]
+		
+	"When urOrFileReference holds an url isFile is expecting file:// and we do not care hence the or: "
+	
+	"Pay attention for the filereference branch sending isFile naively is not really working.
+ 
+	'/tmp.png' asFileReference isFile returns false for example if the file does not existingContexts 
+	
+	'meta-inf.ston' asFileReference isFile returns true with the pharo-launcher because it added that file
+	"
+]
+
+{ #category : #accessing }
+MicResourceReference >> hasBeenResolved [
+
+	^ hasBeenResolved
+]
+
+{ #category : #initialization }
+MicResourceReference >> initialize [ 
+	super initialize.
+	hasBeenResolved := false.
 ]
 
 { #category : #testing }
@@ -72,7 +103,8 @@ MicResourceReference >> isAbsolute [
 	"We consider as absolute a resource reference defined as:
 	'/Chapter/figures/m.mic' by opposition to 'Chapter/figures/m.mic'"
 
-	url hasHost ifTrue: [ ^ true ].
+	hasBeenResolved 
+		ifFalse: [ urlOrFileReference hasHost ifTrue: [ ^ true ] ].
 	^ originalString first = $/
 		ifTrue: [ true ]
 		ifFalse: [ false. ]
@@ -81,30 +113,38 @@ MicResourceReference >> isAbsolute [
 
 { #category : #testing }
 MicResourceReference >> isFile [
-	^ url isFile or: [ url hasHost not ]
+	
+	(originalString last = $/)
+		ifTrue: [ ^ false ].
+	^ true
 ]
 
 { #category : #testing }
 MicResourceReference >> isHttp [
-	^ url isHttp
+	
+	^ hasBeenResolved
+		ifFalse: [ urlOrFileReference isHttps ]
+		ifTrue: [ false ]
 ]
 
 { #category : #testing }
 MicResourceReference >> isHttps [
-	^ url isHttps
+	^ urlOrFileReference isHttps
 ]
 
 { #category : #testing }
 MicResourceReference >> isImageFile [
+	"Working both with resolved or not."
 	^ #('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
-		includes: url path asFileReference extension asLowercase
+		includes: urlOrFileReference asFileReference extension asLowercase
 ]
 
 { #category : #testing }
 MicResourceReference >> isRelative [
 	"We consider 'chapter/figures/f.mic' as relative and any http:// to be absolute."
 	
-	url hasHost ifTrue: [ ^ false ].
+	hasBeenResolved 
+		ifFalse: [ urlOrFileReference hasHost ifTrue: [ ^ false ] ].
 	^ originalString first = $/
 		ifFalse: [ true ]
 		ifTrue: [ false ]
@@ -114,23 +154,48 @@ MicResourceReference >> isRelative [
 { #category : #testing }
 MicResourceReference >> printOn: aStream [
 
-	aStream print: originalString 
+	aStream nextPutAll: originalString.
+
 ]
 
 { #category : #querying }
 MicResourceReference >> query [
-	^ url query
+	^ urlOrFileReference query
+]
+
+{ #category : #resolving }
+MicResourceReference >> resolvedBy: aRoot [
+	"Pay attention here we know that we have a file reference"
+	
+	"we should pay attention because 
+	'tmp' asUrl asFileReference isRelative is false.
+	So we do not resolve http....
+	only /tmp and tmp"
+	
+	hasBeenResolved
+		ifFalse: [ urlOrFileReference hasHost ifTrue: [ ^ self ]].
+	
+	(originalString first = $/)
+		ifTrue: [ urlOrFileReference := originalString allButFirst asFileReference asResolvedBy: aRoot ]
+		ifFalse: [ urlOrFileReference := FileReference fileSystem: aRoot path: (Path from: originalString) ].
+	
+	hasBeenResolved := true.
 ]
 
 { #category : #accessing }
 MicResourceReference >> string: aString [
 
 	originalString := aString trimBoth.
-	url := ZnUrl fromString: originalString.
+	urlOrFileReference := ZnUrl fromString: originalString.
 	 
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MicResourceReference >> url [ 
-	^ url
+	^ urlOrFileReference
+]
+
+{ #category : #'accessing - private' }
+MicResourceReference >> urlOrReference [
+	^ urlOrFileReference 
 ]

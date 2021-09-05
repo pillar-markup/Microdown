@@ -5,42 +5,91 @@ Class {
 }
 
 { #category : #helper }
-MicResourceReferenceTest >> fileReferenceClass [
+MicResourceReferenceTest >> resourceClass [
 
 	^ MicResourceReference
 ]
 
 { #category : #tests }
-MicResourceReferenceTest >> testIsAbsoluteFile [
-	
+MicResourceReferenceTest >> testIsFileOfNoUrlFile [
+
 	| mf |
-	mf := self fileReferenceClass fromString: '/chapter1/figures/m.mic'.
+	mf := self resourceClass fromString: 'server.org/figures/p.png'.
 	self assert: mf isFile.
-	self assert: mf isAbsolute.
-	self deny: mf isRelative
-	
+	mf := self resourceClass fromString: '/server.org/figures/p.png'.
+	self assert: mf isFile.
 ]
 
-{ #category : #'tests unsupported features' }
-MicResourceReferenceTest >> testIsFile [
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfNoUrlFolder [
 
 	| mf |
-	"we should not support this form of file declaration because file:///chapter1/figures/m.mic is relative while file://chapter1/figures/m.mic absolute from 
-	an url point of view"
-	mf := self fileReferenceClass fromString: 'file:///chapter1/figures/m.mic'.
+	mf := self resourceClass fromString: 'server.org/figures/'.
+	self deny: mf isFile.
+	mf := self resourceClass fromString: '/server.org/figures/'.
+	self deny: mf isFile.
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFile [
+
+	| mf |
+	mf := self resourceClass fromString: 'server.org/figures/p.png'.
+	mf resolvedBy: FileSystem workingDirectory.
 	self assert: mf isFile.
-	"we do not want to have file:/// to express relative paths."
+	
+	mf := self resourceClass fromString: '/server.org/figures/p.png'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf isFile.
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFolder [
+
+	| mf |
+	mf := self resourceClass fromString: 'server.org/figures/'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self deny: mf isFile.
+	mf := self resourceClass fromString: '/server.org/figures/'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self deny: mf isFile.
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfResolvedUrlFile [
+
+	| mf |
+	mf := self resourceClass fromString: 'http://server/figures/m.png'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf isFile.
 	
 ]
 
 { #category : #tests }
-MicResourceReferenceTest >> testIsRelativeFile [
-	
+MicResourceReferenceTest >> testIsFileOfUrlFile [
+
 	| mf |
-	mf := self fileReferenceClass fromString: 'chapter1/figures/m.mic'.
+	mf := self resourceClass fromString: 'http://server/figures/m.png'.
 	self assert: mf isFile.
-	self assert: mf isRelative.
-	self deny: mf isAbsolute
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfUrlFolder [
+
+	| mf |
+	mf := self resourceClass fromString: 'http://server.org/figures/'.
+	self deny: mf isFile.
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testIsFileOfUrlResolvedFolder [
+
+	| mf |
+	mf := self resourceClass fromString: 'http://server.org/figures/'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self deny: mf isFile.
 	
 ]
 
@@ -48,6 +97,106 @@ MicResourceReferenceTest >> testIsRelativeFile [
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
-	mf := self fileReferenceClass fromString: 'http://server/m.mic'.
-	self assert: mf url asString equals: 'http://server/m.mic'
+	mf := self resourceClass fromString: 'http://server/m.mic'.
+	self assert: mf asString equals: 'http://server/m.mic'.
+	self deny: mf hasBeenResolved.
+]
+
+{ #category : #'tests - file reference conversion' }
+MicResourceReferenceTest >> testResolvedFileReferenceFromFile [
+	"Resolution does not change the file reference conversion."
+	
+	| mf |
+	mf := self resourceClass fromString: '/tmp'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf asFileReference printString equals: 'File @ /tmp'.
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
+	
+	| mf |
+	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf hasBeenEncodedAsFile.
+	self assert: mf isAbsolute.
+	self deny: mf isRelative
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testResolvedIsImageFile [
+	
+	| mf |
+	mf := self resourceClass fromString: '/chapter1/figures/m.png'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf isImageFile.
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testResolvedIsRelativeFile [
+	
+	| mf |
+	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self assert: mf hasBeenEncodedAsFile.
+	self assert: mf isRelative.
+	self deny: mf isAbsolute
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testUnResolvedIsRelativeFile [
+	
+	| mf |
+	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
+	self assert: mf hasBeenEncodedAsFile.
+	self assert: mf isRelative.
+	self deny: mf isAbsolute
+	
+]
+
+{ #category : #'tests - file reference conversion' }
+MicResourceReferenceTest >> testUnresolvedFileReferenceFromFile [
+	"Resolution does not change the file reference conversion."
+	
+	| mf |
+	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
+	self assert: mf asFileReference printString equals: 'File @ /chapter1/figures/m.mic'.
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
+	
+	| mf |
+	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
+	self assert: mf hasBeenEncodedAsFile.
+	self assert: mf isAbsolute.
+	self deny: mf isRelative
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testUnresolvedIsImageFile [
+	
+	| mf |
+	mf := self resourceClass fromString: '/chapter1/figures/m.png'.
+	self assert: mf isImageFile.
+	
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testUrlGetResolved [
+
+	
+	| mf |
+	mf := self resourceClass fromString: 'http://files.pharo.org/logo/pharologo.png'.
+	mf resolvedBy: FileSystem workingDirectory.
+	self deny: mf hasBeenEncodedAsFile.
+	self assert: mf isAbsolute.
+	self deny: mf isRelative
+	
 ]

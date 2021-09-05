@@ -39,16 +39,13 @@ MicPathResolver >> visitFigure: aFigure [
 	aFigure propertyAt: #originUrl put: originUrl.
 	
 	"if this http:/ or https:// then this an absolute so no need to resolve it. Tell me otherwise"
-	(aFigure url isHttp | aFigure url isHttps)
+	(aFigure resources isHttp | aFigure resources isHttps)
 		ifTrue: [ ^ aFigure ].
 
-	(aFigure url isFile and: [ aFigure url isRelative ])
+	(aFigure resources isFile and: [ aFigure resources isRelative ])
 			ifTrue: [ 
-				aFigure url: (aFigure url asFileReference asResolvedBy: self root).
+				aFigure resources: (aFigure resources resolvedBy: self root).
 				^ aFigure ].
-			
-	 (aFigure url isRelative)
-			ifTrue: [ aFigure url: (aFigure url inContextOf: self root) asUrl ].
 	^ aFigure
 ]
 
