@@ -118,16 +118,17 @@ MicPathResolverTest >> testResolveNotRelativePath [
 { #category : #tests }
 MicPathResolverTest >> testResolveNotRelativePathWithInputfile [
 	
-	| file mic urlBefore |
+	| file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
+	file := system / 'folder' / 'file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=/chapters/withStyle.mic}?' ].
-	self halt.
-	mic := microdown treeFromFile: file.
-	urlBefore := '/chapters/withStyle.mic'.
-	self assert: mic children first children first isRelativeFilePath not.
-	self assert: mic children first children first path equals: urlBefore
+
+	mic := microdown 
+				resolverRoot: system / '_result';
+				treeFromFile: file.
+	
+	self assert: mic children first children first path fullName equals:  '/chapters/withStyle.mic'
 	
 ]
 
@@ -220,13 +221,11 @@ MicPathResolverTest >> testResolveRelativePathWithInputfile [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=chapters/withStyle.mic}?' ].
 	
 	mic := microdown 
-				resolverRoot: system;
+				resolverRoot: system / '_result';
 				treeFromFile: file.
-	
-	
+				
 	self 
-		assert: mic children first children first path urlOrReference fullName 
-		equals: '//chapters/withStyle.mic'
+		assert: mic children first children first path fullName equals: '/_result/chapters/withStyle.mic'
 
 	
 ]
