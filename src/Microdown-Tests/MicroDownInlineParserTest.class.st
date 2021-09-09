@@ -320,7 +320,7 @@ MicrodownInlineParserTest >> testLink [
 	
  	self assert: elements second caption equals: 'Pharo.Org'.
  	self assert: elements second kind equals: 'linkName'.
-	self assert: elements second url printString equals: 'http://www.pharo.org/'.
+	self assert: elements second url printString equals: 'http://www.pharo.org'.
 	
 	
  	self assert: elements second openingDelimiter equals: '['.
@@ -373,20 +373,6 @@ MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	self assert: elements size equals: 1.
  	self assert: elements first substring equals: 'abc`monospacesdef'
 
-]
-
-{ #category : #'tests - path' }
-MicrodownInlineParserTest >> testOriginPathInInlineParser [
-
-	| file system mic |
-	parser := self parser.
-	system := FileSystem memory workingDirectory.
-	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](file://folder/file.mic)' ].
-	mic := parser parseFile: file.
-	self assert: mic children second children first originPath equals: system / 'folder'
 ]
 
 { #category : #'tests - raw' }

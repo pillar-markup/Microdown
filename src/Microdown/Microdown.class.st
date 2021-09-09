@@ -25,9 +25,15 @@ Microdown >> parse: aStreamOrString [
 ]
 
 { #category : #parsing }
-Microdown >> parseFile: aFileReference [
+Microdown >> resolvedTreeFrom: aStreamOrString [
 
-	^ parser parseFile: aFileReference
+	| micTree |
+	micTree := parser parse: aStreamOrString.
+	self resolver 
+		root: self resolverRoot ;
+		visit: micTree.
+	^ micTree
+	
 ]
 
 { #category : #parsing }
@@ -45,24 +51,4 @@ Microdown >> resolverRoot [
 Microdown >> resolverRoot: root [
 	
 	resolverRoot := root
-]
-
-{ #category : #parsing }
-Microdown >> treeFrom: aStreamOrString [
-
-	| ast |
-	ast := parser parse: aStreamOrString.
-	
-]
-
-{ #category : #parsing }
-Microdown >> treeFromFile: aFileReference [
-
-	| micTree |
-	micTree := parser parse: aFileReference asFileReference contents.
-	micTree propertyAt: #originPath put: aFileReference fullName.
-	self resolver 
-		root: self resolverRoot ;
-		visit: micTree.
-	^ micTree
 ]

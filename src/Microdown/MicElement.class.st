@@ -25,12 +25,6 @@ MicElement >> inlineParse: aString [
 ]
 
 { #category : #accessing }
-MicElement >> originPath [
-	^ self properties at: #originPath 
-		ifAbsent: [ ^ parent originPath  ]
-]
-
-{ #category : #accessing }
 MicElement >> parent [
 	^ parent
 ]

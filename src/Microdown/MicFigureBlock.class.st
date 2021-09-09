@@ -40,14 +40,19 @@ MicFigureBlock >> arguments: aDictionary [
 
 { #category : #visiting }
 MicFigureBlock >> closeMe [ 
-	
-	| dictionary |
+	"we used this circumvoluted way to use the parsing on arguments provided by the URL parser,
+	even in case of file. so the user can express tmp/figures/goo.png?width=90&anchor=foo"
+	| dictionary urlString tempUrl |
 	dictionary := OrderedDictionary new. 
-	url := (MicResourceReference fromString: url asString).
-	url query ifNotNil: [ :q |
+	urlString := url asString.
+	tempUrl := ZnUrlCopy fromString: urlString.
+	tempUrl query ifNotNil: [ :q |
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
 	caption := self inlineParse: substring.
+	"while the instance variable is named url it will host a file or http url mic resources object"
+	url := MicResourceReference fromString: urlString
+	
 	
 	
 ]

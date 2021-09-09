@@ -99,7 +99,7 @@ MicResourceReferenceTest >> testParseFullUrl [
 	| mf |
 	mf := self resourceClass fromString: 'http://server/m.mic'.
 	self assert: mf asString equals: 'http://server/m.mic'.
-	self deny: mf hasBeenResolved.
+
 ]
 
 { #category : #'tests - file reference conversion' }
@@ -109,7 +109,7 @@ MicResourceReferenceTest >> testResolvedFileReferenceFromFile [
 	| mf |
 	mf := self resourceClass fromString: '/tmp'.
 	mf resolvedBy: FileSystem workingDirectory.
-	self assert: mf asFileReference printString equals: 'File @ /tmp'.
+	self assert: mf asFileReference printString equals: '/tmp'.
 	
 ]
 
@@ -118,10 +118,9 @@ MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
 	
 	| mf |
 	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
-	mf resolvedBy: FileSystem workingDirectory.
-	self assert: mf hasBeenEncodedAsFile.
-	self assert: mf isAbsolute.
-	self deny: mf isRelative
+	mf resolvedBy: FileSystem memory / 'root2'.
+	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: mf fullName equals: '/chapter1/figures/m.mic'
 	
 ]
 
@@ -140,10 +139,9 @@ MicResourceReferenceTest >> testResolvedIsRelativeFile [
 	
 	| mf |
 	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
-	mf resolvedBy: FileSystem workingDirectory.
-	self assert: mf hasBeenEncodedAsFile.
-	self assert: mf isRelative.
-	self deny: mf isAbsolute
+	mf resolvedBy: FileSystem memory workingDirectory.
+	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: (mf fullName endsWith: '/chapter1/figures/m.mic')
 	
 ]
 
@@ -152,9 +150,8 @@ MicResourceReferenceTest >> testUnResolvedIsRelativeFile [
 	
 	| mf |
 	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
-	self assert: mf hasBeenEncodedAsFile.
-	self assert: mf isRelative.
-	self deny: mf isAbsolute
+	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: (mf fullName endsWith: 'chapter1/figures/m.mic').
 	
 ]
 
@@ -164,7 +161,7 @@ MicResourceReferenceTest >> testUnresolvedFileReferenceFromFile [
 	
 	| mf |
 	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
-	self assert: mf asFileReference printString equals: 'File @ /chapter1/figures/m.mic'.
+	self assert: mf asFileReference printString equals: '/chapter1/figures/m.mic'.
 	
 ]
 
@@ -173,9 +170,9 @@ MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 	
 	| mf |
 	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
-	self assert: mf hasBeenEncodedAsFile.
-	self assert: mf isAbsolute.
-	self deny: mf isRelative
+	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: mf fullName equals: '/chapter1/figures/m.mic'.
+
 	
 ]
 
@@ -195,8 +192,6 @@ MicResourceReferenceTest >> testUrlGetResolved [
 	| mf |
 	mf := self resourceClass fromString: 'http://files.pharo.org/logo/pharologo.png'.
 	mf resolvedBy: FileSystem workingDirectory.
-	self deny: mf hasBeenEncodedAsFile.
-	self assert: mf isAbsolute.
-	self deny: mf isRelative
+	self assert: (mf isKindOf: MicHTTPResource).
 	
 ]

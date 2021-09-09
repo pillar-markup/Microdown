@@ -51,7 +51,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := MicroDownParser new parseFile: file.
+	root := Microdown new resolvedTreeFrom: file contents.
 	
 	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
 	self assert: root children first class equals: MicParagraphBlock.
@@ -89,7 +89,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := (MicroDownParser new parseFile: file).
+	root := (Microdown new resolvedTreeFrom: file contents).
 	
 	includer visit: root.
 	"even if inputFile was in a paragraph this raises the question of where do we put the expansion. 
@@ -116,7 +116,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
-	root := (MicroDownParser new parseFile: file).
+	root := (Microdown new resolvedTreeFrom: file contents).
 	includer visit: root.
 
 	self assert: root children size equals: 1.
@@ -142,7 +142,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
-	mic := (MicroDownParser new parseFile: file).
+	mic := (Microdown new resolvedTreeFrom: file contents).
 	includer visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
@@ -179,7 +179,7 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? 
 
 ?{inputfile|path=anExample2.mic}?' ].
-	root := MicroDownParser new parseFile: file.
+	root := Microdown new resolvedTreeFrom: file contents.
 	includer visit: root.
 
 	self assert: root children first children first class equals: MicHeaderBlock.

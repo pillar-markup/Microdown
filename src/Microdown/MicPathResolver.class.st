@@ -34,16 +34,8 @@ MicPathResolver >> root: aRoot [
 
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
-	
-	self halt.
-	"if this http:/ or https:// then this an absolute so no need to resolve it. Tell me otherwise"
-	(aFigure resources isHttp | aFigure resources isHttps)
-		ifTrue: [ ^ aFigure ].
 
-	aFigure resources isFile
-			ifTrue: [ 
-				aFigure resources: (aFigure resources resolvedBy: self root).
-				^ aFigure ].
+	aFigure resources: (aFigure resources resolvedBy: self root).
 	^ aFigure
 ]
 
