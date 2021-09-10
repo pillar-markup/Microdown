@@ -56,6 +56,12 @@ MicResourceReference class >> fromString: aString [
 		
 ]
 
+{ #category : #converting }
+MicResourceReference >> asFileReference [
+
+	^ self subclassResponsibility
+]
+
 { #category : #testing }
 MicResourceReference >> isFile [
 	
