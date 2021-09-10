@@ -71,6 +71,13 @@ MicResourceReference >> isImageFile [
 		includes: urlOrFileReference asFileReference extension asLowercase
 ]
 
+{ #category : #testing }
+MicResourceReference >> isWeb [
+	"Answer whether I'm suitable to be opened in a web browser."
+
+	^ false
+]
+
 { #category : #accessing }
 MicResourceReference >> originalString [
 	

@@ -405,6 +405,12 @@ ZnUrlCopy >> isSlash [
 	^ self hasPath not or: [ segments size = 1 and: [ segments first = #/ ] ]
 ]
 
+{ #category : #testing }
+ZnUrlCopy >> isWeb [
+
+	^ #( http https ) includes: self scheme
+]
+
 { #category : #'accessing - path' }
 ZnUrlCopy >> lastPathSegment [
 	^ self isSlash
