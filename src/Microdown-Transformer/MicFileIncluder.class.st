@@ -1,27 +1,19 @@
 "
-MicFileInclusion replace the MicInputfileBlock by the nodes obtain during the parse of file.
+I replace the inputFileBlock by the nodes of the file.
+In particular I resolve paths to the correct places.
+For example imagine that we have the file 
 
-For a file name example.mic which contains :
-
-# Foo
-
-this is a paragraph
-
-```
- this is a code
-```
-
-the transformer transform `?{fileinput?path=example.mic}?` by : 
-
-# Foo
-
-this is a paragraph
-
-```
- this is a code
-```
-
-And if the path does not exist the transformer do nothing
+`Books/Book1/index.mic`
+containing 
+	`${inputfile&path=SUnit/SUnit.mic$`
+	
+and that `SUnit/SUnit.mic` contains a figure
+such as 
+	`![](figures/setUpTearDown.png)`
+	
+Such `figures/setUpTearDown.png` file should get its path being: `Books/Book1/SUnit/figures/setUpTearDown.png`
+	
+Note that the path does not exist the transformer does nothing.
 "
 Class {
 	#name : #MicFileIncluder,
@@ -91,11 +83,14 @@ MicFileIncluder >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
 	| includedFile microdownAST |
-	includedFile := topFile / anInputFileAnnotation path asString.
+	includedFile := anInputFileAnnotation path.
 	self validateInclusionOfFile: includedFile.
-	includedFile ifExists:[
+	self halt.
+	includedFile exists ifExists:[
+		"may be better to call back microdown since it defined resolvedTreeFrom:"
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
-	
+		MicPathResolver new root: topFile ; visit: microdownAST.
+		
 	"Execute a file inclusion step recursively" 
 	self class new
 		topFile: includedFile;

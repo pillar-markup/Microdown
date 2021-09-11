@@ -41,5 +41,5 @@ MicPathResolver >> visitFigure: aFigure [
 
 { #category : #visiting }
 MicPathResolver >> visitInputfile: anInputFile [
-	anInputFile path: (anInputFile path asResolvedBy: self root) asFileReference
+	anInputFile path: (anInputFile path asResolvedBy: self root)
 ]

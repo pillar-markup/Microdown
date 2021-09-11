@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'parser',
-		'resolverRoot'
+		'resolverRoot',
+		'file'
 	],
 	#category : #'Microdown-Core'
 }
@@ -34,6 +35,12 @@ Microdown >> resolvedTreeFrom: aStreamOrString [
 		visit: micTree.
 	^ micTree
 	
+]
+
+{ #category : #resolving }
+Microdown >> resolvedTreeFromFile: aFileReference [ 
+	file := aFileReference. 
+	^ self resolvedTreeFrom: file contents
 ]
 
 { #category : #parsing }
