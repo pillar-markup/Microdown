@@ -86,11 +86,13 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 	| includer root file|
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
-	
-	file := filesystem workingDirectory / 'test.mic'.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := (Microdown new resolvedTreeFrom: file contents).
-	
+	root := (Microdown new 
+					resolverRoot: filesystem workingDirectory;
+					resolvedTreeFromFile: file).
+	self halt.
 	includer visit: root.
 	"even if inputFile was in a paragraph this raises the question of where do we put the expansion. 
 	For example putting a header inside a paragraph does not make sense. 

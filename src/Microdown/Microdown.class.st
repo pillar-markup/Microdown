@@ -30,7 +30,8 @@ Microdown >> resolvedTreeFrom: aStreamOrString [
 
 	| micTree |
 	micTree := parser parse: aStreamOrString.
-	self resolver 
+	self resolver
+		originFile: file;
 		root: self resolverRoot ;
 		visit: micTree.
 	^ micTree
@@ -38,7 +39,9 @@ Microdown >> resolvedTreeFrom: aStreamOrString [
 ]
 
 { #category : #resolving }
-Microdown >> resolvedTreeFromFile: aFileReference [ 
+Microdown >> resolvedTreeFromFile: aFileReference [
+	"This method is needed because when we resolved path we often need to know in which file a given figure or inputFile is written."
+	
 	file := aFileReference. 
 	^ self resolvedTreeFrom: file contents
 ]

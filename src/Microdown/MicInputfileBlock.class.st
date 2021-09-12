@@ -44,6 +44,6 @@ MicInputfileBlock >> path [
 
 { #category : #accessing }
 MicInputfileBlock >> path: aPath [
-	self halt.
+
 	arguments at: 'path' put: aPath
 ]

@@ -86,6 +86,11 @@ MicResourceReference >> originalString: aString [
 	 
 ]
 
+{ #category : #private }
+MicResourceReference >> path [ 
+	^ urlOrFileReference
+]
+
 { #category : #testing }
 MicResourceReference >> printOn: aStream [
 

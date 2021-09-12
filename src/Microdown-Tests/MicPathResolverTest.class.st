@@ -19,7 +19,7 @@ MicPathResolverTest >> setUp [
 	microdown := Microdown new
 ]
 
-{ #category : #tests }
+{ #category : #'dummy tests' }
 MicPathResolverTest >> testNotCallingResolver [
 	"Using the parser only should not resolve the path, here we only call parse."
 	
@@ -34,7 +34,7 @@ MicPathResolverTest >> testNotCallingResolver [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'dummy tests' }
 MicPathResolverTest >> testParameterFileNotCallingResolver [
 	"Using the parser should handle parameters"
 	
@@ -58,7 +58,7 @@ MicPathResolverTest >> testResolveAbsoluteFileWithURL [
 
 	mic := microdown 
 		resolverRoot: 'http://www.pharo.org' asUrl;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources url printString 
@@ -81,7 +81,7 @@ MicPathResolverTest >> testResolveAbsoluteFileWithURL2 [
 
 	mic := microdown 
 		resolverRoot: 'http://www.pharo.org/figures/' asUrl;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources url printString 
@@ -100,12 +100,27 @@ MicPathResolverTest >> testResolveAbsoluteResourcesAgainstRootFileSystem [
 
 	mic := microdown 
 		resolverRoot: system;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources url fullName 
 		equals: '/documentation/image.png'
 	
+]
+
+{ #category : #'new tests' }
+MicPathResolverTest >> testResolveInContextOfFilePath [
+
+	| fileSystem root file|
+	fileSystem := FileSystem memory. 
+	(fileSystem workingDirectory / 'SUnit') createDirectory.
+	file := fileSystem workingDirectory  / 'SUnit' / 'SUnit.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '![aFile](figures/setUp.png)' ].
+	root := (Microdown new 
+					resolverRoot: fileSystem workingDirectory;
+					resolvedTreeFromFile: file).
+
+	self assert: root children first children first url fullName equals: '/SUnit/figures/setUp.png' 
 ]
 
 { #category : #tests }
@@ -120,7 +135,7 @@ MicPathResolverTest >> testResolveNotRelativePath [
 
 	mic := microdown 
 		resolverRoot: system; 
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 		
 	self assert: mic children second children first resources fullName equals: '/folder/figures/image.png'.
 	self assert: mic children second children first resources isFile
@@ -138,7 +153,7 @@ MicPathResolverTest >> testResolveNotRelativePathWithInputfile [
 
 	mic := microdown 
 				resolverRoot: system / '_result';
-				resolvedTreeFrom: file contents.
+				resolvedTreeFromFile: file.
 	
 	self assert: mic children first children first path fullName equals:  '/chapters/withStyle.mic'
 	
@@ -155,19 +170,15 @@ MicPathResolverTest >> testResolveRelativeFileWithFileSystem [
 
 	mic := microdown 
 		resolverRoot: system;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources fullName 
-		equals: '/documentation/image.png'.
+		equals: '/folder/documentation/image.png'.
 	
 	self 
 		assert: mic children second children first resources url  class 
 		equals: FileReference.
-	
-	self 
-		assert: mic children second children first resources url pathString 
-		equals: '/documentation/image.png'.
 		
 	"Now we try with a working directory and we check that we get a resolved path."
 	
@@ -196,7 +207,7 @@ MicPathResolverTest >> testResolveRelativeFileWithURL [
 
 	mic := microdown 
 		resolverRoot: 'http://www.pharo.org' asUrl;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources url printString 
@@ -215,17 +226,11 @@ MicPathResolverTest >> testResolveRelativeFileWithURL2 [
 
 	mic := microdown 
 		resolverRoot: 'http://www.pharo.org/figures' asUrl;
-		resolvedTreeFrom: file contents.
-
-	self flag: #toFixLater.
-	"We will see how to manage the url with subproject
+		resolvedTreeFromFile: file.
+		
 	self 
 		assert: mic children second children first resources url printString 
 		equals: 'http://www.pharo.org/figures/documentation/image.png'
-	"
-	self 
-		assert: mic children second children first resources url printString 
-		equals: 'http://www.pharo.org/documentation/image.png'
 ]
 
 { #category : #tests }
@@ -238,7 +243,7 @@ MicPathResolverTest >> testResolveRelativePathWithInputfile [
 	
 	mic := microdown 
 				resolverRoot: system / '_result';
-				resolvedTreeFrom: file contents.
+				resolvedTreeFromFile: file.
 				
 	self 
 		assert: mic children first children first path fullName equals: '/_result/chapters/withStyle.mic'
@@ -257,7 +262,7 @@ MicPathResolverTest >> testResolveRelativeResourcesAgainstRootFileSystem [
 
 	mic := microdown 
 		resolverRoot: system / 'folder';
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources fullName
@@ -283,7 +288,7 @@ MicPathResolverTest >> testResolveRelativeResourcesAgainstSubFolders [
 	"now we resolved against folder and not the root of the filesystem"
 	mic := microdown 
 		resolverRoot: system / 'folder' / 'subfil' ;
-		resolvedTreeFrom: file contents.
+		resolvedTreeFromFile: file.
 
 	self 
 		assert: mic children second children first resources fullName 

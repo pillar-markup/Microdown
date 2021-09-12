@@ -7,7 +7,8 @@ Class {
 	#name : #MicPathResolver,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
-		'root'
+		'root',
+		'originFile'
 	],
 	#category : #'Microdown-Core'
 }
@@ -17,6 +18,12 @@ MicPathResolver >> initialize [
 	
 	super initialize. 
 	root := FileSystem workingDirectory
+]
+
+{ #category : #initialization }
+MicPathResolver >> originFile: aFile [
+	"Origin file represents the file that is containing the figure or the input file we are resolving."
+	originFile := aFile
 ]
 
 { #category : #visiting }
@@ -34,12 +41,16 @@ MicPathResolver >> root: aRoot [
 
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
-
-	aFigure resources: (aFigure resources resolvedBy: self root).
+	
+	originFile 
+		ifNotNil: [ aFigure resources: (aFigure resources resolvedBy: originFile parent path withResolver: self)]
+		ifNil: [ aFigure resources: (aFigure resources resolvedBy: self root )].
 	^ aFigure
 ]
 
 { #category : #visiting }
 MicPathResolver >> visitInputfile: anInputFile [
+
+	self halt.
 	anInputFile path: (anInputFile path asResolvedBy: self root)
 ]
