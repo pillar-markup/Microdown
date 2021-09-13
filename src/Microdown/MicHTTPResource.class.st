@@ -28,15 +28,15 @@ MicHTTPResource >> resolvedBy: aRoot [
 ]
 
 { #category : #resolving }
-MicHTTPResource >> resolvedBy: aRoot withResolver: aResolver [
+MicHTTPResource >> resolvedBy: parentPath withResolver: aResolver [
 	"I'm url resource so I do not care about a root"
-	self halt.
-	^ (aResolver root isKindOf: ZnUrl)
+
+	^ (aResolver resolutionSource isKindOf: ZnUrl)
 			ifTrue: [
 				"we want to resolve over for example http://github.com/pharo-project...."
 				MicHTTPResource new 
 								originalString: originalString; 
-								url: (aResolver root withRelativeReference: self path) ]
+								url: (aResolver resolutionSource withRelativeReference: self path) ]
 			ifFalse: [ 
 				"Now I resolve again a file system... well this is http so I do not care about the resolver"
 				self				

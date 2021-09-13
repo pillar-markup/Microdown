@@ -1,7 +1,28 @@
 "
-`MicPathResolver` uses the originPath of the figure to create an absolutePath for the figure.
-The originPath is defined when we use the `MicroDownParser>>#parseFile:` else originPath takes per default the FileSystem workingDirectory.
-The `MicPathResolver` replaces the  url by an url which contains an absolute file path and it keeps the original url in originUrl in the properties of figure
+`MicPathResolver` resolves paths and urls of the document into absolute references based on the kind of resolutionSource and the kind of paths.
+
+Imagine we have the following file that we want to resolve on a local disk
+
+```
+	'SUnit' / 'SUnit.mic'.
+	with contents:  '![aFile](figures/setUp.png)'
+```
+
+We should get a figure whose reference is `FileSystem workingDirectory / 'SUnit' / 'figures' / 'setUp.png'`.
+
+Here are the possible combinations
+
+- aPath (e.g., figures/tmp.png) => full path := parent path + path
+- aUrl  (`http://files.pharo.org/logos/p.png`) => full path := http://files.pharo.org/logos/p.png
+
+then the root resolution impacts the full path:
+
+- if this is an url e.g., `http://pharo.org/resources` we should get
+  - 		`SUnit/figures/setUp.png` => `http://pharo.org/resources/SUnit/figures/setUp.png`
+  -      `http://files.pharo.org/logos/p.png` => `http://files.pharo.org/logos/p.png`
+- else a file system e.g., `~ducasse/pillar/books/`
+  - `SUnit/figures/setUp.png` =>`~ducasse/pillar/books/SUnit/figures/setUp.png`
+  - `http://files.pharo.org/logos/p.png` => `http://files.pharo.org/logos/p.png`
 "
 Class {
 	#name : #MicPathResolver,
@@ -17,13 +38,28 @@ Class {
 MicPathResolver >> initialize [ 
 	
 	super initialize. 
-	root := FileSystem workingDirectory
+	self resolutionSource: FileSystem workingDirectory
 ]
 
 { #category : #initialization }
 MicPathResolver >> originFile: aFile [
 	"Origin file represents the file that is containing the figure or the input file we are resolving."
+	
 	originFile := aFile
+]
+
+{ #category : #visiting }
+MicPathResolver >> resolutionSource [
+	"Return an URL or a file reference."
+	
+	^ root 
+]
+
+{ #category : #visiting }
+MicPathResolver >> resolutionSource: aRoot [
+	"To set as root for resolution, an absolute URL or file reference."
+	
+	root := aRoot 
 ]
 
 { #category : #visiting }
@@ -36,15 +72,15 @@ MicPathResolver >> root [
 MicPathResolver >> root: aRoot [
 	"To set as root for resolution, an absolute URL or file reference."
 	
-	root := aRoot 
+	self resolutionSource: aRoot
 ]
 
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
-	
+	self flag: #toFix.
 	originFile 
 		ifNotNil: [ aFigure resources: (aFigure resources resolvedBy: originFile parent path withResolver: self)]
-		ifNil: [ aFigure resources: (aFigure resources resolvedBy: self root )].
+		ifNil: [ aFigure resources: (aFigure resources resolvedBy: self resolutionSource )].
 	^ aFigure
 ]
 
@@ -52,5 +88,5 @@ MicPathResolver >> visitFigure: aFigure [
 MicPathResolver >> visitInputfile: anInputFile [
 
 	self halt.
-	anInputFile path: (anInputFile path asResolvedBy: self root)
+	anInputFile path: (anInputFile path asResolvedBy: self resolutionSource)
 ]
