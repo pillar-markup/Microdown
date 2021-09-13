@@ -11,5 +11,5 @@ MicrodownTest >> testResolverRootIsCorrectlyPassedToResolver [
 	mic := Microdown new.  
 	root := 'http://www.pharo.org' asUrl.
 	mic resolverRoot: root.
-	self assert: mic resolverRoot equals: mic resolver root
+	self assert: mic resolverRoot equals: mic resolver resolutionSource
 ]

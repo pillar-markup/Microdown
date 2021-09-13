@@ -63,19 +63,6 @@ MicPathResolver >> resolutionSource: aRoot [
 ]
 
 { #category : #visiting }
-MicPathResolver >> root [
-	"Return an URL or a file reference. May be in the future we should have a URL resolver and a file resolver."
-	^ root 
-]
-
-{ #category : #visiting }
-MicPathResolver >> root: aRoot [
-	"To set as root for resolution, an absolute URL or file reference."
-	
-	self resolutionSource: aRoot
-]
-
-{ #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
 	self flag: #toFix.
 	originFile 
