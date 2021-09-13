@@ -31,6 +31,7 @@ Microdown >> resolvedTreeFrom: aStreamOrString [
 	| micTree |
 	micTree := parser parse: aStreamOrString.
 	self resolver
+		microdown: self; 
 		originFile: file;
 		resolutionSource: self resolverRoot ;
 		visit: micTree.

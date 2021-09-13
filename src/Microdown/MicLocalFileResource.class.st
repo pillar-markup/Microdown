@@ -17,7 +17,6 @@ MicLocalFileResource >> fullName [
 
 { #category : #converting }
 MicLocalFileResource >> resolvedBy: aRoot [
-	self halt.
 	
 	^ (aRoot isKindOf: FileReference)
 			ifTrue: [ MicLocalFileResource new 
@@ -31,11 +30,6 @@ MicLocalFileResource >> resolvedBy: aRoot [
 
 { #category : #converting }
 MicLocalFileResource >> resolvedBy: parentPath withResolver: aResolver [
-	"a root is a path for example the path of the file containing the expression
-	aResolver is way to resolve path like URL or filesystem
-	"
-
-	"I'm a path to a resource.... I should resolve look at its root (parentPath)"
 	
 	^ (aResolver resolutionSource isKindOf: ZnUrl)
 		ifTrue: [ 
@@ -48,9 +42,11 @@ MicLocalFileResource >> resolvedBy: parentPath withResolver: aResolver [
 				url: (aResolver resolutionSource withRelativeReference: (resolverPath resolvePath: self path ) pathString) ]
 		ifFalse: [ 
 			"I have a filesystem + parentPath and local path"
-			MicLocalFileResource new 
+			| resolverPath |
+			resolverPath := aResolver resolutionSource path.
+			self class new 
 				originalString: originalString; 
-				url: (aResolver resolutionSource resolvePath: (parentPath resolvePath: self path)) ]
+				url: (aResolver resolutionSource resolvePath: (resolverPath resolvePath: (parentPath resolvePath: self path))) ]
 			
 ]
 

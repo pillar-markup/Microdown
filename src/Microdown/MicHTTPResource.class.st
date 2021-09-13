@@ -22,12 +22,6 @@ MicHTTPResource >> query [
 ]
 
 { #category : #resolving }
-MicHTTPResource >> resolvedBy: aRoot [
-
-	^ self
-]
-
-{ #category : #resolving }
 MicHTTPResource >> resolvedBy: parentPath withResolver: aResolver [
 	"I'm url resource so I do not care about a root"
 

@@ -261,7 +261,7 @@ MicPathResolverTest >> testResolveRelativeResourcesAgainstRootFileSystem [
 ![caption](documentation/image.png)' ].
 
 	mic := microdown 
-		resolverRoot: system / 'folder';
+		resolverRoot: system;
 		resolvedTreeFromFile: file.
 
 	self 
@@ -281,17 +281,17 @@ MicPathResolverTest >> testResolveRelativeResourcesAgainstSubFolders [
 	| file mic |
 	system := FileSystem memory workingDirectory.
 	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
+	file := system / 'folder' / 'file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# section
-![caption](documentation/image.png)' ].
+![caption](figures/image.png)' ].
 
 	"now we resolved against folder and not the root of the filesystem"
 	mic := microdown 
-		resolverRoot: system / 'folder' / 'subfil' ;
+		resolverRoot: system / 'xxx' / 'subfil' ;
 		resolvedTreeFromFile: file.
 
 	self 
-		assert: mic children second children first resources fullName 
-		equals: '/folder/subfil/documentation/image.png'
+		assert: mic children second children first resources path pathString
+		equals: '/xxx/subfil/folder/figures/image.png'
 	
 ]
