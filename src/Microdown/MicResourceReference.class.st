@@ -56,6 +56,12 @@ MicResourceReference class >> fromString: aString [
 		
 ]
 
+{ #category : #converting }
+MicResourceReference >> asFileReference [
+
+	^ self subclassResponsibility
+]
+
 { #category : #testing }
 MicResourceReference >> isFile [
 	
@@ -69,6 +75,13 @@ MicResourceReference >> isImageFile [
 	"Working both with resolved or not."
 	^ #('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
 		includes: urlOrFileReference asFileReference extension asLowercase
+]
+
+{ #category : #testing }
+MicResourceReference >> isWeb [
+	"Answer whether I'm suitable to be opened in a web browser."
+
+	^ false
 ]
 
 { #category : #accessing }
