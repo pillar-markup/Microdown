@@ -113,6 +113,20 @@ ZnUrlCopy >> addedToZnUrl: url [
 ]
 
 { #category : #converting }
+ZnUrlCopy >> asFileReference [
+	"Convert the receiver into a new FileReference object.
+	Note that for a FileReference a trailing slash is not relevant"
+
+	| path |
+	self isSlash
+		ifTrue: [ ^ FileSystem root ].
+	path := self isDirectoryPath
+		ifTrue: [ segments allButLast ]
+		ifFalse: [ segments copy ].
+	^ FileReference fileSystem: FileSystem disk path: (AbsolutePath withAll: path)
+]
+
+{ #category : #converting }
 ZnUrlCopy >> asFileUrl [
 	"Return a copy of the receiver as a File URL, replacing the scheme with #file.
 	This is useful when you want to do a #asFileReference afterwards."
@@ -403,6 +417,12 @@ ZnUrlCopy >> isSchemeUsingPath [
 { #category : #testing }
 ZnUrlCopy >> isSlash [
 	^ self hasPath not or: [ segments size = 1 and: [ segments first = #/ ] ]
+]
+
+{ #category : #testing }
+ZnUrlCopy >> isWeb [
+
+	^ #( http https ) includes: self scheme
 ]
 
 { #category : #'accessing - path' }

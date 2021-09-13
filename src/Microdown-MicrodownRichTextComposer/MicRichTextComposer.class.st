@@ -789,13 +789,17 @@ MicRichTextComposer >> visitItalic: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitLink: aLink [
+
 	| attribute |
 	attribute := nil.
-	(#(http https) includes: aLink url scheme )
-		ifTrue: [ attribute := TextAction new actOnClickBlock: [ WebBrowser openOn: aLink url printString ]].
+	aLink url isWeb ifTrue: [
+		attribute := TextAction new
+			actOnClickBlock: [ WebBrowser openOn: aLink url printString ];
+			yourself ].
 	attribute
-		ifNotNil:
-			[ canvas includeAttribute: attribute in: [ super visitLink: aLink ] ]
+		ifNotNil: [ canvas
+			includeAttribute: attribute
+			in: [ super visitLink: aLink ] ]
 		ifNil: [ super visitLink: aLink ]
 ]
 

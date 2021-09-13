@@ -16,6 +16,12 @@ MicHTTPResource >> fullName [
 	^ urlOrFileReference printString
 ]
 
+{ #category : #testing }
+MicHTTPResource >> isWeb [
+
+	^ urlOrFileReference isWeb
+]
+
 { #category : #querying }
 MicHTTPResource >> query [
 	^ urlOrFileReference query
