@@ -2,7 +2,7 @@ SmalltalkCISpec {
   #preLoading : '.github/scripts/preLoading.st',
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'MicrodownDev',
+      #baseline : 'Microdown',
       #onConflict : #useIncoming,
       #ignoreImage : true,
       #directory : 'src',
