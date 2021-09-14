@@ -51,7 +51,9 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := Microdown new resolvedTreeFrom: file contents.
+	root := Microdown new 
+					resolverRoot: filesystem workingDirectory;
+					resolvedTreeFromFile: file.
 	
 	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
 	self assert: root children first class equals: MicParagraphBlock.
@@ -86,13 +88,28 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 	| includer root file|
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
+	(filesystem workingDirectory / 'Chapters') createDirectory.
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
+Pharo is cool
+
+```
+	this is a code
+```
+' ].
+	
+	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
 	root := (Microdown new 
 					resolverRoot: filesystem workingDirectory;
 					resolvedTreeFromFile: file).
-	self halt.
+					
+	self assert: root children first children first class equals: MicInputfileBlock.
+	self assert: (root children first children first path isKindOf: MicResourceReference).			
+
 	includer visit: root.
 	"even if inputFile was in a paragraph this raises the question of where do we put the expansion. 
 	For example putting a header inside a paragraph does not make sense. 
@@ -118,7 +135,9 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
-	root := (Microdown new resolvedTreeFrom: file contents).
+	root := (Microdown new 
+		resolverRoot: filesystem workingDirectory;
+		resolvedTreeFromFile: file).
 	includer visit: root.
 
 	self assert: root children size equals: 1.
@@ -144,7 +163,9 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
-	mic := (Microdown new resolvedTreeFrom: file contents).
+	mic := (Microdown new 
+					resolverRoot: filesystem workingDirectory;
+					resolvedTreeFromFile: file).
 	includer visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
@@ -163,10 +184,14 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 { #category : #tests }
 MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesNotExist [
 
-	| includer mic |
+	| includer mic file |
 	includer := MicFileIncluder new.
 	includer topFile: filesystem workingDirectory.
-	mic := (MicroDownParser new parse: '?{inputfile|path=anExample3.mic}?').
+	file := filesystem workingDirectory / 'test.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample3.mic}?'].
+	mic := (Microdown new 
+					resolverRoot: filesystem workingDirectory;
+					resolvedTreeFromFile: file).
 	includer visit: mic.
 	self assert: mic children first children first class equals: MicInputfileBlock.
 ]
@@ -181,7 +206,9 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? 
 
 ?{inputfile|path=anExample2.mic}?' ].
-	root := Microdown new resolvedTreeFrom: file contents.
+	root := Microdown new 
+		resolverRoot: filesystem workingDirectory;
+		resolvedTreeFromFile: file.
 	includer visit: root.
 
 	self assert: root children first children first class equals: MicHeaderBlock.

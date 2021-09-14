@@ -113,7 +113,7 @@ MicResourceReference >> printOn: aStream [
 { #category : #accessing }
 MicResourceReference >> string: aString [
 
-	originalString := aString trimBoth.
+	originalString := aString trimBoth
 	
 	 
 ]

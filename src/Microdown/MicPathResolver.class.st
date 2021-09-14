@@ -78,6 +78,6 @@ MicPathResolver >> visitFigure: aFigure [
 
 { #category : #visiting }
 MicPathResolver >> visitInputfile: anInputFile [
-
-	anInputFile path: (anInputFile path asResolvedBy: self resolutionSource)
+	
+	anInputFile path: (anInputFile path resolvedBy: (Path * originFile parent pathString) withResolver: self)
 ]

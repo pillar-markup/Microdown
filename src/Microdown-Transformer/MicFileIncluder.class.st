@@ -83,14 +83,13 @@ MicFileIncluder >> visitInputfile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
 	| includedFile microdownAST |
-	includedFile := anInputFileAnnotation path.
+	includedFile := anInputFileAnnotation path path.
 	self validateInclusionOfFile: includedFile.
-	self halt.
-	includedFile exists ifExists:[
+	
+	includedFile ifExists:[
 		"may be better to call back microdown since it defined resolvedTreeFrom:"
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
-		MicPathResolver new 
-			
+		MicPathResolver new 	
 			originFile: topFile ; visit: microdownAST.
 		self flag: #tofix. "we are missing the resolution source"
 	"Execute a file inclusion step recursively" 

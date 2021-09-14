@@ -236,9 +236,9 @@ MicPathResolverTest >> testResolveRelativeFileWithURL2 [
 { #category : #tests }
 MicPathResolverTest >> testResolveRelativePathWithInputfile [
 	| file mic |
-	system := FileSystem memory workingDirectory.
-	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
+	system := FileSystem memory.
+	(system workingDirectory / 'folder') createDirectory.
+	file := system workingDirectory / 'folder' / 'file.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=chapters/withStyle.mic}?' ].
 	
 	mic := microdown 
@@ -246,7 +246,7 @@ MicPathResolverTest >> testResolveRelativePathWithInputfile [
 				resolvedTreeFromFile: file.
 				
 	self 
-		assert: mic children first children first path fullName equals: '/_result/chapters/withStyle.mic'
+		assert: mic children first children first path fullName equals: '/_result/folder/chapters/withStyle.mic'
 
 	
 ]
