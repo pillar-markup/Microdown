@@ -303,9 +303,9 @@ MicRichTextComposerTest >> testNestedList [
 	richText := self richTextForString: source.
 	runs := richText runs.
 	
-	"check that 'sub item 2.1' is numbered 'a)' and is rightly indented"
-	self assert: (richText asString copyFrom: 35 to: 36) equals: 'a)'.
-	self assert: (runs at: 35) first amount equals: 2
+	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
+	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
+	self assert: (runs at: 35) first amount equals: 3
 	
 ]
 

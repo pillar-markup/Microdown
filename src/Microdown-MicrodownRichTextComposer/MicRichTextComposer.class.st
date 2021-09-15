@@ -810,7 +810,7 @@ MicRichTextComposer >> visitListItem: anItem [
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
 	canvas newLineIfNotAlready.
 	canvas << bullet.
-	super visitListItem: anItem.
+	canvas indentIn: [ super visitListItem: anItem ].
 
 ]
 
