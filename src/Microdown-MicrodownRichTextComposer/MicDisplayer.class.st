@@ -150,5 +150,5 @@ MicDisplayer >> open [
 
 { #category : #'instance creation' }
 MicDisplayer >> richContents [
-	^ MicRichTextComposer new visit: (MicroDownParser new parse: self contents)
+	^ MicRichTextComposer new visit: (MicrodownParser new parse: self contents)
 ]

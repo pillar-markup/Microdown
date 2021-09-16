@@ -377,7 +377,7 @@ MicRichTextComposer class >> methodStylerFor: aString [
 { #category : #examples }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (MicroDownParser new parse: aString)
+	^ self new visit: (MicrodownParser new parse: aString)
 
 ]
 
@@ -454,7 +454,7 @@ MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	Else aString."
 	
 	| builder |
-	builder := MicroDownParser builder.
+	builder := MicrodownParser builder.
 	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
 	self notRendering 	
 		ifTrue: [ ^ aString ].

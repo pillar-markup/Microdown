@@ -37,7 +37,7 @@ MicElementTest >> parser [
 
 { #category : #factory }
 MicElementTest >> parserClass [
-	^ MicroDownParser
+	^ MicrodownParser
 ]
 
 { #category : #factory }
