@@ -700,16 +700,13 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 				ifTrue: [ 
 					canvas 
 					includeAttribute: TextEmphasis bold 
-					in: [ canvas  << aCodeBlock caption asText; newLine.
-							canvas <<  '------------------------------------------------------' asText; newLine ]].
+					in: [ canvas  << aCodeBlock caption asText; newLine]].
 			canvas
 				indentIn: [ 
 					canvas << (self class  
 						style: aCodeBlock body 
 						asLanguage: aCodeBlock firstTag)
 			] ].
-	canvas
-		indentIn: [  canvas newLine; <<  '------------------------------------------------------' asText].
 	canvas newLine.
 
 ]
@@ -813,7 +810,7 @@ MicRichTextComposer >> visitListItem: anItem [
 	bullet addAttribute: (TextIndent tabs: canvas nesting - 1).
 	canvas newLineIfNotAlready.
 	canvas << bullet.
-	super visitListItem: anItem.
+	canvas indentIn: [ super visitListItem: anItem ].
 
 ]
 
