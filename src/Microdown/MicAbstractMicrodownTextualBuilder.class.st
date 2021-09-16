@@ -41,7 +41,7 @@ MicAbstractMicrodownTextualBuilder >> flush [
 MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
-	parserClass := MicrodownParser.
+	parserClass := MicroDownParser.
 	newLineCharacterString := String cr.
 	lastIsNewLine := true
 ]

@@ -154,7 +154,7 @@ Now the implementation for now does not create a paragraph in the list_item elem
 
 "
 Class {
-	#name : #MicrodownParser,
+	#name : #MicroDownParser,
 	#superclass : #Object,
 	#instVars : [
 		'current',
@@ -168,116 +168,116 @@ Class {
 }
 
 { #category : #private }
-MicrodownParser class >> allBlockNodeClasses [
+MicroDownParser class >> allBlockNodeClasses [
 	^ MicAbstractBlock allSubclasses
 	
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> anchorMarkup [
+MicroDownParser class >> anchorMarkup [
 	^ '@'
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> anchorReferenceCloserMarkup [
+MicroDownParser class >> anchorReferenceCloserMarkup [
 	^ self inlineMarkups at: #anchorReferenceCloser
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> anchorReferenceOpenerMarkup [
+MicroDownParser class >> anchorReferenceOpenerMarkup [
 	^ self inlineMarkups at: #anchorReferenceOpener
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> annotatedParagraphMarkup [
+MicroDownParser class >> annotatedParagraphMarkup [
 	^ '!!'
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> argumentListDelimiter [
+MicroDownParser class >> argumentListDelimiter [
 	
 	^ '&'
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> argumentListEqualsDelimiter [
+MicroDownParser class >> argumentListEqualsDelimiter [
 	
 	^ '='
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> argumentListOfFigureStartDelimiter [
+MicroDownParser class >> argumentListOfFigureStartDelimiter [
 	
 	^ '?'
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> argumentListStartDelimiter [
+MicroDownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> boldMarkup [
+MicroDownParser class >> boldMarkup [
 	^ self inlineMarkups at: #bold
 ]
 
 { #category : #private }
-MicrodownParser class >> builder [
+MicroDownParser class >> builder [
 	^ MicMicrodownTextualBuilder new
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> codeblockMarkup [
+MicroDownParser class >> codeblockMarkup [
 
 	^ '```'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> commentedLineMarkup [
+MicroDownParser class >> commentedLineMarkup [
 
 	^ '%'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> environmentClosingBlockMarkup [
+MicroDownParser class >> environmentClosingBlockMarkup [
 	^ '?>'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> environmentOpeningBlockMarkup [
+MicroDownParser class >> environmentOpeningBlockMarkup [
 	^ '<?'
 ]
 
 { #category : #examples }
-MicrodownParser class >> example [
+MicroDownParser class >> example [
 	<sampleInstance>
 	^ self parse: self comment
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> figureOpenerMarkup [
+MicroDownParser class >> figureOpenerMarkup [
 	^ self inlineMarkups at: #figureOpener
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> headerMarkup [
+MicroDownParser class >> headerMarkup [
 
 	^ '#'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> horizontalLineMarkup [
+MicroDownParser class >> horizontalLineMarkup [
 	^ '***'
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> inlineMarkup: aType [
+MicroDownParser class >> inlineMarkup: aType [
 	^ self inlineMarkups at: aType asSymbol
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> inlineMarkups [
+MicroDownParser class >> inlineMarkups [
 	^ inlineMarkups ifNil: [ 
 		inlineMarkups := Dictionary new.
 		MicAbstractDelimiter subclasses 
@@ -298,145 +298,145 @@ MicrodownParser class >> inlineMarkups [
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> italicMarkup [
+MicroDownParser class >> italicMarkup [
 	^ self inlineMarkups at: #italic
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> linkNameCloserMarkup [
+MicroDownParser class >> linkNameCloserMarkup [
 	^ self inlineMarkups at: #linkNameCloser
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> linkNameOpenerMarkup [
+MicroDownParser class >> linkNameOpenerMarkup [
 	^ self inlineMarkups at: #linkNameOpener
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> mathClosingBlockMarkup [
+MicroDownParser class >> mathClosingBlockMarkup [
 	
 	^ '&'
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> mathMarkup [
+MicroDownParser class >> mathMarkup [
 	^ self inlineMarkups at: #math
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> mathOpeningBlockMarkup [
+MicroDownParser class >> mathOpeningBlockMarkup [
 
 	^ '&'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> metaDataClosingBlockMarkup [
+MicroDownParser class >> metaDataClosingBlockMarkup [
 	^ '}'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> metaDataOpeningBlockMarkup [
+MicroDownParser class >> metaDataOpeningBlockMarkup [
 	^ '{'
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> monospaceMarkup [
+MicroDownParser class >> monospaceMarkup [
 	^ self inlineMarkups at: #monospace
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> orderedListSemiMarkup [
+MicroDownParser class >> orderedListSemiMarkup [
 
 	^ '. '
 ]
 
 { #category : #'instance creation' }
-MicrodownParser class >> parse: aString [
+MicroDownParser class >> parse: aString [
 
 	^ self new parse: aString
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> preformattedMarkup [
+MicroDownParser class >> preformattedMarkup [
 
 	^ '> '
 ]
 
 { #category : #'markup utils' }
-MicrodownParser class >> resetInlineMarkups [
+MicroDownParser class >> resetInlineMarkups [
 	"self resetInlineMarkups"
 	inlineMarkups := nil
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> strikeMarkup [
+MicroDownParser class >> strikeMarkup [
 	^ self inlineMarkups at: #strike
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> tableCellMarkup [
+MicroDownParser class >> tableCellMarkup [
 
 	^ '|'
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> unorderedListMarkup [
+MicroDownParser class >> unorderedListMarkup [
 
 	^ '- '
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> unorderedListMarkups [
+MicroDownParser class >> unorderedListMarkups [
 
 	^ { self unorderedListPlusMarkup . self unorderedListMarkup . self unorderedListStarMarkup}
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> unorderedListPlusMarkup [
+MicroDownParser class >> unorderedListPlusMarkup [
 
 	^ '+ '
 ]
 
 { #category : #'block markups' }
-MicrodownParser class >> unorderedListStarMarkup [
+MicroDownParser class >> unorderedListStarMarkup [
 
 	^ '* '
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> urlCloserMarkup [
+MicroDownParser class >> urlCloserMarkup [
 	^ self inlineMarkups at: #urlCloser
 ]
 
 { #category : #'inline block markups' }
-MicrodownParser class >> urlOpenerMarkup [
+MicroDownParser class >> urlOpenerMarkup [
 	^ self inlineMarkups at: #urlOpener
 ]
 
 { #category : #markups }
-MicrodownParser >> anchorMarkup [
+MicroDownParser >> anchorMarkup [
 	^ self class anchorMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> annotatedParagraphMarkup [
+MicroDownParser >> annotatedParagraphMarkup [
 	^ self class annotatedParagraphMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> argumentListOfFigureStartDelimiter [
+MicroDownParser >> argumentListOfFigureStartDelimiter [
 	
 	^ self class argumentListOfFigureStartDelimiter
 ]
 
 { #category : #markups }
-MicrodownParser >> argumentListStartDelimiter [
+MicroDownParser >> argumentListStartDelimiter [
 	
 	^ self class argumentListStartDelimiter
 ]
 
 { #category : #'node creation' }
-MicrodownParser >> blockStarterClassFrom: line [
+MicroDownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
 	line ifEmpty: [ ^ nil ].
@@ -456,7 +456,7 @@ MicrodownParser >> blockStarterClassFrom: line [
 ]
 
 { #category : #'node creation' }
-MicrodownParser >> blockStarterClassFromOld: line [
+MicroDownParser >> blockStarterClassFromOld: line [
 	"return the class of a block which can start with line, or nil if none"
 
 	(line beginsWith: self headerMarkup)
@@ -491,47 +491,47 @@ MicrodownParser >> blockStarterClassFromOld: line [
 ]
 
 { #category : #markups }
-MicrodownParser >> boldMarkup [
+MicroDownParser >> boldMarkup [
 
 	^ self class boldMarkup
 ]
 
 { #category : #accessing }
-MicrodownParser >> builder [
+MicroDownParser >> builder [
 	"return a little helper to build microdown correct expression"
 	
 	^ self class builder
 ]
 
 { #category : #markups }
-MicrodownParser >> codeblockMarkup [ 
+MicroDownParser >> codeblockMarkup [ 
 	^ self class codeblockMarkup 
 ]
 
 { #category : #markups }
-MicrodownParser >> commentedLineMarkup [
+MicroDownParser >> commentedLineMarkup [
 
 	^ self class commentedLineMarkup
 ]
 
 { #category : #accessing }
-MicrodownParser >> current [ 
+MicroDownParser >> current [ 
 
 	^ current
 ]
 
 { #category : #markups }
-MicrodownParser >> environmentClosingBlockMarkup [
+MicroDownParser >> environmentClosingBlockMarkup [
 	^ self class environmentClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> environmentOpeningBlockMarkup [
+MicroDownParser >> environmentOpeningBlockMarkup [
 	^ self class environmentOpeningBlockMarkup
 ]
 
 { #category : #parsing }
-MicrodownParser >> handleErrorInLine: line [
+MicroDownParser >> handleErrorInLine: line [
 		
 	^ MicParsingError new 
 		line: line;
@@ -540,7 +540,7 @@ MicrodownParser >> handleErrorInLine: line [
 ]
 
 { #category : #parsing }
-MicrodownParser >> handleLine: line [
+MicroDownParser >> handleLine: line [
 	"The logic is the following: 
 		-first line is cleaned to avoid noise,
 		-then if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
@@ -557,17 +557,17 @@ MicrodownParser >> handleLine: line [
 ]
 
 { #category : #markups }
-MicrodownParser >> headerMarkup [ 
+MicroDownParser >> headerMarkup [ 
 	^ self class headerMarkup 
 ]
 
 { #category : #markups }
-MicrodownParser >> horizontalLineMarkup [
+MicroDownParser >> horizontalLineMarkup [
 	^ self class horizontalLineMarkup
 ]
 
 { #category : #initialization }
-MicrodownParser >> initialize [
+MicroDownParser >> initialize [
 
 	super initialize.
 	dispatchTable := Dictionary new.
@@ -589,61 +589,61 @@ MicrodownParser >> initialize [
 ]
 
 { #category : #testing }
-MicrodownParser >> isAList: normalized [
+MicroDownParser >> isAList: normalized [
 	
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
 { #category : #markups }
-MicrodownParser >> italicMarkup [
+MicroDownParser >> italicMarkup [
 
 	^ self class italicMarkup
 ]
 
 { #category : #'node creation' }
-MicrodownParser >> matchOrdered: line [
+MicroDownParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
 { #category : #'node creation' }
-MicrodownParser >> matchUnordered: line [
+MicroDownParser >> matchUnordered: line [
 	^ ( line beginsWith: self unorderedListPlusMarkup ) 
 		| ( line beginsWith: self unorderedListStarMarkup ) 
 		| ( line beginsWith: self unorderedListMarkup )
 ]
 
 { #category : #markups }
-MicrodownParser >> mathClosingBlockMarkup [
+MicroDownParser >> mathClosingBlockMarkup [
 	^ self class mathClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> mathOpeningBlockMarkup [
+MicroDownParser >> mathOpeningBlockMarkup [
 	^ self class mathOpeningBlockMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> metaDataClosingBlockMarkup [
+MicroDownParser >> metaDataClosingBlockMarkup [
 	^ self class metaDataClosingBlockMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> metaDataOpeningBlockMarkup [
+MicroDownParser >> metaDataOpeningBlockMarkup [
 	^ self class metaDataOpeningBlockMarkup
 ]
 
 { #category : #parsing }
-MicrodownParser >> newRootBlock [
+MicroDownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
 { #category : #markups }
-MicrodownParser >> orderedListSemiMarkup [
+MicroDownParser >> orderedListSemiMarkup [
 	^ self class orderedListSemiMarkup
 ]
 
 { #category : #parsing }
-MicrodownParser >> parse: aStreamOrString [
+MicroDownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
 	| inStream line |
@@ -662,17 +662,17 @@ MicrodownParser >> parse: aStreamOrString [
 ]
 
 { #category : #markups }
-MicrodownParser >> preformattedMarkup [ 
+MicroDownParser >> preformattedMarkup [ 
 	^ self class preformattedMarkup 
 ]
 
 { #category : #accessing }
-MicrodownParser >> resolver [
+MicroDownParser >> resolver [
 	^ MicPathResolver new
 ]
 
 { #category : #accessing }
-MicrodownParser >> setCurrent: aBlock [
+MicroDownParser >> setCurrent: aBlock [
 	"aBlock parent = current 
 		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].
 	note for me: we could just inforce this. aBlock parent: current.
@@ -682,24 +682,24 @@ MicrodownParser >> setCurrent: aBlock [
 ]
 
 { #category : #markups }
-MicrodownParser >> tableCellMarkup [
+MicroDownParser >> tableCellMarkup [
 
 	^ self class tableCellMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> unorderedListMarkup [
+MicroDownParser >> unorderedListMarkup [
 	^ self class unorderedListMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> unorderedListPlusMarkup [
+MicroDownParser >> unorderedListPlusMarkup [
 
 	^ self class unorderedListPlusMarkup
 ]
 
 { #category : #markups }
-MicrodownParser >> unorderedListStarMarkup [
+MicroDownParser >> unorderedListStarMarkup [
 
 	^ self class unorderedListStarMarkup
 ]
