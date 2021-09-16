@@ -4,7 +4,7 @@ I am intended to provide arguments to annotations, codeblocks and environments.
 My syntax is of the following form:
 
 - ` ` no name and no arguments
-- `name` a single name, no arguments
+- `name` a single name, no arguments. However, this is also interpreted as name=nil 
 - `key=arg[&key=arg]*`, no name, but arguments
 - `name|key=arg[&key=arg]*` a single name, and arguments
 "
