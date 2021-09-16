@@ -2,23 +2,23 @@
 may be rename the class later
 "
 Class {
-	#name : #MicInputfileBlock,
+	#name : #MicInputFileBlock,
 	#superclass : #MicAnnotationBlock,
 	#category : #'Microdown-Extensions'
 }
 
 { #category : #accessing }
-MicInputfileBlock class >> tag [ 
+MicInputFileBlock class >> tag [ 
 	^ #inputfile
 ]
 
 { #category : #visiting }
-MicInputfileBlock >> accept: aVisitor [
+MicInputFileBlock >> accept: aVisitor [
 	aVisitor visitInputfile: self
 ]
 
 { #category : #testing }
-MicInputfileBlock >> closeMe [
+MicInputFileBlock >> closeMe [
 	| p |
 	super closeMe.
 	p := arguments at: #path ifAbsent: [ 'notfound' ].
@@ -28,30 +28,30 @@ MicInputfileBlock >> closeMe [
 ]
 
 { #category : #accessing }
-MicInputfileBlock >> fileWithConfiguration: aConfiguration [
+MicInputFileBlock >> fileWithConfiguration: aConfiguration [
 	"I search my file."
 	self flag: 'can be better to use the MicPathResolver'.
 	^ aConfiguration baseDirectory resolve: self path
 ]
 
 { #category : #testing }
-MicInputfileBlock >> isRelativeFilePath [
+MicInputFileBlock >> isRelativeFilePath [
 	^ (self path beginsWith: '/') not
 ]
 
 { #category : #accessing }
-MicInputfileBlock >> originalPath [
+MicInputFileBlock >> originalPath [
 	^ properties at: #originalPath ifAbsent: [ self path ]
 ]
 
 { #category : #accessing }
-MicInputfileBlock >> path [
+MicInputFileBlock >> path [
 	
 	^ self arguments at: #path  ifAbsent: [ self halt. ^ 'path is absent' ]
 ]
 
 { #category : #accessing }
-MicInputfileBlock >> path: aPath [
+MicInputFileBlock >> path: aPath [
 	
 	arguments at: #'path' put: aPath
 ]
