@@ -281,7 +281,8 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
 		assert: (builder inputfile: 'Chapters/image.png') contents 
-		equals: MicAnnotationOpenerDelimiter markup,'inputfile | path=Chapters/image.png',MicAnnotationCloserDelimiter markup
+		equals: MicAnnotationOpenerDelimiter markup,
+					'inputfile | path=Chapters/image.png', MicAnnotationCloserDelimiter markup
 ]
 
 { #category : #'tests - format' }

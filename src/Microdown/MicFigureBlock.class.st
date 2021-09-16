@@ -6,10 +6,13 @@ My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/log
 You should get the following picture: 
 ![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)
 
-What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micanchor and micwitdh. 
-But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
+I have a resources, i.e. an object referencing either a file (in relative or absolute manner) or an Url, that refers to a given image object.
 
-So we will use ? and we will prefix all the microdown specific parameters with mic. 
+### Implementation notes
+
+What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micAnchor and micWitdh. 
+But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
+Therefore we use ? and we prefix all the microdown specific parameters with mic so that we can identify them. 
 "
 Class {
 	#name : #MicFigureBlock,
@@ -37,14 +40,19 @@ MicFigureBlock >> arguments: aDictionary [
 
 { #category : #visiting }
 MicFigureBlock >> closeMe [ 
-	
-	| dictionary |
+	"we used this circumvoluted way to use the parsing on arguments provided by the URL parser,
+	even in case of file. so the user can express tmp/figures/goo.png?width=90&anchor=foo"
+	| dictionary urlString tempUrl |
 	dictionary := OrderedDictionary new. 
-	url := (ZnUrl fromString: url asString).
-	url query ifNotNil: [ :q |
+	urlString := url asString.
+	tempUrl := ZnUrlCopy fromString: urlString.
+	tempUrl query ifNotNil: [ :q |
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
 	caption := self inlineParse: substring.
+	"while the instance variable is named url it will host a file or http url mic resources object"
+	url := MicResourceReference fromString: urlString
+	
 	
 	
 ]
@@ -59,19 +67,19 @@ MicFigureBlock >> hasCaption [
 MicFigureBlock >> isImageFile [
 	"Answer whether the file name indicates an image file."
 
-	url asString ifNil: [^false].
-	^#('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
-		includes: url path asFileReference extension asLowercase
+	^ url isImageFile
 ]
 
 { #category : #testing }
 MicFigureBlock >> isRelativeFilePath [
-	^ self url scheme = 'file' and: [ (self url asString beginsWith: 'file:///') not ]
+	self flag: #toRemove.
+	^ self url isFile and: [ (self url asString beginsWith: 'file:///') not ]
 ]
 
 { #category : #accessing }
 MicFigureBlock >> kind [
-
+	self flag: #todo. 
+	"remove me"
  	^ #figure
 ]
 
@@ -81,7 +89,7 @@ MicFigureBlock >> openingDelimiter [
  	^ MicFigureNameOpenerDelimiter markup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicFigureBlock >> originUrl [
 	^ self properties at: #originUrl ifAbsent: [ 
 		^ url ]
@@ -118,6 +126,13 @@ MicFigureBlock >> query [
 ]
 
 { #category : #accessing }
-MicFigureBlock >> resolver [
-	^ MicPathResolver new
+MicFigureBlock >> resources [ 
+
+	^ url 
+]
+
+{ #category : #accessing }
+MicFigureBlock >> resources: micResources [
+
+	url := micResources
 ]

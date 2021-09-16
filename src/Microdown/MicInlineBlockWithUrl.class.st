@@ -115,5 +115,6 @@ MicInlineBlockWithUrl >> url [
 
 { #category : #accessing }
 MicInlineBlockWithUrl >> url: anURL [
+
 	url := anURL
 ]

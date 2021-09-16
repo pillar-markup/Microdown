@@ -658,28 +658,7 @@ MicroDownParser >> parse: aStreamOrString [
 	[ current = root ]
 		whileFalse: [ current closeMe.
 			current := current parent ].
-	self resolver visit: root.
 	^ root
-]
-
-{ #category : #parsing }
-MicroDownParser >> parseFile: aFileReference [
-	| micTree |
-	aFileReference isFile 
-		ifTrue: [ 
-			| currentPath |
-			micTree := self parse: aFileReference contents.
-			currentPath := ''.
-			aFileReference pathSegments allButLast do: [ :each | currentPath := currentPath , '/' , each ].
-			self flag: #tocheck.
-			"working directory does not feel correct here because the file can be in another location than 
-			the pillar image."
-			micTree propertyAt: #originPath put: aFileReference fileSystem workingDirectory / currentPath.
-			self resolver visit: micTree.
-			^ micTree ]
-		ifFalse: [ 
-			^ self parse: 'Your file is not valid' ]
-	
 ]
 
 { #category : #markups }

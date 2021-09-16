@@ -34,9 +34,3 @@ MicRootBlock >> canConsumeLine: line [
 MicRootBlock >> indent [
 	^0
 ]
-
-{ #category : #accessing }
-MicRootBlock >> originPath [
-	^ self properties at: #originPath 
-		ifAbsent: [ ^ FileSystem workingDirectory ]
-]

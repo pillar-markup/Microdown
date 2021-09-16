@@ -7,7 +7,7 @@
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
 
 
-Microdown is a smaller mardown but more extensible. 
+Microdown is a smaller markdown but more extensible. 
 It supports
 - Header
 - Lists

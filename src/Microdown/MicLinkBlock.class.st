@@ -20,7 +20,7 @@ MicLinkBlock >> closeMe [
 		assert: 'http://localhost:80/foo/bar/doc.txt' asZnUrl path 
 		equals: 'http://localhost:80/foo/bar/doc.txt' asZnUrl asFileUrl path"
 	
-	self url: (ZnUrl fromString: self url).
+	self url: (MicResourceReference fromString: self url).
 	caption := self inlineParse: substring.
 ]
 
