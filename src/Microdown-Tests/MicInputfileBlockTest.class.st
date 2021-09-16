@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 MicInputfileBlockTest >> setUp [
 	super setUp.
-	parser := MicrodownParser new
+	parser := MicroDownParser new
 ]
 
 { #category : #tests }
