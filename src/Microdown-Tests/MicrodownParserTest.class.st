@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 MicrodownParserTest >> parser [ 
 
-	^ MicroDownParser new
+	^ MicrodownParser new
 ]
 
 { #category : #running }
