@@ -1,94 +1,89 @@
 "
-I'm responsible to handle `'width=80&anchor=here'` and in particular to identify the first tag of such expression since it is important for code block.
-I copied two utility method from Zinc to make sure that the resulting dictionary is ordered.
+I am intended to provide arguments to annotations, codeblocks and environments. 
+
+My syntax is of the following form:
+
+- ` ` no name and no arguments
+- `name` a single name, no arguments
+- `key=arg[&key=arg]*`, no name, but arguments
+- `name|key=arg[&key=arg]*` a single name, and arguments
 "
 Class {
 	#name : #MicArgumentsSplitter,
 	#superclass : #Object,
 	#instVars : [
 		'arguments',
-		'firstTag',
-		'name',
-		'stream'
+		'name'
 	],
 	#category : #'Microdown-Parser'
 }
 
 { #category : #'instance creation' }
 MicArgumentsSplitter class >> withStream: aStream [
-	^ self new stream: aStream; yourself
+	^ self withString: aStream contents.
 ]
 
 { #category : #'instance creation' }
 MicArgumentsSplitter class >> withString: aString [
-	^ self new stream: (aString readStream); yourself
+	^ self new from: aString; yourself 
 ]
 
 { #category : #accessing }
 MicArgumentsSplitter >> arguments [
-	^ arguments ifNil: [ ^ arguments := self parseQuery ]
-]
-
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> decodePercentForQuery: string [
-	^ ZnPercentEncoder new 
-		decodePlusAsSpace: true; 
-		decode: string
+	^ arguments
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter >> firstTag [ 
-	^ firstTag ifNil: [ 
-		firstTag := (stream upTo: $=) asSymbol. 
-		stream position: 0.
-		^ firstTag ]
+MicArgumentsSplitter >> firstTag [
+	name ifNotNil: [ ^name ].
+	arguments notEmpty ifTrue: [ ^arguments keys first asString ].
+	^''
+]
+
+{ #category : #initialization }
+MicArgumentsSplitter >> from: fullString [
+	
+	| barSplit |
+	arguments := OrderedDictionary new.
+	fullString isEmpty ifTrue: [ ^ self ].
+	(fullString intersection: '|=&') isEmpty 
+		ifTrue: [ ^self setNameNoArguments: fullString  ].
+	barSplit := fullString splitOn: $|.
+	barSplit size > 1
+		ifTrue: [ ^ self setNameAndArguments: barSplit  ].
+	self setNoNameButArguments: fullString 
+	
 ]
 
 { #category : #accessing }
 MicArgumentsSplitter >> name [
-	^ name ifNil: [ ^ name := (stream upTo: self parserClass argumentListStartDelimiter first) contents asString; yourself ]
+	^ name
 ]
 
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> parseQuery [
-
-	| string index fields |
-	fields := OrderedDictionary new.
-	[ stream atEnd ] whileFalse: [
-		string := stream upTo: $&.
-		index := string indexOf: $=.
-		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
-			ifTrue: [
-				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
-					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
-	^ fields
+{ #category : #parsing }
+MicArgumentsSplitter >> setNameAndArguments: barSplit [
+	"barSplit is two strings, first assumed to be just a name, second to be arguments"
+	name := barSplit first trim.
+	self setNoNameButArguments: barSplit second
 ]
 
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> parseQueryFrom: aStream [
-
-	| string index fields |
-	fields := OrderedDictionary new.
-	[ aStream atEnd ] whileFalse: [
-		string := aStream upTo: $&.
-		index := string indexOf: $=.
-		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
-			ifTrue: [
-				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
-					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
-	^ fields
+{ #category : #parsing }
+MicArgumentsSplitter >> setNameNoArguments: fullString [
+	"fullstring is just a name (containing no arguments)
+	It is interpreted as both a name, and as an argument with no value
+	"
+	name := fullString trim.
+	arguments at: name asSymbol put: nil
 ]
 
-{ #category : #accessing }
-MicArgumentsSplitter >> parserClass [
-	^ MicroDownParser 
-]
-
-{ #category : #accessing }
-MicArgumentsSplitter >> stream: aStream [
-	stream := aStream
+{ #category : #parsing }
+MicArgumentsSplitter >> setNoNameButArguments: string [
+	"string is assumed to be on the form key=value&key=value"
+	| pairs |
+	pairs := string splitOn: $&.
+	pairs do: [ :p | |keyValue|
+		keyValue := p splitOnFirst: $=.
+		arguments at: keyValue first trim asSymbol put: keyValue second.
+		 ]
+	
 ]
