@@ -92,20 +92,17 @@ MicInlineBlockWithUrl >> parser: aParser [
 
 { #category : #printing }
 MicInlineBlockWithUrl >> printOn: aStream [
-	(self kind == #basic) 
-		ifTrue: [ aStream nextPutAll: self substring ] 
-		ifFalse: [ 
-			| contents |
-			contents := children 
-				ifEmpty: [ self substring ] 
-				ifNotEmpty: [ self childrenPrintOn ].
-			aStream nextPut: $[;
-				nextPutAll: contents;
-				nextPut: $];
-				nextPut: $(.
-			url printOn: aStream.
-			aStream nextPut: $) 
-		]
+	| contents |
+	contents := children
+		            ifEmpty: [ self substring ]
+		            ifNotEmpty: [ self childrenPrintOn ].
+	aStream
+		nextPut: $[;
+		nextPutAll: contents;
+		nextPut: $];
+		nextPut: $(.
+	url printOn: aStream.
+	aStream nextPut: $)
 ]
 
 { #category : #accessing }
