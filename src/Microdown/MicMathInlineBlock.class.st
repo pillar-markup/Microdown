@@ -45,11 +45,6 @@ MicMathInlineBlock >> cleanSubstring [
 	"overrides to do nothing - super removes backslash, which we should not in latex"
 ]
 
-{ #category : #visiting }
-MicMathInlineBlock >> closeMe [ 
-	self flag: #back. "self halt"
-]
-
 { #category : #accessing }
 MicMathInlineBlock >> closingDelimiter [
 
