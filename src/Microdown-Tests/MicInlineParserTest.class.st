@@ -277,6 +277,15 @@ MicInlineParserTest >> testFigureWithParenthesesInsteadOfBracket [
 		equals: { 'abc!(AltText)(my_directory/image.png)last' }
 ]
 
+{ #category : #'tests - annotation' }
+MicInlineParserTest >> testFootnoteAnnotation [
+	| res annotation |
+	res := self splitter parse: 'some text before ',MicAnnotationOpenerDelimiter markup,'footnote | note=A foonote is annotation.',MicAnnotationCloserDelimiter markup,'some text after'.
+	annotation := res second.
+	self assert: (annotation isKindOf: MicFootnoteBlock).
+	self assert: (annotation note) equals: 'A foonote is annotation.'
+]
+
 { #category : #'tests - formats' }
 MicInlineParserTest >> testItalic [
 
