@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #parsing }
+Microdown >> builder [
+
+	^ parser builder
+]
+
+{ #category : #parsing }
 Microdown >> initialize [ 
 	super initialize.
 	parser := MicroDownParser new.
