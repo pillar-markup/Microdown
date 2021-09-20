@@ -377,7 +377,7 @@ MicRichTextComposer class >> methodStylerFor: aString [
 { #category : #examples }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (MicroDownParser new parse: aString)
+	^ self new visit: (Microdown new resolvedTreeFrom: aString)
 
 ]
 
@@ -449,6 +449,19 @@ MicRichTextComposer class >> putOnline [
 ]
 
 { #category : #examples }
+MicRichTextComposer class >> render: aString [ 
+	"Render a string, in case of error, just return it."
+	
+	self notRendering 	
+		ifTrue: [ ^ aString ].
+	self captureErrors 
+		ifFalse: [ ^ self microdownAsRichText: aString ].
+	^ [ self microdownAsRichText: aString ] 
+			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
+			do: [ aString  ]
+]
+
+{ #category : #examples }
 MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [ 
 	"Return aString as part of the templated class comment, when rendering is on.
 	Else aString."
@@ -456,13 +469,7 @@ MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 	| builder |
 	builder := MicroDownParser builder.
 	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
-	self notRendering 	
-		ifTrue: [ ^ aString ].
-	self captureErrors 
-		ifFalse: [ ^ self microdownAsRichText: builder contents ].
-	^ [ self microdownAsRichText: builder contents ] 
-			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
-			do: [ builder contents  ]
+	^ self render: builder contents
 ]
 
 { #category : #'class initialization' }
@@ -728,24 +735,27 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 	"Try to read a png file (only one supported right now), else use alt text"
+	
 	aFigure isImageFile ifTrue: [
 	| anchoredImage url |
-	"for now I cancel the catching of all exceptions because it is a blackhole."
 	url := aFigure url.
-	anchoredImage := url scheme = 'file'
-		                 ifTrue: [ 
-									(aFigure originPath fileSystem / (aFigure url) path) isFile
+	"this url should be renamed resources"
+	"this logic has to be revisited with the new resolver."
+	
+	anchoredImage := url isWeb
+		                 ifFalse: [ 
+									"should probably fix this."
+									(aFigure originPath fileSystem / aFigure url path) isFile
 										ifTrue: [ 
 											aFigure originPath fileSystem / (aFigure url) path
 				                 		binaryReadStreamDo: [ :stream | 
 				                 		ImageReadWriter formFromStream: stream ] 
 											]
 							        ]
-		                 ifFalse: [ self cachedImageFromUrl: url ].
+		                 ifTrue: [ self cachedImageFromUrl: url url ].
 	anchoredImage ifNotNil: [ 
 		anchoredImage := self resizeImage: anchoredImage of: aFigure.
-		anchoredImage := (String value: 1) asText addAttribute:
-		                 (TextAnchor new anchoredMorph: anchoredImage).
+		anchoredImage := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: anchoredImage).
 		canvas << anchoredImage ].
 	
 	canvas newLine.

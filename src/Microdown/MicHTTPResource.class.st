@@ -45,6 +45,24 @@ MicHTTPResource >> resolvedBy: parentPath withResolver: aResolver [
 
 ]
 
+{ #category : #resolving }
+MicHTTPResource >> resolvedWithResolver: aResolver [
+	"I'm url resource so I do not care about a root"
+	"Experimental"
+	^ (aResolver resolutionSource isKindOf: ZnUrl)
+			ifTrue: [
+				"we want to resolve over for example http://github.com/pharo-project...."
+				MicHTTPResource new 
+								originalString: originalString; 
+								url: (aResolver resolutionSource withRelativeReference: self path) ]
+			ifFalse: [ 
+				"Now I resolve again a file system... well this is http so I do not care about the resolver"
+				self				
+				]
+
+
+]
+
 { #category : #converting }
 MicHTTPResource >> string: aString [
 

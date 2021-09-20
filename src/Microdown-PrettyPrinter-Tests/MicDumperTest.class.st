@@ -13,7 +13,6 @@ Class {
 MicDumperTest class >> testParameters [ 
 	^ super testParameters
 			addCase: { #visitor -> MicDumper };
-			addCase: { #visitor -> MicDullDumper };
 		yourself.
 ]
 

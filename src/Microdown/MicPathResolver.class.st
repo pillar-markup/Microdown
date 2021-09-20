@@ -71,8 +71,14 @@ MicPathResolver >> resolutionSource: aRoot [
 
 { #category : #visiting }
 MicPathResolver >> visitFigure: aFigure [
-
-	aFigure resources: (aFigure resources resolvedBy: (Path * originFile parent pathString) withResolver: self).
+	originFile 
+		ifNotNil: [ 
+					aFigure resources: 
+						(aFigure resources 
+							resolvedBy: (Path * originFile parent pathString) 
+							withResolver: self)]
+		ifNil: [ aFigure resources: 
+						(aFigure resources resolvedWithResolver: self)].
 	^ aFigure
 ]
 
