@@ -309,10 +309,10 @@ MicRichTextComposer class >> initialize [
 { #category : #'class initialization' }
 MicRichTextComposer class >> initializeStylers [
 	"self initializeStylers"
-	Stylers := Dictionary
-		newFromAssociations: ((PragmaCollector
+	Stylers := ((PragmaCollector
 						filter: [ :prg | prg selector = 'codeblockStylerFor:' ]) reset
 						collected collect: [ :p | p arguments first asLowercase-> p method ])
+					asDictionary 
 ]
 
 { #category : #styler }

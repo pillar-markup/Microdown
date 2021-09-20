@@ -310,14 +310,6 @@ MicRichTextComposerTest >> testNestedList [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testNewDictionaryAPI [
-	
-	| dict |
-	dict := Dictionary newFromAssociations: { #a -> 1  . #b -> 2 }.
-	self assert: (dict at: #a) equals: 1
-]
-
-{ #category : #'tests - list' }
 MicRichTextComposerTest >> testOrderedList [ 
 	| source richText runs  |
 	source := '1. First item
