@@ -22,41 +22,10 @@ MicAnnotatedBlock >> accept: aVisitor [
  	^ aVisitor visitAnnotated: self
 ]
 
-{ #category : #testing }
-MicAnnotatedBlock >> addLineAndReturnNextNode: line [
-	"line is assumed to be of the form '@@label some text
-	
-	'
-	"
-
-	isClosed
-		ifTrue: [ ^ self ].
-	label 
-		ifNil: [ 
-			| indexOfFirstSpace |
-			indexOfFirstSpace := line indexOf: Character space.
-			label := line copyFrom: self lineMarkup size + 1 to: indexOfFirstSpace - 1.
-			body := (line copyFrom: indexOfFirstSpace + 1 to: line size) trim ]
-		ifNotNil: [ body := body , String cr , line ]
-]
-
-{ #category : #testing }
-MicAnnotatedBlock >> canConsumeLine: line [
-	"return if this block can consume line"
-
-	"it can be dangerous but let us try"
-	^ line isNotEmpty 
-]
-
 { #category : #'parse support' }
 MicAnnotatedBlock >> closeMe [
 	super closeMe.
 	body := self inlineParse: body
-]
-
-{ #category : #accessing }
-MicAnnotatedBlock >> label [
-	^ label
 ]
 
 { #category : #testing }
