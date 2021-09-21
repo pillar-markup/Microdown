@@ -5,9 +5,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/pillar-markup/MicroDown/badge.svg?branch=dev)](https://coveralls.io/github/pillar-markup/MicroDown?branch=dev)
 
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
+Microdown is a smaller markdown but it is more extensible.
 
-
-## Loading
+## Quick start
+### Loading specific version
 
 To load the latest stable version load the version 1.0.5. It will load the version of Pillar that is in sync. 
 
@@ -18,6 +19,7 @@ Metacello new
   load.
 ```
 
+### Loading latest development version
 We are about to release a version 2.0.0 of Microdown with enhanced model, visitor... planned for mid July 2021.
 It is used for example by the BeautifulComments project. You can load this alpha version.
 
