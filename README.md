@@ -10,12 +10,12 @@ Microdown is a smaller markdown but it is more extensible.
 ## Quick start
 ### Loading specific version
 
-To load the latest stable version load the version 1.0.5. It will load the version of Pillar that is in sync. 
+To load the latest stable version load the master. It will load the version of Pillar that is in sync. 
 
 ```Smalltalk
 Metacello new
   baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:v1.0.5/src';
+  repository: 'github://pillar-markup/Microdown:master/src';
   load.
 ```
 
