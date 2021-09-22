@@ -13,10 +13,3 @@ Class {
 MicHorizontalLineBlock >> accept: aVisitor [ 
  	^ aVisitor visitHorizontalLine: self
 ]
-
-{ #category : #public }
-MicHorizontalLineBlock >> addLineAndReturnNextNode: line [
-	"Line is on the form '*** useless and ignored text '"
-
-	^ self
-]
