@@ -4,9 +4,6 @@ The logic is to call the main parser so that the inline elements are in the bloc
 Class {
 	#name : #MicrodownInlineParserTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'parser'
-	],
 	#category : #'Microdown-Tests-Parser'
 }
 
