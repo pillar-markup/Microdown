@@ -10,6 +10,7 @@ SmalltalkCISpec {
       #platforms : [ #pharo ]
     }
   ],
+  #preTesting : [ '.github/scripts/preTesting.st' ],
   #testing : {
   	#packages : [ 
   		'Microdown*',
