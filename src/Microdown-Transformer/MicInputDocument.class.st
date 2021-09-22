@@ -35,7 +35,7 @@ MicInputDocument >> basename [
 { #category : #building }
 MicInputDocument >> contributeToPipelineBuilding: aPRPipelineBuilder [ 
 	
-	1halt.
+	self error: 'To be fixed'.
 	self flag: #maybeToRemove.
 	
 	aPRPipelineBuilder setInputDocument: file.

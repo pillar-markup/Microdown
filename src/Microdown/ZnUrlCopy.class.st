@@ -17,7 +17,7 @@ Class {
 		'username',
 		'password'
 	],
-	#category : #Microdown
+	#category : #'Microdown-Core'
 }
 
 { #category : #accessing }

@@ -21,9 +21,7 @@ Class {
 	#instVars : [
 		'shouldTransform',
 		'input',
-		'goal',
 		'topFile',
-		'expansionTask',
 		'inProcessFiles'
 	],
 	#category : #'Microdown-Transformer'
