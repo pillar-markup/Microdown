@@ -63,7 +63,7 @@ Class {
 	#classInstVars : [
 		'imageCache'
 	],
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #private }

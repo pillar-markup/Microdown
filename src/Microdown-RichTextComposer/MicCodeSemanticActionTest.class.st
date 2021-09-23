@@ -1,7 +1,7 @@
 Class {
 	#name : #MicCodeSemanticActionTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #'test - bogus entry' }

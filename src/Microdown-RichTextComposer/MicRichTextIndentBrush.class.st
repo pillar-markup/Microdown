@@ -4,7 +4,7 @@ I am a Brush that paints the `TextIndent` on a `Text`. The actual value of the i
 Class {
 	#name : #MicRichTextIndentBrush,
 	#superclass : #MicRichTextBrush,
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #paint }

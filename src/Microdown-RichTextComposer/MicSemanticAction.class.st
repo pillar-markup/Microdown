@@ -26,7 +26,7 @@ Class {
 		'entity',
 		'tokens'
 	],
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #'instance creation' }

@@ -5,7 +5,7 @@ Class {
 		'sample',
 		'parser'
 	],
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #helpers }
