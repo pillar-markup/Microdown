@@ -21,6 +21,11 @@ MicRawBlock >> accept: aVisitor [
 	^ aVisitor visitRaw: self
 ]
 
+{ #category : #testing }
+MicRawBlock >> cleanSubstring [
+	"overrides to do nothing - super removes backslash, which we should not in raw"
+]
+
 { #category : #accessing }
 MicRawBlock >> closingDelimiter [
 

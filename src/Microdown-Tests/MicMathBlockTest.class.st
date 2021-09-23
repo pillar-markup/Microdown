@@ -20,6 +20,21 @@ V_i = C_0 - C_3
 ]
 
 { #category : #tests }
+MicMathBlockTest >> testMathBlockWithBackslashCommands [
+	"check that backslash are not expanded for math blocks"
+	| root math |
+	root := (MicroDownParser new parse: '
+
+&
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+&
+').
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math body equals: 'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz'.
+]
+
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithBadClosure [
 
 	| root |
