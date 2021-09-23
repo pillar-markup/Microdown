@@ -1,5 +1,10 @@
 Extension { #name : #MicroDownParser }
 
+{ #category : #'*Microdown-MicrodownRichTextComposer' }
+MicroDownParser class >> convertToRichText: aString [
+	^ MicRichTextComposer new visit: (self new parse: aString)
+]
+
 { #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> asRichText: aString [
 	^PRRichTextComposer new start: (MicroDownParser new parse: aString) asPillar
