@@ -1,11 +1,6 @@
 Extension { #name : #MicroDownParser }
 
 { #category : #'*Microdown-RichTextComposer' }
-MicroDownParser class >> convertToRichText: aString [
-	^ MicRichTextComposer new visit: (self new parse: aString)
-]
-
-{ #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> asRichText: aString [
 	^PRRichTextComposer new start: (MicroDownParser new parse: aString) asPillar
 ]
@@ -13,6 +8,11 @@ MicroDownParser class >> asRichText: aString [
 { #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> asText: aString [
 	^ PRRichTextComposer new start: (self new parse: aString) asPillar
+]
+
+{ #category : #'*Microdown-RichTextComposer' }
+MicroDownParser class >> convertToRichText: aString [
+	^ MicRichTextComposer new visit: (self new parse: aString)
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
