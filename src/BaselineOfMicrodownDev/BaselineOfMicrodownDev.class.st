@@ -25,7 +25,7 @@ BaselineOfMicrodownDev >> baseline: spec [
 			package: #'Microdown-Pharo-Tools'
 				with: [ spec requires: #( #Microdown ) ];
 				
-			package: #'Microdown-MicrodownRichTextComposer'
+			package: #'Microdown-RichTextComposer'
 				with: [ spec requires: #( #Microdown ) ];
 
 			package: #'Microdown-Transformer'
@@ -64,7 +64,7 @@ BaselineOfMicrodownDev >> baseline: spec [
 				#'Microdown-Tests' 
 				#'Microdown-Pillar' 
 				#'Microdown-Pillar-Tests' );
-			group: 'RichText' with: #('Core' #'Microdown-MicrodownRichTextComposer' );
+			group: 'RichText' with: #('Core' #'Microdown-RichTextComposer' );
 			group: 'Extensions' 
 			with: #(
 				#'Microdown-Evaluator'
