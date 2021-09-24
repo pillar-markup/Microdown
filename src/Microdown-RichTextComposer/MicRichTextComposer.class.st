@@ -757,6 +757,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 		anchoredImage := self resizeImage: anchoredImage of: aFigure.
 		anchoredImage := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: anchoredImage).
 		canvas << anchoredImage ].
+	aFigure caption ifEmpty: [ ^self ].
 	
 	canvas newLine.
 	canvas includeAttribute: TextEmphasis bold in: [  ]].
