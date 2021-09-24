@@ -350,6 +350,14 @@ MicrodownInlineParserTest >> testMath [
  	self assert: elements second openingDelimiter equals: '$'
 ]
 
+{ #category : #'tests - others' }
+MicrodownInlineParserTest >> testMathBackslash [
+ 	| elements |
+ 	elements := (self parseAndReturnElementsOfParagraphFor: '$ f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz $').
+ 	self assert: elements first substring equals: ' f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz '.
+
+]
+
 { #category : #'tests - format' }
 MicrodownInlineParserTest >> testMonospace [
 
@@ -402,7 +410,7 @@ MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
 
 { #category : #'tests to make green' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellEscape [
-	self skip.
+	"Well, actually it does"
 	self rawTestingFor: 'anything\*foo'.
 	
 ]
