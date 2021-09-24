@@ -11,6 +11,11 @@ MicroDownParser class >> asText: aString [
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
+MicroDownParser class >> convertToRichText: aString [
+	^ MicRichTextComposer new visit: (self new parse: aString)
+]
+
+{ #category : #'*Microdown-RichTextComposer' }
 MicroDownParser class >> exampleAsRichText [
 	<script>
 	^ (self asText: self comment) inspectWithLabel: 'PillarRichTextRender/README.md'

@@ -12,7 +12,7 @@ Class {
 		'nesting',
 		'crAtEnd'
 	],
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #public }

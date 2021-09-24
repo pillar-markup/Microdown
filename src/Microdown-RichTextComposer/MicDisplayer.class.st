@@ -8,7 +8,7 @@ MicDisplayer new open
 Class {
 	#name : #MicDisplayer,
 	#superclass : #Object,
-	#category : #'Microdown-MicrodownRichTextComposer'
+	#category : #'Microdown-RichTextComposer'
 }
 
 { #category : #'grammar - Script' }
