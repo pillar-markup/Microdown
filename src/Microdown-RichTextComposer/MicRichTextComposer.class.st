@@ -609,6 +609,14 @@ MicRichTextComposer >> renderMathExpression: aString [
 	canvas << (self class latexMathStylerFor: aString)
 ]
 
+{ #category : #private }
+MicRichTextComposer >> renderTableCell: aCell [
+	"a cell is an array of nodes. Each element should be rendered and concatenated"
+	^ aCell inject: Text new into: [ :txt :part | 
+		txt, (MicRichTextComposer new visit: part)
+		 ]
+]
+
 { #category : #'visiting - document' }
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
@@ -904,6 +912,29 @@ MicRichTextComposer >> visitStrike: anObject [
 	canvas 
 		includeAttribute: TextEmphasis struckOut 
 		in: [ super visitStrike: anObject ]
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitTable: tableBlock [
+	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
+	| headers rows table anchoredTable renderedRows |
+	renderedRows := tableBlock rows collect: [ :oneRow | oneRow collect: [ :cell | self renderTableCell: cell ]].
+	tableBlock hasHeader
+		ifTrue: [ 
+			headers := renderedRows first. 
+			rows := renderedRows allButFirst  ]
+		ifFalse: [ 
+			headers := (1 to: renderedRows first size) collect: [:i | i printString asText].
+			rows := renderedRows].
+	"Create the Morphic Table and insert it"
+	table := MicRichTextTable headers: headers rows: rows.
+	tableBlock hasHeader
+		ifFalse: [ 
+			table extent: table extent - (0 @ '1' asTextMorph height). "not showing the headers"
+			table hideColumnHeaders  ].
+	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table asForm).
+	canvas << anchoredTable
+	
 ]
 
 { #category : #'visiting -  format' }
