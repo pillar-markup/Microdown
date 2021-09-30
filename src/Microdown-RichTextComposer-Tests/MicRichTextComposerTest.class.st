@@ -151,6 +151,31 @@ MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testBackslashLast [
+		| source richText |
+	source := 'I am a text which ends in \'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: source
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testBackslashNoBreak [
+	"This test is related to issue: https://github.com/pillar-markup/Microdown/issues/107"
+	| source richText |
+	source := 'I''m a simple lexer. I''m used bt the DLitlleLParser.
+
+I recogniseI
+- names: list of characters letter and number and ''
+- separators: one character separator.
+- escape char \
+
+Whitespaces and separators can be customised using setters.
+Subclasses may change the definition of names by redefining isCurrentALetter.'.
+	richText := self richTextForString: source.
+	self assert: true "I did not fail"
+]
+
 { #category : #'tests - format' }
 MicRichTextComposerTest >> testBoldFormat [
 
