@@ -8,6 +8,14 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests'
 }
 
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest class >> dummyStylerFor: aString [
+	"I am a styler used for testing. "
+	<codeblockStylerFor: 'dummy'>
+	
+	^'§dummy§' asText
+]
+
 { #category : #helpers }
 MicRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute [
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
@@ -143,6 +151,31 @@ MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testBackslashLast [
+		| source richText |
+	source := 'I am a text which ends in \'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: source
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testBackslashNoBreak [
+	"This test is related to issue: https://github.com/pillar-markup/Microdown/issues/107"
+	| source richText |
+	source := 'I''m a simple lexer. I''m used bt the DLitlleLParser.
+
+I recogniseI
+- names: list of characters letter and number and ''
+- separators: one character separator.
+- escape char \
+
+Whitespaces and separators can be customised using setters.
+Subclasses may change the definition of names by redefining isCurrentALetter.'.
+	richText := self richTextForString: source.
+	self assert: true "I did not fail"
+]
+
 { #category : #'tests - format' }
 MicRichTextComposerTest >> testBoldFormat [
 
@@ -167,6 +200,32 @@ line 2
 line 1
 line 2
 '
+]
+
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
+	| source richText |
+	source := '
+```language=dummy
+line 1
+line 2
+```
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: '§dummy§'
+]
+
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest >> testCodeBlockStylerShortHand [
+	| source runs richText |
+	source := '
+```dummy
+line 1
+line 2
+```
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: '§dummy§'
 ]
 
 { #category : #'tests - codeBlock' }
@@ -307,6 +366,25 @@ MicRichTextComposerTest >> testItalicFormat [
 ]
 
 { #category : #'tests - list' }
+MicRichTextComposerTest >> testLatexMathStyle [
+	|    source1 source2 richText1 richText2 |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source1 :=  'foo$a+b$bar'.
+	source2 :=  'foo$\frac{A}{B}$bar'.
+	richText1 := self richTextForString: source1.
+	richText2 := self richTextForString: source2.
+	self assert: richText1 asMorph height < richText2 asMorph height
+]
+
+{ #category : #'tests - list' }
+MicRichTextComposerTest >> testLatexMathStyleEmpty [ 
+	| source richText runs  |
+	source :=  'foo$$bar'.
+	richText := self richTextForString: source.
+	self assert: richText equals: (String cr,'foobar',String cr) asText.
+]
+
+{ #category : #'tests - list' }
 MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	| source richText |
 	source :=
@@ -322,7 +400,7 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testNestedList [
+MicRichTextComposerTest >> testNestedMixedList [
 	| source richText runs|
 	source := 
 '- item 1
@@ -337,6 +415,25 @@ MicRichTextComposerTest >> testNestedList [
 	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
 	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
 	self assert: (runs at: 35) first amount equals: 3
+	
+]
+
+{ #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedUnorderdList [
+	| source richText runs|
+	source := 
+'- item 1
+  - sub item 1.1
+- item 2
+  - sub item 2.1
+  - sub item 2.2
+- item 3'.
+	richText := self richTextForString: source.
+	runs := richText runs.
+	
+	"check that 'sub item 1.1' is bulleted and is rightly indented"
+	self assert: (richText asString at: 10) equals: $•.
+	self assert: (runs at: 12) first amount equals: 4
 	
 ]
 

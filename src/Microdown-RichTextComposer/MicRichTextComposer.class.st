@@ -341,6 +341,7 @@ MicRichTextComposer class >> latexMathStylerFor: aString [
 	this is totally bogus: this method does not return a styler but just an image."
 	
 	| expressionUrl |
+   aString ifEmpty: [^'' asText].
 	expressionUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
 	^self loadExternalImageFromURL: expressionUrl errorText: 'Latex error'.
 ]
@@ -720,7 +721,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 				indentIn: [ 
 					canvas << (self class  
 						style: aCodeBlock body 
-						asLanguage: aCodeBlock firstTag)
+						asLanguage: aCodeBlock language)
 			] ].
 	canvas newLine.
 
