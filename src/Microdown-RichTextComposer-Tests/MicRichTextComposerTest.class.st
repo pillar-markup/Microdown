@@ -310,7 +310,7 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testNestedList [
+MicRichTextComposerTest >> testNestedMixedList [
 	| source richText runs|
 	source := 
 '- item 1
@@ -325,6 +325,25 @@ MicRichTextComposerTest >> testNestedList [
 	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
 	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
 	self assert: (runs at: 35) first amount equals: 3
+	
+]
+
+{ #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedUnorderdList [
+	| source richText runs|
+	source := 
+'- item 1
+  - sub item 1.1
+- item 2
+  - sub item 2.1
+  - sub item 2.2
+- item 3'.
+	richText := self richTextForString: source.
+	runs := richText runs.
+	
+	"check that 'sub item 1.1' is bulleted and is rightly indented"
+	self assert: (richText asString at: 10) equals: $•.
+	self assert: (runs at: 12) first amount equals: 4
 	
 ]
 
