@@ -276,6 +276,25 @@ MicRichTextComposerTest >> testItalicFormat [
 ]
 
 { #category : #'tests - list' }
+MicRichTextComposerTest >> testLatexMathStyle [
+	|    source1 source2 richText1 richText2 |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source1 :=  'foo$a+b$bar'.
+	source2 :=  'foo$\frac{A}{B}$bar'.
+	richText1 := self richTextForString: source1.
+	richText2 := self richTextForString: source2.
+	self assert: richText1 asMorph height < richText2 asMorph height
+]
+
+{ #category : #'tests - list' }
+MicRichTextComposerTest >> testLatexMathStyleEmpty [ 
+	| source richText runs  |
+	source :=  'foo$$bar'.
+	richText := self richTextForString: source.
+	self assert: richText equals: (String cr,'foobar',String cr) asText.
+]
+
+{ #category : #'tests - list' }
 MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	| source richText |
 	source :=
