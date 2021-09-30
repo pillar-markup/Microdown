@@ -39,7 +39,8 @@ Class {
 	#name : #MicCodeBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
 	#instVars : [
-		'firstTag'
+		'firstTag',
+		'language'
 	],
 	#category : #'Microdown-Model'
 }

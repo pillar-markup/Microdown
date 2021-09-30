@@ -713,7 +713,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 				indentIn: [ 
 					canvas << (self class  
 						style: aCodeBlock body 
-						asLanguage: aCodeBlock firstTag)
+						asLanguage: aCodeBlock language)
 			] ].
 	canvas newLine.
 

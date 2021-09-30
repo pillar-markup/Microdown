@@ -8,6 +8,14 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests'
 }
 
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest class >> dummyStylerFor: aString [
+	"I am a styler used for testing. "
+	<codeblockStylerFor: 'dummy'>
+	
+	^'§dummy§' asText
+]
+
 { #category : #helpers }
 MicRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute [
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
@@ -167,6 +175,32 @@ line 2
 line 1
 line 2
 '
+]
+
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
+	| source richText |
+	source := '
+```language=dummy
+line 1
+line 2
+```
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: '§dummy§'
+]
+
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest >> testCodeBlockStylerShortHand [
+	| source runs richText |
+	source := '
+```dummy
+line 1
+line 2
+```
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: '§dummy§'
 ]
 
 { #category : #'tests - codeBlock' }
