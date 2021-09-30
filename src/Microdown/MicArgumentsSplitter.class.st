@@ -33,13 +33,6 @@ MicArgumentsSplitter >> arguments [
 	^ arguments
 ]
 
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> decodePercentForQuery: string [
-	^ ZnPercentEncoder new 
-		decodePlusAsSpace: true; 
-		decode: string
-]
-
 { #category : #accessing }
 MicArgumentsSplitter >> firstTag [
 	name ifNotNil: [ ^name ].
@@ -49,7 +42,6 @@ MicArgumentsSplitter >> firstTag [
 
 { #category : #initialization }
 MicArgumentsSplitter >> from: fullString [
-	
 	| barSplit |
 	arguments := OrderedDictionary new.
 	fullString isEmpty ifTrue: [ ^ self ].
@@ -65,40 +57,6 @@ MicArgumentsSplitter >> from: fullString [
 { #category : #accessing }
 MicArgumentsSplitter >> name [
 	^ name
-]
-
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> parseQuery [
-
-	| string index fields |
-	fields := OrderedDictionary new.
-	[ stream atEnd ] whileFalse: [
-		string := stream upTo: $&.
-		index := string indexOf: $=.
-		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
-			ifTrue: [
-				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
-					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
-	^ fields
-]
-
-{ #category : #'query parsing' }
-MicArgumentsSplitter >> parseQueryFrom: aStream [
-
-	| string index fields |
-	fields := OrderedDictionary new.
-	[ aStream atEnd ] whileFalse: [
-		string := aStream upTo: $&.
-		index := string indexOf: $=.
-		index > 0
-			ifFalse: [ fields at: (self decodePercentForQuery: string) trimBoth asSymbol put: nil ]
-			ifTrue: [
-				fields
-					at: (self decodePercentForQuery: (string copyFrom: 1 to: index - 1)) trimBoth asSymbol
-					add: (self decodePercentForQuery: (string copyFrom: index + 1 to: string size)) ] ].
-	^ fields
 ]
 
 { #category : #accessing }
@@ -132,9 +90,4 @@ MicArgumentsSplitter >> setNoNameButArguments: string [
 		arguments at: keyValue first trim asSymbol put: keyValue second.
 		 ]
 	
-]
-
-{ #category : #accessing }
-MicArgumentsSplitter >> stream: aStream [
-	stream := aStream
 ]
