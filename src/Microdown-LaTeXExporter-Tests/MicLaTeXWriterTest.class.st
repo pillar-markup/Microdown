@@ -9,6 +9,14 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #'tests - formats' }
+MicLaTeXWriterTest >> parse: aString andCheckWeGet: aResultingString [
+	
+	| mic |
+	mic := parser parse: 	aString.
+	self assert: (writer visit: mic) contents equals: aResultingString
+]
+
 { #category : #running }
 MicLaTeXWriterTest >> setUp [
 	super setUp.
@@ -19,18 +27,16 @@ MicLaTeXWriterTest >> setUp [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testAnchor [
-	| mic |
-	mic := parser parse: factory anchorSample.
-	self assert: (writer visit: mic) contents equals: '\label{test}'
+
+	self parse: factory anchorSample andCheckWeGet: '\label{test}'
+
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testAnchorReference [
-	| mic |
-	mic := parser parse: factory anchorReferenceSample.
-	self assert: (writer visit: mic) contents equals: '
-\ref{Foo}
-'
+	"Pay attention that an anchor reference only exists within a paragraph and as such a paragraph emit a newline to start."
+	self parse: factory anchorReferenceSample andCheckWeGet: writer usedNewLine, '\ref{Foo}',writer usedNewLine
+	
 ]
 
 { #category : #'tests - formats' }
