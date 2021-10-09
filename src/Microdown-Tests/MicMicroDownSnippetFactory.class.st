@@ -451,6 +451,20 @@ MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> nestedOrderedList2Sample [
+	^ '
+- Foo
+- Bar
+		1. B
+		1. a
+		1. r
+					- 3rdlvel
+					- 3rdlevl2
+- Zork
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> nestedOrderedListSample [
 	^ '
 - Foo
@@ -515,6 +529,16 @@ MicMicrodownSnippetFactory >> orderedListSample [
 ]
 
 { #category : #list }
+MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldFirstSample [
+	
+	^ 
+'
+1. **_first_**
+1. second
+'
+]
+
+{ #category : #list }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
 	
 	^ 
@@ -540,16 +564,6 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
 	^ 
 '
 1. `first`
-1. second
-'
-]
-
-{ #category : #list }
-MicMicrodownSnippetFactory >> orderedListWithTwoItemsNestedSample [
-	
-	^ 
-'
-1. **_first_**
 1. second
 '
 ]
@@ -600,6 +614,11 @@ MicMicrodownSnippetFactory >> paragraphNestedSample [
 	^ '
 this is a **_paragraph_**
 '
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> paragraphOnMultipleLinesSample [
+	^ 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''obligateration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
 ]
 
 { #category : #format }

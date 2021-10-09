@@ -164,7 +164,8 @@ MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 { #category : #'visiting-document' }
 MicLaTeXWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	"Annotations need to be defined as environments in LaTeX include files (e.g. common.tex)"
-
+	self error: 'Do we pass here? it seems that the method is called visitAnnotated:'.
+	
 	canvas environment
 		name: anAnnotatedParagraph annotation;
 		with: [ super visitParagraph: anAnnotatedParagraph.
@@ -247,7 +248,7 @@ MicLaTeXWriter >> visitHeader: aHeader [
 { #category : #blocks }
 MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 
-	canvas newLine; newLine.
+	canvas newLine.
 	canvas raw: '\rule{\textwidth}{0.1pt}'.
 	canvas newLine.
 ]
@@ -312,7 +313,7 @@ MicLaTeXWriter >> visitOrderedList: aList [
 	nbListTab := nbListTab - 1.
 	self tabList.
 	canvas raw: '\end{enumerate}'.
-	canvas newLine.
+	nbListTab = -1 ifTrue: [canvas newLine]
 ]
 
 { #category : #blocks }
@@ -417,7 +418,7 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 	nbListTab := nbListTab - 1.
 	self tabList.
 	canvas raw: '\end{itemize}'.
-	canvas newLine.
+	nbListTab = -1 ifTrue: [canvas newLine]
 ]
 
 { #category : #helpers }

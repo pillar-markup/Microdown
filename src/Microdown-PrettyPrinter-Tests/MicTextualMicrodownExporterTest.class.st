@@ -335,7 +335,7 @@ MicTextualMicrodownExporterTest >> testOrderedListWithMonospace [
 { #category : #'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithNested [
 
-	self verifyObtain: factory orderedListWithTwoItemsNestedSample  
+	self verifyObtain: factory orderedListWithTwoItemsBoldFirstSample  
 ]
 
 { #category : #'tests - list' }

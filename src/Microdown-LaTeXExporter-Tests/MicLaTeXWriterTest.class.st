@@ -17,6 +17,14 @@ MicLaTeXWriterTest >> parse: aString andCheckWeGet: aResultingString [
 	self assert: (writer visit: mic) contents equals: aResultingString
 ]
 
+{ #category : #'tests - formats' }
+MicLaTeXWriterTest >> parseInlined: aString andCheckWeGet: aResultingString [
+	
+	| mic |
+	mic := parser parse: 	aString.
+	self assert: (writer visit: mic) contents equals: writer usedNewLine, aResultingString, writer usedNewLine
+]
+
 { #category : #running }
 MicLaTeXWriterTest >> setUp [
 	super setUp.
@@ -35,30 +43,25 @@ MicLaTeXWriterTest >> testAnchor [
 { #category : #tests }
 MicLaTeXWriterTest >> testAnchorReference [
 	"Pay attention that an anchor reference only exists within a paragraph and as such a paragraph emit a newline to start."
-	self parse: factory anchorReferenceSample andCheckWeGet: writer usedNewLine, '\ref{Foo}',writer usedNewLine
+	self parseInlined: factory anchorReferenceSample andCheckWeGet: '\ref{Foo}'
 	
 ]
 
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testBold [
-	| mic |
-	mic := parser parse: factory boldFormatSample.
-	self assert: (writer visit: mic) contents equals: '
-\textbf{Foo}
-'
+
+	self parseInlined: factory boldFormatSample andCheckWeGet: '\textbf{Foo}'
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testCitation [
-	| mic |
-	mic := parser parse: '?{citation|ref=Pharo is cool}?'.
-	self assert: (writer visit: mic) contents equals: '
-\cite{Pharo is cool}
-'
+
+	self parseInlined: '?{citation|ref=Duca99a}?' andCheckWeGet: '\cite{Duca99a}'
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblock [
+
 	| mic |
 	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
 	self assert: (writer visit: mic) contents equals: '
@@ -140,78 +143,59 @@ MicLaTeXWriterTest >> testFigureBold [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testFootnote [
-	| mic |
-	mic := parser parse: factory footnoteSample.
-	self assert: (writer visit: mic) contents equals: '
-\footnote{Pharo is cool}
-'
+
+	self parseInlined: factory footnoteSample andCheckWeGet: '\footnote{Pharo is cool}'
+	
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel1 [
-	| mic |
-	mic := parser parse: factory headerLevel1Sample.
-	self assert: (writer visit: mic) contents equals: '
-\part{Foo}'
+
+	self parse: factory headerLevel1Sample andCheckWeGet: writer usedNewLine , '\part{Foo}'
+	
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel2 [
-	| mic |
-	mic := parser parse: factory headerLevel2Sample.
-	self assert: (writer visit: mic) contents equals: '
-\chapter{Foo}'
+
+	self parse: factory headerLevel2Sample andCheckWeGet: writer usedNewLine , '\chapter{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel3 [
-	| mic |
-	mic := parser parse: factory headerLevel3Sample.
-	self assert: (writer visit: mic) contents equals: '
-\section{Foo}'
+
+	self parse: factory headerLevel3Sample andCheckWeGet: writer usedNewLine , '\section{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel4 [
-	| mic |
-	mic := parser parse: factory headerLevel4Sample.
-	self assert: (writer visit: mic) contents equals: '
-\subsection{Foo}'
+
+	self parse: factory headerLevel4Sample andCheckWeGet: writer usedNewLine , '\subsection{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel5 [
-	| mic |
-	mic := parser parse: factory headerLevel5Sample.
-	self assert: (writer visit: mic) contents equals: '
-\subsubsection{Foo}'
+
+	self parse: factory headerLevel5Sample andCheckWeGet: writer usedNewLine , '\subsubsection{Foo}'
 ]
 
 { #category : #'tests - header' }
 MicLaTeXWriterTest >> testHeaderLevel6 [
-	| mic |
-	mic := parser parse: factory headerLevel6Sample.
-	self assert: (writer visit: mic) contents equals: '
-\paragraph{Foo}'
+	
+   self parse: factory headerLevel6Sample andCheckWeGet: writer usedNewLine , '\paragraph{Foo}'
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testHorizontalLine [
-	| mic |
-	mic := parser parse: factory horizontalLineSample.
-	self assert: (writer visit: mic) contents equals: '
 
-\rule{\textwidth}{0.1pt}
-'
+
+	self parseInlined: factory horizontalLineSample andCheckWeGet: '\rule{\textwidth}{0.1pt}'
 ]
 
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testItalic [
-	| mic |
-	mic := parser parse: factory italicFormatSample.
-	self assert: (writer visit: mic) contents equals: '
-\textit{Foo}
-'
+
+	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
 ]
 
 { #category : #'tests - references' }
@@ -240,11 +224,8 @@ MicLaTeXWriterTest >> testLinkBold [
 
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testMonospace [
-	| mic |
-	mic := parser parse: factory monospaceFormatSample.
-	self assert: (writer visit: mic) contents equals: '
-\code{Foo}
-'
+
+	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\code{Foo}'
 ]
 
 { #category : #'tests - lists' }
@@ -274,7 +255,7 @@ MicLaTeXWriterTest >> testOrderedListBold [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedListNested [
 	| mic |
-	mic := parser parse: factory orderedListWithTwoItemsNestedSample.
+	mic := parser parse: factory orderedListWithTwoItemsBoldFirstSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{enumerate}
     \item \textbf{\textit{first}}
@@ -296,61 +277,85 @@ MicLaTeXWriterTest >> testOrderedNestedListNested [
         \item a
         \item r
     \end{enumerate}
+\end{itemize}
+'
+]
 
+{ #category : #'tests - lists' }
+MicLaTeXWriterTest >> testOrderedNestedListNested2 [
+	| mic |
+	mic := parser parse: factory nestedOrderedList2Sample.
+	self assert: (writer visit: mic) contents  equals: '
+\begin{itemize}
+    \item Foo
+    \item Bar
+    \begin{enumerate}
+        \item B
+        \item a
+        \item r
+        \begin{itemize}
+            \item 3rdlvel
+            \item 3rdlevl2
+        \end{itemize}
+    \end{enumerate}
+    \item Zork
 \end{itemize}
 '
 ]
 
 { #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraph [
-	| mic |
-	mic := parser parse: factory paragraphSample.
-	self assert: (	writer visit: mic) contents equals: '
+	
+	self parse: factory paragraphSample andCheckWeGet: '
 Foo
 '
 ]
 
 { #category : #'tests - paragraph' }
+MicLaTeXWriterTest >> testParagraphLong [
+
+		self parse: factory paragraphOnMultipleLinesSample andCheckWeGet:  '
+Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit \`{a} l''obligateration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass\''{e}e, je tournerai mon oeil interieur sur son chemin. Et l\`{a} o\`{u} elle sera pass\''{e}e, il n''y aura plus rien, rien que moi.
+'
+]
+
+{ #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraphWithBold [
-	| mic |
-	mic := parser parse: factory paragraphBoldSample.
-	self assert: (writer visit: mic) contents equals: '
+
+	self parse: factory paragraphBoldSample andCheckWeGet:  '
 this is a \textbf{paragraph}
 '
 ]
 
 { #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraphWithItalic [
-	| mic |
-	mic := parser parse: factory paragraphItalicSample.
-	self assert: (writer visit: mic) contents equals: '
+
+	self parse: factory paragraphItalicSample andCheckWeGet:  '
 this is a \textit{paragraph}
 '
 ]
 
 { #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraphWithMonospace [
-	| mic |
-	mic := parser parse: factory paragraphMonospaceSample.
-	self assert: (writer visit: mic) contents equals: '
+	
+	self parse: factory paragraphMonospaceSample andCheckWeGet:  '
 this is a \code{paragraph}
 '
+
 ]
 
 { #category : #'tests - paragraph' }
 MicLaTeXWriterTest >> testParagraphWithNested [
-	| mic |
-	mic := parser parse: factory paragraphNestedSample.
-	self assert: (writer visit: mic) contents equals: '
+
+	self parse: factory paragraphNestedSample andCheckWeGet:  '
 this is a \textbf{\textit{paragraph}}
 '
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testQuote [
-	| mic |
-	mic := parser parse: (factory quoteSample).
-	self assert: (writer visit: mic) contents equals: '
+
+	self parse: factory quoteSample andCheckWeGet:  '
 \begin{verbatim}
 Foo
 \end{verbatim}
@@ -359,11 +364,9 @@ Foo
 
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> testStrike [
-	| mic |
-	mic := parser parse: factory strikethroughFormatSample.
-	self assert: (writer visit: mic) contents equals: '
-\sout{Foo}
-'
+
+	self parseInlined: factory strikethroughFormatSample andCheckWeGet: '\sout{Foo}'
+		
 ]
 
 { #category : #tests }
@@ -444,13 +447,13 @@ MicLaTeXWriterTest >> testUnorderedNestedListNested [
         \item a
         \item r
     \end{itemize}
-
 \end{itemize}
 '
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testUrlsAreProtected [
+
 	self assert: (writer protectUrl: '#') equals: '\#'.
 	self assert: (writer protectUrl: '~') equals: '~'.
 	self assert: (writer protectUrl: '&') equals: '&'.
