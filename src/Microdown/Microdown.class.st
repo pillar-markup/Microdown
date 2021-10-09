@@ -1,5 +1,7 @@
 "
-I'm a kind of facade to steer Microdown services.
+I'm the favored entry point to use microdown. I'm a kind of facade to steer Microdown services.
+In particular I invoke a resolver for paths after parsing documents.
+ 
 "
 Class {
 	#name : #Microdown,
