@@ -15,6 +15,7 @@ Class {
 
 { #category : #accessing }
 MicLaTeXCommand >> name: aString [ 
+
 	stream
 		<< $\
 		<< aString

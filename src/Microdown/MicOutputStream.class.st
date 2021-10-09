@@ -58,7 +58,7 @@ MicOutputStream >> isEmpty [
 
 { #category : #streaming }
 MicOutputStream >> newLine [
-	self << self configuration newLine
+	self << self usedNewLine
 ]
 
 { #category : #accessing }
@@ -90,8 +90,13 @@ MicOutputStream >> tab [
 { #category : #streaming }
 MicOutputStream >> trimLastNewLine [
 	| newLine |
-	newLine := self configuration newLine.
+	newLine := self usedNewLine.
 	(newLine isEmpty or: [ stream position < newLine size ])
 		ifTrue: [ ^ self ].
 	stream position: stream position - newLine size.
+]
+
+{ #category : #streaming }
+MicOutputStream >> usedNewLine [
+	^ self configuration newLine
 ]

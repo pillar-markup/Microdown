@@ -69,6 +69,7 @@ MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 
 { #category : #helpers }
 MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
+
 	canvas command
 		name: 'ref';
 		parameter: [ canvas raw: anInternalLink substring ]
@@ -139,6 +140,13 @@ MicLaTeXWriter >> tabularEnvironment [
 	^ 'tabular'
 ]
 
+{ #category : #initialization }
+MicLaTeXWriter >> usedNewLine [
+	"Return the encoded new line. Useful for tests."
+	
+	^ stream usedNewLine
+]
+
 { #category : #blocks }
 MicLaTeXWriter >> visitAnchor: anAnchor [
 	canvas command
@@ -148,36 +156,9 @@ MicLaTeXWriter >> visitAnchor: anAnchor [
 
 { #category : #'inline - blocks' }
 MicLaTeXWriter >> visitAnchorReference: anAchorReference [
-	self flag: 'it is still the pillar method' .
+
 	self createLinkToLabelWithoutAlias: anAchorReference
-	"
-	(anAchorReference reference isNil or: [ self configuration separateOutputFiles not ])
-		ifTrue: [ 
-			anAchorReference hasAlias
-				ifTrue: [ 
-					anAchorReference hasAnchor
-						ifTrue: [ self createLinkToLabelWithAlias: anAchorReference ]
-						ifFalse: [ 
-							PRLinkWarning
-								signal:
-									(PRPillarWriter write: anAchorReference)
-										,
-											' will not be render because you export without separate output files. If you want your link to be render add an anchor to the beginning of your file.'.
-							canvas nextPutAll: anAchorReference alias ] ]
-				ifFalse: [ 
-					anAchorReference hasAnchor
-						ifTrue: [ self createLinkToLabelWithoutAlias: anAchorReference ] ] ]
-		ifFalse: [ 
-			anAchorReference hasAlias
-				ifTrue: [ 
-					self flag: #todo.	""If we don't render the link we can put it as Footer. We need to do it.""
-					canvas nextPutAll: anAchorReference alias ]
-				ifFalse: [ 
-					PRLinkWarning
-						signal:
-							(PRPillarWriter write: anAchorReference)
-								,
-									' will not be exported because LaTeX doesn''t support the inter-files links. Please add an Alias to keep this internal link.' ] ]"
+	
 ]
 
 { #category : #'visiting-document' }

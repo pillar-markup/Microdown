@@ -50,7 +50,15 @@ MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchorReference [
-	self verifyObtain: factory anchorReferenceSample
+	"Pay attention an anchor reference is inside a paragraph and a paragraph emits 
+	a newline "
+	| micElement |
+	micElement := parser parse: factory anchorReferenceSample.
+	self assert: (visitor visit: micElement) equals: '
+*@Foo@*
+'.
+	self flag: #newline.
+	
 ]
 
 { #category : #'tests-anchor' }
