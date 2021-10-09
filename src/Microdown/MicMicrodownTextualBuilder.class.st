@@ -268,12 +268,18 @@ MicMicrodownTextualBuilder >> initialize [
 ]
 
 { #category : #'element - annotated' }
-MicMicrodownTextualBuilder >> inputfile: aPathString [
+MicMicrodownTextualBuilder >> inputFile: aPathString [
 
 	self raw: MicAnnotationOpenerDelimiter markup.
 	self raw: 'inputfile | path='.
 	self raw: aPathString.
 	self raw: MicAnnotationCloserDelimiter markup
+]
+
+{ #category : #'element - annotated' }
+MicMicrodownTextualBuilder >> inputfile: aPathString [
+	"deprecated"
+	self inputFile: aPathString
 ]
 
 { #category : #'element - references' }

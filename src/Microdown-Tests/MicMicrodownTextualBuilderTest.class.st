@@ -280,7 +280,7 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
-		assert: (builder inputfile: 'Chapters/image.png') contents 
+		assert: (builder inputFile: 'Chapters/image.png') contents 
 		equals: MicAnnotationOpenerDelimiter markup,
 					'inputfile | path=Chapters/image.png', MicAnnotationCloserDelimiter markup
 ]

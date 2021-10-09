@@ -98,6 +98,11 @@ MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
 ]
 
 { #category : #visiting }
+MicrodownVisitor >> visitInputFile: anInputfile [
+	"subclassResponsibility"
+]
+
+{ #category : #visiting }
 MicrodownVisitor >> visitInputfile: anInputfile [
 	"subclassResponsibility"
 ]
