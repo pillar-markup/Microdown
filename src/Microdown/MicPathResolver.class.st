@@ -87,9 +87,3 @@ MicPathResolver >> visitInputFile: anInputFile [
 	
 	anInputFile path: (anInputFile path resolvedBy: (Path * originFile parent pathString) withResolver: self)
 ]
-
-{ #category : #visiting }
-MicPathResolver >> visitInputfile: anInputFile [
-	"deprecated"
-	self visitInputFile: anInputFile
-]

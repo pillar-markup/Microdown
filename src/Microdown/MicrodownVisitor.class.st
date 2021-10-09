@@ -102,11 +102,6 @@ MicrodownVisitor >> visitInputFile: anInputfile [
 	"subclassResponsibility"
 ]
 
-{ #category : #visiting }
-MicrodownVisitor >> visitInputfile: anInputfile [
-	"subclassResponsibility"
-]
-
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitItalic: aFormat [
 

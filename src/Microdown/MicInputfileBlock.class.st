@@ -14,7 +14,7 @@ MicInputfileBlock class >> tag [
 
 { #category : #visiting }
 MicInputfileBlock >> accept: aVisitor [
-	aVisitor visitInputfile: self
+	aVisitor visitInputFile: self
 ]
 
 { #category : #testing }

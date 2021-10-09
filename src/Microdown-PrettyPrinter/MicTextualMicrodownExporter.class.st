@@ -188,12 +188,6 @@ MicTextualMicrodownExporter >> visitInputFile: anInputfile [
 ]
 
 { #category : #'visit - format' }
-MicTextualMicrodownExporter >> visitInputfile: anInputfile [
-
-	 self visitInputFile: anInputfile
-]
-
-{ #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitItalic: anItalicFormatBlock [
 
 	builder italic: [ super visitItalic: anItalicFormatBlock ]

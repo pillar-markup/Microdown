@@ -105,10 +105,3 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	self replaceCurrentNodeBy: microdownAST children]
 	
 ]
-
-{ #category : #'visiting-document' }
-MicFileIncluder >> visitInputfile: anInputFileAnnotation [
-	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
-	
-	self visitInputFile: anInputFileAnnotation
-]
