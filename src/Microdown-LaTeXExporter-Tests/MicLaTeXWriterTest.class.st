@@ -98,7 +98,7 @@ this is a code
 '
 ]
 
-{ #category : #'tests - references' }
+{ #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
 	| mic |
 	mic := parser parse: factory figureSample.
@@ -125,7 +125,7 @@ MicLaTeXWriterTest >> testFigure [
 '
 ]
 
-{ #category : #'tests - references' }
+{ #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigureBold [
 	| mic |
 	mic := parser parse: factory figureBoldSample.
@@ -198,7 +198,7 @@ MicLaTeXWriterTest >> testItalic [
 	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
 ]
 
-{ #category : #'tests - references' }
+{ #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLink [
 	| mic |
 	mic := parser parse: factory linkSample.
@@ -210,7 +210,7 @@ MicLaTeXWriterTest >> testLink [
 '
 ]
 
-{ #category : #'tests - references' }
+{ #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLinkBold [
 	| mic |
 	self flag: 'caption do not use bold in the caption'.
