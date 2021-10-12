@@ -31,3 +31,14 @@ MicHTMLExporterTest >> testHeaderLevel1 [
 	self parse: factory headerLevel1Sample andCheckWeGet: writer usedNewLine , '<h1>Foo</h1>'
 	
 ]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testUnorderedList [
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsSample.
+	self assert: (writer visit: mic) contents equals: '
+<ul>
+<li>Foo</li>
+<li>Bar</li>
+</ul>'
+]

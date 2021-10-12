@@ -39,3 +39,23 @@ MicHTMLWriter >> visitHeader: aHeader [
 		nextPutAll: aHeader level asString;
 		nextPutAll: '>'
 ]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitUnorderedList: anUnorderedList [
+
+	stream newLine.
+	stream nextPutAll: '<ul>'.
+	stream newLine.
+	super visitUnorderedList: anUnorderedList.
+	stream nextPutAll: '</ul>'.
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
+
+	stream nextPutAll: '<li>'.
+	stream nextPutAll: anUnorderedListItem text.
+	"will not work with we have text decorators such as bold, italic, monospace"
+	stream nextPutAll: '</li>'.
+	stream newLine
+]
