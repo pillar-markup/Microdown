@@ -33,7 +33,10 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-Transformer' ) ];
 			package: #'Microdown-Evaluator-Tests'
 				with: [ spec requires: #( #'Microdown-Evaluator' ) ];
-				
+			
+			package: #'Microdown-HTMLExporter'
+				with: [ spec requires: #( #Microdown ) ];
+			
 			package: #'Microdown-LaTeXExporter'
 				with: [ spec requires: #( #Microdown ) ];
 
@@ -60,6 +63,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
 				#'Microdown-PrettyPrinter-Tests'
+				#'Microdown-HTMLExporter'
 				#'Microdown-LaTeXExporter'
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
