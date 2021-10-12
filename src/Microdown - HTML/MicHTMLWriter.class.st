@@ -2,10 +2,17 @@ Class {
 	#name : #MicHTMLWriter,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
-		'stream'
+		'stream',
+		'canvas'
 	],
 	#category : #'Microdown - HTML'
 }
+
+{ #category : #initialization }
+MicHTMLWriter >> canvasClass [
+
+	^ MicHTMLCanvas
+]
 
 { #category : #accessing }
 MicHTMLWriter >> contents [ 
@@ -16,7 +23,7 @@ MicHTMLWriter >> contents [
 MicHTMLWriter >> initialize [ 
 	super initialize.
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	"canvas := self canvasClass on: stream."
+	canvas := self canvasClass on: stream.
 	
 ]
 
@@ -29,33 +36,29 @@ MicHTMLWriter >> usedNewLine [
 
 { #category : #visiting }
 MicHTMLWriter >> visitHeader: aHeader [
-	stream newLine.
-	stream
-		nextPutAll: '<h';
-		nextPutAll: aHeader level asString;
-		nextPutAll: '>';
-		nextPutAll: aHeader header;
-		nextPutAll: '</h';
-		nextPutAll: aHeader level asString;
-		nextPutAll: '>'
+
+	canvas newLine.	
+	canvas tag 
+		name: 'h',  aHeader level asString;
+		with: aHeader header
+	
 ]
 
 { #category : #visiting }
 MicHTMLWriter >> visitUnorderedList: anUnorderedList [
 
-	stream newLine.
-	stream nextPutAll: '<ul>'.
-	stream newLine.
-	super visitUnorderedList: anUnorderedList.
-	stream nextPutAll: '</ul>'.
+	canvas newLine.
+	canvas tag
+		name: 'ul';
+		with: [ canvas newLine. super visitUnorderedList: anUnorderedList  ]
 ]
 
 { #category : #visiting }
 MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
-
-	stream nextPutAll: '<li>'.
-	stream nextPutAll: anUnorderedListItem text.
 	"will not work with we have text decorators such as bold, italic, monospace"
-	stream nextPutAll: '</li>'.
-	stream newLine
+	
+	canvas tag
+		name: 'li';
+		with: anUnorderedListItem text.
+	canvas newLine
 ]
