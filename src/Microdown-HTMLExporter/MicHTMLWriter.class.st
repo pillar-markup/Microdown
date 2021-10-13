@@ -45,6 +45,21 @@ MicHTMLWriter >> visitHeader: aHeader [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> visitParagraph: aParagraph [
+
+	canvas newLine.
+	canvas tag
+				name: 'p';
+				with: [ super visitParagraph: aParagraph ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitText: aText [
+
+	stream nextPutAll: aText text
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> visitUnorderedList: anUnorderedList [
 
 	canvas newLine.
