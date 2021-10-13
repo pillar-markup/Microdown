@@ -25,6 +25,13 @@ MicHTMLExporterTest >> setUp [
 	factory := MicMicrodownSnippetFactory new
 ]
 
+{ #category : #'tests - paragraph' }
+MicHTMLExporterTest >> testAccents [
+
+	self parse: 'éà' andCheckWeGet:  '
+<p>&eacute;&agrave;</p>'
+]
+
 { #category : #tests }
 MicHTMLExporterTest >> testHeaderLevel1 [
 
@@ -32,41 +39,48 @@ MicHTMLExporterTest >> testHeaderLevel1 [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
 	self parse: factory paragraphSample andCheckWeGet: writer usedNewLine ,'<p>Foo</p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - paragraph' }
+MicHTMLExporterTest >> testParagraphLongWithAccents [
+
+	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet:  '
+<p>Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit &agrave; l''oblit&eacute;ration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass&eacute;e, je tournerai mon oeil interieur sur son chemin. Et l&agrave; o&ugrave; elle sera pass&eacute;e, il n''y aura plus rien, rien que moi.</p>'
+]
+
+{ #category : #'tests - formats' }
 MicHTMLExporterTest >> testParagraphNestedSample [
 
 	self parse: factory paragraphNestedSample andCheckWeGet:  '
 <p>this is a <strong><em>paragraph</em></strong></p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithBold [
 
 	self parse: factory paragraphBoldSample andCheckWeGet:  '
 <p>this is a <strong>paragraph</strong></p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithItalic [
 
 	self parse: factory paragraphItalicSample andCheckWeGet:  '
 <p>this is a <em>paragraph</em></p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithMonospace [
 
 	self parse: factory paragraphMonospaceSample andCheckWeGet:  '
 <p>this is a <code>paragraph</code></p>'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - list' }
 MicHTMLExporterTest >> testUnorderedList [
 
 	self parse: factory unorderedListWithTwoItemsSample andCheckWeGet: '
