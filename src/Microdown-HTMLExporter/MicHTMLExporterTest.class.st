@@ -39,6 +39,34 @@ MicHTMLExporterTest >> testParagraph [
 ]
 
 { #category : #tests }
+MicHTMLExporterTest >> testParagraphNestedSample [
+
+	self parse: factory paragraphNestedSample andCheckWeGet:  '
+<p>this is a <strong><em>paragraph</em></strong></p>'
+]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testParagraphWithBold [
+
+	self parse: factory paragraphBoldSample andCheckWeGet:  '
+<p>this is a <strong>paragraph</strong></p>'
+]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testParagraphWithItalic [
+
+	self parse: factory paragraphItalicSample andCheckWeGet:  '
+<p>this is a <em>paragraph</em></p>'
+]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testParagraphWithMonospace [
+
+	self parse: factory paragraphMonospaceSample andCheckWeGet:  '
+<p>this is a <code>paragraph</code></p>'
+]
+
+{ #category : #tests }
 MicHTMLExporterTest >> testUnorderedList [
 
 	self parse: factory unorderedListWithTwoItemsSample andCheckWeGet: '

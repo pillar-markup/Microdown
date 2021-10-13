@@ -35,6 +35,14 @@ MicHTMLWriter >> usedNewLine [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> visitBold: aBoldText [
+
+	canvas tag
+		name: 'strong';
+		with: [ super visitBold: aBoldText ]
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> visitHeader: aHeader [
 
 	canvas newLine.	
@@ -42,6 +50,22 @@ MicHTMLWriter >> visitHeader: aHeader [
 		name: 'h',  aHeader level asString;
 		with: aHeader header
 	
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitItalic: aBoldText [
+
+	canvas tag
+		name: 'em';
+		with: [ super visitItalic: aBoldText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitMonospace: aMonospace [
+
+	canvas tag
+		name: 'code';
+		with: [ super visitMonospace: aMonospace ]
 ]
 
 { #category : #visiting }
