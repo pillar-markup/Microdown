@@ -2,7 +2,6 @@ Class {
 	#name : #MicHTMLWriter,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
-		'stream',
 		'canvas'
 	],
 	#category : #'Microdown-HTMLExporter'
@@ -16,11 +15,12 @@ MicHTMLWriter >> canvasClass [
 
 { #category : #accessing }
 MicHTMLWriter >> contents [ 
-	^ stream contents
+	^ canvas contents
 ]
 
 { #category : #initialization }
 MicHTMLWriter >> initialize [ 
+	| stream |
 	super initialize.
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
 	canvas := self canvasClass on: stream.
@@ -31,7 +31,15 @@ MicHTMLWriter >> initialize [
 MicHTMLWriter >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
-	^ stream usedNewLine
+	^ canvas stream usedNewLine
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitBold: aBoldText [
+
+	canvas tag
+		name: 'strong';
+		with: [ super visitBold: aBoldText ]
 ]
 
 { #category : #visiting }
@@ -42,6 +50,37 @@ MicHTMLWriter >> visitHeader: aHeader [
 		name: 'h',  aHeader level asString;
 		with: aHeader header
 	
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitItalic: aBoldText [
+
+	canvas tag
+		name: 'em';
+		with: [ super visitItalic: aBoldText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitMonospace: aMonospace [
+
+	canvas tag
+		name: 'code';
+		with: [ super visitMonospace: aMonospace ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitParagraph: aParagraph [
+
+	canvas newLine.
+	canvas tag
+				name: 'p';
+				with: [ super visitParagraph: aParagraph ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitText: aText [
+
+	canvas nextPutAll: aText text
 ]
 
 { #category : #visiting }
