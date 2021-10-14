@@ -485,6 +485,32 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 	self deny: ((runs at: 6 "the h in have") includes: self strikethroughtFormat ).
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testStylerForSmalltalk [
+	
+	| code source richText blueLocation textColor |
+	MicRichTextComposer initializeStylers.
+	code := '
+codeStylerFor: aString
+<codeblockStylerFor: #smalltalk>
+
+^bobby new 
+isForWorkspace: blue; 
+styledTextFor: aString asFest'.
+	source := '
+```language=smalltalk' , code ,'
+```
+'.
+	richText := self richTextForString: source.
+	
+	self assert: richText asString trim equals: code trim.
+	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold).
+	"Check that the unknown variable 'blue' is not colored red"
+	blueLocation := richText asString findString: 'blue'.
+	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
+	self assert: textColor color red equals: 0.
+]
+
 { #category : #'tests - stylers' }
 MicRichTextComposerTest >> testStylersAreRegistered [
 
