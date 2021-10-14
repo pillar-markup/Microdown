@@ -92,9 +92,7 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 MicRichTextComposer class >> codeStylerFor: aString [
 	<codeblockStylerFor: 'Smalltalk'>
 	
-	^SHRBTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
+	^MicSmalltalkTextStyler new styledTextFor: aString asText
 ]
 
 { #category : #private }
