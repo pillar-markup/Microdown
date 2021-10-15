@@ -10,11 +10,12 @@ Class {
 }
 
 { #category : #utils }
-MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
-	
-	| mic |
-	mic := parser parse: 	aString.
-	self assert: (writer visit: mic) contents equals: aResultingString
+MicHTMLExporterTest >> parse: aString andCheckWeGet: anExpectedString [
+
+	| mic result|
+	mic := parser parse: aString.
+	result := (writer visit: mic).
+	self assert: result contents equals: anExpectedString
 ]
 
 { #category : #running }
@@ -116,8 +117,9 @@ MicHTMLExporterTest >> testParagraphWithMonospace [
 { #category : #tests }
 MicHTMLExporterTest >> testTable [
 
-self parse: factory tableSample andCheckWeGet: '<table style="border:"></table>'
-															  
+	self
+		parse: factory tableSample
+		andCheckWeGet: '<table style="border:"></table> '
 ]
 
 { #category : #'tests - list' }
@@ -129,7 +131,7 @@ MicHTMLExporterTest >> testUnorderedBoldList [
 <ul>
 <li><strong>Foo</strong></li>
 
-<li><strong>Bar</strong></li>
+<li>Bar</li>
 </ul>'
 ]
 

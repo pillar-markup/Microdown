@@ -118,8 +118,9 @@ MicrodownVisitor >> visitLink: aLink [
 
 { #category : #'visiting - list' }
 MicrodownVisitor >> visitListItem: anItem [
-
+	
 	anItem textElements do: [ :each | each accept: self ].
+	self flag: #toCheck. "textelemenets are the children so this is strqnge to hqve in aadition"
 	self visitChildrenOf: anItem
 ]
 
@@ -187,9 +188,30 @@ MicrodownVisitor >> visitStrike: aFormat [
 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - table' }
 MicrodownVisitor >> visitTable: aTable [
-	"subclassResponsibility"
+	
+	aTable hasHeader 
+		ifTrue: [ 
+			self visitTable: aTable header: aTable rows first.
+			self visitTable: aTable rows: aTable rows allButFirst ]
+		ifFalse: [ self visitTable: aTable rows: aTable rows ]
+			
+
+	
+]
+
+{ #category : #'visiting - table' }
+MicrodownVisitor >> visitTable: aTable header: aRow [
+
+	aRow do: [ :each | each accept: self ]
+			
+]
+
+{ #category : #'visiting - table' }
+MicrodownVisitor >> visitTable: aTable rows: aRow [
+
+	aRow do: [ :each | each accept: self ]
 ]
 
 { #category : #'visiting - inline elements' }
