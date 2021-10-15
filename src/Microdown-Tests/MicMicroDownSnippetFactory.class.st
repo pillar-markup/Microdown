@@ -618,7 +618,7 @@ this is a **_paragraph_**
 
 { #category : #format }
 MicMicrodownSnippetFactory >> paragraphOnMultipleLinesSample [
-	^ 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''obligateration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
+	^ 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
 ]
 
 { #category : #format }

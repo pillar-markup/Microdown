@@ -312,10 +312,10 @@ Foo
 ]
 
 { #category : #'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphLong [
+MicLaTeXWriterTest >> testParagraphLongWithAccents [
 
 		self parse: factory paragraphOnMultipleLinesSample andCheckWeGet:  '
-Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit \`{a} l''obligateration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass\''{e}e, je tournerai mon oeil interieur sur son chemin. Et l\`{a} o\`{u} elle sera pass\''{e}e, il n''y aura plus rien, rien que moi.
+Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit \`{a} l''oblit\''{e}ration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass\''{e}e, je tournerai mon oeil interieur sur son chemin. Et l\`{a} o\`{u} elle sera pass\''{e}e, il n''y aura plus rien, rien que moi.
 '
 ]
 
