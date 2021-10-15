@@ -53,6 +53,16 @@ MicRealDumperTest >> setUp [
 ]
 
 { #category : #'tests - section' }
+MicRealDumperTest >> testMonospaceFormat [
+
+	| mic result |
+	mic := parser parse: factory monospaceFormatSample.
+	result := (visitor visit: mic children first).
+	self assert: result contents equals: '(MicMonospaceFormatBlock new text: )'
+	
+]
+
+{ #category : #'tests - section' }
 MicRealDumperTest >> testPrintHeader [
 	
 	| resString |
@@ -63,6 +73,34 @@ MicRealDumperTest >> testPrintHeader [
 	
 
 
+]
+
+{ #category : #'tests - section' }
+MicRealDumperTest >> testPrintOrderedList [
+
+   | resString |
+	resString := ('MicOrderedListBlock').
+	self parse: factory orderedListSample andCheckWeGet: resString.
+	
+]
+
+{ #category : #'tests - section' }
+MicRealDumperTest >> testPrintParagraph [
+
+	| resString |
+	resString := '(MicParagraphBlock new )'.
+	self parse: factory paragraphSample andCheckWeGet: resString.
+	
+
+]
+
+{ #category : #'tests - section' }
+MicRealDumperTest >> testPrintUnorderedList [
+
+	| resString |
+	resString := 'MicUnorderedListBlock'.
+	self parse: factory unorderedListSample andCheckWeGet: resString.
+	
 ]
 
 { #category : #accessing }

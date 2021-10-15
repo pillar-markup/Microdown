@@ -68,3 +68,31 @@ MicRealDumper >> visitHeader: aHeader [
 		 
 	
 ]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitMonospace: aMonospace [
+
+	^ self blockPrint: aMonospace
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitOrderedList: aOrderedList [
+
+	^ self classPrint: aOrderedList
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitParagraph: aParagraph [
+	
+	stream << '('.
+	self classOf: aParagraph on: stream.
+	stream << ')' 		
+		 
+	
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitUnorderedList: aUnorderedList [
+
+	^ self classPrint: aUnorderedList
+]
