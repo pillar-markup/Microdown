@@ -77,6 +77,14 @@ MicRichTextComposer class >> bulletForLevel: level [
 ]
 
 { #category : #images }
+MicRichTextComposer class >> cachedImageFromFile: aFileRef [
+
+	^ ImageCache
+		  at: aFileRef asString
+		  ifAbsentPut: [ self rawImageFromFile: aFileRef ] 
+]
+
+{ #category : #images }
 MicRichTextComposer class >> cachedImageFromUrl: aUrl [
 	
 	^ OffLine 
@@ -311,7 +319,6 @@ MicRichTextComposer class >> imageOffLineFromUrl: aUrl [
 	"we are off but the image is there so we return it,"
 	^ ImageCache 
 			at: aUrl asString
-			ifPresent: [ :i | i ]
 			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
 When you will be online, you should see: ' , aUrl asString) imageForm  ]
 			
@@ -498,6 +505,11 @@ MicRichTextComposer class >> rawImageFrom: aURL [
 			on: ZnUnexpectedContentType 
 			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
 		
+]
+
+{ #category : #'images internal' }
+MicRichTextComposer class >> rawImageFromFile: aFileRef [
+	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
 ]
 
 { #category : #examples }
