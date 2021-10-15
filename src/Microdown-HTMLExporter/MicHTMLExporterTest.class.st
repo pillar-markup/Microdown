@@ -32,11 +32,44 @@ MicHTMLExporterTest >> testAccents [
 <p>&eacute;&agrave;</p>'
 ]
 
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testComment [
+
+self parse: factory commentSample andCheckWeGet: '<!></!>'
+															  
+]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testFigure [
+
+self parse: factory figureSample andCheckWeGet: '
+<p><img src="/anUrl?label=figureTest&size=80"/></p>'
+															  
+]
+
 { #category : #tests }
 MicHTMLExporterTest >> testHeaderLevel1 [
 
 	self parse: factory headerLevel1Sample andCheckWeGet: writer usedNewLine , '<h1>Foo</h1>'
 	
+]
+
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testLink [
+	| mic |
+	mic := parser parse: factory linkSample.
+	
+	self assert: (writer visit: mic) contents equals: '
+<p><a href="/anUrl"</p>'
+]
+
+{ #category : #'tests - paragraph' }
+MicHTMLExporterTest >> testOrderedList [
+
+	self parse: factory orderedListSample andCheckWeGet:  writer usedNewLine ,'
+<ol>
+<li>Foo</li>
+</ol>'
 ]
 
 { #category : #'tests - paragraph' }
@@ -80,12 +113,33 @@ MicHTMLExporterTest >> testParagraphWithMonospace [
 <p>this is a <code>paragraph</code></p>'
 ]
 
+{ #category : #tests }
+MicHTMLExporterTest >> testTable [
+
+self parse: factory tableSample andCheckWeGet: '<table style="border:"></table>'
+															  
+]
+
+{ #category : #'tests - list' }
+MicHTMLExporterTest >> testUnorderedBoldList [
+
+	self
+		parse: factory unorderedListWithTwoItemsBoldSample
+		andCheckWeGet: '
+<ul>
+<li><strong>Foo</strong></li>
+
+<li><strong>Bar</strong></li>
+</ul>'
+]
+
 { #category : #'tests - list' }
 MicHTMLExporterTest >> testUnorderedList [
 
 	self parse: factory unorderedListWithTwoItemsSample andCheckWeGet: '
 <ul>
 <li>Foo</li>
+
 <li>Bar</li>
 </ul>'
 ]
