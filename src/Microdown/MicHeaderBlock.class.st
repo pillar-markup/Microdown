@@ -67,24 +67,9 @@ MicHeaderBlock >> header [
 ]
 
 { #category : #accessing }
-MicHeaderBlock >> header: text [
-	
-	children := self inlineParse: text
-	
-	
-]
-
-{ #category : #accessing }
 MicHeaderBlock >> headerElements [
 	
 	^ self children
-	
-]
-
-{ #category : #accessing }
-MicHeaderBlock >> headerElements: aCollection [
-	
-	children := aCollection
 	
 ]
 
