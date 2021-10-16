@@ -123,12 +123,19 @@ MicDumper >> visitFigure: aMicFigure [
 
 { #category : #'visit-block' }
 MicDumper >> visitHeader: aHeader [
-
-	| text |
-	text := self classPrint: aHeader.
-	text := text , ' level:' , aHeader level asString.
-	text := text , ' "' , aHeader header , '"'.
-	^ text
+	
+	String streamContents: [ :st | 
+		st << '('.
+		self classOf: aHeader on: st.
+		st << 'level: '.
+		aHeader level printOn: st.
+		st 
+			<< ';';
+			<< 'header: '; 
+			<< aHeader header;
+			<< ')' 		
+		 ].
+	
 ]
 
 { #category : #'visit-block' }

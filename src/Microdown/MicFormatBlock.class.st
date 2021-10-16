@@ -26,6 +26,11 @@ MicFormatBlock >> text [
 ]
 
 { #category : #accessing }
+MicFormatBlock >> text: aString [ 
+	children := { MicTextBlock new substring: aString; cleanSubstring; yourself   }
+]
+
+{ #category : #accessing }
 MicFormatBlock >> wrappedElements [
 	^ children
 ]
