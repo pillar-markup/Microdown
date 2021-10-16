@@ -12,18 +12,18 @@ MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]
 
-{ #category : #utils }
+{ #category : #utilcaca }
 MicBoldFormatBlock >> closingDelimiter [
 
  	^ MicBoldDelimiter markup
 ]
 
-{ #category : #utils }
+{ #category : #utilcaca }
 MicBoldFormatBlock >> kind [
 	^ #bold
 ]
 
-{ #category : #utils }
+{ #category : #utilcaca }
 MicBoldFormatBlock >> openingDelimiter [
 
  	^ MicBoldDelimiter markup

@@ -68,12 +68,6 @@ MicHTMLCanvas class >> initialize [
 ]
 
 { #category : #accessing }
-MicHTMLCanvas >> emptyTag [
-	^ self brush: MicHTMLEmptyTag new
-	
-]
-
-{ #category : #accessing }
 MicHTMLCanvas >> nextPut: aCharacter [
 
 	(HTMLCharacters at: aCharacter ifAbsent: nil)

@@ -19,21 +19,6 @@ MicHTMLWriter >> contents [
 ]
 
 { #category : #initialization }
-MicHTMLWriter >> exportImgFor: aFigure [
-
-	| img |
-	img := canvas emptyTag
-		       name: 'img';
-		       parameterAt: 'src' put: aFigure localFileOrExternalReference;
-		       yourself.
-	aFigure arguments
-		at: 'width'
-		ifPresent: [ :width | 
-		img parameterAt: 'width' put: width asString , '%' ].
-	img closeTag
-]
-
-{ #category : #initialization }
 MicHTMLWriter >> initialize [ 
 	| stream |
 	super initialize.
@@ -49,26 +34,12 @@ MicHTMLWriter >> usedNewLine [
 	^ canvas stream usedNewLine
 ]
 
-{ #category : #'visiting - formats' }
+{ #category : #visiting }
 MicHTMLWriter >> visitBold: aBoldText [
 
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aBoldText ]
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> visitComment: aComment [
-	canvas tag
-		name: '!';
-		with: [ 
-					super visitComment: aComment ]
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> visitFigure: aFigure [
-
-	self exportImgFor: aFigure.
 ]
 
 { #category : #visiting }
@@ -81,7 +52,7 @@ MicHTMLWriter >> visitHeader: aHeader [
 	
 ]
 
-{ #category : #'visiting - formats' }
+{ #category : #visiting }
 MicHTMLWriter >> visitItalic: aBoldText [
 
 	canvas tag
@@ -90,38 +61,11 @@ MicHTMLWriter >> visitItalic: aBoldText [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitLink: aLink [
-	canvas tag
-		name: 'a';
-		parameterAt: 'href' put: aLink localFileOrExternalReference
-]
-
-{ #category : #'visiting - list' }
-MicHTMLWriter >> visitListItem: aList [
-
-	canvas newLine.
-	canvas tag
-		name: 'li';
-		with: [ super visitListItem: aList ].
-	canvas newLine
-]
-
-{ #category : #'visiting - formats' }
 MicHTMLWriter >> visitMonospace: aMonospace [
 
 	canvas tag
 		name: 'code';
 		with: [ super visitMonospace: aMonospace ]
-]
-
-{ #category : #'visiting - list' }
-MicHTMLWriter >> visitOrderedList: aList [
-
-	canvas newLine.
-	canvas newLine.
-	canvas tag
-		name: 'ol';
-		with: [ super visitOrderedList: aList ]
 ]
 
 { #category : #visiting }
@@ -134,26 +78,26 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitTable: aTable [
-	canvas tag
-		name: 'table';
-		parameterAt: 'style' put: 'border:';
-		with: [ super visitTable: aTable ].
-	canvas newLine
-]
-
-{ #category : #'visiting - formats' }
 MicHTMLWriter >> visitText: aText [
 
 	canvas nextPutAll: aText text
 ]
 
-{ #category : #'visiting - list' }
+{ #category : #visiting }
 MicHTMLWriter >> visitUnorderedList: anUnorderedList [
 
 	canvas newLine.
 	canvas tag
 		name: 'ul';
-		with: [ 
-			super visitUnorderedList: anUnorderedList ]
+		with: [ canvas newLine. super visitUnorderedList: anUnorderedList  ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
+	"will not work with we have text decorators such as bold, italic, monospace"
+	
+	canvas tag
+		name: 'li';
+		with: anUnorderedListItem text.
+	canvas newLine
 ]
