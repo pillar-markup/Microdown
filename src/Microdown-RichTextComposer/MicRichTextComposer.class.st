@@ -895,10 +895,10 @@ MicRichTextComposer >> visitOrderedList: anObject [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitParagraph: anObject [
 	
-	"canvas newLineIfNotAlready."
-	canvas newLine.
+	canvas newLineIfNotAlready.
+	"canvas newLine."
 	super visitParagraph: anObject.
-	canvas newLine.
+	"canvas newLine."
 ]
 
 { #category : #'visiting - document' }

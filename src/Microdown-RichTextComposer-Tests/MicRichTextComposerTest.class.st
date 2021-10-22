@@ -450,6 +450,28 @@ MicRichTextComposerTest >> testNewDictionaryAPI [
 ]
 
 { #category : #'tests - list' }
+MicRichTextComposerTest >> testNoNSuperfluousNewLines [
+	| source richText expected |
+	source :=  'This is **bold**
+	
+	And this is just an other paragraph'.
+	expected := 'This is bold
+
+And this is just an other paragraph'.
+	richText := self richTextForString: source.
+	self assert: richText asString equals: expected
+]
+
+{ #category : #'tests - list' }
+MicRichTextComposerTest >> testNosuperfluousNewLines [
+	| source richText expected |
+	source :=  'This is **bold**'.
+	expected := 'This is bold'.
+	richText := self richTextForString: source.
+	self assert: richText asString equals: expected
+]
+
+{ #category : #'tests - list' }
 MicRichTextComposerTest >> testOrderedList [ 
 	| source richText runs  |
 	source := '1. First item
