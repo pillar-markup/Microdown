@@ -204,28 +204,32 @@ line 2
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
-	| source richText |
+	| source richText expected |
 	source := '
 ```language=dummy
 line 1
 line 2
 ```
 '.
+	expected := 'line 1
+line 2'.
 	richText := self richTextForString: source.
-	self assert: richText asString trim equals: '§dummy§'
+	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
-	| source runs richText |
+	| source runs richText expected |
 	source := '
 ```dummy
 line 1
 line 2
 ```
 '.
+	expected := 'line 1
+line 2'.
 	richText := self richTextForString: source.
-	self assert: richText asString trim equals: '§dummy§'
+	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
@@ -378,10 +382,10 @@ MicRichTextComposerTest >> testLatexMathStyle [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testLatexMathStyleEmpty [ 
-	| source richText runs  |
+	| source richText |
 	source :=  'foo$$bar'.
 	richText := self richTextForString: source.
-	self assert: richText equals: (String cr,'foobar',String cr) asText.
+	self assert: richText asString equals: 'foobar' .
 ]
 
 { #category : #'tests - list' }
