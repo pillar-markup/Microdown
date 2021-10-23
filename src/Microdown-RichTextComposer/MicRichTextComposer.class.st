@@ -783,7 +783,6 @@ MicRichTextComposer >> visitFigure: aFigure [
 MicRichTextComposer >> visitHeader: aHeader [
 
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: (self class headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
