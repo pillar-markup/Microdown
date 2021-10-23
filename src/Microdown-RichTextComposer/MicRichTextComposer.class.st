@@ -793,6 +793,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	
+	canvas newLineIfNotAlready.
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -896,9 +897,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
-	"canvas newLine."
 	super visitParagraph: anObject.
-	"canvas newLine."
 ]
 
 { #category : #'visiting - document' }
