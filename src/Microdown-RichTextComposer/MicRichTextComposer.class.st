@@ -682,7 +682,6 @@ MicRichTextComposer >> visit: aDocument [
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	self error: 'this was a halt.'.
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: self annotatedParagrapAlignment
 		in: [ 
@@ -783,7 +782,6 @@ MicRichTextComposer >> visitFigure: aFigure [
 MicRichTextComposer >> visitHeader: aHeader [
 
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: (self class headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
@@ -793,6 +791,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	
+	canvas newLineIfNotAlready.
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -895,10 +894,8 @@ MicRichTextComposer >> visitOrderedList: anObject [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitParagraph: anObject [
 	
-	"canvas newLineIfNotAlready."
-	canvas newLine.
+	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
-	canvas newLine.
 ]
 
 { #category : #'visiting - document' }
