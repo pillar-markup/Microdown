@@ -682,7 +682,6 @@ MicRichTextComposer >> visit: aDocument [
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	self error: 'this was a halt.'.
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: self annotatedParagrapAlignment
 		in: [ 
