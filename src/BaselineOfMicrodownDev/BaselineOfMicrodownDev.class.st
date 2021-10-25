@@ -27,6 +27,8 @@ BaselineOfMicrodownDev >> baseline: spec [
 				
 			package: #'Microdown-RichTextComposer'
 				with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-RichTextComposer-Tests'
+				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
 
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
