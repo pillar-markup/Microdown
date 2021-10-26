@@ -48,6 +48,83 @@ abc', MicAnnotationOpenerDelimiter markup , 'Foo | value=aFoo&label=42 ', MicAnn
 '
 ]
 
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockParameterWithLiteralArraySample [
+
+	^ self codeblock: 'foo=#(1 2 true)'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockSampleOnMultipleLines [
+
+	^ self codeblockNoParamBody: 'first line 
+second line
+third line **b**'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithLanguageSample [
+	^ self codeblock: 'language=smalltalk' body: 'foo'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithNewLineSample [
+
+	^ (self codeblockNoParamBody: 'foo') , self newLine
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParameterTrueByDefaultSample [
+	^ self codeblock: 'foo' body: 'bar'
+	
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParameterWithFloatSample [
+	^ self codeblock: 'ratio=0.8' body: 'bar'
+	
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParameterWithLiteralArraySample [
+	^ self codeblock: 'foo=#(1 2 true)'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParameterWithNoValuesSample [
+	^ self codeblock: 'foo=' body: 'bar'
+
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParametersSample [
+	^ self 
+		codeblock:   'foo=true&bar=2'
+		body: 'bla'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithParametersWithCaptionSample [
+	^ self 
+		codeblock:   'caption=`Color` is beautifull&bar=2'
+		body: 'bla'
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithSpaceAtTheEndSample [
+		
+	 ^ (self codeblockNoParamBody: 'foo'), '  '.
+
+
+]
+
+{ #category : #'code block' }
+MicMicrodownSnippetFactory >> blockWithSpacedParametersSample [
+	^ self 
+		codeblock:   ' foo = true & bar = 2'
+		body: 'bla'
+]
+
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass boldMarkup
@@ -56,12 +133,6 @@ MicMicrodownSnippetFactory >> boldFormatEmptySample [
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatSample [
 	^ self surroundWithMarkup: self parserClass boldMarkup
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> codeBlockParameterWithLiteralArraySample [
-
-	^ self newLine , self codeblock: 'foo=#(1 2 true)'
 ]
 
 { #category : #'code block' }
@@ -666,116 +737,48 @@ MicMicrodownSnippetFactory >> rootSample [
 	^ stream contents
 ]
 
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterEscapeSample [
 	^ 'value\==foo'
 ]
 
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterSample [
 	^ 'value=foo'
 ]
 
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParameterTrueByDefaultSample [
-	^ self codeblock: 'foo' body: 'bar'
-	
-]
-
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterValueSample [
 	^ '=foo'
 ]
 
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParameterWithFloatSample [
-	^ self codeblock: 'ratio=0.8' body: 'bar'
-	
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParameterWithLiteralArraySample [
-	^ self codeblock: 'foo=#(1 2 true)'
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParameterWithNoValuesSample [
-	^ self codeblock: 'foo=' body: 'bar'
-
-]
-
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterWithSpacesBeforeAndAfterSample [
 	^ ' foo = true & bar = 2 
 '
 ]
 
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterWithoutValueSample [
 	^ 'foo'
 ]
 
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParametersEscapeSample [
 	^ 'value=foo\&&bar
 '
 ]
 
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParametersMultipleSample [
 	^ 'value=foo&bar
 '
 ]
 
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParametersSample [
-	^ self 
-		codeblock:   'foo=true&bar=2'
-		body: 'bla'
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptParametersWithCaptionSample [
-	^ self 
-		codeblock:   'caption=`Color` is beautifull&bar=2'
-		body: 'bla'
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptSample [
-	^ self codeblockNoParamBody: 'foo'
-]
-
-{ #category : #'code block' }
+{ #category : #'code block parameter' }
 MicMicrodownSnippetFactory >> scriptTwoParametersNoValueSample [
 	^ 'foo&bar
 '
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptWithLanguageSample [
-	^ self codeblock: 'language=smalltalk' body: 'foo'
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptWithNewLineSample [
-
-	^ (self codeblockNoParamBody: 'foo') , self newLine
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptWithSpaceAtTheEndSample [
-		
-	 ^ (self codeblockNoParamBody: 'foo'), '  '.
-
-
-]
-
-{ #category : #'code block' }
-MicMicrodownSnippetFactory >> scriptWithSpacedParametersSample [
-	^ self 
-		codeblock:   ' foo = true & bar = 2'
-		body: 'bla'
 ]
 
 { #category : #sample }
