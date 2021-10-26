@@ -708,24 +708,21 @@ MicRichTextComposer >> visitBold: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitCode: aCodeBlock [
-	
-	canvas newLineIfNotAlready.
-	canvas newLine.
-	canvas
-		indentIn: [  
-			aCodeBlock hasCaption 
-				ifTrue: [ 
-					canvas 
-					includeAttribute: TextEmphasis bold 
-					in: [ canvas  << aCodeBlock caption asText; newLine]].
-			canvas
-				indentIn: [ 
-					canvas << (self class  
-						style: aCodeBlock body 
-						asLanguage: aCodeBlock language)
-			] ].
-	canvas newLine.
 
+	canvas newLineIfNotAlready.
+	canvas indentIn: [ 
+		canvas
+			<< (self class 
+				style: aCodeBlock body 
+				asLanguage: aCodeBlock language);
+			newLine.
+		aCodeBlock hasCaption ifTrue: [ 
+			canvas 
+				includeAttribute: TextEmphasis bold 
+				in: [ 
+					canvas
+						<< aCodeBlock caption asText;
+					newLine ]]].
 ]
 
 { #category : #'visiting - document' }
