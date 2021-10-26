@@ -8,6 +8,14 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests'
 }
 
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest class >> dummyStylerFor: aString [
+	"I am a styler used for testing. "
+	<codeblockStylerFor: 'dummy'>
+	
+	^'§dummy§' asText
+]
+
 { #category : #helpers }
 MicRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute [
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
@@ -185,11 +193,10 @@ line 2
 '.
 	richText := self richTextForString: source.
 	runs := (richText runs collect: [:run | run collect: [:a| a class]]) asArray .	
-	
-	self assert: runs first isEmpty. 
+		 
 	self assert: (runs second includes: TextIndent).
-	self assert: richText asString equals: '
-line 1
+	self assert: richText asString equals: 
+'line 1
 line 2
 '
 ]
@@ -232,13 +239,13 @@ line 2
 	richText := self richTextForString: source.
 	runs := (richText runs ) asArray .	
 	
-	self assert: runs first isEmpty. 
+	self assert: runs first notEmpty. 
 	self assert: (runs second anySatisfy: [ :r | r class = TextIndent]).
-	self assert: ((runs at: 10) includes: self boldFormat ).
-	self assert: richText asString equals: '
-Roger Rabbit
-line 1
+	self assert: ((runs at: 15) includes: self boldFormat ).
+	self assert: richText asString equals: 
+'line 1
 line 2
+Roger Rabbit
 '
 ]
 
@@ -478,6 +485,32 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 ]
 
 { #category : #tests }
+MicRichTextComposerTest >> testStylerForMethod [
+	
+	| code source richText blueLocation textColor |
+	MicRichTextComposer initializeStylers.
+	code := '
+codeStylerFor: aString
+<codeblockStylerFor: #smalltalk>
+
+^bobby new 
+isForWorkspace: blue; 
+styledTextFor: aString asFest'.
+	source := '
+```language=method' , code ,'
+```
+'.
+	richText := self richTextForString: source.
+	
+	self assert: richText asString trim equals: code trim.
+	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold).
+	"Check that the unknown variable 'blue' is not colored red"
+	blueLocation := richText asString findString: 'blue'.
+	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
+	self assert: textColor color red equals: 0.
+]
+
+{ #category : #tests }
 MicRichTextComposerTest >> testStylerForSmalltalk [
 	
 	| code source richText blueLocation textColor |
@@ -496,7 +529,8 @@ styledTextFor: aString asFest'.
 	richText := self richTextForString: source.
 	
 	self assert: richText asString trim equals: code trim.
-	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold).
+	"style smalltalk is assumes the code to be a code fragment, not a full method def"
+	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold) not.
 	"Check that the unknown variable 'blue' is not colored red"
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
