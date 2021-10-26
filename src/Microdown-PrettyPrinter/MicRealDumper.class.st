@@ -7,6 +7,12 @@ Class {
 	#category : #'Microdown-PrettyPrinter'
 }
 
+{ #category : #'visit - section' }
+MicRealDumper >> accept: aVisitor [
+
+	^ aVisitor visitRaw: self
+]
+
 { #category : #build }
 MicRealDumper >> blockPrint: aMicText [
 
@@ -53,6 +59,48 @@ MicRealDumper >> parametersPrint: aDictionnary [
 	^ text
 ]
 
+{ #category : #build }
+MicRealDumper >> visit: aMicElement [
+
+	^ aMicElement accept: self
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitAnchor: aAnchor [
+
+	| text |
+	text := self classPrint: aAnchor.
+	text := text , ' "' , aAnchor label , '"'.
+	^ text
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitBold: aMicBold [
+
+	^ self blockPrint: aMicBold
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitComment: aComment [
+
+	| text |
+	text := self classPrint: aComment.
+	text := text , ' "' , aComment text , '"'.
+	^ text
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitFigure: aMicFigure [
+
+	| text |
+	text := (self classPrint: aMicFigure) , String space.
+	text := text
+	        , (self parametersPrint: aMicFigure arguments asDictionary).
+	text := text , ' url:' , aMicFigure url asString.
+	text := text , ' "' , aMicFigure substring , '"'.
+	^ text
+]
+
 { #category : #'visit - section' }
 MicRealDumper >> visitHeader: aHeader [
 	
@@ -67,6 +115,22 @@ MicRealDumper >> visitHeader: aHeader [
 	stream << ')' 		
 		 
 	
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitItalic: aMicItalic [
+
+	^ self blockPrint: aMicItalic
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitLink: aMicLink [
+
+	| text |
+	text := self classPrint: aMicLink.
+	text := text , ' url:' , aMicLink url asString , ' "'
+	        , aMicLink substring , '"'.
+	^ text
 ]
 
 { #category : #'visit - section' }
@@ -89,6 +153,39 @@ MicRealDumper >> visitParagraph: aParagraph [
 	stream << ')' 		
 		 
 	
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitQuote: aQuote [
+
+	| text |
+	text := self classPrint: aQuote.
+	text := text , ' "' , aQuote text , '"'.
+	^ text
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitRaw: aMicRaw [
+
+	^ self blockPrint: aMicRaw
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitStrike: aMicStrike [
+
+	^ self blockPrint: aMicStrike
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitTable: aTable [
+
+	^ self classPrint: aTable
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitText: aMicText [
+
+	^ self blockPrint: aMicText
 ]
 
 { #category : #'visit - section' }

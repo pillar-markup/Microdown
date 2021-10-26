@@ -86,10 +86,14 @@ MicDumperTest >> testPrintListItem [
 
 { #category : #'tests-block' }
 MicDumperTest >> testPrintMath [
+
 	| micMath |
 	self skip.
-	micMath := (parser parse: factory mathParametersSample) children first.
-	self assert: (micMath  accept: visitor) equals: 'MicMathBlock parameters:label=42 "Foo"'
+	micMath := (parser parse: factory mathParametersSample) children
+		           first.
+	self
+		assert: (micMath accept: visitor)
+		equals: 'MicMathBlock parameters:label=42 "Foo"'
 ]
 
 { #category : #'tests-block' }

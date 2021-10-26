@@ -133,13 +133,30 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 				with: [ super visitParagraph: aParagraph ]
 ]
 
+{ #category : #'visiting - list' }
+MicHTMLWriter >> visitStrike: aStrike [
+
+	canvas tag
+		name: 'strike';
+		with: [ super visitStrike: aStrike ]
+]
+
 { #category : #visiting }
 MicHTMLWriter >> visitTable: aTable [
-	canvas tag
-		name: 'table';
-		parameterAt: 'style' put: 'border:';
-		with: [ super visitTable: aTable ].
-	canvas newLine
+	
+	aTable hasHeader 
+		ifTrue: [ 
+			self visitTable: aTable header: aTable rows first.
+			self visitTable: aTable rows: aTable rows allButFirst ]
+		ifFalse: [ self visitTable: aTable rows: aTable rows ]
+			
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitTable: aTable header: aRow [
+
+	aRow do: [ :each | each accept: self ]
+			
 ]
 
 { #category : #'visiting - formats' }
