@@ -872,6 +872,12 @@ MicMicrodownSnippetFactory >> tableSample [
 ]
 
 { #category : #format }
+MicMicrodownSnippetFactory >> textSentenceSample [
+
+	^ 'Je ne connaitrais pas la peur'
+]
+
+{ #category : #format }
 MicMicrodownSnippetFactory >> underlineFormatEmptySample [
 	^ self surround: '' withMarkup: self parserClass underlineMarkup
 ]

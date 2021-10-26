@@ -31,6 +31,16 @@ MicFormatBlock >> text: aString [
 ]
 
 { #category : #accessing }
+MicFormatBlock >> textElement [
+	^ children first
+]
+
+{ #category : #accessing }
+MicFormatBlock >> textElement: aMicTextBlock [ 
+	children := { aMicTextBlock }
+]
+
+{ #category : #accessing }
 MicFormatBlock >> wrappedElements [
 	^ children
 ]

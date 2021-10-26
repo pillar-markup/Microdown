@@ -16,27 +16,28 @@ MicRealDumper >> accept: aVisitor [
 { #category : #build }
 MicRealDumper >> blockPrint: aMicText [
 
-	| text |
-	text := self classPrint: aMicText.
-	text := text , ' "' , aMicText substring , '"'.
-	^ text
+	self emitClassNameOf: aMicText.
+	stream nextPutAll: '"' ; nextPutAll: aMicText substring ; nextPutAll: '"'.
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> classOf: aHeader on: st [
-	st << aHeader class name; << ' new '
-]
+MicRealDumper >> classOf: aHeader [
 
-{ #category : #build }
-MicRealDumper >> classPrint: aMicFigure [
-
-	^ aMicFigure class asString
+	stream
+		<< aHeader class name;
+		<< ' new '
 ]
 
 { #category : #initialization }
 MicRealDumper >> contents [ 
 
 	^ stream contents
+]
+
+{ #category : #build }
+MicRealDumper >> emitClassNameOf: aMicFigure [
+
+	stream nextPutAll: aMicFigure class asString
 ]
 
 { #category : #initialization }
@@ -62,14 +63,15 @@ MicRealDumper >> parametersPrint: aDictionnary [
 { #category : #build }
 MicRealDumper >> visit: aMicElement [
 
-	^ aMicElement accept: self
+	aMicElement accept: self.
+	stream contents
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitAnchor: aAnchor [
 
 	| text |
-	text := self classPrint: aAnchor.
+	text := self emitClassNameOf: aAnchor.
 	text := text , ' "' , aAnchor label , '"'.
 	^ text
 ]
@@ -77,14 +79,28 @@ MicRealDumper >> visitAnchor: aAnchor [
 { #category : #'visit - section' }
 MicRealDumper >> visitBold: aMicBold [
 
-	^ self blockPrint: aMicBold
+	stream nextPut: $(.
+	self emitClassNameOf: aMicBold.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	stream nextPutAll: 'textElement: '.
+	aMicBold children first accept: self.
+	stream nextPut: $)
+]
+
+{ #category : #'visit - section' }
+MicRealDumper >> visitCode: aMicText [
+
+ 	self emitClassNameOf: MicCodeBlock
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitComment: aComment [
 
 	| text |
-	text := self classPrint: aComment.
+	text := self emitClassNameOf: aComment.
 	text := text , ' "' , aComment text , '"'.
 	^ text
 ]
@@ -93,7 +109,7 @@ MicRealDumper >> visitComment: aComment [
 MicRealDumper >> visitFigure: aMicFigure [
 
 	| text |
-	text := (self classPrint: aMicFigure) , String space.
+	text := (self emitClassNameOf: aMicFigure) , String space.
 	text := text
 	        , (self parametersPrint: aMicFigure arguments asDictionary).
 	text := text , ' url:' , aMicFigure url asString.
@@ -103,18 +119,16 @@ MicRealDumper >> visitFigure: aMicFigure [
 
 { #category : #'visit - section' }
 MicRealDumper >> visitHeader: aHeader [
-	
+
 	stream << '('.
-	self classOf: aHeader on: stream.
+	self classOf: aHeader.
 	stream << 'level: '.
 	aHeader level printOn: stream.
-	stream 
+	stream
 		<< '; ';
 		<< 'header: '.
 	aHeader header printOn: stream.
-	stream << ')' 		
-		 
-	
+	stream << ')'
 ]
 
 { #category : #'visit - section' }
@@ -127,7 +141,7 @@ MicRealDumper >> visitItalic: aMicItalic [
 MicRealDumper >> visitLink: aMicLink [
 
 	| text |
-	text := self classPrint: aMicLink.
+	text := self emitClassNameOf: aMicLink.
 	text := text , ' url:' , aMicLink url asString , ' "'
 	        , aMicLink substring , '"'.
 	^ text
@@ -136,30 +150,39 @@ MicRealDumper >> visitLink: aMicLink [
 { #category : #'visit - section' }
 MicRealDumper >> visitMonospace: aMonospace [
 
-	^ self blockPrint: aMonospace
+	stream nextPut: $(.
+	self emitClassNameOf: aMonospace.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	stream
+		nextPutAll: 'string: ';
+		nextPutAll: '''';
+		nextPutAll: aMonospace substring;
+		nextPutAll: ''''.
+	stream nextPut: $)
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitOrderedList: aOrderedList [
 
-	^ self classPrint: aOrderedList
+	^ self emitClassNameOf: aOrderedList
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitParagraph: aParagraph [
-	
+
 	stream << '('.
-	self classOf: aParagraph on: stream.
-	stream << ')' 		
-		 
-	
+	self classOf: aParagraph.
+	stream << ')'
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitQuote: aQuote [
 
 	| text |
-	text := self classPrint: aQuote.
+	text := self emitClassNameOf: aQuote.
 	text := text , ' "' , aQuote text , '"'.
 	^ text
 ]
@@ -179,17 +202,28 @@ MicRealDumper >> visitStrike: aMicStrike [
 { #category : #'visit - section' }
 MicRealDumper >> visitTable: aTable [
 
-	^ self classPrint: aTable
+	^ self emitClassNameOf: aTable
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> visitText: aMicText [
+MicRealDumper >> visitText: aMonospace [
 
-	^ self blockPrint: aMicText
+	stream nextPut: $(.
+	self emitClassNameOf: aMonospace.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	stream
+		nextPutAll: 'substring: ';
+		nextPutAll: '''';
+		nextPutAll: aMonospace substring;
+		nextPutAll: ''''.
+	stream nextPut: $)
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitUnorderedList: aUnorderedList [
 
-	^ self classPrint: aUnorderedList
+	^ self emitClassNameOf: aUnorderedList
 ]

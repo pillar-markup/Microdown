@@ -29,10 +29,10 @@ MicRealDumperTest >> factory: aFactory [
 { #category : #'tests - section' }
 MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 
-	| mic result |
+	| mic |
 	mic := parser parse: aString.
-	result := (visitor visit: mic children first).
-	self assert: result contents equals: anExpectedString
+	visitor visit: mic children first.
+	self assert: visitor contents equals: anExpectedString
 ]
 
 { #category : #'tests - section' }
@@ -55,12 +55,28 @@ MicRealDumperTest >> setUp [
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testBoldFormat [
 
-	| micBold result |
-	micBold := (parser parse: factory boldFormatSample) children first children first.
-	result := (micBold accept: visitor).
-	self assert: result contents equals: 'MicBoldFormatBlock "Foo"'
-	
+	| micBold |
+	micBold := (parser parse: factory boldFormatSample) children first
+		           children first.
+	self assert: micBold children first class equals: MicTextBlock.
+	visitor visit: micBold.
+	self
+		assert: visitor contents
+		equals:
+		'(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
+]
 
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithoutParam [
+
+	| micCodeBlock |
+	micCodeBlock := parser parse:
+		                factory blockSampleOnMultipleLines.
+	self
+		assert: (micCodeBlock accept: visitor)
+		equals: '(MicCodeBlock new body: ''first line 
+second line
+third line **b**'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -68,8 +84,8 @@ MicRealDumperTest >> testComment [
 
 	| micComment result |
 	micComment := (parser parse: factory commentSample) children first.
-	result := (micComment accept: visitor).
-	self assert: result contents equals: 'MicCommentBlock "Foo"'
+	result := micComment accept: visitor.
+	self assert: result contents equals: '(MicCommentBlock new "% Foo")'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -94,21 +110,22 @@ MicRealDumperTest >> testHeader [
 MicRealDumperTest >> testItalicFormat [
 
 	| micItalic result |
-	micItalic := (parser parse: factory italicFormatSample) children first children first.
-	result := (micItalic accept: visitor).
-	self assert: result contents equals: 'MicItalicFormatBlock "Foo"'
-
+	micItalic := (parser parse: factory italicFormatSample) children
+		             first children first.
+	result := micItalic accept: visitor.
+	self
+		assert: result contents
+		equals: '(MicItalicFormatBlock new string: "Foo")'
 ]
 
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testLinkFormat [
 
 	| micLink result |
-	micLink := (parser parse: factory linkSample) children first children first.
-	result := (micLink accept: visitor).
-	self assert: result contents equals: 'MicLinkBlock url:/anUrl "Foo"'
-
-	
+	micLink := (parser parse: factory linkSample) children first children
+		           first.
+	result := micLink accept: visitor.
+	self assert: result contents equals: '(MicLinkBlock url:/anUrl "Foo")'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -116,9 +133,8 @@ MicRealDumperTest >> testMonospaceFormat [
 
 	| mic result |
 	mic := parser parse: factory monospaceFormatSample.
-	result := (visitor visit: mic children first children first).
-	self assert: result contents equals: 'MicMonospaceFormatBlock "Foo"'
-	
+	result := visitor visit: mic children first children first.
+	self assert: result contents equals: '(MicMonospaceFormatBlock new string: ''Foo'')'
 ]
 
 { #category : #'tests - section' }
@@ -133,7 +149,9 @@ MicRealDumperTest >> testOrderedList [
 MicRealDumperTest >> testParagraph [
 
 	| resString |
-	resString := '(MicParagraphBlock new )'.
+	resString := '(MicParagraphBlock new text: ''
+Foo
+'')'.
 	self parse: factory paragraphSample andCheckWeGet: resString
 ]
 
@@ -177,9 +195,11 @@ MicRealDumperTest >> testTable [
 MicRealDumperTest >> testTextBlock [
 
 	| micText |
-	micText := (parser parse: factory headerLevel3Sample) children first
-		           children first.
-	self assert: (micText accept: visitor) equals: 'MicTextBlock "Foo"'
+	micText := (parser parse: factory textSentenceSample) children first children first.
+	visitor visit: micText.
+	self
+		assert: visitor contents
+		equals: '(MicTextBlock new string: ''Je ne connaitrais pas la peur'')'
 ]
 
 { #category : #'tests - section' }
