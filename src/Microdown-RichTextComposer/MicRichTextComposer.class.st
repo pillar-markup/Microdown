@@ -89,10 +89,28 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 ]
 
 { #category : #styler }
-MicRichTextComposer class >> codeStylerFor: aString [
+MicRichTextComposer class >> codeStylerForMethod: aString [
+	<codeblockStylerFor: 'Method'>
+	^MicSmalltalkTextStyler new 
+		isForWorkspace: false; 
+		styledTextFor: aString asText
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> codeStylerForPharo: aString [
+	<codeblockStylerFor: 'Pharo'>
+	"For full methods use style 'Method'"
+	^MicSmalltalkTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> codeStylerForSmalltalk: aString [
 	<codeblockStylerFor: 'Smalltalk'>
-	
-	^MicSmalltalkTextStyler new styledTextFor: aString asText
+	^MicSmalltalkTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
 ]
 
 { #category : #private }
@@ -126,7 +144,7 @@ MicRichTextComposer class >> defaultStyler: aString [
 	<codeblockStylerFor: 'default'>
 	"Pay attention without this one the logic can loop."
 	
-	^ self codeStylerFor: aString
+	^ self codeStylerForPharo: aString
 ]
 
 { #category : #examples }
@@ -252,15 +270,6 @@ foo: arg
 ') inspect
 ]
 
-{ #category : #styler }
-MicRichTextComposer class >> expressionStylerFor: aString [
-	<codeblockStylerFor: 'PharoExpression'>
-	
-	^SHRBTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
-]
-
 { #category : #private }
 MicRichTextComposer class >> headerFontSizes: anArray [
 
@@ -365,16 +374,6 @@ MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc
 			do: [ errorDesc asText addAttribute: TextColor red ]
 		].
 	^ anchoredImage 
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> methodStylerFor: aString [
-	<codeblockStylerFor:'PharoMethod'>
-	
-	"when we use a pharo method for an expression the styler breaks for method pattern. So it should be fixed in the future but for now we make sure that at least it does not breaks."
-	^[ SHRBTextStyler new 
-		isForWorkspace: false; 
-		styledTextFor: aString asText ] on: SubscriptOutOfBounds do: [ aString asText ]
 ]
 
 { #category : #examples }
