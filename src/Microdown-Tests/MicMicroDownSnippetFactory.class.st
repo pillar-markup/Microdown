@@ -887,7 +887,10 @@ MicMicrodownSnippetFactory >> underlineFormatEmptySample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> underlineFormatSample [
-	^ self surroundWithMarkup: self parserClass underlineMarkup
+
+	^ '
+* Foo
+'
 ]
 
 { #category : #list }
@@ -898,7 +901,8 @@ MicMicrodownSnippetFactory >> unorderedListEmptySample [
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListSample [
 
-	^ self newLine , self parserClass unorderedListMarkup , 'Foo
+	^ '
+* Foo
 '
 ]
 

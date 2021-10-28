@@ -7,6 +7,15 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
+{ #category : #functions }
+MicOrderedListBlockTest >> orderedListWithTwoItemsBoldFirstSample [
+
+	^ '
+1. **_first_**
+1. second
+'
+]
+
 { #category : #tests }
 MicOrderedListBlockTest >> testEmbeddedUnordered [
 	| source root list |
@@ -216,6 +225,19 @@ MicOrderedListBlockTest >> testTwoLevelList1 [
 			children first "ordered list"
 			children first "sub item"
 			text equals: 'sublevel'
+]
+
+{ #category : #'tests - list' }
+MicOrderedListBlockTest >> testUnOrderedListAPIToAccessText [
+
+	| list |
+	list := (self parser parse:
+		         self orderedListWithTwoItemsBoldFirstSample) children first
+		        children first.
+
+	self assert: list class equals: MicListItemBlock.
+	self assert: list nestedLevel equals: 1.
+	self assert: list text equals: '_first_'
 ]
 
 { #category : #tests }

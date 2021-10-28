@@ -133,6 +133,7 @@ MicHTMLExporterTest >> testStrike [
 MicHTMLExporterTest >> testTable [
 
 	| micTable |
+	self skip.
 	micTable := parser parse: factory tableSample.
 	self assert: (writer visit: micTable) contents equals: '
 <table>
