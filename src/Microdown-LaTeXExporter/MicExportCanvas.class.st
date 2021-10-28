@@ -29,6 +29,11 @@ MicExportCanvas >> brush: aBrush [
 ]
 
 { #category : #accessing }
+MicExportCanvas >> contents [ 
+	^ stream contents
+]
+
+{ #category : #accessing }
 MicExportCanvas >> flush [
 	stream flush
 ]
@@ -92,6 +97,13 @@ MicExportCanvas >> setStream: aStream [
 { #category : #'writing text' }
 MicExportCanvas >> space [
 	stream space
+]
+
+{ #category : #accessing }
+MicExportCanvas >> stream [
+	"Pay attention to what you do with this stream. You may break the canvas logic"
+	
+	^ stream
 ]
 
 { #category : #private }

@@ -100,10 +100,26 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 ]
 
 { #category : #styler }
-MicRichTextComposer class >> codeStylerFor: aString [
+MicRichTextComposer class >> codeStylerForMethod: aString [
+	<codeblockStylerFor: 'Method'>
+	^MicSmalltalkTextStyler new 
+		isForWorkspace: false; 
+		styledTextFor: aString asText
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> codeStylerForPharo: aString [
+	<codeblockStylerFor: 'Pharo'>
+	"For full methods use style 'Method'"
+	^MicSmalltalkTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> codeStylerForSmalltalk: aString [
 	<codeblockStylerFor: 'Smalltalk'>
-	
-	^SHRBTextStyler new 
+	^MicSmalltalkTextStyler new 
 		isForWorkspace: true; 
 		styledTextFor: aString asText
 ]
@@ -139,7 +155,7 @@ MicRichTextComposer class >> defaultStyler: aString [
 	<codeblockStylerFor: 'default'>
 	"Pay attention without this one the logic can loop."
 	
-	^ self codeStylerFor: aString
+	^ self codeStylerForPharo: aString
 ]
 
 { #category : #examples }
@@ -265,15 +281,6 @@ foo: arg
 ') inspect
 ]
 
-{ #category : #styler }
-MicRichTextComposer class >> expressionStylerFor: aString [
-	<codeblockStylerFor: 'PharoExpression'>
-	
-	^SHRBTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
-]
-
 { #category : #private }
 MicRichTextComposer class >> headerFontSizes: anArray [
 
@@ -342,12 +349,14 @@ MicRichTextComposer class >> initialize [
 { #category : #'class initialization' }
 MicRichTextComposer class >> initializeStylers [
 	"self initializeStylers"
+
 	Stylers := Dictionary
 		newFromAssociations: ((PragmaCollector
-						filter: [ :prg | 
-							(prg selector = 'codeblockStylerFor:') and: [ prg methodClass isObsolete not ]  ]
-						) reset
-						collected collect: [ :p | p arguments first asLowercase-> p method ])
+			filter: [ :prg | 
+				prg selector = 'codeblockStylerFor:' and: [ 
+					"When debugging stylers, make sure no old ones are included"
+				prg method methodClass isObsolete not ] ]) reset
+			collected collect: [ :prg | prg arguments first asLowercase-> prg method ])
 ]
 
 { #category : #styler }
@@ -398,16 +407,6 @@ MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc
 			do: [ errorDesc asText addAttribute: TextColor red ]
 		].
 	^ anchoredImage 
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> methodStylerFor: aString [
-	<codeblockStylerFor:'PharoMethod'>
-	
-	"when we use a pharo method for an expression the styler breaks for method pattern. So it should be fixed in the future but for now we make sure that at least it does not breaks."
-	^[ SHRBTextStyler new 
-		isForWorkspace: false; 
-		styledTextFor: aString asText ] on: SubscriptOutOfBounds do: [ aString asText ]
 ]
 
 { #category : #examples }
@@ -684,7 +683,6 @@ MicRichTextComposer >> visit: aDocument [
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	self error: 'this was a halt.'.
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: self annotatedParagrapAlignment
 		in: [ 
@@ -709,24 +707,21 @@ MicRichTextComposer >> visitBold: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitCode: aCodeBlock [
-	
-	canvas newLineIfNotAlready.
-	canvas newLine.
-	canvas
-		indentIn: [  
-			aCodeBlock hasCaption 
-				ifTrue: [ 
-					canvas 
-					includeAttribute: TextEmphasis bold 
-					in: [ canvas  << aCodeBlock caption asText; newLine]].
-			canvas
-				indentIn: [ 
-					canvas << (self class  
-						style: aCodeBlock body 
-						asLanguage: aCodeBlock language)
-			] ].
-	canvas newLine.
 
+	canvas newLineIfNotAlready.
+	canvas indentIn: [ 
+		canvas
+			<< (self class 
+				style: aCodeBlock body 
+				asLanguage: aCodeBlock language);
+			newLine.
+		aCodeBlock hasCaption ifTrue: [ 
+			canvas 
+				includeAttribute: TextEmphasis bold 
+				in: [ 
+					canvas
+						<< aCodeBlock caption asText;
+					newLine ]]].
 ]
 
 { #category : #'visiting - document' }
@@ -785,7 +780,6 @@ MicRichTextComposer >> visitFigure: aFigure [
 MicRichTextComposer >> visitHeader: aHeader [
 
 	canvas newLineIfNotAlready.
-	canvas newLine.
 	canvas
 		includeAttribute: (self class headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
@@ -795,6 +789,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	
+	canvas newLineIfNotAlready.
 	canvas includeAttribute: TextEmphasis underlined in: [ canvas << ('     ' repeat: 20) asText ].
 	canvas newLine.	
 ]
@@ -897,10 +892,8 @@ MicRichTextComposer >> visitOrderedList: anObject [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitParagraph: anObject [
 	
-	"canvas newLineIfNotAlready."
-	canvas newLine.
+	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
-	canvas newLine.
 ]
 
 { #category : #'visiting - document' }

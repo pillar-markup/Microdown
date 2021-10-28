@@ -159,7 +159,7 @@ MicrodownVisitor >> visitOrderedListItem: anItem [
 
 { #category : #visiting }
 MicrodownVisitor >> visitParagraph: aParagraph [
-
+	
 	^ self visitChildrenOf: aParagraph
 ]
 
