@@ -128,6 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
+	MicRichTextComposer initializeStylers.
 ]
 
 { #category : #'skipped tests' }
