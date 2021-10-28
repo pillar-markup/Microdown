@@ -210,23 +210,21 @@ line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
-	| source runs richText expected |
+	| source richText expected |
 	source := '
 ```dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
