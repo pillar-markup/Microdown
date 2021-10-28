@@ -257,14 +257,6 @@ MicRealDumperTest >> testUnOrderedList [
 		'(MicUnOrderedListBlock new textElement: (MicTextBlock new substring: ''Foo''))'
 ]
 
-{ #category : #'tests - section' }
-MicRealDumperTest >> testUnorderedList [
-
-	| resString |
-	resString := 'MicUnorderedListBlock'.
-	self parse: factory unorderedListSample andCheckWeGet: resString
-]
-
 { #category : #accessing }
 MicRealDumperTest >> visitor [
 

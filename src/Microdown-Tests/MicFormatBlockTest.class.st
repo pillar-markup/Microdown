@@ -48,18 +48,6 @@ MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 	self assert: italic textElement substring equals: 'a b'
 ]
 
-{ #category : #tests }
-MicFormatBlockTest >> testBoldWrappedElements [
-	
-	| paragraph |
-	paragraph := (MicroDownParser new parse: '**aa bb** c') children first.
-	self assert: paragraph children size equals: 2.
-	self assert: paragraph children first wrappedElements size equals: 1. 
-	self assert: paragraph children first class equals: MicBoldFormatBlock.
-	self assert: paragraph children first wrappedElements first class equals: MicTextBlock.
-	
-]
-
 { #category : #'tests - bold' }
 MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 

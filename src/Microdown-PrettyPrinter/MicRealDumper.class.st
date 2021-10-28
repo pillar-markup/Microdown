@@ -307,9 +307,3 @@ MicRealDumper >> visitUnOrderedList: aUnOrderedList [
 	aUnOrderedList children first accept: self.
 	stream nextPut: $)
 ]
-
-{ #category : #'visit - section' }
-MicRealDumper >> visitUnorderedList: aUnorderedList [
-
-	^ self emitClassNameOf: aUnorderedList
-]
