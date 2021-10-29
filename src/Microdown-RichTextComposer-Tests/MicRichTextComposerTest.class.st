@@ -566,7 +566,7 @@ styledTextFor: aString asFest'.
 MicRichTextComposerTest >> testStylersAreRegistered [
 
 	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'blblbl'.
+	defaultStyler := self composer styler styleFor: 'blblbl'.
 	self assert: defaultStyler selector equals: #defaultStyler:
 ]
 
@@ -574,7 +574,7 @@ MicRichTextComposerTest >> testStylersAreRegistered [
 MicRichTextComposerTest >> testStylersForText [
 
 	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'text'.
+	defaultStyler := self composer styler styleFor: 'text'.
 	self assert: defaultStyler selector equals: #textStyler:.
 	 "Stylers are used for codeblock, and a test should be included for this"
 ]
