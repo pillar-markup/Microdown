@@ -541,7 +541,7 @@ MicRichTextComposerTest >> testStylerForSmalltalk [
 	| code source richText blueLocation textColor |
 	MicRichTextComposer initializeStylers.
 	code := '
-isBlue: blue
+isBlue: green
 
 ^red & blue'.
 	source := '
