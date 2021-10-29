@@ -91,16 +91,19 @@ MicRealDumper >> visitBold: aMicBold [
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> visitCode: aMicText [
+MicRealDumper >> visitCode: aCodeBlock [
 
 	stream nextPut: $(.
-	self emitClassNameOf: aMicText.
+	self emitClassNameOf: aCodeBlock.
 	stream space.
 	stream
 		nextPutAll: 'new';
 		space.
 	stream nextPutAll: 'body: '.
-	aMicText children first accept: self.
+	stream 
+		nextPutAll: '''';
+		nextPutAll: aCodeBlock body;
+		nextPutAll: ''''.
 	stream nextPut: $)
 ]
 
@@ -124,11 +127,16 @@ MicRealDumper >> visitFigure: aMicFigure [
 	stream nextPut: $(.
 	self emitClassNameOf: aMicFigure.
 	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aMicFigure arguments accept: self.
+	stream nextPutAll: 'parameters: '.
+	stream nextPutAll: 'label=figureTest&size=80'.
+	stream space.
+	stream nextPutAll: 'url: '.
+	stream nextPutAll: aMicFigure url originalString.
+	stream 
+		space;
+		nextPutAll: '''';
+	   nextPutAll: aMicFigure caption;
+		nextPutAll: ''''.
 	stream nextPut: $)
 ]
 
@@ -171,7 +179,11 @@ MicRealDumper >> visitLink: aMicLink [
 		nextPutAll: 'new';
 		space.
 	stream nextPutAll: 'textElement: '.
-	aMicLink substring accept: self.
+	stream nextPut: $[.
+	stream nextPutAll: aMicLink substring.
+	stream nextPut: $].
+	stream nextPut: $(.
+	stream nextPutAll: aMicLink url originalString .
 	stream nextPut: $)
 ]
 
@@ -201,8 +213,8 @@ MicRealDumper >> visitOrderedList: aOrderedList [
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'textElement: '.
-	aOrderedList children first accept: self.
+	stream nextPutAll: 'addChild: '.
+	aOrderedList children do: [ :each | each accept: self ].
 	stream nextPut: $)
 ]
 
@@ -215,8 +227,9 @@ MicRealDumper >> visitParagraph: aParagraph [
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'textElement: '.
-	aParagraph children first accept: self.
+	stream
+		nextPutAll: 'textElement: '. aParagraph children first
+		accept: self.
 	stream nextPut: $)
 ]
 
@@ -237,6 +250,7 @@ MicRealDumper >> visitQuote: aQuote [
 { #category : #'visit - section' }
 MicRealDumper >> visitRaw: aMicRaw [
 
+	self halt.
 	stream nextPut: $(.
 	self emitClassNameOf: aMicRaw.
 	stream space.
@@ -244,7 +258,7 @@ MicRealDumper >> visitRaw: aMicRaw [
 		nextPutAll: 'new';
 		space.
 	stream nextPutAll: 'textElement: '.
-	aMicRaw substring accept: self.
+	aMicRaw do: [ :each | each accept: self ].
 	stream nextPut: $)
 ]
 
@@ -294,16 +308,16 @@ MicRealDumper >> visitText: aMonospace [
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> visitUnOrderedList: aUnOrderedList [
+MicRealDumper >> visitUnorderedList: aUnOrderedList [
 
-	self halt.
 	stream nextPut: $(.
 	self emitClassNameOf: aUnOrderedList.
 	stream space.
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'textElement: '.
-	aUnOrderedList children first accept: self.
+	stream nextPutAll: 'addChild: '.
+	aUnOrderedList children do: [ :each | 
+		 each accept: self ].
 	stream nextPut: $)
 ]
