@@ -17,6 +17,36 @@ MicHeaderBlockTest >> testCanConsumeLine [
 ]
 
 { #category : #tests }
+MicHeaderBlockTest >> testHeaderAPIToAccessText [
+
+	| header |
+	header := (self parser parse: '# titre1') children first.
+	self assert: header class equals: MicHeaderBlock.
+	self assert: header children first class equals: MicTextBlock.
+	self assert: header children first substring equals: 'titre1'
+]
+
+{ #category : #tests }
+MicHeaderBlockTest >> testHeaderAPIToSetText [
+
+	| header |
+	header := (self parser parse: '# titre1') children first.
+	self assert: header class equals: MicHeaderBlock.
+	header headerElements: (MicTextBlock new substring: 'Blblbl').
+	self assert: header headerElements substring equals: 'Blblbl'
+]
+
+{ #category : #tests }
+MicHeaderBlockTest >> testHeaderCreatesInnerText [
+
+	| header |
+	header := (self parser parse: '# titre1') children first.
+	self assert: header class equals: MicHeaderBlock.
+	self assert: header children first class equals: MicTextBlock.
+	self assert: header children first substring equals: 'titre1'
+]
+
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
 	root := parser parse: (parser headerMarkup, ' Level1').
@@ -53,6 +83,19 @@ MicHeaderBlockTest >> testHeaderLevel6 [
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level six'.
 	self assert: root children first level equals: 6
+]
+
+{ #category : #tests }
+MicHeaderBlockTest >> testHeaderLongElements [
+
+	| header |
+	header := (self parser parse: '# titre1 Introduction') children
+		             first.
+	self assert: header children size equals: 1.
+	self
+		assert: header children first class
+		equals: MicTextBlock.
+	
 ]
 
 { #category : #running }
