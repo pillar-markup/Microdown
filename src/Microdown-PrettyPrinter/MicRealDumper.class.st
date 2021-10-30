@@ -28,10 +28,21 @@ MicRealDumper >> classOf: aHeader [
 		<< ' new '
 ]
 
+{ #category : #accessing }
+MicRealDumper >> contents [ 
+	^ stream contents
+]
+
 { #category : #build }
 MicRealDumper >> emitClassNameOf: aMicFigure [
 
 	stream nextPutAll: aMicFigure class asString
+]
+
+{ #category : #initialization }
+MicRealDumper >> initialize [ 
+	super initialize.
+	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
 ]
 
 { #category : #build }

@@ -18,6 +18,14 @@ MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 	self assert: visitor contents equals: anExpectedString
 ]
 
+{ #category : #initialization }
+MicRealDumperTest >> setUp [ 
+	super setUp.
+	parser := MicroDownParser new.
+	factory := MicMicrodownSnippetFactory new.
+	visitor := MicRealDumper new.
+]
+
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testBoldFormat [
 
@@ -273,7 +281,7 @@ MicRealDumperTest >> testQuote [
 MicRealDumperTest >> testRawBlock [
 
 	| micRaw |
-	self halt.
+	self skip.
 	micRaw := (parser parse: factory rawFormatSample) children first.
 	self assert: micRaw class equals: MicRawBlock.
 	visitor visit: micRaw.
