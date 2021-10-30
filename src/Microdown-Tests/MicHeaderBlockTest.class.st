@@ -32,8 +32,9 @@ MicHeaderBlockTest >> testHeaderAPIToSetText [
 	| header |
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
-	header headerElements: (MicTextBlock new substring: 'Blblbl').
-	self assert: header headerElements substring equals: 'Blblbl'
+	self assert: header headerElements first text equals: 'titre1'.
+	header headerElements: { (MicTextBlock new substring: 'Blblbl') }.
+	self assert: header headerElements first substring equals: 'Blblbl'
 ]
 
 { #category : #tests }

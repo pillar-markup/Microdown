@@ -156,9 +156,9 @@ MicFormatBlockTest >> testMonospaceTextCreatesInnerText [
 	| mono |
 	mono := (self parser parse: '`a b`') children first children first.
 	self assert: mono class equals: MicMonospaceFormatBlock.
-	mono text: ' 0 **a b** z'.
-	self assert: mono children first class equals: MicTextBlock.
-	self assert: mono children first substring equals: ' 0 **a b** z'
+	self assert: mono text equals: 'a b'.
+	self assert: mono textElement class equals: MicTextBlock.
+	self assert: mono textElement substring equals: 'a b'
 ]
 
 { #category : #'tests - monospace' }
