@@ -8,19 +8,6 @@ Class {
 }
 
 { #category : #'visit - section' }
-MicRealDumper >> accept: aVisitor [
-
-	^ aVisitor visitRaw: self
-]
-
-{ #category : #build }
-MicRealDumper >> blockPrint: aMicText [
-
-	self emitClassNameOf: aMicText.
-	stream nextPutAll: '"' ; nextPutAll: aMicText substring ; nextPutAll: '"'.
-]
-
-{ #category : #'visit - section' }
 MicRealDumper >> classOf: aHeader [
 
 	stream
@@ -127,16 +114,17 @@ MicRealDumper >> visitFigure: aMicFigure [
 
 { #category : #'visit - section' }
 MicRealDumper >> visitHeader: aHeader [
-
+	
 	stream nextPut: $(.
 	self emitClassNameOf: aHeader.
+	stream nextPutAll: ' new '.
 	stream nextPutAll: 'level: '.
-	stream nextPutAll: 'header: '.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aHeader children first accept: self.
+	aHeader level printOn: stream. 
+	stream nextPutAll: '; '.
+	stream nextPutAll: 'headerElements: '.
+	stream nextPut: ${.
+	self visitChildrenOf: aHeader.
+	stream nextPut: $}.
 	stream nextPut: $)
 ]
 
@@ -276,10 +264,10 @@ MicRealDumper >> visitTable: aTable [
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> visitText: aMonospace [
-
+MicRealDumper >> visitText: aText [
+	
 	stream nextPut: $(.
-	self emitClassNameOf: aMonospace.
+	self emitClassNameOf: aText.
 	stream space.
 	stream
 		nextPutAll: 'new';
@@ -287,7 +275,7 @@ MicRealDumper >> visitText: aMonospace [
 	stream
 		nextPutAll: 'substring: ';
 		nextPutAll: '''';
-		nextPutAll: aMonospace substring;
+		nextPutAll: aText substring;
 		nextPutAll: ''''.
 	stream nextPut: $)
 ]

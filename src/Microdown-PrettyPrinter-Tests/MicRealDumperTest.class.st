@@ -94,7 +94,7 @@ MicRealDumperTest >> testHeader [
 	self
 		assert: visitor contents
 		equals:
-		'(MicHeaderBlocklevel: header: new textElement: (MicTextBlock new substring: ''Foo''))'
+		'(MicHeaderBlock new level: 3; headerElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -227,7 +227,7 @@ MicRealDumperTest >> testParagraph [
 MicRealDumperTest >> testPrintHeader [
 	
 	| resString |
-	resString := '(MicHeaderBlock new level: 3; header: ''Foo'')'.
+	resString := '(MicHeaderBlock new level: 3; headerElements: {(MicTextBlock new substring: ''Foo'')})'.
 	self parse: factory headerLevel3Sample andCheckWeGet: resString.
 	
 	
