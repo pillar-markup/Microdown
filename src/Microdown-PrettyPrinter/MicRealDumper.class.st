@@ -201,8 +201,10 @@ MicRealDumper >> visitParagraph: aParagraph [
 		nextPutAll: 'new';
 		space.
 	stream
-		nextPutAll: 'textElement: '. aParagraph children first
-		accept: self.
+		nextPutAll: 'textElements: '. 
+	stream nextPut: ${.
+	self visitChildrenOf: aParagraph.
+	stream nextPut: $}.
 	stream nextPut: $)
 ]
 

@@ -219,7 +219,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsStrike [
 MicRealDumperTest >> testParagraph [
 
 	| resString |
-	resString := '(MicParagraphBlock new textElement: (MicTextBlock new substring: ''Foo''))'.
+	resString := '(MicParagraphBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'.
 	self parse: factory paragraphSample andCheckWeGet: resString
 ]
 
@@ -249,7 +249,7 @@ MicRealDumperTest >> testPrintOrderedList [
 MicRealDumperTest >> testPrintParagraph [
 
 	| resString |
-	resString := '(MicParagraphBlock new )'.
+	resString := '(MicParagraphBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'.
 	self parse: factory paragraphSample andCheckWeGet: resString.
 	
 
