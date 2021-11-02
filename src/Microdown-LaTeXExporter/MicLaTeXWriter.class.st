@@ -80,7 +80,7 @@ MicLaTeXWriter >> getLevelFor: aHeader [
 	^ aHeader level
 ]
 
-{ #category : #blocks }
+{ #category : #helpers }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
 		| visitor |
@@ -129,7 +129,7 @@ MicLaTeXWriter >> sectioningCommands [
 	^ #('part' 'chapter' 'section' 'subsection' 'subsubsection' 'paragraph' 'subparagraph')
 ]
 
-{ #category : #blocks }
+{ #category : #helpers }
 MicLaTeXWriter >> tabList [
 
 	0 to: nbListTab do: [ :nothing | canvas raw: '    ' ]
@@ -154,7 +154,7 @@ MicLaTeXWriter >> visitAnchor: anAnchor [
 		parameter: anAnchor label
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 
 	self createLinkToLabelWithoutAlias: anAchorReference
@@ -173,12 +173,12 @@ MicLaTeXWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	"Attention: we do a super call on #visitParagraph: instead of #visitAnnotatedParagraph:. The goal of this hack is to avoid trailing new line characters. This is related to PRLaTeXWriterTest>>#testStrictLineBreaksInAnnotatedParagraphs"
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitBold: aBold [
 	canvas command name: 'textbf'; parameter: [ super visitBold: aBold ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitCitation: aCitation [
 	canvas command
 		name: 'cite';
@@ -206,7 +206,7 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 			canvas newLine ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
 	(aFigure hasCaption not and: [ aFigure hasLabel not ])
 		ifTrue: [ 
@@ -230,7 +230,7 @@ MicLaTeXWriter >> visitFigure: aFigure [
 							canvas newLine ] ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitFootnote: aFootnote [
 	canvas command name: 'footnote'; parameter: (aFootnote note)
 ]
@@ -253,12 +253,12 @@ MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 	canvas newLine.
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitItalic: anItalic [
 	canvas command name: 'textit'; parameter: [ super visitItalic: anItalic ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
 	| text reference |
 	reference := aLink localFileOrExternalReference.
@@ -277,7 +277,7 @@ MicLaTeXWriter >> visitLink: aLink [
 				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitListItem: anItem [
 	self tabList.
 	canvas command name: 'item'.
@@ -294,14 +294,14 @@ MicLaTeXWriter >> visitMailLink: aLink [
 		parameter: aLink alias
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitMonospace: aMonospace [
 	canvas command
 		name: self monospaceMacro;
 		parameter: [ super visitMonospace: aMonospace ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitOrderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
 	canvas newLine.
@@ -332,12 +332,12 @@ MicLaTeXWriter >> visitQuote: aQuote [
 						canvas newLine ] ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitStrike: aStrike [
 	canvas command name: 'sout'; parameter: [ super visitStrike: aStrike ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
 	| environment |
 	environment := canvas environment name: self tabularEnvironment.
@@ -353,7 +353,7 @@ MicLaTeXWriter >> visitTable: aTable [
 			canvas newLine ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell [
 	aCell isAligned
 		ifFalse: [ self writeTableCellContent: aCell ]
@@ -365,12 +365,12 @@ MicLaTeXWriter >> visitTableCell: aCell [
 				parameter: [ self writeTableCellContent: aCell ] ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell with: aBool [
 	self writeTableCellContent: aCell with: aBool 
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow [
 	self visitAll: aRow children separatedBy: [ canvas raw: ' & ' ].
 	canvas
@@ -382,7 +382,7 @@ MicLaTeXWriter >> visitTableRow: aRow [
 			canvas newLine ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 	aRow do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] separatedBy: [ canvas raw: ' & ' ].
 	canvas
@@ -406,7 +406,7 @@ MicLaTeXWriter >> visitUnderlineFormat: aFormat [
 		parameter: [ super visitUnderlineFormat: aFormat ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitUnorderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
 	canvas newLine.
@@ -459,7 +459,7 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 		ifFalse: [ super visitTableCell: aCell ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> writeTableCellContent: aCell with: aBool [
 	^ aBool
 		ifTrue: [ 

@@ -18,7 +18,7 @@ MicTextBlock >> kind [
 	^ #basic
 ]
 
-{ #category : #printing }
+{ #category : #accessing }
 MicTextBlock >> printOn: aStream [
 
 	aStream nextPutAll: self substring.

@@ -76,3 +76,9 @@ MicParagraphBlock >> isRightlyIndented: line [
 MicParagraphBlock >> text [
 	^ text
 ]
+
+{ #category : #accessing }
+MicParagraphBlock >> textElements [
+ 
+	^ children
+]

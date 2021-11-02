@@ -1,11 +1,50 @@
 "
-I represent one item in a list (ordered or non-ordered)
+I represent one item in a list (ordered or non-ordered).
+
+```
+1. item 1
+2. item 2
+```
+or 
+```
+- item 1
+- item 2
+```
+are two lists containing 2 item list elements. 
+
+An item list can be on multiple lines 
+
+```
+1. item 1 **foo**
+   on the same item element
+2. is another element
+3. and a third one on 
+   another line 
+```
+
+Please note that I can contain nested subelements and 
+
+```
+1. item 1 **foo**
+   on the same item
+  - sublevel item 1 **bold**
+  - sublevel item 2
+2. item 2
+```
+
+Therefore I expose two APIs:
+- `children` which returns all the mic elements (for example the text and the nested lists)
+- `textElements` which returns only the text elements (for example `item 1 **foo** on the same item`)
+	
+Pay attention my instance variable text is only used during the parsing time. 
+
 "
 Class {
 	#name : #MicListItemBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
-		'text'
+		'text',
+		'textElements'
 	],
 	#category : #'Microdown-Model'
 }
@@ -31,7 +70,15 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 		
 	(self isAList: normalized)
 		ifTrue: [ ^ self newBlockFor: normalized parent: self ]
-		ifFalse: [ text := text , String cr , normalized ]
+		ifFalse: [ 
+			"here we manage multiple lines list item."
+			text := text , String cr , normalized ]
+]
+
+{ #category : #accessing }
+MicListItemBlock >> basicText [
+
+	^ text
 ]
 
 { #category : #testing }
@@ -43,9 +90,19 @@ MicListItemBlock >> canConsumeLine: line [
 
 { #category : #visiting }
 MicListItemBlock >> closeMe [
+
+"1. item 1 **foo**
+   on the same line
+  - sublevel item 1 **bold**
+  - sublevel item 2
+2. item 2
+In this example textElements of the first item will be the elements for 
+	item 1 **foo**
+   on the same line
+"
 	super closeMe.
-	text := self inlineParse: text.
-	
+	textElements :=  self inlineParse: text.	
+	children := textElements asOrderedCollection addAll: children ; yourself
 ]
 
 { #category : #accessing }
@@ -69,18 +126,18 @@ MicListItemBlock >> nestedLevel [
 
 { #category : #accessing }
 MicListItemBlock >> text [
-	"Returns a string we should rename text into textString"
-	^ String streamContents: [ :s | self textElements do: [:each | s nextPutAll: each substring ]]
+
+	^ String streamContents: [ :str | textElements do: [ :each | str nextPutAll: each substring ] ]
 ]
 
 { #category : #accessing }
 MicListItemBlock >> textElements [ 
 	
-	^ text 
+	^ textElements 
 ]
 
 { #category : #accessing }
 MicListItemBlock >> textElements: aCollection [ 
 	
-	text := aCollection
+	textElements := aCollection
 ]
