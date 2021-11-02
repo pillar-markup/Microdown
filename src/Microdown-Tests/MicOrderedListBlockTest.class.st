@@ -28,10 +28,15 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list children second text equals: 'item 2'.
-	self assert: list children first "item 1"
-			children first "unordered list"
-			children second "sub item"
-			text equals: 'sublevel item 2'
+	
+	"item 1 + nested list"
+	self assert: list children first children size equals: 2.
+		
+	self assert: list children first 
+			children first text equals: 'item 1'.
+			
+	self assert: list children first "list item"
+			children second children first text equals: 'sublevel item 1'.	
 ]
 
 { #category : #'tests - nested' }
