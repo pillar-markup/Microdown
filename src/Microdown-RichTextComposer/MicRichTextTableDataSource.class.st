@@ -12,7 +12,7 @@ Class {
 	#category : #'Microdown-RichTextComposer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MicRichTextTableDataSource class >> headers: headers rows: theRows [
 	^ self new headers: headers rows: theRows
 ]
@@ -47,7 +47,7 @@ MicRichTextTableDataSource >> elementAt: rowIndex [
 	rows at: rowIndex 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MicRichTextTableDataSource >> headers: headers rows: theRows [
 	rows := theRows.
 	colNames := Dictionary new.
@@ -80,7 +80,7 @@ MicRichTextTableDataSource >> unsortElements [
 	^ self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MicRichTextTableDataSource >> widthOfText: txt [
 	|width|
 	width := ((txt fontAt: 1) widthOfStringOrText: txt).
