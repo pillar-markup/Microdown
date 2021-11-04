@@ -45,14 +45,18 @@ Class {
 
 { #category : #'instance creation' }
 MicResourceReference class >> fromString: aString [
-	
-	^ (aString beginsWith: 'http')
-		ifTrue: [ MicHTTPResource new 
+	"perhaps this should be made more general if more uri prefixes are supported, but keep it simple for now"
+	(aString beginsWith: 'http')
+		ifTrue: [ ^ MicHTTPResource new 
 						string: aString; 
-						yourself ]
-		ifFalse: [ MicLocalFileResource new 
-							string: aString;
-							yourself ]
+						yourself ].
+	(aString beginsWith: 'file://')
+		ifTrue: [ ^ MicLocalFileResource new 
+							string: (aString withoutPrefix: 'file://');
+							yourself  ].
+	^  MicLocalFileResource new 
+			string: aString;
+			yourself 
 		
 ]
 
