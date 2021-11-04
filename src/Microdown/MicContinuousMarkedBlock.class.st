@@ -80,3 +80,8 @@ MicContinuousMarkedBlock >> lineMarkup [
 MicContinuousMarkedBlock >> text [
 	^ text
 ]
+
+{ #category : #accessing }
+MicContinuousMarkedBlock >> text: aString [
+	text := aString
+]

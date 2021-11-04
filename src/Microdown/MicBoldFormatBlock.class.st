@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
-{ #category : #visiting }
+{ #category : #utilcaca }
 MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]
