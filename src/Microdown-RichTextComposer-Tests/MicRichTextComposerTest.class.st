@@ -548,10 +548,7 @@ MicRichTextComposerTest >> testStylerForSmalltalk [
 	| code source richText blueLocation textColor |
 	MicRichTextComposer initializeStylers.
 	code := '
-codeStylerFor: aString
-<codeblockStylerFor: #smalltalk>
-
-^bobby new 
+Bobby new 
 isForWorkspace: blue; 
 styledTextFor: aString asFest'.
 	source := '
