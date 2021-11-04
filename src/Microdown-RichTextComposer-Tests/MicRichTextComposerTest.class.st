@@ -545,7 +545,7 @@ styledTextFor: aString asFest'.
 { #category : #tests }
 MicRichTextComposerTest >> testStylerForSmalltalk [
 	
-	| code source richText blueLocation textColor |
+	| code source richText blueLocation textColor desc |
 	MicRichTextComposer initializeStylers.
 	code := '
 Bobby new 
@@ -564,7 +564,8 @@ Bobby new
 	blueLocation := richText asString findString: 'blue'.
 	self assert: (richText copyFrom:  blueLocation to:  blueLocation +3 ) asString equals: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color blue > 0.
+	desc := 'Was expecting ', textColor printString, ' to contain blue'.
+	self assert: textColor color blue > 0 description: desc.
 ]
 
 { #category : #'tests - stylers' }
