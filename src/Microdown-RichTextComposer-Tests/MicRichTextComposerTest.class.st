@@ -549,8 +549,8 @@ MicRichTextComposerTest >> testStylerForSmalltalk [
 	MicRichTextComposer initializeStylers.
 	code := '
 Bobby new 
-isForWorkspace: blue; 
-styledTextFor: aString asFest'.
+   isForWorkspace: blue; 
+   styledTextFor: aString asFest'.
 	source := '
 ```language=smalltalk' , code ,'
 ```
@@ -563,7 +563,7 @@ styledTextFor: aString asFest'.
 	"Check that the unknown variable 'blue' is not colored red"
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 0.
+	self assert: textColor color blue > 0.
 ]
 
 { #category : #'tests - stylers' }
