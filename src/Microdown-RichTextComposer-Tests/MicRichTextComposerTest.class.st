@@ -16,7 +16,7 @@ MicRichTextComposerTest class >> dummyStylerFor: aString [
 	^ self dummyStylerReturn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'tests - codeBlock' }
 MicRichTextComposerTest class >> dummyStylerReturn [
 	^ '***dummy***' asText
 ]
