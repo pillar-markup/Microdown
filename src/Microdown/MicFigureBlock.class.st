@@ -70,12 +70,6 @@ MicFigureBlock >> isImageFile [
 	^ url isImageFile
 ]
 
-{ #category : #testing }
-MicFigureBlock >> isRelativeFilePath [
-	self flag: #toRemove.
-	^ self url isFile and: [ (self url asString beginsWith: 'file:///') not ]
-]
-
 { #category : #accessing }
 MicFigureBlock >> kind [
 	self flag: #todo. 

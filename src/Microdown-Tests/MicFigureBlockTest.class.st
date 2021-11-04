@@ -25,13 +25,6 @@ MicFigureBlockTest >> testCaption [
 ]
 
 { #category : #'tests - testing' }
-MicFigureBlockTest >> testIsNotRelativeFilePath [
-	| figure |
-	figure := (splitterClass new parse: '![caption](file:///Users/name/figures/test.mic)') first.
-	self assert: figure isRelativeFilePath not
-]
-
-{ #category : #'tests - testing' }
 MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.pharo.org)') first.
@@ -50,13 +43,6 @@ MicFigureBlockTest >> testIsNotValidImageWithFolder [
 	| figure |
 	figure := (splitterClass new parse: '![caption](file://figures/)') first.
 	self assert: figure isImageFile not
-]
-
-{ #category : #'tests - testing' }
-MicFigureBlockTest >> testIsRelativeFilePath [
-	| figure |
-	figure := (splitterClass new parse: '![caption](file://figures/test.mic)') first.
-	self assert: figure isRelativeFilePath
 ]
 
 { #category : #'tests - testing' }
