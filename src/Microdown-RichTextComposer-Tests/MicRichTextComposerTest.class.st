@@ -13,7 +13,12 @@ MicRichTextComposerTest class >> dummyStylerFor: aString [
 	"I am a styler used for testing. "
 	<codeblockStylerFor: 'dummy'>
 	
-	^'§dummy§' asText
+	^ self dummyStylerReturn
+]
+
+{ #category : #'as yet unclassified' }
+MicRichTextComposerTest class >> dummyStylerReturn [
+	^ '***dummy***' asText
 ]
 
 { #category : #helpers }
@@ -185,6 +190,8 @@ MicRichTextComposerTest >> testBoldFormat [
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 	| source runs richText |
+	
+	MicRichTextComposer initializeStylers.
 	source := '
 ```arguments
 line 1
@@ -203,39 +210,31 @@ line 2
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
-	| source richText expected |
+	| source richText |
 	
-		self skip. 
-	self flag: #todo.
-	
+	MicRichTextComposer initializeStylers.
 	source := '
 ```language=dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
 	richText := self richTextForString: source.
-	self assert: richText asString trim equals: expected
+	self assert: richText asString trim equals: self class dummyStylerReturn asString
 ]
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
-	| source runs richText expected |
-	
-	self skip. 
-	self flag: #todo.
+	| source richText |
+
 	source := '
 ```dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
 	richText := self richTextForString: source.
-	self assert: richText asString trim equals: expected
+	self assert: richText asString trim equals: self class dummyStylerReturn asString
 ]
 
 { #category : #'tests - codeBlock' }
