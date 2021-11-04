@@ -23,7 +23,7 @@ MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 
 { #category : #private }
 MicSmalltalkTextStyler >> resolveStyleFor: aVariableNode [
-	"This circumvent an error in my super"
+	"make sure undeclared variables are marked as undefined"
 	aVariableNode isUndeclaredVariable ifTrue: [ ^#undefinedIdentifier ].
 	^ super resolveStyleFor: aVariableNode
 ]
