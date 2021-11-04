@@ -562,6 +562,7 @@ Bobby new
 	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold) not.
 	"Check that the unknown variable 'blue' is not colored red"
 	blueLocation := richText asString findString: 'blue'.
+	self assert: (richText copyFrom:  blueLocation to:  blueLocation +3 ) asString equals: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
 	self assert: textColor color blue > 0.
 ]
