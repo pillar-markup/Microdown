@@ -88,6 +88,15 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 	CaptureErrors := aBoolean
 ]
 
+{ #category : #styler }
+MicRichTextComposer class >> codeStylerFor: aString [
+	<codeblockStylerFor: 'Smalltalk'>
+	
+	^SHRBTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
 { #category : #private }
 MicRichTextComposer class >> computeHeaderFonts [
 	
@@ -112,6 +121,14 @@ MicRichTextComposer class >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
 	kind = 2
 		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> defaultStyler: aString [
+	<codeblockStylerFor: 'default'>
+	"Pay attention without this one the logic can loop."
+	
+	^ self codeStylerFor: aString
 ]
 
 { #category : #examples }
@@ -237,6 +254,15 @@ foo: arg
 ') inspect
 ]
 
+{ #category : #styler }
+MicRichTextComposer class >> expressionStylerFor: aString [
+	<codeblockStylerFor: 'PharoExpression'>
+	
+	^SHRBTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
 { #category : #private }
 MicRichTextComposer class >> headerFontSizes: anArray [
 
@@ -335,6 +361,16 @@ MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc
 			do: [ errorDesc asText addAttribute: TextColor red ]
 		].
 	^ anchoredImage 
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> methodStylerFor: aString [
+	<codeblockStylerFor:'PharoMethod'>
+	
+	"when we use a pharo method for an expression the styler breaks for method pattern. So it should be fixed in the future but for now we make sure that at least it does not breaks."
+	^[ SHRBTextStyler new 
+		isForWorkspace: false; 
+		styledTextFor: aString asText ] on: SubscriptOutOfBounds do: [ aString asText ]
 ]
 
 { #category : #examples }
@@ -450,6 +486,13 @@ MicRichTextComposer class >> style: aString asLanguage: aLanguage [
 	^ styler
 		valueWithReceiver: styler methodClass soleInstance 
 		arguments: (Array with: aString)
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> textStyler: aString [
+	<codeblockStylerFor: 'text'>
+	
+	^aString asText
 ]
 
 { #category : #accessing }
