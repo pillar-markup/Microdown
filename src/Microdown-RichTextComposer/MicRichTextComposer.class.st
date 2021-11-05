@@ -726,7 +726,6 @@ MicRichTextComposer >> visitFigure: aFigure [
 	aFigure isImageFile 
 		ifTrue: [ 
 			url := aFigure url.
-
 			anchoredImage := url isWeb
 				ifFalse: [ self class cachedImageFromFile: url asFileReference ]
 				ifTrue: [ self class cachedImageFromUrl: url url ].

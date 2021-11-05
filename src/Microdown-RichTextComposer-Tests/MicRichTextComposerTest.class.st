@@ -280,6 +280,7 @@ MicRichTextComposerTest >> testFigure [
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
+	self skip: 'The implementation is not done yet'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
@@ -291,6 +292,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
+	self skip: 'The implementation is not done yet'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
