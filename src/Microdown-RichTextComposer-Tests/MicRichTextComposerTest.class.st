@@ -509,6 +509,12 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 	self assert: richText asString equals: expected
 ]
 
+{ #category : #'skipped tests' }
+MicRichTextComposerTest >> testOldMethodsGone [
+	self assert: (MicRichTextComposer class selectors includes: #expressionStylerFor:) not
+		description: 'MicRichTextComposer still contains method #expressionStylerFor:'
+]
+
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testOrderedList [ 
 	| source richText runs  |
