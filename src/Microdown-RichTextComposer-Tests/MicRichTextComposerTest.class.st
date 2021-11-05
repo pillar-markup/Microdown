@@ -272,6 +272,19 @@ MicRichTextComposerTest >> testExternaLink [
 ]
 
 { #category : #'skipped tests' }
+MicRichTextComposerTest >> testFigure [
+
+	| source richText obj1  |
+	self skip. "Currently getting an error in MicHTTPRessource"
+	
+	source := 'See ![no image found](https://pharo.org/web/files/pharo.png)'.
+	richText := MicRichTextComposer microdownAsRichText: source.
+
+	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
+	self assert: obj1 class name equals: #TextAction
+]
+
+{ #category : #'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
@@ -406,6 +419,25 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	richText := self richTextForString: source. 
 	self assert: (richText asString copyFrom: 11 to: 25) equals: '2.	other item 1'.
 	self assert: (richText asString copyFrom: 47 to: 55) equals: '5.	item 4'.
+	
+]
+
+{ #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedList [
+	| source richText runs|
+	source := 
+'- item 1
+  1. sub item 1.1
+- item 2
+  2. sub item 2.1
+  2. sub item 2.2
+- item 3'.
+	richText := self richTextForString: source.
+	runs := richText runs.
+	
+	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
+	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
+	self assert: (runs at: 35) first amount equals: 3
 	
 ]
 

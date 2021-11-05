@@ -89,6 +89,15 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 ]
 
 { #category : #styler }
+MicRichTextComposer class >> codeStylerFor: aString [
+	<codeblockStylerFor: 'Smalltalk'>
+	
+	^SHRBTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
+{ #category : #styler }
 MicRichTextComposer class >> codeStylerForMethod: aString [
 	<codeblockStylerFor: 'Method'>
 	^MicSmalltalkTextStyler new 
@@ -270,6 +279,15 @@ foo: arg
 ') inspect
 ]
 
+{ #category : #styler }
+MicRichTextComposer class >> expressionStylerFor: aString [
+	<codeblockStylerFor: 'PharoExpression'>
+	
+	^SHRBTextStyler new 
+		isForWorkspace: true; 
+		styledTextFor: aString asText
+]
+
 { #category : #private }
 MicRichTextComposer class >> headerFontSizes: anArray [
 
@@ -374,6 +392,16 @@ MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc
 			do: [ errorDesc asText addAttribute: TextColor red ]
 		].
 	^ anchoredImage 
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> methodStylerFor: aString [
+	<codeblockStylerFor:'PharoMethod'>
+	
+	"when we use a pharo method for an expression the styler breaks for method pattern. So it should be fixed in the future but for now we make sure that at least it does not breaks."
+	^[ SHRBTextStyler new 
+		isForWorkspace: false; 
+		styledTextFor: aString asText ] on: SubscriptOutOfBounds do: [ aString asText ]
 ]
 
 { #category : #examples }
