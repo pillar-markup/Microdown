@@ -19,6 +19,48 @@ MicPathResolverTest >> setUp [
 	microdown := Microdown new
 ]
 
+{ #category : #running }
+MicPathResolverTest >> tearDown [
+	| file |
+	file := FileSystem workingDirectory /'testfile.mic'.
+	file exists ifTrue: [ file delete ].
+]
+
+{ #category : #tests }
+MicPathResolverTest >> testDiskResolveAbsoluteFile [
+
+	| file mic |
+	file := FileSystem workingDirectory  /'testfile.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](/documentation/image.png)' ].
+
+	mic := microdown 
+		resolvedTreeFromFile: file.
+
+	self 
+		assert: mic children second children first resources url fullName 
+		equals: '/documentation/image.png' .
+	
+]
+
+{ #category : #tests }
+MicPathResolverTest >> testDiskResolveRelativeFile [
+
+	| wdir file mic |
+	wdir := FileSystem workingDirectory.
+	file := wdir  /'testfile.mic'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# section
+![caption](documentation/image.png)' ].
+
+	mic := microdown 
+		resolvedTreeFromFile: file.
+
+	self 
+		assert: mic children second children first resources url fullName 
+		equals: (wdir / 'documentation/image.png') fullName .
+	
+]
+
 { #category : #'dummy tests' }
 MicPathResolverTest >> testNotCallingResolver [
 	"Using the parser only should not resolve the path, here we only call parse."

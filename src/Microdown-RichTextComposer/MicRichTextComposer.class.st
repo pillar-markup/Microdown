@@ -77,6 +77,14 @@ MicRichTextComposer class >> bulletForLevel: level [
 ]
 
 { #category : #images }
+MicRichTextComposer class >> cachedImageFromFile: aFileRef [
+
+	^ ImageCache
+		  at: aFileRef asString
+		  ifAbsentPut: [ self rawImageFromFile: aFileRef ] 
+]
+
+{ #category : #images }
 MicRichTextComposer class >> cachedImageFromUrl: aUrl [
 	
 	^ OffLine 
@@ -285,7 +293,6 @@ MicRichTextComposer class >> imageOffLineFromUrl: aUrl [
 	"we are off but the image is there so we return it,"
 	^ ImageCache 
 			at: aUrl asString
-			ifPresent: [ :i | i ]
 			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
 When you will be online, you should see: ' , aUrl asString) imageForm  ]
 			
@@ -460,6 +467,12 @@ MicRichTextComposer class >> rawImageFrom: aURL [
 		
 ]
 
+
+{ #category : #'images internal' }
+MicRichTextComposer class >> rawImageFromFile: aFileRef [
+	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
+]
+
 { #category : #examples }
 MicRichTextComposer class >> render: aString [ 
 	"Render a string, in case of error, just return it."
@@ -500,7 +513,6 @@ MicRichTextComposer class >> style: aString asLanguage: aLanguage [
 		valueWithReceiver: styler methodClass soleInstance 
 		arguments: (Array with: aString)
 ]
-
 
 { #category : #styler }
 MicRichTextComposer class >> textStyler: aString [
@@ -716,39 +728,22 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 	"Try to read a png file (only one supported right now), else use alt text"
+
+	| anchoredImage url textContribution |
+	textContribution := nil.
+	aFigure isImageFile 
+		ifTrue: [ 
+			url := aFigure url.
+			anchoredImage := url isWeb
+				ifFalse: [ self class cachedImageFromFile: url asFileReference ]
+				ifTrue: [ self class cachedImageFromUrl: url url ].
+			anchoredImage 
+				ifNotNil: [ 
+					anchoredImage := self resizeImage: anchoredImage of: aFigure.
+					textContribution := (String value: 1) asText addAttribute:
+					                 (TextAnchor new anchoredMorph: anchoredImage)] ].
 	
-	aFigure isImageFile ifTrue: [
-	| anchoredImage url |
-	url := aFigure url.
-	"this url should be renamed resources"
-	"this logic has to be revisited with the new resolver."
-	
-	anchoredImage := url isWeb
-		                 ifFalse: [ 
-									"should probably fix this."
-									(aFigure originPath fileSystem / aFigure url path) isFile
-										ifTrue: [ 
-											aFigure originPath fileSystem / (aFigure url) path
-				                 		binaryReadStreamDo: [ :stream | 
-				                 		ImageReadWriter formFromStream: stream ] 
-											]
-							        ]
-		                 ifTrue: [ self class cachedImageFromUrl: url url ].
-	anchoredImage ifNotNil: [ 
-		anchoredImage := self resizeImage: anchoredImage of: aFigure.
-		anchoredImage := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: anchoredImage).
-		canvas << anchoredImage ].
-	aFigure caption ifEmpty: [ ^self ].
-	
-	canvas newLine.
-	canvas includeAttribute: TextEmphasis bold in: [  ]].
-	"	on: Exception
-		do: [ self visitChildrenOf: aFigure ]. pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
-	canvas
-		tab;
-		tab;
-		tab;
-		<< aFigure caption asText
+	canvas << textContribution ifNil: [ aFigure caption asText ]
 ]
 
 { #category : #'visiting - document' }

@@ -115,7 +115,7 @@ MicResourceReferenceTest >> testResolvedFileReferenceFromFile [
 	| mf |
 	mf := self resourceClass fromString: '/tmp'.
 	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
-	self assert: mf asFileReference printString equals: '/tmp'.
+	self assert: mf asFileReference fullName  equals: '/tmp'.
 	
 ]
 
