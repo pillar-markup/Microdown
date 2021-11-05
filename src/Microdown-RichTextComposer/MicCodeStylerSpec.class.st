@@ -25,14 +25,7 @@ Class {
 { #category : #cache }
 MicCodeStylerSpec class >> buildCache [
 	styleCache := Dictionary
-		newFromAssociations: ((PragmaCollector
-			filter: [ :prg | 
-				prg selector = 'codeblockStylerFor:' and: [ 
-					"When debugging stylers, make sure no old ones are included"
-				prg method methodClass isObsolete not ] ]) reset
-			collected collect: [ :prg | prg arguments first asLowercase -> (self new 
-				classSymbol:  prg method methodClass soleInstance name; 
-				selector: prg method selector) ])
+		newFromAssociations: ( self collectStylers )
 ]
 
 { #category : #stylers }
@@ -58,6 +51,18 @@ MicCodeStylerSpec class >> codeStylerForSmalltalk: aString [
 	^MicSmalltalkTextStyler new 
 		isForWorkspace: true; 
 		styledTextFor: aString asText
+]
+
+{ #category : #cache }
+MicCodeStylerSpec class >> collectStylers [
+	^ (PragmaCollector
+			filter: [ :prg | 
+				prg selector = 'codeblockStylerFor:' and: [ 
+					"When debugging stylers, make sure no old ones are included"
+				prg method methodClass isObsolete not ] ]) reset
+			collected collect: [ :prg | prg arguments first asLowercase -> (self new 
+				classSymbol:  prg method methodClass soleInstance name; 
+				selector: prg method selector) ]
 ]
 
 { #category : #stylers }

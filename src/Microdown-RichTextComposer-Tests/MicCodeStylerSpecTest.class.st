@@ -7,6 +7,13 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests'
 }
 
+{ #category : #running }
+MicCodeStylerSpecTest >> setUp [
+	super setUp.
+	
+	MicCodeStylerSpec initializeCache.
+]
+
 { #category : #tests }
 MicCodeStylerSpecTest >> testStylerForMethod [
 	
@@ -48,7 +55,15 @@ green isColored: yellow
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #'tests - stylers' }
+{ #category : #tests }
+MicCodeStylerSpecTest >> testStylersAreNotDoubleDeclared [
+	"styleCache is a dictionary (set), collectStylers return a an array with possible doubles"
+	self 
+		assert: MicCodeStylerSpec collectStylers size 
+		equals: MicCodeStylerSpec styleCache size
+]
+
+{ #category : #tests }
 MicCodeStylerSpecTest >> testStylersAreRegistered [
 
 	| defaultStyler |
@@ -56,7 +71,7 @@ MicCodeStylerSpecTest >> testStylersAreRegistered [
 	self assert: defaultStyler selector equals: #defaultStyler:
 ]
 
-{ #category : #'tests - stylers' }
+{ #category : #tests }
 MicCodeStylerSpecTest >> testStylersForText [
 
 	| defaultStyler |
