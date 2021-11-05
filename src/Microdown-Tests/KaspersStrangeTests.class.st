@@ -18,6 +18,6 @@ KaspersStrangeTests >> testPackage2MicrodownExist [
 	self 
 		assert: (RPackageOrganizer default packageNames includes: #'Microdown-MicrodownRichTextComposer') not
 		description: 'Package #Microdown-MicrodownRichTextComposer still exists, with classes',
-		((RPackageOrganizer default packageNamed: #'Microdown-MicrodownRichTextComposer') classes collect: #name) printString.
+		((RPackageOrganizer default packageNamed: #'Microdown-MicrodownRichTextComposer' ifAbsent: [^self]) classes collect: #name) printString.
 	
 ]
