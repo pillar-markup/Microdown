@@ -8,9 +8,16 @@ Class {
 }
 
 { #category : #tests }
+KaspersStrangeTests >> testOldMethodsGone [
+	self assert: (MicRichTextComposer class selectors includes: #expressionStylerFor:) not
+		description: 'MicRichTextComposer still contains method #expressionStylerFor:'
+]
+
+{ #category : #tests }
 KaspersStrangeTests >> testPackage2MicrodownExist [
 	self 
-		assert: (RPackageOrganizer default packageNames includes: #'Microdown-MicrodownRichTextComposer')
+		assert: (RPackageOrganizer default packageNames includes: #'Microdown-MicrodownRichTextComposer') not
 		description: 'Package #Microdown-MicrodownRichTextComposer still exists, with classes',
-		((RPackageOrganizer default packageNamed: #'Microdown-MicrodownRichTextComposer') classes collect: #name) printString
+		((RPackageOrganizer default packageNamed: #'Microdown-MicrodownRichTextComposer') classes collect: #name) printString.
+	
 ]
