@@ -74,6 +74,13 @@ MicHeaderBlock >> headerElements [
 ]
 
 { #category : #accessing }
+MicHeaderBlock >> headerElements: aCollection [
+	
+	children := aCollection
+	
+]
+
+{ #category : #accessing }
 MicHeaderBlock >> level [
 	^ level
 ]

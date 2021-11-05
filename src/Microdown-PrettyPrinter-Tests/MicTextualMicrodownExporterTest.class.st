@@ -73,7 +73,7 @@ MicTextualMicrodownExporterTest >> testAnnotation [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [ 
-	self verifyObtain: factory scriptParametersSample, String cr
+	self verifyObtain: factory blockWithParametersSample, String cr
 ]
 
 { #category : #'tests-codeblock' }
@@ -92,7 +92,7 @@ MicTextualMicrodownExporterTest >> testCodeBlockNewLine [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlockWithCaption [
-	self verifyObtain: factory scriptParametersWithCaptionSample, String cr
+	self verifyObtain: factory blockWithParametersWithCaptionSample, String cr
 ]
 
 { #category : #'tests-anchor' }

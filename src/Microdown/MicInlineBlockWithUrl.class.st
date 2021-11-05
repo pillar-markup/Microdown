@@ -69,6 +69,11 @@ MicInlineBlockWithUrl >> captionElements [
 	^ caption ifNil: [ OrderedCollection new ]
 ]
 
+{ #category : #visiting }
+MicInlineBlockWithUrl >> captionElements: aCollection [ 
+	caption := aCollection
+]
+
 { #category : #accessing }
 MicInlineBlockWithUrl >> closingDelimiter [
 

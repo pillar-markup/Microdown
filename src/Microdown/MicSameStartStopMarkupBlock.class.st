@@ -43,12 +43,14 @@ MicSameStartStopMarkupBlock >> captionElements [
 ]
 
 { #category : #visiting }
-MicSameStartStopMarkupBlock >> closeMe [ 
+MicSameStartStopMarkupBlock >> closeMe [
+	"The only case where the receiver contains a nested element is in its caption"
 	
 	super closeMe.
-	self arguments at: #caption 
-		ifPresent: [:cp| arguments at: #caption put: (self inlineParse: cp) ]
-		
+	self arguments
+		at: #caption
+		ifPresent: [ :cp | 
+		arguments at: #caption put: (self inlineParse: cp) ]
 ]
 
 { #category : #accessing }
