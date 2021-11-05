@@ -76,6 +76,17 @@ MicRichTextComposer class >> bulletForLevel: level [
 		ifTrue: [ ^ $- asText ]
 ]
 
+{ #category : #images }
+MicRichTextComposer class >> cachedImageFromUrl: aUrl [
+	
+	^ OffLine 
+		ifFalse: [
+			ImageCache 
+				at: aUrl asString
+				ifAbsentPut: [ self rawImageFrom: aUrl ] ] 
+		ifTrue: [ self imageOffLineFromUrl: aUrl ]
+]
+
 { #category : #'class initialization' }
 MicRichTextComposer class >> captureErrors [
 	
@@ -302,6 +313,28 @@ MicRichTextComposer class >> imageCache [
 	^ imageCache ifNil: [ imageCache := LRUCache new ]
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> imageOffLineFromUrl: aUrl [
+	"we are off but the image is there so we return it,"
+	^ ImageCache 
+			at: aUrl asString
+			ifPresent: [ :i | i ]
+			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
+When you will be online, you should see: ' , aUrl asString) imageForm  ]
+			
+]
+
+{ #category : #'images internal' }
+MicRichTextComposer class >> imageUnexpectedContentFromUrl: aUrl [
+	"The request got unexpected content if the image is there so we return it. We do not cache the failing case image form so that we do not polute the cache."
+	
+	^ ImageCache 
+			at: aUrl asString
+			ifPresent: [ :i | i ]
+			ifAbsent: [ (StringMorph contents: 'The HTTP request ', aUrl asString, ' returned an unexpected content.' ) imageForm  ]
+			
+]
+
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
@@ -450,6 +483,22 @@ MicRichTextComposer class >> putOnline [
 	self offline: false
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> rawImageFrom: aURL [
+	| block |
+	self flag: #fixMeOnceNewExceptionIsAvailable.
+	block := [ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ].
+	self captureErrors
+		ifFalse: [ ^ block value ].
+
+	^ [[ block
+		on: ZnHttpUnsuccessful 
+		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
+			on: ZnUnexpectedContentType 
+			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
+		
+]
+
 { #category : #examples }
 MicRichTextComposer class >> render: aString [ 
 	"Render a string, in case of error, just return it."
@@ -498,6 +547,16 @@ MicRichTextComposer class >> textStyler: aString [
 	^aString asText
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> unsuccessfulRequestFromUrl: aUrl [
+	
+	^ ImageCache 
+			at: aUrl asString
+			ifPresent: [ :i | i ]
+			ifAbsent: [ (StringMorph contents: 'The HTTP request ',  aUrl asString,  ' got unsuccessful.') imageForm  ]
+			
+]
+
 { #category : #accessing }
 MicRichTextComposer >> annotatedParagrapAlignment [
 	^ annotatedParagraphAlignment 
@@ -523,17 +582,6 @@ MicRichTextComposer >> annotatedParagraphColor: aColor [
 	annotatedParagraphColor := aColor
 ]
 
-{ #category : #images }
-MicRichTextComposer >> cachedImageFromUrl: aUrl [
-	
-	^ OffLine 
-		ifFalse: [
-			ImageCache 
-				at: aUrl asString
-				ifAbsentPut: [ self rawImageFrom: aUrl ] ] 
-		ifTrue: [ self imageOffLineFromUrl: aUrl ]
-]
-
 { #category : #initialization }
 MicRichTextComposer >> defaultAnnotatedParagraphColor [
 	^ TextColor blue
@@ -542,28 +590,6 @@ MicRichTextComposer >> defaultAnnotatedParagraphColor [
 { #category : #initialization }
 MicRichTextComposer >> defaultSuperscriptColor [
 	^ TextColor blue
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> imageOffLineFromUrl: aUrl [
-	"we are off but the image is there so we return it,"
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
-When you will be online, you should see: ' , aUrl asString) imageForm  ]
-			
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> imageUnexpectedContentFromUrl: aUrl [
-	"The request got unexpected content if the image is there so we return it. We do not cache the failing case image form so that we do not polute the cache."
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ', aUrl asString, ' returned an unexpected content.' ) imageForm  ]
-			
 ]
 
 { #category : #initialization }
@@ -587,22 +613,6 @@ MicRichTextComposer >> monospaceBackgroundColor [
 MicRichTextComposer >> monospaceBackgroundColor: aColor [
 
 	monospaceBackgroundColor := aColor
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> rawImageFrom: aURL [
-	| block |
-	self flag: #fixMeOnceNewExceptionIsAvailable.
-	block := [ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ].
-	self class captureErrors
-		ifFalse: [ ^ block value ].
-
-	^ [[ block
-		on: ZnHttpUnsuccessful 
-		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
-			on: ZnUnexpectedContentType 
-			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
-		
 ]
 
 { #category : #images }
@@ -659,16 +669,6 @@ MicRichTextComposer >> theme [
 MicRichTextComposer >> todo [ 
 	^ 'there is too much hspace after a section when it is followed by a paragraph. 
 This also because people will not want to to not let a newline between the header and paragraph when writing the text.'
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> unsuccessfulRequestFromUrl: aUrl [
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ',  aUrl asString,  ' got unsuccessful.') imageForm  ]
-			
 ]
 
 { #category : #visiting }
@@ -758,7 +758,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 				                 		ImageReadWriter formFromStream: stream ] 
 											]
 							        ]
-		                 ifTrue: [ self cachedImageFromUrl: url url ].
+		                 ifTrue: [ self class cachedImageFromUrl: url url ].
 	anchoredImage ifNotNil: [ 
 		anchoredImage := self resizeImage: anchoredImage of: aFigure.
 		anchoredImage := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: anchoredImage).
