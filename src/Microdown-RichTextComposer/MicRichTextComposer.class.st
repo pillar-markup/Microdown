@@ -467,6 +467,7 @@ MicRichTextComposer class >> rawImageFrom: aURL [
 		
 ]
 
+
 { #category : #'images internal' }
 MicRichTextComposer class >> rawImageFromFile: aFileRef [
 	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
@@ -511,6 +512,13 @@ MicRichTextComposer class >> style: aString asLanguage: aLanguage [
 	^ styler
 		valueWithReceiver: styler methodClass soleInstance 
 		arguments: (Array with: aString)
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> textStyler: aString [
+	<codeblockStylerFor: 'text'>
+	
+	^aString asText
 ]
 
 { #category : #'images internal' }
