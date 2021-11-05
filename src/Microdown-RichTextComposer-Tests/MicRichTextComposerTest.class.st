@@ -535,6 +535,16 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testStylersAreRegistered [
+	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testStylersForText [
+	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testSubscriptFormat [
 	"Test fails: subscript isn't recognized"
