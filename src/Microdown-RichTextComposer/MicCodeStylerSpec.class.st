@@ -27,7 +27,7 @@ MicCodeStylerSpec class >> buildCache [
 	styleCache := Dictionary
 		newFromAssociations: ((PragmaCollector
 			filter: [ :prg | 
-				prg selector = 'codeblockStylerFor:' and: [ 
+				prg selector = 'codeblockStyler:' and: [ 
 					"When debugging stylers, make sure no old ones are included"
 				prg method methodClass isObsolete not ] ]) reset
 			collected collect: [ :prg | prg arguments first asLowercase -> (self new 
@@ -37,7 +37,7 @@ MicCodeStylerSpec class >> buildCache [
 
 { #category : #stylers }
 MicCodeStylerSpec class >> codeStylerForMethod: aString [
-	<codeblockStylerFor: 'Method'>
+	<codeblockStyler: 'Method'>
 	^MicSmalltalkTextStyler new 
 		isForWorkspace: false; 
 		styledTextFor: aString asText
@@ -45,7 +45,7 @@ MicCodeStylerSpec class >> codeStylerForMethod: aString [
 
 { #category : #stylers }
 MicCodeStylerSpec class >> codeStylerForPharo: aString [
-	<codeblockStylerFor: 'Pharo'>
+	<codeblockStyler: 'Pharo'>
 	"For full methods use style 'Method'"
 	^MicSmalltalkTextStyler new 
 		isForWorkspace: true; 
@@ -54,7 +54,7 @@ MicCodeStylerSpec class >> codeStylerForPharo: aString [
 
 { #category : #stylers }
 MicCodeStylerSpec class >> codeStylerForSmalltalk: aString [
-	<codeblockStylerFor: 'Smalltalk'>
+	<codeblockStyler: 'Smalltalk'>
 	^MicSmalltalkTextStyler new 
 		isForWorkspace: true; 
 		styledTextFor: aString asText
@@ -62,7 +62,7 @@ MicCodeStylerSpec class >> codeStylerForSmalltalk: aString [
 
 { #category : #stylers }
 MicCodeStylerSpec class >> defaultStyler: aString [
-	<codeblockStylerFor: 'default'>
+	<codeblockStyler: 'default'>
 	"Pay attention without this one the logic can loop."
 	
 	^ self codeStylerForPharo: aString
@@ -93,7 +93,7 @@ MicCodeStylerSpec class >> styleFor: aLanguage [
 
 { #category : #stylers }
 MicCodeStylerSpec class >> textStyler: aString [
-	<codeblockStylerFor: 'text'>
+	<codeblockStyler: 'text'>
 	
 	^aString asText
 ]

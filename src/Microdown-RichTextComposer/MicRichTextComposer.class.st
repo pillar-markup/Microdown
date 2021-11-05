@@ -287,6 +287,14 @@ MicRichTextComposer class >> initializeStylers [
 	MicCodeStylerSpec initializeCache.
 ]
 
+{ #category : #styler }
+MicRichTextComposer class >> languageStylerFor: aLanguage [
+
+	^ Stylers
+		at: aLanguage asLowercase
+		ifAbsent: [ self languageStylerFor: 'default' ]
+]
+
 { #category : #examples }
 MicRichTextComposer class >> latexExample [
 	<example>
@@ -431,6 +439,17 @@ MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [
 MicRichTextComposer class >> resetCache [
 
 	ImageCache := Dictionary new
+]
+
+{ #category : #styler }
+MicRichTextComposer class >> style: aString asLanguage: aLanguage [
+	"render aString according to the styler named aLanguage"
+	
+	| styler |
+	styler := self languageStylerFor: aLanguage asLowercase.
+	^ styler
+		valueWithReceiver: styler methodClass soleInstance 
+		arguments: (Array with: aString)
 ]
 
 { #category : #accessing }

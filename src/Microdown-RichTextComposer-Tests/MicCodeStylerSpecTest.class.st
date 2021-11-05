@@ -60,7 +60,7 @@ MicCodeStylerSpecTest >> testStylersAreRegistered [
 MicCodeStylerSpecTest >> testStylersForText [
 
 	| defaultStyler |
-	defaultStyler := MicCodeStylerSpec  styleFor: 'text'.
+	defaultStyler := MicCodeStylerSpec styleFor: 'text'.
 	self assert: defaultStyler selector equals: #textStyler:.
 	 "Stylers are used for codeblock, and a test should be included for this"
 ]
