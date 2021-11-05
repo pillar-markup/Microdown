@@ -153,6 +153,16 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 
 ]
 
+{ #category : #'tests - list' }
+MicUnorderedListBlockTest >> testOrderedListAPIToAccessText [
+
+	| list |
+	list := (self parser parse: '1.a 2.b') children first children first.
+	self assert: list class equals: MicListItemBlock.
+	self assert: list nestedLevel equals: 1.
+	self assert: list text equals: '2.b'
+]
+
 { #category : #tests }
 MicUnorderedListBlockTest >> testSingleLevelList [
 	| source root list |

@@ -255,45 +255,45 @@ MicSurfacicMicrodownToPillarTest >> testOrderedListWithTwoItems [
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScript [
 	self
-		parse: factory scriptSample
+		parse: factory blockSampleOnMultipleLines
 		createElementOfClass: self codeBlockClass
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptParameterTrueByDefault [
 	self 
-		parse: factory scriptParameterTrueByDefaultSample 
+		parse: factory blockWithParameterTrueByDefaultSample 
 		createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptParameterWithFloat [
-	self parse: factory scriptParameterWithFloatSample createElementOfClass: self codeBlockClass 
+	self parse: factory blockWithParameterWithFloatSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptParameterWithNoValues [
-	self parse: factory scriptParameterWithNoValuesSample createElementOfClass: self codeBlockClass 
+	self parse: factory blockWithParameterWithNoValuesSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptWithLanguage [
-	self parse: factory scriptWithLanguageSample createElementOfClass: self codeBlockClass 
+	self parse: factory blockWithLanguageSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptWithNewLine [
-	self parse: factory scriptWithNewLineSample createElementOfClass: self codeBlockClass 
+	self parse: factory blockWithNewLineSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptWithSpaceAtTheEnd [
-	self parse: factory scriptWithSpaceAtTheEndSample createElementOfClass: self codeBlockClass 
+	self parse: factory blockWithSpaceAtTheEndSample createElementOfClass: self codeBlockClass 
 ]
 
 { #category : #'tests - codeblock' }
 MicSurfacicMicrodownToPillarTest >> testScriptWithSpacedParameters [
-	self parse: factory scriptWithSpacedParametersSample createElementOfClass: self codeBlockClass
+	self parse: factory blockWithSpacedParametersSample createElementOfClass: self codeBlockClass
 ]
 
 { #category : #'tests - format' }
