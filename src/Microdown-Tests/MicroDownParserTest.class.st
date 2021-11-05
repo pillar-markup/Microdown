@@ -414,16 +414,16 @@ MicrodownParserTest >> testMathBlockWithArguments [
 { #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaData [
 
-	| source root math |
+	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse"', String cr,
 	parser metaDataClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
-	math := root children first. 
-	self assert: (math isKindOf: MicMetaDataBlock). 
-	self assert: math body equals: '"author": "S Ducasse"'
+	metadata := root children first. 
+	self assert: (metadata isKindOf: MicMetaDataBlock). 
+	self assert: metadata body equals: '"author": "S Ducasse"'
 	"note that the closing is not part of the body"
 	
 ]
@@ -443,13 +443,46 @@ MicrodownParserTest >> testMetaData2 [
 	self assert: (metadata isKindOf: MicMetaDataBlock). 
 	self assert: metadata body equals: '"authors" : "S. Ducasse" ,
 "title" : "Pharo by Example"'
-	"note that the closing is not part of the body"
+	
+]
+
+{ #category : #'tests - metaData' }
+MicrodownParserTest >> testMetaData2WithEmptyLines [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+
+
+
+
+}'.
+
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	metadata := root children first. 
+	self assert: (metadata isKindOf: MicMetaDataBlock). 
+	self assert: metadata body equals: '"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+
+
+
+'
 	
 ]
 
 { #category : #'tests - metaData' }
 MicrodownParserTest >> testMetaDataEatsOtherBlocks [
+	"this is normal since 
+{
 
+....
+
+without closing statement (}) is just an unclosed block and since metadata can be a multilines
+then it eats.
+
+"
 	| source root metadata |
 	source := parser metaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse"', String cr,

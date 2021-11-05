@@ -39,6 +39,14 @@ MicHTMLExporterTest >> testHeaderLevel1 [
 	
 ]
 
+{ #category : #tests }
+MicHTMLExporterTest >> testHeaderLevel2 [
+
+	self
+		parse: factory headerLevel2Sample
+		andCheckWeGet: writer usedNewLine , '<h2>Foo</h2>'
+]
+
 { #category : #'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
@@ -78,6 +86,28 @@ MicHTMLExporterTest >> testParagraphWithMonospace [
 
 	self parse: factory paragraphMonospaceSample andCheckWeGet:  '
 <p>this is a <code>paragraph</code></p>'
+]
+
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testStrike [
+
+	self parse: factory strikethroughFormatSample andCheckWeGet: '
+<p><strike>Foo</strike></p>'
+]
+
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testTable [
+
+	| micTable |
+	self skip.
+	micTable := parser parse: factory tableSample.
+	self assert: (writer visit: micTable) contents equals: '
+<table>
+        <tr>
+            <th>aaab</th>
+        </tr>
+</table>
+'
 ]
 
 { #category : #'tests - list' }
