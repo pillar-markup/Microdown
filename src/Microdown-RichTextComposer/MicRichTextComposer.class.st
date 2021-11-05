@@ -49,7 +49,8 @@ Class {
 		'subscriptColor',
 		'annotatedParagraphColor',
 		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment'
+		'annotatedParagraphAlignment',
+		'styler'
 	],
 	#classVars : [
 		'CaptureErrors',
@@ -57,8 +58,7 @@ Class {
 		'HeaderFonts',
 		'ImageCache',
 		'NotRendering',
-		'OffLine',
-		'Stylers'
+		'OffLine'
 	],
 	#classInstVars : [
 		'imageCache'
@@ -99,31 +99,6 @@ MicRichTextComposer class >> captureErrors: aBoolean [
 	CaptureErrors := aBoolean
 ]
 
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForMethod: aString [
-	<codeblockStylerFor: 'Method'>
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: false; 
-		styledTextFor: aString asText
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForPharo: aString [
-	<codeblockStylerFor: 'Pharo'>
-	"For full methods use style 'Method'"
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForSmalltalk: aString [
-	<codeblockStylerFor: 'Smalltalk'>
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
-]
-
 { #category : #private }
 MicRichTextComposer class >> computeHeaderFonts [
 	
@@ -148,14 +123,6 @@ MicRichTextComposer class >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
 	kind = 2
 		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> defaultStyler: aString [
-	<codeblockStylerFor: 'default'>
-	"Pay attention without this one the logic can loop."
-	
-	^ self codeStylerForPharo: aString
 ]
 
 { #category : #examples }
@@ -349,14 +316,8 @@ MicRichTextComposer class >> initialize [
 { #category : #'class initialization' }
 MicRichTextComposer class >> initializeStylers [
 	"self initializeStylers"
-
-	Stylers := Dictionary
-		newFromAssociations: ((PragmaCollector
-			filter: [ :prg | 
-				prg selector = 'codeblockStylerFor:' and: [ 
-					"When debugging stylers, make sure no old ones are included"
-				prg method methodClass isObsolete not ] ]) reset
-			collected collect: [ :prg | prg arguments first asLowercase-> prg method ])
+	
+	MicCodeStylerSpec initializeCache.
 ]
 
 { #category : #styler }
@@ -540,6 +501,7 @@ MicRichTextComposer class >> style: aString asLanguage: aLanguage [
 		arguments: (Array with: aString)
 ]
 
+
 { #category : #styler }
 MicRichTextComposer class >> textStyler: aString [
 	<codeblockStylerFor: 'text'>
@@ -600,7 +562,8 @@ MicRichTextComposer >> initialize [
 	subscriptColor := TextColor red.
 	annotatedParagraphColor := self defaultAnnotatedParagraphColor.
 	annotatedParagraphAnnotationColor := TextEmphasis bold.
-	annotatedParagraphAlignment := TextAlignment leftFlush
+	annotatedParagraphAlignment := TextAlignment leftFlush.
+	styler := MicCodeStylerSpec. "Yes, the class"
 ]
 
 { #category : #accessing }
@@ -637,6 +600,18 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 	aFigure arguments at: #width ifPresent: [ :s | 
 		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
 	^ anchoredImage
+]
+
+{ #category : #accessing }
+MicRichTextComposer >> styler [
+
+	^ styler
+]
+
+{ #category : #accessing }
+MicRichTextComposer >> styler: anObject [
+
+	styler := anObject
 ]
 
 { #category : #accessing }
@@ -711,7 +686,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self class 
+			<< (self styler 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.

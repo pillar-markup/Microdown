@@ -11,7 +11,7 @@ Class {
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest class >> dummyStylerFor: aString [
 	"I am a styler used for testing. "
-	<codeblockStylerFor: 'dummy'>
+	<codeblockStyler: 'dummy'>
 	
 	^'§dummy§' asText
 ]
@@ -128,6 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
+	MicRichTextComposer initializeStylers.
 ]
 
 { #category : #'skipped tests' }
@@ -204,36 +205,27 @@ line 2
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
 	| source richText expected |
-	
-		self skip. 
-	self flag: #todo.
-	
 	source := '
 ```language=dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
-	| source runs richText expected |
-	
-	self skip. 
-	self flag: #todo.
+	| source richText expected |
 	source := '
 ```dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
@@ -544,49 +536,13 @@ styledTextFor: aString asFest'.
 ]
 
 { #category : #tests }
-MicRichTextComposerTest >> testStylerForSmalltalk [
-	
-	| code source richText blueLocation textColor |
-	self skip.
-	"no idea why on the server self assert: textColor color red equals: 1.0. and not in our image"
-	MicRichTextComposer initializeStylers.
-	code := '
-codeStylerFor: aString
-<codeblockStylerFor: #smalltalk>
-
-^bobby new 
-isForWorkspace: blue; 
-styledTextFor: aString asFest'.
-	source := '
-```language=smalltalk' , code ,'
-```
-'.
-	richText := self richTextForString: source.
-	
-	self assert: richText asString trim equals: code trim.
-	"style smalltalk is assumes the code to be a code fragment, not a full method def"
-	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold) not.
-	"Check that the unknown variable 'blue' is not colored red"
-	blueLocation := richText asString findString: 'blue'.
-	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 0.
-]
-
-{ #category : #'tests - stylers' }
 MicRichTextComposerTest >> testStylersAreRegistered [
-
-	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'blblbl'.
-	self assert: defaultStyler selector equals: #defaultStyler:
+	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
 ]
 
-{ #category : #'tests - stylers' }
+{ #category : #tests }
 MicRichTextComposerTest >> testStylersForText [
-
-	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'text'.
-	self assert: defaultStyler selector equals: #textStyler:.
-	 "Stylers are used for codeblock, and a test should be included for this"
+	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
 ]
 
 { #category : #'skipped tests' }
