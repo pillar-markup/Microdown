@@ -260,6 +260,17 @@ Roger Rabbit
 '
 ]
 
+{ #category : #'tests - list' }
+MicRichTextComposerTest >> testCodeVersion [
+	
+	self 
+		assert: (MicRichTextComposer classVariables includes: #Stylers) not
+		description: 'A strange bug re-introduces the #Stylers class variable'.
+	self
+		assert: (MicRichTextComposerTest selectors includes: #testStylersAreRegistered) not
+		description: '#testStylersAreRegistered is not in this class'
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testExternaLink [
 
