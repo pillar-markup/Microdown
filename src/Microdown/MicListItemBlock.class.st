@@ -78,3 +78,9 @@ MicListItemBlock >> textElements [
 	
 	^ text 
 ]
+
+{ #category : #accessing }
+MicListItemBlock >> textElements: aCollection [ 
+	
+	text := aCollection
+]

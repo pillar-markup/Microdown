@@ -103,6 +103,15 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	
 ]
 
+{ #category : #'tests - code' }
+MicCodeBlockTest >> testCodeCreatesInnerText [
+
+	| code |
+	code := (self parser parse: '```a b```') children first.
+	self assert: code class equals: MicCodeBlock.
+	self assert: code firstTag equals: 'a b```'
+]
+
 { #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagNoValue [
 

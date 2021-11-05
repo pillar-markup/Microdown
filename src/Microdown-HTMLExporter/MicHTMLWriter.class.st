@@ -77,6 +77,23 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 				with: [ super visitParagraph: aParagraph ]
 ]
 
+{ #category : #'visiting - list' }
+MicHTMLWriter >> visitStrike: aStrike [
+
+	canvas tag
+		name: 'strike';
+		with: [ super visitStrike: aStrike ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitTable: aTable [
+
+	canvas newLine.
+	canvas tag
+		name: 'table';
+		with: [ super visitTable: aTable ]
+]
+
 { #category : #visiting }
 MicHTMLWriter >> visitText: aText [
 
