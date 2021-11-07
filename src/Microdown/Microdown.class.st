@@ -63,7 +63,7 @@ Microdown >> resolver [
 { #category : #parsing }
 Microdown >> resolverRoot [
 	
-	^ resolverRoot ifNil: [ resolverRoot := FileSystem workingDirectory ]
+	^ resolverRoot ifNil: [ resolverRoot := FileSystem disk root ]
 ]
 
 { #category : #parsing }

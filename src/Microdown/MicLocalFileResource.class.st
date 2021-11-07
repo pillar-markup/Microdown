@@ -7,7 +7,7 @@ Class {
 { #category : #converting }
 MicLocalFileResource >> asFileReference [
 
-	^ self
+	^ urlOrFileReference 
 ]
 
 { #category : #converting }

@@ -49,7 +49,8 @@ Class {
 		'subscriptColor',
 		'annotatedParagraphColor',
 		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment'
+		'annotatedParagraphAlignment',
+		'styler'
 	],
 	#classVars : [
 		'CaptureErrors',
@@ -57,8 +58,7 @@ Class {
 		'HeaderFonts',
 		'ImageCache',
 		'NotRendering',
-		'OffLine',
-		'Stylers'
+		'OffLine'
 	],
 	#classInstVars : [
 		'imageCache'
@@ -76,6 +76,25 @@ MicRichTextComposer class >> bulletForLevel: level [
 		ifTrue: [ ^ $- asText ]
 ]
 
+{ #category : #images }
+MicRichTextComposer class >> cachedImageFromFile: aFileRef [
+
+	^ ImageCache
+		  at: aFileRef asString
+		  ifAbsentPut: [ self rawImageFromFile: aFileRef ] 
+]
+
+{ #category : #images }
+MicRichTextComposer class >> cachedImageFromUrl: aUrl [
+	
+	^ OffLine 
+		ifFalse: [
+			ImageCache 
+				at: aUrl asString
+				ifAbsentPut: [ self rawImageFrom: aUrl ] ] 
+		ifTrue: [ self imageOffLineFromUrl: aUrl ]
+]
+
 { #category : #'class initialization' }
 MicRichTextComposer class >> captureErrors [
 	
@@ -86,31 +105,6 @@ MicRichTextComposer class >> captureErrors [
 MicRichTextComposer class >> captureErrors: aBoolean [
 	"self captureErrors: false"
 	CaptureErrors := aBoolean
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForMethod: aString [
-	<codeblockStylerFor: 'Method'>
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: false; 
-		styledTextFor: aString asText
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForPharo: aString [
-	<codeblockStylerFor: 'Pharo'>
-	"For full methods use style 'Method'"
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> codeStylerForSmalltalk: aString [
-	<codeblockStylerFor: 'Smalltalk'>
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: true; 
-		styledTextFor: aString asText
 ]
 
 { #category : #private }
@@ -137,14 +131,6 @@ MicRichTextComposer class >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
 	kind = 2
 		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> defaultStyler: aString [
-	<codeblockStylerFor: 'default'>
-	"Pay attention without this one the logic can loop."
-	
-	^ self codeStylerForPharo: aString
 ]
 
 { #category : #examples }
@@ -302,6 +288,27 @@ MicRichTextComposer class >> imageCache [
 	^ imageCache ifNil: [ imageCache := LRUCache new ]
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> imageOffLineFromUrl: aUrl [
+	"we are off but the image is there so we return it,"
+	^ ImageCache 
+			at: aUrl asString
+			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
+When you will be online, you should see: ' , aUrl asString) imageForm  ]
+			
+]
+
+{ #category : #'images internal' }
+MicRichTextComposer class >> imageUnexpectedContentFromUrl: aUrl [
+	"The request got unexpected content if the image is there so we return it. We do not cache the failing case image form so that we do not polute the cache."
+	
+	^ ImageCache 
+			at: aUrl asString
+			ifPresent: [ :i | i ]
+			ifAbsent: [ (StringMorph contents: 'The HTTP request ', aUrl asString, ' returned an unexpected content.' ) imageForm  ]
+			
+]
+
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
@@ -316,14 +323,8 @@ MicRichTextComposer class >> initialize [
 { #category : #'class initialization' }
 MicRichTextComposer class >> initializeStylers [
 	"self initializeStylers"
-
-	Stylers := Dictionary
-		newFromAssociations: ((PragmaCollector
-			filter: [ :prg | 
-				prg selector = 'codeblockStylerFor:' and: [ 
-					"When debugging stylers, make sure no old ones are included"
-				prg method methodClass isObsolete not ] ]) reset
-			collected collect: [ :prg | prg arguments first asLowercase-> prg method ])
+	
+	MicCodeStylerSpec initializeCache.
 ]
 
 { #category : #styler }
@@ -450,6 +451,27 @@ MicRichTextComposer class >> putOnline [
 	self offline: false
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> rawImageFrom: aURL [
+	| block |
+	self flag: #fixMeOnceNewExceptionIsAvailable.
+	block := [ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ].
+	self captureErrors
+		ifFalse: [ ^ block value ].
+
+	^ [[ block
+		on: ZnHttpUnsuccessful 
+		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
+			on: ZnUnexpectedContentType 
+			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
+		
+]
+
+{ #category : #'images internal' }
+MicRichTextComposer class >> rawImageFromFile: aFileRef [
+	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
+]
+
 { #category : #examples }
 MicRichTextComposer class >> render: aString [ 
 	"Render a string, in case of error, just return it."
@@ -498,6 +520,16 @@ MicRichTextComposer class >> textStyler: aString [
 	^aString asText
 ]
 
+{ #category : #'images internal' }
+MicRichTextComposer class >> unsuccessfulRequestFromUrl: aUrl [
+	
+	^ ImageCache 
+			at: aUrl asString
+			ifPresent: [ :i | i ]
+			ifAbsent: [ (StringMorph contents: 'The HTTP request ',  aUrl asString,  ' got unsuccessful.') imageForm  ]
+			
+]
+
 { #category : #accessing }
 MicRichTextComposer >> annotatedParagrapAlignment [
 	^ annotatedParagraphAlignment 
@@ -523,17 +555,6 @@ MicRichTextComposer >> annotatedParagraphColor: aColor [
 	annotatedParagraphColor := aColor
 ]
 
-{ #category : #images }
-MicRichTextComposer >> cachedImageFromUrl: aUrl [
-	
-	^ OffLine 
-		ifFalse: [
-			ImageCache 
-				at: aUrl asString
-				ifAbsentPut: [ self rawImageFrom: aUrl ] ] 
-		ifTrue: [ self imageOffLineFromUrl: aUrl ]
-]
-
 { #category : #initialization }
 MicRichTextComposer >> defaultAnnotatedParagraphColor [
 	^ TextColor blue
@@ -544,28 +565,6 @@ MicRichTextComposer >> defaultSuperscriptColor [
 	^ TextColor blue
 ]
 
-{ #category : #'images internal' }
-MicRichTextComposer >> imageOffLineFromUrl: aUrl [
-	"we are off but the image is there so we return it,"
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
-When you will be online, you should see: ' , aUrl asString) imageForm  ]
-			
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> imageUnexpectedContentFromUrl: aUrl [
-	"The request got unexpected content if the image is there so we return it. We do not cache the failing case image form so that we do not polute the cache."
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ', aUrl asString, ' returned an unexpected content.' ) imageForm  ]
-			
-]
-
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
@@ -574,7 +573,8 @@ MicRichTextComposer >> initialize [
 	subscriptColor := TextColor red.
 	annotatedParagraphColor := self defaultAnnotatedParagraphColor.
 	annotatedParagraphAnnotationColor := TextEmphasis bold.
-	annotatedParagraphAlignment := TextAlignment leftFlush
+	annotatedParagraphAlignment := TextAlignment leftFlush.
+	styler := MicCodeStylerSpec. "Yes, the class"
 ]
 
 { #category : #accessing }
@@ -587,22 +587,6 @@ MicRichTextComposer >> monospaceBackgroundColor [
 MicRichTextComposer >> monospaceBackgroundColor: aColor [
 
 	monospaceBackgroundColor := aColor
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> rawImageFrom: aURL [
-	| block |
-	self flag: #fixMeOnceNewExceptionIsAvailable.
-	block := [ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ].
-	self class captureErrors
-		ifFalse: [ ^ block value ].
-
-	^ [[ block
-		on: ZnHttpUnsuccessful 
-		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
-			on: ZnUnexpectedContentType 
-			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
-		
 ]
 
 { #category : #images }
@@ -627,6 +611,18 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 	aFigure arguments at: #width ifPresent: [ :s | 
 		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
 	^ anchoredImage
+]
+
+{ #category : #accessing }
+MicRichTextComposer >> styler [
+
+	^ styler
+]
+
+{ #category : #accessing }
+MicRichTextComposer >> styler: anObject [
+
+	styler := anObject
 ]
 
 { #category : #accessing }
@@ -659,16 +655,6 @@ MicRichTextComposer >> theme [
 MicRichTextComposer >> todo [ 
 	^ 'there is too much hspace after a section when it is followed by a paragraph. 
 This also because people will not want to to not let a newline between the header and paragraph when writing the text.'
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer >> unsuccessfulRequestFromUrl: aUrl [
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ',  aUrl asString,  ' got unsuccessful.') imageForm  ]
-			
 ]
 
 { #category : #visiting }
@@ -711,7 +697,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self class 
+			<< (self styler 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.
@@ -741,39 +727,22 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 	"Try to read a png file (only one supported right now), else use alt text"
+
+	| anchoredImage url textContribution |
+	textContribution := nil.
+	aFigure isImageFile 
+		ifTrue: [ 
+			url := aFigure url.
+			anchoredImage := url isWeb
+				ifFalse: [ self class cachedImageFromFile: url asFileReference ]
+				ifTrue: [ self class cachedImageFromUrl: url url ].
+			anchoredImage 
+				ifNotNil: [ 
+					anchoredImage := self resizeImage: anchoredImage of: aFigure.
+					textContribution := (String value: 1) asText addAttribute:
+					                 (TextAnchor new anchoredMorph: anchoredImage)] ].
 	
-	aFigure isImageFile ifTrue: [
-	| anchoredImage url |
-	url := aFigure url.
-	"this url should be renamed resources"
-	"this logic has to be revisited with the new resolver."
-	
-	anchoredImage := url isWeb
-		                 ifFalse: [ 
-									"should probably fix this."
-									(aFigure originPath fileSystem / aFigure url path) isFile
-										ifTrue: [ 
-											aFigure originPath fileSystem / (aFigure url) path
-				                 		binaryReadStreamDo: [ :stream | 
-				                 		ImageReadWriter formFromStream: stream ] 
-											]
-							        ]
-		                 ifTrue: [ self cachedImageFromUrl: url url ].
-	anchoredImage ifNotNil: [ 
-		anchoredImage := self resizeImage: anchoredImage of: aFigure.
-		anchoredImage := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: anchoredImage).
-		canvas << anchoredImage ].
-	aFigure caption ifEmpty: [ ^self ].
-	
-	canvas newLine.
-	canvas includeAttribute: TextEmphasis bold in: [  ]].
-	"	on: Exception
-		do: [ self visitChildrenOf: aFigure ]. pay attention url return the rest https://files.pharo.org/media/logo/logo.png%7Csize=80&caption=Our%20great%20figure so we will have to add a method to only return the url part."
-	canvas
-		tab;
-		tab;
-		tab;
-		<< aFigure caption asText
+	canvas << textContribution ifNil: [ aFigure caption asText ]
 ]
 
 { #category : #'visiting - document' }
