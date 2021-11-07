@@ -31,7 +31,9 @@ Class {
 
 { #category : #'instance creation' }
 MicSemanticAction class >> from: aString [ 
-	^ self fromTokens: (RBScanner scanTokens: aString)
+	| contents |
+	contents := ((RBScanner on: (ReadStream on: aString) errorBlock: [#()]) contents).
+	^ self fromTokens: (contents collect: #value)
 ]
 
 { #category : #'instance creation' }

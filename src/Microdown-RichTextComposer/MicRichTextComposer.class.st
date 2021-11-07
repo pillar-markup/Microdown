@@ -467,7 +467,6 @@ MicRichTextComposer class >> rawImageFrom: aURL [
 		
 ]
 
-
 { #category : #'images internal' }
 MicRichTextComposer class >> rawImageFromFile: aFileRef [
 	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
