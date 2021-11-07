@@ -41,7 +41,7 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 
 { #category : #'tests - nested' }
 MicOrderedListBlockTest >> testNestedLevel [
-	| source root list |
+	| source root list item1 |
 	source := 
 '1. item 1
    6) sublevel
@@ -50,22 +50,26 @@ MicOrderedListBlockTest >> testNestedLevel [
 	list := root children first.
 	self assert: list children size equals: 2.
 	
-	self assert: list children first text equals: 'item 1'.
-	self assert: list children first nestedLevel equals: 1.
+	item1 := list children first.
+	self assert: item1 text equals: 'item 1'.
+	self assert: item1 class equals: MicListItemBlock.
+	self assert: item1 nestedLevel equals: 1.
 	
 	"this is the inner list"
-	self assert: list children first children first nestedLevel equals: 2.
-	
+	self assert: item1 children second nestedLevel equals: 2.
+	self assert: item1 children second class equals: MicOrderedListBlock.
+		
 	"this is the inner list first item"
-	self assert: list children first children first children first text equals: 'sublevel'.
-	self assert: list children first children first children first nestedLevel equals: 2.
+	self assert: item1 children second children first text equals: 'sublevel'.
+	self assert: item1 children second children first class equals: MicListItemBlock.
+
 	
 
 ]
 
 { #category : #'tests - nested' }
 MicOrderedListBlockTest >> testNestedLevel2 [
-	| source root list |
+	| source root list item1 sublevelItem |
 	source := 
 '1. item 1
    6) sublevel
@@ -76,19 +80,20 @@ MicOrderedListBlockTest >> testNestedLevel2 [
 	list := root children first.
 	self assert: list children size equals: 2.
 	
-	self assert: list children first text equals: 'item 1'.
-	self assert: list children first nestedLevel equals: 1.
+	item1 := list children first.
+	sublevelItem := item1 children second children first.
 	
 	"this is the inner list"
-	self assert: list children first children first nestedLevel equals: 2.
-	
+	self assert: item1 children second nestedLevel equals: 2.
+	self assert: item1 children second class equals: MicOrderedListBlock.
+		
 	"this is the inner list first item"
-	self assert: list children first children first children first text equals: 'sublevel'.
-	self assert: list children first children first children first nestedLevel equals: 2.
-	self assert: list children first children first children second text equals: 'sublevel2'.
+	self assert: sublevelItem text equals: 'sublevel'.
+	self assert: sublevelItem class equals: MicListItemBlock.
+
+	self assert: sublevelItem children second children first nestedLevel equals: 3.
+	self assert: sublevelItem children second children first text equals: 'subsublevel'.
 	
-	self assert: list children first children first children first children first nestedLevel equals: 3.
-	self assert: list children first children first children first children first children first nestedLevel equals: 3.
 
 ]
 

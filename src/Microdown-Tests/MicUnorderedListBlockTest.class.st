@@ -105,7 +105,7 @@ MicUnorderedListBlockTest >> testNestedLevel [
 	| source root list |
 	source := 
 '- item 1
-  - sublevel
+  1. sublevel
 - item 2'.
 	root := parser parse: source.
 	list := root children first.

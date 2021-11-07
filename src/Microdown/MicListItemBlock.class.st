@@ -101,8 +101,11 @@ In this example textElements of the first item will be the elements for
    on the same line
 "
 	super closeMe.
+	Transcript show: text;  show: ' entry children: ' ; show: children.
 	textElements :=  self inlineParse: text.	
-	children := textElements asOrderedCollection addAll: children ; yourself
+	textElements reverseDo: [ :each | 
+		children addFirst: each ]. 
+	Transcript  show: ' exit children: ' ; show: children ; cr.
 ]
 
 { #category : #accessing }
