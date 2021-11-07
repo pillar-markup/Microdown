@@ -220,23 +220,6 @@ follow up of second item'.
 	
 ]
 
-{ #category : #tests }
-MicOrderedListBlockTest >> testTwoLevelList1 [
-	| source root list |
-	source := 
-'1. item 1
-   6) sublevel
-1. item 2'.
-	root := parser parse: source.
-	list := root children first.
-	self assert: list children size equals: 2.
-	self assert: list children second text equals: 'item 2'.
-	self assert: list children first "item 1"
-			children first "ordered list"
-			children first "sub item"
-			text equals: 'sublevel'
-]
-
 { #category : #'tests - list' }
 MicOrderedListBlockTest >> testUnOrderedListAPIToAccessText [
 

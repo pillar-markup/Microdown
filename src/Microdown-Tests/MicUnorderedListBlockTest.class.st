@@ -20,7 +20,7 @@ MicUnorderedListBlockTest >> testEmbeddedOrdered [
 	self assert: list children size equals: 2.
 	self assert: list children second text equals: 'item 2'.
 	self assert: list children first "item 1"
-			children first "unordered list"
+			children second "unordered list"
 			children second "sub item"
 			text equals: 'sublevel item 2'
 ]
@@ -38,7 +38,7 @@ MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 	self assert: list children size equals: 2.
 	
 	item4 := list children first "item 1"
-			children first "unordered list"
+			children second "unordered list"
 			children second.
 			
 	self assert: item4 text equals: 'sublevel4 item 24'.
@@ -102,7 +102,7 @@ multiple lines
 
 { #category : #'tests - nested' }
 MicUnorderedListBlockTest >> testNestedLevel [
-	| source root list |
+	| source root list item1|
 	source := 
 '- item 1
   1. sublevel
@@ -111,22 +111,26 @@ MicUnorderedListBlockTest >> testNestedLevel [
 	list := root children first.
 	self assert: list children size equals: 2.
 	
-	self assert: list children first text equals: 'item 1'.
-	self assert: list children first nestedLevel equals: 1.
+	item1 := list children first.
+	self assert: item1 text equals: 'item 1'.
+	self assert: item1 class equals: MicListItemBlock.
+	self assert: item1 nestedLevel equals: 1.
 	
 	"this is the inner list"
-	self assert: list children first children first nestedLevel equals: 2.
-	
+	self assert: item1 children second nestedLevel equals: 2.
+	self assert: item1 children second class equals: MicOrderedListBlock.
+		
 	"this is the inner list first item"
-	self assert: list children first children first children first text equals: 'sublevel'.
-	self assert: list children first children first children first nestedLevel equals: 2.
+	self assert: item1 children second children first text equals: 'sublevel'.
+	self assert: item1 children second children first class equals: MicListItemBlock.
+
 	
 
 ]
 
 { #category : #'tests - nested' }
 MicUnorderedListBlockTest >> testNestedLevel2 [
-	| source root list |
+	| source root list item1 sublevelItem|
 	source := 
 '- item 1
   - sublevel
@@ -137,20 +141,19 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 	list := root children first.
 	self assert: list children size equals: 2.
 	
-	self assert: list children first text equals: 'item 1'.
-	self assert: list children first nestedLevel equals: 1.
+	item1 := list children first.
+	sublevelItem := item1 children second children first.
 	
 	"this is the inner list"
-	self assert: list children first children first nestedLevel equals: 2.
-	
+	self assert: item1 children second nestedLevel equals: 2.
+	self assert: item1 children second class equals: MicUnorderedListBlock.
+		
 	"this is the inner list first item"
-	self assert: list children first children first children first text equals: 'sublevel'.
-	self assert: list children first children first children first nestedLevel equals: 2.
-	self assert: list children first children first children second text equals: 'sublevel2'.
-	
-	self assert: list children first children first children first children first nestedLevel equals: 3.
-	self assert: list children first children first children first children first children first nestedLevel equals: 3.
+	self assert: sublevelItem text equals: 'sublevel'.
+	self assert: sublevelItem class equals: MicListItemBlock.
 
+	self assert: sublevelItem children second children first nestedLevel equals: 3.
+	self assert: sublevelItem children second children first text equals: 'subsublevel'.
 ]
 
 { #category : #'tests - list' }
@@ -344,37 +347,21 @@ MicUnorderedListBlockTest >> testTwoLevelList [
 '- item 1
   * sublevel1
   * sublevel2
+  * sublevel3
 - item 2'.
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
 	self assert: list children second text equals: 'item 2'.
-	self assert: list children first "item 1"
-			children first "unorded list"
+	self assert: list children first "item 1 list"
+			children second "unorded list"
 			children first "sub item"
 			text equals: 'sublevel1'.
 	self assert: list children first "item 1"
-			children first "unorded list"
+			children second "unorded list"
 			children second "sub item"
 			text equals: 'sublevel2'
 			
-]
-
-{ #category : #tests }
-MicUnorderedListBlockTest >> testTwoLevelList1 [
-	| source root list |
-	source := 
-'- item 1
-  - sublevel
-- item 2'.
-	root := parser parse: source.
-	list := root children first.
-	self assert: list children size equals: 2.
-	self assert: list children second text equals: 'item 2'.
-	self assert: list children first "item 1"
-			children first "unorded list"
-			children first "sub item"
-			text equals: 'sublevel'
 ]
 
 { #category : #tests }
