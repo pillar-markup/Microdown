@@ -33,7 +33,7 @@ Class {
 MicSemanticAction class >> from: aString [ 
 	| contents |
 	contents := ((RBScanner on: (ReadStream on: aString) errorBlock: [#()]) contents).
-	^ self fromTokens: (contents collect: #value)
+	^ self fromTokens: (contents collect: [:e | e value])
 ]
 
 { #category : #'instance creation' }
@@ -51,7 +51,7 @@ MicSemanticAction >> computeEntity [
 		"
 	| size |
 	size := tokens size.
-	size > 4 ifTrue: [  ^ self ].
+	size > 4 ifTrue: [ ^ self ].
 	size = 0 ifTrue: [ ^ self ].
 	"either 'Point' for a class or #'''System-Caching''' for a package"
 	size = 1 
