@@ -92,8 +92,17 @@ MicCodeBlock >> hasFirstTag [
 { #category : #accessing }
 MicCodeBlock >> hasLabel [
 	^ arguments ifNotEmpty: [ 
-		arguments at: #label ifPresent: [ true ] ifAbsent: [ false ]]
+		arguments at: #label ifPresent: [ true ] ifAbsent: [ false ]] ifEmpty: [ false ]
 
+]
+
+{ #category : #accessing }
+MicCodeBlock >> hasLanguage [
+	"Return true whether there is a language = tag used in the arguments."
+	
+	arguments ifNotEmpty: [ 
+		^ arguments at: #language ifPresent: [ true ] ifAbsent: [ false ]].
+	^ false
 ]
 
 { #category : #initialization }
@@ -111,7 +120,7 @@ MicCodeBlock >> isEvaluated [
 { #category : #accessing }
 MicCodeBlock >> label [
 	"precondition: receiver hasLabel"
-	arguments at: #label
+	^ arguments at: #label
 ]
 
 { #category : #accessing }

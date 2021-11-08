@@ -175,8 +175,8 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	parameters := OrderedCollection new.
 	aCodeBlock hasCaption
 		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock language ifNotEmpty:
-			[ parameters add: 'language=' , aCodeBlock language asString ].
+	aCodeBlock hasLanguage 
+			ifTrue: [ parameters add: 'language=' , aCodeBlock language asString ].
 	aCodeBlock hasLabel
 		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
 	env := canvas environment

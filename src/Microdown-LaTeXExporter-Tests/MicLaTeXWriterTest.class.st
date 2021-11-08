@@ -89,7 +89,7 @@ MicLaTeXWriterTest >> testCodeblockWithLabel [
 	self flag: #tofix.
 	"This is wrong since language cannot be label"
 	self assert: (writer visit: mic) contents equals: '
-\begin{listing}[language=label, label=Pharo is cool]
+\begin{listing}[label=Pharo is cool]
 this is a code
 \end{listing}
 '
