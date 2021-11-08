@@ -75,11 +75,6 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink substring ]
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> getLevelFor: aHeader [
-	^ aHeader level
-]
-
 { #category : #helpers }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
@@ -87,15 +82,6 @@ MicLaTeXWriter >> getStringForAll: aCollection [
 		visitor := self class new.
 		aCollection do: [ :object | visitor visit: object ].
 		^ visitor contents
-]
-
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> getTypeOfSectionFor: aHeader [
-	| sections level section |
-	sections := self sectioningCommands.
-	level := self getLevelFor: aHeader.
-	section := sections at: (level min: sections size max: 1).
-	^ section
 ]
 
 { #category : #'visiting-document' }
@@ -140,6 +126,15 @@ MicLaTeXWriter >> tabularEnvironment [
 	^ 'tabular'
 ]
 
+{ #category : #'visiting-document' }
+MicLaTeXWriter >> typeOfSectionFor: aHeader [
+	| sections level section |
+	sections := self sectioningCommands.
+	level := aHeader level.
+	section := sections at: (level min: sections size max: 1).
+	^ section
+]
+
 { #category : #initialization }
 MicLaTeXWriter >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
@@ -161,18 +156,6 @@ MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 	
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	"Annotations need to be defined as environments in LaTeX include files (e.g. common.tex)"
-	self error: 'Do we pass here? it seems that the method is called visitAnnotated:'.
-	
-	canvas environment
-		name: anAnnotatedParagraph annotation;
-		with: [ super visitParagraph: anAnnotatedParagraph.
-			canvas newLine ]
-	"Attention: we do a super call on #visitParagraph: instead of #visitAnnotatedParagraph:. The goal of this hack is to avoid trailing new line characters. This is related to PRLaTeXWriterTest>>#testStrictLineBreaksInAnnotatedParagraphs"
-]
-
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitBold: aBold [
 	canvas command name: 'textbf'; parameter: [ super visitBold: aBold ]
@@ -186,23 +169,23 @@ MicLaTeXWriter >> visitCitation: aCitation [
 
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - code' }
 MicLaTeXWriter >> visitCode: aCodeBlock [
 	| env parameters |
 	parameters := OrderedCollection new.
 	aCodeBlock hasCaption
 		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock language
-		ifNotEmpty:
+	aCodeBlock language ifNotEmpty:
 			[ parameters add: 'language=' , aCodeBlock language asString ].
-	(aCodeBlock arguments includesKey: 'label')
-		ifTrue: [ parameters add: 'label=' , (aCodeBlock arguments at: 'label') ].
+	aCodeBlock hasLabel
+		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
 	env := canvas environment
 		name: 'listing';
 		yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
 	env
-		with: [ canvas nextPutAllLines: aCodeBlock body.
+		with: [ 
+			canvas nextPutAllLines: aCodeBlock body.
 			canvas newLine ]
 ]
 
@@ -239,7 +222,7 @@ MicLaTeXWriter >> visitFootnote: aFootnote [
 MicLaTeXWriter >> visitHeader: aHeader [
 	| section |
 	canvas newLine.
-	section := self getTypeOfSectionFor: aHeader.
+	section := self typeOfSectionFor: aHeader.
 	canvas command
 		name: section;
 		parameter: [ super visitHeader: aHeader ]
@@ -284,14 +267,6 @@ MicLaTeXWriter >> visitListItem: anItem [
 	canvas space.
 	canvas raw: [ super visitListItem: anItem ].
 	canvas newLine
-]
-
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitMailLink: aLink [
-	canvas command
-		name: 'href';
-		parameter: aLink unscrambledUrl;
-		parameter: aLink alias
 ]
 
 { #category : #'blocks - inline' }
@@ -394,16 +369,9 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 			canvas newLine ]
 ]
 
-{ #category : #visiting }
+{ #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
 	canvas nextPutAllLines: aText substring
-]
-
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitUnderlineFormat: aFormat [
-	canvas command
-		name: 'uline';
-		parameter: [ super visitUnderlineFormat: aFormat ]
 ]
 
 { #category : #'blocks - list' }

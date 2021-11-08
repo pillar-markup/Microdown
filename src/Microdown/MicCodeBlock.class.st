@@ -89,6 +89,13 @@ MicCodeBlock >> hasFirstTag [
 	^ firstTag isNotEmpty
 ]
 
+{ #category : #accessing }
+MicCodeBlock >> hasLabel [
+	^ arguments ifNotEmpty: [ 
+		arguments at: #label ifPresent: [ true ] ifAbsent: [ false ]]
+
+]
+
 { #category : #initialization }
 MicCodeBlock >> initialize [
 	super initialize.
@@ -101,9 +108,10 @@ MicCodeBlock >> isEvaluated [
 	^ arguments at: #eval
 ]
 
-{ #category : #visiting }
+{ #category : #accessing }
 MicCodeBlock >> label [
-	^ arguments at: #label ifAbsent: [ '' ]
+	"precondition: receiver hasLabel"
+	arguments at: #label
 ]
 
 { #category : #accessing }

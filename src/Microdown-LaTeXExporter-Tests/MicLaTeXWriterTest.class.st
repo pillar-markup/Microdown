@@ -75,11 +75,8 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithCaption [
 	| mic |
 	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self flag: #toFix.
-	"language = caption is false. It is not the case may in microdown we have ...&language=perl
-	and this creates language=perl in latex."
 	self assert: (writer visit: mic) contents equals: '
-\begin{listing}[caption={Pharo is \textbf{cool}}, language=caption]
+\begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
 \end{listing}
 '
@@ -187,7 +184,6 @@ MicLaTeXWriterTest >> testHeaderLevel6 [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testHorizontalLine [
-
 
 	self parseInlined: factory horizontalLineSample andCheckWeGet: '\rule{\textwidth}{0.1pt}'
 ]
@@ -372,7 +368,7 @@ MicLaTeXWriterTest >> testStrike [
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
 	| mic |
-	mic := parser parse: (factory tableSample).
+	mic := parser parse: factory tableSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{tabular}{ll}
 \toprule
