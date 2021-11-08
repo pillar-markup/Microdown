@@ -576,6 +576,20 @@ this is a code block
 	self assert: mic children second body equals: 'this is a code block'
 ]
 
+{ #category : #'tests - table' }
+MicrodownParserTest >> testPipeEscape [
+
+	| tableBlock firstElementOfSecondRowAsString|
+	tableBlock := (parser parse: '
+|foo|bar|
+|12\|3|456|') children first.
+	"Extract the text node"
+	firstElementOfSecondRowAsString := tableBlock rows second first.
+	"now get to the actual string stored there"
+	firstElementOfSecondRowAsString := firstElementOfSecondRowAsString first substring.
+	self assert: firstElementOfSecondRowAsString equals: '12|3'
+]
+
 { #category : #'tests - breaking class comments' }
 MicrodownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
