@@ -83,8 +83,13 @@ MicTableBlock >> extractLine: line [
 		| something | something | 
 		or 
 		| something | something"
+	| unicodeReplacementCharacter |
 		
-		^ (line findBetweenSubstrings: #($|)) collect: [ :each | each trim ]
+	"allow pipe symbols to be written as \|"
+	unicodeReplacementCharacter := 16rFFFD asCharacter asString. "By definition this do not appear in any input"
+	 
+	^ ((line copyReplaceAll: '\|' with: unicodeReplacementCharacter) findBetweenSubstrings: '|') 
+			collect: [ :each | (each copyReplaceAll: unicodeReplacementCharacter with: '|') trim]
 		
 				
 		

@@ -147,6 +147,15 @@ MicCodeSemanticActionTest >> testReferenceToNonExistingClass [
 ]
 
 { #category : #'test - bogus entry' }
+MicCodeSemanticActionTest >> testScannerShouldNotFail [
+
+	self deny: (self semanticActionClass from: 'half"baked') hasEntity.
+	self deny: (self semanticActionClass from: '') hasEntity.
+	self deny: (self semanticActionClass from: 'half"baked') hasEntity.
+	self deny: (self semanticActionClass from: 16rFFFD asCharacter asString) hasEntity.
+]
+
+{ #category : #'test - bogus entry' }
 MicCodeSemanticActionTest >> testTwoBogusElements [
 
 	self assert:
