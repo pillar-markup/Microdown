@@ -500,7 +500,8 @@ Foo
 { #category : #anchor }
 MicMicrodownSnippetFactory >> metaDataSample [
 	^ '{
-"author": "Foo"
+"author": "G. Foo",
+"title":"The title"
 }
 '
 ]
