@@ -69,6 +69,7 @@ MicInlineElement >> childrenPrintOn [
 MicInlineElement >> cleanSubstring [
 	| keepDoubleEscapes res |
 	"remove all \ left by the MicInlineParser - and replace \\ with single \"
+	self substring ifEmpty: [ ^ self ].
 	keepDoubleEscapes := 16rFFFD asCharacter asString.
 	res := self substring copyReplaceAll: '\\' with: keepDoubleEscapes.
 	res last = $\ ifTrue:[res at: res size put: 16rFFFD asCharacter].

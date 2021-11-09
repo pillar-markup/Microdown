@@ -596,13 +596,12 @@ MicInlineParserTest >> testStrike [
 
 { #category : #'tests to make green again' }
 MicInlineParserTest >> testTwoConsecutiveEscapeCharacter [
+
 	"we should have just one escape"
+
 	| res |
-	self skip.
-	res := self splitter start: '\\'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'\'}.
+	res := self splitter parse: '\\'.
+	self assert: (res collect: [ :x | x printString ]) equals: { '\' }
 ]
 
 { #category : #'tests - annotation' }
