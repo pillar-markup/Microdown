@@ -282,21 +282,6 @@ this is the end.'.
 	
 ]
 
-{ #category : #'tests - error' }
-MicrodownParserTest >> testError [
-	self skip. 
-	"see if we have an error"
-	self should: [ parser parse: '
-
-| aaab | jkhjh |
-| --- |
-| bar |
-
-'
-	] raise: MicParsingError 
-	
-]
-
 { #category : #'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
@@ -623,6 +608,20 @@ MicrodownParserTest >> testSimpleTable [
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
 	self assert: mic rows first first first class equals: MicTextBlock
+]
+
+{ #category : #'tests - error' }
+MicrodownParserTest >> testSimpleTableNoError [
+	"Microdown allows jagged tables - as implemented in MicTableBlock>>closeMe"
+	self shouldnt: [ parser parse: '
+
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: Error
+	
 ]
 
 { #category : #'tests - table' }
