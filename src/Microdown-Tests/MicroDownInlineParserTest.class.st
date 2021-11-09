@@ -230,7 +230,7 @@ MicrodownInlineParserTest >> testEscapeAsLastCharacterDoesNotBreak [
 	elts  := self parseAndReturnElementsOfParagraphFor:  'ch\\'.
 	self assert: elts size equals: 1.
 	self assert: elts first class  equals: MicTextBlock.
-	self assert: elts first substring  equals: 'ch\\'.
+	self assert: elts first substring  equals: 'ch\'.
 	
 	elts  := self parseAndReturnElementsOfParagraphFor:  'ch\a'.
 	self assert: elts size equals: 1.

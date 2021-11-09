@@ -90,18 +90,14 @@ MicInlineParserTest >> testCurlyBraceDoesNotLeadToProblem [
 	self assert: mic substring equals:  ' jhkjhk { a }'
 ]
 
-{ #category : #'tests - escape' }
+{ #category : #'tests to make green again' }
 MicInlineParserTest >> testEscapeCharacter [
-	"Test the escape \ in simple case (here, bold one)"
+
+	"we should have just one escape"
 
 	| res |
-	res := self splitter parse: 'abc\**test**last'.
-	self assert: res first class equals: MicTextBlock.
-	
-	"The following is plain wrong we are losing the \ information!"
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc**test**last' }
+	res := self splitter parse: 'not \`mono\` here'.
+	self assert: (res collect: [ :x | x printString ]) equals: { 'not `mono` here' }
 ]
 
 { #category : #'tests - escape' }
@@ -149,14 +145,22 @@ MicInlineParserTest >> testEscapeCharacterInNestedLinkName [
 ]
 
 { #category : #'tests to make green again' }
+MicInlineParserTest >> testEscapeCharacterTwoConsecutive [
+	"we should have just one escape"
+
+	| res |
+	res := self splitter parse: '\\begin\\atend\\'.
+	self assert: (res collect: [ :x | x printString ]) equals: { '\begin\atend\' }
+]
+
+{ #category : #'tests to make green again' }
 MicInlineParserTest >> testEscapeCharacterWithNoCharacterAfter [
 
 	| res |
-	self skip.
-	res := self splitter parse: '**bold**\'.
+	res := self splitter parse: '\'.
+	
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { '**bold**\' }
+		assert: res first substring equals: '\'
 ]
 
 { #category : #'tests - formats' }
@@ -164,11 +168,9 @@ MicInlineParserTest >> testEscapeMonospace [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
 
 	| res |
-	self skip.
 	res := self splitter parse: 'abc`\`monospace\``efg'.
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[\`monospace\`](monospace)'. 'efg' }.
+		assert: res second substring equals: '`monospace`'.
 	self assert: res second class equals: MicMonospaceFormatBlock
 ]
 
