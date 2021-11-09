@@ -8,6 +8,13 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #properties }
+MicElement >> hasProperty: aKey [
+	"Answer the property value associated with aKey."
+	
+	^ self properties includesKey: aKey
+]
+
 { #category : #initialization }
 MicElement >> initialize [
 	super initialize.

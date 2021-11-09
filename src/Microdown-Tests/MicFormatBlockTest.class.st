@@ -75,8 +75,8 @@ MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 
 { #category : #tests }
 MicFormatBlockTest >> testHasProperty [
-	self skip.
-	self deny: (self instance hasProperty: #foo).
+
+	self deny: (self instance  hasProperty: #foo).
 	self instance propertyAt: #foo put: 'bar'.
 	self assert: (self instance hasProperty: #foo).
 	self deny: (self instance hasProperty: #bar)
@@ -172,7 +172,7 @@ MicFormatBlockTest >> testMonospaceWrappedElements [
 
 { #category : #tests }
 MicFormatBlockTest >> testProperties [
-	self skip.
+
 	self assert: self instance properties isNotNil.
 	self instance instVarNamed: 'properties' put: nil.
 
