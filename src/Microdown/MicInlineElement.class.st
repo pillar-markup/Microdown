@@ -67,11 +67,15 @@ MicInlineElement >> childrenPrintOn [
 
 { #category : #operations }
 MicInlineElement >> cleanSubstring [
-	self isOnlyChild ifTrue: [ 
-		self substring: ( String streamContents: [:s | 
-			(self substring splitOn: self escapeCharacter)
-				doWithIndex: [:each :i | 
-					(each isEmpty and: i>1) ifTrue: [ s << self escapeCharacter ] ifFalse: [ s << each ] ] ] ) ]
+	| keepDoubleEscapes res |
+	"remove all \ left by the MicInlineParser - and replace \\ with single \"
+	self substring ifEmpty: [ ^ self ].
+	keepDoubleEscapes := 16rFFFD asCharacter asString.
+	res := self substring copyReplaceAll: '\\' with: keepDoubleEscapes.
+	res last = $\ ifTrue:[res at: res size put: 16rFFFD asCharacter].
+	res := res copyWithoutAll: '\'.
+	res := res copyReplaceAll: keepDoubleEscapes  with: '\'.
+	self substring: res
 ]
 
 { #category : #visiting }

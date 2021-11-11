@@ -88,10 +88,19 @@ MicHTMLWriter >> visitStrike: aStrike [
 { #category : #visiting }
 MicHTMLWriter >> visitTable: aTable [
 
+	| restRows |
 	canvas newLine.
 	canvas tag
 		name: 'table';
-		with: [ super visitTable: aTable ]
+		with: [ 
+			canvas newLine.
+			aTable hasHeader
+				ifTrue: [ 
+					self writeTableHeaders: aTable rows first. 
+					restRows := aTable rows allButFirst  ] 
+				ifFalse: [ restRows := aTable rows ].
+			self writeTableRows: restRows.
+			 ]
 ]
 
 { #category : #visiting }
@@ -117,4 +126,23 @@ MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
 		name: 'li';
 		with: anUnorderedListItem text.
 	canvas newLine
+]
+
+{ #category : #writing }
+MicHTMLWriter >> writeTableHeaders: headers [
+	canvas tag
+		name: 'tr';
+		with: [ headers do: [ :cell | canvas tag name: 'th'; with: [self visitAll: cell]] ].
+	canvas newLine
+		
+]
+
+{ #category : #writing }
+MicHTMLWriter >> writeTableRows: rows [
+	rows do: [ :row |
+		canvas tag
+			name: 'tr';
+			with: [ row do: [ :cell | canvas tag name: 'td'; with: [self visitAll: cell]] ].
+		canvas newLine]
+		
 ]

@@ -264,23 +264,10 @@ MicRichTextComposerTest >> testExternaLink [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testFigure [
-
-	| source richText obj1  |
-	self skip. "Currently getting an error in MicHTTPRessource"
-	
-	source := 'See ![no image found](https://pharo.org/web/files/pharo.png)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
-
-	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
-	self assert: obj1 class name equals: #TextAction
-]
-
-{ #category : #'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
-	self skip: 'The implementation is not done yet'.
+	self skip: 'The implementation need to be changed and synced with resolving'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
@@ -292,23 +279,11 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
-	self skip: 'The implementation is not done yet'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
-	self assert: (richText asString trim includesSubstring: 'SomeText').
+	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
-]
-
-{ #category : #'skipped tests' }
-MicRichTextComposerTest >> testFigureLocal [
-
-	| source richText |
-	self skip. "Local not working yet"
-	source := 'See ![](foo.png)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
-
-	
 ]
 
 { #category : #'skipped tests' }
