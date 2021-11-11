@@ -82,7 +82,7 @@ But also
 Under writing...
 
 ### Headers
-Similar to markdonw headers are composed of `#` space text on one line.
+Similar to markdown headers are composed of `#` space text on one line.
 The headers can be from 1 to 6
 
 ```

@@ -10,15 +10,10 @@ Class {
 
 { #category : #properties }
 MicElement >> hasProperty: aKey [
-	"Answer the property value associated with aKey."
+	"Answer whether there is a property named aKey."
 	
-	^ self properties includesKey: aKey
-]
-
-{ #category : #initialization }
-MicElement >> initialize [
-	super initialize.
-	properties := OrderedDictionary new
+	properties ifNil: [ ^ false ].
+	^ properties includesKey: aKey
 ]
 
 { #category : #public }
@@ -80,8 +75,7 @@ MicElement >> propertyAt: aKey ifAbsentPut: aBlock [
 MicElement >> propertyAt: aKey put: anObject [
 	"Set the property at aKey to be anObject. If aKey is not found, create a new entry for aKey and set is value to anObject. Answer anObject."
 
-	^ (properties ifNil: [ properties := (IdentityDictionary new: 1) ])
-		at: aKey put: anObject
+	^ self properties at: aKey put: anObject
 ]
 
 { #category : #properties }
