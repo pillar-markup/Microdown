@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-RichTextComposer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MicRichTextTable class >> headers: headers rows: rows [
 	"headers is an array of column names, and rows are an array of array of string"
 	^ self new headers: headers rows: rows
@@ -32,7 +32,7 @@ MicRichTextTable >> addHeaders: headers with: renderedRows [
 	self extent: (totalWidth + (headers size * 5)) @ (totalHeight+(renderedRows size +1 *5) )
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MicRichTextTable >> headers: headers rows: rows [
 	self
 		addHeaders: headers with: rows ;
