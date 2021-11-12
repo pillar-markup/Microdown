@@ -1,9 +1,6 @@
 Class {
 	#name : #MicHTMLCanvas,
 	#superclass : #MicExportCanvas,
-	#instVars : [
-		'name'
-	],
 	#classVars : [
 		'HTMLCharacters'
 	],
