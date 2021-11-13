@@ -1,6 +1,9 @@
 Class {
 	#name : #MicHTTPResource,
 	#superclass : #MicResourceReference,
+	#instVars : [
+		'uri'
+	],
 	#category : #'Microdown-Core'
 }
 
@@ -17,9 +20,38 @@ MicHTTPResource >> fullName [
 ]
 
 { #category : #testing }
+MicHTTPResource >> isImage [
+
+	^ self isImage: uri segments last
+]
+
+{ #category : #testing }
+MicHTTPResource >> isResolved [  
+	^ true
+]
+
+{ #category : #testing }
 MicHTTPResource >> isWeb [
 
 	^ urlOrFileReference isWeb
+]
+
+{ #category : #'accessing - resources' }
+MicHTTPResource >> loadImage [
+	"return an image form from my reference"
+	| image |
+	image := ZnEasy getPng: uri.
+	^ image
+]
+
+{ #category : #'accessing - resources' }
+MicHTTPResource >> loadMicrodown [
+	"load, parse and resolve a microdown document"
+	| docString doc |
+	docString := (ZnEasy get: uri) contents.
+	doc := Microdown new parse: docString.
+	MicZinkPathResolver resolve: doc withBase: uri.
+	^doc
 ]
 
 { #category : #querying }
@@ -67,5 +99,17 @@ MicHTTPResource >> resolvedWithResolver: aResolver [
 MicHTTPResource >> string: aString [
 
 	super string: aString.
-	urlOrFileReference := ZnUrlCopy fromString: originalString.
+	urlOrFileReference := MicZnUrl fromString: originalString.
+]
+
+{ #category : #accessing }
+MicHTTPResource >> uri [
+
+	^ uri
+]
+
+{ #category : #accessing }
+MicHTTPResource >> uri: anObject [
+
+	uri := anObject
 ]

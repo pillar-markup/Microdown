@@ -1,6 +1,9 @@
 Class {
 	#name : #MicLocalFileResource,
 	#superclass : #MicResourceReference,
+	#instVars : [
+		'uri'
+	],
 	#category : #'Microdown-Core'
 }
 
@@ -13,6 +16,34 @@ MicLocalFileResource >> asFileReference [
 { #category : #converting }
 MicLocalFileResource >> fullName [ 
 	^ urlOrFileReference fullName
+]
+
+{ #category : #testing }
+MicLocalFileResource >> isImage [
+
+	^ self isImage: uri segments last
+]
+
+{ #category : #testing }
+MicLocalFileResource >> isResolved [  
+	^ true
+]
+
+{ #category : #'accessing - resources' }
+MicLocalFileResource >> loadImage [
+	"return an image form from my reference"
+	| image |
+	image := ImageReadWriter formFromStream: uri asFileReference binaryReadStream  .
+	^ image
+]
+
+{ #category : #'accessing - resources' }
+MicLocalFileResource >> loadMicrodown [
+	"load, parse and resolve a microdown document"
+	| docString doc |
+	docString := uri asFileReference contents.
+	doc := Microdown new parse: docString.
+	^doc
 ]
 
 { #category : #converting }
@@ -77,4 +108,16 @@ MicLocalFileResource >> string: aString [
 
 	super string: aString.
 	urlOrFileReference := Path from: originalString
+]
+
+{ #category : #accessing }
+MicLocalFileResource >> uri [
+
+	^ uri
+]
+
+{ #category : #accessing }
+MicLocalFileResource >> uri: anObject [
+
+	uri := anObject
 ]

@@ -56,6 +56,22 @@ MicResourceReference class >> fromString: aString [
 		
 ]
 
+{ #category : #'instance creation' }
+MicResourceReference class >> fromUri: aString [
+	| uri |
+	uri := ZnUrl fromString: aString.
+	uri scheme
+		ifNil: [ ^ MicRelativeResource new relativePath: aString ].
+	(uri scheme beginsWith: 'http')
+		ifTrue: [ ^ MicHTTPResource new uri: uri ].
+	uri scheme = 'file'
+		ifTrue: [ ^ MicLocalFileResource new uri: uri ].
+	uri scheme = 'pharo'
+		ifTrue: [ ^ MicPharoResource new uri: uri ].
+	^uri
+	
+]
+
 { #category : #converting }
 MicResourceReference >> asFileReference [
 
@@ -71,10 +87,15 @@ MicResourceReference >> isFile [
 ]
 
 { #category : #testing }
-MicResourceReference >> isImageFile [
-	"Working both with resolved or not."
-	^ #('pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png' 'pbm')
-		includes: urlOrFileReference asFileReference extension asLowercase
+MicResourceReference >> isImage: aPath [
+
+	^ #( 'pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png'
+	     'pbm' ) includes: (aPath copyAfterLast: $.) asLowercase
+]
+
+{ #category : #testing }
+MicResourceReference >> isResolved [ 
+	self subclassResponsibility 
 ]
 
 { #category : #testing }
@@ -82,6 +103,18 @@ MicResourceReference >> isWeb [
 	"Answer whether I'm suitable to be opened in a web browser."
 
 	^ false
+]
+
+{ #category : #'accessing - resources' }
+MicResourceReference >> loadImage [
+	"return an image form from my reference"
+	self subclassResponsibility 
+]
+
+{ #category : #'accessing - resources' }
+MicResourceReference >> loadMicrodown [
+	"load, parse and resolve a microdown document"
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

@@ -1,3 +1,6 @@
+"
+I should not be necessary.
+"
 Class {
 	#name : #MicBrokenResource,
 	#superclass : #MicResourceReference,

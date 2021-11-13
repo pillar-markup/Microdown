@@ -18,7 +18,8 @@ Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
 	#instVars : [
-		'parameters'
+		'parameters',
+		'reference'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -39,7 +40,22 @@ MicFigureBlock >> arguments: aDictionary [
 ]
 
 { #category : #visiting }
-MicFigureBlock >> closeMe [ 
+MicFigureBlock >> closeMe [
+
+	"we used this circumvoluted way to use the parsing on arguments provided by the URL parser,
+	even in case of file. so the user can express tmp/figures/goo.png?width=90&anchor=foo"
+
+	| split |
+	split := url splitOnFirst: Character space.
+	self reference: (MicResourceReference fromUri: split first).
+	self arguments:
+		(MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
+	caption := self inlineParse: substring.
+	self children: caption
+]
+
+{ #category : #visiting }
+MicFigureBlock >> closeMeOld [
 	"we used this circumvoluted way to use the parsing on arguments provided by the URL parser,
 	even in case of file. so the user can express tmp/figures/goo.png?width=90&anchor=foo"
 	| dictionary urlString tempUrl |
@@ -109,13 +125,12 @@ MicFigureBlock >> parameters: someParameters [
 
 { #category : #printing }
 MicFigureBlock >> printOn: aStream [
- 	
  		aStream nextPut: $!;
  			nextPut: $[;
  			nextPutAll: self caption;
  			nextPut: $];
  			nextPut: $(.
-		url printOn: aStream. 
+		aStream nextPutAll: url. 
 		aStream nextPut: $).
  		
 ]
@@ -123,6 +138,18 @@ MicFigureBlock >> printOn: aStream [
 { #category : #accessing }
 MicFigureBlock >> query [
 	^ url query
+]
+
+{ #category : #accessing }
+MicFigureBlock >> reference [
+
+	^ reference
+]
+
+{ #category : #accessing }
+MicFigureBlock >> reference: anObject [
+
+	reference := anObject
 ]
 
 { #category : #accessing }

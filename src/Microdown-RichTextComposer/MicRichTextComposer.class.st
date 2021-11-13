@@ -726,22 +726,39 @@ MicRichTextComposer >> visitEnvironment: anObject [
 
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
+
+	"Try to read a png file (only one supported right now), else use alt text"
+
+	| image textContribution |
+	image := aFigure reference loadImage.
+	image ifNotNil: [ 
+		image := self resizeImage: image of: aFigure.
+		textContribution := (String value: 1) asText addAttribute:
+			                    (TextAnchor new anchoredMorph: image) ].
+
+	canvas << textContribution ifNil: [ aFigure caption asText ]
+]
+
+{ #category : #'visiting - inline elements' }
+MicRichTextComposer >> visitFigureOld: aFigure [
+
 	"Try to read a png file (only one supported right now), else use alt text"
 
 	| anchoredImage url textContribution |
+	self flag: 'remove'.
 	textContribution := nil.
-	aFigure isImageFile 
-		ifTrue: [ 
-			url := aFigure url.
-			anchoredImage := url isWeb
-				ifFalse: [ self class cachedImageFromFile: url asFileReference ]
-				ifTrue: [ self class cachedImageFromUrl: url url ].
-			anchoredImage 
-				ifNotNil: [ 
-					anchoredImage := self resizeImage: anchoredImage of: aFigure.
-					textContribution := (String value: 1) asText addAttribute:
-					                 (TextAnchor new anchoredMorph: anchoredImage)] ].
-	
+	aFigure isImageFile ifTrue: [ 
+		url := aFigure url.
+		anchoredImage := url isWeb
+			                 ifFalse: [ 
+			                 self class cachedImageFromFile:
+				                 url asFileReference ]
+			                 ifTrue: [ self class cachedImageFromUrl: url url ].
+		anchoredImage ifNotNil: [ 
+			anchoredImage := self resizeImage: anchoredImage of: aFigure.
+			textContribution := (String value: 1) asText addAttribute:
+				                    (TextAnchor new anchoredMorph: anchoredImage) ] ].
+
 	canvas << textContribution ifNil: [ aFigure caption asText ]
 ]
 

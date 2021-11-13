@@ -213,7 +213,7 @@ MicInlineParserTest >> testFigure [
 		equals: { 'abc'. '![AltText](my_directory/image.png)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference  isKindOf: MicResourceReference)
 	
 ]
 
@@ -243,7 +243,7 @@ MicInlineParserTest >> testFigureWithParameters [
 			{ 'abc'. '![AltText](my_directory/image.png?label=42&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: '42'.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -262,7 +262,7 @@ MicInlineParserTest >> testFigureWithParametersWithBlank [
 			{ 'abc'. '![AltText](my_directory/image.png?label=&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: ''.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
