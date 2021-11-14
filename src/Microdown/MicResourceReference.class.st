@@ -37,24 +37,10 @@ Class {
 	#name : #MicResourceReference,
 	#superclass : #Object,
 	#instVars : [
-		'originalString',
-		'urlOrFileReference'
+		'originalString'
 	],
 	#category : #'Microdown-Core'
 }
-
-{ #category : #'instance creation' }
-MicResourceReference class >> fromString: aString [
-	self error: 'obsolete'.
-	^ (aString beginsWith: 'http')
-		ifTrue: [ MicHTTPResource new 
-						string: aString; 
-						yourself ]
-		ifFalse: [ MicFileResource new 
-							string: aString;
-							yourself ]
-		
-]
 
 { #category : #'instance creation' }
 MicResourceReference class >> fromUri: aString [
@@ -79,15 +65,9 @@ MicResourceReference class >> workingDirectoryReference [
 	^ self fromUri: FileSystem workingDirectory asUrl asString
 ]
 
-{ #category : #converting }
-MicResourceReference >> asFileReference [
-
-	^ self subclassResponsibility
-]
-
 { #category : #testing }
 MicResourceReference >> isFile [
-	
+	"answer if the resource is a file (as opposed to a directory)"
 	(self path last = $/)
 		ifTrue: [ ^ false ].
 	^ true
@@ -95,7 +75,7 @@ MicResourceReference >> isFile [
 
 { #category : #testing }
 MicResourceReference >> isImage: aPath [
-
+	"makes a guess if path referes to an image"
 	^ #( 'pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png'
 	     'pbm' ) includes: (aPath copyAfterLast: $.) asLowercase
 ]
@@ -103,13 +83,6 @@ MicResourceReference >> isImage: aPath [
 { #category : #testing }
 MicResourceReference >> isResolved [ 
 	self subclassResponsibility 
-]
-
-{ #category : #testing }
-MicResourceReference >> isWeb [
-	"Answer whether I'm suitable to be opened in a web browser."
-
-	^ false
 ]
 
 { #category : #'accessing - resources' }
@@ -127,44 +100,22 @@ MicResourceReference >> loadMicrodown [
 { #category : #accessing }
 MicResourceReference >> originalString [
 	
-		
 	^ originalString 
 ]
 
 { #category : #accessing }
-MicResourceReference >> originalString: aString [
+MicResourceReference >> originalString: anObject [
 
-	originalString := aString trimBoth.
-	
-	 
+	originalString := anObject
 ]
 
 { #category : #private }
-MicResourceReference >> path [ 
+MicResourceReference >> path [
+	"return the path part of my reference (leave out http: or file:)"
 	self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : #printing }
 MicResourceReference >> printOn: aStream [
-
 	aStream nextPutAll: originalString 
-]
-
-{ #category : #accessing }
-MicResourceReference >> string: aString [
-
-	originalString := aString trimBoth
-	
-	 
-]
-
-{ #category : #private }
-MicResourceReference >> url [ 
-	^ urlOrFileReference
-]
-
-{ #category : #private }
-MicResourceReference >> url: aString [
-	
-	urlOrFileReference := aString
 ]

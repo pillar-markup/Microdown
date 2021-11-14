@@ -7,6 +7,13 @@ Class {
 	#category : #'Microdown-Tests-Resources'
 }
 
+{ #category : #running }
+MicHTTPResourceTest >> setUp [
+	super setUp.
+	
+	
+]
+
 { #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
 	|uri ref image |

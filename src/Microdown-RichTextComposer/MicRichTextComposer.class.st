@@ -739,29 +739,6 @@ MicRichTextComposer >> visitFigure: aFigure [
 	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 
-{ #category : #'visiting - inline elements' }
-MicRichTextComposer >> visitFigureOld: aFigure [
-
-	"Try to read a png file (only one supported right now), else use alt text"
-
-	| anchoredImage url textContribution |
-	self flag: 'remove'.
-	textContribution := nil.
-	aFigure isImageFile ifTrue: [ 
-		url := aFigure url.
-		anchoredImage := url isWeb
-			                 ifFalse: [ 
-			                 self class cachedImageFromFile:
-				                 url asFileReference ]
-			                 ifTrue: [ self class cachedImageFromUrl: url url ].
-		anchoredImage ifNotNil: [ 
-			anchoredImage := self resizeImage: anchoredImage of: aFigure.
-			textContribution := (String value: 1) asText addAttribute:
-				                    (TextAnchor new anchoredMorph: anchoredImage) ] ].
-
-	canvas << textContribution ifNil: [ aFigure caption asText ]
-]
-
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHeader: aHeader [
 

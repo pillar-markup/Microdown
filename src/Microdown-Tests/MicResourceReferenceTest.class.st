@@ -4,16 +4,19 @@ Class {
 	#category : #'Microdown-Tests-Resources'
 }
 
-{ #category : #tests }
-MicResourceReferenceTest >> resolver: aFileSystemOrURL [
-
-	^ MicPathResolver new resolutionSource: aFileSystemOrURL; yourself
-]
-
 { #category : #helper }
 MicResourceReferenceTest >> resourceClass [
 
 	^ MicResourceReference
+]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testHttpRecognized [
+	|uri ref|
+	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
+	ref := self resourceClass fromUri: uri.
+	self assert: ref isNotNil.
+	self assert: ref class equals: MicHTTPResource.
 ]
 
 { #category : #tests }

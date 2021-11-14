@@ -1,9 +1,6 @@
 Class {
 	#name : #MicPharoResource,
-	#superclass : #MicResourceReference,
-	#instVars : [
-		'uri'
-	],
+	#superclass : #MicAbsoluteResource,
 	#category : #'Microdown-Core'
 }
 
@@ -19,11 +16,6 @@ MicPharoResource >> executeUri [
 		ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ] 
 		ifFalse: [ #() ].
 	^ (class compiledMethodAt: selector) valueWithReceiver: class arguments: args
-]
-
-{ #category : #testing }
-MicPharoResource >> isResolved [ 
-	^true
 ]
 
 { #category : #'accessing - resources' }

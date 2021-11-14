@@ -1,16 +1,13 @@
 Class {
 	#name : #MicRelativeResource,
 	#superclass : #MicResourceReference,
-	#instVars : [
-		'relativePath'
-	],
 	#category : #'Microdown-Core'
 }
 
 { #category : #testing }
 MicRelativeResource >> isImage [
 
-	^ self isImage: relativePath
+	^ self isImage: originalString 
 ]
 
 { #category : #testing }
@@ -20,19 +17,19 @@ MicRelativeResource >> isResolved [
 
 { #category : #accessing }
 MicRelativeResource >> path [
-	^relativePath 
+	^originalString  
 ]
 
 { #category : #accessing }
 MicRelativeResource >> relativePath [
 
-	^ relativePath
+	^ originalString 
 ]
 
 { #category : #accessing }
-MicRelativeResource >> relativePath: anObject [
+MicRelativeResource >> relativePath: aString [
 
-	relativePath := anObject
+	originalString := aString 
 ]
 
 { #category : #'as yet unclassified' }

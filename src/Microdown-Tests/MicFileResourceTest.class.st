@@ -2,13 +2,13 @@
 A MicLocalFileResourceTest is a test class for testing the behavior of MicLocalFileResource
 "
 Class {
-	#name : #MicLocalFileResourceTest,
+	#name : #MicFileResourceTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-Tests-Resources'
 }
 
 { #category : #tests }
-MicLocalFileResourceTest >> testLoadImage [
+MicFileResourceTest >> testLoadImage [
 	|uri ref image |
 	uri := 'file:///Users/kasper/GITHUB/kasperosterbye/Microdown/doc/testMicrodown/toplevel.png'.
 	ref := MicResourceReference  fromUri: uri.
@@ -19,7 +19,7 @@ MicLocalFileResourceTest >> testLoadImage [
 ]
 
 { #category : #tests }
-MicLocalFileResourceTest >> testLoadMicrodown [
+MicFileResourceTest >> testLoadMicrodown [
 	|uri ref doc |
 	uri := 'file:///Users/kasper/GITHUB/kasperosterbye/Microdown/doc/testMicrodown/readme.md'.
 	ref := MicResourceReference  fromUri: uri.

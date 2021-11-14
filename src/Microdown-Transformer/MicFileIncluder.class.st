@@ -80,6 +80,32 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
+	| inputRef inputDoc|
+	"
+	* check in input file is absolute or relative
+	* if relative, resolve with topFile
+	* load referenced microdown
+	* recurse with resolved reference as root
+	* insert ast into me
+	"
+	inputRef := anInputFileAnnotation path.
+	inputRef isResolved 
+		ifFalse: [ 
+			inputRef := inputRef resolveWith: topFile.
+			anInputFileAnnotation path: inputRef].
+	inputDoc := inputRef loadMicrodown.
+	inputDoc ifNil: [ ^ self ].
+	inputDoc accept: (self class new topFile: inputRef ).
+	self replaceCurrentNodeBy: inputDoc children
+	
+	
+	
+]
+
+{ #category : #'visiting-document' }
+MicFileIncluder >> visitInputFileOld: anInputFileAnnotation [
+	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
+	
 	| includedFile microdownAST |
 	self halt.
 	includedFile := anInputFileAnnotation path path.
@@ -88,7 +114,7 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	includedFile ifExists:[
 		"may be better to call back microdown since it defined resolvedTreeFrom:"
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
-		MicPathResolver new 	
+		MicZinkPathResolver new 	
 			originFile: topFile ; visit: microdownAST.
 		self flag: #tofix. "we are missing the resolution source"
 	"Execute a file inclusion step recursively" 
