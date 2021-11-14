@@ -45,7 +45,7 @@ Class {
 
 { #category : #'instance creation' }
 MicResourceReference class >> fromString: aString [
-	
+	self error: 'obsolete'.
 	^ (aString beginsWith: 'http')
 		ifTrue: [ MicHTTPResource new 
 						string: aString; 
@@ -59,6 +59,8 @@ MicResourceReference class >> fromString: aString [
 { #category : #'instance creation' }
 MicResourceReference class >> fromUri: aString [
 	| uri |
+	(aString beginsWith: '/')
+		ifTrue: [ ^ MicLocalFileResource new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
 		ifNil: [ ^ MicRelativeResource new relativePath: aString ].
@@ -72,6 +74,11 @@ MicResourceReference class >> fromUri: aString [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+MicResourceReference class >> workingDirectoryReference [
+	^ self fromUri: FileSystem workingDirectory asUrl asString
+]
+
 { #category : #converting }
 MicResourceReference >> asFileReference [
 
@@ -81,7 +88,7 @@ MicResourceReference >> asFileReference [
 { #category : #testing }
 MicResourceReference >> isFile [
 	
-	(originalString last = $/)
+	(self path last = $/)
 		ifTrue: [ ^ false ].
 	^ true
 ]
@@ -134,7 +141,7 @@ MicResourceReference >> originalString: aString [
 
 { #category : #private }
 MicResourceReference >> path [ 
-	^ urlOrFileReference
+	self subclassResponsibility 
 ]
 
 { #category : #testing }

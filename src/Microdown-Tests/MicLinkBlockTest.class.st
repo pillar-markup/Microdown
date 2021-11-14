@@ -70,7 +70,7 @@ MicLinkBlockTest >> testLinkAPIToAccessText [
 	link := (self parser parse: self linkSample) children first
 		        children first.
 	self assert: link class equals: MicLinkBlock.
-	self assert: link url printString equals: '/anUrl'
+	self assert: link url equals: '/anUrl'
 ]
 
 { #category : #'tests - link' }
@@ -95,7 +95,7 @@ MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 	self assert: link children first class equals: MicBoldFormatBlock.
 	self assert: link children first children first class equals: MicTextBlock.
 
-	self assert: link url printString equals: '/anUrl'
+	self assert: link url equals: '/anUrl'
 ]
 
 { #category : #'tests - link' }
@@ -105,7 +105,7 @@ MicLinkBlockTest >> testLinkCreatesInnerText [
 	link := (self parser parse: '[ab](https://ab.com)') children first
 		        children first.
 	self assert: link class equals: MicLinkBlock.
-	self assert: link url printString equals: 'https://ab.com'
+	self assert: link url equals: 'https://ab.com'
 ]
 
 { #category : #'tests - link' }
@@ -120,7 +120,7 @@ MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 		assert: link children first children first class
 		equals: MicTextBlock.
 
-	self assert: link url printString equals: '/anUrl'
+	self assert: link url equals: '/anUrl'
 ]
 
 { #category : #tests }
@@ -136,7 +136,7 @@ MicLinkBlockTest >> testUrl [
 
 	| link |
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.
-	self assert: link url printString equals: 'http://www.pharo.org:8080'
+	self assert: link url equals: 'http://www.pharo.org:8080'
 ]
 
 { #category : #tests }

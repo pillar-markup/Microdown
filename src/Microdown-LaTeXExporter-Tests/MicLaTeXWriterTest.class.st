@@ -106,7 +106,7 @@ MicLaTeXWriterTest >> testFigure [
 
 \begin{center}
 \includegraphics[width=1.0\textwidth]{/anUrl}
-\caption{Foooo}\label{figureTest}
+\caption{Foo}\label{figureTest}
 \end{center}
 \end{figure}
 

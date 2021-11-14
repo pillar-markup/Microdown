@@ -24,7 +24,7 @@ MicInputfileBlock >> closeMe [
 	p := arguments at: #path ifAbsent: [ 'notfound' ].
 	p = 'notfound'
 		ifTrue: [ self path: (MicBrokenResource new originalString: substring; yourself) ]
-		ifFalse: [self path: (MicResourceReference fromString: (arguments at: #path)) ]
+		ifFalse: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
 ]
 
 { #category : #accessing }

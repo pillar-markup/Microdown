@@ -380,7 +380,7 @@ MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc
 { #category : #examples }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (Microdown new resolvedTreeFrom: aString)
+	^ self new visit: (Microdown new parse: aString)
 
 ]
 
@@ -736,7 +736,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 		textContribution := (String value: 1) asText addAttribute:
 			                    (TextAnchor new anchoredMorph: image) ].
 
-	canvas << textContribution ifNil: [ aFigure caption asText ]
+	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 
 { #category : #'visiting - inline elements' }
@@ -791,16 +791,11 @@ MicRichTextComposer >> visitItalic: anObject [
 MicRichTextComposer >> visitLink: aLink [
 
 	| attribute |
-	attribute := nil.
-	aLink url isWeb ifTrue: [
-		attribute := TextAction new
-			actOnClickBlock: [ WebBrowser openOn: aLink url printString ];
-			yourself ].
-	attribute
-		ifNotNil: [ canvas
-			includeAttribute: attribute
-			in: [ super visitLink: aLink ] ]
-		ifNil: [ super visitLink: aLink ]
+	attribute := TextAction new
+		             actOnClickBlock: [ 
+			             WebBrowser openOn: aLink url printString ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
 
 { #category : #'visiting - list' }

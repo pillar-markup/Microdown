@@ -46,6 +46,11 @@ MicLocalFileResource >> loadMicrodown [
 	^doc
 ]
 
+{ #category : #accessing }
+MicLocalFileResource >> path [
+	^ '/', self uri path
+]
+
 { #category : #converting }
 MicLocalFileResource >> resolvedBy: aRoot [
 	

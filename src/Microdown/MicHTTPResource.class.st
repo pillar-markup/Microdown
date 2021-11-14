@@ -39,9 +39,9 @@ MicHTTPResource >> isWeb [
 { #category : #'accessing - resources' }
 MicHTTPResource >> loadImage [
 	"return an image form from my reference"
-	| image |
-	image := ZnEasy getPng: uri.
-	^ image
+	[ ^ ZnEasy getPng: uri ]
+		on: Error
+		do: [ ^ nil ]
 ]
 
 { #category : #'accessing - resources' }
@@ -52,6 +52,11 @@ MicHTTPResource >> loadMicrodown [
 	doc := Microdown new parse: docString.
 	MicZinkPathResolver resolve: doc withBase: uri.
 	^doc
+]
+
+{ #category : #accessing }
+MicHTTPResource >> path [
+	^self uri path
 ]
 
 { #category : #querying }
@@ -99,7 +104,7 @@ MicHTTPResource >> resolvedWithResolver: aResolver [
 MicHTTPResource >> string: aString [
 
 	super string: aString.
-	urlOrFileReference := MicZnUrl fromString: originalString.
+	urlOrFileReference := ZnUrlCopy  fromString: originalString.
 ]
 
 { #category : #accessing }

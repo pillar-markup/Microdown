@@ -19,6 +19,11 @@ MicRelativeResource >> isResolved [
 ]
 
 { #category : #accessing }
+MicRelativeResource >> path [
+	^relativePath 
+]
+
+{ #category : #accessing }
 MicRelativeResource >> relativePath [
 
 	^ relativePath
@@ -28,4 +33,9 @@ MicRelativeResource >> relativePath [
 MicRelativeResource >> relativePath: anObject [
 
 	relativePath := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MicRelativeResource >> resolveWith: baseReference [
+	^ MicResourceReference fromUri: (baseReference uri withRelativeReference: self relativePath) asString
 ]

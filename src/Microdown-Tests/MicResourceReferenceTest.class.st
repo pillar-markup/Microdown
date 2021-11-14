@@ -20,9 +20,9 @@ MicResourceReferenceTest >> resourceClass [
 MicResourceReferenceTest >> testIsFileOfNoUrlFile [
 
 	| mf |
-	mf := self resourceClass fromString: 'server.org/figures/p.png'.
+	mf := self resourceClass fromUri: 'server.org/figures/p.png'.
 	self assert: mf isFile.
-	mf := self resourceClass fromString: '/server.org/figures/p.png'.
+	mf := self resourceClass fromUri: '/server.org/figures/p.png'.
 	self assert: mf isFile.
 ]
 
@@ -30,9 +30,9 @@ MicResourceReferenceTest >> testIsFileOfNoUrlFile [
 MicResourceReferenceTest >> testIsFileOfNoUrlFolder [
 
 	| mf |
-	mf := self resourceClass fromString: 'server.org/figures/'.
+	mf := self resourceClass fromUri: 'server.org/figures/'.
 	self deny: mf isFile.
-	mf := self resourceClass fromString: '/server.org/figures/'.
+	mf := self resourceClass fromUri: '/server.org/figures/'.
 	self deny: mf isFile.
 ]
 
@@ -40,12 +40,11 @@ MicResourceReferenceTest >> testIsFileOfNoUrlFolder [
 MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFile [
 
 	| mf |
-	mf := self resourceClass fromString: 'server.org/figures/p.png'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: 'server.org/figures/p.png'.
+	mf := mf resolveWith:  self resourceClass workingDirectoryReference. 
 	self assert: mf isFile.
 	
-	mf := self resourceClass fromString: '/server.org/figures/p.png'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: '/server.org/figures/p.png'.
 	self assert: mf isFile.
 ]
 
@@ -53,11 +52,10 @@ MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFile [
 MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFolder [
 
 	| mf |
-	mf := self resourceClass fromString: 'server.org/figures/'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: 'server.org/figures/'.
+	mf := mf resolveWith:  self resourceClass workingDirectoryReference.
 	self deny: mf isFile.
-	mf := self resourceClass fromString: '/server.org/figures/'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: '/server.org/figures/'.
 	self deny: mf isFile.
 ]
 
@@ -65,8 +63,7 @@ MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFolder [
 MicResourceReferenceTest >> testIsFileOfResolvedUrlFile [
 
 	| mf |
-	mf := self resourceClass fromString: 'http://server/figures/m.png'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: 'http://server/figures/m.png'.
 	self assert: mf isFile.
 	
 ]
@@ -75,7 +72,7 @@ MicResourceReferenceTest >> testIsFileOfResolvedUrlFile [
 MicResourceReferenceTest >> testIsFileOfUrlFile [
 
 	| mf |
-	mf := self resourceClass fromString: 'http://server/figures/m.png'.
+	mf := self resourceClass fromUri: 'http://server/figures/m.png'.
 	self assert: mf isFile.
 	
 ]
@@ -84,7 +81,7 @@ MicResourceReferenceTest >> testIsFileOfUrlFile [
 MicResourceReferenceTest >> testIsFileOfUrlFolder [
 
 	| mf |
-	mf := self resourceClass fromString: 'http://server.org/figures/'.
+	mf := self resourceClass fromUri: 'http://server.org/figures/'.
 	self deny: mf isFile.
 	
 ]
@@ -93,8 +90,7 @@ MicResourceReferenceTest >> testIsFileOfUrlFolder [
 MicResourceReferenceTest >> testIsFileOfUrlResolvedFolder [
 
 	| mf |
-	mf := self resourceClass fromString: 'http://server.org/figures/'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
+	mf := self resourceClass fromUri: 'http://server.org/figures/'.
 	self deny: mf isFile.
 	
 ]
@@ -103,30 +99,20 @@ MicResourceReferenceTest >> testIsFileOfUrlResolvedFolder [
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
-	mf := self resourceClass fromString: 'http://server/m.mic'.
-	self assert: mf asString equals: 'http://server/m.mic'.
+	mf := self resourceClass fromUri: 'http://server/m.mic'.
+	self assert: mf uri asString equals: 'http://server/m.mic'.
 
-]
-
-{ #category : #'tests - file reference conversion' }
-MicResourceReferenceTest >> testResolvedFileReferenceFromFile [
-	"Resolution does not change the file reference conversion."
-	
-	| mf |
-	mf := self resourceClass fromString: '/tmp'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver: FileSystem workingDirectory).
-	self assert: mf asFileReference fullName  equals: '/tmp'.
-	
 ]
 
 { #category : #tests }
 MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
 	
-	| mf |
-	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver:  FileSystem memory / 'root2').
+	| mf base|
+	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	base := self resourceClass fromUri: 'file:///stuff'.
+	mf := mf resolveWith: base.
 	self assert: (mf isKindOf: MicLocalFileResource).
-	self assert: mf path pathString equals:  '/chapter1/figures/m.mic'. 
+	self assert: mf uri asString equals:  'file:///chapter1/figures/m.mic'. 
 	
 ]
 
@@ -134,21 +120,8 @@ MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
 MicResourceReferenceTest >> testResolvedIsImageFile [
 	
 	| mf |
-	mf := self resourceClass fromString: '/chapter1/figures/m.png'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver:  FileSystem workingDirectory).
-	self assert: mf isImageFile.
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testResolvedIsRelativeFile [
-	
-	| mf |
-	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver:  FileSystem memory workingDirectory).
-
-	self assert: (mf isKindOf: MicLocalFileResource).
-	self assert: mf path pathString equals: 'chapter1/figures/m.mic'
+	mf := self resourceClass fromUri: 'http://foo.edu/chapter1/figures/m.png'.
+	self assert: mf isImage.
 	
 ]
 
@@ -156,9 +129,9 @@ MicResourceReferenceTest >> testResolvedIsRelativeFile [
 MicResourceReferenceTest >> testUnResolvedIsRelativeFile [
 	
 	| mf |
-	mf := self resourceClass fromString: 'chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicLocalFileResource).
-	self assert: mf path pathString equals: 'chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	self assert: (mf isKindOf: MicRelativeResource).
+	self assert: mf relativePath  equals: 'chapter1/figures/m.mic'.
 	
 ]
 
@@ -167,8 +140,8 @@ MicResourceReferenceTest >> testUnresolvedFileReferenceFromFile [
 	"Resolution does not change the file reference conversion."
 	
 	| mf |
-	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
-	self assert: mf path pathString equals: '/chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
+	self assert: mf path equals: '/chapter1/figures/m.mic'.
 	
 ]
 
@@ -176,9 +149,9 @@ MicResourceReferenceTest >> testUnresolvedFileReferenceFromFile [
 MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 	
 	| mf |
-	mf := self resourceClass fromString: '/chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
 	self assert: (mf isKindOf: MicLocalFileResource).
-	self assert: mf path pathString equals: '/chapter1/figures/m.mic'.
+	self assert: mf path  equals: '/chapter1/figures/m.mic'.
 
 	
 ]
@@ -187,19 +160,7 @@ MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 MicResourceReferenceTest >> testUnresolvedIsImageFile [
 	
 	| mf |
-	mf := self resourceClass fromString: '/chapter1/figures/m.png'.
-	self assert: mf isImageFile.
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testUrlGetResolved [
-
-	
-	| mf |
-	mf := self resourceClass fromString: 'http://files.pharo.org/logo/pharologo.png'.
-	mf resolvedBy: (Path * '') withResolver: (self resolver:  FileSystem memory workingDirectory).
-	self assert: (mf isKindOf: MicHTTPResource).
-	self assert: (mf url printString) equals: 'http://files.pharo.org/logo/pharologo.png'
+	mf := self resourceClass fromUri: '/chapter1/figures/m.png'.
+	self assert: mf isImage
 	
 ]

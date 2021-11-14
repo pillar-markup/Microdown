@@ -50,8 +50,8 @@ MicFigureBlock >> closeMe [
 	self reference: (MicResourceReference fromUri: split first).
 	self arguments:
 		(MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
-	caption := self inlineParse: substring.
-	self children: caption
+	self captionElements: (self inlineParse: substring).
+	self children: captionElements
 ]
 
 { #category : #visiting }
@@ -65,7 +65,7 @@ MicFigureBlock >> closeMeOld [
 	tempUrl query ifNotNil: [ :q |
 		q keysAndValuesDo: [ :k :v | dictionary at: k put: v  ] ].
 	self arguments: dictionary.
-	caption := self inlineParse: substring.
+	captionElements := self inlineParse: substring.
 	"while the instance variable is named url it will host a file or http url mic resources object"
 	url := MicResourceReference fromString: urlString
 	
@@ -75,21 +75,14 @@ MicFigureBlock >> closeMeOld [
 
 { #category : #testing }
 MicFigureBlock >> hasCaption [ 	
-	caption ifNil: [ ^ false ].
-	^ true
+	^ captionElements notNil 
 ]
 
 { #category : #testing }
 MicFigureBlock >> isImageFile [
 	"Answer whether the file name indicates an image file."
 
-	^ url isImageFile
-]
-
-{ #category : #testing }
-MicFigureBlock >> isRelativeFilePath [
-	self flag: #toRemove.
-	^ self url isFile and: [ (self url asString beginsWith: 'file:///') not ]
+	^ url isImage
 ]
 
 { #category : #accessing }
@@ -111,18 +104,6 @@ MicFigureBlock >> originUrl [
 		^ url ]
 ]
 
-{ #category : #accessing }
-MicFigureBlock >> parameters [
-	self deprecated: 'Use arguments instead' transformWith: '`@rec parameters' -> '`@rec arguments'.
-	^ parameters 
-]
-
-{ #category : #accessing }
-MicFigureBlock >> parameters: someParameters [
-	self deprecated: 'Use arguments: instead' transformWith: '`@rec parameters: `@arg' -> '`@rec arguments: `@arg'.
-	parameters := someParameters
-]
-
 { #category : #printing }
 MicFigureBlock >> printOn: aStream [
  		aStream nextPut: $!;
@@ -133,11 +114,6 @@ MicFigureBlock >> printOn: aStream [
 		aStream nextPutAll: url. 
 		aStream nextPut: $).
  		
-]
-
-{ #category : #accessing }
-MicFigureBlock >> query [
-	^ url query
 ]
 
 { #category : #accessing }

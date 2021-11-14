@@ -90,7 +90,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure reference relativePath ]
+		parameter: [ canvas raw: aFigure reference path ]
 ]
 
 { #category : #initialization }
