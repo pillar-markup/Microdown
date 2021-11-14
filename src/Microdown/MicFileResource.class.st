@@ -1,36 +1,80 @@
 Class {
-	#name : #MicLocalFileResource,
+	#name : #MicFileResource,
 	#superclass : #MicResourceReference,
 	#instVars : [
 		'uri'
 	],
+	#classVars : [
+		'Hosts'
+	],
 	#category : #'Microdown-Core'
 }
 
-{ #category : #converting }
-MicLocalFileResource >> asFileReference [
+{ #category : #'as yet unclassified' }
+MicFileResource class >> host: hostName is: aBlock [
+	self hosts at: hostName put: aBlock
+]
 
-	^ urlOrFileReference 
+{ #category : #'as yet unclassified' }
+MicFileResource class >> hostFileReference: hostName [
+	"returns a file reference for the host, or nil if no such host exists"
+	^ (self hosts at: hostName ifAbsent: [ ^ nil ]) value
+]
+
+{ #category : #'as yet unclassified' }
+MicFileResource class >> hosts [
+	Hosts ifNil: [ 
+		Hosts := Dictionary new. 
+		self populateHosts ].
+	^ Hosts
+	
+]
+
+{ #category : #'as yet unclassified' }
+MicFileResource class >> initialize [ 
+	<script>
+	Hosts := nil.
+]
+
+{ #category : #'as yet unclassified' }
+MicFileResource class >> populateHosts [
+	self halt.
+	self host: #localhost is: [ FileSystem disk root asFileReference   ].
+	self host: #workingdirectory is: [ FileSystem workingDirectory  ]
+]
+
+{ #category : #'as yet unclassified' }
+MicFileResource class >> removeHost: hostName [
+	self hosts removeKey: hostName ifAbsent: [  ]
 ]
 
 { #category : #converting }
-MicLocalFileResource >> fullName [ 
+MicFileResource >> asFileReference [
+	| hostRef |
+	uri host ifNil: [ ^ uri asFileReference  ].
+	hostRef := self class hostFileReference: uri host asSymbol.
+	hostRef ifNil: [ ^ uri asFileReference  ].
+	self halt.
+]
+
+{ #category : #converting }
+MicFileResource >> fullName [ 
 	^ urlOrFileReference fullName
 ]
 
 { #category : #testing }
-MicLocalFileResource >> isImage [
+MicFileResource >> isImage [
 
 	^ self isImage: uri segments last
 ]
 
 { #category : #testing }
-MicLocalFileResource >> isResolved [  
+MicFileResource >> isResolved [  
 	^ true
 ]
 
 { #category : #'accessing - resources' }
-MicLocalFileResource >> loadImage [
+MicFileResource >> loadImage [
 	"return an image form from my reference"
 	| image |
 	image := ImageReadWriter formFromStream: uri asFileReference binaryReadStream  .
@@ -38,7 +82,7 @@ MicLocalFileResource >> loadImage [
 ]
 
 { #category : #'accessing - resources' }
-MicLocalFileResource >> loadMicrodown [
+MicFileResource >> loadMicrodown [
 	"load, parse and resolve a microdown document"
 	| docString doc |
 	docString := uri asFileReference contents.
@@ -47,15 +91,15 @@ MicLocalFileResource >> loadMicrodown [
 ]
 
 { #category : #accessing }
-MicLocalFileResource >> path [
+MicFileResource >> path [
 	^ '/', self uri path
 ]
 
 { #category : #converting }
-MicLocalFileResource >> resolvedBy: aRoot [
+MicFileResource >> resolvedBy: aRoot [
 	
 	^ (aRoot isKindOf: FileReference)
-			ifTrue: [ MicLocalFileResource new 
+			ifTrue: [ MicFileResource new 
 								originalString: originalString; 
 								url: (aRoot resolvePath: self path) ]
 			ifFalse: [ 
@@ -65,7 +109,7 @@ MicLocalFileResource >> resolvedBy: aRoot [
 ]
 
 { #category : #converting }
-MicLocalFileResource >> resolvedBy: parentPath withResolver: aResolver [
+MicFileResource >> resolvedBy: parentPath withResolver: aResolver [
 	
 	^ (aResolver resolutionSource isKindOf: ZnUrl)
 		ifTrue: [ 
@@ -87,7 +131,7 @@ MicLocalFileResource >> resolvedBy: parentPath withResolver: aResolver [
 ]
 
 { #category : #converting }
-MicLocalFileResource >> resolvedWithResolver: aResolver [
+MicFileResource >> resolvedWithResolver: aResolver [
 	"Experimental"
 	^ (aResolver resolutionSource isKindOf: ZnUrl)
 		ifTrue: [ 
@@ -109,20 +153,20 @@ MicLocalFileResource >> resolvedWithResolver: aResolver [
 ]
 
 { #category : #converting }
-MicLocalFileResource >> string: aString [
+MicFileResource >> string: aString [
 
 	super string: aString.
 	urlOrFileReference := Path from: originalString
 ]
 
 { #category : #accessing }
-MicLocalFileResource >> uri [
+MicFileResource >> uri [
 
 	^ uri
 ]
 
 { #category : #accessing }
-MicLocalFileResource >> uri: anObject [
+MicFileResource >> uri: anObject [
 
 	uri := anObject
 ]

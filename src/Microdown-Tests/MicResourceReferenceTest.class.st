@@ -111,7 +111,7 @@ MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
 	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
 	base := self resourceClass fromUri: 'file:///stuff'.
 	mf := mf resolveWith: base.
-	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: (mf isKindOf: MicFileResource).
 	self assert: mf uri asString equals:  'file:///chapter1/figures/m.mic'. 
 	
 ]
@@ -150,7 +150,7 @@ MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 	
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicLocalFileResource).
+	self assert: (mf isKindOf: MicFileResource).
 	self assert: mf path  equals: '/chapter1/figures/m.mic'.
 
 	

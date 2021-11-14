@@ -50,7 +50,7 @@ MicResourceReference class >> fromString: aString [
 		ifTrue: [ MicHTTPResource new 
 						string: aString; 
 						yourself ]
-		ifFalse: [ MicLocalFileResource new 
+		ifFalse: [ MicFileResource new 
 							string: aString;
 							yourself ]
 		
@@ -60,14 +60,14 @@ MicResourceReference class >> fromString: aString [
 MicResourceReference class >> fromUri: aString [
 	| uri |
 	(aString beginsWith: '/')
-		ifTrue: [ ^ MicLocalFileResource new uri: (ZnUrl fromString: 'file://',aString) ].
+		ifTrue: [ ^ MicFileResource new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
 		ifNil: [ ^ MicRelativeResource new relativePath: aString ].
 	(uri scheme beginsWith: 'http')
 		ifTrue: [ ^ MicHTTPResource new uri: uri ].
 	uri scheme = 'file'
-		ifTrue: [ ^ MicLocalFileResource new uri: uri ].
+		ifTrue: [ ^ MicFileResource new uri: uri ].
 	uri scheme = 'pharo'
 		ifTrue: [ ^ MicPharoResource new uri: uri ].
 	^uri
