@@ -154,7 +154,7 @@ MicRichTextComposerTest >> superscriptFormat [
 
 { #category : #tests }
 MicRichTextComposerTest >> testBackslashLast [
-		| source richText |
+	| source richText |
 	source := 'I am a text which ends in \'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: source
@@ -185,6 +185,7 @@ MicRichTextComposerTest >> testBoldFormat [
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
+
 	| source runs richText |
 	source := '
 ```arguments
@@ -204,6 +205,7 @@ line 2
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
+
 	| source richText expected |
 	source := '
 ```language=dummy
@@ -218,6 +220,7 @@ line 2
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
+
 	| source richText expected |
 	source := '
 ```dummy
@@ -231,7 +234,8 @@ line 2
 ]
 
 { #category : #'tests - codeBlock' }
-MicRichTextComposerTest >> testCodeBlockWithCaption [ 
+MicRichTextComposerTest >> testCodeBlockWithCaption [
+
 	| source runs richText |
 	source := '
 ```caption=Roger Rabbit
@@ -255,7 +259,7 @@ Roger Rabbit
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testExternaLink [
 
-	| source richText obj1  |
+	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
@@ -266,7 +270,7 @@ MicRichTextComposerTest >> testExternaLink [
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
-	| source richText|
+	| source richText |
 	self skip: 'The implementation need to be changed and synced with resolving'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
@@ -346,11 +350,12 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testItalicFormat [ 
+MicRichTextComposerTest >> testItalicFormat [
+
 	| source runs richText |
 	source := 'This have been _emphasized_'.
 	richText := self richTextForString: source.
-	runs := (richText runs ) asArray .
+	runs := richText runs asArray.
 	
 	self assert: runs first isEmpty. 
 	self assert: ((runs at: 19 "the p in emphasized") includes: self italicFormat ).
@@ -359,7 +364,8 @@ MicRichTextComposerTest >> testItalicFormat [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testLatexMathStyle [
-	|    source1 source2 richText1 richText2 |
+
+	| source1 source2 richText1 richText2 |
 	"this checks if latex is working by making two formulas, of which the second should be taller"
 	source1 :=  'foo$a+b$bar'.
 	source2 :=  'foo$\frac{A}{B}$bar'.
@@ -369,7 +375,8 @@ MicRichTextComposerTest >> testLatexMathStyle [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testLatexMathStyleEmpty [ 
+MicRichTextComposerTest >> testLatexMathStyleEmpty [
+
 	| source richText |
 	source :=  'foo$$bar'.
 	richText := self richTextForString: source.
@@ -378,6 +385,7 @@ MicRichTextComposerTest >> testLatexMathStyleEmpty [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testListAreCorrectlyNumbered [
+
 	| source richText |
 	source :=
 '1. item 1
@@ -392,27 +400,9 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testNestedList [
-	| source richText runs|
-	source := 
-'- item 1
-  1. sub item 1.1
-- item 2
-  2. sub item 2.1
-  2. sub item 2.2
-- item 3'.
-	richText := self richTextForString: source.
-	runs := richText runs.
-	
-	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
-	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
-	self assert: (runs at: 35) first amount equals: 3
-	
-]
-
-{ #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedMixedList [
-	| source richText runs|
+
+	| source richText runs |
 	source := 
 '- item 1
   1. sub item 1.1
@@ -431,7 +421,8 @@ MicRichTextComposerTest >> testNestedMixedList [
 
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
-	| source richText runs|
+
+	| source richText runs |
 	source := 
 '- item 1
   - sub item 1.1
@@ -458,6 +449,7 @@ MicRichTextComposerTest >> testNewDictionaryAPI [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testNoNSuperfluousNewLines [
+
 	| source richText expected |
 	source :=  'This is **bold**
 	
@@ -471,6 +463,7 @@ And this is just an other paragraph'.
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testNosuperfluousNewLines [
+
 	| source richText expected |
 	source :=  'This is **bold**'.
 	expected := 'This is bold'.
@@ -479,7 +472,8 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testOrderedList [ 
+MicRichTextComposerTest >> testOrderedList [
+
 	| source richText runs  |
 	source := '1. First item
 2. Second item
@@ -497,6 +491,7 @@ MicRichTextComposerTest >> testOrderedList [
 
 { #category : #'tests - paragraph' }
 MicRichTextComposerTest >> testParagraphNotFormat [
+
 	| runs richText |
 	richText := self richTextFor: (self microElementsFrom: '
 foo
@@ -511,7 +506,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 	| source runs richText |
 	source := 'This have been ~deleted~'.
 	richText := self richTextForString: source.
-	runs := (richText runs ) asArray .
+	runs := richText runs asArray.
 	
 	self assert: runs first isEmpty. 
 	self assert: ((runs at: 19 "the l in deleted") includes: self strikethroughtFormat ).
@@ -544,26 +539,9 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #tests }
-MicRichTextComposerTest >> testStylersAreRegistered [
-	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
-]
-
-{ #category : #tests }
-MicRichTextComposerTest >> testStylersForText [
-	"this one is empty and have been moved to MicCodeStylerSpecTest - left here to do nothing"
-]
-
-{ #category : #'skipped tests' }
-MicRichTextComposerTest >> testSubscriptFormat [
-	"Test fails: subscript isn't recognized"
-	
-	self assert: true.
-	
-]
-
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testUnorderedList [ 
+MicRichTextComposerTest >> testUnorderedList [
+
 	| source richText runs  |
 	source :=  '- First item
 - Second item
