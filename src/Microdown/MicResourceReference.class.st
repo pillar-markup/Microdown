@@ -85,18 +85,6 @@ MicResourceReference >> isResolved [
 	self subclassResponsibility 
 ]
 
-{ #category : #'accessing - resources' }
-MicResourceReference >> loadImage [
-	"return an image form from my reference"
-	self subclassResponsibility 
-]
-
-{ #category : #'accessing - resources' }
-MicResourceReference >> loadMicrodown [
-	"load, parse and resolve a microdown document"
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 MicResourceReference >> originalString [
 	

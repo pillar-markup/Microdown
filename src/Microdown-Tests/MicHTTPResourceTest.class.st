@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Tests-Resources'
 }
 
+{ #category : #'as yet unclassified' }
+MicHTTPResourceTest class >> githubTestData [
+	^ MicResourceReference fromUri: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
+]
+
 { #category : #running }
 MicHTTPResourceTest >> setUp [
 	super setUp.
@@ -17,8 +22,8 @@ MicHTTPResourceTest >> setUp [
 { #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
 	|uri ref image |
-	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/toplevel.png'.
-	ref := MicResourceReference  fromUri: uri.
+	uri := 'toplevel.png' asMicResourceUri.
+	ref := uri resolveWith: self class githubTestData.
 	image := ref loadImage.
 	self assert: image notNil.
 	self assert: image height equals: 90.
@@ -28,8 +33,8 @@ MicHTTPResourceTest >> testLoadImage [
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodown [
 	|uri ref doc |
-	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
-	ref := MicResourceReference  fromUri: uri.
+	uri := 'readme.md' asMicResourceUri.
+	ref := uri resolveWith: self class githubTestData.
 	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
@@ -39,8 +44,8 @@ MicHTTPResourceTest >> testLoadMicrodown [
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodownResolves [
 	|uri ref doc topLevelImageRef |
-	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
-	ref := MicResourceReference  fromUri: uri.
+	uri := 'readme.md' asMicResourceUri.
+	ref := uri resolveWith: self class githubTestData.
 	doc := ref loadMicrodown.
 	
 	topLevelImageRef := doc children fourth children first.
@@ -53,8 +58,8 @@ MicHTTPResourceTest >> testLoadMicrodownResolves [
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodownResolvesTopLevel [
 	|uri ref doc topLevelImageRef |
-	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
-	ref := MicResourceReference  fromUri: uri.
+	uri := 'readme.md' asMicResourceUri.
+	ref := uri resolveWith: self class githubTestData.
 	doc := ref loadMicrodown.
 	
 	topLevelImageRef := doc children fourth children first.

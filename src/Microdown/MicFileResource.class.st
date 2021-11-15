@@ -18,18 +18,18 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> host: hostName is: aBlock [
 	self hosts at: hostName put: aBlock
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> hostFileReference: hostName [
 	"returns a file reference for the host, or nil if no such host exists"
 	^ (self hosts at: hostName ifAbsent: [ ^ nil ]) value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> hosts [
 	Hosts ifNil: [ 
 		Hosts := Dictionary new. 
@@ -38,19 +38,19 @@ MicFileResource class >> hosts [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> initialize [ 
 	<script>
 	Hosts := nil.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> populateHosts [
 	self host: #localhost is: [ FileSystem disk root asFileReference   ].
 	self host: #workingdirectory is: [ FileSystem workingDirectory  ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'url hosts' }
 MicFileResource class >> removeHost: hostName [
 	self hosts removeKey: hostName ifAbsent: [  ]
 ]

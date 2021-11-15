@@ -12,3 +12,13 @@ MicBrokenResource >> asFileReference [
 
 	^ self error
 ]
+
+{ #category : #testing }
+MicBrokenResource >> isResolved [ 
+	^ false
+]
+
+{ #category : #accessing }
+MicBrokenResource >> path [
+	^originalString  
+]

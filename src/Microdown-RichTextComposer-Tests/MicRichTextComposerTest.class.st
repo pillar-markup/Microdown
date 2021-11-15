@@ -267,7 +267,6 @@ MicRichTextComposerTest >> testExternaLink [
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
-	self skip: 'The implementation need to be changed and synced with resolving'.
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 

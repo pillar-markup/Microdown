@@ -32,7 +32,7 @@ MicRelativeResource >> relativePath: aString [
 	originalString := aString 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicRelativeResource >> resolveWith: baseReference [
 	^ MicResourceReference fromUri: (baseReference uri withRelativeReference: self relativePath) asString
 ]
