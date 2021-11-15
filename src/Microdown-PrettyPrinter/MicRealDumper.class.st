@@ -259,7 +259,7 @@ MicRealDumper >> visitQuote: aQuote [
 { #category : #'visit - section' }
 MicRealDumper >> visitRaw: aMicRaw [
 
-	self halt.
+	"self halt".
 	stream nextPut: $(.
 	self emitClassNameOf: aMicRaw.
 	stream space.

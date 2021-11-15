@@ -24,6 +24,7 @@ MicPathResolverTest >> tearDown [
 	| file |
 	file := FileSystem workingDirectory /'testfile.mic'.
 	file exists ifTrue: [ file delete ].
+	super tearDown.
 ]
 
 { #category : #tests }

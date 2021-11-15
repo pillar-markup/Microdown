@@ -327,14 +327,6 @@ MicRichTextComposer class >> initializeStylers [
 	MicCodeStylerSpec initializeCache.
 ]
 
-{ #category : #styler }
-MicRichTextComposer class >> languageStylerFor: aLanguage [
-
-	^ Stylers
-		at: aLanguage asLowercase
-		ifAbsent: [ self languageStylerFor: 'default' ]
-]
-
 { #category : #examples }
 MicRichTextComposer class >> latexExample [
 	<example>
