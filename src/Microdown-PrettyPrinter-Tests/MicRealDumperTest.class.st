@@ -139,6 +139,7 @@ MicRealDumperTest >> testOrderedList [
 	| micList |
 	self skip.
 	self flag: #lyna.
+	
 	micList := (parser parse: factory orderedListSample) children first.
 	self assert: micList class equals: MicOrderedListBlock.
 	visitor visit: micList.
