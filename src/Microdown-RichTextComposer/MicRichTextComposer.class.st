@@ -56,9 +56,7 @@ Class {
 		'CaptureErrors',
 		'HeaderFontSizes',
 		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine'
+		'NotRendering'
 	],
 	#category : #'Microdown-RichTextComposer'
 }

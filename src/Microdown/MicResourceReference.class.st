@@ -60,7 +60,7 @@ MicResourceReference class >> fromUri: aString [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MicResourceReference class >> workingDirectoryReference [
 	^ self fromUri: FileSystem workingDirectory asUrl asString
 ]

@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Tests-Resources'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'test data' }
 MicHTTPResourceTest class >> githubTestData [
 	^ MicResourceReference fromUri: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]

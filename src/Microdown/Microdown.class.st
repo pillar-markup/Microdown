@@ -7,9 +7,7 @@ Class {
 	#name : #Microdown,
 	#superclass : #Object,
 	#instVars : [
-		'parser',
-		'resolverRoot',
-		'file'
+		'parser'
 	],
 	#category : #'Microdown-Core'
 }

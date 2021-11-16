@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MicZinkPathResolver class >> resolve: document withBase: aZnUrl [
 	"Assumes aZnUrl to be an absolute uri. Converts all relative references to absolute references in document"
 	self new
@@ -16,7 +16,7 @@ MicZinkPathResolver class >> resolve: document withBase: aZnUrl [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicZinkPathResolver >> baseUri: aZnUrl [
 	baseUri := aZnUrl
 ]

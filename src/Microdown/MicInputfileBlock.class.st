@@ -17,9 +17,8 @@ MicInputfileBlock >> accept: aVisitor [
 	aVisitor visitInputFile: self
 ]
 
-{ #category : #testing }
+{ #category : #visiting }
 MicInputfileBlock >> closeMe [
-	| p |
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
