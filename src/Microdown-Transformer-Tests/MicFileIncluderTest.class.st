@@ -47,6 +47,7 @@ MicFileIncluderTest >> setUp [
 MicFileIncluderTest >> tearDown [ 
 	filesystem := nil.
 	MicFileResource removeHost: #testsystem.
+	super tearDown 
 ]
 
 { #category : #tests }

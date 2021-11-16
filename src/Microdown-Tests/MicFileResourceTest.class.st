@@ -26,7 +26,8 @@ MicFileResourceTest >> setUp [
 
 { #category : #running }
 MicFileResourceTest >> tearDown [
-	MicFileResource removeHost: #'test.memory'
+	MicFileResource removeHost: #'test.memory'.
+	super tearDown 
 ]
 
 { #category : #tests }
