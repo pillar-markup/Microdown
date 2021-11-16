@@ -120,7 +120,7 @@ MicRealDumper >> visitFigure: aMicFigure [
 	"
 	stream space.
 	stream nextPutAll: 'url: '.
-	stream nextPutAll: aMicFigure url originalString.
+	stream nextPutAll: aMicFigure url.
 	stream 
 		space;
 		nextPutAll: '''';
@@ -173,7 +173,7 @@ MicRealDumper >> visitLink: aMicLink [
 	stream nextPutAll: aMicLink substring.
 	stream nextPut: $].
 	stream nextPut: $(.
-	stream nextPutAll: aMicLink url originalString .
+	stream nextPutAll: aMicLink url.
 	stream nextPut: $)
 ]
 
