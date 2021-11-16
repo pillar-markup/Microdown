@@ -15,6 +15,7 @@ MicHTTPResourceTest class >> githubTestData [
 { #category : #running }
 MicHTTPResourceTest >> setUp [
 	super setUp.
+	MicHTTPResource initialize.
 	
 	
 ]
