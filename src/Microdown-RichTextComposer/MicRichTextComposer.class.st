@@ -57,7 +57,8 @@ Class {
 		'HeaderFontSizes',
 		'HeaderFonts',
 		'ImageCache',
-		'NotRendering'
+		'NotRendering',
+		'OffLine'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
