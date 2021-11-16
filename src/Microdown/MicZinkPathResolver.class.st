@@ -9,6 +9,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 MicZinkPathResolver class >> resolve: document withBase: aZnUrl [
+	"Assumes aZnUrl to be an absolute uri. Converts all relative references to absolute references in document"
 	self new
 		baseUri: aZnUrl;
 		visit: document
