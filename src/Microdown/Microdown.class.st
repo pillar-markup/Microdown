@@ -31,6 +31,12 @@ Microdown >> parse: aStreamOrString [
 	^ parser parse: aStreamOrString
 ]
 
+{ #category : #rendering }
+Microdown >> render: aString [
+	"Facade method to render a microdown string to Text"
+	^ MicRichTextComposer microdownAsRichText: aString
+]
+
 { #category : #parsing }
 Microdown >> resolve: document fromUri: uri [
 	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"

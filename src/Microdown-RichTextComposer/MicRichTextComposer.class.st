@@ -330,19 +330,6 @@ MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
 			]
 ]
 
-{ #category : #public }
-MicRichTextComposer class >> render: aString [ 
-	"Render a string, in case of error, just return it."
-	
-	self notRendering 	
-		ifTrue: [ ^ aString ].
-	self captureErrors 
-		ifFalse: [ ^ self microdownAsRichText: aString ].
-	^ [ self microdownAsRichText: aString ] 
-			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
-			do: [ aString  ]
-]
-
 { #category : #accessing }
 MicRichTextComposer >> annotatedParagrapAlignment [
 	^ annotatedParagraphAlignment 
