@@ -104,7 +104,7 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 
 { #category : #'visiting-document' }
 MicFileIncluder >> visitInputFileOld: anInputFileAnnotation [
-	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
+	"This method is obsolete and must be removed"
 	
 	| includedFile microdownAST |
 	includedFile := anInputFileAnnotation path path.
@@ -115,7 +115,6 @@ MicFileIncluder >> visitInputFileOld: anInputFileAnnotation [
 		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
 		MicZinkPathResolver new 	
 			originFile: topFile ; visit: microdownAST.
-		self flag: #tofix. "we are missing the resolution source"
 	"Execute a file inclusion step recursively" 
 	self class new
 		topFile: includedFile;
