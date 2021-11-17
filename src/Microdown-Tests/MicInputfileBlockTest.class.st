@@ -17,7 +17,7 @@ MicInputfileBlockTest >> setUp [
 MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
 	| mic |
 	mic := parser parse: '?{inputfile|path=/chapters/withStyle.mic}?'.
-	self assert: mic children first children first path path pathString equals: '/chapters/withStyle.mic'
+	self assert: mic children first children first path path equals: '/chapters/withStyle.mic'
 ]
 
 { #category : #tests }
@@ -25,14 +25,14 @@ MicInputfileBlockTest >> testMicInputfileIsRelativeFilePath [
 	| mic |
 	mic := parser parse: '?{inputfile|path=chapters/withStyle.mic}?'.
 	mic children first children first path: mic children first children first originalPath.
-	self assert: mic children first children first path path pathString equals: 'chapters/withStyle.mic'
+	self assert: mic children first children first path path equals: 'chapters/withStyle.mic'
 ]
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfilePath [
 	| mic |
 	mic := parser parse: '?{inputfile|path=chapters/withStyle.mic}?'.
-	self assert: mic children first children first path path pathString equals: 'chapters/withStyle.mic' 
+	self assert: mic children first children first path path equals: 'chapters/withStyle.mic' 
 ]
 
 { #category : #tests }

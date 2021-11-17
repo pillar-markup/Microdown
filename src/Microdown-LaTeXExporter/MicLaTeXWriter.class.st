@@ -86,10 +86,11 @@ MicLaTeXWriter >> getStringForAll: aCollection [
 
 { #category : #'visiting-document' }
 MicLaTeXWriter >> includeGraphicsFor: aFigure [
+
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: (aFigure localFileOrExternalReference) ]
+		parameter: [ canvas raw: aFigure reference path ]
 ]
 
 { #category : #initialization }
@@ -191,26 +192,24 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
-	(aFigure hasCaption not and: [ aFigure hasLabel not ])
-		ifTrue: [ 
-			self includeGraphicsFor: aFigure.
-			^ self ].
+
+	(aFigure hasCaption not and: [ aFigure hasLabel not ]) ifTrue: [ 
+		self includeGraphicsFor: aFigure.
+		^ self ].
 	canvas environment
 		name: 'figure';
-		with:
-				[ 
+		optParameter: [ canvas raw: 'htpb' ];
+		with: [ 
 			canvas environment
 				name: 'center';
-				with:
-						[ 
+				with: [ 
 					self includeGraphicsFor: aFigure.
+					canvas newLine.
 					canvas command
 						name: 'caption';
-						parameter: [ 
-							self
-								writeCaptionOfExternalLink: aFigure;
-								writeLabelOfExternalLink: aFigure ].
-							canvas newLine ] ]
+						parameter: [ self writeCaptionOfExternalLink: aFigure ].
+					self writeLabelOfExternalLink: aFigure.
+					canvas newLine ] ]
 ]
 
 { #category : #'blocks - inline' }
@@ -391,7 +390,7 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 
 { #category : #helpers }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
-	self visitAll: anExternalLink children
+	self visitAll: anExternalLink captionElements
 ]
 
 { #category : #helpers }
@@ -411,7 +410,7 @@ MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
 	| label |
 	label := anExternalLink arguments
 		         at: 'label'
-		         ifAbsent: [ anExternalLink localFileOrExternalReference ].
+		         ifAbsent: [ anExternalLink reference relativePath  ].
 	canvas command
 		name: 'label';
 		parameter: [ canvas raw: label ]

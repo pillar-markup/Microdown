@@ -213,7 +213,7 @@ MicInlineParserTest >> testFigure [
 		equals: { 'abc'. '![AltText](my_directory/image.png)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference  isKindOf: MicResourceReference)
 	
 ]
 
@@ -236,14 +236,14 @@ MicInlineParserTest >> testFigureWithParameters [
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png?label=42&width=90)last'.
+		       'abc![AltText](my_directory/image.png label=42&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png?label=42&width=90)'.
+			{ 'abc'. '![AltText](my_directory/image.png label=42&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: '42'.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -255,14 +255,14 @@ MicInlineParserTest >> testFigureWithParametersWithBlank [
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png?label=&width=90)last'.
+		       'abc![AltText](my_directory/image.png label=&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png?label=&width=90)'.
+			{ 'abc'. '![AltText](my_directory/image.png label=&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: ''.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -532,7 +532,7 @@ MicInlineParserTest >> testSplitBlockLink [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[LinkText](myURL)'. 'last' }.
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference isKindOf: MicResourceReference)
 
 ]
 
@@ -658,7 +658,7 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks [
 
 	| res |
 	res := self splitter parse: 'abc[test](myURL)last'.
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference isKindOf: MicResourceReference)
 
 ]
 
@@ -668,9 +668,9 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks2 [
 	| res |
 	res := self splitter parse:
 		       'abc[pulse](https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests)last'.
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicHTTPResource ).
 	self flag: #tofix. "substring just returns pulse???"
-	self assert: res second url printString  equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
+	self assert: res second reference uri asString equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
 ]
 
 { #category : #tests }

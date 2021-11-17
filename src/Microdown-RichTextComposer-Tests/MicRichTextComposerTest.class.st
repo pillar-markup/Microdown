@@ -270,8 +270,7 @@ MicRichTextComposerTest >> testExternaLink [
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
-	| source richText |
-	self skip: 'The implementation need to be changed and synced with resolving'.
+	| source richText|
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
@@ -397,6 +396,38 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	self assert: (richText asString copyFrom: 11 to: 25) equals: '2.	other item 1'.
 	self assert: (richText asString copyFrom: 47 to: 55) equals: '5.	item 4'.
 	
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testMathEnvironment [
+	| source1 source2 richText1 richText2 |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source1 :=  'foo
+&
+a+b
+&
+bar'.
+	source2 :=  'foo
+&
+\frac{A}{B}
+&
+bar'.
+	richText1 := self richTextForString: source1.
+	richText2 := self richTextForString: source2.
+	self assert: richText1 asMorph height < richText2 asMorph height
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testMathEnvironmentError [
+	| source richText |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source :=  'foo
+&
+\foo{a+b}
+&
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString equals: 'foo& - LATEX ERROR - &'
 ]
 
 { #category : #'skipped tests' }
@@ -537,6 +568,16 @@ styledTextFor: aString asFest'.
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
 	self assert: textColor color red equals: 0.
+]
+
+{ #category : #'tests - header' }
+MicRichTextComposerTest >> testStylersAreRegistered [
+	"this test has been moved to MicCodeStylerTest"
+]
+
+{ #category : #'tests - header' }
+MicRichTextComposerTest >> testStylersForText [
+	"this test has been moved to MicCodeStylerTest"
 ]
 
 { #category : #'tests - list' }

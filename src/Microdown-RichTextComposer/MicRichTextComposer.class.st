@@ -56,12 +56,7 @@ Class {
 		'CaptureErrors',
 		'HeaderFontSizes',
 		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine'
-	],
-	#classInstVars : [
-		'imageCache'
+		'NotRendering'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
@@ -74,25 +69,6 @@ MicRichTextComposer class >> bulletForLevel: level [
 		ifTrue: [ ^ $• asText ].
 	kind = 1
 		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #images }
-MicRichTextComposer class >> cachedImageFromFile: aFileRef [
-
-	^ ImageCache
-		  at: aFileRef asString
-		  ifAbsentPut: [ self rawImageFromFile: aFileRef ] 
-]
-
-{ #category : #images }
-MicRichTextComposer class >> cachedImageFromUrl: aUrl [
-	
-	^ OffLine 
-		ifFalse: [
-			ImageCache 
-				at: aUrl asString
-				ifAbsentPut: [ self rawImageFrom: aUrl ] ] 
-		ifTrue: [ self imageOffLineFromUrl: aUrl ]
 ]
 
 { #category : #'class initialization' }
@@ -131,6 +107,17 @@ MicRichTextComposer class >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
 	kind = 2
 		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleLatex [
+	<example>
+
+	(MicRichTextComposer new visit: 
+		(MicMathInlineBlock new 
+		substring:
+'V_i = C_0 - C_3
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
 ]
 
 { #category : #examples }
@@ -277,39 +264,6 @@ MicRichTextComposer class >> headerLevelFont: level [
 ]
 
 { #category : #'class initialization' }
-MicRichTextComposer class >> imageAt: urlString put: aForm [	
-	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
-	
-	ImageCache at: urlString put: aForm
-]
-
-{ #category : #accessing }
-MicRichTextComposer class >> imageCache [
-	^ imageCache ifNil: [ imageCache := LRUCache new ]
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer class >> imageOffLineFromUrl: aUrl [
-	"we are off but the image is there so we return it,"
-	^ ImageCache 
-			at: aUrl asString
-			ifAbsent: [ (StringMorph contents: 'The HTTP request got unsuccessful. 
-When you will be online, you should see: ' , aUrl asString) imageForm  ]
-			
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer class >> imageUnexpectedContentFromUrl: aUrl [
-	"The request got unexpected content if the image is there so we return it. We do not cache the failing case image form so that we do not polute the cache."
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ', aUrl asString, ' returned an unexpected content.' ) imageForm  ]
-			
-]
-
-{ #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
 	self offline: false.
@@ -327,52 +281,10 @@ MicRichTextComposer class >> initializeStylers [
 	MicCodeStylerSpec initializeCache.
 ]
 
-{ #category : #examples }
-MicRichTextComposer class >> latexExample [
-	<example>
-
-	(MicRichTextComposer new visit: 
-		(MicMathInlineBlock new 
-		substring:
-'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> latexMathStylerFor: aString [
-	"<codeblockStylerFor:'latexMath'>
-	
-	this is totally bogus: this method does not return a styler but just an image."
-	
-	| expressionUrl |
-   aString ifEmpty: [^'' asText].
-	expressionUrl := 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
-	^self loadExternalImageFromURL: expressionUrl errorText: 'Latex error'.
-]
-
-{ #category : #private }
-MicRichTextComposer class >> loadExternalImageFromURL: aUrl errorText: errorDesc [
-	"I return a Text instance with an loaded from a url"
-	
-	| anchoredImage |
-	self flag: #cleanAndRevisit.
-	"there is duplication in the visitFigure: method!!!"
-	anchoredImage := self imageCache 
-		at: aUrl 
-		ifAbsentPut: [ 
-			[ anchoredImage := (String value: 1) asText
-					addAttribute: (TextAnchor new anchoredMorph: (ZnEasy getPng: aUrl)).
-				anchoredImage ] 
-			on: Exception 
-			do: [ errorDesc asText addAttribute: TextColor red ]
-		].
-	^ anchoredImage 
-]
-
-{ #category : #examples }
+{ #category : #public }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (Microdown new resolvedTreeFrom: aString)
+	^ self new visit: (Microdown new parse: aString)
 
 ]
 
@@ -386,19 +298,6 @@ MicRichTextComposer class >> notRendering [
 { #category : #'class initialization' }
 MicRichTextComposer class >> notRendering: aBoolean [
 	NotRendering := aBoolean
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> offline [
-
-	^ OffLine
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> offline: aBoolean [
-
-	OffLine := aBoolean
-
 ]
 
 { #category : #settings }
@@ -431,40 +330,7 @@ MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
 			]
 ]
 
-{ #category : #'class initialization' }
-MicRichTextComposer class >> putOffline [
-
-	self offline: true
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> putOnline [
-
-	self offline: false
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer class >> rawImageFrom: aURL [
-	| block |
-	self flag: #fixMeOnceNewExceptionIsAvailable.
-	block := [ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ].
-	self captureErrors
-		ifFalse: [ ^ block value ].
-
-	^ [[ block
-		on: ZnHttpUnsuccessful 
-		do: [ :ex | self unsuccessfulRequestFromUrl: aURL ]]
-			on: ZnUnexpectedContentType 
-			do: [ :ex | self imageUnexpectedContentFromUrl: aURL ]] on: Error do: [ ] 
-		
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer class >> rawImageFromFile: aFileRef [
-	^ aFileRef binaryReadStreamDo: [ :stream | ImageReadWriter formFromStream: stream ] 
-]
-
-{ #category : #examples }
+{ #category : #public }
 MicRichTextComposer class >> render: aString [ 
 	"Render a string, in case of error, just return it."
 	
@@ -475,51 +341,6 @@ MicRichTextComposer class >> render: aString [
 	^ [ self microdownAsRichText: aString ] 
 			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
 			do: [ aString  ]
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> renderComment: aString of: aClassOrPackage [ 
-	"Return aString as part of the templated class comment, when rendering is on.
-	Else aString."
-	
-	| builder |
-	builder := MicroDownParser builder.
-	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
-	^ self render: builder contents
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> resetCache [
-
-	ImageCache := Dictionary new
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> style: aString asLanguage: aLanguage [
-	"render aString according to the styler named aLanguage"
-	
-	| styler |
-	styler := self languageStylerFor: aLanguage asLowercase.
-	^ styler
-		valueWithReceiver: styler methodClass soleInstance 
-		arguments: (Array with: aString)
-]
-
-{ #category : #styler }
-MicRichTextComposer class >> textStyler: aString [
-	<codeblockStylerFor: 'text'>
-	
-	^aString asText
-]
-
-{ #category : #'images internal' }
-MicRichTextComposer class >> unsuccessfulRequestFromUrl: aUrl [
-	
-	^ ImageCache 
-			at: aUrl asString
-			ifPresent: [ :i | i ]
-			ifAbsent: [ (StringMorph contents: 'The HTTP request ',  aUrl asString,  ' got unsuccessful.') imageForm  ]
-			
 ]
 
 { #category : #accessing }
@@ -567,6 +388,16 @@ MicRichTextComposer >> initialize [
 	annotatedParagraphAnnotationColor := TextEmphasis bold.
 	annotatedParagraphAlignment := TextAlignment leftFlush.
 	styler := MicCodeStylerSpec. "Yes, the class"
+]
+
+{ #category : #private }
+MicRichTextComposer >> latexFor: aString onError: aBlock [
+	"return a MicResourceReference to an image for the latex formula in aString"
+	| ref |
+	ref := MicResourceReference fromUri: 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
+	^ ref loadImage
+		ifNotNil: [ :image | image asText]
+		ifNil: [ aBlock value asText ]
 ]
 
 { #category : #accessing }
@@ -718,23 +549,17 @@ MicRichTextComposer >> visitEnvironment: anObject [
 
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
+
 	"Try to read a png file (only one supported right now), else use alt text"
 
-	| anchoredImage url textContribution |
-	textContribution := nil.
-	aFigure isImageFile 
-		ifTrue: [ 
-			url := aFigure url.
-			anchoredImage := url isWeb
-				ifFalse: [ self class cachedImageFromFile: url asFileReference ]
-				ifTrue: [ self class cachedImageFromUrl: url url ].
-			anchoredImage 
-				ifNotNil: [ 
-					anchoredImage := self resizeImage: anchoredImage of: aFigure.
-					textContribution := (String value: 1) asText addAttribute:
-					                 (TextAnchor new anchoredMorph: anchoredImage)] ].
-	
-	canvas << textContribution ifNil: [ aFigure caption asText ]
+	| image textContribution |
+	image := aFigure reference loadImage.
+	image ifNotNil: [ 
+		image := self resizeImage: image of: aFigure.
+		textContribution := (String value: 1) asText addAttribute:
+			                    (TextAnchor new anchoredMorph: image) ].
+
+	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 
 { #category : #'visiting - document' }
@@ -766,16 +591,11 @@ MicRichTextComposer >> visitItalic: anObject [
 MicRichTextComposer >> visitLink: aLink [
 
 	| attribute |
-	attribute := nil.
-	aLink url isWeb ifTrue: [
-		attribute := TextAction new
-			actOnClickBlock: [ WebBrowser openOn: aLink url printString ];
-			yourself ].
-	attribute
-		ifNotNil: [ canvas
-			includeAttribute: attribute
-			in: [ super visitLink: aLink ] ]
-		ifNil: [ super visitLink: aLink ]
+	attribute := TextAction new
+		             actOnClickBlock: [ 
+			             WebBrowser openOn: aLink url printString ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
 
 { #category : #'visiting - list' }
@@ -795,23 +615,18 @@ MicRichTextComposer >> visitListItem: anItem [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 
-	| text |
-	text := aMicMathEnvironment body. 
-	(OffLine | text isNil)
-		ifTrue: [ text 
-						ifNotNil: [ canvas << '&'; cr; << text; << '&']
-						ifNil: [ canvas << '&'; cr; << 'Your math environment is strange its body is nil'; << '&' ] ]
-		ifFalse: [ canvas cr.
-					canvas indentIn: [ self renderMathExpression: text ].
-					 canvas cr ]
+	| aString |
+	aString := aMicMathEnvironment body.
+	aString ifEmpty: [ ^self ].
+	canvas << (self latexFor: aString onError: ['& - LATEX ERROR - &' asText] )
 ]
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitMathInline: aMicMathInline [ 
-	
-	OffLine 
-		ifTrue: [ canvas << '$', aMicMathInline text, '$' ]
-		ifFalse: [ canvas << (self class latexMathStylerFor: aMicMathInline text)]
+	| aString  |
+	aString := aMicMathInline substring .
+   aString ifEmpty: [^ self].
+	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
 { #category : #'visiting -  format' }

@@ -17,14 +17,12 @@ MicInputfileBlock >> accept: aVisitor [
 	aVisitor visitInputFile: self
 ]
 
-{ #category : #testing }
+{ #category : #visiting }
 MicInputfileBlock >> closeMe [
-	| p |
 	super closeMe.
-	p := arguments at: #path ifAbsent: [ 'notfound' ].
-	p = 'notfound'
-		ifTrue: [ self path: (MicBrokenResource new originalString: substring; yourself) ]
-		ifFalse: [self path: (MicResourceReference fromString: (arguments at: #path)) ]
+	(arguments includesKey: #path)
+		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
+		ifFalse: [ self path: (MicBrokenResource new originalString: substring; yourself) ]
 ]
 
 { #category : #accessing }

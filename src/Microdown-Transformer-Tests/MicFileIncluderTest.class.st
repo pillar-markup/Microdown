@@ -40,6 +40,14 @@ MicFileIncluderTest >> setUp [
 	super setUp.
 	self cleanFilesystem.
 	self generateFilesystemExample.
+	MicFileResource host: #testsystem is: [ filesystem  ].
+]
+
+{ #category : #running }
+MicFileIncluderTest >> tearDown [ 
+	filesystem := nil.
+	MicFileResource removeHost: #testsystem.
+	super tearDown 
 ]
 
 { #category : #tests }
@@ -51,9 +59,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := Microdown new 
-					resolverRoot: filesystem workingDirectory;
-					resolvedTreeFromFile: file.
+	root := (MicResourceReference fromUri: 'file://testsystem/test.mic') loadMicrodown.
 	
 	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
 	self assert: root children first class equals: MicParagraphBlock.
@@ -87,7 +93,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFile [
 
 	| includer root file|
 	includer := MicFileIncluder new.
-	includer topFile: filesystem workingDirectory.
+	includer topFile: (MicResourceReference fromUri: 'file://testsystem/').
 	(filesystem workingDirectory / 'Chapters') createDirectory.
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
 	
@@ -103,9 +109,7 @@ Pharo is cool
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?' ].
-	root := (Microdown new 
-					resolverRoot: filesystem workingDirectory;
-					resolvedTreeFromFile: file).
+	root := (MicResourceReference fromUri: 'file://testsystem/Chapters/SUnit/SUnit.mic') loadMicrodown.
 					
 	self assert: root children first children first class equals: MicInputfileBlock.
 	self assert: (root children first children first path isKindOf: MicResourceReference).			
@@ -130,14 +134,12 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	point of view. For example we should have a paragraph containing an header and this is what the transformation of the includer is doing."
 	| includer root file |
 	includer := MicFileIncluder new.
-	includer topFile: filesystem workingDirectory.
+	includer topFile: (MicResourceReference fromUri: 'file://testsystem/').
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}?
 ?{inputfile|path=anExample2.mic}?' ].
-	root := (Microdown new 
-		resolverRoot: filesystem workingDirectory;
-		resolvedTreeFromFile: file).
+	root := (MicResourceReference fromUri: 'file://testsystem/test.mic') loadMicrodown.
 	includer visit: root.
 
 	self assert: root children size equals: 1.
@@ -159,13 +161,11 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 
 	| includer mic file |
 	includer := MicFileIncluder new.
-	includer topFile: filesystem workingDirectory.
+	includer topFile: (MicResourceReference fromUri: 'file://testsystem/').
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? ?{inputfile|path=anExample2.mic}?' ].
-	mic := (Microdown new 
-					resolverRoot: filesystem workingDirectory;
-					resolvedTreeFromFile: file).
+	mic := (MicResourceReference fromUri: 'file://testsystem/test.mic') loadMicrodown.
 	includer visit: mic.
 
 	self assert: mic children first children first class equals: MicHeaderBlock.
@@ -186,12 +186,10 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 
 	| includer mic file |
 	includer := MicFileIncluder new.
-	includer topFile: filesystem workingDirectory.
+	includer topFile: (MicResourceReference fromUri: 'file://testsystem/').
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample3.mic}?'].
-	mic := (Microdown new 
-					resolverRoot: filesystem workingDirectory;
-					resolvedTreeFromFile: file).
+	mic := (MicResourceReference fromUri: 'file://testsystem/test.mic') loadMicrodown.
 	includer visit: mic.
 	self assert: mic children first children first class equals: MicInputfileBlock.
 ]
@@ -201,14 +199,12 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	"This test works because we have two paragraphs each one containing an inputfile."
 	| includer root file |
 	includer := MicFileIncluder new.
-	includer topFile: filesystem workingDirectory.
+	includer topFile: (MicResourceReference fromUri: 'file://testsystem/').
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputfile|path=anExample1.mic}? 
 
 ?{inputfile|path=anExample2.mic}?' ].
-	root := Microdown new 
-		resolverRoot: filesystem workingDirectory;
-		resolvedTreeFromFile: file.
+	root := (MicResourceReference fromUri: 'file://testsystem/test.mic') loadMicrodown.
 	includer visit: root.
 
 	self assert: root children first children first class equals: MicHeaderBlock.
