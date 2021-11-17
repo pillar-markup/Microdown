@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 MicInputfileBlock class >> tag [ 
-	^ #inputfile
+	^ #inputFile
 ]
 
 { #category : #visiting }
