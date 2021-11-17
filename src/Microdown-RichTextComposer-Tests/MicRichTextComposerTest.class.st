@@ -570,6 +570,16 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
+{ #category : #'tests - header' }
+MicRichTextComposerTest >> testStylersAreRegistered [
+	"this test has been moved to MicCodeStylerTest"
+]
+
+{ #category : #'tests - header' }
+MicRichTextComposerTest >> testStylersForText [
+	"this test has been moved to MicCodeStylerTest"
+]
+
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testUnorderedList [
 
