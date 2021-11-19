@@ -80,7 +80,6 @@ MicRealDumper >> visitBold: aMicBold [
 MicRealDumper >> visitCode: aCodeBlock [
 
 	self flag: #todo.
-	self halt.
 	"un code peut avoir des arguments:
 	
 	```language=Pharo|.....
