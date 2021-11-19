@@ -1,3 +1,11 @@
+"
+I am a path resolver for microdown.
+References in microdown (currently (2021-11-19) links, images and inputfiles) can be either absolute references to a specific file or http address, or relative to an absolute reference.
+
+I am a visitor which is given a base/absolute reference, and traverses a document and **resolves** all relative references with respect to the base reference. Resolution is to replace the relative reference with an absolute.
+
+The mention of `Zink` in my name is a credit to the zink library ZnUrl which does the underlying resolution.
+"
 Class {
 	#name : #MicZinkPathResolver,
 	#superclass : #MicrodownVisitor,

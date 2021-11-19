@@ -1,3 +1,8 @@
+"
+I am a http reference encapsulating a http uri (`http//host/path/to/some/file.md`).
+
+
+"
 Class {
 	#name : #MicHTTPResource,
 	#superclass : #MicAbsoluteResource,
