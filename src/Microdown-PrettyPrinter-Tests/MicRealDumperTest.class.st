@@ -29,6 +29,17 @@ MicRealDumperTest >> setUp [
 ]
 
 { #category : #'test - inline - blocks' }
+MicRealDumperTest >> testAnchorFormat [
+
+	| micAnchor result |
+	micAnchor := parser parse: factory anchorSample.
+	result := visitor visit: micAnchor children first.
+	self
+		assert: result contents
+		equals: '(MicAnchorBlock new textElement: " test ")'
+]
+
+{ #category : #'test - inline - blocks' }
 MicRealDumperTest >> testBoldFormat [
 
 	| micBold |
@@ -43,6 +54,155 @@ MicRealDumperTest >> testBoldFormat [
 ]
 
 { #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockNewLine [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse: factory blockWithNewLineSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:'''' new body: ''foo'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockOnMultipleLines [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse: factory blockSampleOnMultipleLines)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals: '(MicCodeBlock new parameters:'''' new body: ''first line 
+second line
+third line **b**'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithCaption [
+
+	| micCodeBlock result |
+	self halt.
+	micCodeBlock := (parser parse:
+		                 factory blockWithParametersWithCaptionSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new caption=`Color` is beautifull&bar=2 new body: ''bla'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithFloatParam [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse:
+		                 factory blockWithParameterWithFloatSample) children
+		                first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals: '(MicCodeBlock new parameters:''ratio=0.8&'' new body: ''bar'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithLanguage [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse: factory blockWithLanguageSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:''language=smalltalk&'' new body: ''foo'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithLiteralArray [
+
+	| micCodeBlock result |
+	self halt.
+	micCodeBlock := (parser parse:
+		                 factory blockParameterWithLiteralArraySample) children
+		                first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:''ratio=0.8'' new body: ''bar'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithNoValues [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse:
+		                 factory blockWithParameterWithNoValuesSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals: '(MicCodeBlock new parameters:''foo=&'' new body: ''bar'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse:
+		                 factory blockWithParameterTrueByDefaultSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:''foo'' new body: ''bar'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithParameters [
+
+	| micCodeBlock result |	
+	micCodeBlock := (parser parse: factory blockWithParametersSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:''foo=true&bar=2&'' new body: ''bla'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithSpaceAtTheEnd [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse: factory blockWithSpaceAtTheEndSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:'''' new body: ''foo'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testCodeBlockWithSpacedParameters [
+
+	| micCodeBlock result |
+	micCodeBlock := (parser parse: factory blockWithSpacedParametersSample)
+		                children first.
+	result := micCodeBlock accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicCodeBlock new parameters:''foo= true &bar= 2&'' new body: ''bla'')'
+]
+
+{ #category : #'test - inline - blocks' }
 MicRealDumperTest >> testCodeBlockWithoutParam [
 
 	| micCodeBlock result |
@@ -51,7 +211,7 @@ MicRealDumperTest >> testCodeBlockWithoutParam [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new body: ''first line 
+		equals: '(MicCodeBlock new parameters:'''' new body: ''first line 
 second line
 third line **b**'')'
 ]
@@ -70,6 +230,20 @@ MicRealDumperTest >> testComment [
 ]
 
 { #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureBoldFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory figureBoldSample) children first
+		             children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+]
+
+{ #category : #'test - inline - blocks' }
 MicRealDumperTest >> testFigureFormat [
 
 	| micFigure result |
@@ -81,7 +255,77 @@ MicRealDumperTest >> testFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80 url: /anUrl?label=figureTest&size=80 ''Foo'')'
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''Foo'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureItalicFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory figureItalicSample) children
+		             first children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureMonospaceFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory figureMonospaceSample) children
+		             first children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureNestedFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory figureNestedSample) children
+		             first children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicTextBlock new substring: ''!['')(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureStrikeFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory figureStrikeSample) children
+		             first children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFileFigureFormat [
+
+	| micFigure result |
+	micFigure := (parser parse: factory fileFigureSample) children first
+		             children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents
+		equals:
+		'(MicFigureBlock parameters: label=figureTest&size=80& url: file://image.png/?label=figureTest&size=80 '''')'
 ]
 
 { #category : #'tests - section' }
@@ -130,31 +374,29 @@ MicRealDumperTest >> testMonospaceFormat [
 	| mic result |
 	mic := parser parse: factory monospaceFormatSample.
 	result := visitor visit: mic children first children first.
-	self assert: result contents equals: '(MicMonospaceFormatBlock new string: ''Foo'')'
+	self
+		assert: result contents
+		equals: '(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedList [
 
 	| micList |
-	self skip.
-	self flag: #lyna.
-	
+
 	micList := (parser parse: factory orderedListSample) children first.
 	self assert: micList class equals: MicOrderedListBlock.
 	visitor visit: micList.
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicTextBlock new substring: ''Foo''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicTextBlock new substring: ''Foo''))})'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedListWithTwoItems [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
 	micList := (parser parse: factory orderedListWithTwoItemsSample)
 		           children first.
 	self assert: micList class equals: MicOrderedListBlock.
@@ -162,15 +404,13 @@ MicRealDumperTest >> testOrderedListWithTwoItems [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicTextBlock new substring: ''first'')(MicTextBlock new substring: ''second''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicTextBlock new substring: ''first''))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedListWithTwoItemsBold [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
 	micList := (parser parse: factory orderedListWithTwoItemsBoldSample)
 		           children first.
 	self assert: micList class equals: MicOrderedListBlock.
@@ -178,15 +418,14 @@ MicRealDumperTest >> testOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))(MicTextBlock new substring: ''second''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedListWithTwoItemsItalic [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
+	
 	micList := (parser parse: factory orderedListWithTwoItemsItalicSample)
 		           children first.
 	self assert: micList class equals: MicOrderedListBlock.
@@ -194,15 +433,13 @@ MicRealDumperTest >> testOrderedListWithTwoItemsItalic [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicItalicFormatBlock new string: (MicTextBlock new substring: ''first''))(MicTextBlock new substring: ''second''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedListWithTwoItemsMonospace [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
 	micList := (parser parse: factory orderedListWithTwoItemsMonospaceSample)
 		           children first.
 	self assert: micList class equals: MicOrderedListBlock.
@@ -210,24 +447,21 @@ MicRealDumperTest >> testOrderedListWithTwoItemsMonospace [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicMonospaceFormatBlock new string: ''first'')(MicTextBlock new substring: ''second''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testOrderedListWithTwoItemsStrike [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
-	micList := (parser parse:
-		            factory orderedListWithTwoItemsStrikeSample) children
-		           first.
+	micList := (parser parse: factory orderedListWithTwoItemsStrikeSample)
+		           children first.
 	self assert: micList class equals: MicOrderedListBlock.
 	visitor visit: micList.
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new addChild: (MicStrikeFormatBlock new string: (MicTextBlock new substring: ''first''))(MicTextBlock new substring: ''second''))'
+		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
 ]
 
 { #category : #'tests - section' }
@@ -254,10 +488,11 @@ MicRealDumperTest >> testPrintHeader [
 { #category : #'tests - section' }
 MicRealDumperTest >> testPrintOrderedList [
 
-   | resString |
-	resString := '(MicOrderedListBlock new children: {MicListItemBlock new textElements: { (MicBoldFormatBlock new textElement: (MicBoldFormatBlock new substring: ''first'')) . (MicBoldFormatBlock new substring: ''second'')})'.
-	self parse: factory orderedListWithTwoItemsBoldSample andCheckWeGet: resString.
-	
+	| resString |
+	resString := '(MicOrderedListBlock new children: {(MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'.
+	self
+		parse: factory orderedListWithTwoItemsBoldSample
+		andCheckWeGet: resString
 ]
 
 { #category : #'tests - section' }
@@ -274,9 +509,8 @@ MicRealDumperTest >> testPrintParagraph [
 MicRealDumperTest >> testPrintUnorderedList [
 
 	| resString |
-	resString := 'MicUnorderedListBlock'.
-	self parse: factory unorderedListSample andCheckWeGet: resString.
-	
+	resString := '(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo'')))'.
+	self parse: factory unorderedListSample andCheckWeGet: resString
 ]
 
 { #category : #'test - inline - blocks' }
@@ -353,22 +587,21 @@ MicRealDumperTest >> testUnOrderedEmptyList [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicTextBlock new substring: ''-''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new ))'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedList [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
+	
 	micList := (parser parse: factory unorderedListSample) children first.
 	self assert: micList class equals: MicUnorderedListBlock.
 	visitor visit: micList.
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicTextBlock new substring: ''Foo''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo'')))'
 ]
 
 { #category : #'tests - section' }
@@ -383,7 +616,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItems [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicTextBlock new substring: ''Foo'')(MicTextBlock new substring: ''Bar''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo''))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
 ]
 
 { #category : #'tests - section' }
@@ -399,15 +632,14 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))(MicTextBlock new substring: ''Bar''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
+	
 	micList := (parser parse:
 		            factory unorderedListWithTwoItemsMonospaceSample) children
 		           first.
@@ -416,15 +648,14 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicMonospaceFormatBlock new string: ''Foo'')(MicTextBlock new substring: ''Bar''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedListWithTwoItemsNested [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
+	
 	micList := (parser parse:
 		            factory unorderedListWithTwoItemsNestedSample) children
 		           first.
@@ -433,15 +664,14 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsNested [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicStrikeFormatBlock new string: (MicItalicFormatBlock new string: (MicTextBlock new substring: ''Foo'')))(MicTextBlock new substring: ''Bar''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedListWithTwoItemsStrike [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
+	
 	micList := (parser parse: factory unorderedListWithTwoItemsStrikeSample )
 		           children first.
 	self assert: micList class equals: MicUnorderedListBlock.
@@ -449,5 +679,5 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsStrike [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new addChild: (MicStrikeFormatBlock new string: (MicTextBlock new substring: ''Foo''))(MicTextBlock new substring: ''Bar''))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
 ]

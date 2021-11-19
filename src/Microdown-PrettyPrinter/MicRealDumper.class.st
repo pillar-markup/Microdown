@@ -7,15 +7,6 @@ Class {
 	#category : #'Microdown-PrettyPrinter'
 }
 
-{ #category : #utils }
-MicRealDumper >> classOf: aHeader [
-	self flag: #todo.
-	"il faut utiliser emitClassNameOf:"
-	stream
-		<< aHeader class name;
-		<< ' new '
-]
-
 { #category : #accessing }
 MicRealDumper >> contents [ 
 	^ stream contents
@@ -35,6 +26,19 @@ MicRealDumper >> initialize [
 ]
 
 { #category : #build }
+MicRealDumper >> parametersPrint: aDictionnary [
+
+	| lastKey |
+	lastKey := aDictionnary keys.
+	aDictionnary keysAndValuesDo: [ :k :v | 
+		stream
+			nextPutAll: k;
+			nextPutAll: '=';
+			nextPutAll: v.
+		k = lastKey ifFalse: [ stream nextPutAll: '&' ] ]
+]
+
+{ #category : #build }
 MicRealDumper >> visit: aMicElement [
 
 	aMicElement accept: self.
@@ -42,14 +46,20 @@ MicRealDumper >> visit: aMicElement [
 ]
 
 { #category : #'visit - section' }
-MicRealDumper >> visitAnchor: aAnchor [
+MicRealDumper >> visitAnchor: aMicAnchor [
 
-	| text |
-	self flag: #todo. 
-	"Should be (MicAnchor....)"
-	text := self emitClassNameOf: aAnchor.
-	text := text , ' "' , aAnchor label , '"'.
-	^ text
+	stream nextPut: $(.
+	self emitClassNameOf: aMicAnchor.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	stream nextPutAll: 'textElement: '.
+	stream
+		nextPutAll: '" ';
+		nextPutAll: aMicAnchor label;
+		nextPutAll: ' "'.
+	stream nextPut: $)
 ]
 
 { #category : #'visit - format' }
@@ -66,9 +76,11 @@ MicRealDumper >> visitBold: aMicBold [
 	stream nextPut: $)
 ]
 
-{ #category : #'visit - section' }
+{ #category : #'as yet unclassified' }
 MicRealDumper >> visitCode: aCodeBlock [
+
 	self flag: #todo.
+	self halt.
 	"un code peut avoir des arguments:
 	
 	```language=Pharo|.....
@@ -83,8 +95,18 @@ MicRealDumper >> visitCode: aCodeBlock [
 	stream
 		nextPutAll: 'new';
 		space.
+	stream nextPutAll: 'parameters:'.
+	stream nextPutAll: ''''.
+	self parametersPrint: aCodeBlock arguments.
+	stream
+		nextPutAll: '''';
+		space.
+
+	stream
+		nextPutAll: 'new';
+		space.
 	stream nextPutAll: 'body: '.
-	stream 
+	stream
 		nextPutAll: '''';
 		nextPutAll: aCodeBlock body;
 		nextPutAll: ''''.
@@ -112,20 +134,15 @@ MicRealDumper >> visitFigure: aMicFigure [
 	self emitClassNameOf: aMicFigure.
 	stream space.
 	stream nextPutAll: 'parameters: '.
-	stream nextPutAll: 'label=figureTest&size=80'.
-	self flag: #todo.
-	"
-	We should not hard the arguments like that.... we should grab the dictionary and iterate... 
-	with keysAndValuesDo:...
-	"
+	self parametersPrint: aMicFigure arguments.
 	stream space.
 	stream nextPutAll: 'url: '.
 	stream nextPutAll: aMicFigure url originalString.
-	stream 
+	stream
 		space;
-		nextPutAll: '''';
-	   nextPutAll: aMicFigure caption;
 		nextPutAll: ''''.
+	self visitChildrenOf: aMicFigure.
+	stream nextPutAll: ''''.
 	stream nextPut: $)
 ]
 
@@ -186,6 +203,9 @@ MicRealDumper >> visitListItem: anItem [
 	stream
 		nextPutAll: 'new';
 		space.
+	anItem children 
+		do: [ :each | each accept: self ]
+		separatedBy: [ ''.	'' ].
 	stream nextPut: $).
 	self flag: #todo.
 	"qd on a une liste elle contient des items e.g. une liste de inline model"
@@ -193,19 +213,15 @@ MicRealDumper >> visitListItem: anItem [
 
 { #category : #'visit - format' }
 MicRealDumper >> visitMonospace: aMonospace [
-	self flag: #todo.
-	"a verifier si un monospace contient un micText ou une chaine. Je pense que c'est un micText"
+
 	stream nextPut: $(.
 	self emitClassNameOf: aMonospace.
 	stream space.
 	stream
 		nextPutAll: 'new';
 		space.
-	stream
-		nextPutAll: 'string: ';
-		nextPutAll: '''';
-		nextPutAll: aMonospace substring;
-		nextPutAll: ''''.
+	stream nextPutAll: 'textElement: '.
+	aMonospace children first accept: self.
 	stream nextPut: $)
 ]
 
@@ -220,7 +236,10 @@ MicRealDumper >> visitOrderedList: anOrderedList [
 		space.
 	stream nextPutAll: 'children: '.
 	stream nextPut: ${.
-	self visitChildrenOf: anOrderedList.
+	anOrderedList children
+		do: [ :each | each accept: self ]
+		separatedBy: [ 
+			'.' ].
 	stream nextPut: $}.
 	stream nextPut: $)
 ]
@@ -259,7 +278,6 @@ MicRealDumper >> visitQuote: aQuote [
 { #category : #'visit - section' }
 MicRealDumper >> visitRaw: aMicRaw [
 
-	self halt.
 	stream nextPut: $(.
 	self emitClassNameOf: aMicRaw.
 	stream space.
@@ -327,10 +345,11 @@ MicRealDumper >> visitUnorderedList: aUnOrderedList [
 	stream
 		nextPutAll: 'new';
 		space.
-	self flag: #todo.
-	"This cannot be an addChild: because an orderedList can have multiple children...."
-	stream nextPutAll: 'addChild: '.
-	aUnOrderedList children do: [ :each | 
-		 each accept: self ].
+	stream nextPutAll: 'children: '.
+	aUnOrderedList children
+		do: [ :each | each accept: self ]
+		separatedBy: [ 
+			''.
+			'' ].
 	stream nextPut: $)
 ]
