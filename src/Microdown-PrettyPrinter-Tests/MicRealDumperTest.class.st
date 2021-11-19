@@ -595,7 +595,7 @@ MicRealDumperTest >> testUnOrderedEmptyList [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new ))'
+		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''-'')))'
 ]
 
 { #category : #'tests - section' }
