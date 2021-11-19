@@ -53,10 +53,8 @@ Class {
 		'styler'
 	],
 	#classVars : [
-		'CaptureErrors',
 		'HeaderFontSizes',
-		'HeaderFonts',
-		'NotRendering'
+		'HeaderFonts'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
@@ -69,18 +67,6 @@ MicRichTextComposer class >> bulletForLevel: level [
 		ifTrue: [ ^ $• asText ].
 	kind = 1
 		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> captureErrors [
-	
-	^ CaptureErrors
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> captureErrors: aBoolean [
-	"self captureErrors: false"
-	CaptureErrors := aBoolean
 ]
 
 { #category : #private }
@@ -286,48 +272,6 @@ MicRichTextComposer class >> microdownAsRichText: aString [
 	
 	^ self new visit: (Microdown new parse: aString)
 
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> notRendering [
-	"When notRendering, the comments are just displayed as plain text."
-	
-	^ NotRendering
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> notRendering: aBoolean [
-	NotRendering := aBoolean
-]
-
-{ #category : #settings }
-MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
-	<systemsettings>
-	(aBuilder group: #comments)
-		label: 'Comment rendering';  
-		parent: #appearance;
-		description: 'All settings concerned with the control of nice comment rendering';
-		with: [
-		(aBuilder setting: #offline)
-			label: 'To enable offline mode';
-			target: self;
-			default: false;
-			description: '
-			When online is chosen, requests to external images are only performed when they are not in the image cache (since requesting systematically HTTP may lead of latency. Each figure is cached, so the request is at most done one per external references. When the system is online but the request failed we return a placeholder that is not cached.
-			
-			When offline, requests to external images are not performed. The cache can be reset executing PRRichTextComposer resetCache. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).'. 
-			(aBuilder setting: #notRendering)
-				label: 'To disable richtext rendering';
-				default: false;
-				target: self;
-				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
-			(aBuilder setting: #captureErrors)
-				label: 'To disable rendering error capture';
-				default: true;
-				target: self;
-				description: 'By default if there is an error during the rendering of the comments, various errors are trapped. If you want to get such errors to debug the system, you should turn off this settings.'. 
-			
-			]
 ]
 
 { #category : #accessing }
