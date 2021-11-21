@@ -233,7 +233,7 @@ This is a codeBlock
 MicMicrodownSnippetFactory >> figureBoldSample [
 	^ '
 
-![**Foo**](/anUrl?label=figureTest&size=80)
+![**Foo**](/anUrl label=figureTest&size=80)
 '
 ]
 
@@ -263,9 +263,10 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureSample [
+
 	^ '
 
-![Foo](/anUrl?label=figureTest&size=80)
+![Foo](/anUrl label=figureTest&size=80)
 '
 ]
 
@@ -500,7 +501,8 @@ Foo
 { #category : #anchor }
 MicMicrodownSnippetFactory >> metaDataSample [
 	^ '{
-"author": "Foo"
+"author": "G. Foo",
+"title":"The title"
 }
 '
 ]

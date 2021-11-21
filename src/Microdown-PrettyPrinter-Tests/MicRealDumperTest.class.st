@@ -20,7 +20,7 @@ MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 	self assert: visitor contents equals: anExpectedString
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicRealDumperTest >> setUp [ 
 	super setUp.
 	parser := MicroDownParser new.
@@ -81,7 +81,7 @@ MicRealDumperTest >> testFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80 url: /anUrl?label=figureTest&size=80 ''Foo'')'
+		'(MicFigureBlock parameters: label=figureTest&size=80 url: /anUrl label=figureTest&size=80 ''Foo'')'
 ]
 
 { #category : #'tests - section' }

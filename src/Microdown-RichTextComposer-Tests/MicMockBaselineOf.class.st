@@ -1,5 +1,5 @@
 Class {
-	#name : #MDMockBaselineOf,
+	#name : #MicMockBaselineOf,
 	#superclass : #BaselineOf,
 	#category : #'Microdown-RichTextComposer-Tests'
 }

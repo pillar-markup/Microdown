@@ -12,8 +12,8 @@ Class {
 	#superclass : #MicInlineElement,
 	#instVars : [
 		'url',
-		'caption',
-		'parser'
+		'parser',
+		'captionElements'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -66,12 +66,12 @@ MicInlineBlockWithUrl >> caption [
 
 { #category : #visiting }
 MicInlineBlockWithUrl >> captionElements [ 
-	^ caption ifNil: [ OrderedCollection new ]
+	^ captionElements ifNil: [ OrderedCollection new ]
 ]
 
 { #category : #visiting }
 MicInlineBlockWithUrl >> captionElements: aCollection [ 
-	caption := aCollection
+	captionElements := aCollection
 ]
 
 { #category : #accessing }
@@ -106,7 +106,7 @@ MicInlineBlockWithUrl >> printOn: aStream [
 		nextPutAll: contents;
 		nextPut: $];
 		nextPut: $(.
-	url printOn: aStream.
+		aStream nextPutAll: url. 
 	aStream nextPut: $)
 ]
 

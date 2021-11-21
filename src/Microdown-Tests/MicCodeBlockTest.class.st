@@ -300,6 +300,40 @@ is really cool', String cr, parser codeblockMarkup.
 	self assert: codeBlock firstTagValue equals: ''
 ]
 
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testHasLabelFalse [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	self deny: code hasLabel
+]
+
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testHasLabelTrue [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	self assert: code hasLabel
+]
+
 { #category : #tests }
 MicCodeBlockTest >> testHasNOCaption [
 
@@ -318,6 +352,23 @@ Color >> asMorph
 	
 	code := root children first.
 	self deny: code hasCaption
+]
+
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testLanguage [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	self assert: code language equals: 'pharo'
 ]
 
 { #category : #tests }

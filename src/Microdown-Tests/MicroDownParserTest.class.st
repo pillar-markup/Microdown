@@ -282,21 +282,6 @@ this is the end.'.
 	
 ]
 
-{ #category : #'tests - error' }
-MicrodownParserTest >> testError [
-	self skip. 
-	"see if we have an error"
-	self should: [ parser parse: '
-
-| aaab | jkhjh |
-| --- |
-| bar |
-
-'
-	] raise: MicParsingError 
-	
-]
-
 { #category : #'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
@@ -576,6 +561,20 @@ this is a code block
 	self assert: mic children second body equals: 'this is a code block'
 ]
 
+{ #category : #'tests - table' }
+MicrodownParserTest >> testPipeEscape [
+
+	| tableBlock firstElementOfSecondRowAsString|
+	tableBlock := (parser parse: '
+|foo|bar|
+|12\|3|456|') children first.
+	"Extract the text node"
+	firstElementOfSecondRowAsString := tableBlock rows second first.
+	"now get to the actual string stored there"
+	firstElementOfSecondRowAsString := firstElementOfSecondRowAsString first substring.
+	self assert: firstElementOfSecondRowAsString equals: '12|3'
+]
+
 { #category : #'tests - breaking class comments' }
 MicrodownParserTest >> testRBPatternVariableNode [
 	| paragraph1 paragraph2 paragraph3 |
@@ -609,6 +608,20 @@ MicrodownParserTest >> testSimpleTable [
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
 	self assert: mic rows first first first class equals: MicTextBlock
+]
+
+{ #category : #'tests - error' }
+MicrodownParserTest >> testSimpleTableNoError [
+	"Microdown allows jagged tables - as implemented in MicTableBlock>>closeMe"
+	self shouldnt: [ parser parse: '
+
+| aaab | jkhjh |
+| --- |
+| bar |
+
+'
+	] raise: Error
+	
 ]
 
 { #category : #'tests - table' }

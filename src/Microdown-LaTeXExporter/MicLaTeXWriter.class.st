@@ -75,12 +75,7 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink substring ]
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> getLevelFor: aHeader [
-	^ aHeader level
-]
-
-{ #category : #blocks }
+{ #category : #helpers }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
 		| visitor |
@@ -90,20 +85,12 @@ MicLaTeXWriter >> getStringForAll: aCollection [
 ]
 
 { #category : #'visiting-document' }
-MicLaTeXWriter >> getTypeOfSectionFor: aHeader [
-	| sections level section |
-	sections := self sectioningCommands.
-	level := self getLevelFor: aHeader.
-	section := sections at: (level min: sections size max: 1).
-	^ section
-]
-
-{ #category : #'visiting-document' }
 MicLaTeXWriter >> includeGraphicsFor: aFigure [
+
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: (aFigure localFileOrExternalReference) ]
+		parameter: [ canvas raw: aFigure reference path ]
 ]
 
 { #category : #initialization }
@@ -129,7 +116,7 @@ MicLaTeXWriter >> sectioningCommands [
 	^ #('part' 'chapter' 'section' 'subsection' 'subsubsection' 'paragraph' 'subparagraph')
 ]
 
-{ #category : #blocks }
+{ #category : #helpers }
 MicLaTeXWriter >> tabList [
 
 	0 to: nbListTab do: [ :nothing | canvas raw: '    ' ]
@@ -138,6 +125,15 @@ MicLaTeXWriter >> tabList [
 { #category : #protected }
 MicLaTeXWriter >> tabularEnvironment [
 	^ 'tabular'
+]
+
+{ #category : #'visiting-document' }
+MicLaTeXWriter >> typeOfSectionFor: aHeader [
+	| sections level section |
+	sections := self sectioningCommands.
+	level := aHeader level.
+	section := sections at: (level min: sections size max: 1).
+	^ section
 ]
 
 { #category : #initialization }
@@ -154,31 +150,19 @@ MicLaTeXWriter >> visitAnchor: anAnchor [
 		parameter: anAnchor label
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 
 	self createLinkToLabelWithoutAlias: anAchorReference
 	
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	"Annotations need to be defined as environments in LaTeX include files (e.g. common.tex)"
-	self error: 'Do we pass here? it seems that the method is called visitAnnotated:'.
-	
-	canvas environment
-		name: anAnnotatedParagraph annotation;
-		with: [ super visitParagraph: anAnnotatedParagraph.
-			canvas newLine ]
-	"Attention: we do a super call on #visitParagraph: instead of #visitAnnotatedParagraph:. The goal of this hack is to avoid trailing new line characters. This is related to PRLaTeXWriterTest>>#testStrictLineBreaksInAnnotatedParagraphs"
-]
-
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitBold: aBold [
 	canvas command name: 'textbf'; parameter: [ super visitBold: aBold ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitCitation: aCitation [
 	canvas command
 		name: 'cite';
@@ -186,51 +170,49 @@ MicLaTeXWriter >> visitCitation: aCitation [
 
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - code' }
 MicLaTeXWriter >> visitCode: aCodeBlock [
 	| env parameters |
 	parameters := OrderedCollection new.
 	aCodeBlock hasCaption
 		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock language
-		ifNotEmpty:
-			[ parameters add: 'language=' , aCodeBlock language asString ].
-	(aCodeBlock arguments includesKey: 'label')
-		ifTrue: [ parameters add: 'label=' , (aCodeBlock arguments at: 'label') ].
+	aCodeBlock hasLanguage 
+			ifTrue: [ parameters add: 'language=' , aCodeBlock language asString ].
+	aCodeBlock hasLabel
+		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
 	env := canvas environment
 		name: 'listing';
 		yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
 	env
-		with: [ canvas nextPutAllLines: aCodeBlock body.
+		with: [ 
+			canvas nextPutAllLines: aCodeBlock body.
 			canvas newLine ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
-	(aFigure hasCaption not and: [ aFigure hasLabel not ])
-		ifTrue: [ 
-			self includeGraphicsFor: aFigure.
-			^ self ].
+
+	(aFigure hasCaption not and: [ aFigure hasLabel not ]) ifTrue: [ 
+		self includeGraphicsFor: aFigure.
+		^ self ].
 	canvas environment
 		name: 'figure';
-		with:
-				[ 
+		optParameter: [ canvas raw: 'htpb' ];
+		with: [ 
 			canvas environment
 				name: 'center';
-				with:
-						[ 
+				with: [ 
 					self includeGraphicsFor: aFigure.
+					canvas newLine.
 					canvas command
 						name: 'caption';
-						parameter: [ 
-							self
-								writeCaptionOfExternalLink: aFigure;
-								writeLabelOfExternalLink: aFigure ].
-							canvas newLine ] ]
+						parameter: [ self writeCaptionOfExternalLink: aFigure ].
+					self writeLabelOfExternalLink: aFigure.
+					canvas newLine ] ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitFootnote: aFootnote [
 	canvas command name: 'footnote'; parameter: (aFootnote note)
 ]
@@ -239,7 +221,7 @@ MicLaTeXWriter >> visitFootnote: aFootnote [
 MicLaTeXWriter >> visitHeader: aHeader [
 	| section |
 	canvas newLine.
-	section := self getTypeOfSectionFor: aHeader.
+	section := self typeOfSectionFor: aHeader.
 	canvas command
 		name: section;
 		parameter: [ super visitHeader: aHeader ]
@@ -253,12 +235,12 @@ MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 	canvas newLine.
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitItalic: anItalic [
 	canvas command name: 'textit'; parameter: [ super visitItalic: anItalic ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
 	| text reference |
 	reference := aLink localFileOrExternalReference.
@@ -277,7 +259,7 @@ MicLaTeXWriter >> visitLink: aLink [
 				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitListItem: anItem [
 	self tabList.
 	canvas command name: 'item'.
@@ -286,22 +268,14 @@ MicLaTeXWriter >> visitListItem: anItem [
 	canvas newLine
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitMailLink: aLink [
-	canvas command
-		name: 'href';
-		parameter: aLink unscrambledUrl;
-		parameter: aLink alias
-]
-
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitMonospace: aMonospace [
 	canvas command
 		name: self monospaceMacro;
 		parameter: [ super visitMonospace: aMonospace ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitOrderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
 	canvas newLine.
@@ -332,12 +306,12 @@ MicLaTeXWriter >> visitQuote: aQuote [
 						canvas newLine ] ]
 ]
 
-{ #category : #'inline - blocks' }
+{ #category : #'blocks - inline' }
 MicLaTeXWriter >> visitStrike: aStrike [
 	canvas command name: 'sout'; parameter: [ super visitStrike: aStrike ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
 	| environment |
 	environment := canvas environment name: self tabularEnvironment.
@@ -353,7 +327,7 @@ MicLaTeXWriter >> visitTable: aTable [
 			canvas newLine ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell [
 	aCell isAligned
 		ifFalse: [ self writeTableCellContent: aCell ]
@@ -365,12 +339,12 @@ MicLaTeXWriter >> visitTableCell: aCell [
 				parameter: [ self writeTableCellContent: aCell ] ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell with: aBool [
 	self writeTableCellContent: aCell with: aBool 
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow [
 	self visitAll: aRow children separatedBy: [ canvas raw: ' & ' ].
 	canvas
@@ -382,7 +356,7 @@ MicLaTeXWriter >> visitTableRow: aRow [
 			canvas newLine ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 	aRow do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] separatedBy: [ canvas raw: ' & ' ].
 	canvas
@@ -394,19 +368,12 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 			canvas newLine ]
 ]
 
-{ #category : #visiting }
+{ #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
 	canvas nextPutAllLines: aText substring
 ]
 
-{ #category : #'visiting-document' }
-MicLaTeXWriter >> visitUnderlineFormat: aFormat [
-	canvas command
-		name: 'uline';
-		parameter: [ super visitUnderlineFormat: aFormat ]
-]
-
-{ #category : #blocks }
+{ #category : #'blocks - list' }
 MicLaTeXWriter >> visitUnorderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
 	canvas newLine.
@@ -423,7 +390,7 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 
 { #category : #helpers }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
-	self visitAll: anExternalLink children
+	self visitAll: anExternalLink captionElements
 ]
 
 { #category : #helpers }
@@ -443,7 +410,7 @@ MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
 	| label |
 	label := anExternalLink arguments
 		         at: 'label'
-		         ifAbsent: [ anExternalLink localFileOrExternalReference ].
+		         ifAbsent: [ anExternalLink reference relativePath  ].
 	canvas command
 		name: 'label';
 		parameter: [ canvas raw: label ]
@@ -459,7 +426,7 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 		ifFalse: [ super visitTableCell: aCell ]
 ]
 
-{ #category : #blocks }
+{ #category : #'blocks - table' }
 MicLaTeXWriter >> writeTableCellContent: aCell with: aBool [
 	^ aBool
 		ifTrue: [ 

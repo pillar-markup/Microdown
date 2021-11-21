@@ -90,18 +90,14 @@ MicInlineParserTest >> testCurlyBraceDoesNotLeadToProblem [
 	self assert: mic substring equals:  ' jhkjhk { a }'
 ]
 
-{ #category : #'tests - escape' }
+{ #category : #'tests to make green again' }
 MicInlineParserTest >> testEscapeCharacter [
-	"Test the escape \ in simple case (here, bold one)"
+
+	"we should have just one escape"
 
 	| res |
-	res := self splitter parse: 'abc\**test**last'.
-	self assert: res first class equals: MicTextBlock.
-	
-	"The following is plain wrong we are losing the \ information!"
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc**test**last' }
+	res := self splitter parse: 'not \`mono\` here'.
+	self assert: (res collect: [ :x | x printString ]) equals: { 'not `mono` here' }
 ]
 
 { #category : #'tests - escape' }
@@ -149,14 +145,22 @@ MicInlineParserTest >> testEscapeCharacterInNestedLinkName [
 ]
 
 { #category : #'tests to make green again' }
+MicInlineParserTest >> testEscapeCharacterTwoConsecutive [
+	"we should have just one escape"
+
+	| res |
+	res := self splitter parse: '\\begin\\atend\\'.
+	self assert: (res collect: [ :x | x printString ]) equals: { '\begin\atend\' }
+]
+
+{ #category : #'tests to make green again' }
 MicInlineParserTest >> testEscapeCharacterWithNoCharacterAfter [
 
 	| res |
-	self skip.
-	res := self splitter parse: '**bold**\'.
+	res := self splitter parse: '\'.
+	
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { '**bold**\' }
+		assert: res first substring equals: '\'
 ]
 
 { #category : #'tests - formats' }
@@ -164,11 +168,9 @@ MicInlineParserTest >> testEscapeMonospace [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
 
 	| res |
-	self skip.
 	res := self splitter parse: 'abc`\`monospace\``efg'.
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[\`monospace\`](monospace)'. 'efg' }.
+		assert: res second substring equals: '`monospace`'.
 	self assert: res second class equals: MicMonospaceFormatBlock
 ]
 
@@ -211,7 +213,7 @@ MicInlineParserTest >> testFigure [
 		equals: { 'abc'. '![AltText](my_directory/image.png)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference  isKindOf: MicResourceReference)
 	
 ]
 
@@ -234,14 +236,14 @@ MicInlineParserTest >> testFigureWithParameters [
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png?label=42&width=90)last'.
+		       'abc![AltText](my_directory/image.png label=42&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png?label=42&width=90)'.
+			{ 'abc'. '![AltText](my_directory/image.png label=42&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: '42'.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -253,14 +255,14 @@ MicInlineParserTest >> testFigureWithParametersWithBlank [
 
 	| res |
 	res := self splitter parse:
-		       'abc![AltText](my_directory/image.png?label=&width=90)last'.
+		       'abc![AltText](my_directory/image.png label=&width=90)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png?label=&width=90)'.
+			{ 'abc'. '![AltText](my_directory/image.png label=&width=90)'.
 			'last' }.
 	self assert: (res second isKindOf: MicFigureBlock).
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: ''.
 	self assert: (res second arguments at: 'width') equals: '90'
 ]
@@ -530,7 +532,7 @@ MicInlineParserTest >> testSplitBlockLink [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals: { 'abc'. '[LinkText](myURL)'. 'last' }.
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference isKindOf: MicResourceReference)
 
 ]
 
@@ -594,13 +596,12 @@ MicInlineParserTest >> testStrike [
 
 { #category : #'tests to make green again' }
 MicInlineParserTest >> testTwoConsecutiveEscapeCharacter [
+
 	"we should have just one escape"
+
 	| res |
-	self skip.
-	res := self splitter start: '\\'.
-	self
-		assert: (res collect: [ :x | x printString ])
-		equals: {'\'}.
+	res := self splitter parse: '\\'.
+	self assert: (res collect: [ :x | x printString ]) equals: { '\' }
 ]
 
 { #category : #'tests - annotation' }
@@ -657,7 +658,7 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks [
 
 	| res |
 	res := self splitter parse: 'abc[test](myURL)last'.
-	self assert: (res second url isKindOf: MicResourceReference)
+	self assert: (res second reference isKindOf: MicResourceReference)
 
 ]
 
@@ -667,9 +668,9 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks2 [
 	| res |
 	res := self splitter parse:
 		       'abc[pulse](https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests)last'.
-	self assert: (res second url isKindOf: MicResourceReference).
+	self assert: (res second reference isKindOf: MicHTTPResource ).
 	self flag: #tofix. "substring just returns pulse???"
-	self assert: res second url printString  equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
+	self assert: res second reference uri asString equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
 ]
 
 { #category : #tests }

@@ -1,71 +1,61 @@
 Class {
 	#name : #MicHTTPResource,
-	#superclass : #MicResourceReference,
+	#superclass : #MicAbsoluteResource,
+	#classVars : [
+		'ImageCache'
+	],
 	#category : #'Microdown-Core'
 }
 
-{ #category : #converting }
-MicHTTPResource >> asFileReference [
-
-	^ urlOrFileReference asFileReference
+{ #category : #images }
+MicHTTPResource class >> cachedImageFromUrl: aUrl [
+	
+	^ self imageCache 
+		at: aUrl
+		ifAbsentPut: [ (self rawImageFrom: aUrl) ifNil: [ ^ nil ] ] 
 ]
 
-{ #category : #converting }
-MicHTTPResource >> fullName [
-
-	^ urlOrFileReference printString
+{ #category : #accessing }
+MicHTTPResource class >> imageAt: urlString put: aForm [	
+	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
+	
+	ImageCache at: urlString put: aForm
 ]
 
-{ #category : #testing }
-MicHTTPResource >> isWeb [
-
-	^ urlOrFileReference isWeb
+{ #category : #images }
+MicHTTPResource class >> imageCache [
+	ImageCache ifNil:[ImageCache := LRUCache new ].
+	^ImageCache
 ]
 
-{ #category : #querying }
-MicHTTPResource >> query [
-	^ urlOrFileReference query
+{ #category : #images }
+MicHTTPResource class >> initialize [
+	<script>
+	ImageCache := nil
 ]
 
-{ #category : #resolving }
-MicHTTPResource >> resolvedBy: parentPath withResolver: aResolver [
-	"I'm url resource so I do not care about a root"
-
-	^ (aResolver resolutionSource isKindOf: ZnUrl)
-			ifTrue: [
-				"we want to resolve over for example http://github.com/pharo-project...."
-				MicHTTPResource new 
-								originalString: originalString; 
-								url: (aResolver resolutionSource withRelativeReference: self path) ]
-			ifFalse: [ 
-				"Now I resolve again a file system... well this is http so I do not care about the resolver"
-				self				
-				]
-
-
+{ #category : #images }
+MicHTTPResource class >> rawImageFrom: aURL [
+	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
+	on: Error
+	do: [ ^nil ]
+		
 ]
 
-{ #category : #resolving }
-MicHTTPResource >> resolvedWithResolver: aResolver [
-	"I'm url resource so I do not care about a root"
-	"Experimental"
-	^ (aResolver resolutionSource isKindOf: ZnUrl)
-			ifTrue: [
-				"we want to resolve over for example http://github.com/pharo-project...."
-				MicHTTPResource new 
-								originalString: originalString; 
-								url: (aResolver resolutionSource withRelativeReference: self path) ]
-			ifFalse: [ 
-				"Now I resolve again a file system... well this is http so I do not care about the resolver"
-				self				
-				]
-
-
+{ #category : #'accessing - resources' }
+MicHTTPResource >> loadImage [
+	"return an image form from my reference"
+	^ self class cachedImageFromUrl: uri asString
 ]
 
-{ #category : #converting }
-MicHTTPResource >> string: aString [
-
-	super string: aString.
-	urlOrFileReference := ZnUrlCopy fromString: originalString.
+{ #category : #'accessing - resources' }
+MicHTTPResource >> loadMicrodown [
+	"load, parse and resolve a microdown document"
+	| docString doc |
+	[ docString := (ZnEasy get: uri) contents.
+	  doc := Microdown new parse: docString.
+	  MicZinkPathResolver resolve: doc withBase: uri.
+	  ^doc]
+	on: Error
+	do: [ ^ nil ]
 ]

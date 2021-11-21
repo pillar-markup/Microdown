@@ -11,7 +11,7 @@ Class {
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest class >> dummyStylerFor: aString [
 	"I am a styler used for testing. "
-	<codeblockStylerFor: 'dummy'>
+	<codeblockStyler: 'dummy'>
 	
 	^'§dummy§' asText
 ]
@@ -128,6 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
+	MicRichTextComposer initializeStylers.
 ]
 
 { #category : #'skipped tests' }
@@ -153,7 +154,7 @@ MicRichTextComposerTest >> superscriptFormat [
 
 { #category : #tests }
 MicRichTextComposerTest >> testBackslashLast [
-		| source richText |
+	| source richText |
 	source := 'I am a text which ends in \'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: source
@@ -184,6 +185,7 @@ MicRichTextComposerTest >> testBoldFormat [
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
+
 	| source runs richText |
 	source := '
 ```arguments
@@ -203,43 +205,37 @@ line 2
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
+
 	| source richText expected |
-	
-		self skip. 
-	self flag: #todo.
-	
 	source := '
 ```language=dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
-	| source runs richText expected |
-	
-	self skip. 
-	self flag: #todo.
+
+	| source richText expected |
 	source := '
 ```dummy
 line 1
 line 2
 ```
 '.
-	expected := 'line 1
-line 2'.
+	expected := '§dummy§'.
 	richText := self richTextForString: source.
 	self assert: richText asString trim equals: expected
 ]
 
 { #category : #'tests - codeBlock' }
-MicRichTextComposerTest >> testCodeBlockWithCaption [ 
+MicRichTextComposerTest >> testCodeBlockWithCaption [
+
 	| source runs richText |
 	source := '
 ```caption=Roger Rabbit
@@ -263,7 +259,7 @@ Roger Rabbit
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testExternaLink [
 
-	| source richText obj1  |
+	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
@@ -289,19 +285,8 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := MicRichTextComposer microdownAsRichText: source.
 
-	self assert: (richText asString trim includesSubstring: 'SomeText').
+	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
-]
-
-{ #category : #'skipped tests' }
-MicRichTextComposerTest >> testFigureLocal [
-
-	| source richText |
-	self skip. "Local not working yet"
-	source := 'See ![](foo.png)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
-
-	
 ]
 
 { #category : #'skipped tests' }
@@ -364,11 +349,12 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 ]
 
 { #category : #'skipped tests' }
-MicRichTextComposerTest >> testItalicFormat [ 
+MicRichTextComposerTest >> testItalicFormat [
+
 	| source runs richText |
 	source := 'This have been _emphasized_'.
 	richText := self richTextForString: source.
-	runs := (richText runs ) asArray .
+	runs := richText runs asArray.
 	
 	self assert: runs first isEmpty. 
 	self assert: ((runs at: 19 "the p in emphasized") includes: self italicFormat ).
@@ -377,7 +363,8 @@ MicRichTextComposerTest >> testItalicFormat [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testLatexMathStyle [
-	|    source1 source2 richText1 richText2 |
+
+	| source1 source2 richText1 richText2 |
 	"this checks if latex is working by making two formulas, of which the second should be taller"
 	source1 :=  'foo$a+b$bar'.
 	source2 :=  'foo$\frac{A}{B}$bar'.
@@ -387,7 +374,8 @@ MicRichTextComposerTest >> testLatexMathStyle [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testLatexMathStyleEmpty [ 
+MicRichTextComposerTest >> testLatexMathStyleEmpty [
+
 	| source richText |
 	source :=  'foo$$bar'.
 	richText := self richTextForString: source.
@@ -396,6 +384,7 @@ MicRichTextComposerTest >> testLatexMathStyleEmpty [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testListAreCorrectlyNumbered [
+
 	| source richText |
 	source :=
 '1. item 1
@@ -409,9 +398,42 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testMathEnvironment [
+	| source1 source2 richText1 richText2 |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source1 :=  'foo
+&
+a+b
+&
+bar'.
+	source2 :=  'foo
+&
+\frac{A}{B}
+&
+bar'.
+	richText1 := self richTextForString: source1.
+	richText2 := self richTextForString: source2.
+	self assert: richText1 asMorph height < richText2 asMorph height
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testMathEnvironmentError [
+	| source richText |
+	"this checks if latex is working by making two formulas, of which the second should be taller"
+	source :=  'foo
+&
+\foo{a+b}
+&
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString equals: 'foo& - LATEX ERROR - &'
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedMixedList [
-	| source richText runs|
+
+	| source richText runs |
 	source := 
 '- item 1
   1. sub item 1.1
@@ -430,7 +452,8 @@ MicRichTextComposerTest >> testNestedMixedList [
 
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
-	| source richText runs|
+
+	| source richText runs |
 	source := 
 '- item 1
   - sub item 1.1
@@ -457,6 +480,7 @@ MicRichTextComposerTest >> testNewDictionaryAPI [
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testNoNSuperfluousNewLines [
+
 	| source richText expected |
 	source :=  'This is **bold**
 	
@@ -470,6 +494,7 @@ And this is just an other paragraph'.
 
 { #category : #'tests - list' }
 MicRichTextComposerTest >> testNosuperfluousNewLines [
+
 	| source richText expected |
 	source :=  'This is **bold**'.
 	expected := 'This is bold'.
@@ -478,7 +503,8 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testOrderedList [ 
+MicRichTextComposerTest >> testOrderedList [
+
 	| source richText runs  |
 	source := '1. First item
 2. Second item
@@ -496,6 +522,7 @@ MicRichTextComposerTest >> testOrderedList [
 
 { #category : #'tests - paragraph' }
 MicRichTextComposerTest >> testParagraphNotFormat [
+
 	| runs richText |
 	richText := self richTextFor: (self microElementsFrom: '
 foo
@@ -510,7 +537,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 	| source runs richText |
 	source := 'This have been ~deleted~'.
 	richText := self richTextForString: source.
-	runs := (richText runs ) asArray .
+	runs := richText runs asArray.
 	
 	self assert: runs first isEmpty. 
 	self assert: ((runs at: 19 "the l in deleted") includes: self strikethroughtFormat ).
@@ -543,62 +570,19 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #tests }
-MicRichTextComposerTest >> testStylerForSmalltalk [
-	
-	| code source richText blueLocation textColor |
-	self skip.
-	"no idea why on the server self assert: textColor color red equals: 1.0. and not in our image"
-	MicRichTextComposer initializeStylers.
-	code := '
-codeStylerFor: aString
-<codeblockStylerFor: #smalltalk>
-
-^bobby new 
-isForWorkspace: blue; 
-styledTextFor: aString asFest'.
-	source := '
-```language=smalltalk' , code ,'
-```
-'.
-	richText := self richTextForString: source.
-	
-	self assert: richText asString trim equals: code trim.
-	"style smalltalk is assumes the code to be a code fragment, not a full method def"
-	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold) not.
-	"Check that the unknown variable 'blue' is not colored red"
-	blueLocation := richText asString findString: 'blue'.
-	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 0.
-]
-
-{ #category : #'tests - stylers' }
+{ #category : #'tests - header' }
 MicRichTextComposerTest >> testStylersAreRegistered [
-
-	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'blblbl'.
-	self assert: defaultStyler selector equals: #defaultStyler:
+	"this test has been moved to MicCodeStylerTest"
 ]
 
-{ #category : #'tests - stylers' }
+{ #category : #'tests - header' }
 MicRichTextComposerTest >> testStylersForText [
-
-	| defaultStyler |
-	defaultStyler := self composerClass languageStylerFor: 'text'.
-	self assert: defaultStyler selector equals: #textStyler:.
-	 "Stylers are used for codeblock, and a test should be included for this"
-]
-
-{ #category : #'skipped tests' }
-MicRichTextComposerTest >> testSubscriptFormat [
-	"Test fails: subscript isn't recognized"
-	
-	self assert: true.
-	
+	"this test has been moved to MicCodeStylerTest"
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testUnorderedList [ 
+MicRichTextComposerTest >> testUnorderedList [
+
 	| source richText runs  |
 	source :=  '- First item
 - Second item

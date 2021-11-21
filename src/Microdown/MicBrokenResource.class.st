@@ -1,3 +1,6 @@
+"
+I should not be necessary.
+"
 Class {
 	#name : #MicBrokenResource,
 	#superclass : #MicResourceReference,
@@ -8,4 +11,14 @@ Class {
 MicBrokenResource >> asFileReference [
 
 	^ self error
+]
+
+{ #category : #testing }
+MicBrokenResource >> isResolved [ 
+	^ false
+]
+
+{ #category : #accessing }
+MicBrokenResource >> path [
+	^originalString  
 ]

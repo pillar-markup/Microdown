@@ -75,11 +75,8 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithCaption [
 	| mic |
 	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self flag: #toFix.
-	"language = caption is false. It is not the case may in microdown we have ...&language=perl
-	and this creates language=perl in latex."
 	self assert: (writer visit: mic) contents equals: '
-\begin{listing}[caption={Pharo is \textbf{cool}}, language=caption]
+\begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
 \end{listing}
 '
@@ -92,7 +89,7 @@ MicLaTeXWriterTest >> testCodeblockWithLabel [
 	self flag: #tofix.
 	"This is wrong since language cannot be label"
 	self assert: (writer visit: mic) contents equals: '
-\begin{listing}[language=label, label=Pharo is cool]
+\begin{listing}[label=Pharo is cool]
 this is a code
 \end{listing}
 '
@@ -100,25 +97,16 @@ this is a code
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
+
 	| mic |
 	mic := parser parse: factory figureSample.
-	self flag: #tofix.
-	"we should give something similar to 
-	
-	\begin{figure}[htpb]
-\begin{center}
-\includegraphics[width=\linewidth]{stef-ReferenceSituation2.pdf}
-\caption{A schematic mini project composed of the A, B, C, D, E, and F hierarchies (thick borders denote hierarchy roots). \label{figureIllustrativeExampleCB}}
-\end{center}
-\end{figure}
-"
-
 	self assert: (writer visit: mic) contents equals: '
 
-\begin{figure}
+\begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{/anUrl?label=figureTest&size=80}\caption{\label{figureTest}}
+\includegraphics[width=1.0\textwidth]{/anUrl}
+\caption{Foo}\label{figureTest}
 \end{center}
 \end{figure}
 
@@ -131,10 +119,11 @@ MicLaTeXWriterTest >> testFigureBold [
 	mic := parser parse: factory figureBoldSample.
 	self assert: (writer visit: mic) contents equals: '
 
-\begin{figure}
+\begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{/anUrl?label=figureTest&size=80}\caption{\textbf{Foo}\label{figureTest}}
+\includegraphics[width=1.0\textwidth]{/anUrl}
+\caption{\textbf{Foo}}\label{figureTest}
 \end{center}
 \end{figure}
 
@@ -187,7 +176,6 @@ MicLaTeXWriterTest >> testHeaderLevel6 [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testHorizontalLine [
-
 
 	self parseInlined: factory horizontalLineSample andCheckWeGet: '\rule{\textwidth}{0.1pt}'
 ]
@@ -372,7 +360,7 @@ MicLaTeXWriterTest >> testStrike [
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
 	| mic |
-	mic := parser parse: (factory tableSample).
+	mic := parser parse: factory tableSample.
 	self assert: (writer visit: mic) contents equals: '
 \begin{tabular}{ll}
 \toprule

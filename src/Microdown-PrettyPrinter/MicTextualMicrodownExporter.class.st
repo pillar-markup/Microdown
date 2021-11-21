@@ -309,7 +309,7 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
-
+	
 	builder text:  (self backSlasher backSlashString: aMicTextBlock substring)
 ]
 
