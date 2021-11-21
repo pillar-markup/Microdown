@@ -59,6 +59,13 @@ Class {
 	#category : #'Microdown-RichTextComposer'
 }
 
+{ #category : #public }
+MicRichTextComposer class >> asRichText: aDoc [
+	
+	^ self new visit: aDoc
+
+]
+
 { #category : #private }
 MicRichTextComposer class >> bulletForLevel: level [
 	| kind |
