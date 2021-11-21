@@ -274,6 +274,13 @@ MicRichTextComposer class >> microdownAsRichText: aString [
 
 ]
 
+{ #category : #public }
+MicRichTextComposer class >> parseAndCompose: aString [
+	
+	^ self new visit: (Microdown parse: aString)
+
+]
+
 { #category : #accessing }
 MicRichTextComposer >> annotatedParagrapAlignment [
 	^ annotatedParagraphAlignment 
