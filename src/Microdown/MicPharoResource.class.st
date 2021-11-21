@@ -1,3 +1,17 @@
+"
+I am a reference to a image or microdown ressource in the image.
+
+I follow the url scheme `pharo:///class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///SpPresenter/iconNamed:/nameOfIcon`.
+
+Examples:
+- abstract: ![](pharo:///SpPresenter/iconNamed:/abstract) 
+- bitbucket: ![](pharo:///SpPresenter/iconNamed:/bitbucket)
+- thumbsUp: ![](pharo:///SpPresenter/iconNamed:/thumbsUp)
+
+## Restictions
+- Only class side methods can be invoked
+- Only string arguments can be passed
+"
 Class {
 	#name : #MicPharoResource,
 	#superclass : #MicAbsoluteResource,
@@ -6,8 +20,7 @@ Class {
 
 { #category : #'accessing - resources' }
 MicPharoResource >> executeUri [
-
-	"return the result of executing my uri"
+	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 
 	| class selector size args |
 	class := (self class environment at: (uri segments first) asSymbol ) class.
