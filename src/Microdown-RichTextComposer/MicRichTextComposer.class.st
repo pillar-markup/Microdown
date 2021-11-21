@@ -97,19 +97,17 @@ MicRichTextComposer class >> counterFor: counter atLevel: level [
 
 { #category : #examples }
 MicRichTextComposer class >> exampleLatex [
-	<example>
+	<sampleInstance>
 
-	(MicRichTextComposer new visit: 
-		(MicMathInlineBlock new 
-		substring:
+	^ self parseAndCompose:
 'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown1 [
-	<example>
-	(self microdownAsRichText: '### First section
+	<sampleInstance>
+	^ self parseAndCompose:  '### First section
 and this is just **first** line 
 1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
    - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
@@ -117,13 +115,13 @@ and this is just **first** line
 1. Line 2
    - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
    - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3') inspect
+1. Line 3'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown11 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 '### Latex mathematics 
 It is possible to render latex math via a web services. Future version will cache the resulting expressions. 
 
@@ -132,13 +130,13 @@ $
 $
 
 Cool eh?
-') inspect
+'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown3 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'## Code Blocks
 this is just _first_ line
 
@@ -147,26 +145,26 @@ Metacello new
    baseline: ''PillarRichTextExporter'';
    repository: ''github://kasperosterbye/PillarRichTextRender'';
    load.
-```') inspect
+```' 
 
 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown4 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'## Annotations
 this is just _first_ line
 
 !!todo remember to do annotations
-and this is the second line') inspect
+and this is the second line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown5 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'### Links
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
@@ -176,26 +174,26 @@ Here are direct links to classes and method
 - `String`
 - `String>>#trim`
 
-And this is another line') inspect
+And this is another line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown6 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'### Figures
 This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
 At max you should get one request per picture.
 
 ![A super nice Pharo logo.](https://files.pharo.org/media/logo/logo.png)
 
-And this is the last line') inspect
+And this is the last line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown7 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'# First section
 
 1. `Point` should open a class browser on Point.
@@ -203,30 +201,30 @@ MicRichTextComposer class >> exampleMicrodown7 [
 3. `Point >> setX:setY:` should open a browser on the correspoding method.
 4. `#''Pillar-ExporterRichText''` should open a browser on the package.
 5. But `Borrrrrken` does not display the same.
-') inspect
+' 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown8 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'```language=PharoExpression
 1 + 2 * 3  
 ```
-') inspect
+' 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown9 [
-	<example>
+	<sampleInstance>
 	
-	(self microdownAsRichText: 
+	^ self parseAndCompose: 
 'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
 ```language=PharoMethod
 foo: arg
 	^ arg + self
 ```
-') inspect
+'
 ]
 
 { #category : #private }
@@ -270,7 +268,7 @@ MicRichTextComposer class >> initializeStylers [
 { #category : #public }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (Microdown new parse: aString)
+	^ self new visit: (Microdown parse: aString)
 
 ]
 
