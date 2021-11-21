@@ -13,6 +13,35 @@ Class {
 }
 
 { #category : #parsing }
+Microdown class >> asRichText: aStringOrDoc [
+	"Facade method to render a microdown document or string to Text"
+	^ MicRichTextComposer asRichText:
+		(aStringOrDoc isString 
+			ifTrue: [  self parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc   ])
+	
+]
+
+{ #category : #parsing }
+Microdown class >> parse: aStreamOrString [
+
+	^ MicroDownParser parse: aStreamOrString
+]
+
+{ #category : #parsing }
+Microdown class >> resolve: document fromUri: uri [
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
+	|baseUri|
+	baseUri := uri.
+	(uri isString | uri isText)
+		ifTrue: [ baseUri := uri asString asUrl ].
+	baseUri isRelative 
+		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
+	MicZinkPathResolver resolve: document  withBase: baseUri.
+	^ document 
+]
+
+{ #category : #parsing }
 Microdown >> builder [
 
 	^ parser builder
@@ -28,7 +57,14 @@ Microdown >> initialize [
 { #category : #parsing }
 Microdown >> parse: aStreamOrString [
 
-	^ parser parse: aStreamOrString
+	^ self class parse: aStreamOrString
+]
+
+{ #category : #rendering }
+Microdown >> render: aStringOrDoc [
+	"Facade method to render a microdown string to Text"
+	^ self class render: aStringOrDoc 
+	
 ]
 
 { #category : #parsing }

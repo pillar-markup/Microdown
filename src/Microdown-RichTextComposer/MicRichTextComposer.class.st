@@ -49,19 +49,24 @@ Class {
 		'subscriptColor',
 		'annotatedParagraphColor',
 		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment'
+		'annotatedParagraphAlignment',
+		'styler'
 	],
 	#classVars : [
 		'CaptureErrors',
 		'HeaderFontSizes',
 		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine',
-		'Stylers'
+		'NotRendering'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
+
+{ #category : #public }
+MicRichTextComposer class >> asRichText: aDoc [
+	
+	^ self new visit: aDoc
+
+]
 
 { #category : #private }
 MicRichTextComposer class >> bulletForLevel: level [
@@ -71,18 +76,6 @@ MicRichTextComposer class >> bulletForLevel: level [
 		ifTrue: [ ^ $• asText ].
 	kind = 1
 		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> captureErrors [
-	
-	^ CaptureErrors
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> captureErrors: aBoolean [
-	"self captureErrors: false"
-	CaptureErrors := aBoolean
 ]
 
 { #category : #private }
@@ -124,8 +117,8 @@ MicRichTextComposer class >> exampleLatex [
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown1 [
-	<example>
-	(self microdownAsRichText: '### First section
+	<sampleInstance>
+	^ self parseAndCompose:  '### First section
 and this is just **first** line 
 1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
    - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
@@ -133,13 +126,13 @@ and this is just **first** line
 1. Line 2
    - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
    - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3') inspect
+1. Line 3'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown11 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 '### Latex mathematics 
 It is possible to render latex math via a web services. Future version will cache the resulting expressions. 
 
@@ -148,13 +141,13 @@ $
 $
 
 Cool eh?
-') inspect
+'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown3 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'## Code Blocks
 this is just _first_ line
 
@@ -163,26 +156,26 @@ Metacello new
    baseline: ''PillarRichTextExporter'';
    repository: ''github://kasperosterbye/PillarRichTextRender'';
    load.
-```') inspect
+```' 
 
 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown4 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'## Annotations
 this is just _first_ line
 
 !!todo remember to do annotations
-and this is the second line') inspect
+and this is the second line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown5 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'### Links
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
@@ -192,26 +185,26 @@ Here are direct links to classes and method
 - `String`
 - `String>>#trim`
 
-And this is another line') inspect
+And this is another line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown6 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'### Figures
 This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
 At max you should get one request per picture.
 
 ![A super nice Pharo logo.](https://files.pharo.org/media/logo/logo.png)
 
-And this is the last line') inspect
+And this is the last line'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown7 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'# First section
 
 1. `Point` should open a class browser on Point.
@@ -219,30 +212,30 @@ MicRichTextComposer class >> exampleMicrodown7 [
 3. `Point >> setX:setY:` should open a browser on the correspoding method.
 4. `#''Pillar-ExporterRichText''` should open a browser on the package.
 5. But `Borrrrrken` does not display the same.
-') inspect
+' 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown8 [
-	<example>
-	(self microdownAsRichText:
+	<sampleInstance>
+	^ self parseAndCompose:
 					'```language=PharoExpression
 1 + 2 * 3  
 ```
-') inspect
+' 
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown9 [
-	<example>
+	<sampleInstance>
 	
-	(self microdownAsRichText: 
+	^ self parseAndCompose: 
 'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
 ```language=PharoMethod
 foo: arg
 	^ arg + self
 ```
-') inspect
+'
 ]
 
 { #category : #private }
@@ -290,46 +283,11 @@ MicRichTextComposer class >> microdownAsRichText: aString [
 
 ]
 
-{ #category : #'class initialization' }
-MicRichTextComposer class >> notRendering [
-	"When notRendering, the comments are just displayed as plain text."
+{ #category : #public }
+MicRichTextComposer class >> parseAndCompose: aString [
 	
-	^ NotRendering
-]
+	^ self new visit: (Microdown parse: aString)
 
-{ #category : #'class initialization' }
-MicRichTextComposer class >> notRendering: aBoolean [
-	NotRendering := aBoolean
-]
-
-{ #category : #settings }
-MicRichTextComposer class >> preferencesSettingsOn: aBuilder [
-	<systemsettings>
-	(aBuilder group: #comments)
-		label: 'Comment rendering';  
-		parent: #appearance;
-		description: 'All settings concerned with the control of nice comment rendering';
-		with: [
-		(aBuilder setting: #offline)
-			label: 'To enable offline mode';
-			target: self;
-			default: false;
-			description: '
-			When online is chosen, requests to external images are only performed when they are not in the image cache (since requesting systematically HTTP may lead of latency. Each figure is cached, so the request is at most done one per external references. When the system is online but the request failed we return a placeholder that is not cached.
-			
-			When offline, requests to external images are not performed. The cache can be reset executing PRRichTextComposer resetCache. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).'. 
-			(aBuilder setting: #notRendering)
-				label: 'To disable richtext rendering';
-				default: false;
-				target: self;
-				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
-			(aBuilder setting: #captureErrors)
-				label: 'To disable rendering error capture';
-				default: true;
-				target: self;
-				description: 'By default if there is an error during the rendering of the comments, various errors are trapped. If you want to get such errors to debug the system, you should turn off this settings.'. 
-			
-			]
 ]
 
 { #category : #public }
