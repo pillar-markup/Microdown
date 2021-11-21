@@ -339,7 +339,7 @@ MicRichTextComposer >> defaultSuperscriptColor [
 ]
 
 { #category : #initialization }
-MicRichTextComposer >> initialize [
+MicRichTextComposer >> initialize [ 
 	super initialize.
 	monospaceBackgroundColor := self theme settings windowColor.
 	superscriptColor := self defaultSuperscriptColor.
@@ -399,13 +399,13 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 { #category : #accessing }
 MicRichTextComposer >> styler [
 
-	^ styler
+	^ styler 
 ]
 
 { #category : #accessing }
 MicRichTextComposer >> styler: anObject [
 
-	styler := anObject
+	styler := anObject 
 ]
 
 { #category : #accessing }
@@ -553,7 +553,7 @@ MicRichTextComposer >> visitLink: aLink [
 	| attribute |
 	attribute := TextAction new
 		             actOnClickBlock: [ 
-			             WebBrowser openOn: aLink url printString ];
+			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
