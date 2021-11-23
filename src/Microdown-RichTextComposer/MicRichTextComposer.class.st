@@ -45,12 +45,8 @@ Class {
 	#instVars : [
 		'canvas',
 		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'codeStyler'
+		'codeStyler',
+		'textStyler'
 	],
 	#classVars : [
 		'CaptureErrors',
@@ -304,56 +300,16 @@ MicRichTextComposer class >> render: aString [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> annotatedParagrapAlignment [
-	^ annotatedParagraphAlignment 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphAnnotationColor [
-	^ annotatedParagraphAnnotationColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphAnnotationColor: aColor [
-	annotatedParagraphAnnotationColor := aColor
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphColor [
-	^ annotatedParagraphColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphColor: aColor [
-	annotatedParagraphColor := aColor
-]
-
-{ #category : #accessing }
 MicRichTextComposer >> codeStyler [
 
 	^ codeStyler
 ]
 
 { #category : #initialization }
-MicRichTextComposer >> defaultAnnotatedParagraphColor [
-	^ TextColor blue
-]
-
-{ #category : #initialization }
-MicRichTextComposer >> defaultSuperscriptColor [
-	^ TextColor blue
-]
-
-{ #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
-	monospaceBackgroundColor := self theme settings windowColor.
-	superscriptColor := self defaultSuperscriptColor.
-	subscriptColor := TextColor red.
-	annotatedParagraphColor := self defaultAnnotatedParagraphColor.
-	annotatedParagraphAnnotationColor := TextEmphasis bold.
-	annotatedParagraphAlignment := TextAlignment leftFlush.
 	codeStyler := MicCodeStylerSpec. "Yes, the class"
+	textStyler := MicTextStyler
 ]
 
 { #category : #private }
@@ -364,18 +320,6 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	^ ref loadImage
 		ifNotNil: [ :image | image asText]
 		ifNil: [ aBlock value asText ]
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> monospaceBackgroundColor [
-
-	^ monospaceBackgroundColor
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> monospaceBackgroundColor: aColor [
-
-	monospaceBackgroundColor := aColor
 ]
 
 { #category : #images }
@@ -403,23 +347,15 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> subscriptColor [
-	^ subscriptColor 
+MicRichTextComposer >> textStyler [
+
+	^ textStyler
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> subscriptColor: anObject [
-	subscriptColor := anObject
-]
+MicRichTextComposer >> textStyler: anObject [
 
-{ #category : #accessing }
-MicRichTextComposer >> superscriptColor [
-	^ superscriptColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> superscriptColor: anObject [
-	superscriptColor := anObject
+	textStyler := anObject
 ]
 
 { #category : #initialization }
@@ -444,20 +380,9 @@ MicRichTextComposer >> visit: aDocument [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	self error: 'this was a halt.'.
-	canvas newLineIfNotAlready.
-	canvas
-		includeAttribute: self annotatedParagrapAlignment
-		in: [ 
-			canvas
-				includeAttribute: self annotatedParagraphAnnotationColor
-				in: [ canvas << anAnnotatedParagraph annotation capitalized asText ].
-			canvas
-				includeAttribute: self annotatedParagrapAlignment
-				in: [ canvas
-						includeAttribute: self annotatedParagraphColor
-						in: [ self visitParagraph: anAnnotatedParagraph ] ] ].
-	canvas newLine.
+	"Do nothing - You are supposed to use specialized annotations"
+	self error: 'You are not supposed to be here - did you misspell an annotation type?'
+	
 ]
 
 { #category : #'visiting -  format' }
@@ -587,7 +512,7 @@ MicRichTextComposer >> visitMathInline: aMicMathInline [
 MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
-	backgroundColor := self monospaceBackgroundColor.
+	backgroundColor := self textStyler monospaceBackgroundColor.
 	
 	self flag: #fixMe.
 	"Right now we stupidly emit TextAction but we should emit TextClassLink and revisit them."
