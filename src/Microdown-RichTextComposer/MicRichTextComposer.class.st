@@ -64,20 +64,6 @@ MicRichTextComposer class >> asRichText: aDoc [
 
 ]
 
-{ #category : #private }
-MicRichTextComposer class >> computeHeaderFonts [
-	
-	HeaderFonts := Array new:  HeaderFontSizes size.
-	1 to: HeaderFontSizes size do: [ :index |
-		HeaderFonts at: index put: 
-			(TextFontReference
-				toFont:
-					(StrikeFont
-						familyName: 'Bitmap Source Sans Pro'
-						pointSize: (HeaderFontSizes at: index)))
-			  ]
-]
-
 { #category : #examples }
 MicRichTextComposer class >> exampleLatex [
 	<example>
@@ -215,18 +201,6 @@ foo: arg
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
-	self offline: false.
-	self notRendering: false.
-	self resetCache.
-	self headerFontSizes: #(18 14 12 11 10 10).
-	self initializeCodeStylers.
-	self captureErrors: true.
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> initializeCodeStylers [
-	"self initializeStylers"
-	
 	MicCodeStylerSpec initializeCache.
 ]
 

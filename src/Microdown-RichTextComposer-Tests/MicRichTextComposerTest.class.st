@@ -128,7 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
-	MicRichTextComposer initializeCodeStylers.
+	MicRichTextComposer initialize.
 ]
 
 { #category : #'skipped tests' }
@@ -558,7 +558,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	MicRichTextComposer initializeCodeStylers.
+	MicRichTextComposer initialize.
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
