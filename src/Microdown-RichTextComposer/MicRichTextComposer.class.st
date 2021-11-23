@@ -516,6 +516,29 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 					newLine ]]].
 ]
 
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumn: columnBlock [
+	"I do nothing - handled by columns"
+	
+	
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumns: columnsBlock [
+	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
+	| columns scale |
+	canvas newLineIfNotAlready.
+	columns := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
+	scale := (100 / columns size ) asInteger.
+	columns do: [ :column | |colText morph|
+		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
+		morph := RubScrolledTextMorph new setText: colText. 
+		canvas << ((String value: 1) asText addAttribute: (MicScalingTextAnchor new original: morph;scale:scale-5 ))].
+	canvas newLine 
+	
+	
+]
+
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitEnvironment: anObject [
 	self error: 'It was a halt'.
