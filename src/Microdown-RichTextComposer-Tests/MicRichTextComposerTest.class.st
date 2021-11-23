@@ -271,7 +271,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
+	richText := MicRichTextComposer parseAndCompose: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -293,7 +293,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
+	richText := MicRichTextComposer parseAndCompose: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"

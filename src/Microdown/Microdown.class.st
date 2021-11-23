@@ -70,12 +70,5 @@ Microdown >> render: aStringOrDoc [
 { #category : #parsing }
 Microdown >> resolve: document fromUri: uri [
 	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
-	|baseUri|
-	baseUri := uri.
-	(uri isString | uri isText)
-		ifTrue: [ baseUri := uri asString asUrl ].
-	baseUri isRelative 
-		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
-	MicZinkPathResolver resolve: document  withBase: baseUri.
-	^ document 
+	^ self class resolve: document fromUri: uri
 ]

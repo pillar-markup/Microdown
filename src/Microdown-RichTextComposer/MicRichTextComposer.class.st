@@ -45,14 +45,16 @@ Class {
 	#instVars : [
 		'canvas',
 		'monospaceBackgroundColor',
-		'codeStyler',
-		'textStyler'
+		'superscriptColor',
+		'subscriptColor',
+		'annotatedParagraphColor',
+		'annotatedParagraphAnnotationColor',
+		'annotatedParagraphAlignment',
+		'styler'
 	],
 	#classVars : [
-		'CaptureErrors',
 		'HeaderFontSizes',
-		'HeaderFonts',
-		'NotRendering'
+		'HeaderFonts'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
@@ -66,13 +68,11 @@ MicRichTextComposer class >> asRichText: aDoc [
 
 { #category : #examples }
 MicRichTextComposer class >> exampleLatex [
-	<example>
+	<sampleInstance>
 
-	(MicRichTextComposer new visit: 
-		(MicMathInlineBlock new 
-		substring:
+	^ self parseAndCompose:
 'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}'
 ]
 
 { #category : #examples }
@@ -221,7 +221,7 @@ MicRichTextComposer class >> initialize [
 { #category : #public }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (Microdown new parse: aString)
+	^ self new visit: (Microdown parse: aString)
 
 ]
 
@@ -230,19 +230,6 @@ MicRichTextComposer class >> parseAndCompose: aString [
 	
 	^ self new visit: (Microdown parse: aString)
 
-]
-
-{ #category : #public }
-MicRichTextComposer class >> render: aString [ 
-	"Render a string, in case of error, just return it."
-	
-	self notRendering 	
-		ifTrue: [ ^ aString ].
-	self captureErrors 
-		ifFalse: [ ^ self microdownAsRichText: aString ].
-	^ [ self microdownAsRichText: aString ] 
-			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
-			do: [ aString  ]
 ]
 
 { #category : #public }
