@@ -44,17 +44,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'styler'
-	],
-	#classVars : [
-		'HeaderFontSizes',
-		'HeaderFonts'
+		'codeStyler',
+		'textStyler'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
@@ -248,7 +239,7 @@ MicRichTextComposer >> codeStyler [
 MicRichTextComposer >> initialize [
 	super initialize.
 	codeStyler := MicCodeStylerSpec. "Yes, the class"
-	textStyler := MicTextStyler new
+	textStyler := MicTextStyler new 
 ]
 
 { #category : #private }

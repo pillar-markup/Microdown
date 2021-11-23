@@ -11,9 +11,6 @@ Class {
 	#instVars : [
 		'headerFonts'
 	],
-	#classInstVars : [
-		'headerFonts'
-	],
 	#category : #'Microdown-RichTextComposer'
 }
 
