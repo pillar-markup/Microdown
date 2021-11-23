@@ -65,16 +65,6 @@ MicRichTextComposer class >> asRichText: aDoc [
 ]
 
 { #category : #private }
-MicRichTextComposer class >> bulletForLevel: level [
-	| kind |
-	kind := level % 2.
-	kind = 0
-		ifTrue: [ ^ $• asText ].
-	kind = 1
-		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #private }
 MicRichTextComposer class >> computeHeaderFonts [
 	
 	HeaderFonts := Array new:  HeaderFontSizes size.
@@ -86,18 +76,6 @@ MicRichTextComposer class >> computeHeaderFonts [
 						familyName: 'Bitmap Source Sans Pro'
 						pointSize: (HeaderFontSizes at: index)))
 			  ]
-]
-
-{ #category : #private }
-MicRichTextComposer class >> counterFor: counter atLevel: level [
-	| kind |
-	kind := level % 3.
-	kind = 0
-		ifTrue: [ ^ counter asString asText , '.' ].
-	kind = 1
-		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
-	kind = 2
-		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
 ]
 
 { #category : #examples }
@@ -234,26 +212,6 @@ foo: arg
 '
 ]
 
-{ #category : #private }
-MicRichTextComposer class >> headerFontSizes: anArray [
-
-	HeaderFontSizes := anArray.
-	self computeHeaderFonts 
-]
-
-{ #category : #private }
-MicRichTextComposer class >> headerFonts: anArray [
-
-	HeaderFontSizes := anArray
-]
-
-{ #category : #private }
-MicRichTextComposer class >> headerLevelFont: level [
-	"I return a font annotation to be used with Attributes"
-
-	^ HeaderFonts at: level
-]
-
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
@@ -261,12 +219,12 @@ MicRichTextComposer class >> initialize [
 	self notRendering: false.
 	self resetCache.
 	self headerFontSizes: #(18 14 12 11 10 10).
-	self initializeStylers.
+	self initializeCodeStylers.
 	self captureErrors: true.
 ]
 
 { #category : #'class initialization' }
-MicRichTextComposer class >> initializeStylers [
+MicRichTextComposer class >> initializeCodeStylers [
 	"self initializeStylers"
 	
 	MicCodeStylerSpec initializeCache.
@@ -446,7 +404,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 
 	canvas newLineIfNotAlready.
 	canvas
-		includeAttribute: (self class headerLevelFont: aHeader level)
+		includeAttribute: (self textStyler headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
 	canvas newLine
 ]
@@ -538,7 +496,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
-					put: (self class counterFor: counter atLevel: canvas nesting - 1).
+					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: anObject ].
 	canvas newLine
@@ -605,7 +563,7 @@ MicRichTextComposer >> visitUnorderedList: anObject [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						put: (self class bulletForLevel: canvas nesting - 1) ].
+						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
 			super visitUnorderedList: anObject ].
 	canvas newLine
 ]

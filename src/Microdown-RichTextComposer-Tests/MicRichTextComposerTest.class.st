@@ -51,37 +51,37 @@ MicRichTextComposerTest >> figure: aFigureLink [
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel1 [
 
-	^ self composerClass headerLevelFont: 1
+	^ self composer textStyler headerLevelFont: 1
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel2 [
 
-	^ self composerClass headerLevelFont: 2
+	^ self composer textStyler headerLevelFont: 2
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel3 [
 
-	^ self composerClass headerLevelFont: 3
+	^ self composer textStyler headerLevelFont: 3
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel4 [
 
-	^ self composerClass headerLevelFont: 4
+	^ self composer textStyler headerLevelFont: 4
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel5 [
 
-	^ self composerClass headerLevelFont: 5
+	^ self composer textStyler headerLevelFont: 5
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel6 [
 
-	^ self composerClass headerLevelFont: 6
+	^ self composer textStyler headerLevelFont: 6
 ]
 
 { #category : #'tests - format' }
@@ -128,7 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
-	MicRichTextComposer initializeStylers.
+	MicRichTextComposer initializeCodeStylers.
 ]
 
 { #category : #'skipped tests' }
@@ -558,7 +558,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	MicRichTextComposer initializeStylers.
+	MicRichTextComposer initializeCodeStylers.
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
