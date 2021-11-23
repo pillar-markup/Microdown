@@ -50,7 +50,7 @@ Class {
 		'annotatedParagraphColor',
 		'annotatedParagraphAnnotationColor',
 		'annotatedParagraphAlignment',
-		'styler'
+		'codeStyler'
 	],
 	#classVars : [
 		'CaptureErrors',
@@ -328,6 +328,12 @@ MicRichTextComposer >> annotatedParagraphColor: aColor [
 	annotatedParagraphColor := aColor
 ]
 
+{ #category : #accessing }
+MicRichTextComposer >> codeStyler [
+
+	^ codeStyler
+]
+
 { #category : #initialization }
 MicRichTextComposer >> defaultAnnotatedParagraphColor [
 	^ TextColor blue
@@ -347,7 +353,7 @@ MicRichTextComposer >> initialize [
 	annotatedParagraphColor := self defaultAnnotatedParagraphColor.
 	annotatedParagraphAnnotationColor := TextEmphasis bold.
 	annotatedParagraphAlignment := TextAlignment leftFlush.
-	styler := MicCodeStylerSpec. "Yes, the class"
+	codeStyler := MicCodeStylerSpec. "Yes, the class"
 ]
 
 { #category : #private }
@@ -394,18 +400,6 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 	aFigure arguments at: #width ifPresent: [ :s | 
 		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
 	^ anchoredImage
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> styler [
-
-	^ styler
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> styler: anObject [
-
-	styler := anObject
 ]
 
 { #category : #accessing }
@@ -480,7 +474,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self styler 
+			<< (self codeStyler 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.
