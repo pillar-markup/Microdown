@@ -338,6 +338,25 @@ MicRichTextComposer >> defaultSuperscriptColor [
 	^ TextColor blue
 ]
 
+{ #category : #'visiting - document' }
+MicRichTextComposer >> imageAnchorFor: anImage of: aFigure [
+
+	aFigure arguments at: #width ifPresent: [ :width |
+		(width endsWith: '%') 
+			ifTrue: [ |scale|
+				scale := width initialIntegerOrNil.
+				scale ifNotNil: [ 
+					^ MicScalingTextAnchor new original: anImage; scale: scale; yourself
+					 ]]
+		   ifFalse:  [ 
+				width initialIntegerOrNil 
+					ifNotNil: [ :absWidth | |absHeight|
+						absHeight := anImage height / anImage width *absWidth.
+						^ TextAnchor new anchoredMorph: (anImage scaledToSize: absWidth @ absHeight)  ]
+		 ]].
+	^ TextAnchor new anchoredMorph: anImage
+]
+
 { #category : #initialization }
 MicRichTextComposer >> initialize [ 
 	super initialize.
@@ -389,11 +408,15 @@ MicRichTextComposer >> renderTableCell: aCell [
 { #category : #'visiting - document' }
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
-	| anchoredImage |
-	anchoredImage := anImage.
-	aFigure arguments at: #width ifPresent: [ :s | 
-		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
-	^ anchoredImage
+	| scaledImage |
+	scaledImage := anImage.
+	"aFigure arguments at: #width ifPresent: [ :s |
+		hostMorph 
+			ifNotNil: [
+				scaledImage := anImage scaledToSize: ( s asNumber in: [ :scale | 
+					(hostMorph width / 100 * scale) @ (hostMorph height / 100 * scale)]).
+		 ]]."
+	^ scaledImage
 ]
 
 { #category : #accessing }
@@ -510,15 +533,11 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	"Try to read a png file (only one supported right now), else use alt text"
-
 	| image textContribution |
 	image := aFigure reference loadImage.
 	image ifNotNil: [ 
-		image := self resizeImage: image of: aFigure.
-		textContribution := (String value: 1) asText addAttribute:
-			                    (TextAnchor new anchoredMorph: image) ].
-
+		textContribution := (String value: 1) asText 
+			addAttribute: (self imageAnchorFor: image of: aFigure ) ].
 	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 
@@ -665,7 +684,8 @@ MicRichTextComposer >> visitTable: tableBlock [
 		ifFalse: [ 
 			table extent: table extent - (0 @ '1' asTextMorph height). "not showing the headers"
 			table hideColumnHeaders  ].
-	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table asForm).
+	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table).
+	canvas newLineIfNotAlready;newLine.
 	canvas << anchoredTable
 	
 ]
