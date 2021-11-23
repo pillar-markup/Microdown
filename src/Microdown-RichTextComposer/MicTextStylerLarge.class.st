@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-RichTextComposer'
 }
 
-{ #category : #private }
+{ #category : #public }
 MicTextStylerLarge >> headerFontSizes [
 	^ #(36 28 24 22 18 18)
 ]
