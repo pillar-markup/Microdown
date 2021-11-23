@@ -51,37 +51,37 @@ MicRichTextComposerTest >> figure: aFigureLink [
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel1 [
 
-	^ self composerClass headerLevelFont: 1
+	^ self composer textStyler headerLevelFont: 1
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel2 [
 
-	^ self composerClass headerLevelFont: 2
+	^ self composer textStyler headerLevelFont: 2
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel3 [
 
-	^ self composerClass headerLevelFont: 3
+	^ self composer textStyler headerLevelFont: 3
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel4 [
 
-	^ self composerClass headerLevelFont: 4
+	^ self composer textStyler headerLevelFont: 4
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel5 [
 
-	^ self composerClass headerLevelFont: 5
+	^ self composer textStyler headerLevelFont: 5
 ]
 
 { #category : #'tests - header' }
 MicRichTextComposerTest >> headerLevel6 [
 
-	^ self composerClass headerLevelFont: 6
+	^ self composer textStyler headerLevelFont: 6
 ]
 
 { #category : #'tests - format' }
@@ -128,7 +128,7 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := MicroDownParser new.
-	MicRichTextComposer initializeStylers.
+	MicRichTextComposer initialize.
 ]
 
 { #category : #'skipped tests' }
@@ -271,7 +271,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
+	richText := MicRichTextComposer parseAndCompose: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -293,7 +293,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := MicRichTextComposer microdownAsRichText: source.
+	richText := MicRichTextComposer parseAndCompose: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -558,7 +558,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	MicRichTextComposer initializeStylers.
+	MicRichTextComposer initialize.
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>

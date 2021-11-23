@@ -44,19 +44,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'styler'
-	],
-	#classVars : [
-		'CaptureErrors',
-		'HeaderFontSizes',
-		'HeaderFonts',
-		'NotRendering'
+		'codeStyler',
+		'textStyler'
 	],
 	#category : #'Microdown-RichTextComposer'
 }
@@ -64,55 +53,17 @@ Class {
 { #category : #public }
 MicRichTextComposer class >> asRichText: aDoc [
 	
-	^ self new visit: aDoc
+	^ self new asRichText: aDoc
 
-]
-
-{ #category : #private }
-MicRichTextComposer class >> bulletForLevel: level [
-	| kind |
-	kind := level % 2.
-	kind = 0
-		ifTrue: [ ^ $• asText ].
-	kind = 1
-		ifTrue: [ ^ $- asText ]
-]
-
-{ #category : #private }
-MicRichTextComposer class >> computeHeaderFonts [
-	
-	HeaderFonts := Array new:  HeaderFontSizes size.
-	1 to: HeaderFontSizes size do: [ :index |
-		HeaderFonts at: index put: 
-			(TextFontReference
-				toFont:
-					(StrikeFont
-						familyName: 'Bitmap Source Sans Pro'
-						pointSize: (HeaderFontSizes at: index)))
-			  ]
-]
-
-{ #category : #private }
-MicRichTextComposer class >> counterFor: counter atLevel: level [
-	| kind |
-	kind := level % 3.
-	kind = 0
-		ifTrue: [ ^ counter asString asText , '.' ].
-	kind = 1
-		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
-	kind = 2
-		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleLatex [
-	<example>
+	<sampleInstance>
 
-	(MicRichTextComposer new visit: 
-		(MicMathInlineBlock new 
-		substring:
+	^ self parseAndCompose:
 'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}')) inspect
+\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}'
 ]
 
 { #category : #examples }
@@ -142,6 +93,20 @@ $
 
 Cool eh?
 '
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleMicrodown1Large [
+	<sampleInstance>
+	^ self new textStyler: MicTextStylerLarge new; asRichText:  (Microdown parse: '# First section
+and this is just **first** line 
+1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
+   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
+   - And one more _silly_ thingie
+1. Line 2
+   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
+   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
+1. Line 3')
 ]
 
 { #category : #examples }
@@ -238,48 +203,16 @@ foo: arg
 '
 ]
 
-{ #category : #private }
-MicRichTextComposer class >> headerFontSizes: anArray [
-
-	HeaderFontSizes := anArray.
-	self computeHeaderFonts 
-]
-
-{ #category : #private }
-MicRichTextComposer class >> headerFonts: anArray [
-
-	HeaderFontSizes := anArray
-]
-
-{ #category : #private }
-MicRichTextComposer class >> headerLevelFont: level [
-	"I return a font annotation to be used with Attributes"
-
-	^ HeaderFonts at: level
-]
-
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
-	self offline: false.
-	self notRendering: false.
-	self resetCache.
-	self headerFontSizes: #(18 14 12 11 10 10).
-	self initializeStylers.
-	self captureErrors: true.
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> initializeStylers [
-	"self initializeStylers"
-	
 	MicCodeStylerSpec initializeCache.
 ]
 
 { #category : #public }
 MicRichTextComposer class >> microdownAsRichText: aString [
 	
-	^ self new visit: (Microdown new parse: aString)
+	^ self new visit: (Microdown parse: aString)
 
 ]
 
@@ -291,51 +224,15 @@ MicRichTextComposer class >> parseAndCompose: aString [
 ]
 
 { #category : #public }
-MicRichTextComposer class >> render: aString [ 
-	"Render a string, in case of error, just return it."
+MicRichTextComposer >> asRichText: aDocument [
 	
-	self notRendering 	
-		ifTrue: [ ^ aString ].
-	self captureErrors 
-		ifFalse: [ ^ self microdownAsRichText: aString ].
-	^ [ self microdownAsRichText: aString ] 
-			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
-			do: [ aString  ]
+	^ self visit: aDocument
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> annotatedParagrapAlignment [
-	^ annotatedParagraphAlignment 
-]
+MicRichTextComposer >> codeStyler [
 
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphAnnotationColor [
-	^ annotatedParagraphAnnotationColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphAnnotationColor: aColor [
-	annotatedParagraphAnnotationColor := aColor
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphColor [
-	^ annotatedParagraphColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> annotatedParagraphColor: aColor [
-	annotatedParagraphColor := aColor
-]
-
-{ #category : #initialization }
-MicRichTextComposer >> defaultAnnotatedParagraphColor [
-	^ TextColor blue
-]
-
-{ #category : #initialization }
-MicRichTextComposer >> defaultSuperscriptColor [
-	^ TextColor blue
+	^ codeStyler
 ]
 
 { #category : #'visiting - document' }
@@ -358,15 +255,10 @@ MicRichTextComposer >> imageAnchorFor: anImage of: aFigure [
 ]
 
 { #category : #initialization }
-MicRichTextComposer >> initialize [ 
+MicRichTextComposer >> initialize [
 	super initialize.
-	monospaceBackgroundColor := self theme settings windowColor.
-	superscriptColor := self defaultSuperscriptColor.
-	subscriptColor := TextColor red.
-	annotatedParagraphColor := self defaultAnnotatedParagraphColor.
-	annotatedParagraphAnnotationColor := TextEmphasis bold.
-	annotatedParagraphAlignment := TextAlignment leftFlush.
-	styler := MicCodeStylerSpec. "Yes, the class"
+	codeStyler := MicCodeStylerSpec. "Yes, the class"
+	textStyler := MicTextStyler new 
 ]
 
 { #category : #private }
@@ -377,18 +269,6 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	^ ref loadImage
 		ifNotNil: [ :image | image asText]
 		ifNil: [ aBlock value asText ]
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> monospaceBackgroundColor [
-
-	^ monospaceBackgroundColor
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> monospaceBackgroundColor: aColor [
-
-	monospaceBackgroundColor := aColor
 ]
 
 { #category : #images }
@@ -420,35 +300,15 @@ MicRichTextComposer >> resizeImage: anImage of: aFigure [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> styler [
+MicRichTextComposer >> textStyler [
 
-	^ styler 
+	^ textStyler
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> styler: anObject [
+MicRichTextComposer >> textStyler: anObject [
 
-	styler := anObject 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> subscriptColor [
-	^ subscriptColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> subscriptColor: anObject [
-	subscriptColor := anObject
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> superscriptColor [
-	^ superscriptColor 
-]
-
-{ #category : #accessing }
-MicRichTextComposer >> superscriptColor: anObject [
-	superscriptColor := anObject
+	textStyler := anObject
 ]
 
 { #category : #initialization }
@@ -473,20 +333,9 @@ MicRichTextComposer >> visit: aDocument [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
-	self error: 'this was a halt.'.
-	canvas newLineIfNotAlready.
-	canvas
-		includeAttribute: self annotatedParagrapAlignment
-		in: [ 
-			canvas
-				includeAttribute: self annotatedParagraphAnnotationColor
-				in: [ canvas << anAnnotatedParagraph annotation capitalized asText ].
-			canvas
-				includeAttribute: self annotatedParagrapAlignment
-				in: [ canvas
-						includeAttribute: self annotatedParagraphColor
-						in: [ self visitParagraph: anAnnotatedParagraph ] ] ].
-	canvas newLine.
+	"Do nothing - You are supposed to use specialized annotations"
+	self error: 'You are not supposed to be here - did you misspell an annotation type?'
+	
 ]
 
 { #category : #'visiting -  format' }
@@ -503,7 +352,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self styler 
+			<< (self codeStyler 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.
@@ -569,7 +418,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 
 	canvas newLineIfNotAlready.
 	canvas
-		includeAttribute: (self class headerLevelFont: aHeader level)
+		includeAttribute: (self textStyler headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
 	canvas newLine
 ]
@@ -635,7 +484,7 @@ MicRichTextComposer >> visitMathInline: aMicMathInline [
 MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
-	backgroundColor := self monospaceBackgroundColor.
+	backgroundColor := self textStyler monospaceBackgroundColor.
 	
 	self flag: #fixMe.
 	"Right now we stupidly emit TextAction but we should emit TextClassLink and revisit them."
@@ -661,7 +510,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
-					put: (self class counterFor: counter atLevel: canvas nesting - 1).
+					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: anObject ].
 	canvas newLine
@@ -729,7 +578,7 @@ MicRichTextComposer >> visitUnorderedList: anObject [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						put: (self class bulletForLevel: canvas nesting - 1) ].
+						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
 			super visitUnorderedList: anObject ].
 	canvas newLine
 ]
