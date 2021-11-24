@@ -47,7 +47,7 @@ Class {
 		'codeStyler',
 		'textStyler'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }
@@ -223,6 +223,28 @@ MicRichTextComposer class >> parseAndCompose: aString [
 
 ]
 
+{ #category : #'visiting - document' }
+MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
+
+	aNode arguments at: #width ifPresent: [ :width |
+		(width endsWith: '%') 
+			ifTrue: [ |scale|
+				scale := width initialIntegerOrNil.
+				scale ifNotNil: [ 
+					^ MicScalingTextAnchor new original: anImageOrMorph; scale: scale; yourself
+					 ]]
+		   ifFalse:  [ 
+				width initialIntegerOrNil 
+					ifNotNil: [ :absWidth | |absHeight|
+						absHeight := anImageOrMorph height / anImageOrMorph width *absWidth.
+						anImageOrMorph isMorph 
+							ifTrue: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph extent: absWidth @ absHeight) ]
+							ifFalse: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph scaledToSize: absWidth @ absHeight) ]
+						  ]
+		 ]].
+	^ TextAnchor new anchoredMorph: anImageOrMorph
+]
+
 { #category : #public }
 MicRichTextComposer >> asRichText: aDocument [
 	
@@ -235,30 +257,11 @@ MicRichTextComposer >> codeStyler [
 	^ codeStyler
 ]
 
-{ #category : #'visiting - document' }
-MicRichTextComposer >> imageAnchorFor: anImage of: aFigure [
-
-	aFigure arguments at: #width ifPresent: [ :width |
-		(width endsWith: '%') 
-			ifTrue: [ |scale|
-				scale := width initialIntegerOrNil.
-				scale ifNotNil: [ 
-					^ MicScalingTextAnchor new original: anImage; scale: scale; yourself
-					 ]]
-		   ifFalse:  [ 
-				width initialIntegerOrNil 
-					ifNotNil: [ :absWidth | |absHeight|
-						absHeight := anImage height / anImage width *absWidth.
-						^ TextAnchor new anchoredMorph: (anImage scaledToSize: absWidth @ absHeight)  ]
-		 ]].
-	^ TextAnchor new anchoredMorph: anImage
-]
-
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
 	codeStyler := MicCodeStylerSpec. "Yes, the class"
-	textStyler := MicTextStyler new 
+	self textStyler:  MicTextStyler new 
 ]
 
 { #category : #private }
@@ -269,12 +272,6 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	^ ref loadImage
 		ifNotNil: [ :image | image asText]
 		ifNil: [ aBlock value asText ]
-]
-
-{ #category : #images }
-MicRichTextComposer >> renderMathExpression: aString [
-	
-	canvas << (self class latexMathStylerFor: aString)
 ]
 
 { #category : #private }
@@ -306,9 +303,9 @@ MicRichTextComposer >> textStyler [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> textStyler: anObject [
+MicRichTextComposer >> textStyler: aTextStyler [
 
-	textStyler := anObject
+	textStyler := aTextStyler.
 ]
 
 { #category : #initialization }
@@ -326,7 +323,7 @@ This also because people will not want to to not let a newline between the heade
 { #category : #visiting }
 MicRichTextComposer >> visit: aDocument [
 	
-	canvas := MicRichTextCanvas new.
+	canvas := MicRichTextCanvas new textStyler: self textStyler; yourself  .
 	super visit: aDocument.
 	^ canvas contents
 ]
@@ -375,14 +372,22 @@ MicRichTextComposer >> visitColumn: columnBlock [
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitColumns: columnsBlock [
 	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
-	| columns scale |
+	| columns columnsBlocks totalWidth|
 	canvas newLineIfNotAlready.
-	columns := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
-	scale := (100 / columns size ) asInteger.
-	columns do: [ :column | |colText morph|
+	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
+	columns := columnsBlocks collect: [ :column | |colText|
 		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
-		morph := RubScrolledTextMorph new setText: colText. 
-		canvas << ((String value: 1) asText addAttribute: (MicScalingTextAnchor new original: morph;scale:scale-5 ))].
+		RubScrolledTextMorph new setText: colText. 
+		].
+	totalWidth := columns sum: [ :col | col textArea width].
+	columns do: [ :morph |
+		canvas << ((String value: 1) asText addAttribute: 
+			(MicScalingTextAnchor new 
+				original: morph;
+				"There need to be a bit of extra space assigned (5%)"
+				scale: (morph textArea width / totalWidth * 100)-5;
+				"Need to add a bit of space (15) for the scrollbar to disappear"
+				freezeHeight: morph textArea height+15))].
 	canvas newLine 
 	
 	
@@ -409,7 +414,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	image := aFigure reference loadImage.
 	image ifNotNil: [ 
 		textContribution := (String value: 1) asText 
-			addAttribute: (self imageAnchorFor: image of: aFigure ) ].
+			addAttribute: (self anchorFor: image of: aFigure ) ].
 	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 

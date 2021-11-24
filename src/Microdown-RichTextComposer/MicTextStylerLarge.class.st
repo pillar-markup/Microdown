@@ -4,7 +4,7 @@ I am redefining font sizes for headers
 Class {
 	#name : #MicTextStylerLarge,
 	#superclass : #MicTextStyler,
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }

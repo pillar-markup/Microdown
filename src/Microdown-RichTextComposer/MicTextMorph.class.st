@@ -1,10 +1,13 @@
+"
+I override `textAreaExtentChanged` to hook into rescaling of UI.
+"
 Class {
 	#name : #MicTextMorph,
 	#superclass : #RubScrolledTextMorph,
 	#instVars : [
 		'textAreaChanged'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #accessing }

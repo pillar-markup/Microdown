@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'headerFonts'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }
@@ -65,4 +65,17 @@ MicTextStyler >> headerLevelFont: level [
 { #category : #public }
 MicTextStyler >> monospaceBackgroundColor [
 	^ Smalltalk ui theme settings windowColor
+]
+
+{ #category : #'canvas styles' }
+MicTextStyler >> newLineBody [ 
+	"return a newline"
+	^ String cr asText
+]
+
+{ #category : #'canvas styles' }
+MicTextStyler >> newLineIfNotAlready [ 
+	"return a newline if there is not already one"
+	"Intended to be overridden to add extra newline or tab indentation of the following line"
+	^ String cr asText
 ]

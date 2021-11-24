@@ -4,9 +4,10 @@ Class {
 	#instVars : [
 		'text',
 		'document',
-		'textMorph'
+		'textMorph',
+		'imageIndexes'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #'as yet unclassified' }
@@ -201,7 +202,9 @@ MicrodownPresenter >> document [
 MicrodownPresenter >> document: aNode [
 
 	document := aNode.
-	text := Microdown asRichText: document 
+	text := Microdown asRichText: document.
+	imageIndexes := ((1 to: text size) select: [ :idx | (text at: idx) = Character home ]).
+	
 		
 ]
 
@@ -239,14 +242,11 @@ MicrodownPresenter >> parserClass [
 
 { #category : #initialization }
 MicrodownPresenter >> render [
-	|renderWidth imageIndexes|
+	|renderWidth |
 	renderWidth := textMorph morph width.
-	"for really large documents, the imageIndexes could be cached, and only changed when a new document is shown"
-	imageIndexes := ((1 to: text size) select: [ :idx | (text at: idx) = Character home ]).
 	imageIndexes do: [ :idx | 
-		(text attributesAt: idx) 
-			detect: [ :attr | attr isKindOf: MicScalingTextAnchor  ] 
-			ifFound: [:micTextAnchor| micTextAnchor targetWidth: renderWidth ]].
+		(text attributeAt: idx ofKind: MicScalingTextAnchor) 
+			ifNotNil: [:micTextAnchor| micTextAnchor targetWidth: renderWidth ]].
 	textMorph morph setText: text
 ]
 

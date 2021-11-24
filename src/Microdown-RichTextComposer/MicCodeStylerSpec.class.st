@@ -19,7 +19,7 @@ Class {
 	#classInstVars : [
 		'styleCache'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #cache }

@@ -3,14 +3,32 @@ Class {
 	#superclass : #TextAnchor,
 	#instVars : [
 		'original',
-		'scale'
+		'scale',
+		'freezeHeight'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #accessing }
 MicScalingTextAnchor >> anchoredMorph [ 
 	^ super anchoredMorph 
+]
+
+{ #category : #accessing }
+MicScalingTextAnchor >> freezeHeight [
+
+	^ freezeHeight
+]
+
+{ #category : #accessing }
+MicScalingTextAnchor >> freezeHeight: anObject [
+
+	freezeHeight := anObject
+]
+
+{ #category : #initialization }
+MicScalingTextAnchor >> initialize [ 
+	freezeHeight := false
 ]
 
 { #category : #accessing }
@@ -33,11 +51,13 @@ MicScalingTextAnchor >> scale: percentOrNil [
 
 { #category : #accessing }
 MicScalingTextAnchor >> targetWidth: rightMargin [
-	|newWidth newHeight|
-	newWidth := rightMargin  / 100 * scale.
-	newHeight := original  height / original width * newWidth.
-	"This will fail when given a morph, only works for forms"
-	anchoredMorph isMorph
-		ifTrue: [ anchoredMorph := original extent: newWidth @ newHeight]
-		ifFalse:[ anchoredMorph  := original scaledToSize: newWidth @ newHeight]
+
+	| newWidth newHeight |
+	newWidth := rightMargin / 100 * scale.
+	newHeight := freezeHeight
+		         ifNil: [ original height / original width * newWidth ].
+	anchoredMorph := anchoredMorph isMorph
+		                 ifTrue: [ original extent: newWidth @ newHeight ]
+		                 ifFalse: [ 
+		                 original scaledToSize: newWidth @ newHeight ]
 ]

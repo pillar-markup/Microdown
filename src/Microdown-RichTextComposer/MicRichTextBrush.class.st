@@ -10,7 +10,7 @@ Class {
 		'canvas',
 		'attribute'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #'instance creation' }
