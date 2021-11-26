@@ -22,7 +22,6 @@ Metacello new
 ### Loading latest development version
 We are about to release a version 2.0.0 of Microdown with enhanced model, visitor... planned for mid July 2021.
 It is used for example by the BeautifulComments project. You can load this alpha version.
-
 ```Smalltalk
 Metacello new
 	baseline: 'MicrodownDev';
