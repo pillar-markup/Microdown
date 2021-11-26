@@ -1,12 +1,12 @@
 "
 I am a reference to a image or microdown ressource in the image.
 
-I follow the url scheme `pharo:///class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///SpPresenter/iconNamed:/nameOfIcon`.
+I follow the url scheme `pharo:///class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///Object/iconNamed:/nameOfIcon`.
 
 Examples:
-- abstract: ![](pharo:///SpPresenter/iconNamed:/abstract) 
-- bitbucket: ![](pharo:///SpPresenter/iconNamed:/bitbucket)
-- thumbsUp: ![](pharo:///SpPresenter/iconNamed:/thumbsUp)
+- abstract: ![](pharo:///Object/iconNamed:/abstract) 
+- bitbucket: ![](pharo:///Object/iconNamed:/bitbucket)
+- thumbsUp: ![](pharo:///Object/iconNamed:/thumbsUp)
 
 ## Restictions
 - Only class side methods can be invoked
@@ -28,7 +28,7 @@ MicPharoResource >> executeUri [
 	args := ( (size :=uri segments size) > 2) 
 		ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ] 
 		ifFalse: [ #() ].
-	^ (class compiledMethodAt: selector) valueWithReceiver: class arguments: args
+	^ (class lookupSelector:  selector) valueWithReceiver: class arguments: args
 ]
 
 { #category : #'accessing - resources' }
