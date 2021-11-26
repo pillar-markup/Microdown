@@ -30,7 +30,7 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 
 	text := text
 		ifNil: [ line trim ]
-		ifNotNil: [ text , String cr , line trim ].
+		ifNotNil: [ text , String space , line trim ].
 	^ self
 ]
 

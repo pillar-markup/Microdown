@@ -34,8 +34,7 @@ a paragraph on two lines**'.
 
 	self
 		assert: root children first text
-		equals: '**Hello is ... cut for real
-another line** and more'.
+		equals: '**Hello is ... cut for real another line** and more'.
 	self
 		assert: root children second text
 		equals: 'a paragraph on two lines**'.
@@ -86,8 +85,7 @@ MicParagraphBlockTest >> testCanConsumeLineBasic [
 	self assert: paragraph text equals: 'This is'.
 	self assert: (paragraph canConsumeLine: 'Another line').
 	paragraph := parser handleLine: 'Another line'.
-	self assert: paragraph text equals: 'This is
-Another line'.
+	self assert: paragraph text equals: 'This is Another line'.
 ]
 
 { #category : #tests }
@@ -116,9 +114,7 @@ MicParagraphBlockTest >> testHandlingSequenceOfBasicLinesProducesAParagraph [
 	paragraph := parser handleLine: 'This is'.
 	paragraph := parser handleLine: 'Another line'.
 	paragraph := parser handleLine: '  And that other line'.
-	self assert: paragraph text equals: 'This is
-Another line
-And that other line'.
+	self assert: paragraph text equals: 'This is Another line And that other line'.
 	self assert: root children size equals: 1
 ]
 
@@ -129,8 +125,7 @@ MicParagraphBlockTest >> testSingleParagraph [
 a paragraph on two lines'.
 	self 
 		assert: root children first class equals: MicParagraphBlock.
-	self assert: root children first children first text equals: 'This is
-a paragraph on two lines'.
+	self assert: root children first children first text equals: 'This is a paragraph on two lines'.
 
 
 ]
@@ -139,11 +134,9 @@ a paragraph on two lines'.
 MicParagraphBlockTest >> testSingleParagraphWithIndentedText [
 	| source root expected |
 	source := 'This is
-   a paragraph with spaces
-	and one with tabs'.
-	expected := 'This is
 a paragraph with spaces
-and one with tabs'.
+	and one with tabs'.
+	expected := 'This is a paragraph with spaces and one with tabs'.
 	root := parser parse: source.
 	self assert: root children first text equals: expected
 ]

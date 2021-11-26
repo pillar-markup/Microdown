@@ -477,8 +477,9 @@ MicRichTextComposer >> visitOrderedList: anObject [
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitParagraph: anObject [
 	
-	canvas newLineIfNotAlready.
+	canvas newLine.
 	super visitParagraph: anObject.
+	canvas newLineIfNotAlready.
 ]
 
 { #category : #'visiting - document' }

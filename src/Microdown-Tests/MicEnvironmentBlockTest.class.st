@@ -248,9 +248,7 @@ the paragraph.
 ?>'.
 	self assert: root children size equals: 1.
 	env := root children first.
-	self assert: env children first text equals: 'Here we are a paragraph and the paragraph should not eat the end of the
-environment, else we force writer to enter a new line to declare the end of
-the paragraph.'.
+	self assert: env children first text equals: 'Here we are a paragraph and the paragraph should not eat the end of the environment, else we force writer to enter a new line to declare the end of the paragraph.'.
 ]
 
 { #category : #'tests - extensions' }

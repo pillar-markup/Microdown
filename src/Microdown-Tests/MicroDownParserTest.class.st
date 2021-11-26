@@ -255,7 +255,7 @@ Pharo'.
 	child := root children first.
 	self assert: (child isKindOf: MicEnvironmentBlock).
 	self assert: child name equals: environmentName.
-	self assert: child children first text equals: contents.
+	self assert: child children first text equals: 'Hello Pharo'.
 	
 	self assert: (child arguments at: 'a') equals: '1'.
 	self assert: (child arguments at: 'b') equals: '17'.
