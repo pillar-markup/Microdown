@@ -379,8 +379,7 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
 	columns := columnsBlocks collect: [ :column | |colText|
 		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
-		RubScrolledTextMorph new setText: colText. 
-		].
+		RubScrolledTextMorph new setText: colText].
 	totalWidth := columns sum: [ :col | col textArea width].
 	columns do: [ :morph |
 		canvas << ((String value: 1) asText addAttribute: 

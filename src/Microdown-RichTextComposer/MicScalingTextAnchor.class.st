@@ -28,7 +28,7 @@ MicScalingTextAnchor >> freezeHeight: anObject [
 
 { #category : #initialization }
 MicScalingTextAnchor >> initialize [ 
-	freezeHeight := false
+	freezeHeight := nil
 ]
 
 { #category : #accessing }
@@ -55,9 +55,9 @@ MicScalingTextAnchor >> targetWidth: rightMargin [
 	| newWidth newHeight |
 	newWidth := rightMargin / 100 * scale.
 	newHeight := freezeHeight
-		         ifNil: [ original height / original width * newWidth ].
+		ifNil: [ original height / original width * newWidth ]
+		ifNotNil: [freezeHeight ].
 	anchoredMorph := anchoredMorph isMorph
-		                 ifTrue: [ original extent: newWidth @ newHeight ]
-		                 ifFalse: [ 
-		                 original scaledToSize: newWidth @ newHeight ]
+		ifTrue: [ original extent: newWidth @ newHeight ]
+		ifFalse: [ original scaledToSize: newWidth @ newHeight ]
 ]

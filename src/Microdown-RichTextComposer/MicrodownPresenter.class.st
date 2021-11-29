@@ -5,15 +5,18 @@ Class {
 		'text',
 		'document',
 		'textMorph',
-		'imageIndexes'
+		'imageIndexes',
+		'textStyler'
 	],
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #'as yet unclassified' }
 MicrodownPresenter class >> cheetSheet [
-^'# Markdown Cheatsheet
+^Microdown parse: '# Markdown Cheatsheet
+
 % adapted from https://raw.githubusercontent.com/tchapi/markdown-cheatsheet/master/README.md
+
 <?columns
 <?column
 # Heading 1
@@ -168,13 +171,15 @@ MicrodownPresenter class >> defaultSpec [
 { #category : #'instance creation' }
 MicrodownPresenter class >> open [
 	<script>
-	(self on: self cheetSheet ) openWithSpec 
+	(self on: self sampleDocument ) openWithSpec 
 ]
 
 { #category : #'instance creation' }
 MicrodownPresenter class >> sampleDocument [
 	"I return a sample document"
-	^ Microdown parse: '### Links
+	^ Microdown parse: '# Header 1
+## Header 2
+### Header 3
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
 [![](https://pharo.org/web/files/pharo.png width=75%)](http://pharo.org/)
@@ -202,7 +207,9 @@ MicrodownPresenter >> document [
 MicrodownPresenter >> document: aNode [
 
 	document := aNode.
-	text := Microdown asRichText: document.
+	text := MicRichTextComposer  new 
+		textStyler: self textStyler; 
+		asRichText: aNode.
 	imageIndexes := ((1 to: text size) select: [ :idx | (text at: idx) = Character home ]).
 	
 		
@@ -210,19 +217,20 @@ MicrodownPresenter >> document: aNode [
 
 { #category : #initialization }
 MicrodownPresenter >> initializePresenters [
-
+	|morph|
 	super initializePresenters.
-	textMorph  := self newMorph
-		morph: (MicTextMorph new
+	morph := MicTextMorph new
+			setText: self text;
 			beWrapped;
 			hResizing: #spaceFill; 
 			vResizing: #spaceFill;
 			in: [ :this | this textArea readOnly: true ];
-			yourself);
+			yourself.
+	textMorph  := self newMorph
+		morph: morph;
 		yourself.
-	"Crude check, but it seems to work. Problem is that the whole document is re-rendered"
-	textMorph morph textAreaChanged: [ self render ]
-
+	textMorph morph textAreaChanged: [ self render ].
+	
 
 
 
@@ -257,11 +265,28 @@ MicrodownPresenter >> scrollTo: aString [
 
 { #category : #accessing }
 MicrodownPresenter >> setModelBeforeInitialization: aNode [
-
+	"called indirecly by the on: method"
 	self document: aNode
 ]
 
 { #category : #accessing }
 MicrodownPresenter >> text [
 	^ text
+]
+
+{ #category : #accessing }
+MicrodownPresenter >> textStyler [
+	textStyler ifNil: [ textStyler := MicTextStyler new ].
+	^ textStyler
+]
+
+{ #category : #accessing }
+MicrodownPresenter >> textStyler: anObject [
+
+	textStyler := anObject
+]
+
+{ #category : #initialization }
+MicrodownPresenter >> updatePresenter [
+	self render
 ]

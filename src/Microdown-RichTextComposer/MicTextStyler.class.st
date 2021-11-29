@@ -79,3 +79,8 @@ MicTextStyler >> newLineIfNotAlready [
 	"Intended to be overridden to add extra newline or tab indentation of the following line"
 	^ String cr asText
 ]
+
+{ #category : #'presenter styles' }
+MicTextStyler >> presenterDefaultFont [
+	^ LogicalFont familyName: 'Source Sans Pro' pointSize: 80
+]

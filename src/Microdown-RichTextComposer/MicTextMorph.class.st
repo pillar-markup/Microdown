@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #accessing }
+MicTextMorph >> font: aFont [
+	self halt.
+]
+
+{ #category : #accessing }
 MicTextMorph >> textAreaChanged [
 
 	^ textAreaChanged
@@ -24,7 +29,7 @@ MicTextMorph >> textAreaChanged: anObject [
 
 { #category : #'event handling' }
 MicTextMorph >> textAreaExtentChanged [
-	self manageLayout.
+	super textAreaExtentChanged.
 	self textAreaChanged ifNotNil: [ self textAreaChanged value ]
 
 ]
