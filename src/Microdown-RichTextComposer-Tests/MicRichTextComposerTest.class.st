@@ -542,6 +542,16 @@ barwith a space').
 
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testQuoteBlock [
+	| src richText |
+	self skip. "Quote blocks have not been implemented"
+	src := '> foo'.
+	richText := Microdown asRichText: src.
+	"should at least include foo somehow"
+	self deny: (richText asString findString: 'foo') equals: 0
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testStrikethroughFormat [ 
 	| source runs richText |
