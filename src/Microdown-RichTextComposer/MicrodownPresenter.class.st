@@ -1,3 +1,9 @@
+"
+I am a spec presenter for microdown documents.
+
+The key api message is `document:` to set which document the presenter shows.
+New instances can also be created by `MicrodownPresenter on: document`
+"
 Class {
 	#name : #MicrodownPresenter,
 	#superclass : #SpPresenter,

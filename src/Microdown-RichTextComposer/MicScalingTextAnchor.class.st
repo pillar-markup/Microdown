@@ -1,3 +1,15 @@
+"
+I allow my images to be rescaled when a new total width is given. 
+
+New instances should set the following:
+
+- original: the original image later scaled
+- scale: percentage - 1 to 100, not 0-1.
+
+optionally one can freeze the height of the embedded image. This is mostly useful for morphs of text which should not scale in height
+
+New width is given by targetWidth: - this is not a user function, but is called by the scaling mechanism.
+"
 Class {
 	#name : #MicScalingTextAnchor,
 	#superclass : #TextAnchor,
