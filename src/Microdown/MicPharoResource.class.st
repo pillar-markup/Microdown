@@ -28,7 +28,7 @@ MicPharoResource >> executeUri [
 	args := ( (size :=uri segments size) > 2) 
 		ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ] 
 		ifFalse: [ #() ].
-	^ (class compiledMethodAt: selector) valueWithReceiver: class arguments: args
+	^ (class lookupSelector:  selector) valueWithReceiver: class arguments: args
 ]
 
 { #category : #'accessing - resources' }
