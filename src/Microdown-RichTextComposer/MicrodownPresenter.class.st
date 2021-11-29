@@ -188,7 +188,10 @@ Here are direct links to classes and method
 - `String`
 - `String>>#trim`
 
-And this is another line'
+And this is another line
+and second line in same paragraph
+
+and an other line in the next paragraph'
 ]
 
 { #category : #initialization }

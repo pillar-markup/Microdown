@@ -12,7 +12,7 @@ Class {
 
 { #category : #accessing }
 MicTextMorph >> font: aFont [
-	self halt.
+	"Until there is a solid solution to pharo issue: 10297 we just ignore font changes"
 ]
 
 { #category : #accessing }

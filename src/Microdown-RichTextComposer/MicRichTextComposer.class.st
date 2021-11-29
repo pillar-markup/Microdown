@@ -362,6 +362,8 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 					canvas
 						<< aCodeBlock caption asText;
 					newLine ]]].
+	canvas << textStyler interBlockSpacing
+		
 ]
 
 { #category : #'visiting -  format' }
@@ -389,23 +391,18 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 				scale: (morph textArea width / totalWidth * 100)-5;
 				"Need to add a bit of space (15) for the scrollbar to disappear"
 				freezeHeight: morph textArea height+15))].
-	canvas newLine 
+	canvas 
+		newLine; 
+		<< textStyler interBlockSpacing 
 	
 	
 ]
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitEnvironment: anObject [
-	self error: 'It was a halt'.
-	"What is this textBlock idea? Clean!"
-	anObject name = 'textBlock'
-		ifTrue:[
-			canvas indentIn: [  
-				canvas 
-					includeAttribute: TextEmphasis italic  
-					in: [self visitFormat: anObject]] ]
-		ifFalse: [canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText]
+	"Environment is an abstract class, and if we end here it is because of error"
+	canvas << ('>>> Environment ' , anObject name , 
+						'is not supported in RichText Pillar <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
@@ -426,7 +423,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas
 		includeAttribute: (self textStyler headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
-	canvas newLine
+	canvas << (textStyler spaceAfterHeaderLevel: aHeader level)
 ]
 
 { #category : #'visiting - document' }
@@ -519,7 +516,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -527,6 +524,7 @@ MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -564,14 +562,17 @@ MicRichTextComposer >> visitTable: tableBlock [
 			table hideColumnHeaders  ].
 	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table).
 	canvas newLineIfNotAlready;newLine.
-	canvas << anchoredTable
+	canvas 
+		<< anchoredTable;
+		newLine;
+		<< textStyler interBlockSpacing 
 	
 ]
 
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	canvas << anInlineBlock substring asText
+	canvas << (textStyler postTextTreatment: (anInlineBlock substring asText) )
 ]
 
 { #category : #'visiting - list' }
@@ -586,5 +587,5 @@ MicRichTextComposer >> visitUnorderedList: anObject [
 						propertyAt: #bullet
 						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
 			super visitUnorderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]
