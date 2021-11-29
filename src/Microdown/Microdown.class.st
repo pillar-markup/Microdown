@@ -15,10 +15,8 @@ Class {
 { #category : #parsing }
 Microdown class >> asRichText: aStringOrDoc [
 	"Facade method to render a microdown document or string to Text"
-	^ MicRichTextComposer asRichText:
-		(aStringOrDoc isString 
-			ifTrue: [  self parse: aStringOrDoc ]
-			ifFalse: [ aStringOrDoc   ])
+	^ MicRichTextComposer asRichText: aStringOrDoc.
+		
 	
 ]
 

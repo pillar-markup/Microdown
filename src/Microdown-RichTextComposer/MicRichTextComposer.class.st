@@ -51,9 +51,9 @@ Class {
 }
 
 { #category : #public }
-MicRichTextComposer class >> asRichText: aDoc [
+MicRichTextComposer class >> asRichText: aStringOrDoc [
 	
-	^ self new asRichText: aDoc
+	^ self new asRichText: aStringOrDoc
 
 ]
 
@@ -246,9 +246,11 @@ MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 ]
 
 { #category : #public }
-MicRichTextComposer >> asRichText: aDocument [
+MicRichTextComposer >> asRichText: aStringOrDoc [
 	
-	^ self visit: aDocument
+	^ self visit: (aStringOrDoc isString 
+			ifTrue: [  Microdown  parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc   ])
 ]
 
 { #category : #accessing }
