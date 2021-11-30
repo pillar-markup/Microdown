@@ -30,12 +30,19 @@ MicRealDumper >> parametersPrint: aDictionnary [
 
 	| lastKey |
 	lastKey := aDictionnary keys.
+
 	aDictionnary keysAndValuesDo: [ :k :v | 
 		stream
-			nextPutAll: k;
-			nextPutAll: '=';
-			nextPutAll: v.
-		k = lastKey ifFalse: [ stream nextPutAll: '&' ] ]
+			nextPutAll: '#' , k;
+			nextPutAll: ' ->'.
+		v class = Array
+			ifTrue: [ 
+				stream nextPutAll: ''''.
+				v do: [ :each | stream nextPutAll: each text ].
+				stream nextPutAll: '''' ]
+			ifFalse: [ stream nextPutAll: v ].
+		"nextPutAll: v asMicOutPut."
+		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
 ]
 
 { #category : #build }
@@ -79,36 +86,23 @@ MicRealDumper >> visitBold: aMicBold [
 { #category : #'as yet unclassified' }
 MicRealDumper >> visitCode: aCodeBlock [
 
-	self flag: #todo.
-	"un code peut avoir des arguments:
-	
-	```language=Pharo|.....
-	llkj
-	
-	donc voir des exemples avec des arguments + ecrire des tests
-	Et fixer cette methode. 
-	"
 	stream nextPut: $(.
 	self emitClassNameOf: aCodeBlock.
 	stream space.
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'parameters:'.
-	stream nextPutAll: ''''.
-	self parametersPrint: aCodeBlock arguments.
-	stream
-		nextPutAll: '''';
-		space.
+	aCodeBlock hasArguments ifTrue: [ 
+		stream nextPutAll: 'arguments: { '.
+		self parametersPrint: aCodeBlock arguments.
+		stream nextPutAll: ' } asDictionary ; ' ].
 
-	stream
-		nextPutAll: 'new';
-		space.
 	stream nextPutAll: 'body: '.
-	stream
-		nextPutAll: '''';
-		nextPutAll: aCodeBlock body;
-		nextPutAll: ''''.
+	aCodeBlock hasBody ifTrue: [ 
+		stream
+			nextPutAll: '''';
+			nextPutAll: aCodeBlock body;
+			nextPutAll: '''' ].
 	stream nextPut: $)
 ]
 
@@ -132,7 +126,7 @@ MicRealDumper >> visitFigure: aMicFigure [
 	stream nextPut: $(.
 	self emitClassNameOf: aMicFigure.
 	stream space.
-	stream nextPutAll: 'parameters: '.
+	stream nextPutAll: 'arguments: '.
 	self parametersPrint: aMicFigure arguments.
 	stream space.
 	stream nextPutAll: 'url: '.

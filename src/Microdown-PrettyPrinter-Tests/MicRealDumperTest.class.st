@@ -84,7 +84,6 @@ third line **b**'')'
 MicRealDumperTest >> testCodeBlockWithCaption [
 
 	| micCodeBlock result |
-	self skip.
 	self flag: #todo.
 	"Ne prend pas en compte caption (children vide)"
 	micCodeBlock := (parser parse:
@@ -94,7 +93,7 @@ MicRealDumperTest >> testCodeBlockWithCaption [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new caption=`Color` is beautifull&bar=2 new body: ''bla'')'
+		'(MicCodeBlock new arguments: { #caption ->''Color is beautifull'' . #bar ->2 .  } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -128,8 +127,6 @@ MicRealDumperTest >> testCodeBlockWithLiteralArray [
 
 	| micCodeBlock result |
 	self skip.
-	self flag: #todo.
-	"n'arrive pas à considérer une liste comme value"
 	micCodeBlock := (parser parse:
 		                 factory blockParameterWithLiteralArraySample)
 		                children first.
@@ -137,7 +134,7 @@ MicRealDumperTest >> testCodeBlockWithLiteralArray [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:''foo=#(1 2 true)'' new body: '''')'
+		'(MicCodeBlock new parameters:''foo=''#(1 2 true)'''' new body: '''')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -253,7 +250,7 @@ MicRealDumperTest >> testFigureBoldFormat [
 MicRealDumperTest >> testFigureFormat [
 
 	| micFigure result |
-	self skip.
+	self halt.
 	self flag: #todo.
 	"visitFigure récupère les children mais pour une figureSample ils sont stockés dans une substring"
 	micFigure := (parser parse: factory figureSample) children first
@@ -263,7 +260,7 @@ MicRealDumperTest >> testFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''Foo'')'
+		'(MicFigureBlock arguments: #label ->figureTest . #size ->80 .  url: /anUrl?label=figureTest&size=80 '''')'
 ]
 
 { #category : #'test - inline - blocks' }

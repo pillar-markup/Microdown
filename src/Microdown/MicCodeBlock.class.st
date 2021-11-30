@@ -83,6 +83,18 @@ MicCodeBlock >> firstTagValue [
 	^ arguments at: self firstTag ifAbsent: [ '' ]
 ]
 
+{ #category : #testing }
+MicCodeBlock >> hasArguments [
+
+	^ arguments keys isNotEmpty
+]
+
+{ #category : #testing }
+MicCodeBlock >> hasBody [
+
+	^ body isNotEmpty
+]
+
 { #category : #accessing }
 MicCodeBlock >> hasFirstTag [
 
@@ -131,7 +143,7 @@ MicCodeBlock >> language [
 	^ ''
 ]
 
-{ #category : #utilspipi }
+{ #category : #utils }
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	
