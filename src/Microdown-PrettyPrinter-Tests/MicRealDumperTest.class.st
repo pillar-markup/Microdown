@@ -250,7 +250,7 @@ MicRealDumperTest >> testFigureBoldFormat [
 MicRealDumperTest >> testFigureFormat [
 
 	| micFigure result |
-	self halt.
+	self skip.
 	self flag: #todo.
 	"visitFigure récupère les children mais pour une figureSample ils sont stockés dans une substring"
 	micFigure := (parser parse: factory figureSample) children first
