@@ -7,12 +7,39 @@ Class {
 	#name : #Microdown,
 	#superclass : #Object,
 	#instVars : [
-		'parser',
-		'resolverRoot',
-		'file'
+		'parser'
 	],
 	#category : #'Microdown-Core'
 }
+
+{ #category : #parsing }
+Microdown class >> asRichText: aStringOrDoc [
+	"Facade method to render a microdown document or string to Text"
+	^ MicRichTextComposer asRichText:
+		(aStringOrDoc isString 
+			ifTrue: [  self parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc   ])
+	
+]
+
+{ #category : #parsing }
+Microdown class >> parse: aStreamOrString [
+
+	^ MicroDownParser parse: aStreamOrString
+]
+
+{ #category : #parsing }
+Microdown class >> resolve: document fromUri: uri [
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
+	|baseUri|
+	baseUri := uri.
+	(uri isString | uri isText)
+		ifTrue: [ baseUri := uri asString asUrl ].
+	baseUri isRelative 
+		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
+	MicZinkPathResolver resolve: document  withBase: baseUri.
+	^ document 
+]
 
 { #category : #parsing }
 Microdown >> builder [
@@ -30,44 +57,18 @@ Microdown >> initialize [
 { #category : #parsing }
 Microdown >> parse: aStreamOrString [
 
-	^ parser parse: aStreamOrString
+	^ self class parse: aStreamOrString
 ]
 
-{ #category : #parsing }
-Microdown >> resolvedTreeFrom: aStreamOrString [
-
-	| micTree |
-	micTree := parser parse: aStreamOrString.
-	self resolver
-		microdown: self; 
-		originFile: file;
-		resolutionSource: self resolverRoot ;
-		visit: micTree.
-	^ micTree
+{ #category : #rendering }
+Microdown >> render: aStringOrDoc [
+	"Facade method to render a microdown string to Text"
+	^ self class render: aStringOrDoc 
 	
 ]
 
-{ #category : #resolving }
-Microdown >> resolvedTreeFromFile: aFileReference [
-	"This method is needed because when we resolved path we often need to know in which file a given figure or inputFile is written."
-	
-	file := aFileReference. 
-	^ self resolvedTreeFrom: file contents
-]
-
 { #category : #parsing }
-Microdown >> resolver [
-	^ MicPathResolver new resolutionSource: self resolverRoot; yourself
-]
-
-{ #category : #parsing }
-Microdown >> resolverRoot [
-	
-	^ resolverRoot ifNil: [ resolverRoot := FileSystem disk root ]
-]
-
-{ #category : #parsing }
-Microdown >> resolverRoot: root [
-	
-	resolverRoot := root
+Microdown >> resolve: document fromUri: uri [
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
+	^ self class resolve: document fromUri: uri
 ]

@@ -183,7 +183,7 @@ MicRealDumper >> visitLink: aMicLink [
 	stream nextPutAll: aMicLink substring.
 	stream nextPut: $].
 	stream nextPut: $(.
-	stream nextPutAll: aMicLink url originalString .
+	stream nextPutAll: aMicLink url.
 	stream nextPut: $)
 ]
 

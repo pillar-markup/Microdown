@@ -255,7 +255,7 @@ MicrodownInlineParserTest >> testFigureWithParameters [
 
 	| elements figure |
 	elements := self parseAndReturnElementsOfParagraphFor:
-		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png?micAnchor=fig2&micWidth=80)'.
+		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png micAnchor=fig2&micWidth=80)'.
 	self assert: elements size equals: 1.
 	figure := elements first.
 	self assert: figure caption equals: 'caption terminating with a .'.
@@ -317,7 +317,7 @@ MicrodownInlineParserTest >> testLink [
 	
  	self assert: elements second caption equals: 'Pharo.Org'.
  	self assert: elements second kind equals: 'linkName'.
-	self assert: elements second url printString equals: 'http://www.pharo.org'.
+	self assert: elements second url equals: 'http://www.pharo.org'.
 	
 	
  	self assert: elements second openingDelimiter equals: '['.
@@ -333,7 +333,7 @@ MicrodownInlineParserTest >> testLinkWithParameters [
  	self assert: elements second substring equals: 'GH Ducasse'.
  	self assert: elements second kind equals: 'linkName'.
 	
-	self assert: elements second url printString equals: 'https://github.com/Ducasse?tab=repositories'.
+	self assert: elements second url equals: 'https://github.com/Ducasse?tab=repositories'.
 	
  	self assert: elements second openingDelimiter equals: '['.
  	self assert: elements second closingDelimiter equals: ')'
@@ -495,7 +495,7 @@ MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
 	self assert: element name equals: 'inputFile'.
 	self assert: element children equals: #().
 	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
-	self assert: (element arguments at: 'path') equals: 'PharoTour.mic'
+	self assert: (element arguments at: 'path') path equals: 'PharoTour.mic'
 	
 ]
 

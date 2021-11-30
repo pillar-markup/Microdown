@@ -20,7 +20,7 @@ MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 	self assert: visitor contents equals: anExpectedString
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicRealDumperTest >> setUp [ 
 	super setUp.
 	parser := MicroDownParser new.

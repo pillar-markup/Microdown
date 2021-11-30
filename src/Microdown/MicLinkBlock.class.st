@@ -4,6 +4,9 @@ I represent a reference in a text. For example `[http://pharo.org](http://pharo.
 Class {
 	#name : #MicLinkBlock,
 	#superclass : #MicInlineBlockWithUrl,
+	#instVars : [
+		'reference'
+	],
 	#category : #'Microdown-ModelInline'
 }
 
@@ -14,14 +17,9 @@ MicLinkBlock >> accept: aVisitor [
 
 { #category : #visiting }
 MicLinkBlock >> closeMe [
-	"testAsFileUrl
-	self assert: 'http://localhost:80/foo/bar/doc.txt' asZnUrl asFileUrl isFile.
-	self 
-		assert: 'http://localhost:80/foo/bar/doc.txt' asZnUrl path 
-		equals: 'http://localhost:80/foo/bar/doc.txt' asZnUrl asFileUrl path"
 	
-	self url: (MicResourceReference fromString: self url).
-	caption := self inlineParse: substring.
+	self reference: (MicResourceReference fromUri: self url).
+	captionElements := self inlineParse: substring.
 ]
 
 { #category : #accessing }
@@ -34,4 +32,16 @@ MicLinkBlock >> kind [
 MicLinkBlock >> openingDelimiter [
 
  	^ MicLinkNameOpenerDelimiter markup
+]
+
+{ #category : #accessing }
+MicLinkBlock >> reference [
+
+	^ reference
+]
+
+{ #category : #accessing }
+MicLinkBlock >> reference: anObject [
+
+	reference := anObject
 ]

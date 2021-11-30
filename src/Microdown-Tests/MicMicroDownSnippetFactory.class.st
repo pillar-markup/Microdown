@@ -233,7 +233,7 @@ This is a codeBlock
 MicMicrodownSnippetFactory >> figureBoldSample [
 	^ '
 
-![**Foo**](/anUrl?label=figureTest&size=80)
+![**Foo**](/anUrl label=figureTest&size=80)
 '
 ]
 
@@ -263,9 +263,10 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureSample [
+
 	^ '
 
-![Foo](/anUrl?label=figureTest&size=80)
+![Foo](/anUrl label=figureTest&size=80)
 '
 ]
 
