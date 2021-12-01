@@ -18,6 +18,14 @@ MicRealDumper >> emitClassNameOf: aMicElement [
 	stream nextPutAll: aMicElement class asString
 ]
 
+{ #category : #'as yet unclassified' }
+MicRealDumper >> emitParameters: aCodeBlock [
+
+	stream nextPutAll: 'arguments: { '.
+	self parametersPrint: aCodeBlock arguments.
+	stream nextPutAll: ' } asDictionary ; '
+]
+
 { #category : #initialization }
 MicRealDumper >> initialize [
 
@@ -32,15 +40,16 @@ MicRealDumper >> parametersPrint: aDictionnary [
 	lastKey := aDictionnary keys.
 
 	aDictionnary keysAndValuesDo: [ :k :v | 
+		self halt.
 		stream
 			nextPutAll: '#' , k;
 			nextPutAll: ' ->'.
-		v class = Array
-			ifTrue: [ 
-				stream nextPutAll: ''''.
-				v do: [ :each | stream nextPutAll: each text ].
-				stream nextPutAll: '''' ]
-			ifFalse: [ stream nextPutAll: v ].
+			v class = Array
+				ifTrue: [ 
+					stream nextPutAll: ''''.
+					v do: [ :each | stream nextPutAll: each text ].
+					stream nextPutAll: '''' ]
+				ifFalse: [ stream nextPutAll: v ].
 		"nextPutAll: v asMicOutPut."
 		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
 ]
@@ -92,13 +101,9 @@ MicRealDumper >> visitCode: aCodeBlock [
 	stream
 		nextPutAll: 'new';
 		space.
-	aCodeBlock hasArguments ifTrue: [ 
-		stream nextPutAll: 'arguments: { '.
-		self parametersPrint: aCodeBlock arguments.
-		stream nextPutAll: ' } asDictionary ; ' ].
-
-	stream nextPutAll: 'body: '.
-	aCodeBlock hasBody ifTrue: [ 
+	aCodeBlock hasArguments ifTrue: [ self emitParameters: aCodeBlock ].
+	aCodeBlock hasNoBody ifFalse: [ 
+		stream nextPutAll: 'body: '.
 		stream
 			nextPutAll: '''';
 			nextPutAll: aCodeBlock body;

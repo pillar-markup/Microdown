@@ -387,7 +387,7 @@ MicCodeBlockTest >> testHasNoBody [
 	source := parser codeblockMarkup , String cr , textBody , String cr
 	          , parser codeblockMarkup.
 	root := parser parse: source.
-	self deny: root children first hasBody
+	self assert: root children first hasNoBody
 ]
 
 { #category : #'tests - arguments' }

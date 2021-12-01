@@ -54,6 +54,12 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
+{ #category : #accessing }
+MicFigureBlock >> hasArguments [
+
+	^ parameters keys isNotEmpty
+]
+
 { #category : #testing }
 MicFigureBlock >> hasCaption [ 	
 	^ captionElements notNil 

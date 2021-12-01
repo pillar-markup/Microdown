@@ -92,7 +92,7 @@ MicCodeBlock >> hasArguments [
 { #category : #testing }
 MicCodeBlock >> hasBody [
 
-	^ body isNotEmpty
+	^ body isEmpty
 ]
 
 { #category : #accessing }
@@ -115,6 +115,12 @@ MicCodeBlock >> hasLanguage [
 	arguments ifNotEmpty: [ 
 		^ arguments at: #language ifPresent: [ true ] ifAbsent: [ false ]].
 	^ false
+]
+
+{ #category : #testing }
+MicCodeBlock >> hasNoBody [
+
+	^ body isEmptyOrNil
 ]
 
 { #category : #initialization }

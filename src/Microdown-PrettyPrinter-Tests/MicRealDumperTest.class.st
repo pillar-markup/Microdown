@@ -62,8 +62,7 @@ MicRealDumperTest >> testCodeBlockNewLine [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals:
-		'(MicCodeBlock new parameters:'''' new body: ''foo'')'
+		equals: '(MicCodeBlock new body: ''foo'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -75,7 +74,7 @@ MicRealDumperTest >> testCodeBlockOnMultipleLines [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new parameters:'''' new body: ''first line 
+		equals: '(MicCodeBlock new body: ''first line 
 second line
 third line **b**'')'
 ]
@@ -106,7 +105,7 @@ MicRealDumperTest >> testCodeBlockWithFloatParam [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new parameters:''ratio=0.8&'' new body: ''bar'')'
+		equals: '(MicCodeBlock new arguments: { #ratio ->0.8 .  } asDictionary ; body: ''bar'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -119,14 +118,13 @@ MicRealDumperTest >> testCodeBlockWithLanguage [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:''language=smalltalk&'' new body: ''foo'')'
+		'(MicCodeBlock new arguments: { #language ->smalltalk .  } asDictionary ; body: ''foo'')'
 ]
 
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testCodeBlockWithLiteralArray [
 
 	| micCodeBlock result |
-	self skip.
 	micCodeBlock := (parser parse:
 		                 factory blockParameterWithLiteralArraySample)
 		                children first.
@@ -134,7 +132,7 @@ MicRealDumperTest >> testCodeBlockWithLiteralArray [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:''foo=''#(1 2 true)'''' new body: '''')'
+		'(MicCodeBlock new arguments: { #foo ->#(1 2 true) .  } asDictionary ; )'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -147,14 +145,14 @@ MicRealDumperTest >> testCodeBlockWithNoValues [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new parameters:''foo=&'' new body: ''bar'')'
+		equals: '(MicCodeBlock new arguments: { #foo -> .  } asDictionary ; body: ''bar'')'
 ]
 
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
-	self skip.
+	self halt.
 	self flag: #todo.
 	"argument value isEmpty error: do return nil"
 	micCodeBlock := (parser parse:
@@ -176,7 +174,7 @@ MicRealDumperTest >> testCodeBlockWithParameters [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:''foo=true&bar=2&'' new body: ''bla'')'
+		'(MicCodeBlock new arguments: { #foo ->true . #bar ->2 .  } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -189,7 +187,7 @@ MicRealDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:'''' new body: ''foo'')'
+		'(MicCodeBlock new body: ''foo'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -202,7 +200,7 @@ MicRealDumperTest >> testCodeBlockWithSpacedParameters [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new parameters:''foo= true &bar= 2&'' new body: ''bla'')'
+		'(MicCodeBlock new arguments: { #foo -> true  . #bar -> 2 .  } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -214,7 +212,7 @@ MicRealDumperTest >> testCodeBlockWithoutParam [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new parameters:'''' new body: ''first line 
+		equals: '(MicCodeBlock new body: ''first line 
 second line
 third line **b**'')'
 ]
