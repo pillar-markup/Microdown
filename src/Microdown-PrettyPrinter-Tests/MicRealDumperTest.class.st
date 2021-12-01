@@ -152,7 +152,6 @@ MicRealDumperTest >> testCodeBlockWithNoValues [
 MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
-	self halt.
 	self flag: #todo.
 	"argument value isEmpty error: do return nil"
 	micCodeBlock := (parser parse:
@@ -239,9 +238,22 @@ MicRealDumperTest >> testFigureBoldFormat [
 	self assert: micFigure class equals: MicFigureBlock.
 	result := micFigure accept: visitor.
 	self
-		assert: result contents
+		assert: result contents equals: '(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ;  url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		
+]
+
+{ #category : #'test - inline - blocks' }
+MicRealDumperTest >> testFigureBoldFormat2 [
+
+	| micFigure result |
+	micFigure := (parser parse: '![**Bold** and not bold and **bold**](/anUrl label=figureTest&size=80)') children first
+		             children first.
+	self assert: micFigure class equals: MicFigureBlock.
+	result := micFigure accept: visitor.
+	self
+		assert: result contents 
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock new arguments: {  #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl''; caption: { (MicBoldFormatBlock new text: ''foo'')} ; yourself'
 ]
 
 { #category : #'test - inline - blocks' }
