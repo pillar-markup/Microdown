@@ -83,8 +83,6 @@ third line **b**'')'
 MicRealDumperTest >> testCodeBlockWithCaption [
 
 	| micCodeBlock result |
-	self flag: #todo.
-	"Ne prend pas en compte caption (children vide)"
 	micCodeBlock := (parser parse:
 		                 factory blockWithParametersWithCaptionSample)
 		                children first.
@@ -92,7 +90,7 @@ MicRealDumperTest >> testCodeBlockWithCaption [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #caption ->''Color is beautifull'' . #bar ->2 .  } asDictionary ; body: ''bla'')'
+		'(MicCodeBlock new arguments: { #caption ->''Color is beautifull'' . #bar ->2 } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -105,7 +103,7 @@ MicRealDumperTest >> testCodeBlockWithFloatParam [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new arguments: { #ratio ->0.8 .  } asDictionary ; body: ''bar'')'
+		equals: '(MicCodeBlock new arguments: { #ratio ->0.8 } asDictionary ; body: ''bar'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -118,7 +116,7 @@ MicRealDumperTest >> testCodeBlockWithLanguage [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #language ->smalltalk .  } asDictionary ; body: ''foo'')'
+		'(MicCodeBlock new arguments: { #language ->smalltalk } asDictionary ; body: ''foo'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -132,7 +130,7 @@ MicRealDumperTest >> testCodeBlockWithLiteralArray [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #foo ->#(1 2 true) .  } asDictionary ; )'
+		'(MicCodeBlock new arguments: { #foo ->#(1 2 true) } asDictionary ; )'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -145,15 +143,16 @@ MicRealDumperTest >> testCodeBlockWithNoValues [
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new arguments: { #foo -> .  } asDictionary ; body: ''bar'')'
+		equals:
+		'(MicCodeBlock new arguments: { #foo -> } asDictionary ; body: ''bar'')'
 ]
 
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
+	self skip.
 	self flag: #todo.
-	"argument value isEmpty error: do return nil"
 	micCodeBlock := (parser parse:
 		                 factory blockWithParameterTrueByDefaultSample)
 		                children first.
@@ -166,14 +165,14 @@ MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testCodeBlockWithParameters [
 
-	| micCodeBlock result |	
+	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockWithParametersSample)
 		                children first.
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #foo ->true . #bar ->2 .  } asDictionary ; body: ''bla'')'
+		'(MicCodeBlock new arguments: { #foo ->true . #bar ->2 } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -193,13 +192,14 @@ MicRealDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 MicRealDumperTest >> testCodeBlockWithSpacedParameters [
 
 	| micCodeBlock result |
-	micCodeBlock := (parser parse: factory blockWithSpacedParametersSample)
-		                children first.
+	micCodeBlock := (parser parse:
+		                 factory blockWithSpacedParametersSample) children
+		                first.
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #foo -> true  . #bar -> 2 .  } asDictionary ; body: ''bla'')'
+		'(MicCodeBlock new arguments: { #foo -> true  . #bar -> 2 } asDictionary ; body: ''bla'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -238,7 +238,8 @@ MicRealDumperTest >> testFigureBoldFormat [
 	self assert: micFigure class equals: MicFigureBlock.
 	result := micFigure accept: visitor.
 	self
-		assert: result contents equals: '(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ;  url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		assert: result contents
+		 equals: '(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 		
 ]
 
@@ -253,16 +254,13 @@ MicRealDumperTest >> testFigureBoldFormat2 [
 	self
 		assert: result contents 
 		equals:
-		'(MicFigureBlock new arguments: {  #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl''; caption: { (MicBoldFormatBlock new text: ''foo'')} ; yourself'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Bold'')) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''bold''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
 MicRealDumperTest >> testFigureFormat [
 
 	| micFigure result |
-	self skip.
-	self flag: #todo.
-	"visitFigure récupère les children mais pour une figureSample ils sont stockés dans une substring"
 	micFigure := (parser parse: factory figureSample) children first
 		             children first.
 	self assert: micFigure class equals: MicFigureBlock.
@@ -270,7 +268,7 @@ MicRealDumperTest >> testFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock arguments: #label ->figureTest . #size ->80 .  url: /anUrl?label=figureTest&size=80 '''')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -284,7 +282,7 @@ MicRealDumperTest >> testFigureItalicFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock arguments:  url: /anUrl?label=figureTest&size=80 ''(MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -296,9 +294,9 @@ MicRealDumperTest >> testFigureMonospaceFormat [
 	self assert: micFigure class equals: MicFigureBlock.
 	result := micFigure accept: visitor.
 	self
-		assert: result contents
+		assert: result contents 
 		equals:
-		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -312,7 +310,7 @@ MicRealDumperTest >> testFigureNestedFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicTextBlock new substring: ''!['')(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))'')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -324,9 +322,9 @@ MicRealDumperTest >> testFigureStrikeFormat [
 	self assert: micFigure class equals: MicFigureBlock.
 	result := micFigure accept: visitor.
 	self
-		assert: result contents
+		assert: result contents  
 		equals:
-		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -340,7 +338,7 @@ MicRealDumperTest >> testFileFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock arguments: label=figureTest&size=80& url: file://image.png/?label=figureTest&size=80 '''')'
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file://image.png/'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
 ]
 
 { #category : #'tests - section' }

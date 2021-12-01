@@ -130,17 +130,16 @@ MicRealDumper >> visitFigure: aMicFigure [
 	self emitClassNameOf: aMicFigure.
 	stream nextPutAll: ' new '.
 	aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
-	stream space.
 	stream nextPutAll: 'url: '.
 	stream print: aMicFigure reference uri asString.
 	stream
 		space;
 		nextPutAll: ';'.
 	stream nextPutAll: ' caption: { '.
-	aMicFigure captionElements 
+	aMicFigure captionElements
 		do: [ :each | self visit: each ]
-		separatedBy: [ stream nextPutAll: ' . '].
-	stream nextPutAll: '}; yourself) '.
+		separatedBy: [ stream nextPutAll: ' . ' ].
+	stream nextPutAll: '}; yourself) '
 ]
 
 { #category : #'visit - section' }
