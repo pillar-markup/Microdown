@@ -131,11 +131,10 @@ MicRealDumper >> visitFigure: aMicFigure [
 	stream nextPut: $(.
 	self emitClassNameOf: aMicFigure.
 	stream space.
-	stream nextPutAll: 'arguments: '.
-	self parametersPrint: aMicFigure arguments.
+	aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
 	stream space.
 	stream nextPutAll: 'url: '.
-	stream nextPutAll: aMicFigure url originalString.
+	stream nextPutAll: aMicFigure url.
 	stream
 		space;
 		nextPutAll: ''''.

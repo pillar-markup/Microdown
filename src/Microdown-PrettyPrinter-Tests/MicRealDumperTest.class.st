@@ -234,14 +234,14 @@ MicRealDumperTest >> testComment [
 MicRealDumperTest >> testFigureBoldFormat [
 
 	| micFigure result |
-	micFigure := (parser parse: factory figureBoldSample) children first
+	micFigure := (parser parse: '![**caption** no bold](http://anURL.org?label=1&title=testFigure)') children first
 		             children first.
 	self assert: micFigure class equals: MicFigureBlock.
 	result := micFigure accept: visitor.
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock arguments: #label ->figureTest . #size ->80 .  url: /anUrl label=figureTest&size=80 ''(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -272,7 +272,7 @@ MicRealDumperTest >> testFigureItalicFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock arguments:  url: /anUrl?label=figureTest&size=80 ''(MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -286,7 +286,7 @@ MicRealDumperTest >> testFigureMonospaceFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -300,7 +300,7 @@ MicRealDumperTest >> testFigureNestedFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicTextBlock new substring: ''!['')(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))'')'
+		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicTextBlock new substring: ''!['')(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -314,7 +314,7 @@ MicRealDumperTest >> testFigureStrikeFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
+		'(MicFigureBlock arguments: label=figureTest&size=80& url: /anUrl?label=figureTest&size=80 ''(MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'')'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -328,7 +328,7 @@ MicRealDumperTest >> testFileFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock parameters: label=figureTest&size=80& url: file://image.png/?label=figureTest&size=80 '''')'
+		'(MicFigureBlock arguments: label=figureTest&size=80& url: file://image.png/?label=figureTest&size=80 '''')'
 ]
 
 { #category : #'tests - section' }
