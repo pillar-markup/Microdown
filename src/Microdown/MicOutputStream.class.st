@@ -71,6 +71,11 @@ MicOutputStream >> nextPutAll: aCharacter [
 	stream nextPutAll: aCharacter
 ]
 
+{ #category : #accessing }
+MicOutputStream >> print: anObject [
+	stream print: anObject
+]
+
 { #category : #initialization }
 MicOutputStream >> setStream: aWriteStream [
 	stream := aWriteStream

@@ -18,7 +18,7 @@ MicRealDumper >> emitClassNameOf: aMicElement [
 	stream nextPutAll: aMicElement class asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #build }
 MicRealDumper >> emitParameters: aCodeBlock [
 
 	stream nextPutAll: 'arguments: { '.
@@ -37,10 +37,9 @@ MicRealDumper >> initialize [
 MicRealDumper >> parametersPrint: aDictionnary [
 
 	| lastKey |
-	lastKey := aDictionnary keys.
+	lastKey := aDictionnary keys last.
 
 	aDictionnary keysAndValuesDo: [ :k :v | 
-		self halt.
 		stream
 			nextPutAll: '#' , k;
 			nextPutAll: ' ->'.
@@ -50,11 +49,10 @@ MicRealDumper >> parametersPrint: aDictionnary [
 					v do: [ :each | stream nextPutAll: each text ].
 					stream nextPutAll: '''' ]
 				ifFalse: [ stream nextPutAll: v ].
-		"nextPutAll: v asMicOutPut."
 		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
 ]
 
-{ #category : #build }
+{ #category : #'visit - format' }
 MicRealDumper >> visit: aMicElement [
 
 	aMicElement accept: self.
@@ -92,7 +90,7 @@ MicRealDumper >> visitBold: aMicBold [
 	stream nextPut: $)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visit - section' }
 MicRealDumper >> visitCode: aCodeBlock [
 
 	stream nextPut: $(.
@@ -130,17 +128,19 @@ MicRealDumper >> visitFigure: aMicFigure [
 
 	stream nextPut: $(.
 	self emitClassNameOf: aMicFigure.
-	stream space.
+	stream nextPutAll: ' new '.
 	aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
 	stream space.
 	stream nextPutAll: 'url: '.
-	stream nextPutAll: aMicFigure url.
+	stream print: aMicFigure reference uri asString.
 	stream
 		space;
-		nextPutAll: ''''.
-	self visitChildrenOf: aMicFigure.
-	stream nextPutAll: ''''.
-	stream nextPut: $)
+		nextPutAll: ';'.
+	stream nextPutAll: ' caption: { '.
+	aMicFigure captionElements 
+		do: [ :each | self visit: each ]
+		separatedBy: [ stream nextPutAll: ' . '].
+	stream nextPutAll: '}; yourself) '.
 ]
 
 { #category : #'visit - section' }
