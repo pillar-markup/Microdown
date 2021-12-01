@@ -151,8 +151,8 @@ MicRealDumperTest >> testCodeBlockWithNoValues [
 MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
-	self skip.
 	self flag: #todo.
+	self skip.
 	micCodeBlock := (parser parse:
 		                 factory blockWithParameterTrueByDefaultSample)
 		                children first.
@@ -567,10 +567,8 @@ MicRealDumperTest >> testStrike [
 { #category : #'tests - section' }
 MicRealDumperTest >> testTable [
 
-	
 	| micTable |
 	self skip.
-	
 	micTable := (parser parse: factory tableSample) children first.
 	self assert: (micTable accept: visitor) equals: 'MicTableBlock'
 ]
