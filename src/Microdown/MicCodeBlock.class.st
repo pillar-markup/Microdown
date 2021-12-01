@@ -92,7 +92,7 @@ MicCodeBlock >> hasArguments [
 { #category : #testing }
 MicCodeBlock >> hasBody [
 
-	^ body isEmpty
+	^ body isNotEmpty
 ]
 
 { #category : #accessing }
