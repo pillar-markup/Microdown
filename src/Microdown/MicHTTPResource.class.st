@@ -7,24 +7,25 @@ Class {
 	#name : #MicHTTPResource,
 	#superclass : #MicAbsoluteResource,
 	#classVars : [
-		'ImageCache'
+		'ImageCache',
+		'ImageNotCachedBlock'
 	],
 	#category : #'Microdown-Core'
 }
 
 { #category : #images }
 MicHTTPResource class >> cachedImageFromUrl: aUrl [
+	"In case a url is not in the cache, it is either read from the net, or if the ImageNotCachedBlock
+	is non nil, the image returned by ImageNotCachedBlock is returned, but not stored in the cache"
 	
-	^ self imageCache 
-		at: aUrl
-		ifAbsentPut: [ (self rawImageFrom: aUrl) ifNil: [ ^ nil ] ] 
-]
-
-{ #category : #accessing }
-MicHTTPResource class >> imageAt: urlString put: aForm [	
-	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
-	
-	ImageCache at: urlString put: aForm
+	(self imageCache includesKey: aUrl)
+		ifTrue: [ ^ self imageCache at: aUrl ].
+		
+	ImageNotCachedBlock 
+		ifNil: [
+			^ self imageCache at: aUrl put: ((self rawImageFrom: aUrl) ifNil: [ ^nil ])]
+		ifNotNil: [ 
+			^ ImageNotCachedBlock value]
 ]
 
 { #category : #images }
@@ -33,17 +34,31 @@ MicHTTPResource class >> imageCache [
 	^ImageCache
 ]
 
+{ #category : #accessing }
+MicHTTPResource class >> imageNotCachedBlock: aHandlerBlock [
+	"If an image is not in the cache, execute this block get an image. 
+	Do not store the produced image in the cache."
+	ImageNotCachedBlock := aHandlerBlock.
+]
+
+{ #category : #accessing }
+MicHTTPResource class >> imageNotCachedValue [
+	ImageNotCachedBlock ifNil: [ ^ nil ].
+	^ ImageNotCachedBlock value
+]
+
 { #category : #images }
 MicHTTPResource class >> initialize [
 	<script>
-	ImageCache := nil
+	ImageCache := nil.
+	ImageNotCachedBlock := nil
 ]
 
 { #category : #images }
 MicHTTPResource class >> rawImageFrom: aURL [
 	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
-	on: Error
-	do: [ ^nil ]
+	on: Exception
+	do: [ ^ nil ]
 		
 ]
 
