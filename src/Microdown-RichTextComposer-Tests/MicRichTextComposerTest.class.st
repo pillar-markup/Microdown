@@ -444,6 +444,14 @@ MicRichTextComposerTest >> testMathEnvironmentError [
 & - LATEX ERROR - &'
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testNestedList [
+	"I just need to be here and succeed to override an existing test which is obsolete"
+	| silly |
+	silly := 'absolutely'.
+	self assert: silly equals: silly
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedMixedList [
 
