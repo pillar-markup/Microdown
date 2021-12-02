@@ -18,7 +18,7 @@ Class {
 		'scale',
 		'freezeHeight'
 	],
-	#category : #'Microdown-RichTextComposer-Presenter'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #accessing }
@@ -36,11 +36,6 @@ MicScalingTextAnchor >> freezeHeight [
 MicScalingTextAnchor >> freezeHeight: anObject [
 
 	freezeHeight := anObject
-]
-
-{ #category : #initialization }
-MicScalingTextAnchor >> initialize [ 
-	freezeHeight := nil
 ]
 
 { #category : #accessing }
@@ -69,7 +64,7 @@ MicScalingTextAnchor >> targetWidth: rightMargin [
 	newHeight := freezeHeight
 		ifNil: [ original height / original width * newWidth ]
 		ifNotNil: [freezeHeight ].
-	anchoredMorph := anchoredMorph isMorph
+	anchoredMorph := original  isMorph
 		ifTrue: [ original extent: newWidth @ newHeight ]
 		ifFalse: [ original scaledToSize: newWidth @ newHeight ]
 ]

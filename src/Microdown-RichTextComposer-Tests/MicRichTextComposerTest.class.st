@@ -210,6 +210,7 @@ line 2
 	self assert: richText asString equals: 
 'line 1
 line 2
+
 '
 ]
 
@@ -263,6 +264,7 @@ line 2
 'line 1
 line 2
 Roger Rabbit
+
 '
 ]
 
@@ -389,7 +391,7 @@ MicRichTextComposerTest >> testLatexMathStyleEmpty [
 	| source richText |
 	source :=  'foo$$bar'.
 	richText := self richTextForString: source.
-	self assert: richText asString equals: 'foobar' .
+	self assert: richText asString trim equals: 'foobar' .
 ]
 
 { #category : #'tests - list' }
@@ -437,7 +439,9 @@ MicRichTextComposerTest >> testMathEnvironmentError [
 &
 '.
 	richText := self richTextForString: source.
-	self assert: richText asString equals: 'foo& - LATEX ERROR - &'
+	self assert: richText asString equals: 'foo
+
+& - LATEX ERROR - &'
 ]
 
 { #category : #'skipped tests' }
@@ -455,8 +459,8 @@ MicRichTextComposerTest >> testNestedMixedList [
 	runs := richText runs.
 	
 	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
-	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
-	self assert: (runs at: 35) first amount equals: 3
+	self assert: (richText asString copyFrom: 36 to: 37) equals: 'A)'.
+	self assert: (runs at: 36) first amount equals: 3
 	
 ]
 
@@ -493,11 +497,13 @@ MicRichTextComposerTest >> testNoNSuperfluousNewLines [
 
 	| source richText expected |
 	source :=  'This is **bold**
-	
-	And this is just an other paragraph'.
-	expected := 'This is bold
 
 And this is just an other paragraph'.
+	expected := 'This is bold
+
+And this is just an other paragraph
+
+'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]
@@ -507,7 +513,9 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 
 	| source richText expected |
 	source :=  'This is **bold**'.
-	expected := 'This is bold'.
+	expected := 'This is bold
+
+'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]

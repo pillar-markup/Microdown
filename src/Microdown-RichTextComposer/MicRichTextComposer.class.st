@@ -96,20 +96,6 @@ Cool eh?
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown1Large [
-	<sampleInstance>
-	^ self new textStyler: MicTextStylerLarge new; asRichText:  (Microdown parse: '# First section
-and this is just **first** line 
-1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
-   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
-   - And one more _silly_ thingie
-1. Line 2
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3')
-]
-
-{ #category : #examples }
 MicRichTextComposer class >> exampleMicrodown3 [
 	<sampleInstance>
 	^ self parseAndCompose:
