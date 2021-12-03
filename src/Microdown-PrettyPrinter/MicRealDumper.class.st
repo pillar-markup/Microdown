@@ -18,6 +18,22 @@ MicRealDumper >> emitClassNameOf: aMicElement [
 	stream nextPutAll: aMicElement class asString
 ]
 
+{ #category : #'visit - section' }
+MicRealDumper >> emitList: aList [
+
+	stream nextPut: $(.
+	self emitClassNameOf: aList.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	stream nextPutAll: 'children: { '.
+	aList children
+		do: [ :each | each accept: self ]
+		separatedBy: [ stream nextPutAll: ' . ' ].
+	stream nextPutAll: ' }; yourself)'
+]
+
 { #category : #build }
 MicRealDumper >> emitParameters: aCodeBlock [
 
@@ -48,7 +64,7 @@ MicRealDumper >> parametersPrint: aDictionnary [
 					stream nextPutAll: ''''.
 					v do: [ :each | stream nextPutAll: each text ].
 					stream nextPutAll: '''' ]
-				ifFalse: [ stream nextPutAll: v ].
+				ifFalse: [ stream nextPutAll: v asString ].
 		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
 ]
 
@@ -224,20 +240,7 @@ MicRealDumper >> visitMonospace: aMonospace [
 { #category : #'visit - section' }
 MicRealDumper >> visitOrderedList: anOrderedList [
 
-	stream nextPut: $(.
-	self emitClassNameOf: anOrderedList.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'children: '.
-	stream nextPut: ${.
-	anOrderedList children
-		do: [ :each | each accept: self ]
-		separatedBy: [ 
-			'.' ].
-	stream nextPut: $}.
-	stream nextPut: $)
+	self emitList: anOrderedList
 ]
 
 { #category : #'visit - section' }
@@ -335,17 +338,5 @@ MicRealDumper >> visitText: aText [
 { #category : #'visit - section' }
 MicRealDumper >> visitUnorderedList: aUnOrderedList [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aUnOrderedList.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'children: '.
-	aUnOrderedList children
-		do: [ :each | each accept: self ]
-		separatedBy: [ 
-			''.
-			'' ].
-	stream nextPut: $)
+	self emitList: aUnOrderedList
 ]

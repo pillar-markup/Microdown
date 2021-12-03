@@ -13,8 +13,6 @@ Class {
 MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 
 	| mic |
-		self skip.
-	self flag: #lyna.
 	mic := parser parse: aString.
 	visitor visit: mic children first.
 	self assert: visitor contents equals: anExpectedString
@@ -403,7 +401,7 @@ MicRealDumperTest >> testOrderedList [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicTextBlock new substring: ''Foo''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -417,7 +415,7 @@ MicRealDumperTest >> testOrderedListWithTwoItems [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicTextBlock new substring: ''first''))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''first'')) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -431,7 +429,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -446,7 +444,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsItalic [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -460,7 +458,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsMonospace [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -474,7 +472,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsStrike [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: {(MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -502,7 +500,7 @@ MicRealDumperTest >> testPrintHeader [
 MicRealDumperTest >> testPrintOrderedList [
 
 	| resString |
-	resString := '(MicOrderedListBlock new children: {(MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first'')))(MicListItemBlock new (MicTextBlock new substring: ''second''))})'.
+	resString := '(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'.
 	self
 		parse: factory orderedListWithTwoItemsBoldSample
 		andCheckWeGet: resString
@@ -513,16 +511,14 @@ MicRealDumperTest >> testPrintParagraph [
 
 	| resString |
 	resString := '(MicParagraphBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'.
-	self parse: factory paragraphSample andCheckWeGet: resString.
-	
-
+	self parse: factory paragraphSample andCheckWeGet: resString
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testPrintUnorderedList [
 
 	| resString |
-	resString := '(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo'')))'.
+	resString := '(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'.
 	self parse: factory unorderedListSample andCheckWeGet: resString
 ]
 
@@ -590,52 +586,47 @@ MicRealDumperTest >> testTextBlock [
 MicRealDumperTest >> testUnOrderedEmptyList [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
-	micList := (parser parse: factory unorderedListEmptySample) children first.
+	micList := (parser parse: factory unorderedListEmptySample) children
+		           first.
 	self assert: micList class equals: MicUnorderedListBlock.
 	visitor visit: micList.
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''-'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''-'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedList [
 
 	| micList |
-	
 	micList := (parser parse: factory unorderedListSample) children first.
 	self assert: micList class equals: MicUnorderedListBlock.
 	visitor visit: micList.
 	self
-		assert: visitor contents
+		assert: visitor contents 
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedListWithTwoItems [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
-	micList := (parser parse: factory unorderedListWithTwoItemsSample) children first.
+	micList := (parser parse: factory unorderedListWithTwoItemsSample)
+		           children first.
 	self assert: micList class equals: MicUnorderedListBlock.
 	visitor visit: micList.
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicTextBlock new substring: ''Foo''))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
 MicRealDumperTest >> testUnOrderedListWithTwoItemsBold [
 
 	| micList |
-		self skip.
-	self flag: #lyna.
 	micList := (parser parse: factory unorderedListWithTwoItemsBoldSample)
 		           children first.
 	self assert: micList class equals: MicUnorderedListBlock.
@@ -643,7 +634,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -659,7 +650,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -675,7 +666,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsNested [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -690,5 +681,5 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsStrike [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))(MicListItemBlock new (MicTextBlock new substring: ''Bar'')))'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
