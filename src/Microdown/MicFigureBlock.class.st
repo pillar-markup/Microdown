@@ -1,18 +1,14 @@
 "
 I am a **figure**.
 
-My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)`
+My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png? anchor=figanchor&width=80)`
 
 You should get the following picture: 
-![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png?micAnchor=figanchor&micWidth=80)
+![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png anchor=figanchor&width=80)
 
 I have a resources, i.e. an object referencing either a file (in relative or absolute manner) or an Url, that refers to a given image object.
 
-### Implementation notes
-
-What is important to see is that using ? hampers to see the difference between url arguments from microdown ones such as micAnchor and micWitdh. 
-But if we use another character such as | `https://files.pharo.org/media/logo/logo.png|micanchor=figanchor&micwidth=80` then it breaks the external tools because they do ignore extra arguments in the expression with ? but they break on parsing |.
-Therefore we use ? and we prefix all the microdown specific parameters with mic so that we can identify them. 
+What is important to see is that there is a space between the url arguments and microdown arguments. 
 "
 Class {
 	#name : #MicFigureBlock,
@@ -52,6 +48,12 @@ MicFigureBlock >> closeMe [
 		(MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
 	self captionElements: (self inlineParse: substring).
 	self children: captionElements
+]
+
+{ #category : #accessing }
+MicFigureBlock >> hasArguments [
+
+	^ parameters keys isNotEmpty
 ]
 
 { #category : #testing }
