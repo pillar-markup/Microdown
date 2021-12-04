@@ -4,7 +4,7 @@ I am a Morphic table used by `MicRichTextComposer>>visitTable:` to render tables
 Class {
 	#name : #MicRichTextTable,
 	#superclass : #FTTableMorph,
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Table-Support'
 }
 
 { #category : #'instance creation' }

@@ -60,13 +60,13 @@ Class {
 		'NotRendering',
 		'OffLine'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }
-MicRichTextComposer class >> asRichText: aDoc [
+MicRichTextComposer class >> asRichText: aStringOrDoc [
 	
-	^ self new asRichText: aDoc
+	^ self new asRichText: aStringOrDoc
 
 ]
 
@@ -106,20 +106,6 @@ $
 
 Cool eh?
 '
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown1Large [
-	<sampleInstance>
-	^ self new textStyler: MicTextStylerLarge new; asRichText:  (Microdown parse: '# First section
-and this is just **first** line 
-1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
-   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
-   - And one more _silly_ thingie
-1. Line 2
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3')
 ]
 
 { #category : #examples }
@@ -236,10 +222,34 @@ MicRichTextComposer class >> parseAndCompose: aString [
 
 ]
 
+{ #category : #'visiting - document' }
+MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
+
+	aNode arguments at: #width ifPresent: [ :width |
+		(width endsWith: '%') 
+			ifTrue: [ |scale|
+				scale := width initialIntegerOrNil.
+				scale ifNotNil: [ 
+					^ MicScalingTextAnchor new original: anImageOrMorph; scale: scale; yourself
+					 ]]
+		   ifFalse:  [ 
+				width initialIntegerOrNil 
+					ifNotNil: [ :absWidth | |absHeight|
+						absHeight := anImageOrMorph height / anImageOrMorph width *absWidth.
+						anImageOrMorph isMorph 
+							ifTrue: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph extent: absWidth @ absHeight) ]
+							ifFalse: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph scaledToSize: absWidth @ absHeight) ]
+						  ]
+		 ]].
+	^ TextAnchor new anchoredMorph: anImageOrMorph
+]
+
 { #category : #public }
-MicRichTextComposer >> asRichText: aDocument [
+MicRichTextComposer >> asRichText: aStringOrDoc [
 	
-	^ self visit: aDocument
+	^ self visit: (aStringOrDoc isString 
+			ifTrue: [  Microdown  parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc   ])
 ]
 
 { #category : #accessing }
@@ -252,7 +262,7 @@ MicRichTextComposer >> codeStyler [
 MicRichTextComposer >> initialize [
 	super initialize.
 	codeStyler := MicCodeStylerSpec. "Yes, the class"
-	textStyler := MicTextStyler new 
+	self textStyler:  MicTextStyler new 
 ]
 
 { #category : #private }
@@ -263,12 +273,6 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	^ ref loadImage
 		ifNotNil: [ :image | image asText]
 		ifNil: [ aBlock value asText ]
-]
-
-{ #category : #images }
-MicRichTextComposer >> renderMathExpression: aString [
-	
-	canvas << (self class latexMathStylerFor: aString)
 ]
 
 { #category : #private }
@@ -282,11 +286,15 @@ MicRichTextComposer >> renderTableCell: aCell [
 { #category : #'visiting - document' }
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
-	| anchoredImage |
-	anchoredImage := anImage.
-	aFigure arguments at: #width ifPresent: [ :s | 
-		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
-	^ anchoredImage
+	| scaledImage |
+	scaledImage := anImage.
+	"aFigure arguments at: #width ifPresent: [ :s |
+		hostMorph 
+			ifNotNil: [
+				scaledImage := anImage scaledToSize: ( s asNumber in: [ :scale | 
+					(hostMorph width / 100 * scale) @ (hostMorph height / 100 * scale)]).
+		 ]]."
+	^ scaledImage
 ]
 
 { #category : #accessing }
@@ -296,9 +304,9 @@ MicRichTextComposer >> textStyler [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> textStyler: anObject [
+MicRichTextComposer >> textStyler: aTextStyler [
 
-	textStyler := anObject
+	textStyler := aTextStyler.
 ]
 
 { #category : #initialization }
@@ -316,7 +324,7 @@ This also because people will not want to to not let a newline between the heade
 { #category : #visiting }
 MicRichTextComposer >> visit: aDocument [
 	
-	canvas := MicRichTextCanvas new.
+	canvas := MicRichTextCanvas new textStyler: self textStyler; yourself  .
 	super visit: aDocument.
 	^ canvas contents
 ]
@@ -353,34 +361,57 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 					canvas
 						<< aCodeBlock caption asText;
 					newLine ]]].
+	canvas << textStyler interBlockSpacing
+		
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumn: columnBlock [
+	"I do nothing - handled by columns"
+	
+	
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumns: columnsBlock [
+	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
+	| columns columnsBlocks totalWidth|
+	canvas newLineIfNotAlready.
+	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
+	columns := columnsBlocks collect: [ :column | |colText|
+		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
+		RubScrolledTextMorph new setText: colText].
+	totalWidth := columns sum: [ :col | col textArea width].
+	columns do: [ :morph |
+		canvas << ((String value: 1) asText addAttribute: 
+			(MicScalingTextAnchor new 
+				original: morph;
+				"There need to be a bit of extra space assigned (5%)"
+				scale: (morph textArea width / totalWidth * 100)-5;
+				"Need to add a bit of space (15) for the scrollbar to disappear"
+				freezeHeight: morph textArea height+15))].
+	canvas 
+		newLine; 
+		<< textStyler interBlockSpacing 
+	
+	
 ]
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitEnvironment: anObject [
-	self error: 'It was a halt'.
-	"What is this textBlock idea? Clean!"
-	anObject name = 'textBlock'
-		ifTrue:[
-			canvas indentIn: [  
-				canvas 
-					includeAttribute: TextEmphasis italic  
-					in: [self visitFormat: anObject]] ]
-		ifFalse: [canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText]
+	"Environment is an abstract class, and if we end here it is because of error"
+	canvas << ('>>> Environment ' , anObject name , 
+						'is not supported in RichText Pillar <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	"Try to read a png file (only one supported right now), else use alt text"
-
 	| image textContribution |
 	image := aFigure reference loadImage.
 	image ifNotNil: [ 
-		image := self resizeImage: image of: aFigure.
-		textContribution := (String value: 1) asText addAttribute:
-			                    (TextAnchor new anchoredMorph: image) ].
-
+		textContribution := (String value: 1) asText 
+			addAttribute: (self anchorFor: image of: aFigure ) ].
 	canvas << (textContribution ifNil: [ aFigure caption asText ])
 ]
 
@@ -391,7 +422,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas
 		includeAttribute: (self textStyler headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
-	canvas newLine
+	canvas << (textStyler spaceAfterHeaderLevel: aHeader level)
 ]
 
 { #category : #'visiting - document' }
@@ -415,7 +446,7 @@ MicRichTextComposer >> visitLink: aLink [
 	| attribute |
 	attribute := TextAction new
 		             actOnClickBlock: [ 
-			             WebBrowser openOn: aLink url printString ];
+			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
@@ -484,7 +515,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -492,6 +523,7 @@ MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -527,15 +559,19 @@ MicRichTextComposer >> visitTable: tableBlock [
 		ifFalse: [ 
 			table extent: table extent - (0 @ '1' asTextMorph height). "not showing the headers"
 			table hideColumnHeaders  ].
-	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table asForm).
-	canvas << anchoredTable
+	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table).
+	canvas newLineIfNotAlready;newLine.
+	canvas 
+		<< anchoredTable;
+		newLine;
+		<< textStyler interBlockSpacing 
 	
 ]
 
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	canvas << anInlineBlock substring asText
+	canvas << (textStyler postTextTreatment: (anInlineBlock substring asText) )
 ]
 
 { #category : #'visiting - list' }
@@ -550,5 +586,5 @@ MicRichTextComposer >> visitUnorderedList: anObject [
 						propertyAt: #bullet
 						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
 			super visitUnorderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]
