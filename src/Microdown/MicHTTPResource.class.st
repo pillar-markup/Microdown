@@ -41,12 +41,6 @@ MicHTTPResource class >> imageNotCachedBlock: aHandlerBlock [
 	ImageNotCachedBlock := aHandlerBlock
 ]
 
-{ #category : #images }
-MicHTTPResource class >> imageNotCachedValue [
-	ImageNotCachedBlock ifNil: [ ^ nil ].
-	^ ImageNotCachedBlock value
-]
-
 { #category : #'class initialization' }
 MicHTTPResource class >> initialize [
 	<script>
