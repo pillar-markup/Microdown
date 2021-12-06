@@ -39,7 +39,7 @@ MicInlineParserTest >> testExternalLinkAsPillar [
 { #category : #'*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testFigureAsPillar [
 	| res |
-	res := self splitter pillarFrom: 'abc![alias](link)cba'.
+	res := self splitter pillarFrom: 'abc![alias](http://www.pharo.org)cba'.
 	self assert: res second children first text equals: 'alias'.
 	self assert: res second class equals: PRFigure
 

@@ -23,11 +23,11 @@ MicPillarConverter >> formatBlock: aMicFormatBlock [
 MicPillarConverter >> urlBlock: aMicUrlBlock [
 	
 	| queries urlString |
-	queries := aMicUrlBlock url query.
-	aMicUrlBlock url query: nil.
+	queries := aMicUrlBlock reference uri query.
+	aMicUrlBlock reference uri query: nil.
 	"UGLY we remove the query dicrtionary just to print."
-	urlString := aMicUrlBlock url asString.
-	aMicUrlBlock url query: queries.
+	urlString := aMicUrlBlock reference uri asString.
+	aMicUrlBlock reference uri query: queries.
 	^ aMicUrlBlock associatedPillarClass new
 		  setChildren:
 			  ((aMicUrlBlock inlineParse: aMicUrlBlock substring) collect: [ :n | 
@@ -176,8 +176,9 @@ MicPillarConverter >> visitLink: aMicLink [
 
 { #category : #visiting }
 MicPillarConverter >> visitListItem: aMicListItemBlock [
+	
  	^ PRListItem new
-		setChildren: (aMicListItemBlock pillarFrom: aMicListItemBlock textElements), (aMicListItemBlock children collect: [:child| child accept: self]);
+		setChildren: "(aMicListItemBlock pillarFrom: aMicListItemBlock textElements)," (aMicListItemBlock children collect: [:child| child accept: self]);
 		yourself;
 		yourself
 
@@ -274,6 +275,7 @@ MicPillarConverter >> visitTable: aTable [
 
 { #category : #'visiting inline' }
 MicPillarConverter >> visitText: aMicTextBlock [
+	
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
