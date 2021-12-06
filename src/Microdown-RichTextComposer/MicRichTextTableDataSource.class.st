@@ -9,7 +9,7 @@ Class {
 		'colNames',
 		'rows'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Table-Support'
 }
 
 { #category : #'tests - instance creation' }

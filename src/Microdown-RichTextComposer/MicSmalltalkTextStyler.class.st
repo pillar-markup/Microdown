@@ -5,7 +5,7 @@ I am used to render smalltalk codeblocks.
 Class {
 	#name : #MicSmalltalkTextStyler,
 	#superclass : #SHRBTextStyler,
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #attributes }

@@ -239,25 +239,28 @@ MicMicrodownSnippetFactory >> figureBoldSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureItalicSample [
+
 	^ '
 
-![_Foo_](/anUrl?label=figureTest&size=80)
+![_Foo_](/anUrl label=figureTest&size=80)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureMonospaceSample [
+
 	^ '
 
-![`Foo`](/anUrl?label=figureTest&size=80)
+![`Foo`](/anUrl label=figureTest&size=80)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureNestedSample [
+
 	^ '
 
-![**Foo\_**](/anUrl?label=figureTest&size=80)
+![**Foo\_**](/anUrl label=figureTest&size=80)
 '
 ]
 
@@ -272,17 +275,19 @@ MicMicrodownSnippetFactory >> figureSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> figureStrikeSample [
+
 	^ '
 
-![~Foo~](/anUrl?label=figureTest&size=80)
+![~Foo~](/anUrl label=figureTest&size=80)
 '
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> fileFigureSample [
+
 	^ '
 
-![Foo](file://image.png/?label=figureTest&size=80)
+![Foo](file://image.png/ label=figureTest&size=80)
 '
 ]
 

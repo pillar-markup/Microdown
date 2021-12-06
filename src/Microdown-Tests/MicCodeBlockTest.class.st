@@ -259,6 +259,31 @@ Ending text'.
 	self assert: codeBlock children second body equals: 'something in the way'
 ]
 
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testHasArguments [
+
+	| source root textBody |
+	textBody := 'my fancy code
+is really cool'.
+	source := '```language=Smalltalk 
+this is a body
+```'.
+	root := parser parse: source.
+	self assert: root children first hasArguments
+]
+
+{ #category : #'tests - code' }
+MicCodeBlockTest >> testHasBody [
+
+	| source root textBody |
+	textBody := 'my fancy code
+is really cool'.
+	source := parser codeblockMarkup , String cr , textBody , String cr
+	          , parser codeblockMarkup.
+	root := parser parse: source.
+	self assert: root children first hasBody 
+]
+
 { #category : #tests }
 MicCodeBlockTest >> testHasCaption [
 
@@ -352,6 +377,29 @@ Color >> asMorph
 	
 	code := root children first.
 	self deny: code hasCaption
+]
+
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testHasNoArguments [
+
+	| source root textBody |
+	textBody := 'my fancy code
+is really cool'.
+	source := parser codeblockMarkup , String cr , textBody , String cr
+	          , parser codeblockMarkup.
+	root := parser parse: source.
+	self deny: root children first hasArguments
+]
+
+{ #category : #'tests - code' }
+MicCodeBlockTest >> testHasNoBody [
+
+	| source root textBody |
+	textBody := ''.
+	source := parser codeblockMarkup , String cr , textBody , String cr
+	          , parser codeblockMarkup.
+	root := parser parse: source.
+	self assert: root children first hasNoBody
 ]
 
 { #category : #'tests - arguments' }

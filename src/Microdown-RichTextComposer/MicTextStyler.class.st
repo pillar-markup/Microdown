@@ -11,10 +11,10 @@ Class {
 	#instVars : [
 		'headerFonts'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
-{ #category : #public }
+{ #category : #'composer styles' }
 MicTextStyler >> bulletForLevel: level [
 	| kind |
 	kind := level % 2.
@@ -32,13 +32,13 @@ MicTextStyler >> computeHeaderFonts [
 		headerFonts at: index put:
 			(TextFontReference
 				toFont:
-					(StrikeFont
-						familyName: 'Bitmap Source Sans Pro'
+					(LogicalFont 
+						familyName: 'Source Sans Pro'
 						pointSize: (self headerFontSizes at: index)))
 			  ]
 ]
 
-{ #category : #public }
+{ #category : #'composer styles' }
 MicTextStyler >> counterFor: counter atLevel: level [
 	| kind |
 	kind := level % 3.
@@ -52,7 +52,7 @@ MicTextStyler >> counterFor: counter atLevel: level [
 
 { #category : #public }
 MicTextStyler >> headerFontSizes [
-	^ #(18 14 12 11 10 10)
+	^ #(28 24 18 14 12 10)
 ]
 
 { #category : #private }
@@ -62,7 +62,47 @@ MicTextStyler >> headerLevelFont: level [
 	^ headerFonts at: level
 ]
 
-{ #category : #public }
+{ #category : #'composer styles' }
+MicTextStyler >> interBlockSpacing [
+	"I return the space to be put between blocks"
+	^ String cr asText
+]
+
+{ #category : #'composer styles' }
 MicTextStyler >> monospaceBackgroundColor [
 	^ Smalltalk ui theme settings windowColor
+]
+
+{ #category : #'canvas styles' }
+MicTextStyler >> newLineBody [ 
+	"return a newline"
+	^ String cr asText
+]
+
+{ #category : #'canvas styles' }
+MicTextStyler >> newLineIfNotAlready [ 
+	"return a newline if there is not already one"
+	"Intended to be overridden to add extra newline or tab indentation of the following line"
+	^ String cr asText
+]
+
+{ #category : #'composer styles' }
+MicTextStyler >> postTextTreatment: aText [
+	"my primary purpose is to replace newLines with space in some styles"
+	((1 to: aText size) 
+		select: [ :i | (aText at: i) = Character cr  ]) 
+		do: [ :i | aText at: i put: Character space ].
+	^ aText
+	 
+]
+
+{ #category : #'presenter styles' }
+MicTextStyler >> presenterDefaultFont [
+	^ LogicalFont familyName: 'Source Sans Pro' pointSize: 80
+]
+
+{ #category : #'composer styles' }
+MicTextStyler >> spaceAfterHeaderLevel: level [
+	"I return Text to make space after a header"
+	^ String cr asText
 ]
