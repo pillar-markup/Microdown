@@ -28,13 +28,6 @@ MicHTTPResource class >> cachedImageFromUrl: aUrl [
 			^ ImageNotCachedBlock value]
 ]
 
-{ #category : #accessing }
-MicHTTPResource class >> imageAt: urlString put: aForm [	
-	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
-	
-	ImageCache at: urlString put: aForm
-]
-
 { #category : #images }
 MicHTTPResource class >> imageCache [
 	ImageCache ifNil:[ImageCache := LRUCache new ].
@@ -64,8 +57,8 @@ MicHTTPResource class >> initialize [
 { #category : #images }
 MicHTTPResource class >> rawImageFrom: aURL [
 	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
-	on: Error
-	do: [ ^nil ]
+	on: Exception
+	do: [ ^ nil ]
 		
 ]
 
