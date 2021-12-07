@@ -50,16 +50,16 @@ MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
 			"Delete openers above in stack, considered as unclosed so ignored"
 			self popFrom: 1 to: indexOfAssociateOpener.
 			"Add found inline block"
-			openersStack size > 0
-				ifTrue: [ 
+			openersStack 
+				ifNotEmpty: [ 
 					(openersStack size > nestedLevel)
 						ifTrue: [ 
 							children 
 								ifEmpty: [ children add: self newInlineBlock ]
-								ifNotEmpty: [ children last add: self newInlineBlock ] ]
+								ifNotEmpty: [ children addLast: self newInlineBlock ] ]
 						ifFalse: [ children add: self newInlineBlockWithoutChildren ].
 				]
-				ifFalse: [ 
+				ifEmpty: [ 
 					result add: self newInlineBlock.
 					children := LinkedList new.
 				].
