@@ -331,7 +331,7 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
-{ #category : #'visiting - document' }
+{ #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
 
 	canvas newLineIfNotAlready.
