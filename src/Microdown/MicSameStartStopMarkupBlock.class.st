@@ -28,6 +28,11 @@ MicSameStartStopMarkupBlock >> argumentAssociations [
 ]
 
 { #category : #accessing }
+MicSameStartStopMarkupBlock >> arguments [
+	^ arguments
+]
+
+{ #category : #accessing }
 MicSameStartStopMarkupBlock >> arguments: aDictionary [
 	arguments := aDictionary
 ]
