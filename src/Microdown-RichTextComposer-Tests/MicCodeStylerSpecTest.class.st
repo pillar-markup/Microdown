@@ -7,6 +7,13 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
+{ #category : #running }
+MicCodeStylerSpecTest >> setUp [
+	super setUp.
+	
+	MicCodeStylerSpec initializeCache
+]
+
 { #category : #tests }
 MicCodeStylerSpecTest >> testStylerForMethod [
 	

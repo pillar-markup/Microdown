@@ -56,7 +56,7 @@ MicParsesAndRendersAllCommentsTest >> testCommentFromFluidBuilder [
 	"Test that we do not break on empty code blocks"
 	Microdown asRichText: '```
 ```'.
-	"Microdown asRichText: FluidBuilder comment"
+	Microdown asRichText: FluidBuilder comment
 ]
 
 { #category : #tests }
