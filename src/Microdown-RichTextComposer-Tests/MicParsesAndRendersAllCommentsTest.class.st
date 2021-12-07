@@ -52,6 +52,14 @@ Examples:
 ]
 
 { #category : #tests }
+MicParsesAndRendersAllCommentsTest >> testCommentFromFluidBuilder [
+	"Test that we do not break on empty code blocks"
+	Microdown asRichText: '```
+```'.
+	"Microdown asRichText: FluidBuilder comment"
+]
+
+{ #category : #tests }
 MicParsesAndRendersAllCommentsTest >> testSmokeSignalAndChoke [
 	| difficultClasses |
 	"this test disables error handling and tries to render all class comments in the system"
