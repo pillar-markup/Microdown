@@ -33,7 +33,7 @@ MicHTTPResourceTest >> testErrorLoad [
 MicHTTPResourceTest >> testErrorLoadWithHandler [
  	|uri ref image noImage|
  	noImage := 'UUUPS - No image' asMorph asForm.
- 	MicHTTPResource imageNotCachedBlock:  [ noImage ].
+ 	MicHTTPResource imageNotCachedBlock:  [ :dummyUrl | noImage ].
  	uri := 'nonexistingImage.png' asMicResourceUri.
  	ref := uri resolveWith: self class githubTestData.
  	image := ref loadImage.
