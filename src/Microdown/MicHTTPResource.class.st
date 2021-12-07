@@ -20,12 +20,15 @@ MicHTTPResource class >> cachedImageFromUrl: aUrl [
 	
 	(self imageCache includesKey: aUrl)
 		ifTrue: [ ^ self imageCache at: aUrl ].
-		
-	ImageNotCachedBlock 
-		ifNil: [
-			^ self imageCache at: aUrl put: ((self rawImageFrom: aUrl) ifNil: [ ^nil ])]
+	
+	^ ImageNotCachedBlock 
+		ifNil: [ |image|
+			image := self rawImageFrom: aUrl.
+			image ifNil: [ ^ nil ].
+			"at: aUrl put: image retuns image!"
+			self imageCache at: aUrl put: image]
 		ifNotNil: [ 
-			^ ImageNotCachedBlock cull: aUrl]
+			ImageNotCachedBlock value: aUrl]
 ]
 
 { #category : #images }
