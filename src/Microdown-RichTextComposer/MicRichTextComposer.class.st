@@ -44,21 +44,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'styler'
-	],
-	#classVars : [
-		'CaptureErrors',
-		'HeaderFontSizes',
-		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine'
+		'codeStyler',
+		'textStyler'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
