@@ -1,7 +1,7 @@
 Class {
 	#name : #MicTemplatingTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests'
+	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
 { #category : #tests }
