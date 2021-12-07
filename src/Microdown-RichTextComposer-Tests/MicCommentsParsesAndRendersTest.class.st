@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #tests }
+MicCommentsParsesAndRendersTest >> testCommentFromChunkReadStream [
+	"Test that we do not break on empty annotated blocks"
+	Microdown asRichText: ChunkReadStream comment.
+	Microdown asRichText: '!!'
+]
+
+{ #category : #tests }
 MicCommentsParsesAndRendersTest >> testSmokeSignalAndChoke [
 	| difficultClasses |
 	"this test disables error handling and tries to render all class comments in the system"

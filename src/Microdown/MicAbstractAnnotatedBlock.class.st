@@ -9,12 +9,9 @@ Class {
 	#category : #'Microdown-Model'
 }
 
-{ #category : #testing }
+{ #category : #public }
 MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
-	"line is assumed to be of the form '@@label some text
-	
-	'
-	"
+	"line is assumed to be of the form '!!label some text'"
 
 	isClosed
 		ifTrue: [ ^ self ].
@@ -22,7 +19,9 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 		ifNil: [ 
 			| indexOfFirstSpace |
 			indexOfFirstSpace := line indexOf: Character space.
-			label := line copyFrom: self lineMarkup size + 1 to: indexOfFirstSpace - 1.
+			label := indexOfFirstSpace = 0
+				ifTrue: [ '' ]
+				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstSpace - 1.].
 			body := (line copyFrom: indexOfFirstSpace + 1 to: line size) trim ]
 		ifNotNil: [ body := body , String cr , line ]
 ]
