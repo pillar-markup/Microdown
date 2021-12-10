@@ -44,13 +44,8 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'styler'
+		'codeStyler',
+		'textStyler'
 	],
 	#classVars : [
 		'CaptureErrors',
