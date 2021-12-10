@@ -202,7 +202,7 @@ MicrodownPresenter >> document: aNode [
 MicrodownPresenter >> initializePresenters [
 	|morph|
 	super initializePresenters.
-	morph := MicTextMorph new
+	morph := SpRichTextMorph new
 			setText: self text;
 			beWrapped;
 			hResizing: #spaceFill; 
