@@ -9,14 +9,11 @@ SpMorphicRichTextAdapter >> buildWidget [
 	| newWidget |
 	
 	newWidget := (SpRichTextMorph  on: self)
-		getSelectionSelector: #readSelection;
-		menuProvider: self selector: #codePaneMenu:shifted:;
-		setSelectionSelector: #setSelection:;
+		beReadOnly;
 		beWrapped;
 		enabled: self enabled;
 		vResizing: #spaceFill;
 		hResizing: #spaceFill;
-		registerScrollChanges: #scrollValueChanged:;
 		hScrollbarShowWhenNeeded;
 		yourself.	
 	^ newWidget
@@ -25,4 +22,14 @@ SpMorphicRichTextAdapter >> buildWidget [
 { #category : #accessing }
 SpMorphicRichTextAdapter >> getText [
 	^ model text
+]
+
+{ #category : #factory }
+SpMorphicRichTextAdapter >> menu [
+	^ nil.
+]
+
+{ #category : #factory }
+SpMorphicRichTextAdapter >> shiftMenu [
+	^ nil.
 ]

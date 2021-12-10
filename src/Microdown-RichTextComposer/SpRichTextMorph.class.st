@@ -1,3 +1,6 @@
+"
+I override `textAreaExtentChanged` to hook into rescaling of UI.
+"
 Class {
 	#name : #SpRichTextMorph,
 	#superclass : #RubScrolledTextMorph,
@@ -6,5 +9,12 @@ Class {
 
 { #category : #accessing }
 SpRichTextMorph >> font: aFont [
-	"do not override font"
+	"we do not want to set the font, so we do nothing here"
+]
+
+{ #category : #'event handling' }
+SpRichTextMorph >> textAreaExtentChanged [
+	super textAreaExtentChanged.
+	self model model render
+
 ]

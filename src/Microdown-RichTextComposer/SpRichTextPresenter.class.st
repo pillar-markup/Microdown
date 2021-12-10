@@ -1,12 +1,16 @@
 "
 I am a presenter for formatted text (class Text).
 I am a read-only presenter. There is no rich text editor, rich text is often composed using microdown.
+
+I support MicScalingTextAnchor. 
+I keep a list of the indexes where they are in `imageIndexes`. imageIndexes are computed in `text:`
 "
 Class {
 	#name : #SpRichTextPresenter,
 	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
-		'text'
+		'text',
+		'scalingImageIndexes'
 	],
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
@@ -171,7 +175,7 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 SpRichTextPresenter class >> example [
 	<example>
 	self new
-		text: (Microdown asRichText: self cheetSheet  );
+		text: (Microdown asRichText: self sampleDocument   );
 		openWithSpec
 ]
 
@@ -183,13 +187,34 @@ SpRichTextPresenter class >> sampleDocument [
 ### Header 3
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
-[![](https://pharo.org/web/files/pharo.png width=75%)](http://pharo.org/)
+![](https://pharo.org/web/files/pharo.png width=75%)
 
 Here are direct links to classes and method
 - `String`
 - `String>>#trim`
 
 And this is another line'
+]
+
+{ #category : #'widget API' }
+SpRichTextPresenter >> codePaneMenu: aMenu shifted: shifted [
+
+	| menuPresenter | 
+	menuPresenter := SpMenuPresenter new.
+	^ SpBindings
+		  value: self application adapterBindings
+		  during: [ menuPresenter value buildWithSpec ]
+]
+
+{ #category : #accessing }
+SpRichTextPresenter >> render [
+	|renderWidth |
+	adapter ifNil: [ ^self ]. "I can be asked to render during setup"
+	
+	renderWidth := adapter widget width.
+	scalingImageIndexes  do: [ :idx | 
+		(text attributeAt: idx ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
+	self adapter widget resetState
 ]
 
 { #category : #accessing }
@@ -199,6 +224,11 @@ SpRichTextPresenter >> text [
 ]
 
 { #category : #accessing }
-SpRichTextPresenter >> text: anObject [
-	text := anObject
+SpRichTextPresenter >> text: aText [
+	text := aText asText "just in case I was given a string".
+	scalingImageIndexes := (1 to: text size) 
+		select: [ :idx | 
+			((text at: idx) = Character home) 
+			and: [ (text attributeAt: idx ofKind: MicScalingTextAnchor) notNil ] ].
+	
 ]
