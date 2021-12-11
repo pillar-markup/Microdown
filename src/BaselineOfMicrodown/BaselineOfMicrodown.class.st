@@ -12,7 +12,14 @@ Class {
 BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
-	spec for: #common do: [ 
+	spec for: #common do: [
+		spec
+			baseline: 'PillarCore'
+			with: [
+				spec  
+					loads: #('Pillar-Core');
+					repository: 'github://pillar-markup/pillar:dev-8'
+			].
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
