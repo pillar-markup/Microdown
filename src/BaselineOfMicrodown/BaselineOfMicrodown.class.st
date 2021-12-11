@@ -18,7 +18,7 @@ BaselineOfMicrodown >> baseline: spec [
 			with: [
 				spec  
 					loads: #('Pillar-Core');
-					repository: 'github://pillar-markup/pillar'
+					repository: 'github://pillar-markup/pillar:dev-8'
 			].
 		spec
 			package: #Microdown;
