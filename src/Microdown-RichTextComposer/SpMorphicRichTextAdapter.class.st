@@ -1,3 +1,12 @@
+"
+I am an adapter used by `SpRichTextPresenter` to connect to a `SpRichTextMorph`.
+
+## Implementation
+My primary method is `buildWidget` which creates an instance of `SpRichTextMorph`. 
+My model (inherited instance variable) is a `SpRichTextPresenter`. 
+
+Perhaps in the future the methods for menu and shiftMenu should be forwarded to the presenter.
+"
 Class {
 	#name : #SpMorphicRichTextAdapter,
 	#superclass : #SpAbstractMorphicAdapter,

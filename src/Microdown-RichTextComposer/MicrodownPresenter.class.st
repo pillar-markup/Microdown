@@ -1,11 +1,11 @@
+"
+I am intended to be a specialized RichTextPresenter which works with a microdown document rather than the composed text.
+"
 Class {
 	#name : #MicrodownPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #SpRichTextPresenter,
 	#instVars : [
-		'text',
 		'document',
-		'textMorph',
-		'imageIndexes',
 		'textStyler'
 	],
 	#category : #'Microdown-RichTextComposer-Presenter'
@@ -174,12 +174,6 @@ MicrodownPresenter class >> open [
 	(self on: self cheetSheet  ) openWithSpec 
 ]
 
-{ #category : #initialization }
-MicrodownPresenter >> announceDisplayed [
-	"I am a hook method called by SpWindowPresenter when I am finally shown"
-	"textMorph morph setText: self text"
-]
-
 { #category : #accessing }
 MicrodownPresenter >> document [
 
@@ -193,37 +187,8 @@ MicrodownPresenter >> document: aNode [
 	text := MicRichTextComposer  new 
 		textStyler: self textStyler; 
 		asRichText: aNode.
-	imageIndexes := ((1 to: text size) select: [ :idx | (text at: idx) = Character home ]).
 	
 		
-]
-
-{ #category : #initialization }
-MicrodownPresenter >> initializePresenters [
-	|morph|
-	super initializePresenters.
-	morph := SpRichTextMorph new
-			setText: self text;
-			beWrapped;
-			hResizing: #spaceFill; 
-			vResizing: #spaceFill;
-			in: [ :this | this textArea readOnly: true ];
-			yourself.
-	textMorph  := self newMorph
-		morph: morph;
-		yourself.
-	textMorph morph textAreaChanged: [ self render ].
-	
-
-
-
-]
-
-{ #category : #initialization }
-MicrodownPresenter >> initializeWindow: aWindowPresenter [
-	aWindowPresenter 
-		initialExtent: 800@500;
-		title: 'Microdown presenter'
 ]
 
 { #category : #initialization }
@@ -231,30 +196,9 @@ MicrodownPresenter >> parserClass [
 	^ MicroDownParser
 ]
 
-{ #category : #initialization }
-MicrodownPresenter >> render [
-	|renderWidth |
-	renderWidth := textMorph morph width.
-	imageIndexes do: [ :idx | 
-		(text attributeAt: idx ofKind: MicScalingTextAnchor) 
-			ifNotNil: [:micTextAnchor| micTextAnchor targetWidth: renderWidth ]].
-	textMorph morph setText: text
-]
-
 { #category : #accessing }
 MicrodownPresenter >> scrollTo: aString [
 	"select the first occurance of aString and scroll so it is shown"
-]
-
-{ #category : #accessing }
-MicrodownPresenter >> setModelBeforeInitialization: aNode [
-	"called indirecly by the on: method"
-	self document: aNode
-]
-
-{ #category : #accessing }
-MicrodownPresenter >> text [
-	^ text
 ]
 
 { #category : #accessing }
@@ -267,9 +211,4 @@ MicrodownPresenter >> textStyler [
 MicrodownPresenter >> textStyler: anObject [
 
 	textStyler := anObject
-]
-
-{ #category : #initialization }
-MicrodownPresenter >> updatePresenter [
-	self render
 ]

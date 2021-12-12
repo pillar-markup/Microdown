@@ -2,8 +2,12 @@
 I am a presenter for formatted text (class Text).
 I am a read-only presenter. There is no rich text editor, rich text is often composed using microdown.
 
-I support MicScalingTextAnchor. 
-I keep a list of the indexes where they are in `imageIndexes`. imageIndexes are computed in `text:`
+The text to present is set by `text:` method.
+
+## Implementation
+I work together with `SpMorphicRichTextAdapter` and `SpRichTextMorph`. The morph is a subclass of `RubScrolledTextMorph`. My class side method adapterName specifies my adapter, and the buildWidget method of the adapter builds the morph.
+
+I support `MicScalingTextAnchor`. When the size of the morph changes, the morph calls my render method. I then rescale the scaleable images (if any). As I am read-only, the location of the scalable images do not change, and I keep a list of the indexes where they are in `imageIndexes`. imageIndexes are computed in `text:`.
 "
 Class {
 	#name : #SpRichTextPresenter,
@@ -23,7 +27,7 @@ SpRichTextPresenter class >> adapterName [
 
 { #category : #'as yet unclassified' }
 SpRichTextPresenter class >> cheetSheet [
-^Microdown parse: '# Markdown Cheatsheet
+^ Microdown parse: '# Markdown Cheatsheet
 
 % adapted from https://raw.githubusercontent.com/tchapi/markdown-cheatsheet/master/README.md
 
@@ -175,7 +179,7 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 SpRichTextPresenter class >> example [
 	<example>
 	self new
-		text: (Microdown asRichText: self sampleDocument   );
+		text: ( Microdown asRichText: self sampleDocument );
 		openWithSpec
 ]
 
