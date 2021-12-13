@@ -21,6 +21,28 @@ MicHTTPResourceTest >> setUp [
 ]
 
 { #category : #tests }
+MicHTTPResourceTest >> testErrorLoad [
+ 	|uri ref image |
+ 	uri := 'nonexistingImage.png' asMicResourceUri.
+ 	ref := uri resolveWith: self class githubTestData.
+ 	image := ref loadImage.
+ 	self assert: image isNil
+]
+
+{ #category : #tests }
+MicHTTPResourceTest >> testErrorLoadWithHandler [
+ 	|uri ref image noImage|
+ 	noImage := 'UUUPS - No image' asMorph asForm.
+ 	MicHTTPResource imageNotCachedBlock:  [ :dummyUrl | noImage ].
+ 	uri := 'nonexistingImage.png' asMicResourceUri.
+ 	ref := uri resolveWith: self class githubTestData.
+ 	image := ref loadImage.
+ 	self assert: image equals: noImage.
+ 	"The error image was not added to the cache"
+ 	self deny: (MicHTTPResource imageCache includesKey: ref originalString )
+]
+
+{ #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
 	|uri ref image |
 	uri := 'toplevel.png' asMicResourceUri.
