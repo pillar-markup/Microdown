@@ -7,7 +7,7 @@ I am a visitor which is given a base/absolute reference, and traverses a documen
 The mention of `Zink` in my name is a credit to the zink library ZnUrl which does the underlying resolution.
 "
 Class {
-	#name : #MicZinkPathResolver,
+	#name : #MicZincPathResolver,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'baseUri'
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MicZinkPathResolver class >> resolve: document withBase: aZnUrl [
+MicZincPathResolver class >> resolve: document withBase: aZnUrl [
 	"Assumes aZnUrl to be an absolute uri. Converts all relative references to absolute references in document"
 	self new
 		baseUri: aZnUrl;
@@ -25,12 +25,12 @@ MicZinkPathResolver class >> resolve: document withBase: aZnUrl [
 ]
 
 { #category : #accessing }
-MicZinkPathResolver >> baseUri: aZnUrl [
+MicZincPathResolver >> baseUri: aZnUrl [
 	baseUri := aZnUrl
 ]
 
 { #category : #visiting }
-MicZinkPathResolver >> visitFigure: aFigure [
+MicZincPathResolver >> visitFigure: aFigure [
 	| resolvedUri |
 	aFigure reference isResolved 
 		ifTrue: [ ^self ].
@@ -40,9 +40,9 @@ MicZinkPathResolver >> visitFigure: aFigure [
 ]
 
 { #category : #visiting }
-MicZinkPathResolver >> visitInputFile: anInputFile [
+MicZincPathResolver >> visitInputFile: anInputFile [
 ]
 
 { #category : #visiting }
-MicZinkPathResolver >> visitLink: aLink [
+MicZincPathResolver >> visitLink: aLink [
 ]

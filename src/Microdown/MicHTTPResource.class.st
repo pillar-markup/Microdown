@@ -69,10 +69,8 @@ MicHTTPResource >> loadImage [
 MicHTTPResource >> loadMicrodown [
 	"load, parse and resolve a microdown document"
 	| docString doc |
-	[ docString := (ZnEasy get: uri) contents.
-	  doc := Microdown new parse: docString.
-	  MicZinkPathResolver resolve: doc withBase: uri.
-	  ^doc]
-	on: Error
-	do: [ ^ nil ]
+	docString := (ZnEasy get: uri) contents.
+	doc := Microdown new parse: docString.
+	MicZincPathResolver resolve: doc withBase: uri.
+	^doc
 ]

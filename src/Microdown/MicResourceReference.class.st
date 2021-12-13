@@ -105,5 +105,9 @@ MicResourceReference >> path [
 
 { #category : #printing }
 MicResourceReference >> printOn: aStream [
-	aStream nextPutAll: originalString 
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(';
+		nextPutAll: originalString;
+		nextPutAll: ')'
 ]

@@ -41,3 +41,9 @@ MicRelativeResource >> relativePath: aString [
 MicRelativeResource >> resolveWith: baseReference [
 	^ MicResourceReference fromUri: (baseReference uri withRelativeReference: self relativePath) asString
 ]
+
+{ #category : #resolving }
+MicRelativeResource >> resolvedBy: aRoot [ 
+	
+	^ aRoot / originalString
+]

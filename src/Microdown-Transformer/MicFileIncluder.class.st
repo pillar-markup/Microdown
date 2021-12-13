@@ -13,7 +13,7 @@ such as
 	
 Such `figures/setUpTearDown.png` file should get its path being: `Books/Book1/SUnit/figures/setUpTearDown.png`
 	
-Note that the path does not exist the transformer does nothing.
+Note that if the path does not exist the transformer does nothing.
 "
 Class {
 	#name : #MicFileIncluder,
@@ -22,10 +22,17 @@ Class {
 		'shouldTransform',
 		'input',
 		'topFile',
-		'inProcessFiles'
+		'inProcessFiles',
+		'isStrict'
 	],
 	#category : #'Microdown-Transformer'
 }
+
+{ #category : #initialization }
+MicFileIncluder >> beRelaxed [
+
+	isStrict := false
+]
 
 { #category : #configuration }
 MicFileIncluder >> doNotTransform [
@@ -41,6 +48,7 @@ MicFileIncluder >> inProcessFiles: aCollection [
 MicFileIncluder >> initialize [
 
 	super initialize.
+	isStrict := true.
 	inProcessFiles := #()
 ]
 
@@ -80,53 +88,26 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
-	| inputRef inputDoc|
+	| inputRef inputDoc fileReference |
 	"
-	* check in input file is absolute or relative
-	* if relative, resolve with topFile
-	* load referenced microdown
-	* recurse with resolved reference as root
-	* insert ast into me
+	check in input file is absolute or relative
+	if relative, resolve with topFile
+	load referenced microdown
+	recurse with resolved reference as root
+	insert ast into me
 	"
+	
 	inputRef := anInputFileAnnotation path.
-	inputRef isResolved 
-		ifFalse: [ 
-			inputRef := inputRef resolveWith: topFile.
-			anInputFileAnnotation path: inputRef].
-	inputDoc := inputRef loadMicrodown.
-	inputDoc ifNil: [ ^ self ].
+	fileReference := inputRef resolvedBy: topFile.
+	
+	"If we are in relaxed mode and the file does not exist, do not try including it"
+	(isStrict not and: [ fileReference exists not])
+		ifTrue: [ ^ self ].
+	
+	inputDoc := Microdown parse: fileReference contents.
 	inputDoc accept: (self class new topFile: inputRef ).
 	self replaceCurrentNodeBy: inputDoc children
 	
 	
-	
-]
-
-{ #category : #'visiting-document' }
-MicFileIncluder >> visitInputFileOld: anInputFileAnnotation [
-	"This method is obsolete and must be removed"
-	
-	| includedFile microdownAST |
-	includedFile := anInputFileAnnotation path path.
-	self validateInclusionOfFile: includedFile.
-	
-	includedFile ifExists:[
-		"may be better to call back microdown since it defined resolvedTreeFrom:"
-		microdownAST := (MicInputDocument forFile: includedFile) parsedDocument.
-		MicZinkPathResolver new 	
-			originFile: topFile ; visit: microdownAST.
-	"Execute a file inclusion step recursively" 
-	self class new
-		topFile: includedFile;
-		inProcessFiles: (inProcessFiles copyWith: topFile);
-		visit: microdownAST.
-	
-	"If we include a file, we need to update all references to external files in it.
-	References that were before relative to the included document, should be now relative to the container document."
-	MicUpdateFileInclusionReference
-		start: microdownAST
-		with: (includedFile parent relativeTo: topFile parent) microdownPrintString.
-	
-	self replaceCurrentNodeBy: microdownAST children]
 	
 ]
