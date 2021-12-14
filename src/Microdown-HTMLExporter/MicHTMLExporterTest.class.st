@@ -89,6 +89,13 @@ MicHTMLExporterTest >> testParagraphWithMonospace [
 ]
 
 { #category : #'tests - formats' }
+MicHTMLExporterTest >> testQuote [
+
+	self parse: factory quoteSample andCheckWeGet: 
+	'<q>Foo</q>'
+]
+
+{ #category : #'tests - formats' }
 MicHTMLExporterTest >> testStrike [
 
 	self parse: factory strikethroughFormatSample andCheckWeGet: '
@@ -115,4 +122,27 @@ MicHTMLExporterTest >> testUnorderedList [
 <li>Foo</li>
 <li>Bar</li>
 </ul>'
+]
+
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testfigure [
+
+	self halt.
+	self parse: factory figureSample andCheckWeGet: '
+<figure>
+    <img src= /anUrl
+         alt="figureTest">
+    <figcaption>Foo</figcaption>
+</figure>'
+]
+
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testfigureBold [
+
+	self flag: #todo.
+	self parse: factory figureBoldSample andCheckWeGet: '
+<figure>
+  <img src="un-gout-de-fraise.jpg" alt="" />
+  <figcaption>Proposition pour le thème : <br><em>Un goût de fraise</em> du jeu <a href="http://www.photogame.fr/">PhotoGame</a></figcaption>
+</figure>'
 ]

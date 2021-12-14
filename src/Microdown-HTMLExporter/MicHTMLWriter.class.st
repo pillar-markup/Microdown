@@ -18,6 +18,25 @@ MicHTMLWriter >> contents [
 	^ canvas contents
 ]
 
+{ #category : #visiting }
+MicHTMLWriter >> exportImgFor: aFigure [
+
+	| img |
+	img := canvas emptyTag
+		       name: 'img';
+		       parameterAt: 'src' put: aFigure localFileOrExternalReference;
+		       yourself.
+	aFigure parameters
+		at: 'width'
+		ifPresent: [ :width | 
+		img parameterAt: 'width' put: width asString , '%' ].
+	aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ].
+	img parameterAt: 'alt' put: (aFigure hasChildren
+			 ifTrue: [ aFigure text ]
+			 ifFalse: [ '' ]).
+	img closeTag
+]
+
 { #category : #initialization }
 MicHTMLWriter >> initialize [ 
 	| stream |
@@ -40,6 +59,12 @@ MicHTMLWriter >> visitBold: aBoldText [
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aBoldText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitFigure: aFigure [
+
+	self exportImgFor: aFigure
 ]
 
 { #category : #visiting }
@@ -75,6 +100,15 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 	canvas tag
 				name: 'p';
 				with: [ super visitParagraph: aParagraph ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitQuote: aQuote [
+
+	canvas tag
+		name: 'q';
+		with: [ 
+			super visitMonospace: aQuote ]
 ]
 
 { #category : #'visiting - list' }
