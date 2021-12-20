@@ -92,12 +92,6 @@ MicResourceReference >> loadImage: aResolver [
 ]
 
 { #category : #accessing }
-MicResourceReference >> loadMicrodown [
-
-	self subclassResponsibility
-]
-
-{ #category : #accessing }
 MicResourceReference >> loadMicrodown: aResolver [
 
 	^ (self resolveResourceIn: aResolver) parseMicrodown
@@ -133,5 +127,11 @@ MicResourceReference >> printOn: aStream [
 { #category : #accessing }
 MicResourceReference >> resolveResourceIn: aResolver [
 
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+MicResourceReference >> uri [
+	
 	self subclassResponsibility
 ]

@@ -1,9 +1,6 @@
 Class {
 	#name : #MicRelativeUrlResolver,
 	#superclass : #MicUrlResolver,
-	#instVars : [
-		'baseUrl'
-	],
 	#category : #'Microdown-Core'
 }
 
@@ -15,20 +12,8 @@ MicRelativeUrlResolver class >> baseUrl: baseUrl [
 		yourself
 ]
 
-{ #category : #accessing }
-MicRelativeUrlResolver >> baseUrl [
-
-	^ baseUrl
-]
-
-{ #category : #accessing }
-MicRelativeUrlResolver >> baseUrl: anObject [
-
-	baseUrl := anObject
-]
-
 { #category : #resolving }
-MicRelativeUrlResolver >> basicResolveRelativeUrl: aMicRelativeResource [ 
+MicRelativeUrlResolver >> basicResolveRelativeReference: aMicRelativeResource [ 
 	
-	^ super basicResolveRelativeUrl: (MicResourceReference fromUri: (baseUrl withRelativeReference: aMicRelativeResource originalString) asString)
+	^ super basicResolveRelativeReference: (MicResourceReference fromUri: (baseUrl, aMicRelativeResource uri) asString)
 ]

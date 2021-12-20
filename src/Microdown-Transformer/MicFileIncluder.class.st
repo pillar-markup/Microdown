@@ -88,7 +88,7 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
-	| inputRef inputDoc fileReference |
+	| inputRef inputDoc fileReference resource |
 	"
 	check in input file is absolute or relative
 	if relative, resolve with topFile
@@ -96,18 +96,17 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	recurse with resolved reference as root
 	insert ast into me
 	"
-	
 	inputRef := anInputFileAnnotation path.
-	fileReference := inputRef resolvedBy: topFile.
+	resource := inputRef resolveResourceIn: (MicUrlResolver new
+		currentWorkingDirectory: topFile;
+		yourself).
 	
 	"If we are in relaxed mode and the file does not exist, do not try including it"
-	(isStrict not and: [ fileReference exists not])
+	(isStrict not and: [ resource exists not])
 		ifTrue: [ ^ self ].
 	
-	inputDoc := Microdown parse: fileReference contents.
-	inputDoc accept: (self class new topFile: inputRef ).
+	inputDoc := resource parseMicrodown.
+	inputDoc accept: (self class new topFile: inputRef).
 	self replaceCurrentNodeBy: inputDoc children
-	
-	
 	
 ]

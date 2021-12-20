@@ -1,8 +1,7 @@
 Class {
 	#name : #MicNotFoundResource,
-	#superclass : #Object,
+	#superclass : #MicAbstractResource,
 	#instVars : [
-		'notFoundResource',
 		'error'
 	],
 	#category : #'Microdown-Core'
@@ -12,7 +11,7 @@ Class {
 MicNotFoundResource class >> resource: aResource error: anError [
 	
 	^ self new
-		notFoundResource: aResource;
+		notFoundReference: aResource;
 		error: anError;
 		yourself
 ]
@@ -35,14 +34,20 @@ MicNotFoundResource >> error: anError [
 	error := anError
 ]
 
-{ #category : #accessing }
-MicNotFoundResource >> notFoundResource [
-
-	^ notFoundResource
+{ #category : #testing }
+MicNotFoundResource >> exists [
+	
+	^ false
 ]
 
 { #category : #accessing }
-MicNotFoundResource >> notFoundResource: anObject [
+MicNotFoundResource >> notFoundReference [
 
-	notFoundResource := anObject
+	^ self reference
+]
+
+{ #category : #accessing }
+MicNotFoundResource >> notFoundReference: anObject [
+
+	self reference: anObject
 ]

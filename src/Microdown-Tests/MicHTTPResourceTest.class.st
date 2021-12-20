@@ -26,7 +26,7 @@ MicHTTPResourceTest >> testErrorLoad [
 	| uri image githubResolver |
 	uri := 'nonexistingImage.png' asMicResourceUri.
 	
-	githubResolver := MicRelativeUrlResolver baseUrl: self class githubTestData uri.
+	githubResolver := MicRelativeUrlResolver baseUrl: self class githubTestData uri asString.
 	image := uri loadImage: githubResolver.
 	self assert: image isNil
 ]

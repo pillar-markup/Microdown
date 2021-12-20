@@ -1,9 +1,8 @@
 Class {
 	#name : #MicHttpResource,
-	#superclass : #Object,
+	#superclass : #MicAbstractResource,
 	#instVars : [
-		'entity',
-		'reference'
+		'entity'
 	],
 	#category : #'Microdown-Core'
 }
@@ -24,6 +23,12 @@ MicHttpResource >> asForm [
 ]
 
 { #category : #accessing }
+MicHttpResource >> contents [
+	
+	^ entity contents
+]
+
+{ #category : #accessing }
 MicHttpResource >> entity [
 
 	^ entity
@@ -39,19 +44,7 @@ MicHttpResource >> entity: anObject [
 MicHttpResource >> parseMicrodown [
 	
 	| doc |
-	doc := Microdown new parse: entity contents.
+	doc := super parseMicrodown.
 	MicZincPathResolver resolve: doc withBase: reference uri.
 	^doc
-]
-
-{ #category : #accessing }
-MicHttpResource >> reference [
-
-	^ reference
-]
-
-{ #category : #accessing }
-MicHttpResource >> reference: anObject [
-
-	reference := anObject
 ]

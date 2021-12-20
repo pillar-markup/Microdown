@@ -53,3 +53,9 @@ MicRelativeResourceReference >> resolvedBy: aRoot [
 	
 	^ aRoot / originalString
 ]
+
+{ #category : #accessing }
+MicRelativeResourceReference >> uri [
+	
+	^ originalString
+]

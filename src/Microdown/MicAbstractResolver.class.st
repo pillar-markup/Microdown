@@ -1,5 +1,5 @@
 Class {
-	#name : #MicFullResolver,
+	#name : #MicAbstractResolver,
 	#superclass : #Object,
 	#instVars : [
 		'nextResolver'
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #images }
-MicFullResolver class >> cachedImageFromUrl: aUrl [
+MicAbstractResolver class >> cachedImageFromUrl: aUrl [
 	"In case a url is not in the cache, it is either read from the net, or if the ImageNotCachedBlock
 	is non nil, the image returned by ImageNotCachedBlock is returned, but not stored in the cache"
 	
@@ -30,27 +30,27 @@ MicFullResolver class >> cachedImageFromUrl: aUrl [
 ]
 
 { #category : #images }
-MicFullResolver class >> imageCache [
+MicAbstractResolver class >> imageCache [
 	ImageCache ifNil:[ImageCache := LRUCache new ].
 	^ImageCache
 ]
 
 { #category : #images }
-MicFullResolver class >> imageNotCachedBlock: aHandlerBlock [ 
+MicAbstractResolver class >> imageNotCachedBlock: aHandlerBlock [ 
 	"If an image is not in the cache, execute this block get an image. 
 	Do not store the produced image in the cache."
 	ImageNotCachedBlock := aHandlerBlock
 ]
 
 { #category : #'class initialization' }
-MicFullResolver class >> initialize [
+MicAbstractResolver class >> initialize [
 	<script>
 	ImageCache := nil.
 	ImageNotCachedBlock := nil
 ]
 
 { #category : #images }
-MicFullResolver class >> rawImageFrom: aURL [
+MicAbstractResolver class >> rawImageFrom: aURL [
 	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
 	on: Exception
 	do: [ ^ nil ]
@@ -58,13 +58,13 @@ MicFullResolver class >> rawImageFrom: aURL [
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> basicResolveAbsoluteFilePath: anAbsoluteFileURL [
+MicAbstractResolver >> basicResolveAbsoluteFilePath: anAbsoluteFileURL [
 
 	self halt.
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> basicResolvePharoResource: aPharoResource [
+MicAbstractResolver >> basicResolvePharoResource: aPharoResource [
 
 	self halt.
 
@@ -73,46 +73,46 @@ MicFullResolver >> basicResolvePharoResource: aPharoResource [
 ]
 
 { #category : #resolving }
-MicFullResolver >> basicResolveRelativeUrl: aMicRelativeResource [ 
+MicAbstractResolver >> basicResolveRelativeReference: aMicRelativeResource [ 
 	
 	self subclassResponsibility
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> basicResolveUrl: anAbsoluteFileURL [
+MicAbstractResolver >> basicResolveUrl: anAbsoluteFileURL [
 
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-MicFullResolver >> nextResolver: aMicDefaultResolver [ 
+MicAbstractResolver >> nextResolver: aMicDefaultResolver [ 
 	
 	nextResolver := aMicDefaultResolver
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> resolveAbsoluteFilePath: anAbsoluteFileURL [
+MicAbstractResolver >> resolveAbsoluteFilePath: anAbsoluteFileURL [
 
 	^ (self basicResolveAbsoluteFilePath: anAbsoluteFileURL)
 		ifNil: [ nextResolver resolveAbsoluteFilePath: anAbsoluteFileURL ]
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> resolvePharoResource: aPharoResource [
+MicAbstractResolver >> resolvePharoResource: aPharoResource [
 
 	^ (self basicResolvePharoResource: aPharoResource)
 		ifNil: [ nextResolver resolvePharoResource: aPharoResource ]
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> resolveRelativeUrl: anAbsoluteFileURL [
+MicAbstractResolver >> resolveRelativeUrl: anAbsoluteFileURL [
 
-	^ (self basicResolveRelativeUrl: anAbsoluteFileURL)
+	^ (self basicResolveRelativeReference: anAbsoluteFileURL)
 		ifNil: [ nextResolver resolveRelativeUrl: anAbsoluteFileURL ]
 ]
 
 { #category : #'accessing - resources' }
-MicFullResolver >> resolveUrl: anAbsoluteFileURL [
+MicAbstractResolver >> resolveUrl: anAbsoluteFileURL [
 
 	^ (self basicResolveUrl: anAbsoluteFileURL)
 		ifNil: [ nextResolver resolveUrl: anAbsoluteFileURL ]
