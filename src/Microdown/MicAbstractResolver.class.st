@@ -66,10 +66,7 @@ MicAbstractResolver >> basicResolveAbsoluteFilePath: anAbsoluteFileURL [
 { #category : #'accessing - resources' }
 MicAbstractResolver >> basicResolvePharoResource: aPharoResource [
 
-	self halt.
-
-	"return an image form from my reference"
-	^ aPharoResource executeUri 
+	^ aPharoResource resolveOnCurrentImage 
 ]
 
 { #category : #resolving }

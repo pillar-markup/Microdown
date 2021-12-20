@@ -65,26 +65,6 @@ MicResourceReference class >> workingDirectoryReference [
 	^ self fromUri: FileSystem workingDirectory asUrl asString
 ]
 
-{ #category : #testing }
-MicResourceReference >> isFile [
-	"answer if the resource is a file (as opposed to a directory)"
-	(self path last = $/)
-		ifTrue: [ ^ false ].
-	^ true
-]
-
-{ #category : #testing }
-MicResourceReference >> isImage: aPath [
-	"makes a guess if path referes to an image"
-	^ #( 'pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png'
-	     'pbm' ) includes: (aPath copyAfterLast: $.) asLowercase
-]
-
-{ #category : #testing }
-MicResourceReference >> isResolved [ 
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 MicResourceReference >> loadImage: aResolver [
 	

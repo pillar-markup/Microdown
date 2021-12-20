@@ -20,112 +20,12 @@ MicResourceReferenceTest >> testHttpRecognized [
 ]
 
 { #category : #tests }
-MicResourceReferenceTest >> testIsFileOfNoUrlFile [
-
-	| mf |
-	mf := self resourceClass fromUri: 'server.org/figures/p.png'.
-	self assert: mf isFile.
-	mf := self resourceClass fromUri: '/server.org/figures/p.png'.
-	self assert: mf isFile.
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfNoUrlFolder [
-
-	| mf |
-	mf := self resourceClass fromUri: 'server.org/figures/'.
-	self deny: mf isFile.
-	mf := self resourceClass fromUri: '/server.org/figures/'.
-	self deny: mf isFile.
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFile [
-
-	| mf |
-	mf := self resourceClass fromUri: 'server.org/figures/p.png'.
-	mf := mf resolveWith:  self resourceClass workingDirectoryReference. 
-	self assert: mf isFile.
-	
-	mf := self resourceClass fromUri: '/server.org/figures/p.png'.
-	self assert: mf isFile.
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfResolvedByNoUrlFolder [
-
-	| mf |
-	mf := self resourceClass fromUri: 'server.org/figures/'.
-	mf := mf resolveWith:  self resourceClass workingDirectoryReference.
-	self deny: mf isFile.
-	mf := self resourceClass fromUri: '/server.org/figures/'.
-	self deny: mf isFile.
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfResolvedUrlFile [
-
-	| mf |
-	mf := self resourceClass fromUri: 'http://server/figures/m.png'.
-	self assert: mf isFile.
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfUrlFile [
-
-	| mf |
-	mf := self resourceClass fromUri: 'http://server/figures/m.png'.
-	self assert: mf isFile.
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfUrlFolder [
-
-	| mf |
-	mf := self resourceClass fromUri: 'http://server.org/figures/'.
-	self deny: mf isFile.
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testIsFileOfUrlResolvedFolder [
-
-	| mf |
-	mf := self resourceClass fromUri: 'http://server.org/figures/'.
-	self deny: mf isFile.
-	
-]
-
-{ #category : #tests }
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
 	mf := self resourceClass fromUri: 'http://server/m.mic'.
 	self assert: mf uri asString equals: 'http://server/m.mic'.
 
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
-	
-	| mf base|
-	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
-	base := self resourceClass fromUri: 'file:///stuff'.
-	mf := mf resolveWith: base.
-	self assert: (mf isKindOf: MicFileResourceReference).
-	self assert: mf uri asString equals:  'file:///chapter1/figures/m.mic'. 
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testResolvedIsImageFile [
-	
-	| mf |
-	mf := self resourceClass fromUri: 'http://foo.edu/chapter1/figures/m.png'.
-	self assert: mf isImage.
-	
 ]
 
 { #category : #tests }
@@ -156,14 +56,5 @@ MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 	self assert: (mf isKindOf: MicFileResourceReference).
 	self assert: mf path  equals: '/chapter1/figures/m.mic'.
 
-	
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testUnresolvedIsImageFile [
-	
-	| mf |
-	mf := self resourceClass fromUri: '/chapter1/figures/m.png'.
-	self assert: mf isImage
 	
 ]

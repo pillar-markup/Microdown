@@ -33,7 +33,6 @@ MicZincPathResolver >> baseUri: aZnUrl [
 MicZincPathResolver >> visitFigure: aFigure [
 
 	| resolvedUri |
-	aFigure reference isResolved ifTrue: [ ^ self ].
 	resolvedUri := baseUri withRelativeReference: aFigure reference relativePath.
 	aFigure reference:
 		(MicResourceReference fromUri: resolvedUri printString)

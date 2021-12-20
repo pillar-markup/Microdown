@@ -39,7 +39,7 @@ MicInputfileBlockTest >> testMicInputfilePath [
 MicInputfileBlockTest >> testMicInputfilePathError [
 	| mic |
 	mic := parser parse: '?{inputFile|path:errror=fchapters/withStyle.mic}?'.
-	self assert: mic children first children first path class equals: MicBrokenResourceReference.
+	self assert: mic children first children first path class equals: MicInvalidResourceReference.
 	self 
 		assert: mic children first children first path originalString 
 		equals: 'inputFile|path:errror=fchapters/withStyle.mic'

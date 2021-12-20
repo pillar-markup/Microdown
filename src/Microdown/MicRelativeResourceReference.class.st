@@ -9,17 +9,6 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #testing }
-MicRelativeResourceReference >> isImage [
-
-	^ self isImage: originalString 
-]
-
-{ #category : #testing }
-MicRelativeResourceReference >> isResolved [ 
-	^ false
-]
-
 { #category : #accessing }
 MicRelativeResourceReference >> path [
 	^originalString  
@@ -44,12 +33,7 @@ MicRelativeResourceReference >> resolveResourceIn: aResolver [
 ]
 
 { #category : #accessing }
-MicRelativeResourceReference >> resolveWith: baseReference [
-	^ MicResourceReference fromUri: (baseReference uri withRelativeReference: self relativePath) asString
-]
-
-{ #category : #accessing }
 MicRelativeResourceReference >> uri [
-	
+
 	^ originalString
 ]

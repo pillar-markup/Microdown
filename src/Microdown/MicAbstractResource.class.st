@@ -7,10 +7,22 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #visiting }
+MicAbstractResource >> accept: aVisitor [
+
+	^ self subclassResponsibility
+]
+
 { #category : #converting }
 MicAbstractResource >> asForm [
 
 	^ ImageReadWriter formFromStream: self binaryReadStream
+]
+
+{ #category : #visiting }
+MicAbstractResource >> asRenderedOn: aRenderer withinNode: aFigure [
+
+	^ self subclassResponsibility
 ]
 
 { #category : #accessing }

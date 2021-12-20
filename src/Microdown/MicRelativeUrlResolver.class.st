@@ -5,10 +5,10 @@ Class {
 }
 
 { #category : #accessing }
-MicRelativeUrlResolver class >> baseUrl: baseUrl [
+MicRelativeUrlResolver class >> baseUrlString: baseUrl [
 
 	^ self new
-		baseUrl: baseUrl;
+		baseUrlString: baseUrl;
 		yourself
 ]
 

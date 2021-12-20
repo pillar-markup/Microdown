@@ -12,17 +12,6 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #testing }
-MicAbsoluteResourceReference >> isImage [
-
-	^ self isImage: uri segments last
-]
-
-{ #category : #testing }
-MicAbsoluteResourceReference >> isResolved [ 
-	^true
-]
-
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	^ '/', self uri path

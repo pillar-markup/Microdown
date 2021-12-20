@@ -81,6 +81,16 @@ and this is just **first** line
 ]
 
 { #category : #examples }
+MicRichTextComposer class >> exampleMicrodown10 [
+	<sampleInstance>
+	
+	^ self parseAndCompose: '## This is the class Object
+	
+	
+	![Object class.](pharo:///Object)'
+]
+
+{ #category : #examples }
 MicRichTextComposer class >> exampleMicrodown11 [
 	<sampleInstance>
 	^ self parseAndCompose:
@@ -259,10 +269,9 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	If the latex formula cannot be built because of network or syntax errors,
 	use the error block to build a text"
 
-	| ref default resource |
-	ref := MicResourceReference fromUri: 'https://latex.codecogs.com/png.latex?' , aString urlEncoded.
-
-	resource := ref resolveResourceIn: MicUrlResolver new.
+	| ref resource |
+	ref := MicResourceReference fromUri: aString.
+	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.latex?').
 	^ (resource asForm ifNil: aBlock) asText
 ]
 
@@ -271,6 +280,27 @@ MicRichTextComposer >> parseAndCompose: aString [
 
 	^ self visit: (Microdown parse: aString)
 
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderHttpResource: aMicHttpResource inNode: aNode [
+
+	^ (String value: 1) asText
+		addAttribute: (self anchorFor: aMicHttpResource asForm of: aNode);
+		yourself
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderNotFoundResource: aMicNotFoundResource inNode: aNode [
+
+	^ aNode caption asText
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderPharoClassResource: aMicPharoClassResource inNode: aNode [
+	
+	"Put a class as text inside the document"
+	^ aMicPharoClassResource asText
 ]
 
 { #category : #private }
@@ -407,22 +437,10 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image embeddedImage default |
-	default := MicDefaultResolver new
-		defaultImage: nil;
-		yourself.
-	image := aFigure reference loadImage: (MicUrlResolver new
-		nextResolver: default;
-		yourself).
-	
-	"If no image was found, render the caption"
-	image ifNil: [ ^ canvas << aFigure caption asText ].
-	
-	"Else, render the image"
-	embeddedImage := (String value: 1) asText
-		addAttribute: (self anchorFor: image of: aFigure);
-		yourself.
-	canvas << embeddedImage
+	| imageResource embeddableInText |
+	imageResource := aFigure reference resolveResourceIn: MicUrlResolver new.
+	embeddableInText := imageResource asRenderedOn: self withinNode: aFigure.
+	canvas << embeddableInText
 ]
 
 { #category : #'visiting - document' }

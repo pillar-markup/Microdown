@@ -20,14 +20,43 @@ Class {
 
 { #category : #'accessing - resources' }
 MicPharoResourceReference >> executeUri [
+
 	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 
 	| class selector size args |
-	class := (self class environment at: (uri segments first) asSymbol ) class.
-	selector:= uri segments second asSymbol.
-	args := ( (size :=uri segments size) > 2) 
-		ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ] 
-		ifFalse: [ #() ].
+	class := (self class environment at: uri segments first asSymbol)
+		         class.
+	selector := uri segments second asSymbol.
+	args := (size := uri segments size) > 2
+		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
+		        ifFalse: [ #(  ) ].
+	^ class perform: selector withArguments: args
+]
+
+{ #category : #resolving }
+MicPharoResourceReference >> resolveOnCurrentImage [
+	
+	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
+
+	| class selector size args className theClass |
+	
+	className := uri segments first asSymbol.
+	theClass := self class environment at: className.
+	uri segments size = 1 ifTrue: [ 
+		^ MicPharoClassResource on: theClass reference: self ].
+	
+	1halt.
+	selector := uri segments second asSymbol.
+	args := (size := uri segments size) > 2
+		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
+		        ifFalse: [ #(  ) ].
+		
+	class := (self class environment at: uri segments first asSymbol)
+		         class.
+	selector := uri segments second asSymbol.
+	args := (size := uri segments size) > 2
+		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
+		        ifFalse: [ #(  ) ].
 	^ class perform: selector withArguments: args
 ]
 
@@ -35,15 +64,4 @@ MicPharoResourceReference >> executeUri [
 MicPharoResourceReference >> resolveResourceIn: aResolver [
 
 	^ aResolver resolvePharoResource: self
-]
-
-{ #category : #accessing }
-MicPharoResourceReference >> uri [
-	^uri 
-]
-
-{ #category : #accessing }
-MicPharoResourceReference >> uri: aUri [
-	"ZnUrl stores the Class>>name in host"
-	uri := aUri 
 ]

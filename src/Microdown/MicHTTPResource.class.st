@@ -16,6 +16,12 @@ MicHttpResource class >> on: anEntity reference: aReference [
 		yourself
 ]
 
+{ #category : #visiting }
+MicHttpResource >> asRenderedOn: aRenderer withinNode: aNode [
+
+	^ aRenderer renderHttpResource: self inNode: aNode
+]
+
 { #category : #converting }
 MicHttpResource >> binaryReadStream [
 

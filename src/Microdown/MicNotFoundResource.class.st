@@ -22,6 +22,12 @@ MicNotFoundResource >> asForm [
 	^ nil
 ]
 
+{ #category : #visiting }
+MicNotFoundResource >> asRenderedOn: aRenderer withinNode: aNode [
+	
+	^ aRenderer renderNotFoundResource: self inNode: aNode
+]
+
 { #category : #accessing }
 MicNotFoundResource >> error [
 

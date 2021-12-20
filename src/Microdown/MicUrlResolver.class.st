@@ -15,7 +15,7 @@ MicUrlResolver >> baseUrl [
 ]
 
 { #category : #accessing }
-MicUrlResolver >> baseUrl: anObject [
+MicUrlResolver >> baseUrlString: anObject [
 
 	baseUrl := anObject
 ]
