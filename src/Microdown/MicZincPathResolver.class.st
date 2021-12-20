@@ -31,12 +31,12 @@ MicZincPathResolver >> baseUri: aZnUrl [
 
 { #category : #visiting }
 MicZincPathResolver >> visitFigure: aFigure [
+
 	| resolvedUri |
-	aFigure reference isResolved 
-		ifTrue: [ ^self ].
+	aFigure reference isResolved ifTrue: [ ^ self ].
 	resolvedUri := baseUri withRelativeReference: aFigure reference relativePath.
-	aFigure reference: (MicResourceReference fromUri: (resolvedUri printString))
-	
+	aFigure reference:
+		(MicResourceReference fromUri: resolvedUri printString)
 ]
 
 { #category : #visiting }

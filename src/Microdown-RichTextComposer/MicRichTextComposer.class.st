@@ -254,12 +254,23 @@ MicRichTextComposer >> initialize [
 
 { #category : #private }
 MicRichTextComposer >> latexFor: aString onError: aBlock [
-	"return a MicResourceReference to an image for the latex formula in aString"
-	| ref |
-	ref := MicResourceReference fromUri: 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
-	^ ref loadImage
-		ifNotNil: [ :image | image asText]
-		ifNil: [ aBlock value asText ]
+
+	"Return a Text containing an image with the latex formula.
+	If the latex formula cannot be built because of network or syntax errors,
+	use the error block to build a text"
+
+	| ref default resource |
+	ref := MicResourceReference fromUri: 'https://latex.codecogs.com/png.latex?' , aString urlEncoded.
+
+	resource := ref resolveResourceIn: MicUrlResolver new.
+	^ (resource asForm ifNil: aBlock) asText
+]
+
+{ #category : #composing }
+MicRichTextComposer >> parseAndCompose: aString [ 
+
+	^ self visit: (Microdown parse: aString)
+
 ]
 
 { #category : #private }
@@ -310,8 +321,10 @@ This also because people will not want to to not let a newline between the heade
 
 { #category : #visiting }
 MicRichTextComposer >> visit: aDocument [
-	
-	canvas := MicRichTextCanvas new textStyler: self textStyler; yourself  .
+
+	canvas := MicRichTextCanvas new
+		          textStyler: self textStyler;
+		          yourself.
 	super visit: aDocument.
 	^ canvas contents
 ]
@@ -394,12 +407,22 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image textContribution |
-	image := aFigure reference loadImage.
-	image ifNotNil: [ 
-		textContribution := (String value: 1) asText 
-			addAttribute: (self anchorFor: image of: aFigure ) ].
-	canvas << (textContribution ifNil: [ aFigure caption asText ])
+	| image embeddedImage default |
+	default := MicDefaultResolver new
+		defaultImage: nil;
+		yourself.
+	image := aFigure reference loadImage: (MicUrlResolver new
+		nextResolver: default;
+		yourself).
+	
+	"If no image was found, render the caption"
+	image ifNil: [ ^ canvas << aFigure caption asText ].
+	
+	"Else, render the image"
+	embeddedImage := (String value: 1) asText
+		addAttribute: (self anchorFor: image of: aFigure);
+		yourself.
+	canvas << embeddedImage
 ]
 
 { #category : #'visiting - document' }

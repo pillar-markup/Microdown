@@ -16,7 +16,7 @@ MicResourceReferenceTest >> testHttpRecognized [
 	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
 	ref := self resourceClass fromUri: uri.
 	self assert: ref isNotNil.
-	self assert: ref class equals: MicHTTPResource.
+	self assert: ref class equals: MicHTTPResourceReference.
 ]
 
 { #category : #tests }
@@ -114,7 +114,7 @@ MicResourceReferenceTest >> testResolvedIsAbsoluteFile [
 	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
 	base := self resourceClass fromUri: 'file:///stuff'.
 	mf := mf resolveWith: base.
-	self assert: (mf isKindOf: MicFileResource).
+	self assert: (mf isKindOf: MicFileResourceReference).
 	self assert: mf uri asString equals:  'file:///chapter1/figures/m.mic'. 
 	
 ]
@@ -133,7 +133,7 @@ MicResourceReferenceTest >> testUnResolvedIsRelativeFile [
 	
 	| mf |
 	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicRelativeResource).
+	self assert: (mf isKindOf: MicRelativeResourceReference).
 	self assert: mf relativePath  equals: 'chapter1/figures/m.mic'.
 	
 ]
@@ -153,7 +153,7 @@ MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
 	
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicFileResource).
+	self assert: (mf isKindOf: MicFileResourceReference).
 	self assert: mf path  equals: '/chapter1/figures/m.mic'.
 
 	

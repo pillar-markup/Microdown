@@ -46,16 +46,16 @@ Class {
 MicResourceReference class >> fromUri: aString [
 	| uri |
 	(aString beginsWith: '/')
-		ifTrue: [ ^ MicFileResource new uri: (ZnUrl fromString: 'file://',aString) ].
+		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
-		ifNil: [ ^ MicRelativeResource new relativePath: aString ].
+		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
 	(uri scheme beginsWith: 'http')
-		ifTrue: [ ^ MicHTTPResource new uri: uri ].
+		ifTrue: [ ^ MicHTTPResourceReference new uri: uri ].
 	uri scheme = 'file'
-		ifTrue: [ ^ MicFileResource new uri: uri ].
+		ifTrue: [ ^ MicFileResourceReference new uri: uri ].
 	uri scheme = 'pharo'
-		ifTrue: [ ^ MicPharoResource new uri: uri ].
+		ifTrue: [ ^ MicPharoResourceReference new uri: uri ].
 	^uri
 	
 ]
@@ -86,6 +86,18 @@ MicResourceReference >> isResolved [
 ]
 
 { #category : #accessing }
+MicResourceReference >> loadImage: aResolver [
+	
+	^ (self resolveResourceIn: aResolver) asForm
+]
+
+{ #category : #accessing }
+MicResourceReference >> loadMicrodown [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 MicResourceReference >> originalString [
 	
 	^ originalString 
@@ -110,4 +122,10 @@ MicResourceReference >> printOn: aStream [
 		nextPutAll: '(';
 		nextPutAll: originalString;
 		nextPutAll: ')'
+]
+
+{ #category : #accessing }
+MicResourceReference >> resolveResourceIn: aResolver [
+
+	self subclassResponsibility
 ]

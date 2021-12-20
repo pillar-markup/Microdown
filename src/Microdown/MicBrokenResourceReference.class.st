@@ -2,23 +2,23 @@
 I should not be necessary.
 "
 Class {
-	#name : #MicBrokenResource,
+	#name : #MicBrokenResourceReference,
 	#superclass : #MicResourceReference,
 	#category : #'Microdown-Core'
 }
 
 { #category : #converting }
-MicBrokenResource >> asFileReference [
+MicBrokenResourceReference >> asFileReference [
 
 	^ self error
 ]
 
 { #category : #testing }
-MicBrokenResource >> isResolved [ 
+MicBrokenResourceReference >> isResolved [ 
 	^ false
 ]
 
 { #category : #accessing }
-MicBrokenResource >> path [
+MicBrokenResourceReference >> path [
 	^originalString  
 ]

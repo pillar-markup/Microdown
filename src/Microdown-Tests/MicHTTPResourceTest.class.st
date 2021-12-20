@@ -15,39 +15,29 @@ MicHTTPResourceTest class >> githubTestData [
 { #category : #running }
 MicHTTPResourceTest >> setUp [
 	super setUp.
-	MicHTTPResource initialize.
+	MicHTTPResourceReference initialize.
 	
 	
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testErrorLoad [
- 	|uri ref image |
- 	uri := 'nonexistingImage.png' asMicResourceUri.
- 	ref := uri resolveWith: self class githubTestData.
- 	image := ref loadImage.
- 	self assert: image isNil
-]
 
-{ #category : #tests }
-MicHTTPResourceTest >> testErrorLoadWithHandler [
- 	|uri ref image noImage|
- 	noImage := 'UUUPS - No image' asMorph asForm.
- 	MicHTTPResource imageNotCachedBlock:  [ :dummyUrl | noImage ].
- 	uri := 'nonexistingImage.png' asMicResourceUri.
- 	ref := uri resolveWith: self class githubTestData.
- 	image := ref loadImage.
- 	self assert: image equals: noImage.
- 	"The error image was not added to the cache"
- 	self deny: (MicHTTPResource imageCache includesKey: ref originalString )
+	| uri image githubResolver |
+	uri := 'nonexistingImage.png' asMicResourceUri.
+	
+	githubResolver := MicRelativeUrlResolver baseUrl: self class githubTestData uri.
+	image := uri loadImage: githubResolver.
+	self assert: image isNil
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
-	|uri ref image |
+
+	| uri ref image |
 	uri := 'toplevel.png' asMicResourceUri.
 	ref := uri resolveWith: self class githubTestData.
-	image := ref loadImage.
+	image := ref loadImage: MicUrlResolver new.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
@@ -66,28 +56,32 @@ MicHTTPResourceTest >> testLoadMicrodown [
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodownResolves [
-	|uri ref doc topLevelImageRef |
+
+	| uri ref doc topLevelImageRef |
 	uri := 'readme.md' asMicResourceUri.
 	ref := uri resolveWith: self class githubTestData.
 	doc := ref loadMicrodown.
-	
+
 	topLevelImageRef := doc children fourth children first.
 	self assert: topLevelImageRef class equals: MicFigureBlock.
 	self assert: topLevelImageRef reference isResolved.
-	self assert: topLevelImageRef reference loadImage height equals: 90
-	
+	self
+		assert: (topLevelImageRef reference loadImage: MicUrlResolver new) height
+		equals: 90
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodownResolvesTopLevel [
-	|uri ref doc topLevelImageRef |
+
+	| uri ref doc topLevelImageRef |
 	uri := 'readme.md' asMicResourceUri.
 	ref := uri resolveWith: self class githubTestData.
 	doc := ref loadMicrodown.
-	
+
 	topLevelImageRef := doc children fourth children first.
 	self assert: topLevelImageRef class equals: MicFigureBlock.
 	self assert: topLevelImageRef reference isResolved.
-	self assert: topLevelImageRef reference loadImage height equals: 90
-	
+	self
+		assert: (topLevelImageRef reference loadImage: MicUrlResolver new) height
+		equals: 90
 ]

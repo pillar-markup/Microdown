@@ -13,13 +13,13 @@ Examples:
 - Only string arguments can be passed
 "
 Class {
-	#name : #MicPharoResource,
-	#superclass : #MicAbsoluteResource,
+	#name : #MicPharoResourceReference,
+	#superclass : #MicAbsoluteResourceReference,
 	#category : #'Microdown-Core'
 }
 
 { #category : #'accessing - resources' }
-MicPharoResource >> executeUri [
+MicPharoResourceReference >> executeUri [
 	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 
 	| class selector size args |
@@ -28,28 +28,28 @@ MicPharoResource >> executeUri [
 	args := ( (size :=uri segments size) > 2) 
 		ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ] 
 		ifFalse: [ #() ].
-	^ (class lookupSelector:  selector) valueWithReceiver: class arguments: args
+	^ class perform: selector withArguments: args
 ]
 
 { #category : #'accessing - resources' }
-MicPharoResource >> loadImage [
+MicPharoResourceReference >> loadMicrodown [
 	"return an image form from my reference"
 	^ self executeUri 
 ]
 
 { #category : #'accessing - resources' }
-MicPharoResource >> loadMicrodown [
-	"return an image form from my reference"
-	^ self executeUri 
+MicPharoResourceReference >> resolveResourceIn: aResolver [
+
+	^ aResolver resolvePharoResource: self
 ]
 
 { #category : #accessing }
-MicPharoResource >> uri [
+MicPharoResourceReference >> uri [
 	^uri 
 ]
 
 { #category : #accessing }
-MicPharoResource >> uri: aUri [
+MicPharoResourceReference >> uri: aUri [
 	"ZnUrl stores the Class>>name in host"
 	uri := aUri 
 ]

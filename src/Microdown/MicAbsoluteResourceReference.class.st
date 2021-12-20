@@ -4,7 +4,7 @@ I represent a superclass for all absolute references.
 Common for all absolute references is that they store their reference in a uri (ZnUrl).
 "
 Class {
-	#name : #MicAbsoluteResource,
+	#name : #MicAbsoluteResourceReference,
 	#superclass : #MicResourceReference,
 	#instVars : [
 		'uri'
@@ -13,41 +13,35 @@ Class {
 }
 
 { #category : #testing }
-MicAbsoluteResource >> isImage [
+MicAbsoluteResourceReference >> isImage [
 
 	^ self isImage: uri segments last
 ]
 
 { #category : #testing }
-MicAbsoluteResource >> isResolved [ 
+MicAbsoluteResourceReference >> isResolved [ 
 	^true
 ]
 
 { #category : #'accessing - resources' }
-MicAbsoluteResource >> loadImage [
-	"return an image form from my reference"
-	self subclassResponsibility 
-]
-
-{ #category : #'accessing - resources' }
-MicAbsoluteResource >> loadMicrodown [
+MicAbsoluteResourceReference >> loadMicrodown [
 	"load, parse and resolve a microdown document"
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
-MicAbsoluteResource >> path [
+MicAbsoluteResourceReference >> path [
 	^ '/', self uri path
 ]
 
 { #category : #accessing }
-MicAbsoluteResource >> uri [
+MicAbsoluteResourceReference >> uri [
 
 	^ uri
 ]
 
 { #category : #accessing }
-MicAbsoluteResource >> uri: aZnUrl [
+MicAbsoluteResourceReference >> uri: aZnUrl [
 	uri := aZnUrl.
 	originalString := uri printString 
 ]

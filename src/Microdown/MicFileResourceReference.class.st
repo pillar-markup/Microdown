@@ -10,19 +10,13 @@ There are two predefined hosts:
 It is possible to add new hosts, a primary use case is to give memory file store a way to be expressed as a file uri. See the `MicFileResourceTest` setUp, tearDown and testMemoryStoreHost.
 "
 Class {
-	#name : #MicFileResource,
-	#superclass : #MicAbsoluteResource,
+	#name : #MicFileResourceReference,
+	#superclass : #MicAbsoluteResourceReference,
 	#category : #'Microdown-Core'
 }
 
 { #category : #'accessing - resources' }
-MicFileResource >> loadImage [
-	"return an image form from my reference"
-	^ ImageReadWriter formFromStream: self asFileReference binaryReadStream
-]
-
-{ #category : #'accessing - resources' }
-MicFileResource >> loadMicrodown [
+MicFileResourceReference >> loadMicrodown [
 
 	"load, parse and resolve a microdown document"
 	| docString doc |
@@ -31,8 +25,14 @@ MicFileResource >> loadMicrodown [
 	^ doc
 ]
 
+{ #category : #'accessing - resources' }
+MicFileResourceReference >> resolveResourceIn: aResolver [
+
+	^ aResolver resolveAbsoluteFilePath: self
+]
+
 { #category : #converting }
-MicFileResource >> resolvedBy: aRoot [
+MicFileResourceReference >> resolvedBy: aRoot [
 	
 	^ aRoot resolvePath: uri path
 ]
