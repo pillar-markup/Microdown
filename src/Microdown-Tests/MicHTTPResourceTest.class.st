@@ -22,14 +22,34 @@ MicHTTPResourceTest >> setUp [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testErrorLoad [
+MicHTTPResourceTest >> testErrorNonCorrectImage [
 
-	| uri image githubResolver |
+	| uri |
+	uri := 'readme.md' asMicResourceUri.
+	
+	self
+		should: [(uri resolveResourceIn: resolver) asForm]
+		raise: UnrecognizedImageFormatError
+]
+
+{ #category : #tests }
+MicHTTPResourceTest >> testErrorNonExistingImage [
+
+	| uri image |
 	uri := 'nonexistingImage.png' asMicResourceUri.
 	
-	githubResolver := MicRelativeUrlResolver baseUrlString: self class githubTestData uri asString.
-	image := uri loadImage: githubResolver.
+	image := (uri resolveResourceIn: resolver) asForm.
 	self assert: image isNil
+]
+
+{ #category : #tests }
+MicHTTPResourceTest >> testLoadErrorMicrodown [
+	| uri |
+	uri := 'toplevel.png' asMicResourceUri.
+
+	self
+		should: [uri loadMicrodown: resolver]
+		raise: ZnInvalidUTF8
 ]
 
 { #category : #tests }
@@ -54,7 +74,7 @@ MicHTTPResourceTest >> testLoadMicrodown [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodownResolves [
+MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 
 	| uri doc topLevelImageRef |
 	uri := 'readme.md' asMicResourceUri.
@@ -68,15 +88,13 @@ MicHTTPResourceTest >> testLoadMicrodownResolves [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodownResolvesTopLevel [
-
-	| uri doc topLevelImageRef |
-	uri := 'readme.md' asMicResourceUri.
-	doc := uri loadMicrodown: resolver.
-
-	topLevelImageRef := doc children fourth children first.
-	self assert: topLevelImageRef class equals: MicFigureBlock.
-	self
-		assert: (topLevelImageRef reference loadImage: resolver) height
-		equals: 90
+MicHTTPResourceTest >> testLoadNonExistingMicrodown [
+	| uri doc |
+	uri := 'readmeNOT.md' asMicResourceUri.
+	
+	[
+		uri loadMicrodown: resolver.
+		self fail
+	] on: Error do: [ :e |
+		self assert: e messageText equals: 'Microdown file not found' ]
 ]

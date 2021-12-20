@@ -50,8 +50,9 @@ MicUrlResolver >> basicResolveUrl: anAbsoluteFileURL [
 	
 	(anAbsoluteFileURL uri asZnUrl asZnUrlWithDefaults)
 		hasHost ifFalse: [ ZnMissingHost signal: 'Invalid Url: ', anAbsoluteFileURL uri ].
-	
+
 	(client := ZnEasy client)
+		beBinary; "Let decoding to the user, this is just a file"
 		url: anAbsoluteFileURL uri;
 		enforceHttpSuccess: true;
 		get ] on: ZnHttpUnsuccessful, ZnMissingHost do: [ :error |

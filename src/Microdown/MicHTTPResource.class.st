@@ -31,7 +31,7 @@ MicHttpResource >> binaryReadStream [
 { #category : #accessing }
 MicHttpResource >> contents [
 	
-	^ entity contents
+	^ entity contents utf8Decoded
 ]
 
 { #category : #accessing }

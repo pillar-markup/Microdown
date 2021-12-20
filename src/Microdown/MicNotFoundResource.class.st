@@ -71,3 +71,9 @@ MicNotFoundResource >> notFoundReference: anObject [
 
 	self reference: anObject
 ]
+
+{ #category : #converting }
+MicNotFoundResource >> parseMicrodown [
+	
+	Error signal: 'Microdown file not found'
+]
