@@ -5,7 +5,7 @@ Class {
 		'sample',
 		'parser'
 	],
-	#category : #'Microdown-RichTextComposer-Tests'
+	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
 { #category : #'tests - codeBlock' }

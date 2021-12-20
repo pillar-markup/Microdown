@@ -20,6 +20,8 @@ SpRichTextMorph >> font: aFont [
 { #category : #'event handling' }
 SpRichTextMorph >> textAreaExtentChanged [
 	super textAreaExtentChanged.
-	self model model render
+	"When textArea size change, scalable images might need to be redrawn"
+	self model model renderWidth: self width.
+	self resetState
 
 ]

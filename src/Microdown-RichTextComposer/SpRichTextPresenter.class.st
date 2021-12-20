@@ -4,6 +4,10 @@ I am a read-only presenter. There is no rich text editor, rich text is often com
 
 The text to present is set by `text:` method.
 
+I allow access to the currently selected text. 
+
+I can be in wrap mode (default) or not. Once created this cannot be changed. In no-wrap-mode images are not resized when I change size.
+
 ## Implementation
 I work together with `SpMorphicRichTextAdapter` and `SpRichTextMorph`. The morph is a subclass of `RubScrolledTextMorph`. My class side method adapterName specifies my adapter, and the buildWidget method of the adapter builds the morph.
 
@@ -13,8 +17,10 @@ Class {
 	#name : #SpRichTextPresenter,
 	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
-		'text',
-		'scalingImageIndexes'
+		'#text => ObservableSlot',
+		'#scalingImageIndexes',
+		'#selection => ObservableSlot',
+		'#wrapWord => ObservableSlot'
 	],
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
@@ -178,8 +184,8 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 { #category : #examples }
 SpRichTextPresenter class >> example [
 	<example>
-	self new
-		text: ( Microdown asRichText: self sampleDocument );
+	^ self new
+		text: ( Microdown asRichText: self cheetSheet  );
 		openWithSpec
 ]
 
@@ -200,25 +206,83 @@ Here are direct links to classes and method
 And this is another line'
 ]
 
-{ #category : #'widget API' }
-SpRichTextPresenter >> codePaneMenu: aMenu shifted: shifted [
+{ #category : #api }
+SpRichTextPresenter >> enabled: aBoolean [
+	"Set if the widget is enabled (clickable or focusable)"
 
-	| menuPresenter | 
-	menuPresenter := SpMenuPresenter new.
-	^ SpBindings
-		  value: self application adapterBindings
-		  during: [ menuPresenter value buildWithSpec ]
+	super enabled: aBoolean.
+	self changed: #enabled: with: { aBoolean }
+]
+
+{ #category : #initialization }
+SpRichTextPresenter >> initialize [
+	super initialize.
+	text := '' asText.
+	scalingImageIndexes := Array new.
+]
+
+{ #category : #testing }
+SpRichTextPresenter >> isWrapWord [
+	"Answer true if words will be wrapped to make text fit horizontally into component area."
+
+	^ wrapWord
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> rawSelection: anInterval [
+
+	self property: #selection rawValue: anInterval
 ]
 
 { #category : #accessing }
-SpRichTextPresenter >> render [
-	|renderWidth |
+SpRichTextPresenter >> renderWidth: renderWidth [
+	"I am called by the morph directly to recompute image sizes"
 	adapter ifNil: [ ^self ]. "I can be asked to render during setup"
-	
-	renderWidth := adapter widget width.
 	scalingImageIndexes  do: [ :idx | 
 		(text attributeAt: idx ofKind: MicScalingTextAnchor) targetWidth: renderWidth ].
-	self adapter widget resetState
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> selectAll [
+	self selectionInterval: (1 to: text size)
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> selectNone [
+	self selectionInterval: (1 to: 0)
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> selectedText [ 
+	"Answer the text contained in selection interval 
+	(See `SpAbstractTextPresenter>>#selectionInterval`)"
+	| selectionInterval |
+	
+	selectionInterval := self selectionInterval.
+	selectionInterval ifEmpty: [ ^ '' asText ].
+	
+	^ self text
+		copyFrom: selectionInterval first 
+		to: selectionInterval last
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> selectionInterval [
+	"Answer the text selection interval (an interval from start to end)."
+	
+	self withAdapterDo: [ :anAdapter | 
+		self property: #selection rawValue: anAdapter selectionInterval].
+	^ selection ifNil: [ 1 to: 0 ]
+]
+
+{ #category : #selection }
+SpRichTextPresenter >> selectionInterval: anInterval [
+	"Set the text selection interval.
+	 `anInterval` is an `Interval` from the first character selected to the end."
+	
+	selection := anInterval.
+	adapter selectionInterval: anInterval
+	
 ]
 
 { #category : #accessing }
@@ -234,5 +298,26 @@ SpRichTextPresenter >> text: aText [
 		select: [ :idx | 
 			((text at: idx) = Character home) 
 			and: [ (text attributeAt: idx ofKind: MicScalingTextAnchor) notNil ] ].
+	self withAdapterDo: [ adapter setText: aText ]
 	
+]
+
+{ #category : #enumerating }
+SpRichTextPresenter >> whenSelectionChangedDo: aBlock [
+	"Inform when selection changed. 
+	 `aBlock` receives two optional arguments 
+	 - new selection
+	 - old selection"
+
+	self property: #selection whenChangedDo: aBlock
+]
+
+{ #category : #api }
+SpRichTextPresenter >> whenTextChangedDo: aBlock [
+	"Inform when text has been changed (`text:` has been called)
+	 `aBlock` receives two optional arguments 
+	 - new text
+	 - old text"
+
+	self property: #text whenChangedDo: aBlock
 ]

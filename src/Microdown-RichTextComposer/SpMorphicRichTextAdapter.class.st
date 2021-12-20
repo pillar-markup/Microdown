@@ -24,21 +24,55 @@ SpMorphicRichTextAdapter >> buildWidget [
 		vResizing: #spaceFill;
 		hResizing: #spaceFill;
 		hScrollbarShowWhenNeeded;
-		yourself.	
+		getSelectionSelector: #readSelection;
+		setSelectionSelector: #setSelection:;
+		getTextSelector: #getText;
+		setTextSelector: #accept:notifying:;
+		yourself.
+	
+	newWidget setText: self presenter text.
+	self presenter selectionInterval 
+		ifNotNil: [  :anInterval | self selectionInterval: anInterval].
 	^ newWidget
 ]
 
-{ #category : #accessing }
+{ #category : #'morph->presenter' }
 SpMorphicRichTextAdapter >> getText [
+	"called by morph to get text from model"
 	^ model text
 ]
 
-{ #category : #factory }
+{ #category : #'morph->presenter' }
 SpMorphicRichTextAdapter >> menu [
 	^ nil.
 ]
 
-{ #category : #factory }
+{ #category : #'presenter->morph' }
+SpMorphicRichTextAdapter >> selectionInterval [
+	"called by the presenter to get the selection in the morph"
+	^ self widget selectionInterval
+]
+
+{ #category : #'presenter->morph' }
+SpMorphicRichTextAdapter >> selectionInterval: anInterval [
+	"called by presenter to set selection in morph"
+	self widgetDo: [ :w | w setTextAreaSelection: anInterval ].
+	
+]
+
+{ #category : #'morph->presenter' }
+SpMorphicRichTextAdapter >> setSelection: interval [
+	"Called when a selection happens in the widget"
+	self model selectionInterval: interval
+]
+
+{ #category : #'presenter->morph' }
+SpMorphicRichTextAdapter >> setText: aText [
+	"called by presenter to set text in morph"
+	widget ifNotNil: [ widget setText: aText ]
+]
+
+{ #category : #'morph->presenter' }
 SpMorphicRichTextAdapter >> shiftMenu [
 	^ nil.
 ]
