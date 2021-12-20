@@ -96,6 +96,7 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	recurse with resolved reference as root
 	insert ast into me
 	"
+
 	inputRef := anInputFileAnnotation path.
 	resource := inputRef resolveResourceIn: (MicUrlResolver new
 		currentWorkingDirectory: topFile;
@@ -105,8 +106,8 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	(isStrict not and: [ resource exists not])
 		ifTrue: [ ^ self ].
 	
-	inputDoc := resource parseMicrodown.
-	inputDoc accept: (self class new topFile: inputRef).
+	(self class new topFile: resource fileReference parent)
+		visit: (inputDoc := resource parseMicrodown).
 	self replaceCurrentNodeBy: inputDoc children
 	
 ]

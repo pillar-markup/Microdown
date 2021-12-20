@@ -83,6 +83,45 @@ Pharo is **cool**
 ]
 
 { #category : #tests }
+MicFileIncluderTest >> testHandleNestedFileResolution [
+
+	| root file resolvedReference |
+	(filesystem workingDirectory / 'Chapters') createDirectory.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=SUnit/anExample1.md}?' ].
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
+?{inputFile|path=anExample2.md}?''
+
+' ].
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample2.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Example2
+' ].
+	
+	resolvedReference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') resolveResourceIn: resolver.
+
+	includer topFile: resolvedReference fileReference parent.
+	includer visit: (root := resolvedReference parseMicrodown).
+
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first header equals: 'Foo'.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	
+	self flag: #tofix. 
+	"this is wrong the header should not be inside a paragraph"
+	
+	self assert: root children first children second children first class equals: MicHeaderBlock.
+	self assert: root children first children second children first header equals: 'Example2'.
+
+
+
+]
+
+{ #category : #tests }
 MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 
 	| root file resolvedReference |
