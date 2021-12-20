@@ -17,6 +17,12 @@ MicFileResource class >> on: fileReference reference: aReference [
 ]
 
 { #category : #accessing }
+MicFileResource >> binaryReadStream [
+	
+	^ fileReference binaryReadStream 
+]
+
+{ #category : #accessing }
 MicFileResource >> contents [
 	
 	^ fileReference contents

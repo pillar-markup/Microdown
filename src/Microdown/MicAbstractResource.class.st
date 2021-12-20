@@ -7,10 +7,10 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #accessing }
+{ #category : #converting }
 MicAbstractResource >> asForm [
 
-	self subclassResponsibility
+	^ ImageReadWriter formFromStream: self binaryReadStream
 ]
 
 { #category : #accessing }

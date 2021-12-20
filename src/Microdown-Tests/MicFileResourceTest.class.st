@@ -30,10 +30,13 @@ MicFileResourceTest >> setUp [
 
 { #category : #tests }
 MicFileResourceTest >> testLoadImage [
-	|uri ref image |
+
+	| uri ref image |
 	uri := 'file:///toplevel.png'.
-	ref := MicResourceReference  fromUri: uri.
-	image := ImageReadWriter formFromStream: (ref resolvedBy: filesystem root) binaryReadStream.
+	ref := MicResourceReference fromUri: uri.
+	image := (ref resolveResourceIn: (MicUrlResolver new
+			           currentWorkingDirectory: filesystem workingDirectory;
+			           yourself)) asForm.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
@@ -41,11 +44,11 @@ MicFileResourceTest >> testLoadImage [
 
 { #category : #tests }
 MicFileResourceTest >> testLoadMicrodown [
-	|uri ref doc fileReference |
+	| uri ref doc resolvedReference |
 	uri := 'file:///readme.md'.
 	ref := MicResourceReference  fromUri: uri.
-	fileReference := ref resolvedBy: filesystem root.
-	doc := Microdown parse: fileReference contents.
+	resolvedReference := ref resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	doc := resolvedReference parseMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	

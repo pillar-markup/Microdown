@@ -20,9 +20,3 @@ MicFileResourceReference >> resolveResourceIn: aResolver [
 
 	^ aResolver resolveAbsoluteFilePath: self
 ]
-
-{ #category : #converting }
-MicFileResourceReference >> resolvedBy: aRoot [
-	
-	^ aRoot resolvePath: uri path
-]

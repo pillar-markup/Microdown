@@ -60,7 +60,7 @@ MicAbstractResolver class >> rawImageFrom: aURL [
 { #category : #'accessing - resources' }
 MicAbstractResolver >> basicResolveAbsoluteFilePath: anAbsoluteFileURL [
 
-	self halt.
+	self subclassResponsibility
 ]
 
 { #category : #'accessing - resources' }

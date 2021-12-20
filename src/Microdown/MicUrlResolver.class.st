@@ -20,6 +20,16 @@ MicUrlResolver >> baseUrl: anObject [
 	baseUrl := anObject
 ]
 
+{ #category : #'accessing - resources' }
+MicUrlResolver >> basicResolveAbsoluteFilePath: anAbsoluteMicFileReference [ 
+
+	| fileReference |
+	fileReference := currentWorkingDirectory resolvePath: anAbsoluteMicFileReference path.
+	fileReference exists 	
+		ifFalse: [ ^ MicNotFoundResource resource: anAbsoluteMicFileReference ].
+	^ MicFileResource on: fileReference reference: anAbsoluteMicFileReference
+]
+
 { #category : #resolving }
 MicUrlResolver >> basicResolveRelativeReference: aMicRelativeReference [ 
 	

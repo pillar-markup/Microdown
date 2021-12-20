@@ -17,9 +17,9 @@ MicHttpResource class >> on: anEntity reference: aReference [
 ]
 
 { #category : #converting }
-MicHttpResource >> asForm [
+MicHttpResource >> binaryReadStream [
 
-	^ ImageReadWriter formFromStream: entity readStream
+	^ entity readStream
 ]
 
 { #category : #accessing }
