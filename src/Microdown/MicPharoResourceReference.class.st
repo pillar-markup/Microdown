@@ -36,17 +36,38 @@ MicPharoResourceReference >> executeUri [
 { #category : #resolving }
 MicPharoResourceReference >> resolveOnCurrentImage [
 	
-	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
+	"I assume the uri to have the form: 'pharo:///class/selector'"
 
-	| class selector size args className theClass |
+	| class selector size args className theClass theMethod |
 	
 	className := uri segments first asSymbol.
-	theClass := self class environment at: className.
+	theClass := self class environment
+		at: className
+		ifAbsent: [ ^ MicNotFoundResource resource: self ].
 	uri segments size = 1 ifTrue: [ 
 		^ MicPharoClassResource on: theClass reference: self ].
 	
-	1halt.
 	selector := uri segments second asSymbol.
+	theMethod := (theClass includesSelector: selector)
+		ifFalse: [ ^ MicNotFoundResource resource: self ]
+		ifTrue: [ theClass >> selector ].
+	uri segments size = 2 ifTrue: [ 
+		^ MicPharoMethodResource on: theMethod reference: self ].
+
+
+	"Evaluation of methods not implemented yet.
+	Possible ideas to support it in a REST fashion are
+	
+	- support evaluation with receiver and arguments through query string
+	pharo:///class/selector/evaluate?receiver=...&argument1=...
+	
+	- support senders/implementors queries
+	
+	pharo:///class/selector/senders
+	pharo:///class/selector/implementors
+	"
+	self notYetImplemented.
+		
 	args := (size := uri segments size) > 2
 		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
 		        ifFalse: [ #(  ) ].

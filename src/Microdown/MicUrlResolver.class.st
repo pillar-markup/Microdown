@@ -79,5 +79,5 @@ MicUrlResolver >> initialize [
 	"Use by default an empty url, it should fail all requests by default"
 	baseUrl := ''.
 	"Use an empty in-memory file system that will contain no files"
-	currentWorkingDirectory := FileSystem memory.
+	currentWorkingDirectory := FileSystem memory root.
 ]

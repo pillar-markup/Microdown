@@ -7,12 +7,6 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #visiting }
-MicAbstractResource >> accept: aVisitor [
-
-	^ self subclassResponsibility
-]
-
 { #category : #converting }
 MicAbstractResource >> asForm [
 

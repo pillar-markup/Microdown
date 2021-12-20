@@ -24,16 +24,15 @@ MicFileResourceTest >> setUp [
 	file writeStreamDo: [ :stream | stream nextPutAll: readme].
 	
 	file := filesystem workingDirectory / 'toplevel.png'.
-	PNGReadWriter putForm: image onStream: file binaryWriteStream .
+	PNGReadWriter putForm: image onStream: file binaryWriteStream.
 	
 ]
 
 { #category : #tests }
 MicFileResourceTest >> testLoadImage [
 
-	| uri ref image |
-	uri := 'file:///toplevel.png'.
-	ref := MicResourceReference fromUri: uri.
+	| ref image |
+	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
 	image := (ref resolveResourceIn: (MicUrlResolver new
 			           currentWorkingDirectory: filesystem workingDirectory;
 			           yourself)) asForm.
@@ -52,4 +51,14 @@ MicFileResourceTest >> testLoadMicrodown [
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	
+]
+
+{ #category : #tests }
+MicFileResourceTest >> testLoadNotFoundImage [
+
+	| ref image |
+	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
+	image := (ref resolveResourceIn: MicUrlResolver new) asForm.
+
+	self assert: image isNil
 ]

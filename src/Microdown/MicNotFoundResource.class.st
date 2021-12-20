@@ -8,6 +8,14 @@ Class {
 }
 
 { #category : #'instance creation' }
+MicNotFoundResource class >> resource: aResource [
+	
+	^ self new
+		notFoundReference: aResource;
+		yourself
+]
+
+{ #category : #'instance creation' }
 MicNotFoundResource class >> resource: aResource error: anError [
 	
 	^ self new
@@ -26,6 +34,12 @@ MicNotFoundResource >> asForm [
 MicNotFoundResource >> asRenderedOn: aRenderer withinNode: aNode [
 	
 	^ aRenderer renderNotFoundResource: self inNode: aNode
+]
+
+{ #category : #converting }
+MicNotFoundResource >> asText [
+	
+	^ 'Resource not found' asText
 ]
 
 { #category : #accessing }
