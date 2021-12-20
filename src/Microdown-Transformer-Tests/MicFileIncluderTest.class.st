@@ -45,16 +45,17 @@ MicFileIncluderTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - simple' }
 MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 	| root file resolvedReference |	
 	file := filesystem workingDirectory / 'test.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.md}?' ].
+	
 	resolvedReference := (MicResourceReference fromUri: 'file:///test.md') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	
-	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
+	"here we verify that ?{ ... }? is not a block and an element of a paragraph"
 	self assert: root children first class equals: MicParagraphBlock.
 	self assert: root children first children first class equals: MicInputfileBlock.
 	
@@ -82,7 +83,7 @@ Pharo is **cool**
 ]
 
 { #category : #tests }
-MicFileIncluderTest >> testIncluderIncludesInputFile [
+MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 
 	| root file resolvedReference |
 	(filesystem workingDirectory / 'Chapters') createDirectory.
@@ -97,9 +98,9 @@ Pharo is cool
 ```
 ' ].
 	
-	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.md}?' ].
+	
 	resolvedReference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.md') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 					
@@ -107,9 +108,6 @@ Pharo is cool
 	self assert: (root children first children first path isKindOf: MicResourceReference).			
 
 	includer visit: root.
-	"even if inputFile was in a paragraph this raises the question of where do we put the expansion. 
-	For example putting a header inside a paragraph does not make sense. 
-	I feel that I would prefer to have a top level expander in addition to an in place expander."
 
 	self assert: root children first children first class equals: MicHeaderBlock.
 	self assert: root children first children first header equals: 'Foo'.

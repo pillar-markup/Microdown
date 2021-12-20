@@ -3,7 +3,7 @@ I'm a silly `MicNodeTransformer`: I delete code block and replace paragraph by t
 "
 Class {
 	#name : #MicNodeTransformerCodeDeleterMock,
-	#superclass : #MicNodeTransformer,
+	#superclass : #AnObsoleteMicNodeTransformer,
 	#category : #'Microdown-Transformer-Tests'
 }
 
