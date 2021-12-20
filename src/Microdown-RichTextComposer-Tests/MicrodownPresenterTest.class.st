@@ -1,10 +1,10 @@
 Class {
-	#name : #MicrodownPresenter2Test,
+	#name : #MicrodownPresenterTest,
 	#superclass : #SpRichTextPresenterTest,
 	#category : #'Microdown-RichTextComposer-Tests-Presenter'
 }
 
 { #category : #accessing }
-MicrodownPresenter2Test >> classToTest [
+MicrodownPresenterTest >> classToTest [
 	^ MicrodownPresenter 
 ]
