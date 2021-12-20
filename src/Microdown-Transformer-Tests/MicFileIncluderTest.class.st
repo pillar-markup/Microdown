@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
-		'includer'
+		'includer',
+		'resolver'
 	],
 	#category : #'Microdown-Transformer-Tests'
 }
@@ -39,6 +40,8 @@ MicFileIncluderTest >> setUp [
 	includer topFile: filesystem root.
 	
 	self generateFilesystemExample.
+	
+	resolver := MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself.
 
 ]
 
@@ -48,7 +51,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 	| root file resolvedReference |	
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.mic}?' ].
-	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	
 	"here we verify that ?{ ...}? is not a block and an element of a paragraph"
@@ -58,7 +61,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - simple' }
 MicFileIncluderTest >> testGenerateFilesystemIsGood [
 	
 	self assert: (filesystem workingDirectory / 'anExample1.mic') contents equals: '# Foo
@@ -97,7 +100,7 @@ Pharo is cool
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.mic}?' ].
-	resolvedReference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 					
 	self assert: root children first children first class equals: MicInputfileBlock.
@@ -126,7 +129,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.mic}?
 ?{inputFile|path=anExample2.mic}?' ].
-	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	includer visit: root.
 
@@ -151,7 +154,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
 
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.mic}? ?{inputFile|path=anExample2.mic}?' ].
-	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	
 	includer visit: root.
@@ -176,7 +179,7 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 	file := filesystem workingDirectory / 'test.mic'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample3.mic}?'].
 	
-	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	
 	includer beRelaxed.
@@ -193,7 +196,7 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	file writeStreamDo: [ :stream | stream nextPutAll: '?{inputFile|path=anExample1.mic}? 
 
 ?{inputFile|path=anExample2.mic}?' ].
-	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: (MicUrlResolver new currentWorkingDirectory: filesystem workingDirectory; yourself).
+	resolvedReference := (MicResourceReference fromUri: 'file:///test.mic') resolveResourceIn: resolver.
 	root := resolvedReference parseMicrodown.
 	includer visit: root.
 
