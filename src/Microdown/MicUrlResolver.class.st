@@ -17,11 +17,9 @@ MicUrlResolver >> basicResolveUrl: anAbsoluteFileURL [
 	[
 	(client := ZnEasy client)
 		url: anAbsoluteFileURL uri asString;
-		accept: (ZnMimeType main: 'image' sub: '*');
 		enforceHttpSuccess: true;
-		enforceAcceptContentType: true;
 		get ] on: ZnHttpUnsuccessful do: [ :error |
 			^ MicNotFoundResource resource: anAbsoluteFileURL error: error ].
 
-	^ MicHttpResource on: client entity
+	^ MicHttpResource on: client entity reference: anAbsoluteFileURL
 ]

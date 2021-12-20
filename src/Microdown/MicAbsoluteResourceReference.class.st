@@ -23,12 +23,6 @@ MicAbsoluteResourceReference >> isResolved [
 	^true
 ]
 
-{ #category : #'accessing - resources' }
-MicAbsoluteResourceReference >> loadMicrodown [
-	"load, parse and resolve a microdown document"
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	^ '/', self uri path

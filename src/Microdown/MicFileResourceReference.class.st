@@ -16,16 +16,6 @@ Class {
 }
 
 { #category : #'accessing - resources' }
-MicFileResourceReference >> loadMicrodown [
-
-	"load, parse and resolve a microdown document"
-	| docString doc |
-	docString := self asFileReference contents.
-	doc := Microdown new parse: docString.
-	^ doc
-]
-
-{ #category : #'accessing - resources' }
 MicFileResourceReference >> resolveResourceIn: aResolver [
 
 	^ aResolver resolveAbsoluteFilePath: self

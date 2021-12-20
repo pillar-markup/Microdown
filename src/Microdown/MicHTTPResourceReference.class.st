@@ -10,16 +10,6 @@ Class {
 }
 
 { #category : #'accessing - resources' }
-MicHTTPResourceReference >> loadMicrodown [
-	"load, parse and resolve a microdown document"
-	| docString doc |
-	docString := (ZnEasy get: uri) contents.
-	doc := Microdown new parse: docString.
-	MicZincPathResolver resolve: doc withBase: uri.
-	^doc
-]
-
-{ #category : #'accessing - resources' }
 MicHTTPResourceReference >> resolveResourceIn: aResolver [
 
 	^ aResolver resolveUrl: self

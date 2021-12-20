@@ -32,12 +32,6 @@ MicPharoResourceReference >> executeUri [
 ]
 
 { #category : #'accessing - resources' }
-MicPharoResourceReference >> loadMicrodown [
-	"return an image form from my reference"
-	^ self executeUri 
-]
-
-{ #category : #'accessing - resources' }
 MicPharoResourceReference >> resolveResourceIn: aResolver [
 
 	^ aResolver resolvePharoResource: self

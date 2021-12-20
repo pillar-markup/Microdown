@@ -98,6 +98,12 @@ MicResourceReference >> loadMicrodown [
 ]
 
 { #category : #accessing }
+MicResourceReference >> loadMicrodown: aResolver [
+
+	^ (self resolveResourceIn: aResolver) parseMicrodown
+]
+
+{ #category : #accessing }
 MicResourceReference >> originalString [
 	
 	^ originalString 

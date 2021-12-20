@@ -2,16 +2,18 @@ Class {
 	#name : #MicHttpResource,
 	#superclass : #Object,
 	#instVars : [
-		'entity'
+		'entity',
+		'reference'
 	],
 	#category : #'Microdown-Core'
 }
 
 { #category : #'instance creation' }
-MicHttpResource class >> on: anEntity [
+MicHttpResource class >> on: anEntity reference: aReference [
 
 	^ self new
 		entity: anEntity;
+		reference: aReference;
 		yourself
 ]
 
@@ -31,4 +33,25 @@ MicHttpResource >> entity [
 MicHttpResource >> entity: anObject [
 
 	entity := anObject
+]
+
+{ #category : #converting }
+MicHttpResource >> parseMicrodown [
+	
+	| doc |
+	doc := Microdown new parse: entity contents.
+	MicZincPathResolver resolve: doc withBase: reference uri.
+	^doc
+]
+
+{ #category : #accessing }
+MicHttpResource >> reference [
+
+	^ reference
+]
+
+{ #category : #accessing }
+MicHttpResource >> reference: anObject [
+
+	reference := anObject
 ]
