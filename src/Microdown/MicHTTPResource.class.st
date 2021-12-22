@@ -1,78 +1,56 @@
-"
-I am a http reference encapsulating a http uri (`http//host/path/to/some/file.md`).
-
-
-"
 Class {
-	#name : #MicHTTPResource,
-	#superclass : #MicAbsoluteResource,
-	#classVars : [
-		'ImageCache',
-		'ImageNotCachedBlock'
+	#name : #MicHttpResource,
+	#superclass : #MicAbstractResource,
+	#instVars : [
+		'entity'
 	],
 	#category : #'Microdown-Core'
 }
 
-{ #category : #images }
-MicHTTPResource class >> cachedImageFromUrl: aUrl [
-	"In case a url is not in the cache, it is either read from the net, or if the ImageNotCachedBlock
-	is non nil, the image returned by ImageNotCachedBlock is returned, but not stored in the cache"
+{ #category : #'instance creation' }
+MicHttpResource class >> on: anEntity reference: aReference [
+
+	^ self new
+		entity: anEntity;
+		reference: aReference;
+		yourself
+]
+
+{ #category : #visiting }
+MicHttpResource >> asRenderedOn: aRenderer withinNode: aNode [
+
+	^ aRenderer renderHttpResource: self inNode: aNode
+]
+
+{ #category : #converting }
+MicHttpResource >> binaryReadStream [
+
+	^ entity readStream
+]
+
+{ #category : #accessing }
+MicHttpResource >> contents [
 	
-	(self imageCache includesKey: aUrl)
-		ifTrue: [ ^ self imageCache at: aUrl ].
+	^ entity contents utf8Decoded
+]
+
+{ #category : #accessing }
+MicHttpResource >> entity [
+
+	^ entity
+]
+
+{ #category : #accessing }
+MicHttpResource >> entity: anObject [
+
+	entity := anObject
+]
+
+{ #category : #converting }
+MicHttpResource >> parseMicrodown [
 	
-	^ ImageNotCachedBlock 
-		ifNil: [ |image|
-			image := self rawImageFrom: aUrl.
-			image ifNil: [ ^ nil ].
-			"at: aUrl put: image retuns image!"
-			self imageCache at: aUrl put: image]
-		ifNotNil: [ 
-			ImageNotCachedBlock value: aUrl]
-]
-
-{ #category : #images }
-MicHTTPResource class >> imageCache [
-	ImageCache ifNil:[ImageCache := LRUCache new ].
-	^ImageCache
-]
-
-{ #category : #images }
-MicHTTPResource class >> imageNotCachedBlock: aHandlerBlock [ 
-	"If an image is not in the cache, execute this block get an image. 
-	Do not store the produced image in the cache."
-	ImageNotCachedBlock := aHandlerBlock
-]
-
-{ #category : #'class initialization' }
-MicHTTPResource class >> initialize [
-	<script>
-	ImageCache := nil.
-	ImageNotCachedBlock := nil
-]
-
-{ #category : #images }
-MicHTTPResource class >> rawImageFrom: aURL [
-	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
-	on: Exception
-	do: [ ^ nil ]
-		
-]
-
-{ #category : #'accessing - resources' }
-MicHTTPResource >> loadImage [
-	"return an image form from my reference"
-	^ self class cachedImageFromUrl: uri asString
-]
-
-{ #category : #'accessing - resources' }
-MicHTTPResource >> loadMicrodown [
-	"load, parse and resolve a microdown document"
-	| docString doc |
-	[ docString := (ZnEasy get: uri) contents.
-	  doc := Microdown new parse: docString.
-	  MicZinkPathResolver resolve: doc withBase: uri.
-	  ^doc]
-	on: Error
-	do: [ ^ nil ]
+	| doc |
+	doc := super parseMicrodown.
+	MicZincPathResolver resolve: doc withBase: reference uri.
+	^doc
 ]

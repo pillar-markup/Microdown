@@ -61,11 +61,11 @@ MicFigureBlock >> hasCaption [
 	^ captionElements notNil 
 ]
 
-{ #category : #testing }
-MicFigureBlock >> isImageFile [
-	"Answer whether the file name indicates an image file."
+{ #category : #accessing }
+MicFigureBlock >> initialize [
 
-	^ url isImage
+	super initialize.
+	parameters := OrderedDictionary new
 ]
 
 { #category : #accessing }

@@ -4,6 +4,9 @@ A MicHTTPResourceTest is a test class for testing the behavior of MicHTTPResourc
 Class {
 	#name : #MicHTTPResourceTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'resolver'
+	],
 	#category : #'Microdown-Tests-Resources'
 }
 
@@ -15,39 +18,46 @@ MicHTTPResourceTest class >> githubTestData [
 { #category : #running }
 MicHTTPResourceTest >> setUp [
 	super setUp.
-	MicHTTPResource initialize.
-	
-	
+	resolver := MicUrlResolver new baseUrlString: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testErrorLoad [
- 	|uri ref image |
- 	uri := 'nonexistingImage.png' asMicResourceUri.
- 	ref := uri resolveWith: self class githubTestData.
- 	image := ref loadImage.
- 	self assert: image isNil
+MicHTTPResourceTest >> testErrorNonCorrectImage [
+
+	| uri |
+	uri := 'readme.md' asMicResourceUri.
+	
+	self
+		should: [(uri resolveResourceIn: resolver) asForm]
+		raise: UnrecognizedImageFormatError
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testErrorLoadWithHandler [
- 	|uri ref image noImage|
- 	noImage := 'UUUPS - No image' asMorph asForm.
- 	MicHTTPResource imageNotCachedBlock:  [ :dummyUrl | noImage ].
- 	uri := 'nonexistingImage.png' asMicResourceUri.
- 	ref := uri resolveWith: self class githubTestData.
- 	image := ref loadImage.
- 	self assert: image equals: noImage.
- 	"The error image was not added to the cache"
- 	self deny: (MicHTTPResource imageCache includesKey: ref originalString )
+MicHTTPResourceTest >> testErrorNonExistingImage [
+
+	| uri image |
+	uri := 'nonexistingImage.png' asMicResourceUri.
+	
+	image := (uri resolveResourceIn: resolver) asForm.
+	self assert: image isNil
+]
+
+{ #category : #tests }
+MicHTTPResourceTest >> testLoadErrorMicrodown [
+	| uri |
+	uri := 'toplevel.png' asMicResourceUri.
+
+	self
+		should: [uri loadMicrodown: resolver]
+		raise: ZnInvalidUTF8
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
-	|uri ref image |
+
+	| uri image |
 	uri := 'toplevel.png' asMicResourceUri.
-	ref := uri resolveWith: self class githubTestData.
-	image := ref loadImage.
+	image := uri loadImage: resolver.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
@@ -55,39 +65,36 @@ MicHTTPResourceTest >> testLoadImage [
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodown [
-	|uri ref doc |
+	| uri doc |
 	uri := 'readme.md' asMicResourceUri.
-	ref := uri resolveWith: self class githubTestData.
-	doc := ref loadMicrodown.
+	doc := uri loadMicrodown: resolver.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodownResolves [
-	|uri ref doc topLevelImageRef |
+MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
+
+	| uri doc topLevelImageRef |
 	uri := 'readme.md' asMicResourceUri.
-	ref := uri resolveWith: self class githubTestData.
-	doc := ref loadMicrodown.
-	
+	doc := uri loadMicrodown: resolver.
+
 	topLevelImageRef := doc children fourth children first.
 	self assert: topLevelImageRef class equals: MicFigureBlock.
-	self assert: topLevelImageRef reference isResolved.
-	self assert: topLevelImageRef reference loadImage height equals: 90
-	
+	self
+		assert: (topLevelImageRef reference loadImage: MicUrlResolver new) height
+		equals: 90
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodownResolvesTopLevel [
-	|uri ref doc topLevelImageRef |
-	uri := 'readme.md' asMicResourceUri.
-	ref := uri resolveWith: self class githubTestData.
-	doc := ref loadMicrodown.
+MicHTTPResourceTest >> testLoadNonExistingMicrodown [
+	| uri doc |
+	uri := 'readmeNOT.md' asMicResourceUri.
 	
-	topLevelImageRef := doc children fourth children first.
-	self assert: topLevelImageRef class equals: MicFigureBlock.
-	self assert: topLevelImageRef reference isResolved.
-	self assert: topLevelImageRef reference loadImage height equals: 90
-	
+	[
+		uri loadMicrodown: resolver.
+		self fail
+	] on: Error do: [ :e |
+		self assert: e messageText equals: 'Microdown file not found' ]
 ]
