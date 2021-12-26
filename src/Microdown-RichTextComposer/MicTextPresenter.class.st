@@ -14,7 +14,7 @@ I work together with `SpMorphicRichTextAdapter` and `SpRichTextMorph`. The morph
 I support `MicScalingTextAnchor`. When the size of the morph changes, the morph calls my render method. I then rescale the scaleable images (if any). As I am read-only, the location of the scalable images do not change, and I keep a list of the indexes where they are in `imageIndexes`. imageIndexes are computed in `text:`.
 "
 Class {
-	#name : #SpRichTextPresenter,
+	#name : #MicTextPresenter,
 	#superclass : #SpAbstractWidgetPresenter,
 	#instVars : [
 		'#text => ObservableSlot',
@@ -26,13 +26,13 @@ Class {
 }
 
 { #category : #specs }
-SpRichTextPresenter class >> adapterName [
+MicTextPresenter class >> adapterName [
 
-	^ #SpMorphicRichTextAdapter
+	^ #MicMorphicTextAdapter
 ]
 
 { #category : #'as yet unclassified' }
-SpRichTextPresenter class >> cheetSheet [
+MicTextPresenter class >> cheetSheet [
 ^ Microdown parse: '# Markdown Cheatsheet
 
 % adapted from https://raw.githubusercontent.com/tchapi/markdown-cheatsheet/master/README.md
@@ -182,7 +182,7 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 ]
 
 { #category : #examples }
-SpRichTextPresenter class >> example [
+MicTextPresenter class >> example [
 	<example>
 	^ self new
 		text: ( Microdown asRichText: self cheetSheet  );
@@ -190,7 +190,7 @@ SpRichTextPresenter class >> example [
 ]
 
 { #category : #'instance creation' }
-SpRichTextPresenter class >> sampleDocument [
+MicTextPresenter class >> sampleDocument [
 	"I return a sample document"
 	^ Microdown parse: '# Header 1
 ## Header 2
@@ -207,7 +207,7 @@ And this is another line'
 ]
 
 { #category : #api }
-SpRichTextPresenter >> enabled: aBoolean [
+MicTextPresenter >> enabled: aBoolean [
 	"Set if the widget is enabled (clickable or focusable)"
 
 	super enabled: aBoolean.
@@ -215,27 +215,27 @@ SpRichTextPresenter >> enabled: aBoolean [
 ]
 
 { #category : #initialization }
-SpRichTextPresenter >> initialize [
+MicTextPresenter >> initialize [
 	super initialize.
 	text := '' asText.
 	scalingImageIndexes := Array new.
 ]
 
 { #category : #testing }
-SpRichTextPresenter >> isWrapWord [
+MicTextPresenter >> isWrapWord [
 	"Answer true if words will be wrapped to make text fit horizontally into component area."
 
 	^ wrapWord
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> rawSelection: anInterval [
+MicTextPresenter >> rawSelection: anInterval [
 
 	self property: #selection rawValue: anInterval
 ]
 
 { #category : #accessing }
-SpRichTextPresenter >> renderWidth: renderWidth [
+MicTextPresenter >> renderWidth: renderWidth [
 	"I am called by the morph directly to recompute image sizes"
 	adapter ifNil: [ ^self ]. "I can be asked to render during setup"
 	scalingImageIndexes  do: [ :idx | 
@@ -243,17 +243,17 @@ SpRichTextPresenter >> renderWidth: renderWidth [
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> selectAll [
+MicTextPresenter >> selectAll [
 	self selectionInterval: (1 to: text size)
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> selectNone [
+MicTextPresenter >> selectNone [
 	self selectionInterval: (1 to: 0)
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> selectedText [ 
+MicTextPresenter >> selectedText [ 
 	"Answer the text contained in selection interval 
 	(See `SpAbstractTextPresenter>>#selectionInterval`)"
 	| selectionInterval |
@@ -267,7 +267,7 @@ SpRichTextPresenter >> selectedText [
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> selectionInterval [
+MicTextPresenter >> selectionInterval [
 	"Answer the text selection interval (an interval from start to end)."
 	
 	self withAdapterDo: [ :anAdapter | 
@@ -276,7 +276,7 @@ SpRichTextPresenter >> selectionInterval [
 ]
 
 { #category : #selection }
-SpRichTextPresenter >> selectionInterval: anInterval [
+MicTextPresenter >> selectionInterval: anInterval [
 	"Set the text selection interval.
 	 `anInterval` is an `Interval` from the first character selected to the end."
 	
@@ -286,13 +286,13 @@ SpRichTextPresenter >> selectionInterval: anInterval [
 ]
 
 { #category : #accessing }
-SpRichTextPresenter >> text [
+MicTextPresenter >> text [
 
 	^ text
 ]
 
 { #category : #accessing }
-SpRichTextPresenter >> text: aText [
+MicTextPresenter >> text: aText [
 	text := aText asText "just in case I was given a string".
 	scalingImageIndexes := (1 to: text size) 
 		select: [ :idx | 
@@ -303,7 +303,7 @@ SpRichTextPresenter >> text: aText [
 ]
 
 { #category : #enumerating }
-SpRichTextPresenter >> whenSelectionChangedDo: aBlock [
+MicTextPresenter >> whenSelectionChangedDo: aBlock [
 	"Inform when selection changed. 
 	 `aBlock` receives two optional arguments 
 	 - new selection
@@ -313,7 +313,7 @@ SpRichTextPresenter >> whenSelectionChangedDo: aBlock [
 ]
 
 { #category : #api }
-SpRichTextPresenter >> whenTextChangedDo: aBlock [
+MicTextPresenter >> whenTextChangedDo: aBlock [
 	"Inform when text has been changed (`text:` has been called)
 	 `aBlock` receives two optional arguments 
 	 - new text

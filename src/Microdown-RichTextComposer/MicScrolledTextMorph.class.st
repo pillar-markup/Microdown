@@ -7,18 +7,18 @@ I override `font:` to do nothing, preventing the Spec engine to remove the fonts
 I override `textAreaExtentChanged` to hook into rescaling of UI. Notice I assume my model is a `SpMorphicRichTextAdapter`, and that its model is a `SpRichTextPresenter`. 
 "
 Class {
-	#name : #SpRichTextMorph,
+	#name : #MicScrolledTextMorph,
 	#superclass : #RubScrolledTextMorph,
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #accessing }
-SpRichTextMorph >> font: aFont [
+MicScrolledTextMorph >> font: aFont [
 	"we do not want to set the font, so we do nothing here"
 ]
 
 { #category : #'event handling' }
-SpRichTextMorph >> textAreaExtentChanged [
+MicScrolledTextMorph >> textAreaExtentChanged [
 	super textAreaExtentChanged.
 	"When textArea size change, scalable images might need to be redrawn"
 	self model model renderWidth: self width.

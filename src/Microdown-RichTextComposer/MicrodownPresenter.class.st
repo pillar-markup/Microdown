@@ -1,12 +1,16 @@
 "
-I am intended to be a specialized RichTextPresenter which works with a microdown document rather than the composed text.
+I am a presenter for a microdown document.
+
+The document rendered into a Text in the document: method.
+
+It is possible to control various aspects of the Text generation using a `MicTextStyler` instance.
 "
 Class {
 	#name : #MicrodownPresenter,
-	#superclass : #SpRichTextPresenter,
+	#superclass : #MicTextPresenter,
 	#instVars : [
-		'document',
-		'textStyler'
+		'#document => ObservableSlot',
+		'#textStyler => ObservableSlot'
 	],
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
@@ -15,7 +19,16 @@ Class {
 MicrodownPresenter class >> open [
 	<script>
 	(self new 
-		document: SpRichTextPresenter cheetSheet  ) openWithSpec 
+		document: MicTextPresenter cheetSheet  ) openWithSpec 
+]
+
+{ #category : #composing }
+MicrodownPresenter >> compose [
+
+	self document ifNil: [ ^self ].
+	self text: (MicRichTextComposer  new 
+		textStyler: self textStyler; 
+		asRichText: self document)
 ]
 
 { #category : #accessing }
@@ -28,9 +41,7 @@ MicrodownPresenter >> document [
 MicrodownPresenter >> document: aNode [
 
 	document := aNode.
-	self text: (MicRichTextComposer  new 
-		textStyler: self textStyler; 
-		asRichText: aNode)
+	self compose.
 ]
 
 { #category : #accessing }
@@ -53,7 +64,20 @@ MicrodownPresenter >> textStyler [
 ]
 
 { #category : #accessing }
-MicrodownPresenter >> textStyler: anObject [
+MicrodownPresenter >> textStyler: styler [
 
-	textStyler := anObject
+	textStyler := styler.
+	self compose
+]
+
+{ #category : #enumerating }
+MicrodownPresenter >> whenDocumentChangedDo: aBlock [
+
+	self property: #document whenChangedDo: aBlock
+]
+
+{ #category : #enumerating }
+MicrodownPresenter >> whenTextStylerChangedDo: aBlock [
+
+	self property: #textStyler whenChangedDo: aBlock
 ]

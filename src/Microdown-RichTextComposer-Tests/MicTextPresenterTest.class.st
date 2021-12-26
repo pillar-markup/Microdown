@@ -2,36 +2,49 @@
 A SpRichTextPresenterTest is a test class for testing the behavior of SpRichTextPresenter
 "
 Class {
-	#name : #SpRichTextPresenterTest,
+	#name : #MicTextPresenterTest,
 	#superclass : #SpSmokeTest,
 	#category : #'Microdown-RichTextComposer-Tests-Presenter'
 }
 
 { #category : #accessing }
-SpRichTextPresenterTest >> adapter [
+MicTextPresenterTest >> adapter [
 	"We do not use this for anything. 
 	When the framework start using this, give us an error so we can fix it"
 	self error: 'Somewhere the frameworks started using this method - can we use it?'
 ]
 
 { #category : #accessing }
-SpRichTextPresenterTest >> classToTest [
-	^ SpRichTextPresenter 
+MicTextPresenterTest >> classToTest [
+	^ MicTextPresenter 
 ]
 
 { #category : #running }
-SpRichTextPresenterTest >> setUp [
+MicTextPresenterTest >> setUp [
 	super setUp.
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testAdapterExists [
+MicTextPresenterTest >> testAdapterExists [
 	self openInstance.
 	self assert: presenter adapter notNil
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testSelectAll [
+MicTextPresenterTest >> testHugeFontIsHuge [
+	| hugeText pointSize |
+	pointSize := 104.
+	hugeText := 'huge' asText addAttribute: 
+		(TextFontReference toFont: (LogicalFont
+			familyName: 'Source Sans Pro'
+			pointSize: pointSize)).
+	presenter text: hugeText.
+	self openInstance.
+	self assert: presenter adapter widget textArea height > pointSize 
+]
+
+{ #category : #tests }
+MicTextPresenterTest >> testSelectAll [
 	| txt |
 	txt := 'some text to select' asText.
 	presenter text: txt.
@@ -41,7 +54,7 @@ SpRichTextPresenterTest >> testSelectAll [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testSelectNone [
+MicTextPresenterTest >> testSelectNone [
 	| txt |
 	txt := 'some text to select' asText.
 	presenter text: txt.
@@ -51,7 +64,7 @@ SpRichTextPresenterTest >> testSelectNone [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testSelectSome [
+MicTextPresenterTest >> testSelectSome [
 	| txt |
 	txt := 'some text to select' asText.
 	presenter text: txt.
@@ -61,7 +74,7 @@ SpRichTextPresenterTest >> testSelectSome [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testSelectSomeOther [
+MicTextPresenterTest >> testSelectSomeOther [
 	| txt |
 	txt := 'some text to select' asText.
 	self openInstance.
@@ -71,7 +84,7 @@ SpRichTextPresenterTest >> testSelectSomeOther [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testSelectingInEditor [
+MicTextPresenterTest >> testSelectingInEditor [
 	| txt |
 	txt := 'some text to select' asText.
 	presenter text: txt.
@@ -81,13 +94,13 @@ SpRichTextPresenterTest >> testSelectingInEditor [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testWidgetExists [
+MicTextPresenterTest >> testWidgetExists [
 	self openInstance.
 	self assert: presenter adapter widget notNil
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testwhenSelectionChangedDo [
+MicTextPresenterTest >> testwhenSelectionChangedDo [
 	| txt wasHere |
 	wasHere := false.
 	txt := 'some text to select' asText.
@@ -99,7 +112,7 @@ SpRichTextPresenterTest >> testwhenSelectionChangedDo [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testwhenSelectionChangedDoFromEditor [
+MicTextPresenterTest >> testwhenSelectionChangedDoFromEditor [
 	| txt wasHere |
 	wasHere := false.
 	txt := 'some text to select' asText.
@@ -111,7 +124,7 @@ SpRichTextPresenterTest >> testwhenSelectionChangedDoFromEditor [
 ]
 
 { #category : #tests }
-SpRichTextPresenterTest >> testwhenTextChangedDo [
+MicTextPresenterTest >> testwhenTextChangedDo [
 	| wasHere |
 	wasHere := false.
 	presenter whenTextChangedDo: [ wasHere := true ].

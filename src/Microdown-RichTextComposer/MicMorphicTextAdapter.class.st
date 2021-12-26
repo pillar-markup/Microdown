@@ -8,16 +8,16 @@ My model (inherited instance variable) is a `SpRichTextPresenter`.
 Perhaps in the future the methods for menu and shiftMenu should be forwarded to the presenter.
 "
 Class {
-	#name : #SpMorphicRichTextAdapter,
+	#name : #MicMorphicTextAdapter,
 	#superclass : #SpAbstractMorphicAdapter,
 	#category : #'Microdown-RichTextComposer-Presenter'
 }
 
 { #category : #factory }
-SpMorphicRichTextAdapter >> buildWidget [
+MicMorphicTextAdapter >> buildWidget [
 	| newWidget |
 	
-	newWidget := (SpRichTextMorph  on: self)
+	newWidget := (MicScrolledTextMorph  on: self)
 		beReadOnly;
 		beWrapped;
 		enabled: self enabled;
@@ -37,42 +37,42 @@ SpMorphicRichTextAdapter >> buildWidget [
 ]
 
 { #category : #'morph->presenter' }
-SpMorphicRichTextAdapter >> getText [
+MicMorphicTextAdapter >> getText [
 	"called by morph to get text from model"
 	^ model text
 ]
 
 { #category : #'morph->presenter' }
-SpMorphicRichTextAdapter >> menu [
+MicMorphicTextAdapter >> menu [
 	^ nil.
 ]
 
 { #category : #'presenter->morph' }
-SpMorphicRichTextAdapter >> selectionInterval [
+MicMorphicTextAdapter >> selectionInterval [
 	"called by the presenter to get the selection in the morph"
 	^ self widget selectionInterval
 ]
 
 { #category : #'presenter->morph' }
-SpMorphicRichTextAdapter >> selectionInterval: anInterval [
+MicMorphicTextAdapter >> selectionInterval: anInterval [
 	"called by presenter to set selection in morph"
 	self widgetDo: [ :w | w setTextAreaSelection: anInterval ].
 	
 ]
 
 { #category : #'morph->presenter' }
-SpMorphicRichTextAdapter >> setSelection: interval [
+MicMorphicTextAdapter >> setSelection: interval [
 	"Called when a selection happens in the widget"
 	self model selectionInterval: interval
 ]
 
 { #category : #'presenter->morph' }
-SpMorphicRichTextAdapter >> setText: aText [
+MicMorphicTextAdapter >> setText: aText [
 	"called by presenter to set text in morph"
 	widget ifNotNil: [ widget setText: aText ]
 ]
 
 { #category : #'morph->presenter' }
-SpMorphicRichTextAdapter >> shiftMenu [
+MicMorphicTextAdapter >> shiftMenu [
 	^ nil.
 ]
