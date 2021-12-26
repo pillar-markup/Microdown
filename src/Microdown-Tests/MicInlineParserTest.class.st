@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
-{ #category : #access }
+{ #category : #accessing }
 MicInlineParserTest >> splitter [
 	^ MicInlineParser new
 ]
@@ -668,7 +668,7 @@ MicInlineParserTest >> testUrlObjectInUrlBlocks2 [
 	| res |
 	res := self splitter parse:
 		       'abc[pulse](https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests)last'.
-	self assert: (res second reference isKindOf: MicHTTPResource ).
+	self assert: (res second reference isKindOf: MicHTTPResourceReference ).
 	self flag: #tofix. "substring just returns pulse???"
 	self assert: res second reference uri asString equals: 'https://github.com/Ducasse/NewTools-NewHelpBrowser/pulse#merged-pull-requests'
 ]

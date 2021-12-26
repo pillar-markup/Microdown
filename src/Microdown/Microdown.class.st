@@ -35,7 +35,7 @@ Microdown class >> resolve: document fromUri: uri [
 		ifTrue: [ baseUri := uri asString asUrl ].
 	baseUri isRelative 
 		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
-	MicZinkPathResolver resolve: document  withBase: baseUri.
+	MicZincPathResolver resolve: document  withBase: baseUri.
 	^ document 
 ]
 

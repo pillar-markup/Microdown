@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'sample',
-		'parser'
+		'parser',
+		'composer'
 	],
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
@@ -28,7 +29,9 @@ MicRichTextComposerTest >> boldFormat [
 
 { #category : #helpers }
 MicRichTextComposerTest >> composer [
-	^ self composerClass new
+	
+	composer ifNotNil: [ ^ composer ].
+	^ composer := self composerClass new
 ]
 
 { #category : #helpers }
@@ -114,7 +117,7 @@ MicRichTextComposerTest >> richTextFor: aDocument [
 { #category : #helpers }
 MicRichTextComposerTest >> richTextForString: aString [
 
-	^ self composerClass parseAndCompose: aString
+	^ self composer parseAndCompose: aString
 ]
 
 { #category : #helpers }
@@ -432,7 +435,6 @@ bar'.
 { #category : #tests }
 MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
-	"this checks if latex is working by making two formulas, of which the second should be taller"
 	source :=  'foo
 &
 \foo{a+b}

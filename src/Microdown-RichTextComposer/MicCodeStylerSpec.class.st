@@ -76,7 +76,10 @@ MicCodeStylerSpec class >> initializeCache [
 
 { #category : #accessing }
 MicCodeStylerSpec class >> style: aString asLanguage: aLanguage [
-	^ (self styleFor: aLanguage) style: aString
+
+	^ aString 
+		ifEmpty: [ aString asText ]
+		ifNotEmpty: [(self styleFor: aLanguage) style: aString]
 ]
 
 { #category : #accessing }

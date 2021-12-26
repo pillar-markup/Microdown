@@ -46,16 +46,16 @@ Class {
 MicResourceReference class >> fromUri: aString [
 	| uri |
 	(aString beginsWith: '/')
-		ifTrue: [ ^ MicFileResource new uri: (ZnUrl fromString: 'file://',aString) ].
+		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
-		ifNil: [ ^ MicRelativeResource new relativePath: aString ].
+		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
 	(uri scheme beginsWith: 'http')
-		ifTrue: [ ^ MicHTTPResource new uri: uri ].
+		ifTrue: [ ^ MicHTTPResourceReference new uri: uri ].
 	uri scheme = 'file'
-		ifTrue: [ ^ MicFileResource new uri: uri ].
+		ifTrue: [ ^ MicFileResourceReference new uri: uri ].
 	uri scheme = 'pharo'
-		ifTrue: [ ^ MicPharoResource new uri: uri ].
+		ifTrue: [ ^ MicPharoResourceReference new uri: uri ].
 	^uri
 	
 ]
@@ -65,24 +65,16 @@ MicResourceReference class >> workingDirectoryReference [
 	^ self fromUri: FileSystem workingDirectory asUrl asString
 ]
 
-{ #category : #testing }
-MicResourceReference >> isFile [
-	"answer if the resource is a file (as opposed to a directory)"
-	(self path last = $/)
-		ifTrue: [ ^ false ].
-	^ true
+{ #category : #accessing }
+MicResourceReference >> loadImage: aResolver [
+	
+	^ (self resolveResourceIn: aResolver) asForm
 ]
 
-{ #category : #testing }
-MicResourceReference >> isImage: aPath [
-	"makes a guess if path referes to an image"
-	^ #( 'pcx' 'bmp' 'jpeg' 'xbm' 'pnm' 'ppm' 'gif' 'pam' 'jpg' 'png'
-	     'pbm' ) includes: (aPath copyAfterLast: $.) asLowercase
-]
+{ #category : #accessing }
+MicResourceReference >> loadMicrodown: aResolver [
 
-{ #category : #testing }
-MicResourceReference >> isResolved [ 
-	self subclassResponsibility 
+	^ (self resolveResourceIn: aResolver) parseMicrodown
 ]
 
 { #category : #accessing }
@@ -105,5 +97,21 @@ MicResourceReference >> path [
 
 { #category : #printing }
 MicResourceReference >> printOn: aStream [
-	aStream nextPutAll: originalString 
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(';
+		nextPutAll: originalString;
+		nextPutAll: ')'
+]
+
+{ #category : #accessing }
+MicResourceReference >> resolveResourceIn: aResolver [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+MicResourceReference >> uri [
+	
+	self subclassResponsibility
 ]
