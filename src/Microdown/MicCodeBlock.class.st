@@ -144,7 +144,7 @@ MicCodeBlock >> language [
 	^ ''
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	

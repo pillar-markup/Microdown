@@ -47,7 +47,7 @@ MicConverterVisitorTest >> parserClass [
 	^ MicroDownParser
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicConverterVisitorTest >> setUp [
  	super setUp.
  	visitor := MicPillarConverter new.

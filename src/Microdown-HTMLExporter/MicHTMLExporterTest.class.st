@@ -9,7 +9,7 @@ Class {
 	#category : #'Microdown-HTMLExporter'
 }
 
-{ #category : #utils }
+{ #category : #utilities }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
