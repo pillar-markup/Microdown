@@ -47,14 +47,6 @@ Class {
 		'codeStyler',
 		'textStyler'
 	],
-	#classVars : [
-		'CaptureErrors',
-		'HeaderFontSizes',
-		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine'
-	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
 
