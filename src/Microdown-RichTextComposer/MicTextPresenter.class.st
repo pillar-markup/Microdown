@@ -31,7 +31,7 @@ MicTextPresenter class >> adapterName [
 	^ #MicMorphicTextAdapter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 MicTextPresenter class >> cheetSheet [
 ^ Microdown parse: '# Markdown Cheatsheet
 
@@ -182,14 +182,22 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 ]
 
 { #category : #examples }
-MicTextPresenter class >> example [
+MicTextPresenter class >> exampleCheetSheet [
 	<example>
 	^ self new
 		text: ( Microdown asRichText: self cheetSheet  );
 		openWithSpec
 ]
 
-{ #category : #'instance creation' }
+{ #category : #examples }
+MicTextPresenter class >> exampleSample [
+	<example>
+	^ self new
+		text: ( Microdown asRichText: self sampleDocument   );
+		openWithSpec
+]
+
+{ #category : #examples }
 MicTextPresenter class >> sampleDocument [
 	"I return a sample document"
 	^ Microdown parse: '# Header 1
