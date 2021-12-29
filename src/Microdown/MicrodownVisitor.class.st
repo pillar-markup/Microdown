@@ -49,9 +49,9 @@ MicrodownVisitor >> visitBold: aFormat [
 ]
 
 { #category : #'visiting - inline elements' }
-MicrodownVisitor >> visitChildrenOf: aFormat [
+MicrodownVisitor >> visitChildrenOf: anElement [
 
-	aFormat children do: [ :each | each accept: self ]
+	anElement children do: [ :each | each accept: self ]
 ]
 
 { #category : #'visiting - extensions' }
