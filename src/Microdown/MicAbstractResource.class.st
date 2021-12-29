@@ -1,3 +1,9 @@
+"
+I represent found/resolved resources. 
+Do not confuse me with ResourceReference, a resource reference is a reference to an unresolved and potentially not reachable or unexisting resource.
+
+For now I know how to convert myself into a form, a document tree, 
+"
 Class {
 	#name : #MicAbstractResource,
 	#superclass : #Object,
@@ -17,6 +23,12 @@ MicAbstractResource >> asForm [
 MicAbstractResource >> asRenderedOn: aRenderer withinNode: aFigure [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #converting }
+MicAbstractResource >> binaryReadStream [
+	
+	^ self subclassResponsibility 
 ]
 
 { #category : #accessing }

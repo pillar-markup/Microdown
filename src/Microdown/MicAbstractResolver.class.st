@@ -1,3 +1,7 @@
+"
+I'm an alternate version of resource resolution. 
+Contrary to MicZincPathResolver I do not expand once for all the relative paths.
+"
 Class {
 	#name : #MicAbstractResolver,
 	#superclass : #Object,
