@@ -43,6 +43,7 @@ MicLaTeXWriterTest >> testAnchor [
 { #category : #tests }
 MicLaTeXWriterTest >> testAnchorReference [
 	"Pay attention that an anchor reference only exists within a paragraph and as such a paragraph emit a newline to start."
+	
 	self parseInlined: factory anchorReferenceSample andCheckWeGet: '\ref{Foo}'
 	
 ]
@@ -85,11 +86,9 @@ this is a code
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblockWithLabel [
 	| mic |
-	mic := parser parse: (factory codeblock: 'label=Pharo is cool' body: 'this is a code').
-	self flag: #tofix.
-	"This is wrong since language cannot be label"
+	mic := parser parse: (factory codeblock: 'label=Pharo' body: 'this is a code').
 	self assert: (writer visit: mic) contents equals: '
-\begin{listing}[label=Pharo is cool]
+\begin{listing}[label=Pharo]
 this is a code
 \end{listing}
 '
@@ -128,6 +127,27 @@ MicLaTeXWriterTest >> testFigureBold [
 \end{figure}
 
 '
+]
+
+{ #category : #'tests - figure/link' }
+MicLaTeXWriterTest >> testFigureRealSample [
+
+	| mic |
+	mic := parser parse: factory figureRealSample.
+	self assert: (writer visit: mic) contents equals: '
+
+\begin{figure}[htpb]
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{/logo.png}
+\caption{A logo png under figures folder}\label{figureTest}
+\end{center}
+\end{figure}
+
+'.
+self flag: #todo.
+"may be we should get figures/logo.png when file://figures/logo.png"
+
 ]
 
 { #category : #tests }
@@ -189,12 +209,9 @@ MicLaTeXWriterTest >> testItalic [
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLink [
 	| mic |
-	mic := parser parse: factory linkSample.
-	self flag: #tofix.
-	"footnotesize"
-	
+	mic := parser parse: factory linkSample.	
 	self assert: (writer visit: mic) contents equals: '
-\href{/anUrl}{Foo}\footnote{\url{/anUrl}}
+\href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}
 '
 ]
 
@@ -347,6 +364,15 @@ MicLaTeXWriterTest >> testQuote [
 \begin{verbatim}
 Foo
 \end{verbatim}
+'
+]
+
+{ #category : #'tests - figure/link' }
+MicLaTeXWriterTest >> testRealLinkSample [
+	| mic |
+	mic := parser parse: factory realLinkSample.	
+	self assert: (writer visit: mic) contents equals: '
+\href{http://www.pharo.org}{The Pharo Project}\footnotesize{\url{http://www.pharo.org}}
 '
 ]
 

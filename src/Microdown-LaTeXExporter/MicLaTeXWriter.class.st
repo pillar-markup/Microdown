@@ -91,6 +91,8 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
 		parameter: [ canvas raw: aFigure reference path ]
+	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
+	
 ]
 
 { #category : #initialization }
@@ -243,7 +245,10 @@ MicLaTeXWriter >> visitItalic: anItalic [
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
 	| text reference |
-	reference := aLink localFileOrExternalReference.
+	reference := aLink fileStringWithoutHostFile.
+	self flag: #todo.
+	"I do not get this logic if the string does not have file:// it can still be
+	something else than a url... all this logic is bogus."
 	text := aLink text.
 	(text isEmptyOrNil or: [ reference = text ])
 		ifTrue: [ canvas command
@@ -255,7 +260,7 @@ MicLaTeXWriter >> visitLink: aLink [
 				parameter: reference;
 				parameter: [ canvas nextPutAll: text ].
 			canvas command
-				name: 'footnote';
+				name: 'footnotesize';
 				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
 ]
 
@@ -399,7 +404,7 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 	canvas
 		nextPutAll: 'width=';
 		nextPutAll:
-			((anExternalLink arguments at: 'width' ifAbsent: [ 100 ]) asNumber
+			((anExternalLink arguments at: 'size' ifAbsent: [ 100 ]) asNumber
 			 / 100.0) printString;
 		raw: '\textwidth'
 ]

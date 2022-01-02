@@ -477,7 +477,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		write: aFigure
 		withTemplateFileName: self figureTemplateFileName
 		extraArguments: {
-			'ref' -> aFigure localFileOrExternalReference.
+			'ref' -> aFigure fileStringWithoutHostFile.
 			'caption' -> (aFigure hasChildren ifTrue: [ aFigure text ] ifFalse: [ '' ]) }
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
