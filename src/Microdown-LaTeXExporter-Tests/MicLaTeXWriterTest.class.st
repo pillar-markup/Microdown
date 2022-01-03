@@ -104,7 +104,7 @@ MicLaTeXWriterTest >> testFigure [
 \begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{/anUrl}
+\includegraphics[width=0.8\textwidth]{/anUrl}
 \caption{Foo}\label{figureTest}
 \end{center}
 \end{figure}
@@ -121,7 +121,7 @@ MicLaTeXWriterTest >> testFigureBold [
 \begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=1.0\textwidth]{/anUrl}
+\includegraphics[width=0.8\textwidth]{/anUrl}
 \caption{\textbf{Foo}}\label{figureTest}
 \end{center}
 \end{figure}
@@ -223,7 +223,7 @@ MicLaTeXWriterTest >> testLinkBold [
 	self flag: #toFix.
 	"\textbf{Foo}"
 	self assert: (writer visit: mic) contents equals: '
-\href{/anUrl}{**Foo**}\footnote{\url{/anUrl}}
+\href{/anUrl}{**Foo**}\footnotesize{\url{/anUrl}}
 '
 ]
 

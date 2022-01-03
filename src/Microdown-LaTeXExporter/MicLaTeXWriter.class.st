@@ -1,11 +1,6 @@
 Class {
 	#name : #MicLaTeXWriter,
-	#superclass : #MicrodownVisitor,
-	#instVars : [
-		'canvas',
-		'stream',
-		'nbListTab'
-	],
+	#superclass : #MicDocumentWriter,
 	#category : #'Microdown-LaTeXExporter'
 }
 
@@ -42,7 +37,7 @@ MicLaTeXWriter class >> writerName [
 
 { #category : #accessing }
 MicLaTeXWriter >> canvasClass [
-	^ MicLaTeXCanvas initialize
+	^ MicLaTeXCanvas
 ]
 
 { #category : #templating }
@@ -95,14 +90,6 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	
 ]
 
-{ #category : #initialization }
-MicLaTeXWriter >> initialize [ 
-	super initialize.
-	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream.
-	nbListTab := -1
-]
-
 { #category : #protected }
 MicLaTeXWriter >> monospaceMacro [
 	^ 'code'
@@ -136,13 +123,6 @@ MicLaTeXWriter >> typeOfSectionFor: aHeader [
 	level := aHeader level.
 	section := sections at: (level min: sections size max: 1).
 	^ section
-]
-
-{ #category : #initialization }
-MicLaTeXWriter >> usedNewLine [
-	"Return the encoded new line. Useful for tests."
-	
-	^ stream usedNewLine
 ]
 
 { #category : #blocks }
