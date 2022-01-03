@@ -81,6 +81,17 @@ is really cool'.
 ]
 
 { #category : #tests }
+MicCodeBlockTest >> testCaption [
+
+	| codeBlock |
+	codeBlock := self testedClass new.
+	codeBlock caption: '**Here** is a nice caption.'.
+	self assert: codeBlock hasCaption. 
+	self assert: codeBlock captionElements first class equals: MicBoldFormatBlock.
+	self assert: codeBlock captionElements size equals: 2.
+]
+
+{ #category : #tests }
 MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	"This test shows that we can write a code block inside a code block but that the later is not interpreter."
 	

@@ -1,3 +1,6 @@
+"
+I'm producing a textual latex version of a microdown document.
+"
 Class {
 	#name : #MicLaTeXWriter,
 	#superclass : #MicDocumentWriter,

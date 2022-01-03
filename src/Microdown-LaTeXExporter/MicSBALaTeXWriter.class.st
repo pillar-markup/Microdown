@@ -1,3 +1,7 @@
+"
+I'm version producing LaTeX for the SBA template.
+In the future (once the templatedWriter is working) I should get removed.
+"
 Class {
 	#name : #MicSBALaTeXWriter,
 	#superclass : #MicLaTeXWriter,

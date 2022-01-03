@@ -9,6 +9,12 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #running }
+MicLaTeXWriterTest >> actualClass [
+
+	^ MicLaTeXWriter
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> parse: aString andCheckWeGet: aResultingString [
 	
@@ -27,9 +33,10 @@ MicLaTeXWriterTest >> parseInlined: aString andCheckWeGet: aResultingString [
 
 { #category : #running }
 MicLaTeXWriterTest >> setUp [
+
 	super setUp.
 	parser := MicroDownParser new.
-	writer := MicLaTeXWriter new.
+	writer := self actualClass new.
 	factory := MicMicrodownSnippetFactory new
 ]
 

@@ -31,3 +31,11 @@ MicDocumentWriter >> usedNewLine [
 	
 	^ stream usedNewLine
 ]
+
+{ #category : #writing }
+MicDocumentWriter >> writeRawDuring: aBlock [
+	[ 
+	writingRaw := true.
+	aBlock value ]
+		ensure: [ writingRaw := false ]
+]

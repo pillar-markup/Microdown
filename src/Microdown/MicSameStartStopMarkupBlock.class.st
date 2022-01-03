@@ -43,6 +43,12 @@ MicSameStartStopMarkupBlock >> caption [
 ]
 
 { #category : #visiting }
+MicSameStartStopMarkupBlock >> caption: aString [
+	
+	arguments at: #caption put: (MicInlineParser new parse: aString)
+]
+
+{ #category : #visiting }
 MicSameStartStopMarkupBlock >> captionElements [
 	^ arguments at: #caption ifAbsent: [ #() ]
 ]
