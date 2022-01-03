@@ -11,10 +11,10 @@ MicSBALaTeXWriterTest >> actualClass [
 
 { #category : #tests }
 MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
-	| codeBlock res |
+	| codeBlock |
 	codeBlock := MicCodeBlock new body: 'foo', writer usedNewLine, 'bar on another line'.
-	res := (writer visit: codeBlock) contents.	
-	self assert: res equals: '
+	self writeLaTeXForElement: codeBlock.	
+	self assert: writer contents equals: '
 \begin{displaycode}{smalltalk}
 foo', 
 writer usedNewLine,
@@ -31,12 +31,12 @@ MicSBALaTeXWriterTest >> testMonospace [
 
 { #category : #tests }
 MicSBALaTeXWriterTest >> testSimpleFloating [
-	| codeBlock res |
+	| codeBlock |
 	codeBlock := (MicCodeBlock new body: 'foo')
 		caption: 'A caption.';
 		yourself.
-	res := (writer visit: codeBlock) contents.	
-	self assert: res equals: '
+	self writeLaTeXForElement: codeBlock.
+	self assert: writer contents equals: '
 \begin{listing}[float, list text={A caption.}]{smalltalk}{A caption.}
 foo
 \end{listing}

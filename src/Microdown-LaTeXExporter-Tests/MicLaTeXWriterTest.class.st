@@ -88,9 +88,7 @@ MicLaTeXWriterTest >> testCitation [
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblock [
 
-	| mic |
-	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
-	writer visit: mic.
+	self writeLaTeXFor: (factory codeblockNoParamBody: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}
 this is a code
@@ -100,9 +98,8 @@ this is a code
 
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblockWithCaption [
-	| mic |
-	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	writer visit: mic.
+
+	self writeLaTeXFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
@@ -112,9 +109,8 @@ this is a code
 
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblockWithLabel [
-	| mic |
-	mic := parser parse: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	writer visit: mic.
+
+	self writeLaTeXFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}[label=Pharo]
 this is a code
@@ -125,9 +121,7 @@ this is a code
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
 
-	| mic |
-	mic := parser parse: factory figureSample.
-	writer visit: mic.
+	self writeLaTeXFor: factory figureSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
@@ -143,9 +137,7 @@ MicLaTeXWriterTest >> testFigure [
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigureBold [
-	| mic |
-	mic := parser parse: factory figureBoldSample.
-	writer visit: mic. 
+	self writeLaTeXFor: factory figureBoldSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
@@ -162,9 +154,7 @@ MicLaTeXWriterTest >> testFigureBold [
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigureRealSample [
 
-	| mic |
-	mic := parser parse: factory figureRealSample.
-	writer visit: mic.
+	self writeLaTeXFor: factory figureRealSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
@@ -239,9 +229,7 @@ MicLaTeXWriterTest >> testItalic [
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLink [
-	| mic |
-	mic := parser parse: factory linkSample.	
-	writer visit: mic. 	
+	self writeLaTeXFor: factory linkSample.		
 	self assert: writer contents equals: '
 \href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}
 '
@@ -249,12 +237,11 @@ MicLaTeXWriterTest >> testLink [
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLinkBold [
-	| mic |
+
 	self flag: 'caption do not use bold in the caption'.
-	mic := parser parse: factory linkBoldSample.
+	self writeLaTeXFor: factory linkBoldSample.
 	self flag: #toFix.
-	"\textbf{Foo}"
-	writer visit: mic. 
+	"\textbf{Foo}" 
 	self assert: writer contents equals: '
 \href{/anUrl}{**Foo**}\footnotesize{\url{/anUrl}}
 '
@@ -268,9 +255,8 @@ MicLaTeXWriterTest >> testMonospace [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedList [
-	| mic |
-	mic := parser parse: factory orderedListWithTwoItemsSample.
-	writer visit: mic. 
+	
+	self writeLaTeXFor: factory orderedListWithTwoItemsSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item first
@@ -281,9 +267,8 @@ MicLaTeXWriterTest >> testOrderedList [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedListBold [
-	| mic |
-	mic := parser parse: factory orderedListWithTwoItemsBoldSample.
-	writer visit: mic.
+
+	self writeLaTeXFor: factory orderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{first}
@@ -294,9 +279,8 @@ MicLaTeXWriterTest >> testOrderedListBold [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedListNested [
-	| mic |
-	mic := parser parse: factory orderedListWithTwoItemsBoldFirstSample.
-	writer visit: mic. 
+
+	self writeLaTeXFor:  factory orderedListWithTwoItemsBoldFirstSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{\textit{first}}
@@ -307,9 +291,8 @@ MicLaTeXWriterTest >> testOrderedListNested [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedNestedListNested [
-	| mic |
-	mic := parser parse: factory nestedOrderedListSample.
-	writer visit: mic. 
+
+	self writeLaTeXFor: factory nestedOrderedListSample. 
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -325,9 +308,8 @@ MicLaTeXWriterTest >> testOrderedNestedListNested [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedNestedListNested2 [
-	| mic |
-	mic := parser parse: factory nestedOrderedList2Sample.
-	writer visit: mic. 
+
+	self writeLaTeXFor: factory nestedOrderedList2Sample. 
 	self assert: writer contents  equals: '
 \begin{itemize}
     \item Foo
@@ -407,9 +389,7 @@ Foo
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testRealLinkSample [
-	| mic |
-	mic := parser parse: factory realLinkSample.	
-	writer visit: mic.	
+	self writeLaTeXFor: factory realLinkSample.	
 	self assert: writer contents equals: '
 \href{http://www.pharo.org}{The Pharo Project}\footnotesize{\url{http://www.pharo.org}}
 '
@@ -424,9 +404,7 @@ MicLaTeXWriterTest >> testStrike [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
-	| mic |
-	mic := parser parse: factory tableSample.
-	writer visit: mic.
+	self writeLaTeXFor: factory tableSample.
 	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
@@ -440,9 +418,8 @@ bar & rab \\
 
 { #category : #tests }
 MicLaTeXWriterTest >> testTableWhithoutHeader [
-	| mic |
-	mic := parser parse: (factory simpleTableWithoutHeaderTable).
-	writer visit: mic.
+	
+	self writeLaTeXFor: (factory simpleTableWithoutHeaderTable).
 	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
@@ -455,9 +432,8 @@ bar & rab \\
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedList [
-	| mic |
-	mic := parser parse: factory unorderedListWithTwoItemsSample.
-	writer visit: mic.
+
+	self writeLaTeXFor: factory unorderedListWithTwoItemsSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -468,9 +444,8 @@ MicLaTeXWriterTest >> testUnorderedList [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedListBold [
-	| mic |
-	mic := parser parse: factory unorderedListWithTwoItemsBoldSample.
-	writer visit: mic. 
+
+	self writeLaTeXFor: factory unorderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item \textbf{Foo}
@@ -481,9 +456,8 @@ MicLaTeXWriterTest >> testUnorderedListBold [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedListNested [
-	| mic |
-	mic := parser parse: factory unorderedListWithTwoItemsNestedSample.
-	writer visit: mic. 
+
+	self writeLaTeXFor: factory unorderedListWithTwoItemsNestedSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item \sout{\textit{Foo}}
@@ -494,9 +468,8 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedNestedListNested [
-	| mic |
-	mic := parser parse: factory nestedUnorderedListSample.
-	writer visit: mic. 
+
+	self writeLaTeXFor: factory nestedUnorderedListSample. 
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -519,4 +492,19 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 	self assert: (writer protectUrl: '%') equals: '\%'.
 	self assert: (writer protectUrl: '\') equals: '\\'.
 	self assert: (writer protectUrl: '\~#%') equals: '\\~\#\%'.
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> writeLaTeXFor: aString [ 
+	| mic |
+	mic := parser parse: aString.
+	writer visit: mic.
+
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> writeLaTeXForElement: aNode [
+
+	writer visit: aNode.
+
 ]
