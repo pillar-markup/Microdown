@@ -17,11 +17,10 @@ MicSBALaTeXWriter >> monospaceMacro [
 MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 
 	| parameters |
-	self flag: #toRename.
 	parameters := OrderedCollection new.
 	parameters add: 'float'.
 	aCodeBlock hasLabel ifTrue: [ parameters add: 'label=', aCodeBlock label ].
-	aCodeBlock hasShortCaption ifTrue: [ parameters add: 'list text={', aCodeBlock shortCaption, '}' ].
+	aCodeBlock hasCaption ifTrue: [ parameters add: 'list text={', aCodeBlock caption, '}' ].
 	^ parameters asCommaString
 ]
 
@@ -31,32 +30,36 @@ MicSBALaTeXWriter >> tabularEnvironment [
 ]
 
 { #category : #protected }
-MicSBALaTeXWriter >> visitCodeblock: aCodeBlock [
+MicSBALaTeXWriter >> visitCode: aCodeBlock [
+	
 	aCodeBlock hasCaption | aCodeBlock hasLabel
-		ifTrue: [ self visitFloatingScript: aCodeBlock ]
-		ifFalse: [ self visitInFlowScript: aCodeBlock ]
+		ifTrue: [ self writeFloatingCodeSnippet: aCodeBlock ]
+		ifFalse: [ self writeInFlowCodeSnippet: aCodeBlock ]
 ]
 
 { #category : #protected }
-MicSBALaTeXWriter >> visitFloatingScript: aScript [ 
+MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [ 
 	canvas environment
 		name: 'listing';
-		optParameter: (self optionalParametersForFloatingScript: aScript);
-		parameter: (self languageForScript: aScript) sbaString;
-		parameter: [ self visitAll: aScript caption children ];
+		optParameter: (self optionalParametersForFloatingScript: aCodeBlock);
+		"parameter: (self languageForScript: aScript) sbaString;"
+		flag: #todo;"should come back here"
+		parameter: 'smalltalk';
+		parameter: [ aCodeBlock captionElements collect: [ :each | each accept: self ] ];
 		with: [
-			self writeRawDuring: [ self visitText: aScript ].
+			self writeRawDuring: [ 	canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]
 
 { #category : #protected }
-MicSBALaTeXWriter >> visitInFlowScript: aScript [ 
+MicSBALaTeXWriter >> writeInFlowCodeSnippet: aCodeBlock [
 	canvas environment
 		name: 'displaycode';
 		"parameter: (self languageForScript: aScript) sbaString;"
-		"should come back here"
+		flag: #todo;"should come back here"
 		parameter: 'smalltalk';
 		with: [
-			self writeRawDuring: [ self visitText: aScript ].
+			self writeRawDuring: [ "there is no need of the writeRaw if I do not call high level " 
+				canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]

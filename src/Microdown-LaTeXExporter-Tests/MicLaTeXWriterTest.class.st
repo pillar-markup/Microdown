@@ -15,12 +15,29 @@ MicLaTeXWriterTest >> actualClass [
 	^ MicLaTeXWriter
 ]
 
+{ #category : #helpers }
+MicLaTeXWriterTest >> assert: result includesSubstring: expected [
+
+	expected ifEmpty: [ ^ self ].
+	self 
+		assert: (result includesSubstring: expected) 
+		description: ('''{1}'' not in ''{2}''' format: {expected . result})
+]
+
+{ #category : #helpers }
+MicLaTeXWriterTest >> assertWriting: aDocumentItem includesText: aString [
+	| result |
+	result := (writer visit: aDocumentItem) contents.
+	self assert: result includesSubstring: aString
+]
+
 { #category : #'tests - formats' }
 MicLaTeXWriterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
 	mic := parser parse: 	aString.
-	self assert: (writer visit: mic) contents equals: aResultingString
+	writer visit: mic.
+	self assert: writer contents equals: aResultingString
 ]
 
 { #category : #'tests - formats' }
@@ -28,7 +45,8 @@ MicLaTeXWriterTest >> parseInlined: aString andCheckWeGet: aResultingString [
 	
 	| mic |
 	mic := parser parse: 	aString.
-	self assert: (writer visit: mic) contents equals: writer usedNewLine, aResultingString, writer usedNewLine
+	writer visit: mic.
+	self assert: writer contents equals: writer usedNewLine, aResultingString, writer usedNewLine
 ]
 
 { #category : #running }
@@ -72,7 +90,8 @@ MicLaTeXWriterTest >> testCodeblock [
 
 	| mic |
 	mic := parser parse: (factory codeblockNoParamBody: 'this is a code').
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{listing}
 this is a code
 \end{listing}
@@ -83,7 +102,8 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithCaption [
 	| mic |
 	mic := parser parse: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
 \end{listing}
@@ -94,7 +114,8 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithLabel [
 	| mic |
 	mic := parser parse: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{listing}[label=Pharo]
 this is a code
 \end{listing}
@@ -106,7 +127,8 @@ MicLaTeXWriterTest >> testFigure [
 
 	| mic |
 	mic := parser parse: factory figureSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
 
@@ -123,7 +145,8 @@ MicLaTeXWriterTest >> testFigure [
 MicLaTeXWriterTest >> testFigureBold [
 	| mic |
 	mic := parser parse: factory figureBoldSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
 
@@ -141,7 +164,8 @@ MicLaTeXWriterTest >> testFigureRealSample [
 
 	| mic |
 	mic := parser parse: factory figureRealSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
 
@@ -217,7 +241,8 @@ MicLaTeXWriterTest >> testItalic [
 MicLaTeXWriterTest >> testLink [
 	| mic |
 	mic := parser parse: factory linkSample.	
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 	
+	self assert: writer contents equals: '
 \href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}
 '
 ]
@@ -229,7 +254,8 @@ MicLaTeXWriterTest >> testLinkBold [
 	mic := parser parse: factory linkBoldSample.
 	self flag: #toFix.
 	"\textbf{Foo}"
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \href{/anUrl}{**Foo**}\footnotesize{\url{/anUrl}}
 '
 ]
@@ -244,7 +270,8 @@ MicLaTeXWriterTest >> testMonospace [
 MicLaTeXWriterTest >> testOrderedList [
 	| mic |
 	mic := parser parse: factory orderedListWithTwoItemsSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{enumerate}
     \item first
     \item second
@@ -256,7 +283,8 @@ MicLaTeXWriterTest >> testOrderedList [
 MicLaTeXWriterTest >> testOrderedListBold [
 	| mic |
 	mic := parser parse: factory orderedListWithTwoItemsBoldSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{first}
     \item second
@@ -268,7 +296,8 @@ MicLaTeXWriterTest >> testOrderedListBold [
 MicLaTeXWriterTest >> testOrderedListNested [
 	| mic |
 	mic := parser parse: factory orderedListWithTwoItemsBoldFirstSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{\textit{first}}
     \item second
@@ -280,7 +309,8 @@ MicLaTeXWriterTest >> testOrderedListNested [
 MicLaTeXWriterTest >> testOrderedNestedListNested [
 	| mic |
 	mic := parser parse: factory nestedOrderedListSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
     \item Bar
@@ -297,7 +327,8 @@ MicLaTeXWriterTest >> testOrderedNestedListNested [
 MicLaTeXWriterTest >> testOrderedNestedListNested2 [
 	| mic |
 	mic := parser parse: factory nestedOrderedList2Sample.
-	self assert: (writer visit: mic) contents  equals: '
+	writer visit: mic. 
+	self assert: writer contents  equals: '
 \begin{itemize}
     \item Foo
     \item Bar
@@ -378,7 +409,8 @@ Foo
 MicLaTeXWriterTest >> testRealLinkSample [
 	| mic |
 	mic := parser parse: factory realLinkSample.	
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.	
+	self assert: writer contents equals: '
 \href{http://www.pharo.org}{The Pharo Project}\footnotesize{\url{http://www.pharo.org}}
 '
 ]
@@ -394,7 +426,8 @@ MicLaTeXWriterTest >> testStrike [
 MicLaTeXWriterTest >> testTable [
 	| mic |
 	mic := parser parse: factory tableSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
 \textbf{aaab} & \textbf{jkhjh} \\
@@ -409,7 +442,8 @@ bar & rab \\
 MicLaTeXWriterTest >> testTableWhithoutHeader [
 	| mic |
 	mic := parser parse: (factory simpleTableWithoutHeaderTable).
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
 aaab & jkhjh \\
@@ -423,7 +457,8 @@ bar & rab \\
 MicLaTeXWriterTest >> testUnorderedList [
 	| mic |
 	mic := parser parse: factory unorderedListWithTwoItemsSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic.
+	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
     \item Bar
@@ -435,7 +470,8 @@ MicLaTeXWriterTest >> testUnorderedList [
 MicLaTeXWriterTest >> testUnorderedListBold [
 	| mic |
 	mic := parser parse: factory unorderedListWithTwoItemsBoldSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{itemize}
     \item \textbf{Foo}
     \item Bar
@@ -447,7 +483,8 @@ MicLaTeXWriterTest >> testUnorderedListBold [
 MicLaTeXWriterTest >> testUnorderedListNested [
 	| mic |
 	mic := parser parse: factory unorderedListWithTwoItemsNestedSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{itemize}
     \item \sout{\textit{Foo}}
     \item Bar
@@ -459,7 +496,8 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 MicLaTeXWriterTest >> testUnorderedNestedListNested [
 	| mic |
 	mic := parser parse: factory nestedUnorderedListSample.
-	self assert: (writer visit: mic) contents equals: '
+	writer visit: mic. 
+	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
     \item Bar
