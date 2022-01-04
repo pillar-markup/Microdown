@@ -37,11 +37,8 @@ MicSBALaTeXWriterTest >> testSimpleFloating [
 		yourself.
 	self writeLaTeXForElement: codeBlock.
 	self assert: writer contents equals: '
-\begin{listing}[float, list text={A caption.}]{smalltalk}{A caption.}
+\begin{listing}[float]{smalltalk}{A caption.}
 foo
 \end{listing}
 '
-
-
-
 ]

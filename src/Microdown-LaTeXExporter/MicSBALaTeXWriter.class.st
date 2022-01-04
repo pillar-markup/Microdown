@@ -20,7 +20,6 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	parameters := OrderedCollection new.
 	parameters add: 'float'.
 	aCodeBlock hasLabel ifTrue: [ parameters add: 'label=', aCodeBlock label ].
-	aCodeBlock hasCaption ifTrue: [ parameters add: 'list text={', aCodeBlock caption, '}' ].
 	^ parameters asCommaString
 ]
 
