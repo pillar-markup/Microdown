@@ -10,6 +10,16 @@ MicSBALaTeXWriterTest >> actualClass [
 ]
 
 { #category : #tests }
+MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
+	| codeBlock |
+	codeBlock := (MicCodeBlock new body: 'foo')
+					label: 'myScript';
+					caption: 'a caption';
+					yourself.
+	self assertWriting: codeBlock includesTexts: #('label=myScript')
+]
+
+{ #category : #tests }
 MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
 	| codeBlock |
 	codeBlock := MicCodeBlock new body: 'foo', writer usedNewLine, 'bar on another line'.
@@ -41,4 +51,15 @@ MicSBALaTeXWriterTest >> testSimpleFloating [
 foo
 \end{listing}
 '
+]
+
+{ #category : #tests }
+MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
+	| codeBlock |
+	codeBlock := (MicCodeBlock new body: 'foo')
+		caption: 'A caption.';
+		yourself.
+	self writeLaTeXForElement: codeBlock.
+	self flag: #languageSupport. "smalltalk -> plain"
+	self assertWriting: codeBlock includesText: '{smalltalk}'
 ]

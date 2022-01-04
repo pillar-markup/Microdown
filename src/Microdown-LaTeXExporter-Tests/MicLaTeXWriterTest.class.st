@@ -27,8 +27,17 @@ MicLaTeXWriterTest >> assert: result includesSubstring: expected [
 { #category : #helpers }
 MicLaTeXWriterTest >> assertWriting: aDocumentItem includesText: aString [
 	| result |
-	result := (writer visit: aDocumentItem) contents.
+	self writeLaTeXForElement: aDocumentItem.
+	result := writer contents.
 	self assert: result includesSubstring: aString
+]
+
+{ #category : #helpers }
+MicLaTeXWriterTest >> assertWriting: aDocumentItem includesTexts: aCollection [
+	| resultString |
+	self writeLaTeXForElement: aDocumentItem.
+	resultString := writer contents.
+	aCollection do: [ :testString | self assert: resultString includesSubstring: testString ]
 ]
 
 { #category : #'tests - formats' }

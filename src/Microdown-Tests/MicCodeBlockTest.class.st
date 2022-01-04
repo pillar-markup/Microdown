@@ -486,6 +486,17 @@ is really cool'.
 	
 ]
 
+{ #category : #'tests - arguments' }
+MicCodeBlockTest >> testSetLabel [
+
+	| codeBlock |
+	codeBlock := self testedClass new.
+	codeBlock label: 'sec123'.
+	self assert: codeBlock hasLabel. 
+	self assert: codeBlock label equals: 'sec123'
+
+]
+
 { #category : #tests }
 MicCodeBlockTest >> testSingleBlockWithArguments [
 
