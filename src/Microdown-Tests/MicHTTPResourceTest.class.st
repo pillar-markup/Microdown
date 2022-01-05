@@ -89,7 +89,7 @@ MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadNonExistingMicrodown [
-	| uri doc |
+	| uri |
 	uri := 'readmeNOT.md' asMicResourceUri.
 	
 	[

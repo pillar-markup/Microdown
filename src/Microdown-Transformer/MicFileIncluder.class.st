@@ -88,7 +88,7 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
-	| inputRef inputDoc fileReference resource |
+	| inputRef inputDoc resource |
 	"
 	check in input file is absolute or relative
 	if relative, resolve with topFile

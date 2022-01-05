@@ -13,7 +13,7 @@ MicPharoResourceTest >> assertNotFoundText: aResource [
 	self assert: aResource asText equals: 'Resource not found'
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicPharoResourceTest >> setUp [
 	super setUp.
 	resolver := MicUrlResolver new
