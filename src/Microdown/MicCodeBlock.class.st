@@ -137,6 +137,12 @@ MicCodeBlock >> label [
 ]
 
 { #category : #accessing }
+MicCodeBlock >> label: aString [
+
+	self arguments at: #label put: aString
+]
+
+{ #category : #accessing }
 MicCodeBlock >> language [
 	arguments ifNotEmpty: [ 
 		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].

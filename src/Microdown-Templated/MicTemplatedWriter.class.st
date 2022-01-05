@@ -7,7 +7,7 @@ I am carefully designed so if an element X is delegated to the wrapped writer, i
 "
 Class {
 	#name : #MicTemplatedWriter,
-	#superclass : #PRVisitor,
+	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'outputDocument',
 		'defaultWriter',

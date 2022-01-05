@@ -21,6 +21,7 @@ MicTextBlock >> kind [
 { #category : #accessing }
 MicTextBlock >> printOn: aStream [
 
-	aStream nextPutAll: self substring.
+	self printWithoutConventions: aStream.
+	self print: self substring surroundedOn: aStream.
 
 ]

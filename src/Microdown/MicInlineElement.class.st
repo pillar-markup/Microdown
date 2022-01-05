@@ -129,6 +129,16 @@ MicInlineElement >> parent: aParent [
 ]
 
 { #category : #printing }
+MicInlineElement >> print: aString surroundedOn: aStream [
+
+	aStream 
+		nextPut: $(;
+		nextPutAll: aString;
+		nextPut: $) 
+
+]
+
+{ #category : #printing }
 MicInlineElement >> printOn: aStream [
 
 	| contents |
@@ -141,6 +151,14 @@ MicInlineElement >> printOn: aStream [
 				nextPut: $(;
 				nextPutAll: self kind;
 				nextPut: $) 
+
+]
+
+{ #category : #printing }
+MicInlineElement >> printWithoutConventions: aStream [
+	"Remove Mic and Block from the class."
+	
+	aStream nextPutAll: ((self class name allButFirst: 3) allButLast: 5).
 
 ]
 

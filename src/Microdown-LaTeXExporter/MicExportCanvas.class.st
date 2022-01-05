@@ -108,7 +108,7 @@ MicExportCanvas >> stream [
 
 { #category : #private }
 MicExportCanvas >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
-	"this method shows that the PRCommentedLine class is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
+	"this method shows that the body of code block is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
 	| str |
 	str := aString readStream.
 	[ str atEnd ]

@@ -100,7 +100,8 @@ MicHTMLExporterTest >> testTable [
 
 	| micTable |
 	micTable := parser parse: factory tableSample.
-	self assert: (writer visit: micTable) contents equals: '
+	writer visit: micTable.
+	self assert: writer contents equals: '
 <table>
 <tr><th>aaab</th><th>jkhjh</th></tr>
 <tr><td>bar</td><td>rab</td></tr>

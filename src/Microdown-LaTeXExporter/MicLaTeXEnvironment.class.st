@@ -27,6 +27,7 @@ MicLaTeXEnvironment >> name: aString [
 
 { #category : #accessing }
 MicLaTeXEnvironment >> with: aBlock [
+
 	stream newLine.
 	aBlock value.
 	(stream << '\end{' << name)

@@ -1,3 +1,6 @@
+"
+I'm producing a textual latex version of a microdown document.
+"
 Class {
 	#name : #MicLaTeXWriter,
 	#superclass : #MicDocumentWriter,
@@ -355,12 +358,14 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 
 { #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
+
 	canvas nextPutAllLines: aText substring
 ]
 
 { #category : #'blocks - list' }
 MicLaTeXWriter >> visitUnorderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
+	
 	canvas newLine.
 	self tabList.
 	canvas raw: '\begin{itemize}'.

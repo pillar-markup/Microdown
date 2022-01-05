@@ -39,7 +39,7 @@ MicAbstractOutputDocumentMaker >> writer [
 
 	| writer |
 	writer := self basicWriter.
-	writer := PRTemplatedWriter new
+	writer := MicTemplatedWriter new
 			outputDocument: self;
 			defaultWriter: writer;
 			yourself .

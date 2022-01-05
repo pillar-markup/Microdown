@@ -24,7 +24,7 @@ MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents
 MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 
 	| document result |
-	document := PRDocument new
+	document := MicRootBlock new
 		addChild: node;
 		yourself.
 
@@ -75,7 +75,7 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 	self
 		assertTemplate: MicTemplatedWriter boldTemplateFileName
 		writesValue: 'boldTemplate'
-		forNode: (PRBoldFormat with: (PRText content: 'Bar'))
+		forNode: (MicBoldFormatBlock new children: { MicTextBlock new substring: 'Bar'}) 
 ]
 
 { #category : #'tests-templatefiles' }
