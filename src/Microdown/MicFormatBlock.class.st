@@ -18,10 +18,18 @@ MicFormatBlock >> closeMe [
 			self children: { text } ]
 ]
 
+{ #category : #printing }
+MicFormatBlock >> printOn: aStream [
+
+	self printWithoutConventions: aStream.
+	aStream nextPut: $(.
+	self children ifNotNil: [ children first printOn: aStream ].
+	aStream nextPut: $)
+]
+
 { #category : #accessing }
 MicFormatBlock >> text [
-	self flag: #fixMe. 
-	"we should clarify what is text! to me it makes no sense."
+
  	^ String streamContents: [:st | self wrappedElements do: [ :each | st nextPutAll: each text ]]
 ]
 

@@ -38,8 +38,7 @@ MicFormatBlockTest >> testBoldCreatesInnerText [
 MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 
 	| italic |
-	italic := (self parser parse: '**_a b_**') children first children
-		          first.
+	italic := (self parser parse: '**_a b_**') children first children first.
 	self assert: italic class equals: MicBoldFormatBlock.
 	self assert: italic textElement class equals: MicItalicFormatBlock.
 	self
@@ -168,6 +167,31 @@ MicFormatBlockTest >> testMonospaceWrappedElements [
 	mono := (self parser parse: '`a b`') children first children first.
 	self assert: mono wrappedElements first class equals: MicTextBlock.
 	self assert: mono wrappedElements first substring equals: 'a b'
+]
+
+{ #category : #'tests - bold' }
+MicFormatBlockTest >> testPrintingBold [
+
+	| bold |
+	bold := (self parser parse: '**a b**') children first children first.
+	self assert: bold printString equals: 'BoldFormat(Text(a b))'
+	
+]
+
+{ #category : #'tests - monospace' }
+MicFormatBlockTest >> testPrintingBold2 [
+
+	| bold |
+	bold := (self parser parse: '`_a b_`') children first children first.
+	self assert: bold printString equals: 'MonospaceFormat(Text(_a b_))'
+]
+
+{ #category : #'tests - italic' }
+MicFormatBlockTest >> testPrintingItalic [
+
+	| bold |
+	bold := (self parser parse: '_a b_') children first children first.
+	self assert: bold printString equals: 'ItalicFormat(Text(a b))'
 ]
 
 { #category : #tests }
