@@ -130,7 +130,7 @@ MicInlineParserTest >> testEscapeCharacterInNestedCase [
 	res := self splitter parse: 'abc_\**not bold** italic_last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'abc' . '[**not bold** italic](italic)' . 'last'}.
+		equals: {'Text(abc)' . '[**not bold** italic](italic)' . 'Text(last)'}.
 ]
 
 { #category : #'tests - escape' }
@@ -141,7 +141,7 @@ MicInlineParserTest >> testEscapeCharacterInNestedLinkName [
 	res := self splitter parse: 'abc[\[nested\]](myURL)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[[nested]](myURL)'. 'last' }
+		equals: { 'Text(abc)'. '[[nested]](myURL)'. 'Text(last)' }
 ]
 
 { #category : #'tests to make green again' }
@@ -150,7 +150,7 @@ MicInlineParserTest >> testEscapeCharacterTwoConsecutive [
 
 	| res |
 	res := self splitter parse: '\\begin\\atend\\'.
-	self assert: (res collect: [ :x | x printString ]) equals: { '\begin\atend\' }
+	self assert: (res collect: [ :x | x printString ]) equals: { 'Text(\begin\atend\)' }
 ]
 
 { #category : #'tests to make green again' }
@@ -210,8 +210,8 @@ MicInlineParserTest >> testFigure [
 		       'abc![AltText](my_directory/image.png)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '![AltText](my_directory/image.png)'.
-			'last' }.
+		equals: { 'Text(abc)'. '![AltText](my_directory/image.png)'.
+			'Text(last)' }.
 	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: (res second reference  isKindOf: MicResourceReference)
 	
@@ -226,7 +226,7 @@ MicInlineParserTest >> testFigureWithBracketInsteadOfParentheses [
 		       'abc![AltText][my_directory/image.png]last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc![AltText][my_directory/image.png]last' }
+		equals: { 'Text(abc![AltText][my_directory/image.png]last)' }
 ]
 
 { #category : #'tests - figure' }
@@ -240,8 +240,8 @@ MicInlineParserTest >> testFigureWithParameters [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png label=42&width=90)'.
-			'last' }.
+			{ 'Text(abc)'. '![AltText](my_directory/image.png label=42&width=90)'.
+			'Text(last)' }.
 	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: '42'.
@@ -259,8 +259,8 @@ MicInlineParserTest >> testFigureWithParametersWithBlank [
 	self
 		assert: (res collect: [ :x | x printString ])
 		equals:
-			{ 'abc'. '![AltText](my_directory/image.png label=&width=90)'.
-			'last' }.
+			{ 'Text(abc)'. '![AltText](my_directory/image.png label=&width=90)'.
+			'Text(last)' }.
 	self assert: (res second isKindOf: MicFigureBlock).
 	self assert: (res second reference isKindOf: MicResourceReference).
 	self assert: (res second arguments at: 'label') equals: ''.
@@ -276,7 +276,7 @@ MicInlineParserTest >> testFigureWithParenthesesInsteadOfBracket [
 		       'abc!(AltText)(my_directory/image.png)last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc!(AltText)(my_directory/image.png)last' }
+		equals: { 'Text(abc!(AltText)(my_directory/image.png)last)' }
 ]
 
 { #category : #'tests - formats' }
@@ -300,9 +300,9 @@ MicInlineParserTest >> testItalicNestedInBold [
 	| res |
 	res := self splitter parse: 'abc**bold_italic_bold**xyz'.
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[bold [italic](italic) bold](bold)'.
-			'xyz' }
+		assert: (res collect: [ :x | x printString ]) 
+		equals: { 'Text(abc)'. 'BoldFormat(Text(bold) ItalicFormat(Text(italic)) Text(bold))'.
+			'Text(xyz)' }
 ]
 
 { #category : #'tests - formats' }
@@ -311,8 +311,8 @@ MicInlineParserTest >> testItalicNestedInBoldWithSpace [
 	| res |
 	res := self splitter parse: 'abc**x_y_z**cba'.
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[x [y](italic) z](bold)'. 'cba' }
+		assert: (res collect: [ :x | x printString ]) 
+		equals: { 'Text(abc)'. 'BoldFormat(Text(x) ItalicFormat(Text(y)) Text(z))'. 'Text(cba)' }
 ]
 
 { #category : #'tests - math' }
@@ -346,8 +346,8 @@ MicInlineParserTest >> testMathshouldBeUnevaluated [
 	res := self splitter parse: 'abc$def**not bold**ghi$xyz'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[def**not bold**ghi](math)'.
-		'xyz' }
+		equals: { 'Text(abc)'. '[def**not bold**ghi](math)'.
+		'Text(xyz)' }
 ]
 
 { #category : #'tests - formats' }

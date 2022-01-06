@@ -23,7 +23,8 @@ MicFormatBlock >> printOn: aStream [
 
 	self printWithoutConventions: aStream.
 	aStream nextPut: $(.
-	self children ifNotNil: [ children first printOn: aStream ].
+	self children ifNotNil: [ children do: [ :each | each printOn: aStream ] 
+		separatedBy: [aStream nextPutAll: ' ']].
 	aStream nextPut: $)
 ]
 
