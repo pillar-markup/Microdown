@@ -19,8 +19,8 @@ MicInlineParserTest >> testAnchorReference [
 	res := self splitter parse: 'abc*@anchorA@*def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[anchorA](anchorReference)'.
-		'def' }.
+		equals: { 'Text(abc)'. '[anchorA](anchorReference)'.
+		'Text(def)' }.
 	self assert: (res second isKindOf: MicAnchorReferenceBlock)
 ]
 
@@ -33,8 +33,8 @@ MicInlineParserTest >> testAnchorReferenceUnevaluated [
 	res := self splitter parse: 'abc*@def**not bold**ghi@*xyz'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[def**not bold**ghi](anchorReference)'.
-			'xyz' }
+		equals: { 'Text(abc)'. '[def**not bold**ghi](anchorReference)'.
+			'Text(xyz)' }
 ]
 
 { #category : #'tests - annotation' }
@@ -45,8 +45,8 @@ MicInlineParserTest >> testAnnotationWithParameters [
 		       'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42', MicAnnotationCloserDelimiter markup.
-			'def' }.
+		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42', MicAnnotationCloserDelimiter markup.
+			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
 	self assert: (res second arguments at: 'label') equals: '42'
@@ -59,8 +59,8 @@ MicInlineParserTest >> testAnnotationWithParametersWithBlank [
 	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup.
-			'def' }.
+		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup.
+			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
 	self assert: (res second arguments at: 'label') equals: '42'
@@ -73,13 +73,13 @@ MicInlineParserTest >> testBold [
 	res := self splitter parse: 'abc**bold**def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[bold](bold)'. 'def' }.
+		equals: { 'Text(abc)'. 'BoldFormat(Text(bold))'. 'Text(def)' }.
 	self assert: res second kind equals: #bold.
 
 	res := self splitter parse: 'abc** b old **def'.
 	self
-		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[ b old ](bold)'. 'def' }.
+		assert: (res collect: [ :x | x printString ]) "#('Text(abc)' 'BoldFormat(Text( b old ))' 'Text(def)')"
+		equals: { 'Text(abc)'. 'BoldFormat(Text( b old ))'. 'Text(def)' }.
 	self assert: res second kind equals: #bold
 ]
 
@@ -286,12 +286,12 @@ MicInlineParserTest >> testItalic [
 	res := self splitter parse: 'abc_italics_def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[italics](italic)'. 'def' }.
+		equals: { 'Text(abc)'. 'ItalicFormat(Text(italic))'. 'Text(def)' }.
 
 	res := self splitter parse: 'abc_ ita lics _def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[ ita lics ](italic)'. 'def' }
+		equals: { 'Text(abc)'. 'ItalicFormat(Text( ita lics ))'. 'Text(def)' }
 ]
 
 { #category : #'tests - formats' }
@@ -357,7 +357,7 @@ MicInlineParserTest >> testMonospace [
 	res := self splitter parse: 'ab`block`de'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'ab'. '[block](monospace)'. 'de' }
+		equals: { 'Text(ab)'. 'MonospaceFormat(Text(block))'. 'Text(de)' }
 ]
 
 { #category : #'tests - formats' }
@@ -412,7 +412,7 @@ MicInlineParserTest >> testOverlappingFormat [
 	res := self splitter parse: 'ab**boldstart_ boldend** italicEnd_de'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: #('ab' '[boldstart_ boldend](bold)' ' italicEnd_de')
+		equals: #('Text(ab)' 'BoldFormat(Text(boldstart_ boldend))' 'Text( italicEnd_de)')
 ]
 
 { #category : #'tests - formats' }
@@ -472,7 +472,7 @@ MicInlineParserTest >> testRaw [
 	res := self splitter parse: 'abc{{someRaw}}def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[someRaw](raw)'. 'def' }
+		equals: { 'Text(abc)'. '[someRaw](raw)'. 'Text(def)' }
 ]
 
 { #category : #'tests - raw' }
@@ -484,8 +484,8 @@ MicInlineParserTest >> testRawUnevaluated [
 	res := self splitter parse: 'abc{{def**not bold**ghi}}xyz'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[def**not bold**ghi](raw)'.
-		'xyz' }
+		equals: { 'Text(abc)'. '[def**not bold**ghi](raw)'.
+		'Text(xyz)' }
 ]
 
 { #category : #'tests - formats' }
@@ -590,7 +590,7 @@ MicInlineParserTest >> testStrike [
 	res := self splitter parse: 'abc~strike~def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[strike](strike)'. 'def' }.
+		equals: { 'Text(abc)'. 'StrikeFormat(Text(strike))'. 'Text(def)' }.
 	self assert: res second class equals: MicStrikeFormatBlock
 ]
 
@@ -611,7 +611,7 @@ MicInlineParserTest >> testUnclosedAnnotation [
 	res := self splitter parse: 'abc<?an annotation>def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc<?an annotation>def' }
+		equals: { 'Text(abc<?an annotation>def)' }
 ]
 
 { #category : #'tests - formats' }
@@ -619,7 +619,7 @@ MicInlineParserTest >> testUnclosedBold [
 
 	| res |
 	res := self splitter parse: 'abc**xyz'.
-	self assert: res first printString equals: 'abc**xyz'
+	self assert: res first printString equals: 'Text(abc**xyz)'
 ]
 
 { #category : #'tests - figure' }
@@ -630,7 +630,7 @@ MicInlineParserTest >> testUnclosedFigure [
 	res := self splitter parse: 'abc![AltText]last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc![AltText]last' }
+		equals: { 'Text(abc![AltText]last)' }
 ]
 
 { #category : #'tests - math' }
@@ -640,7 +640,7 @@ MicInlineParserTest >> testUnclosedMath [
 	res := self splitter parse: 'abc$	V_i = C_0 - C_3	&def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc$	V_i = C_0 - C_3	&def' }
+		equals: { 'Text(abc$	V_i = C_0 - C_3	&def)' }
 ]
 
 { #category : #'tests - formats' }
@@ -650,7 +650,7 @@ MicInlineParserTest >> testUnclosedStrike [
 	res := self splitter parse: 'abc~strikeédef'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc~strikeédef' }
+		equals: { 'Text(abc~strikeédef)' }
 ]
 
 { #category : #'tests - url' }
