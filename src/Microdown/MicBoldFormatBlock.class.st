@@ -7,23 +7,23 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
-{ #category : #utilcaca }
+{ #category : #utilities }
 MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]
 
-{ #category : #utilcaca }
+{ #category : #utilities }
 MicBoldFormatBlock >> closingDelimiter [
 
  	^ MicBoldDelimiter markup
 ]
 
-{ #category : #utilcaca }
+{ #category : #utilities }
 MicBoldFormatBlock >> kind [
 	^ #bold
 ]
 
-{ #category : #utilcaca }
+{ #category : #utilities }
 MicBoldFormatBlock >> openingDelimiter [
 
  	^ MicBoldDelimiter markup
