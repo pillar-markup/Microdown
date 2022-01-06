@@ -322,8 +322,8 @@ MicInlineParserTest >> testMath [
 	res := self splitter parse: 'abc$	V_i = C_0 - C_3	$def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[	V_i = C_0 - C_3	](math)'.
-		'def' }.
+		equals: { 'Text(abc)'. '[	V_i = C_0 - C_3	](math)'.
+		'Text(def)' }.
 	self assert: (res second isKindOf: MicMathInlineBlock)
 ]
 
@@ -334,7 +334,7 @@ MicInlineParserTest >> testMath2 [
 	res := self splitter parse: 'abc$math env$def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'abc'. '[math env](math)'. 'def' }
+		equals: { 'Text(abc)'. '[math env](math)'. 'Text(def)' }
 ]
 
 { #category : #'tests - math' }
