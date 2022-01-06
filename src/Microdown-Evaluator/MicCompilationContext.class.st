@@ -1,6 +1,6 @@
 Class {
 	#name : #MicCompilationContext,
-	#superclass : #MicElement,
+	#superclass : #AnObsoleteMicElement,
 	#instVars : [
 		'configuration',
 		'input'

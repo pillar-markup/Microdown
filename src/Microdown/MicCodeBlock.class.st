@@ -54,12 +54,6 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #'public access' }
-MicCodeBlock >> eval: aBoolean [
-	arguments at: #eval put: aBoolean
-
-]
-
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
@@ -128,12 +122,6 @@ MicCodeBlock >> hasNoBody [
 MicCodeBlock >> initialize [
 	super initialize.
 	arguments := OrderedDictionary new.
-]
-
-{ #category : #'public access' }
-MicCodeBlock >> isEvaluated [ 
-	arguments at: #eval ifAbsent: [ ^ false ].
-	^ arguments at: #eval
 ]
 
 { #category : #accessing }
