@@ -130,7 +130,7 @@ MicInlineParserTest >> testEscapeCharacterInNestedCase [
 	res := self splitter parse: 'abc_\**not bold** italic_last'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: {'Text(abc)' . '[**not bold** italic](italic)' . 'Text(last)'}.
+		equals: {'Text(abc)' . 'ItalicFormat(Text(**not bold** italic))' . 'Text(last)'}.
 ]
 
 { #category : #'tests - escape' }
