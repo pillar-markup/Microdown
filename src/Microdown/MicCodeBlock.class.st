@@ -54,6 +54,12 @@ MicCodeBlock >> code [
 	^ self body
 ]
 
+{ #category : #'public access' }
+MicCodeBlock >> eval: aBoolean [
+	arguments at: #eval put: aBoolean
+
+]
+
 { #category : #handle }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"

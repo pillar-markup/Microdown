@@ -14,7 +14,8 @@ MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
 	mic := parser parse: 	aString.
-	self assert: (writer visit: mic) contents equals: aResultingString
+	writer visit: mic.
+	self assert: writer contents equals: aResultingString
 ]
 
 { #category : #running }
