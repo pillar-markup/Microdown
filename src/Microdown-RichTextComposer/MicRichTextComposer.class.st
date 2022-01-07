@@ -1,26 +1,22 @@
 "
-I am a visitor that produces rich text (class Text) based on a pillar document model.
-I am implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
+I'm a visitor that produces rich text (class `Text`) based on a microdown model.
+I'm implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
 a not rendering mode, and a not catching exceptions (to ease debugging).
 
-The main API is the method: `BCRichTextComposer class>>#renderComment:of:`.
+The main API is the methods: `MicRichTextComposer class >> #renderComment:of:` and `MicRichTextComposer class >> #asRichText:`
 
 Web-based images or LaTeX rendering requires network access and are cached.
-
-
-
-!!Note The composer should be improved to render better and in nicer ways elements. 
 
 #### Advanced  
 For the LaTeX rendering, internet connexion is required. 
 You can also turn it off/on doing
 
 ```
-BCRichTextComposer putOffLine
+MicRichTextComposer putOffLine
 ```
 
 In addition, images fetched via http requests are cached to avoid multiple http requests.
-The cache can be reset executing `PRRichTextComposer resetCache`. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).
+The cache can be reset executing `MicRichTextComposer resetCache`. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).
 When the system is online but the request failed I display an uncached placeholder.
 
 It means that web-based images can be prefilled and Pharo images can be provided preloaded. 
@@ -28,10 +24,10 @@ It means that web-based images can be prefilled and Pharo images can be provided
 When you want to get all the errors (typically to debug and fix them), you can configure the system to stop capturing errors using 
 
 ```
-PRRichTextComposer captureErrors: false
+MicRichTextComposer captureErrors: false
 
 ```
-\'
+
 
 
 #### Known limits
@@ -245,9 +241,13 @@ MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 { #category : #public }
 MicRichTextComposer >> asRichText: aStringOrDoc [
 	
-	^ self visit: (aStringOrDoc isString 
-			ifTrue: [ Microdown parse: aStringOrDoc ]
-			ifFalse: [ aStringOrDoc ])
+	configuration notRendering 	
+		ifTrue: [ ^ aStringOrDoc ].
+	configuration captureErrors 
+		ifFalse: [ ^ self parseAndComposeStringOrDoc: aStringOrDoc ].
+	^ [ self parseAndComposeStringOrDoc: aStringOrDoc ] 
+			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
+			do: [ aStringOrDoc ]
 ]
 
 { #category : #accessing }
@@ -282,6 +282,25 @@ MicRichTextComposer >> parseAndCompose: aString [
 
 	^ self visit: (Microdown parse: aString)
 
+]
+
+{ #category : #public }
+MicRichTextComposer >> parseAndComposeStringOrDoc: aStringOrDoc [
+	
+	^ self visit: (aStringOrDoc isString 
+			ifTrue: [ self parseAndCompose: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc ])
+]
+
+{ #category : #public }
+MicRichTextComposer >> renderComment: aString of: aClassOrPackage [ 
+	"Return aString as part of the templated class comment, when rendering is on.
+	Else aString."
+	
+	| builder |
+	builder := MicroDownParser builder.
+	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
+	^ self asRichText: builder contents
 ]
 
 { #category : #'figure-resolution' }

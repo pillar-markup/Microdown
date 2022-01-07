@@ -66,9 +66,9 @@ MicParsesAndRendersAllCommentsTest >> testSmokeSignalAndChoke [
 	self skip. "I take too long for normal circumstances"
 	difficultClasses := OrderedCollection new.
 	Smalltalk globals allClasses do: [ :cl |
-			[Microdown asRichText:  cl comment ]
-			on: Exception 
-			do: [ difficultClasses add: cl ]
+			[ Microdown asRichText: cl comment ]
+				on: Exception 
+				do: [ difficultClasses add: cl ]
 		 ].
 	self assert: difficultClasses isEmpty
 ]
