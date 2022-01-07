@@ -19,26 +19,26 @@ Class {
 }
 
 { #category : #initialization }
-MicRichTextConfiguration >> captureErrors [
+MicRichTextConfiguration class >> captureErrors [
 	
 	^ CaptureErrors
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> captureErrors: aBoolean [
+MicRichTextConfiguration class >> captureErrors: aBoolean [
 	
 	CaptureErrors := aBoolean
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> imageAt: urlString put: aForm [	
+MicRichTextConfiguration class >> imageAt: urlString put: aForm [	
 	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
 	
 	ImageCache at: urlString put: aForm
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> initialize [ 
+MicRichTextConfiguration class >> initialize [ 
 	"self initialize"
 	self offline: false.
 	self notRendering: false.
@@ -47,32 +47,32 @@ MicRichTextConfiguration >> initialize [
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> notRendering [
+MicRichTextConfiguration class >> notRendering [
 	"When notRendering, the comments are just displayed as plain text."
 	
 	^ NotRendering
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> notRendering: aBoolean [
+MicRichTextConfiguration class >> notRendering: aBoolean [
 	NotRendering := aBoolean
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> offline [
+MicRichTextConfiguration class >> offline [
 
 	^ OffLine
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> offline: aBoolean [
+MicRichTextConfiguration class >> offline: aBoolean [
 
 	OffLine := aBoolean
 
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> preferencesSettingsOn: aBuilder [
+MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #comments)
 		label: 'Comment rendering';  
@@ -102,19 +102,19 @@ MicRichTextConfiguration >> preferencesSettingsOn: aBuilder [
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> putOffline [
+MicRichTextConfiguration class >> putOffline [
 
 	self offline: true
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> putOnline [
+MicRichTextConfiguration class >> putOnline [
 
 	self offline: false
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration >> resetCache [
+MicRichTextConfiguration class >> resetCache [
 
 	ImageCache := Dictionary new
 ]
