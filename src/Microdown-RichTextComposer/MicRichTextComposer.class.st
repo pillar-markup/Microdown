@@ -243,11 +243,11 @@ MicRichTextComposer >> asRichText: aStringOrDoc [
 	
 	configuration notRendering 	
 		ifTrue: [ ^ aStringOrDoc ].
-	configuration captureErrors 
-		ifFalse: [ ^ self parseAndComposeStringOrDoc: aStringOrDoc ].
 	^ [ self parseAndComposeStringOrDoc: aStringOrDoc ] 
 			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
-			do: [ aStringOrDoc ]
+			do: [ :ex | ^ configuration captureErrors 
+									ifTrue: [ aStringOrDoc ]
+									ifFalse: [ ex pass ] ]
 ]
 
 { #category : #accessing }
@@ -279,7 +279,7 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 
 { #category : #composing }
 MicRichTextComposer >> parseAndCompose: aString [ 
-
+	
 	^ self visit: (Microdown parse: aString)
 
 ]
@@ -288,7 +288,7 @@ MicRichTextComposer >> parseAndCompose: aString [
 MicRichTextComposer >> parseAndComposeStringOrDoc: aStringOrDoc [
 	
 	^ self visit: (aStringOrDoc isString 
-			ifTrue: [ self parseAndCompose: aStringOrDoc ]
+			ifTrue: [ Microdown parse: aStringOrDoc ]
 			ifFalse: [ aStringOrDoc ])
 ]
 
@@ -298,8 +298,12 @@ MicRichTextComposer >> renderComment: aString of: aClassOrPackage [
 	Else aString."
 	
 	| builder |
-	builder := MicroDownParser builder.
-	aClassOrPackage buildMicroDownUsing: builder withComment: aString.
+	[  builder := MicroDownParser builder.
+	aClassOrPackage buildMicroDownUsing: builder withComment: aString ] 
+		on: Error 
+		do: [:ex | configuration captureErrors 
+			ifTrue: [ ^ aString ]
+			ifFalse: [ ex pass ] ].
 	^ self asRichText: builder contents
 ]
 
@@ -536,7 +540,6 @@ MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
 	backgroundColor := self textStyler monospaceBackgroundColor.
-	
 	self flag: #fixMe.
 	"Right now we stupidly emit TextAction but we should emit TextClassLink and revisit them."
 	canvas 

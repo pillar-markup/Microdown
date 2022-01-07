@@ -90,7 +90,7 @@ MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 				target: self;
 				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
 			(aBuilder setting: #captureErrors)
-				label: 'Disable error raising';
+				label: 'Capture error raising';
 				default: true;
 				target: self;
 				description: 'Errors may occur during the parsing of the comments and by default they are captured. It makes the users happy but the programmer cannot see the problem so this settings is there to help them.'. 
