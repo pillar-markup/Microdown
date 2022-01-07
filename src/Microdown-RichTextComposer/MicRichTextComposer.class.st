@@ -561,6 +561,15 @@ MicRichTextComposer >> visitParameters: anObject [
 	^ self
 ]
 
+{ #category : #visiting }
+MicRichTextComposer >> visitQuote: aQuote [
+	"I should have a fancier implementation, but for now this should work and be recognized as a quote"
+	canvas newLineIfNotAlready.
+	canvas << ('>',String tab) asText..
+	canvas indentIn: [ super visitQuote: aQuote ].
+	canvas newLine
+]
+
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitStrike: anObject [
 

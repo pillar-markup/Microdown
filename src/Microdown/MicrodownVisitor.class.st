@@ -164,7 +164,7 @@ MicrodownVisitor >> visitParagraph: aParagraph [
 
 { #category : #visiting }
 MicrodownVisitor >> visitQuote: aQuote [
-
+	^ self visitChildrenOf: aQuote
 ]
 
 { #category : #'visiting - inline elements' }
