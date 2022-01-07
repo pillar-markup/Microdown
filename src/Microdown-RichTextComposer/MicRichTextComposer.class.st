@@ -44,8 +44,9 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'codeStyler',
-		'textStyler'
+		'textStyler',
+		'configuration',
+		'codeStylerClass'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
@@ -245,21 +246,22 @@ MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 MicRichTextComposer >> asRichText: aStringOrDoc [
 	
 	^ self visit: (aStringOrDoc isString 
-			ifTrue: [  Microdown  parse: aStringOrDoc ]
-			ifFalse: [ aStringOrDoc   ])
+			ifTrue: [ Microdown parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc ])
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> codeStyler [
+MicRichTextComposer >> codeStylerClass [
 
-	^ codeStyler
+	^ codeStylerClass
 ]
 
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
-	codeStyler := MicCodeStylerSpec. "Yes, the class"
-	self textStyler:  MicTextStyler new 
+	codeStylerClass := MicCodeStylerSpec.
+	self textStyler:  MicTextStyler new.
+	configuration := MicRichTextConfiguration new.
 ]
 
 { #category : #private }
@@ -380,7 +382,7 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self codeStyler 
+			<< (self codeStylerClass 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.
