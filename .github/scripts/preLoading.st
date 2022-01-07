@@ -3,7 +3,7 @@ IceRepository registry
 	detect: [ :each | each name = 'Microdown' ]
 	ifFound: [ :aRepository | aRepository forget ].
 "This, however, needs to stay :)"
-#( 'BaselineOfMicrodownDev' 'BaselineOfMicrodown' 'Microdown' 'Microdown-Tests' 'Microdown-ResolvePath' 
+#( 'BaselineOfMicrodownDev' 'BaselineOfMicrodown' 'Microdown' 'Microdown-Tests' 'Microdown-MicrodownRichTextComposer' 'Microdown-ResolvePath' 
 'Microdown-ResolvePath-Tests' 
 'NewTools-DocumentationReader') do: [ :each | 
 	(RPackageOrganizer default packageNamed: each ifAbsent: [ nil ]) 
