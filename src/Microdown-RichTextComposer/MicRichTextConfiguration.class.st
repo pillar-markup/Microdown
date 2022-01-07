@@ -19,9 +19,8 @@ Class {
 }
 
 { #category : #initialization }
-MicRichTextConfiguration class >> captureErrors [
-	
-	^ CaptureErrors
+MicRichTextConfiguration class >> captureErrors [ 
+	^ CaptureErrors 
 ]
 
 { #category : #initialization }
@@ -47,10 +46,8 @@ MicRichTextConfiguration class >> initialize [
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration class >> notRendering [
-	"When notRendering, the comments are just displayed as plain text."
-	
-	^ NotRendering
+MicRichTextConfiguration class >> notRendering [  
+	^ NotRendering  
 ]
 
 { #category : #initialization }
@@ -117,4 +114,21 @@ MicRichTextConfiguration class >> putOnline [
 MicRichTextConfiguration class >> resetCache [
 
 	ImageCache := Dictionary new
+]
+
+{ #category : #initialization }
+MicRichTextConfiguration >> captureErrors [ 
+
+	^ CaptureErrors   
+]
+
+{ #category : #initialization }
+MicRichTextConfiguration >> notRendering [  
+	^ NotRendering  
+]
+
+{ #category : #initialization }
+MicRichTextConfiguration >> offLine [
+
+	^ OffLine
 ]
