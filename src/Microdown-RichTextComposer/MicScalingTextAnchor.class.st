@@ -22,11 +22,6 @@ Class {
 }
 
 { #category : #accessing }
-MicScalingTextAnchor >> anchoredMorph [ 
-	^ super anchoredMorph 
-]
-
-{ #category : #accessing }
 MicScalingTextAnchor >> freezeHeight [
 
 	^ freezeHeight
