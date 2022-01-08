@@ -41,13 +41,13 @@ MicParagraphBlock >> asUnindented: line [
 	^ line copyFrom: self indent + 1 to: line size
 ]
 
-{ #category : #parsing }
+{ #category : #public }
 MicParagraphBlock >> canConsumeLine: line [
 	"A paragraph is closed by an empty line, "
 
 	| unIndented |
 	"if we are closing block that can contain other elements then do not consume their ends."
-	(line isEmpty or: [ #('?>') includes: line]) 
+	(line isEmpty or: [ line beginsWith: MicroDownParser environmentClosingBlockMarkup]) 
 		ifTrue: [ ^ false ].
 	(self isRightlyIndented: line)
 		ifFalse: [ ^ false ].

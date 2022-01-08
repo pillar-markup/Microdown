@@ -279,11 +279,7 @@ toto'.
 
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
-	"
-'"
-	
 	| root |
-
 	root := parser parse: 'What a super day for a ride.
 	
 <?card
