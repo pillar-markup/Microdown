@@ -301,6 +301,42 @@ Yes this is a good idea.'.
 ]
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph2 [
+	"This test has a space after ?> '?> ' - was strangely broken at one point in time"
+	| root |
+	root := parser parse: 
+'What a super day for a ride.	
+<?card
+Sunn Special S3
+?> 
+Yes this is a good idea.'.
+	
+	self assert: root children size equals: 3.
+	self assert: root children second children first text equals: 'Sunn Special S3'.
+	self assert: root children third text  equals: 'Yes this is a good idea.'.
+	
+
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph3 [
+	"Text after ?> should be ignored - was strangely broken at one point in time"
+	| root |
+	root := parser parse: 
+'What a super day for a ride.	
+<?card
+Sunn Special S3
+?> Should ignore
+Yes this is a good idea.'.
+	
+	self assert: root children size equals: 3.
+	self assert: root children second children first text equals: 'Sunn Special S3'.
+	self assert: root children third text  equals: 'Yes this is a good idea.'.
+	
+
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testedClass [ 
 	^ MicEnvironmentBlock  
 ]
