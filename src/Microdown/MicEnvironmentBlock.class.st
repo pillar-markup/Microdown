@@ -89,7 +89,7 @@ MicEnvironmentBlock >> accept: aVisitor [
  	^ aVisitor visitEnvironment: self
 ]
 
-{ #category : #adding }
+{ #category : #handle }
 MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
