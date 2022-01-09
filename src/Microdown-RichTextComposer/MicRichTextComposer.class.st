@@ -55,83 +55,59 @@ MicRichTextComposer class >> asRichText: aStringOrDoc [
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleLatex [
-	<sampleInstance>
-
-	^ self parseAndCompose:
-'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}'
-]
-
-{ #category : #examples }
 MicRichTextComposer class >> exampleMicrodown1 [
 	<sampleInstance>
-	^ self parseAndCompose:  '### First section
-and this is just **first** line 
-1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
-   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
-   - And one more _silly_ thingie
-1. Line 2
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3'
+	^ self parseAndCompose:  '### Emphasis and lists
+Paragraphs are seperated by blank lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+New lines are preserved. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+Pargraphs can be split over several lines.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+1. Lorem ipsum dolor sit amet, `consectetur` adipiscing elit, 
+   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+   - _Lorem_ **ipsum** dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+     incididunt ut labore et dolore magna aliqua.
+   - Lorem _**ipsum dolor**_ sit amet
+1. You indent by alligning the bullet pointer (-, *, + or number) to the beginning of the text in above
+   - Like this
+   - Or this
+1. For the moment numbered lists always start with 1, and count upwards'
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown10 [
-	<sampleInstance>
-	
-	^ self parseAndCompose: '## This is the class Object
-	
-	
-	![Object class.](pharo:///Object)'
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown11 [
+MicRichTextComposer class >> exampleMicrodown2 [
 	<sampleInstance>
 	^ self parseAndCompose:
-'### Latex mathematics 
-It is possible to render latex math via a web services. Future version will cache the resulting expressions. 
+'## Code Blocks
 
-$
- \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
-$
+Code blocks can be Pharo, Method, or text. Default is Pharo
 
-Cool eh?
-'
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown3 [
-	<sampleInstance>
-	^ self parseAndCompose:
-					'## Code Blocks
-this is just _first_ line
-
-```
+```Pharo
 Metacello new
    baseline: ''PillarRichTextExporter'';
    repository: ''github://kasperosterbye/PillarRichTextRender'';
    load.
-```' 
+```
+
+```Method
+textStyler: aString
+	<codeblockStyler: ''text''>
+	^aString asText
+```
+
+```text
+textStyler: aString
+	<codeblockStyler: ''text''>
+	^aString asText
+```
+
+' 
 
 
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown4 [
-	<sampleInstance>
-	^ self parseAndCompose:
-					'## Annotations
-this is just _first_ line
-
-!!todo remember to do annotations
-and this is the second line'
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown5 [
+MicRichTextComposer class >> exampleMicrodown3 [
 	<sampleInstance>
 	^ self parseAndCompose:
 					'### Links
@@ -147,66 +123,76 @@ And this is another line'
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown6 [
+MicRichTextComposer class >> exampleMicrodown4 [
 	<sampleInstance>
 	^ self parseAndCompose:
 					'### Figures
 This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
-At max you should get one request per picture.
+You should get one request per picture.
 
 ![A super nice Pharo logo.](https://files.pharo.org/media/logo/logo.png)
 
-And this is the last line'
+Images can be used as anchors: 
+
+[![](https://pharo.org/web/files/pharo-logo-small.png)](https://pharo.org)
+
+'
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleMicrodown5 [
+	<sampleInstance>
+	^ self parseAndCompose:
+					'# Links to code
+
+1. `Point` should open a class browser on Point.
+2. `Point class` should open a class browser on Point.
+3. `Point >> setX:setY:` should open a browser on the correspoding method.
+4. `#''Kernel-BasicObjects''` should open a browser on the package.
+5. But `Borrrrrken` does not create a link to code.
+' 
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleMicrodown6 [
+	<sampleInstance>
+	^ self parseAndCompose:
+'### Latex mathematics 
+It is possible to render latex math via a web services. We allow inline math $x^2$, or math blocks
+
+&
+ \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
+&
+
+Cool eh?
+'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown7 [
 	<sampleInstance>
-	^ self parseAndCompose:
-					'# First section
-
-1. `Point` should open a class browser on Point.
-2. `Point class` should open a class browser on Point.
-3. `Point >> setX:setY:` should open a browser on the correspoding method.
-4. `#''Pillar-ExporterRichText''` should open a browser on the package.
-5. But `Borrrrrken` does not display the same.
-' 
+	
+	^ self parseAndCompose: '## This is the class Object
+	
+	
+	![Object class.](pharo:///Object)'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown8 [
 	<sampleInstance>
 	^ self parseAndCompose:
-					'```language=PharoExpression
-1 + 2 * 3  
-```
-' 
-]
+					'## Annotations
+this is just _first_ line
 
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown9 [
-	<sampleInstance>
-	
-	^ self parseAndCompose: 
-'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
-```language=PharoMethod
-foo: arg
-	^ arg + self
-```
-'
+!!todo remember to do annotations
+and this is the second line'
 ]
 
 { #category : #'class initialization' }
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
 	MicCodeStylerSpec initializeCache.
-]
-
-{ #category : #public }
-MicRichTextComposer class >> microdownAsRichText: aString [
-	
-	^ self new visit: (Microdown parse: aString)
-
 ]
 
 { #category : #public }
