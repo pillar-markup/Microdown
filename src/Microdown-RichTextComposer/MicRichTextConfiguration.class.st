@@ -95,7 +95,7 @@ MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
 			(aBuilder setting: #cacheResources)
 				label: 'Cache HTTP resources';
-				default: true;
+				default: false;
 				target: self;
 				description: 'When we refer to an HTTP resources cache it instead of systematically refetch it.'. 
 			(aBuilder setting: #captureErrors)

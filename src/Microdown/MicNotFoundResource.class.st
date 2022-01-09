@@ -27,7 +27,10 @@ MicNotFoundResource class >> resource: aResource error: anError [
 { #category : #converting }
 MicNotFoundResource >> asForm [
 
-	^ 'Resource not found' asMorph asForm
+	^ nil
+	
+	 " the following does not work because the client are using nil to pass around.
+	'Resource not found' asMorph asForm"
 ]
 
 { #category : #visiting }
