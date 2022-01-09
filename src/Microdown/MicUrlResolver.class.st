@@ -81,6 +81,8 @@ MicUrlResolver >> initialize [
 MicUrlResolver >> rawResourceFromUrl: anAbsoluteFileURL [
 
 	| client |
+	self isOffLine 
+		ifTrue: [ ^ MicNotFoundResource resource: anAbsoluteFileURL ].
 	[	
 	(anAbsoluteFileURL uri asZnUrl asZnUrlWithDefaults)
 		hasHost ifFalse: [ ZnMissingHost signal: 'Invalid Url: ', anAbsoluteFileURL uri ].

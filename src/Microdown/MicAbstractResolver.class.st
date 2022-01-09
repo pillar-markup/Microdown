@@ -10,6 +10,7 @@ Class {
 	],
 	#classVars : [
 		'IsCachingResources',
+		'OffLine',
 		'ResourcesCache'
 	],
 	#category : #'Microdown-Core'
@@ -34,6 +35,19 @@ MicAbstractResolver class >> initialize [
 MicAbstractResolver class >> isCachingResources [
 
 	^ IsCachingResources 
+]
+
+{ #category : #images }
+MicAbstractResolver class >> offLine [
+
+	^ OffLine
+]
+
+{ #category : #images }
+MicAbstractResolver class >> offLine: aBoolean [
+
+	OffLine := aBoolean
+
 ]
 
 { #category : #images }
@@ -73,9 +87,14 @@ MicAbstractResolver >> basicResolveUrl: anAbsoluteFileURL [
 	self subclassResponsibility
 ]
 
-{ #category : #'accessing - resources' }
+{ #category : #testing }
 MicAbstractResolver >> isCachingResources [ 
 	^ self class isCachingResources
+]
+
+{ #category : #testing }
+MicAbstractResolver >> isOffLine [ 
+	^ OffLine
 ]
 
 { #category : #accessing }
@@ -112,7 +131,7 @@ MicAbstractResolver >> resolveUrl: anAbsoluteFileURL [
 		ifNil: [ nextResolver resolveUrl: anAbsoluteFileURL ]
 ]
 
-{ #category : #'accessing - resources' }
+{ #category : #accessing }
 MicAbstractResolver >> resourcesCache [ 
 	^ self class resourcesCache
 ]

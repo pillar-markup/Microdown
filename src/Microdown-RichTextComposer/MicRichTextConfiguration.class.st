@@ -60,15 +60,15 @@ MicRichTextConfiguration class >> notRendering: aBoolean [
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration class >> offline [
+MicRichTextConfiguration class >> offLine [
 
-	^ OffLine
+	^ MicAbstractResolver offLine
 ]
 
 { #category : #initialization }
-MicRichTextConfiguration class >> offline: aBoolean [
+MicRichTextConfiguration class >> offLine: aBoolean [
 
-	OffLine := aBoolean
+	MicAbstractResolver offLine: aBoolean
 
 ]
 
@@ -80,7 +80,7 @@ MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 		parent: #appearance;
 		description: 'All settings concerned with the notifications popup look''n feel';
 		with: [
-		(aBuilder setting: #offline)
+		(aBuilder setting: #offLine)
 			label: 'Enable offline mode';
 			target: self;
 			default: false;
@@ -104,18 +104,6 @@ MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 				target: self;
 				description: 'Errors may occur during the parsing of the comments and by default they are captured. It makes the users happy but the programmer cannot see the problem so this settings is there to help them.'. 
 			]
-]
-
-{ #category : #initialization }
-MicRichTextConfiguration class >> putOffline [
-
-	self offline: true
-]
-
-{ #category : #initialization }
-MicRichTextConfiguration class >> putOnline [
-
-	self offline: false
 ]
 
 { #category : #initialization }
