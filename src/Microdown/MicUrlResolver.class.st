@@ -46,8 +46,7 @@ MicUrlResolver >> basicResolveRelativeReference: aMicRelativeReference [
 MicUrlResolver >> basicResolveUrl: anAbsoluteFileURL [
 
 	| client |
-	[
-	
+	[	
 	(anAbsoluteFileURL uri asZnUrl asZnUrlWithDefaults)
 		hasHost ifFalse: [ ZnMissingHost signal: 'Invalid Url: ', anAbsoluteFileURL uri ].
 

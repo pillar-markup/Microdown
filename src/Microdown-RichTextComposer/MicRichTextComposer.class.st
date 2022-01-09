@@ -244,7 +244,7 @@ MicRichTextComposer >> asRichText: aStringOrDoc [
 	configuration notRendering 	
 		ifTrue: [ ^ aStringOrDoc ].
 	^ [ self parseAndComposeStringOrDoc: aStringOrDoc ] 
-			on: STONReaderError, MicParsingError, MessageNotUnderstood, SubclassResponsibility 
+			on: Error 
 			do: [ :ex | ^ configuration captureErrors 
 									ifTrue: [ aStringOrDoc ]
 									ifFalse: [ ex pass ] ]

@@ -34,8 +34,7 @@ MicZincPathResolver >> visitFigure: aFigure [
 
 	| resolvedUri |
 	resolvedUri := baseUri withRelativeReference: aFigure reference relativePath.
-	aFigure reference:
-		(MicResourceReference fromUri: resolvedUri printString)
+	aFigure reference: (MicResourceReference fromUri: resolvedUri printString)
 ]
 
 { #category : #visiting }

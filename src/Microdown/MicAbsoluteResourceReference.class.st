@@ -1,5 +1,6 @@
 "
 I represent a superclass for all absolute references.
+A reference will then be resolved and produces a resource.
 
 Common for all absolute references is that they store their reference in a uri (ZnUrl).
 "
