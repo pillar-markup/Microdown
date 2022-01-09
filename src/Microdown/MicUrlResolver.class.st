@@ -44,20 +44,15 @@ MicUrlResolver >> basicResolveRelativeReference: aMicRelativeReference [
 
 { #category : #resolving }
 MicUrlResolver >> basicResolveUrl: anAbsoluteFileURL [
-
-	| client |
-	[	
-	(anAbsoluteFileURL uri asZnUrl asZnUrlWithDefaults)
-		hasHost ifFalse: [ ZnMissingHost signal: 'Invalid Url: ', anAbsoluteFileURL uri ].
-
-	(client := ZnEasy client)
-		beBinary; "Let decoding to the user, this is just a file"
-		url: anAbsoluteFileURL uri;
-		enforceHttpSuccess: true;
-		get ] on: ZnHttpUnsuccessful, ZnMissingHost do: [ :error |
-			^ MicNotFoundResource resource: anAbsoluteFileURL error: error ].
-
-	^ MicHttpResource on: client entity reference: anAbsoluteFileURL
+	"Returns a resolved resources that will be later be rendered by a canvas such as the rich text composer by extracting a form for example from the resources."
+	
+	| url |
+	url := anAbsoluteFileURL uri asZnUrl.
+	self isCachingResources ifTrue: [ 
+		^ self resourcesCache at: url ifAbsentPut: [ self rawResourceFromUrl: anAbsoluteFileURL ] ].
+	^ self rawResourceFromUrl: anAbsoluteFileURL
+	
+	
 ]
 
 { #category : #accessing }
@@ -80,4 +75,21 @@ MicUrlResolver >> initialize [
 	baseUrl := ''.
 	"Use an empty in-memory file system that will contain no files"
 	currentWorkingDirectory := FileSystem memory root.
+]
+
+{ #category : #resolving }
+MicUrlResolver >> rawResourceFromUrl: anAbsoluteFileURL [
+
+	| client |
+	[	
+	(anAbsoluteFileURL uri asZnUrl asZnUrlWithDefaults)
+		hasHost ifFalse: [ ZnMissingHost signal: 'Invalid Url: ', anAbsoluteFileURL uri ].
+
+	(client := ZnEasy client)
+		beBinary; "Let decoding to the user, this is just a file"
+		url: anAbsoluteFileURL uri;
+		enforceHttpSuccess: true;
+		get ] on: ZnHttpUnsuccessful, ZnMissingHost do: [ :error |
+			^ MicNotFoundResource resource: anAbsoluteFileURL error: error ].
+	^ MicHttpResource on: client entity reference: anAbsoluteFileURL
 ]

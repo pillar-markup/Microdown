@@ -11,12 +11,24 @@ Class {
 	#superclass : #Object,
 	#classVars : [
 		'CaptureErrors',
-		'ImageCache',
 		'NotRendering',
 		'OffLine'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
+
+{ #category : #initialization }
+MicRichTextConfiguration class >> cacheResources [
+
+	^ MicAbstractResolver isCachingResources
+	
+]
+
+{ #category : #initialization }
+MicRichTextConfiguration class >> cacheResources: aBoolean [
+
+	MicAbstractResolver cachingResources: aBoolean
+]
 
 { #category : #initialization }
 MicRichTextConfiguration class >> captureErrors [ 
@@ -27,13 +39,6 @@ MicRichTextConfiguration class >> captureErrors [
 MicRichTextConfiguration class >> captureErrors: aBoolean [
 	
 	CaptureErrors := aBoolean
-]
-
-{ #category : #initialization }
-MicRichTextConfiguration class >> imageAt: urlString put: aForm [	
-	"the cache contains results of for example ZnEasy getPng:, i.e., a form"
-	
-	ImageCache at: urlString put: aForm
 ]
 
 { #category : #initialization }
@@ -89,12 +94,16 @@ MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
 				default: false;
 				target: self;
 				description: 'Comments are by default rendered via Pillar in Richtext. When this setting is on, they are rendered as plain text (showing their Microdown definitions).'. 
+			(aBuilder setting: #cacheResources)
+				label: 'Cache HTTP resources';
+				default: true;
+				target: self;
+				description: 'When we refer to an HTTP resources cache it instead of systematically refetch it.'. 
 			(aBuilder setting: #captureErrors)
 				label: 'Capture error raising';
 				default: true;
 				target: self;
 				description: 'Errors may occur during the parsing of the comments and by default they are captured. It makes the users happy but the programmer cannot see the problem so this settings is there to help them.'. 
-			
 			]
 ]
 
@@ -108,12 +117,6 @@ MicRichTextConfiguration class >> putOffline [
 MicRichTextConfiguration class >> putOnline [
 
 	self offline: false
-]
-
-{ #category : #initialization }
-MicRichTextConfiguration class >> resetCache [
-
-	ImageCache := Dictionary new
 ]
 
 { #category : #initialization }

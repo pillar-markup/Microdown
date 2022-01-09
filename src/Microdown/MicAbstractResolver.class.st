@@ -9,56 +9,44 @@ Class {
 		'nextResolver'
 	],
 	#classVars : [
-		'ImageCache',
-		'ImageNotCachedBlock'
+		'IsCachingResources',
+		'ResourcesCache'
 	],
 	#category : #'Microdown-Core'
 }
 
 { #category : #images }
-MicAbstractResolver class >> cachedImageFromUrl: aUrl [
-	"In case a url is not in the cache, it is either read from the net, or if the ImageNotCachedBlock
-	is non nil, the image returned by ImageNotCachedBlock is returned, but not stored in the cache"
-	
-	(self imageCache includesKey: aUrl)
-		ifTrue: [ ^ self imageCache at: aUrl ].
-	
-	^ ImageNotCachedBlock 
-		ifNil: [ |image|
-			image := self rawImageFrom: aUrl.
-			image ifNil: [ ^ nil ].
-			"at: aUrl put: image retuns image!"
-			self imageCache at: aUrl put: image]
-		ifNotNil: [ 
-			ImageNotCachedBlock value: aUrl]
-]
+MicAbstractResolver class >> cachingResources: aBoolean [
 
-{ #category : #images }
-MicAbstractResolver class >> imageCache [
-	ImageCache ifNil:[ImageCache := LRUCache new ].
-	^ImageCache
-]
-
-{ #category : #images }
-MicAbstractResolver class >> imageNotCachedBlock: aHandlerBlock [ 
-	"If an image is not in the cache, execute this block get an image. 
-	Do not store the produced image in the cache."
-	ImageNotCachedBlock := aHandlerBlock
+	IsCachingResources := aBoolean 
 ]
 
 { #category : #'class initialization' }
 MicAbstractResolver class >> initialize [
+	"self initialize"
+	
 	<script>
-	ImageCache := nil.
-	ImageNotCachedBlock := nil
+	ResourcesCache := nil.
+	IsCachingResources := true.
 ]
 
 { #category : #images }
-MicAbstractResolver class >> rawImageFrom: aURL [
-	[ ^ ZnEasy getImageOfType: (ZnMimeType main: 'image' sub: '*') fromUrl: aURL ]
-	on: Exception
-	do: [ ^ nil ]
-		
+MicAbstractResolver class >> isCachingResources [
+
+	^ IsCachingResources 
+]
+
+{ #category : #images }
+MicAbstractResolver class >> resetResourcesCache [ 
+
+	ResourcesCache := nil 
+]
+
+{ #category : #images }
+MicAbstractResolver class >> resourcesCache [
+
+	ResourcesCache ifNil: [ ResourcesCache := LRUCache new ].
+	^ ResourcesCache
 ]
 
 { #category : #'accessing - resources' }
@@ -83,6 +71,11 @@ MicAbstractResolver >> basicResolveRelativeReference: aMicRelativeResource [
 MicAbstractResolver >> basicResolveUrl: anAbsoluteFileURL [
 
 	self subclassResponsibility
+]
+
+{ #category : #'accessing - resources' }
+MicAbstractResolver >> isCachingResources [ 
+	^ self class isCachingResources
 ]
 
 { #category : #accessing }
@@ -117,4 +110,9 @@ MicAbstractResolver >> resolveUrl: anAbsoluteFileURL [
 
 	^ (self basicResolveUrl: anAbsoluteFileURL)
 		ifNil: [ nextResolver resolveUrl: anAbsoluteFileURL ]
+]
+
+{ #category : #'accessing - resources' }
+MicAbstractResolver >> resourcesCache [ 
+	^ self class resourcesCache
 ]
