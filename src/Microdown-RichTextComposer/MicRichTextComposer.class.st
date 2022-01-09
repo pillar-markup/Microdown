@@ -465,7 +465,10 @@ MicRichTextComposer >> visitFigure: aFigure [
 	| imageResource embeddableInText |
 	imageResource := aFigure reference resolveResourceIn: MicUrlResolver new.
 	embeddableInText := imageResource asRenderedOn: self withinNode: aFigure.
-	canvas << embeddableInText
+	"Adding a zero width no-break space circumvents two errors in rubrics when
+	using images as links. Adding it even if the image is not a link causes no
+	harm (it is invisible), and this is the easiest place to add it."
+	canvas << (embeddableInText, 16rFEFF asCharacter asString asText)
 ]
 
 { #category : #'visiting - document' }
