@@ -44,7 +44,7 @@ MicRichTextConfiguration class >> captureErrors: aBoolean [
 { #category : #initialization }
 MicRichTextConfiguration class >> initialize [ 
 	"self initialize"
-	self offline: false.
+	self offLine:  false.
 	self notRendering: false.
 	self captureErrors: true.
 ]
