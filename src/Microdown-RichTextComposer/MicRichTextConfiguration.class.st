@@ -46,7 +46,6 @@ MicRichTextConfiguration class >> initialize [
 	"self initialize"
 	self offline: false.
 	self notRendering: false.
-	self resetCache.
 	self captureErrors: true.
 ]
 
