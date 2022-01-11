@@ -13,7 +13,8 @@ SmalltalkCISpec {
   #preTesting : [ '.github/scripts/preTesting.st' ],
   #testing : {
   	#packages : [ 
-  		'Microdown*',
+  		'Microdown.*',
+  		'System-Settings-Tests.*',
   		'ReleaseTests.*' ] 
   }  
 }

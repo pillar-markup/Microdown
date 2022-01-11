@@ -1,11 +1,10 @@
 # Microdown Parser and Elements
 
-![https://github.com/pillar-markup/Microdown/workflows/currentDev/badge.svg](https://github.com/pillar-markup/Microdown/workflows/currentDev/badge.svg)
-![https://github.com/pillar-markup/Microdown/workflows/currentReleasable/badge.svg](https://github.com/pillar-markup/Microdown/workflows/currentReleasable/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/pillar-markup/MicroDown/badge.svg?branch=dev)](https://coveralls.io/github/pillar-markup/MicroDown?branch=dev)
-
 I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
-Microdown is a smaller markdown but it is more extensible.
+Microdown is a smaller markdown but it is more extensible.  
+
+[![Microdown-Pharo-Integration](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml)  
+[![currentDev](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml)  
 
 ## Quick start
 ### Loading specific version
