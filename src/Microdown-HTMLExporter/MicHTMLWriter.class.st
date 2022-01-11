@@ -19,22 +19,35 @@ MicHTMLWriter >> contents [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> createAnchorWith: anId [
+
+	canvas tag
+		name: 'a';
+		parameterAt: 'id' put: anId;
+		with: ''
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> exportImgFor: aFigure [
 
 	| img |
-	img := canvas emptyTag
+	img := canvas tag
 		       name: 'img';
 		       parameterAt: 'src' put: aFigure localFileOrExternalReference;
 		       yourself.
-	aFigure parameters
-		at: 'width'
-		ifPresent: [ :width | 
-		img parameterAt: 'width' put: width asString , '%' ].
-	aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ].
+	"aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ]."
 	img parameterAt: 'alt' put: (aFigure hasChildren
 			 ifTrue: [ aFigure text ]
 			 ifFalse: [ '' ]).
 	img closeTag
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> hasLabel [
+
+	| label |
+	label := self parameters at: 'label' ifAbsent: [ ^ false ].
+	^ label isEmptyOrNil not
 ]
 
 { #category : #initialization }
@@ -44,6 +57,14 @@ MicHTMLWriter >> initialize [
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
 	canvas := self canvasClass on: stream.
 	
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> languageForScript: aScript [
+
+	^ aScript language isSpecified
+		  ifTrue: [ aScript language ]
+		  ifFalse: [ self configuration defaultScriptLanguage ]
 ]
 
 { #category : #initialization }
@@ -59,6 +80,34 @@ MicHTMLWriter >> visitBold: aBoldText [
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aBoldText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitCodeblock: aCodeBlock [
+
+	canvas tag
+		name: 'figure';
+		with: [ 
+			canvas tag
+				name: 'pre';
+				with: [ 
+					| code language |
+					code := canvas tag
+						        name: 'code';
+						        yourself.
+					language := self languageForScript: aCodeBlock.
+					language isSyntaxHighlightingPossible ifTrue: [ 
+						code parameterAt: 'class' put: language printString ].
+					code with: [ canvas lines: aCodeBlock text ] ].
+			canvas tag
+				name: 'figcaption';
+				with: [ 
+					aCodeBlock hasLabel ifTrue: [ 
+							self createAnchorWith: aCodeBlock label.
+							self writeCounterForScript: aCodeBlock ].
+					aCodeBlock hasCaption ifTrue: [ 
+							self visitAll: aCodeBlock caption children ] ] ].
+	canvas newLine
 ]
 
 { #category : #visiting }
@@ -160,6 +209,36 @@ MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
 		name: 'li';
 		with: anUnorderedListItem text.
 	canvas newLine
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> writeCounter: aCounter [
+
+	"Write on the canvas the string representation of ==aCounter=="
+
+	^ aCounter elements
+		  do: [ :each | self writeCounterElement: each ]
+		  separatedBy: [ self writeCounterElementSeparator ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> writeCounterDefinitionSeparator [
+
+	canvas nextPutAll: '. '
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> writeCounterElement: aCounterElement [
+
+	canvas nextPutAll: aCounterElement asString
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> writeCounterForScript: aScript [
+
+	aScript counter isValidCounter ifFalse: [ ^ self ].
+	self writeCounter: aScript counter.
+	self writeCounterDefinitionSeparator
 ]
 
 { #category : #writing }

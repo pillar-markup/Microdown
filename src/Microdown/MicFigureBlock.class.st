@@ -25,6 +25,22 @@ MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
+{ #category : #'as yet unclassified' }
+MicFigureBlock >> alt [
+  ^ self arguments at: #alt ifAbsent: ['']
+]
+
+{ #category : #'as yet unclassified' }
+MicFigureBlock >> alt: aString [
+    self arguments at: #alt put: aString
+]
+
+{ #category : #accessing }
+MicFigureBlock >> anchor [
+	^self arguments at: #anchor 
+	ifAbsent: [ nil ] 
+]
+
 { #category : #accessing }
 MicFigureBlock >> arguments [
 	^ parameters
@@ -50,6 +66,11 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
+{ #category : #testing }
+MicFigureBlock >> hasAnchor [
+	^self anchor isNotNil
+]
+
 { #category : #accessing }
 MicFigureBlock >> hasArguments [
 
@@ -59,6 +80,11 @@ MicFigureBlock >> hasArguments [
 { #category : #testing }
 MicFigureBlock >> hasCaption [ 	
 	^ captionElements notNil 
+]
+
+{ #category : #testing }
+MicFigureBlock >> hasChildren [
+	^ self children notEmpty.
 ]
 
 { #category : #testing }

@@ -127,13 +127,8 @@ MicHTMLExporterTest >> testUnorderedList [
 { #category : #'tests - formats' }
 MicHTMLExporterTest >> testfigure [
 
-	self halt.
 	self parse: factory figureSample andCheckWeGet: '
-<figure>
-    <img src= /anUrl
-         alt="figureTest">
-    <figcaption>Foo</figcaption>
-</figure>'
+<p><img src="/anUrl label=figureTest&size=80" alt="Foo"></p>'
 ]
 
 { #category : #'tests - formats' }
