@@ -41,7 +41,6 @@ Class {
 	#instVars : [
 		'canvas',
 		'textStyler',
-		'configuration',
 		'codeStylerClass'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
@@ -227,13 +226,10 @@ MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 { #category : #public }
 MicRichTextComposer >> asRichText: aStringOrDoc [
 	
-	configuration notRendering 	
-		ifTrue: [ ^ aStringOrDoc ].
-	^ [ self parseAndComposeStringOrDoc: aStringOrDoc ] 
-			on: Error 
-			do: [ :ex | ^ configuration captureErrors 
-									ifTrue: [ aStringOrDoc ]
-									ifFalse: [ ex pass ] ]
+	
+	^ self visit: (aStringOrDoc isString 
+		ifTrue: [ Microdown parse: aStringOrDoc ]
+		ifFalse: [ aStringOrDoc ])
 ]
 
 { #category : #accessing }
@@ -247,7 +243,6 @@ MicRichTextComposer >> initialize [
 	super initialize.
 	codeStylerClass := MicCodeStylerSpec.
 	self textStyler:  MicTextStyler new.
-	configuration := MicRichTextConfiguration new.
 ]
 
 { #category : #private }
@@ -276,21 +271,6 @@ MicRichTextComposer >> parseAndComposeStringOrDoc: aStringOrDoc [
 	^ self visit: (aStringOrDoc isString 
 			ifTrue: [ Microdown parse: aStringOrDoc ]
 			ifFalse: [ aStringOrDoc ])
-]
-
-{ #category : #public }
-MicRichTextComposer >> renderComment: aString of: aClassOrPackage [ 
-	"Return aString as part of the templated class comment, when rendering is on.
-	Else aString."
-	
-	| builder |
-	[  builder := MicroDownParser builder.
-	aClassOrPackage buildMicroDownUsing: builder withComment: aString ] 
-		on: Error 
-		do: [:ex | configuration captureErrors 
-			ifTrue: [ ^ aString ]
-			ifFalse: [ ex pass ] ].
-	^ self asRichText: builder contents
 ]
 
 { #category : #'figure-resolution' }

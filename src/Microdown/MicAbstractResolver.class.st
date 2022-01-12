@@ -9,54 +9,37 @@ Class {
 		'nextResolver'
 	],
 	#classVars : [
-		'IsCachingResources',
-		'OffLine',
 		'ResourcesCache'
 	],
 	#category : #'Microdown-Core'
 }
-
-{ #category : #images }
-MicAbstractResolver class >> cachingResources: aBoolean [
-
-	IsCachingResources := aBoolean 
-]
 
 { #category : #'class initialization' }
 MicAbstractResolver class >> initialize [
 	"self initialize"
 	
 	<script>
-	ResourcesCache := nil.
-	IsCachingResources := true.
+	self resetResourcesCache 
 ]
 
-{ #category : #images }
+{ #category : #resources }
 MicAbstractResolver class >> isCachingResources [
 
-	^ IsCachingResources 
+	^ Microdown isCachingResources 
 ]
 
-{ #category : #images }
-MicAbstractResolver class >> offLine [
-
-	^ OffLine
+{ #category : #resources }
+MicAbstractResolver class >> offline [
+	^ Microdown offline
 ]
 
-{ #category : #images }
-MicAbstractResolver class >> offLine: aBoolean [
-
-	OffLine := aBoolean
-
-]
-
-{ #category : #images }
+{ #category : #resources }
 MicAbstractResolver class >> resetResourcesCache [ 
 
 	ResourcesCache := nil 
 ]
 
-{ #category : #images }
+{ #category : #resources }
 MicAbstractResolver class >> resourcesCache [
 
 	ResourcesCache ifNil: [ ResourcesCache := LRUCache new ].
@@ -93,8 +76,8 @@ MicAbstractResolver >> isCachingResources [
 ]
 
 { #category : #testing }
-MicAbstractResolver >> isOffLine [ 
-	^ OffLine
+MicAbstractResolver >> isOffline [ 
+	^ self class offline
 ]
 
 { #category : #accessing }
