@@ -9,6 +9,10 @@ Class {
 	#instVars : [
 		'parser'
 	],
+	#classVars : [
+		'IsCachingResources',
+		'Offline'
+	],
 	#category : #'Microdown-Core'
 }
 
@@ -18,6 +22,32 @@ Microdown class >> asRichText: aStringOrDoc [
 	^ MicRichTextComposer asRichText: aStringOrDoc.
 		
 	
+]
+
+{ #category : #images }
+Microdown class >> cachingResources: aBoolean [
+
+	IsCachingResources := aBoolean 
+]
+
+{ #category : #images }
+Microdown class >> isCachingResources [
+	IsCachingResources ifNil: [ IsCachingResources := true ].
+
+	^ IsCachingResources 
+]
+
+{ #category : #images }
+Microdown class >> offline [
+	^ Offline
+
+]
+
+{ #category : #images }
+Microdown class >> offline: aBoolean [
+
+	Offline := aBoolean
+
 ]
 
 { #category : #parsing }

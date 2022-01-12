@@ -9,17 +9,16 @@ Class {
 		'nextResolver'
 	],
 	#classVars : [
-		'IsCachingResources',
-		'OffLine',
 		'ResourcesCache'
 	],
 	#category : #'Microdown-Core'
 }
 
-{ #category : #images }
+{ #category : #initialization }
 MicAbstractResolver class >> cachingResources: aBoolean [
+	self halt: 'Should not be called, status is on Microdown'.
 
-	IsCachingResources := aBoolean 
+	Microdown cachingResources:  aBoolean 
 ]
 
 { #category : #'class initialization' }
@@ -28,26 +27,23 @@ MicAbstractResolver class >> initialize [
 	
 	<script>
 	ResourcesCache := nil.
-	IsCachingResources := true.
 ]
 
-{ #category : #images }
+{ #category : #initialization }
 MicAbstractResolver class >> isCachingResources [
 
-	^ IsCachingResources 
+	^ Microdown isCachingResources 
 ]
 
-{ #category : #images }
+{ #category : #initialization }
 MicAbstractResolver class >> offLine [
-
-	^ OffLine
+	^ Microdown offline
 ]
 
-{ #category : #images }
+{ #category : #initialization }
 MicAbstractResolver class >> offLine: aBoolean [
-
-	OffLine := aBoolean
-
+	self halt: 'Should not be called, offline status is on Microdown'.
+	Microdown offline: aBoolean
 ]
 
 { #category : #images }
@@ -94,7 +90,7 @@ MicAbstractResolver >> isCachingResources [
 
 { #category : #testing }
 MicAbstractResolver >> isOffLine [ 
-	^ OffLine
+	^ Microdown offline
 ]
 
 { #category : #accessing }
