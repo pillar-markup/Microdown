@@ -71,6 +71,7 @@ Microdown class >> microdownPreferenceSettingsOn: aBuilder [
 
 { #category : #settings }
 Microdown class >> offline [
+	Offline ifNil: [ Offline := false ].
 	^ Offline
 
 ]
