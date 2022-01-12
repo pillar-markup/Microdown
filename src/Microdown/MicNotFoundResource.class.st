@@ -26,7 +26,6 @@ MicNotFoundResource class >> resource: aResource error: anError [
 
 { #category : #converting }
 MicNotFoundResource >> asForm [
-
 	^ nil
 	
 	 " the following does not work because the client are using nil to pass around.
@@ -35,7 +34,6 @@ MicNotFoundResource >> asForm [
 
 { #category : #visiting }
 MicNotFoundResource >> asRenderedOn: aRenderer withinNode: aNode [
-	
 	^ aRenderer renderNotFoundResource: self inNode: aNode
 ]
 

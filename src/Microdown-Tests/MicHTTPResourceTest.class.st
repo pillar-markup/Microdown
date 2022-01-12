@@ -5,7 +5,8 @@ Class {
 	#name : #MicHTTPResourceTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'resolver'
+		'resolver',
+		'offlineSetting'
 	],
 	#category : #'Microdown-Tests-Resources'
 }
@@ -18,7 +19,18 @@ MicHTTPResourceTest class >> githubTestData [
 { #category : #running }
 MicHTTPResourceTest >> setUp [
 	super setUp.
+	"All tests assume to be online"
+	offlineSetting := Microdown offline.
+	Microdown offline: false.
 	resolver := MicUrlResolver new baseUrlString: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
+]
+
+{ #category : #running }
+MicHTTPResourceTest >> tearDown [
+	
+	Microdown offline: offlineSetting.
+	
+	super tearDown
 ]
 
 { #category : #tests }

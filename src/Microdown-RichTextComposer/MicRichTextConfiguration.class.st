@@ -62,7 +62,7 @@ MicRichTextConfiguration class >> notRendering: aBoolean [
 { #category : #initialization }
 MicRichTextConfiguration class >> offLine [
 
-	^ MicAbstractResolver offLine
+	^ MicAbstractResolver offline
 ]
 
 { #category : #initialization }
@@ -74,7 +74,7 @@ MicRichTextConfiguration class >> offLine: aBoolean [
 
 { #category : #initialization }
 MicRichTextConfiguration class >> preferencesSettingsOn: aBuilder [
-	<systemsettings>
+	<old_systemsettings>
 	(aBuilder group: #comments)
 		label: 'Comment rendering';  
 		parent: #appearance;

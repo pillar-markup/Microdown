@@ -14,45 +14,32 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #initialization }
-MicAbstractResolver class >> cachingResources: aBoolean [
-	self halt: 'Should not be called, status is on Microdown'.
-
-	Microdown cachingResources:  aBoolean 
-]
-
 { #category : #'class initialization' }
 MicAbstractResolver class >> initialize [
 	"self initialize"
 	
 	<script>
-	ResourcesCache := nil.
+	self resetResourcesCache 
 ]
 
-{ #category : #initialization }
+{ #category : #resources }
 MicAbstractResolver class >> isCachingResources [
 
 	^ Microdown isCachingResources 
 ]
 
-{ #category : #initialization }
-MicAbstractResolver class >> offLine [
+{ #category : #resources }
+MicAbstractResolver class >> offline [
 	^ Microdown offline
 ]
 
-{ #category : #initialization }
-MicAbstractResolver class >> offLine: aBoolean [
-	self halt: 'Should not be called, offline status is on Microdown'.
-	Microdown offline: aBoolean
-]
-
-{ #category : #images }
+{ #category : #resources }
 MicAbstractResolver class >> resetResourcesCache [ 
 
 	ResourcesCache := nil 
 ]
 
-{ #category : #images }
+{ #category : #resources }
 MicAbstractResolver class >> resourcesCache [
 
 	ResourcesCache ifNil: [ ResourcesCache := LRUCache new ].
