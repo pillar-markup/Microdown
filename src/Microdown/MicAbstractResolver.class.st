@@ -76,8 +76,8 @@ MicAbstractResolver >> isCachingResources [
 ]
 
 { #category : #testing }
-MicAbstractResolver >> isOffLine [ 
-	^ Microdown offline
+MicAbstractResolver >> isOffline [ 
+	^ self class offline
 ]
 
 { #category : #accessing }
