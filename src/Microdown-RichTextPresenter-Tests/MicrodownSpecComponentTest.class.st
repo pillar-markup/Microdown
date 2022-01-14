@@ -1,7 +1,7 @@
 Class {
 	#name : #MicrodownSpecComponentTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Presenter'
+	#category : #'Microdown-RichTextPresenter-Tests'
 }
 
 { #category : #tests }

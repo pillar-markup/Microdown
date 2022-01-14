@@ -1,7 +1,7 @@
 Class {
 	#name : #MicrodownPresenterTest,
 	#superclass : #MicTextPresenterTest,
-	#category : #'Microdown-RichTextComposer-Tests-Presenter'
+	#category : #'Microdown-RichTextPresenter-Tests'
 }
 
 { #category : #accessing }

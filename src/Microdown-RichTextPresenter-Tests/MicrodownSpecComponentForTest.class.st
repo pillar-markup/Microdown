@@ -6,7 +6,7 @@ Class {
 		'doc1',
 		'doc2'
 	],
-	#category : #'Microdown-RichTextComposer-Tests-Presenter'
+	#category : #'Microdown-RichTextPresenter-Tests'
 }
 
 { #category : #specs }
