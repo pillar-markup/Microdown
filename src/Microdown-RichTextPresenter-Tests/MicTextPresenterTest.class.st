@@ -4,7 +4,7 @@ A SpRichTextPresenterTest is a test class for testing the behavior of SpRichText
 Class {
 	#name : #MicTextPresenterTest,
 	#superclass : #SpSmokeTest,
-	#category : #'Microdown-RichTextComposer-Tests-Presenter'
+	#category : #'Microdown-RichTextPresenter-Tests'
 }
 
 { #category : #accessing }

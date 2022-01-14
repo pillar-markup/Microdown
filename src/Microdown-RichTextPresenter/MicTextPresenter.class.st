@@ -22,7 +22,7 @@ Class {
 		'#selection => ObservableSlot',
 		'#wrapWord => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextComposer-Presenter'
+	#category : #'Microdown-RichTextPresenter'
 }
 
 { #category : #specs }

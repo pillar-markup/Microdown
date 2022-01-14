@@ -12,7 +12,7 @@ Class {
 		'#document => ObservableSlot',
 		'#textStyler => ObservableSlot'
 	],
-	#category : #'Microdown-RichTextComposer-Presenter'
+	#category : #'Microdown-RichTextPresenter'
 }
 
 { #category : #'instance creation' }
