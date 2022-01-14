@@ -10,7 +10,7 @@ Perhaps in the future the methods for menu and shiftMenu should be forwarded to 
 Class {
 	#name : #MicMorphicTextAdapter,
 	#superclass : #SpAbstractMorphicAdapter,
-	#category : #'Microdown-RichTextComposer-Presenter'
+	#category : #'Microdown-RichTextPresenter'
 }
 
 { #category : #factory }
