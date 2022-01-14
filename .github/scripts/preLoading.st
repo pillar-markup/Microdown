@@ -4,6 +4,6 @@ IceRepository registry
 "This, however, needs to stay :)"
 #( 'BaselineOfMicrodownDev' 'BaselineOfMicrodown' 'Microdown' 'Microdown-Tests' 'Microdown-MicrodownRichTextComposer' 'Microdown-ResolvePath' 
 'Microdown-ResolvePath-Tests' 'NewTools-DocumentationReader-Tests'
-'NewTools-DocumentationReader' 'BaselineOfNewToolsDocumentationReader') do: [ :each | 
+'NewTools-DocumentationReader') do: [ :each | 
 	(RPackageOrganizer default packageNamed: each ifAbsent: [ nil ]) 
 		ifNotNil: [ :aPackage | aPackage removeFromSystem ] ]
