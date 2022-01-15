@@ -149,7 +149,6 @@ MicDumperTest >> testCodeBlockWithNoValues [
 MicDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
-	self flag: #todo.
 	self skip.
 	micCodeBlock := (parser parse:
 		                 factory blockWithParameterTrueByDefaultSample)
