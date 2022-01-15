@@ -244,7 +244,7 @@ MicroDownParser class >> commentedLineMarkup [
 
 { #category : #'block markups' }
 MicroDownParser class >> environmentClosingBlockMarkup [
-	^ '?>'
+	^ EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #'block markups' }
@@ -271,7 +271,7 @@ MicroDownParser class >> headerMarkup [
 
 { #category : #'block markups' }
 MicroDownParser class >> horizontalLineMarkup [
-	^ '***'
+	^ HorizontalLineMarkup 
 ]
 
 { #category : #'inline block markups' }
@@ -318,7 +318,7 @@ MicroDownParser class >> linkNameOpenerMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> mathClosingBlockMarkup [
 	
-	^ '&'
+	^ MathClosingBlockMarkup 
 ]
 
 { #category : #'inline block markups' }
@@ -329,17 +329,17 @@ MicroDownParser class >> mathMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> mathOpeningBlockMarkup [
 
-	^ '&'
+	^ MathOpeningBlockMarkup
 ]
 
 { #category : #'block markups' }
 MicroDownParser class >> metaDataClosingBlockMarkup [
-	^ '}'
+	^ MetaDataClosingBlockMarkup
 ]
 
 { #category : #'block markups' }
 MicroDownParser class >> metaDataOpeningBlockMarkup [
-	^ '{'
+	^ MetaDataOpeningBlockMarkup 
 ]
 
 { #category : #'inline block markups' }
@@ -362,7 +362,7 @@ MicroDownParser class >> parse: aString [
 { #category : #'block markups' }
 MicroDownParser class >> preformattedMarkup [
 
-	^ '> '
+	^ PreformattedMarkup
 ]
 
 { #category : #'markup utilities' }
@@ -379,13 +379,13 @@ MicroDownParser class >> strikeMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> tableCellMarkup [
 
-	^ '|'
+	^ TableCellMarkup 
 ]
 
 { #category : #'block markups' }
 MicroDownParser class >> unorderedListMarkup [
 
-	^ '- '
+	^ UnorderedListMarkup 
 ]
 
 { #category : #'block markups' }
@@ -397,13 +397,13 @@ MicroDownParser class >> unorderedListMarkups [
 { #category : #'block markups' }
 MicroDownParser class >> unorderedListPlusMarkup [
 
-	^ '+ '
+	^ UnorderedListPlusMarkup 
 ]
 
 { #category : #'block markups' }
 MicroDownParser class >> unorderedListStarMarkup [
 
-	^ '* '
+	^ UnorderedListStarMarkup 
 ]
 
 { #category : #'inline block markups' }
@@ -525,12 +525,12 @@ MicroDownParser >> current [
 
 { #category : #markups }
 MicroDownParser >> environmentClosingBlockMarkup [
-	^ self class environmentClosingBlockMarkup
+	^ EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> environmentOpeningBlockMarkup [
-	^ self class environmentOpeningBlockMarkup
+	^ EnvironmentOpeningBlockMarkup 
 ]
 
 { #category : #parsing }
@@ -566,7 +566,7 @@ MicroDownParser >> headerMarkup [
 
 { #category : #markups }
 MicroDownParser >> horizontalLineMarkup [
-	^ self class horizontalLineMarkup
+	^ HorizontalLineMarkup 
 ]
 
 { #category : #initialization }
@@ -617,22 +617,23 @@ MicroDownParser >> matchUnordered: line [
 
 { #category : #markups }
 MicroDownParser >> mathClosingBlockMarkup [
-	^ self class mathClosingBlockMarkup
+	^ MathClosingBlockMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> mathOpeningBlockMarkup [
-	^ self class mathOpeningBlockMarkup
+	^ MathOpeningBlockMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> metaDataClosingBlockMarkup [
-	^ self class metaDataClosingBlockMarkup
+	^ MetaDataClosingBlockMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> metaDataOpeningBlockMarkup [
-	^ self class metaDataOpeningBlockMarkup
+	^ MetaDataOpeningBlockMarkup
+	
 ]
 
 { #category : #parsing }
@@ -666,7 +667,7 @@ MicroDownParser >> parse: aStreamOrString [
 
 { #category : #markups }
 MicroDownParser >> preformattedMarkup [ 
-	^ self class preformattedMarkup 
+	^ PreformattedMarkup
 ]
 
 { #category : #accessing }
@@ -682,22 +683,22 @@ MicroDownParser >> setCurrent: aBlock [
 { #category : #markups }
 MicroDownParser >> tableCellMarkup [
 
-	^ self class tableCellMarkup
+	^ TableCellMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> unorderedListMarkup [
-	^ self class unorderedListMarkup
+	^ UnorderedListMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> unorderedListPlusMarkup [
 
-	^ self class unorderedListPlusMarkup
+	^ UnorderedListPlusMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> unorderedListStarMarkup [
 
-	^ self class unorderedListStarMarkup
+	^ UnorderedListStarMarkup 
 ]

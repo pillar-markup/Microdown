@@ -9,7 +9,19 @@ Class {
 		'AnnotatedParagraphMarkup',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
-		'HeaderMarkup'
+		'EnvironmentClosingBlockMarkup',
+		'EnvironmentOpeningBlockMarkup',
+		'HeaderMarkup',
+		'HorizontalLineMarkup',
+		'MathClosingBlockMarkup',
+		'MathOpeningBlockMarkup',
+		'MetaDataClosingBlockMarkup',
+		'MetaDataOpeningBlockMarkup',
+		'PreformattedMarkup',
+		'TableCellMarkup',
+		'UnorderedListMarkup',
+		'UnorderedListPlusMarkup',
+		'UnorderedListStarMarkup'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -22,5 +34,21 @@ MicroSharedPool class >> initialize [
 	AnnotatedParagraphMarkup := '!!'.
 	CodeblockMarkup := '```'.
 	CommentedLineMarkup := '%'.
-	HeaderMarkup := '#'
+	EnvironmentClosingBlockMarkup := '?>'.
+	EnvironmentOpeningBlockMarkup := '<?'.
+	HeaderMarkup := '#'.
+	HorizontalLineMarkup	:= '***'.
+		
+		
+	MathClosingBlockMarkup := '&'.
+	MathOpeningBlockMarkup := '&'.	
+	MetaDataClosingBlockMarkup := '}'.
+	MetaDataOpeningBlockMarkup := '{'.
+	PreformattedMarkup := '> '.
+	TableCellMarkup	:= '|'.
+	UnorderedListMarkup := '- '.
+   UnorderedListPlusMarkup := '+ '.
+	UnorderedListStarMarkup := '* '.
+
+
 ]
