@@ -88,7 +88,6 @@ MicAbstractResolver >> nextResolver: aMicDefaultResolver [
 
 { #category : #'accessing - resources' }
 MicAbstractResolver >> resolveAbsoluteFilePath: anAbsoluteFileURL [
-
 	^ (self basicResolveAbsoluteFilePath: anAbsoluteFileURL)
 		ifNil: [ nextResolver resolveAbsoluteFilePath: anAbsoluteFileURL ]
 ]

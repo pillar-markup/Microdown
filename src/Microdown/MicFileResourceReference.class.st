@@ -33,6 +33,56 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 	^ micRef
 ]
 
+{ #category : #'host resolution' }
+MicFileResourceReference class >> host: hostName is: aFileReference [ 
+	self hosts at: hostName put: aFileReference
+
+]
+
+{ #category : #'host resolution' }
+MicFileResourceReference class >> hostFileReference: hostName [ 
+	"returns a file reference for the host, or nil if no such host exists"
+	^ self hosts at: hostName ifAbsent: [ ^ nil ] 
+
+]
+
+{ #category : #'host resolution' }
+MicFileResourceReference class >> hostOf: aFileReference [
+	| host |
+	host := self hosts associations 
+		detect: [ :assoc | assoc value = aFileReference fileSystem ]
+		ifNone: [ ^ nil ].
+	^ host key
+]
+
+{ #category : #'host resolution' }
+MicFileResourceReference class >> hosts [ 
+	Hosts ifNil: [ 
+		Hosts := Dictionary new. 
+		self populateHosts ].
+	^ Hosts
+]
+
+{ #category : #'class initialization' }
+MicFileResourceReference class >> initialize [  
+	<script>
+	Hosts := nil.
+
+]
+
+{ #category : #'host resolution' }
+MicFileResourceReference class >> populateHosts [ 
+	self host: #localhost is: FileSystem disk root asFileReference .
+	self host: #workingdirectory is: FileSystem disk workingDirectory
+
+]
+
+{ #category : #'host resolution' }
+MicFileResourceReference class >> removeHost: hostName [ 
+	self hosts removeKey: hostName ifAbsent: [  ]
+
+]
+
 { #category : #accessing }
 MicFileResourceReference >> contents [
 	^ uri host 
@@ -40,8 +90,17 @@ MicFileResourceReference >> contents [
 		ifNotNil: [ ((self class hostFileReference: uri host) / self path) contents ].
 ]
 
-{ #category : #'accessing - resources' }
-MicFileResourceReference >> resolveResourceIn: aResolver [
+{ #category : #loading }
+MicFileResourceReference >> loadMicrodown [
+	"I am an absolute reference, so I should be able to load completely"
+	|doc|
+	doc := Microdown parse: self contents.
+	doc := Microdown resolve: doc fromUri: uri.
+	^ doc
+]
 
+{ #category : #accessing }
+MicFileResourceReference >> resolveResourceIn: aResolver [
+	self error: 'Check the uri for host, and set resolvers working directory if host is not nil'.
 	^ aResolver resolveAbsoluteFilePath: self
 ]
