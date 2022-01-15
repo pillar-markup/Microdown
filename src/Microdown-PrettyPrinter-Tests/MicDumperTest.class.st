@@ -1,5 +1,5 @@
 Class {
-	#name : #MicRealDumperTest,
+	#name : #MicDumperTest,
 	#superclass : #ParametrizedTestCase,
 	#instVars : [
 		'factory',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'tests - section' }
-MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
+MicDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 
 	| mic |
 	mic := parser parse: aString.
@@ -19,15 +19,15 @@ MicRealDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 ]
 
 { #category : #running }
-MicRealDumperTest >> setUp [ 
+MicDumperTest >> setUp [ 
 	super setUp.
-	parser := MicroDownParser new.
+	parser := Microdown new.
 	factory := MicMicrodownSnippetFactory new.
 	visitor := MicRealDumper new.
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testAnchorFormat [
+MicDumperTest >> testAnchorFormat [
 
 	| micAnchor result |
 	micAnchor := parser parse: factory anchorSample.
@@ -38,7 +38,7 @@ MicRealDumperTest >> testAnchorFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testBoldFormat [
+MicDumperTest >> testBoldFormat [
 
 	| micBold |
 	micBold := (parser parse: factory boldFormatSample) children first
@@ -52,7 +52,7 @@ MicRealDumperTest >> testBoldFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockNewLine [
+MicDumperTest >> testCodeBlockNewLine [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockWithNewLineSample)
@@ -64,7 +64,7 @@ MicRealDumperTest >> testCodeBlockNewLine [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockOnMultipleLines [
+MicDumperTest >> testCodeBlockOnMultipleLines [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockSampleOnMultipleLines)
@@ -78,7 +78,7 @@ third line **b**'')'
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithCaption [
+MicDumperTest >> testCodeBlockWithCaption [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse:
@@ -92,7 +92,7 @@ MicRealDumperTest >> testCodeBlockWithCaption [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithFloatParam [
+MicDumperTest >> testCodeBlockWithFloatParam [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse:
@@ -105,7 +105,7 @@ MicRealDumperTest >> testCodeBlockWithFloatParam [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithLanguage [
+MicDumperTest >> testCodeBlockWithLanguage [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockWithLanguageSample)
@@ -118,7 +118,7 @@ MicRealDumperTest >> testCodeBlockWithLanguage [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithLiteralArray [
+MicDumperTest >> testCodeBlockWithLiteralArray [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse:
@@ -132,7 +132,7 @@ MicRealDumperTest >> testCodeBlockWithLiteralArray [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithNoValues [
+MicDumperTest >> testCodeBlockWithNoValues [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse:
@@ -146,7 +146,7 @@ MicRealDumperTest >> testCodeBlockWithNoValues [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
+MicDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
 	self flag: #todo.
@@ -161,7 +161,7 @@ MicRealDumperTest >> testCodeBlockWithParameterTrueByDefault [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithParameters [
+MicDumperTest >> testCodeBlockWithParameters [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockWithParametersSample)
@@ -174,7 +174,7 @@ MicRealDumperTest >> testCodeBlockWithParameters [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithSpaceAtTheEnd [
+MicDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockWithSpaceAtTheEndSample)
@@ -187,7 +187,7 @@ MicRealDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithSpacedParameters [
+MicDumperTest >> testCodeBlockWithSpacedParameters [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse:
@@ -201,7 +201,7 @@ MicRealDumperTest >> testCodeBlockWithSpacedParameters [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testCodeBlockWithoutParam [
+MicDumperTest >> testCodeBlockWithoutParam [
 
 	| micCodeBlock result |
 	micCodeBlock := (parser parse: factory blockSampleOnMultipleLines)
@@ -215,7 +215,7 @@ third line **b**'')'
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testComment [
+MicDumperTest >> testComment [
 
 	| micComment |  
 	micComment := (parser parse: factory commentSample) children first.
@@ -228,7 +228,7 @@ MicRealDumperTest >> testComment [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureBoldFormat [
+MicDumperTest >> testFigureBoldFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureBoldSample) children first
@@ -242,7 +242,7 @@ MicRealDumperTest >> testFigureBoldFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureBoldFormat2 [
+MicDumperTest >> testFigureBoldFormat2 [
 
 	| micFigure result |
 	micFigure := (parser parse: '![**Bold** and not bold and **bold**](/anUrl label=figureTest&size=80)') children first
@@ -256,7 +256,7 @@ MicRealDumperTest >> testFigureBoldFormat2 [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureFormat [
+MicDumperTest >> testFigureFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureSample) children first
@@ -270,7 +270,7 @@ MicRealDumperTest >> testFigureFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureItalicFormat [
+MicDumperTest >> testFigureItalicFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureItalicSample) children
@@ -284,7 +284,7 @@ MicRealDumperTest >> testFigureItalicFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureMonospaceFormat [
+MicDumperTest >> testFigureMonospaceFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureMonospaceSample) children
@@ -298,7 +298,7 @@ MicRealDumperTest >> testFigureMonospaceFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureNestedFormat [
+MicDumperTest >> testFigureNestedFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureNestedSample) children
@@ -312,7 +312,7 @@ MicRealDumperTest >> testFigureNestedFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFigureStrikeFormat [
+MicDumperTest >> testFigureStrikeFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory figureStrikeSample) children
@@ -326,7 +326,7 @@ MicRealDumperTest >> testFigureStrikeFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testFileFigureFormat [
+MicDumperTest >> testFileFigureFormat [
 
 	| micFigure result |
 	micFigure := (parser parse: factory fileFigureSample) children first
@@ -340,7 +340,7 @@ MicRealDumperTest >> testFileFigureFormat [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testHeader [
+MicDumperTest >> testHeader [
 
 	| micHeader |
 	micHeader := (parser parse: factory headerLevel3Sample) children
@@ -355,7 +355,7 @@ MicRealDumperTest >> testHeader [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testItalicFormat [
+MicDumperTest >> testItalicFormat [
 
 	| micItalic result |
 	micItalic := (parser parse: factory italicFormatSample) children
@@ -367,7 +367,7 @@ MicRealDumperTest >> testItalicFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testLinkFormat [
+MicDumperTest >> testLinkFormat [
 
 	| micLink result |
 	micLink := (parser parse: factory linkSample) children first children
@@ -380,7 +380,7 @@ MicRealDumperTest >> testLinkFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testMonospaceFormat [
+MicDumperTest >> testMonospaceFormat [
 
 	| mic result |
 	mic := parser parse: factory monospaceFormatSample.
@@ -391,7 +391,7 @@ MicRealDumperTest >> testMonospaceFormat [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedList [
+MicDumperTest >> testOrderedList [
 
 	| micList |
 
@@ -405,7 +405,7 @@ MicRealDumperTest >> testOrderedList [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedListWithTwoItems [
+MicDumperTest >> testOrderedListWithTwoItems [
 
 	| micList |
 	micList := (parser parse: factory orderedListWithTwoItemsSample)
@@ -419,7 +419,7 @@ MicRealDumperTest >> testOrderedListWithTwoItems [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedListWithTwoItemsBold [
+MicDumperTest >> testOrderedListWithTwoItemsBold [
 
 	| micList |
 	micList := (parser parse: factory orderedListWithTwoItemsBoldSample)
@@ -433,7 +433,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsBold [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedListWithTwoItemsItalic [
+MicDumperTest >> testOrderedListWithTwoItemsItalic [
 
 	| micList |
 	
@@ -448,7 +448,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsItalic [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedListWithTwoItemsMonospace [
+MicDumperTest >> testOrderedListWithTwoItemsMonospace [
 
 	| micList |
 	micList := (parser parse: factory orderedListWithTwoItemsMonospaceSample)
@@ -462,7 +462,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsMonospace [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testOrderedListWithTwoItemsStrike [
+MicDumperTest >> testOrderedListWithTwoItemsStrike [
 
 	| micList |
 	micList := (parser parse: factory orderedListWithTwoItemsStrikeSample)
@@ -476,7 +476,7 @@ MicRealDumperTest >> testOrderedListWithTwoItemsStrike [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testParagraph [
+MicDumperTest >> testParagraph [
 
 	| resString |
 	resString := '(MicParagraphBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'.
@@ -484,7 +484,7 @@ MicRealDumperTest >> testParagraph [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testPrintHeader [
+MicDumperTest >> testPrintHeader [
 	
 	| resString |
 	resString := '(MicHeaderBlock new level: 3; headerElements: {(MicTextBlock new substring: ''Foo'')})'.
@@ -497,7 +497,7 @@ MicRealDumperTest >> testPrintHeader [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testPrintOrderedList [
+MicDumperTest >> testPrintOrderedList [
 
 	| resString |
 	resString := '(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'.
@@ -507,7 +507,7 @@ MicRealDumperTest >> testPrintOrderedList [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testPrintParagraph [
+MicDumperTest >> testPrintParagraph [
 
 	| resString |
 	resString := '(MicParagraphBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'.
@@ -515,7 +515,7 @@ MicRealDumperTest >> testPrintParagraph [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testPrintUnorderedList [
+MicDumperTest >> testPrintUnorderedList [
 
 	| resString |
 	resString := '(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'.
@@ -523,7 +523,7 @@ MicRealDumperTest >> testPrintUnorderedList [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testQuote [
+MicDumperTest >> testQuote [
 
 	| micQuote |
 	micQuote := (parser parse: factory quoteSample) children first.
@@ -536,7 +536,7 @@ MicRealDumperTest >> testQuote [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testRawBlock [
+MicDumperTest >> testRawBlock [
 
 	| micRaw |
 	self skip.
@@ -550,7 +550,7 @@ MicRealDumperTest >> testRawBlock [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testStrike [
+MicDumperTest >> testStrike [
 
 
 	| micStrike result |
@@ -561,7 +561,7 @@ MicRealDumperTest >> testStrike [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testTable [
+MicDumperTest >> testTable [
 
 	| micTable |
 	self skip.
@@ -570,7 +570,7 @@ MicRealDumperTest >> testTable [
 ]
 
 { #category : #'test - inline - blocks' }
-MicRealDumperTest >> testTextBlock [
+MicDumperTest >> testTextBlock [
 
 	| micText |
 	micText := (parser parse: factory textSentenceSample) children first
@@ -583,7 +583,7 @@ MicRealDumperTest >> testTextBlock [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedEmptyList [
+MicDumperTest >> testUnOrderedEmptyList [
 
 	| micList |
 	micList := (parser parse: factory unorderedListEmptySample) children
@@ -597,7 +597,7 @@ MicRealDumperTest >> testUnOrderedEmptyList [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedList [
+MicDumperTest >> testUnOrderedList [
 
 	| micList |
 	micList := (parser parse: factory unorderedListSample) children first.
@@ -610,7 +610,7 @@ MicRealDumperTest >> testUnOrderedList [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedListWithTwoItems [
+MicDumperTest >> testUnOrderedListWithTwoItems [
 
 	| micList |
 	micList := (parser parse: factory unorderedListWithTwoItemsSample)
@@ -624,7 +624,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItems [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedListWithTwoItemsBold [
+MicDumperTest >> testUnOrderedListWithTwoItemsBold [
 
 	| micList |
 	micList := (parser parse: factory unorderedListWithTwoItemsBoldSample)
@@ -638,7 +638,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsBold [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedListWithTwoItemsMonospace [
+MicDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 
 	| micList |
 	
@@ -654,7 +654,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedListWithTwoItemsNested [
+MicDumperTest >> testUnOrderedListWithTwoItemsNested [
 
 	| micList |
 	
@@ -670,7 +670,7 @@ MicRealDumperTest >> testUnOrderedListWithTwoItemsNested [
 ]
 
 { #category : #'tests - section' }
-MicRealDumperTest >> testUnOrderedListWithTwoItemsStrike [
+MicDumperTest >> testUnOrderedListWithTwoItemsStrike [
 
 	| micList |
 	
