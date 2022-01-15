@@ -130,7 +130,7 @@ MicRichTextComposerTest >> runsOf: aDocument [
 MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
-	parser := MicroDownParser new.
+	parser := Microdown new.
 	MicRichTextComposer initialize.
 ]
 
