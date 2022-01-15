@@ -1,17 +1,8 @@
 Class {
 	#name : #MicInputfileBlockTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'parser'
-	],
+	#superclass : #MicAnnotationSubclassTest,
 	#category : #'Microdown-Tests-Extensions'
 }
-
-{ #category : #running }
-MicInputfileBlockTest >> setUp [
-	super setUp.
-	parser := MicroDownParser new
-]
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
