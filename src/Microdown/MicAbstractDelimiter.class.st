@@ -20,6 +20,9 @@ Class {
 	#instVars : [
 		'index'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Parser'
 }
 

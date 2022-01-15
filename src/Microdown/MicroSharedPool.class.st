@@ -6,6 +6,8 @@ Class {
 	#superclass : #SharedPool,
 	#classVars : [
 		'AnchorMarkup',
+		'AnchorReferenceCloserDelimiter',
+		'AnchorReferenceOpenerDelimiter',
 		'AnnotatedParagraphMarkup',
 		'ArgumentListDelimiter',
 		'ArgumentListEqualsDelimiter',
@@ -57,7 +59,36 @@ MicroSharedPool class >> initialize [
 	ArgumentListDelimiter := '&'.
 	ArgumentListEqualsDelimiter := '='.
 	ArgumentListOfFigureStartDelimiter := '?'.
-	ArgumentListStartDelimiter := '|'
+	ArgumentListStartDelimiter := '|'.
+	
+	
+	AnchorReferenceCloserDelimiter := '@*'.
+	AnchorReferenceOpenerDelimiter := '*@'. 
+"	
+	AnnotationCloserDelimiter := nil. 
+	AnnotationOpenerDelimiter := nil.
+	BoldDelimiter := nil. 
+	FigureNameOpenerDelimiter := nil. 
+	ItalicDelimiter := nil. 
+	LinkNameCloserDelimiter := nil. 
+	LinkNameOpenerDelimiter := nil.  
+	MathDelimiter  := nil. 
+	MonospaceDelimiter := nil. 
+	RawCloserDelimiter := nil. 
+	RawOpenerDelimiter := nil. 
+	StrikeDelimiter := nil. 
+	URLCloserDelimiter := nil. 
+	URLOpenerDelimiter := nil. 
+"
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 
