@@ -9,6 +9,8 @@ Class {
 		'AnchorReferenceCloserDelimiter',
 		'AnchorReferenceOpenerDelimiter',
 		'AnnotatedParagraphMarkup',
+		'AnnotationCloserDelimiter',
+		'AnnotationOpenerDelimiter',
 		'ArgumentListDelimiter',
 		'ArgumentListEqualsDelimiter',
 		'ArgumentListOfFigureStartDelimiter',
@@ -64,9 +66,10 @@ MicroSharedPool class >> initialize [
 	
 	AnchorReferenceCloserDelimiter := '@*'.
 	AnchorReferenceOpenerDelimiter := '*@'. 
-"	
-	AnnotationCloserDelimiter := nil. 
-	AnnotationOpenerDelimiter := nil.
+	
+	AnnotationCloserDelimiter := '}?'. 
+	AnnotationOpenerDelimiter := '?{'.
+"
 	BoldDelimiter := nil. 
 	FigureNameOpenerDelimiter := nil. 
 	ItalicDelimiter := nil. 
