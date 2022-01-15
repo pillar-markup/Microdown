@@ -8,5 +8,5 @@ Class {
 MicTemplatingTest >> testBaselineWithoutBaselineMethodShouldNotBreak [
 	
 	
-	MicMockBaselineOf buildMicroDownUsing: MicroDownParser builder withComment: 'balbabl'
+	MicMockBaselineOf buildMicroDownUsing: Microdown builder withComment: 'balbabl'
 ]

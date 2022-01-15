@@ -21,7 +21,7 @@ MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 { #category : #running }
 MicHTMLExporterTest >> setUp [
 	super setUp.
-	parser := MicroDownParser new.
+	parser := Microdown new.
 	writer := MicHTMLWriter new.
 	factory := MicMicrodownSnippetFactory new
 ]

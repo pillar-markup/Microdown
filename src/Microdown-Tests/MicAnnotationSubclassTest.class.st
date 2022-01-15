@@ -10,5 +10,5 @@ Class {
 { #category : #running }
 MicAnnotationSubclassTest >> setUp [
 	super setUp.
-	parser := MicroDownParser new
+	parser := Microdown new
 ]
