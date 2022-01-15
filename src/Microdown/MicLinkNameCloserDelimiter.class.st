@@ -24,7 +24,7 @@ MicLinkNameCloserDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicLinkNameCloserDelimiter class >> markup [
-	^ ']'
+	^ LinkNameCloserDelimiter
 ]
 
 { #category : #accessing }

@@ -29,7 +29,7 @@ MicURLOpenerDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicURLOpenerDelimiter class >> markup [
-	^ '('
+	^ URLOpenerDelimiter
 ]
 
 { #category : #accessing }

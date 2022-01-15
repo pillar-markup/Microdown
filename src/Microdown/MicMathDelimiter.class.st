@@ -25,7 +25,7 @@ MicMathDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicMathDelimiter class >> markup [
-	^ '$'
+	^ MathDelimiter
 ]
 
 { #category : #accessing }

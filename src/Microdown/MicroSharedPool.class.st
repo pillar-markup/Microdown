@@ -15,19 +15,31 @@ Class {
 		'ArgumentListEqualsDelimiter',
 		'ArgumentListOfFigureStartDelimiter',
 		'ArgumentListStartDelimiter',
+		'BoldDelimiter',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
+		'FigureNameOpenerDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
+		'ItalicDelimiter',
+		'LinkNameCloserDelimiter',
+		'LinkNameOpenerDelimiter',
 		'MathClosingBlockMarkup',
+		'MathDelimiter',
 		'MathOpeningBlockMarkup',
 		'MetaDataClosingBlockMarkup',
 		'MetaDataOpeningBlockMarkup',
+		'MonospaceDelimiter',
 		'OrderedListSemiMarkup',
 		'PreformattedMarkup',
+		'RawCloserDelimiter',
+		'RawOpenerDelimiter',
+		'StrikeDelimiter',
 		'TableCellMarkup',
+		'URLCloserDelimiter',
+		'URLOpenerDelimiter',
 		'UnorderedListMarkup',
 		'UnorderedListPlusMarkup',
 		'UnorderedListStarMarkup'
@@ -69,20 +81,20 @@ MicroSharedPool class >> initialize [
 	
 	AnnotationCloserDelimiter := '}?'. 
 	AnnotationOpenerDelimiter := '?{'.
-"
-	BoldDelimiter := nil. 
-	FigureNameOpenerDelimiter := nil. 
-	ItalicDelimiter := nil. 
-	LinkNameCloserDelimiter := nil. 
-	LinkNameOpenerDelimiter := nil.  
-	MathDelimiter  := nil. 
-	MonospaceDelimiter := nil. 
-	RawCloserDelimiter := nil. 
-	RawOpenerDelimiter := nil. 
-	StrikeDelimiter := nil. 
-	URLCloserDelimiter := nil. 
-	URLOpenerDelimiter := nil. 
-"
+
+	BoldDelimiter := '**'. 
+	FigureNameOpenerDelimiter := '!['. 
+	ItalicDelimiter := '_'. 
+	LinkNameCloserDelimiter := ']'. 
+	LinkNameOpenerDelimiter := '['.  
+	MathDelimiter := '$'. 
+	MonospaceDelimiter := '`'. 
+	RawCloserDelimiter := '}}'. 
+	RawOpenerDelimiter := '{{'. 
+	StrikeDelimiter := '~'. 
+	URLCloserDelimiter := ')'. 
+	URLOpenerDelimiter := '('. 
+
 	
 	
 	
