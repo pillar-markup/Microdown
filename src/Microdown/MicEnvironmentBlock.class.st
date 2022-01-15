@@ -157,7 +157,7 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 { #category : #markups }
 MicEnvironmentBlock >> lineStartMarkup [
 
-	^ parser environmentOpeningBlockMarkup 
+	^ EnvironmentOpeningBlockMarkup 
 ]
 
 { #category : #markups }

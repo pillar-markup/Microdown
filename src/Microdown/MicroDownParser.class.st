@@ -462,7 +462,7 @@ MicroDownParser >> blockStarterClassFrom: line [
 MicroDownParser >> blockStarterClassFromOld: line [
 	"return the class of a block which can start with line, or nil if none"
 
-	(line beginsWith: self headerMarkup)
+	(line beginsWith: HeaderMarkup)
 		ifTrue: [ ^ MicHeaderBlock ].
 	(line beginsWith: CodeblockMarkup)
 		ifTrue: [ ^ MicCodeBlock ].
@@ -480,7 +480,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 		ifTrue: [ ^ MicCommentBlock ].
 	(line beginsWith: self mathOpeningBlockMarkup)
 		ifTrue: [ ^ MicMathBlock ].
-	(line beginsWith: self environmentOpeningBlockMarkup)
+	(line beginsWith: EnvironmentOpeningBlockMarkup)
 		ifTrue: [ ^ MicEnvironmentBlock ].
 	(line beginsWith: self horizontalLineMarkup)
 		ifTrue: [ ^ MicHorizontalLineBlock ].

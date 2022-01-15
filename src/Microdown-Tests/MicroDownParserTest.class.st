@@ -272,7 +272,7 @@ MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 ^ self foo
 
 this is the end.'.
-	source := parser environmentOpeningBlockMarkup , environmentName
+	source := EnvironmentOpeningBlockMarkup , environmentName
 		, String cr , contents , String cr.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -287,7 +287,7 @@ this is the end.'.
 { #category : #'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
-	source := (self parser headerMarkup repeat: 4), '    Level four'.
+	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level four'.
@@ -298,7 +298,7 @@ MicrodownParserTest >> testHeaderLevel4 [
 MicrodownParserTest >> testHeaderLevel4WithBold [
 
 	| source root |
-	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
+	source := (HeaderMarkup repeat: 4), 'Level **four** `mono` end'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first children first substring equals: 'Level '.
@@ -471,14 +471,14 @@ then it eats.
 
 "
 	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
+	source := MetaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse"', String cr,
-	parser headerMarkup, 'newheader here'.
+	HeaderMarkup, 'newheader here'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	metadata := root children first. 
 	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"author": "S Ducasse"',String cr, parser headerMarkup, 'newheader here'.
+	self assert: metadata body equals: '"author": "S Ducasse"',String cr, HeaderMarkup, 'newheader here'.
 	
 ]
 

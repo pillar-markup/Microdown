@@ -271,7 +271,7 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 											 italic: [ builder text: 'Pharo' ];
 											 text: ' is cool']  withLevel: 1;				
 							contents) contents 
-		equals: parser headerMarkup , ' Hello _Pharo_ is cool
+		equals: HeaderMarkup , ' Hello _Pharo_ is cool
 '
 ]
 

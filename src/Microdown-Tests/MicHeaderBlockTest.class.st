@@ -11,7 +11,7 @@ Class {
 MicHeaderBlockTest >> testCanConsumeLine [
 
 	| root headerString |
-	headerString := (parser headerMarkup, ' Level1').
+	headerString := HeaderMarkup, ' Level1'.
 	root := parser parse: headerString.
 	self deny: (root children first canConsumeLine: headerString) 
 ]
@@ -50,7 +50,7 @@ MicHeaderBlockTest >> testHeaderCreatesInnerText [
 { #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
-	root := parser parse: (parser headerMarkup, ' Level1').
+	root := parser parse: HeaderMarkup, ' Level1'.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level1'.
 	self assert: root children first level equals: 1
@@ -58,8 +58,9 @@ MicHeaderBlockTest >> testHeaderLevel1 [
 
 { #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1NoSpace [
+
 	| source root |
-	source := parser headerMarkup, 'Level1'.
+	source := HeaderMarkup, 'Level1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level1'.
@@ -68,8 +69,9 @@ MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 
 { #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel4 [
+
 	| source root |
-	source := (parser headerMarkup repeat: 4), '    Level four'.
+	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level four'.
@@ -79,7 +81,7 @@ MicHeaderBlockTest >> testHeaderLevel4 [
 { #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel6 [
 	| source root |
-	source := (parser headerMarkup repeat: 6), '    Level six'.
+	source := (HeaderMarkup repeat: 6), '    Level six'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level six'.
