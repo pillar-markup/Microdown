@@ -71,7 +71,7 @@ MicrodownParserTest >> testAnchorMarkupInsideLine [
 MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -85,7 +85,7 @@ MicrodownParserTest >> testAnnotatedBlock [
 MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
-	source := (parser annotatedParagraphMarkup , 'important this is an 
+	source := (AnnotatedParagraphMarkup , 'important this is an 
 important point because...!') readStream.
 	
 	"first the root block"
@@ -113,7 +113,7 @@ important point because...!'.
 { #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an important 
+	source := AnnotatedParagraphMarkup , 'important this is an important 
 paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -127,7 +127,7 @@ paragraph on two lines.'
 { #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important **this** is an _important_ 
+	source := AnnotatedParagraphMarkup , 'important **this** is an _important_ 
 paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -143,7 +143,7 @@ paragraph on two lines.'.
 MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -159,7 +159,7 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
 	self flag: #fixme.
-	source := (parser annotatedParagraphMarkup , 'important this is a point
+	source := (AnnotatedParagraphMarkup , 'important this is a point
 - one
 * two ' ) readStream.
 

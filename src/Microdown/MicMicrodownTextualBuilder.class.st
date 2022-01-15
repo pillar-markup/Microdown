@@ -58,7 +58,7 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 	
 	"!!Important there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
 	self
-		raw: parserClass annotatedParagraphMarkup;
+		raw: AnnotatedParagraphMarkup;
 		raw: annotation;
 		raw: String space
 	
@@ -483,7 +483,7 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 	
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
 	self
-		raw: parserClass annotatedParagraphMarkup;
+		raw: AnnotatedParagraphMarkup;
 		raw: annotation; 
 		raw: String space;
 		rawParagraph: aBlock
