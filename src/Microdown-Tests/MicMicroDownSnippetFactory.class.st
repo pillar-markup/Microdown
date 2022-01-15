@@ -724,7 +724,7 @@ this is a ~paragraph~
 { #category : #utilities }
 MicMicrodownSnippetFactory >> parserClass [
 
-	^ MicroDownParser
+	^ parserClass
 ]
 
 { #category : #anchor }
@@ -864,21 +864,6 @@ MicMicrodownSnippetFactory >> subscriptFormatEmptySample [
 ]
 
 { #category : #format }
-MicMicrodownSnippetFactory >> subscriptFormatSample [
-	^ self surroundWithMarkup: self parserClass subscriptMarkup
-]
-
-{ #category : #format }
-MicMicrodownSnippetFactory >> superscriptFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass superscriptMarkup
-]
-
-{ #category : #format }
-MicMicrodownSnippetFactory >> superscriptFormatSample [
-	^ self surroundWithMarkup: self parserClass superscriptMarkup
-]
-
-{ #category : #format }
 MicMicrodownSnippetFactory >> surround: aWord withMarkup: aMarkup [
 	^ (aMarkup, aWord, aMarkup) asString
 ]
@@ -900,19 +885,6 @@ MicMicrodownSnippetFactory >> tableSample [
 MicMicrodownSnippetFactory >> textSentenceSample [
 
 	^ 'Je ne connaitrais pas la peur'
-]
-
-{ #category : #format }
-MicMicrodownSnippetFactory >> underlineFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass underlineMarkup
-]
-
-{ #category : #format }
-MicMicrodownSnippetFactory >> underlineFormatSample [
-
-	^ '
-* Foo
-'
 ]
 
 { #category : #list }
