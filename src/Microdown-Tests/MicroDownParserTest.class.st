@@ -251,9 +251,8 @@ MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	contents := 'Hello
 Pharo'.
 
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
-		, String cr , contents , String cr, String cr, 
-		parser environmentClosingBlockMarkup , String cr.
+	source := EnvironmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'	, String cr , contents , String cr, String cr, 
+		EnvironmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
 	child := root children first.
 	self assert: (child isKindOf: MicEnvironmentBlock).

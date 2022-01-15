@@ -160,24 +160,25 @@ MicMicrodownTextualBuilder >> comment: aText [
 
 { #category : #'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
-	self raw: parserClass environmentOpeningBlockMarkup.
+	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: aName.
 	self raw: parserClass argumentListStartDelimiter.
 	self rawParameters: aCol asDictionary.
 	self newLine.
-	self raw: parserClass environmentClosingBlockMarkup
+	self raw: EnvironmentClosingBlockMarkup
 ]
 
 { #category : #'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCol [
-	self raw: parserClass environmentOpeningBlockMarkup.
+	
+	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: aName.
 	self raw: parserClass argumentListStartDelimiter.
 	self rawParameters: aCol asDictionary.
 	self newLine.
 	aBodyBlock value.
 	self newLine.
-	self raw: parserClass environmentClosingBlockMarkup
+	self raw: EnvironmentClosingBlockMarkup
 ]
 
 { #category : #'element - references' }

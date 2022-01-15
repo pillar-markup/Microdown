@@ -163,7 +163,7 @@ MicEnvironmentBlock >> lineStartMarkup [
 { #category : #markups }
 MicEnvironmentBlock >> lineStopMarkup [
 	
-	^ parser environmentClosingBlockMarkup 
+	^ EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #accessing }
