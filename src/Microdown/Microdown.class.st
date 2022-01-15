@@ -103,7 +103,8 @@ Microdown class >> resolve: document fromUri: uri [
 	baseUri := uri.
 	(uri isString | uri isText)
 		ifTrue: [ baseUri := uri asString asUrl ].
-	baseUri isRelative 
+	"ZnUrl treats file:///path as relative as there is no host, so we cannot use the isRelative method"
+	(baseUri isHttp and: [baseUri isRelative] )
 		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
 	MicZincPathResolver resolve: document  withBase: baseUri.
 	^ document 
