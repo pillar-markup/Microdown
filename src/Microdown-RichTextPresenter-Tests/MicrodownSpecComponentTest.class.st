@@ -6,9 +6,10 @@ Class {
 
 { #category : #tests }
 MicrodownSpecComponentTest >> testComponent [
-	|comp|
+
+	| comp |
 	comp := MicrodownSpecComponentForTest new.
-	comp openWithSpec.
+	comp open.
 	comp setDoc2.
 	self assert: comp mdPresenter text asString trim equals: 'Header 2'.
 	comp window close

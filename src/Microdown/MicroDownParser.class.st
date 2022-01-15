@@ -667,11 +667,6 @@ MicroDownParser >> preformattedMarkup [
 ]
 
 { #category : #accessing }
-MicroDownParser >> resolver [
-	^ MicPathResolver new
-]
-
-{ #category : #accessing }
 MicroDownParser >> setCurrent: aBlock [
 	"aBlock parent = current 
 		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].
