@@ -5,7 +5,11 @@ Class {
 	#name : #MicroSharedPool,
 	#superclass : #SharedPool,
 	#classVars : [
-		'AnchorMarkup'
+		'AnchorMarkup',
+		'AnnotatedParagraphMarkup',
+		'CodeblockMarkup',
+		'CommentedLineMarkup',
+		'HeaderMarkup'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -14,5 +18,9 @@ Class {
 MicroSharedPool class >> initialize [
 	"self initialize"
 	
-	AnchorMarkup := '@'
+	AnchorMarkup := '@'.
+	AnnotatedParagraphMarkup := '!!'.
+	CodeblockMarkup := '```'.
+	CommentedLineMarkup := '%'.
+	HeaderMarkup := '#'
 ]

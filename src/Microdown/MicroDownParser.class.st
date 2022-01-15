@@ -193,7 +193,7 @@ MicroDownParser class >> anchorReferenceOpenerMarkup [
 
 { #category : #'block markups' }
 MicroDownParser class >> annotatedParagraphMarkup [
-	^ '!!'
+	^ AnnotatedParagraphMarkup
 ]
 
 { #category : #'markup utilities' }
@@ -233,13 +233,13 @@ MicroDownParser class >> builder [
 { #category : #'block markups' }
 MicroDownParser class >> codeblockMarkup [
 
-	^ '```'
+	^ CodeblockMarkup 
 ]
 
 { #category : #'block markups' }
 MicroDownParser class >> commentedLineMarkup [
 
-	^ '%'
+	^ CommentedLineMarkup 
 ]
 
 { #category : #'block markups' }
@@ -266,7 +266,7 @@ MicroDownParser class >> figureOpenerMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> headerMarkup [
 
-	^ '#'
+	^ HeaderMarkup
 ]
 
 { #category : #'block markups' }
@@ -423,7 +423,7 @@ MicroDownParser >> anchorMarkup [
 
 { #category : #markups }
 MicroDownParser >> annotatedParagraphMarkup [
-	^ self class annotatedParagraphMarkup
+	^ AnnotatedParagraphMarkup
 ]
 
 { #category : #markups }
@@ -508,13 +508,13 @@ MicroDownParser >> builder [
 
 { #category : #markups }
 MicroDownParser >> codeblockMarkup [ 
-	^ self class codeblockMarkup 
+	^ CodeblockMarkup 
 ]
 
 { #category : #markups }
 MicroDownParser >> commentedLineMarkup [
 
-	^ self class commentedLineMarkup
+	^ CommentedLineMarkup 
 ]
 
 { #category : #accessing }
@@ -561,7 +561,7 @@ MicroDownParser >> handleLine: line [
 
 { #category : #markups }
 MicroDownParser >> headerMarkup [ 
-	^ self class headerMarkup 
+	^ HeaderMarkup 
 ]
 
 { #category : #markups }
