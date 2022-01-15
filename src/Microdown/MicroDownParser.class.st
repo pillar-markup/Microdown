@@ -199,25 +199,25 @@ MicroDownParser class >> annotatedParagraphMarkup [
 { #category : #'markup utilities' }
 MicroDownParser class >> argumentListDelimiter [
 	
-	^ '&'
+	^ ArgumentListDelimiter
 ]
 
 { #category : #'markup utilities' }
 MicroDownParser class >> argumentListEqualsDelimiter [
 	
-	^ '='
+	^ ArgumentListEqualsDelimiter
 ]
 
 { #category : #'markup utilities' }
 MicroDownParser class >> argumentListOfFigureStartDelimiter [
 	
-	^ '?'
+	^ ArgumentListOfFigureStartDelimiter
 ]
 
 { #category : #'markup utilities' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
-	^ '|'
+	^ ArgumentListStartDelimiter
 ]
 
 { #category : #'inline block markups' }
@@ -281,6 +281,7 @@ MicroDownParser class >> inlineMarkup: aType [
 
 { #category : #'markup utilities' }
 MicroDownParser class >> inlineMarkups [
+
 	^ inlineMarkups ifNil: [ 
 		inlineMarkups := Dictionary new.
 		MicAbstractDelimiter subclasses 
@@ -435,7 +436,7 @@ MicroDownParser >> argumentListOfFigureStartDelimiter [
 { #category : #markups }
 MicroDownParser >> argumentListStartDelimiter [
 	
-	^ self class argumentListStartDelimiter
+	^ ArgumentListStartDelimiter
 ]
 
 { #category : #'node creation' }

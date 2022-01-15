@@ -162,7 +162,7 @@ MicMicrodownTextualBuilder >> comment: aText [
 MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
 	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: aName.
-	self raw: parserClass argumentListStartDelimiter.
+	self raw: ArgumentListStartDelimiter.
 	self rawParameters: aCol asDictionary.
 	self newLine.
 	self raw: EnvironmentClosingBlockMarkup
@@ -173,7 +173,7 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 	
 	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: aName.
-	self raw: parserClass argumentListStartDelimiter.
+	self raw: ArgumentListStartDelimiter.
 	self rawParameters: aCol asDictionary.
 	self newLine.
 	aBodyBlock value.
@@ -546,7 +546,7 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 		self raw: parserClass argumentListEqualsDelimiter.
 		self raw: value asString.
 		key = aZnDictionary keys last ifFalse: [ 
-			self raw: parserClass argumentListDelimiter ] ]
+			self raw: ArgumentListDelimiter ] ]
 ]
 
 { #category : #'ugly line handling' }

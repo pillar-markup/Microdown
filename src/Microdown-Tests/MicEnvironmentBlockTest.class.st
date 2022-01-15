@@ -63,7 +63,7 @@ MicEnvironmentBlockTest >> testEnvironmentWiathArgsWithCorrespondingClassIsCreat
 bababba
 
 toto'.
-	source := EnvironmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c' , String cr , contents , String cr , EnvironmentClosingBlockMarkup , String cr.
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c' , String cr , contents , String cr , EnvironmentClosingBlockMarkup , String cr.
 		
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -122,7 +122,7 @@ toto
 bababba
 
 toto'.
-	source := EnvironmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c'
 		, String cr , contents , String cr
 		, EnvironmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
@@ -256,7 +256,7 @@ MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 bababba
 
 toto'.
-	source := EnvironmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c'
 		, String cr , contents , String cr
 		, EnvironmentClosingBlockMarkup , String cr.
 		

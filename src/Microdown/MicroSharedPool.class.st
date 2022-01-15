@@ -7,6 +7,10 @@ Class {
 	#classVars : [
 		'AnchorMarkup',
 		'AnnotatedParagraphMarkup',
+		'ArgumentListDelimiter',
+		'ArgumentListEqualsDelimiter',
+		'ArgumentListOfFigureStartDelimiter',
+		'ArgumentListStartDelimiter',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
 		'EnvironmentClosingBlockMarkup',
@@ -39,8 +43,6 @@ MicroSharedPool class >> initialize [
 	EnvironmentOpeningBlockMarkup := '<?'.
 	HeaderMarkup := '#'.
 	HorizontalLineMarkup	:= '***'.
-		
-		
 	MathClosingBlockMarkup := '&'.
 	MathOpeningBlockMarkup := '&'.	
 	MetaDataClosingBlockMarkup := '}'.
@@ -51,6 +53,16 @@ MicroSharedPool class >> initialize [
 	UnorderedListMarkup := '- '.
    UnorderedListPlusMarkup := '+ '.
 	UnorderedListStarMarkup := '* '.
+
+	ArgumentListDelimiter := '&'.
+	ArgumentListEqualsDelimiter := '='.
+	ArgumentListOfFigureStartDelimiter := '?'.
+	ArgumentListStartDelimiter := '|'
+
+
+
+
+
 
 
 ]
