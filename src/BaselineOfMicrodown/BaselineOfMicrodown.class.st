@@ -57,7 +57,7 @@ BaselineOfMicrodown >> baseline: spec [
 			
 			"contains the asPillar and converter from MD to Pillar"
 			package: #'Microdown-Pillar'
-				with: [ spec requires: #( #Microdown) ];
+				with: [ spec requires: #( #Microdown 'PillarCore') ];
 				"I do not get why adding 'Pillar-Core' or #'Pillar-Core' is failing"
 				
 			package: #'Microdown-Pillar-Tests'
