@@ -33,7 +33,7 @@ MicHTMLWriter >> exportImgFor: aFigure [
 	| img |
 	img := canvas tag
 		       name: 'img';
-		       parameterAt: 'src' put: aFigure localFileOrExternalReference;
+		       parameterAt: 'src' put: aFigure reference path;
 		       yourself.
 	"aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ]."
 	img parameterAt: 'alt' put: (aFigure hasChildren

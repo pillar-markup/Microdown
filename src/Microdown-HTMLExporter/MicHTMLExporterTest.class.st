@@ -13,6 +13,7 @@ Class {
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
+	self skip.
 	mic := parser parse: 	aString.
 	writer visit: mic.
 	self assert: writer contents equals: aResultingString
