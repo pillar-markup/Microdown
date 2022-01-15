@@ -12,8 +12,33 @@ It is possible to add new hosts, a primary use case is to give memory file store
 Class {
 	#name : #MicFileResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
+	#classVars : [
+		'Hosts'
+	],
 	#category : #'Microdown-Core'
 }
+
+{ #category : #'instance creation' }
+MicFileResourceReference class >> fromFileRef: aFileReference [
+	"return an instance of me which references aFileReference"
+	| host micRef |
+	aFileReference fileSystem isDiskFileSystem
+		ifTrue:[ ^ self new uri: ('file://',aFileReference pathString ) asZnUrl].
+	"fileReference is a memory filesystem"
+	host := self hostOf: aFileReference.
+	host ifNil: [
+		host := #'memory.default'.
+		self host: host is: aFileReference fileSystem].
+	micRef := self new uri: ('file://', host, aFileReference pathString ) asZnUrl .
+	^ micRef
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> contents [
+	^ uri host 
+		ifNil: [ self path asFileReference contents]
+		ifNotNil: [ ((self class hostFileReference: uri host) / self path) contents ].
+]
 
 { #category : #'accessing - resources' }
 MicFileResourceReference >> resolveResourceIn: aResolver [
