@@ -464,7 +464,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 
 	(line beginsWith: self headerMarkup)
 		ifTrue: [ ^ MicHeaderBlock ].
-	(line beginsWith: self codeblockMarkup)
+	(line beginsWith: CodeblockMarkup)
 		ifTrue: [ ^ MicCodeBlock ].
 	(self matchUnordered: line)
 		ifTrue: [ ^ MicUnorderedListBlock ].
@@ -476,7 +476,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 		ifTrue: [ ^ MicAnnotatedBlock ].
 	(line beginsWith: AnchorMarkup)
 		ifTrue: [ ^ MicAnchorBlock ].
-	(line beginsWith: self commentedLineMarkup)
+	(line beginsWith: CommentedLineMarkup)
 		ifTrue: [ ^ MicCommentBlock ].
 	(line beginsWith: self mathOpeningBlockMarkup)
 		ifTrue: [ ^ MicMathBlock ].

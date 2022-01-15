@@ -193,8 +193,8 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 MicrodownParserTest >> testCommentOnMultipleLines [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment', String cr.
-	source := source, parser commentedLineMarkup , 'a second comment'.
+	source := CommentedLineMarkup , 'a comment', String cr.
+	source := source, CommentedLineMarkup , 'a second comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	comment := root children first. 
@@ -207,7 +207,7 @@ a second comment'
 MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment', String cr.
+	source := CommentedLineMarkup , 'a comment', String cr.
 	source := source, 'a second comment'.
 	root :=  parser parse: source.
 	"we have two commented lines."
@@ -223,7 +223,7 @@ MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 MicrodownParserTest >> testCommentSimple [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment'.
+	source := CommentedLineMarkup , 'a comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	comment := root children first. 
@@ -235,12 +235,12 @@ MicrodownParserTest >> testCommentSimple [
 MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 
 	| source root paragraph |
-	source := 'this is not the start', parser commentedLineMarkup , 'a comment'.
+	source := 'this is not the start', CommentedLineMarkup , 'a comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
 	self assert: (paragraph isKindOf: MicParagraphBlock).
-	self assert: paragraph text equals: 'this is not the start', parser commentedLineMarkup , 'a comment'
+	self assert: paragraph text equals: 'this is not the start', CommentedLineMarkup , 'a comment'
 	
 ]
 

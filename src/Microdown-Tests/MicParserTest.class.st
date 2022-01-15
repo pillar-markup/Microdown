@@ -78,7 +78,7 @@ MicParserTest >> testParsingLogic [
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := (parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup) readStream. 
+	source := (CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup) readStream. 
 	
 	line := source nextLine.
 	"First we get the root block"

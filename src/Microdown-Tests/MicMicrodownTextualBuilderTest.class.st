@@ -145,7 +145,7 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testComment [
 
-	self assert: (builder comment: 'Comment') contents equals: parser commentedLineMarkup, ' Comment'
+	self assert: (builder comment: 'Comment') contents equals: CommentedLineMarkup, ' Comment'
 ]
 
 { #category : #'tests - anchor' }

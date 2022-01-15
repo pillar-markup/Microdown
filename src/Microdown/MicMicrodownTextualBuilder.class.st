@@ -101,7 +101,7 @@ MicMicrodownTextualBuilder >> codeblock: aString [
 
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '=';
@@ -111,13 +111,13 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
 	self newLine.
 	self raw: aString.
 	self newLine.
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 	self newLine.
 ]
 
 { #category : #'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '='.
@@ -129,7 +129,7 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol wit
 	self newLine.
 	self raw: aString.
 	self newLine.
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 	self newLine.
 ]
 
@@ -141,19 +141,20 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	...
 	"
 
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 	self raw: aTag.	
 	self newLine.
 	self raw: aString.
 	self newLine.
-	self raw: parserClass codeblockMarkup.
+	self raw: CodeblockMarkup.
 ]
 
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
 		withLinesIn: aText 
-		do: [ :line | self writeText: line beginsWith: (parserClass commentedLineMarkup) ] 		separatedBy: [ self newLine ]
+		do: [ :line | self writeText: line beginsWith: CommentedLineMarkup ] 		
+		separatedBy: [ self newLine ]
 	
 ]
 

@@ -148,5 +148,5 @@ MicCodeBlock >> language [
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	
-	^ self parser codeblockMarkup 
+	^ CodeblockMarkup 
 ]

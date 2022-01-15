@@ -6,7 +6,7 @@ MicCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	code := root children first asPillar.
 	self
