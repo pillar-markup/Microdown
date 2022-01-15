@@ -12,7 +12,7 @@ MicRealDumper >> contents [
 	^ stream contents
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicRealDumper >> emitClassNameOf: aMicElement [
 
 	stream nextPutAll: aMicElement class asString

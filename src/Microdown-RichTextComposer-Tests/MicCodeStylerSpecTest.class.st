@@ -4,8 +4,15 @@ A MicCodeStylerSpecTest is a test class for testing the behavior of MicCodeStyle
 Class {
 	#name : #MicCodeStylerSpecTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests'
+	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
+
+{ #category : #running }
+MicCodeStylerSpecTest >> setUp [
+	super setUp.
+	
+	MicCodeStylerSpec initializeCache
+]
 
 { #category : #tests }
 MicCodeStylerSpecTest >> testStylerForMethod [

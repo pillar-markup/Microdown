@@ -515,7 +515,7 @@ MicTextualMicrodownExporterTest >> testUnorderedListWithStrike [
 	self verifyObtain: factory unorderedListWithTwoItemsStrikeSample
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	| micElement |
 	micElement := parser parse: aString.

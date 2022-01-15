@@ -1,26 +1,22 @@
 "
-I am a visitor that produces rich text (class Text) based on a pillar document model.
-I am implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
+I'm a visitor that produces rich text (class `Text`) based on a microdown model.
+I'm implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
 a not rendering mode, and a not catching exceptions (to ease debugging).
 
-The main API is the method: `BCRichTextComposer class>>#renderComment:of:`.
+The main API is the methods: `MicRichTextComposer class >> #renderComment:of:` and `MicRichTextComposer class >> #asRichText:`
 
 Web-based images or LaTeX rendering requires network access and are cached.
-
-
-
-!!Note The composer should be improved to render better and in nicer ways elements. 
 
 #### Advanced  
 For the LaTeX rendering, internet connexion is required. 
 You can also turn it off/on doing
 
 ```
-BCRichTextComposer putOffLine
+MicRichTextComposer putOffLine
 ```
 
 In addition, images fetched via http requests are cached to avoid multiple http requests.
-The cache can be reset executing `PRRichTextComposer resetCache`. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).
+The cache can be reset executing `MicRichTextComposer resetCache`. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).
 When the system is online but the request failed I display an uncached placeholder.
 
 It means that web-based images can be prefilled and Pharo images can be provided preloaded. 
@@ -28,10 +24,10 @@ It means that web-based images can be prefilled and Pharo images can be provided
 When you want to get all the errors (typically to debug and fix them), you can configure the system to stop capturing errors using 
 
 ```
-PRRichTextComposer captureErrors: false
+MicRichTextComposer captureErrors: false
 
 ```
-\'
+
 
 
 #### Known limits
@@ -44,114 +40,73 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'monospaceBackgroundColor',
-		'superscriptColor',
-		'subscriptColor',
-		'annotatedParagraphColor',
-		'annotatedParagraphAnnotationColor',
-		'annotatedParagraphAlignment',
-		'styler'
+		'textStyler',
+		'codeStylerClass'
 	],
-	#classVars : [
-		'CaptureErrors',
-		'HeaderFontSizes',
-		'HeaderFonts',
-		'ImageCache',
-		'NotRendering',
-		'OffLine'
-	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }
-MicRichTextComposer class >> asRichText: aDoc [
+MicRichTextComposer class >> asRichText: aStringOrDoc [
 	
-	^ self new asRichText: aDoc
+	^ self new asRichText: aStringOrDoc
 
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleLatex [
-	<sampleInstance>
-
-	^ self parseAndCompose:
-'V_i = C_0 - C_3
-\frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown1 [
 	<sampleInstance>
-	^ self parseAndCompose:  '### First section
-and this is just **first** line 
-1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
-   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
-   - And one more _silly_ thingie
-1. Line 2
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3'
+	^ self parseAndCompose:  '### Emphasis and lists
+Paragraphs are seperated by blank lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+New lines are preserved. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+
+Pargraphs can be split over several lines.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+1. Lorem ipsum dolor sit amet, `consectetur` adipiscing elit, 
+   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+   - _Lorem_ **ipsum** dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+     incididunt ut labore et dolore magna aliqua.
+   - Lorem _**ipsum dolor**_ sit amet
+1. You indent by alligning the bullet pointer (-, *, + or number) to the beginning of the text in above
+   - Like this
+   - Or this
+1. For the moment numbered lists always start with 1, and count upwards'
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown11 [
+MicRichTextComposer class >> exampleMicrodown2 [
 	<sampleInstance>
 	^ self parseAndCompose:
-'### Latex mathematics 
-It is possible to render latex math via a web services. Future version will cache the resulting expressions. 
+'## Code Blocks
 
-$
- \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
-$
+Code blocks can be Pharo, Method, or text. Default is Pharo
 
-Cool eh?
-'
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown1Large [
-	<sampleInstance>
-	^ self new textStyler: MicTextStylerLarge new; asRichText:  (Microdown parse: '# First section
-and this is just **first** line 
-1. Line 1 More here More here `More here More here` More here More here More here More here More here More here
-   - Kasper tries the strange thing Kasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thingKasper tries the strange thing
-   - And one more _silly_ thingie
-1. Line 2
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-   - Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
-1. Line 3')
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown3 [
-	<sampleInstance>
-	^ self parseAndCompose:
-					'## Code Blocks
-this is just _first_ line
-
-```
+```Pharo
 Metacello new
    baseline: ''PillarRichTextExporter'';
    repository: ''github://kasperosterbye/PillarRichTextRender'';
    load.
-```' 
+```
+
+```Method
+textStyler: aString
+	<codeblockStyler: ''text''>
+	^aString asText
+```
+
+```text
+textStyler: aString
+	<codeblockStyler: ''text''>
+	^aString asText
+```
+
+' 
 
 
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown4 [
-	<sampleInstance>
-	^ self parseAndCompose:
-					'## Annotations
-this is just _first_ line
-
-!!todo remember to do annotations
-and this is the second line'
-]
-
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown5 [
+MicRichTextComposer class >> exampleMicrodown3 [
 	<sampleInstance>
 	^ self parseAndCompose:
 					'### Links
@@ -167,53 +122,70 @@ And this is another line'
 ]
 
 { #category : #examples }
-MicRichTextComposer class >> exampleMicrodown6 [
+MicRichTextComposer class >> exampleMicrodown4 [
 	<sampleInstance>
 	^ self parseAndCompose:
 					'### Figures
 This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
-At max you should get one request per picture.
+You should get one request per picture.
 
 ![A super nice Pharo logo.](https://files.pharo.org/media/logo/logo.png)
 
-And this is the last line'
+Images can be used as anchors: 
+
+[![](https://pharo.org/web/files/pharo-logo-small.png)](https://pharo.org)
+
+'
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleMicrodown5 [
+	<sampleInstance>
+	^ self parseAndCompose:
+					'# Links to code
+
+1. `Point` should open a class browser on Point.
+2. `Point class` should open a class browser on Point.
+3. `Point >> setX:setY:` should open a browser on the correspoding method.
+4. `#''Kernel-BasicObjects''` should open a browser on the package.
+5. But `Borrrrrken` does not create a link to code.
+' 
+]
+
+{ #category : #examples }
+MicRichTextComposer class >> exampleMicrodown6 [
+	<sampleInstance>
+	^ self parseAndCompose:
+'### Latex mathematics 
+It is possible to render latex math via a web services. We allow inline math $x^2$, or math blocks
+
+&
+ \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
+&
+
+Cool eh?
+'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown7 [
 	<sampleInstance>
-	^ self parseAndCompose:
-					'# First section
-
-1. `Point` should open a class browser on Point.
-2. `Point class` should open a class browser on Point.
-3. `Point >> setX:setY:` should open a browser on the correspoding method.
-4. `#''Pillar-ExporterRichText''` should open a browser on the package.
-5. But `Borrrrrken` does not display the same.
-' 
+	
+	^ self parseAndCompose: '## This is the class Object
+	
+	
+	![Object class.](pharo:///Object)'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown8 [
 	<sampleInstance>
 	^ self parseAndCompose:
-					'```language=PharoExpression
-1 + 2 * 3  
-```
-' 
-]
+					'## Annotations
+this is just _first_ line
 
-{ #category : #examples }
-MicRichTextComposer class >> exampleMicrodown9 [
-	<sampleInstance>
-	
-	^ self parseAndCompose: 
-'In future versions, we should introduce adapted colorizer for expressions and for method bodies.
-```language=PharoMethod
-foo: arg
-	^ arg + self
-```
-'
+!!todo remember to do annotations
+and this is the second line'
 ]
 
 { #category : #'class initialization' }
@@ -223,52 +195,103 @@ MicRichTextComposer class >> initialize [
 ]
 
 { #category : #public }
-MicRichTextComposer class >> microdownAsRichText: aString [
-	
-	^ self new visit: (Microdown parse: aString)
-
-]
-
-{ #category : #public }
 MicRichTextComposer class >> parseAndCompose: aString [
 	
 	^ self new visit: (Microdown parse: aString)
 
 ]
 
+{ #category : #'visiting - document' }
+MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
+
+	aNode arguments at: #width ifPresent: [ :width |
+		(width endsWith: '%') 
+			ifTrue: [ |scale|
+				scale := width initialIntegerOrNil.
+				scale ifNotNil: [ 
+					^ MicScalingTextAnchor new original: anImageOrMorph; scale: scale; yourself
+					 ]]
+		   ifFalse:  [ 
+				width initialIntegerOrNil 
+					ifNotNil: [ :absWidth | |absHeight|
+						absHeight := anImageOrMorph height / anImageOrMorph width *absWidth.
+						anImageOrMorph isMorph 
+							ifTrue: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph extent: absWidth @ absHeight) ]
+							ifFalse: [ ^ TextAnchor new anchoredMorph: (anImageOrMorph scaledToSize: absWidth @ absHeight) ]
+						  ]
+		 ]].
+	^ TextAnchor new anchoredMorph: anImageOrMorph
+]
+
 { #category : #public }
-MicRichTextComposer >> asRichText: aDocument [
+MicRichTextComposer >> asRichText: aStringOrDoc [
 	
-	^ self visit: aDocument
+	
+	^ self visit: (aStringOrDoc isString 
+		ifTrue: [ Microdown parse: aStringOrDoc ]
+		ifFalse: [ aStringOrDoc ])
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> codeStyler [
+MicRichTextComposer >> codeStylerClass [
 
-	^ codeStyler
+	^ codeStylerClass
 ]
 
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
-	codeStyler := MicCodeStylerSpec. "Yes, the class"
-	textStyler := MicTextStyler new 
+	codeStylerClass := MicCodeStylerSpec.
+	self textStyler:  MicTextStyler new.
 ]
 
 { #category : #private }
 MicRichTextComposer >> latexFor: aString onError: aBlock [
-	"return a MicResourceReference to an image for the latex formula in aString"
-	| ref |
-	ref := MicResourceReference fromUri: 'https://latex.codecogs.com/png.latex?', aString urlEncoded.
-	^ ref loadImage
-		ifNotNil: [ :image | image asText]
-		ifNil: [ aBlock value asText ]
+
+	"Return a Text containing an image with the latex formula.
+	If the latex formula cannot be built because of network or syntax errors,
+	use the error block to build a text"
+
+	| ref resource |
+	ref := MicResourceReference fromUri: aString.
+	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.latex?').
+	^ (resource asForm ifNil: aBlock) asText
 ]
 
-{ #category : #images }
-MicRichTextComposer >> renderMathExpression: aString [
+{ #category : #composing }
+MicRichTextComposer >> parseAndCompose: aString [ 
 	
-	canvas << (self class latexMathStylerFor: aString)
+	^ self visit: (Microdown parse: aString)
+
+]
+
+{ #category : #public }
+MicRichTextComposer >> parseAndComposeStringOrDoc: aStringOrDoc [
+	
+	^ self visit: (aStringOrDoc isString 
+			ifTrue: [ Microdown parse: aStringOrDoc ]
+			ifFalse: [ aStringOrDoc ])
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderHttpResource: aMicHttpResource inNode: aNode [
+
+	^ (String value: 1) asText
+		addAttribute: (self anchorFor: aMicHttpResource asForm of: aNode);
+		yourself
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderNotFoundResource: aMicNotFoundResource inNode: aNode [
+
+	^ aNode caption asText
+]
+
+{ #category : #'figure-resolution' }
+MicRichTextComposer >> renderPharoClassResource: aMicPharoClassResource inNode: aNode [
+	
+	"Put a class as text inside the document"
+	^ aMicPharoClassResource asText
 ]
 
 { #category : #private }
@@ -282,11 +305,15 @@ MicRichTextComposer >> renderTableCell: aCell [
 { #category : #'visiting - document' }
 MicRichTextComposer >> resizeImage: anImage of: aFigure [
 
-	| anchoredImage |
-	anchoredImage := anImage.
-	aFigure arguments at: #width ifPresent: [ :s | 
-		anchoredImage := anImage scaledToSize: s asNumber @ s asNumber ].
-	^ anchoredImage
+	| scaledImage |
+	scaledImage := anImage.
+	"aFigure arguments at: #width ifPresent: [ :s |
+		hostMorph 
+			ifNotNil: [
+				scaledImage := anImage scaledToSize: ( s asNumber in: [ :scale | 
+					(hostMorph width / 100 * scale) @ (hostMorph height / 100 * scale)]).
+		 ]]."
+	^ scaledImage
 ]
 
 { #category : #accessing }
@@ -296,9 +323,9 @@ MicRichTextComposer >> textStyler [
 ]
 
 { #category : #accessing }
-MicRichTextComposer >> textStyler: anObject [
+MicRichTextComposer >> textStyler: aTextStyler [
 
-	textStyler := anObject
+	textStyler := aTextStyler.
 ]
 
 { #category : #initialization }
@@ -315,8 +342,10 @@ This also because people will not want to to not let a newline between the heade
 
 { #category : #visiting }
 MicRichTextComposer >> visit: aDocument [
-	
-	canvas := MicRichTextCanvas new.
+
+	canvas := MicRichTextCanvas new
+		          textStyler: self textStyler;
+		          yourself.
 	super visit: aDocument.
 	^ canvas contents
 ]
@@ -336,13 +365,13 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
-{ #category : #'visiting - document' }
+{ #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
 
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self codeStyler 
+			<< (self codeStylerClass 
 				style: aCodeBlock body 
 				asLanguage: aCodeBlock language);
 			newLine.
@@ -353,35 +382,59 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 					canvas
 						<< aCodeBlock caption asText;
 					newLine ]]].
+	canvas << textStyler interBlockSpacing
+		
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumn: columnBlock [
+	"I do nothing - handled by columns"
+	
+	
+]
+
+{ #category : #'visiting -  format' }
+MicRichTextComposer >> visitColumns: columnsBlock [
+	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
+	| columns columnsBlocks totalWidth|
+	canvas newLineIfNotAlready.
+	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
+	columns := columnsBlocks collect: [ :column | |colText|
+		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
+		RubScrolledTextMorph new setText: colText].
+	totalWidth := columns sum: [ :col | col textArea width].
+	columns do: [ :morph |
+		canvas << ((String value: 1) asText addAttribute: 
+			(MicScalingTextAnchor new 
+				original: morph;
+				"There need to be a bit of extra space assigned (5%)"
+				scale: (morph textArea width / totalWidth * 100)-5;
+				"Need to add a bit of space (15) for the scrollbar to disappear"
+				freezeHeight: morph textArea height+15))].
+	canvas 
+		newLine; 
+		<< textStyler interBlockSpacing 
+	
+	
 ]
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitEnvironment: anObject [
-	self error: 'It was a halt'.
-	"What is this textBlock idea? Clean!"
-	anObject name = 'textBlock'
-		ifTrue:[
-			canvas indentIn: [  
-				canvas 
-					includeAttribute: TextEmphasis italic  
-					in: [self visitFormat: anObject]] ]
-		ifFalse: [canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText]
+	"Environment is an abstract class, and if we end here it is because of error"
+	canvas << ('>>> Environment ' , anObject name , 
+						'is not supported in RichText Pillar <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	"Try to read a png file (only one supported right now), else use alt text"
-
-	| image textContribution |
-	image := aFigure reference loadImage.
-	image ifNotNil: [ 
-		image := self resizeImage: image of: aFigure.
-		textContribution := (String value: 1) asText addAttribute:
-			                    (TextAnchor new anchoredMorph: image) ].
-
-	canvas << (textContribution ifNil: [ aFigure caption asText ])
+	| imageResource embeddableInText |
+	imageResource := aFigure reference resolveResourceIn: MicUrlResolver new.
+	embeddableInText := imageResource asRenderedOn: self withinNode: aFigure.
+	"Adding a zero width no-break space circumvents two errors in rubrics when
+	using images as links. Adding it even if the image is not a link causes no
+	harm (it is invisible), and this is the easiest place to add it."
+	canvas << (embeddableInText, 16rFEFF asCharacter asString asText)
 ]
 
 { #category : #'visiting - document' }
@@ -391,7 +444,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas
 		includeAttribute: (self textStyler headerLevelFont: aHeader level)
 		in: [ super visitHeader: aHeader ].
-	canvas newLine
+	canvas << (textStyler spaceAfterHeaderLevel: aHeader level)
 ]
 
 { #category : #'visiting - document' }
@@ -415,7 +468,7 @@ MicRichTextComposer >> visitLink: aLink [
 	| attribute |
 	attribute := TextAction new
 		             actOnClickBlock: [ 
-			             WebBrowser openOn: aLink url printString ];
+			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
@@ -456,7 +509,6 @@ MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
 	backgroundColor := self textStyler monospaceBackgroundColor.
-	
 	self flag: #fixMe.
 	"Right now we stupidly emit TextAction but we should emit TextClassLink and revisit them."
 	canvas 
@@ -484,7 +536,7 @@ MicRichTextComposer >> visitOrderedList: anObject [
 					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -492,6 +544,7 @@ MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
+	canvas newLine; << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -499,6 +552,15 @@ MicRichTextComposer >> visitParameters: anObject [
 	"do nothing for now"
 	
 	^ self
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitQuote: aQuote [
+	"I should have a fancier implementation, but for now this should work and be recognized as a quote"
+	canvas newLineIfNotAlready.
+	canvas << ('>',String tab) asText..
+	canvas indentIn: [ super visitQuote: aQuote ].
+	canvas newLine
 ]
 
 { #category : #'visiting -  format' }
@@ -527,15 +589,19 @@ MicRichTextComposer >> visitTable: tableBlock [
 		ifFalse: [ 
 			table extent: table extent - (0 @ '1' asTextMorph height). "not showing the headers"
 			table hideColumnHeaders  ].
-	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table asForm).
-	canvas << anchoredTable
+	anchoredTable := (String value: 1) asText addAttribute: (TextAnchor new anchoredMorph: table).
+	canvas newLineIfNotAlready;newLine.
+	canvas 
+		<< anchoredTable;
+		newLine;
+		<< textStyler interBlockSpacing 
 	
 ]
 
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	canvas << anInlineBlock substring asText
+	canvas << (textStyler postTextTreatment: (anInlineBlock substring asText) )
 ]
 
 { #category : #'visiting - list' }
@@ -550,5 +616,5 @@ MicRichTextComposer >> visitUnorderedList: anObject [
 						propertyAt: #bullet
 						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
 			super visitUnorderedList: anObject ].
-	canvas newLine
+	canvas newLine; << textStyler interBlockSpacing 
 ]

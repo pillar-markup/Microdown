@@ -43,6 +43,11 @@ MicTextualMicrodownExporter >> contents [
 	^ stream contents
 ]
 
+{ #category : #io }
+MicTextualMicrodownExporter >> folderName [
+	^ 'mic'
+]
+
 { #category : #accessing }
 MicTextualMicrodownExporter >> inList [
 	^ inList

@@ -74,35 +74,10 @@ MicFigureBlockTest >> testHasNoArguments [
 ]
 
 { #category : #'tests - testing' }
-MicFigureBlockTest >> testIsNotRelativeFilePath [
-	| figure |
-	figure := (splitterClass new parse: '![caption](file:///Users/name/figures/test.mic)') first.
-	self assert: figure reference isResolved
-]
-
-{ #category : #'tests - testing' }
 MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.pharo.org)') first.
 	self assert: figure reference uri asString equals: 'http://www.pharo.org/'
-]
-
-{ #category : #'tests - testing' }
-MicFigureBlockTest >> testIsNotValidImage [
-
-	| figure |
-	figure := (splitterClass new parse:
-		           '![caption](file://figures/test.mic)') first.
-	self assert: figure reference isImage not
-]
-
-{ #category : #'tests - testing' }
-MicFigureBlockTest >> testIsValidImage [
-
-	| figure |
-	figure := (splitterClass new parse:
-		           '![caption](file:///figures/test.png)') first.
-	self assert: figure reference isImage
 ]
 
 { #category : #tests }

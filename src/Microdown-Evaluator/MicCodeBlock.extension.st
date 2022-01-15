@@ -1,11 +1,9 @@
 Extension { #name : #MicCodeBlock }
 
 { #category : #'*Microdown-Evaluator' }
-MicCodeBlock >> eval: aString [
+MicCodeBlock >> eval: aBoolean [
+	arguments at: #eval put: aBoolean
 
-	self flag: #tofix.
-	"I do not get what is the use of this method."
-	arguments at: 'eval' put: aString
 ]
 
 { #category : #'*Microdown-Evaluator' }
@@ -36,4 +34,10 @@ MicCodeBlock >> evaluationString [
 					stream
 						nextPutAll: '= ';
 						nextPutAll: e description ] ]
+]
+
+{ #category : #'*Microdown-Evaluator' }
+MicCodeBlock >> isEvaluated [ 
+	arguments at: #eval ifAbsent: [ ^ false ].
+	^ arguments at: #eval
 ]

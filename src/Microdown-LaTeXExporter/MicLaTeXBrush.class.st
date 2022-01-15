@@ -8,17 +8,17 @@ Class {
 }
 
 { #category : #accessing }
-MicLaTeXBrush >> optParameter: aString [ 
+MicLaTeXBrush >> optParameter: aStringOrBlock [
 	stream
 		<< $[
-		<< aString
+		<< aStringOrBlock
 		<< $]
 ]
 
 { #category : #accessing }
-MicLaTeXBrush >> parameter: aString [ 
+MicLaTeXBrush >> parameter: aStringOrBlock [
 	stream
 		<< ${
-		<< aString
+		<< aStringOrBlock
 		<< $}
 ]

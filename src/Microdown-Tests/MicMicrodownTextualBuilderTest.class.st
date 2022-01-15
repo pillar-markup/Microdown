@@ -225,7 +225,7 @@ MicMicrodownTextualBuilderTest >> testFigureInPresenceOfParagraph [
 										withParameters:  dictionnary ] ;				
 							contents) contents 
 		equals: 'This is some text forming a paragraph and then there is figure.
-![it is a beautifull figure](http://www.pharo.org/files/ouf.png?label=aLabel&size=80)'
+![it is a beautifull figure](http://www.pharo.org/files/ouf.png label=aLabel&size=80)'
 ]
 
 { #category : #'tests - figure' }
@@ -249,7 +249,7 @@ MicMicrodownTextualBuilderTest >> testFigureWithParameters [
 							withCaption: [builder text: 'it is a beautifull figure'] 
 							withParameters:  dictionnary;				
 							contents) contents 
-		equals: '![it is a beautifull figure](http://www.pharo.org/flo.png?label=aLabel&size=80)'
+		equals: '![it is a beautifull figure](http://www.pharo.org/flo.png label=aLabel&size=80)'
 ]
 
 { #category : #tests }

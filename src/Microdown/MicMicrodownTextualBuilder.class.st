@@ -199,7 +199,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
 	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
-	
+	self deprecated: 'Better use figureURLString:withCaption:withParameters:'.
 	anOrderedDictionary
 		ifEmpty: [ 
 			self figureURL: aUrl withCaption: aDescriptionBlock ]
@@ -210,7 +210,8 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			aUrl authority ifNotNil: [ :auth | self raw: auth asString ].
 			self raw: '/'.
 			aUrl segments ifNotNil: [:segs | segs do: [:each | self raw: each asString]].
-			self raw: parserClass argumentListOfFigureStartDelimiter.
+			self raw: Character space.
+			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
 ]
@@ -227,7 +228,10 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
-	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
+	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png
+	
+	In microdown external parameters i.e., the ones not part of the URL but part of the documents such as the label and size are following the url separated by a space.
+	"
 	
 	anOrderedDictionary
 		ifEmpty: [ 
@@ -236,7 +240,8 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 			self rawFigureDescription: aDescriptionBlock.
 			self raw: parserClass urlOpenerMarkup.
 			self raw: aString.
-			self raw: parserClass argumentListOfFigureStartDelimiter.
+			self raw: Character space.
+			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
 			self raw: parserClass urlCloserMarkup ]
 ]
@@ -433,13 +438,13 @@ MicMicrodownTextualBuilder >> paragraph: aBlock [
 	self newLine
 ]
 
-{ #category : #'private utils' }
+{ #category : #'private utilities' }
 MicMicrodownTextualBuilder >> popPrefix [
 	
 	prefixStack removeLast
 ]
 
-{ #category : #'private utils' }
+{ #category : #'private utilities' }
 MicMicrodownTextualBuilder >> pushPrefix: aString [ 
 	
 	prefixStack addLast: aString
@@ -580,7 +585,7 @@ MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 
 { #category : #'ugly line handling' }
 MicMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
-	"this method shows that the PRCommentedLine class is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
+	"this method shows that the body of code block is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
 	| str |
 	str := aString readStream.
 	[ str atEnd ]

@@ -50,11 +50,6 @@ MicCodeBlock >> accept: aVisitor [
 ]
 
 { #category : #accessing }
-MicCodeBlock >> arguments [
-	^ arguments
-]
-
-{ #category : #accessing }
 MicCodeBlock >> code [
 	^ self body
 ]
@@ -129,16 +124,16 @@ MicCodeBlock >> initialize [
 	arguments := OrderedDictionary new.
 ]
 
-{ #category : #'public access' }
-MicCodeBlock >> isEvaluated [ 
-	arguments at: #eval ifAbsent: [ ^ false ].
-	^ arguments at: #eval
-]
-
 { #category : #accessing }
 MicCodeBlock >> label [
 	"precondition: receiver hasLabel"
 	^ arguments at: #label
+]
+
+{ #category : #accessing }
+MicCodeBlock >> label: aString [
+
+	self arguments at: #label put: aString
 ]
 
 { #category : #accessing }
@@ -149,7 +144,7 @@ MicCodeBlock >> language [
 	^ ''
 ]
 
-{ #category : #utils }
+{ #category : #utilities }
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	

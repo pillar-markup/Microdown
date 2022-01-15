@@ -193,25 +193,25 @@ MicroDownParser class >> annotatedParagraphMarkup [
 	^ '!!'
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> argumentListDelimiter [
 	
 	^ '&'
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> argumentListEqualsDelimiter [
 	
 	^ '='
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> argumentListOfFigureStartDelimiter [
 	
 	^ '?'
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> argumentListStartDelimiter [
 	
 	^ '|'
@@ -276,7 +276,7 @@ MicroDownParser class >> inlineMarkup: aType [
 	^ self inlineMarkups at: aType asSymbol
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> inlineMarkups [
 	^ inlineMarkups ifNil: [ 
 		inlineMarkups := Dictionary new.
@@ -362,7 +362,7 @@ MicroDownParser class >> preformattedMarkup [
 	^ '> '
 ]
 
-{ #category : #'markup utils' }
+{ #category : #'markup utilities' }
 MicroDownParser class >> resetInlineMarkups [
 	"self resetInlineMarkups"
 	inlineMarkups := nil

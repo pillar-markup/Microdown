@@ -10,9 +10,10 @@ Class {
 		'out',
 		'brushes',
 		'nesting',
-		'crAtEnd'
+		'crAtEnd',
+		'textStyler'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : #'Microdown-RichTextComposer-Composer'
 }
 
 { #category : #public }
@@ -78,17 +79,29 @@ MicRichTextCanvas >> newLine [
 
 { #category : #private }
 MicRichTextCanvas >> newLineBody [
-	self << String cr asText
+	self << self textStyler newLineBody 
 ]
 
 { #category : #public }
 MicRichTextCanvas >> newLineIfNotAlready [
 	crAtEnd
-		ifFalse: [ self newLineBody ].
+		ifFalse: [ self << self textStyler newLineIfNotAlready  ].
 	crAtEnd := true
 ]
 
 { #category : #private }
 MicRichTextCanvas >> tab [
 	self << String tab asText
+]
+
+{ #category : #accessing }
+MicRichTextCanvas >> textStyler [
+
+	^ textStyler
+]
+
+{ #category : #accessing }
+MicRichTextCanvas >> textStyler: anObject [
+
+	textStyler := anObject
 ]

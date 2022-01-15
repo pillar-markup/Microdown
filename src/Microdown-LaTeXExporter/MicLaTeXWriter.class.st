@@ -1,11 +1,9 @@
+"
+I'm producing a textual latex version of a microdown document.
+"
 Class {
 	#name : #MicLaTeXWriter,
-	#superclass : #MicrodownVisitor,
-	#instVars : [
-		'canvas',
-		'stream',
-		'nbListTab'
-	],
+	#superclass : #MicDocumentWriter,
 	#category : #'Microdown-LaTeXExporter'
 }
 
@@ -42,7 +40,7 @@ MicLaTeXWriter class >> writerName [
 
 { #category : #accessing }
 MicLaTeXWriter >> canvasClass [
-	^ MicLaTeXCanvas initialize
+	^ MicLaTeXCanvas
 ]
 
 { #category : #templating }
@@ -91,14 +89,8 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
 		parameter: [ canvas raw: aFigure reference path ]
-]
-
-{ #category : #initialization }
-MicLaTeXWriter >> initialize [ 
-	super initialize.
-	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream.
-	nbListTab := -1
+	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
+	
 ]
 
 { #category : #protected }
@@ -134,13 +126,6 @@ MicLaTeXWriter >> typeOfSectionFor: aHeader [
 	level := aHeader level.
 	section := sections at: (level min: sections size max: 1).
 	^ section
-]
-
-{ #category : #initialization }
-MicLaTeXWriter >> usedNewLine [
-	"Return the encoded new line. Useful for tests."
-	
-	^ stream usedNewLine
 ]
 
 { #category : #blocks }
@@ -243,7 +228,10 @@ MicLaTeXWriter >> visitItalic: anItalic [
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
 	| text reference |
-	reference := aLink localFileOrExternalReference.
+	reference := aLink fileStringWithoutHostFile.
+	self flag: #todo.
+	"I do not get this logic if the string does not have file:// it can still be
+	something else than a url... all this logic is bogus."
 	text := aLink text.
 	(text isEmptyOrNil or: [ reference = text ])
 		ifTrue: [ canvas command
@@ -255,7 +243,7 @@ MicLaTeXWriter >> visitLink: aLink [
 				parameter: reference;
 				parameter: [ canvas nextPutAll: text ].
 			canvas command
-				name: 'footnote';
+				name: 'footnotesize';
 				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
 ]
 
@@ -370,12 +358,14 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 
 { #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
+
 	canvas nextPutAllLines: aText substring
 ]
 
 { #category : #'blocks - list' }
 MicLaTeXWriter >> visitUnorderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
+	
 	canvas newLine.
 	self tabList.
 	canvas raw: '\begin{itemize}'.
@@ -399,7 +389,7 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 	canvas
 		nextPutAll: 'width=';
 		nextPutAll:
-			((anExternalLink arguments at: 'width' ifAbsent: [ 100 ]) asNumber
+			((anExternalLink arguments at: 'size' ifAbsent: [ 100 ]) asNumber
 			 / 100.0) printString;
 		raw: '\textwidth'
 ]

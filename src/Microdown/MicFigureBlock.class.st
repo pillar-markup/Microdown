@@ -53,15 +53,16 @@ MicFigureBlock >> arguments: aDictionary [
 
 { #category : #visiting }
 MicFigureBlock >> closeMe [
-
-	"we used this circumvoluted way to use the parsing on arguments provided by the URL parser,
-	even in case of file. so the user can express tmp/figures/goo.png?width=90&anchor=foo"
+	"We used this circumvoluted way to use the parsing on arguments provided by the URL parser
+	There is a distinction between the URL (with it potential arguments) and external parameters such as the size and label. 
+	The URL and the external parameters are separated by a space.
+	
+	So the user can express http://www.pharo.org/figures/goo.png?cookieOne=90&cookieTwo=foo size=80&label=ref12"
 
 	| split |
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
-	self arguments:
-		(MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
+	self arguments: (MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
 	self captionElements: (self inlineParse: substring).
 	self children: captionElements
 ]
@@ -87,11 +88,11 @@ MicFigureBlock >> hasChildren [
 	^ self children notEmpty.
 ]
 
-{ #category : #testing }
-MicFigureBlock >> isImageFile [
-	"Answer whether the file name indicates an image file."
+{ #category : #accessing }
+MicFigureBlock >> initialize [
 
-	^ url isImage
+	super initialize.
+	parameters := OrderedDictionary new
 ]
 
 { #category : #accessing }

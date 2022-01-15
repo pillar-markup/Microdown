@@ -265,6 +265,14 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 ]
 
 { #category : #format }
+MicMicrodownSnippetFactory >> figureRealSample [
+
+	^ '
+![A logo png under figures folder](file://figures/logo.png label=figureTest&size=80)
+'
+]
+
+{ #category : #format }
 MicMicrodownSnippetFactory >> figureSample [
 
 	^ '
@@ -728,6 +736,13 @@ MicMicrodownSnippetFactory >> quoteSample [
 MicMicrodownSnippetFactory >> rawFormatSample [
 	^ '
 a{{Foo}}b
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> realLinkSample [
+	^ '
+[The Pharo Project](http://www.pharo.org)
 '
 ]
 

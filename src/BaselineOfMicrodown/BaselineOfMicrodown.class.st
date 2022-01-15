@@ -12,7 +12,14 @@ Class {
 BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
-	spec for: #common do: [ 
+	spec for: #common do: [
+		spec
+			baseline: 'PillarCore'
+			with: [
+				spec  
+					loads: #('Pillar-Core');
+					repository: 'github://pillar-markup/pillar:dev-8'
+			].
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
@@ -47,6 +54,13 @@ BaselineOfMicrodown >> baseline: spec [
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
+			
+			"contains the asPillar and converter from MD to Pillar"
+			package: #'Microdown-Pillar'
+				with: [ spec requires: #( #Microdown 'PillarCore') ];
+				
+			package: #'Microdown-Pillar-Tests'
+				with: [ spec requires: #( #'Microdown-Pillar' ) ];	
 
 			package: #'Microdown-PrettyPrinter-Tests'
 				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
