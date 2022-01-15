@@ -455,7 +455,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 { #category : #markups }
 MicroDownParser >> boldMarkup [
 
-	^ self class boldMarkup
+	^ BoldDelimiter
 ]
 
 { #category : #accessing }
@@ -559,7 +559,7 @@ MicroDownParser >> isAList: normalized [
 { #category : #markups }
 MicroDownParser >> italicMarkup [
 
-	^ self class italicMarkup
+	^ ItalicDelimiter
 ]
 
 { #category : #'node creation' }

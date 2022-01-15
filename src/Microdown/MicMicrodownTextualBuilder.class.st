@@ -20,9 +20,6 @@ Class {
 		'prefixStack',
 		'currentLevel'
 	],
-	#pools : [
-		'MicroSharedPool'
-	],
 	#category : #'Microdown-Parser'
 }
 
@@ -82,9 +79,9 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> bold: aBlock [
-	self raw: parserClass boldMarkup.
+	self raw: BoldDelimiter.
 	aBlock value.
-	self raw: parserClass boldMarkup.
+	self raw: BoldDelimiter.
 ]
 
 { #category : #accessing }
@@ -184,21 +181,21 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
 
-	self raw: parserClass linkNameOpenerMarkup .
+	self raw: LinkNameOpenerDelimiter.
 	aDescriptionBlock value.
-	self raw: parserClass linkNameCloserMarkup.
-	self raw: parserClass urlOpenerMarkup.
+	self raw: LinkNameCloserDelimiter.
+	self raw: URLOpenerDelimiter.
 	self raw: aURL asString.
-	self raw: parserClass urlCloserMarkup.
+	self raw: URLCloserDelimiter.
 ]
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 
 	self rawFigureDescription: aDescriptionBlock.
-	self raw: parserClass urlOpenerMarkup.
+	self raw: URLOpenerDelimiter.
 	self raw: aUrl asString. 
-	self raw: parserClass urlCloserMarkup
+	self raw: URLCloserDelimiter
 ]
 
 { #category : #'element - figure' }
@@ -210,7 +207,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			self figureURL: aUrl withCaption: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
-			self raw: parserClass urlOpenerMarkup.
+			self raw: URLOpenerDelimiter.
 			aUrl scheme ifNotNil: [ :sch | self raw: sch asString, '://' ].
 			aUrl authority ifNotNil: [ :auth | self raw: auth asString ].
 			self raw: '/'.
@@ -218,7 +215,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			self raw: Character space.
 			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
-			self raw: parserClass urlCloserMarkup ]
+			self raw: URLCloserDelimiter ]
 ]
 
 { #category : #'element - figure' }
@@ -226,9 +223,9 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 	"aString can be 'http://www.pharo.org or http://www.pharo.org?width=80&language=en'"
 	
 	self rawFigureDescription: aDescriptionBlock.
-	self raw: parserClass urlOpenerMarkup.
+	self raw: URLOpenerDelimiter.
 	self raw: aString.
-	self raw: parserClass urlCloserMarkup.
+	self raw: URLCloserDelimiter.
 ]
 
 { #category : #'element - figure' }
@@ -243,12 +240,12 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 			self figureURLString: aString withCaption: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
-			self raw: parserClass urlOpenerMarkup.
+			self raw: URLOpenerDelimiter.
 			self raw: aString.
 			self raw: Character space.
 			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
-			self raw: parserClass urlCloserMarkup ]
+			self raw: URLCloserDelimiter ]
 ]
 
 { #category : #accessing }
@@ -303,9 +300,9 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> italic: aBlock [
-	self raw: parserClass italicMarkup.
+	self raw: ItalicDelimiter.
 	aBlock value.
-	self raw: parserClass italicMarkup.
+	self raw: ItalicDelimiter
 ]
 
 { #category : #'element - list' }
@@ -496,9 +493,9 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 
-	self raw: parserClass figureOpenerMarkup.
+	self raw: FigureNameOpenerDelimiter.
 	aBlock value.
-	self raw: parserClass linkNameCloserMarkup.
+	self raw: LinkNameCloserDelimiter
 ]
 
 { #category : #'element - format' }
@@ -569,9 +566,9 @@ MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> strike: aBlock [
-	self raw: parserClass strikeMarkup.
+	self raw: StrikeDelimiter.
 	aBlock value.
-	self raw: parserClass strikeMarkup.
+	self raw: StrikeDelimiter.
 ]
 
 { #category : #'element - list' }

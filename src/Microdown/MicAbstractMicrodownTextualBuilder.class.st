@@ -11,6 +11,9 @@ Class {
 		'lastIsNewLine',
 		'newLineCharacterString'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Parser'
 }
 
@@ -24,7 +27,7 @@ MicAbstractMicrodownTextualBuilder class >> on: aStream [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> bold: aText [
 
-	self writeText: aText surroundBy: parserClass boldMarkup
+	self writeText: aText surroundBy: BoldDelimiter
 ]
 
 { #category : #accessing }
@@ -49,7 +52,7 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> italic: aText [
 
-	self writeText: aText surroundBy: parserClass italicMarkup
+	self writeText: aText surroundBy: ItalicDelimiter
 ]
 
 { #category : #testing }
@@ -67,7 +70,7 @@ MicAbstractMicrodownTextualBuilder >> line: aString [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
-	self writeText: aText surroundBy: parserClass monospaceMarkup
+	self writeText: aText surroundBy: MonospaceDelimiter
 ]
 
 { #category : #'writing text' }
@@ -116,7 +119,7 @@ MicAbstractMicrodownTextualBuilder >> space [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> strike: aText [
 
-	self writeText: aText surroundBy: parserClass strikeMarkup
+	self writeText: aText surroundBy: StrikeDelimiter
 ]
 
 { #category : #writing }

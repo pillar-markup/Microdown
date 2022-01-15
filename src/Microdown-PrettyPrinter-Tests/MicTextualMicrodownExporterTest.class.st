@@ -295,8 +295,8 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 	| header res |
 	header := parser parse: factory headerWithNestedFormatSampleWithNewLine.
 	res := visitor visit: header.
-	self assert: (res at: res size -1)  asString equals: parser italicMarkup.
-	self assert: (res copyFrom: res size -3 to: res size - 2) equals: parser boldMarkup
+	self assert: (res at: res size -1)  asString equals: ItalicDelimiter.
+	self assert: (res copyFrom: res size -3 to: res size - 2) equals: BoldDelimiter
 ]
 
 { #category : #'tests - list' }

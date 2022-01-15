@@ -131,12 +131,12 @@ MicMicrodownSnippetFactory >> blockWithSpacedParametersSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass boldMarkup
+	^ self surround: '' withMarkup: BoldDelimiter
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatSample [
-	^ self surroundWithMarkup: self parserClass boldMarkup
+	^ self surroundWithMarkup: BoldDelimiter
 ]
 
 { #category : #'code block' }
@@ -411,12 +411,12 @@ MicMicrodownSnippetFactory >> inputfileSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> italicFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass italicMarkup
+	^ self surround: '' withMarkup: ItalicDelimiter
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> italicFormatSample [
-	^ self surroundWithMarkup: self parserClass italicMarkup
+	^ self surroundWithMarkup: ItalicDelimiter
 ]
 
 { #category : #document }
@@ -526,18 +526,18 @@ MicMicrodownSnippetFactory >> metaDataSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> monospaceFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass monospaceMarkup
+	^ self surround: '' withMarkup: MonospaceDelimiter
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> monospaceFormatSample [
-	^ self surroundWithMarkup: self parserClass monospaceMarkup
+	^ self surroundWithMarkup: MonospaceDelimiter
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 	"self new nestedBoldFormatSample"
-	^ self surround: (self surround: 'Foo' withMarkup: self parserClass boldMarkup) withMarkup: self parserClass italicMarkup  
+	^ self surround: (self surround: 'Foo' withMarkup: BoldDelimiter) withMarkup: ItalicDelimiter  
 ]
 
 { #category : #list }
@@ -854,12 +854,12 @@ MicMicrodownSnippetFactory >> space [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> strikethroughFormatEmptySample [
-	^ self surround: '' withMarkup: self parserClass strikeMarkup
+	^ self surround: '' withMarkup: StrikeDelimiter
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> strikethroughFormatSample [
-	^ self surroundWithMarkup: self parserClass strikeMarkup
+	^ self surroundWithMarkup: StrikeDelimiter
 ]
 
 { #category : #format }
