@@ -18,7 +18,7 @@ MicNodeTransformerTest >> setUp [
 MicNodeTransformerTest >> testDeleteNode [
 
 	| root |
-	root := MicroDownParser new parse: '```
+	root := Microdown parse: '```
 this is a paragraph
 ```'.
 	self assert: root children first class equals: MicCodeBlock.
@@ -30,7 +30,7 @@ this is a paragraph
 MicNodeTransformerTest >> testReplaceNodeByAnotherNode [
 
 	| root |
-	root := MicroDownParser new parse: 'this is a paragraph'.
+	root := Microdown parse: 'this is a paragraph'.
 	self assert: root children first class equals: MicParagraphBlock.
 	transformer visit: root.
 	self assert: root children first class equals: MicTextBlock.
