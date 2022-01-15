@@ -31,5 +31,5 @@ MicQuoteBlock >> closeMe [
 { #category : #testing }
 MicQuoteBlock >> lineMarkup [
 
-	^ self parser preformattedMarkup
+	^ PreformattedMarkup
 ]

@@ -24,6 +24,21 @@ MicrodownParserTest >> setUp [
 	parser := self parser
 ]
 
+{ #category : #'tests - math' }
+MicrodownParserTest >> stestMathBlockWithArguments [
+
+	| source root math |
+	source := MathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
+	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
+	MathClosingBlockMarkup, String cr.
+
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	math := root children first.
+	self assert: (math arguments at: 'label') equals: 'equation'.
+	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
+]
+
 { #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
@@ -313,7 +328,7 @@ MicrodownParserTest >> testHeaderLevel4WithBold [
 MicrodownParserTest >> testHorizontalBlock [
 
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr.
+	source := HorizontalLineMarkup, 'ignored ignored ignore', String cr.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	horizontal := root children first. 
@@ -325,7 +340,7 @@ MicrodownParserTest >> testHorizontalBlock [
 MicrodownParserTest >> testHorizontalBlockFollowedByList [
 
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
+	source := HorizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 2.
 	horizontal := root children first. 
@@ -337,7 +352,7 @@ MicrodownParserTest >> testHorizontalBlockFollowedByList [
 { #category : #'tests - horizontal line' }
 MicrodownParserTest >> testHorizontalLineBlock [
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'label1'.
+	source := HorizontalLineMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	horizontal := root children first. 
@@ -354,9 +369,9 @@ MicrodownParserTest >> testHorizontalLineBlock [
 MicrodownParserTest >> testMathBlock [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup , String cr, 
+	source := MathOpeningBlockMarkup , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -370,9 +385,9 @@ MicrodownParserTest >> testMathBlock [
 MicrodownParserTest >> testMathBlockOnMulitpleLines [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup , String cr, 
+	source := MathOpeningBlockMarkup , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B |', String cr, 'support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -387,9 +402,9 @@ support(I) \geq minsup \}'
 MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
+	source := MathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -402,9 +417,8 @@ MicrodownParserTest >> testMathBlockWithArguments [
 MicrodownParserTest >> testMetaData [
 
 	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
-	 '"author": "S Ducasse"', String cr,
-	parser metaDataClosingBlockMarkup, String cr.
+	source := MetaDataOpeningBlockMarkup , String cr, 
+	 '"author": "S Ducasse"', String cr, MetaDataClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -486,10 +500,10 @@ then it eats.
 MicrodownParserTest >> testMetaDataMultipleLines [
 
 	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
+	source := MetaDataOpeningBlockMarkup , String cr, 
 	 '"author": "S Ducasse",', String cr,
 	 '"title": "Ze Great Book from Frenchies"', String cr,
-	parser metaDataClosingBlockMarkup, String cr.
+	MetaDataClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.

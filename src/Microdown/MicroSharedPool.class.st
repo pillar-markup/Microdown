@@ -17,6 +17,7 @@ Class {
 		'MathOpeningBlockMarkup',
 		'MetaDataClosingBlockMarkup',
 		'MetaDataOpeningBlockMarkup',
+		'OrderedListSemiMarkup',
 		'PreformattedMarkup',
 		'TableCellMarkup',
 		'UnorderedListMarkup',
@@ -44,6 +45,7 @@ MicroSharedPool class >> initialize [
 	MathOpeningBlockMarkup := '&'.	
 	MetaDataClosingBlockMarkup := '}'.
 	MetaDataOpeningBlockMarkup := '{'.
+	OrderedListSemiMarkup := '. '.
 	PreformattedMarkup := '> '.
 	TableCellMarkup	:= '|'.
 	UnorderedListMarkup := '- '.

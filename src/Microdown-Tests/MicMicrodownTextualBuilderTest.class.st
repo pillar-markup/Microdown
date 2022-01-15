@@ -278,7 +278,9 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testHorizontalLine [
 
-	self assert: (builder horizontalLine) contents equals: parser horizontalLineMarkup, String cr
+	self 
+		assert: builder horizontalLine contents 
+		equals: HorizontalLineMarkup, String cr
 ]
 
 { #category : #'tests - anchor' }
@@ -335,7 +337,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 
 	self 
 		assert: (builder metaDataFromAssociations: {'label'->'aLabel' . 'size'->'142'}) contents 
-		equals: parser metaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , parser metaDataClosingBlockMarkup
+		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , MetaDataClosingBlockMarkup
 ]
 
 { #category : #'tests - format' }
@@ -366,7 +368,7 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testQuote [
 
-	self assert: (builder quoteBlock: 'aQuote') contents equals: parser class preformattedMarkup, ' aQuote'
+	self assert: (builder quoteBlock: 'aQuote') contents equals: PreformattedMarkup, ' aQuote'
 ]
 
 { #category : #'tests - anchor' }

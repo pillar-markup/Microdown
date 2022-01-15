@@ -264,7 +264,7 @@ MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> horizontalLine [
-	self raw: parserClass horizontalLineMarkup.
+	self raw: HorizontalLineMarkup.
    self newLine
 
 ]
@@ -340,7 +340,7 @@ MicMicrodownTextualBuilder >> mathInline: aText [
 { #category : #'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 
-	self raw: parserClass mathOpeningBlockMarkup.
+	self raw: MathOpeningBlockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '=';
@@ -350,14 +350,14 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 	self newLine.
 	self raw: aString.
 	self newLine.
-	self raw: parserClass mathClosingBlockMarkup.
+	self raw: MathClosingBlockMarkup.
 	self newLine.
 ]
 
 { #category : #'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
 
-	self raw: parserClass mathOpeningBlockMarkup.
+	self raw: MathOpeningBlockMarkup.
 	aCol do: [ :each | self 
 						raw: each key;
 						raw: '='.
@@ -369,7 +369,7 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol wit
 	self newLine.
 	self raw: aString.
 	self newLine.
-	self raw: parserClass mathClosingBlockMarkup.
+	self raw: MathClosingBlockMarkup.
 	self newLine.
 ]
 
@@ -458,7 +458,7 @@ MicMicrodownTextualBuilder >> pushPrefix: aString [
 { #category : #'element - quote block' }
 MicMicrodownTextualBuilder >> quoteBlock: aText [
 
-	self writeText: aText beginsWith: parserClass preformattedMarkup
+	self writeText: aText beginsWith: PreformattedMarkup
 ]
 
 { #category : #'writing low-level' }
@@ -558,13 +558,13 @@ MicMicrodownTextualBuilder >> root: aBlock [
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> startOfOrderedListForLevel: aNumber [
 
-	^ ('  ' repeat: aNumber) ,'1', parserClass orderedListSemiMarkup
+	^ ('  ' repeat: aNumber) ,'1', OrderedListSemiMarkup
 ]
 
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
-	^ ('  ' repeat: aNumber) , parserClass unorderedListMarkup
+	^ ('  ' repeat: aNumber) , UnorderedListMarkup
 ]
 
 { #category : #'element - format' }
@@ -609,7 +609,7 @@ is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
 	
 	self
-		writePrefix: parserClass preformattedMarkup
+		writePrefix: PreformattedMarkup
 		forEachLineDuring: aBlockClosure.
 ]
 
@@ -628,12 +628,12 @@ MicMicrodownTextualBuilder >> writeQuoteCodeBlockDuring: aBlockClosure [
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
 	self
-		writePrefix: parserClass preformattedMarkup, String space
+		writePrefix: PreformattedMarkup, String space
 		forEachLineDuring: aBlockClosure
 ]
 
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> writeStartOfOrderedListIndex: anInteger [
 	"does not handle for now nesting"
-	self raw: anInteger asString, parserClass orderedListSemiMarkup
+	self raw: anInteger asString, OrderedListSemiMarkup
 ]

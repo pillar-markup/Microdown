@@ -350,7 +350,7 @@ MicroDownParser class >> monospaceMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> orderedListSemiMarkup [
 
-	^ '. '
+	^ OrderedListSemiMarkup
 ]
 
 { #category : #'instance creation' }
@@ -391,7 +391,7 @@ MicroDownParser class >> unorderedListMarkup [
 { #category : #'block markups' }
 MicroDownParser class >> unorderedListMarkups [
 
-	^ { self unorderedListPlusMarkup . self unorderedListMarkup . self unorderedListStarMarkup}
+	^ { UnorderedListPlusMarkup . UnorderedListMarkup . UnorderedListStarMarkup}
 ]
 
 { #category : #'block markups' }
@@ -478,17 +478,17 @@ MicroDownParser >> blockStarterClassFromOld: line [
 		ifTrue: [ ^ MicAnchorBlock ].
 	(line beginsWith: CommentedLineMarkup)
 		ifTrue: [ ^ MicCommentBlock ].
-	(line beginsWith: self mathOpeningBlockMarkup)
+	(line beginsWith: MathOpeningBlockMarkup)
 		ifTrue: [ ^ MicMathBlock ].
 	(line beginsWith: EnvironmentOpeningBlockMarkup)
 		ifTrue: [ ^ MicEnvironmentBlock ].
-	(line beginsWith: self horizontalLineMarkup)
+	(line beginsWith: HorizontalLineMarkup)
 		ifTrue: [ ^ MicHorizontalLineBlock ].
-	(line beginsWith: self metaDataOpeningBlockMarkup)
+	(line beginsWith: MetaDataOpeningBlockMarkup)
 		ifTrue: [ ^ MicMetaDataBlock ].
-	(line beginsWith: self preformattedMarkup)
+	(line beginsWith: PreformattedMarkup)
 		ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
-	(line beginsWith: self tableCellMarkup)
+	(line beginsWith: TableCellMarkup)
 		ifTrue: [ ^ MicTableBlock ].
 	line ifNotEmpty: [ ^ MicParagraphBlock ] ifEmpty: [ ^ nil ]
 ]
@@ -610,9 +610,9 @@ MicroDownParser >> matchOrdered: line [
 
 { #category : #'node creation' }
 MicroDownParser >> matchUnordered: line [
-	^ ( line beginsWith: self unorderedListPlusMarkup ) 
-		| ( line beginsWith: self unorderedListStarMarkup ) 
-		| ( line beginsWith: self unorderedListMarkup )
+	^ ( line beginsWith: UnorderedListPlusMarkup ) 
+		| ( line beginsWith: UnorderedListStarMarkup ) 
+		| ( line beginsWith: UnorderedListMarkup )
 ]
 
 { #category : #markups }
@@ -643,7 +643,7 @@ MicroDownParser >> newRootBlock [
 
 { #category : #markups }
 MicroDownParser >> orderedListSemiMarkup [
-	^ self class orderedListSemiMarkup
+	^ OrderedListSemiMarkup
 ]
 
 { #category : #parsing }

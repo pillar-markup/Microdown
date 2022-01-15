@@ -120,7 +120,7 @@ MicTableBlock >> isHeader: line [
 { #category : #markups }
 MicTableBlock >> lineMarkup [
 
-	^ parser tableCellMarkup
+	^ TableCellMarkup
 ]
 
 { #category : #accessing }

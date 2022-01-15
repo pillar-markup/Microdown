@@ -29,13 +29,13 @@ MicMetaDataBlock >> accept: aVisitor [
 { #category : #markups }
 MicMetaDataBlock >> lineStartMarkup [
 
-	^ parser metaDataOpeningBlockMarkup
+	^ MetaDataOpeningBlockMarkup
 ]
 
 { #category : #markups }
 MicMetaDataBlock >> lineStopMarkup [
 
-	^ parser metaDataClosingBlockMarkup 
+	^ MetaDataClosingBlockMarkup 
 ]
 
 { #category : #markups }
