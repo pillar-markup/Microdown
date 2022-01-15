@@ -101,6 +101,11 @@ MicFileResourceReference >> loadMicrodown [
 
 { #category : #accessing }
 MicFileResourceReference >> resolveResourceIn: aResolver [
-	self error: 'Check the uri for host, and set resolvers working directory if host is not nil'.
+	self uri host 
+		ifNotNil: [ :hostname | |fileRef|
+			fileRef := self class hostFileReference: hostname.
+			fileRef ifNil: [ self error: 'unknown host' ].
+			aResolver currentWorkingDirectory: fileRef
+			 ].
 	^ aResolver resolveAbsoluteFilePath: self
 ]
