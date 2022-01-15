@@ -37,9 +37,9 @@ MicMicrodownTextualBuilder >> anchor: aLabel [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> anchorReference: aText [
 
-	self raw: parserClass anchorReferenceOpenerMarkup.
+	self raw: AnchorReferenceOpenerDelimiter.
 	self raw: aText.
-	self raw: parserClass anchorReferenceCloserMarkup.
+	self raw: AnchorReferenceCloserDelimiter.
 ]
 
 { #category : #'element - annotated' }
@@ -296,8 +296,8 @@ MicMicrodownTextualBuilder >> inputfile: aPathString [
 MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 
 		writeText: aLabel 
-		surroundBy: parserClass anchorReferenceOpenerMarkup 
-		and: parserClass anchorReferenceCloserMarkup.
+		surroundBy: AnchorReferenceOpenerDelimiter
+		and: AnchorReferenceCloserDelimiter
 	
 ]
 

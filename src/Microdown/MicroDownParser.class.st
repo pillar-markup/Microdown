@@ -164,17 +164,8 @@ Class {
 	#pools : [
 		'MicroSharedPool'
 	],
-	#classInstVars : [
-		'inlineMarkups'
-	],
 	#category : #'Microdown-Parser'
 }
-
-{ #category : #private }
-MicroDownParser class >> allBlockNodeClasses [
-	^ MicAbstractBlock allSubclasses
-	
-]
 
 { #category : #'block markups' }
 MicroDownParser class >> anchorMarkup [
@@ -183,12 +174,12 @@ MicroDownParser class >> anchorMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> anchorReferenceCloserMarkup [
-	^ self inlineMarkups at: #anchorReferenceCloser
+	^ AnchorReferenceCloserDelimiter
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> anchorReferenceOpenerMarkup [
-	^ self inlineMarkups at: #anchorReferenceOpener
+	^ AnchorReferenceOpenerDelimiter
 ]
 
 { #category : #'block markups' }
@@ -222,7 +213,7 @@ MicroDownParser class >> argumentListStartDelimiter [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> boldMarkup [
-	^ self inlineMarkups at: #bold
+	^ BoldDelimiter
 ]
 
 { #category : #private }
@@ -260,7 +251,7 @@ MicroDownParser class >> example [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> figureOpenerMarkup [
-	^ self inlineMarkups at: #figureOpener
+	^ FigureNameOpenerDelimiter
 ]
 
 { #category : #'block markups' }
@@ -275,45 +266,18 @@ MicroDownParser class >> horizontalLineMarkup [
 ]
 
 { #category : #'inline block markups' }
-MicroDownParser class >> inlineMarkup: aType [
-	^ self inlineMarkups at: aType asSymbol
-]
-
-{ #category : #'markup utilities' }
-MicroDownParser class >> inlineMarkups [
-
-	^ inlineMarkups ifNil: [ 
-		inlineMarkups := Dictionary new.
-		MicAbstractDelimiter subclasses 
-			do: [ :subclass | 
-			| role |
-			self flag: #fixMe. 
-			"why not pushing this logic in the class themselves? Because a delimiter knows it."
-			"for example for there is also a problem with escape which is neither a closer and opener"
-			role := subclass isOpener 
-				ifTrue: [ subclass isCloser 
-								ifTrue: [ '' ] 
-								ifFalse: [ 'Opener' ] ] 
-				ifFalse: [ 'Closer' ].			
-			inlineMarkups
-				at: subclass type asString, role
-				put: subclass markup ].
-			^ inlineMarkups ]
-]
-
-{ #category : #'inline block markups' }
 MicroDownParser class >> italicMarkup [
-	^ self inlineMarkups at: #italic
+	^ ItalicDelimiter
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> linkNameCloserMarkup [
-	^ self inlineMarkups at: #linkNameCloser
+	^ LinkNameCloserDelimiter
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> linkNameOpenerMarkup [
-	^ self inlineMarkups at: #linkNameOpener
+	^ LinkNameOpenerDelimiter
 ]
 
 { #category : #'block markups' }
@@ -324,7 +288,7 @@ MicroDownParser class >> mathClosingBlockMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> mathMarkup [
-	^ self inlineMarkups at: #math
+	^ MathDelimiter
 ]
 
 { #category : #'block markups' }
@@ -345,7 +309,7 @@ MicroDownParser class >> metaDataOpeningBlockMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> monospaceMarkup [
-	^ self inlineMarkups at: #monospace
+	^ MonospaceDelimiter
 ]
 
 { #category : #'block markups' }
@@ -366,15 +330,9 @@ MicroDownParser class >> preformattedMarkup [
 	^ PreformattedMarkup
 ]
 
-{ #category : #'markup utilities' }
-MicroDownParser class >> resetInlineMarkups [
-	"self resetInlineMarkups"
-	inlineMarkups := nil
-]
-
 { #category : #'inline block markups' }
 MicroDownParser class >> strikeMarkup [
-	^ self inlineMarkups at: #strike
+	^ StrikeDelimiter
 ]
 
 { #category : #'block markups' }
@@ -409,12 +367,12 @@ MicroDownParser class >> unorderedListStarMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> urlCloserMarkup [
-	^ self inlineMarkups at: #urlCloser
+	^ URLCloserDelimiter
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> urlOpenerMarkup [
-	^ self inlineMarkups at: #urlOpener
+	^ URLOpenerDelimiter
 ]
 
 { #category : #markups }
