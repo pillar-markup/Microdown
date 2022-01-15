@@ -4,6 +4,9 @@ Class {
 	#instVars : [
 		'parser'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
@@ -37,8 +40,8 @@ MicrodownParserTest >> testAnchorBlock [
 MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 
 	| source root annotated |
-	source := parser anchorMarkup, 'label1', String cr.
-	source := source, parser anchorMarkup, 'label2'.
+	source := AnchorMarkup, 'label1', String cr.
+	source := source, AnchorMarkup, 'label2'.
 	root := parser parse: source.
 	self assert: root children size equals: 2.
 	annotated := root children first. 
@@ -54,12 +57,12 @@ MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 MicrodownParserTest >> testAnchorMarkupInsideLine [
 
 	| source root paragraph |
-	source := 'this is not an anchor', parser anchorMarkup, 'label1'.
+	source := 'this is not an anchor', AnchorMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
 	self assert: (paragraph isKindOf: MicParagraphBlock).
-	self assert: paragraph text equals: 'this is not an anchor', parser anchorMarkup, 'label1'.
+	self assert: paragraph text equals: 'this is not an anchor', AnchorMarkup, 'label1'.
 	
 
 ]

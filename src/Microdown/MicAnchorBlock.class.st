@@ -25,7 +25,7 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	"# bla
 	@myanchor
 	"
-	label := (line copyFrom: parser anchorMarkup size + 1 to: line size) trim.
+	label := (line copyFrom: AnchorMarkup size + 1 to: line size) trim.
 	^ self
 ]
 

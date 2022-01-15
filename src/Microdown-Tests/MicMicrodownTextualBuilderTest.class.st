@@ -9,6 +9,9 @@ Class {
 		'parser',
 		'builder'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Builder'
 }
 
@@ -35,13 +38,15 @@ MicMicrodownTextualBuilderTest >> setUp [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchor [
 
-	self assert: (builder anchor: 'Anchor') contents equals: parser anchorMarkup, 'Anchor'
+	self assert: (builder anchor: 'Anchor') contents equals:  AnchorMarkup, 'Anchor'
 ]
 
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchorReference [
 
-	self assert: (builder anchorReference: 'AnchorReference') contents equals: parser class anchorReferenceOpenerMarkup, 'AnchorReference', parser class anchorReferenceCloserMarkup
+	self 
+		assert: (builder anchorReference: 'AnchorReference') contents 
+		equals: parser class anchorReferenceOpenerMarkup, 'AnchorReference', parser class anchorReferenceCloserMarkup
 ]
 
 { #category : #'tests - anchor' }

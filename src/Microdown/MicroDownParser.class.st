@@ -474,7 +474,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 				"number followed by . or ). We could treat this one separated and fall back on a dictionary By moving this into the extension for example."
 	(line beginsWith: self annotatedParagraphMarkup)
 		ifTrue: [ ^ MicAnnotatedBlock ].
-	(line beginsWith: self anchorMarkup)
+	(line beginsWith: AnchorMarkup)
 		ifTrue: [ ^ MicAnchorBlock ].
 	(line beginsWith: self commentedLineMarkup)
 		ifTrue: [ ^ MicCommentBlock ].

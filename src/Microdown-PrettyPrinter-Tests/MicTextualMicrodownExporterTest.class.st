@@ -7,6 +7,9 @@ Class {
 		'visitorClass',
 		'parser'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-PrettyPrinter-Tests'
 }
 
@@ -39,7 +42,7 @@ MicTextualMicrodownExporterTest >> setUp [
 MicTextualMicrodownExporterTest >> testAnchor [
 	| micAnchor |
 	micAnchor := parser parse: factory anchorSample.
-	self assert: (visitor visit: micAnchor) first asString equals: parser anchorMarkup
+	self assert: (visitor visit: micAnchor) first asString equals: AnchorMarkup
 ]
 
 { #category : #'tests-anchor' }

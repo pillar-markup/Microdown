@@ -20,13 +20,16 @@ Class {
 		'prefixStack',
 		'currentLevel'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Parser'
 }
 
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> anchor: aLabel [
 
-	self raw: parserClass anchorMarkup.
+	self raw: AnchorMarkup.
 	self raw: aLabel.
 
 ]
