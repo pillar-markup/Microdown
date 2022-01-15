@@ -27,7 +27,7 @@ MicrodownParserTest >> setUp [
 { #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
-	source := parser anchorMarkup, 'label1'.
+	source := AnchorMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
