@@ -161,6 +161,9 @@ Class {
 		'root',
 		'dispatchTable'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#classInstVars : [
 		'inlineMarkups'
 	],
@@ -175,7 +178,7 @@ MicroDownParser class >> allBlockNodeClasses [
 
 { #category : #'block markups' }
 MicroDownParser class >> anchorMarkup [
-	^ '@'
+	^ AnchorMarkup 
 ]
 
 { #category : #'inline block markups' }
@@ -415,7 +418,7 @@ MicroDownParser class >> urlOpenerMarkup [
 
 { #category : #markups }
 MicroDownParser >> anchorMarkup [
-	^ self class anchorMarkup
+	^ AnchorMarkup
 ]
 
 { #category : #markups }
