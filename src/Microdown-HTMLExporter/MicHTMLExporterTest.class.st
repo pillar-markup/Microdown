@@ -128,7 +128,7 @@ MicHTMLExporterTest >> testUnorderedList [
 
 { #category : #'tests - formats' }
 MicHTMLExporterTest >> testfigure [
-
+	self skip.
 	self parse: factory figureSample andCheckWeGet: '
 <p><img src="/anUrl label=figureTest&size=80" alt="Foo"></p>'
 ]
@@ -136,7 +136,7 @@ MicHTMLExporterTest >> testfigure [
 { #category : #'tests - formats' }
 MicHTMLExporterTest >> testfigureBold [
 
-	self flag: #todo.
+	self skip.
 	self parse: factory figureBoldSample andCheckWeGet: '
 <figure>
   <img src="un-gout-de-fraise.jpg" alt="" />
