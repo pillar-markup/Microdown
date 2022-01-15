@@ -4,6 +4,11 @@ Class {
 	#category : #'Microdown-HTMLExporter'
 }
 
+{ #category : #tag }
+MicHTMLTag >> closeTag [
+	stream << '>'
+]
+
 { #category : #accessing }
 MicHTMLTag >> name: aString [
 	name := aString.
