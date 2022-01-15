@@ -5,6 +5,9 @@ Class {
 		'parent',
 		'properties'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Model'
 }
 
