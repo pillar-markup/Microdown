@@ -35,9 +35,9 @@ MicArgumentsSplitter >> arguments [
 
 { #category : #accessing }
 MicArgumentsSplitter >> firstTag [
-	name ifNotNil: [ ^name ].
-	arguments notEmpty ifTrue: [ ^arguments keys first asString ].
-	^''
+	name ifNotNil: [ ^ name ].
+	arguments notEmpty ifTrue: [ ^ arguments keys first asString ].
+	^ ''
 ]
 
 { #category : #initialization }
@@ -59,14 +59,10 @@ MicArgumentsSplitter >> name [
 	^ name
 ]
 
-{ #category : #accessing }
-MicArgumentsSplitter >> parserClass [
-	^ MicroDownParser 
-]
-
 { #category : #parsing }
 MicArgumentsSplitter >> setNameAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a name, second to be arguments"
+	
 	name := barSplit first trim.
 	self setNoNameButArguments: barSplit second
 ]
@@ -87,7 +83,6 @@ MicArgumentsSplitter >> setNoNameButArguments: string [
 	pairs := string splitOn: $&.
 	pairs do: [ :p | |keyValue|
 		keyValue := p splitOnFirst: $=.
-		arguments at: keyValue first trim asSymbol put: keyValue second.
-		 ]
+		arguments at: keyValue first trim asSymbol put: keyValue second ]
 	
 ]

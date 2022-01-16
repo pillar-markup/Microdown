@@ -25,8 +25,8 @@ MicrodownPresenter class >> open [
 { #category : #composing }
 MicrodownPresenter >> compose [
 
-	self document ifNil: [ ^self ].
-	self text: (MicRichTextComposer  new 
+	self document ifNil: [ ^ self ].
+	self text: (MicRichTextComposer new 
 		textStyler: self textStyler; 
 		asRichText: self document)
 ]
@@ -54,7 +54,7 @@ MicrodownPresenter >> documentFromString: aString [
 
 { #category : #initialization }
 MicrodownPresenter >> parserClass [ 
-	^ MicroDownParser
+	^ Microdown
 ]
 
 { #category : #accessing }
