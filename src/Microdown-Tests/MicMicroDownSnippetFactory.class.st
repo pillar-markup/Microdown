@@ -399,7 +399,7 @@ MicMicrodownSnippetFactory >> horizontalLineSample [
 MicMicrodownSnippetFactory >> initialize [
 	
 	super initialize.
-	parserClass := MicroDownParser
+	parserClass := Microdown
 ]
 
 { #category : #sample }
