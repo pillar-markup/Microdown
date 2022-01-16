@@ -540,7 +540,7 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 	
 	aZnDictionary keysAndValuesDo: [ :key :value | 
 		self raw: key.
-		self raw: parserClass argumentListEqualsDelimiter.
+		self raw: ArgumentListEqualsDelimiter.
 		self raw: value asString.
 		key = aZnDictionary keys last ifFalse: [ 
 			self raw: ArgumentListDelimiter ] ]
