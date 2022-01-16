@@ -6,7 +6,6 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'factory',
-		'parser',
 		'builder'
 	],
 	#pools : [
@@ -31,8 +30,7 @@ Pharo'
 MicMicrodownTextualBuilderTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
-	parser := MicroDownParser new.
-	builder := parser builder
+	builder := Microdown builder
 ]
 
 { #category : #'tests - anchor' }
