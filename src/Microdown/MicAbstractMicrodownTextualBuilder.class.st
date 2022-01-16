@@ -27,7 +27,7 @@ MicAbstractMicrodownTextualBuilder class >> on: aStream [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> bold: aText [
 
-	self writeText: aText surroundBy: BoldDelimiter
+	self writeText: aText surroundBy: BoldMarkup
 ]
 
 { #category : #accessing }
@@ -52,7 +52,7 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> italic: aText [
 
-	self writeText: aText surroundBy: ItalicDelimiter
+	self writeText: aText surroundBy: ItalicMarkup
 ]
 
 { #category : #testing }
@@ -70,7 +70,7 @@ MicAbstractMicrodownTextualBuilder >> line: aString [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
-	self writeText: aText surroundBy: MonospaceDelimiter
+	self writeText: aText surroundBy: MonospaceMarkup
 ]
 
 { #category : #'writing text' }
@@ -119,7 +119,7 @@ MicAbstractMicrodownTextualBuilder >> space [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> strike: aText [
 
-	self writeText: aText surroundBy: StrikeDelimiter
+	self writeText: aText surroundBy: StrikeMarkup
 ]
 
 { #category : #writing }

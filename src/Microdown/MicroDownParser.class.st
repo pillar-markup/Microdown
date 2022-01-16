@@ -174,12 +174,12 @@ MicroDownParser class >> anchorMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> anchorReferenceCloserMarkup [
-	^ AnchorReferenceCloserDelimiter
+	^ AnchorReferenceCloserMarkup
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> anchorReferenceOpenerMarkup [
-	^ AnchorReferenceOpenerDelimiter
+	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : #'block markups' }
@@ -213,7 +213,7 @@ MicroDownParser class >> argumentListStartDelimiter [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> boldMarkup [
-	^ BoldDelimiter
+	^ BoldMarkup
 ]
 
 { #category : #private }
@@ -251,7 +251,7 @@ MicroDownParser class >> example [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> figureOpenerMarkup [
-	^ FigureNameOpenerDelimiter
+	^ FigureNameOpenerMarkup
 ]
 
 { #category : #'block markups' }
@@ -267,17 +267,17 @@ MicroDownParser class >> horizontalLineMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> italicMarkup [
-	^ ItalicDelimiter
+	^ ItalicMarkup
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> linkNameCloserMarkup [
-	^ LinkNameCloserDelimiter
+	^ LinkNameCloserMarkup
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> linkNameOpenerMarkup [
-	^ LinkNameOpenerDelimiter
+	^ LinkNameOpenerMarkup
 ]
 
 { #category : #'block markups' }
@@ -288,7 +288,7 @@ MicroDownParser class >> mathClosingBlockMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> mathMarkup [
-	^ MathDelimiter
+	^ MathMarkup
 ]
 
 { #category : #'block markups' }
@@ -309,7 +309,7 @@ MicroDownParser class >> metaDataOpeningBlockMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> monospaceMarkup [
-	^ MonospaceDelimiter
+	^ MonospaceMarkup
 ]
 
 { #category : #'block markups' }
@@ -332,7 +332,7 @@ MicroDownParser class >> preformattedMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> strikeMarkup [
-	^ StrikeDelimiter
+	^ StrikeMarkup
 ]
 
 { #category : #'block markups' }
@@ -367,12 +367,12 @@ MicroDownParser class >> unorderedListStarMarkup [
 
 { #category : #'inline block markups' }
 MicroDownParser class >> urlCloserMarkup [
-	^ URLCloserDelimiter
+	^ URLCloserMarkup
 ]
 
 { #category : #'inline block markups' }
 MicroDownParser class >> urlOpenerMarkup [
-	^ URLOpenerDelimiter
+	^ URLOpenerMarkup
 ]
 
 { #category : #markups }
@@ -455,7 +455,7 @@ MicroDownParser >> blockStarterClassFromOld: line [
 { #category : #markups }
 MicroDownParser >> boldMarkup [
 
-	^ BoldDelimiter
+	^ BoldMarkup
 ]
 
 { #category : #accessing }
@@ -559,7 +559,7 @@ MicroDownParser >> isAList: normalized [
 { #category : #markups }
 MicroDownParser >> italicMarkup [
 
-	^ ItalicDelimiter
+	^ ItalicMarkup
 ]
 
 { #category : #'node creation' }

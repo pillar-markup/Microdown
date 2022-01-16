@@ -131,12 +131,12 @@ MicMicrodownSnippetFactory >> blockWithSpacedParametersSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatEmptySample [
-	^ self surround: '' withMarkup: BoldDelimiter
+	^ self surround: '' withMarkup: BoldMarkup
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> boldFormatSample [
-	^ self surroundWithMarkup: BoldDelimiter
+	^ self surroundWithMarkup: BoldMarkup
 ]
 
 { #category : #'code block' }
@@ -411,12 +411,12 @@ MicMicrodownSnippetFactory >> inputfileSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> italicFormatEmptySample [
-	^ self surround: '' withMarkup: ItalicDelimiter
+	^ self surround: '' withMarkup: ItalicMarkup
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> italicFormatSample [
-	^ self surroundWithMarkup: ItalicDelimiter
+	^ self surroundWithMarkup: ItalicMarkup
 ]
 
 { #category : #document }
@@ -526,18 +526,18 @@ MicMicrodownSnippetFactory >> metaDataSample [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> monospaceFormatEmptySample [
-	^ self surround: '' withMarkup: MonospaceDelimiter
+	^ self surround: '' withMarkup: MonospaceMarkup
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> monospaceFormatSample [
-	^ self surroundWithMarkup: MonospaceDelimiter
+	^ self surroundWithMarkup: MonospaceMarkup
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 	"self new nestedBoldFormatSample"
-	^ self surround: (self surround: 'Foo' withMarkup: BoldDelimiter) withMarkup: ItalicDelimiter  
+	^ self surround: (self surround: 'Foo' withMarkup: BoldMarkup) withMarkup: ItalicMarkup  
 ]
 
 { #category : #list }
@@ -854,12 +854,12 @@ MicMicrodownSnippetFactory >> space [
 
 { #category : #format }
 MicMicrodownSnippetFactory >> strikethroughFormatEmptySample [
-	^ self surround: '' withMarkup: StrikeDelimiter
+	^ self surround: '' withMarkup: StrikeMarkup
 ]
 
 { #category : #format }
 MicMicrodownSnippetFactory >> strikethroughFormatSample [
-	^ self surroundWithMarkup: StrikeDelimiter
+	^ self surroundWithMarkup: StrikeMarkup
 ]
 
 { #category : #format }

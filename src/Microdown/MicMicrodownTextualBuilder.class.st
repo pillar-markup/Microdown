@@ -34,9 +34,9 @@ MicMicrodownTextualBuilder >> anchor: aLabel [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> anchorReference: aText [
 
-	self raw: AnchorReferenceOpenerDelimiter.
+	self raw: AnchorReferenceOpenerMarkup.
 	self raw: aText.
-	self raw: AnchorReferenceCloserDelimiter.
+	self raw: AnchorReferenceCloserMarkup.
 ]
 
 { #category : #'element - annotated' }
@@ -79,9 +79,9 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> bold: aBlock [
-	self raw: BoldDelimiter.
+	self raw: BoldMarkup.
 	aBlock value.
-	self raw: BoldDelimiter.
+	self raw: BoldMarkup.
 ]
 
 { #category : #accessing }
@@ -181,21 +181,21 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 { #category : #'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
 
-	self raw: LinkNameOpenerDelimiter.
+	self raw: LinkNameOpenerMarkup.
 	aDescriptionBlock value.
-	self raw: LinkNameCloserDelimiter.
-	self raw: URLOpenerDelimiter.
+	self raw: LinkNameCloserMarkup.
+	self raw: URLOpenerMarkup.
 	self raw: aURL asString.
-	self raw: URLCloserDelimiter.
+	self raw: URLCloserMarkup.
 ]
 
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 
 	self rawFigureDescription: aDescriptionBlock.
-	self raw: URLOpenerDelimiter.
+	self raw: URLOpenerMarkup.
 	self raw: aUrl asString. 
-	self raw: URLCloserDelimiter
+	self raw: URLCloserMarkup
 ]
 
 { #category : #'element - figure' }
@@ -207,7 +207,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			self figureURL: aUrl withCaption: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
-			self raw: URLOpenerDelimiter.
+			self raw: URLOpenerMarkup.
 			aUrl scheme ifNotNil: [ :sch | self raw: sch asString, '://' ].
 			aUrl authority ifNotNil: [ :auth | self raw: auth asString ].
 			self raw: '/'.
@@ -215,7 +215,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			self raw: Character space.
 			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
-			self raw: URLCloserDelimiter ]
+			self raw: URLCloserMarkup ]
 ]
 
 { #category : #'element - figure' }
@@ -223,9 +223,9 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 	"aString can be 'http://www.pharo.org or http://www.pharo.org?width=80&language=en'"
 	
 	self rawFigureDescription: aDescriptionBlock.
-	self raw: URLOpenerDelimiter.
+	self raw: URLOpenerMarkup.
 	self raw: aString.
-	self raw: URLCloserDelimiter.
+	self raw: URLCloserMarkup.
 ]
 
 { #category : #'element - figure' }
@@ -240,12 +240,12 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 			self figureURLString: aString withCaption: aDescriptionBlock ]
 		ifNotEmpty: [ 
 			self rawFigureDescription: aDescriptionBlock.
-			self raw: URLOpenerDelimiter.
+			self raw: URLOpenerMarkup.
 			self raw: aString.
 			self raw: Character space.
 			"self raw: parserClass argumentListOfFigureStartDelimiter."
 			self rawParameters: anOrderedDictionary.
-			self raw: URLCloserDelimiter ]
+			self raw: URLCloserMarkup ]
 ]
 
 { #category : #accessing }
@@ -293,16 +293,16 @@ MicMicrodownTextualBuilder >> inputfile: aPathString [
 MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 
 		writeText: aLabel 
-		surroundBy: AnchorReferenceOpenerDelimiter
-		and: AnchorReferenceCloserDelimiter
+		surroundBy: AnchorReferenceOpenerMarkup
+		and: AnchorReferenceCloserMarkup
 	
 ]
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> italic: aBlock [
-	self raw: ItalicDelimiter.
+	self raw: ItalicMarkup.
 	aBlock value.
-	self raw: ItalicDelimiter
+	self raw: ItalicMarkup
 ]
 
 { #category : #'element - list' }
@@ -493,9 +493,9 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 { #category : #'element - figure' }
 MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 
-	self raw: FigureNameOpenerDelimiter.
+	self raw: FigureNameOpenerMarkup.
 	aBlock value.
-	self raw: LinkNameCloserDelimiter
+	self raw: LinkNameCloserMarkup
 ]
 
 { #category : #'element - format' }
@@ -566,9 +566,9 @@ MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> strike: aBlock [
-	self raw: StrikeDelimiter.
+	self raw: StrikeMarkup.
 	aBlock value.
-	self raw: StrikeDelimiter.
+	self raw: StrikeMarkup.
 ]
 
 { #category : #'element - list' }

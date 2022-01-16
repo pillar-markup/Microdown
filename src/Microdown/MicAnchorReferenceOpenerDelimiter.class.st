@@ -28,7 +28,7 @@ MicAnchorReferenceOpenerDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicAnchorReferenceOpenerDelimiter class >> markup [
-	^ AnchorReferenceOpenerDelimiter
+	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : #accessing }

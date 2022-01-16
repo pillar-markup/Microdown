@@ -24,7 +24,7 @@ MicRawOpenerDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicRawOpenerDelimiter class >> markup [
-	^ RawOpenerDelimiter
+	^ RawOpenerMarkup
 ]
 
 { #category : #accessing }

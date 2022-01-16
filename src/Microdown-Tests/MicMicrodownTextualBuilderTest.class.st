@@ -46,7 +46,7 @@ MicMicrodownTextualBuilderTest >> testAnchorReference [
 
 	self 
 		assert: (builder anchorReference: 'AnchorReference') contents 
-		equals: AnchorReferenceOpenerDelimiter, 'AnchorReference', AnchorReferenceCloserDelimiter
+		equals: AnchorReferenceOpenerMarkup, 'AnchorReference', AnchorReferenceCloserMarkup
 ]
 
 { #category : #'tests - anchor' }

@@ -29,7 +29,7 @@ MicURLCloserDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicURLCloserDelimiter class >> markup [
-	^ URLCloserDelimiter
+	^ URLCloserMarkup
 ]
 
 { #category : #accessing }

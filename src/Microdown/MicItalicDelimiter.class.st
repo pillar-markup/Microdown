@@ -24,7 +24,7 @@ MicItalicDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicItalicDelimiter class >> markup [
-	^ ItalicDelimiter
+	^ ItalicMarkup
 ]
 
 { #category : #accessing }

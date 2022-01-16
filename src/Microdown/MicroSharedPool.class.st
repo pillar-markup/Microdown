@@ -6,40 +6,40 @@ Class {
 	#superclass : #SharedPool,
 	#classVars : [
 		'AnchorMarkup',
-		'AnchorReferenceCloserDelimiter',
-		'AnchorReferenceOpenerDelimiter',
+		'AnchorReferenceCloserMarkup',
+		'AnchorReferenceOpenerMarkup',
 		'AnnotatedParagraphMarkup',
-		'AnnotationCloserDelimiter',
-		'AnnotationOpenerDelimiter',
+		'AnnotationCloserMarkup',
+		'AnnotationOpenerMarkup',
 		'ArgumentListDelimiter',
 		'ArgumentListEqualsDelimiter',
 		'ArgumentListOfFigureStartDelimiter',
 		'ArgumentListStartDelimiter',
-		'BoldDelimiter',
+		'BoldMarkup',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
-		'FigureNameOpenerDelimiter',
+		'FigureNameOpenerMarkup',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
-		'ItalicDelimiter',
-		'LinkNameCloserDelimiter',
-		'LinkNameOpenerDelimiter',
+		'ItalicMarkup',
+		'LinkNameCloserMarkup',
+		'LinkNameOpenerMarkup',
 		'MathClosingBlockMarkup',
-		'MathDelimiter',
+		'MathMarkup',
 		'MathOpeningBlockMarkup',
 		'MetaDataClosingBlockMarkup',
 		'MetaDataOpeningBlockMarkup',
-		'MonospaceDelimiter',
+		'MonospaceMarkup',
 		'OrderedListSemiMarkup',
 		'PreformattedMarkup',
-		'RawCloserDelimiter',
-		'RawOpenerDelimiter',
-		'StrikeDelimiter',
+		'RawCloserMarkup',
+		'RawOpenerMarkup',
+		'StrikeMarkup',
 		'TableCellMarkup',
-		'URLCloserDelimiter',
-		'URLOpenerDelimiter',
+		'URLCloserMarkup',
+		'URLOpenerMarkup',
 		'UnorderedListMarkup',
 		'UnorderedListPlusMarkup',
 		'UnorderedListStarMarkup'
@@ -76,24 +76,24 @@ MicroSharedPool class >> initialize [
 	ArgumentListStartDelimiter := '|'.
 	
 	
-	AnchorReferenceCloserDelimiter := '@*'.
-	AnchorReferenceOpenerDelimiter := '*@'. 
+	AnchorReferenceCloserMarkup := '@*'.
+	AnchorReferenceOpenerMarkup := '*@'. 
 	
-	AnnotationCloserDelimiter := '}?'. 
-	AnnotationOpenerDelimiter := '?{'.
+	AnnotationCloserMarkup := '}?'. 
+	AnnotationOpenerMarkup := '?{'.
 
-	BoldDelimiter := '**'. 
-	FigureNameOpenerDelimiter := '!['. 
-	ItalicDelimiter := '_'. 
-	LinkNameCloserDelimiter := ']'. 
-	LinkNameOpenerDelimiter := '['.  
-	MathDelimiter := '$'. 
-	MonospaceDelimiter := '`'. 
-	RawCloserDelimiter := '}}'. 
-	RawOpenerDelimiter := '{{'. 
-	StrikeDelimiter := '~'. 
-	URLCloserDelimiter := ')'. 
-	URLOpenerDelimiter := '('. 
+	BoldMarkup := '**'. 
+	FigureNameOpenerMarkup := '!['. 
+	ItalicMarkup := '_'. 
+	LinkNameCloserMarkup := ']'. 
+	LinkNameOpenerMarkup := '['.  
+	MathMarkup := '$'. 
+	MonospaceMarkup := '`'. 
+	RawCloserMarkup := '}}'. 
+	RawOpenerMarkup := '{{'. 
+	StrikeMarkup := '~'. 
+	URLCloserMarkup := ')'. 
+	URLOpenerMarkup := '('. 
 
 	
 	
