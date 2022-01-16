@@ -58,7 +58,7 @@ MicTextualMicrodownExporter >> inList [
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
 	stream := (String new: 10000) writeStream.
-	builder := MicroDownParser builder.
+	builder := Microdown builder.
 	builder setStream: stream.
 	builder setNewLineCharacterString: String cr.
 	inList := false
