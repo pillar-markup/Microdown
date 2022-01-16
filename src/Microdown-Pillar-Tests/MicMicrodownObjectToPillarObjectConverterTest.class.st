@@ -1,5 +1,5 @@
 Class {
-	#name : #MicConverterVisitorTest,
+	#name : #MicMicrodownObjectToPillarObjectConverterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'pillarDocument',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #parsing }
-MicConverterVisitorTest >> parse: sample createChildElementOfClass: aClass [
+MicMicrodownObjectToPillarObjectConverterTest >> parse: sample createChildElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
 	parser := self parserClass new. 
@@ -21,7 +21,7 @@ MicConverterVisitorTest >> parse: sample createChildElementOfClass: aClass [
 ]
 
 { #category : #parsing }
-MicConverterVisitorTest >> parse: sample createChildSecondElementOfClass: aClass [
+MicMicrodownObjectToPillarObjectConverterTest >> parse: sample createChildSecondElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
 	parser := self parserClass new. 
@@ -32,7 +32,7 @@ MicConverterVisitorTest >> parse: sample createChildSecondElementOfClass: aClass
 ]
 
 { #category : #parsing }
-MicConverterVisitorTest >> parse: sample createElementOfClass: aClass [
+MicMicrodownObjectToPillarObjectConverterTest >> parse: sample createElementOfClass: aClass [
 
 	| parser micDoc pillarDoc |
 	parser := self parserClass new. 
@@ -43,44 +43,44 @@ MicConverterVisitorTest >> parse: sample createElementOfClass: aClass [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> parserClass [
+MicMicrodownObjectToPillarObjectConverterTest >> parserClass [
 	^ Microdown
 ]
 
 { #category : #running }
-MicConverterVisitorTest >> setUp [
+MicMicrodownObjectToPillarObjectConverterTest >> setUp [
  	super setUp.
- 	visitor := MicPillarConverter new.
+ 	visitor := MicMicrodownObjectToPillarObjectConverter new.
 	factory := MicMicrodownSnippetFactory new.
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testAnchorBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testAnchorBlock [
 	self parse: factory anchorSample createElementOfClass: PRAnchor
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testAnchorReference [
+MicMicrodownObjectToPillarObjectConverterTest >> testAnchorReference [
 	self parse: factory anchorReferenceSample createChildElementOfClass: PRInternalLink
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testAnnotated [
+MicMicrodownObjectToPillarObjectConverterTest >> testAnnotated [
 	self parse: factory annotatedSample createElementOfClass: PRAnnotatedParagraph
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testAnnotation [
+MicMicrodownObjectToPillarObjectConverterTest >> testAnnotation [
 	self parse: factory annotationSample createChildSecondElementOfClass: PRUndefinedAnnotation
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testBoldFormat [
+MicMicrodownObjectToPillarObjectConverterTest >> testBoldFormat [
 	self parse: factory boldFormatSample createChildElementOfClass: PRBoldFormat
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testBoldFormatEmpty [
+MicMicrodownObjectToPillarObjectConverterTest >> testBoldFormatEmpty [
 	| boldBlock |
 	self skip.
 	self flag: #fixme.
@@ -90,13 +90,13 @@ MicConverterVisitorTest >> testBoldFormatEmpty [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testCodeBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testCodeBlock [
 	self parse: (factory codeblock: 'language=pharo' body: '1-2 ') createElementOfClass: PRCodeblock
 
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testCodeInText [
+MicMicrodownObjectToPillarObjectConverterTest >> testCodeInText [
 
 	| document |
 	document := self parserClass new parse: 'The method `foo` is fun'.
@@ -108,87 +108,87 @@ MicConverterVisitorTest >> testCodeInText [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testComment [
+MicMicrodownObjectToPillarObjectConverterTest >> testComment [
 	self parse: factory commentSample createElementOfClass: PRCommentedLine
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testEnvironmentBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testEnvironmentBlock [
 
 	self parse: factory environmentSample createElementOfClass: PREnvironment
 	
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testFigure [
+MicMicrodownObjectToPillarObjectConverterTest >> testFigure [
 	self parse: factory figureSample createChildElementOfClass: PRFigure
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testHeader [ 
+MicMicrodownObjectToPillarObjectConverterTest >> testHeader [ 
 	self parse: factory headerLevel3Sample createElementOfClass: PRHeader
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testHorizontalLineBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testHorizontalLineBlock [
 	self parse: factory horizontalLineSample createElementOfClass: PRHorizontalRule
 	
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testItalicFormat [
+MicMicrodownObjectToPillarObjectConverterTest >> testItalicFormat [
 	self parse: factory italicFormatSample createChildElementOfClass: PRItalicFormat
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testItalicFormatEmpty [
+MicMicrodownObjectToPillarObjectConverterTest >> testItalicFormatEmpty [
 	| italicBlock |
 	italicBlock := self parse: factory italicFormatEmptySample createChildElementOfClass: PRItalicFormat.
 	self assert: italicBlock text equals: ''
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testLink [
+MicMicrodownObjectToPillarObjectConverterTest >> testLink [
 	self parse: factory linkSample createChildElementOfClass: PRExternalLink
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testListItem [
+MicMicrodownObjectToPillarObjectConverterTest >> testListItem [
 	self parse: factory listMultiSample createChildElementOfClass: PRListItem
 	
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testMathBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testMathBlock [
 	self parse: factory mathParametersSample createElementOfClass: PRMathEnvironment
 	
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testMathInline [
+MicMicrodownObjectToPillarObjectConverterTest >> testMathInline [
 	self parse: factory mathInlineSample createChildElementOfClass: PRMathInTextAnnotation
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testMetaDataBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testMetaDataBlock [
 	self parse: factory metaDataSample createElementOfClass: PRMetadata
 	
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testMonospaceFormat [
+MicMicrodownObjectToPillarObjectConverterTest >> testMonospaceFormat [
 	self parse: factory monospaceFormatSample createChildElementOfClass: PRMonospaceFormat
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testMonospaceFormatEmpty [
+MicMicrodownObjectToPillarObjectConverterTest >> testMonospaceFormatEmpty [
 	| monospaceBloc |
 	monospaceBloc := self parse: factory monospaceFormatEmptySample createChildElementOfClass: PRMonospaceFormat.
 	self assert: monospaceBloc text equals: ''
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testNumberedList [
+MicMicrodownObjectToPillarObjectConverterTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 
 		parse: MicMicrodownSnippetFactory new orderedListWithTwoItemsSample).
@@ -203,7 +203,7 @@ MicConverterVisitorTest >> testNumberedList [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testQuoteBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testQuoteBlock [
 	| source root pillarNode |
 	source := '> text1
 >    text2'.
@@ -219,7 +219,7 @@ text2'
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testRawFormat [
+MicMicrodownObjectToPillarObjectConverterTest >> testRawFormat [
 	self skip.
 	self flag: #fixme.
 	"PRRaw don't understand setChildren"
@@ -227,7 +227,7 @@ MicConverterVisitorTest >> testRawFormat [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testRoot [
+MicMicrodownObjectToPillarObjectConverterTest >> testRoot [
 	| source root pillar |
 	source := '####    Level four
 ## Level 2'.
@@ -239,7 +239,7 @@ MicConverterVisitorTest >> testRoot [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testSingleLevelOrderedList2 [
+MicMicrodownObjectToPillarObjectConverterTest >> testSingleLevelOrderedList2 [
 	| source root list |
 	source := '19. item 1
     expanded
@@ -257,7 +257,7 @@ expanded'.
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testSingleLevelUnorderedList2 [
+MicMicrodownObjectToPillarObjectConverterTest >> testSingleLevelUnorderedList2 [
 	| source root list item |
 	source := '- item 1
   expanded
@@ -276,7 +276,7 @@ expanded'
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testSingleParagraphWithIndentedText [
+MicMicrodownObjectToPillarObjectConverterTest >> testSingleParagraphWithIndentedText [
 	| source root expected pillar |
 	source := 'This is
    a paragraph with spaces
@@ -292,31 +292,31 @@ and one with tabs'.
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testStrikethroughFormat [
+MicMicrodownObjectToPillarObjectConverterTest >> testStrikethroughFormat [
 	self parse: factory strikethroughFormatSample createChildElementOfClass: PRStrikethroughFormat
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testStrikethroughFormatEmpty [
+MicMicrodownObjectToPillarObjectConverterTest >> testStrikethroughFormatEmpty [
 	| strikeBlock |
 	strikeBlock := self parse: factory strikethroughFormatEmptySample createChildElementOfClass: PRStrikethroughFormat.
 	self assert: strikeBlock text equals: ''
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testTableBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testTableBlock [
 
 	self parse: factory simpleTable createElementOfClass: PRTable
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testTableFormatBlock [
+MicMicrodownObjectToPillarObjectConverterTest >> testTableFormatBlock [
 
 	self parse: factory simpleTableMoreFormat createElementOfClass: PRTable
 ]
 
 { #category : #'tests-inline blocks' }
-MicConverterVisitorTest >> testText [
+MicMicrodownObjectToPillarObjectConverterTest >> testText [
 	| source root pillar |
 	source := 'Foo'.
 	root := (self parserClass new parse: source) children first children first.
@@ -325,7 +325,7 @@ MicConverterVisitorTest >> testText [
 ]
 
 { #category : #tests }
-MicConverterVisitorTest >> testTwoLevelUnorderedList1 [
+MicMicrodownObjectToPillarObjectConverterTest >> testTwoLevelUnorderedList1 [
 	| source root list secondItem subItem |
 	source := '- item 1
   - sublevel
