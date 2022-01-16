@@ -533,21 +533,20 @@ MicroDownParser >> initialize [
 
 	super initialize.
 	dispatchTable := Dictionary new.
-	"should use a registration with classes, but later"
-	dispatchTable at: self anchorMarkup put: MicAnchorBlock.
-	dispatchTable at: self headerMarkup put: MicHeaderBlock.
-	dispatchTable at: self codeblockMarkup put: MicCodeBlock.
-	dispatchTable at: self annotatedParagraphMarkup put: MicAnnotatedBlock.
-	dispatchTable at: self commentedLineMarkup put: MicCommentBlock.
-	dispatchTable at: self horizontalLineMarkup put: MicHorizontalLineBlock.
-	dispatchTable at: self mathOpeningBlockMarkup put: MicMathBlock.
-	dispatchTable at: self environmentOpeningBlockMarkup put: MicEnvironmentBlock.
-	dispatchTable at: self metaDataOpeningBlockMarkup put: MicMetaDataBlock.
-	dispatchTable at: self unorderedListPlusMarkup put: MicUnorderedListBlock.
-	dispatchTable at: self unorderedListMarkup put: MicUnorderedListBlock.
-	dispatchTable at: self unorderedListStarMarkup put: MicUnorderedListBlock.
-	dispatchTable at: self preformattedMarkup put: MicQuoteBlock.
-	dispatchTable at: self tableCellMarkup put: MicTableBlock.
+	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
+	dispatchTable at: HeaderMarkup put: MicHeaderBlock.
+	dispatchTable at: CodeblockMarkup put: MicCodeBlock.
+	dispatchTable at: AnnotatedParagraphMarkup put: MicAnnotatedBlock.
+	dispatchTable at: CommentedLineMarkup put: MicCommentBlock.
+	dispatchTable at: HorizontalLineMarkup put: MicHorizontalLineBlock.
+	dispatchTable at: MathOpeningBlockMarkup put: MicMathBlock.
+	dispatchTable at: EnvironmentOpeningBlockMarkup put: MicEnvironmentBlock.
+	dispatchTable at: MetaDataOpeningBlockMarkup put: MicMetaDataBlock.
+	dispatchTable at: UnorderedListPlusMarkup put: MicUnorderedListBlock.
+	dispatchTable at: UnorderedListMarkup put: MicUnorderedListBlock.
+	dispatchTable at: UnorderedListStarMarkup put: MicUnorderedListBlock.
+	dispatchTable at: PreformattedMarkup put: MicQuoteBlock.
+	dispatchTable at: TableCellMarkup put: MicTableBlock.
 ]
 
 { #category : #testing }

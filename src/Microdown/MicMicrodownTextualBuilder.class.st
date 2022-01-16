@@ -509,7 +509,7 @@ MicMicrodownTextualBuilder >> rawFormat: aText [
 { #category : #'writing low-level' }
 MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 
-	self raw: (parserClass headerMarkup repeat: anInteger).
+	self raw: (HeaderMarkup repeat: anInteger).
    self raw: String space.
 	self flag: #todo. 
 	"in this future once we are sure no one use header: [:b | b...] but [abuilder ..
