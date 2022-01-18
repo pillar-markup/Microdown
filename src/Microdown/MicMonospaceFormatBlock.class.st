@@ -25,7 +25,7 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 { #category : #internal }
 MicMonospaceFormatBlock >> closingDelimiter [
 
- 	^ MicMonospaceDelimiter markup
+ 	^ MonospaceMarkup
 ]
 
 { #category : #accessing }
@@ -36,5 +36,5 @@ MicMonospaceFormatBlock >> kind [
 { #category : #internal }
 MicMonospaceFormatBlock >> openingDelimiter [
 
- 	^ MicMonospaceDelimiter markup
+ 	^ MonospaceMarkup
 ]

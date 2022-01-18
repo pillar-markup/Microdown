@@ -15,7 +15,7 @@ MicBoldFormatBlock >> accept: aVisitor [
 { #category : #utilities }
 MicBoldFormatBlock >> closingDelimiter [
 
- 	^ MicBoldDelimiter markup
+ 	^ BoldMarkup
 ]
 
 { #category : #utilities }
@@ -26,5 +26,5 @@ MicBoldFormatBlock >> kind [
 { #category : #utilities }
 MicBoldFormatBlock >> openingDelimiter [
 
- 	^ MicBoldDelimiter markup
+ 	^ BoldMarkup
 ]

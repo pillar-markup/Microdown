@@ -28,7 +28,7 @@ MicAnchorReferenceBlock >> accept: aVisitor [
 { #category : #visiting }
 MicAnchorReferenceBlock >> closingDelimiter [
 
- 	^ MicAnchorReferenceCloserDelimiter markup
+ 	^ AnchorReferenceCloserMarkup
 ]
 
 { #category : #initialization }
@@ -40,7 +40,7 @@ MicAnchorReferenceBlock >> kind [
 { #category : #visiting }
 MicAnchorReferenceBlock >> openingDelimiter [
 
- 	^ MicAnchorReferenceOpenerDelimiter markup
+ 	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : #accessing }

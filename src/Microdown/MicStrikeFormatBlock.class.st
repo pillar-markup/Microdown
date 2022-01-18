@@ -26,5 +26,5 @@ MicStrikeFormatBlock >> kind [
 { #category : #accessing }
 MicStrikeFormatBlock >> openingDelimiter [
 
- 	^ MicStrikeDelimiter markup
+ 	^ StrikeMarkup
 ]

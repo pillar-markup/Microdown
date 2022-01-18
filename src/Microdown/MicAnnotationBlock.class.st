@@ -74,7 +74,7 @@ MicAnnotationBlock >> closeMe [
 { #category : #accessing }
 MicAnnotationBlock >> closingDelimiter [
 
- 	^ MicAnnotationCloserDelimiter markup
+ 	^ AnnotationCloserMarkup
 ]
 
 { #category : #initialization }
@@ -102,7 +102,7 @@ MicAnnotationBlock >> name: aName [
 { #category : #accessing }
 MicAnnotationBlock >> openingDelimiter [
 
- 	^ MicAnnotationOpenerDelimiter markup
+ 	^ AnnotationOpenerMarkup
 ]
 
 { #category : #accessing }

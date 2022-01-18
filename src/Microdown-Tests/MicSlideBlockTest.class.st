@@ -33,3 +33,8 @@ MicSlideBlockTest >> testSlideBlocIsParsed [
 ?>'.
 	self assert: doc children first class equals: MicSlideBlock
 ]
+
+{ #category : #tests }
+MicSlideBlockTest >> testedClass [ 
+	^ MicSlideBlock 
+]
