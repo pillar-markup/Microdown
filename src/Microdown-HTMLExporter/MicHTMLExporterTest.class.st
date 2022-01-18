@@ -63,7 +63,8 @@ ab
 foo bar
 ```') children first.
 	writer visit: doc.
-	self assert: writer contents equals: '<pre><code>ab
+	self assert: writer contents equals: '
+<pre><code>ab
 foo bar</code></pre>
 '
 ]
