@@ -1,3 +1,12 @@
+"
+A citation is an inline element that represents a bibliography reference as in LaTeX for example.
+The bibliography will be able to extract its entries from the reference in the citation.
+
+```
+this is a text with a ?{citation|ref=Duca99a}?
+```
+
+"
 Class {
 	#name : #MicCitationBlock,
 	#superclass : #MicAnnotationBlock,
@@ -17,6 +26,5 @@ MicCitationBlock >> accept: aVisitor [
 
 { #category : #accessing }
 MicCitationBlock >> ref [
-	^ arguments at: 'ref' 
-		ifAbsent: [ ^ '' ]
+	^ arguments at: 'ref' ifAbsent: [ '' ]
 ]
