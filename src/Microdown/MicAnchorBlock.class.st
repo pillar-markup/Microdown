@@ -10,7 +10,8 @@ Class {
 	#name : #MicAnchorBlock,
 	#superclass : #MicSingleLineBlock,
 	#instVars : [
-		'label'
+		'label',
+		'target'
 	],
 	#category : #'Microdown-Model'
 }
@@ -43,4 +44,14 @@ MicAnchorBlock >> label [
 { #category : #accessing }
 MicAnchorBlock >> label: anObject [
 	label := anObject
+]
+
+{ #category : #accessing }
+MicAnchorBlock >> target [
+	^ target
+]
+
+{ #category : #accessing }
+MicAnchorBlock >> target: aMicHeaderBlock [ 
+	target := aMicHeaderBlock
 ]

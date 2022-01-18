@@ -1,3 +1,7 @@
+"
+A first version of an HTML writer. 
+We should rewrite it once the templatedWriter is working.
+"
 Class {
 	#name : #MicHTMLWriter,
 	#superclass : #MicrodownVisitor,
@@ -60,6 +64,12 @@ MicHTMLWriter >> initialize [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> isSyntaxHighlightingPossible [
+
+	^ true
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> languageForScript: aScript [
 
 	^ aScript language isSpecified
@@ -75,6 +85,12 @@ MicHTMLWriter >> usedNewLine [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> visitAnchor: anAnchor [
+
+	self createAnchorWith: anAnchor label 
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> visitBold: aBoldText [
 
 	canvas tag
@@ -83,30 +99,28 @@ MicHTMLWriter >> visitBold: aBoldText [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitCodeblock: aCodeBlock [
+MicHTMLWriter >> visitCode: aCodeBlock [
 
+	canvas newLine.
 	canvas tag
-		name: 'figure';
-		with: [ 
-			canvas tag
 				name: 'pre';
 				with: [ 
-					| code language |
+					| code |
 					code := canvas tag
 						        name: 'code';
 						        yourself.
-					language := self languageForScript: aCodeBlock.
+					"language := self languageForScript: aCodeBlock.
 					language isSyntaxHighlightingPossible ifTrue: [ 
-						code parameterAt: 'class' put: language printString ].
-					code with: [ canvas lines: aCodeBlock text ] ].
-			canvas tag
+						code parameterAt: 'class' put: language printString ]."
+					code with: [ canvas lines: aCodeBlock body ] ].
+			"canvas tag
 				name: 'figcaption';
 				with: [ 
 					aCodeBlock hasLabel ifTrue: [ 
 							self createAnchorWith: aCodeBlock label.
 							self writeCounterForScript: aCodeBlock ].
 					aCodeBlock hasCaption ifTrue: [ 
-							self visitAll: aCodeBlock caption children ] ] ].
+							self visitAll: aCodeBlock caption children ] ]" .
 	canvas newLine
 ]
 
@@ -127,11 +141,11 @@ MicHTMLWriter >> visitHeader: aHeader [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitItalic: aBoldText [
+MicHTMLWriter >> visitItalic: aItalicText [
 
 	canvas tag
 		name: 'em';
-		with: [ super visitItalic: aBoldText ]
+		with: [ super visitItalic: aItalicText ]
 ]
 
 { #category : #visiting }

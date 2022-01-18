@@ -6,7 +6,8 @@ Class {
 
 { #category : #tag }
 MicHTMLTag >> closeTag [
-	stream << '>'
+
+	stream << '/>'
 ]
 
 { #category : #accessing }

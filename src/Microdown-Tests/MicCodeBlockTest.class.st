@@ -80,7 +80,7 @@ is really cool'.
 	self deny: (root children first canConsumeLine: 'plain text')
 ]
 
-{ #category : #tests }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testCaption [
 
 	| codeBlock |
@@ -480,7 +480,7 @@ is really cool'.
 	
 ]
 
-{ #category : #'tests - arguments' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testSetLabel [
 
 	| codeBlock |

@@ -140,6 +140,13 @@ MicMicrodownSnippetFactory >> boldFormatSample [
 ]
 
 { #category : #'code block' }
+MicMicrodownSnippetFactory >> codeBlockSample [
+	^ '
+```ab```
+'
+]
+
+{ #category : #'code block' }
 MicMicrodownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
@@ -241,6 +248,14 @@ MicMicrodownSnippetFactory >> figureBoldSample [
 '
 ]
 
+{ #category : #figures }
+MicMicrodownSnippetFactory >> figureGoutDeFraise [
+	^ '
+
+![Proposition pour le thème : _Un goût de fraise_](un-gout-de-fraise.jpg)
+'
+]
+
 { #category : #format }
 MicMicrodownSnippetFactory >> figureItalicSample [
 
@@ -268,7 +283,7 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 '
 ]
 
-{ #category : #format }
+{ #category : #figures }
 MicMicrodownSnippetFactory >> figureRealSample [
 
 	^ '
@@ -291,6 +306,24 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 	^ '
 
 ![~Foo~](/anUrl label=figureTest&size=80)
+'
+]
+
+{ #category : #figures }
+MicMicrodownSnippetFactory >> figureWithLabelWithoutSizeSample [
+
+	^ '
+
+![Foo](/anUrl label=figureTest)
+'
+]
+
+{ #category : #figures }
+MicMicrodownSnippetFactory >> figureWithoutCaptionSample [
+
+	^ '
+
+![](/anUrl label=figureTest&size=80)
 '
 ]
 
@@ -736,6 +769,14 @@ MicMicrodownSnippetFactory >> quoteSample [
 	^ '>  Foo'
 ]
 
+{ #category : #figures }
+MicMicrodownSnippetFactory >> rawFormatInline [
+
+	^ '
+a{{_$Foo_}}b
+'
+]
+
 { #category : #format }
 MicMicrodownSnippetFactory >> rawFormatSample [
 	^ '
@@ -743,7 +784,7 @@ a{{Foo}}b
 '
 ]
 
-{ #category : #format }
+{ #category : #figures }
 MicMicrodownSnippetFactory >> realLinkSample [
 	^ '
 [The Pharo Project](http://www.pharo.org)
