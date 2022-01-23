@@ -262,7 +262,7 @@ MicH5PWriterTest >> creditSlide [
          }'
 ]
 
-{ #category : #tests }
+{ #category : #actions }
 MicH5PWriterTest >> fillTemplateWithVariables [
 	"self new fillTemplateWithVariables"
 	
@@ -273,7 +273,22 @@ MicH5PWriterTest >> fillTemplateWithVariables [
 						'SHORTTITLEVARIABLE' -> 'OOD&Pharo'.
 						'SLIDETITLEVARIABLE' -> 'Getting started with Design' .
 						'SHORTSLIDETITLEVARIABLE' -> 'Getting started' .
+						'SLIDES' -> self fillUpOneSlide
 						}) asDictionary.
+]
+
+{ #category : #'working templates with parameters' }
+MicH5PWriterTest >> fillUpOneSlide [
+	"self new fillUpOneSlide"
+	
+	^ self slideTemplate asMustacheTemplate 
+			value: ({ 
+						'SLIDETITLEVARIABLE' -> 'Getting started with Design' .
+						'SHORTSLIDETITLEVARIABLE' -> 'Getting started' .
+						'SINGLESLIDEBODY' -> 'La peur est la petite mort qui conduit a l''oblitération totale. Je ne connaitrais pas la peur...'
+						}) asDictionary.
+
+	
 ]
 
 { #category : #'working templates' }
@@ -3889,6 +3904,7 @@ MicH5PWriterTest >> fullTemplateString5 [
 
 { #category : #'working templates with parameters' }
 MicH5PWriterTest >> fullTemplateStringParam [
+	"with slides and credit variables."
  ^ '{
    "presentation":{
       "slides":[
@@ -4074,172 +4090,8 @@ MicH5PWriterTest >> fullTemplateStringParam [
             ],
             "slideBackgroundSelector":{ }
          },
-         {
-            "elements":[
-               {
-                  "x":6.5359477124183005,
-                  "y":19.365916847056596,
-                  "width":37.037037037037,
-                  "height":73.160071277275,
-                  "action":{
-                     "library":"H5P.AdvancedText 1.1",
-                     "params":{
-                        "text":"<ul>\n\t<li><span style=\"font-size:1.125em\">Cool</span></li>\n\t<li><span style=\"font-size:1.125em\">Nice</span></li>\n\t<li><span style=\"font-size:1.125em\">Super</span></li>\n\t<li><span style=\"font-size:1.125em\">Hyper language</span></li>\n</ul>\n"
-                     },
-                     "metadata":{
-                        "contentType":"Text",
-                        "license":"U",
-                        "title":"Untitled Text",
-                        "authors":[ ],
-                        "changes":[ ]
-                     }
-                  },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               },
-               {
-                  "x":2.178649237472767,
-                  "y":2.151768538561844,
-                  "width":95.86056644880175,
-                  "height":17.214148308494753,
-                  "action":{
-                     "library":"H5P.AdvancedText 1.1",
-                     "params":{
-                        "text":"<h2>{{{SLIDETITLEVARIABLE}}}</h2>\n" 
-                      },
-                     "metadata":{
-                        "contentType":"Text",
-                        "license":"U",
-                        "title":"Untitled Text",
-                        "authors":[ ],
-                        "changes":[ ]
-                     }
-                  },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               }
-            ],
-            "slideBackgroundSelector":{ },
-            "keywords":[
-               {
-                  "main":"{{{SHORTSLIDETITLEVARIABLE}}}"
-               }
-            ]
-         },
-         {
-            "elements":[
-               {
-                  "x":2.178649237472767,
-                  "y":2.151768538561844,
-                  "width":95.86056644880175,
-                  "height":10.758842692809221,
-                  "action":{
-                     "library":"H5P.AdvancedText 1.1",
-                     "params":{
-                        "text":"<h2>Doing Manual Title....</h2>\n"
-                     },
-                     "metadata":{
-                        "contentType":"Text",
-                        "license":"U",
-                        "title":"Untitled Text",
-                        "authors":[ ],
-                        "changes":[ ]
-                     }
-                  },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               },
-               {
-                  "x":4.3572984749455,
-                  "y":19.365901220455,
-                  "width":82.788671023965,
-                  "height":51.642403254547,
-                  "action":{
-                     "library":"H5P.AdvancedText 1.1",
-                     "params":{
-                        "text":"<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: ''sec123''.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: ''sec123''\n</pre>\n"
-                     },
-                     "subContentId":"4f8b5f81-40ee-4bdd-9fa6-935c850f9da0",
-                     "metadata":{
-                        "contentType":"Text",
-                        "license":"U",
-                        "title":"Untitled Text",
-                        "authors":[ ],
-                        "changes":[ ]
-                     }
-                  },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               }
-            ],
-            "slideBackgroundSelector":{
-               
-            },
-            "keywords":[
-               {
-                  "main":"Code"
-               }
-            ]
-         },
-         {
-            "elements":[
-               {
-                  "x":30.000680827887,
-                  "y":30.000336213563,
-                  "width":40,
-                  "height":40,
-                  "action":{
-                     "library":"H5P.Link 1.3",
-                     "params":{
-                        "linkWidget":{
-                           "protocol":"http://",
-                           "url":"www.pharo.org"
-                        },
-                        "title":"What a great link"
-                     },
-                     "metadata":{
-                        "contentType":"Link",
-                        "license":"U"
-                     }
-                  },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               }
-            ],
-            "slideBackgroundSelector":{
-               
-            },
-            "keywords":[
-               {
-                  "main":"Link"
-               }
-            ]
-         },
+         {{{SLIDES}}}
+         ,
          {{{CREDITSLIDE}}}
       ],
       "keywordListEnabled":true,
@@ -4758,6 +4610,345 @@ MicH5PWriterTest >> fullTemplateStringParam2 [
 }'
 ]
 
+{ #category : #'working templates with parameters' }
+MicH5PWriterTest >> fullTemplateStringParam3 [
+	"with slides and credit variables."
+ ^ '{
+   "presentation":{
+      "slides":[
+         {
+            "elements":[
+               {
+                  "x":8.714596949891067,
+                  "y":25.821222462742128,
+                  "width":81.69934640522877,
+                  "height":27.972991001303974,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p><span style=\"font-size:1.5em\">{{{TITLEVARIABLE}}}</span></p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":86.35110294117648,
+                  "y":71.00836177254085,
+                  "width":13.648910675381265,
+                  "height":26.954343775148796,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-b8lco9r6.png",
+                           "mime":"image/png",
+                           "copyright":{"license":"U"},
+                           "width":256,
+                           "height":256
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":16.051364365971107,
+                  "y":60.24268289202926,
+                  "width":40.30501089324619,
+                  "height":12.910611231371064,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>{{{AUTHORVARIABLE}}}</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":88.22251008103561,
+                  "width":14.161220043572985,
+                  "height":9.783833332616078,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-FLYhoyME.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":403,
+                           "height":141
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":4.303537077123688,
+                  "width":93.68191721132898,
+                  "height":8.607074154247377,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>Advanced object-oriented design explained with Pharo</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":70.80610021786492,
+                  "y":92.5260471581593,
+                  "width":19.607843137254903,
+                  "height":6.455305615685532,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>http://www.pharo.org</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "keywords":[
+               {
+                  "main":"{{{SHORTTITLEVARIABLE}}}"
+               }
+            ],
+            "slideBackgroundSelector":{ }
+         },
+         {{{SLIDES}}}
+         ,
+         {{{CREDITSLIDE}}}
+      ],
+      "keywordListEnabled":true,
+      "globalBackgroundSelector":{
+         
+      },
+      "keywordListAlwaysShow":false,
+      "keywordListAutoHide":false,
+      "keywordListOpacity":100
+   },
+   "override":{
+      "activeSurface":false,
+      "hideSummarySlide":false,
+      "summarySlideSolutionButton":true,
+      "summarySlideRetryButton":true,
+      "enablePrintButton":false,
+      "social":{
+         "showFacebookShare":false,
+         "facebookShare":{
+            "url":"@currentpageurl",
+            "quote":"I scored @score out of @maxScore on a task at @currentpageurl."
+         },
+         "showTwitterShare":false,
+         "twitterShare":{
+            "statement":"I scored @score out of @maxScore on a task at @currentpageurl.",
+            "url":"@currentpageurl",
+            "hashtags":"h5p, course"
+         },
+         "showGoogleShare":false,
+         "googleShareUrl":"@currentpageurl"
+      }
+   },
+   "l10n":{
+      "slide":"Slide",
+      "score":"Score",
+      "yourScore":"Your Score",
+      "maxScore":"Max Score",
+      "total":"Total",
+      "totalScore":"Total Score",
+      "showSolutions":"Show solutions",
+      "retry":"Retry",
+      "exportAnswers":"Export text",
+      "hideKeywords":"Hide sidebar navigation menu",
+      "showKeywords":"Show sidebar navigation menu",
+      "fullscreen":"Fullscreen",
+      "exitFullscreen":"Exit fullscreen",
+      "prevSlide":"Previous slide",
+      "nextSlide":"Next slide",
+      "currentSlide":"Current slide",
+      "lastSlide":"Last slide",
+      "solutionModeTitle":"Exit solution mode",
+      "solutionModeText":"Solution Mode",
+      "summaryMultipleTaskText":"Multiple tasks",
+      "scoreMessage":"You achieved:",
+      "shareFacebook":"Share on Facebook",
+      "shareTwitter":"Share on Twitter",
+      "shareGoogle":"Share on Google+",
+      "summary":"Summary",
+      "solutionsButtonTitle":"Show comments",
+      "printTitle":"Print",
+      "printIngress":"How would you like to print this presentation?",
+      "printAllSlides":"Print all slides",
+      "printCurrentSlide":"Print current slide",
+      "noTitle":"No title",
+      "accessibilitySlideNavigationExplanation":"Use left and right arrow to change slide in that direction whenever canvas is selected.",
+      "accessibilityCanvasLabel":"Presentation canvas. Use left and right arrow to move between slides.",
+      "containsNotCompleted":"@slideName contains not completed interaction",
+      "containsCompleted":"@slideName contains completed interaction",
+      "slideCount":"Slide @index of @total",
+      "containsOnlyCorrect":"@slideName only has correct answers",
+      "containsIncorrectAnswers":"@slideName has incorrect answers",
+      "shareResult":"Share Result",
+      "accessibilityTotalScore":"You got @score of @maxScore points in total",
+      "accessibilityEnteredFullscreen":"Entered fullscreen",
+      "accessibilityExitedFullscreen":"Exited fullscreen",
+      "confirmDialogHeader":"Submit your answers",
+      "confirmDialogText":"This will submit your results, do you want to continue?",
+      "confirmDialogConfirmText":"Submit and see results"
+   }
+}'
+]
+
+{ #category : #'working templates with parameters' }
+MicH5PWriterTest >> slideTemplate [
+
+	^ '{
+            "elements":[
+               {
+                  "x":6.5359477124183005,
+                  "y":19.365916847056596,
+                  "width":37.037037037037,
+                  "height":73.160071277275,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"{{{SINGLESLIDEBODY}}}"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":2.151768538561844,
+                  "width":95.86056644880175,
+                  "height":17.214148308494753,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<h2>{{{SLIDETITLEVARIABLE}}}</h2>\n" 
+                      },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "slideBackgroundSelector":{ },
+            "keywords":[
+               {
+                  "main":"{{{SHORTSLIDETITLEVARIABLE}}}"
+               }
+            ]
+         }'
+]
+
 { #category : #tests }
 MicH5PWriterTest >> testAssembleFirstSlide [
 
@@ -4798,7 +4989,7 @@ MicH5PWriterTest >> testSlides [
 ?>'
 ]
 
-{ #category : #tests }
+{ #category : #actions }
 MicH5PWriterTest >> writeContentJSONOnDisk [
 	"self new writeContentJSONOnDisk"
 	
