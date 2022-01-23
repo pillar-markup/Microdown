@@ -34,6 +34,256 @@ MicH5PWriterTest >> assemblingFirstSlide [
 ]
 
 { #category : #tests }
+MicH5PWriterTest >> creditSlide [
+
+	^ '{
+            "elements":[
+               {
+                  "x":57.734204793028326,
+                  "y":83.91897300391192,
+                  "width":18.51851851851852,
+                  "height":13.21319292326363,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-wFbeHf6p.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":227,
+                           "height":82
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":26.143790849673202,
+                  "y":81.76720446535008,
+                  "width":10.893246187363834,
+                  "height":13.448553366011526,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-9vO0XU26.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":160,
+                           "height":100
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":42.48366013071895,
+                  "y":81.76720446535008,
+                  "width":9.803921568627452,
+                  "height":13.39475915254748,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-oZNS16yO.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":133,
+                           "height":92
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":80.61002178649238,
+                  "y":83.91897300391192,
+                  "width":17.429193899782135,
+                  "height":13.646924907581543,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-TyojgW30.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":222,
+                           "height":88
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":1.0893246187363834,
+                  "y":81.76720446535008,
+                  "width":19.607843137254903,
+                  "height":13.949506599474109,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-MHF07lsl.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":472,
+                           "height":170
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes": [ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":37.03703703703704,
+                  "y":62.40128761829348,
+                  "width":18.51851851851852,
+                  "height":12.796309286602659,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-kyGO23Dp.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":403,
+                           "height":141
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":19.607843137254903,
+                  "y":30.124759539865817,
+                  "width":55.55555555555556,
+                  "height":39.999440540179975,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p style=\"text-align:center\"><span style=\"font-size:1.375em\">S. Ducasse, L. Fabresse, G. Polito, P. Tesone </span></p>\n\n<p style=\"text-align:center\"><span style=\"font-size:1.125em\">Copyright 2022</span></p>\n\n<p> </p>\n"
+                     },
+                     "subContentId":"a5116483-6063-4cf8-8155-dd08bd8526b0",
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "slideBackgroundSelector":{ },
+            "keywords":[
+               { "main":"Credits/License" }
+            ]
+         }'
+]
+
+{ #category : #tests }
 MicH5PWriterTest >> fullTemplateString [ 
  ^ '{
    "presentation":{
@@ -512,7 +762,6 @@ MicH5PWriterTest >> fullTemplateString [
                            "height":88
                         }
                      },
-                     "subContentId":"fee02c70-37b2-4615-a13a-84b397cf0e41",
                      "metadata":{
                         "contentType":"Image",
                         "license":"U",
@@ -609,7 +858,6 @@ MicH5PWriterTest >> fullTemplateString [
                      "params":{
                         "text":"<p style=\"text-align:center\"><span style=\"font-size:1.375em\">S. Ducasse, L. Fabresse, G. Polito, P. Tesone </span></p>\n\n<p style=\"text-align:center\"><span style=\"font-size:1.125em\">Copyright 2022</span></p>\n\n<p> </p>\n"
                      },
-                     "subContentId":"a5116483-6063-4cf8-8155-dd08bd8526b0",
                      "metadata":{
                         "contentType":"Text",
                         "license":"U",
@@ -3565,6 +3813,441 @@ MicH5PWriterTest >> fullTemplateString5 [
                { "main":"Credits/License" }
             ]
          }
+      ],
+      "keywordListEnabled":true,
+      "globalBackgroundSelector":{
+         
+      },
+      "keywordListAlwaysShow":false,
+      "keywordListAutoHide":false,
+      "keywordListOpacity":100
+   },
+   "override":{
+      "activeSurface":false,
+      "hideSummarySlide":false,
+      "summarySlideSolutionButton":true,
+      "summarySlideRetryButton":true,
+      "enablePrintButton":false,
+      "social":{
+         "showFacebookShare":false,
+         "facebookShare":{
+            "url":"@currentpageurl",
+            "quote":"I scored @score out of @maxScore on a task at @currentpageurl."
+         },
+         "showTwitterShare":false,
+         "twitterShare":{
+            "statement":"I scored @score out of @maxScore on a task at @currentpageurl.",
+            "url":"@currentpageurl",
+            "hashtags":"h5p, course"
+         },
+         "showGoogleShare":false,
+         "googleShareUrl":"@currentpageurl"
+      }
+   },
+   "l10n":{
+      "slide":"Slide",
+      "score":"Score",
+      "yourScore":"Your Score",
+      "maxScore":"Max Score",
+      "total":"Total",
+      "totalScore":"Total Score",
+      "showSolutions":"Show solutions",
+      "retry":"Retry",
+      "exportAnswers":"Export text",
+      "hideKeywords":"Hide sidebar navigation menu",
+      "showKeywords":"Show sidebar navigation menu",
+      "fullscreen":"Fullscreen",
+      "exitFullscreen":"Exit fullscreen",
+      "prevSlide":"Previous slide",
+      "nextSlide":"Next slide",
+      "currentSlide":"Current slide",
+      "lastSlide":"Last slide",
+      "solutionModeTitle":"Exit solution mode",
+      "solutionModeText":"Solution Mode",
+      "summaryMultipleTaskText":"Multiple tasks",
+      "scoreMessage":"You achieved:",
+      "shareFacebook":"Share on Facebook",
+      "shareTwitter":"Share on Twitter",
+      "shareGoogle":"Share on Google+",
+      "summary":"Summary",
+      "solutionsButtonTitle":"Show comments",
+      "printTitle":"Print",
+      "printIngress":"How would you like to print this presentation?",
+      "printAllSlides":"Print all slides",
+      "printCurrentSlide":"Print current slide",
+      "noTitle":"No title",
+      "accessibilitySlideNavigationExplanation":"Use left and right arrow to change slide in that direction whenever canvas is selected.",
+      "accessibilityCanvasLabel":"Presentation canvas. Use left and right arrow to move between slides.",
+      "containsNotCompleted":"@slideName contains not completed interaction",
+      "containsCompleted":"@slideName contains completed interaction",
+      "slideCount":"Slide @index of @total",
+      "containsOnlyCorrect":"@slideName only has correct answers",
+      "containsIncorrectAnswers":"@slideName has incorrect answers",
+      "shareResult":"Share Result",
+      "accessibilityTotalScore":"You got @score of @maxScore points in total",
+      "accessibilityEnteredFullscreen":"Entered fullscreen",
+      "accessibilityExitedFullscreen":"Exited fullscreen",
+      "confirmDialogHeader":"Submit your answers",
+      "confirmDialogText":"This will submit your results, do you want to continue?",
+      "confirmDialogConfirmText":"Submit and see results"
+   }
+}'
+]
+
+{ #category : #tests }
+MicH5PWriterTest >> fullTemplateStringCreditParam [
+ ^ '{
+   "presentation":{
+      "slides":[
+         {
+            "elements":[
+               {
+                  "x":8.714596949891067,
+                  "y":25.821222462742128,
+                  "width":81.69934640522877,
+                  "height":27.972991001303974,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p><span style=\"font-size:1.5em\">{{{TITLEVARIABLE}}}</span></p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":86.35110294117648,
+                  "y":71.00836177254085,
+                  "width":13.648910675381265,
+                  "height":26.954343775148796,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-b8lco9r6.png",
+                           "mime":"image/png",
+                           "copyright":{"license":"U"},
+                           "width":256,
+                           "height":256
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":16.051364365971107,
+                  "y":60.24268289202926,
+                  "width":40.30501089324619,
+                  "height":12.910611231371064,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>{{{AUTHORVARIABLE}}}</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":88.22251008103561,
+                  "width":14.161220043572985,
+                  "height":9.783833332616078,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-FLYhoyME.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":403,
+                           "height":141
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":4.303537077123688,
+                  "width":93.68191721132898,
+                  "height":8.607074154247377,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>Advanced object-oriented design explained with Pharo</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":70.80610021786492,
+                  "y":92.5260471581593,
+                  "width":19.607843137254903,
+                  "height":6.455305615685532,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<p>http://www.pharo.org</p>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ { "name" : "S. Ducasse" }, { "organization" : "Pharo Consortium" } ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "keywords":[
+               {
+                  "main":"{{{SHORTTITLEVARIABLE}}}"
+               }
+            ],
+            "slideBackgroundSelector":{ }
+         },
+         {
+            "elements":[
+               {
+                  "x":6.5359477124183005,
+                  "y":19.365916847056596,
+                  "width":37.037037037037,
+                  "height":73.160071277275,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<ul>\n\t<li><span style=\"font-size:1.125em\">Cool</span></li>\n\t<li><span style=\"font-size:1.125em\">Nice</span></li>\n\t<li><span style=\"font-size:1.125em\">Super</span></li>\n\t<li><span style=\"font-size:1.125em\">Hyper language</span></li>\n</ul>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":2.178649237472767,
+                  "y":2.151768538561844,
+                  "width":95.86056644880175,
+                  "height":17.214148308494753,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<h2>{{{SLIDETITLEVARIABLE}}}</h2>\n" 
+                      },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "slideBackgroundSelector":{ },
+            "keywords":[
+               {
+                  "main":"{{{SHORTSLIDETITLEVARIABLE}}}"
+               }
+            ]
+         },
+         {
+            "elements":[
+               {
+                  "x":2.178649237472767,
+                  "y":2.151768538561844,
+                  "width":95.86056644880175,
+                  "height":10.758842692809221,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<h2>Doing Manual Title....</h2>\n"
+                     },
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               },
+               {
+                  "x":4.3572984749455,
+                  "y":19.365901220455,
+                  "width":82.788671023965,
+                  "height":51.642403254547,
+                  "action":{
+                     "library":"H5P.AdvancedText 1.1",
+                     "params":{
+                        "text":"<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: ''sec123''.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: ''sec123''\n</pre>\n"
+                     },
+                     "subContentId":"4f8b5f81-40ee-4bdd-9fa6-935c850f9da0",
+                     "metadata":{
+                        "contentType":"Text",
+                        "license":"U",
+                        "title":"Untitled Text",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "slideBackgroundSelector":{
+               
+            },
+            "keywords":[
+               {
+                  "main":"Code"
+               }
+            ]
+         },
+         {
+            "elements":[
+               {
+                  "x":30.000680827887,
+                  "y":30.000336213563,
+                  "width":40,
+                  "height":40,
+                  "action":{
+                     "library":"H5P.Link 1.3",
+                     "params":{
+                        "linkWidget":{
+                           "protocol":"http://",
+                           "url":"www.pharo.org"
+                        },
+                        "title":"What a great link"
+                     },
+                     "metadata":{
+                        "contentType":"Link",
+                        "license":"U"
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }
+            ],
+            "slideBackgroundSelector":{
+               
+            },
+            "keywords":[
+               {
+                  "main":"Link"
+               }
+            ]
+         },
+         {{{CREDITSLIDE}}}
       ],
       "keywordListEnabled":true,
       "globalBackgroundSelector":{
