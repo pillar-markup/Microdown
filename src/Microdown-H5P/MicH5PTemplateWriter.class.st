@@ -5,15 +5,74 @@ Now I always work on fullTemplateString without number
 and whenit is working I from time to time archive it by adding an increasing number to the methods. 
 
 I do that because the format is super fragile and I do not to fight with git to recover in case of problems.
+
+
+I'm a slide converter to a limited subset of H5P.
+### code 
+params"""":{
+                        """"text"""":""""<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: 'sec123'.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: 'sec123'\n</pre>\n""""
+                     },
+### Bullet
+ """"action"""":{
+                     """"library"""":""""H5P.AdvancedText 1.1"""",
+                     """"params"""":{
+                        """"text"""":""""<ul>\n\t<li><span style=\""""font-size:1.125em\"""">Cool</span></li>\n\t<li><span style=\""""font-size:1.125em\"""">Nice</span></li>\n\t<li><span style=\""""font-size:1.125em\"""">Super</span></li>\n\t<li><span style=\""""font-size:1.125em\"""">Hyper language</span></li>\n</ul>\n""""
+                     },
+### Links
+""""action"""":{
+                     """"library"""":""""H5P.Link 1.3"""",
+                     """"params"""":{
+                        """"linkWidget"""":{
+                           """"protocol"""":""""http://"""",
+                           """"url"""":""""www.pharo.org""""
+                        },
+                        """"title"""":""""What a great link""""
+                     },
+                     """"subContentId"""":""""4160c8f2-8a7c-4e83-ad3b-a6b5415a7b9e"""",
+                     """"metadata"""":{
+                        """"contentType"""":""""Link"""",
+                        """"license"""":""""U""""
+                     }
 "
 Class {
-	#name : #MicH5PWriterTest,
-	#superclass : #TestCase,
+	#name : #MicH5PTemplateWriter,
+	#superclass : #MicDocumentWriter,
 	#category : #'Microdown-H5P'
 }
 
+{ #category : #'as yet unclassified' }
+MicH5PTemplateWriter class >> docString [
+	"since we may lose class comment..."
+	^ 'I''m a slide converter to a limited subset of H5P.
+### code 
+params"":{
+                        ""text"":""<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: ''sec123''.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: ''sec123''\n</pre>\n""
+                     },
+### Bullet
+ ""action"":{
+                     ""library"":""H5P.AdvancedText 1.1"",
+                     ""params"":{
+                        ""text"":""<ul>\n\t<li><span style=\""font-size:1.125em\"">Cool</span></li>\n\t<li><span style=\""font-size:1.125em\"">Nice</span></li>\n\t<li><span style=\""font-size:1.125em\"">Super</span></li>\n\t<li><span style=\""font-size:1.125em\"">Hyper language</span></li>\n</ul>\n""
+                     },
+### Links
+""action"":{
+                     ""library"":""H5P.Link 1.3"",
+                     ""params"":{
+                        ""linkWidget"":{
+                           ""protocol"":""http://"",
+                           ""url"":""www.pharo.org""
+                        },
+                        ""title"":""What a great link""
+                     },
+                     ""subContentId"":""4160c8f2-8a7c-4e83-ad3b-a6b5415a7b9e"",
+                     ""metadata"":{
+                        ""contentType"":""Link"",
+                        ""license"":""U""
+                     }'
+]
+
 { #category : #'static document parts' }
-MicH5PWriterTest >> creditSlide [
+MicH5PTemplateWriter >> creditSlide [
 
 	^ '{
             "elements":[
@@ -262,8 +321,8 @@ MicH5PWriterTest >> creditSlide [
          }'
 ]
 
-{ #category : #actions }
-MicH5PWriterTest >> fillTemplateWithVariables [
+{ #category : #'to debug generation' }
+MicH5PTemplateWriter >> fillTemplateWithVariables [
 	"self new fillTemplateWithVariables"
 	
 	 ^ self fullTemplateStringParam asMustacheTemplate 
@@ -277,8 +336,58 @@ MicH5PWriterTest >> fillTemplateWithVariables [
 						}) asDictionary.
 ]
 
-{ #category : #'working templates with parameters' }
-MicH5PWriterTest >> fillUpOneSlide [
+{ #category : #'to debug generation' }
+MicH5PTemplateWriter >> fillTemplateWithVariables2 [
+	"self new fillTemplateWithVariables"
+	
+	 ^ self fullTemplateStringParam asMustacheTemplate 
+			value: ({ 'CREDITSLIDE' -> self creditSlide . 
+						'AUTHORVARIABLE' -> 'S. Ducasse, L. Fabresse, G. Polito, and P. Tesone' .
+						'TITLEVARIABLE' -> '1- Object-oriented Design and Pharo: a Love Affair' .
+						'SHORTTITLEVARIABLE' -> 'OOD&Pharo'.
+						'SLIDETITLEVARIABLE' -> 'Getting started with Design' .
+						'SHORTSLIDETITLEVARIABLE' -> 'Getting started' .
+						'SLIDES' -> self fillUpOneSlide
+						}) asDictionary.
+]
+
+{ #category : #actions }
+MicH5PTemplateWriter >> fillTemplateWithVariables: aMicPresentation [
+	"aMicPresentation is a collection with metadata and slides."
+	
+	| mainSlide otherSlides |
+	mainSlide := aMicPresentation first.
+	otherSlides := aMicPresentation allButFirst.
+	self fillUpSlides: otherSlides.
+	 ^ self fullTemplateStringParam asMustacheTemplate 
+			value: ({ 'CREDITSLIDE' -> self creditSlide . 
+						'AUTHORVARIABLE' -> 'S. Ducasse, L. Fabresse, G. Polito, and P. Tesone' .
+						'TITLEVARIABLE' -> (mainSlide body at: #title).
+						'SHORTTITLEVARIABLE' -> 'OOD&Pharo'.
+						'SLIDETITLEVARIABLE' -> 'Getting started with Design' .
+						'SHORTSLIDETITLEVARIABLE' -> 'Getting started' .
+						'SLIDES' -> self contents.
+						}) asDictionary.
+]
+
+{ #category : #'to debug generation' }
+MicH5PTemplateWriter >> fillUpOneSlide [
+	" works too"
+	"self new fillUpOneSlide"
+	
+	^ self slideTemplate asMustacheTemplate 
+			value: ({ 
+						'SLIDETITLEVARIABLE' -> 'Getting started with Design' .
+						'SHORTSLIDETITLEVARIABLE' -> 'Getting started' .
+						'SINGLESLIDEBODY' -> '<ul>\n\t<li>pilou</li>\n\t\n</ul>\n'
+						}) asDictionary.
+
+	
+]
+
+{ #category : #'to debug generation' }
+MicH5PTemplateWriter >> fillUpOneSlide2 [
+	"works"
 	"self new fillUpOneSlide"
 	
 	^ self slideTemplate asMustacheTemplate 
@@ -291,8 +400,33 @@ MicH5PWriterTest >> fillUpOneSlide [
 	
 ]
 
-{ #category : #'working templates' }
-MicH5PWriterTest >> fullTemplateString [ 
+{ #category : #actions }
+MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
+	
+	| oneSlideWriter |
+	oneSlideWriter := self class new.
+	aSlide accept: oneSlideWriter. 
+	^ self slideTemplate asMustacheTemplate 
+			value: ({ 
+						'SLIDETITLEVARIABLE' -> aSlide title .
+						'SHORTSLIDETITLEVARIABLE' ->  aSlide title  .
+						'SINGLESLIDEBODY' -> oneSlideWriter contents 
+						}) asDictionary.
+
+	
+]
+
+{ #category : #actions }
+MicH5PTemplateWriter >> fillUpSlides: aCollection [ 
+	
+	aCollection 
+		do: [ :each | stream nextPutAll: (self fillUpOneSlide: each) ] 
+		separatedBy: [ stream  nextPutAll: ','; newLine ].
+	
+]
+
+{ #category : #'old working templates' }
+MicH5PTemplateWriter >> fullTemplateString [ 
  ^ '{
    "presentation":{
       "slides":[
@@ -969,8 +1103,8 @@ MicH5PWriterTest >> fullTemplateString [
 }'
 ]
 
-{ #category : #'working templates' }
-MicH5PWriterTest >> fullTemplateString2 [
+{ #category : #'old working templates' }
+MicH5PTemplateWriter >> fullTemplateString2 [
 	"Working too"
  ^ '{
    "presentation":{
@@ -1744,8 +1878,8 @@ MicH5PWriterTest >> fullTemplateString2 [
 }'
 ]
 
-{ #category : #'working templates' }
-MicH5PWriterTest >> fullTemplateString3 [
+{ #category : #'old working templates' }
+MicH5PTemplateWriter >> fullTemplateString3 [
 	"working too"
  ^ '{
    "presentation":{
@@ -2492,8 +2626,8 @@ MicH5PWriterTest >> fullTemplateString3 [
 }'
 ]
 
-{ #category : #'working templates' }
-MicH5PWriterTest >> fullTemplateString4 [
+{ #category : #'old working templates' }
+MicH5PTemplateWriter >> fullTemplateString4 [
 	"no subcomponentid"
  ^ '{
    "presentation":{
@@ -3220,8 +3354,8 @@ MicH5PWriterTest >> fullTemplateString4 [
 }'
 ]
 
-{ #category : #'working templates' }
-MicH5PWriterTest >> fullTemplateString5 [
+{ #category : #'old working templates' }
+MicH5PTemplateWriter >> fullTemplateString5 [
 	"Cleaned subcomponents 
 	removed some extra space"
  ^ '{
@@ -3903,7 +4037,7 @@ MicH5PWriterTest >> fullTemplateString5 [
 ]
 
 { #category : #'working templates with parameters' }
-MicH5PWriterTest >> fullTemplateStringParam [
+MicH5PTemplateWriter >> fullTemplateStringParam [
 	"with slides and credit variables."
  ^ '{
    "presentation":{
@@ -4175,7 +4309,7 @@ MicH5PWriterTest >> fullTemplateStringParam [
 ]
 
 { #category : #'working templates with parameters' }
-MicH5PWriterTest >> fullTemplateStringParam2 [
+MicH5PTemplateWriter >> fullTemplateStringParam2 [
 	"This one is working"
  ^ '{
    "presentation":{
@@ -4611,7 +4745,7 @@ MicH5PWriterTest >> fullTemplateStringParam2 [
 ]
 
 { #category : #'working templates with parameters' }
-MicH5PWriterTest >> fullTemplateStringParam3 [
+MicH5PTemplateWriter >> fullTemplateStringParam3 [
 	"with slides and credit variables."
  ^ '{
    "presentation":{
@@ -4883,14 +5017,14 @@ MicH5PWriterTest >> fullTemplateStringParam3 [
 ]
 
 { #category : #'working templates with parameters' }
-MicH5PWriterTest >> slideTemplate [
+MicH5PTemplateWriter >> slideTemplate [
 
 	^ '{
             "elements":[
                {
                   "x":6.5359477124183005,
                   "y":19.365916847056596,
-                  "width":37.037037037037,
+                  "width":88.037037037037,
                   "height":73.160071277275,
                   "action":{
                      "library":"H5P.AdvancedText 1.1",
@@ -4949,52 +5083,45 @@ MicH5PWriterTest >> slideTemplate [
          }'
 ]
 
-{ #category : #tests }
-MicH5PWriterTest >> testAssembleFirstSlide [
+{ #category : #visiting }
+MicH5PTemplateWriter >> visitOrderedList: anOrderedList [
 
-	| writer |
-	writer := MicH5PWriter new. 
-	writer 
+	stream nextPutAll: '<ol>\n\t'.
+	super visitOrderedList: anOrderedList.
+	stream nextPutAll: '\n<\ol>\n'.
 ]
 
-{ #category : #tests }
-MicH5PWriterTest >> testMetaDataGoesToFirstSlide [
+{ #category : #visiting }
+MicH5PTemplateWriter >> visitUnorderedList: anOrderedList [
+
+	stream nextPutAll: '<ul>\n\t'.
+	super visitUnorderedList: anOrderedList.
+	stream nextPutAll: '\n</ul>\n'.
 ]
 
-{ #category : #tests }
-MicH5PWriterTest >> testSlides [
+{ #category : #visiting }
+MicH5PTemplateWriter >> visitUnorderedListItem: anUnorderedListItem [
 
-	| doc |
-	doc := Microdown parse: 
-
-'
-{
-    "title":"About Validation",
-    "subtitle":"A pretext to talk about optional actions",
-    "author":""
-}
-
-<?slide|title=Slide2 Bli&tag=nh5p
-
-- slide 1 bullet 1
-- slide 1 bullet 1
-- slide 1 bullet 1
-?>.
-
-<?slide|title=Slide3 blah&tag=nh5p
-
-- slide 2 bullet 1
-- bullet 2
-- bullet 2
-?>'
+	stream nextPutAll: '<li><span style=\"font-size:1.125em\">'.
+	stream nextPutAll: anUnorderedListItem text.
+	stream nextPutAll: '</span></li>\n\t'.
+	
 ]
 
-{ #category : #actions }
-MicH5PWriterTest >> writeContentJSONOnDisk [
+{ #category : #'to debug generation' }
+MicH5PTemplateWriter >> writeContentJSONOnDisk [
 	"self new writeContentJSONOnDisk"
 	
 	
 	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference ensureDelete.
 	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference 
 		writeStreamDo: [ :str | str nextPutAll: self fillTemplateWithVariables  ] 
+]
+
+{ #category : #actions }
+MicH5PTemplateWriter >> writeContentJSONOnDisk: aMicDocument [
+	"self new writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new presentationInMicrodown)"
+	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference ensureDelete.
+	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference 
+		writeStreamDo: [ :str | str nextPutAll: (self fillTemplateWithVariables: aMicDocument children) ] 
 ]

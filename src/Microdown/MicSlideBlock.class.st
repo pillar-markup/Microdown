@@ -28,6 +28,13 @@ MicSlideBlock >> accept: aVisitor [
 	^ aVisitor visitSlide: self
 ]
 
+{ #category : #printing }
+MicSlideBlock >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPutAll: ' -- ' ; nextPutAll: self title
+]
+
 { #category : #accessing }
 MicSlideBlock >> tag [
 	^ arguments at: 'tag' ifAbsent: [ '' ]
