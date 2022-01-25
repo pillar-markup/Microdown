@@ -5084,6 +5084,15 @@ MicH5PTemplateWriter >> slideTemplate [
 ]
 
 { #category : #visiting }
+MicH5PTemplateWriter >> visitCode: aCodeBlock [
+
+	stream nextPutAll: '<pre>'.
+ 	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ stream nextPutAll: '\n' ]
+											ifFalse: [ stream nextPut: each  ] ].
+	stream nextPutAll: '\n</pre>\n'.
+]
+
+{ #category : #visiting }
 MicH5PTemplateWriter >> visitOrderedList: anOrderedList [
 
 	stream nextPutAll: '<ol>\n\t'.
@@ -5120,7 +5129,7 @@ MicH5PTemplateWriter >> writeContentJSONOnDisk [
 
 { #category : #actions }
 MicH5PTemplateWriter >> writeContentJSONOnDisk: aMicDocument [
-	"self new writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new presentationInMicrodown)"
+	"self new writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new mainSlideInMicrodown, MicH5PTemplateWriterTest new oneSlideWithCodeInMicrodown )"
 	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference ensureDelete.
 	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference 
 		writeStreamDo: [ :str | str nextPutAll: (self fillTemplateWithVariables: aMicDocument children) ] 

@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-MicH5PTemplateWriterTest >> presentationInMicrodown [
+MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 
 ^ '
 {
@@ -13,8 +13,31 @@ MicH5PTemplateWriterTest >> presentationInMicrodown [
     "subtitle":"A pretext to talk about optional actions",
     "author":"Tintin and Mickey"
 }
-', 
-self twoSlidesInMicrodown 
+
+'
+]
+
+{ #category : #tests }
+MicH5PTemplateWriterTest >> oneSlideWithCodeInMicrodown [
+
+^ '
+
+<?slide|title=Nice code eh!&tag=nh5p
+
+```
+SpTextInputFieldWithValidation >> validateInto: aValidationReport
+	self validate.
+	aValidationReport addAll: validationErrors
+```
+
+
+?>'
+]
+
+{ #category : #tests }
+MicH5PTemplateWriterTest >> presentationInMicrodown [
+
+^ self mainSlideInMicrodown , self twoSlidesInMicrodown 
 ]
 
 { #category : #tests }
@@ -26,6 +49,47 @@ MicH5PTemplateWriterTest >> slideInMicrodown [
 - slide 1 bullet 1
 - slide 1 bullet 2
 - slide 1 bullet 3
+?>
+
+
+
+'
+]
+
+{ #category : #tests }
+MicH5PTemplateWriterTest >> slideInMicrodownWithCode [
+
+^ '
+<?slide|title=A piece of code&tag=nh5p
+
+```
+testMethod
+	self assert: 4 foo equals: 55
+```
+
+```
+testFoo
+   self assertSpace.
+   self assertSpace2
+   ^ self
+```
+?>
+
+
+
+'
+]
+
+{ #category : #tests }
+MicH5PTemplateWriterTest >> slideInMicrodownWithSimpleCode [
+
+^ '
+<?slide|title=A piece of code&tag=nh5p
+
+```
+testMethod
+	self assert: 4 foo equals: 55
+```
 ?>
 
 
@@ -244,6 +308,26 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithBullets [
 	h5p := MicH5PTemplateWriter new.
 	h5p visit: doc children first.
 	self assert: h5p contents equals: '<ul>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 1</span></li>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 2</span></li>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 3</span></li>\n\t\n</ul>\n' 
+]
+
+{ #category : #'low level visitor tests' }
+MicH5PTemplateWriterTest >> testOneSlideBodyWithCode [
+
+	| doc h5p |
+	doc := Microdown parse: self slideInMicrodownWithCode.
+	h5p := MicH5PTemplateWriter new.
+	h5p visit: doc children first.
+	self assert: h5p contents equals: '<pre></pre>\n' 
+]
+
+{ #category : #'low level visitor tests' }
+MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
+
+	| doc h5p |
+	doc := Microdown parse: self slideInMicrodownWithSimpleCode.
+	h5p := MicH5PTemplateWriter new.
+	h5p visit: doc children first.
+	self assert: h5p contents equals: '<pre>testMethod\n		self assert: 4 foo equals: 55\n<\pre>\n' 
 ]
 
 { #category : #tests }
