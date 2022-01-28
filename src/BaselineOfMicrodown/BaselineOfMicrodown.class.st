@@ -67,14 +67,10 @@ BaselineOfMicrodown >> baseline: spec [
 	
 		"I do not want group without tests for now"
 		spec
-			group: 'Core' 
-			with: #(
-				#'Microdown'
-				#'Microdown-Tests'
-				);
-			group: 'RichText' with: #('Core' #'Microdown-RichTextComposer' );
-			group: 'Extensions' 
-			with: #(   
+			group: 'Core' with: #('Microdown');
+			group: 'Tests' with: #('Core' 'Microdown-Tests');
+			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
+			group: 'Extensions' with: #(   
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
@@ -84,6 +80,5 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'All' 
-			with: #('Core' 'Extensions' #'Microdown-Pharo-Tools' 'RichText')  ]
+			group: 'All' with: #('Core' 'Tests' 'Extensions' #'Microdown-Pharo-Tools' 'RichText') ]
 ]
