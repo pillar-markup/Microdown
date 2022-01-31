@@ -9,7 +9,7 @@ Microdown is a smaller markdown but it is more extensible.
 ## Quick start
 ### Loading specific version
 
-To load the latest stable version load the master. It will load the version of Pillar that is in sync. 
+To load the latest stable version load the master.
 
 ```Smalltalk
 Metacello new
@@ -19,12 +19,12 @@ Metacello new
 ```
 
 ### Loading latest development version
-We are about to release a version 2.0.0 of Microdown with enhanced model, visitor... planned for mid July 2021.
-It is used for example by the BeautifulComments project. You can load this alpha version.
+We are about to release a version 2.0.0 of Microdown with enhanced model, visitor.... no dependency with Pillar anymore.
+It is used for example by the BeautifulComments project.
 
 ```Smalltalk
 Metacello new
-	baseline: 'MicrodownDev';
+	baseline: 'MicrodownD';
 	repository: 'github://pillar-markup/Microdown:dev/src';
 	onConflict: [ :ex | ex useIncoming ];
 	onUpgrade: [ :ex | ex useIncoming ];
@@ -138,7 +138,7 @@ When a new line is read we do the following:
 	- as part of this a child of current can be made which can consume the new line
 2. If current cannot consume the new line, we close current, move current to its parent, and repeat 1.
 3. The root node can consume anything, for instance by making new nodes for storing the new line.
-4. The roor node is not closed until input is exhausted
+4. The root node is not closed until input is exhausted
 
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
