@@ -3,7 +3,7 @@ Extension { #name : #MicAbstractBlock }
 { #category : #'*Microdown-Pillar' }
 MicAbstractBlock >> pillarFrom: aCollectionOfMicElements [
 	
-	^ aCollectionOfMicElements collect: [ :e | e accept: MicPillarConverter new ]
+	^ aCollectionOfMicElements collect: [ :e | e accept: MicMicrodownObjectToPillarObjectConverter new ]
 ]
 
 { #category : #'*Microdown-Pillar' }

@@ -29,7 +29,7 @@ MicAnnotationCloserDelimiter class >> isOpener [
 { #category : #accessing }
 MicAnnotationCloserDelimiter class >> markup [
 
-	^ '}?'
+	^ AnnotationCloserMarkup
 ]
 
 { #category : #accessing }

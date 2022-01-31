@@ -13,7 +13,13 @@ Class {
 { #category : #accessing }
 MicDocumentWriter >> canvasClass [ 
 
-	^ self subclassResponsibility 
+	^ MicHTMLCanvas
+]
+
+{ #category : #writing }
+MicDocumentWriter >> contents [
+
+	^ stream contents
 ]
 
 { #category : #initialization }

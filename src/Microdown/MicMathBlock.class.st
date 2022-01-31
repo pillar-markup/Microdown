@@ -40,5 +40,5 @@ MicMathBlock >> arguments [
 { #category : #markups }
 MicMathBlock >> lineStartMarkup [
 	
-	^ parser mathOpeningBlockMarkup
+	^ MathOpeningBlockMarkup
 ]

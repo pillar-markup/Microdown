@@ -29,7 +29,7 @@ MicrodownInlineParserTest >> parser [
 
 { #category : #parsing }
 MicrodownInlineParserTest >> parserClass [ 
-	^ MicroDownParser 
+	^ Microdown 
 ]
 
 { #category : #'tests - raw' }
@@ -408,7 +408,7 @@ MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
 	
 ]
 
-{ #category : #'tests to make green' }
+{ #category : #'tests - escape' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellEscape [
 	"Well, actually it does"
 	self rawTestingFor: 'anything\*foo'.

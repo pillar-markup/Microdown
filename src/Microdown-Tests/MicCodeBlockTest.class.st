@@ -28,8 +28,8 @@ Color >> asMorph
 	```
 	"
 	| source code associations |
-	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
 	associations :=  { ('language' -> 'pharo') . ('caption' -> { MicMonospaceFormatBlock new substring: 'Color' . MicTextBlock new substring: ' is a class.' }) . ('label' -> 'scr:asMorphInColor') }.
@@ -54,7 +54,7 @@ MicCodeBlockTest >> testBody [
 	| source root textBody |
 	textBody := 'my fancy code
 is really cool'.
-	source := parser codeblockMarkup, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, String cr, textBody, String cr, CodeblockMarkup. 
 	root := parser parse: source.
 	self assert: root children first body equals: textBody.
 	
@@ -70,7 +70,7 @@ MicCodeBlockTest >> testCanConsumeLine [
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := parser parse: source.
 	
 	"An already created blockNode cannot consume a new code block since no nesting is allowed."
@@ -80,7 +80,7 @@ is really cool'.
 	self deny: (root children first canConsumeLine: 'plain text')
 ]
 
-{ #category : #tests }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testCaption [
 
 	| codeBlock |
@@ -100,7 +100,7 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
  my fancy code
  is really cool
  ```'.
-	source := parser codeblockMarkup,  String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup,  String cr, textBody, String cr, CodeblockMarkup. 
 	root := parser parse: source.
 	
 	self 
@@ -136,7 +136,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -157,7 +157,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'lang uage'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -169,9 +169,9 @@ Color >> asMorph
 MicCodeBlockTest >> testFirstTagValue [
 
 	| source codeBlock |
-	source := parser codeblockMarkup, 'language=12', String cr, 'Color >> asMorph
-    ^ Morph new color: self' , String cr, parser codeblockMarkup. 
-   codeBlock :=(self parser parse: source) children first.
+	source := CodeblockMarkup, 'language=12', String cr, 'Color >> asMorph
+    ^ Morph new color: self' , String cr, CodeblockMarkup. 
+   codeBlock := (self parser parse: source) children first.
 	self assert:  codeBlock firstTagValue equals: '12'.
 ]
 
@@ -188,7 +188,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=PharoMethod'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -289,8 +289,7 @@ MicCodeBlockTest >> testHasBody [
 	| source root textBody |
 	textBody := 'my fancy code
 is really cool'.
-	source := parser codeblockMarkup , String cr , textBody , String cr
-	          , parser codeblockMarkup.
+	source := CodeblockMarkup , String cr , textBody , String cr, CodeblockMarkup.
 	root := parser parse: source.
 	self assert: root children first hasBody 
 ]
@@ -308,7 +307,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	
 	code := root children first.
@@ -319,26 +318,25 @@ Color >> asMorph
 MicCodeBlockTest >> testHasFirstTag [
 
 	| source codeBlock |
-	source := parser codeblockMarkup, 'language=PharoMethod', String cr, 'Color >> asMorph
-    ^ Morph new color: self' , String cr, parser codeblockMarkup. 
-   codeBlock :=(self parser parse: source) children first.
-	self assert:  codeBlock hasFirstTag.
-	self assert:  codeBlock firstTag equals: 'language'.
+	source := CodeblockMarkup, 'language=PharoMethod', String cr, 'Color >> asMorph
+    ^ Morph new color: self' , String cr, CodeblockMarkup. 
+   codeBlock := (self parser parse: source) children first.
+	self assert: codeBlock hasFirstTag.
+	self assert: codeBlock firstTag equals: 'language'.
 ]
 
 { #category : #'tests - first tag' }
 MicCodeBlockTest >> testHasFirstTagWithNoFirstTag [
 
 	| source codeBlock |
-	source := parser codeblockMarkup, String cr,  'my fancy code
-is really cool', String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, String cr,  'my fancy code
+is really cool', String cr, CodeblockMarkup. 
 	codeBlock := (parser parse: source) children first.
 	self assert: codeBlock firstTagValue equals: ''
 ]
 
 { #category : #'tests - arguments' }
 MicCodeBlockTest >> testHasLabelFalse [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -346,8 +344,8 @@ Color >> asMorph
 	```
 	"
 	| source code |
-	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
 	self deny: code hasLabel
@@ -355,7 +353,6 @@ Color >> asMorph
 
 { #category : #'tests - arguments' }
 MicCodeBlockTest >> testHasLabelTrue [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -363,8 +360,8 @@ Color >> asMorph
 	```
 	"
 	| source code |
-	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
 	self assert: code hasLabel
@@ -372,7 +369,6 @@ Color >> asMorph
 
 { #category : #tests }
 MicCodeBlockTest >> testHasNOCaption [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -383,7 +379,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&label=scr:asMorphInColor'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	
 	code := root children first.
@@ -396,8 +392,7 @@ MicCodeBlockTest >> testHasNoArguments [
 	| source root textBody |
 	textBody := 'my fancy code
 is really cool'.
-	source := parser codeblockMarkup , String cr , textBody , String cr
-	          , parser codeblockMarkup.
+	source := CodeblockMarkup , String cr , textBody , String cr, CodeblockMarkup.
 	root := parser parse: source.
 	self deny: root children first hasArguments
 ]
@@ -407,8 +402,7 @@ MicCodeBlockTest >> testHasNoBody [
 
 	| source root textBody |
 	textBody := ''.
-	source := parser codeblockMarkup , String cr , textBody , String cr
-	          , parser codeblockMarkup.
+	source := CodeblockMarkup , String cr , textBody , String cr, CodeblockMarkup.
 	root := parser parse: source.
 	self assert: root children first hasNoBody
 ]
@@ -423,8 +417,8 @@ Color >> asMorph
 	```
 	"
 	| source code |
-	source := parser codeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
 	self assert: code language equals: 'pharo'
@@ -443,7 +437,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := ''.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -459,7 +453,7 @@ MicCodeBlockTest >> testOpenCanConsumeLine [
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := (parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup) readStream. 
+	source := (CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup) readStream. 
 	
 	line := source nextLine.
 	
@@ -477,7 +471,7 @@ is really cool'.
 	"now new line"
 	line := source nextLine.
 	self assert: (code canConsumeLine: line). 
-	self assert: (code canConsumeLine: parser codeblockMarkup).
+	self assert: (code canConsumeLine: CodeblockMarkup).
 	"now a code block is closed."
 	self deny: (code canConsumeLine: line). 
 	self assert: code isClosed
@@ -486,7 +480,7 @@ is really cool'.
 	
 ]
 
-{ #category : #'tests - arguments' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testSetLabel [
 
 	| codeBlock |
@@ -499,7 +493,6 @@ MicCodeBlockTest >> testSetLabel [
 
 { #category : #tests }
 MicCodeBlockTest >> testSingleBlockWithArguments [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -510,7 +503,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -533,7 +526,7 @@ Color >> asMorph
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 
 	
@@ -557,7 +550,7 @@ MicCodeBlockTest >> testSingleCodeBlock [
 	| source root code  textBody argument |
 	textBody := 'my fancy code'.
 	argument := 'Argument'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
@@ -574,7 +567,7 @@ MicCodeBlockTest >> testSingleCodeBlockListInside [
 	textBody := '* my fancy code
 * is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := parser parse: source.
 	
 	self 
@@ -596,7 +589,7 @@ MicCodeBlockTest >> testSingleCodeBlockTwoLines [
 	textBody := 'my fancy code
 is really cool'.
 	argument := 'ArgumentGoesHere'.
-	source := parser codeblockMarkup, argument, String cr, textBody, String cr, parser codeblockMarkup. 
+	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := parser parse: source.
 	self 
 		assert: root children size 

@@ -127,6 +127,7 @@ MicCodeBlock >> initialize [
 { #category : #accessing }
 MicCodeBlock >> label [
 	"precondition: receiver hasLabel"
+	
 	^ arguments at: #label
 ]
 
@@ -148,5 +149,25 @@ MicCodeBlock >> language [
 MicCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	
-	^ self parser codeblockMarkup 
+	^ CodeblockMarkup 
+]
+
+{ #category : #accessing }
+MicCodeBlock >> size [
+
+	"precondition: receiver hasLabel"
+
+	^ arguments at: #size
+]
+
+{ #category : #accessing }
+MicCodeBlock >> text [
+	| text |
+	self flag: #todo.
+	"what a terrible idea we concatenate the text of children and store. 
+	I could understand that we keep the text of the parser element but then we do not modify it after
+	and certainly not change it."
+	text := ''.
+	body do: [ :each | text := text , each text ].
+	^ text
 ]

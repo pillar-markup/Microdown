@@ -24,7 +24,7 @@ MicFigureNameOpenerDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicFigureNameOpenerDelimiter class >> markup [
-	^ '!['
+	^ FigureNameOpenerMarkup
 ]
 
 { #category : #accessing }

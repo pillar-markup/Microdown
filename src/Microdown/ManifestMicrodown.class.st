@@ -68,3 +68,8 @@ Class {
 	#superclass : #PackageManifest,
 	#category : #'Microdown-Manifest'
 }
+
+{ #category : #'code-critics' }
+ManifestMicrodown class >> ruleAnySatisfyRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#'MicFileResourceReference class' #hostOf: #true)) #'2022-01-15T12:11:48.574879+01:00') )
+]

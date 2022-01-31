@@ -11,6 +11,9 @@ Class {
 		'lastIsNewLine',
 		'newLineCharacterString'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Parser'
 }
 
@@ -24,7 +27,7 @@ MicAbstractMicrodownTextualBuilder class >> on: aStream [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> bold: aText [
 
-	self writeText: aText surroundBy: parserClass boldMarkup
+	self writeText: aText surroundBy: BoldMarkup
 ]
 
 { #category : #accessing }
@@ -41,7 +44,6 @@ MicAbstractMicrodownTextualBuilder >> flush [
 MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
-	parserClass := MicroDownParser.
 	newLineCharacterString := String cr.
 	lastIsNewLine := true
 ]
@@ -49,7 +51,7 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> italic: aText [
 
-	self writeText: aText surroundBy: parserClass italicMarkup
+	self writeText: aText surroundBy: ItalicMarkup
 ]
 
 { #category : #testing }
@@ -67,7 +69,7 @@ MicAbstractMicrodownTextualBuilder >> line: aString [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
-	self writeText: aText surroundBy: parserClass monospaceMarkup
+	self writeText: aText surroundBy: MonospaceMarkup
 ]
 
 { #category : #'writing text' }
@@ -116,7 +118,7 @@ MicAbstractMicrodownTextualBuilder >> space [
 { #category : #formatting }
 MicAbstractMicrodownTextualBuilder >> strike: aText [
 
-	self writeText: aText surroundBy: parserClass strikeMarkup
+	self writeText: aText surroundBy: StrikeMarkup
 ]
 
 { #category : #writing }

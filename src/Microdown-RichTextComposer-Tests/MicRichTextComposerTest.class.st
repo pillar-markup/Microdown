@@ -130,7 +130,7 @@ MicRichTextComposerTest >> runsOf: aDocument [
 MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
-	parser := MicroDownParser new.
+	parser := Microdown new.
 	MicRichTextComposer initialize.
 ]
 
@@ -258,7 +258,7 @@ line 2
 ```
 '.
 	richText := self richTextForString: source.
-	runs := (richText runs ) asArray .	
+	runs := richText runs asArray.	
 	
 	self assert: runs first notEmpty. 
 	self assert: (runs second anySatisfy: [ :r | r class = TextIndent]).
@@ -276,7 +276,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := MicRichTextComposer parseAndCompose: source.
+	richText := self composerClass parseAndCompose: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -287,7 +287,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
-	richText := MicRichTextComposer parseAndCompose: source.
+	richText := self composerClass parseAndCompose: source.
 
 	self assert: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height < 100 "No image embedded"
@@ -298,7 +298,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := MicRichTextComposer parseAndCompose: source.
+	richText := self composerClass parseAndCompose: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -309,7 +309,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
-	richText := MicRichTextComposer parseAndCompose: source.
+	richText := self composerClass parseAndCompose: source.
 
 	self assert: (richText asString trim first: 5 )equals: 'See ', (String value: 1).
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -586,7 +586,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	MicRichTextComposer initialize.
+	self composerClass initialize.
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
@@ -606,16 +606,6 @@ styledTextFor: aString asFest'.
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
 	self assert: textColor color red equals: 0.
-]
-
-{ #category : #'tests - header' }
-MicRichTextComposerTest >> testStylersAreRegistered [
-	"this test has been moved to MicCodeStylerTest"
-]
-
-{ #category : #'tests - header' }
-MicRichTextComposerTest >> testStylersForText [
-	"this test has been moved to MicCodeStylerTest"
 ]
 
 { #category : #'tests - list' }

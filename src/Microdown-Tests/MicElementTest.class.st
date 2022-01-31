@@ -5,6 +5,9 @@ Class {
 		'parser',
 		'instance'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
@@ -37,6 +40,9 @@ MicElementTest >> parser [
 
 { #category : #factory }
 MicElementTest >> parserClass [
+	"This references to MicrodownParser is needed for the test.
+	Replacing it by Microdown does not work."
+	
 	^ MicroDownParser
 ]
 

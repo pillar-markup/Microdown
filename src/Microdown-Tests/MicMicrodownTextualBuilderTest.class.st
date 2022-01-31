@@ -6,8 +6,10 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'factory',
-		'parser',
 		'builder'
+	],
+	#pools : [
+		'MicroSharedPool'
 	],
 	#category : #'Microdown-Tests-Builder'
 }
@@ -28,20 +30,21 @@ Pharo'
 MicMicrodownTextualBuilderTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
-	parser := MicroDownParser new.
-	builder := parser builder
+	builder := Microdown builder
 ]
 
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchor [
 
-	self assert: (builder anchor: 'Anchor') contents equals: parser anchorMarkup, 'Anchor'
+	self assert: (builder anchor: 'Anchor') contents equals:  AnchorMarkup, 'Anchor'
 ]
 
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchorReference [
 
-	self assert: (builder anchorReference: 'AnchorReference') contents equals: parser class anchorReferenceOpenerMarkup, 'AnchorReference', parser class anchorReferenceCloserMarkup
+	self 
+		assert: (builder anchorReference: 'AnchorReference') contents 
+		equals: AnchorReferenceOpenerMarkup, 'AnchorReference', AnchorReferenceCloserMarkup
 ]
 
 { #category : #'tests - anchor' }
@@ -140,7 +143,7 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testComment [
 
-	self assert: (builder comment: 'Comment') contents equals: parser commentedLineMarkup, ' Comment'
+	self assert: (builder comment: 'Comment') contents equals: CommentedLineMarkup, ' Comment'
 ]
 
 { #category : #'tests - anchor' }
@@ -266,14 +269,16 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 											 italic: [ builder text: 'Pharo' ];
 											 text: ' is cool']  withLevel: 1;				
 							contents) contents 
-		equals: parser headerMarkup , ' Hello _Pharo_ is cool
+		equals: HeaderMarkup , ' Hello _Pharo_ is cool
 '
 ]
 
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testHorizontalLine [
 
-	self assert: (builder horizontalLine) contents equals: parser horizontalLineMarkup, String cr
+	self 
+		assert: builder horizontalLine contents 
+		equals: HorizontalLineMarkup, String cr
 ]
 
 { #category : #'tests - anchor' }
@@ -330,7 +335,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 
 	self 
 		assert: (builder metaDataFromAssociations: {'label'->'aLabel' . 'size'->'142'}) contents 
-		equals: parser metaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , parser metaDataClosingBlockMarkup
+		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , MetaDataClosingBlockMarkup
 ]
 
 { #category : #'tests - format' }
@@ -361,7 +366,7 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testQuote [
 
-	self assert: (builder quoteBlock: 'aQuote') contents equals: parser class preformattedMarkup, ' aQuote'
+	self assert: (builder quoteBlock: 'aQuote') contents equals: PreformattedMarkup, ' aQuote'
 ]
 
 { #category : #'tests - anchor' }

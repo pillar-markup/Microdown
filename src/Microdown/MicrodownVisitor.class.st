@@ -179,6 +179,12 @@ MicrodownVisitor >> visitRoot: aRoot [
 	^ self visitChildrenOf: aRoot
 ]
 
+{ #category : #'visiting - extensions' }
+MicrodownVisitor >> visitSlide: aSlide [
+
+	^ aSlide children collect: [ :each | self visit: each ]
+]
+
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitStrike: aFormat [
 

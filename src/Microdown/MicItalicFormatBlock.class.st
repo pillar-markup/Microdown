@@ -15,7 +15,7 @@ MicItalicFormatBlock >> accept: aVisitor [
 { #category : #accessing }
 MicItalicFormatBlock >> closingDelimiter [
 
- 	^ MicItalicDelimiter markup
+ 	^ ItalicMarkup
 ]
 
 { #category : #accessing }
@@ -27,5 +27,5 @@ MicItalicFormatBlock >> kind [
 { #category : #accessing }
 MicItalicFormatBlock >> openingDelimiter [
 
- 	^ MicItalicDelimiter markup
+ 	^ ItalicMarkup
 ]

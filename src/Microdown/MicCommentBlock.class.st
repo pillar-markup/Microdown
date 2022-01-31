@@ -19,5 +19,5 @@ MicCommentBlock >> accept: aVisitor [
 { #category : #markups }
 MicCommentBlock >> lineMarkup [
 
-	^ parser commentedLineMarkup 
+	^ CommentedLineMarkup 
 ]

@@ -45,7 +45,7 @@ MicInputfileBlock >> originalPath [
 { #category : #accessing }
 MicInputfileBlock >> path [
 	
-	^ self arguments at: #path  ifAbsent: [ ^ 'path is absent' ]
+	^ self arguments at: #path  ifAbsent: [ 'path is absent' ]
 ]
 
 { #category : #accessing }

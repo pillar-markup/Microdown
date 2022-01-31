@@ -4,12 +4,15 @@ Class {
 	#instVars : [
 		'parser'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
 { #category : #running }
 MicrodownParserTest >> parser [ 
-
+	"for now this reference is needed and cannot be changed into Microdown"
 	^ MicroDownParser new
 ]
 
@@ -21,10 +24,25 @@ MicrodownParserTest >> setUp [
 	parser := self parser
 ]
 
+{ #category : #'tests - math' }
+MicrodownParserTest >> stestMathBlockWithArguments [
+
+	| source root math |
+	source := MathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
+	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
+	MathClosingBlockMarkup, String cr.
+
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	math := root children first.
+	self assert: (math arguments at: 'label') equals: 'equation'.
+	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
+]
+
 { #category : #'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
-	source := parser anchorMarkup, 'label1'.
+	source := AnchorMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -37,8 +55,8 @@ MicrodownParserTest >> testAnchorBlock [
 MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 
 	| source root annotated |
-	source := parser anchorMarkup, 'label1', String cr.
-	source := source, parser anchorMarkup, 'label2'.
+	source := AnchorMarkup, 'label1', String cr.
+	source := source, AnchorMarkup, 'label2'.
 	root := parser parse: source.
 	self assert: root children size equals: 2.
 	annotated := root children first. 
@@ -54,12 +72,12 @@ MicrodownParserTest >> testAnchorBlockFollowingEachOther [
 MicrodownParserTest >> testAnchorMarkupInsideLine [
 
 	| source root paragraph |
-	source := 'this is not an anchor', parser anchorMarkup, 'label1'.
+	source := 'this is not an anchor', AnchorMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
 	self assert: (paragraph isKindOf: MicParagraphBlock).
-	self assert: paragraph text equals: 'this is not an anchor', parser anchorMarkup, 'label1'.
+	self assert: paragraph text equals: 'this is not an anchor', AnchorMarkup, 'label1'.
 	
 
 ]
@@ -68,7 +86,7 @@ MicrodownParserTest >> testAnchorMarkupInsideLine [
 MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -82,7 +100,7 @@ MicrodownParserTest >> testAnnotatedBlock [
 MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
-	source := (parser annotatedParagraphMarkup , 'important this is an 
+	source := (AnnotatedParagraphMarkup , 'important this is an 
 important point because...!') readStream.
 	
 	"first the root block"
@@ -110,7 +128,7 @@ important point because...!'.
 { #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an important 
+	source := AnnotatedParagraphMarkup , 'important this is an important 
 paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -124,7 +142,7 @@ paragraph on two lines.'
 { #category : #'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important **this** is an _important_ 
+	source := AnnotatedParagraphMarkup , 'important **this** is an _important_ 
 paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -140,7 +158,7 @@ paragraph on two lines.'.
 MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 	| source root annotated |
-	source := parser annotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -156,7 +174,7 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
 	self flag: #fixme.
-	source := (parser annotatedParagraphMarkup , 'important this is a point
+	source := (AnnotatedParagraphMarkup , 'important this is a point
 - one
 * two ' ) readStream.
 
@@ -190,8 +208,8 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 MicrodownParserTest >> testCommentOnMultipleLines [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment', String cr.
-	source := source, parser commentedLineMarkup , 'a second comment'.
+	source := CommentedLineMarkup , 'a comment', String cr.
+	source := source, CommentedLineMarkup , 'a second comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	comment := root children first. 
@@ -204,7 +222,7 @@ a second comment'
 MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment', String cr.
+	source := CommentedLineMarkup , 'a comment', String cr.
 	source := source, 'a second comment'.
 	root :=  parser parse: source.
 	"we have two commented lines."
@@ -220,7 +238,7 @@ MicrodownParserTest >> testCommentOnMultipleLinesWithASingleMarkup [
 MicrodownParserTest >> testCommentSimple [
 
 	| source root comment |
-	source := parser commentedLineMarkup , 'a comment'.
+	source := CommentedLineMarkup , 'a comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	comment := root children first. 
@@ -232,12 +250,12 @@ MicrodownParserTest >> testCommentSimple [
 MicrodownParserTest >> testCommentedLineMarkupInsideLine [
 
 	| source root paragraph |
-	source := 'this is not the start', parser commentedLineMarkup , 'a comment'.
+	source := 'this is not the start', CommentedLineMarkup , 'a comment'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	paragraph := root children first. 
 	self assert: (paragraph isKindOf: MicParagraphBlock).
-	self assert: paragraph text equals: 'this is not the start', parser commentedLineMarkup , 'a comment'
+	self assert: paragraph text equals: 'this is not the start', CommentedLineMarkup , 'a comment'
 	
 ]
 
@@ -247,10 +265,8 @@ MicrodownParserTest >> testEnvironmentCitationWithArguments [
 	environmentName := 'cite'.
 	contents := 'Hello
 Pharo'.
-
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
-		, String cr , contents , String cr, String cr, 
-		parser environmentClosingBlockMarkup , String cr.
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c'	, String cr , contents , String cr, String cr, 
+		EnvironmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
 	child := root children first.
 	self assert: (child isKindOf: MicEnvironmentBlock).
@@ -270,7 +286,7 @@ MicrodownParserTest >> testEnvironmentEatsNonClosedCodeMarkup [
 ^ self foo
 
 this is the end.'.
-	source := parser environmentOpeningBlockMarkup , environmentName
+	source := EnvironmentOpeningBlockMarkup , environmentName
 		, String cr , contents , String cr.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -285,7 +301,7 @@ this is the end.'.
 { #category : #'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
-	source := (self parser headerMarkup repeat: 4), '    Level four'.
+	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first header equals: 'Level four'.
@@ -296,7 +312,7 @@ MicrodownParserTest >> testHeaderLevel4 [
 MicrodownParserTest >> testHeaderLevel4WithBold [
 
 	| source root |
-	source := (self parser headerMarkup repeat: 4), 'Level **four** `mono` end'.
+	source := (HeaderMarkup repeat: 4), 'Level **four** `mono` end'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	self assert: root children first children first substring equals: 'Level '.
@@ -311,7 +327,7 @@ MicrodownParserTest >> testHeaderLevel4WithBold [
 MicrodownParserTest >> testHorizontalBlock [
 
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr.
+	source := HorizontalLineMarkup, 'ignored ignored ignore', String cr.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	horizontal := root children first. 
@@ -323,7 +339,7 @@ MicrodownParserTest >> testHorizontalBlock [
 MicrodownParserTest >> testHorizontalBlockFollowedByList [
 
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
+	source := HorizontalLineMarkup, 'ignored ignored ignore', String cr, '- item1'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 2.
 	horizontal := root children first. 
@@ -335,7 +351,7 @@ MicrodownParserTest >> testHorizontalBlockFollowedByList [
 { #category : #'tests - horizontal line' }
 MicrodownParserTest >> testHorizontalLineBlock [
 	| source root horizontal |
-	source := parser horizontalLineMarkup, 'label1'.
+	source := HorizontalLineMarkup, 'label1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	horizontal := root children first. 
@@ -352,9 +368,9 @@ MicrodownParserTest >> testHorizontalLineBlock [
 MicrodownParserTest >> testMathBlock [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup , String cr, 
+	source := MathOpeningBlockMarkup , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -368,9 +384,9 @@ MicrodownParserTest >> testMathBlock [
 MicrodownParserTest >> testMathBlockOnMulitpleLines [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup , String cr, 
+	source := MathOpeningBlockMarkup , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B |', String cr, 'support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -385,118 +401,15 @@ support(I) \geq minsup \}'
 MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
-	source := parser mathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
+	source := MathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
 	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
-	parser mathClosingBlockMarkup, String cr.
+	MathClosingBlockMarkup, String cr.
 
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	math := root children first.
 	self assert: (math arguments at: 'label') equals: 'equation'.
 	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
-]
-
-{ #category : #'tests - metaData' }
-MicrodownParserTest >> testMetaData [
-
-	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
-	 '"author": "S Ducasse"', String cr,
-	parser metaDataClosingBlockMarkup, String cr.
-
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	metadata := root children first. 
-	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"author": "S Ducasse"'
-	"note that the closing is not part of the body"
-	
-]
-
-{ #category : #'tests - metaData' }
-MicrodownParserTest >> testMetaData2 [
-
-	| source root metadata |
-	source := '{
-"authors" : "S. Ducasse" ,
-"title" : "Pharo by Example"
-}'.
-
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	metadata := root children first. 
-	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"authors" : "S. Ducasse" ,
-"title" : "Pharo by Example"'
-	
-]
-
-{ #category : #'tests - metaData' }
-MicrodownParserTest >> testMetaData2WithEmptyLines [
-
-	| source root metadata |
-	source := '{
-"authors" : "S. Ducasse" ,
-"title" : "Pharo by Example"
-
-
-
-
-}'.
-
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	metadata := root children first. 
-	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"authors" : "S. Ducasse" ,
-"title" : "Pharo by Example"
-
-
-
-'
-	
-]
-
-{ #category : #'tests - metaData' }
-MicrodownParserTest >> testMetaDataEatsOtherBlocks [
-	"this is normal since 
-{
-
-....
-
-without closing statement (}) is just an unclosed block and since metadata can be a multilines
-then it eats.
-
-"
-	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
-	 '"author": "S Ducasse"', String cr,
-	parser headerMarkup, 'newheader here'.
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	metadata := root children first. 
-	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"author": "S Ducasse"',String cr, parser headerMarkup, 'newheader here'.
-	
-]
-
-{ #category : #'tests - metaData' }
-MicrodownParserTest >> testMetaDataMultipleLines [
-
-	| source root metadata |
-	source := parser metaDataOpeningBlockMarkup , String cr, 
-	 '"author": "S Ducasse",', String cr,
-	 '"title": "Ze Great Book from Frenchies"', String cr,
-	parser metaDataClosingBlockMarkup, String cr.
-
-	root :=  parser parse: source.
-	self assert: root children size equals: 1.
-	metadata := root children first. 
-	self assert: (metadata isKindOf: MicMetaDataBlock). 
-	self assert: metadata body equals: '"author": "S Ducasse",
-"title": "Ze Great Book from Frenchies"'
-	"note that the closing is not part of the body"
-	
 ]
 
 { #category : #'tests - path' }

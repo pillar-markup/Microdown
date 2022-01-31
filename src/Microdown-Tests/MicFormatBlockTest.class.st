@@ -51,7 +51,7 @@ MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 MicFormatBlockTest >> testBoldWrappedElements [
 	
 	| paragraph |
-	paragraph := (MicroDownParser new parse: '**aa bb** c') children first.
+	paragraph := (self parserClass parse: '**aa bb** c') children first.
 	self assert: paragraph children size equals: 2.
 	self assert: paragraph children first wrappedElements size equals: 1. 
 	self assert: paragraph children first class equals: MicBoldFormatBlock.

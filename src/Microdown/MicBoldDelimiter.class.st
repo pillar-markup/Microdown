@@ -24,7 +24,7 @@ MicBoldDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicBoldDelimiter class >> markup [
-	^ '**'
+	^ BoldMarkup
 ]
 
 { #category : #accessing }

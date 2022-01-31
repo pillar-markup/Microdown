@@ -12,9 +12,8 @@ blbababbab bababba
 '" 
 	| source root env environmentName |
 	environmentName := 'card'.
-	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
-	 'blbababbab bababba', String cr,
-	parser environmentClosingBlockMarkup, String cr.
+	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
+	 'blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	env := root children first. 
@@ -43,9 +42,8 @@ MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 
 	| source root env environmentName |
 	environmentName := 'slideXXX'.
-	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
-	 'this is the slide body', String cr,
-	parser environmentClosingBlockMarkup, String cr.
+	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
+	 'this is the slide body', String cr, EnvironmentClosingBlockMarkup, String cr.
 	
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -65,9 +63,7 @@ MicEnvironmentBlockTest >> testEnvironmentWiathArgsWithCorrespondingClassIsCreat
 bababba
 
 toto'.
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
-		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c' , String cr , contents , String cr , EnvironmentClosingBlockMarkup , String cr.
 		
 	root := parser parse: source.
 	self assert: root children size equals: 1.
@@ -89,12 +85,11 @@ MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 '" 
 	| source root env environmentName |
 	environmentName := 'slide'.
-	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
+	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
 	 '- item1 
 - item 2
 
-blbababbab bababba', String cr,
-	parser environmentClosingBlockMarkup, String cr.
+blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	root :=  parser parse: source.
 	
 	self assert: root children size equals: 1.
@@ -127,9 +122,9 @@ toto
 bababba
 
 toto'.
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c'
 		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+		, EnvironmentClosingBlockMarkup , String cr.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
@@ -168,9 +163,9 @@ MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 
 	| source root env environmentName |
 	environmentName := 'slide'.
-	source := parser environmentOpeningBlockMarkup ,  environmentName, String cr, 
+	source := EnvironmentOpeningBlockMarkup ,  environmentName, String cr, 
 	 'this is the slide body', String cr,
-	parser environmentClosingBlockMarkup, String cr.
+	EnvironmentClosingBlockMarkup, String cr.
 	
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -190,12 +185,11 @@ MicEnvironmentBlockTest >> testEnvironmentWithFormat [
 '" 
 	| source root env environmentName |
 	environmentName := 'slide'.
-	source := parser environmentOpeningBlockMarkup , environmentName, String cr, 
+	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
 	 '- item1 **bold**
 - item 2
 
-blbababbab bababba', String cr,
-	parser environmentClosingBlockMarkup, String cr.
+blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	root :=  parser parse: source.
 	
 	self assert: root children size equals: 1.
@@ -222,9 +216,9 @@ toto
 bababba
 
 toto'.
-	source := parser environmentOpeningBlockMarkup , environmentName
+	source := EnvironmentOpeningBlockMarkup , environmentName
 		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+		, EnvironmentClosingBlockMarkup , String cr.
 	root := parser parse: source .
 	self assert: root children size equals: 1.
 	env := root children first.
@@ -262,9 +256,9 @@ MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 bababba
 
 toto'.
-	source := parser environmentOpeningBlockMarkup, environmentName, parser argumentListStartDelimiter, 'a=1&b=17&c'
+	source := EnvironmentOpeningBlockMarkup, environmentName, ArgumentListStartDelimiter, 'a=1&b=17&c'
 		, String cr , contents , String cr
-		, parser environmentClosingBlockMarkup , String cr.
+		, EnvironmentClosingBlockMarkup , String cr.
 		
 	root := parser parse: source.
 	self assert: root children size equals: 1.

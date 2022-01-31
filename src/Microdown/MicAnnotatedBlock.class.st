@@ -30,8 +30,8 @@ MicAnnotatedBlock >> closeMe [
 
 { #category : #testing }
 MicAnnotatedBlock >> lineMarkup [
-	"Normally !!"
-	^ parser annotatedParagraphMarkup
+	
+	^ AnnotatedParagraphMarkup
 ]
 
 { #category : #accessing }

@@ -62,7 +62,7 @@ MicLaTeXWriterTest >> parseInlined: aString andCheckWeGet: aResultingString [
 MicLaTeXWriterTest >> setUp [
 
 	super setUp.
-	parser := MicroDownParser new.
+	parser := Microdown new.
 	writer := self actualClass new.
 	factory := MicMicrodownSnippetFactory new
 ]

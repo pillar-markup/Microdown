@@ -31,7 +31,7 @@ MicLinkBlock >> kind [
 { #category : #accessing }
 MicLinkBlock >> openingDelimiter [
 
- 	^ MicLinkNameOpenerDelimiter markup
+ 	^ LinkNameOpenerMarkup
 ]
 
 { #category : #accessing }

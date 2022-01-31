@@ -24,7 +24,7 @@ MicMonospaceDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicMonospaceDelimiter class >> markup [
-	^ '`'
+	^ MonospaceMarkup
 ]
 
 { #category : #accessing }

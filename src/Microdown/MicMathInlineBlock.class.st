@@ -48,7 +48,7 @@ MicMathInlineBlock >> cleanSubstring [
 { #category : #accessing }
 MicMathInlineBlock >> closingDelimiter [
 
- 	^ MicMathDelimiter markup
+ 	^ MathMarkup
 ]
 
 { #category : #accessing }
@@ -60,5 +60,5 @@ MicMathInlineBlock >> kind [
 { #category : #accessing }
 MicMathInlineBlock >> openingDelimiter [
 
- 	^ MicMathDelimiter markup
+ 	^ MathMarkup
 ]

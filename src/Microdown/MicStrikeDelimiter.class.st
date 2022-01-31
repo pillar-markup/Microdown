@@ -24,7 +24,7 @@ MicStrikeDelimiter class >> isOpener [
 
 { #category : #accessing }
 MicStrikeDelimiter class >> markup [
-	^ '~'
+	^ StrikeMarkup
 ]
 
 { #category : #accessing }
