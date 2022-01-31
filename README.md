@@ -9,7 +9,8 @@ Microdown is a smaller markdown but it is more extensible.
 ## Quick start
 ### Loading specific version
 
-To load the latest stable version load the master.
+To load the latest stable version load the master. If you have trouble loading in latest Pharo just execute the preloading.st script in the .github folder.
+This script will remove exiting Microdown package and clear the system.
 
 ```Smalltalk
 Metacello new
