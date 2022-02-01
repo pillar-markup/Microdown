@@ -317,7 +317,7 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithCode [
 	doc := Microdown parse: self slideInMicrodownWithCode.
 	h5p := MicH5PTemplateWriter new.
 	h5p visit: doc children first.
-	self assert: h5p contents equals: '<pre></pre>\n' 
+	self assert: h5p contents equals: '<pre>testMethod\n self assert: 4 foo equals: 55\n</pre>\n<pre>testFoo\n   self assertSpace.\n   self assertSpace2\n   ^ self\n</pre>\n' 
 ]
 
 { #category : #'low level visitor tests' }
@@ -327,7 +327,7 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
 	doc := Microdown parse: self slideInMicrodownWithSimpleCode.
 	h5p := MicH5PTemplateWriter new.
 	h5p visit: doc children first.
-	self assert: h5p contents equals: '<pre>testMethod\n		self assert: 4 foo equals: 55\n<\pre>\n' 
+	self assert: h5p contents equals: '<pre>testMethod\n self assert: 4 foo equals: 55\n</pre>\n'
 ]
 
 { #category : #tests }

@@ -7,7 +7,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'stream',
-		'parserClass',
 		'lastIsNewLine',
 		'newLineCharacterString'
 	],
