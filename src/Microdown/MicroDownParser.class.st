@@ -161,9 +161,6 @@ Class {
 		'root',
 		'dispatchTable'
 	],
-	#pools : [
-		'MicroSharedPool'
-	],
 	#category : #'Microdown-Parser'
 }
 
