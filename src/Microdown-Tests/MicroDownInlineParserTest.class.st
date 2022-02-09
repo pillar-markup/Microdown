@@ -4,6 +4,9 @@ The logic is to call the main parser so that the inline elements are in the bloc
 Class {
 	#name : #MicrodownInlineParserTest,
 	#superclass : #TestCase,
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
@@ -114,13 +117,13 @@ MicrodownInlineParserTest >> testAnnotationPrintString [
 { #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotations [
  	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc',MicAnnotationOpenerDelimiter markup,'footnote | value=A foonote is annotation.',MicAnnotationCloserDelimiter markup,'def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc', AnnotationOpenerMarkup,'footnote | value=A foonote is annotation.', AnnotationCloserMarkup,'def'.
  	self assert: elements size equals: 3.
  	self assert: elements first substring equals: 'abc'.
  	self assert: elements second substring equals: 'footnote | value=A foonote is annotation.'.
  	self assert: elements second kind equals: 'annotation'.
- 	self assert: elements second openingDelimiter equals: MicAnnotationOpenerDelimiter markup.
- 	self assert: elements second closingDelimiter equals: MicAnnotationCloserDelimiter markup
+ 	self assert: elements second openingDelimiter equals: AnnotationOpenerMarkup.
+ 	self assert: elements second closingDelimiter equals: AnnotationCloserMarkup
  
 ]
 
@@ -480,7 +483,7 @@ MicrodownInlineParserTest >> testStructureOfAnchorReference [
 MicrodownInlineParserTest >> testStructureOfAnnotation [
 
  	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: MicAnnotationOpenerDelimiter markup , 'annotation' , MicAnnotationCloserDelimiter markup ) first.
+ 	element := (self parseAndReturnElementsOfParagraphFor: AnnotationOpenerMarkup , 'annotation' , AnnotationCloserMarkup ) first.
 	self assert: element text equals: 'annotation'.
 	self assert: element name equals: 'annotation'.
 	self assert: element children equals: #()
@@ -491,7 +494,7 @@ MicrodownInlineParserTest >> testStructureOfAnnotation [
 MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
 
  	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: MicAnnotationOpenerDelimiter markup , 'inputFile|path=PharoTour.mic' , MicAnnotationCloserDelimiter markup ) first.
+ 	element := (self parseAndReturnElementsOfParagraphFor: AnnotationOpenerMarkup , 'inputFile|path=PharoTour.mic' , AnnotationCloserMarkup ) first.
 	self assert: element name equals: 'inputFile'.
 	self assert: element children equals: #().
 	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
