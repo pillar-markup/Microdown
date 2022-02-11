@@ -91,15 +91,15 @@ MicrodownInlineParserTest >> testAnchorRefernce [
 { #category : #'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'needed ', MicAnnotationOpenerDelimiter markup ,'footnote | value=A foonote is annotation.', MicAnnotationCloserDelimiter markup.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'needed ', AnnotationOpenerMarkup ,'footnote | value=A foonote is annotation.', AnnotationCloserMarkup.
 	"pay attention an annotation is inside a paragraph (else this is an environment)"
 	annotation := elements second.
 	
  	self assert: annotation substring equals: 'footnote | value=A foonote is annotation.'.
 	
  	self assert: annotation kind equals: 'annotation'.
- 	self assert: annotation openingDelimiter equals: MicAnnotationOpenerDelimiter markup.
- 	self assert: annotation closingDelimiter equals: MicAnnotationCloserDelimiter markup
+ 	self assert: annotation openingDelimiter equals: AnnotationOpenerMarkup.
+ 	self assert: annotation closingDelimiter equals: AnnotationCloserMarkup
  
 ]
 
@@ -107,7 +107,7 @@ MicrodownInlineParserTest >> testAnnotationBasic [
 MicrodownInlineParserTest >> testAnnotationPrintString [
  	
 	| elements |
- 	elements := self parseAndReturnElementsOfParagraphFor: 'abc',MicAnnotationOpenerDelimiter markup,'footnote | value=A foonote is annotation.&width=90',MicAnnotationCloserDelimiter markup,'def'.
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc',AnnotationOpenerMarkup,'footnote | value=A foonote is annotation.&width=90',AnnotationCloserMarkup,'def'.
  	self assert: elements size equals: 3.
  	self assert: elements second text equals: 'footnote | value=A foonote is annotation.&width=90'.
 	self assert: elements second name equals: 'footnote'.

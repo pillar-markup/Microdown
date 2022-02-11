@@ -65,7 +65,7 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
-	self raw: MicAnnotationOpenerDelimiter markup.
+	self raw: AnnotationOpenerMarkup.
 	self raw: aString.
 	aDictionary ifNotEmpty: [ 
 		self raw: ' | '.
@@ -74,7 +74,7 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 			self raw: '='.
 			self raw: value.
 			key = aDictionary keys last ifFalse: [ self raw: '&' ] ] ].
-	self raw: MicAnnotationCloserDelimiter markup
+	self raw: AnnotationCloserMarkup
 ]
 
 { #category : #'element - format' }
@@ -277,10 +277,10 @@ MicMicrodownTextualBuilder >> initialize [
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> inputFile: aPathString [
 
-	self raw: MicAnnotationOpenerDelimiter markup.
+	self raw: AnnotationOpenerMarkup.
 	self raw: 'inputfile | path='.
 	self raw: aPathString.
-	self raw: MicAnnotationCloserDelimiter markup
+	self raw: AnnotationCloserMarkup
 ]
 
 { #category : #'element - annotated' }

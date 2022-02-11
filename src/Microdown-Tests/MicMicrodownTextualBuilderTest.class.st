@@ -58,7 +58,7 @@ MicMicrodownTextualBuilderTest >> testAnnotation [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {'label'->'aLabel' . 'value' -> '42'} asDictionary) contents 
-		equals: MicAnnotationOpenerDelimiter markup,'anAnnotationName | label=aLabel&value=42',MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup,'anAnnotationName | label=aLabel&value=42', AnnotationCloserMarkup 
 ]
 
 { #category : #'tests - anchor' }
@@ -66,7 +66,7 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {} ) contents 
-		equals: MicAnnotationOpenerDelimiter markup,'anAnnotationName',MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup, 'anAnnotationName', AnnotationCloserMarkup
 ]
 
 { #category : #'tests - format' }
@@ -286,8 +286,8 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
 		assert: (builder inputFile: 'Chapters/image.png') contents 
-		equals: MicAnnotationOpenerDelimiter markup,
-					'inputfile | path=Chapters/image.png', MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup,
+					'inputfile | path=Chapters/image.png', AnnotationCloserMarkup
 ]
 
 { #category : #'tests - format' }

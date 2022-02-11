@@ -508,10 +508,10 @@ MicInlineParserTest >> testSplitAnnotation [
 
 	| res |
 	res := self splitter parse:
-		       'abc',MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup,'def'.
+		       'abc',AnnotationOpenerMarkup,'type:value|key1=val1&key2=val2', AnnotationCloserMarkup, 'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup,'type:value|key1=val1&key2=val2',AnnotationCloserMarkup .
 			'Text(def)' }
 ]
 
@@ -519,10 +519,11 @@ MicInlineParserTest >> testSplitAnnotation [
 MicInlineParserTest >> testSplitBlockAnnotation [
 
 	| res |
-	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup,'def'.
+	res := self splitter 
+		parse: 'abc', AnnotationOpenerMarkup ,'an annotation', AnnotationCloserMarkup ,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup. 'Text(def)' }.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup ,'an annotation',AnnotationCloserMarkup . 'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock)
 ]
 
