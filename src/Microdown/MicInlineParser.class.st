@@ -167,12 +167,21 @@ MicInlineParser >> initializeDelimiters [
 
 { #category : #'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks [
-	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: 1 to: string size
+	^ self 
+		insertBasicText: anArrayOfInlineBlocks 
+			withFinalArray: LinkedList new 
+			from: 1 
+			to: string size
 ]
 
 { #category : #'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
-	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: startIndex to: endIndex
+	^ self 
+		insertBasicText: anArrayOfInlineBlocks 
+		withFinalArray: LinkedList new 
+		from: startIndex 
+		to: endIndex
+		
 ]
 
 { #category : #'handle basic text' }
@@ -268,15 +277,14 @@ MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 MicInlineParser >> newInlineBlock [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
-	(inlineBlockClass isEvaluated) 
+	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 
-			^ inlineBlockClass
+			inlineBlockClass
 				from: opener index
 				to: closer index + closer size - 1
 				withSubstring: correctSubstring
-				withChildren: children asArray
-		 ]
-		ifFalse: [ ^ self newInlineBlockWithoutChildren ]
+				withChildren: children asArray ]
+		ifFalse: [  self newInlineBlockWithoutChildren ]
 	
 ]
 
@@ -293,18 +301,17 @@ MicInlineParser >> newInlineBlockWithoutChildren [
 MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
-	(inlineBlockClass isEvaluated) 
+	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 
-			^ inlineBlockClass
+			inlineBlockClass
 				from: opener index
 				to: aCloserIndex
 				withKind: opener type
 				withSubstring: correctSubstring
 				withChildren: children asArray
 				withURL: correctURL
-				withParser: self
-		 ]
-		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
+				withParser: self ]
+		ifFalse: [  self newURLInlineBlockWithoutChildren ]
 	
 ]
 
