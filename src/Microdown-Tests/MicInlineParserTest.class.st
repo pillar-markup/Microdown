@@ -4,6 +4,9 @@ These tests should be merged in MicrodDownInlineParserTest
 Class {
 	#name : #MicInlineParserTest,
 	#superclass : #TestCase,
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
@@ -42,10 +45,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 
 	| res |
 	res := self splitter parse:
-		       'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42',MicAnnotationCloserDelimiter markup,'def'.
+		       'abc', AnnotationOpenerMarkup ,'an annotation|key=cite&label=42',AnnotationCloserMarkup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42', MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup,'an annotation|key=cite&label=42', AnnotationCloserMarkup.
 			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
@@ -56,10 +59,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 MicInlineParserTest >> testAnnotationWithParametersWithBlank [
 
 	| res |
-	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup,'def'.
+	res := self splitter parse: 'abc', AnnotationOpenerMarkup,'an annotation|key=&label=42', AnnotationCloserMarkup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup ,'an annotation|key=&label=42', AnnotationCloserMarkup.
 			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
