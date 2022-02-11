@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'stream',
 		'builder',
-		'inList'
+		'inList',
+		'backSlasher'
 	],
 	#category : #'Microdown-PrettyPrinter'
 }
@@ -12,7 +13,7 @@ Class {
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> backSlasher [
 
-	^ MicrodownBackSlasher new
+	^ backSlasher 
 ]
 
 { #category : #build }
@@ -57,6 +58,7 @@ MicTextualMicrodownExporter >> inList [
 { #category : #initialization }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
+	backSlasher := MicrodownBackSlasher new.
 	stream := (String new: 10000) writeStream.
 	builder := Microdown builder.
 	builder setStream: stream.
