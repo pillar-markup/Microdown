@@ -105,7 +105,7 @@ MicFigureBlock >> kind [
 { #category : #accessing }
 MicFigureBlock >> openingDelimiter [
 
- 	^ MicFigureNameOpenerDelimiter markup
+ 	^ FigureNameOpenerMarkup
 ]
 
 { #category : #accessing }

@@ -77,7 +77,7 @@ MicInlineBlockWithUrl >> captionElements: aCollection [
 { #category : #accessing }
 MicInlineBlockWithUrl >> closingDelimiter [
 
- 	^ MicURLCloserDelimiter markup
+ 	^ URLCloserMarkup
 ]
 
 { #category : #accessing }

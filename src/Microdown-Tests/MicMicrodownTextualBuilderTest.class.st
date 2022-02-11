@@ -372,7 +372,7 @@ MicMicrodownTextualBuilderTest >> testQuote [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testRawFormat [
 
-	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
+	self assert: (builder rawFormat: 'aRawFormat') contents equals: RawOpenerMarkup, 'aRawFormat', RawCloserMarkup
 ]
 
 { #category : #tests }

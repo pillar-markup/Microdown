@@ -329,9 +329,9 @@ MicMicrodownTextualBuilder >> lines: aString [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> mathInline: aText [
 
-	self raw: MicMathDelimiter markup.
+	self raw: MathMarkup.
 	self raw: aText.
-	self raw: MicMathDelimiter markup.
+	self raw: MathMarkup.
 ]
 
 { #category : #'element - math' }
@@ -501,9 +501,9 @@ MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> rawFormat: aText [
 
-	self raw: MicRawOpenerDelimiter markup.
+	self raw: RawOpenerMarkup.
 	self raw: aText.
-	self raw: MicRawCloserDelimiter markup.
+	self raw: RawCloserMarkup.
 ]
 
 { #category : #'writing low-level' }
