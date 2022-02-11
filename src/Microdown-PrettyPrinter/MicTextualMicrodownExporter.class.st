@@ -4,16 +4,24 @@ Class {
 	#instVars : [
 		'stream',
 		'builder',
-		'inList',
-		'backSlasher'
+		'inList'
+	],
+	#pools : [
+		'MicroSharedPool'
 	],
 	#category : #'Microdown-PrettyPrinter'
 }
 
-{ #category : #'visit - format' }
-MicTextualMicrodownExporter >> backSlasher [
+{ #category : #helpers }
+MicTextualMicrodownExporter >> backSlashString: aString [
 
-	^ backSlasher 
+	^ String streamContents: [ :st | 
+		aString doWithIndex: [ :each :i | 
+			((Delimiters includes: each asString) or:
+				 (Delimiters includes:
+					  each asString , (aString at: (i + 1 min: aString size)) asString)) 
+			ifTrue: [ st nextPutAll: '\' ].
+		st nextPutAll: each asString ]]
 ]
 
 { #category : #build }
@@ -58,7 +66,6 @@ MicTextualMicrodownExporter >> inList [
 { #category : #initialization }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
-	backSlasher := MicrodownBackSlasher new.
 	stream := (String new: 10000) writeStream.
 	builder := Microdown builder.
 	builder setStream: stream.
@@ -317,7 +324,7 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 	
-	builder text:  (self backSlasher backSlashString: aMicTextBlock substring)
+	builder text:  (self backSlashString: aMicTextBlock substring)
 ]
 
 { #category : #visiting }

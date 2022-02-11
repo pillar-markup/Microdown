@@ -18,6 +18,7 @@ Class {
 		'BoldMarkup',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
+		'Delimiters',
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
 		'FigureNameOpenerMarkup',
@@ -95,7 +96,23 @@ MicroSharedPool class >> initialize [
 	URLCloserMarkup := ')'. 
 	URLOpenerMarkup := '('. 
 
-	
+	Delimiters := { AnchorReferenceCloserMarkup . 
+	AnchorReferenceOpenerMarkup .
+	AnnotationCloserMarkup .
+	AnnotationOpenerMarkup .
+	BoldMarkup .
+	FigureNameOpenerMarkup .  
+	ItalicMarkup .
+	LinkNameCloserMarkup .  
+	LinkNameOpenerMarkup .  
+	MathMarkup .
+	MonospaceMarkup .  
+	RawCloserMarkup . 
+	RawOpenerMarkup .
+	StrikeMarkup . 
+	URLCloserMarkup . 
+	URLOpenerMarkup} 
+
 	
 	
 	
