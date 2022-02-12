@@ -48,7 +48,7 @@ Foo _bar_
 MicMicrodownSnippetFactory >> annotationSample [
 
 	^ '
-abc', MicAnnotationOpenerDelimiter markup , 'Foo | value=aFoo&label=42 ', MicAnnotationCloserDelimiter markup ,'def
+abc',  AnnotationOpenerMarkup , 'Foo | value=aFoo&label=42 ', AnnotationCloserMarkup ,'def
 '
 ]
 
@@ -338,7 +338,7 @@ MicMicrodownSnippetFactory >> fileFigureSample [
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> footnoteSample [
-	^ MicAnnotationOpenerDelimiter markup ,'footnote|note=Pharo is cool', MicAnnotationCloserDelimiter markup
+	^ AnnotationOpenerMarkup ,'footnote|note=Pharo is cool', AnnotationCloserMarkup
 ]
 
 { #category : #headers }

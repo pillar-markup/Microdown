@@ -29,7 +29,7 @@ MicRawBlock >> cleanSubstring [
 { #category : #accessing }
 MicRawBlock >> closingDelimiter [
 
- 	^ MicRawCloserDelimiter markup
+ 	^ RawCloserMarkup
 ]
 
 { #category : #accessing }
@@ -41,5 +41,5 @@ MicRawBlock >> kind [
 { #category : #accessing }
 MicRawBlock >> openingDelimiter [
 
- 	^ MicRawOpenerDelimiter markup
+ 	^ RawOpenerMarkup
 ]

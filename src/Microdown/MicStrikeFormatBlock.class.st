@@ -15,7 +15,7 @@ MicStrikeFormatBlock >> accept: aVisitor [
 { #category : #accessing }
 MicStrikeFormatBlock >> closingDelimiter [
 
- 	^ MicStrikeDelimiter markup
+ 	^ StrikeMarkup
 ]
 
 { #category : #accessing }

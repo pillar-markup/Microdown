@@ -20,6 +20,9 @@ Class {
 		'keys',
 		'delimiterClass'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-Parser'
 }
 
@@ -164,12 +167,21 @@ MicInlineParser >> initializeDelimiters [
 
 { #category : #'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks [
-	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: 1 to: string size
+	^ self 
+		insertBasicText: anArrayOfInlineBlocks 
+			withFinalArray: LinkedList new 
+			from: 1 
+			to: string size
 ]
 
 { #category : #'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
-	^ self insertBasicText: anArrayOfInlineBlocks withFinalArray: LinkedList new from: startIndex to: endIndex
+	^ self 
+		insertBasicText: anArrayOfInlineBlocks 
+		withFinalArray: LinkedList new 
+		from: startIndex 
+		to: endIndex
+		
 ]
 
 { #category : #'handle basic text' }
@@ -215,16 +227,17 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 	"IF we find a ( just after and a ) after again
 	THEN we add the associate link or figure inline block
 	ELSE we ignore it"
+	
 	| startIndex endIndex urlCloserIndex |
-	((string allButFirst: (closer index + closer size - 1)) beginsWith: self urlOpenerDelimiterClass markup)
+	((string allButFirst: (closer index + closer size - 1)) beginsWith: URLOpenerMarkup)
 		ifTrue: [ 
-			urlCloserIndex := string indexOfSubCollection: self urlCloserDelimiterClass markup startingAt: closer index ifAbsent: [ 0 ].
+			urlCloserIndex := string indexOfSubCollection: URLCloserMarkup startingAt: closer index ifAbsent: [ 0 ].
 			(urlCloserIndex > 0) 
 				ifTrue: [ 
 					startIndex := opener index + opener size.
 					endIndex := closer index - 1.
 					correctSubstring := string copyFrom: startIndex to: endIndex.
-					correctURL := string copyFrom: (closer index + closer size + self urlOpenerDelimiterClass size) to: (urlCloserIndex - 1).
+					correctURL := string copyFrom: (closer index + closer size + URLOpenerMarkup size) to: (urlCloserIndex - 1).
 					"Delete openers above in stack, considered as unclosed so ignored"
 					self popFrom: 1 to: indexOfAssociateOpener.
 					"Add found inline block"
@@ -264,15 +277,14 @@ MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 MicInlineParser >> newInlineBlock [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
-	(inlineBlockClass isEvaluated) 
+	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 
-			^ inlineBlockClass
+			inlineBlockClass
 				from: opener index
 				to: closer index + closer size - 1
 				withSubstring: correctSubstring
-				withChildren: children asArray
-		 ]
-		ifFalse: [ ^ self newInlineBlockWithoutChildren ]
+				withChildren: children asArray ]
+		ifFalse: [  self newInlineBlockWithoutChildren ]
 	
 ]
 
@@ -289,18 +301,17 @@ MicInlineParser >> newInlineBlockWithoutChildren [
 MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	inlineBlockClass := opener associatedInlineBlock.
-	(inlineBlockClass isEvaluated) 
+	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 
-			^ inlineBlockClass
+			inlineBlockClass
 				from: opener index
 				to: aCloserIndex
 				withKind: opener type
 				withSubstring: correctSubstring
 				withChildren: children asArray
 				withURL: correctURL
-				withParser: self
-		 ]
-		ifFalse: [ ^ self newURLInlineBlockWithoutChildren ]
+				withParser: self ]
+		ifFalse: [  self newURLInlineBlockWithoutChildren ]
 	
 ]
 
