@@ -6,7 +6,7 @@ Class {
 		'writer',
 		'factory'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-Tests'
 }
 
 { #category : #utilities }
