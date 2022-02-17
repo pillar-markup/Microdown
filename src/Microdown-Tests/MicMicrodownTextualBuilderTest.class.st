@@ -382,6 +382,19 @@ MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 	self assert: builder contents equals: 'label=42&size=MicTextBlock'
 ]
 
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testSimpleSlide [
+
+	self 
+		assert: (builder 
+					slideTitle: 'Ze super cool slide' 
+					withBody: [ builder text: 'This is a paragraph in a slide'] ) contents 
+		equals: '<?slide|title=Ze super cool slide
+
+This is a paragraph in a slide
+?>'
+]
+
 { #category : #'tests - format' }
 MicMicrodownTextualBuilderTest >> testStrike [
 

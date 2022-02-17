@@ -552,6 +552,19 @@ MicMicrodownTextualBuilder >> root: aBlock [
 	aBlock value
 ]
 
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> slideTitle: aString withBody: aBodyBlock [ 
+	
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'slide|title='.
+	self raw: aString.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup
+]
+
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> startOfOrderedListForLevel: aNumber [
 
