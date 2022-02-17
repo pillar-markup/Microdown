@@ -5,7 +5,7 @@ Class {
 		'filesystem',
 		'converter'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-Tests'
 }
 
 { #category : #running }

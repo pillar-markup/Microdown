@@ -254,7 +254,7 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 
 	| ref resource |
 	ref := MicResourceReference fromUri: aString.
-	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.latex?').
+	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.image?').
 	^ (resource asForm ifNil: aBlock) asText
 ]
 
