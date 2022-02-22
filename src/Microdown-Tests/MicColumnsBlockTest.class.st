@@ -10,20 +10,20 @@ MicColumnsBlockTest >> testSimpleColumn [
 	| doc |
 	doc := Microdown parse:  
 '
-<?columns
+<!columns
 
-<?column
+<!column
 
 - col 1 item1 a first list
 - col 1 item2 a first list
-?>
+!>
 
-<?column
+<!column
 
 - col 2 item1 a first list
 - col 2 item2 a first list
-?>
-?>'.
+!>
+!>'.
 	self assert: doc children size equals: 1.
 	self assert: doc children first class equals: MicColumnsBlock. 
 	self assert: doc children first children first class equals: MicColumnBlock.
@@ -38,20 +38,20 @@ MicColumnsBlockTest >> testSimpleColumnWithWidth [
 	| doc |
 	doc := Microdown parse:  
 '
-<?columns
+<!columns
 
-<?column|width=80
+<!column|width=80
 
 - col 1 item1 a first list
 - col 1 item2 a first list
-?>
+!>
 
-<?column|width=20
+<!column|width=20
 
 - col 2 item1 a first list
 - col 2 item2 a first list
-?>
-?>'.
+!>
+!>'.
 	self assert: doc children size equals: 1.
 	self assert: doc children first class equals: MicColumnsBlock. 
 	self assert: doc children first children first class equals: MicColumnBlock.

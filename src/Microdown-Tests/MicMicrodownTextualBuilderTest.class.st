@@ -151,8 +151,8 @@ MicMicrodownTextualBuilderTest >> testEnvironment [
 
 	self 
 		assert: (builder environment: 'anEnvironmentName' arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
-		equals: '<?anEnvironmentName|label=aLabel&value=42
-?>'
+		equals: '<!anEnvironmentName|label=aLabel&value=42
+!>'
 ]
 
 { #category : #'tests - anchor' }
@@ -162,9 +162,9 @@ MicMicrodownTextualBuilderTest >> testEnvironmentWithBody [
 		assert: (builder environment: 'anEnvironmentName' 
 					body: [ builder text: 'aText'] 
 					arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
-		equals: '<?anEnvironmentName|label=aLabel&value=42
+		equals: '<!anEnvironmentName|label=aLabel&value=42
 aText
-?>'
+!>'
 ]
 
 { #category : #'tests - references' }
@@ -389,10 +389,10 @@ MicMicrodownTextualBuilderTest >> testSimpleSlide [
 		assert: (builder 
 					slideTitle: 'Ze super cool slide' 
 					withBody: [ builder text: 'This is a paragraph in a slide'] ) contents 
-		equals: '<?slide|title=Ze super cool slide
+		equals: '<!slide|title=Ze super cool slide
 
 This is a paragraph in a slide
-?>'
+!>'
 ]
 
 { #category : #'tests - format' }
