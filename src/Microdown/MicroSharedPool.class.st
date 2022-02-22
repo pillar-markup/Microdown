@@ -48,7 +48,7 @@ Class {
 	#category : #'Microdown-Parser'
 }
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MicroSharedPool class >> initialize [
 	"self initialize"
 	
@@ -56,8 +56,8 @@ MicroSharedPool class >> initialize [
 	AnnotatedParagraphMarkup := '!!'.
 	CodeblockMarkup := '```'.
 	CommentedLineMarkup := '%'.
-	EnvironmentClosingBlockMarkup := '?>'.
-	EnvironmentOpeningBlockMarkup := '<?'.
+	EnvironmentClosingBlockMarkup := '!>'.
+	EnvironmentOpeningBlockMarkup := '<!'.
 	HeaderMarkup := '#'.
 	HorizontalLineMarkup	:= '***'.
 	MathClosingBlockMarkup := '&'.
