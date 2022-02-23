@@ -38,11 +38,13 @@ Second if we want to treat lines separatedly we have to reparse it. Now we do no
 Class {
 	#name : #MicCodeBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
-	#instVars : [
-		'firstTag'
-	],
 	#category : #'Microdown-Model'
 }
+
+{ #category : #accessing }
+MicCodeBlock class >> defaultLanguage [
+	^ 'Pharo'
+]
 
 { #category : #visiting }
 MicCodeBlock >> accept: aVisitor [
@@ -62,19 +64,17 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	
 	| lineWithoutMarkup argumentsSplitter |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	firstTag := argumentsSplitter firstTag.
+	argumentsSplitter := MicArgumentsSplitter 
+		split: lineWithoutMarkup 
+		defaultArg: #language 
+		defaultValue: self class defaultLanguage.
 	arguments := argumentsSplitter arguments.
 	^ lineWithoutMarkup
 ]
 
 { #category : #accessing }
-MicCodeBlock >> firstTag [
-	^ firstTag
-]
-
-{ #category : #accessing }
 MicCodeBlock >> firstTagValue [
+	self halt: 'do not use'.
 	^ arguments at: self firstTag ifAbsent: [ '' ]
 ]
 
@@ -92,8 +92,8 @@ MicCodeBlock >> hasBody [
 
 { #category : #accessing }
 MicCodeBlock >> hasFirstTag [
-
-	^ firstTag isNotEmpty
+	self halt: 'What is this used for?'.
+	^ 'firstTag' isNotEmpty
 ]
 
 { #category : #accessing }
@@ -106,10 +106,7 @@ MicCodeBlock >> hasLabel [
 { #category : #accessing }
 MicCodeBlock >> hasLanguage [
 	"Return true whether there is a language = tag used in the arguments."
-	
-	arguments ifNotEmpty: [ 
-		^ arguments at: #language ifPresent: [ true ] ifAbsent: [ false ]].
-	^ false
+	^ true
 ]
 
 { #category : #testing }
@@ -139,10 +136,7 @@ MicCodeBlock >> label: aString [
 
 { #category : #accessing }
 MicCodeBlock >> language [
-	arguments ifNotEmpty: [ 
-		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
-		^ arguments at: #language ].
-	^ ''
+	^ arguments at: #language
 ]
 
 { #category : #utilities }
