@@ -21,7 +21,6 @@ MicArgumentsSplitterTest >> subjectUnderTestWith: aString [
 MicArgumentsSplitterTest >> testArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'foo=bar'.
-	self assert: (subject arguments) size equals: 1.
 	self assert: (subject arguments at: #foo) equals: 'bar'
 ]
 
