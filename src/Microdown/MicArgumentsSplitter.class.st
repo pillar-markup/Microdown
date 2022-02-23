@@ -13,7 +13,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'arguments',
-		'name'
+		'defaultArg'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -25,7 +25,7 @@ MicArgumentsSplitter class >> withStream: aStream [
 
 { #category : #'instance creation' }
 MicArgumentsSplitter class >> withString: aString [
-	^ self new from: aString; yourself 
+	^ self split: aString defaultArg: #defaultArg
 ]
 
 { #category : #accessing }
@@ -34,50 +34,74 @@ MicArgumentsSplitter >> arguments [
 ]
 
 { #category : #accessing }
+MicArgumentsSplitter >> defaultArg [
+
+	^ defaultArg
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> defaultArg: anObject [
+
+	defaultArg := anObject
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> defaultValue [
+	^ self arguments at: #defaultArg
+]
+
+{ #category : #accessing }
 MicArgumentsSplitter >> firstTag [
-	name ifNotNil: [ ^ name ].
+	self error: 'to be eliminated'.
 	arguments notEmpty ifTrue: [ ^ arguments keys first asString ].
 	^ ''
 ]
 
 { #category : #initialization }
 MicArgumentsSplitter >> from: fullString [
+	"I am the 'parser' of the argument splitter"
 	| barSplit |
-	arguments := OrderedDictionary new.
 	fullString isEmpty ifTrue: [ ^ self ].
 	(fullString intersection: '|=&') isEmpty 
-		ifTrue: [ ^self setNameNoArguments: fullString  ].
+		ifTrue: [ ^self setDefaultNoArguments: fullString  ].
 	barSplit := fullString splitOn: $|.
 	barSplit size > 1
-		ifTrue: [ ^ self setNameAndArguments: barSplit  ].
-	self setNoNameButArguments: fullString 
+		ifTrue: [ ^ self setDefaultAndArguments: barSplit  ].
+	self setNoDefaultButArguments: fullString 
 	
+]
+
+{ #category : #initialization }
+MicArgumentsSplitter >> initialize [
+	arguments := OrderedDictionary new.
 ]
 
 { #category : #accessing }
 MicArgumentsSplitter >> name [
-	^ name
+	self error: 'to be eliminated'.
+	^ 'name'
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNameAndArguments: barSplit [
+MicArgumentsSplitter >> setDefaultAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a name, second to be arguments"
-	
-	name := barSplit first trim.
-	self setNoNameButArguments: barSplit second
+	|defaultValue|
+	defaultValue := barSplit first trim.
+	self arguments at: defaultArg put: defaultValue.
+	self setNoDefaultButArguments: barSplit second
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNameNoArguments: fullString [
+MicArgumentsSplitter >> setDefaultNoArguments: fullString [
 	"fullstring is just a name (containing no arguments)
-	It is interpreted as both a name, and as an argument with no value
-	"
-	name := fullString trim.
-	arguments at: name asSymbol put: nil
+	It is interpreted as both a name, and as an argument with no value"
+	|defaultValue|
+	defaultValue := fullString trim.
+	arguments at: defaultArg put: defaultValue
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNoNameButArguments: string [
+MicArgumentsSplitter >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
 	| pairs |
 	pairs := string splitOn: $&.
