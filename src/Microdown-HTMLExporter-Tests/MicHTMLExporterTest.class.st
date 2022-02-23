@@ -13,7 +13,7 @@ Class {
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
-	self skip.
+
 	mic := parser parse: 	aString.
 	writer visit: mic.
 	self assert: writer contents equals: aResultingString
@@ -72,34 +72,38 @@ foo bar</code></pre>
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigure [
-	self skip.
-	self parse: factory figureSample andCheckWeGet: '
-<p><img src="/anUrl" alt="Foo"/><figcaption>Foo</figcaption>
-</p>'
+
+	self 
+		parse: factory figureSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureItalic [
-	self skip.
-	self parse: factory figureItalicSample andCheckWeGet: '
-<p><img src="/anUrl" alt="_Foo_" class="figureTest" width="80"/><figcaption><em>Foo</em></figcaption>
-</p>'
+
+	self 
+		parse: factory figureItalicSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="_Foo_" class="figureTest" width="80"><figcaption><em>Foo</em></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureNested [
-	self skip.
-	self parse: factory figureNestedSample andCheckWeGet: '
-<p><img src="/anUrl" alt="**Foo_**" class="figureTest" width="80"/><figcaption><strong>Foo_</strong></figcaption>
-</p>'
+
+	self 
+		parse: factory figureNestedSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="**Foo_**" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureReal [
-	self skip.
-	self parse: factory figureRealSample andCheckWeGet: '
-<p><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"/><figcaption>A logo png under figures folder</figcaption>
-</p>'
+
+	self 
+		parse: factory figureRealSample 
+		andCheckWeGet: '
+<p><figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -124,6 +128,15 @@ MicHTMLExporterTest >> testFigureWithoutCaption [
 	self parse: factory figureWithoutCaptionSample andCheckWeGet: '
 <p><img src="/anUrl" alt="" class="figureTest" width="80"/><figcaption></figcaption>
 </p>'
+]
+
+{ #category : #tests }
+MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
+
+	self 
+		parse: factory figureSampleWithoutSizeAndLabel 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
 { #category : #tests }

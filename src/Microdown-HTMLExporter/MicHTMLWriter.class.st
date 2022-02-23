@@ -153,9 +153,23 @@ MicHTMLWriter >> visitCodeblock: aCodeBlock [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitFigure: aFigure [
+MicHTMLWriter >> visitFigCaption: aFigCaptionBlock [
 
-	self exportImgFor: aFigure
+	canvas tag
+		name: 'figcaption';
+		with: [ 
+			aFigCaptionBlock hasCaption ifTrue: [ 
+				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitFigure: aFigure [
+	"Write mark up elements related with photo in the receiver's canvas"
+
+	canvas tag
+		name: 'figure';
+		with: [ self visitImg: aFigure ]
+
 ]
 
 { #category : #visiting }
@@ -166,6 +180,21 @@ MicHTMLWriter >> visitHeader: aHeader [
 		name: 'h',  aHeader level asString;
 		with: aHeader header
 	
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitImg: aMicFigureBlock [
+	"Write mark up elements related with image tag in the receiver's canvas.
+	Mandatory attributes:
+		src - Specifies the path to the image
+		alt - Specifies an alternate text for the image, if the image for some reason cannot be displayed"
+	
+	canvas tag
+		name: 'img';
+		parameterAt: 'src' put: aMicFigureBlock reference path;
+		parameterAt: 'alt' put: (aMicFigureBlock hasChildren ifTrue: [ aMicFigureBlock text ] ifFalse: [ '' ]);
+		addArguments: aMicFigureBlock;
+		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
 
 { #category : #visiting }

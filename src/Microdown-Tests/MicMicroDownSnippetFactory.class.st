@@ -301,6 +301,15 @@ MicMicrodownSnippetFactory >> figureSample [
 ]
 
 { #category : #format }
+MicMicrodownSnippetFactory >> figureSampleWithoutSizeAndLabel [
+
+	^ '
+
+![Foo](/anUrl)
+'
+]
+
+{ #category : #format }
 MicMicrodownSnippetFactory >> figureStrikeSample [
 
 	^ '
