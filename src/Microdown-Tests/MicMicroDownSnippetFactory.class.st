@@ -220,11 +220,11 @@ MicMicrodownSnippetFactory >> documentFrom: aString [
 MicMicrodownSnippetFactory >> environmentSample [
 
 	^ '
-<?Foo|value=aFoo&label=42
+<!Foo|value=aFoo&label=42
 
 Foo
 
-?>'
+!>'
 ]
 
 { #category : #anchor }
