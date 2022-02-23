@@ -19,6 +19,20 @@ Class {
 }
 
 { #category : #'instance creation' }
+MicArgumentsSplitter class >> split: aString defaultArg: defArg [
+	^ self split: aString defaultArg: defArg defaultValue: ''
+]
+
+{ #category : #'instance creation' }
+MicArgumentsSplitter class >> split: aString defaultArg: defArg defaultValue: defValue [
+	|splitter|
+	splitter := self new.
+	splitter	defaultArg: defArg.
+	splitter arguments at: defArg put: defValue.
+	^ splitter from: aString; yourself
+]
+
+{ #category : #'instance creation' }
 MicArgumentsSplitter class >> withStream: aStream [
 	^ self withString: aStream contents.
 ]
