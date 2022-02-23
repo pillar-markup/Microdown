@@ -10,10 +10,10 @@ My syntax is of the following form:
 "
 Class {
 	#name : #MicArgumentsSplitter,
-	#superclass : #Object,
+	#superclass : #OrderedDictionary,
 	#instVars : [
-		'arguments',
-		'defaultArg'
+		'defaultArg',
+		'initialValue'
 	],
 	#category : #'Microdown-Parser'
 }
@@ -28,7 +28,8 @@ MicArgumentsSplitter class >> split: aString defaultArg: defArg defaultValue: de
 	|splitter|
 	splitter := self new.
 	splitter	defaultArg: defArg.
-	splitter arguments at: defArg put: defValue.
+	splitter at: defArg put: defValue.
+	splitter initialValue: defValue.
 	^ splitter from: aString; yourself
 ]
 
@@ -40,11 +41,6 @@ MicArgumentsSplitter class >> withStream: aStream [
 { #category : #'instance creation' }
 MicArgumentsSplitter class >> withString: aString [
 	^ self split: aString defaultArg: #defaultArg
-]
-
-{ #category : #accessing }
-MicArgumentsSplitter >> arguments [
-	^ arguments
 ]
 
 { #category : #accessing }
@@ -61,14 +57,7 @@ MicArgumentsSplitter >> defaultArg: anObject [
 
 { #category : #accessing }
 MicArgumentsSplitter >> defaultValue [
-	^ self arguments at: #defaultArg
-]
-
-{ #category : #accessing }
-MicArgumentsSplitter >> firstTag [
-	self error: 'to be eliminated'.
-	arguments notEmpty ifTrue: [ ^ arguments keys first asString ].
-	^ ''
+	^ self at: #defaultArg
 ]
 
 { #category : #initialization }
@@ -85,15 +74,16 @@ MicArgumentsSplitter >> from: fullString [
 	
 ]
 
-{ #category : #initialization }
-MicArgumentsSplitter >> initialize [
-	arguments := OrderedDictionary new.
+{ #category : #accessing }
+MicArgumentsSplitter >> hasNonDefaultArguments [
+	^ self size > 1 or:
+		[(self at: defaultArg) ~= initialValue   ]
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter >> name [
-	self error: 'to be eliminated'.
-	^ 'name'
+MicArgumentsSplitter >> initialValue: anObject [
+
+	initialValue := anObject
 ]
 
 { #category : #parsing }
@@ -101,7 +91,7 @@ MicArgumentsSplitter >> setDefaultAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a name, second to be arguments"
 	|defaultValue|
 	defaultValue := barSplit first trim.
-	self arguments at: defaultArg put: defaultValue.
+	self at: defaultArg put: defaultValue.
 	self setNoDefaultButArguments: barSplit second
 ]
 
@@ -111,7 +101,7 @@ MicArgumentsSplitter >> setDefaultNoArguments: fullString [
 	It is interpreted as both a name, and as an argument with no value"
 	|defaultValue|
 	defaultValue := fullString trim.
-	arguments at: defaultArg put: defaultValue
+	self at: defaultArg put: defaultValue
 ]
 
 { #category : #parsing }
@@ -121,6 +111,6 @@ MicArgumentsSplitter >> setNoDefaultButArguments: string [
 	pairs := string splitOn: $&.
 	pairs do: [ :p | |keyValue|
 		keyValue := p splitOnFirst: $=.
-		arguments at: keyValue first trim asSymbol put: keyValue second ]
+		self at: keyValue first trim asSymbol put: keyValue second ]
 	
 ]
