@@ -191,16 +191,17 @@ MicroDownParser >> blockStarterClassFrom: line [
 	line ifEmpty: [ ^ nil ].
 	(self matchOrdered: line)
 		ifTrue: [ ^ MicOrderedListBlock ]
-		ifFalse: [ 
-			"the max length of a markup is 3 even if header can be #####"
-			1 to: 3 do: [:i |
-				line size < i
+		ifFalse: [
+			"the max significant length of a markup is 3"
+			(3 to: 1 by: -1) do: [:i | |prefix|
+				prefix := (line truncateTo: i).
+				"If we have a inline starter, it takes precedence"
+				(Delimiters includes: prefix) 
 					ifTrue: [ ^ MicParagraphBlock ].
   				dispatchTable
-    		 		 at: (line first: i)
+    		 		at: prefix
       				ifPresent: [ :blockClass | ^ blockClass ] ]].
-	line 
-		ifNotEmpty: [ ^ MicParagraphBlock ] 
+	^ MicParagraphBlock
 	
 ]
 

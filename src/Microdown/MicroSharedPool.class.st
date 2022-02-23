@@ -80,8 +80,8 @@ MicroSharedPool class >> initialize [
 	AnchorReferenceCloserMarkup := '@*'.
 	AnchorReferenceOpenerMarkup := '*@'. 
 	
-	AnnotationCloserMarkup := '}?'. 
-	AnnotationOpenerMarkup := '?{'.
+	AnnotationCloserMarkup := '!}'. 
+	AnnotationOpenerMarkup := '{!'.
 
 	BoldMarkup := '**'. 
 	FigureNameOpenerMarkup := '!['. 
@@ -111,7 +111,7 @@ MicroSharedPool class >> initialize [
 	RawOpenerMarkup .
 	StrikeMarkup . 
 	URLCloserMarkup . 
-	URLOpenerMarkup} 
+	URLOpenerMarkup} asSet
 
 	
 	
