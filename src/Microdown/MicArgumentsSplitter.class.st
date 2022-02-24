@@ -84,14 +84,14 @@ MicArgumentsSplitter >> from: fullString [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MicArgumentsSplitter >> hasNonDefaultArguments [
 	"has changed #defaultArg or has other keys"
 	^ self hasNonDefaultValue or: [ (self keys copyWithout: self defaultArg ) notEmpty  ]
 		
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MicArgumentsSplitter >> hasNonDefaultValue [
 	"return true if the default arg was given a value"
 	^ self defaultValue notNil and: [ self defaultValue ~= initialValue  ]
@@ -103,7 +103,7 @@ MicArgumentsSplitter >> initialValue: anObject [
 	initialValue := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #copying }
 MicArgumentsSplitter >> justTheArguments [
 	^ self copy 
 		removeKey: defaultArg ifAbsent: [ ]; 
@@ -156,7 +156,7 @@ MicArgumentsSplitter >> setNoDefaultButArguments: string [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #copying }
 MicArgumentsSplitter >> withoutDefaultValue [
 	"remove the defaultArg if no new value was assigned to it"
 	^ self hasNonDefaultValue 
