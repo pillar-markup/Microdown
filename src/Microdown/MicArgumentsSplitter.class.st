@@ -155,3 +155,13 @@ MicArgumentsSplitter >> setNoDefaultButArguments: string [
 		self at: keyValue first trim asSymbol put: keyValue second ]
 	
 ]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> withoutDefaultValue [
+	"remove the defaultArg if no new value was assigned to it"
+	^ self hasNonDefaultValue 
+		ifTrue: [ ^ self ]
+		ifFalse: [ self copy 
+			removeKey: defaultArg ifAbsent: [ ]; 
+			yourself ]
+]

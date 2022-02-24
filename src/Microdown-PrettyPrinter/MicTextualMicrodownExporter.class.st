@@ -149,7 +149,7 @@ MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [
 	builder newLine.
 	builder
 		  codeblock: aMicCodeBlock body
-		  firstLineAssociations: aMicCodeBlock arguments justTheArguments associations
+		  firstLineAssociations: aMicCodeBlock arguments withoutDefaultValue associations
 		  withCaption: [ super visitCode: aMicCodeBlock ]
 
 ]
