@@ -375,6 +375,33 @@ MicrodownInlineParserTest >> testMonospace [
 ]
 
 { #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithBackQuote [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\`bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo`bar'
+
+]
+
+{ #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithBackSlash [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo\bar'
+
+]
+
+{ #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\\bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo\\bar'
+
+]
+
+{ #category : #'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef'.
