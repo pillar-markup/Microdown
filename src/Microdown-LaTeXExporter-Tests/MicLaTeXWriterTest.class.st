@@ -169,7 +169,7 @@ MicLaTeXWriterTest >> testFigureRealSample [
 \begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{/logo.png}
+\includegraphics[width=0.8\textwidth]{figures/logo.png}
 \caption{A logo png under figures folder}\label{figureTest}
 \end{center}
 \end{figure}
