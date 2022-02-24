@@ -229,12 +229,14 @@ Foo
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> environmentWithInnerBlockSample [
-	^ '<?Foo|value=aFoo&label=42
+	^ '
+<?Foo|value=aFoo&label=42
 This is a **paragraph**
 
 ```language=Smalltalk&caption=`Color` is cool
 This is a codeBlock
 ```
+
 [ this is an _url_ ](/anExternalLink)
 
 ?>'

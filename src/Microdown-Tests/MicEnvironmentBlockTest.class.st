@@ -18,7 +18,7 @@ blbababbab bababba
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'blbababbab bababba'
 	
 ]
@@ -49,7 +49,7 @@ MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'this is the slide body'
 	
 ]
@@ -68,7 +68,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'slide'.
+	self assert: environment environmentName equals: 'slide'.
 	self assert: environment class equals: MicSlideBlock.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
@@ -95,7 +95,7 @@ blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	
 	self assert: env children size equals: 2.
 	self assert: env children first class equals: MicUnorderedListBlock.
@@ -128,7 +128,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'card'.
+	self assert: environment environmentName equals: 'card'.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
 	self assert: (environment arguments at: 'c') equals: nil.
@@ -171,7 +171,7 @@ MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicSlideBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'this is the slide body'
 	
 ]
@@ -223,7 +223,7 @@ toto'.
 	self assert: root children size equals: 1.
 	env := root children first.
 	self assert: (env isKindOf: MicEnvironmentBlock).
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children size equals: 2.
 	self assert: env children first class equals: MicParagraphBlock.
 	self assert: env children second class equals: MicParagraphBlock.
@@ -263,7 +263,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'slide'.
+	self assert: environment environmentName equals: 'slide'.
 	self assert: environment class equals: MicSlideBlock.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.

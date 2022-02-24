@@ -62,26 +62,13 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	"The first tag is language.
 	its value is Pharo."
 	
-	| lineWithoutMarkup argumentsSplitter |
+	| lineWithoutMarkup|
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter 
+	arguments := MicArgumentsSplitter 
 		split: lineWithoutMarkup 
 		defaultArg: #language 
 		defaultValue: self class defaultLanguage.
-	arguments := argumentsSplitter arguments.
 	^ lineWithoutMarkup
-]
-
-{ #category : #accessing }
-MicCodeBlock >> firstTagValue [
-	self halt: 'do not use'.
-	^ arguments at: self firstTag ifAbsent: [ '' ]
-]
-
-{ #category : #testing }
-MicCodeBlock >> hasArguments [
-
-	^ arguments keys isNotEmpty
 ]
 
 { #category : #testing }
@@ -91,28 +78,21 @@ MicCodeBlock >> hasBody [
 ]
 
 { #category : #accessing }
-MicCodeBlock >> hasFirstTag [
-	self halt: 'What is this used for?'.
-	^ 'firstTag' isNotEmpty
-]
-
-{ #category : #accessing }
 MicCodeBlock >> hasLabel [
-	^ arguments ifNotEmpty: [ 
-		arguments at: #label ifPresent: [ true ] ifAbsent: [ false ]] ifEmpty: [ false ]
+	^ arguments includesKey: #label
 
-]
-
-{ #category : #accessing }
-MicCodeBlock >> hasLanguage [
-	"Return true whether there is a language = tag used in the arguments."
-	^ true
 ]
 
 { #category : #testing }
-MicCodeBlock >> hasNoBody [
+MicCodeBlock >> hasNonDefaultArguments [
 
-	^ body isEmptyOrNil
+	^ 	arguments hasNonDefaultArguments
+]
+
+{ #category : #accessing }
+MicCodeBlock >> hasNonDefaultLanguage [
+	"is the language defined explicitly"
+	^ arguments hasNonDefaultValue 
 ]
 
 { #category : #initialization }
@@ -157,7 +137,7 @@ MicCodeBlock >> size [
 { #category : #accessing }
 MicCodeBlock >> text [
 	| text |
-	self flag: #todo.
+	self halt: #todo.
 	"what a terrible idea we concatenate the text of children and store. 
 	I could understand that we keep the text of the parser element but then we do not modify it after
 	and certainly not change it."

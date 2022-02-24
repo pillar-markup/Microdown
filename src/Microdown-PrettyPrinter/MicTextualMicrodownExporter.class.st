@@ -129,7 +129,7 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
-	builder annotation: anAnnotation name arguments: anAnnotation arguments
+	builder raw: anAnnotation printString
 ]
 
 { #category : #'visit - format' }
@@ -147,9 +147,9 @@ MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	builder newLine.
-	 builder
+	builder
 		  codeblock: aMicCodeBlock body
-		  firstLineAssociations: aMicCodeBlock argumentAssociations
+		  firstLineAssociations: aMicCodeBlock arguments justTheArguments associations
 		  withCaption: [ super visitCode: aMicCodeBlock ]
 
 ]
@@ -164,9 +164,9 @@ MicTextualMicrodownExporter >> visitComment: aComment [
 MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 	builder newLine.
 	builder
-		environment: anEnvironment name
+		environment: anEnvironment environmentName 
 		body: [ super visitEnvironment: anEnvironment ]
-		arguments: anEnvironment arguments.
+		arguments: anEnvironment arguments justTheArguments .
 	
 ]
 
@@ -226,7 +226,7 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 
 	 builder
 		  mathblock: aMicMath body
-		  firstLineAssociations: aMicMath argumentAssociations
+		  firstLineAssociations: aMicMath arguments associations
 		  withCaption: [ super visitMath: aMicMath ]
 
 ]

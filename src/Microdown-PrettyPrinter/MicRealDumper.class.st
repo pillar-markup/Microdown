@@ -38,7 +38,7 @@ MicRealDumper >> emitList: aList [
 MicRealDumper >> emitParameters: aCodeBlock [
 
 	stream nextPutAll: 'arguments: { '.
-	self parametersPrint: aCodeBlock arguments.
+	self parametersPrintWithoutDefault: aCodeBlock arguments.
 	stream nextPutAll: ' } asDictionary ; '
 ]
 
@@ -57,7 +57,8 @@ MicRealDumper >> parametersPrint: aDictionnary [
 
 	aDictionnary keysAndValuesDo: [ :k :v | 
 		stream
-			nextPutAll: '#' , k;
+			nextPut: $#;
+			nextPutAll: k;
 			nextPutAll: ' ->'.
 			v class = Array
 				ifTrue: [ 
@@ -66,6 +67,17 @@ MicRealDumper >> parametersPrint: aDictionnary [
 					stream nextPutAll: '''' ]
 				ifFalse: [ stream nextPutAll: v asString ].
 		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
+]
+
+{ #category : #build }
+MicRealDumper >> parametersPrintWithoutDefault: aDictionnary [
+	"if #language is default value, do not print #language binding"
+	| dic |
+	dic := aDictionnary copy.
+	(dic at: #language) = MicCodeBlock defaultLanguage
+		ifTrue: [ dic removeKey: #language ].
+	self parametersPrint: dic
+	
 ]
 
 { #category : #'visit - format' }
@@ -115,7 +127,7 @@ MicRealDumper >> visitCode: aCodeBlock [
 	stream
 		nextPutAll: 'new';
 		space.
-	aCodeBlock hasArguments ifTrue: [ self emitParameters: aCodeBlock ].
+	aCodeBlock hasNonDefaultArguments ifTrue: [ self emitParameters: aCodeBlock ].
 	aCodeBlock hasNoBody ifFalse: [ 
 		stream nextPutAll: 'body: '.
 		stream

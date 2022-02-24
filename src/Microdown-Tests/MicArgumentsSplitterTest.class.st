@@ -63,9 +63,7 @@ MicArgumentsSplitterTest >> testDefaultWithValue [
 MicArgumentsSplitterTest >> testEmpty [
 	| subject |
 	subject := self subjectUnderTestWith: ''.
-	self assert: subject size equals: 1.
-	self assert: subject keys first equals: #defaultArg.
-	self assert: (subject at: #defaultArg) equals: ''
+	self assert: subject size equals: 0.
 ]
 
 { #category : #tests }
@@ -106,6 +104,57 @@ MicArgumentsSplitterTest >> testHasNonDefaultArguments_nonDefault [
 ]
 
 { #category : #tests }
+MicArgumentsSplitterTest >> testHasNonDefaultValue [
+	| subject |
+	subject := self splitter split: 'fortran' defaultArg: #language.
+	self assert: subject hasNonDefaultValue
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testHasNonDefaultValue_AndSomeArgs [
+	| subject |
+	subject := self splitter split: 'fortran|wasOnce=cool' defaultArg: #language.
+	self assert: subject hasNonDefaultValue
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testHasNonDefaultValue_Default [
+	| subject |
+	subject := self splitter split: '' defaultArg: #language defaultValue: 'pharo'.
+	self deny: subject hasNonDefaultValue
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testHasNonDefaultValue_DefaultOverridden [
+	| subject |
+	subject := self splitter split: 'fortran' defaultArg: #language defaultValue: 'pharo'.
+	self assert: subject hasNonDefaultValue
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testHasNonDefaultValue_NoDefault [
+	| subject |
+	subject := self splitter split: '' defaultArg: #language.
+	self deny: subject hasNonDefaultValue
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testJustTheArguments [
+	| subject input |
+	input := 'joe|foo=bar&aaa=bbb ccc&pip='.
+	subject := self splitter split: input defaultArg: #personName.
+	self assert: subject justTheArguments printString equals: 'foo=bar&aaa=bbb ccc&pip='
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testJustTheArguments_NoDefault [
+	| subject input |
+	input := 'foo=bar&aaa=bbb ccc&pip='.
+	subject := self splitter split: input defaultArg: #personName.
+	self assert: subject justTheArguments printString equals: 'foo=bar&aaa=bbb ccc&pip='
+]
+
+{ #category : #tests }
 MicArgumentsSplitterTest >> testNameAndArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'aName|foo=bar'.
@@ -121,11 +170,58 @@ MicArgumentsSplitterTest >> testNameWithDelimiter [
 ]
 
 { #category : #tests }
+MicArgumentsSplitterTest >> testPrintString [
+	| subject input |
+	input := 'joe|foo=bar&aaa=bbb ccc&pip='.
+	subject := self splitter split: input defaultArg: #personName.
+	self assert: subject printString equals: input
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testPrintString_AssignDefaultUsingEquals [
+	| subject input |
+	input := 'language=fortran'.
+	subject := self splitter split: input defaultArg: 'language'.
+	self assert: subject printString equals: 'fortran'
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testPrintString_Empty [
+	| subject input |
+	input := ''.
+	subject := self splitter split: input.
+	self assert: subject printString equals: input
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testPrintString_defaultValue [
+	| subject input |
+	input := 'foo'.
+	subject := self splitter split: input.
+	self assert: subject printString equals: input
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testPrintString_oneParam [
+	| subject input |
+	input := 'foo=bar'.
+	subject := self splitter split: input.
+	self assert: subject printString equals: input
+]
+
+{ #category : #tests }
+MicArgumentsSplitterTest >> testPrintString_onlyParams [
+	| subject input |
+	input := 'foo=bar&a=b'.
+	subject := self splitter split: input.
+	self assert: subject printString equals: input
+]
+
+{ #category : #tests }
 MicArgumentsSplitterTest >> testSeveralArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'foo=bar&caption=this is lovely&aaa=99'.
-	self assert: subject size equals: 4.
-	self assert: (subject at: #defaultArg) equals: ''.
+	self assert: subject size equals: 3.
 	self assert: (subject at: #foo) equals: 'bar'.
 	self assert: (subject at: #caption) equals: 'this is lovely'.
 	self assert: (subject values last) equals: '99'

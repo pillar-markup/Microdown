@@ -144,13 +144,19 @@ MicEnvironmentBlock >> closeMe [
 ]
 
 { #category : #accessing }
+MicEnvironmentBlock >> environmentName [
+	^ arguments at: #environmentName
+]
+
+{ #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 
-	| lineWithoutMarkup argumentsSplitter |
+	| lineWithoutMarkup |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	name := argumentsSplitter name trimBoth.
-	arguments := argumentsSplitter arguments.
+	arguments := MicArgumentsSplitter 
+		split: lineWithoutMarkup
+		defaultArg: #environmentName
+		defaultValue: ''.
 	^ lineWithoutMarkup
 ]
 
@@ -164,10 +170,4 @@ MicEnvironmentBlock >> lineStartMarkup [
 MicEnvironmentBlock >> lineStopMarkup [
 	
 	^ EnvironmentClosingBlockMarkup 
-]
-
-{ #category : #accessing }
-MicEnvironmentBlock >> name [
-
-	^ name
 ]
