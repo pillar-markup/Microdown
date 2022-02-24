@@ -22,6 +22,13 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
+{ #category : #operations }
+MicMonospaceFormatBlock >> cleanSubstring [
+	| res |
+	res := self substring copyReplaceAll: '\`' with: '`'..
+	self substring: res
+]
+
 { #category : #internal }
 MicMonospaceFormatBlock >> closingDelimiter [
 
