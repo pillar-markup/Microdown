@@ -18,8 +18,14 @@ BaselineOfMicrodown >> baseline: spec [
 			with: [
 				spec  
 					loads: #('Pillar-Core');
-					repository: 'github://pillar-markup/pillar:dev-8'
-			].
+					repository: 'github://pillar-markup/pillar:dev-8' ].
+		spec 
+			baseline: 'NeoCSV'
+			with: [ 
+				spec 
+					loads: #('core');
+					repository: 'github://svenvc/NeoCSV/repository' ].
+
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
@@ -44,7 +50,7 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-Evaluator') ];
 			
 			package: #'Microdown-HTMLExporter'
-				with: [ spec requires: #( #Microdown #'Microdown-LaTeXExporter') ];
+				with: [ spec requires: #( #Microdown #'Microdown-LaTeXExporter' 'NeoCSV') ];
 			package: #'Microdown-HTMLExporter-Tests'
 				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests') ];				
 			
