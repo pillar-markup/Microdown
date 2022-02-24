@@ -14,14 +14,14 @@ Code: `$a^2 + b^2 = c^2$`
 $a^2 + b^2 = c^2$
 
 #### Example 3
-Code: `$\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^{n}x^{2n+1}}{(2n+1)!}$`
+Code: `$\sin(x) = \sum_{n=0}^{\infty} \frac{(-1)^{n}x^{2n+1}}{(2n+1)!}$`
 
-$\\sin(x) = \\sum_{n=0}^{\\infty} \\frac{(-1)^{n}x^{2n+1}}{(2n+1)!}$
+$\sin(x) = \sum_{n=0}^{\infty} \frac{(-1)^{n}x^{2n+1}}{(2n+1)!}$
 
 #### Example 4
-Code: `$f(a) = \\frac{1}{2\\pi i} \\oint_{\\gamma} \\frac{f(z)}{z - a} dz$`
+Code: `$f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz$`
 
-$f(a) = \\frac{1}{2\\pi i} \\oint_{\\gamma} \\frac{f(z)}{z - a} dz$
+$f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz$
 
 "
 Class {
