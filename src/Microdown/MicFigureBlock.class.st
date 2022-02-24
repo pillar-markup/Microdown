@@ -57,6 +57,12 @@ MicFigureBlock >> argumentAt: aKey ifPresent: aBlock [
 ]
 
 { #category : #accessing }
+MicFigureBlock >> argumentAt: aKey put: anObject [
+
+	self arguments at: aKey put: anObject
+]
+
+{ #category : #accessing }
 MicFigureBlock >> arguments [
 	^ parameters
 ]
@@ -136,7 +142,10 @@ MicFigureBlock >> printOn: aStream [
  			nextPutAll: self caption;
  			nextPut: $];
  			nextPut: $(.
-		aStream nextPutAll: url. 
+		aStream nextPutAll: (
+			url
+				ifNotNil: [ url. ] 
+				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
 ]

@@ -30,7 +30,13 @@ MicHTMLTag >> name: aString [
 
 { #category : #accessing }
 MicHTMLTag >> parameterAt: aString put: anotherString [
-	stream space. stream << aString << '="' << anotherString << '"'
+
+	stream 
+		space;
+		<< aString;
+		<< '="';
+		<< anotherString;
+		<< '"'
 ]
 
 { #category : #accessing }

@@ -79,6 +79,15 @@ MicHTMLExporterTest >> testFigure [
 <p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
+{ #category : #'tests - formats' }
+MicHTMLExporterTest >> testFigureBold [
+
+	self 
+		parse: factory figureBoldSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="**Foo**" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure></p>'
+]
+
 { #category : #tests }
 MicHTMLExporterTest >> testFigureItalic [
 
@@ -108,26 +117,29 @@ MicHTMLExporterTest >> testFigureReal [
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureStrike [
-	self skip.
-	self parse: factory figureStrikeSample andCheckWeGet: '
-<p><img src="/anUrl" alt="~Foo~" class="figureTest" width="80"/><figcaption><strike>Foo</strike></figcaption>
-</p>'
+
+	self 
+		parse: factory figureStrikeSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="~Foo~" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
-	self skip.
-	self parse: factory figureWithLabelWithoutSizeSample andCheckWeGet: '
-<p><img src="/anUrl" alt="" class="figureTest"/><figcaption></figcaption>
-</p>'
+
+	self 
+		parse: factory figureWithLabelWithoutSizeSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testFigureWithoutCaption [
-	self skip.
-	self parse: factory figureWithoutCaptionSample andCheckWeGet: '
-<p><img src="/anUrl" alt="" class="figureTest" width="80"/><figcaption></figcaption>
-</p>'
+
+	self 
+		parse: factory figureWithoutCaptionSample 
+		andCheckWeGet: '
+<p><figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -142,15 +154,18 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 { #category : #tests }
 MicHTMLExporterTest >> testGoutDeFraise [
 
-	self skip.
-	self parse: factory figureGoutDeFraise andCheckWeGet: '
-<p><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_" /><figcaption>Proposition pour le thème : <br><em>Un goût de fraise</em></figcaption></p>'
+	self 
+		parse: factory figureGoutDeFraise 
+		andCheckWeGet: '
+<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le th&egrave;me : <em>Un go&ucirc;t de fraise</em></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
 MicHTMLExporterTest >> testHeaderLevel1 [
 
-	self parse: factory headerLevel1Sample andCheckWeGet: writer usedNewLine , '<h1>Foo</h1>'
+	self 
+		parse: factory headerLevel1Sample 
+		andCheckWeGet: writer usedNewLine , '<h1>Foo</h1>'
 	
 ]
 
@@ -185,7 +200,9 @@ MicHTMLExporterTest >> testParagraphNestedSample [
 { #category : #'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithBold [
 
-	self parse: factory paragraphBoldSample andCheckWeGet:  '
+	self 
+		parse: factory paragraphBoldSample 
+		andCheckWeGet:  '
 <p>this is a <strong>paragraph</strong></p>'
 ]
 
@@ -238,22 +255,4 @@ MicHTMLExporterTest >> testUnorderedList [
 <li>Foo</li>
 <li>Bar</li>
 </ul>'
-]
-
-{ #category : #'tests - formats' }
-MicHTMLExporterTest >> testfigure [
-	self skip.
-	self parse: factory figureSample andCheckWeGet: '
-<p><img src="/anUrl label=figureTest&size=80" alt="Foo"></p>'
-]
-
-{ #category : #'tests - formats' }
-MicHTMLExporterTest >> testfigureBold [
-
-	self skip.
-	self parse: factory figureBoldSample andCheckWeGet: '
-<figure>
-  <img src="un-gout-de-fraise.jpg" alt="" />
-  <figcaption>Proposition pour le thème : <br><em>Un goût de fraise</em> du jeu <a href="http://www.photogame.fr/">PhotoGame</a></figcaption>
-</figure>'
 ]
