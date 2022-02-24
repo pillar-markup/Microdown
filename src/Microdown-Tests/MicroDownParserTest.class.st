@@ -270,7 +270,7 @@ Pharo'.
 	root := parser parse: source.
 	child := root children first.
 	self assert: (child isKindOf: MicEnvironmentBlock).
-	self assert: child name equals: environmentName.
+	self assert: child environmentName equals: environmentName.
 	self assert: child children first text equals: contents.
 	
 	self assert: (child arguments at: 'a') equals: '1'.
@@ -292,7 +292,7 @@ this is the end.'.
 	self assert: root children size equals: 1.
 	env := root children first.
 	self assert: (env isKindOf: MicEnvironmentBlock).
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children size equals: 3.
 	self assert: env children third text equals: 'this is the end.'.
 	

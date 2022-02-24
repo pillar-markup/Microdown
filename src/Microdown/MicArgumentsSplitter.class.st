@@ -3,86 +3,165 @@ I am intended to provide arguments to annotations, codeblocks and environments.
 
 My syntax is of the following form:
 
-- ` ` no name and no arguments
-- `name` a single name, no arguments. However, this is also interpreted as name=nil 
-- `key=arg[&key=arg]*`, no name, but arguments
-- `name|key=arg[&key=arg]*` a single name, and arguments
+- ` ` defaultArg->initialValue, no other arguments. 
+- `value` defaultArg->value, no otherarguments. 
+- `key=arg[&key=arg]*`, defaultArg->initialValue, but arguments.
+- `value|key=arg[&key=arg]*` defaultArg->value, and arguments.
 "
 Class {
 	#name : #MicArgumentsSplitter,
-	#superclass : #Object,
+	#superclass : #OrderedDictionary,
 	#instVars : [
-		'arguments',
-		'name'
+		'defaultArg',
+		'initialValue'
 	],
 	#category : #'Microdown-Parser'
 }
 
 { #category : #'instance creation' }
+MicArgumentsSplitter class >> split: aString [
+	^ self new 
+		from: aString; 
+		yourself 
+]
+
+{ #category : #'instance creation' }
+MicArgumentsSplitter class >> split: aString defaultArg: defArg [
+	^ self new
+		defaultArg: defArg;
+		from: aString;
+		yourself
+]
+
+{ #category : #'instance creation' }
+MicArgumentsSplitter class >> split: aString defaultArg: defArg defaultValue: defValue [
+	^ self new
+		defaultArg: defArg;
+		at: defArg put: defValue;
+		initialValue: defValue;
+		from: aString; 
+		yourself
+]
+
+{ #category : #'instance creation' }
 MicArgumentsSplitter class >> withStream: aStream [
-	^ self withString: aStream contents.
+	^ self split: aStream contents.
 ]
 
 { #category : #'instance creation' }
 MicArgumentsSplitter class >> withString: aString [
-	^ self new from: aString; yourself 
+	^ self split: aString 
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter >> arguments [
-	^ arguments
+MicArgumentsSplitter >> defaultArg [
+
+	^ defaultArg ifNil: [ defaultArg := #defaultArg ]
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter >> firstTag [
-	name ifNotNil: [ ^ name ].
-	arguments notEmpty ifTrue: [ ^ arguments keys first asString ].
-	^ ''
+MicArgumentsSplitter >> defaultArg: anObject [
+
+	defaultArg := anObject
+]
+
+{ #category : #accessing }
+MicArgumentsSplitter >> defaultValue [
+	^ self at: defaultArg ifAbsent: [ initialValue  ]
 ]
 
 { #category : #initialization }
 MicArgumentsSplitter >> from: fullString [
+	"I am the 'parser' of the argument splitter"
 	| barSplit |
-	arguments := OrderedDictionary new.
 	fullString isEmpty ifTrue: [ ^ self ].
 	(fullString intersection: '|=&') isEmpty 
-		ifTrue: [ ^self setNameNoArguments: fullString  ].
+		ifTrue: [ ^self setDefaultNoArguments: fullString  ].
 	barSplit := fullString splitOn: $|.
 	barSplit size > 1
-		ifTrue: [ ^ self setNameAndArguments: barSplit  ].
-	self setNoNameButArguments: fullString 
+		ifTrue: [ ^ self setDefaultAndArguments: barSplit  ].
+	self setNoDefaultButArguments: fullString
 	
+]
+
+{ #category : #testing }
+MicArgumentsSplitter >> hasNonDefaultArguments [
+	"has changed #defaultArg or has other keys"
+	^ self hasNonDefaultValue or: [ (self keys copyWithout: self defaultArg ) notEmpty  ]
+		
+]
+
+{ #category : #testing }
+MicArgumentsSplitter >> hasNonDefaultValue [
+	"return true if the default arg was given a value"
+	^ self defaultValue notNil and: [ self defaultValue ~= initialValue  ]
 ]
 
 { #category : #accessing }
-MicArgumentsSplitter >> name [
-	^ name
+MicArgumentsSplitter >> initialValue: anObject [
+
+	initialValue := anObject
+]
+
+{ #category : #copying }
+MicArgumentsSplitter >> justTheArguments [
+	^ self copy 
+		removeKey: defaultArg ifAbsent: [ ]; 
+		yourself 
+]
+
+{ #category : #printing }
+MicArgumentsSplitter >> printOn: aStream [
+	|argKeys|
+	self hasNonDefaultValue 
+		ifTrue:[
+			aStream nextPutAll: self defaultValue.
+			argKeys := self keys copyWithout: self defaultArg.
+			argKeys ifNotEmpty: [aStream nextPut: $|]]
+		ifFalse: [argKeys := self keys].
+	aStream nextPutAll: ((argKeys collect: [:k| k,'=',(self at:k)]) joinUsing: '&')
+]
+
+{ #category : #printing }
+MicArgumentsSplitter >> printString [
+	^ String streamContents: [ :stream | self printOn: stream ]
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNameAndArguments: barSplit [
-	"barSplit is two strings, first assumed to be just a name, second to be arguments"
-	
-	name := barSplit first trim.
-	self setNoNameButArguments: barSplit second
+MicArgumentsSplitter >> setDefaultAndArguments: barSplit [
+	"barSplit is two strings, first assumed to be just a value, second to be arguments"
+	|value|
+	value := barSplit first trim.
+	self at: self defaultArg put: value.
+	self setNoDefaultButArguments: barSplit second
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNameNoArguments: fullString [
+MicArgumentsSplitter >> setDefaultNoArguments: fullString [
 	"fullstring is just a name (containing no arguments)
-	It is interpreted as both a name, and as an argument with no value
-	"
-	name := fullString trim.
-	arguments at: name asSymbol put: nil
+	It is interpreted as both a name, and as an argument with no value"
+	|value|
+	value := fullString trim.
+	self at: self defaultArg put: value
 ]
 
 { #category : #parsing }
-MicArgumentsSplitter >> setNoNameButArguments: string [
+MicArgumentsSplitter >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
 	| pairs |
 	pairs := string splitOn: $&.
 	pairs do: [ :p | |keyValue|
 		keyValue := p splitOnFirst: $=.
-		arguments at: keyValue first trim asSymbol put: keyValue second ]
+		self at: keyValue first trim asSymbol put: keyValue second ]
 	
+]
+
+{ #category : #copying }
+MicArgumentsSplitter >> withoutDefaultValue [
+	"remove the defaultArg if no new value was assigned to it"
+	^ self hasNonDefaultValue 
+		ifTrue: [ ^ self ]
+		ifFalse: [ self copy 
+			removeKey: defaultArg ifAbsent: [ ]; 
+			yourself ]
 ]

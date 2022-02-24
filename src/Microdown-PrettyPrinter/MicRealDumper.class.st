@@ -38,7 +38,7 @@ MicRealDumper >> emitList: aList [
 MicRealDumper >> emitParameters: aCodeBlock [
 
 	stream nextPutAll: 'arguments: { '.
-	self parametersPrint: aCodeBlock arguments.
+	self parametersPrint: aCodeBlock arguments withoutDefaultValue.
 	stream nextPutAll: ' } asDictionary ; '
 ]
 
@@ -57,7 +57,8 @@ MicRealDumper >> parametersPrint: aDictionnary [
 
 	aDictionnary keysAndValuesDo: [ :k :v | 
 		stream
-			nextPutAll: '#' , k;
+			nextPut: $#;
+			nextPutAll: k;
 			nextPutAll: ' ->'.
 			v class = Array
 				ifTrue: [ 
@@ -115,8 +116,8 @@ MicRealDumper >> visitCode: aCodeBlock [
 	stream
 		nextPutAll: 'new';
 		space.
-	aCodeBlock hasArguments ifTrue: [ self emitParameters: aCodeBlock ].
-	aCodeBlock hasNoBody ifFalse: [ 
+	aCodeBlock hasNonDefaultArguments ifTrue: [ self emitParameters: aCodeBlock ].
+	aCodeBlock hasBody ifTrue: [ 
 		stream nextPutAll: 'body: '.
 		stream
 			nextPutAll: '''';
