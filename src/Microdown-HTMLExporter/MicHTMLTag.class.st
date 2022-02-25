@@ -16,16 +16,11 @@ MicHTMLTag >> addArguments: aMicFigureBlock [
 
 ]
 
-{ #category : #tag }
-MicHTMLTag >> closeTag [
-
-	stream << '/>'
-]
-
 { #category : #accessing }
-MicHTMLTag >> name: aString [
-	name := aString.
-	stream nextPut: $<; << aString
+MicHTMLTag >> contents [
+	"Answer a <String> with receiver's output without modifying the stream position"
+	
+	^ stream contents
 ]
 
 { #category : #accessing }
@@ -37,6 +32,20 @@ MicHTMLTag >> parameterAt: aString put: anotherString [
 		<< '="';
 		<< anotherString;
 		<< '"'
+]
+
+{ #category : #printing }
+MicHTMLTag >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream << ' name: ['.
+	name
+		ifNotNil: [ aStream << name ].
+	aStream << '] contents: ('.
+	stream
+		ifNotNil: [ aStream << stream contents ].
+	aStream
+		<< ')'
 ]
 
 { #category : #accessing }

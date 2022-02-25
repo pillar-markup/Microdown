@@ -36,7 +36,7 @@ MicHTMLExporterTest >> setUp [
 MicHTMLExporterTest >> testAccents [
 
 	self parse: 'éà' andCheckWeGet:  '
-<p>&eacute;&agrave;</p>'
+<p>éà</p>'
 ]
 
 { #category : #utilities }
@@ -157,7 +157,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 	self 
 		parse: factory figureGoutDeFraise 
 		andCheckWeGet: '
-<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le th&egrave;me : <em>Un go&ucirc;t de fraise</em></figcaption></img></figure></p>'
+<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le thème : <em>Un goût de fraise</em></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -187,7 +187,7 @@ MicHTMLExporterTest >> testParagraph [
 MicHTMLExporterTest >> testParagraphLongWithAccents [
 
 	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: '
-<p>Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit &agrave; l''oblit&eacute;ration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass&eacute;e, je tournerai mon oeil interieur sur son chemin. Et l&agrave; o&ugrave; elle sera pass&eacute;e, il n''y aura plus rien, rien que moi.</p>'
+<p>Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.</p>'
 ]
 
 { #category : #'tests - formats' }

@@ -93,8 +93,9 @@ MicFigureBlock >> hasAnchor [
 
 { #category : #accessing }
 MicFigureBlock >> hasArguments [
-
-	^ arguments size>1
+	"Answer <true> if the receiver contain at least 1 argument"
+	
+	^ arguments notEmpty
 ]
 
 { #category : #testing }

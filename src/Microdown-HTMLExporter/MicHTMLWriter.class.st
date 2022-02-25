@@ -22,6 +22,20 @@ MicHTMLWriter >> contents [
 	^ canvas contents
 ]
 
+{ #category : #converting }
+MicHTMLWriter >> convertFile: aFile [
+
+	| doc write fileref |
+	fileref := aFile asFileReference.
+	doc := Microdown parse: fileref contents.
+
+	write := MicHTMLWriter new.
+	write visit: doc.
+
+	(fileref parent / (fileref basenameWithoutExtension: 'md'), 'html') asFileReference 
+		writeStreamDo: [ :st | st nextPutAll: write contents ]
+]
+
 { #category : #visiting }
 MicHTMLWriter >> createAnchorWith: anId [
 
@@ -29,29 +43,6 @@ MicHTMLWriter >> createAnchorWith: anId [
 		name: 'a';
 		parameterAt: 'id' put: anId;
 		with: ''
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> exportImgFor: aFigure [
-
-	| img |
-	img := canvas tag
-		       name: 'img';
-		       parameterAt: 'src' put: aFigure reference path;
-		       yourself.
-	"aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ]."
-	img parameterAt: 'alt' put: (aFigure hasChildren
-			 ifTrue: [ aFigure text ]
-			 ifFalse: [ '' ]).
-	img closeTag
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> hasLabel [
-
-	| label |
-	label := self parameters at: 'label' ifAbsent: [ ^ false ].
-	^ label isEmptyOrNil not
 ]
 
 { #category : #initialization }
