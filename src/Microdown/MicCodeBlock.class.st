@@ -38,11 +38,13 @@ Second if we want to treat lines separatedly we have to reparse it. Now we do no
 Class {
 	#name : #MicCodeBlock,
 	#superclass : #MicSameStartStopMarkupBlock,
-	#instVars : [
-		'firstTag'
-	],
 	#category : #'Microdown-Model'
 }
+
+{ #category : #accessing }
+MicCodeBlock class >> defaultLanguage [
+	^ 'Pharo'
+]
 
 { #category : #visiting }
 MicCodeBlock >> accept: aVisitor [
@@ -60,28 +62,13 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	"The first tag is language.
 	its value is Pharo."
 	
-	| lineWithoutMarkup argumentsSplitter |
+	| lineWithoutMarkup|
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	firstTag := argumentsSplitter firstTag.
-	arguments := argumentsSplitter arguments.
+	arguments := MicArgumentsSplitter 
+		split: lineWithoutMarkup 
+		defaultArg: #language 
+		defaultValue: self class defaultLanguage.
 	^ lineWithoutMarkup
-]
-
-{ #category : #accessing }
-MicCodeBlock >> firstTag [
-	^ firstTag
-]
-
-{ #category : #accessing }
-MicCodeBlock >> firstTagValue [
-	^ arguments at: self firstTag ifAbsent: [ '' ]
-]
-
-{ #category : #testing }
-MicCodeBlock >> hasArguments [
-
-	^ arguments keys isNotEmpty
 ]
 
 { #category : #testing }
@@ -91,31 +78,21 @@ MicCodeBlock >> hasBody [
 ]
 
 { #category : #accessing }
-MicCodeBlock >> hasFirstTag [
-
-	^ firstTag isNotEmpty
-]
-
-{ #category : #accessing }
 MicCodeBlock >> hasLabel [
-	^ arguments ifNotEmpty: [ 
-		arguments at: #label ifPresent: [ true ] ifAbsent: [ false ]] ifEmpty: [ false ]
+	^ arguments includesKey: #label
 
-]
-
-{ #category : #accessing }
-MicCodeBlock >> hasLanguage [
-	"Return true whether there is a language = tag used in the arguments."
-	
-	arguments ifNotEmpty: [ 
-		^ arguments at: #language ifPresent: [ true ] ifAbsent: [ false ]].
-	^ false
 ]
 
 { #category : #testing }
-MicCodeBlock >> hasNoBody [
+MicCodeBlock >> hasNonDefaultArguments [
 
-	^ body isEmptyOrNil
+	^ 	arguments hasNonDefaultArguments
+]
+
+{ #category : #accessing }
+MicCodeBlock >> hasNonDefaultLanguage [
+	"is the language defined explicitly"
+	^ arguments hasNonDefaultValue 
 ]
 
 { #category : #initialization }
@@ -139,10 +116,7 @@ MicCodeBlock >> label: aString [
 
 { #category : #accessing }
 MicCodeBlock >> language [
-	arguments ifNotEmpty: [ 
-		arguments at: #language ifAbsent: [ ^ arguments keys first asString ].
-		^ arguments at: #language ].
-	^ ''
+	^ arguments at: #language
 ]
 
 { #category : #utilities }
@@ -163,7 +137,7 @@ MicCodeBlock >> size [
 { #category : #accessing }
 MicCodeBlock >> text [
 	| text |
-	self flag: #todo.
+	self halt: #todo.
 	"what a terrible idea we concatenate the text of children and store. 
 	I could understand that we keep the text of the parser element but then we do not modify it after
 	and certainly not change it."

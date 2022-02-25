@@ -52,7 +52,7 @@ MicHTMLExporterTest >> testCodeCreatesInnerText [
 	| code |
 	code := (self parser parse: '```a b```') children first.
 	self assert: code class equals: MicCodeBlock.
-	self assert: code firstTag equals: 'a b```'
+	self assert: code language equals: 'a b```'
 ]
 
 { #category : #tests }

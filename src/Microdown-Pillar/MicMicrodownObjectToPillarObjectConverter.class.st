@@ -56,10 +56,6 @@ MicMicrodownObjectToPillarObjectConverter >> visitAnnotated: aMicAnnotatedBlock 
 
 { #category : #'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnnotation: aMicAnnotation [
-	| argumentsSplitter |
-	argumentsSplitter := MicArgumentsSplitter withString: aMicAnnotation substring.
-	aMicAnnotation name: argumentsSplitter  name.
-	aMicAnnotation arguments: argumentsSplitter arguments.
 	^ aMicAnnotation associatedPillarClass new parameters: aMicAnnotation arguments
 ]
 
@@ -116,7 +112,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitEnvironment: aMicEnvironmentBl
 	
 	| env |
 	env := PREnvironment new 
-			name: aMicEnvironmentBlock name;
+			name: aMicEnvironmentBlock environmentName;
 			parameters: aMicEnvironmentBlock arguments; yourself.
 	env add: (PRParagraph withAll: (aMicEnvironmentBlock pillarFrom: aMicEnvironmentBlock bodyElements)).
 	^ env

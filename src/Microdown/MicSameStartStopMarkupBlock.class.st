@@ -23,17 +23,13 @@ MicSameStartStopMarkupBlock class >> isAbstract [
 ]
 
 { #category : #accessing }
-MicSameStartStopMarkupBlock >> argumentAssociations [
-	^ arguments associations
-]
-
-{ #category : #accessing }
 MicSameStartStopMarkupBlock >> arguments [
 	^ arguments
 ]
 
 { #category : #accessing }
 MicSameStartStopMarkupBlock >> arguments: aDictionary [
+	self halt: 'Do not set this'.
 	arguments := aDictionary
 ]
 

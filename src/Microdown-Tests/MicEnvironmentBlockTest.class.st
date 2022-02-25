@@ -18,7 +18,7 @@ blbababbab bababba
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'blbababbab bababba'
 	
 ]
@@ -28,10 +28,10 @@ MicEnvironmentBlockTest >> testEnvironmentClosingNotEatingClosingCharacter [
 
 	
 	| root env |
-	root := parser parse: '<?card
+	root := parser parse: '<!card
 to
 
-?>'.
+!>'.
 	self assert: root children size equals: 1.
 	env := root children first.
 	self assert: env children first text equals: 'to'.
@@ -49,7 +49,7 @@ MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'this is the slide body'
 	
 ]
@@ -68,7 +68,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'slide'.
+	self assert: environment environmentName equals: 'slide'.
 	self assert: environment class equals: MicSlideBlock.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
@@ -95,7 +95,7 @@ blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicEnvironmentBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	
 	self assert: env children size equals: 2.
 	self assert: env children first class equals: MicUnorderedListBlock.
@@ -128,7 +128,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'card'.
+	self assert: environment environmentName equals: 'card'.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
 	self assert: (environment arguments at: 'c') equals: nil.
@@ -138,7 +138,7 @@ toto'.
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
-	root :=  parser parse: '<?slide
+	root :=  parser parse: '<!slide
 
 This is a nice piece of code
 ```
@@ -146,7 +146,7 @@ This is a nice piece of code
 >>> 1000
 ```
 isn''t it
-?>
+!>
 '.
 	
 	self assert: root children size equals: 1.
@@ -171,7 +171,7 @@ MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 	self assert: root children size equals: 1.
 	env := root children first. 
 	self assert: (env isKindOf: MicSlideBlock). 
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children first children first text equals: 'this is the slide body'
 	
 ]
@@ -223,7 +223,7 @@ toto'.
 	self assert: root children size equals: 1.
 	env := root children first.
 	self assert: (env isKindOf: MicEnvironmentBlock).
-	self assert: env name equals: environmentName.
+	self assert: env environmentName equals: environmentName.
 	self assert: env children size equals: 2.
 	self assert: env children first class equals: MicParagraphBlock.
 	self assert: env children second class equals: MicParagraphBlock.
@@ -235,11 +235,11 @@ MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
 
 	
 	| root env |
-	root := parser parse: '<?card
+	root := parser parse: '<!card
 Here we are a paragraph and the paragraph should not eat the end of the
 environment, else we force writer to enter a new line to declare the end of
 the paragraph.
-?>'.
+!>'.
 	self assert: root children size equals: 1.
 	env := root children first.
 	self assert: env children first text equals: 'Here we are a paragraph and the paragraph should not eat the end of the
@@ -263,7 +263,7 @@ toto'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	environment := root children first.
-	self assert: environment name equals: 'slide'.
+	self assert: environment environmentName equals: 'slide'.
 	self assert: environment class equals: MicSlideBlock.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
@@ -276,10 +276,10 @@ MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
 	root := parser parse: 'What a super day for a ride.
 	
-<?card
+<!card
 Sunn Special S3
 
-?>
+!>
 
 Yes this is a good idea.'.
 	
@@ -296,9 +296,9 @@ MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph2 [
 	| root |
 	root := parser parse: 
 'What a super day for a ride.	
-<?card
+<!card
 Sunn Special S3
-?> 
+!> 
 Yes this is a good idea.'.
 	
 	self assert: root children size equals: 3.
@@ -314,9 +314,9 @@ MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph3 [
 	| root |
 	root := parser parse: 
 'What a super day for a ride.	
-<?card
+<!card
 Sunn Special S3
-?> Should ignore
+!> Should ignore
 Yes this is a good idea.'.
 	
 	self assert: root children size equals: 3.

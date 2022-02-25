@@ -149,14 +149,13 @@ MicDumperTest >> testCodeBlockWithNoValues [
 MicDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
-	self skip.
 	micCodeBlock := (parser parse:
 		                 factory blockWithParameterTrueByDefaultSample)
 		                children first.
 	result := micCodeBlock accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicCodeBlock new parameters:''foo'' new body: ''bar'')'
+		equals: '(MicCodeBlock new arguments: { #language ->foo } asDictionary ; body: ''bar'')'
 ]
 
 { #category : #'test - inline - blocks' }

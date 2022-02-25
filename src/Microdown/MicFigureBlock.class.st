@@ -1,10 +1,10 @@
 "
 I am a **figure**.
 
-My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png? anchor=figanchor&width=80)`
+My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png  ""anchor=figanchor&width=80"")`
 
 You should get the following picture: 
-![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png anchor=figanchor&width=80)
+![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png ""anchor=figanchor&width=80"")
 
 I have a resources, i.e. an object referencing either a file (in relative or absolute manner) or an Url, that refers to a given image object.
 
@@ -14,8 +14,8 @@ Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
 	#instVars : [
-		'parameters',
-		'reference'
+		'reference',
+		'arguments'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -64,26 +64,24 @@ MicFigureBlock >> argumentAt: aKey put: anObject [
 
 { #category : #accessing }
 MicFigureBlock >> arguments [
-	^ parameters
+	^ arguments
 ]
 
 { #category : #accessing }
 MicFigureBlock >> arguments: aDictionary [
-	parameters := aDictionary
+	arguments := aDictionary
 ]
 
 { #category : #visiting }
 MicFigureBlock >> closeMe [
-	"We used this circumvoluted way to use the parsing on arguments provided by the URL parser
-	There is a distinction between the URL (with it potential arguments) and external parameters such as the size and label. 
-	The URL and the external parameters are separated by a space.
-	
-	So the user can express http://www.pharo.org/figures/goo.png?cookieOne=90&cookieTwo=foo size=80&label=ref12"
-
-	| split |
+	"the link url - ![alt text](url) - url is allowed to have title in quotes
+	(url ""title"") "
+	| split title|
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
-	self arguments: (MicArgumentsSplitter withString: (split second ifNil: [ '' ])) arguments.
+	title := (split second ifNil: [ '' ]) 
+		trimBoth: [:char | {$". Character space} includes: char].
+	self arguments: (MicArgumentsSplitter withString: title).
 	self captionElements: (self inlineParse: substring).
 	self children: captionElements
 ]
@@ -96,7 +94,7 @@ MicFigureBlock >> hasAnchor [
 { #category : #accessing }
 MicFigureBlock >> hasArguments [
 
-	^ parameters keys isNotEmpty
+	^ arguments size>1
 ]
 
 { #category : #testing }
@@ -113,7 +111,7 @@ MicFigureBlock >> hasChildren [
 MicFigureBlock >> initialize [
 
 	super initialize.
-	parameters := OrderedDictionary new
+	arguments := OrderedDictionary new
 ]
 
 { #category : #accessing }

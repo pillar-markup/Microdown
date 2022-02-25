@@ -91,7 +91,7 @@ MicLaTeXWriterTest >> testBold [
 { #category : #tests }
 MicLaTeXWriterTest >> testCitation [
 
-	self parseInlined: '?{citation|ref=Duca99a}?' andCheckWeGet: '\cite{Duca99a}'
+	self parseInlined: '{!citation|ref=Duca99a!}' andCheckWeGet: '\cite{Duca99a}'
 ]
 
 { #category : #tests }

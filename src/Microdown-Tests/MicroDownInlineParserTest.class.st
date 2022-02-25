@@ -110,8 +110,7 @@ MicrodownInlineParserTest >> testAnnotationPrintString [
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc',AnnotationOpenerMarkup,'footnote | value=A foonote is annotation.&width=90',AnnotationCloserMarkup,'def'.
  	self assert: elements size equals: 3.
  	self assert: elements second text equals: 'footnote | value=A foonote is annotation.&width=90'.
-	self assert: elements second name equals: 'footnote'.
-	self assert: elements second arguments keys equals: #('value' 'width'). 
+	self assert: elements second name equals: 'footnote'
 ]
 
 { #category : #'tests - annotations' }
@@ -258,6 +257,19 @@ MicrodownInlineParserTest >> testFigureWithParameters [
 
 	| elements figure |
 	elements := self parseAndReturnElementsOfParagraphFor:
+		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png "micAnchor=fig2&micWidth=80")'.
+	self assert: elements size equals: 1.
+	figure := elements first.
+	self assert: figure caption equals: 'caption terminating with a .'.
+	self assert: figure captionElements first text equals: 'caption terminating with a .'.
+	self assert: figure arguments keys size equals: 2
+]
+
+{ #category : #'tests - figure' }
+MicrodownInlineParserTest >> testFigureWithParameters_withoutQuotes [
+
+	| elements figure |
+	elements := self parseAndReturnElementsOfParagraphFor:
 		            '![caption terminating with a .](http://www.pharo.org/pharoLogo.png micAnchor=fig2&micWidth=80)'.
 	self assert: elements size equals: 1.
 	figure := elements first.
@@ -371,6 +383,33 @@ MicrodownInlineParserTest >> testMonospace [
  	self assert: elements second substring equals: 'monospaces'.
  	self assert: elements second kind equals: 'monospace'.
  	self assert: elements second openingDelimiter equals: '`'
+
+]
+
+{ #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithBackQuote [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\`bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo`bar'
+
+]
+
+{ #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithBackSlash [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo\bar'
+
+]
+
+{ #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\\bar`def'.
+ 	self assert: elements size equals: 3.
+ 	self assert: elements second substring equals: 'foo\\bar'
 
 ]
 
