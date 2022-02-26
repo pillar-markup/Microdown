@@ -9,3 +9,9 @@ Class {
 	],
 	#category : #'Microdown-HTMLExporter'
 }
+
+{ #category : #accessing }
+MicHTMLBrush >> name: aString [
+	name := aString.
+	stream nextPut: $<; << aString
+]

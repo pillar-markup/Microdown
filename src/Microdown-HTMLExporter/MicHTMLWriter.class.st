@@ -22,6 +22,20 @@ MicHTMLWriter >> contents [
 	^ canvas contents
 ]
 
+{ #category : #converting }
+MicHTMLWriter >> convertFile: aFile [
+
+	| doc write fileref |
+	fileref := aFile asFileReference.
+	doc := Microdown parse: fileref contents.
+
+	write := MicHTMLWriter new.
+	write visit: doc.
+
+	(fileref parent / (fileref basenameWithoutExtension: 'md'), 'html') asFileReference 
+		writeStreamDo: [ :st | st nextPutAll: write contents ]
+]
+
 { #category : #visiting }
 MicHTMLWriter >> createAnchorWith: anId [
 
@@ -29,29 +43,6 @@ MicHTMLWriter >> createAnchorWith: anId [
 		name: 'a';
 		parameterAt: 'id' put: anId;
 		with: ''
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> exportImgFor: aFigure [
-
-	| img |
-	img := canvas tag
-		       name: 'img';
-		       parameterAt: 'src' put: aFigure reference path;
-		       yourself.
-	"aFigure hasLabel ifTrue: [ img parameterAt: 'id' put: aFigure label ]."
-	img parameterAt: 'alt' put: (aFigure hasChildren
-			 ifTrue: [ aFigure text ]
-			 ifFalse: [ '' ]).
-	img closeTag
-]
-
-{ #category : #visiting }
-MicHTMLWriter >> hasLabel [
-
-	| label |
-	label := self parameters at: 'label' ifAbsent: [ ^ false ].
-	^ label isEmptyOrNil not
 ]
 
 { #category : #initialization }
@@ -153,9 +144,23 @@ MicHTMLWriter >> visitCodeblock: aCodeBlock [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitFigure: aFigure [
+MicHTMLWriter >> visitFigCaption: aFigCaptionBlock [
 
-	self exportImgFor: aFigure
+	canvas tag
+		name: 'figcaption';
+		with: [ 
+			aFigCaptionBlock hasCaption ifTrue: [ 
+				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitFigure: aFigure [
+	"Write mark up elements related with photo in the receiver's canvas"
+
+	canvas tag
+		name: 'figure';
+		with: [ self visitImg: aFigure ]
+
 ]
 
 { #category : #visiting }
@@ -166,6 +171,21 @@ MicHTMLWriter >> visitHeader: aHeader [
 		name: 'h',  aHeader level asString;
 		with: aHeader header
 	
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitImg: aMicFigureBlock [
+	"Write mark up elements related with image tag in the receiver's canvas.
+	Mandatory attributes:
+		src - Specifies the path to the image
+		alt - Specifies an alternate text for the image, if the image for some reason cannot be displayed"
+	
+	canvas tag
+		name: 'img';
+		parameterAt: 'src' put: aMicFigureBlock reference path;
+		parameterAt: 'alt' put: (aMicFigureBlock hasChildren ifTrue: [ aMicFigureBlock text ] ifFalse: [ '' ]);
+		addArguments: aMicFigureBlock;
+		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
 
 { #category : #visiting }

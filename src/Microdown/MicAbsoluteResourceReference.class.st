@@ -15,7 +15,11 @@ Class {
 
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
-	^ '/', self uri path
+	"Answer a <String> with the receiver's relative URI without the scheme"
+
+	^ String streamContents: [ : stream | 
+		self uri printAuthorityOn: stream.
+		self uri printPathQueryFragmentOn: stream ]
 ]
 
 { #category : #accessing }

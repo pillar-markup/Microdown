@@ -345,7 +345,7 @@ MicMicrodownTextualBuilderTest >> testMonospace [
 ]
 
 { #category : #'tests - anchor' }
-MicMicrodownTextualBuilderTest >> testOrderedList [
+MicMicrodownTextualBuilderTest >> testOrderedListDuring [
 
 	self 
 		assert: (builder orderedListDuring: [  {'item1' . 'item2' . 'item3' } 
@@ -364,7 +364,7 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 ]
 
 { #category : #'tests - anchor' }
-MicMicrodownTextualBuilderTest >> testQuote [
+MicMicrodownTextualBuilderTest >> testQuoteBlock [
 
 	self assert: (builder quoteBlock: 'aQuote') contents equals: PreformattedMarkup, ' aQuote'
 ]

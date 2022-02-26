@@ -4,21 +4,48 @@ Class {
 	#category : #'Microdown-HTMLExporter'
 }
 
-{ #category : #tag }
-MicHTMLTag >> closeTag [
+{ #category : #accessing }
+MicHTMLTag >> addArguments: aMicFigureBlock [ 
+	"Add arguments to the receiver's parameters if present"
 
-	stream << '/>'
+	aMicFigureBlock hasArguments
+		ifTrue: [ 
+			aMicFigureBlock 
+				argumentAt: 'label' ifPresent: [ : labelString | self parameterAt: 'class' put: labelString ];
+				argumentAt: 'size' ifPresent: [ : labelString | self parameterAt: 'width' put: labelString ] ]
+
 ]
 
 { #category : #accessing }
-MicHTMLTag >> name: aString [
-	name := aString.
-	stream nextPut: $<; << aString
+MicHTMLTag >> contents [
+	"Answer a <String> with receiver's output without modifying the stream position"
+	
+	^ stream contents
 ]
 
 { #category : #accessing }
 MicHTMLTag >> parameterAt: aString put: anotherString [
-	stream space. stream << aString << '="' << anotherString << '"'
+
+	stream 
+		space;
+		<< aString;
+		<< '="';
+		<< anotherString;
+		<< '"'
+]
+
+{ #category : #printing }
+MicHTMLTag >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream << ' name: ['.
+	name
+		ifNotNil: [ aStream << name ].
+	aStream << '] contents: ('.
+	stream
+		ifNotNil: [ aStream << stream contents ].
+	aStream
+		<< ')'
 ]
 
 { #category : #accessing }

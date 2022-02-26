@@ -42,6 +42,27 @@ MicFigureBlock >> anchor [
 ]
 
 { #category : #accessing }
+MicFigureBlock >> argumentAt: aKey [
+
+	^ self arguments at: aKey
+]
+
+{ #category : #accessing }
+MicFigureBlock >> argumentAt: aKey ifPresent: aBlock [
+	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
+
+	self arguments 
+		at: aKey
+		ifPresent: aBlock
+]
+
+{ #category : #accessing }
+MicFigureBlock >> argumentAt: aKey put: anObject [
+
+	self arguments at: aKey put: anObject
+]
+
+{ #category : #accessing }
 MicFigureBlock >> arguments [
 	^ arguments
 ]
@@ -72,8 +93,9 @@ MicFigureBlock >> hasAnchor [
 
 { #category : #accessing }
 MicFigureBlock >> hasArguments [
-
-	^ arguments size>1
+	"Answer <true> if the receiver contain at least 1 argument"
+	
+	^ arguments notEmpty
 ]
 
 { #category : #testing }
@@ -119,7 +141,10 @@ MicFigureBlock >> printOn: aStream [
  			nextPutAll: self caption;
  			nextPut: $];
  			nextPut: $(.
-		aStream nextPutAll: url. 
+		aStream nextPutAll: (
+			url
+				ifNotNil: [ url. ] 
+				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
 ]
