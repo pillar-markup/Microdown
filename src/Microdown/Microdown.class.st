@@ -14,6 +14,24 @@ Class {
 }
 
 { #category : #facade }
+Microdown class >> asHTMLDocument: aStringOrDoc [
+	"Facade method to render a microdown document or string to HTML"
+	
+	^ MicHTMLWriter asHTMLDocument: aStringOrDoc.
+		
+	
+]
+
+{ #category : #facade }
+Microdown class >> asHTMLString: aStringOrDoc [
+	"Facade method to render a microdown document or string to HTML"
+	
+	^ MicHTMLWriter asHTMLString: aStringOrDoc.
+		
+	
+]
+
+{ #category : #facade }
 Microdown class >> asRichText: aStringOrDoc [
 	"Facade method to render a microdown document or string to Text"
 	^ MicRichTextComposer asRichText: aStringOrDoc.

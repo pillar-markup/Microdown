@@ -11,6 +11,34 @@ Class {
 	#category : #'Microdown-HTMLExporter'
 }
 
+{ #category : #converting }
+MicHTMLWriter class >> asHTMLDocument: aMicrodownString [
+	"Answer a <String> formatted as HTML with UTF-8 encoding from aMicrodownString as input"
+
+	^ self new convertMicStringToDoc: aMicrodownString
+]
+
+{ #category : #converting }
+MicHTMLWriter class >> asHTMLString: aMicrodownString [
+	"Answer a <String> formatted as HTML from aMicrodownString as input"
+
+	^ self new convertMicString: aMicrodownString
+]
+
+{ #category : #examples }
+MicHTMLWriter class >> exampleHTMLDocument [
+	<example>
+	
+	^ (Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument) inspect.
+]
+
+{ #category : #examples }
+MicHTMLWriter class >> exampleHTMLString [
+	<example>
+	
+	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
+]
+
 { #category : #initialization }
 MicHTMLWriter >> canvasClass [
 
@@ -19,21 +47,38 @@ MicHTMLWriter >> canvasClass [
 
 { #category : #accessing }
 MicHTMLWriter >> contents [ 
+	"Answer a <String> of HTML formatted receiver's canvas"
+
 	^ canvas contents
 ]
 
 { #category : #converting }
-MicHTMLWriter >> convertFile: aFile [
+MicHTMLWriter >> convertMicFile: aFilename [
 
-	| doc write fileref |
-	fileref := aFile asFileReference.
-	doc := Microdown parse: fileref contents.
+	| fileRef |
 
-	write := MicHTMLWriter new.
-	write visit: doc.
+	fileRef := aFilename asFileReference.
+	self visit: (Microdown parse: fileRef contents).
+	(fileRef parent / (fileRef basenameWithoutExtension: 'md') , 'html') asFileReference 
+		writeStreamDo: [ : writeStream | writeStream nextPutAll: self contents ]
+]
 
-	(fileref parent / (fileref basenameWithoutExtension: 'md'), 'html') asFileReference 
-		writeStreamDo: [ :st | st nextPutAll: write contents ]
+{ #category : #converting }
+MicHTMLWriter >> convertMicString: aMicString [
+	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
+
+	self visit: (Microdown parse: aMicString).
+	^ self contents
+]
+
+{ #category : #converting }
+MicHTMLWriter >> convertMicStringToDoc: aMicString [
+	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
+
+	self visit: (Microdown parse: aMicString).
+	^ MicHTMLDocBuilder new
+		contents: self contents;
+		document
 ]
 
 { #category : #visiting }
@@ -260,7 +305,9 @@ MicHTMLWriter >> visitUnorderedList: anUnorderedList [
 	canvas newLine.
 	canvas tag
 		name: 'ul';
-		with: [ canvas newLine. super visitUnorderedList: anUnorderedList  ]
+		with: [ 
+			canvas newLine. 
+			super visitUnorderedList: anUnorderedList  ]
 ]
 
 { #category : #visiting }

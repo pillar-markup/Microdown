@@ -5,8 +5,8 @@ Class {
 	#name : #MicHTMLWriterTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'converter',
-		'filesystem'
+		'filesystem',
+		'micHTMLWriter'
 	],
 	#category : #'Microdown-HTMLExporter-Tests'
 }
@@ -39,7 +39,7 @@ Pharo is **cool**
 { #category : #running }
 MicHTMLWriterTest >> setUp [
 	super setUp.
-	converter := MicHTMLWriter new.
+	micHTMLWriter := MicHTMLWriter new.
 	filesystem := FileSystem memory.
 	self generateFilesystemExample.
 ]
@@ -47,21 +47,21 @@ MicHTMLWriterTest >> setUp [
 { #category : #test }
 MicHTMLWriterTest >> testCanvasClass [
 
-	self assert: converter canvasClass equals: MicHTMLCanvas
+	self assert: micHTMLWriter canvasClass equals: MicHTMLCanvas
 ]
 
 { #category : #test }
 MicHTMLWriterTest >> testContents [ 
 
-	self assert: converter contents equals: String empty.
-	converter visitItalic: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'test')).
-	self assert: converter contents equals: '<em>test</em>'.
+	self assert: micHTMLWriter contents equals: String empty.
+	micHTMLWriter visitItalic: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'test')).
+	self assert: micHTMLWriter contents equals: '<em>test</em>'.
 ]
 
 { #category : #test }
-MicHTMLWriterTest >> testConvertFile [
+MicHTMLWriterTest >> testConvertMicFile [
 	
-	converter convertFile: (filesystem / 'anExample1.md') asFileReference.
+	micHTMLWriter convertMicFile: (filesystem / 'anExample1.md') asFileReference.
 	
 	self assert: (filesystem / 'anExample1.html') asFileReference exists.
 	self 
@@ -74,9 +74,38 @@ MicHTMLWriterTest >> testConvertFile [
 ]
 
 { #category : #test }
+MicHTMLWriterTest >> testConvertMicString [
+
+	| result |
+	
+	result := micHTMLWriter convertMicString: MicMicrodownSnippetFactory buildDocument.
+	
+	self assert: (result isKindOf: String).
+	self assert: result notEmpty.
+
+]
+
+{ #category : #test }
+MicHTMLWriterTest >> testConvertMicStringToDoc [
+
+	| expectedHtmlDoc |
+	
+	expectedHtmlDoc := Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument.
+	self 
+		assert: (expectedHtmlDoc isKindOf: String)
+		description: 'It tests that result is a String object'.
+	self 
+		deny: expectedHtmlDoc isEmpty 
+		description: 'It test that result is not empty'.
+	self
+		assert: (expectedHtmlDoc beginsWith: MicHTMLDocBuilder documentType)
+		description: 'It test that result contain the expected document type tag'
+]
+
+{ #category : #test }
 MicHTMLWriterTest >> testCreateAnchorWith [
 
-	self assert: converter contents equals: String empty.
-	converter createAnchorWith: 'id1'.
-	self assert: converter contents equals: '<a id="id1"></a>'.
+	self assert: micHTMLWriter contents equals: String empty.
+	micHTMLWriter createAnchorWith: 'id1'.
+	self assert: micHTMLWriter contents equals: '<a id="id1"></a>'.
 ]
