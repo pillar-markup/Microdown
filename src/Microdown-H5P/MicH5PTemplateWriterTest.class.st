@@ -44,12 +44,12 @@ MicH5PTemplateWriterTest >> presentationInMicrodown [
 MicH5PTemplateWriterTest >> slideInMicrodown [
 
 ^ '
-<?slide|title=A nice title isn''t&tag=nh5p
+<!slide|title=A nice title isn''t&tag=nh5p
 
 - slide 1 bullet 1
 - slide 1 bullet 2
 - slide 1 bullet 3
-?>
+!>
 
 
 
@@ -60,7 +60,7 @@ MicH5PTemplateWriterTest >> slideInMicrodown [
 MicH5PTemplateWriterTest >> slideInMicrodownWithCode [
 
 ^ '
-<?slide|title=A piece of code&tag=nh5p
+<!slide|title=A piece of code&tag=nh5p
 
 ```
 testMethod
@@ -73,7 +73,7 @@ testFoo
    self assertSpace2
    ^ self
 ```
-?>
+!>
 
 
 
@@ -84,13 +84,13 @@ testFoo
 MicH5PTemplateWriterTest >> slideInMicrodownWithSimpleCode [
 
 ^ '
-<?slide|title=A piece of code&tag=nh5p
+<!slide|title=A piece of code&tag=nh5p
 
 ```
 testMethod
 	self assert: 4 foo equals: 55
 ```
-?>
+!>
 
 
 
@@ -343,19 +343,19 @@ MicH5PTemplateWriterTest >> testSlides [
     "author":""
 }
 
-<?slide|title=Slide2 Bli&tag=nh5p
+<!slide|title=Slide2 Bli&tag=nh5p
 
 - slide 2 bullet 1
 - slide 2 bullet 2
 - slide 2 bullet 3
-?>.
+!>.
 
-<?slide|title=Slide3 blah&tag=nh5p
+<!slide|title=Slide3 blah&tag=nh5p
 
 - slide 3 bullet 1
 - bullet 2
 - bullet 3
-?>'
+!>'
 ]
 
 { #category : #tests }
@@ -363,10 +363,10 @@ MicH5PTemplateWriterTest >> twoSlidesInMicrodown [
 
 ^ self slideInMicrodown, '
 
-<?slide|title=Slide3 blah&tag=nh5p
+<!slide|title=Slide3 blah&tag=nh5p
 
 - slide 2 bullet 1
 - bullet 2
 - bullet 2
-?>'
+!>'
 ]
