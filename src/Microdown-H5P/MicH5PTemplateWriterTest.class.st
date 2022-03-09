@@ -4,7 +4,7 @@ Class {
 	#category : #'Microdown-H5P'
 }
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 
 ^ '
@@ -17,12 +17,12 @@ MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> oneSlideWithCodeInMicrodown [
 
 ^ '
 
-<?slide|title=Nice code eh!&tag=nh5p
+<!slide|title=Nice code eh!&tag=nh5p
 
 ```
 SpTextInputFieldWithValidation >> validateInto: aValidationReport
@@ -31,16 +31,16 @@ SpTextInputFieldWithValidation >> validateInto: aValidationReport
 ```
 
 
-?>'
+!>'
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> presentationInMicrodown [
 
 ^ self mainSlideInMicrodown , self twoSlidesInMicrodown 
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodown [
 
 ^ '
@@ -56,7 +56,7 @@ MicH5PTemplateWriterTest >> slideInMicrodown [
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodownWithCode [
 
 ^ '
@@ -80,7 +80,7 @@ testFoo
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodownWithSimpleCode [
 
 ^ '
@@ -93,6 +93,19 @@ testMethod
 !>
 
 
+
+'
+]
+
+{ #category : #sample }
+MicH5PTemplateWriterTest >> slideWithFigure [
+
+^ '
+<!slide|title=A nice title isn''t&tag=nh5p
+
+
+![A nice figure](file:/figures/foo.png position=fullscreen)
+!>
 
 '
 ]
@@ -331,6 +344,32 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
 ]
 
 { #category : #tests }
+MicH5PTemplateWriterTest >> testOneSlideWithOneFigure [
+
+	| doc fig |
+	doc := Microdown parse: self slideWithFigure.
+	fig := doc children first children first children first.
+	self assert: (fig isKindOf: MicFigureBlock).
+	self assert: (fig reference uri segments last) equals: 'foo.png'.
+	self assert: (fig arguments at: #position) equals: 'fullscreen'.
+	
+
+]
+
+{ #category : #tests }
+MicH5PTemplateWriterTest >> testOneSlideWithOneFigureSkipped [
+
+	| doc h5p |
+	self skip.
+	doc := Microdown 
+				resolver: (self memoryFileSystem);
+				parse: self slideWithFigure.
+	self assert: (doc children first children first isKindOf: MicFigureBlock).
+	self assert: (doc children first children first filename) equals: 'figures/foo.png'
+
+]
+
+{ #category : #tests }
 MicH5PTemplateWriterTest >> testSlides [
 
 	| doc |
@@ -358,7 +397,7 @@ MicH5PTemplateWriterTest >> testSlides [
 !>'
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> twoSlidesInMicrodown [
 
 ^ self slideInMicrodown, '

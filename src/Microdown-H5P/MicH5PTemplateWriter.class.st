@@ -1,8 +1,20 @@
 "
-This is not yet a test case... but soon. 
+An H5P writer... scary format.
+
+
+first invoke the writer 
+then the following script on the repository of Advanced Design Mooc since it has the ValidatedJSON
+
+```
+cp ValidatedJSON/content4.json pharo-Template-withVariableNames2/content/content.json
+cd pharo-Template-withVariableNames2
+zip -r -D -X ../Generated.h5p *
+cd ../
+```
+
 
 Now I always work on fullTemplateString without number
-and whenit is working I from time to time archive it by adding an increasing number to the methods. 
+and when it is working I from time to time archive it by adding an increasing number to the methods. 
 
 I do that because the format is super fragile and I do not to fight with git to recover in case of problems.
 
@@ -5090,6 +5102,48 @@ MicH5PTemplateWriter >> visitCode: aCodeBlock [
  	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ stream nextPutAll: '\n' ]
 											ifFalse: [ stream nextPut: each  ] ].
 	stream nextPutAll: '\n</pre>\n'.
+]
+
+{ #category : #visiting }
+MicH5PTemplateWriter >> visitFigure: aFigureBlock [
+
+	self halt.
+	
+	 '{
+                  "x":57.734204793028326,
+                  "y":83.91897300391192,
+                  "width":18.51851851851852,
+                  "height":13.21319292326363,
+                  "action":{
+                     "library":"H5P.Image 1.1",
+                     "params":{
+                        "contentName":"Image",
+                        "file":{
+                           "path":"images/image-wFbeHf6p.png",
+                           "mime":"image/png",
+                           "copyright":{
+                              "license":"U"
+                           },
+                           "width":227,
+                           "height":82
+                        }
+                     },
+                     "metadata":{
+                        "contentType":"Image",
+                        "license":"U",
+                        "title":"Untitled Image",
+                        "authors":[ ],
+                        "changes":[ ]
+                     }
+                  },
+                  "alwaysDisplayComments":false,
+                  "backgroundOpacity":0,
+                  "displayAsButton":false,
+                  "buttonSize":"big",
+                  "goToSlideType":"specified",
+                  "invisible":false,
+                  "solution":""
+               }'
 ]
 
 { #category : #visiting }
