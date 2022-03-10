@@ -3,10 +3,17 @@ An H5P writer... scary format.
 
 
 first invoke the writer 
+
+MicH5PTemplateWriter new 
+	writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new mainSlideInMicrodown, MicH5PTemplateWriterTest new oneSlideWithCodeInMicrodown )
+
+
+slideWithFigure
+
 then the following script on the repository of Advanced Design Mooc since it has the ValidatedJSON
 
 ```
-cp ValidatedJSON/content4.json pharo-Template-withVariableNames2/content/content.json
+#cp ValidatedJSON/content4.json pharo-Template-withVariableNames2/content/content.json
 cd pharo-Template-withVariableNames2
 zip -r -D -X ../Generated.h5p *
 cd ../
@@ -22,6 +29,7 @@ I do that because the format is super fragile and I do not to fight with git to 
 I'm a slide converter to a limited subset of H5P.
 
 ### figure
+the 4 first info is the size of the picture area.
 
 {
             ""x"": 22.875816993464053,
@@ -460,6 +468,7 @@ MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 	| oneSlideWriter |
 	oneSlideWriter := self class new.
 	aSlide accept: oneSlideWriter. 
+	self halt.
 	^ self slideTemplate asMustacheTemplate 
 			value: ({ 
 						'SLIDETITLEVARIABLE' -> aSlide title .
@@ -5139,7 +5148,6 @@ MicH5PTemplateWriter >> slideTemplate [
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitCode: aCodeBlock [
-
 	stream nextPutAll: '<pre>'.
  	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ stream nextPutAll: '\n' ]
 											ifFalse: [ stream nextPut: each  ] ].
@@ -5148,7 +5156,8 @@ MicH5PTemplateWriter >> visitCode: aCodeBlock [
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitFigure: aFigureBlock [
-
+	
+	self halt.
 	stream nextPutAll:	
 	 '{
             "x": 22.875816993464053,

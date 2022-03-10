@@ -103,8 +103,7 @@ MicH5PTemplateWriterTest >> slideWithFigure [
 ^ '
 <!slide|title=A nice title isn''t&tag=nh5p
 
-
-![A nice figure](file:/figures/foo.png position=fullscreen)
+![A nice figure](file:/figures/foo.png)
 !>
 
 '
