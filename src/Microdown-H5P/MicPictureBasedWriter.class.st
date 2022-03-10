@@ -14,9 +14,9 @@ MicPictureBasedWriter class >> example [
 	<script>
 	
 	self new
-		placeOfTemplateFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/';
-		sourceFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/AboutBasket-images/';
-		writeContentJSONOnDisk: 2.
+		placeOfTemplateFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/Source-Template/';
+		sourceSlideImagesFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/AboutBasket-images/';
+		go
 		
 ]
 
@@ -27,24 +27,34 @@ MicPictureBasedWriter >> contentJSON [
 	^ (self target / 'content' / 'content.json') asFileReference
 ]
 
-{ #category : #writing }
+{ #category : #operations }
 MicPictureBasedWriter >> copyImagesInSource [
 
-	self sourceSlideImagesFolder copyAllTo: self target / 'content' / 'images'
+	(self target / 'content' / 'images/') ensureDeleteAll.
+	self sourceSlideImagesFolder copyAllTo: self target / 'content' / 'images/'
 ]
 
-{ #category : #writing }
+{ #category : #operations }
+MicPictureBasedWriter >> generateContent [
+
+	self contentJSON ensureDelete.
+	self contentJSON 
+		writeStreamDo: [ :str | str nextPutAll: (self presentationStringForCollection: slideNames sorted )]
+]
+
+{ #category : #operations }
 MicPictureBasedWriter >> go [
 	
 	self installSource.
 	self copyImagesInSource.
-	slideNames := self sourceSlideImagesFolder allFilesWithExtension: 'jpeg'.
+	slideNames := ((self sourceSlideImagesFolder children select: [:each | #('jpeg' 'jpg') includes: each extension]) collect: [:each | each basename]) sorted.
 	self generateContent.
 ]
 
-{ #category : #writing }
+{ #category : #operations }
 MicPictureBasedWriter >> installSource [
-	
+
+	self target ensureDeleteAll.
 	self placeOfTemplateFolder copyAllTo: self target
 ]
 
