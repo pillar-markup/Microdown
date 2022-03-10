@@ -20,6 +20,48 @@ I do that because the format is super fragile and I do not to fight with git to 
 
 
 I'm a slide converter to a limited subset of H5P.
+
+### figure
+
+{
+            ""x"": 22.875816993464053,
+            ""y"": 25.821222462742128,
+            ""width"": 61.08050108932463,
+            ""height"": 51.642444925484256,
+            ""action"": {
+              ""library"": ""H5P.Image 1.1"",
+              ""params"": {
+                ""contentName"": ""Image"",
+                ""file"": {
+                  ""path"": ""images/image-dejfFHSf.png"",
+                  ""mime"": ""image/png"",
+                  ""copyright"": {
+                    ""license"": ""U""
+                  },
+                  ""width"": 771,
+                  ""height"": 330
+                }
+              },
+              ""subContentId"": ""9cdd1cde-7ffa-4306-b811-cf1287e7c0ba"",
+              ""metadata"": {
+                ""contentType"": ""Image"",
+                ""license"": ""U"",
+                ""title"": ""Untitled Image"",
+                ""authors"": [],
+                ""changes"": []
+              }
+            },
+            ""alwaysDisplayComments"": false,
+            ""backgroundOpacity"": 0,
+            ""displayAsButton"": false,
+            ""buttonSize"": ""big"",
+            ""goToSlideType"": ""specified"",
+            ""invisible"": false,
+            ""solution"": """"
+          }
+
+
+
 ### code 
 params"""":{
                         """"text"""":""""<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: 'sec123'.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: 'sec123'\n</pre>\n""""
@@ -5107,43 +5149,43 @@ MicH5PTemplateWriter >> visitCode: aCodeBlock [
 { #category : #visiting }
 MicH5PTemplateWriter >> visitFigure: aFigureBlock [
 
-	self halt.
-	
+	stream nextPutAll:	
 	 '{
-                  "x":57.734204793028326,
-                  "y":83.91897300391192,
-                  "width":18.51851851851852,
-                  "height":13.21319292326363,
-                  "action":{
-                     "library":"H5P.Image 1.1",
-                     "params":{
-                        "contentName":"Image",
-                        "file":{
-                           "path":"images/image-wFbeHf6p.png",
-                           "mime":"image/png",
-                           "copyright":{
-                              "license":"U"
-                           },
-                           "width":227,
-                           "height":82
-                        }
-                     },
-                     "metadata":{
-                        "contentType":"Image",
-                        "license":"U",
-                        "title":"Untitled Image",
-                        "authors":[ ],
-                        "changes":[ ]
-                     }
+            "x": 22.875816993464053,
+            "y": 25.821222462742128,
+            "width": 61.08050108932463,
+            "height": 51.642444925484256,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "contentName": "Image",
+                "file": {
+                  "path": "images/image-dejfFHSf.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
                   },
-                  "alwaysDisplayComments":false,
-                  "backgroundOpacity":0,
-                  "displayAsButton":false,
-                  "buttonSize":"big",
-                  "goToSlideType":"specified",
-                  "invisible":false,
-                  "solution":""
-               }'
+                  "width": 771,
+                  "height": 330
+                }
+              },
+              "subContentId": "9cdd1cde-7ffa-4306-b811-cf1287e7c0ba",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Untitled Image",
+                "authors": [],
+                "changes": []
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }'
 ]
 
 { #category : #visiting }
