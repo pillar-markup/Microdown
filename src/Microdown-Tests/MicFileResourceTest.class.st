@@ -19,7 +19,7 @@ MicFileResourceTest >> exampleMicFileResource [
 	| file |
 	
 	file := self exampleReadmeFile.
-	^ MicFileResource on: file reference: (filesystem resolvePath: file path)
+	^ MicFileResourceReference fromFileRef: file
 ]
 
 { #category : #private }
@@ -101,13 +101,9 @@ MicFileResourceTest >> setUp [
 	super setUp.
 	emptyResolver := MicUrlResolver new.
 	filesystem := FileSystem memory.
-	readme := self exampleReadmeFile contents. "(ZnEasy get: (MicHTTPResourceTest githubTestData uri + 'readme.md')) contents."
-	image := self examplePNGFile. "ZnEasy getPng: (MicHTTPResourceTest githubTestData uri + 'toplevel.png')."
+	readme := self exampleReadmeFile contents.
+	image := self examplePNGFile.
 
-	fullResolver := MicUrlResolver new
-		currentWorkingDirectory: filesystem workingDirectory;
-		yourself.
-	
 	file := filesystem workingDirectory / 'readme.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: readme].
 	

@@ -65,6 +65,11 @@ MicResourceReference class >> workingDirectoryReference [
 	^ self fromUri: FileSystem workingDirectory asUrl asString
 ]
 
+{ #category : #testing }
+MicResourceReference >> isRelative [
+	^ false
+]
+
 { #category : #accessing }
 MicResourceReference >> loadImage: aResolver [
 	

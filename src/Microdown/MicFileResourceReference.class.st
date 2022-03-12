@@ -12,8 +12,8 @@ It is possible to add new hosts, a primary use case is to give memory file store
 Class {
 	#name : #MicFileResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
-	#classVars : [
-		'Hosts'
+	#instVars : [
+		'fileSystem'
 	],
 	#category : #'Microdown-Core'
 }
@@ -21,73 +21,33 @@ Class {
 { #category : #'instance creation' }
 MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
-	| host micRef |
-	aFileReference fileSystem isDiskFileSystem
-		ifTrue:[ ^ self new uri: ('file://',aFileReference pathString ) asZnUrl].
-	"fileReference is a memory filesystem"
-	host := self hostOf: aFileReference.
-	host ifNil: [
-		host := #'memory.default'.
-		self host: host is: aFileReference fileSystem].
-	micRef := self new uri: ('file://', host, aFileReference pathString ) asZnUrl .
-	^ micRef
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> host: hostName is: aFileReference [ 
-	self hosts at: hostName put: aFileReference
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hostFileReference: hostName [ 
-	"returns a file reference for the host, or nil if no such host exists"
-	^ self hosts at: hostName ifAbsent: [ ^ nil ] 
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hostOf: aFileReference [
-	| host |
-	host := self hosts associations 
-		detect: [ :assoc | assoc value = aFileReference fileSystem ]
-		ifNone: [ ^ nil ].
-	^ host key
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hosts [ 
-	Hosts ifNil: [ 
-		Hosts := Dictionary new. 
-		self populateHosts ].
-	^ Hosts
-]
-
-{ #category : #'class initialization' }
-MicFileResourceReference class >> initialize [  
-	<script>
-	Hosts := nil.
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> populateHosts [ 
-	self host: #localhost is: FileSystem disk root asFileReference .
-	self host: #workingdirectory is: FileSystem disk workingDirectory
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> removeHost: hostName [ 
-	self hosts removeKey: hostName ifAbsent: [  ]
-
+	^ self new
+		uri: ('file://',aFileReference pathString) asZnUrl;
+		fileSystem: aFileReference fileSystem 
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> contents [
 	^ uri host 
-		ifNil: [ self path asFileReference contents]
+		ifNil: [ (self fileSystem referenceTo: self path) contents]
 		ifNotNil: [ ((self class hostFileReference: uri host) / self path) contents ].
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> fileSystem [
+
+	^ fileSystem
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> fileSystem: anObject [
+
+	fileSystem := anObject
+]
+
+{ #category : #testing }
+MicFileResourceReference >> isFileReference [
+	^ true
 ]
 
 { #category : #loading }

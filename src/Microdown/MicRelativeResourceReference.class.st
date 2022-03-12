@@ -9,6 +9,11 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #testing }
+MicRelativeResourceReference >> isRelative [
+	^ true
+]
+
 { #category : #accessing }
 MicRelativeResourceReference >> path [
 	^originalString  

@@ -13,6 +13,11 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #testing }
+MicAbsoluteResourceReference >> isFileReference [
+	^ false
+]
+
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	"Answer a <String> with the receiver's relative URI without the scheme"

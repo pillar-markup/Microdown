@@ -53,3 +53,14 @@ MicInputfileBlock >> path: aPath [
 	
 	arguments at: #'path' put: aPath
 ]
+
+{ #category : #accessing }
+MicInputfileBlock >> reference [
+	^ self arguments at: #path
+]
+
+{ #category : #accessing }
+MicInputfileBlock >> reference: aMicResourceReference [
+
+	self arguments at: #path put: aMicResourceReference
+]
