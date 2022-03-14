@@ -1,13 +1,75 @@
 "
-This is not yet a test case... but soon. 
+An H5P writer... scary format.
+
+
+first invoke the writer 
+
+MicH5PTemplateWriter new 
+	writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new mainSlideInMicrodown, MicH5PTemplateWriterTest new oneSlideWithCodeInMicrodown )
+
+
+slideWithFigure
+
+then the following script on the repository of Advanced Design Mooc since it has the ValidatedJSON
+
+```
+#cp ValidatedJSON/content4.json pharo-Template-withVariableNames2/content/content.json
+cd pharo-Template-withVariableNames2
+zip -r -D -X ../Generated.h5p *
+cd ../
+```
+
 
 Now I always work on fullTemplateString without number
-and whenit is working I from time to time archive it by adding an increasing number to the methods. 
+and when it is working I from time to time archive it by adding an increasing number to the methods. 
 
 I do that because the format is super fragile and I do not to fight with git to recover in case of problems.
 
 
 I'm a slide converter to a limited subset of H5P.
+
+### figure
+the 4 first info is the size of the picture area.
+
+{
+            ""x"": 22.875816993464053,
+            ""y"": 25.821222462742128,
+            ""width"": 61.08050108932463,
+            ""height"": 51.642444925484256,
+            ""action"": {
+              ""library"": ""H5P.Image 1.1"",
+              ""params"": {
+                ""contentName"": ""Image"",
+                ""file"": {
+                  ""path"": ""images/image-dejfFHSf.png"",
+                  ""mime"": ""image/png"",
+                  ""copyright"": {
+                    ""license"": ""U""
+                  },
+                  ""width"": 771,
+                  ""height"": 330
+                }
+              },
+              ""subContentId"": ""9cdd1cde-7ffa-4306-b811-cf1287e7c0ba"",
+              ""metadata"": {
+                ""contentType"": ""Image"",
+                ""license"": ""U"",
+                ""title"": ""Untitled Image"",
+                ""authors"": [],
+                ""changes"": []
+              }
+            },
+            ""alwaysDisplayComments"": false,
+            ""backgroundOpacity"": 0,
+            ""displayAsButton"": false,
+            ""buttonSize"": ""big"",
+            ""goToSlideType"": ""specified"",
+            ""invisible"": false,
+            ""solution"": """"
+          }
+
+
+
 ### code 
 params"""":{
                         """"text"""":""""<pre>testSetLabel\n\n    | codeBlock |\n    codeBlock := self testedClass new.\n    codeBlock label: 'sec123'.\n    self assert: codeBlock hasLabel. \n    self assert: codeBlock label equals: 'sec123'\n</pre>\n""""
@@ -406,6 +468,7 @@ MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 	| oneSlideWriter |
 	oneSlideWriter := self class new.
 	aSlide accept: oneSlideWriter. 
+	self halt.
 	^ self slideTemplate asMustacheTemplate 
 			value: ({ 
 						'SLIDETITLEVARIABLE' -> aSlide title .
@@ -5085,11 +5148,53 @@ MicH5PTemplateWriter >> slideTemplate [
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitCode: aCodeBlock [
-
 	stream nextPutAll: '<pre>'.
  	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ stream nextPutAll: '\n' ]
 											ifFalse: [ stream nextPut: each  ] ].
 	stream nextPutAll: '\n</pre>\n'.
+]
+
+{ #category : #visiting }
+MicH5PTemplateWriter >> visitFigure: aFigureBlock [
+	
+	self halt.
+	stream nextPutAll:	
+	 '{
+            "x": 22.875816993464053,
+            "y": 25.821222462742128,
+            "width": 61.08050108932463,
+            "height": 51.642444925484256,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "contentName": "Image",
+                "file": {
+                  "path": "images/image-dejfFHSf.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 771,
+                  "height": 330
+                }
+              },
+              "subContentId": "9cdd1cde-7ffa-4306-b811-cf1287e7c0ba",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Untitled Image",
+                "authors": [],
+                "changes": []
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }'
 ]
 
 { #category : #visiting }
