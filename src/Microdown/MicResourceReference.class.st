@@ -60,9 +60,10 @@ MicResourceReference class >> fromUri: aString [
 	
 ]
 
-{ #category : #'instance creation' }
-MicResourceReference class >> workingDirectoryReference [
-	^ self fromUri: FileSystem workingDirectory asUrl asString
+{ #category : #accessing }
+MicResourceReference >> binaryStream [
+	"return the binaryStream I refer to"
+	self subclassResponsibility.
 ]
 
 { #category : #testing }
@@ -80,6 +81,16 @@ MicResourceReference >> loadImage: aResolver [
 MicResourceReference >> loadMicrodown: aResolver [
 
 	^ (self resolveResourceIn: aResolver) parseMicrodown
+]
+
+{ #category : #loading }
+MicResourceReference >> loadMicrodown_old [
+	"I am an absolute reference, so I should be able to load completely"
+	|doc|
+	doc := Microdown parse: self contents.
+	"doc := Microdown resolve: doc fromUri: uri."
+	self error: 'I need to be reimplemented'.
+	^ doc
 ]
 
 { #category : #accessing }

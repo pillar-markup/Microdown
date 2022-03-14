@@ -27,10 +27,20 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 ]
 
 { #category : #accessing }
+MicFileResourceReference >> binaryReadStream [
+	^ self fileReference binaryReadStream.
+]
+
+{ #category : #accessing }
 MicFileResourceReference >> contents [
+	^ self fileReference contents.
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> fileReference [ 
 	^ uri host 
-		ifNil: [ (self fileSystem referenceTo: self path) contents]
-		ifNotNil: [ ((self class hostFileReference: uri host) / self path) contents ].
+		ifNil: [ self fileSystem referenceTo: self path]
+		ifNotNil: [ (self class hostFileReference: uri host) / self path ].
 ]
 
 { #category : #accessing }
@@ -48,15 +58,6 @@ MicFileResourceReference >> fileSystem: anObject [
 { #category : #testing }
 MicFileResourceReference >> isFileReference [
 	^ true
-]
-
-{ #category : #loading }
-MicFileResourceReference >> loadMicrodown [
-	"I am an absolute reference, so I should be able to load completely"
-	|doc|
-	doc := Microdown parse: self contents.
-	doc := Microdown resolve: doc fromUri: uri.
-	^ doc
 ]
 
 { #category : #accessing }

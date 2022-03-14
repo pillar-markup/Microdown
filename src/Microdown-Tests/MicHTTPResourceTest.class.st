@@ -5,7 +5,7 @@ Class {
 	#name : #MicHTTPResourceTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'resolver',
+		'baseUrl',
 		'offlineSetting'
 	],
 	#category : #'Microdown-Tests-Resources'
@@ -22,7 +22,7 @@ MicHTTPResourceTest >> setUp [
 	"All tests assume to be online"
 	offlineSetting := Microdown offline.
 	Microdown offline: false.
-	resolver := MicUrlResolver new baseUrlString: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
+	baseUrl := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]
 
 { #category : #running }
@@ -36,40 +36,40 @@ MicHTTPResourceTest >> tearDown [
 { #category : #tests }
 MicHTTPResourceTest >> testErrorNonCorrectImage [
 
-	| uri |
-	uri := 'readme.md' asMicResourceUri.
+	| ref |
+	ref := MicResourceReference fromUri:  baseUrl ,'readme.md'.
 	
 	self
-		should: [(uri resolveResourceIn: resolver) asForm]
+		should: [ref loadImage]
 		raise: UnrecognizedImageFormatError
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testErrorNonExistingImage [
 
-	| uri image |
-	uri := 'nonexistingImage.png' asMicResourceUri.
-	
-	image := (uri resolveResourceIn: resolver) asForm.
-	self assert: image isNil
+	| ref |
+	ref := MicResourceReference fromUri:  baseUrl , 'nonexistingImage.png'.
+	self
+		should: [ref loadMicrodown]
+		raise: MicHttpReferenceError 
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadErrorMicrodown [
-	| uri |
-	uri := 'toplevel.png' asMicResourceUri.
+	| ref |
+	ref := MicResourceReference fromUri:  baseUrl ,'toplevel.png'.
 
 	self
-		should: [uri loadMicrodown: resolver]
+		should: [ref loadMicrodown]
 		raise: ZnInvalidUTF8
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadImage [
 
-	| uri image |
-	uri := 'toplevel.png' asMicResourceUri.
-	image := uri loadImage: resolver.
+	| ref image |
+	ref := MicResourceReference fromUri:  baseUrl , 'toplevel.png'.
+	image := ref loadImage.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
@@ -77,9 +77,9 @@ MicHTTPResourceTest >> testLoadImage [
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodown [
-	| uri doc |
-	uri := 'readme.md' asMicResourceUri.
-	doc := uri loadMicrodown: resolver.
+	| ref doc |
+	ref := MicResourceReference fromUri:  baseUrl , 'readme.md'.
+	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	
@@ -88,25 +88,25 @@ MicHTTPResourceTest >> testLoadMicrodown [
 { #category : #tests }
 MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 
-	| uri doc topLevelImageRef |
-	uri := 'readme.md' asMicResourceUri.
-	doc := uri loadMicrodown: resolver.
+	| ref doc topLevelImageRef |
+	ref := MicResourceReference fromUri:  baseUrl , 'readme.md'.
+	doc := ref loadMicrodown.
 
 	topLevelImageRef := doc children fourth children first.
 	self assert: topLevelImageRef class equals: MicFigureBlock.
 	self
-		assert: (topLevelImageRef reference loadImage: MicUrlResolver new) height
+		assert: (topLevelImageRef reference loadImage) height
 		equals: 90
 ]
 
 { #category : #tests }
 MicHTTPResourceTest >> testLoadNonExistingMicrodown [
-	| uri |
-	uri := 'readmeNOT.md' asMicResourceUri.
-	
+	| ref errorMessage|
+	ref := MicResourceReference fromUri:  baseUrl , 'readmeNOT.md'.
+	errorMessage := 'Could not access ', baseUrl, 'readmeNOT.md'.
 	[
-		uri loadMicrodown: resolver.
+		ref loadMicrodown.
 		self fail
 	] on: Error do: [ :e |
-		self assert: e messageText equals: 'Microdown file not found' ]
+		self assert: e messageText equals: errorMessage ]
 ]

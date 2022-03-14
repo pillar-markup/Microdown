@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #private }
-MicFileResourceTest >> exampleMicFileResource [
+MicFileResourceTest >> exampleMicFileResourceReference [
 
 	| file |
 	
@@ -114,29 +114,19 @@ MicFileResourceTest >> setUp [
 
 { #category : #tests }
 MicFileResourceTest >> testContents [
-
 	| micFileResource |
 	
-	micFileResource := self exampleMicFileResource.
+	micFileResource := self exampleMicFileResourceReference.
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
-]
-
-{ #category : #tests }
-MicFileResourceTest >> testFileReference [
-
-	| micFileResource |
-	micFileResource := self exampleMicFileResource.
-	self 
-		assert: (micFileResource fileReference isKindOf: FileReference)
-		description: 'It asserts that the file reference of a file resource it is actually a FileReference'
 ]
 
 { #category : #tests }
 MicFileResourceTest >> testLoadImage [
 
 	| ref image |
-	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
-	image := (ref resolveResourceIn: fullResolver) asForm.
+	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
+		fileSystem: filesystem.
+	image := ref loadImage.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
@@ -144,11 +134,10 @@ MicFileResourceTest >> testLoadImage [
 
 { #category : #tests }
 MicFileResourceTest >> testLoadMicrodown [
-	| uri ref doc resolvedReference |
-	uri := 'file:///readme.md'.
-	ref := MicResourceReference  fromUri: uri.
-	resolvedReference := ref resolveResourceIn: fullResolver.
-	doc := resolvedReference parseMicrodown.
+	| ref doc |
+	ref := (MicResourceReference fromUri: 'file:/readme.md')
+		fileSystem: filesystem.
+	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	
@@ -156,12 +145,11 @@ MicFileResourceTest >> testLoadMicrodown [
 
 { #category : #tests }
 MicFileResourceTest >> testLoadNotCorrectImage [
-
 	| ref |
-	ref := MicResourceReference fromUri: 'file:///readme.md'.
-	
+	ref := (MicResourceReference fromUri: 'file:/readme.md')
+		fileSystem: filesystem .
 	self
-		should: [(ref resolveResourceIn: fullResolver) asForm]
+		should: [ref loadImage]
 		raise: UnrecognizedImageFormatError
 ]
 
@@ -169,10 +157,10 @@ MicFileResourceTest >> testLoadNotCorrectImage [
 MicFileResourceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
-	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
-	
+	ref := (MicResourceReference fromUri: 'file:///toplevel.png')
+		fileSystem: filesystem.
 	self
-		should: [(ref resolveResourceIn: fullResolver) parseMicrodown]
+		should: [ ref loadMicrodown ]
 		raise: ZnInvalidUTF8
 ]
 
