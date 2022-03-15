@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #'accessing - resources' }
-MicPharoResourceReference >> executeUri [
+MicPharoResourceReference >> loadImage [
 
 	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 
@@ -79,10 +79,4 @@ MicPharoResourceReference >> resolveOnCurrentImage [
 		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
 		        ifFalse: [ #(  ) ].
 	^ class perform: selector withArguments: args
-]
-
-{ #category : #'accessing - resources' }
-MicPharoResourceReference >> resolveResourceIn: aResolver [
-
-	^ aResolver resolvePharoResource: self
 ]

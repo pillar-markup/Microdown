@@ -73,13 +73,14 @@ MicResourceReference >> isRelative [
 
 { #category : #accessing }
 MicResourceReference >> loadImage: aResolver [
-	
+	self halt: 'removeme'.
 	^ (self resolveResourceIn: aResolver) asForm
 ]
 
 { #category : #accessing }
 MicResourceReference >> loadMicrodown: aResolver [
 
+	self halt: 'removeme'.
 	^ (self resolveResourceIn: aResolver) parseMicrodown
 ]
 

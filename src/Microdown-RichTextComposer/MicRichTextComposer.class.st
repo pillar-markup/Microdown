@@ -173,8 +173,7 @@ MicRichTextComposer class >> exampleMicrodown7 [
 	
 	^ self parseAndCompose: '## This is the class Object
 	
-	
-	![Object class.](pharo:///Object)'
+It is possible to use the icons in the image: ![Object class](pharo:///Object/iconNamed:/info)'
 ]
 
 { #category : #examples }
@@ -428,13 +427,16 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| imageResource embeddableInText |
-	imageResource := aFigure reference resolveResourceIn: MicUrlResolver new.
-	embeddableInText := imageResource asRenderedOn: self withinNode: aFigure.
-	"Adding a zero width no-break space circumvents two errors in rubrics when
-	using images as links. Adding it even if the image is not a link causes no
-	harm (it is invisible), and this is the easiest place to add it."
-	canvas << (embeddableInText, 16rFEFF asCharacter asString asText)
+	| image anchor embeddableInText |
+	[ image := aFigure reference loadImage.
+		anchor := self anchorFor: image of: aFigure.
+		embeddableInText := (String value: 1) asText addAttribute: anchor; yourself.
+		"Adding a zero width no-break space circumvents two errors in rubrics when
+		using images as links. Adding it even if the image is not a link causes no
+		harm (it is invisible), and this is the easiest place to add it."
+		canvas << (embeddableInText, 16rFEFF asCharacter asString asText)]
+	on: MicHttpReferenceError
+	do: [ self visitAll: aFigure captionElements  ]
 ]
 
 { #category : #'visiting - document' }
@@ -504,7 +506,7 @@ MicRichTextComposer >> visitMathInline: aMicMathInline [
 	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |

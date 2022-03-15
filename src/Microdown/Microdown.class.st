@@ -38,9 +38,9 @@ Microdown class >> isCachingResources: aBoolean [
 
 	IsCachingResources := aBoolean.
 	"Tell the resouce cache to empty itself"
-	"This should really be done by MicAbstractResolver subscribing to some annoucer
+	"This should really be done by MicHTTPResourceReference subscribing to some annoucer
 	to cut the direct connection - we will do that some other time"
-	aBoolean ifFalse: [ MicAbstractResolver resetResourcesCache ]
+	aBoolean ifFalse: [ MicHTTPResourceReference resetResourcesCache ]
 ]
 
 { #category : #settings }
