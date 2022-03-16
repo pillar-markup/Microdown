@@ -18,8 +18,21 @@ MicLinkBlock >> accept: aVisitor [
 { #category : #visiting }
 MicLinkBlock >> closeMe [
 	
-	self reference: (MicResourceReference fromUri: self url).
-	captionElements := self inlineParse: substring.
+	| split args |
+
+	split := url splitOnFirst: Character space.
+	self reference: (MicResourceReference fromUri: split first).
+	args := (split second ifNil: [ '' ]) trimBoth: [:char | {$". Character space} includes: char].
+	self arguments: (MicArgumentsSplitter withString: args).
+	self captionElements: (self inlineParse: substring).
+"	self children: captionElements"
+]
+
+{ #category : #testing }
+MicLinkBlock >> hasArguments [
+	"Answer <true> if the receiver contain at least 1 argument"
+	
+	^ (self url trimBoth findTokens: ' ') size > 1
 ]
 
 { #category : #accessing }
@@ -44,4 +57,18 @@ MicLinkBlock >> reference [
 MicLinkBlock >> reference: anObject [
 
 	reference := anObject
+]
+
+{ #category : #accessing }
+MicLinkBlock >> referencePath [
+	"Answer a <String> with the URL the receiver is pointing at"
+	
+	^ self referenceUri asString
+]
+
+{ #category : #accessing }
+MicLinkBlock >> referenceUri [
+	"Answer a <ZnUrl> with the target URL of the receiver"
+	
+	^ self reference uri
 ]

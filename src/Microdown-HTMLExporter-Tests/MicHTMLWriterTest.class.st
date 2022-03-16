@@ -44,13 +44,13 @@ MicHTMLWriterTest >> setUp [
 	self generateFilesystemExample.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLWriterTest >> testCanvasClass [
 
 	self assert: micHTMLWriter canvasClass equals: MicHTMLCanvas
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLWriterTest >> testContents [ 
 
 	self assert: micHTMLWriter contents equals: String empty.
@@ -58,7 +58,7 @@ MicHTMLWriterTest >> testContents [
 	self assert: micHTMLWriter contents equals: '<em>test</em>'.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLWriterTest >> testConvertMicFile [
 	
 	micHTMLWriter convertMicFile: (filesystem / 'anExample1.md') asFileReference.
@@ -73,7 +73,7 @@ MicHTMLWriterTest >> testConvertMicFile [
 '.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLWriterTest >> testConvertMicString [
 
 	| result |
@@ -85,7 +85,7 @@ MicHTMLWriterTest >> testConvertMicString [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLWriterTest >> testConvertMicStringToDoc [
 
 	| expectedHtmlDoc |
@@ -102,10 +102,19 @@ MicHTMLWriterTest >> testConvertMicStringToDoc [
 		description: 'It test that result contain the expected document type tag'
 ]
 
-{ #category : #test }
-MicHTMLWriterTest >> testCreateAnchorWith [
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateAnchorWithId [
 
 	self assert: micHTMLWriter contents equals: String empty.
-	micHTMLWriter createAnchorWith: 'id1'.
+	micHTMLWriter createAnchorWithId: 'id1'.
 	self assert: micHTMLWriter contents equals: '<a id="id1"></a>'.
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateAnchorWithLink [
+
+	| result |
+	self assert: micHTMLWriter contents equals: String empty.
+	result := micHTMLWriter convertMicString: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)'.
+	self assert: result trimBoth equals: '<p><a href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
 ]

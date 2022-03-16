@@ -33,10 +33,31 @@ MicHTMLWriter class >> exampleHTMLDocument [
 ]
 
 { #category : #examples }
+MicHTMLWriter class >> exampleHTMLDocumentWithFigure [
+	<example>
+	
+	^ (Microdown asHTMLDocument: '![AltText](my_directory/image.png label=42&width=90)') inspect.
+]
+
+{ #category : #examples }
+MicHTMLWriter class >> exampleHTMLDocumentWithLink [
+	<example>
+	
+	^ (Microdown asHTMLDocument: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)') inspect.
+]
+
+{ #category : #examples }
 MicHTMLWriter class >> exampleHTMLString [
 	<example>
 	
 	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
+]
+
+{ #category : #examples }
+MicHTMLWriter class >> exampleHTMLStringWithLink [
+	<example>
+	
+	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
 ]
 
 { #category : #initialization }
@@ -82,7 +103,7 @@ MicHTMLWriter >> convertMicStringToDoc: aMicString [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> createAnchorWith: anId [
+MicHTMLWriter >> createAnchorWithId: anId [
 
 	canvas tag
 		name: 'a';
@@ -123,7 +144,7 @@ MicHTMLWriter >> usedNewLine [
 { #category : #visiting }
 MicHTMLWriter >> visitAnchor: anAnchor [
 
-	self createAnchorWith: anAnchor label 
+	self createAnchorWithId: anAnchor label 
 ]
 
 { #category : #visiting }
@@ -181,7 +202,7 @@ MicHTMLWriter >> visitCodeblock: aCodeBlock [
 				name: 'figcaption';
 				with: [ 
 					aCodeBlock hasLabel ifTrue: [ 
-							self createAnchorWith: aCodeBlock label.
+							self createAnchorWithId: aCodeBlock label.
 							self writeCounterForScript: aCodeBlock ].
 					aCodeBlock hasCaption ifTrue: [ 
 							self visitAll: aCodeBlock caption children ] ] ].
@@ -239,6 +260,18 @@ MicHTMLWriter >> visitItalic: aItalicText [
 	canvas tag
 		name: 'em';
 		with: [ super visitItalic: aItalicText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitLink: aLink [
+	"Write markup hyperlink, which is used to link from one page to another"
+	
+	canvas tag
+		name: 'a';
+		parameterAt: 'href' put: aLink referencePath;
+		addArguments: aLink;
+		with: aLink caption
+
 ]
 
 { #category : #visiting }
