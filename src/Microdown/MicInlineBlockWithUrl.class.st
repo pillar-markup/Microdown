@@ -14,7 +14,8 @@ Class {
 		'url',
 		'parser',
 		'captionElements',
-		'arguments'
+		'arguments',
+		'reference'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -154,6 +155,18 @@ MicInlineBlockWithUrl >> printOn: aStream [
 		nextPut: $(.
 		aStream nextPutAll: url. 
 	aStream nextPut: $)
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> reference [
+
+	^ reference
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> reference: anObject [
+
+	reference := anObject
 ]
 
 { #category : #accessing }

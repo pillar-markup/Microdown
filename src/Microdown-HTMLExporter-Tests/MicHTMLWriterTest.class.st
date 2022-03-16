@@ -118,3 +118,39 @@ MicHTMLWriterTest >> testCreateAnchorWithLink [
 	result := micHTMLWriter convertMicString: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)'.
 	self assert: result trimBoth equals: '<p><a href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
 ]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateAnnotationCompound [
+
+	| result |
+	
+	result := micHTMLWriter convertMicString: '# This is a title
+!!LabelOfAnnotatedBlock Body of annotated block
+
+this is another string'.
+	self assert: result trimBoth equals: '<h1>This is a title</h1>
+<section class="annotation"><label>LabelOfAnnotatedBlock</label><div>Body of annotated block</div></section>
+<p>this is another string</p>'.
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateAnnotationSimple [
+
+	| result |
+	self assert: micHTMLWriter contents equals: String empty.
+	
+	result := micHTMLWriter convertMicString: '!!LabelOfAnnotatedBlock Body of annotated block'.
+	self assert: result trimBoth equals: '<section class="annotation"><label>LabelOfAnnotatedBlock</label><div>Body of annotated block</div></section>'.	
+
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateCitation [
+
+	| result |
+	self assert: micHTMLWriter contents equals: String empty.
+	
+	result := micHTMLWriter convertMicString: '{!citation|ref=Duca99a!}'.
+	self assert: result trimBoth equals: '<p><cite>Duca99a</cite></p>'.	
+
+]

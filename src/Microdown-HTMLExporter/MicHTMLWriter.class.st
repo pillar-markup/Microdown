@@ -148,11 +148,36 @@ MicHTMLWriter >> visitAnchor: anAnchor [
 ]
 
 { #category : #visiting }
+MicHTMLWriter >> visitAnnotated: anAnnotatedParagraph [
+
+	canvas newLine.
+	canvas tag
+		name: 'section';
+		parameterAt: 'class' put: 'annotation';
+		with: [ 
+			canvas tag
+				name: 'label';
+				with: anAnnotatedParagraph label.
+			canvas tag
+				name: 'div';
+				with: [ super visitAnnotated: anAnnotatedParagraph ] ].
+]
+
+{ #category : #visiting }
 MicHTMLWriter >> visitBold: aBoldText [
 
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aBoldText ]
+]
+
+{ #category : #visiting }
+MicHTMLWriter >> visitCitation: aCitation [
+
+	canvas tag
+		name: 'cite';
+		with: aCitation ref.
+
 ]
 
 { #category : #visiting }
@@ -287,8 +312,8 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 
 	canvas newLine.
 	canvas tag
-				name: 'p';
-				with: [ super visitParagraph: aParagraph ]
+		name: 'p';
+		with: [ super visitParagraph: aParagraph ]
 ]
 
 { #category : #visiting }

@@ -4,9 +4,6 @@ I represent a reference in a text. For example `[http://pharo.org](http://pharo.
 Class {
 	#name : #MicLinkBlock,
 	#superclass : #MicInlineBlockWithUrl,
-	#instVars : [
-		'reference'
-	],
 	#category : #'Microdown-ModelInline'
 }
 
@@ -45,18 +42,6 @@ MicLinkBlock >> kind [
 MicLinkBlock >> openingDelimiter [
 
  	^ LinkNameOpenerMarkup
-]
-
-{ #category : #accessing }
-MicLinkBlock >> reference [
-
-	^ reference
-]
-
-{ #category : #accessing }
-MicLinkBlock >> reference: anObject [
-
-	reference := anObject
 ]
 
 { #category : #accessing }

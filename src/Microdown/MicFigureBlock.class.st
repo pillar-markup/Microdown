@@ -13,9 +13,6 @@ What is important to see is that there is a space between the url arguments and 
 Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
-	#instVars : [
-		'reference'
-	],
 	#category : #'Microdown-ModelInline'
 }
 
@@ -102,18 +99,6 @@ MicFigureBlock >> printOn: aStream [
 				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
-]
-
-{ #category : #accessing }
-MicFigureBlock >> reference [
-
-	^ reference
-]
-
-{ #category : #accessing }
-MicFigureBlock >> reference: anObject [
-
-	reference := anObject
 ]
 
 { #category : #accessing }
