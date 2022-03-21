@@ -12,6 +12,7 @@ MicZincPathResolverTest >> testVisitFileImage [
 	| doc imageNode absoluteFile |
 	doc := Microdown parse: '![alttext](images/pharo.png)'.
 	imageNode := doc children first children first.
+	self assert: imageNode reference isRelative.
 	self assert:  imageNode reference originalString equals: 'images/pharo.png'.
 	absoluteFile := (MicResourceReference fromUri: 'file:/my/deep/directory/sourceFile.md') 
 		fileSystem: #Bogus;
@@ -20,6 +21,7 @@ MicZincPathResolverTest >> testVisitFileImage [
 	MicZincPathResolver new 
 		absoluteReference: absoluteFile;
 		resolveDocument: doc.
+	self assert: imageNode reference isRelative not.
 	self assert: imageNode reference originalString equals: 'file:///my/deep/directory/images/pharo.png'.
 	self assert: imageNode reference fileSystem equals: #Bogus
 ]
