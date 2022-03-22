@@ -13,7 +13,7 @@ Class {
 	#name : #MicFileResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
 	#instVars : [
-		'fileSystem'
+		'filesystem'
 	],
 	#category : #'Microdown-Core'
 }
@@ -23,36 +23,42 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
 	^ self new
 		uri: ('file://',aFileReference pathString) asZnUrl;
-		fileSystem: aFileReference fileSystem 
+		filesystem: aFileReference fileSystem 
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> binaryReadStream [
-	^ self fileReference binaryReadStream.
+	[^ self fileReference binaryReadStream]
+	on: FileDoesNotExistException 
+	do: [ :error | 
+		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> contents [
-	^ self fileReference contents.
+	[^ self fileReference contents]
+	on: FileDoesNotExistException 
+	do: [ :error | 
+		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> fileReference [ 
 	^ uri host 
-		ifNil: [ self fileSystem referenceTo: self path]
+		ifNil: [ self filesystem referenceTo: self path]
 		ifNotNil: [ (self class hostFileReference: uri host) / self path ].
 ]
 
 { #category : #accessing }
-MicFileResourceReference >> fileSystem [
+MicFileResourceReference >> filesystem [
 
-	^ fileSystem
+	^ filesystem
 ]
 
 { #category : #accessing }
-MicFileResourceReference >> fileSystem: anObject [
+MicFileResourceReference >> filesystem: anObject [
 
-	fileSystem := anObject
+	filesystem := anObject
 ]
 
 { #category : #testing }

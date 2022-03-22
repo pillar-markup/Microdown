@@ -51,7 +51,7 @@ MicHTTPResourceTest >> testErrorNonExistingImage [
 	ref := MicResourceReference fromUri:  baseUrl , 'nonexistingImage.png'.
 	self
 		should: [ref loadMicrodown]
-		raise: MicHttpReferenceError 
+		raise: MicResourceReferenceError 
 ]
 
 { #category : #tests }

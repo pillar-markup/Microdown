@@ -7,8 +7,7 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
-		'emptyResolver',
-		'fullResolver'
+		'emptyFilesystem'
 	],
 	#category : #'Microdown-Tests-Resources'
 }
@@ -99,8 +98,8 @@ Link to a document in subfolder:
 MicFileResourceTest >> setUp [
 	| readme image file |
 	super setUp.
-	emptyResolver := MicUrlResolver new.
 	filesystem := FileSystem memory.
+	emptyFilesystem := FileSystem memory.
 	readme := self exampleReadmeFile contents.
 	image := self examplePNGFile.
 
@@ -125,7 +124,7 @@ MicFileResourceTest >> testLoadImage [
 
 	| ref image |
 	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
-		fileSystem: filesystem.
+		filesystem: filesystem.
 	image := ref loadImage.
 	self assert: image notNil.
 	self assert: image height equals: 90.
@@ -136,7 +135,7 @@ MicFileResourceTest >> testLoadImage [
 MicFileResourceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
-		fileSystem: filesystem.
+		filesystem: filesystem.
 	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
@@ -147,7 +146,7 @@ MicFileResourceTest >> testLoadMicrodown [
 MicFileResourceTest >> testLoadNotCorrectImage [
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
-		fileSystem: filesystem .
+		filesystem: filesystem .
 	self
 		should: [ref loadImage]
 		raise: UnrecognizedImageFormatError
@@ -158,7 +157,7 @@ MicFileResourceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:///toplevel.png')
-		fileSystem: filesystem.
+		filesystem: filesystem.
 	self
 		should: [ ref loadMicrodown ]
 		raise: ZnInvalidUTF8
@@ -167,22 +166,23 @@ MicFileResourceTest >> testLoadNotCorrectMicrodown [
 { #category : #tests }
 MicFileResourceTest >> testLoadNotFoundImage [
 
-	| ref image |
-	ref := MicResourceReference fromUri: 'file:///readme.md'.
-	image := (ref resolveResourceIn: emptyResolver) asForm.
-
-	self assert: image isNil
+	| ref  |
+	ref := (MicResourceReference fromUri: 'file:///readme.md') filesystem: emptyFilesystem.
+	[
+		ref loadImage.
+		self fail
+	] on: Error do: [ :e |
+		self assert: e messageText equals: 'Microdown file not found' ]
 ]
 
 { #category : #tests }
 MicFileResourceTest >> testLoadNotFoundMicrodown [
-	| uri ref resolvedReference |
+	| uri ref |
 	uri := 'file:///readme.md'.
-	ref := MicResourceReference  fromUri: uri.
-	resolvedReference := ref resolveResourceIn: emptyResolver.
+	ref := (MicResourceReference  fromUri: uri) filesystem: emptyFilesystem.
 	
 	[
-		resolvedReference parseMicrodown.
+		ref loadMicrodown.
 		self fail
 	] on: Error do: [ :e |
 		self assert: e messageText equals: 'Microdown file not found' ]

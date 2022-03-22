@@ -21,7 +21,7 @@ MicHTTPResourceReference class >> bytesForUrl: url [
 		ifTrue: [ ^ self resourcesCache in: [:cache | 
 				(cache includesKey: url) 
 					ifTrue: [ cache at: url ] 
-					ifFalse: [(MicHttpReferenceError new messageText: 'Could not access ', url printString) signal]]].
+					ifFalse: [(MicResourceReferenceError new messageText: 'Could not access ', url printString) signal]]].
 	self isCachingResources 
 		ifTrue: [ ^ self resourcesCache at: url ifAbsentPut: [ self getBytesByHttp: url ] ]
 		ifFalse: [ ^ self getBytesByHttp: url ]
@@ -37,7 +37,7 @@ MicHTTPResourceReference class >> getBytesByHttp: uri [
 		get ] 
 	on: ZnHttpUnsuccessful 
 	do: [ :error | 
-			error resignalAs: (MicHttpReferenceError new messageText: 'Could not access ', uri printString)  ].
+			error resignalAs: (MicResourceReferenceError new messageText: 'Could not access ', uri printString)  ].
 	^ client entity bytes
 ]
 

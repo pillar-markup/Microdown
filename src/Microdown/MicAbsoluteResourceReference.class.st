@@ -13,6 +13,18 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #accessing }
+MicAbsoluteResourceReference >> binaryStream [
+	"return the binaryStream I refer to"
+	self subclassResponsibility.
+]
+
+{ #category : #accessing }
+MicAbsoluteResourceReference >> contents [
+	"return the contents I refer to"
+	self subclassResponsibility.
+]
+
 { #category : #testing }
 MicAbsoluteResourceReference >> isFileReference [
 	^ false

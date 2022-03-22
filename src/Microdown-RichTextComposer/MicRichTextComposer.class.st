@@ -157,7 +157,7 @@ MicRichTextComposer class >> exampleMicrodown6 [
 	<sampleInstance>
 	^ self parseAndCompose:
 '### Latex mathematics 
-It is possible to render latex math via a web services. We allow inline math $x^2$, or math blocks
+It is possible to render latex math via a web services. We allow inline math $x ^ 2$, or math blocks
 
 &
  \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
@@ -251,10 +251,14 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	If the latex formula cannot be built because of network or syntax errors,
 	use the error block to build a text"
 
-	| ref resource |
-	ref := MicResourceReference fromUri: aString.
-	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.image?').
-	^ (resource asForm ifNil: aBlock) asText
+	| ref codecogs image anchor text |
+	codecogs := 'https://latex.codecogs.com/png.image?'.
+	ref := MicResourceReference fromUri: codecogs , aString.
+	[ 	image := ref loadImage.
+		anchor := TextAnchor new anchoredMorph: image.
+		text := (String value: 1) asText addAttribute: anchor; yourself.
+		^ text, 16rFEFF asCharacter asString asText "see comment in visitFigure" ]
+	on: MicResourceReferenceError do: [^ aBlock value]
 ]
 
 { #category : #composing }
@@ -435,7 +439,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 		using images as links. Adding it even if the image is not a link causes no
 		harm (it is invisible), and this is the easiest place to add it."
 		canvas << (embeddableInText, 16rFEFF asCharacter asString asText)]
-	on: MicHttpReferenceError
+	on: MicResourceReferenceError
 	do: [ self visitAll: aFigure captionElements  ]
 ]
 

@@ -60,12 +60,6 @@ MicResourceReference class >> fromUri: aString [
 	
 ]
 
-{ #category : #accessing }
-MicResourceReference >> binaryStream [
-	"return the binaryStream I refer to"
-	self subclassResponsibility.
-]
-
 { #category : #testing }
 MicResourceReference >> isRelative [
 	^ false
