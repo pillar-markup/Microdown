@@ -205,41 +205,6 @@ MicroDownParser >> blockStarterClassFrom: line [
 	
 ]
 
-{ #category : #'node creation' }
-MicroDownParser >> blockStarterClassFromOld: line [
-	"return the class of a block which can start with line, or nil if none"
-
-	(line beginsWith: HeaderMarkup)
-		ifTrue: [ ^ MicHeaderBlock ].
-	(line beginsWith: CodeblockMarkup)
-		ifTrue: [ ^ MicCodeBlock ].
-	(self matchUnordered: line)
-		ifTrue: [ ^ MicUnorderedListBlock ].
-			"this one could be split if we move to a dictionary based structure"
-	(self matchOrdered: line)
-		ifTrue: [ ^ MicOrderedListBlock ].
-				"number followed by . or ). We could treat this one separated and fall back on a dictionary By moving this into the extension for example."
-	(line beginsWith: AnnotatedParagraphMarkup)
-		ifTrue: [ ^ MicAnnotatedBlock ].
-	(line beginsWith: AnchorMarkup)
-		ifTrue: [ ^ MicAnchorBlock ].
-	(line beginsWith: CommentedLineMarkup)
-		ifTrue: [ ^ MicCommentBlock ].
-	(line beginsWith: MathOpeningBlockMarkup)
-		ifTrue: [ ^ MicMathBlock ].
-	(line beginsWith: EnvironmentOpeningBlockMarkup)
-		ifTrue: [ ^ MicEnvironmentBlock ].
-	(line beginsWith: HorizontalLineMarkup)
-		ifTrue: [ ^ MicHorizontalLineBlock ].
-	(line beginsWith: MetaDataOpeningBlockMarkup)
-		ifTrue: [ ^ MicMetaDataBlock ].
-	(line beginsWith: PreformattedMarkup)
-		ifTrue: [ ^ MicQuoteBlock ].	"or '> '??"
-	(line beginsWith: TableCellMarkup)
-		ifTrue: [ ^ MicTableBlock ].
-	line ifNotEmpty: [ ^ MicParagraphBlock ] ifEmpty: [ ^ nil ]
-]
-
 { #category : #accessing }
 MicroDownParser >> builder [
 	"return a little helper to build microdown correct expression"

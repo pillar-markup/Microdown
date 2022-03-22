@@ -117,7 +117,7 @@ MicRichTextComposerTest >> richTextFor: aDocument [
 { #category : #helpers }
 MicRichTextComposerTest >> richTextForString: aString [
 
-	^ self composer parseAndCompose: aString
+	^ self composer asRichText: aString
 ]
 
 { #category : #helpers }
@@ -276,7 +276,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -287,7 +287,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height < 100 "No image embedded"
@@ -298,7 +298,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -309,7 +309,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim first: 5 )equals: 'See ', (String value: 1).
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"

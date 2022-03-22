@@ -66,29 +66,6 @@ MicResourceReference >> isRelative [
 ]
 
 { #category : #accessing }
-MicResourceReference >> loadImage: aResolver [
-	self halt: 'removeme'.
-	^ (self resolveResourceIn: aResolver) asForm
-]
-
-{ #category : #accessing }
-MicResourceReference >> loadMicrodown: aResolver [
-
-	self halt: 'removeme'.
-	^ (self resolveResourceIn: aResolver) parseMicrodown
-]
-
-{ #category : #loading }
-MicResourceReference >> loadMicrodown_old [
-	"I am an absolute reference, so I should be able to load completely"
-	|doc|
-	doc := Microdown parse: self contents.
-	"doc := Microdown resolve: doc fromUri: uri."
-	self error: 'I need to be reimplemented'.
-	^ doc
-]
-
-{ #category : #accessing }
 MicResourceReference >> originalString [
 	
 	^ originalString 
