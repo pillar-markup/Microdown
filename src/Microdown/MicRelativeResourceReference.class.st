@@ -6,6 +6,9 @@ I specify a ressource relative to an other reference. One example is the path `.
 Class {
 	#name : #MicRelativeResourceReference,
 	#superclass : #MicResourceReference,
+	#instVars : [
+		'relativePath'
+	],
 	#category : #'Microdown-Core'
 }
 
@@ -14,31 +17,23 @@ MicRelativeResourceReference >> isRelative [
 	^ true
 ]
 
-{ #category : #accessing }
-MicRelativeResourceReference >> path [
-	^originalString  
+{ #category : #printing }
+MicRelativeResourceReference >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(';
+		nextPutAll: self relativePath;
+		nextPutAll: ')'
 ]
 
 { #category : #accessing }
 MicRelativeResourceReference >> relativePath [
 
-	^ originalString 
+	^ relativePath 
 ]
 
 { #category : #accessing }
 MicRelativeResourceReference >> relativePath: aString [
 
-	originalString := aString 
-]
-
-{ #category : #resolving }
-MicRelativeResourceReference >> resolveResourceIn: aResolver [
-
-	^ aResolver resolveRelativeUrl: self
-]
-
-{ #category : #accessing }
-MicRelativeResourceReference >> uri [
-
-	^ originalString
+	relativePath := aString 
 ]

@@ -12,7 +12,7 @@ Class {
 	#category : #'Microdown-Core'
 }
 
-{ #category : #accessing }
+{ #category : #private }
 MicHTTPResourceReference class >> bytesForUrl: url [
 	"I do the offline and isCachingResources logic
 	In particular notice that #getBytesByHttp: throws an 
@@ -27,7 +27,7 @@ MicHTTPResourceReference class >> bytesForUrl: url [
 		ifFalse: [ ^ self getBytesByHttp: url ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MicHTTPResourceReference class >> getBytesByHttp: uri [
 	| client |
 	[(client := ZnEasy client)
@@ -75,15 +75,10 @@ MicHTTPResourceReference class >> resourcesCache [
 
 { #category : #streams }
 MicHTTPResourceReference >> binaryReadStream [
-	^ self bytes readStream 
-]
-
-{ #category : #'as yet unclassified' }
-MicHTTPResourceReference >> bytes [
-	^ self class bytesForUrl: self uri
+	^ (self class bytesForUrl: self uri) readStream 
 ]
 
 { #category : #accessing }
 MicHTTPResourceReference >> contents [
-	^ self bytes utf8Decoded.
+	^ (self class bytesForUrl: self uri) utf8Decoded.
 ]

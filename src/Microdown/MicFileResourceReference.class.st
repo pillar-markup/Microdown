@@ -51,9 +51,7 @@ MicFileResourceReference >> contents [
 
 { #category : #accessing }
 MicFileResourceReference >> fileReference [ 
-	^ uri host 
-		ifNil: [ self filesystem referenceTo: self path]
-		ifNotNil: [ (self class hostFileReference: uri host) / self path ].
+	^ self filesystem referenceTo: self path
 ]
 
 { #category : #accessing }
@@ -71,15 +69,4 @@ MicFileResourceReference >> filesystem: anObject [
 { #category : #testing }
 MicFileResourceReference >> isFileReference [
 	^ true
-]
-
-{ #category : #accessing }
-MicFileResourceReference >> resolveResourceIn: aResolver [
-	self uri host 
-		ifNotNil: [ :hostname | |fileRef|
-			fileRef := self class hostFileReference: hostname.
-			fileRef ifNil: [ self error: 'unknown host' ].
-			aResolver currentWorkingDirectory: fileRef
-			 ].
-	^ aResolver resolveAbsoluteFilePath: self
 ]

@@ -48,11 +48,17 @@ MicAbsoluteResourceReference >> loadMicrodown [
 
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
-	"Answer a <String> with the receiver's relative URI without the scheme"
+	"return the path part of my uri"
+	^ uri path
+]
 
-	^ String streamContents: [ : stream | 
-		self uri printAuthorityOn: stream.
-		self uri printPathQueryFragmentOn: stream ]
+{ #category : #printing }
+MicAbsoluteResourceReference >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(';
+		nextPutAll: self uriString;
+		nextPutAll: ')'
 ]
 
 { #category : #accessing }
@@ -63,6 +69,10 @@ MicAbsoluteResourceReference >> uri [
 
 { #category : #accessing }
 MicAbsoluteResourceReference >> uri: aZnUrl [
-	uri := aZnUrl.
-	originalString := uri printString 
+	uri := aZnUrl
+]
+
+{ #category : #accessing }
+MicAbsoluteResourceReference >> uriString [
+	^ uri printString
 ]

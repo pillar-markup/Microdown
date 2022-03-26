@@ -22,9 +22,6 @@ Besides the absolute resource references (file, http), `MicRelativeResourceRefer
 Class {
 	#name : #MicResourceReference,
 	#superclass : #Object,
-	#instVars : [
-		'originalString'
-	],
 	#category : #'Microdown-Core'
 }
 
@@ -49,43 +46,4 @@ MicResourceReference class >> fromUri: aString [
 { #category : #testing }
 MicResourceReference >> isRelative [
 	^ false
-]
-
-{ #category : #accessing }
-MicResourceReference >> originalString [
-	
-	^ originalString 
-]
-
-{ #category : #accessing }
-MicResourceReference >> originalString: anObject [
-
-	originalString := anObject
-]
-
-{ #category : #private }
-MicResourceReference >> path [
-	"return the path part of my reference (leave out http: or file:)"
-	self subclassResponsibility 
-]
-
-{ #category : #printing }
-MicResourceReference >> printOn: aStream [
-	super printOn: aStream.
-	aStream
-		nextPutAll: '(';
-		nextPutAll: originalString;
-		nextPutAll: ')'
-]
-
-{ #category : #accessing }
-MicResourceReference >> resolveResourceIn: aResolver [
-
-	self subclassResponsibility
-]
-
-{ #category : #accessing }
-MicResourceReference >> uri [
-	
-	self subclassResponsibility
 ]
