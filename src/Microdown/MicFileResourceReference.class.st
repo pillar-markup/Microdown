@@ -1,13 +1,20 @@
 "
-I am a file reference encapsulating a file uri (`file:///path/to/some/file.md`).
+I am a file reference encapsulating a file uri (`file:/path/to/some/file.md`).
 
-I allow the host part of the file uri to be used `file://host/path/to/some/file.md`.
+## Ambiguity of uri
+Inside the pharo image, string based file references are ambiguous. `/path/to/some/file.md` might mean a file on disk, or a file in the memory file system. 
 
-There are two predefined hosts:
-- localhost (same as not specifying a host)
-- workingdirectory (`file://workingdirectory/path/to/some/file.md`) - paths starts in working directory
+I will assume disk based if not told otherwise. 
 
-It is possible to add new hosts, a primary use case is to give memory file store a way to be expressed as a file uri. See the `MicFileResourceTest` setUp, tearDown and testMemoryStoreHost.
+I can however, be given an explisit filesystem for disambigutation using method `filesystem:`. 
+
+## Creation from pharo FileReference
+Normally instances of `MicResourceReference` are created using `MicResourceReference fromUri: uriString`.
+
+You can get an instance of me from a pharo `FileReference` using `MicFileResourceReference fromFileRef: aFileRef`. The filesystem of `aFileRef` is taken into account. 
+
+## Examples
+The test class `MicFileResourceTest` has two tests `testLoadImage` and `testLoadMicrodown` which show how to use me.
 "
 Class {
 	#name : #MicFileResourceReference,

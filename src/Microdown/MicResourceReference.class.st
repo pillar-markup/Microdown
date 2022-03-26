@@ -1,36 +1,22 @@
 "
-I represent a file reference or url reference.
+I represent a reference to binary or textual ressources, primarily images and microdown text.
 
-Here are the cases that we should handle
-
+References occour in microdown in three different constructs:
 - external links
 - figures
 - inputfiles
 
-For external links we can accept an URL that will be considered as absolute path to the resources http://server/m.mic.
-For inputfile and figures we can accept
+I have subclasses to give access to files and http bases resources, as well as access to resources already in the image.
 
-- an Url http://server/m.mic or http://server/m.png
-- a relative path e.g., figures/m.png
+## URI 
+Resources are primarily referenced using **Uniform Resource Identifiers** (uri), and are created by my class side method `fromUri:` - for example: `MicResourceReference fromUri: 'file:/path/to/mydocument.md'` or `MicResourceReference fromUri: 'https://host/path/to/myimage.png'`
 
-## Implementation
+## Special cases
+As a special case `MicFileResourceReference` can be created from a regular pharo `FileReference`.
 
-url is misleading as an instance variable names since it can be either an url or a file reference.
+Besides the absolute resource references (file, http), `MicRelativeResourceReference` is a partial/relative reference, which must be resolved with respect to an absolute reference before the resource can be accessed. Resolution of relative references is done by `MicZincPathResolver`.
 
-## Warning
 
-This is class is under heavy development. 
-Some API will be dropped. Right now we just wrapped an URL to get the tests passing but we will revisit all the points.
-
-Note that 
-
-```
-'file:///toto.png' asUrl isAbsolute 
->>> false
-'file://toto.png' asUrl isAbsolute 
->>> true
-```
-So this is counter intuitive from a simple look.
 
 "
 Class {
