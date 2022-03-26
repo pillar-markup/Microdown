@@ -3,17 +3,17 @@ These tests will fail if MicHTTPResourceTest fails. I read the files from the gi
 
 "
 Class {
-	#name : #MicFileResourceTest,
+	#name : #MicFileResourceReferenceTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
 		'emptyFilesystem'
 	],
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #private }
-MicFileResourceTest >> exampleMicFileResourceReference [
+MicFileResourceReferenceTest >> exampleMicFileResourceReference [
 
 	| file |
 	
@@ -22,7 +22,7 @@ MicFileResourceTest >> exampleMicFileResourceReference [
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGByteArray [
+MicFileResourceReferenceTest >> examplePNGByteArray [
 
 	^ #[137 80 78 71 13 10 26 10 0 0 0 13 73 72 68 82 0 0 0 200 0 0 0 90 4 3 0 0 0 15
 216 4 229 0 0 0 27 80 76 84 69 204 204 204 150 150 150 197 197 197 190 190 190
@@ -47,7 +47,7 @@ MicFileResourceTest >> examplePNGByteArray [
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGFile [
+MicFileResourceReferenceTest >> examplePNGFile [
 	" Answer a <Form> for testing purposes "
 
 	^ PNGReadWriter formFromStream: self examplePNGFileContents
@@ -55,13 +55,13 @@ MicFileResourceTest >> examplePNGFile [
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGFileContents [
+MicFileResourceReferenceTest >> examplePNGFileContents [
 
 	^ self examplePNGByteArray readStream
 ]
 
 { #category : #private }
-MicFileResourceTest >> exampleReadmeFile [
+MicFileResourceReferenceTest >> exampleReadmeFile [
 	" Answer a <FileReference> on a memory file system for testing purposes "
 
 	^ (filesystem workingDirectory / 'example.md')
@@ -70,7 +70,7 @@ MicFileResourceTest >> exampleReadmeFile [
 ]
 
 { #category : #private }
-MicFileResourceTest >> exampleReadmeFileContents [
+MicFileResourceReferenceTest >> exampleReadmeFileContents [
 	" Answer a <String> for file resource testing purposes "
 
 	^ '# Test documents
@@ -95,7 +95,7 @@ Link to a document in subfolder:
 ]
 
 { #category : #running }
-MicFileResourceTest >> setUp [
+MicFileResourceReferenceTest >> setUp [
 	| readme image file |
 	super setUp.
 	filesystem := FileSystem memory.
@@ -112,7 +112,7 @@ MicFileResourceTest >> setUp [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testContents [
+MicFileResourceReferenceTest >> testContents [
 	| micFileResource |
 	
 	micFileResource := self exampleMicFileResourceReference.
@@ -120,7 +120,7 @@ MicFileResourceTest >> testContents [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadImage [
+MicFileResourceReferenceTest >> testLoadImage [
 
 	| ref image |
 	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
@@ -132,7 +132,7 @@ MicFileResourceTest >> testLoadImage [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadMicrodown [
+MicFileResourceReferenceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
 		filesystem: filesystem.
@@ -143,7 +143,7 @@ MicFileResourceTest >> testLoadMicrodown [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotCorrectImage [
+MicFileResourceReferenceTest >> testLoadNotCorrectImage [
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
 		filesystem: filesystem .
@@ -153,7 +153,7 @@ MicFileResourceTest >> testLoadNotCorrectImage [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotCorrectMicrodown [
+MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:///toplevel.png')
@@ -164,7 +164,7 @@ MicFileResourceTest >> testLoadNotCorrectMicrodown [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotFoundImage [
+MicFileResourceReferenceTest >> testLoadNotFoundImage [
 
 	| ref  |
 	ref := (MicResourceReference fromUri: 'file:///readme.md') filesystem: emptyFilesystem.
@@ -176,7 +176,7 @@ MicFileResourceTest >> testLoadNotFoundImage [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotFoundMicrodown [
+MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 	| uri ref |
 	uri := 'file:///readme.md'.
 	ref := (MicResourceReference  fromUri: uri) filesystem: emptyFilesystem.

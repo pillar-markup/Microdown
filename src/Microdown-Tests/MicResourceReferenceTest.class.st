@@ -1,7 +1,7 @@
 Class {
 	#name : #MicResourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #helper }
@@ -24,37 +24,35 @@ MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
 	mf := self resourceClass fromUri: 'http://server/m.mic'.
-	self assert: mf uri asString equals: 'http://server/m.mic'.
+	self assert: mf uriString equals: 'http://server/m.mic'.
 
-]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testUnResolvedIsRelativeFile [
-	
-	| mf |
-	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicRelativeResourceReference).
-	self assert: mf relativePath  equals: 'chapter1/figures/m.mic'.
-	
 ]
 
 { #category : #'tests - file reference conversion' }
-MicResourceReferenceTest >> testUnresolvedFileReferenceFromFile [
-	"Resolution does not change the file reference conversion."
-	
+MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
-	self assert: mf path equals: '/chapter1/figures/m.mic'.
+	self assert: mf isFileReference.
+	self assert: mf uriString equals: 'file:///chapter1/figures/m.mic'.
 	
 ]
 
 { #category : #tests }
-MicResourceReferenceTest >> testUnresolvedIsAbsoluteFile [
+MicResourceReferenceTest >> testPurePathIsRelativeFile [
 	
 	| mf |
-	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
-	self assert: (mf isKindOf: MicFileResourceReference).
-	self assert: mf path  equals: '/chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	self assert: mf isRelative.
+	self assert: mf relativePath equals: 'chapter1/figures/m.mic'.
+	
+]
 
+{ #category : #tests }
+MicResourceReferenceTest >> testRelativeFileRecognized [
+	
+	| mf |
+	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	self assert: mf isRelative.
+	self assert: mf relativePath equals: 'chapter1/figures/m.mic'.
 	
 ]

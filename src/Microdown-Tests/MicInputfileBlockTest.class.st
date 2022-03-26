@@ -6,24 +6,29 @@ Class {
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
-	| mic |
+	| mic resourceReference |
+	"a path starting with / should give an absolute file reference"
 	mic := parser parse: '{!inputFile|path=/chapters/withStyle.mic!}'.
-	self assert: mic children first children first path path equals: '/chapters/withStyle.mic'
+	resourceReference := mic children first children first reference.
+	self assert: resourceReference isRelative not.
+	self assert: resourceReference uriString equals: 'file:///chapters/withStyle.mic'
 ]
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfileIsRelativeFilePath [
-	| mic |
+	| mic infileReference |
 	mic := parser parse: '{!inputFile|path=chapters/withStyle.mic!}'.
-	mic children first children first path: mic children first children first originalPath.
-	self assert: mic children first children first path path equals: 'chapters/withStyle.mic'
+	infileReference := mic children first children first reference.
+	self assert: infileReference isRelative.
+	self assert: infileReference relativePath equals: 'chapters/withStyle.mic'
 ]
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfilePath [
-	| mic |
+	| mic infileReference |
 	mic := parser parse: '{!inputFile|path=chapters/withStyle.mic!}'.
-	self assert: mic children first children first path path equals: 'chapters/withStyle.mic' 
+	infileReference := mic children first children first reference.
+	self assert: infileReference relativePath equals: 'chapters/withStyle.mic' 
 ]
 
 { #category : #tests }

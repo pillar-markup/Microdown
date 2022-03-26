@@ -9,7 +9,7 @@ Class {
 		'offlineSetting',
 		'isCachingRessourcesSetting'
 	],
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #utilities }

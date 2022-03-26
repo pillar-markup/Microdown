@@ -2,22 +2,22 @@
 A MicHTTPResourceTest is a test class for testing the behavior of MicHTTPResource
 "
 Class {
-	#name : #MicHTTPResourceTest,
+	#name : #MicHTTPResourceReferenceTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'baseUrl',
 		'offlineSetting'
 	],
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #'test data' }
-MicHTTPResourceTest class >> githubTestData [
+MicHTTPResourceReferenceTest class >> githubTestData [
 	^ MicResourceReference fromUri: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]
 
 { #category : #running }
-MicHTTPResourceTest >> setUp [
+MicHTTPResourceReferenceTest >> setUp [
 	super setUp.
 	"All tests assume to be online"
 	offlineSetting := Microdown offline.
@@ -26,7 +26,7 @@ MicHTTPResourceTest >> setUp [
 ]
 
 { #category : #running }
-MicHTTPResourceTest >> tearDown [
+MicHTTPResourceReferenceTest >> tearDown [
 	
 	Microdown offline: offlineSetting.
 	
@@ -34,7 +34,7 @@ MicHTTPResourceTest >> tearDown [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testErrorNonCorrectImage [
+MicHTTPResourceReferenceTest >> testErrorNonCorrectImage [
 
 	| ref |
 	ref := MicResourceReference fromUri:  baseUrl ,'readme.md'.
@@ -45,7 +45,7 @@ MicHTTPResourceTest >> testErrorNonCorrectImage [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testErrorNonExistingImage [
+MicHTTPResourceReferenceTest >> testErrorNonExistingImage [
 
 	| ref |
 	ref := MicResourceReference fromUri:  baseUrl , 'nonexistingImage.png'.
@@ -55,7 +55,7 @@ MicHTTPResourceTest >> testErrorNonExistingImage [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadErrorMicrodown [
+MicHTTPResourceReferenceTest >> testLoadErrorMicrodown [
 	| ref |
 	ref := MicResourceReference fromUri:  baseUrl ,'toplevel.png'.
 
@@ -65,7 +65,7 @@ MicHTTPResourceTest >> testLoadErrorMicrodown [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadImage [
+MicHTTPResourceReferenceTest >> testLoadImage [
 
 	| ref image |
 	ref := MicResourceReference fromUri:  baseUrl , 'toplevel.png'.
@@ -76,7 +76,7 @@ MicHTTPResourceTest >> testLoadImage [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodown [
+MicHTTPResourceReferenceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := MicResourceReference fromUri:  baseUrl , 'readme.md'.
 	doc := ref loadMicrodown.
@@ -86,7 +86,7 @@ MicHTTPResourceTest >> testLoadMicrodown [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
+MicHTTPResourceReferenceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 
 	| ref doc topLevelImageRef |
 	ref := MicResourceReference fromUri:  baseUrl , 'readme.md'.
@@ -100,7 +100,7 @@ MicHTTPResourceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 ]
 
 { #category : #tests }
-MicHTTPResourceTest >> testLoadNonExistingMicrodown [
+MicHTTPResourceReferenceTest >> testLoadNonExistingMicrodown [
 	| ref errorMessage|
 	ref := MicResourceReference fromUri:  baseUrl , 'readmeNOT.md'.
 	errorMessage := 'Could not access ', baseUrl, 'readmeNOT.md'.

@@ -1,7 +1,7 @@
 Class {
 	#name : #MicPharoResourceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #tests }
