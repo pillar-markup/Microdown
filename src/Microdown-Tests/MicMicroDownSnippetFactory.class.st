@@ -328,7 +328,7 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 MicMicrodownSnippetFactory >> figureRealSample [
 
 	^ '
-![A logo png under figures folder](file://figures/logo.png label=figureTest&size=80)
+![A logo png under figures folder](figures/logo.png label=figureTest&size=80)
 '
 ]
 
