@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'sample',
 		'parser',
-		'composer'
+		'composer',
+		'offlineStatus'
 	],
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
@@ -131,6 +132,8 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := Microdown new.
+	offlineStatus := Microdown offline.
+	Microdown offline: false.
 	MicRichTextComposer initialize.
 ]
 
@@ -153,6 +156,12 @@ MicRichTextComposerTest >> subscriptFormat [
 { #category : #'tests - format' }
 MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
+]
+
+{ #category : #running }
+MicRichTextComposerTest >> tearDown [
+	Microdown offline: offlineStatus.
+	super tearDown.
 ]
 
 { #category : #tests }
