@@ -34,11 +34,11 @@ MicHTTPResourceReference class >> getBytesByHttp: uri [
 		beBinary;
 		url: uri;
 		enforceHttpSuccess: true;
-		get ] 
-	on: ZnHttpUnsuccessful, NetworkError 
+		get.
+		^ client entity bytes ] 
+	on: ZnHttpUnsuccessful, NetworkError, MessageNotUnderstood
 	do: [ :error | 
 			error resignalAs: (MicResourceReferenceError new messageText: 'Could not access ', uri printString)  ].
-	^ client entity bytes
 ]
 
 { #category : #testing }

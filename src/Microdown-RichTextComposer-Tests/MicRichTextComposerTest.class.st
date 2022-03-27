@@ -446,7 +446,7 @@ MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
 &
-\foo{a+b}
+\include{nowhere.com}
 &
 '.
 	richText := self richTextForString: source.

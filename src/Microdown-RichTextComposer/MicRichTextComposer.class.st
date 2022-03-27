@@ -244,13 +244,15 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	If the latex formula cannot be built because of network or syntax errors,
 	use the error block to build a text"
 
-	| ref codecogs image anchor |
-	codecogs := 'https://latex.codecogs.com/png.image?'.
-	ref := MicResourceReference fromUri: codecogs , aString.
+	| ref latexUrlPrefix image anchor |
+	"https://i.upmath.me/png/" "https://latex.codecogs.com/png.image?"
+	latexUrlPrefix := 'https://i.upmath.me/png/'.
+	ref := MicResourceReference fromUri: latexUrlPrefix , aString.
 	[ 	image := ref loadImage.
 		anchor := TextAnchor new anchoredMorph: image.
 		^ self textWithImage: image usingAnchor: anchor ]
-	on: MicResourceReferenceError do: [^ aBlock value]
+	on: MicResourceReferenceError 
+	do: [^ aBlock value]
 ]
 
 { #category : #private }
