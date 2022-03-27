@@ -17,6 +17,11 @@ MicRelativeResourceReference >> isRelative [
 	^ true
 ]
 
+{ #category : #accessing }
+MicRelativeResourceReference >> path [
+	^ self relativePath 
+]
+
 { #category : #printing }
 MicRelativeResourceReference >> printOn: aStream [
 	super printOn: aStream.
