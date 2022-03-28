@@ -56,3 +56,11 @@ MicResourceReferenceTest >> testRelativeFileRecognized [
 	self assert: mf relativePath equals: 'chapter1/figures/m.mic'.
 	
 ]
+
+{ #category : #tests }
+MicResourceReferenceTest >> testStringExtensionMethod [
+	| ref |
+	ref := 'http://somewhere.org/path/to/image.png' asMicResourceReference.
+	self assert: ref class equals: MicHTTPResourceReference.
+	self assert: ref path equals: '/path/to/image.png'
+]

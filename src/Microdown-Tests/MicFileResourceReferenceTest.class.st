@@ -120,6 +120,16 @@ MicFileResourceReferenceTest >> testContents [
 ]
 
 { #category : #tests }
+MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
+	| fileRef micRef |
+	fileRef := '/path/to/nowhere.md' asFileReference.
+	micRef := fileRef asMicResourceReference.
+	self assert: micRef class equals: MicFileResourceReference.
+	self assert: micRef uriString equals: 'file:///path/to/nowhere.md'.
+	self assert: micRef fileReference path asString equals: fileRef path asString
+]
+
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadImage [
 
 	| ref image |
