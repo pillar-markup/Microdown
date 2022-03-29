@@ -39,8 +39,15 @@ MicResourceReference class >> fromUri: aString [
 		ifTrue: [ ^ MicFileResourceReference new uri: uri ].
 	uri scheme = 'pharo'
 		ifTrue: [ ^ MicPharoResourceReference new uri: uri ].
+	uri scheme = 'comment'
+		ifTrue: [ ^ MicPharoCommentResourceReference newFromUri: uri ].
 	^uri
 	
+]
+
+{ #category : #testing }
+MicResourceReference >> isDirectory [ 
+	^ false
 ]
 
 { #category : #testing }

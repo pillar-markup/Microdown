@@ -50,13 +50,18 @@ MicFileResourceReference >> contents [
 ]
 
 { #category : #accessing }
+MicFileResourceReference >> contents: aString [
+	"write the contents of a string to my file"
+	self fileReference writeStreamDo: [ :stream | stream nextPutAll: aString ].
+]
+
+{ #category : #accessing }
 MicFileResourceReference >> fileReference [ 
 	^ self filesystem referenceTo: self path
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> filesystem [
-
 	^ filesystem
 ]
 
@@ -66,7 +71,25 @@ MicFileResourceReference >> filesystem: anObject [
 	filesystem := anObject
 ]
 
+{ #category : #initialization }
+MicFileResourceReference >> initialize [
+	super initialize.
+	filesystem := FileSystem disk.
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> isDirectory [
+	^ self fileReference isDirectory 
+]
+
 { #category : #testing }
 MicFileResourceReference >> isFileReference [
 	^ true
+]
+
+{ #category : #'as yet unclassified' }
+MicFileResourceReference >> loadDirectory [
+	"return a collection of MifResourceReferences if I am a directory, nil if I am not a directory"
+	self isDirectory ifFalse: [ ^ nil ].
+	^ self fileReference children collect: [ :child | child asMicResourceReference ]
 ]

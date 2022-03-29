@@ -20,6 +20,14 @@ MicResourceReferenceTest >> testHttpRecognized [
 ]
 
 { #category : #tests }
+MicResourceReferenceTest >> testIsDirectory [
+	| ref |
+	
+	ref := 'https://pharo.org' asMicResourceReference.
+	self deny: ref isDirectory 
+]
+
+{ #category : #tests }
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |

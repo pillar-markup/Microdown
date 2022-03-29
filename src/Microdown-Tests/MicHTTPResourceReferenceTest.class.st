@@ -34,6 +34,15 @@ MicHTTPResourceReferenceTest >> tearDown [
 ]
 
 { #category : #tests }
+MicHTTPResourceReferenceTest >> testContentsSet [
+	self should: [('https://someplace.irk/mydocument.md' asMicResourceReference ) 
+						contents: '### Impossible']
+	raise: MicResourceReferenceError 
+	description: 'I should raise an error for http based resource references'
+	
+]
+
+{ #category : #tests }
 MicHTTPResourceReferenceTest >> testErrorNonCorrectImage [
 
 	| ref |

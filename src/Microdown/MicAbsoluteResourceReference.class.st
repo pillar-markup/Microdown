@@ -25,6 +25,15 @@ MicAbsoluteResourceReference >> contents [
 	self subclassResponsibility.
 ]
 
+{ #category : #accessing }
+MicAbsoluteResourceReference >> contents: aString [
+	"Some of my subclasses can be written to. By default you cannot, and I then give an error"
+	(MicResourceReferenceError new 
+		messageText: (self printString, ' can not be given new contents')
+	) signal
+	
+]
+
 { #category : #testing }
 MicAbsoluteResourceReference >> isFileReference [
 	^ false

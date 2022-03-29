@@ -100,6 +100,7 @@ MicFileResourceReferenceTest >> setUp [
 	super setUp.
 	filesystem := FileSystem memory.
 	emptyFilesystem := FileSystem memory.
+	"exampleReadmeFile creates file example.md"
 	readme := self exampleReadmeFile contents.
 	image := self examplePNGFile.
 
@@ -120,6 +121,17 @@ MicFileResourceReferenceTest >> testContents [
 ]
 
 { #category : #tests }
+MicFileResourceReferenceTest >> testContentsSet [ 
+	|ref header |
+	ref := (MicResourceReference fromUri: 'file:/example.md')
+		filesystem: filesystem.
+	ref contents: '### Super cool header'.
+	header := ref loadMicrodown children first.
+	self assert: header level equals: 3.
+	self assert: header children first text equals: 'Super cool header'
+]
+
+{ #category : #tests }
 MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	| fileRef micRef |
 	fileRef := '/path/to/nowhere.md' asFileReference.
@@ -127,6 +139,22 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	self assert: micRef class equals: MicFileResourceReference.
 	self assert: micRef uriString equals: 'file:///path/to/nowhere.md'.
 	self assert: micRef fileReference path asString equals: fileRef path asString
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testIsDirectory [ 
+	| ref |
+	ref := filesystem workingDirectory asMicResourceReference.
+	self assert: ref isDirectory 
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testLoadDirectory [ 
+	| ref files |
+	ref := filesystem workingDirectory asMicResourceReference.
+	files := ref loadDirectory.
+	self assert: files size equals: 3.
+	self assert: files first class equals: MicFileResourceReference
 ]
 
 { #category : #tests }
