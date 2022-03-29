@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #accessing }
-MicAbsoluteResourceReference >> binaryStream [
+MicAbsoluteResourceReference >> binaryReadStream [
 	"return the binaryStream I refer to"
 	self subclassResponsibility.
 ]

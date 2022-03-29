@@ -17,7 +17,7 @@ MicPharoCommentResourceReference class >> newFromUri: aUri [
 ]
 
 { #category : #accessing }
-MicPharoCommentResourceReference >> binaryStream [
-	"return the binaryStream I refer to"
+MicPharoCommentResourceReference >> binaryReadStream [
+	"comments are not in binary format"
 	MicResourceReferenceError signal: 'Pharo comments cannot be read in binary format'
 ]
