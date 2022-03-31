@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'savedComment'
 	],
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-DocumentBrowser-Tests-ResourceModel'
 }
 
 { #category : #running }

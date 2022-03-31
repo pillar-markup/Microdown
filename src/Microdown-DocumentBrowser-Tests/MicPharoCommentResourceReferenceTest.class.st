@@ -1,7 +1,7 @@
 Class {
 	#name : #MicPharoCommentResourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-DocumentBrowser-Tests-ResourceModel'
 }
 
 { #category : #tests }

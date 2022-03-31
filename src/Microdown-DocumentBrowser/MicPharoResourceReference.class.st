@@ -15,7 +15,7 @@ Examples:
 Class {
 	#name : #MicPharoResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
-	#category : #'Microdown-Core'
+	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
 { #category : #'accessing - resources' }
