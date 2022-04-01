@@ -26,24 +26,6 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
-{ #category : #'basic search' }
-MicDocumentBrowser class >> search: aTopicName in: topicCollection with: aCollection [
-	
-	| lookedup |
-	lookedup := aTopicName asLowercase.	
-		
-	topicCollection ifNotEmpty: [ 
-		topicCollection doWithIndex: [ :topic :i |
-		aCollection add: i.
-		((topic title asLowercase splitOn: Character space) anySatisfy: [ :each | lookedup match: each ])
-			ifTrue: [ ^ aCollection ]
-			ifFalse: [ (self search: aTopicName in: topic subtopics with: aCollection) isCollection 
-				ifTrue: [ ^ aCollection]].
-			aCollection removeLast ]
-		 ]
-	
-]
-
 { #category : #'source code' }
 MicDocumentBrowser >> chooseEditColor: colors on: block [
 	| color |
@@ -90,6 +72,13 @@ MicDocumentBrowser >> documentList [
 
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
+	^ {'comment://package/Microdown'.
+		'file:///Users/kasper/tmp/pharo/doc' .
+	 } collect: #asMicResourceReference
+]
+
+{ #category : #private }
+MicDocumentBrowser >> documentRoots_old [
 	^ { (MicGithubDocProvider onUri: 'github://pharo-project/pharo' ) documents.
 		(MicGithubDocProvider onUri: 'github://pharo-ai/wiki/wiki') documents.
 		(MicFileDocProvider onUri: 'file:///Users/kasper/tmp/pharo/doc') documents .
@@ -136,9 +125,9 @@ MicDocumentBrowser >> initializePresenters [
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
-		children: [ :aNode | aNode subLevels ];
-		display: [ :aNode | aNode displayString ];
-		displayIcon: [ :aNode | aNode icon ].
+		children: [ :aNode | aNode loadChildren sort: [:a :b |a browserTitle < b browserTitle] ];
+		display: [ :aNode | aNode browserTitle ];
+		displayIcon: [ :aNode | aNode browserIcon ].
 
 	spRendering := self instantiate: MicrodownPresenter.
 	spSource := self newText addStyle: 'code'.
@@ -161,7 +150,7 @@ MicDocumentBrowser >> isEditing [
 { #category : #events }
 MicDocumentBrowser >> newSelection: selection [
 	"I am the raw user selection in the spDocumentList"
-	(selection isNil or: [selection isKindOf:  MicDocumentCollection ])
+	selection isNil
 		ifTrue: [ 
 			spRendering text: '' asText.
 			spSource text: ''.
@@ -170,8 +159,8 @@ MicDocumentBrowser >> newSelection: selection [
 ]
 
 { #category : #rendering }
-MicDocumentBrowser >> renderSection: aMicSectionBlock [ 
-	spRendering text:( aMicSectionBlock provider renderSection: aMicSectionBlock).
+MicDocumentBrowser >> renderSection: micReference [ 
+	spRendering text:(Microdown asRichText: micReference loadMicrodown ).
 	spRendering selectionInterval: (1 to: 0)
 ]
 
@@ -180,10 +169,8 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
 	| docToSave|
 	docToSave := spDocumentList selectedItem.
-	docToSave rootSection = docToSave ifFalse: [ ^ self].
-	spSource text = (docToSave propertyAt: #source) ifTrue: [ ^ self ].
-	docToSave propertyAt: #source put: spSource text.
-	docToSave save.
+	spSource text = (docToSave contents) ifTrue: [ ^ self ].
+	docToSave contents: spSource text.
 	self renderSection: docToSave.
 	self setEditBackgroundColor: self colorCanEdit
 ]
@@ -235,17 +222,14 @@ MicDocumentBrowser >> setEditing: aBoolean [
 { #category : #'source code' }
 MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
-	| section original |
-	section := spDocumentList selectedItem.
-	section isRootSection
-		ifFalse: [ ^ spSource text: 'No source for sub sections' ].
-	original := section propertyAt: #source ifAbsent: ['No source for this node'].
+	| micRef original |
+	micRef := spDocumentList selectedItem.
 	spSource 
-		text: original;
-		editable:section provider canSave;
+		text: micRef contents;
+		editable: micRef canSave;
 		whenTextChangedDo: [:text | 
 				self chooseEditColor: { self colorCanEdit. self colorHasBeenEdited  } on: [ text = original ]].
-	self chooseEditColor: { self colorCanEdit. self colorCannotEdit  } on: [ section provider canSave ].
+	self chooseEditColor: { self colorCanEdit. self colorCannotEdit  } on: [ micRef canSave ].
 	
 		
 	

@@ -396,12 +396,13 @@ MicRichTextComposer >> visitFigure: aFigure [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHeader: aHeader [
-
+	| level |
 	canvas newLineIfNotAlready.
+	level := aHeader level min: 6.
 	canvas
-		includeAttribute: (self textStyler headerLevelFont: aHeader level)
+		includeAttribute: (self textStyler headerLevelFont: level)
 		in: [ super visitHeader: aHeader ].
-	canvas << (textStyler spaceAfterHeaderLevel: aHeader level)
+	canvas << (textStyler spaceAfterHeaderLevel: level)
 ]
 
 { #category : #'visiting - document' }

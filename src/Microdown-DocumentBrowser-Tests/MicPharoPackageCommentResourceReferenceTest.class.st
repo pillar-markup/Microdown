@@ -78,7 +78,7 @@ MicPharoPackageCommentResourceReferenceTest >> testKind [
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 	| ref dir |
 	ref := 'comment://package/Microdown' asMicResourceReference.
-	dir := ref loadDirectory.
+	dir := ref loadChildren.
 	self assert: dir notEmpty.
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoPackageCommentResourceReference  ] ).
 	self assert: (dir first uri segments first beginsWith: 'Microdown').
@@ -88,7 +88,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 	| dir prefixes |
-	dir := 'comment://package/' asMicResourceReference loadDirectory.
+	dir := 'comment://package/' asMicResourceReference loadChildren.
 	self assert: (dir size between: 100 and: 200).
 	"check that four known prefises are in the found set."
 	prefixes := dir collect: [ :ref | ref uri segments first ].
@@ -100,7 +100,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 	| ref dir |
 	ref := 'comment://package/Microdown?kind=package' asMicResourceReference.
-	dir := ref loadDirectory.
+	dir := ref loadChildren.
 	"Expect Extension and Manifest tags removed"
 	self assert: dir size equals: ('Microdown' asPackage classTags size - 2).
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoPackageCommentResourceReference  ] ).
@@ -114,7 +114,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	| ref dir |
 	ref := 'comment://package/Microdown-RichTextComposer' asMicResourceReference.
-	dir := ref loadDirectory.
+	dir := ref loadChildren.
 	self assert: dir size equals: 2.
 ]
 
@@ -122,7 +122,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_withTag [
 	| ref dir |
 	ref := 'comment://package/Microdown-DocumentBrowser-Tests-ResourceModel' asMicResourceReference.
-	dir := ref loadDirectory.
+	dir := ref loadChildren.
 	self assert: dir notEmpty.
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoClassCommentResourceReference  ] ).
 	self assert: (dir anySatisfy:  [:aRef | aRef uri segments first = self class name])

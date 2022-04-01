@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #accessing }
+MicPharoClassCommentResourceReference >> canSave [
+	"return true if I implement contents: "
+	^true
+]
+
+{ #category : #accessing }
 MicPharoClassCommentResourceReference >> classReference [
 
 	^ classReference
@@ -21,6 +27,17 @@ MicPharoClassCommentResourceReference >> contents [
 { #category : #accessing }
 MicPharoClassCommentResourceReference >> contents: newCommentString [
 	^ classReference comment: newCommentString
+]
+
+{ #category : #loading }
+MicPharoClassCommentResourceReference >> loadMicrodown [
+	"I override to provide the comment produced by beautifulComments"
+	| builder |
+	builder := Microdown builder.
+	self classReference 
+		buildMicroDownUsing: builder 
+		withComment: self contents.
+	^ builder contents
 ]
 
 { #category : #accessing }

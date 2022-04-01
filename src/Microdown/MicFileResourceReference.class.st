@@ -41,9 +41,15 @@ MicFileResourceReference >> binaryReadStream [
 		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
+{ #category : #testing }
+MicFileResourceReference >> canSave [
+	"return true if I implement contents: "
+	^true
+]
+
 { #category : #accessing }
 MicFileResourceReference >> contents [
-	[^ self fileReference contents]
+	[^ self fileReference isDirectory ifTrue: [''] ifFalse: [self fileReference contents] ]
 	on: FileDoesNotExistException 
 	do: [ :error | 
 		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
@@ -88,8 +94,10 @@ MicFileResourceReference >> isFileReference [
 ]
 
 { #category : #'as yet unclassified' }
-MicFileResourceReference >> loadDirectory [
-	"return a collection of MifResourceReferences if I am a directory, nil if I am not a directory"
-	self isDirectory ifFalse: [ ^ nil ].
-	^ self fileReference children collect: [ :child | child asMicResourceReference ]
+MicFileResourceReference >> loadChildren [
+	"return a collection of MifResourceReferences if I am a directory, empty if I am not a directory"
+	self isDirectory ifFalse: [ ^ #() ].
+	^ self fileReference children
+		select: [ :child | child isDirectory or: [ #(md mic) includes: child extension  ] ] 
+		thenCollect: [ :child | child asMicResourceReference ]
 ]

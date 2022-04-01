@@ -20,6 +20,12 @@ MicAbsoluteResourceReference >> binaryReadStream [
 ]
 
 { #category : #accessing }
+MicAbsoluteResourceReference >> canSave [
+	"return true if I implement contents: "
+	^false
+]
+
+{ #category : #accessing }
 MicAbsoluteResourceReference >> contents [
 	"return the contents I refer to"
 	self subclassResponsibility.
@@ -28,15 +34,18 @@ MicAbsoluteResourceReference >> contents [
 { #category : #accessing }
 MicAbsoluteResourceReference >> contents: aString [
 	"Some of my subclasses can be written to. By default you cannot, and I then give an error"
-	(MicResourceReferenceError new 
-		messageText: (self printString, ' can not be given new contents')
-	) signal
-	
+	MicResourceReferenceError signal: self printString, ' can not be given new contents'
 ]
 
 { #category : #testing }
 MicAbsoluteResourceReference >> isFileReference [
 	^ false
+]
+
+{ #category : #accessing }
+MicAbsoluteResourceReference >> loadChildren [
+	"return a collection of absolute child references"
+	^#()
 ]
 
 { #category : #loading }
@@ -46,7 +55,7 @@ MicAbsoluteResourceReference >> loadImage [
 
 { #category : #loading }
 MicAbsoluteResourceReference >> loadMicrodown [
-	"I am an absolute reference, so I should be able to load completely"
+	"I am an absolute reference, so I can load completely"
 	|doc|
 	doc := Microdown parse: self contents.
 	MicZincPathResolver new

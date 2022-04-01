@@ -121,6 +121,13 @@ MicFileResourceReferenceTest >> testContents [
 ]
 
 { #category : #tests }
+MicFileResourceReferenceTest >> testContentsOfDirectory [
+	| ref |
+	ref := filesystem workingDirectory asMicResourceReference.
+	self assert: ref contents equals: '' 
+]
+
+{ #category : #tests }
 MicFileResourceReferenceTest >> testContentsSet [ 
 	|ref header |
 	ref := (MicResourceReference fromUri: 'file:/example.md')
@@ -149,11 +156,11 @@ MicFileResourceReferenceTest >> testIsDirectory [
 ]
 
 { #category : #tests }
-MicFileResourceReferenceTest >> testLoadDirectory [ 
+MicFileResourceReferenceTest >> testLoadChildren [
 	| ref files |
 	ref := filesystem workingDirectory asMicResourceReference.
-	files := ref loadDirectory.
-	self assert: files size equals: 3.
+	files := ref loadChildren.
+	self assert: files size equals: 2.
 	self assert: files first class equals: MicFileResourceReference
 ]
 

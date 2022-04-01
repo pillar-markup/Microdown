@@ -26,6 +26,12 @@ Class {
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
+{ #category : #testing }
+MicPharoPackageCommentResourceReference >> canSave [
+	"return true if I implement contents: "
+	^self isPackage
+]
+
 { #category : #accessing }
 MicPharoPackageCommentResourceReference >> categoryName [
 
@@ -76,7 +82,7 @@ MicPharoPackageCommentResourceReference >> childrenOfRPackage [
 MicPharoPackageCommentResourceReference >> contents [ 
 	[ ^ categoryName asPackage packageComment ]
 	on: NotFound 
-	do: [ MicResourceReferenceError signal: 'No package named ', categoryName]
+	do: [ ^ '' ]
 ]
 
 { #category : #accessing }
@@ -119,11 +125,23 @@ MicPharoPackageCommentResourceReference >> level [
 ]
 
 { #category : #accessing }
-MicPharoPackageCommentResourceReference >> loadDirectory [
+MicPharoPackageCommentResourceReference >> loadChildren [
 	kind = #prefix ifTrue: [ ^ self childrenOfCategoryPrefix  ].
 	kind = #package ifTrue: [ ^ self childrenOfRPackage  ].
 	kind = #tag ifTrue: [ ^ self childrenOfPackageWithTag  ].
 	MicResourceReferenceError signal: 'Unknow kind in ', self uri printString.
+]
+
+{ #category : #loading }
+MicPharoPackageCommentResourceReference >> loadMicrodown [
+	"I override to provide the comment produced by beautifulComments"
+	| builder |
+	self isPackage ifFalse: [ ^ Microdown parse: '' ].
+	builder := Microdown builder.
+	self categoryName asPackage  
+		buildMicroDownUsing: builder 
+		withComment: self contents.
+	^ builder contents
 ]
 
 { #category : #testing }
