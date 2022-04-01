@@ -17,7 +17,7 @@ Class {
 Microdown class >> asHTMLDocument: aStringOrDoc [
 	"Facade method to render a microdown document or string to HTML"
 	
-	^ MicHTMLWriter asHTMLDocument: aStringOrDoc.
+	^ MicHTMLVisitor asHTMLDocument: aStringOrDoc.
 		
 	
 ]
@@ -26,7 +26,7 @@ Microdown class >> asHTMLDocument: aStringOrDoc [
 Microdown class >> asHTMLString: aStringOrDoc [
 	"Facade method to render a microdown document or string to HTML"
 	
-	^ MicHTMLWriter asHTMLString: aStringOrDoc.
+	^ MicHTMLVisitor asHTMLString: aStringOrDoc.
 		
 	
 ]

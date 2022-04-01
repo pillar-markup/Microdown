@@ -39,7 +39,7 @@ Pharo is **cool**
 { #category : #running }
 MicHTMLWriterTest >> setUp [
 	super setUp.
-	micHTMLWriter := MicHTMLWriter new.
+	micHTMLWriter := MicHTMLVisitor new.
 	filesystem := FileSystem memory.
 	self generateFilesystemExample.
 ]
@@ -55,7 +55,7 @@ MicHTMLWriterTest >> testContents [
 
 	self assert: micHTMLWriter contents equals: String empty.
 	micHTMLWriter visitItalic: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'test')).
-	self assert: micHTMLWriter contents equals: '<em>test</em>'.
+	self assert: micHTMLWriter contents equals: '<i>test</i>'.
 ]
 
 { #category : #tests }
@@ -98,8 +98,8 @@ MicHTMLWriterTest >> testConvertMicStringToDoc [
 		deny: expectedHtmlDoc isEmpty 
 		description: 'It test that result is not empty'.
 	self
-		assert: (expectedHtmlDoc beginsWith: MicHTMLDocBuilder documentType)
-		description: 'It test that result contain the expected document type tag'
+		assert: (expectedHtmlDoc beginsWith: MicHTMLDoc documentType)
+		description: 'It test that result contains the expected document type tag'
 ]
 
 { #category : #tests }
@@ -152,5 +152,16 @@ MicHTMLWriterTest >> testCreateCitation [
 	
 	result := micHTMLWriter convertMicString: '{!citation|ref=Duca99a!}'.
 	self assert: result trimBoth equals: '<p><cite>Duca99a</cite></p>'.	
+
+]
+
+{ #category : #tests }
+MicHTMLWriterTest >> testCreateItalic [
+
+	| result |
+	self assert: micHTMLWriter contents equals: String empty.
+	
+	result := micHTMLWriter convertMicString: '_Text with italic_'.
+	self assert: result trimBoth equals: '<p><i>Text with italic</i></p>'.	
 
 ]

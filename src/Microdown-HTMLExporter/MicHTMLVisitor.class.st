@@ -3,7 +3,7 @@ A first version of an HTML writer.
 We should rewrite it once the templatedWriter is working.
 "
 Class {
-	#name : #MicHTMLWriter,
+	#name : #MicHTMLVisitor,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas'
@@ -12,69 +12,69 @@ Class {
 }
 
 { #category : #converting }
-MicHTMLWriter class >> asHTMLDocument: aMicrodownString [
+MicHTMLVisitor class >> asHTMLDocument: aMicrodownString [
 	"Answer a <String> formatted as HTML with UTF-8 encoding from aMicrodownString as input"
 
 	^ self new convertMicStringToDoc: aMicrodownString
 ]
 
 { #category : #converting }
-MicHTMLWriter class >> asHTMLString: aMicrodownString [
+MicHTMLVisitor class >> asHTMLString: aMicrodownString [
 	"Answer a <String> formatted as HTML from aMicrodownString as input"
 
 	^ self new convertMicString: aMicrodownString
 ]
 
 { #category : #examples }
-MicHTMLWriter class >> exampleHTMLDocument [
+MicHTMLVisitor class >> exampleHTMLDocument [
 	<example>
 	
 	^ (Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument) inspect.
 ]
 
 { #category : #examples }
-MicHTMLWriter class >> exampleHTMLDocumentWithFigure [
+MicHTMLVisitor class >> exampleHTMLDocumentWithFigure [
 	<example>
 	
 	^ (Microdown asHTMLDocument: '![AltText](my_directory/image.png label=42&width=90)') inspect.
 ]
 
 { #category : #examples }
-MicHTMLWriter class >> exampleHTMLDocumentWithLink [
+MicHTMLVisitor class >> exampleHTMLDocumentWithLink [
 	<example>
 	
 	^ (Microdown asHTMLDocument: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)') inspect.
 ]
 
 { #category : #examples }
-MicHTMLWriter class >> exampleHTMLString [
+MicHTMLVisitor class >> exampleHTMLString [
 	<example>
 	
 	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
 ]
 
 { #category : #examples }
-MicHTMLWriter class >> exampleHTMLStringWithLink [
+MicHTMLVisitor class >> exampleHTMLStringWithLink [
 	<example>
 	
 	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
 ]
 
 { #category : #initialization }
-MicHTMLWriter >> canvasClass [
+MicHTMLVisitor >> canvasClass [
 
 	^ MicHTMLCanvas
 ]
 
 { #category : #accessing }
-MicHTMLWriter >> contents [ 
+MicHTMLVisitor >> contents [ 
 	"Answer a <String> of HTML formatted receiver's canvas"
 
 	^ canvas contents
 ]
 
 { #category : #converting }
-MicHTMLWriter >> convertMicFile: aFilename [
+MicHTMLVisitor >> convertMicFile: aFilename [
 
 	| fileRef |
 
@@ -85,7 +85,7 @@ MicHTMLWriter >> convertMicFile: aFilename [
 ]
 
 { #category : #converting }
-MicHTMLWriter >> convertMicString: aMicString [
+MicHTMLVisitor >> convertMicString: aMicString [
 	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
 
 	self visit: (Microdown parse: aMicString).
@@ -93,17 +93,17 @@ MicHTMLWriter >> convertMicString: aMicString [
 ]
 
 { #category : #converting }
-MicHTMLWriter >> convertMicStringToDoc: aMicString [
+MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
 
 	self visit: (Microdown parse: aMicString).
-	^ MicHTMLDocBuilder new
+	^ MicHTMLDoc new
 		contents: self contents;
-		document
+		contents
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> createAnchorWithId: anId [
+MicHTMLVisitor >> createAnchorWithId: anId [
 
 	canvas tag
 		name: 'a';
@@ -112,22 +112,22 @@ MicHTMLWriter >> createAnchorWithId: anId [
 ]
 
 { #category : #initialization }
-MicHTMLWriter >> initialize [ 
+MicHTMLVisitor >> initialize [ 
 	| stream |
 	super initialize.
-	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	stream := MicOutputStream new setStream: (WriteStream on: String empty).
 	canvas := self canvasClass on: stream.
 	
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> isSyntaxHighlightingPossible [
+MicHTMLVisitor >> isSyntaxHighlightingPossible [
 
 	^ true
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> languageForScript: aScript [
+MicHTMLVisitor >> languageForScript: aScript [
 
 	^ aScript language isSpecified
 		  ifTrue: [ aScript language ]
@@ -135,20 +135,20 @@ MicHTMLWriter >> languageForScript: aScript [
 ]
 
 { #category : #initialization }
-MicHTMLWriter >> usedNewLine [
+MicHTMLVisitor >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
 	^ canvas stream usedNewLine
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitAnchor: anAnchor [
+MicHTMLVisitor >> visitAnchor: anAnchor [
 
 	self createAnchorWithId: anAnchor label 
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitAnnotated: anAnnotatedParagraph [
+MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 
 	canvas newLine.
 	canvas tag
@@ -164,7 +164,7 @@ MicHTMLWriter >> visitAnnotated: anAnnotatedParagraph [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitBold: aBoldText [
+MicHTMLVisitor >> visitBold: aBoldText [
 
 	canvas tag
 		name: 'strong';
@@ -172,7 +172,7 @@ MicHTMLWriter >> visitBold: aBoldText [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitCitation: aCitation [
+MicHTMLVisitor >> visitCitation: aCitation [
 
 	canvas tag
 		name: 'cite';
@@ -181,20 +181,20 @@ MicHTMLWriter >> visitCitation: aCitation [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitCode: aCodeBlock [
+MicHTMLVisitor >> visitCode: aCodeBlock [
 
 	canvas newLine.
 	canvas tag
-				name: 'pre';
-				with: [ 
-					| code |
-					code := canvas tag
-						        name: 'code';
-						        yourself.
-					"language := self languageForScript: aCodeBlock.
-					language isSyntaxHighlightingPossible ifTrue: [ 
-						code parameterAt: 'class' put: language printString ]."
-					code with: [ canvas lines: aCodeBlock body ] ].
+		name: 'pre';
+		with: [ 
+			| code |
+			code := canvas tag
+				        name: 'code';
+				        yourself.
+			"language := self languageForScript: aCodeBlock.
+			language isSyntaxHighlightingPossible ifTrue: [ 
+			code parameterAt: 'class' put: language printString ]."
+			code with: [ canvas lines: aCodeBlock body ] ].
 			"canvas tag
 				name: 'figcaption';
 				with: [ 
@@ -207,7 +207,7 @@ MicHTMLWriter >> visitCode: aCodeBlock [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitCodeblock: aCodeBlock [
+MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 
 	canvas tag
 		name: 'figure';
@@ -219,6 +219,7 @@ MicHTMLWriter >> visitCodeblock: aCodeBlock [
 					code := canvas tag
 						        name: 'code';
 						        yourself.
+					self halt.
 					language := self languageForScript: aCodeBlock.
 					language isSyntaxHighlightingPossible ifTrue: [ 
 						code parameterAt: 'class' put: language printString ].
@@ -234,8 +235,37 @@ MicHTMLWriter >> visitCodeblock: aCodeBlock [
 	canvas newLine
 ]
 
+{ #category : #'visiting - html' }
+MicHTMLVisitor >> visitDocument: aDocument [
+	"Write markup hyperlink, which is used to link from one page to another"
+	
+	canvas tag
+		name: 'html';
+		with: [ 
+			self 
+				visitDocumentHeader: aDocument;
+				visitDocumentBody: aDocument ]
+
+
+]
+
+{ #category : #'visiting - html' }
+MicHTMLVisitor >> visitDocumentBody: aDocument [
+
+	self halt.
+]
+
+{ #category : #'visiting - html' }
+MicHTMLVisitor >> visitDocumentHeader: aDocument [
+
+	canvas tag
+		name: 'head';
+		with: [ 
+			canvas nextPutAll: aDocument text ]
+]
+
 { #category : #visiting }
-MicHTMLWriter >> visitFigCaption: aFigCaptionBlock [
+MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
 		name: 'figcaption';
@@ -245,7 +275,7 @@ MicHTMLWriter >> visitFigCaption: aFigCaptionBlock [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitFigure: aFigure [
+MicHTMLVisitor >> visitFigure: aFigure [
 	"Write mark up elements related with photo in the receiver's canvas"
 
 	canvas tag
@@ -255,7 +285,7 @@ MicHTMLWriter >> visitFigure: aFigure [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitHeader: aHeader [
+MicHTMLVisitor >> visitHeader: aHeader [
 
 	canvas newLine.	
 	canvas tag 
@@ -265,7 +295,7 @@ MicHTMLWriter >> visitHeader: aHeader [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitImg: aMicFigureBlock [
+MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	"Write mark up elements related with image tag in the receiver's canvas.
 	Mandatory attributes:
 		src - Specifies the path to the image
@@ -280,15 +310,15 @@ MicHTMLWriter >> visitImg: aMicFigureBlock [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitItalic: aItalicText [
+MicHTMLVisitor >> visitItalic: aItalicText [
 
 	canvas tag
-		name: 'em';
+		name: 'i';
 		with: [ super visitItalic: aItalicText ]
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitLink: aLink [
+MicHTMLVisitor >> visitLink: aLink [
 	"Write markup hyperlink, which is used to link from one page to another"
 	
 	canvas tag
@@ -300,7 +330,7 @@ MicHTMLWriter >> visitLink: aLink [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitMonospace: aMonospace [
+MicHTMLVisitor >> visitMonospace: aMonospace [
 
 	canvas tag
 		name: 'code';
@@ -308,7 +338,7 @@ MicHTMLWriter >> visitMonospace: aMonospace [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitParagraph: aParagraph [
+MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
 	canvas tag
@@ -317,7 +347,7 @@ MicHTMLWriter >> visitParagraph: aParagraph [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitQuote: aQuote [
+MicHTMLVisitor >> visitQuote: aQuote [
 
 	canvas tag
 		name: 'q';
@@ -326,7 +356,7 @@ MicHTMLWriter >> visitQuote: aQuote [
 ]
 
 { #category : #'visiting - list' }
-MicHTMLWriter >> visitStrike: aStrike [
+MicHTMLVisitor >> visitStrike: aStrike [
 
 	canvas tag
 		name: 'strike';
@@ -334,7 +364,7 @@ MicHTMLWriter >> visitStrike: aStrike [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitTable: aTable [
+MicHTMLVisitor >> visitTable: aTable [
 
 	| restRows |
 	canvas newLine.
@@ -352,13 +382,13 @@ MicHTMLWriter >> visitTable: aTable [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitText: aText [
+MicHTMLVisitor >> visitText: aText [
 
 	canvas nextPutAll: aText text
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitUnorderedList: anUnorderedList [
+MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 
 	canvas newLine.
 	canvas tag
@@ -369,7 +399,7 @@ MicHTMLWriter >> visitUnorderedList: anUnorderedList [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
+MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	"will not work with we have text decorators such as bold, italic, monospace"
 	
 	canvas tag
@@ -379,7 +409,7 @@ MicHTMLWriter >> visitUnorderedListItem: anUnorderedListItem [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> writeCounter: aCounter [
+MicHTMLVisitor >> writeCounter: aCounter [
 
 	"Write on the canvas the string representation of ==aCounter=="
 
@@ -389,19 +419,19 @@ MicHTMLWriter >> writeCounter: aCounter [
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> writeCounterDefinitionSeparator [
+MicHTMLVisitor >> writeCounterDefinitionSeparator [
 
 	canvas nextPutAll: '. '
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> writeCounterElement: aCounterElement [
+MicHTMLVisitor >> writeCounterElement: aCounterElement [
 
 	canvas nextPutAll: aCounterElement asString
 ]
 
 { #category : #visiting }
-MicHTMLWriter >> writeCounterForScript: aScript [
+MicHTMLVisitor >> writeCounterForScript: aScript [
 
 	aScript counter isValidCounter ifFalse: [ ^ self ].
 	self writeCounter: aScript counter.
@@ -409,7 +439,7 @@ MicHTMLWriter >> writeCounterForScript: aScript [
 ]
 
 { #category : #writing }
-MicHTMLWriter >> writeTableHeaders: headers [
+MicHTMLVisitor >> writeTableHeaders: headers [
 	canvas tag
 		name: 'tr';
 		with: [ headers do: [ :cell | canvas tag name: 'th'; with: [self visitAll: cell]] ].
@@ -418,7 +448,7 @@ MicHTMLWriter >> writeTableHeaders: headers [
 ]
 
 { #category : #writing }
-MicHTMLWriter >> writeTableRows: rows [
+MicHTMLVisitor >> writeTableRows: rows [
 	rows do: [ :row |
 		canvas tag
 			name: 'tr';
