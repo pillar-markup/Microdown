@@ -38,25 +38,32 @@ MicPharoPackageCommentResourceReference >> categoryName [
 	^ categoryName
 ]
 
+{ #category : #private }
+MicPharoPackageCommentResourceReference >> childrenOfAllCategories [ 
+	^ (SystemOrganizer default categories 
+		reject: [ :cat | cat beginsWith: 'BaselineOf' ]
+		thenCollect: [:cat | self reduceCategoryName: cat]) 
+		asSet asArray sort
+			collect: [ :cat | ('comment://package/', cat) asMicResourceReference  ]
+]
+
 { #category : #accessing }
 MicPharoPackageCommentResourceReference >> childrenOfCategoryPrefix [
-
 	"I am a prefix of a set of categories, 
 	my children are those categories with one more depth in their name"
-
 	| children |
-	children := (categoryName 
-		ifEmpty: [ SystemOrganizer default categories reject: [ :cat | cat beginsWith: 'BaselineOf' ] ]
-		ifNotEmpty: [
-			SystemOrganizer default categories
-				select: [ :cat |  cat beginsWith: categoryName ]]) asSet.
+	categoryName ifEmpty: [ ^ self childrenOfAllCategories ].
+	children := SystemOrganizer default categories
+				select: [ :cat |  cat beginsWith: categoryName ].
 	self isPackage 
-		ifTrue: [ "remove the children which are actually tags"
-			children := children \ ( categoryName asPackage classTags collect: [:tag | categoryName,'-',tag name]).].
-	children := (children collect: [:cat | self reduceCategoryName: cat]) asSet asArray sort.
-	^ children collect: [ :cat | |query|
-		query := cat=categoryName ifTrue:['?kind=package'] ifFalse: [''].
-		('comment://package/',cat,query) asMicResourceReference  ]
+		ifTrue: [ |tags| "remove the children which are actually tags"
+			tags :=  categoryName asPackage classTags collect: [:tag | categoryName,'-',tag name].
+			children := children \ tags].
+	children := (children collect: [:cat | self reduceCategoryName: cat]) asSet asOrderedCollection sort
+					collect: [ :cat | ('comment://package/',cat) asMicResourceReference  ].
+	children addFirst: ('comment://package/',categoryName,'?kind=package') asMicResourceReference.
+	^ children
+	
 ]
 
 { #category : #accessing }
