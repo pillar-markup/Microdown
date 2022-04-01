@@ -1,11 +1,11 @@
 Class {
-	#name : #MicPharoResourceReferenceTest,
+	#name : #MicPharoImageResourceReferenceTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #tests }
-MicPharoResourceReferenceTest >> testIcon [
+MicPharoImageResourceReferenceTest >> testIcon [
 
 	| uri image |
 	uri := 'pharo:///Object/iconNamed:/info' asMicResourceReference.

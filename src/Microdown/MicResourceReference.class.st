@@ -38,7 +38,7 @@ MicResourceReference class >> fromUri: aString [
 	uri scheme = 'file'
 		ifTrue: [ ^ MicFileResourceReference new uri: uri ].
 	uri scheme = 'pharo'
-		ifTrue: [ ^ MicPharoResourceReference new uri: uri ].
+		ifTrue: [ ^ MicPharoImageResourceReference new uri: uri ].
 	uri scheme = 'comment'
 		ifTrue: [ ^ MicPharoCommentResourceReference newFromUri: uri ].
 	^uri

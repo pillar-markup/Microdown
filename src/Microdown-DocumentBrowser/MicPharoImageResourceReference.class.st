@@ -13,13 +13,13 @@ Examples:
 - Only string arguments can be passed
 "
 Class {
-	#name : #MicPharoResourceReference,
+	#name : #MicPharoImageResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
 { #category : #'accessing - resources' }
-MicPharoResourceReference >> loadImage [
+MicPharoImageResourceReference >> loadImage [
 
 	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 
