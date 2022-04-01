@@ -26,7 +26,7 @@ MicRelativeResourceReferenceTest >> testPrintOn [
 
 { #category : #tests }
 MicRelativeResourceReferenceTest >> testRelativePath [
-	| mic ref print |
+	| mic ref|
 	mic := Microdown parse: '[look here](../images/rudolf.png)'.
 	ref := mic children first children first reference.
 	self assert: ref relativePath equals: '../images/rudolf.png'

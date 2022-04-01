@@ -138,7 +138,7 @@ MicSectionBlock >> inspectionSectionRendered [
 	^ MicrodownPresenter new document: self;yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicSectionBlock >> isRootSection [ 
 	^ self parent isKindOf: MicDocumentCollection
 ]
@@ -154,12 +154,12 @@ MicSectionBlock >> preamble: anObject [
 	preamble := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicSectionBlock >> provider [
 	^ self rootSection parent provider
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicSectionBlock >> rootSection [
 	|sec|
 	sec := self.

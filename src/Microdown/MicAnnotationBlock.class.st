@@ -15,7 +15,6 @@ Class {
 	#name : #MicAnnotationBlock,
 	#superclass : #MicInlineElement,
 	#instVars : [
-		'name',
 		'arguments'
 	],
 	#category : #'Microdown-ModelInline'
@@ -82,11 +81,6 @@ MicAnnotationBlock >> kind [
 { #category : #accessing }
 MicAnnotationBlock >> name [
 	^ arguments defaultValue
-]
-
-{ #category : #accessing }
-MicAnnotationBlock >> name: aName [
-	self halt: 'should not - picked out from arguments'
 ]
 
 { #category : #accessing }

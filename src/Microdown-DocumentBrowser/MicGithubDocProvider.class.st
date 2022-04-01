@@ -31,6 +31,11 @@ MicGithubDocProvider class >> pharoDocs [
 	^ self onUri: 'github://pharo-project/pharo' 
 ]
 
+{ #category : #public }
+MicGithubDocProvider >> _readme [
+	"I am obsolete, but has some non-trivial code which need to be migrated"
+]
+
 { #category : #accessing }
 MicGithubDocProvider >> branch [
 

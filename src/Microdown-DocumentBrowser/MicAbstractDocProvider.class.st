@@ -1,7 +1,5 @@
 "
-I am an abstract documentation provider. A documentation provider must implement a number of virtual methods:
-- loadDocuments - return a document collection (of perhaps a single document)
-- saveDocument: aDocument - store a document in this collection, persisting it if possible
+I am basically obsolete, but my subclass GithubDocProvider contains some non-trivial code which have not yet been migrated
 "
 Class {
 	#name : #MicAbstractDocProvider,
@@ -90,7 +88,7 @@ MicAbstractDocProvider >> provider [
 	^ self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #adding }
 MicAbstractDocProvider >> refreshDocuments [
 	documentsCache := self loadDocuments.
 	
