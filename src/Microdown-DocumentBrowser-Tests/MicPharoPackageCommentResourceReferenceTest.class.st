@@ -147,10 +147,7 @@ MicPharoPackageCommentResourceReferenceTest >> testPackageCommentWrite [
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testPackageComment_NotThere [
-	self
-		should: [ 'comment://package/Microdownnnnn' asMicResourceReference contents ]
-		raise: MicResourceReferenceError 
-		description: 'I should throw an error in case of non existing package name'
+	 self assert: 'comment://package/Microdownnnnn' asMicResourceReference contents equals: ''
 	
 ]
 

@@ -73,17 +73,8 @@ MicDocumentBrowser >> documentList [
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
 	^ {'comment://package/Microdown'.
-		'file:///Users/kasper/tmp/pharo/doc' .
+		'file:///Users/kasper/tmp/pharo/docssss' .
 	 } collect: #asMicResourceReference
-]
-
-{ #category : #private }
-MicDocumentBrowser >> documentRoots_old [
-	^ { (MicGithubDocProvider onUri: 'github://pharo-project/pharo' ) documents.
-		(MicGithubDocProvider onUri: 'github://pharo-ai/wiki/wiki') documents.
-		(MicFileDocProvider onUri: 'file:///Users/kasper/tmp/pharo/doc') documents .
-		MicClassAndPacketDocProvider new documents.
-	 }
 ]
 
 { #category : #events }
@@ -160,8 +151,11 @@ MicDocumentBrowser >> newSelection: selection [
 
 { #category : #rendering }
 MicDocumentBrowser >> renderSection: micReference [ 
-	spRendering text:(Microdown asRichText: micReference loadMicrodown ).
+	[ spRendering text:(Microdown asRichText: micReference loadMicrodown )]
+	on: MicResourceReferenceError  
+	do: [ spRendering text: '' ].
 	spRendering selectionInterval: (1 to: 0)
+	
 ]
 
 { #category : #'source code' }

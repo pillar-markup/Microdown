@@ -56,11 +56,11 @@ MicAbsoluteResourceReference >> loadImage [
 { #category : #loading }
 MicAbsoluteResourceReference >> loadMicrodown [
 	"I am an absolute reference, so I can load completely"
-	|doc|
+	| doc| 
 	doc := Microdown parse: self contents.
-	MicZincPathResolver new
-		absoluteReference: self;
-		resolveDocument: doc.
+		MicZincPathResolver new
+			absoluteReference: self;
+			resolveDocument: doc.
 	^ doc
 ]
 
