@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
+{ #category : #private }
+MicPharoClassCommentResourceReference >> browserIcon [
+	^ self iconNamed: #class
+]
+
 { #category : #accessing }
 MicPharoClassCommentResourceReference >> canSave [
 	"return true if I implement contents: "

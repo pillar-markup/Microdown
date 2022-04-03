@@ -33,6 +33,14 @@ Class {
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
+{ #category : #private }
+MicPharoPackageCommentResourceReference >> browserIcon [
+	self kind = #prefix ifTrue: [ ^ self iconNamed: #packageColored ].
+	self kind = #package ifTrue: [ ^ self iconNamed: #package ].
+	self kind = #tag ifTrue: [ ^ self iconNamed: #book ].
+	^ self iconNamed: #error
+]
+
 { #category : #testing }
 MicPharoPackageCommentResourceReference >> canSave [
 	"return true if I implement contents: "
