@@ -13,8 +13,15 @@ My 'loadDirectory' has been designed to provide a deep directory.
 
 Most class category names are of the form 'aaa-bbb-ccc-ddd'. A call to `loadDirectory` with categoryName being 'aaa' will give children 'aaa-xxx','aaa-yyy','aaa-zzz'. A call with 'aaa-bbb' will return children 'aaa-bbb-xxx', 'aaa-bbb-yyy' etc.
 
-### Tags in packages
-If categoryName is an actual package name, the children will include 'aaa-bbb-xxx', 'aaa-bbb-yyy' packages as mentioned above. However, an additional child will be included for the package itself. Which in turn can return its classes or tags and then each tag can be expanded into classes.
+### Details
+In `comment://package/categoryName`, categoryName can be one of three cases:
+* A package name, with children being the tags or classes if the package has no tags
+* A tag of the form 'PackageName-tag', with children being the classes of the tag
+* A package name prefix of the form 'AI-Algorithms' wich is neither a package or a tag in a package, with children being those categories of which 'AI-Algorithms' is a prefix.
+
+A special case is somewhat common, for example 'Microdown' is both a package name and a prefix for other packages.
+In this case, the prefix 'Microdown' takes precedence  over package, and `comment://package/Microdown` has as children those categories prefixed my 'Microdown' _and_ the Microdown package.
+
 "
 Class {
 	#name : #MicPharoPackageCommentResourceReference,
@@ -39,7 +46,8 @@ MicPharoPackageCommentResourceReference >> categoryName [
 ]
 
 { #category : #private }
-MicPharoPackageCommentResourceReference >> childrenOfAllCategories [ 
+MicPharoPackageCommentResourceReference >> childrenOfAllCategories [
+	"I return the children of 'comment://package/' "
 	^ (SystemOrganizer default categories 
 		reject: [ :cat | cat beginsWith: 'BaselineOf' ]
 		thenCollect: [:cat | self reduceCategoryName: cat]) 
@@ -51,18 +59,19 @@ MicPharoPackageCommentResourceReference >> childrenOfAllCategories [
 MicPharoPackageCommentResourceReference >> childrenOfCategoryPrefix [
 	"I am a prefix of a set of categories, 
 	my children are those categories with one more depth in their name"
-	| children |
+	| children packageChild|
+	packageChild := OrderedCollection new.
 	categoryName ifEmpty: [ ^ self childrenOfAllCategories ].
 	children := SystemOrganizer default categories
-				select: [ :cat |  cat beginsWith: categoryName ].
+				select: [ :cat |  cat beginsWith: categoryName,'-' ].
 	self isPackage 
 		ifTrue: [ |tags| "remove the children which are actually tags"
 			tags :=  categoryName asPackage classTags collect: [:tag | categoryName,'-',tag name].
-			children := children \ tags].
+			children := children \ tags.
+			packageChild add: ('comment://package/', categoryName,'?kind=package') asMicResourceReference ].
 	children := (children collect: [:cat | self reduceCategoryName: cat]) asSet asOrderedCollection sort
 					collect: [ :cat | ('comment://package/',cat) asMicResourceReference  ].
-	children addFirst: ('comment://package/',categoryName,'?kind=package') asMicResourceReference.
-	^ children
+	^ packageChild , children
 	
 ]
 
