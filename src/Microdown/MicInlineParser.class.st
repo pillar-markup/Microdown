@@ -47,6 +47,12 @@ MicInlineParser class >> allDelimiters [
 	^ AllDelimiters 
 ]
 
+{ #category : #'class initialization' }
+MicInlineParser class >> initialize [
+	<script>
+	AllDelimiters := KeyBeginSet := nil.
+]
+
 { #category : #accessing }
 MicInlineParser class >> keyBeginSet [
 	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
