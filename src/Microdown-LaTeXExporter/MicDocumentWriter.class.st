@@ -3,7 +3,6 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'stream',
 		'nbListTab',
 		'writingRaw'
 	],
@@ -13,20 +12,21 @@ Class {
 { #category : #accessing }
 MicDocumentWriter >> canvasClass [ 
 
-	^ MicHTMLCanvas
+	^ self subclassResponsibility 
 ]
 
 { #category : #writing }
 MicDocumentWriter >> contents [
 
-	^ stream contents
+	^ canvas contents
 ]
 
 { #category : #initialization }
-MicDocumentWriter >> initialize [ 
+MicDocumentWriter >> initialize [
+	| stream2 |
 	super initialize.
-	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream.
+	stream2 := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	canvas := self canvasClass on: stream2.
 	writingRaw := false.
 	nbListTab := -1
 ]
@@ -35,7 +35,7 @@ MicDocumentWriter >> initialize [
 MicDocumentWriter >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
-	^ stream usedNewLine
+	^ canvas stream usedNewLine
 ]
 
 { #category : #writing }
