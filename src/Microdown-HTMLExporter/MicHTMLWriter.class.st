@@ -4,10 +4,7 @@ We should rewrite it once the templatedWriter is working.
 "
 Class {
 	#name : #MicHTMLWriter,
-	#superclass : #MicrodownVisitor,
-	#instVars : [
-		'canvas'
-	],
+	#superclass : #MicDocumentWriter,
 	#category : #'Microdown-HTMLExporter'
 }
 
@@ -15,11 +12,6 @@ Class {
 MicHTMLWriter >> canvasClass [
 
 	^ MicHTMLCanvas
-]
-
-{ #category : #accessing }
-MicHTMLWriter >> contents [ 
-	^ canvas contents
 ]
 
 { #category : #converting }
@@ -66,13 +58,6 @@ MicHTMLWriter >> languageForScript: aScript [
 	^ aScript language isSpecified
 		  ifTrue: [ aScript language ]
 		  ifFalse: [ self configuration defaultScriptLanguage ]
-]
-
-{ #category : #initialization }
-MicHTMLWriter >> usedNewLine [
-	"Return the encoded new line. Useful for tests."
-	
-	^ canvas stream usedNewLine
 ]
 
 { #category : #visiting }
