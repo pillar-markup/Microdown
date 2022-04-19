@@ -25,7 +25,7 @@ It is used for example by the BeautifulComments project.
 
 ```Smalltalk
 Metacello new
-	baseline: 'MicrodownD';
+	baseline: 'Microdown';
 	repository: 'github://pillar-markup/Microdown:dev/src';
 	onConflict: [ :ex | ex useIncoming ];
 	onUpgrade: [ :ex | ex useIncoming ];

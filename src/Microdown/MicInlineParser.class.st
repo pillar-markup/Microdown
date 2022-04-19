@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'openersStack',
 		'result',
-		'allDelimiters',
 		'index',
 		'string',
 		'incrementation',
@@ -17,8 +16,13 @@ Class {
 		'closer',
 		'correctSubstring',
 		'correctURL',
+		'delimiterClass',
 		'keys',
-		'delimiterClass'
+		'allDelimiters'
+	],
+	#classVars : [
+		'AllDelimiters',
+		'KeyBeginSet'
 	],
 	#pools : [
 		'MicroSharedPool'
@@ -27,8 +31,32 @@ Class {
 }
 
 { #category : #accessing }
-MicInlineParser >> abstractDelimiterClass [
+MicInlineParser class >> abstractDelimiterClass [
 	^ MicAbstractDelimiter
+]
+
+{ #category : #accessing }
+MicInlineParser class >> allDelimiters [
+	AllDelimiters ifNil: [ 
+		AllDelimiters := Dictionary new.
+		self abstractDelimiterClass subclasses 
+			select: [ :subclass | subclass isActive ]
+			thenDo: [ :subclass | AllDelimiters 
+										at: subclass markup 
+										put: subclass ]].
+	^ AllDelimiters 
+]
+
+{ #category : #'class initialization' }
+MicInlineParser class >> initialize [
+	<script>
+	AllDelimiters := KeyBeginSet := nil.
+]
+
+{ #category : #accessing }
+MicInlineParser class >> keyBeginSet [
+	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
+	^ KeyBeginSet
 ]
 
 { #category : #'handle basic text' }
@@ -72,7 +100,7 @@ MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
 
 { #category : #accessing }
 MicInlineParser >> allDelimiters [
-	^ allDelimiters
+	^ allDelimiters 
 ]
 
 { #category : #process }
@@ -123,7 +151,7 @@ MicInlineParser >> delimiterFoundProcess [
 
 { #category : #actions }
 MicInlineParser >> identifyMarkupFor: aString [
-
+	(self class keyBeginSet includes: aString first) ifFalse: [ ^self ].
 	keys do: [ :key |
 		(aString beginsWith: key) ifTrue: [ 
 			incrementation := key size.
@@ -156,12 +184,7 @@ MicInlineParser >> initialize [
 
 { #category : #initialization }
 MicInlineParser >> initializeDelimiters [
-	allDelimiters := Dictionary new.
-	self abstractDelimiterClass subclasses 
-		select: [ :subclass | subclass isActive ]
-		thenDo: [ :subclass | allDelimiters 
-										at: subclass markup 
-										put: subclass ].
+	allDelimiters := self class allDelimiters.
 	keys := allDelimiters keys.
 ]
 
@@ -362,18 +385,20 @@ MicInlineParser >> pushNewOpener [
 { #category : #actions }
 MicInlineParser >> read: aString [
 	| next |
-	incrementation := 1.
-	aString ifEmpty: [ ^ self resultProcess ].
-	self identifyMarkupFor: aString.
-	"this is stupid to iterate all. We can stop as soon as we found one. "
+	next := aString.
+	[ next isEmpty ] whileFalse: [ 
+		incrementation := 1.
+		self identifyMarkupFor: next.
+		"this is stupid to iterate all. We can stop as soon as we found one. "
 
-	aString first = $\ ifTrue: [ 
-		incrementation := incrementation + 1 ].
-	self indexIncrement: incrementation.
-	aString size > incrementation 
-		ifTrue: [ next := (aString allButFirst: incrementation)]
-		ifFalse: [next := ''].
-	^ self read: next.
+		next first = $\ ifTrue: [ 
+			incrementation := incrementation + 1 ].
+		self indexIncrement: incrementation.
+		next := next size > incrementation 
+			ifTrue: [ (next allButFirst: incrementation)]
+			ifFalse: [''].
+	].
+	^ self resultProcess
 ]
 
 { #category : #process }

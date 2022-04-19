@@ -49,11 +49,6 @@ MicLaTeXWriter >> chapterTemplateName [
 	^ 'latexChapterTemplate'
 ]
 
-{ #category : #accessing }
-MicLaTeXWriter >> contents [
-	^ stream contents
-]
-
 { #category : #helpers }
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
