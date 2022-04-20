@@ -93,7 +93,7 @@ MicFileResourceReference >> isFileReference [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicFileResourceReference >> loadChildren [
 	"return a collection of MifResourceReferences if I am a directory, empty if I am not a directory"
 	self isDirectory ifFalse: [ ^ #() ].
