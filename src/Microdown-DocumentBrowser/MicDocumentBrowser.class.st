@@ -15,7 +15,8 @@ Class {
 		'spRendering',
 		'spSource',
 		'isEditing',
-		'sourceMode'
+		'sourceMode',
+		'saveButton'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -24,13 +25,6 @@ Class {
 MicDocumentBrowser class >> open [
 	<example>
 	^ self new open
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> chooseEditColor: colors on: block [
-	| color |
-	color := (block value ifTrue: [ colors first ] ifFalse: [colors second]).
-	self setEditBackgroundColor: color
 ]
 
 { #category : #'source code' }
@@ -45,15 +39,6 @@ MicDocumentBrowser >> colorCannotEdit [
 	^ bgColor lightness < 0.5
 		ifTrue: [ bgColor + (Color r: 0.0 g: 0.04 b:0.08 )]
 		ifFalse: [ bgColor darker ]
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> colorHasBeenEdited [
-	| bgColor |
-	bgColor := self theme backgroundColor.
-	^ bgColor lightness > 0.5
-		ifTrue: [ Color r: 1 g: 0.8 b: 0.5]
-		ifFalse: [ Color r: 0.5 g: 0.4 b: 0.25 ]
 ]
 
 { #category : #initialization }
@@ -97,7 +82,7 @@ MicDocumentBrowser >> initializeButtons [
 			help: 'source view';
   			items: #( #Horizontal #Vertical #Swap);
   			whenSelectedItemChangedDo: [ :item | self sourceMode: item ]);
-		add: (spButtonBar newButton 
+		add: (saveButton := spButtonBar newButton 
 			label: 'Save';
 			state: self isEditing;
 			action: [ self saveNewSourceForSelectedDocument]);
@@ -121,7 +106,7 @@ MicDocumentBrowser >> initializePresenters [
 		displayIcon: [ :aNode | aNode browserIcon ].
 
 	spRendering := self instantiate: MicrodownPresenter.
-	spSource := self newText addStyle: 'code'.
+	spSource := self newText.
 	spButtonBar := self newButtonBar.
 	self initializeButtons.
 	self setTopLayout
@@ -166,18 +151,7 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
 	self renderSection: docToSave.
-	self setEditBackgroundColor: self colorCanEdit
-]
-
-{ #category : #private }
-MicDocumentBrowser >> selectRootSectionOf: section [
-	"I select the root of section (section assumed not a root section)"
-	|root|
-	root := section rootSection.
-	root = section ifTrue: [ ^ self ].
-	spDocumentList selectItem: root.
-	(spDocumentList selectedItem = root)
-		ifTrue: [ self newSelection: root ]
+	self setEditStatus:  #canEdit
 ]
 
 { #category : #layout }
@@ -198,8 +172,15 @@ MicDocumentBrowser >> setDocumentlayout [
 ]
 
 { #category : #'source code' }
-MicDocumentBrowser >> setEditBackgroundColor: aColor [
-	spSource withAdapterDo: [ :a | a ifNotNil:  [ :w | w color: aColor] ]
+MicDocumentBrowser >> setEditStatus: status [
+	"can be #canEdit, #connotEdit, #hasBeenEdited"
+	status = #hasBeenEdited
+		ifTrue: [ spSource color: self colorCanEdit. saveButton state: true. ^ self].
+	status = #canEdit
+		ifTrue: [ spSource color: self colorCanEdit. saveButton state: false. ^ self].
+	status = #cannotEdit
+		ifTrue: [ spSource color: self colorCannotEdit. saveButton state: false. ^ self]
+		
 ]
 
 { #category : #accessing }
@@ -218,13 +199,14 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
 	| micRef original |
 	micRef := spDocumentList selectedItem.
+	original := micRef contents.
 	spSource 
-		text: micRef contents;
+		text: original;
 		editable: micRef canSave;
-		whenTextChangedDo: [:text | 
-				self chooseEditColor: { self colorCanEdit. self colorHasBeenEdited  } on: [ text = original ]].
-	self chooseEditColor: { self colorCanEdit. self colorCannotEdit  } on: [ micRef canSave ].
-	
+		whenTextChangedDo: [:text | saveButton state: text ~= original].
+	micRef canSave
+		ifTrue: [self setEditStatus: #canEdit]
+		ifFalse: [self setEditStatus: #cannotEdit]
 		
 	
 ]

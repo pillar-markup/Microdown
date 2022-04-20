@@ -41,6 +41,8 @@ MicResourceReference class >> fromUri: aString [
 		ifTrue: [ ^ MicPharoImageResourceReference new uri: uri ].
 	uri scheme = 'comment'
 		ifTrue: [ ^ MicPharoCommentResourceReference newFromUri: uri ].
+	uri scheme = 'github'
+		ifTrue: [ ^ MicGitHubRessourceReference new uri: uri ].
 	^uri
 	
 ]
