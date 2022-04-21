@@ -49,6 +49,11 @@ MicLaTeXWriter >> chapterTemplateName [
 	^ 'latexChapterTemplate'
 ]
 
+{ #category : #accessing }
+MicLaTeXWriter >> contents [
+	^ stream contents
+]
+
 { #category : #helpers }
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
@@ -156,8 +161,8 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	parameters := OrderedCollection new.
 	aCodeBlock hasCaption
 		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock hasNonDefaultLanguage 
-		ifTrue: [parameters add: 'language=' , aCodeBlock language asString].
+	aCodeBlock hasLanguage 
+			ifTrue: [ parameters add: 'language=' , aCodeBlock language asString ].
 	aCodeBlock hasLabel
 		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
 	env := canvas environment

@@ -9,6 +9,11 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #asserting }
+MicLaTeXWriterTest class >> shouldInheritSelectors [
+	^ true
+]
+
 { #category : #running }
 MicLaTeXWriterTest >> actualClass [
 
@@ -27,7 +32,7 @@ MicLaTeXWriterTest >> assert: result includesSubstring: expected [
 { #category : #helpers }
 MicLaTeXWriterTest >> assertWriting: aDocumentItem includesText: aString [
 	| result |
-	self writeLaTeXForElement: aDocumentItem.
+	self writeForElement: aDocumentItem.
 	result := writer contents.
 	self assert: result includesSubstring: aString
 ]
@@ -35,7 +40,7 @@ MicLaTeXWriterTest >> assertWriting: aDocumentItem includesText: aString [
 { #category : #helpers }
 MicLaTeXWriterTest >> assertWriting: aDocumentItem includesTexts: aCollection [
 	| resultString |
-	self writeLaTeXForElement: aDocumentItem.
+	self writeForElement: aDocumentItem.
 	resultString := writer contents.
 	aCollection do: [ :testString | self assert: resultString includesSubstring: testString ]
 ]
@@ -91,13 +96,13 @@ MicLaTeXWriterTest >> testBold [
 { #category : #tests }
 MicLaTeXWriterTest >> testCitation [
 
-	self parseInlined: '{!citation|ref=Duca99a!}' andCheckWeGet: '\cite{Duca99a}'
+	self parseInlined: '?{citation|ref=Duca99a}?' andCheckWeGet: '\cite{Duca99a}'
 ]
 
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblock [
 
-	self writeLaTeXFor: (factory codeblockNoParamBody: 'this is a code').
+	self writeFor: (factory codeblockNoParamBody: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}
 this is a code
@@ -108,7 +113,7 @@ this is a code
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblockWithCaption [
 
-	self writeLaTeXFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
+	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
@@ -119,7 +124,7 @@ this is a code
 { #category : #tests }
 MicLaTeXWriterTest >> testCodeblockWithLabel [
 
-	self writeLaTeXFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
+	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
 	self assert: writer contents equals: '
 \begin{listing}[label=Pharo]
 this is a code
@@ -130,7 +135,7 @@ this is a code
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
 
-	self writeLaTeXFor: factory figureSample.
+	self writeFor: factory figureSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
@@ -146,7 +151,7 @@ MicLaTeXWriterTest >> testFigure [
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigureBold [
-	self writeLaTeXFor: factory figureBoldSample.
+	self writeFor: factory figureBoldSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
@@ -160,16 +165,16 @@ MicLaTeXWriterTest >> testFigureBold [
 '
 ]
 
-{ #category : #'tests - figure/link' }
+{ #category : #tests }
 MicLaTeXWriterTest >> testFigureRealSample [
 
-	self writeLaTeXFor: factory figureRealSample.
+	self writeFor: factory figureRealSample.
 	self assert: writer contents equals: '
 
 \begin{figure}[htpb]
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{figures/logo.png}
+\includegraphics[width=0.8\textwidth]{/logo.png}
 \caption{A logo png under figures folder}\label{figureTest}
 \end{center}
 \end{figure}
@@ -238,7 +243,7 @@ MicLaTeXWriterTest >> testItalic [
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLink [
-	self writeLaTeXFor: factory linkSample.		
+	self writeFor: factory linkSample.		
 	self assert: writer contents equals: '
 \href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}
 '
@@ -248,7 +253,7 @@ MicLaTeXWriterTest >> testLink [
 MicLaTeXWriterTest >> testLinkBold [
 
 	self flag: 'caption do not use bold in the caption'.
-	self writeLaTeXFor: factory linkBoldSample.
+	self writeFor: factory linkBoldSample.
 	self flag: #toFix.
 	"\textbf{Foo}" 
 	self assert: writer contents equals: '
@@ -265,7 +270,7 @@ MicLaTeXWriterTest >> testMonospace [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedList [
 	
-	self writeLaTeXFor: factory orderedListWithTwoItemsSample.
+	self writeFor: factory orderedListWithTwoItemsSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item first
@@ -277,7 +282,7 @@ MicLaTeXWriterTest >> testOrderedList [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedListBold [
 
-	self writeLaTeXFor: factory orderedListWithTwoItemsBoldSample.
+	self writeFor: factory orderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{first}
@@ -289,7 +294,7 @@ MicLaTeXWriterTest >> testOrderedListBold [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedListNested [
 
-	self writeLaTeXFor:  factory orderedListWithTwoItemsBoldFirstSample.
+	self writeFor:  factory orderedListWithTwoItemsBoldFirstSample.
 	self assert: writer contents equals: '
 \begin{enumerate}
     \item \textbf{\textit{first}}
@@ -301,7 +306,7 @@ MicLaTeXWriterTest >> testOrderedListNested [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedNestedListNested [
 
-	self writeLaTeXFor: factory nestedOrderedListSample. 
+	self writeFor: factory nestedOrderedListSample. 
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -318,7 +323,7 @@ MicLaTeXWriterTest >> testOrderedNestedListNested [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testOrderedNestedListNested2 [
 
-	self writeLaTeXFor: factory nestedOrderedList2Sample. 
+	self writeFor: factory nestedOrderedList2Sample. 
 	self assert: writer contents  equals: '
 \begin{itemize}
     \item Foo
@@ -398,7 +403,7 @@ Foo
 
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testRealLinkSample [
-	self writeLaTeXFor: factory realLinkSample.	
+	self writeFor: factory realLinkSample.	
 	self assert: writer contents equals: '
 \href{http://www.pharo.org}{The Pharo Project}\footnotesize{\url{http://www.pharo.org}}
 '
@@ -413,7 +418,7 @@ MicLaTeXWriterTest >> testStrike [
 
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
-	self writeLaTeXFor: factory tableSample.
+	self writeFor: factory tableSample.
 	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
@@ -428,7 +433,7 @@ bar & rab \\
 { #category : #tests }
 MicLaTeXWriterTest >> testTableWhithoutHeader [
 	
-	self writeLaTeXFor: (factory simpleTableWithoutHeaderTable).
+	self writeFor: (factory simpleTableWithoutHeaderTable).
 	self assert: writer contents equals: '
 \begin{tabular}{ll}
 \toprule
@@ -442,7 +447,7 @@ bar & rab \\
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedList [
 
-	self writeLaTeXFor: factory unorderedListWithTwoItemsSample.
+	self writeFor: factory unorderedListWithTwoItemsSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -454,7 +459,7 @@ MicLaTeXWriterTest >> testUnorderedList [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedListBold [
 
-	self writeLaTeXFor: factory unorderedListWithTwoItemsBoldSample.
+	self writeFor: factory unorderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item \textbf{Foo}
@@ -466,7 +471,7 @@ MicLaTeXWriterTest >> testUnorderedListBold [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedListNested [
 
-	self writeLaTeXFor: factory unorderedListWithTwoItemsNestedSample.
+	self writeFor: factory unorderedListWithTwoItemsNestedSample.
 	self assert: writer contents equals: '
 \begin{itemize}
     \item \sout{\textit{Foo}}
@@ -478,7 +483,7 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 { #category : #'tests - lists' }
 MicLaTeXWriterTest >> testUnorderedNestedListNested [
 
-	self writeLaTeXFor: factory nestedUnorderedListSample. 
+	self writeFor: factory nestedUnorderedListSample. 
 	self assert: writer contents equals: '
 \begin{itemize}
     \item Foo
@@ -504,7 +509,7 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 ]
 
 { #category : #tests }
-MicLaTeXWriterTest >> writeLaTeXFor: aString [ 
+MicLaTeXWriterTest >> writeFor: aString [ 
 	| mic |
 	mic := parser parse: aString.
 	writer visit: mic.
@@ -512,7 +517,7 @@ MicLaTeXWriterTest >> writeLaTeXFor: aString [
 ]
 
 { #category : #tests }
-MicLaTeXWriterTest >> writeLaTeXForElement: aNode [
+MicLaTeXWriterTest >> writeForElement: aNode [
 
 	writer visit: aNode.
 

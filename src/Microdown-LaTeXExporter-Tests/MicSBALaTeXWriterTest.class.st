@@ -9,6 +9,18 @@ MicSBALaTeXWriterTest >> actualClass [
 	^ MicSBALaTeXWriter
 ]
 
+{ #category : #'tests - figure/link' }
+MicSBALaTeXWriterTest >> testFigureRealSample [
+
+	self writeFor: factory figureRealSample.
+	self assert: writer contents equals: '
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{/logo.png}\end{center}
+
+'
+]
+
 { #category : #tests }
 MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
 	| codeBlock |
@@ -23,7 +35,7 @@ MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
 MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
 	| codeBlock |
 	codeBlock := MicCodeBlock new body: 'foo', writer usedNewLine, 'bar on another line'.
-	self writeLaTeXForElement: codeBlock.	
+	self writeForElement: codeBlock.	
 	self assert: writer contents equals: '
 \begin{displaycode}{smalltalk}
 foo', 
@@ -45,7 +57,7 @@ MicSBALaTeXWriterTest >> testSimpleFloating [
 	codeBlock := (MicCodeBlock new body: 'foo')
 		caption: 'A caption.';
 		yourself.
-	self writeLaTeXForElement: codeBlock.
+	self writeForElement: codeBlock.
 	self assert: writer contents equals: '
 \begin{listing}[float]{smalltalk}{A caption.}
 foo
@@ -59,7 +71,7 @@ MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 	codeBlock := (MicCodeBlock new body: 'foo')
 		caption: 'A caption.';
 		yourself.
-	self writeLaTeXForElement: codeBlock.
+	self writeForElement: codeBlock.
 	self flag: #languageSupport. "smalltalk -> plain"
 	self assertWriting: codeBlock includesText: '{smalltalk}'
 ]
