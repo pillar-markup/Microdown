@@ -98,7 +98,7 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 
 	self visit: (Microdown parse: aMicString).
 	^ MicHTMLDoc new
-		contents: self contents;
+		writeDocument: self contents;
 		contents
 ]
 
@@ -233,35 +233,6 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 					aCodeBlock hasCaption ifTrue: [ 
 							self visitAll: aCodeBlock caption children ] ] ].
 	canvas newLine
-]
-
-{ #category : #'visiting - html' }
-MicHTMLVisitor >> visitDocument: aDocument [
-	"Write markup hyperlink, which is used to link from one page to another"
-	
-	canvas tag
-		name: 'html';
-		with: [ 
-			self 
-				visitDocumentHeader: aDocument;
-				visitDocumentBody: aDocument ]
-
-
-]
-
-{ #category : #'visiting - html' }
-MicHTMLVisitor >> visitDocumentBody: aDocument [
-
-	self halt.
-]
-
-{ #category : #'visiting - html' }
-MicHTMLVisitor >> visitDocumentHeader: aDocument [
-
-	canvas tag
-		name: 'head';
-		with: [ 
-			canvas nextPutAll: aDocument text ]
 ]
 
 { #category : #visiting }

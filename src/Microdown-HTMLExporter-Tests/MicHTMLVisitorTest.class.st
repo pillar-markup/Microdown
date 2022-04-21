@@ -2,7 +2,7 @@
 A MicHTMLWriterTest is a test class for testing the behavior of MicHTMLWriter
 "
 Class {
-	#name : #MicHTMLWriterTest,
+	#name : #MicHTMLVisitorTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #running }
-MicHTMLWriterTest >> generateFilesystemExample [
+MicHTMLVisitorTest >> generateFilesystemExample [
 
 	| file |
 	file := filesystem workingDirectory / 'anExample1.md'.
@@ -37,7 +37,7 @@ Pharo is **cool**
 ]
 
 { #category : #running }
-MicHTMLWriterTest >> setUp [
+MicHTMLVisitorTest >> setUp [
 	super setUp.
 	micHTMLWriter := MicHTMLVisitor new.
 	filesystem := FileSystem memory.
@@ -45,13 +45,13 @@ MicHTMLWriterTest >> setUp [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCanvasClass [
+MicHTMLVisitorTest >> testCanvasClass [
 
 	self assert: micHTMLWriter canvasClass equals: MicHTMLCanvas
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testContents [ 
+MicHTMLVisitorTest >> testContents [ 
 
 	self assert: micHTMLWriter contents equals: String empty.
 	micHTMLWriter visitItalic: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'test')).
@@ -59,7 +59,7 @@ MicHTMLWriterTest >> testContents [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testConvertMicFile [
+MicHTMLVisitorTest >> testConvertMicFile [
 	
 	micHTMLWriter convertMicFile: (filesystem / 'anExample1.md') asFileReference.
 	
@@ -74,7 +74,7 @@ MicHTMLWriterTest >> testConvertMicFile [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testConvertMicString [
+MicHTMLVisitorTest >> testConvertMicString [
 
 	| result |
 	
@@ -86,7 +86,7 @@ MicHTMLWriterTest >> testConvertMicString [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testConvertMicStringToDoc [
+MicHTMLVisitorTest >> testConvertMicStringToDoc [
 
 	| expectedHtmlDoc |
 	
@@ -103,7 +103,7 @@ MicHTMLWriterTest >> testConvertMicStringToDoc [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateAnchorWithId [
+MicHTMLVisitorTest >> testCreateAnchorWithId [
 
 	self assert: micHTMLWriter contents equals: String empty.
 	micHTMLWriter createAnchorWithId: 'id1'.
@@ -111,7 +111,7 @@ MicHTMLWriterTest >> testCreateAnchorWithId [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateAnchorWithLink [
+MicHTMLVisitorTest >> testCreateAnchorWithLink [
 
 	| result |
 	self assert: micHTMLWriter contents equals: String empty.
@@ -120,7 +120,7 @@ MicHTMLWriterTest >> testCreateAnchorWithLink [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateAnnotationCompound [
+MicHTMLVisitorTest >> testCreateAnnotationCompound [
 
 	| result |
 	
@@ -134,7 +134,7 @@ this is another string'.
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateAnnotationSimple [
+MicHTMLVisitorTest >> testCreateAnnotationSimple [
 
 	| result |
 	self assert: micHTMLWriter contents equals: String empty.
@@ -145,7 +145,7 @@ MicHTMLWriterTest >> testCreateAnnotationSimple [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateCitation [
+MicHTMLVisitorTest >> testCreateCitation [
 
 	| result |
 	self assert: micHTMLWriter contents equals: String empty.
@@ -156,7 +156,7 @@ MicHTMLWriterTest >> testCreateCitation [
 ]
 
 { #category : #tests }
-MicHTMLWriterTest >> testCreateItalic [
+MicHTMLVisitorTest >> testCreateItalic [
 
 	| result |
 	self assert: micHTMLWriter contents equals: String empty.

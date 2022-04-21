@@ -18,6 +18,13 @@ MicHTMLTag >> addArguments: aMicInlineBlockWithUrl [
 ]
 
 { #category : #accessing }
+MicHTMLTag >> close [
+	"Close the receiver's tag. Note that this method does not check if the tag is opened"
+
+	stream << $>
+]
+
+{ #category : #accessing }
 MicHTMLTag >> contents [
 	"Answer a <String> with receiver's output without modifying the stream position"
 	
@@ -51,13 +58,14 @@ MicHTMLTag >> initializeArgumentsMap [
 ]
 
 { #category : #accessing }
-MicHTMLTag >> parameterAt: aString put: anotherString [
+MicHTMLTag >> parameterAt: keyString put: valueString [
+	"Write a parameter named keyString with valueString as value. Note that this method does not close the tag"
 
 	stream 
 		space;
-		<< aString;
+		<< keyString;
 		<< '="';
-		<< anotherString;
+		<< valueString;
 		<< '"'
 ]
 
