@@ -57,8 +57,14 @@ Inline italics then code then bold then smallcaps in link
 
 { #category : #examples }
 MicDocFactory class >> exampleMicAsHTMLDocument [
+	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
+	<example>
 
-	^ Microdown asHTMLDocument: self exampleMic
+	MicHTMLDoc new
+		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
+		destinationDir: 'html_output';
+		contents: self exampleMicAsHTMLString;
+		writeToFileNamed: 'Chapter1.html'.
 ]
 
 { #category : #examples }
@@ -67,10 +73,28 @@ MicDocFactory class >> exampleMicAsHTMLDocumentInBrowser [
 	| htmlDoc |
 	
 	htmlDoc :=  MicHTMLDoc new 
-		contents: self exampleMicAsHTMLDocument;
+		contents: self exampleMicAsHTMLString;
 		flush;
 		yourself.
 	WebBrowser openOn: htmlDoc fileName.
+]
+
+{ #category : #examples }
+MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
+	"This example is a Minimum Working Example to write a HTML document from Microdown content."
+	<example>
+
+	MicHTMLDoc new
+		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
+		contents: self exampleMicAsHTMLString;
+		writeToFile.
+]
+
+{ #category : #examples }
+MicDocFactory class >> exampleMicAsHTMLString [
+	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
+
+	^ Microdown asHTMLString: self exampleMic
 ]
 
 { #category : #examples }

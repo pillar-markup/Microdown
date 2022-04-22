@@ -60,6 +60,17 @@ MicHTMLVisitor class >> exampleHTMLStringWithLink [
 	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
 ]
 
+{ #category : #converting }
+MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
+	"Serialize aMicrodownString <String> to a HTML file with default for output name, directory and CSS"
+
+	MicHTMLDoc new
+		addCSSFile: (MicCSSLocalProvider named: 'Tufte');	
+		fromMicrodown: aMicrodownString;
+		writeToFile
+
+]
+
 { #category : #initialization }
 MicHTMLVisitor >> canvasClass [
 

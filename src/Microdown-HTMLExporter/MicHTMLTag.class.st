@@ -1,3 +1,22 @@
+"
+HTML tags are used to delimit the start and end of elements in the markup. An HTML tag is composed of the name of the element, surrounded by angle brackets:
+
+```
+<p class=""para"">Content</p>
+```
+
+A tag could be:
+
+- A start tag: Can have HTML attributes.
+- An end tag: Has a slash after the opening angle bracket, to distinguish it from the start tag.
+
+Note that not all elements require an **end** tag, for example the `<br>` tag.
+This class contains utility methods to append HTML tags to a stream, and to manage parameters:
+
+- #addArguments:
+- #parameterAt:put:
+
+"
 Class {
 	#name : #MicHTMLTag,
 	#superclass : #MicHTMLBrush,

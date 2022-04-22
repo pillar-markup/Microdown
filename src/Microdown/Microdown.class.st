@@ -15,9 +15,9 @@ Class {
 
 { #category : #facade }
 Microdown class >> asHTMLDocument: aStringOrDoc [
-	"Facade method to render a microdown document or string to HTML"
+	"Facade method to serialize a Microdown document or string to HTML"
 	
-	^ MicHTMLVisitor asHTMLDocument: aStringOrDoc.
+	^ MicHTMLVisitor serializeToHTMLDoc: aStringOrDoc.
 		
 	
 ]

@@ -1,14 +1,15 @@
 "
-Includes behavior to install CSS libraries in a directory used as a base.
+Includes behavior to download pre-defined CSS libraries in a local directory. Supported libraries are specified in a class protocol named ""libraries""
 
 ## Download CSS libraries
 
 To download a set of pre-defined class-less CSS libraries, evaluate:
 
 ```
-MicCSSProvider downloadCssLibs.
+MicCSSLocalProvider downloadCssLibs.
 ```
 
+See superclass comments to check how to add a CSS library.
 "
 Class {
 	#name : #MicCSSLocalProvider,
@@ -24,16 +25,31 @@ MicCSSLocalProvider class >> assertNonBinaryResponse: response [
 ]
 
 { #category : #accessing }
-MicCSSLocalProvider class >> downloadCssLibs [
+MicCSSLocalProvider class >> downloadCSSLibNamed: aString from: anURLString [ 
+
+	| client |
+
+	(client := self httpClient) get: anURLString.
+	self assertNonBinaryResponse: client response.
+	self 
+		installCss: client response contents
+		named: aString
+]
+
+{ #category : #accessing }
+MicCSSLocalProvider class >> downloadCSSLibs [
+	"Download CSS libraries specified in the class protocol of the receiver, and install them on disk.
+	We download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available"
 
 	self librarySelectors 
-		do: [ : libAssoc |
-			| client |
-			(client := self httpClient) get: libAssoc value.
-			self assertNonBinaryResponse: client response.
-			self installCss: client response named: libAssoc key	 ]
-		displayingProgress: 'Downloading CSS libraries'.
-
+		do: [ : cssLibSelector |
+			| cssLibDict |
+			cssLibDict := (self libAttributesFor: cssLibSelector).
+			(cssLibDict includesKey: #minCss)
+				ifTrue: [ self downloadCSSLibNamed: ((cssLibDict at: #name) , '.min') from: (cssLibDict at: #minCss) ].
+			(cssLibDict includesKey: #css)
+				ifTrue: [ self downloadCSSLibNamed: (cssLibDict at: #name) from: (cssLibDict at: #css) ] ]
+		displayingProgress: 'Downloading CSS libraries'
 ]
 
 { #category : #accessing }
@@ -50,8 +66,8 @@ MicCSSLocalProvider class >> httpClient [
 ]
 
 { #category : #accessing }
-MicCSSLocalProvider class >> installCss: cssContent named: cssLibName [
-	"Install all CSS libraries in baseDirectory"
+MicCSSLocalProvider class >> installCss: cssString named: cssLibName [
+	"Install all CSS <String> in baseDirectory as cssLibName"
 
 	| destination |
 	destination := self librariesDirectory.
@@ -60,7 +76,7 @@ MicCSSLocalProvider class >> installCss: cssContent named: cssLibName [
 	"Because we move the support folder into a folder called _support"
 	(destination / cssLibName , 'css') asFileReference 
 		ensureDelete;
-		writeStreamDo: [ : writeStream | writeStream << cssContent contents ].
+		writeStreamDo: [ : writeStream | writeStream << cssString ].
 
 ]
 
@@ -68,14 +84,19 @@ MicCSSLocalProvider class >> installCss: cssContent named: cssLibName [
 MicCSSLocalProvider class >> librariesDirectory [
 	"Answer a <FileReference> containing CSS class-less libraries"
 
-	^ self baseDirectory / 'support'.
+	^ 'support' asFileReference
 ]
 
 { #category : #accessing }
 MicCSSLocalProvider class >> named: aString [
-	"Answer a <String> representing a local path for CSS resource matching aString"
+	"Answer a <String> representing a local relative path for CSS resource matching aString"
 
-	^ (self librariesDirectory / (super named: aString) asZnUrl pathSegments last) fullName
+	| cssFilename |
+	
+	cssFilename := (super named: aString) asZnUrl pathSegments last.
+	^ MicCSSFile new
+		fileReference: (self librariesDirectory / cssFilename);
+		yourself
 		
 
 ]

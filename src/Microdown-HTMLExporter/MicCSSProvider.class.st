@@ -140,7 +140,7 @@ MicCSSProvider class >> librariesMetadata [
 MicCSSProvider class >> librarySelectors [
 	"Answer a <Collection> of <Symbol> matching selectors for CSS libraries"
 	
-	^ self class organization listAtCategoryNamed: #libraries
+	^ MicCSSProvider class organization listAtCategoryNamed: #libraries
 ]
 
 { #category : #libraries }

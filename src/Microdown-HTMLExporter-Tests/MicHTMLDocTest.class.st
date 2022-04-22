@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'doc',
-		'docString'
+		'docString',
+		'cssProvider'
 	],
 	#category : #'Microdown-HTMLExporter-Tests'
 }
@@ -11,7 +12,7 @@ Class {
 { #category : #running }
 MicHTMLDocTest >> sampleHTMLContents [
 
-	^ MicDocFactory exampleMicAsHTMLDocument
+	^ MicDocFactory exampleMicAsHTMLString
 ]
 
 { #category : #running }
@@ -20,17 +21,18 @@ MicHTMLDocTest >> setUp [
 	super setUp.
 	docString := self sampleHTMLContents.
 	doc := MicHTMLDoc new.
+	cssProvider := MicCSSLocalProvider.
 ]
 
 { #category : #tests }
 MicHTMLDocTest >> testAddCSSFile [
 
 	| aCSSFile |
-	aCSSFile := nil.
+	aCSSFile := cssProvider named: 'Tufte'.
 	doc addCSSFile: aCSSFile.
 	self
 		assertCollection: doc cssFiles
-		hasSameElements: #()
+		hasSameElements: { aCSSFile }
 		
 
 ]

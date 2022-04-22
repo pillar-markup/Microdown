@@ -15,7 +15,8 @@ Class {
 		'cssFiles',
 		'description',
 		'keywords',
-		'author'
+		'author',
+		'destinationDir'
 	],
 	#category : #'Microdown-HTMLExporter'
 }
@@ -48,7 +49,7 @@ MicHTMLDoc >> author: anObject [
 	author := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #private }
 MicHTMLDoc >> canvasClass [
 
 	^ MicHTMLCanvas
@@ -74,7 +75,7 @@ MicHTMLDoc >> contents [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> cssBaseFolder [
+MicHTMLDoc >> cssBasePath [
 
 	^ 'css/'
 ]
@@ -88,13 +89,13 @@ MicHTMLDoc >> cssFiles [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> cssLocationFor: cssFile [
+MicHTMLDoc >> cssPathFor: cssFile [
 	"Answer a <String> describing the location for CSS resouce cssFile"
 	
 	^ String streamContents: [ : stream |
 		stream 
-			<< self cssBaseFolder;
-			<< cssFile fileName ]
+			<< self cssBasePath;
+			<< cssFile basename ]
 ]
 
 { #category : #defaults }
@@ -130,7 +131,21 @@ MicHTMLDoc >> description: anObject [
 	description := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+MicHTMLDoc >> destinationDir [
+	"Answer a <String> specifying the destination directory where receiver's output is written"
+
+	^ destinationDir
+		ifNil: [ destinationDir := 'output' ]
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> destinationDir: anObject [
+
+	destinationDir := anObject
+]
+
+{ #category : #private }
 MicHTMLDoc >> documentType [
 	"Answer a <String> specifying the mandatory document specification tag"
 	
@@ -139,8 +154,10 @@ MicHTMLDoc >> documentType [
 
 { #category : #accessing }
 MicHTMLDoc >> fileName [
-
-	^ fileName
+	"Answer a <String> representing the basename for the receiver when written to disk"
+	
+	^ fileName 
+		ifNil: [ fileName := 'index.html' ]
 ]
 
 { #category : #accessing }
@@ -154,8 +171,18 @@ MicHTMLDoc >> flush [
 	"If we have a fileName already, then write the receiver's contents to it. If not, then assign a temporary file name and write contents"
 	
 	self fileName ifNil: [ self fileName: self tempFileName ].
-	self fileName asFileReference 
-		writeStreamDo: [ : fileStream | fileStream nextPutAll: self contents; flush ]
+	(self destinationDir asFileReference / self fileName) 
+		writeStreamDo: [ : fileStream | 
+			fileStream 
+				nextPutAll: self contents; 
+				flush ]
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> fromMicrodown: aMicrodownString [
+	"Convert to HTML and wrap aMicrodownString in the receiver's HTML stream"
+
+	self writeDocument: (Microdown asHTMLString: aMicrodownString)
 ]
 
 { #category : #initialization }
@@ -183,7 +210,7 @@ MicHTMLDoc >> keywords: anObject [
 	keywords := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MicHTMLDoc >> languageId [
 	"Answer a <String> representing the target language of the receiver"
 	
@@ -205,6 +232,29 @@ MicHTMLDoc >> newMicStreamOn: aString [
 		setStream: (WriteStream on: String empty);
 		nextPutAll: aString;
 		yourself
+]
+
+{ #category : #'writing - css' }
+MicHTMLDoc >> serializeCSSIn: destDirFileRef [
+	"Private - Serialize receiver's CSS resource into destDirFileRef"
+
+	destDirFileRef ensureCreateDirectory.
+	(destDirFileRef / self cssBasePath) ensureCreateDirectory. 
+	self cssFiles do: [ : cssFile |
+		cssFile fileReference copyTo: destDirFileRef / self cssBasePath / cssFile basename ]
+
+]
+
+{ #category : #writing }
+MicHTMLDoc >> serializeHTML: aFilename in: destDirFileRef [
+	"Private - Serialize the receiver's into aFilename in destDirFileRef <FileReference>"
+
+	self fileName: aFilename.
+	(destDirFileRef resolveString: aFilename) 
+		ensureDelete;
+		ensureCreateFile.
+	self flush.
+
 ]
 
 { #category : #'writing - metadata' }
@@ -239,9 +289,9 @@ MicHTMLDoc >> title: anObject [
 	title := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #writing }
 MicHTMLDoc >> writeDocument: aHTMLString [
-	"Write markup hyperlink, which is used to link from one page to another"
+	"Write markup from anHTMLString to the receiver's body part"
 
 	self writeDocumentType.
 	canvas tag
@@ -253,7 +303,7 @@ MicHTMLDoc >> writeDocument: aHTMLString [
 				writeDocumentBody: aHTMLString ]
 ]
 
-{ #category : #initialization }
+{ #category : #writing }
 MicHTMLDoc >> writeDocumentBody: aHTMLString [
 	"Write aHTMLString representing a valid HTML body for the receiver"
 
@@ -270,7 +320,7 @@ MicHTMLDoc >> writeDocumentCSS [
 		canvas tag
 			name: 'link';
 			parameterAt: 'rel' put: 'stylesheet';
-			parameterAt: 'href' put: (self cssLocationFor: cssFile);
+			parameterAt: 'href' put: (self cssPathFor: cssFile);
 			close ]
 
 ]
@@ -337,7 +387,7 @@ MicHTMLDoc >> writeDocumentTitle [
 		with: self title
 ]
 
-{ #category : #initialization }
+{ #category : #writing }
 MicHTMLDoc >> writeDocumentType [
 	"Write the mandatory DOCTYPE HTML declaration in the receiver"
 
@@ -354,4 +404,23 @@ MicHTMLDoc >> writeDocumentViewport [
 		parameterAt: 'name' put: 'viewport';
 		parameterAt: 'content' put: self defaultViewport;
 		close
+]
+
+{ #category : #writing }
+MicHTMLDoc >> writeToFile [
+	"Write the receiver's contents to the default file name"
+
+	self writeToFileNamed: self fileName
+]
+
+{ #category : #writing }
+MicHTMLDoc >> writeToFileNamed: aFilename [
+	"Ensure a new file named aFilename and write the receiver's contents into it"
+
+	| destDirFileRef |
+	
+	destDirFileRef := self destinationDir asFileReference.
+	self serializeHTML: aFilename in: destDirFileRef.
+	self serializeCSSIn: destDirFileRef.
+
 ]
