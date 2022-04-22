@@ -1,6 +1,16 @@
 Extension { #name : #MicRichTextComposerTest }
 
 { #category : #'*Microdown-MathFlaky-Tests' }
+MicRichTextComposerTest >> testClassExamplesNotBroken [
+
+	"I merely test that the examples do not break"
+	| examples |
+	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class)
+		collect: [ :pragma | pragma method selector ].
+	examples do: [ :selector | MicRichTextComposer perform: selector ]
+]
+
+{ #category : #'*Microdown-MathFlaky-Tests' }
 MicRichTextComposerTest >> testLatexMathStyle [
 
 	| source1 source2 richText1 richText2 |

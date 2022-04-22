@@ -186,16 +186,6 @@ MicRichTextComposerTest >> testBoldFormat [
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
-{ #category : #'tests - list' }
-MicRichTextComposerTest >> testClassExamplesNotBroken [
-
-	"I merely test that the examples do not break"
-	| examples |
-	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class)
-		collect: [ :pragma | pragma method selector ].
-	examples do: [ :selector | MicRichTextComposer perform: selector ]
-]
-
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 
