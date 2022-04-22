@@ -9,5 +9,12 @@ SmalltalkCISpec {
       #directory : 'src',
       #platforms : [ #pharo ]
     }
-  ]
+  ],
+  #testing : {
+  	#exclude : {
+  		#packages : [ 
+  			'Microdown-MathFlaky-Tests' 
+      ]
+     }
+  }
 }
