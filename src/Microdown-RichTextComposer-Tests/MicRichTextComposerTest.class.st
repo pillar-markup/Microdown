@@ -186,16 +186,6 @@ MicRichTextComposerTest >> testBoldFormat [
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
-{ #category : #'tests - list' }
-MicRichTextComposerTest >> testClassExamplesNotBroken [
-
-	"I merely test that the examples do not break"
-	| examples |
-	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class)
-		collect: [ :pragma | pragma method selector ].
-	examples do: [ :selector | MicRichTextComposer perform: selector ]
-]
-
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 
@@ -377,18 +367,6 @@ MicRichTextComposerTest >> testItalicFormat [
 ]
 
 { #category : #'tests - list' }
-MicRichTextComposerTest >> testLatexMathStyle [
-
-	| source1 source2 richText1 richText2 |
-	"this checks if latex is working by making two formulas, of which the second should be taller"
-	source1 :=  'foo$a+b$bar'.
-	source2 :=  'foo$\frac{A}{B}$bar'.
-	richText1 := self richTextForString: source1.
-	richText2 := self richTextForString: source2.
-	self assert: richText1 asMorph height < richText2 asMorph height
-]
-
-{ #category : #'tests - list' }
 MicRichTextComposerTest >> testLatexMathStyleEmpty [
 
 	| source richText |
@@ -411,25 +389,6 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	self assert: (richText asString copyFrom: 11 to: 25) equals: '2.	other item 1'.
 	self assert: (richText asString copyFrom: 47 to: 55) equals: '5.	item 4'.
 	
-]
-
-{ #category : #tests }
-MicRichTextComposerTest >> testMathEnvironment [
-	| source1 source2 richText1 richText2 |
-	"this checks if latex is working by making two formulas, of which the second should be taller"
-	source1 :=  'foo
-&
-a+b
-&
-bar'.
-	source2 :=  'foo
-&
-\frac{A}{B}
-&
-bar'.
-	richText1 := self richTextForString: source1.
-	richText2 := self richTextForString: source2.
-	self assert: richText1 asMorph height < richText2 asMorph height
 ]
 
 { #category : #tests }
