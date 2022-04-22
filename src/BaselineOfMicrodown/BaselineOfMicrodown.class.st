@@ -52,9 +52,16 @@ BaselineOfMicrodown >> baseline: spec [
 			
 			package: #'Microdown-LaTeXExporter'
 				with: [ spec requires: #( #Microdown ) ];
-
+				
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
+
+
+			package: #'Microdown-BeamerExporter'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];
+				
+			package: #'Microdown-BeamerExporter-Tests'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
