@@ -689,6 +689,17 @@ MicMicrodownSnippetFactory >> newlineSample [
 	^ Smalltalk os lineEnding
 ]
 
+{ #category : #sample }
+MicMicrodownSnippetFactory >> oneSlide [
+
+	^ '<!slide|title=This is a cool title&tag=nh5p
+
+- a list of bullet
+- bullet 2
+- bullet 3
+!>'
+]
+
 { #category : #list }
 MicMicrodownSnippetFactory >> orderedListEmptySample [
 	^ '

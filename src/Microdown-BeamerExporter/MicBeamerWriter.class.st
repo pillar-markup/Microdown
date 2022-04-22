@@ -1,17 +1,124 @@
+"
+I export mainly slides in Beamer LaTeX. Note that I do not generate the full beamer but the body of the slides. The beamer template can be for example the one of Pillar/presentation. 
+
+
+```
+| doc dict aFileReference output| 
+doc := Microdown parse: MicMicrodownSnippetFactory new oneSlide.
+dict := Dictionary new. 
+dict at: 'content' put: (MicBeamerWriter new visit: doc).
+dict at: 'title' put: 'ZeCrazy slides'.
+
+output := (MustacheTemplate 
+	on: '/Users/ducasse/.pillar/build/archetypes/presentation/support/templates/beamer/presentation.template' asFileReference readStream contents)
+	value: dict.
+
+aFileReference := FileSystem workingDirectory / 'MyCoolPresentation.tex'.
+aFileReference ensureDelete.
+aFileReference parent ensureCreateDirectory.
+aFileReference writeStreamDo: [ :stream | 
+		stream nextPutAll: output ]
+```
+
+
+```
+| doc dict aFileReference output| 
+doc := Microdown parse: MicMicrodownSnippetFactory new oneSlide.
+dict := Dictionary new. 
+dict at: 'content' put: (MicBeamerWriter new visit: doc).
+dict at: 'title' put: 'ZeCrazy slides'.
+
+output := (MustacheTemplate on: MicBeamerWriter basicTemplateForTest) value: dict.
+
+aFileReference := FileSystem workingDirectory / 'MyCoolPresentation.tex'.
+aFileReference ensureDelete.
+aFileReference parent ensureCreateDirectory.
+aFileReference writeStreamDo: [ :stream | 
+		stream nextPutAll: output ]
+```
+
+### How to load mustache
+
+```
+Metacello new
+  baseline: 'Mustache';
+  repository: 'github://noha/mustache:v1.0/repository';
+  load
+```
+"
 Class {
 	#name : #MicBeamerWriter,
 	#superclass : #MicLaTeXWriter,
 	#category : #'Microdown-BeamerExporter'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'basic ressources' }
+MicBeamerWriter class >> basicTemplateForTest [
+
+	^ '% -*- mode: latex; -*- mustache tags: {{=« »=}} «! the ''&'' below prevents HTML escaping. »
+
+\documentclass{beamer}
+
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{pgfpages}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    numberstyle=\tiny\color{codegreen},
+    breaklines=true,
+    captionpos=b,
+    tabsize=2,
+    basicstyle=\ttfamily\scriptsize
+}
+
+\lstset{style=mystyle}
+
+\usetheme{Warsaw}
+
+\setbeamercolor{structure}{fg=red!90!black}
+
+\title{«& title»}
+\subtitle{«& subtitle»}
+\author{«& author»}
+\institute{«& complement»}
+\date{«& date»}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\setbeamercolor{footline}{fg=blue}
+\setbeamerfont{footline}{series=\bfseries}
+\setbeamertemplate{headline}{}
+
+\begin{document}
+
+    \frame[plain]{\titlepage}
+    \frame[plain]{\tableofcontents}
+
+    «& content»
+\end{document}'
+]
+
+{ #category : #helpers }
 MicBeamerWriter >> createFrametitle: aTitle [
 	canvas command
 		name: 'frametitle';
 		parameter: aTitle
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #helpers }
 MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
 		name: 'hyperlink';
@@ -19,7 +126,7 @@ MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink alias ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #helpers }
 MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 	parameters
 		add:
@@ -38,7 +145,7 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 				ifFalse: [ 'subsubsectionstyle=hide/hide/hide' ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicBeamerWriter >> visitCode: aCodeBlock [
 	| env |
 	env := (aCodeBlock hasCaption and: [ aCodeBlock hasLabel ])
@@ -69,7 +176,7 @@ MicBeamerWriter >> visitCode: aCodeBlock [
 	env with: [ canvas nextPutAllLines: aCodeBlock body. canvas newLine ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicBeamerWriter >> visitColumn: aColumn [
 	canvas environment
 		name: 'column';
@@ -81,7 +188,7 @@ MicBeamerWriter >> visitColumn: aColumn [
 	canvas newLine
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicBeamerWriter >> visitColumns: aColumns [
 	canvas environment
 		name: 'columns';
@@ -90,14 +197,14 @@ MicBeamerWriter >> visitColumns: aColumns [
 	canvas newLine
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicBeamerWriter >> visitFigure: aFigure [
 	canvas environment
 		name: 'center';
 		with: [ self includeGraphicsFor: aFigure ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 MicBeamerWriter >> visitSlide: aSlide [
 	canvas newLine.
 	canvas environment

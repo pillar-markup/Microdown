@@ -39,6 +39,13 @@ MicDocumentWriter >> usedNewLine [
 ]
 
 { #category : #writing }
+MicDocumentWriter >> visit: aMicElement [
+
+	aMicElement accept: self.
+	^ self contents
+]
+
+{ #category : #writing }
 MicDocumentWriter >> writeRawDuring: aBlock [
 	[ 
 	writingRaw := true.
