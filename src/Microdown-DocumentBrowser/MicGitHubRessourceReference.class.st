@@ -52,11 +52,17 @@ MicGitHubRessourceReference class >> newFromUri: aUri [
 		ifAbsentPut: [ self new uri: aUri; yourself ]
 ]
 
-{ #category : #origins }
+{ #category : #'class initialization' }
 MicGitHubRessourceReference class >> reset [
 	<script>
 	RefCache := nil
 	
+]
+
+{ #category : #accessing }
+MicGitHubRessourceReference >> binaryReadStream [
+	"return the binaryStream I refer to"
+	^ self error: 'Binary streams to github items not yet supporteds'.
 ]
 
 { #category : #accessing }
@@ -115,7 +121,7 @@ MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
 	^ docs collect: [ :doc |  MicResourceReference fromUri: path, '/', (doc at: #path)]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MicGitHubRessourceReference >> githubPathLookup [
 	"I return the response object from the trees api - see https://docs.github.com/en/rest/reference/git#get-a-tree"
 	| request response |
@@ -165,7 +171,7 @@ MicGitHubRessourceReference >> lookupDefaultBranch [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MicGitHubRessourceReference >> pathStringForRawAccess [
 	"I return the path string to be used for the raw.githubusercontent.com access to blobs"
 	| path |

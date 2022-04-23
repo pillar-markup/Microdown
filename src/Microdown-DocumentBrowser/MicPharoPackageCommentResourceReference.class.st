@@ -194,24 +194,6 @@ MicPharoPackageCommentResourceReference >> reduceCategoryName: aString toLevel: 
 ]
 
 { #category : #accessing }
-MicPharoPackageCommentResourceReference >> setStrategy_old [
-	"I am a rPackage | package-with-tag | packageName prefix | not a package at all"
-	| noStarName |
-	(categoryName asPackageIfAbsent: [ nil ])
-		ifNotNil: [ ^ self childrenOfRPackage  ].
-	(SystemOrganizer default classesInCategory:  categoryName)
-		ifNotEmpty: [ ^ self childrenOfPackageWithTag ].
-	noStarName := categoryName trimRight: [:c | c = $*].
-	noStarName 
-		ifEmpty: [ ^ self childrenOfCategoryPrefix ].
-	(SystemOrganizer default categories 
-			select: [ :cat | cat beginsWith: noStarName ])
-		ifNotEmpty: [ ^ self childrenOfCategoryPrefix ].
-	MicResourceReferenceError signal: 'Package ', categoryName, ' not found'
-	
-]
-
-{ #category : #accessing }
 MicPharoPackageCommentResourceReference >> uri: aUri [
 	"the uri is on the form commet://package/packageName - 
 	packageName can be a prefix of a full package name"

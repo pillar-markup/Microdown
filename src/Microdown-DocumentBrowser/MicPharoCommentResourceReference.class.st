@@ -1,3 +1,8 @@
+"
+I am a superclass for providing a common interface to class and package comments.
+
+Please see the comments in my subclasses for further info.
+"
 Class {
 	#name : #MicPharoCommentResourceReference,
 	#superclass : #MicAbsoluteResourceReference,

@@ -1,3 +1,13 @@
+"
+I am reponsible for accessing class comments.
+
+My syntax is `comment://class/className`
+
+## loadMicrodown
+My `loadMicrodown` returns the class comment of the class named className. Notice, `loadMicrodown` will return the synthesized comment (created by the class side method `buildMicroDownUsing:withComment:`)
+
+When categoryName is a package, my two methods `contents` and `contents:` reads and writes the contents of the package comment.
+"
 Class {
 	#name : #MicPharoClassCommentResourceReference,
 	#superclass : #MicPharoCommentResourceReference,

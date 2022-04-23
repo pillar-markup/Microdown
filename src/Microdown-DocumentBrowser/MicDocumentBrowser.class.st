@@ -50,11 +50,6 @@ MicDocumentBrowser >> connectPresenters [
 	
 ]
 
-{ #category : #accessing }
-MicDocumentBrowser >> documentList [
-	^ spDocumentList
-]
-
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
 	^ {'comment://package/Microdown'.
@@ -127,8 +122,7 @@ MicDocumentBrowser >> isEditing [
 { #category : #events }
 MicDocumentBrowser >> newSelection: selection [
 	"I am the raw user selection in the spDocumentList"
-	selection isNil
-		ifTrue: [ 
+	selection ifNil: [ 
 			spRendering text: '' asText.
 			spSource text: ''.
 			^ self ].

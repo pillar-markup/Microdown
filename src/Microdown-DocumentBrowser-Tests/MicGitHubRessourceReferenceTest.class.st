@@ -97,8 +97,8 @@ MicGitHubRessourceReferenceTest >> testCache_storesNewInstances [
 	MicGitHubRessourceReference reset.
 	uri := 'github://pillar-markup/Microdown/doc/testMicrodown/readme.md'.
 	ref := MicResourceReference fromUri: uri.
-	self assert: (MicGitHubRessourceReference cache at: 'pillar-markup/Microdown') notNil.
-	otherRef := MicResourceReference fromUri: 'github://pillar-markup/Microdown'.
+	self assert: (MicGitHubRessourceReference cache at: uri) notNil.
+	otherRef := MicResourceReference fromUri: uri.
 	self assert: otherRef equals: ref
 ]
 

@@ -19,7 +19,7 @@ MicAbsoluteResourceReference >> binaryReadStream [
 	self subclassResponsibility.
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MicAbsoluteResourceReference >> canSave [
 	"return true if I implement contents: "
 	^false
