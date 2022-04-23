@@ -32,6 +32,8 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextComposer-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
+			package: #'Microdown-MathFlaky-Tests'
+				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
 
 			package: #'Microdown-RichTextPresenter'
 				with: [ spec requires: #( #Microdown ) ];
@@ -60,9 +62,16 @@ BaselineOfMicrodown >> baseline: spec [
 			
 			package: #'Microdown-LaTeXExporter'
 				with: [ spec requires: #( #Microdown ) ];
-
+				
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
+
+
+			package: #'Microdown-BeamerExporter'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];
+				
+			package: #'Microdown-BeamerExporter-Tests'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
