@@ -58,7 +58,8 @@ MicDocumentBrowser >> documentList [
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
 	^ {'comment://package/Microdown'.
-		'file:///Users/kasper/tmp/pharo/doc' .
+		'file:///Users/kasper/tmp/pharo/doc'.
+		'github://pillar-markup/Microdown/doc/testMicrodown'
 	 } collect: #asMicResourceReference
 ]
 

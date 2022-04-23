@@ -23,7 +23,7 @@ Class {
 		'project',
 		'branch',
 		'docFolder',
-		'githubConnection'
+		'children'
 	],
 	#classVars : [
 		'RefCache'
@@ -33,7 +33,7 @@ Class {
 
 { #category : #origins }
 MicGitHubRessourceReference class >> cache [
-	RefCache  ifNil: [ RefCache := LRUCache new ].
+	RefCache  ifNil: [ RefCache := LRUCache new maximumWeight: 117; yourself ].
 	^ RefCache
 ]
 
@@ -46,7 +46,7 @@ MicGitHubRessourceReference class >> cache: aCache [
 { #category : #origins }
 MicGitHubRessourceReference class >> newFromUri: aUri [
 	| key |
-	key := aUri host,'/', aUri segments first.
+	key := aUri printString.
 	^ self cache 
 		at: key 
 		ifAbsentPut: [ self new uri: aUri; yourself ]
@@ -65,12 +65,26 @@ MicGitHubRessourceReference >> branch [
 	^ branch
 ]
 
+{ #category : #private }
+MicGitHubRessourceReference >> browserIcon [
+	^ self iconNamed: #github
+]
+
+{ #category : #private }
+MicGitHubRessourceReference >> browserTitle [
+	^ self uri query
+		ifNotNil:[:query | query at: #fullPath]
+		ifNil: [ self uri printString ]
+]
+
 { #category : #accessing }
 MicGitHubRessourceReference >> contents [
 	"This is inefficient, but can be done"
 	| response content |
 	response := self githubPathLookup.
-	content := response at: #content.
+	content := response 
+		at: #content 
+		ifAbsent: [MicResourceReferenceError signal: 'I am a directory and has no contents'].
 	^ content base64Decoded asString
 ]
 
@@ -82,21 +96,23 @@ MicGitHubRessourceReference >> docFolder [
 
 { #category : #private }
 MicGitHubRessourceReference >> extractFolderReferencesFrom: response [
-	| folders raw |
+	| folders raw docPath |
 	folders := (response at: #tree) select: [ :elem | (elem at: #type) = #tree].
 	"github://user/project:sha"
 	raw := 'github://{1}/{2}' format: { user. project }.
-	^ folders collect: [ :folder |  MicResourceReference fromUri: (raw ,':', (folder at: #sha))]
+	docPath := self branch,'/', (self docFolder joinUsing: '/').
+	^ folders collect: [ :folder |  
+		MicResourceReference fromUri: (raw ,':', (folder at: #sha),'?fullPath=', docPath, '/', (folder at: #path))]
 ]
 
 { #category : #private }
 MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
-	| docs raw |
+	| docs path |
 	docs := (response at: #tree) select: [ :elem | 
 		(elem at: #type) = #blob and:[ #(md mic) includes: ((elem at: #path) copyAfterLast: $.) ]].
-	"https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md"
-	raw := 'https://raw.githubusercontent.com/{1}/{2}/{3}/{4}' format: { user. project. branch. (docFolder joinUsing: '/') }.
-	^ docs collect: [ :doc |  MicResourceReference fromUri: (raw ,'/', (doc at: #path))]
+	docs ifEmpty: [ ^#() ].
+	path := self pathStringForRawAccess.
+	^ docs collect: [ :doc |  MicResourceReference fromUri: path, '/', (doc at: #path)]
 ]
 
 { #category : #'as yet unclassified' }
@@ -106,6 +122,7 @@ MicGitHubRessourceReference >> githubPathLookup [
 	request := self githubTreesApiRequest.
 	1 to: self docFolder size do: [ :index |
 		response := STONJSON fromString: (ZnEasy get: request )entity contents.
+		self flag: 'Should check for api restriction overload'.
 		request := ((response at: #tree) detect: [ :elem | (elem at: #path) = (self docFolder at: index) ]) at: #url.
 		 ].
 	response := STONJSON fromString: (ZnEasy get: request )entity contents.
@@ -114,7 +131,7 @@ MicGitHubRessourceReference >> githubPathLookup [
 
 { #category : #private }
 MicGitHubRessourceReference >> githubTreesApiRequest [
-	"https://docs.github.com/en/rest/reference/git#get-a-tree"
+	"See documentation at: https://docs.github.com/en/rest/reference/git#get-a-tree"
 	 ^ 'https://api.github.com/repos/{1}/{2}/git/trees/{3}' 
 			format: { user. project. branch }
 ]
@@ -127,12 +144,14 @@ MicGitHubRessourceReference >> isMicrodownOrFolder: elem [
 ]
 
 { #category : #accessing }
-MicGitHubRessourceReference >> loadChildren [ 
-	| response folders microdownDocs|
-	response := self githubPathLookup.
-	folders := self extractFolderReferencesFrom: response.
-	microdownDocs := self extractMicrodownDocReferencesFrom: response.
-	^ folders , microdownDocs
+MicGitHubRessourceReference >> loadChildren [
+	children 
+		ifNil:[ | response folders microdownDocs|
+			response := self githubPathLookup.
+			folders := self extractFolderReferencesFrom: response.
+			microdownDocs := self extractMicrodownDocReferencesFrom: response.
+			children := folders , microdownDocs].
+	^ children
 ]
 
 { #category : #accessing }
@@ -144,6 +163,19 @@ MicGitHubRessourceReference >> lookupDefaultBranch [
 	response := STONJSON fromString: (ZnEasy get: request) entity contents.
 	^ response at: 'default_branch' ifAbsent: [ 'main' ]
 	
+]
+
+{ #category : #'as yet unclassified' }
+MicGitHubRessourceReference >> pathStringForRawAccess [
+	"I return the path string to be used for the raw.githubusercontent.com access to blobs"
+	| path |
+	path := 'https://raw.githubusercontent.com/{1}/{2}' 
+		format: { user. project}.
+	self docFolder 
+		ifNotEmpty: [ ^ path, '/' , self branch, '/', (self docFolder joinUsing: '/') ].
+	self uri query 
+		ifNil: [ ^ path, '/', self branch ].
+	^ path ,'/', (self uri query at: #fullPath ifAbsent: [''])
 ]
 
 { #category : #accessing }
