@@ -226,23 +226,23 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 
 { #category : #sample }
 MicMicrodownSnippetFactory >> columnSample [
-	^ '<?column|width=42
+	^ EnvironmentOpeningBlockMarkup, 'column|width=42
 	this is a **text**
-?>'
+',EnvironmentClosingBlockMarkup
 ]
 
 { #category : #sample }
 MicMicrodownSnippetFactory >> columnsSample [
-	^ '<?columns|width=42
-?>'
+	^ EnvironmentOpeningBlockMarkup, 'columns|width=42
+',EnvironmentClosingBlockMarkup
 ]
 
 { #category : #sample }
 MicMicrodownSnippetFactory >> columnsWithChildrenSample [
-	^ '<?columns|width=42
+	^ EnvironmentOpeningBlockMarkup,'columns|width=42
 ', self columnSample ,'
 ', self columnSample,'
-?>'
+',EnvironmentClosingBlockMarkup
 ]
 
 { #category : #block }
@@ -259,17 +259,18 @@ MicMicrodownSnippetFactory >> documentFrom: aString [
 MicMicrodownSnippetFactory >> environmentSample [
 
 	^ '
-<!Foo|value=aFoo&label=42
+',EnvironmentOpeningBlockMarkup,'Foo|value=aFoo&label=42
 
 Foo
 
-!>'
+',EnvironmentClosingBlockMarkup
 ]
 
 { #category : #anchor }
 MicMicrodownSnippetFactory >> environmentWithInnerBlockSample [
 	^ '
-<?Foo|value=aFoo&label=42
+',EnvironmentOpeningBlockMarkup,'Foo|value=aFoo&label=42
+
 This is a **paragraph**
 
 ```language=Smalltalk&caption=`Color` is cool
@@ -278,7 +279,7 @@ This is a codeBlock
 
 [ this is an _url_ ](/anExternalLink)
 
-?>'
+',EnvironmentClosingBlockMarkup
 ]
 
 { #category : #format }
@@ -686,6 +687,17 @@ MicMicrodownSnippetFactory >> newlineLFSample [
 MicMicrodownSnippetFactory >> newlineSample [
 
 	^ Smalltalk os lineEnding
+]
+
+{ #category : #sample }
+MicMicrodownSnippetFactory >> oneSlide [
+
+	^ '<!slide|title=This is a cool title&tag=nh5p
+
+- a list of bullet
+- bullet 2
+- bullet 3
+!>'
 ]
 
 { #category : #list }
