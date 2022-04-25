@@ -37,8 +37,8 @@ MicTextPresenter class >> cheetSheet [
 
 % adapted from https://raw.githubusercontent.com/tchapi/markdown-cheatsheet/master/README.md
 
-<?columns
-<?column
+<!columns
+<!column
 # Heading 1
 
    >    Markup :  `# Heading 1`
@@ -55,9 +55,9 @@ MicTextPresenter class >> cheetSheet [
 
    >    Markup :  ####(##) Heading 4-6
 
-?>
+!>
 
-<?column
+<!column
 _Emphasized text_
 
    >    Markup :  `_Emphasized text_`
@@ -77,8 +77,8 @@ _Emphasized text_
 [heading-1](#heading-1)
     
    > Markup: `[heading-1](#heading-1)`
-?>
-?>
+!>
+!>
 
 Table, like this one :
 
@@ -183,18 +183,20 @@ The optional arguments are a pharo speciality. It is of the form `arg1=value1&ar
 
 { #category : #examples }
 MicTextPresenter class >> exampleCheetSheet [
+
 	<example>
 	^ self new
-		text: ( Microdown asRichText: self cheetSheet  );
-		openWithSpec
+		  text: (Microdown asRichText: self cheetSheet);
+		  open
 ]
 
 { #category : #examples }
 MicTextPresenter class >> exampleSample [
+
 	<example>
 	^ self new
-		text: ( Microdown asRichText: self sampleDocument   );
-		openWithSpec
+		  text: (Microdown asRichText: self sampleDocument);
+		  open
 ]
 
 { #category : #examples }
@@ -205,7 +207,7 @@ MicTextPresenter class >> sampleDocument [
 ### Header 3
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
-![](https://pharo.org/web/files/pharo.png width=75%)
+![](https://pharo.org/web/files/pharo.png "width=75%")
 
 Here are direct links to classes and method
 - `String`

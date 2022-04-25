@@ -1,6 +1,6 @@
 Extension { #name : #String }
 
 { #category : #'*Microdown' }
-String >> asMicResourceUri [
+String >> asMicResourceReference [
 	^ MicResourceReference fromUri: self
 ]

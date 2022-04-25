@@ -3,27 +3,26 @@ These tests will fail if MicHTTPResourceTest fails. I read the files from the gi
 
 "
 Class {
-	#name : #MicFileResourceTest,
+	#name : #MicFileResourceReferenceTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
-		'emptyResolver',
-		'fullResolver'
+		'emptyFilesystem'
 	],
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #private }
-MicFileResourceTest >> exampleMicFileResource [
+MicFileResourceReferenceTest >> exampleMicFileResourceReference [
 
 	| file |
 	
 	file := self exampleReadmeFile.
-	^ MicFileResource on: file reference: (filesystem resolvePath: file path)
+	^ MicFileResourceReference fromFileRef: file
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGByteArray [
+MicFileResourceReferenceTest >> examplePNGByteArray [
 
 	^ #[137 80 78 71 13 10 26 10 0 0 0 13 73 72 68 82 0 0 0 200 0 0 0 90 4 3 0 0 0 15
 216 4 229 0 0 0 27 80 76 84 69 204 204 204 150 150 150 197 197 197 190 190 190
@@ -48,7 +47,7 @@ MicFileResourceTest >> examplePNGByteArray [
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGFile [
+MicFileResourceReferenceTest >> examplePNGFile [
 	" Answer a <Form> for testing purposes "
 
 	^ PNGReadWriter formFromStream: self examplePNGFileContents
@@ -56,13 +55,13 @@ MicFileResourceTest >> examplePNGFile [
 ]
 
 { #category : #private }
-MicFileResourceTest >> examplePNGFileContents [
+MicFileResourceReferenceTest >> examplePNGFileContents [
 
 	^ self examplePNGByteArray readStream
 ]
 
 { #category : #private }
-MicFileResourceTest >> exampleReadmeFile [
+MicFileResourceReferenceTest >> exampleReadmeFile [
 	" Answer a <FileReference> on a memory file system for testing purposes "
 
 	^ (filesystem workingDirectory / 'example.md')
@@ -71,7 +70,7 @@ MicFileResourceTest >> exampleReadmeFile [
 ]
 
 { #category : #private }
-MicFileResourceTest >> exampleReadmeFileContents [
+MicFileResourceReferenceTest >> exampleReadmeFileContents [
 	" Answer a <String> for file resource testing purposes "
 
 	^ '# Test documents
@@ -96,18 +95,15 @@ Link to a document in subfolder:
 ]
 
 { #category : #running }
-MicFileResourceTest >> setUp [
+MicFileResourceReferenceTest >> setUp [
 	| readme image file |
 	super setUp.
-	emptyResolver := MicUrlResolver new.
 	filesystem := FileSystem memory.
-	readme := self exampleReadmeFile contents. "(ZnEasy get: (MicHTTPResourceTest githubTestData uri + 'readme.md')) contents."
-	image := self examplePNGFile. "ZnEasy getPng: (MicHTTPResourceTest githubTestData uri + 'toplevel.png')."
+	emptyFilesystem := FileSystem memory.
+	"exampleReadmeFile creates file example.md"
+	readme := self exampleReadmeFile contents.
+	image := self examplePNGFile.
 
-	fullResolver := MicUrlResolver new
-		currentWorkingDirectory: filesystem workingDirectory;
-		yourself.
-	
 	file := filesystem workingDirectory / 'readme.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: readme].
 	
@@ -117,88 +113,121 @@ MicFileResourceTest >> setUp [
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testContents [
-
+MicFileResourceReferenceTest >> testContents [
 	| micFileResource |
 	
-	micFileResource := self exampleMicFileResource.
+	micFileResource := self exampleMicFileResourceReference.
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testFileReference [
-
-	| micFileResource |
-	micFileResource := self exampleMicFileResource.
-	self 
-		assert: (micFileResource fileReference isKindOf: FileReference)
-		description: 'It asserts that the file reference of a file resource it is actually a FileReference'
+MicFileResourceReferenceTest >> testContentsOfDirectory [
+	| ref |
+	ref := filesystem workingDirectory asMicResourceReference.
+	self assert: ref contents equals: '' 
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadImage [
+MicFileResourceReferenceTest >> testContentsSet [ 
+	|ref header |
+	ref := (MicResourceReference fromUri: 'file:/example.md')
+		filesystem: filesystem.
+	ref contents: '### Super cool header'.
+	header := ref loadMicrodown children first.
+	self assert: header level equals: 3.
+	self assert: header children first text equals: 'Super cool header'
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
+	| fileRef micRef |
+	fileRef := '/path/to/nowhere.md' asFileReference.
+	micRef := fileRef asMicResourceReference.
+	self assert: micRef class equals: MicFileResourceReference.
+	self assert: micRef uriString equals: 'file:///path/to/nowhere.md'.
+	self assert: micRef fileReference path asString equals: fileRef path asString
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testIsDirectory [ 
+	| ref |
+	ref := filesystem workingDirectory asMicResourceReference.
+	self assert: ref isDirectory 
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testLoadChildren [
+	| ref files |
+	ref := filesystem workingDirectory asMicResourceReference.
+	files := ref loadChildren.
+	self assert: files size equals: 2.
+	self assert: files first class equals: MicFileResourceReference
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testLoadImage [
 
 	| ref image |
-	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
-	image := (ref resolveResourceIn: fullResolver) asForm.
+	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
+		filesystem: filesystem.
+	image := ref loadImage.
 	self assert: image notNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadMicrodown [
-	| uri ref doc resolvedReference |
-	uri := 'file:///readme.md'.
-	ref := MicResourceReference  fromUri: uri.
-	resolvedReference := ref resolveResourceIn: fullResolver.
-	doc := resolvedReference parseMicrodown.
+MicFileResourceReferenceTest >> testLoadMicrodown [
+	| ref doc |
+	ref := (MicResourceReference fromUri: 'file:/readme.md')
+		filesystem: filesystem.
+	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
 	
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotCorrectImage [
-
+MicFileResourceReferenceTest >> testLoadNotCorrectImage [
 	| ref |
-	ref := MicResourceReference fromUri: 'file:///readme.md'.
-	
+	ref := (MicResourceReference fromUri: 'file:/readme.md')
+		filesystem: filesystem .
 	self
-		should: [(ref resolveResourceIn: fullResolver) asForm]
+		should: [ref loadImage]
 		raise: UnrecognizedImageFormatError
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotCorrectMicrodown [
+MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
-	ref := MicResourceReference fromUri: 'file:///toplevel.png'.
-	
+	ref := (MicResourceReference fromUri: 'file:///toplevel.png')
+		filesystem: filesystem.
 	self
-		should: [(ref resolveResourceIn: fullResolver) parseMicrodown]
+		should: [ ref loadMicrodown ]
 		raise: ZnInvalidUTF8
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotFoundImage [
+MicFileResourceReferenceTest >> testLoadNotFoundImage [
 
-	| ref image |
-	ref := MicResourceReference fromUri: 'file:///readme.md'.
-	image := (ref resolveResourceIn: emptyResolver) asForm.
-
-	self assert: image isNil
+	| ref  |
+	ref := (MicResourceReference fromUri: 'file:///readme.md') filesystem: emptyFilesystem.
+	[
+		ref loadImage.
+		self fail
+	] on: Error do: [ :e |
+		self assert: e messageText equals: 'Microdown file not found' ]
 ]
 
 { #category : #tests }
-MicFileResourceTest >> testLoadNotFoundMicrodown [
-	| uri ref resolvedReference |
+MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
+	| uri ref |
 	uri := 'file:///readme.md'.
-	ref := MicResourceReference  fromUri: uri.
-	resolvedReference := ref resolveResourceIn: emptyResolver.
+	ref := (MicResourceReference  fromUri: uri) filesystem: emptyFilesystem.
 	
 	[
-		resolvedReference parseMicrodown.
+		ref loadMicrodown.
 		self fail
 	] on: Error do: [ :e |
 		self assert: e messageText equals: 'Microdown file not found' ]

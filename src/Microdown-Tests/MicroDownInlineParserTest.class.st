@@ -537,7 +537,7 @@ MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
 	self assert: element name equals: 'inputFile'.
 	self assert: element children equals: #().
 	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
-	self assert: (element arguments at: 'path') path equals: 'PharoTour.mic'
+	self assert: (element arguments at: 'path') relativePath equals: 'PharoTour.mic'
 	
 ]
 
