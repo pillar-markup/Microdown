@@ -84,7 +84,7 @@ MicCSSProvider class >> chota [
 
 	^ { 
 		#name -> 'Chota' .	
-		#minCss -> 'https://unpkg.com/chota' .
+		#minCss -> 'https://unpkg.com/chota@0.8.0/dist/chota.min.css' .
 		#repository -> 'https://github.com/jenil/chota'
 		}
 ]
@@ -112,6 +112,7 @@ MicCSSProvider class >> concretecss [
 
 { #category : #accessing }
 MicCSSProvider class >> cssResource: libAttributes [
+	"Answer a <String> representing the URL of the CSS resource specified in libAttributes Dictionary"
 
 	^ libAttributes 
 			at: #minCss 
@@ -119,6 +120,17 @@ MicCSSProvider class >> cssResource: libAttributes [
 				libAttributes 
 					at: #css
 					ifAbsent: [ nil ] ]
+]
+
+{ #category : #accessing }
+MicCSSProvider class >> installExampless [
+	<script>
+
+	self libraryNames do: [ : libName |
+		(MicHTMLDoc newWithStyle: libName)
+			destinationDir: 'mic_html_examples';
+			fromMicrodown: MicDocFactory exampleMic;
+			writeToFileNamed: 'MicExample' , libName , '.html' ]
 ]
 
 { #category : #accessing }
@@ -137,6 +149,14 @@ MicCSSProvider class >> librariesMetadata [
 ]
 
 { #category : #accessing }
+MicCSSProvider class >> libraryNames [
+	"Answer a <Collection> of <String> each representing a classless CSS library name"
+
+	^ self librarySelectors collect: [ : selector |
+		(self libAttributesFor: selector) at: #name ]
+]
+
+{ #category : #accessing }
 MicCSSProvider class >> librarySelectors [
 	"Answer a <Collection> of <Symbol> matching selectors for CSS libraries"
 	
@@ -148,8 +168,8 @@ MicCSSProvider class >> mercurycss [
 
 	^ { 
 		#name -> 'MercuryCSS' .
-		#minCss -> 'https://github.com/wmeredith/MercuryCSS/blob/master/css/min/mercury.min.css' .
-		#normalizeCss -> 'https://github.com/wmeredith/MercuryCSS/blob/master/css/min/normalize.min.css' .
+		#minCss -> 'https://raw.githubusercontent.com/wmeredith/MercuryCSS/master/css/min/mercury.min.css' .
+		#normalizeCss -> 'https://raw.githubusercontent.com/wmeredith/MercuryCSS/master/css/min/normalize.min.css' .
 		#repository -> 'https://github.com/wmeredith/MercuryCSS'
 		}
 ]
@@ -159,7 +179,7 @@ MicCSSProvider class >> mvp [
 
 	^ { 
 		#name -> 'MVP' .	
-		#css -> 'https://github.com/andybrewer/mvp/blob/master/mvp.css' .
+		#css -> 'https://raw.githubusercontent.com/andybrewer/mvp/master/mvp.css' .
 		#repository -> 'https://github.com/andybrewer/mvp'
 		}
 ]
@@ -233,7 +253,7 @@ MicCSSProvider class >> spcss [
 
 	^ { 
 		#name -> 'SpCSS' .	
-		#minCss -> 'https://github.com/susam/spcss/blob/main/sp.min.css' .
+		#minCss -> 'https://raw.githubusercontent.com/susam/spcss/main/sp.min.css' .
 		#css -> 'https://cdn.jsdelivr.net/npm/spcss' .
 		#repository -> 'https://github.com/susam/spcss'
 		}
@@ -244,7 +264,7 @@ MicCSSProvider class >> splendor [
 
 	^ { 
 		#name -> 'Splendor' .	
-		#minCss -> 'https://github.com/markdowncss/splendor/blob/master/css/splendor.min.css' .
+		#minCss -> 'https://raw.githubusercontent.com/markdowncss/splendor/master/css/splendor.min.css' .
 		#repository -> 'https://github.com/markdowncss/splendor'
 		}
 ]
@@ -254,8 +274,8 @@ MicCSSProvider class >> stylizecss [
 
 	^ { 
 		#name -> 'StylizeCSS' .	
-		#minCss -> 'https://github.com/vasanthv/stylize.css/blob/master/stylize.min.css' .
-		#css -> 'https://github.com/vasanthv/stylize.css/blob/master/stylize.css' .
+		#minCss -> 'https://raw.githubusercontent.com/vasanthv/stylize.css/master/stylize.min.css' .
+		#css -> 'https://raw.githubusercontent.com/vasanthv/stylize.css/master/stylize.css' .
 		#repository -> 'https://github.com/vasanthv/stylize.css'
 		}
 ]
@@ -265,7 +285,7 @@ MicCSSProvider class >> tufte [
 
 	^ { 
 		#name -> 'Tufte' .	
-		#minCss -> 'https://github.com/edwardtufte/tufte-css/blob/gh-pages/tufte.min.css' .
+		#minCss -> 'https://raw.githubusercontent.com/edwardtufte/tufte-css/gh-pages/tufte.min.css' .
 		#repository -> 'https://github.com/edwardtufte/tufte-css' .
 		#fontsDir -> 'https://github.com/edwardtufte/tufte-css/tree/gh-pages/et-book'
 		}
@@ -276,7 +296,7 @@ MicCSSProvider class >> w3c [
 
 	^ { 
 		#name -> 'W3C' .	
-		#css -> 'https://www.w3.org/StyleSheets/Core/Modernist' .
+		#css -> 'https://www.w3.org/StyleSheets/Core/Modernist.css' .
 		#repository -> 'https://www.w3.org/StyleSheets/Core/Overview'
 		}
 ]
@@ -296,7 +316,7 @@ MicCSSProvider class >> wing [
 
 	^ { 
 		#name -> 'Wing' .	
-		#minCss -> 'https://unpkg.com/wingcss' .
+		#minCss -> 'https://unpkg.com/wingcss@1.0.0-beta/dist/wing.min.css' .
 		#repository -> 'https://github.com/kbrsh/wing'
 		}
 ]
@@ -306,8 +326,8 @@ MicCSSProvider class >> yorha [
 
 	^ { 
 		#name -> 'Yorha' .	
-		#minCss -> 'https://github.com/metakirby5/yorha/blob/master/dist/yorha.min.css' .
-		#css -> 'https://github.com/metakirby5/yorha/blob/master/dist/yorha.css' .
+		#minCss -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.min.css' .
+		#css -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.css' .
 		#repository -> 'https://github.com/metakirby5/yorha'
 		}
 ]

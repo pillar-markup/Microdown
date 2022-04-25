@@ -13,6 +13,15 @@ MicCSSFile >> basename [
 	^ self fileReference basename
 ]
 
+{ #category : #copying }
+MicCSSFile >> copyTo: aDestinationDir [
+	"Copy the receiver into aDestinationDir "
+
+	[ self fileReference copyTo: aDestinationDir / self basename ]
+	on: FileExists 
+	do: [ : ex | "do nothing" ]
+]
+
 { #category : #accessing }
 MicCSSFile >> fileReference [
 

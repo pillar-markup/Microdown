@@ -1,6 +1,28 @@
 "
-Represents a Text/HTML file with default character set as UTF-8.
-Assume it receives as input raw HTML String, without any valid mandatory header tag, and builds a header and body tags around it.
+Represents a Text/HTML file to be displayed in a web browser. It can be created from `Microdown` content through **fromMicrodown:** passing a Microdown `String` as parameter.
+
+A document has multiple properties which can be configured:
+
+- A **fileName** `String`.
+- A `Collection` of CSS files to define the look of the document, through **addCSSFile:**.
+- A default character set (**charSet**) as UTF-8 by default (**setCharSetUTF8**)..
+- A language (**languageId**) `String` of element's contents (matches the lang attribute in HTML specification).
+- A title `String` acting as document short explanation.
+- A `Collection` of Keywords (**keywords**).
+- A `Collection` of authors (**authors**), each one being a `String`.
+- A destination directory (**destinationDir**) representing the output path of the document.
+
+A Microdown HTML document can receive as input a raw HTML String, without any surrounding header tags, and it builds a header and body tags around it.
+
+
+## Internals
+
+Internally some properties are configured by default:
+
+- A canvas which acts as a brush to render content.
+- The viewport, specified in **defaultViewport**, to control layout in mobile browsers.
+- The language identifier is set by default to 'en' (English).
+- A subdirectory where the linked CSS files are stored, specified in `MicHTMLDoc >> cssBasePath`.
 
 "
 Class {
@@ -26,6 +48,14 @@ MicHTMLDoc class >> documentType [
 	"Answer a <String> specifying the mandatory document specification tag"
 
 	^ '<!DOCTYPE html>'
+]
+
+{ #category : #initialization }
+MicHTMLDoc class >> newWithStyle: aStyleName [
+
+	^ self new
+		addCSSFile: (MicCSSLocalProvider named: aStyleName);
+		yourself
 ]
 
 { #category : #'accessing - css' }
@@ -241,7 +271,7 @@ MicHTMLDoc >> serializeCSSIn: destDirFileRef [
 	destDirFileRef ensureCreateDirectory.
 	(destDirFileRef / self cssBasePath) ensureCreateDirectory. 
 	self cssFiles do: [ : cssFile |
-		cssFile fileReference copyTo: destDirFileRef / self cssBasePath / cssFile basename ]
+		cssFile copyTo: destDirFileRef / self cssBasePath ]
 
 ]
 

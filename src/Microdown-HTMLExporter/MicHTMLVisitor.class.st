@@ -71,6 +71,17 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 
 ]
 
+{ #category : #converting }
+MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleName [
+	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
+
+	MicHTMLDoc new
+		addCSSFile: (MicCSSLocalProvider named: aStyleName);	
+		fromMicrodown: aMicrodownString;
+		writeToFile
+
+]
+
 { #category : #initialization }
 MicHTMLVisitor >> canvasClass [
 

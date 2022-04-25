@@ -6,14 +6,23 @@ Includes behavior to download pre-defined CSS libraries in a local directory. Su
 To download a set of pre-defined class-less CSS libraries, evaluate:
 
 ```
-MicCSSLocalProvider downloadCssLibs.
+MicCSSLocalProvider getCSSLibs.
 ```
 
 See superclass comments to check how to add a CSS library.
+
+The destination folder where CSS libraries are downloaded can be configured with #destinationDir:
+
+```
+MicCSSLocalProvider destinationDir: 'css_libs';
+```
 "
 Class {
 	#name : #MicCSSLocalProvider,
 	#superclass : #MicCSSProvider,
+	#classInstVars : [
+		'destinationDir'
+	],
 	#category : #'Microdown-HTMLExporter'
 }
 
@@ -25,7 +34,34 @@ MicCSSLocalProvider class >> assertNonBinaryResponse: response [
 ]
 
 { #category : #accessing }
-MicCSSLocalProvider class >> downloadCSSLibNamed: aString from: anURLString [ 
+MicCSSLocalProvider class >> destinationDir [
+
+	^ destinationDir
+		ifNil: [ destinationDir := 'support' ]
+]
+
+{ #category : #accessing }
+MicCSSLocalProvider class >> destinationDir: aPathname [
+
+	destinationDir := aPathname
+]
+
+{ #category : #accessing }
+MicCSSLocalProvider class >> getCSSLib: cssLibSelector [
+	"Download a CSS library using information provided in cssLibSelector method. Prioritize minified versions."
+
+	| cssLibDict |
+
+	cssLibDict := self libAttributesFor: cssLibSelector.
+	(cssLibDict includesKey: #minCss)
+		ifTrue: [ self getCSSLibFrom: (cssLibDict at: #minCss) ]
+		ifFalse: [ 
+			(cssLibDict includesKey: #css)
+				ifTrue: [ self getCSSLibFrom: (cssLibDict at: #css) ] ]
+]
+
+{ #category : #accessing }
+MicCSSLocalProvider class >> getCSSLibFrom: anURLString [ 
 
 	| client |
 
@@ -33,22 +69,16 @@ MicCSSLocalProvider class >> downloadCSSLibNamed: aString from: anURLString [
 	self assertNonBinaryResponse: client response.
 	self 
 		installCss: client response contents
-		named: aString
+		named: client requestedResource
 ]
 
 { #category : #accessing }
-MicCSSLocalProvider class >> downloadCSSLibs [
+MicCSSLocalProvider class >> getCSSLibs [
 	"Download CSS libraries specified in the class protocol of the receiver, and install them on disk.
 	We download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available"
 
 	self librarySelectors 
-		do: [ : cssLibSelector |
-			| cssLibDict |
-			cssLibDict := (self libAttributesFor: cssLibSelector).
-			(cssLibDict includesKey: #minCss)
-				ifTrue: [ self downloadCSSLibNamed: ((cssLibDict at: #name) , '.min') from: (cssLibDict at: #minCss) ].
-			(cssLibDict includesKey: #css)
-				ifTrue: [ self downloadCSSLibNamed: (cssLibDict at: #name) from: (cssLibDict at: #css) ] ]
+		do: [ : cssLibSelector | self getCSSLib: cssLibSelector ]
 		displayingProgress: 'Downloading CSS libraries'
 ]
 
@@ -72,9 +102,7 @@ MicCSSLocalProvider class >> installCss: cssString named: cssLibName [
 	| destination |
 	destination := self librariesDirectory.
 	destination 	ensureCreateDirectory.
-
-	"Because we move the support folder into a folder called _support"
-	(destination / cssLibName , 'css') asFileReference 
+	(destination / cssLibName) asFileReference 
 		ensureDelete;
 		writeStreamDo: [ : writeStream | writeStream << cssString ].
 
@@ -84,12 +112,12 @@ MicCSSLocalProvider class >> installCss: cssString named: cssLibName [
 MicCSSLocalProvider class >> librariesDirectory [
 	"Answer a <FileReference> containing CSS class-less libraries"
 
-	^ 'support' asFileReference
+	^ self destinationDir asFileReference
 ]
 
 { #category : #accessing }
 MicCSSLocalProvider class >> named: aString [
-	"Answer a <String> representing a local relative path for CSS resource matching aString"
+	"Answer a <MicCSSFile> representing a CSS resource matching aString"
 
 	| cssFilename |
 	
