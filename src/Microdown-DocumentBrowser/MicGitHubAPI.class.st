@@ -37,10 +37,61 @@ MicGitHubAPI class >> cache: aCache [
 	ResponseCache := aCache
 ]
 
+{ #category : #'class initialization' }
+MicGitHubAPI class >> reset [
+	<script>
+	ResponseCache := nil
+	
+]
+
+{ #category : #private }
+MicGitHubAPI >> acceptMediaType [
+
+	^ 'application/vnd.github.v3+json'
+]
+
+{ #category : #operations }
+MicGitHubAPI >> defaultBranch: user project: project [
+	"Looks up the name of the default branch. returns nil if user/project does not exist"
+	| response |
+	response := self get: ('https://api.github.com/repos/{1}/{2}' format: {user. project}).
+	^ response at: 'default_branch' ifAbsent: [ 'main' ]
+]
+
+{ #category : #private }
+MicGitHubAPI >> extractRateInfo: response [
+	| unixTime |
+	APICount := (response headers at: 'X-Ratelimit-Remaining') asNumber.
+	unixTime := (response headers at: 'X-Ratelimit-Reset') asNumber.
+	NextReset := DateAndTime fromUnixTime: unixTime.
+	^ response
+]
+
 { #category : #operations }
 MicGitHubAPI >> get: aString [ 
 	| response |
 	response := (self requestTo: aString) get; response.
 	^ self processResponse: response
 	
+]
+
+{ #category : #private }
+MicGitHubAPI >> processResponse: response [
+	| json |
+	self extractRateInfo: response.
+	json := STONJSON fromString: response entity contents.
+	((json includesKey: #message) and: [(json at: #message) beginsWith: 'API rate limit exceeded'])
+		ifTrue: [ MicGitHubAPIRateError new response: json; signal ].
+	^ json
+]
+
+{ #category : #private }
+MicGitHubAPI >> requestTo: url [
+	^ self class cache 
+		at: url 
+		ifAbsentPut: [ 
+			ZnClient new  
+				headerAt: 'Accept' put: self acceptMediaType;
+				url: url;
+				yourself ]
 ]

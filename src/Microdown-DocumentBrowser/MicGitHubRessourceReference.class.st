@@ -100,10 +100,10 @@ MicGitHubRessourceReference >> githubPathLookup [
 	"I return the response object from the trees api - see https://docs.github.com/en/rest/reference/git#get-a-tree"
 	| request response |
 	request := self githubTreesApiRequest.
-	1 to: self docFolder size do: [ :index |
-		response := STONJSON fromString: (ZnEasy get: request )entity contents.
-		self flag: 'Should check for api restriction overload'.
-		request := ((response at: #tree) detect: [ :elem | (elem at: #path) = (self docFolder at: index) ]) at: #url.
+	self docFolder do: [ :segment |
+		response := self githubApi get: request.
+		request := ((response at: #tree) 
+			detect: [ :elem | (elem at: #path) = segment ]) at: #url.
 		 ].
 	response := STONJSON fromString: (ZnEasy get: request )entity contents.
 	^ response
