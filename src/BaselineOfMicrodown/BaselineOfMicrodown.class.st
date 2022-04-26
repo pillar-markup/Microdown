@@ -19,6 +19,13 @@ BaselineOfMicrodown >> baseline: spec [
 				spec  
 					loads: #('Pillar-Core');
 					repository: 'github://pillar-markup/pillar:dev-8' ].
+				
+		spec
+			baseline: 'XMLParserHTML';
+			with: [ 
+				spec
+					loads: #('Core');
+					repository: 'github://pharo-contributions/XML-XMLParserHTML/src' ].
 
 		spec
 			package: #Microdown;
@@ -46,7 +53,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-HTMLExporter'
 				with: [ spec requires: #( #Microdown #'Microdown-LaTeXExporter') ];
 			package: #'Microdown-HTMLExporter-Tests'
-				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests') ];				
+				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];				
 			
 			package: #'Microdown-LaTeXExporter'
 				with: [ spec requires: #( #Microdown ) ];
@@ -78,6 +85,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-PrettyPrinter'
 				#'Microdown-PrettyPrinter-Tests'
 				#'Microdown-HTMLExporter'
+				#'Microdown-HTMLExporter-Tests'
 				#'Microdown-LaTeXExporter'
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
