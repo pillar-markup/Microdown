@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+MicPharoCommentResourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'comment'
+]
+
+{ #category : #'instance creation' }
 MicPharoCommentResourceReference class >> newFromUri: aUri [
 	"I assume aUri to be a ZnUrl"
 	aUri host = 'class'

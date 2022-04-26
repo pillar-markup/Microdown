@@ -41,6 +41,11 @@ MicHTTPResourceReference class >> getBytesByHttp: uri [
 			error resignalAs: (MicResourceReferenceError new messageText: 'Could not access ', uri printString)  ].
 ]
 
+{ #category : #'instance creation' }
+MicHTTPResourceReference class >> handlesUriScheme: scheme [
+	^ scheme beginsWith: 'http'
+]
+
 { #category : #testing }
 MicHTTPResourceReference class >> initialize [
 	"self initialize"

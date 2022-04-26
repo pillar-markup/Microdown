@@ -43,6 +43,11 @@ MicGitHubRessourceReference class >> cache: aCache [
 	RefCache := aCache
 ]
 
+{ #category : #'instance creation' }
+MicGitHubRessourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'github'
+]
+
 { #category : #origins }
 MicGitHubRessourceReference class >> newFromUri: aUri [
 	| key |
