@@ -52,6 +52,7 @@ MicHTMLDoc class >> documentType [
 
 { #category : #initialization }
 MicHTMLDoc class >> newWithStyle: aStyleName [
+	"Answer a new HTML document styled with aStyleName <String>"
 
 	^ self new
 		addCSSFile: (MicCSSLocalProvider named: aStyleName);
@@ -105,12 +106,6 @@ MicHTMLDoc >> contents [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> cssBasePath [
-
-	^ 'css/'
-]
-
-{ #category : #'accessing - css' }
 MicHTMLDoc >> cssFiles [
 	"Answer a <Collection> of <String> each one representing a path to a CSS file"
 	
@@ -124,8 +119,15 @@ MicHTMLDoc >> cssPathFor: cssFile [
 	
 	^ String streamContents: [ : stream |
 		stream 
-			<< self cssBasePath;
+			<< self defaultCSSBasePath;
 			<< cssFile basename ]
+]
+
+{ #category : #defaults }
+MicHTMLDoc >> defaultCSSBasePath [
+	"Answer a default <String> describing the location where receiver's CSS files are stored"
+	
+	^ 'css/'
 ]
 
 { #category : #defaults }
@@ -269,9 +271,9 @@ MicHTMLDoc >> serializeCSSIn: destDirFileRef [
 	"Private - Serialize receiver's CSS resource into destDirFileRef"
 
 	destDirFileRef ensureCreateDirectory.
-	(destDirFileRef / self cssBasePath) ensureCreateDirectory. 
+	(destDirFileRef / self defaultCSSBasePath) ensureCreateDirectory. 
 	self cssFiles do: [ : cssFile |
-		cssFile copyTo: destDirFileRef / self cssBasePath ]
+		cssFile copyTo: destDirFileRef / self defaultCSSBasePath ]
 
 ]
 

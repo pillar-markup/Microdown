@@ -90,7 +90,7 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 
 	| expectedHtmlDoc |
 	
-	expectedHtmlDoc := Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument.
+	expectedHtmlDoc := Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument.
 	self 
 		assert: (expectedHtmlDoc isKindOf: String)
 		description: 'It tests that result is a String object'.
@@ -98,8 +98,8 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 		deny: expectedHtmlDoc isEmpty 
 		description: 'It test that result is not empty'.
 	self
-		assert: (expectedHtmlDoc beginsWith: MicHTMLDoc documentType)
-		description: 'It test that result contains the expected document type tag'
+		assert: (expectedHtmlDoc trimBoth beginsWith: '<ul>')
+		description: 'It test that result contains the expected document tag'
 ]
 
 { #category : #tests }

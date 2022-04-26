@@ -3,16 +3,27 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'doc',
-		'docString',
-		'cssProvider'
+		'docString'
 	],
 	#category : #'Microdown-HTMLExporter-Tests'
 }
+
+{ #category : #tests }
+MicHTMLDocTest class >> resources [
+
+	^ Array with: MicCSSFileResource
+]
 
 { #category : #running }
 MicHTMLDocTest >> sampleHTMLContents [
 
 	^ MicDocFactory exampleMicAsHTMLString
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> sampleMicCSSFile [
+
+	^ MicCSSFileResource current micCSSFile
 ]
 
 { #category : #running }
@@ -21,14 +32,14 @@ MicHTMLDocTest >> setUp [
 	super setUp.
 	docString := self sampleHTMLContents.
 	doc := MicHTMLDoc new.
-	cssProvider := MicCSSLocalProvider.
+
 ]
 
 { #category : #tests }
 MicHTMLDocTest >> testAddCSSFile [
 
 	| aCSSFile |
-	aCSSFile := cssProvider named: 'Tufte'.
+	aCSSFile := self sampleMicCSSFile.
 	doc addCSSFile: aCSSFile.
 	self
 		assertCollection: doc cssFiles
@@ -37,7 +48,7 @@ MicHTMLDocTest >> testAddCSSFile [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLDocTest >> testAuthor [
 
 	self
@@ -54,7 +65,7 @@ MicHTMLDocTest >> testAuthor [
 		equals: 'Nicole Neumann'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLDocTest >> testCanvasClass [
 
 	self
@@ -76,7 +87,7 @@ MicHTMLDocTest >> testCharSet [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLDocTest >> testContents [
 
 	self 
@@ -164,17 +175,9 @@ MicHTMLDocTest >> testDocumentType [
 MicHTMLDocTest >> testFileName [
 
 	self 
-		assert: doc fileName isNil
-		description: 'A document does not have a file name by default'.
-		
-	doc fileName: 'index.html'.
-	self
-		assert: (doc fileName isKindOf: String)
-		description: 'No transformations are done to the configured file name'.
-		
-	self
-		assert: doc fileName
-		equals: 'index.html'
+		assert: doc fileName = 'index.html'
+		description: 'A document default file name is index.html'.
+
 ]
 
 { #category : #tests }
@@ -210,7 +213,7 @@ MicHTMLDocTest >> testLanguageId [
 		equals: 'es'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLDocTest >> testNewMicStreamOn [
 
 	self 
@@ -245,7 +248,7 @@ MicHTMLDocTest >> testTempFileName [
 		equals: '.'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLDocTest >> testTitle [
 
 	self
@@ -258,12 +261,46 @@ MicHTMLDocTest >> testTitle [
 ]
 
 { #category : #tests }
+MicHTMLDocTest >> testWriteDocument [
+
+	| parsedContents |
+	doc writeDocument: 'Prueba'.
+	self deny: doc contents isEmpty.
+	self assert: (doc contents beginsWith: '<!DOCTYPE html>').
+	self assert: (doc contents endsWith: '</html>').
+	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
+	self
+		assert: ((parsedContents descendantElementsNamed: 'body') contentStringAt: 'body')
+		equals: 'Prueba'
+]
+
+{ #category : #tests }
 MicHTMLDocTest >> testWriteDocumentBody [
 
 	doc writeDocumentBody: 'Prueba'.
 	self deny: doc contents isEmpty.
 	self assert: (doc contents beginsWith: '<body>').
 	self assert: (doc contents endsWith: '</body>')
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> testWriteDocumentCSS [
+
+	| parsedContents linkElements |
+	
+	doc addCSSFile: self sampleMicCSSFile.
+	doc writeDocumentCSS.
+	self deny: doc contents isEmpty.
+
+	doc addCSSFile: self sampleMicCSSFile.
+	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
+	linkElements := parsedContents descendantElementsNamed: 'link'.
+
+	self
+		assert: ((linkElements elementsDetect: [ : e | e includesAttribute: 'rel' ]) attributeAt: 'href')
+		equals: 'css/sample.css'.
+
+
 ]
 
 { #category : #tests }
@@ -310,6 +347,28 @@ MicHTMLDocTest >> testWriteDocumentHead [
 	self deny: doc contents isEmpty.
 	self assert: (doc contents beginsWith: '<head>').
 	self assert: (doc contents endsWith: '</head>')
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> testWriteDocumentMetadata [
+
+	| parsedContents metaElements |
+	doc writeDocumentMetadata.
+	self deny: doc contents isEmpty.
+	self assert: (doc contents beginsWith: '<meta').
+	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
+	metaElements := parsedContents descendantElementsNamed: 'meta'.
+
+	self
+		assert: ((metaElements elementsDetect: [ : e | e includesAttribute: 'http-equiv' ]) attributeAt: 'content')
+		equals: 'text/html; charset=utf-8'.
+	self
+		assert: ((metaElements elementsDetect: [ : e | (e attributeNodeAt: 'name') value = 'generator' ]) attributeAt: 'content')
+		equals: 'microdown'.
+	self
+		assert: ((metaElements elementsDetect: [ : e | (e attributeNodeAt: 'name') value = 'viewport' ]) attributeAt: 'content')
+		equals: 'width=device-width,initial-scale=1.0,user-scalable=yes'.
+
 ]
 
 { #category : #tests }

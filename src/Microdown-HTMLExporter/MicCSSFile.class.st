@@ -1,3 +1,6 @@
+"
+It includes behavior to facilitate the handling of CSS files, such as relative paths, copying to other folders, etc.
+"
 Class {
 	#name : #MicCSSFile,
 	#superclass : #Object,
@@ -15,11 +18,14 @@ MicCSSFile >> basename [
 
 { #category : #copying }
 MicCSSFile >> copyTo: aDestinationDir [
-	"Copy the receiver into aDestinationDir "
+	"Copy the receiver into aDestinationDir, if the file already exists, notify, delete it and retry"
 
 	[ self fileReference copyTo: aDestinationDir / self basename ]
 	on: FileExists 
-	do: [ : ex | "do nothing" ]
+	do: [ : ex | 
+		ex printString traceCr.
+		(aDestinationDir / self basename) ensureDelete.
+		ex retry. ]
 ]
 
 { #category : #accessing }

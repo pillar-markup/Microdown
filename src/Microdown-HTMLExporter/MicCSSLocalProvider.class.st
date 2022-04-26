@@ -1,5 +1,5 @@
 "
-Includes behavior to download pre-defined CSS libraries in a local directory. Supported libraries are specified in a class protocol named ""libraries""
+Includes behavior to download pre-defined CSS libraries in a local directory. Supported libraries are specified in the class protocol named ""libraries"". If not specified, a default destination folder is set automatically.
 
 ## Download CSS libraries
 
@@ -14,7 +14,9 @@ See superclass comments to check how to add a CSS library.
 The destination folder where CSS libraries are downloaded can be configured with #destinationDir:
 
 ```
-MicCSSLocalProvider destinationDir: 'css_libs';
+MicCSSLocalProvider 
+	destinationDir: 'css_libs';
+	getCSSLibs
 ```
 "
 Class {
