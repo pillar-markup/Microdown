@@ -4,13 +4,17 @@ A MicGitHubRessourceReferenceTest is a test class for testing the behavior of Mi
 Class {
 	#name : #MicGitHubRessourceReferenceTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'savedCache'
-	],
 	#category : #'Microdown-DocumentBrowser-Tests-ResourceModel'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - accessing' }
+MicGitHubRessourceReferenceTest >> ensureApi: anInteger for: aFullBlockClosure [ 
+	MicGitHubAPI apiCallsRemaining >= anInteger 
+		ifTrue: [ aFullBlockClosure value ]
+		ifFalse: [ self skip: 'Rate limit exhaused' ]
+]
+
+{ #category : #'test data' }
 MicGitHubRessourceReferenceTest >> sampleTreeResponse [
 
 	^ { 
@@ -72,68 +76,30 @@ MicGitHubRessourceReferenceTest >> sampleTreeResponse [
 ]
 
 { #category : #tests }
-MicGitHubRessourceReferenceTest >> setUp [ 
-	super setUp.
-	savedCache := MicGitHubRessourceReference cache.
-	
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> tearDown [ 
-	MicGitHubRessourceReference cache: savedCache.
-	super tearDown
-	
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> testCache [
-	MicGitHubRessourceReference reset.
-	self assert: MicGitHubRessourceReference cache isEmpty.
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> testCache_storesNewInstances [
-	|uri ref otherRef|
-	MicGitHubRessourceReference reset.
-	uri := 'github://pillar-markup/Microdown/doc/testMicrodown/readme.md'.
-	ref := MicResourceReference fromUri: uri.
-	self assert: (MicGitHubRessourceReference cache at: uri) notNil.
-	otherRef := MicResourceReference fromUri: uri.
-	self assert: otherRef equals: ref
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> testCache_takesBranchIntoConsideration [
-	|ref|
-	MicGitHubRessourceReference reset.
-	ref := MicResourceReference fromUri: 'github://pillar-markup/Microdown:aaa'.
-	self deny: (MicResourceReference fromUri: 'github://pillar-markup/Microdown') equals: ref.
-	self deny: (MicResourceReference fromUri: 'github://pillar-markup/Microdown:bbb') equals: ref
-]
-
-{ #category : #tests }
 MicGitHubRessourceReferenceTest >> testContents [
 	|uri ref contents|
-	uri := 'github://pillar-markup/Microdown/doc/testMicrodown/readme.md'.
-	ref := MicResourceReference fromUri: uri.
-	contents := ref contents.
-	self 
-		assert: (contents beginsWith: '# Test documents' )
+	self ensureApi: 1 for: [
+		uri := 'github://pillar-markup/Microdown/doc/testMicrodown/readme.md'.
+		ref := MicResourceReference fromUri: uri.
+		contents := ref contents.
+		self 
+			assert: (contents beginsWith: '# Test documents' )]
 ]
 
 { #category : #tests }
 MicGitHubRessourceReferenceTest >> testExtractFolderReferencesFrom [
 
 	| uri ref response folders expectedRaw |
-	uri := 'github://pillar-markup/Microdown:testBranch/doc/testMicrodown'.
-	ref := MicResourceReference fromUri: uri.
-	response := self sampleTreeResponse.
-	folders := ref extractFolderReferencesFrom: response.
-	self assert: folders size equals: 2.
-	expectedRaw := 'https://raw.githubusercontent.com/pillar-markup/Microdown/testBranch/doc/testMicrodown'.
-	self assert: (folders 
-		allSatisfy: [:folder |
-			folder pathStringForRawAccess beginsWith: expectedRaw]) 
+	self ensureApi: 1 for: [
+		uri := 'github://pillar-markup/Microdown:testBranch/doc/testMicrodown'.
+		ref := MicResourceReference fromUri: uri.
+		response := self sampleTreeResponse.
+		folders := ref extractFolderReferencesFrom: response.
+		self assert: folders size equals: 2.
+		expectedRaw := 'https://raw.githubusercontent.com/pillar-markup/Microdown/testBranch/doc/testMicrodown'.
+		self assert: (folders 
+			allSatisfy: [:folder |
+				folder pathStringForRawAccess beginsWith: expectedRaw]) ]
 	
 ]
 
@@ -141,15 +107,16 @@ MicGitHubRessourceReferenceTest >> testExtractFolderReferencesFrom [
 MicGitHubRessourceReferenceTest >> testExtractMicrodownDocReferencesFrom [
 
 	| uri ref response documents expectedRaw |
-	uri := 'github://pillar-markup/Microdown:testBranch/doc/testMicrodown'.
-	ref := MicResourceReference fromUri: uri.
-	response := self sampleTreeResponse.
-	documents := ref extractMicrodownDocReferencesFrom: response.
-	self assert: documents size equals: 2.
-	expectedRaw := 'https://raw.githubusercontent.com/pillar-markup/Microdown/testBranch/doc/testMicrodown'.
-	self assert: (documents 
-		allSatisfy: [:doc |
-			doc uri printString beginsWith: expectedRaw]) 
+	self ensureApi: 1 for: [ 
+		uri := 'github://pillar-markup/Microdown:testBranch/doc/testMicrodown'.
+		ref := MicResourceReference fromUri: uri.
+		response := self sampleTreeResponse.
+		documents := ref extractMicrodownDocReferencesFrom: response.
+		self assert: documents size equals: 2.
+		expectedRaw := 'https://raw.githubusercontent.com/pillar-markup/Microdown/testBranch/doc/testMicrodown'.
+		self assert: (documents 
+			allSatisfy: [:doc |
+				doc uri printString beginsWith: expectedRaw]) ]
 	
 ]
 
@@ -166,14 +133,14 @@ MicGitHubRessourceReferenceTest >> testGithubTreesApiRequest [
 { #category : #tests }
 MicGitHubRessourceReferenceTest >> testLoadChildren [
 	|uri ref children|
-	MicGitHubRessourceReference reset.
-	uri := 'github://pillar-markup/Microdown/doc/testMicrodown'.
-	ref := MicResourceReference fromUri: uri.
-	children := ref loadChildren.
-	self 
-		assert: children size 
-		equals: 4.
-	self assert: (children allSatisfy: [:child | child isKindOf: MicAbsoluteResourceReference ]).
+	self ensureApi: 3 for: [
+		uri := 'github://pillar-markup/Microdown/doc/testMicrodown'.
+		ref := MicResourceReference fromUri: uri.
+		children := ref loadChildren.
+		self 
+			assert: children size 
+			equals: 4.
+		self assert: (children allSatisfy: [:child | child isKindOf: MicAbsoluteResourceReference ])]
 ]
 
 { #category : #tests }
@@ -189,36 +156,9 @@ MicGitHubRessourceReferenceTest >> testUri [
 ]
 
 { #category : #tests }
-MicGitHubRessourceReferenceTest >> testUri_defaultBranch [
-	|uri ref|
-	uri := 'github://JohnDoe/Calculator'.
-	ref := MicResourceReference fromUri: uri.
-	
-	self assert: ref branch equals: 'main'
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo [
-	|uri ref|
-	uri := 'github://pharo-project/pharo'.
-	ref := MicResourceReference fromUri: uri.
-	
-	self assert: (ref branch beginsWith: 'Pharo')
-]
-
-{ #category : #tests }
 MicGitHubRessourceReferenceTest >> testUri_defaultBranch_Pharo_withDoc [
 	|uri ref|
 	uri := 'github://pharo-project/pharo:dummyBranch/path/to/docs'.
 	ref := MicResourceReference fromUri: uri.
 	self assert: ref docFolder equals: { 'path'. 'to'. 'docs' }
-]
-
-{ #category : #tests }
-MicGitHubRessourceReferenceTest >> testUri_defaultPath [
-	|uri ref|
-	uri := 'github://JohnDoe/Calculator:devBranch'.
-	ref := MicResourceReference fromUri: uri.
-	
-	self assert: ref docFolder equals: #()
 ]

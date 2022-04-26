@@ -25,39 +25,8 @@ Class {
 		'docFolder',
 		'children'
 	],
-	#classVars : [
-		'RefCache'
-	],
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
-
-{ #category : #origins }
-MicGitHubRessourceReference class >> cache [
-	RefCache  ifNil: [ RefCache := LRUCache new maximumWeight: 117; yourself ].
-	^ RefCache
-]
-
-{ #category : #origins }
-MicGitHubRessourceReference class >> cache: aCache [
-	"Only intended usage is for testing"
-	RefCache := aCache
-]
-
-{ #category : #origins }
-MicGitHubRessourceReference class >> newFromUri: aUri [
-	| key |
-	key := aUri printString.
-	^ self cache 
-		at: key 
-		ifAbsentPut: [ self new uri: aUri; yourself ]
-]
-
-{ #category : #'class initialization' }
-MicGitHubRessourceReference class >> reset [
-	<script>
-	RefCache := nil
-	
-]
 
 { #category : #accessing }
 MicGitHubRessourceReference >> binaryReadStream [
@@ -71,12 +40,12 @@ MicGitHubRessourceReference >> branch [
 	^ branch
 ]
 
-{ #category : #private }
+{ #category : #'document browser' }
 MicGitHubRessourceReference >> browserIcon [
 	^ self iconNamed: #github
 ]
 
-{ #category : #private }
+{ #category : #'document browser' }
 MicGitHubRessourceReference >> browserTitle [
 	^ self uri query
 		ifNotNil:[:query | query at: #fullPath]
@@ -122,6 +91,11 @@ MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
 ]
 
 { #category : #private }
+MicGitHubRessourceReference >> githubApi [
+	^ MicGitHubAPI new
+]
+
+{ #category : #private }
 MicGitHubRessourceReference >> githubPathLookup [
 	"I return the response object from the trees api - see https://docs.github.com/en/rest/reference/git#get-a-tree"
 	| request response |
@@ -160,14 +134,10 @@ MicGitHubRessourceReference >> loadChildren [
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MicGitHubRessourceReference >> lookupDefaultBranch [
-	"Looks up the name of the default branch. returns nil if user/project does not exist"
-	| request response |
-	'"default_branch": "Pharo10"'.
-	request := 'https://api.github.com/repos/{1}/{2}' format: {user. project}.
-	response := STONJSON fromString: (ZnEasy get: request) entity contents.
-	^ response at: 'default_branch' ifAbsent: [ 'main' ]
+	
+	^ self githubApi defaultBranch: user project: project
 	
 ]
 

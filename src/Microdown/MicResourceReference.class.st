@@ -42,7 +42,7 @@ MicResourceReference class >> fromUri: aString [
 	uri scheme = 'comment'
 		ifTrue: [ ^ MicPharoCommentResourceReference newFromUri: uri ].
 	uri scheme = 'github'
-		ifTrue: [ ^ MicGitHubRessourceReference newFromUri: uri ].
+		ifTrue: [ ^ MicGitHubRessourceReference new uri: uri ].
 	^uri
 	
 ]
