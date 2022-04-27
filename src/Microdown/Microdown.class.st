@@ -96,22 +96,28 @@ Microdown class >> parse: aStreamOrString [
 	^ self new parse: aStreamOrString
 ]
 
-{ #category : #deprecated }
-Microdown class >> resolve: document fromUri: uri [
+{ #category : #facade }
+Microdown class >> resolveDocument: document withBase: uri [
 	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
 	|baseUri|
 	
-	self error: 'I should not be used directly'.
 	baseUri := uri.
 	(uri isString | uri isText)
 		ifTrue: [ baseUri := uri asString asUrl ].
 	"ZnUrl treats file:///path as relative as there is no host, so we cannot use the isRelative method"
 	(baseUri isHttp and: [baseUri isRelative] )
 		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
-	MicZincPathResolver new
-		absoluteReference: baseUri;
-		resolveDocument: document.
+	MicZincPathResolver resolve: document withBase: baseUri.
 	^ document 
+]
+
+{ #category : #facade }
+Microdown class >> resolveString: markup withBase: uri [
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
+	| doc |
+	doc := self parse: markup.
+	self resolveDocument: doc withBase: uri.
+	^ doc
 ]
 
 { #category : #facade }
@@ -131,11 +137,4 @@ Microdown >> render: aStringOrDoc [
 	"Facade method to render a microdown string to Text"
 	^ self class render: aStringOrDoc 
 	
-]
-
-{ #category : #deprecated }
-Microdown >> resolve: document fromUri: uri [
-	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
-	self error: 'I should not be used directly'.
-	^ self class resolve: document fromUri: uri
 ]
