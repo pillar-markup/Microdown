@@ -58,9 +58,7 @@ MicAbsoluteResourceReference >> loadMicrodown [
 	"I am an absolute reference, so I can load completely"
 	| doc| 
 	doc := Microdown parse: self contents.
-		MicZincPathResolver new
-			absoluteReference: self;
-			resolveDocument: doc.
+	MicZincPathResolver resolve: doc withBase: self.
 	^ doc
 ]
 
@@ -77,6 +75,14 @@ MicAbsoluteResourceReference >> printOn: aStream [
 		nextPutAll: '(';
 		nextPutAll: self uriString;
 		nextPutAll: ')'
+]
+
+{ #category : #visiting }
+MicAbsoluteResourceReference >> resolveDocument: document [
+	MicZincPathResolver 
+		resolve: document 
+		withBase: self.
+	^ document
 ]
 
 { #category : #accessing }

@@ -18,9 +18,7 @@ MicZincPathResolverTest >> testVisitFileImage [
 		filesystem: #Bogus;
 		yourself.
 	
-	MicZincPathResolver new 
-		absoluteReference: absoluteFile;
-		resolveDocument: doc.
+	MicZincPathResolver resolve: doc withBase: absoluteFile.
 	self assert: imageNode reference isRelative not.
 	self assert: imageNode reference uriString equals: 'file:///my/deep/directory/images/pharo.png'.
 	self assert: imageNode reference filesystem equals: #Bogus
@@ -33,9 +31,9 @@ MicZincPathResolverTest >> testVisitHttpImage [
 	imageNode := doc children first children first.
 	self assert:  imageNode reference relativePath equals: 'images/pharo.png'.
 	
-	MicZincPathResolver new 
-		absoluteReference: 'http://nowhere/my/deep/directory/sourceFile.md';
-		resolveDocument: doc.
+	MicZincPathResolver
+		resolve: doc 
+		withBase: 'http://nowhere/my/deep/directory/sourceFile.md'.
 	self assert:  imageNode reference uriString equals: 'http://nowhere/my/deep/directory/images/pharo.png'.
 ]
 
@@ -46,9 +44,9 @@ MicZincPathResolverTest >> testVisitHttpInput [
 	inputNode := doc children first children first.
 	self assert:  inputNode reference relativePath equals: 'otherFile.md'.
 	
-	MicZincPathResolver new 
-		absoluteReference: 'http://nowhere/my/deep/directory/sourceFile.md';
-		resolveDocument: doc.
+	MicZincPathResolver
+		resolve: doc 
+		withBase: 'http://nowhere/my/deep/directory/sourceFile.md'.
 	self assert:  inputNode reference uriString equals: 'http://nowhere/my/deep/directory/otherFile.md'.
 ]
 
@@ -59,9 +57,9 @@ MicZincPathResolverTest >> testVisitHttpInput_WithReference [
 	inputNode := doc children first children first.
 	self assert:  inputNode reference relativePath equals: 'otherFile.md'.
 	
-	MicZincPathResolver new 
-		absoluteReference: (MicResourceReference fromUri: 'http://nowhere/my/deep/directory/sourceFile.md');
-		resolveDocument: doc.
+	MicZincPathResolver
+		resolve: doc 
+		withBase: (MicResourceReference fromUri: 'http://nowhere/my/deep/directory/sourceFile.md').
 	self assert:  inputNode reference uriString equals: 'http://nowhere/my/deep/directory/otherFile.md'.
 ]
 
@@ -72,8 +70,8 @@ MicZincPathResolverTest >> testVisitHttpLink [
 	linkNode := doc children first children first.
 	self assert:  linkNode reference relativePath equals: 'otherFile.md'.
 	
-	MicZincPathResolver new 
-		absoluteReference: 'http://nowhere/my/deep/directory/sourceFile.md';
-		resolveDocument: doc.
+	MicZincPathResolver
+		resolve: doc 
+		withBase: 'http://nowhere/my/deep/directory/sourceFile.md'.
 	self assert:  linkNode reference uriString equals: 'http://nowhere/my/deep/directory/otherFile.md'.
 ]

@@ -25,12 +25,12 @@ Class {
 }
 
 { #category : #'instance creation' }
-MicZincPathResolver class >> resolve: document withBase: aZnUrl [
-	"Assumes aZnUrl to be an absolute uri. Converts all relative references to absolute references in document"
-	self error: 'Do not use me - make instance'.
+MicZincPathResolver class >> resolve: document withBase: aRef [
+	"Assumes aRef to be a MicAbsoluteRessourceReference. 
+	Converts all relative references to absolute references in document"
 	self new
-		baseUri: aZnUrl;
-		visit: document
+		absoluteReference: aRef;
+		resolveDocument: document
 		
 ]
 
