@@ -33,6 +33,11 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 		filesystem: aFileReference fileSystem 
 ]
 
+{ #category : #'instance creation' }
+MicFileResourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'file'
+]
+
 { #category : #accessing }
 MicFileResourceReference >> binaryReadStream [
 	[^ self fileReference binaryReadStream]

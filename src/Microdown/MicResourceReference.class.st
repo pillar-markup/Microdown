@@ -16,6 +16,12 @@ As a special case `MicFileResourceReference` can be created from a regular pharo
 
 Besides the absolute resource references (file, http), `MicRelativeResourceReference` is a partial/relative reference, which must be resolved with respect to an absolute reference before the resource can be accessed. Resolution of relative references is done by `MicZincPathResolver`.
 
+## Extension
+It is possible to add new kinds of ResourceReferences. The idea is each ressource reference type uses its own schema name in the uri - for example files are supported by the scheme `file://....`. Your new resource reference should:
+
+- implement `handlesUriScheme:` on the class side returning true if the passes scheme is handled by your extension
+- maybe override `newFromUri:` on the class side if your reference type need to handle the instantiation of reference objects
+
 
 
 "
@@ -27,24 +33,30 @@ Class {
 
 { #category : #'instance creation' }
 MicResourceReference class >> fromUri: aString [
-	| uri |
+	| uri refClass |
 	(aString beginsWith: '/')
 		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
 		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
-	(uri scheme beginsWith: 'http')
-		ifTrue: [ ^ MicHTTPResourceReference new uri: uri ].
-	uri scheme = 'file'
-		ifTrue: [ ^ MicFileResourceReference new uri: uri ].
-	uri scheme = 'pharo'
-		ifTrue: [ ^ MicPharoImageResourceReference new uri: uri ].
-	uri scheme = 'comment'
-		ifTrue: [ ^ MicPharoCommentResourceReference newFromUri: uri ].
-	uri scheme = 'github'
-		ifTrue: [ ^ MicGitHubRessourceReference new uri: uri ].
-	^uri
+	refClass := self allSubclasses 
+		detect: [ :rc | rc handlesUriScheme: uri scheme ]
+		ifNone: [ MicResourceReferenceError signal: 'Unknown uri scheme: ', uri scheme ].
+	^ refClass newFromUri: uri
 	
+]
+
+{ #category : #'instance creation' }
+MicResourceReference class >> handlesUriScheme: scheme [
+	"Return true if this class can handle the scheme name. 
+	Part of the extension mechanism for new ressource reference types"
+	^ false
+]
+
+{ #category : #'instance creation' }
+MicResourceReference class >> newFromUri: uri [
+	"Default implementation"
+	^ self new uri: uri; yourself
 ]
 
 { #category : #testing }

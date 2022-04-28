@@ -18,6 +18,11 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #'instance creation' }
+MicPharoImageResourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'pharo'
+]
+
 { #category : #'accessing - resources' }
 MicPharoImageResourceReference >> loadImage [
 

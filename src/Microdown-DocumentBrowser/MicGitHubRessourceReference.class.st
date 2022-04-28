@@ -28,6 +28,39 @@ Class {
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
+{ #category : #origins }
+MicGitHubRessourceReference class >> cache [
+	RefCache  ifNil: [ RefCache := LRUCache new maximumWeight: 117; yourself ].
+	^ RefCache
+]
+
+{ #category : #origins }
+MicGitHubRessourceReference class >> cache: aCache [
+	"Only intended usage is for testing"
+	RefCache := aCache
+]
+
+{ #category : #'instance creation' }
+MicGitHubRessourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'github'
+]
+
+{ #category : #origins }
+MicGitHubRessourceReference class >> newFromUri: aUri [
+	| key |
+	key := aUri printString.
+	^ self cache 
+		at: key 
+		ifAbsentPut: [ self new uri: aUri; yourself ]
+]
+
+{ #category : #'class initialization' }
+MicGitHubRessourceReference class >> reset [
+	<script>
+	RefCache := nil
+	
+]
+
 { #category : #accessing }
 MicGitHubRessourceReference >> binaryReadStream [
 	"return the binaryStream I refer to"
