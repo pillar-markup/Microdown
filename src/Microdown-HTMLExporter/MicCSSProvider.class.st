@@ -123,7 +123,7 @@ MicCSSProvider class >> cssResource: libAttributes [
 ]
 
 { #category : #accessing }
-MicCSSProvider class >> installExampless [
+MicCSSProvider class >> installExamples [
 	<script>
 
 	self libraryNames do: [ : libName |

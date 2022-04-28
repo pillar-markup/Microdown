@@ -181,6 +181,16 @@ MicHTMLDocTest >> testFileName [
 ]
 
 { #category : #tests }
+MicHTMLDocTest >> testFromMicrodown [
+
+	| html |
+	
+	html := doc fromMicrodown: MicDocFactory exampleMic.
+	self
+		deny: html contents isEmpty.
+]
+
+{ #category : #tests }
 MicHTMLDocTest >> testKeywords [
 
 	self
@@ -405,4 +415,48 @@ MicHTMLDocTest >> testWriteDocumentViewport [
 	parsedTag := (doc contents copyWithoutAll: '<">') substrings.
 	self assert: (parsedTag includes: 'name=viewport').	
 	self assert: (parsedTag includes: 'content=' , doc defaultViewport ).	
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> testWriteToFile [
+
+	| fileName file wd |
+	
+	fileName := 'index.html'.
+	wd := FileSystem memory workingDirectory / 'testDir'.
+	file := wd / fileName.
+
+	doc 
+		destinationDir: wd;
+		writeToFile.
+
+	self 
+		assert: file exists
+		description: 'It tests that the document was created'.
+	self 
+		assert: file basename
+		equals: fileName.
+	wd ensureDeleteAllChildren.
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> testWriteToFileNamed [
+
+	| fileName file wd |
+	
+	fileName := 'sampleFile.html'.
+	wd := FileSystem memory workingDirectory / 'testDir'.
+	file := wd / fileName.
+
+	doc 
+		destinationDir: wd;
+		writeToFileNamed: fileName.
+
+	self 
+		assert: file exists
+		description: 'It tests that the document was created'.
+	self 
+		assert: file basename
+		equals: fileName.
+	wd ensureDeleteAllChildren.
 ]

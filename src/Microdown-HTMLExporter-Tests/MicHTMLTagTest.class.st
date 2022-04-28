@@ -10,7 +10,7 @@ Class {
 	#category : #'Microdown-HTMLExporter-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> sampleMicFigureBlock [
 
 	^ MicFigureBlock new 
@@ -19,7 +19,7 @@ MicHTMLTagTest >> sampleMicFigureBlock [
 		yourself.
 ]
 
-{ #category : #test }
+{ #category : #running }
 MicHTMLTagTest >> setUp [
 
 	super setUp.
@@ -34,7 +34,7 @@ MicHTMLTagTest >> tag [
 	^ tag
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testAddArguments [
 
 	self tag addArguments: self sampleMicFigureBlock.

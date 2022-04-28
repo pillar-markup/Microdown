@@ -200,10 +200,11 @@ MicHTMLDoc >> fileName: anObject [
 
 { #category : #accessing }
 MicHTMLDoc >> flush [
-	"If we have a fileName already, then write the receiver's contents to it. If not, then assign a temporary file name and write contents"
+	"Write the receiver's contents to a file. If there is no file name, then assign a temporary file name and write contents"
 	
 	self fileName ifNil: [ self fileName: self tempFileName ].
-	(self destinationDir asFileReference / self fileName) 
+	(self destinationDir asFileReference / self fileName)
+		ensureCreateFile;
 		writeStreamDo: [ : fileStream | 
 			fileStream 
 				nextPutAll: self contents; 
@@ -215,6 +216,13 @@ MicHTMLDoc >> fromMicrodown: aMicrodownString [
 	"Convert to HTML and wrap aMicrodownString in the receiver's HTML stream"
 
 	self writeDocument: (Microdown asHTMLString: aMicrodownString)
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> fullName [
+	"Return the full path name of the receiver."
+	
+	^ (self destinationDir asFileReference / self fileName) fullName 
 ]
 
 { #category : #initialization }
@@ -332,7 +340,8 @@ MicHTMLDoc >> writeDocument: aHTMLString [
 		with: [ 
 			self 
 				writeDocumentHead;
-				writeDocumentBody: aHTMLString ]
+				writeDocumentBody: aHTMLString ].
+	self flush.
 ]
 
 { #category : #writing }

@@ -185,7 +185,7 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 				with: [ super visitAnnotated: anAnnotatedParagraph ] ].
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitBold: aBoldText [
 
 	canvas tag
@@ -193,7 +193,7 @@ MicHTMLVisitor >> visitBold: aBoldText [
 		with: [ super visitBold: aBoldText ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - extensions' }
 MicHTMLVisitor >> visitCitation: aCitation [
 
 	canvas tag
@@ -267,7 +267,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitFigure: aFigure [
 	"Write mark up elements related with photo in the receiver's canvas"
 
@@ -302,7 +302,7 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitItalic: aItalicText [
 
 	canvas tag
@@ -310,7 +310,7 @@ MicHTMLVisitor >> visitItalic: aItalicText [
 		with: [ super visitItalic: aItalicText ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitLink: aLink [
 	"Write markup hyperlink, which is used to link from one page to another"
 	
@@ -322,7 +322,7 @@ MicHTMLVisitor >> visitLink: aLink [
 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitMonospace: aMonospace [
 
 	canvas tag
@@ -344,11 +344,10 @@ MicHTMLVisitor >> visitQuote: aQuote [
 
 	canvas tag
 		name: 'q';
-		with: [ 
-			super visitMonospace: aQuote ]
+		with: [ super visitQuote: aQuote ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitStrike: aStrike [
 
 	canvas tag
@@ -374,13 +373,13 @@ MicHTMLVisitor >> visitTable: aTable [
 			 ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitText: aText [
 
 	canvas nextPutAll: aText text
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - list' }
 MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 
 	canvas newLine.
@@ -391,14 +390,27 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 			super visitUnorderedList: anUnorderedList  ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	"will not work with we have text decorators such as bold, italic, monospace"
-	
+
 	canvas tag
 		name: 'li';
-		with: anUnorderedListItem text.
-	canvas newLine
+		with: anUnorderedListItem listItemText.
+	canvas newLine.
+	anUnorderedListItem children size > 1
+		ifTrue: [ 
+			 anUnorderedListItem children second nestedLevel > anUnorderedListItem nestedLevel
+				ifTrue: [ 
+					| listItemWithoutText |
+					listItemWithoutText := anUnorderedListItem copy.
+					listItemWithoutText children removeFirst.
+					self visitUnorderedList: listItemWithoutText ]
+				ifFalse: [ 
+					| listItemWithoutFirst |
+					listItemWithoutFirst := anUnorderedListItem copy.
+					listItemWithoutFirst children removeFirst.					
+					self visitUnorderedListItem: listItemWithoutFirst ] ]
 ]
 
 { #category : #visiting }
