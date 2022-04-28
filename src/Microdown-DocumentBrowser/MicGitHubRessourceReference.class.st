@@ -25,9 +25,6 @@ Class {
 		'docFolder',
 		'children'
 	],
-	#classVars : [
-		'RefCache'
-	],
 	#category : #'Microdown-DocumentBrowser-ResourceModel'
 }
 
@@ -76,12 +73,12 @@ MicGitHubRessourceReference >> branch [
 	^ branch
 ]
 
-{ #category : #private }
+{ #category : #'document browser' }
 MicGitHubRessourceReference >> browserIcon [
 	^ self iconNamed: #github
 ]
 
-{ #category : #private }
+{ #category : #'document browser' }
 MicGitHubRessourceReference >> browserTitle [
 	^ self uri query
 		ifNotNil:[:query | query at: #fullPath]
@@ -127,14 +124,19 @@ MicGitHubRessourceReference >> extractMicrodownDocReferencesFrom: response [
 ]
 
 { #category : #private }
+MicGitHubRessourceReference >> githubApi [
+	^ MicGitHubAPI new
+]
+
+{ #category : #private }
 MicGitHubRessourceReference >> githubPathLookup [
 	"I return the response object from the trees api - see https://docs.github.com/en/rest/reference/git#get-a-tree"
 	| request response |
 	request := self githubTreesApiRequest.
-	1 to: self docFolder size do: [ :index |
-		response := STONJSON fromString: (ZnEasy get: request )entity contents.
-		self flag: 'Should check for api restriction overload'.
-		request := ((response at: #tree) detect: [ :elem | (elem at: #path) = (self docFolder at: index) ]) at: #url.
+	self docFolder do: [ :segment |
+		response := self githubApi get: request.
+		request := ((response at: #tree) 
+			detect: [ :elem | (elem at: #path) = segment ]) at: #url.
 		 ].
 	response := STONJSON fromString: (ZnEasy get: request )entity contents.
 	^ response
@@ -165,14 +167,10 @@ MicGitHubRessourceReference >> loadChildren [
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MicGitHubRessourceReference >> lookupDefaultBranch [
-	"Looks up the name of the default branch. returns nil if user/project does not exist"
-	| request response |
-	'"default_branch": "Pharo10"'.
-	request := 'https://api.github.com/repos/{1}/{2}' format: {user. project}.
-	response := STONJSON fromString: (ZnEasy get: request) entity contents.
-	^ response at: 'default_branch' ifAbsent: [ 'main' ]
+	
+	^ self githubApi defaultBranch: user project: project
 	
 ]
 
