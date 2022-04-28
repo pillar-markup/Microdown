@@ -40,7 +40,7 @@ MicGitHubAPI class >> cache: aCache [
 { #category : #'class initialization' }
 MicGitHubAPI class >> reset [
 	<script>
-	ResponseCache := nil
+	ResponseCache := nil.
 	
 ]
 
@@ -68,30 +68,25 @@ MicGitHubAPI >> extractRateInfo: response [
 ]
 
 { #category : #operations }
-MicGitHubAPI >> get: aString [ 
-	| response |
-	response := (self requestTo: aString) get; response.
-	^ self processResponse: response
+MicGitHubAPI >> get: apiCallString [
+	"I return a json structure as the result from the github api call"
+	^ self class cache 
+		at: apiCallString 
+		ifAbsentPut: [ self performApiCall: apiCallString]
 	
 ]
 
 { #category : #private }
-MicGitHubAPI >> processResponse: response [
-	| json |
+MicGitHubAPI >> performApiCall: apiCallString [
+	| response json|
+	response :=(ZnClient new  
+		headerAt: 'Accept' put: self acceptMediaType;
+		url: apiCallString) get; response.
 	self extractRateInfo: response.
 	json := STONJSON fromString: response entity contents.
 	((json includesKey: #message) and: [(json at: #message) beginsWith: 'API rate limit exceeded'])
 		ifTrue: [ MicGitHubAPIRateError new response: json; signal ].
 	^ json
-]
-
-{ #category : #private }
-MicGitHubAPI >> requestTo: url [
-	^ self class cache 
-		at: url 
-		ifAbsentPut: [ 
-			ZnClient new  
-				headerAt: 'Accept' put: self acceptMediaType;
-				url: url;
-				yourself ]
+	
+	
 ]

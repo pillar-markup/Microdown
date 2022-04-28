@@ -22,25 +22,34 @@ MicGitHubAPITest >> setUp [
 	super setUp.
 	
 	api := MicGitHubAPI new.
+	MicGitHubAPI apiCallsRemaining = 60
+		ifTrue: [ 
+			[ api defaultBranch: 'pillar-markup' project: 'Microdown' ]
+			on: MicGitHubAPIRateError 
+			do: [ 'Just reading the default branch will set the number of API calls remaining' ]]
 ]
 
 { #category : #tests }
 MicGitHubAPITest >> testGet [
 	| url res |
 	self ensureApi: 1 for: [
-	url := 'https://api.github.com/repos/pillar-markup/Microdown'.
-	res := api get: url.
-	self assert: (res at: 'full_name') equals: 'pillar-markup/Microdown'.
-	self assert: (res at: 'default_branch') equals: 'dev']
+		url := 'https://api.github.com/repos/pillar-markup/Microdown'.
+		res := api get: url.
+		self assert: (res at: 'full_name') equals: 'pillar-markup/Microdown'.
+		self assert: (res at: 'default_branch') equals: 'dev']
 ]
 
 { #category : #tests }
 MicGitHubAPITest >> testIsCaching [
-	| url res |
+	| url res rate|
 	self ensureApi: 1 for: [
 		url := 'https://api.github.com/repos/pillar-markup/Microdown'.
 		res := api get: url.
-		self assert: (api class cache includesKey: url)].
+		self assert: (api class cache includesKey: url).
+		rate := MicGitHubAPI apiCallsRemaining.
+		api get: url.
+		self assert: MicGitHubAPI apiCallsRemaining equals: rate
+		].
 ]
 
 { #category : #tests }
