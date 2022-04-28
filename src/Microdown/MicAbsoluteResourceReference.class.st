@@ -77,6 +77,14 @@ MicAbsoluteResourceReference >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
+{ #category : #visiting }
+MicAbsoluteResourceReference >> resolveDocument: document [
+	MicZincPathResolver 
+		resolve: document 
+		withBase: self.
+	^ document
+]
+
 { #category : #accessing }
 MicAbsoluteResourceReference >> uri [
 

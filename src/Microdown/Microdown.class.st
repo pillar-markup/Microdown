@@ -97,23 +97,16 @@ Microdown class >> parse: aStreamOrString [
 ]
 
 { #category : #facade }
-Microdown class >> resolveDocument: document withBase: uri [
-	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
-	|baseUri|
-	
-	baseUri := uri.
-	(uri isString | uri isText)
-		ifTrue: [ baseUri := uri asString asUrl ].
-	"ZnUrl treats file:///path as relative as there is no host, so we cannot use the isRelative method"
-	(baseUri isHttp and: [baseUri isRelative] )
-		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
-	MicZincPathResolver resolve: document withBase: baseUri.
+Microdown class >> resolveDocument: document withBase: base [
+	"resolve all relative urls in document with respect to the absolute uri 
+	base can be a aString | aZnUrl | absoluteResourceReference"
+	base resolveDocument: document.
 	^ document 
 ]
 
 { #category : #facade }
 Microdown class >> resolveString: markup withBase: uri [
-	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl|absoluteResourceReference)"
 	| doc |
 	doc := self parse: markup.
 	self resolveDocument: doc withBase: uri.
