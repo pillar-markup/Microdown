@@ -21,7 +21,7 @@ BaselineOfMicrodown >> baseline: spec [
 					repository: 'github://pillar-markup/pillar:dev-8' ].
 				
 				spec
-					baseline: 'XMLParserHTML';
+					baseline: 'XMLParserHTML'
 					with: [ 
 						spec
 							loads: #('Core');
