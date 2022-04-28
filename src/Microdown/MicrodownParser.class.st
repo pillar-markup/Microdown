@@ -154,7 +154,7 @@ Now the implementation for now does not create a paragraph in the list_item elem
 
 "
 Class {
-	#name : #MicroDownParser,
+	#name : #MicrodownParser,
 	#superclass : #Object,
 	#instVars : [
 		'current',
@@ -168,24 +168,24 @@ Class {
 }
 
 { #category : #builder }
-MicroDownParser class >> builder [
+MicrodownParser class >> builder [
 	^ MicMicrodownTextualBuilder new
 ]
 
 { #category : #examples }
-MicroDownParser class >> example [
+MicrodownParser class >> example [
 	<sampleInstance>
 	^ self parse: self comment
 ]
 
 { #category : #'instance creation' }
-MicroDownParser class >> parse: aString [
+MicrodownParser class >> parse: aString [
 
 	^ self new parse: aString
 ]
 
 { #category : #'node creation' }
-MicroDownParser >> blockStarterClassFrom: line [
+MicrodownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
 	line ifEmpty: [ ^ nil ].
@@ -206,20 +206,20 @@ MicroDownParser >> blockStarterClassFrom: line [
 ]
 
 { #category : #accessing }
-MicroDownParser >> builder [
+MicrodownParser >> builder [
 	"return a little helper to build microdown correct expression"
 	
 	^ self class builder
 ]
 
 { #category : #accessing }
-MicroDownParser >> current [ 
+MicrodownParser >> current [ 
 
 	^ current
 ]
 
 { #category : #parsing }
-MicroDownParser >> handleErrorInLine: line [
+MicrodownParser >> handleErrorInLine: line [
 		
 	^ MicParsingError new 
 		line: line;
@@ -228,7 +228,7 @@ MicroDownParser >> handleErrorInLine: line [
 ]
 
 { #category : #parsing }
-MicroDownParser >> handleLine: line [
+MicrodownParser >> handleLine: line [
 	"The logic is the following: 
 		-first line is cleaned to avoid noise,
 		-then if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
@@ -245,7 +245,7 @@ MicroDownParser >> handleLine: line [
 ]
 
 { #category : #initialization }
-MicroDownParser >> initialize [
+MicrodownParser >> initialize [
 
 	super initialize.
 	dispatchTable := Dictionary new.
@@ -266,30 +266,30 @@ MicroDownParser >> initialize [
 ]
 
 { #category : #testing }
-MicroDownParser >> isAList: normalized [
+MicrodownParser >> isAList: normalized [
 	
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
 { #category : #'node creation' }
-MicroDownParser >> matchOrdered: line [
+MicrodownParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
 { #category : #'node creation' }
-MicroDownParser >> matchUnordered: line [
+MicrodownParser >> matchUnordered: line [
 	^ ( line beginsWith: UnorderedListPlusMarkup ) 
 		| ( line beginsWith: UnorderedListStarMarkup ) 
 		| ( line beginsWith: UnorderedListMarkup )
 ]
 
 { #category : #parsing }
-MicroDownParser >> newRootBlock [
+MicrodownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
 { #category : #parsing }
-MicroDownParser >> parse: aStreamOrString [
+MicrodownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
 	| inStream line |
@@ -308,7 +308,7 @@ MicroDownParser >> parse: aStreamOrString [
 ]
 
 { #category : #accessing }
-MicroDownParser >> setCurrent: aBlock [
+MicrodownParser >> setCurrent: aBlock [
 	"aBlock parent = current 
 		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].
 	note for me: we could just inforce this. aBlock parent: current.

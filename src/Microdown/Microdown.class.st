@@ -23,7 +23,7 @@ Microdown class >> asRichText: aStringOrDoc [
 
 { #category : #facade }
 Microdown class >> builder [
-	^ MicroDownParser builder
+	^ MicrodownParser builder
 ]
 
 { #category : #settings }
@@ -123,7 +123,7 @@ Microdown >> builder [
 { #category : #facade }
 Microdown >> parse: aStreamOrString [
 
-	^ MicroDownParser parse: aStreamOrString
+	^ MicrodownParser parse: aStreamOrString
 ]
 
 { #category : #facade }
