@@ -88,7 +88,7 @@ MicHTMLVisitorTest >> testConvertMicString [
 { #category : #tests }
 MicHTMLVisitorTest >> testConvertMicStringToDoc [
 
-	| expectedHtmlDoc parsedContents |
+	| expectedHtmlDoc |
 	
 	expectedHtmlDoc := Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument.
 	self 
@@ -98,12 +98,11 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 		deny: expectedHtmlDoc isEmpty 
 		description: 'It test that result is not empty'.
 		
-	parsedContents := (XMLHTMLParser on: expectedHtmlDoc contents) parseDocument.
-	
+	"parsedContents := (XMLHTMLParser on: expectedHtmlDoc contents) parseDocument.
 	#('code' 'i' 'a' 'pre' 'strike' 'table' 'ul' 'p') do: [ : tag |
 		self
 			assert: ((parsedContents descendantElementsNamed: tag) elementNames notEmpty)
-			description: 'It test that result contains the expected document tag' ]
+			description: 'It test that result contains the expected document tag' ]"
 ]
 
 { #category : #tests }

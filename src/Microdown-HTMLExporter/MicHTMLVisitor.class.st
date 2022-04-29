@@ -241,7 +241,6 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 					code := canvas tag
 						        name: 'code';
 						        yourself.
-					self halt.
 					language := self languageForScript: aCodeBlock.
 					language isSyntaxHighlightingPossible ifTrue: [ 
 						code parameterAt: 'class' put: language printString ].
