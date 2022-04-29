@@ -98,7 +98,7 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 		deny: expectedHtmlDoc isEmpty 
 		description: 'It test that result is not empty'.
 	self
-		assert: (expectedHtmlDoc trimBoth beginsWith: '<ul>')
+		assert: (expectedHtmlDoc trimBoth beginsWith: '<p>')
 		description: 'It test that result contains the expected document tag'
 ]
 
