@@ -398,9 +398,9 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 		name: 'li';
 		with: anUnorderedListItem listItemText.
 	canvas newLine.
-	anUnorderedListItem children size > 1
+	anUnorderedListItem hasChildren
 		ifTrue: [ 
-			 anUnorderedListItem children second nestedLevel > anUnorderedListItem nestedLevel
+			 anUnorderedListItem hasNestedChildren
 				ifTrue: [ 
 					| listItemWithoutText |
 					listItemWithoutText := anUnorderedListItem copy.
