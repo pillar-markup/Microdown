@@ -98,3 +98,8 @@ MicElement >> removeProperty: aKey ifAbsent: aBlock [
 	self properties isEmpty ifTrue: [ properties := nil ].
 	^ answer
 ]
+
+{ #category : #public }
+MicElement >> resolveFrom: aBase [
+	Microdown resolveDocument: self withBase: aBase
+]

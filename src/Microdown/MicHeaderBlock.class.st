@@ -80,6 +80,11 @@ MicHeaderBlock >> headerElements: aCollection [
 	
 ]
 
+{ #category : #'*Microdown-DocumentBrowser' }
+MicHeaderBlock >> isHeader [
+	^ true
+]
+
 { #category : #accessing }
 MicHeaderBlock >> level [
 	^ level

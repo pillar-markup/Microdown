@@ -42,6 +42,16 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-MathFlaky-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
 
+			package: #'Microdown-RichTextPresenter'
+				with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-RichTextPresenter-Tests'
+				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
+				
+			package: #'Microdown-DocumentBrowser'
+				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
+			package: #'Microdown-DocumentBrowser-Tests'
+				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];
+
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-Transformer-Tests'
@@ -88,7 +98,11 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'Core' with: #('Microdown');
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
-			group: 'Extensions' with: #(   
+			group: 'Extensions' with: #(
+				#'Microdown-RichTextPresenter'
+				#'Microdown-RichTextPresenter-Tests'
+				#'Microdown-DocumentBrowser'
+				#'Microdown-DocumentBrowser-Tests' 
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'

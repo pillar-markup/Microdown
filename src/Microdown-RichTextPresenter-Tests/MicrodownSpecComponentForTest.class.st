@@ -9,8 +9,8 @@ Class {
 	#category : #'Microdown-RichTextPresenter-Tests'
 }
 
-{ #category : #specs }
-MicrodownSpecComponentForTest class >> defaultSpec [ 
+{ #category : #layout }
+MicrodownSpecComponentForTest class >> defaultLayout [ 
 	^ SpBoxLayout newVertical 
 		add: #mdPresenter;
 		add: (SpBoxLayout newHorizontal 

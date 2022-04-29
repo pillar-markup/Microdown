@@ -64,8 +64,7 @@ Class {
 	#name : #MicEnvironmentBlock,
 	#superclass : #MicStartStopMarkupBlock,
 	#instVars : [
-		'arguments',
-		'name'
+		'arguments'
 	],
 	#category : #'Microdown-Model'
 }

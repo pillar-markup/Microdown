@@ -21,12 +21,12 @@ MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicFigureBlock >> alt [
   ^ self arguments at: #alt ifAbsent: ['']
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicFigureBlock >> alt: aString [
     self arguments at: #alt put: aString
 ]

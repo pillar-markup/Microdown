@@ -17,9 +17,9 @@ Class {
 
 { #category : #'instance creation' }
 MicrodownPresenter class >> open [
+
 	<script>
-	(self new 
-		document: MicTextPresenter cheetSheet  ) openWithSpec 
+	(self new document: MicTextPresenter cheetSheet) open
 ]
 
 { #category : #composing }
