@@ -258,6 +258,11 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 ]
 
 { #category : #visiting }
+MicHTMLVisitor >> visitColumn: aMicColumnsBlock [ 
+	"??"
+]
+
+{ #category : #visiting }
 MicHTMLVisitor >> visitColumns: aMicColumnsBlock [ 
 	"??"
 ]
