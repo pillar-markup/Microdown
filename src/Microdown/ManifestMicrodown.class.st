@@ -73,3 +73,8 @@ Class {
 ManifestMicrodown class >> ruleAnySatisfyRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#'MicFileResourceReference class' #hostOf: #true)) #'2022-01-15T12:11:48.574879+01:00') )
 ]
+
+{ #category : #'code-critics' }
+ManifestMicrodown class >> ruleUtilityMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGMethodDefinition #(#MicElement #resolveFrom: #false)) #'2022-04-27T08:53:19.440198+02:00') )
+]

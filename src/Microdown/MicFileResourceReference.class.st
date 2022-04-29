@@ -1,19 +1,26 @@
 "
-I am a file reference encapsulating a file uri (`file:///path/to/some/file.md`).
+I am a file reference encapsulating a file uri (`file:/path/to/some/file.md`).
 
-I allow the host part of the file uri to be used `file://host/path/to/some/file.md`.
+## Ambiguity of uri
+Inside the pharo image, string based file references are ambiguous. `/path/to/some/file.md` might mean a file on disk, or a file in the memory file system. 
 
-There are two predefined hosts:
-- localhost (same as not specifying a host)
-- workingdirectory (`file://workingdirectory/path/to/some/file.md`) - paths starts in working directory
+I will assume disk based if not told otherwise. 
 
-It is possible to add new hosts, a primary use case is to give memory file store a way to be expressed as a file uri. See the `MicFileResourceTest` setUp, tearDown and testMemoryStoreHost.
+I can however, be given an explisit filesystem for disambigutation using method `filesystem:`. 
+
+## Creation from pharo FileReference
+Normally instances of `MicResourceReference` are created using `MicResourceReference fromUri: uriString`.
+
+You can get an instance of me from a pharo `FileReference` using `MicFileResourceReference fromFileRef: aFileRef`. The filesystem of `aFileRef` is taken into account. 
+
+## Examples
+The test class `MicFileResourceTest` has two tests `testLoadImage` and `testLoadMicrodown` which show how to use me.
 "
 Class {
 	#name : #MicFileResourceReference,
 	#superclass : #MicAbsoluteResourceReference,
-	#classVars : [
-		'Hosts'
+	#instVars : [
+		'filesystem'
 	],
 	#category : #'Microdown-Core'
 }
@@ -21,91 +28,81 @@ Class {
 { #category : #'instance creation' }
 MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
-	| host micRef |
-	aFileReference fileSystem isDiskFileSystem
-		ifTrue:[ ^ self new uri: ('file://',aFileReference pathString ) asZnUrl].
-	"fileReference is a memory filesystem"
-	host := self hostOf: aFileReference.
-	host ifNil: [
-		host := #'memory.default'.
-		self host: host is: aFileReference fileSystem].
-	micRef := self new uri: ('file://', host, aFileReference pathString ) asZnUrl .
-	^ micRef
+	^ self new
+		uri: ('file://',aFileReference pathString) asZnUrl;
+		filesystem: aFileReference fileSystem 
 ]
 
-{ #category : #'host resolution' }
-MicFileResourceReference class >> host: hostName is: aFileReference [ 
-	self hosts at: hostName put: aFileReference
-
+{ #category : #'instance creation' }
+MicFileResourceReference class >> handlesUriScheme: scheme [
+	^ scheme = 'file'
 ]
 
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hostFileReference: hostName [ 
-	"returns a file reference for the host, or nil if no such host exists"
-	^ self hosts at: hostName ifAbsent: [ ^ nil ] 
-
+{ #category : #accessing }
+MicFileResourceReference >> binaryReadStream [
+	[^ self fileReference binaryReadStream]
+	on: FileDoesNotExistException 
+	do: [ :error | 
+		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hostOf: aFileReference [
-	| host |
-	host := self hosts associations 
-		detect: [ :assoc | assoc value = aFileReference fileSystem ]
-		ifNone: [ ^ nil ].
-	^ host key
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> hosts [ 
-	Hosts ifNil: [ 
-		Hosts := Dictionary new. 
-		self populateHosts ].
-	^ Hosts
-]
-
-{ #category : #'class initialization' }
-MicFileResourceReference class >> initialize [  
-	<script>
-	Hosts := nil.
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> populateHosts [ 
-	self host: #localhost is: FileSystem disk root asFileReference .
-	self host: #workingdirectory is: FileSystem disk workingDirectory
-
-]
-
-{ #category : #'host resolution' }
-MicFileResourceReference class >> removeHost: hostName [ 
-	self hosts removeKey: hostName ifAbsent: [  ]
-
+{ #category : #testing }
+MicFileResourceReference >> canSave [
+	"return true if I implement contents: "
+	^true
 ]
 
 { #category : #accessing }
 MicFileResourceReference >> contents [
-	^ uri host 
-		ifNil: [ self path asFileReference contents]
-		ifNotNil: [ ((self class hostFileReference: uri host) / self path) contents ].
-]
-
-{ #category : #loading }
-MicFileResourceReference >> loadMicrodown [
-	"I am an absolute reference, so I should be able to load completely"
-	|doc|
-	doc := Microdown parse: self contents.
-	doc := Microdown resolve: doc fromUri: uri.
-	^ doc
+	[^ self fileReference isDirectory ifTrue: [''] ifFalse: [self fileReference contents] ]
+	on: FileDoesNotExistException 
+	do: [ :error | 
+		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
 { #category : #accessing }
-MicFileResourceReference >> resolveResourceIn: aResolver [
-	self uri host 
-		ifNotNil: [ :hostname | |fileRef|
-			fileRef := self class hostFileReference: hostname.
-			fileRef ifNil: [ self error: 'unknown host' ].
-			aResolver currentWorkingDirectory: fileRef
-			 ].
-	^ aResolver resolveAbsoluteFilePath: self
+MicFileResourceReference >> contents: aString [
+	"write the contents of a string to my file"
+	self fileReference writeStreamDo: [ :stream | stream nextPutAll: aString ].
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> fileReference [ 
+	^ self filesystem referenceTo: self path
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> filesystem [
+	^ filesystem
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> filesystem: anObject [
+
+	filesystem := anObject
+]
+
+{ #category : #initialization }
+MicFileResourceReference >> initialize [
+	super initialize.
+	filesystem := FileSystem disk.
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> isDirectory [
+	^ self fileReference isDirectory 
+]
+
+{ #category : #testing }
+MicFileResourceReference >> isFileReference [
+	^ true
+]
+
+{ #category : #accessing }
+MicFileResourceReference >> loadChildren [
+	"return a collection of MifResourceReferences if I am a directory, empty if I am not a directory"
+	self isDirectory ifFalse: [ ^ #() ].
+	^ self fileReference children
+		select: [ :child | child isDirectory or: [ #(md mic) includes: child extension  ] ] 
+		thenCollect: [ :child | child asMicResourceReference ]
 ]

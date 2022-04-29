@@ -9,13 +9,13 @@ Class {
 		'offlineSetting',
 		'isCachingRessourcesSetting'
 	],
-	#category : #'Microdown-Tests-Resources'
+	#category : #'Microdown-Tests-Core'
 }
 
 { #category : #utilities }
 MicResourceSettingsTest >> cacheAt: aUrl [
 	| cache |
-	cache := MicAbstractResolver resourcesCache.
+	cache := MicHTTPResourceReference resourcesCache.
 	cache ifNil: [ ^ nil ].
 	^ (cache includesKey: aUrl)
 		ifTrue: [ cache at: aUrl ]
@@ -81,7 +81,8 @@ MicResourceSettingsTest >> testIsOfflineAndResourceFound [
 	subject offline: true.
 	sample := Microdown asRichText: ('![FooBarRules](', self imageUrl,')' ).
 	self assert: (self cacheAt: self imageUrl asZnUrl ) isNotNil.
-	self assert: sample asMorph height equals: 133.
+	"The image is 90 pixels high, the morphs a bit bigger"
+	self assert: sample asMorph height > 90.
 	self assert: (sample beginsWith: 'FooBarRules') not
 ]
 
@@ -109,7 +110,8 @@ MicResourceSettingsTest >> testIsOfflineTrueAndResourceFound [
 	subject offline: true.
 	sample := Microdown asRichText: ('![FooBarRules](', self imageUrl,')' ).
 	self assert: (self cacheAt: self imageUrl asZnUrl ) isNotNil.
-	self assert: sample asMorph height equals: 133.
+	"The image is 90 pixels high, the morphs a bit bigger"
+	self assert: sample asMorph height > 90.
 	self assert: (sample beginsWith: 'FooBarRules') not
 ]
 

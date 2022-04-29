@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'sample',
 		'parser',
-		'composer'
+		'composer',
+		'offlineStatus'
 	],
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
@@ -117,7 +118,7 @@ MicRichTextComposerTest >> richTextFor: aDocument [
 { #category : #helpers }
 MicRichTextComposerTest >> richTextForString: aString [
 
-	^ self composer parseAndCompose: aString
+	^ self composer asRichText: aString
 ]
 
 { #category : #helpers }
@@ -131,6 +132,8 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := Microdown new.
+	offlineStatus := Microdown offline.
+	Microdown offline: false.
 	MicRichTextComposer initialize.
 ]
 
@@ -153,6 +156,12 @@ MicRichTextComposerTest >> subscriptFormat [
 { #category : #'tests - format' }
 MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
+]
+
+{ #category : #running }
+MicRichTextComposerTest >> tearDown [
+	Microdown offline: offlineStatus.
+	super tearDown.
 ]
 
 { #category : #tests }
@@ -266,7 +275,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -277,7 +286,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height < 100 "No image embedded"
@@ -288,7 +297,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -299,7 +308,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim first: 5 )equals: 'See ', (String value: 1).
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -396,7 +405,7 @@ MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
 &
-\foo{a+b}
+\include{nowhere.com}
 &
 '.
 	richText := self richTextForString: source.

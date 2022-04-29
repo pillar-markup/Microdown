@@ -56,7 +56,7 @@ MicRichTextComposer class >> asRichText: aStringOrDoc [
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown1 [
 	<sampleInstance>
-	^ self parseAndCompose:  '### Emphasis and lists
+	^ self asRichText:  '### Emphasis and lists
 Paragraphs are seperated by blank lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 New lines are preserved. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 
@@ -76,7 +76,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown2 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 '## Code Blocks
 
 Code blocks can be Pharo, Method, or text. Default is Pharo
@@ -108,7 +108,7 @@ textStyler: aString
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown3 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 					'### Links
 This is just first line with an inline web ref [Pharo](http://pharo.org/)
 
@@ -124,7 +124,7 @@ And this is another line'
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown4 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 					'### Figures
 This is just **first** line. Figures accessed via HTTP requests are cached for speed reasons. 
 You should get one request per picture.
@@ -141,7 +141,7 @@ Images can be used as anchors:
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown5 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 					'# Links to code
 
 1. `Point` should open a class browser on Point.
@@ -155,9 +155,9 @@ MicRichTextComposer class >> exampleMicrodown5 [
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown6 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 '### Latex mathematics 
-It is possible to render latex math via a web services. We allow inline math $x^2$, or math blocks
+It is possible to render latex math via a web services. We allow inline math $x ^ 2$, or math blocks
 
 &
  \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
@@ -171,16 +171,15 @@ Cool eh?
 MicRichTextComposer class >> exampleMicrodown7 [
 	<sampleInstance>
 	
-	^ self parseAndCompose: '## This is the class Object
+	^ self asRichText: '## This is the class Object
 	
-	
-	![Object class.](pharo:///Object)'
+It is possible to use the icons in the image: ![Object class](pharo:///Object/iconNamed:/info)'
 ]
 
 { #category : #examples }
 MicRichTextComposer class >> exampleMicrodown8 [
 	<sampleInstance>
-	^ self parseAndCompose:
+	^ self asRichText:
 					'## Annotations
 this is just _first_ line
 
@@ -192,13 +191,6 @@ and this is the second line'
 MicRichTextComposer class >> initialize [ 
 	"self initialize"
 	MicCodeStylerSpec initializeCache.
-]
-
-{ #category : #public }
-MicRichTextComposer class >> parseAndCompose: aString [
-	
-	^ self new visit: (Microdown parse: aString)
-
 ]
 
 { #category : #'visiting - document' }
@@ -252,46 +244,15 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	If the latex formula cannot be built because of network or syntax errors,
 	use the error block to build a text"
 
-	| ref resource |
-	ref := MicResourceReference fromUri: aString.
-	resource := ref resolveResourceIn: (MicUrlResolver new baseUrlString: 'https://latex.codecogs.com/png.image?').
-	^ (resource asForm ifNil: aBlock) asText
-]
-
-{ #category : #composing }
-MicRichTextComposer >> parseAndCompose: aString [ 
-	
-	^ self visit: (Microdown parse: aString)
-
-]
-
-{ #category : #public }
-MicRichTextComposer >> parseAndComposeStringOrDoc: aStringOrDoc [
-	
-	^ self visit: (aStringOrDoc isString 
-			ifTrue: [ Microdown parse: aStringOrDoc ]
-			ifFalse: [ aStringOrDoc ])
-]
-
-{ #category : #'figure-resolution' }
-MicRichTextComposer >> renderHttpResource: aMicHttpResource inNode: aNode [
-
-	^ (String value: 1) asText
-		addAttribute: (self anchorFor: aMicHttpResource asForm of: aNode);
-		yourself
-]
-
-{ #category : #'figure-resolution' }
-MicRichTextComposer >> renderNotFoundResource: aMicNotFoundResource inNode: aNode [
-
-	^ aNode caption asText
-]
-
-{ #category : #'figure-resolution' }
-MicRichTextComposer >> renderPharoClassResource: aMicPharoClassResource inNode: aNode [
-	
-	"Put a class as text inside the document"
-	^ aMicPharoClassResource asText
+	| ref latexUrlPrefix image anchor |
+	"https://i.upmath.me/png/" "https://latex.codecogs.com/png.image?"
+	latexUrlPrefix := 'https://i.upmath.me/png/'.
+	ref := MicResourceReference fromUri: latexUrlPrefix , aString.
+	[ 	image := ref loadImage.
+		anchor := TextAnchor new anchoredMorph: image.
+		^ self textWithImage: image usingAnchor: anchor ]
+	on: MicResourceReferenceError 
+	do: [^ aBlock value]
 ]
 
 { #category : #private }
@@ -300,20 +261,6 @@ MicRichTextComposer >> renderTableCell: aCell [
 	^ aCell inject: Text new into: [ :txt :part | 
 		txt, (MicRichTextComposer new visit: part)
 		 ]
-]
-
-{ #category : #'visiting - document' }
-MicRichTextComposer >> resizeImage: anImage of: aFigure [
-
-	| scaledImage |
-	scaledImage := anImage.
-	"aFigure arguments at: #width ifPresent: [ :s |
-		hostMorph 
-			ifNotNil: [
-				scaledImage := anImage scaledToSize: ( s asNumber in: [ :scale | 
-					(hostMorph width / 100 * scale) @ (hostMorph height / 100 * scale)]).
-		 ]]."
-	^ scaledImage
 ]
 
 { #category : #accessing }
@@ -326,6 +273,17 @@ MicRichTextComposer >> textStyler [
 MicRichTextComposer >> textStyler: aTextStyler [
 
 	textStyler := aTextStyler.
+]
+
+{ #category : #private }
+MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
+	"return a text with an image embedded"
+	| text |
+	text := (String value: 1) asText addAttribute: anchor; yourself.
+	"Adding a zero width no-break space circumvents two errors in rubrics when
+		using images as links. Adding it even if the image is not a link causes no
+		harm (it is invisible), and this is the easiest place to add it."
+	^ text, 16rFEFF asCharacter asString asText
 ]
 
 { #category : #initialization }
@@ -428,23 +386,23 @@ MicRichTextComposer >> visitEnvironment: anObject [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| imageResource embeddableInText |
-	imageResource := aFigure reference resolveResourceIn: MicUrlResolver new.
-	embeddableInText := imageResource asRenderedOn: self withinNode: aFigure.
-	"Adding a zero width no-break space circumvents two errors in rubrics when
-	using images as links. Adding it even if the image is not a link causes no
-	harm (it is invisible), and this is the easiest place to add it."
-	canvas << (embeddableInText, 16rFEFF asCharacter asString asText)
+	| image anchor|
+	[ image := aFigure reference loadImage.
+		anchor := self anchorFor: image of: aFigure.
+		canvas << (self textWithImage: image usingAnchor: anchor)]
+	on: MicResourceReferenceError
+	do: [ self visitAll: aFigure captionElements  ]
 ]
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHeader: aHeader [
-
+	| level |
 	canvas newLineIfNotAlready.
+	level := aHeader level min: 6.
 	canvas
-		includeAttribute: (self textStyler headerLevelFont: aHeader level)
+		includeAttribute: (self textStyler headerLevelFont: level)
 		in: [ super visitHeader: aHeader ].
-	canvas << (textStyler spaceAfterHeaderLevel: aHeader level)
+	canvas << (textStyler spaceAfterHeaderLevel: level)
 ]
 
 { #category : #'visiting - document' }
@@ -504,7 +462,7 @@ MicRichTextComposer >> visitMathInline: aMicMathInline [
 	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
