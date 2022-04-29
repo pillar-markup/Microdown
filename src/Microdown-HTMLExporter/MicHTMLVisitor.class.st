@@ -258,6 +258,11 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 ]
 
 { #category : #visiting }
+MicHTMLVisitor >> visitColumns: aMicColumnsBlock [ 
+	"??"
+]
+
+{ #category : #visiting }
 MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
