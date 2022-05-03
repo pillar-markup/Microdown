@@ -146,6 +146,33 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self raw: CodeblockMarkup.
 ]
 
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> columnWidth: aString withBody: aBodyBlock [ 
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'column|width='.
+	self raw: aString.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
+	self newLine.
+]
+
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> columnsWithBody: aBodyBlock [ 
+	
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'columns|width=100'.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
+]
+
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
@@ -562,7 +589,8 @@ MicMicrodownTextualBuilder >> slideTitle: aString withBody: aBodyBlock [
 	self newLine.
 	aBodyBlock value.
 	self newLine.
-	self raw: EnvironmentClosingBlockMarkup
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
 ]
 
 { #category : #'element - list' }
