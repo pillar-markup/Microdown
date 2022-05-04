@@ -413,6 +413,14 @@ MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	canvas newLine.	
 ]
 
+{ #category : #visiting }
+MicRichTextComposer >> visitInputFile: inputFileBloc [
+	| inputRef includedText |
+	inputRef := inputFileBloc reference.
+	includedText := Microdown asRichText: inputRef loadMicrodown.
+	canvas << (textStyler postTextTreatment: includedText )
+]
+
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitItalic: anObject [
 	canvas 

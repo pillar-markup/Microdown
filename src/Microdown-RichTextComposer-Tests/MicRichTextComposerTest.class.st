@@ -362,6 +362,16 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 		include: self headerLevel6
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testInputfile [
+
+	| source result |
+	source := '{!inputFile|path=comment://class/MicRichTextComposerTest!}'.
+	result := (self richTextForString: source) asString trim.
+	self assert: (result beginsWith: 'MicRichTextComposerTest').
+	self assert: (result includesSubstring: 'This class contains tests')
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testItalicFormat [
 
