@@ -23,19 +23,28 @@ MicPharoImageResourceReference class >> handlesUriScheme: scheme [
 	^ scheme = 'pharo'
 ]
 
-{ #category : #'accessing - resources' }
+{ #category : #accessing }
+MicPharoImageResourceReference >> binaryReadStream [
+	"I am not needed, I implement loadImage directly"
+	^ self shouldBeImplemented
+]
+
+{ #category : #accessing }
+MicPharoImageResourceReference >> contents [
+	"I am not needed, I implement loadMicrodown directly"
+	^ self shouldBeImplemented
+]
+
+{ #category : #loading }
 MicPharoImageResourceReference >> loadImage [
+	"Assume the method just returns a form"
+	^ self perform
+]
 
-	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
-
-	| class selector size args |
-	class := (self class environment at: uri segments first asSymbol)
-		         class.
-	selector := uri segments second asSymbol.
-	args := (size := uri segments size) > 2
-		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
-		        ifFalse: [ #(  ) ].
-	^ class perform: selector withArguments: args
+{ #category : #loading }
+MicPharoImageResourceReference >> loadMicrodown [
+	"Assume the method just returns a form"
+	^ self perform
 ]
 
 { #category : #private }
