@@ -37,3 +37,15 @@ MicPharoImageResourceReference >> loadImage [
 		        ifFalse: [ #(  ) ].
 	^ class perform: selector withArguments: args
 ]
+
+{ #category : #private }
+MicPharoImageResourceReference >> perform [
+	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
+	| class selector size args |
+	class := self class environment at: uri segments first asSymbol.
+	selector := uri segments second asSymbol.
+	args := (size := uri segments size) > 2
+		        ifTrue: [ (uri segments copyFrom: 3 to: size) asArray ]
+		        ifFalse: [ #(  ) ].
+	^ class perform: selector withArguments: args
+]
