@@ -392,7 +392,8 @@ MicMicrodownTextualBuilderTest >> testSimpleSlide [
 		equals: '<!slide|title=Ze super cool slide
 
 This is a paragraph in a slide
-!>'
+!>
+'
 ]
 
 { #category : #'tests - format' }
