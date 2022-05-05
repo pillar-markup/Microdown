@@ -21,6 +21,13 @@ Class {
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
+{ #category : #commands }
+MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
+
+	rootCommandGroup register:
+		(MicOpenDocumentBrowserCommand forSpec context: presenter)
+]
+
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
 	<example>
@@ -100,6 +107,7 @@ MicDocumentBrowser >> initializePresenters [
 		children: [ :aNode | aNode loadChildren sort: [:a :b |a browserTitle < b browserTitle] ];
 		display: [ :aNode | aNode browserTitle ];
 		displayIcon: [ :aNode | aNode browserIcon ].
+	spDocumentList contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter].
 
 	spRendering := self instantiate: MicrodownPresenter.
 	spSource := self newText.
