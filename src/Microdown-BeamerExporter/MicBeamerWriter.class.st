@@ -111,6 +111,12 @@ MicBeamerWriter class >> basicTemplateForTest [
 \end{document}'
 ]
 
+{ #category : #accessing }
+MicBeamerWriter class >> writerName [
+
+	^ #micBeamer
+]
+
 { #category : #helpers }
 MicBeamerWriter >> createFrametitle: aTitle [
 	canvas command

@@ -46,6 +46,13 @@ MicDocumentWriter >> visit: aMicElement [
 ]
 
 { #category : #writing }
+MicDocumentWriter >> write: aMicElement [
+	"for now for integration with Pillar."
+	self visit: aMicElement.
+	^ self contents
+]
+
+{ #category : #writing }
 MicDocumentWriter >> writeRawDuring: aBlock [
 	[ 
 	writingRaw := true.
