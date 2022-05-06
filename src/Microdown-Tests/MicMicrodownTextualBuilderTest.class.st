@@ -140,6 +140,39 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 ]
 
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testColumns [
+
+	self 
+		assert: (builder 
+					columnsWithBody: [ builder text: 'This is a paragraph in a columns'] ) contents 
+		equals: '<!columns|width=100
+
+This is a paragraph in a columns
+!>
+'
+]
+
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testColumnsWithChildren [
+
+	self 
+		assert: (builder 
+						columnsWithBody: [ builder 
+													columnWidth: '60' 
+													withBody: [ builder text: 'This is a paragraph in a column']] ) contents 
+		equals: '<!columns|width=100
+
+<!column|width=60
+
+This is a paragraph in a column
+!>
+
+
+!>
+'
+]
+
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testComment [
 
@@ -342,6 +375,21 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 MicMicrodownTextualBuilderTest >> testMonospace [
 
 	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
+]
+
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testOneColumn [
+
+	self 
+		assert: (builder 
+					columnWidth: '60' 
+					withBody: [ builder text: 'This is a paragraph in a column'] ) contents 
+		equals: '<!column|width=60
+
+This is a paragraph in a column
+!>
+
+'
 ]
 
 { #category : #'tests - anchor' }
