@@ -63,6 +63,9 @@ MicFileResourceReference >> contents [
 { #category : #accessing }
 MicFileResourceReference >> contents: aString [
 	"write the contents of a string to my file"
+	|fileRef|
+	fileRef := self fileReference.
+	fileRef ensureDelete.
 	self fileReference writeStreamDo: [ :stream | stream nextPutAll: aString ].
 ]
 

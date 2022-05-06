@@ -2,9 +2,6 @@
 I am a browser of collections of microdown documents.
 I obtain my documents through DocProviders (through their `loadDocuments` method).
 
-My overall architecture is based on these transitions:
-
-![statediagram](https://www.planttext.com/api/plantuml/png/XPHDQzj048Rl-XNJ70kYj4SHtD2eq1uIIXToCJu8QL8jbZHYTorXIlvxPqUol2ivz6JxdMU-P_rWNM7SgMqIUzHTNvYY1LiN5Osw-mElHMCniBJKKLaRQX6SEM7Yj6iGddHfY3qwoAayjTWv-6Pej6YI163_yG3f3fwfGuKDbWuhLZcjGxZpAbpaEoXin476jN0WS3L2RsZG5HhhAKSzD3XWOuDOECwXD7LJB0NtzsLDkiJTBhcIZzJsPBLRfNvKd13Rtft1OCUfU0HNfwMto2TNJ4GrfxvP7ycAuiqAqdr5Zgq7DagQVNcfuR0bSY6gEQ47s6SRDz-A_o_tBoC07NdcvmjOEfaIdwZ2QMAVnRp_8JjJVQFTYyPHn3cm6eiU1XR5mV_o14I8zmkOACpY4IRm7VZl4x6e7hdWJF1N0T8qRaBRxvLslAsfXozXBS_av8ZyEK_DpcVcrAGg4QFojtZ4mZJ3guSg1ZdgKCkrSUT5cnz130goo1aVtO36mIVuC9tVkw3bZnkOM3qcV0P7FFyoQEqQy4yrk3QkRPrfIsGyXIEyaf7amh-5ft9pdl7KRb2yr9hVjC0Rc-zt1Vj5XXSmZ_Mtp66v-0o2mSmxdH2ul2bPQkmcz2hIyYZNEJBu6kJmatXBaWTM-9_q7m00)
 "
 Class {
 	#name : #MicDocumentBrowser,
@@ -59,10 +56,12 @@ MicDocumentBrowser >> connectPresenters [
 
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
-	^ {'comment://package/Microdown'.
-		'file:///Users/kasper/tmp/pharo/doc'.
+	^ ({'comment://package/Microdown'.
+		"'file:///Users/kasper/tmp/pharo/doc'."
 		'github://pillar-markup/Microdown/doc/testMicrodown'
-	 } collect: #asMicResourceReference
+	 	}, 
+		self loadedDocsInWorkspace  )
+			collect: #asMicResourceReference
 ]
 
 { #category : #events }
@@ -125,6 +124,17 @@ MicDocumentBrowser >> isEditing [
 	^ isEditing ifNil: [ isEditing := false ]
 
 	
+]
+
+{ #category : #private }
+MicDocumentBrowser >> loadedDocsInWorkspace [
+	"I return all the doc folders which exist in the local iceberg repository"
+	| iceRepository githubUsers |
+	iceRepository := FileSystem workingDirectory / 'pharo-local' / 'iceberg'.
+	githubUsers := iceRepository directories.
+	^ ((githubUsers collect: [ :userDir | userDir directories ]) flattened
+		collect: [ :project | project directories ]) flattened
+		select: [ :dir | #('doc' 'docs') includes: dir basename ]
 ]
 
 { #category : #events }
