@@ -28,7 +28,7 @@ MicHTMLExporterTest >> parser [
 MicHTMLExporterTest >> setUp [
 	super setUp.
 	parser := Microdown new.
-	writer := MicHTMLWriter new.
+	writer := MicHTMLVisitor new.
 	factory := MicMicrodownSnippetFactory new
 ]
 
@@ -94,7 +94,7 @@ MicHTMLExporterTest >> testFigureItalic [
 	self 
 		parse: factory figureItalicSample 
 		andCheckWeGet: '
-<p><figure><img src="/anUrl" alt="_Foo_" class="figureTest" width="80"><figcaption><em>Foo</em></figcaption></img></figure></p>'
+<p><figure><img src="/anUrl" alt="_Foo_" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -157,7 +157,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 	self 
 		parse: factory figureGoutDeFraise 
 		andCheckWeGet: '
-<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le thème : <em>Un goût de fraise</em></figcaption></img></figure></p>'
+<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -194,7 +194,7 @@ MicHTMLExporterTest >> testParagraphLongWithAccents [
 MicHTMLExporterTest >> testParagraphNestedSample [
 
 	self parse: factory paragraphNestedSample andCheckWeGet:  '
-<p>this is a <strong><em>paragraph</em></strong></p>'
+<p>this is a <strong><i>paragraph</i></strong></p>'
 ]
 
 { #category : #'tests - formats' }
@@ -210,7 +210,7 @@ MicHTMLExporterTest >> testParagraphWithBold [
 MicHTMLExporterTest >> testParagraphWithItalic [
 
 	self parse: factory paragraphItalicSample andCheckWeGet: '
-<p>this is a <em>paragraph</em></p>'
+<p>this is a <i>paragraph</i></p>'
 ]
 
 { #category : #'tests - formats' }

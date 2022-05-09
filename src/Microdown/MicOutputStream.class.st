@@ -36,6 +36,7 @@ MicOutputStream >> configuration: aConfiguration [
 
 { #category : #streaming }
 MicOutputStream >> contents [
+
 	^ stream contents
 ]
 
