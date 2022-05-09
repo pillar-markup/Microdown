@@ -132,6 +132,11 @@ MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink alias ]
 ]
 
+{ #category : #accessing }
+MicBeamerWriter >> folderName [
+	^ #beamer
+]
+
 { #category : #helpers }
 MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 	parameters
@@ -149,6 +154,11 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 			((3 > level and: [ 3 <= depth ])
 				ifTrue: [ 'subsubsectionstyle=show/show/show' ]
 				ifFalse: [ 'subsubsectionstyle=hide/hide/hide' ])
+]
+
+{ #category : #accessing }
+MicBeamerWriter >> templateForConfiguration: aConfiguration [
+	^ 'presentation.template'
 ]
 
 { #category : #'blocks - code' }
