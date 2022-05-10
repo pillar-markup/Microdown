@@ -323,6 +323,7 @@ MicInlineParser >> newInlineBlockWithoutChildren [
 { #category : #'instance creation' }
 MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
+	
 	inlineBlockClass := opener associatedInlineBlock.
 	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 

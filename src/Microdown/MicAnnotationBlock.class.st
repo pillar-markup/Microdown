@@ -22,22 +22,25 @@ Class {
 
 { #category : #constructor }
 MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
-	
-	| splitter tag klass |
-	splitter := MicArgumentsSplitter split: aString defaultArg: #annotationKind defaultValue: 'Me'.
-	tag := splitter defaultValue trimBoth.
-	
-	klass := self subclasses detect: [ :each | each tag = tag ] ifNone: [ self ].
 
-	^ klass new 
-		start: aStartInteger; 
-		end: anEndInteger; 
-		substring: aString; 
-		children: aChildren; 
-		arguments: splitter;
-		cleanSubstring; 
-		closeMe; 
-		yourself.	
+	| splitter tag extensionClass |
+	splitter := MicArgumentsSplitter
+		            split: aString
+		            defaultArg: #annotationKind
+		            defaultValue: 'Me'.
+	tag := splitter defaultValue trimBoth.
+
+	extensionClass := self extensionClassFor: tag.
+
+	^ extensionClass new
+		  start: aStartInteger;
+		  end: anEndInteger;
+		  substring: aString;
+		  children: aChildren;
+		  arguments: splitter;
+		  cleanSubstring;
+		  closeMe;
+		  yourself
 ]
 
 { #category : #accessing }

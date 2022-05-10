@@ -111,6 +111,12 @@ MicBeamerWriter class >> basicTemplateForTest [
 \end{document}'
 ]
 
+{ #category : #accessing }
+MicBeamerWriter class >> writerName [
+
+	^ #micBeamer
+]
+
 { #category : #helpers }
 MicBeamerWriter >> createFrametitle: aTitle [
 	canvas command
@@ -124,6 +130,11 @@ MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 		name: 'hyperlink';
 		parameter: [ canvas raw: anInternalLink anchor ];
 		parameter: [ canvas raw: anInternalLink alias ]
+]
+
+{ #category : #accessing }
+MicBeamerWriter >> folderName [
+	^ #beamer
 ]
 
 { #category : #helpers }
@@ -145,7 +156,12 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 				ifFalse: [ 'subsubsectionstyle=hide/hide/hide' ])
 ]
 
-{ #category : #visiting }
+{ #category : #accessing }
+MicBeamerWriter >> templateForConfiguration: aConfiguration [
+	^ 'presentation.template'
+]
+
+{ #category : #'blocks - code' }
 MicBeamerWriter >> visitCode: aCodeBlock [
 	| env |
 	env := (aCodeBlock hasCaption and: [ aCodeBlock hasLabel ])
@@ -197,14 +213,14 @@ MicBeamerWriter >> visitColumns: aColumns [
 	canvas newLine
 ]
 
-{ #category : #visiting }
+{ #category : #'blocks - inline' }
 MicBeamerWriter >> visitFigure: aFigure [
 	canvas environment
 		name: 'center';
 		with: [ self includeGraphicsFor: aFigure ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - extensions' }
 MicBeamerWriter >> visitSlide: aSlide [
 	canvas newLine.
 	canvas environment

@@ -4,12 +4,12 @@ Class {
 	#category : #'Microdown-BeamerExporter-Tests'
 }
 
-{ #category : #accessing }
+{ #category : #running }
 MicBeamerWriterTest >> actualClass [ 
 	^ MicBeamerWriter 
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testCode [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
@@ -20,7 +20,7 @@ this is a code
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testCodeWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
@@ -31,7 +31,7 @@ this is a code
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testCodeWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
@@ -42,7 +42,7 @@ this is a code
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testColumn [
 
 	self writeFor: (factory columnSample).
@@ -55,7 +55,7 @@ this is a \textbf{text}
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testColumns [
 
 	self writeFor: (factory columnsSample).
@@ -66,7 +66,7 @@ MicBeamerWriterTest >> testColumns [
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testColumnsWithChildren [
 
 	self writeFor: factory columnsWithChildrenSample.
@@ -89,7 +89,7 @@ this is a \textbf{text}
 '
 ]
 
-{ #category : #accessing }
+{ #category : #'tests - figure/link' }
 MicBeamerWriterTest >> testFigure [
 
 	self writeFor: factory figureSample.
@@ -101,7 +101,7 @@ MicBeamerWriterTest >> testFigure [
 '
 ]
 
-{ #category : #accessing }
+{ #category : #'tests - figure/link' }
 MicBeamerWriterTest >> testFigureBold [
 	"in beamer we do not display caption so bld and the rest goes away."
 	self writeFor: factory figureBoldSample.
@@ -113,7 +113,7 @@ MicBeamerWriterTest >> testFigureBold [
 '
 ]
 
-{ #category : #accessing }
+{ #category : #'tests - figure/link' }
 MicBeamerWriterTest >> testFigureRealSample [
 
 	self writeFor: factory figureRealSample.
@@ -125,7 +125,7 @@ MicBeamerWriterTest >> testFigureRealSample [
 '
 ]
 
-{ #category : #accessing }
+{ #category : #tests }
 MicBeamerWriterTest >> testFrameWithoutOption [
 
 	self

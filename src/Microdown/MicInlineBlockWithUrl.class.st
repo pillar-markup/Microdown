@@ -13,7 +13,9 @@ Class {
 	#instVars : [
 		'url',
 		'parser',
-		'captionElements'
+		'captionElements',
+		'arguments',
+		'reference'
 	],
 	#category : #'Microdown-ModelInline'
 }
@@ -60,6 +62,37 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 ]
 
 { #category : #accessing }
+MicInlineBlockWithUrl >> argumentAt: aKey [
+
+	^ self arguments at: aKey
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
+	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
+
+	self arguments 
+		at: aKey
+		ifPresent: aBlock
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> argumentAt: aKey put: anObject [
+
+	self arguments at: aKey put: anObject
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> arguments [
+	^ arguments
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> arguments: aDictionary [
+	arguments := aDictionary
+]
+
+{ #category : #accessing }
 MicInlineBlockWithUrl >> caption [
 	^ String streamContents: [:st | self captionElements do: [ :each | st nextPutAll: each text ] ] 
 ]
@@ -86,6 +119,20 @@ MicInlineBlockWithUrl >> fileStringWithoutHostFile [
 ]
 
 { #category : #accessing }
+MicInlineBlockWithUrl >> hasArguments [
+	"Answer <true> if the receiver contain at least 1 argument"
+	
+	^ arguments notEmpty
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> initialize [
+
+	super initialize.
+	arguments := OrderedDictionary new
+]
+
+{ #category : #accessing }
 MicInlineBlockWithUrl >> parser [ 
 	^ parser
 ]
@@ -108,6 +155,18 @@ MicInlineBlockWithUrl >> printOn: aStream [
 		nextPut: $(.
 		aStream nextPutAll: url. 
 	aStream nextPut: $)
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> reference [
+
+	^ reference
+]
+
+{ #category : #accessing }
+MicInlineBlockWithUrl >> reference: anObject [
+
+	reference := anObject
 ]
 
 { #category : #accessing }
