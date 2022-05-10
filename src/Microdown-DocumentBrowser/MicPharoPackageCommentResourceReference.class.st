@@ -35,7 +35,7 @@ Class {
 
 { #category : #private }
 MicPharoPackageCommentResourceReference >> browserIcon [
-	self kind = #prefix ifTrue: [ ^ self iconNamed: #packageColored ].
+	self kind = #prefix ifTrue: [ ^ self iconNamed: #group ].
 	self kind = #package ifTrue: [ ^ self iconNamed: #package ].
 	self kind = #tag ifTrue: [ ^ self iconNamed: #book ].
 	^ self iconNamed: #error
