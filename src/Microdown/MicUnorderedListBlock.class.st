@@ -59,5 +59,5 @@ MicUnorderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
 
 	line ifEmpty: [ ^ true ].
-	^ (super canConsumeLine: line) and: [line trim matchesRegex: '(^\* |^- | ^\+).*']
+	^ (super canConsumeLine: line) and: [line trim matchesRegex: '^(\*|^-|^\+) .*']
 ]
