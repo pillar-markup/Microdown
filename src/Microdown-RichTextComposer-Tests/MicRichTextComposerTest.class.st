@@ -548,6 +548,22 @@ MicRichTextComposerTest >> testQuoteBlock [
 	self deny: (richText asString findString: 'foo') equals: 0
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testRaw [
+	| text |
+	text := Microdown asRichText: '{{**not bold**}}'.
+	self assert: text asString trim equals: '**not bold**'.
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testRawNewLinesPreserved [
+	| text |
+	text := Microdown asRichText: '{{**not 
+bold**}}'.
+	self assert: text asString trim equals: '**not
+bold**'.
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testStrikethroughFormat [ 
 	| source runs richText |
