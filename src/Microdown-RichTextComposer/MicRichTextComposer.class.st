@@ -529,6 +529,12 @@ MicRichTextComposer >> visitQuote: aQuote [
 	canvas newLine
 ]
 
+{ #category : #'visiting - inline elements' }
+MicRichTextComposer >> visitRaw: aRawFormat [
+
+	canvas << aRawFormat substring asText.
+]
+
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitStrike: anObject [
 
