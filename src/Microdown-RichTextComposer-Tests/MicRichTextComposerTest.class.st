@@ -453,6 +453,23 @@ MicRichTextComposerTest >> testNestedMixedList [
 ]
 
 { #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
+
+	| source output |
+	source := 
+'- item 1
+  1. sub item 1.1
+- item 2
+  2. sub item 2.1
+  2. sub item 2.2
+- item 3'.
+	output := (self richTextForString: source) asString trim.
+	self assert: output lines size equals: 6
+	
+	
+]
+
+{ #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
 
 	| source richText runs |
