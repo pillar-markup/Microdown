@@ -24,15 +24,15 @@ Class {
 
 { #category : #cache }
 MicCodeStylerSpec class >> buildCache [
-	styleCache := Dictionary
-		newFromAssociations: ((PragmaCollector
-			filter: [ :prg | 
-				prg selector = 'codeblockStyler:' and: [ 
-					"When debugging stylers, make sure no old ones are included"
-				prg method methodClass isObsolete not ] ]) reset
-			collected collect: [ :prg | prg arguments first asLowercase -> (self new 
-				classSymbol:  prg method methodClass soleInstance name; 
-				selector: prg method selector) ])
+	styleCache := Dictionary newFrom: 
+		((Pragma allNamed:  'codeblockStyler:')
+			select: [ :prg | "When debugging stylers, make sure no old ones are included"
+				prg method methodClass isObsolete not ]
+			thenCollect: [ :prg | 
+				prg arguments first asLowercase 
+					-> (self new 
+						classSymbol:  prg method methodClass soleInstance name; 
+						selector: prg method selector) ])
 ]
 
 { #category : #stylers }
