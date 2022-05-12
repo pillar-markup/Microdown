@@ -35,7 +35,7 @@ MicLaTeXWriter class >> toLatexPath: aString [
 
 { #category : #accessing }
 MicLaTeXWriter class >> writerName [
-	^ #latex
+	^ #miclatex
 ]
 
 { #category : #accessing }
