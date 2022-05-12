@@ -35,7 +35,7 @@ MicLaTeXWriter class >> toLatexPath: aString [
 
 { #category : #accessing }
 MicLaTeXWriter class >> writerName [
-	^ #latex
+	^ #miclatex
 ]
 
 { #category : #accessing }
@@ -395,7 +395,7 @@ MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
 	| label |
 	label := anExternalLink arguments
 		         at: 'label'
-		         ifAbsent: [ anExternalLink reference relativePath  ].
+		         ifAbsent: [ anExternalLink url ].
 	canvas command
 		name: 'label';
 		parameter: [ canvas raw: label ]
