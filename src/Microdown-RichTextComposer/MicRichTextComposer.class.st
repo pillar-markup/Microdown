@@ -489,20 +489,21 @@ MicRichTextComposer >> visitMonospace: anObject [
 ]
 
 { #category : #'visiting - list' }
-MicRichTextComposer >> visitOrderedList: anObject [
+MicRichTextComposer >> visitOrderedList: aList [
 	"here we annotate items with their kind and the depth"
 	| counter |
 	canvas newLineIfNotAlready.
 	canvas indentIn: [counter := 1.
-		anObject children
+		aList children
 			do: [ :item | 
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
 					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
 				counter := counter + 1 ].
-		super visitOrderedList: anObject ].
-	canvas newLine; << textStyler interBlockSpacing 
+		super visitOrderedList: aList ].
+	canvas newLine.
+	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing]
 ]
 
 { #category : #'visiting - document' }
@@ -577,16 +578,17 @@ MicRichTextComposer >> visitText: anInlineBlock [
 ]
 
 { #category : #'visiting - list' }
-MicRichTextComposer >> visitUnorderedList: anObject [
+MicRichTextComposer >> visitUnorderedList: aList [
 	canvas newLineIfNotAlready.
 	canvas
 		indentIn: [ 
-			anObject children
+			aList children
 				do: [ :item | 
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
 						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
-			super visitUnorderedList: anObject ].
-	canvas newLine; << textStyler interBlockSpacing 
+			super visitUnorderedList: aList ].
+	canvas newLine.
+	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing] 
 ]
