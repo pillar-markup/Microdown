@@ -83,7 +83,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure reference path ]
+		parameter: [ canvas raw: aFigure url ]
 	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
 	
 ]
@@ -395,7 +395,7 @@ MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
 	| label |
 	label := anExternalLink arguments
 		         at: 'label'
-		         ifAbsent: [ anExternalLink reference relativePath  ].
+		         ifAbsent: [ anExternalLink url ].
 	canvas command
 		name: 'label';
 		parameter: [ canvas raw: label ]

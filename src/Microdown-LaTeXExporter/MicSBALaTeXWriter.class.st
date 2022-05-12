@@ -8,6 +8,16 @@ Class {
 	#category : #'Microdown-LaTeXExporter'
 }
 
+{ #category : #accessing }
+MicSBALaTeXWriter class >> writerName [
+	^ #miclatex:sbabook
+]
+
+{ #category : #accessing }
+MicSBALaTeXWriter >> folderName [
+	^ #latex
+]
+
 { #category : #protected }
 MicSBALaTeXWriter >> monospaceMacro [
 	^ 'textcode'
@@ -26,6 +36,11 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 { #category : #protected }
 MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
+]
+
+{ #category : #accessing }
+MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
+	^ 'main.mustache'
 ]
 
 { #category : #protected }
