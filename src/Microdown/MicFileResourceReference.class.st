@@ -29,7 +29,7 @@ Class {
 MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
 	^ self new
-		uri: ('file://',aFileReference pathString) asZnUrl;
+		uri: aFileReference asZnUrl;
 		filesystem: aFileReference fileSystem 
 ]
 
