@@ -83,7 +83,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure url ]
+		parameter: [ canvas raw: aFigure reference path ]
 	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
 	
 ]
