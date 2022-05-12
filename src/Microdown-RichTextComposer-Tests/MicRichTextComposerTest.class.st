@@ -453,6 +453,23 @@ MicRichTextComposerTest >> testNestedMixedList [
 ]
 
 { #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
+
+	| source output |
+	source := 
+'- item 1
+  1. sub item 1.1
+- item 2
+  2. sub item 2.1
+  2. sub item 2.2
+- item 3'.
+	output := (self richTextForString: source) asString trim.
+	self assert: output lines size equals: 6
+	
+	
+]
+
+{ #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
 
 	| source richText runs |
@@ -546,6 +563,22 @@ MicRichTextComposerTest >> testQuoteBlock [
 	richText := Microdown asRichText: src.
 	"should at least include foo somehow"
 	self deny: (richText asString findString: 'foo') equals: 0
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testRaw [
+	| text |
+	text := Microdown asRichText: '{{**not bold**}}'.
+	self assert: text asString trim equals: '**not bold**'.
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testRawNewLinesPreserved [
+	| text |
+	text := Microdown asRichText: '{{**not 
+bold**}}'.
+	self assert: text asString trim equals: '**not
+bold**'.
 ]
 
 { #category : #'skipped tests' }
