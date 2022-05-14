@@ -1,4 +1,11 @@
 "
+The idea of a picture based writer is that 	we take a pdf + the list of H5P templates and we 
+- generate a list of jpeg 
+- and an H5P file representing the corresponding slides. 
+
+Right now the creation of the jpeg and the zip of the folder to create the H5P files are done by hand. 
+
+
 - placeOfTemplateFolder is the location of all the JS files.
 - sourceSlideImagesFolder is the place where all the jpeg files are.
 "
