@@ -82,6 +82,15 @@ MicPictureBasedWriter class >> example [
 { #category : #operations }
 MicPictureBasedWriter >> compressH5P [
 
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+
+	OSSUnixSubprocess new	
+		command: 'zip';
+		arguments: {'-r' . '-D'. '-X'. '../', sourcePDF basenameWithoutExtension, 'h5p'  };
+		workingDirectory: self target;
+		run.
 	
 ]
 
@@ -221,7 +230,7 @@ MicPictureBasedWriter >> sourceSlideImagesFolder: aString [
 	sourceSlideImagesFolder := aString asFileReference
 ]
 
-{ #category : #accessing }
+{ #category : #operations }
 MicPictureBasedWriter >> splitPDF [
 	
 	| treatedPDF cmd |
