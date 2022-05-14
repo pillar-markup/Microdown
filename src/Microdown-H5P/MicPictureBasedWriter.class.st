@@ -1,3 +1,7 @@
+"
+- placeOfTemplateFolder is the location of all the JS files.
+- sourceSlideImagesFolder is the place where all the jpeg files are.
+"
 Class {
 	#name : #MicPictureBasedWriter,
 	#superclass : #Object,
