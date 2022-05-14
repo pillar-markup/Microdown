@@ -8,6 +8,32 @@ Right now the creation of the jpeg and the zip of the folder to create the H5P f
 
 - placeOfTemplateFolder is the location of all the JS files.
 - sourceSlideImagesFolder is the place where all the jpeg files are.
+
+
+
+The process is the following
+
+Once we have generated from the PDF the JPEG using
+
+```
+pdftoppm -jpeg AboutBasket.pdf Tests-01
+
+pdftoppm -jpeg AboutBasket.pdf -scale-to 1000  Basket
+```
+
+- the folder Target contains /content/images will contain all the JPEG
+- then we invoke the method `go`
+- and manually the script
+
+```
+cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../
+```
+
+
+All the manual parts should be done automatically (this is the next step).
+
 "
 Class {
 	#name : #MicPictureBasedWriter,
