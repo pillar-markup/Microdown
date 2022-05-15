@@ -89,7 +89,7 @@ cd ../"
 	OSSUnixSubprocess new	
 		command: 'zip';
 		arguments: {'-r' . '-D'. '-X'. '../', sourcePDF basenameWithoutExtension, 'h5p'  };
-		workingDirectory: self target;
+		workingDirectory: self target fullName;
 		run.
 	
 ]
@@ -235,12 +235,20 @@ MicPictureBasedWriter >> splitPDF [
 	
 	| treatedPDF cmd |
 	treatedPDF := (self sourceSlideImagesFolder / sourcePDF basename).
-	"cmd := 'pdftoppm -jpeg ', treatedPDF fullName, ' -scale-to 1000 ', treatedPDF basenameWithoutExtension."
+	
+	cmd := '/usr/local/bin/pdftoppm -jpeg ', treatedPDF fullName, ' -scale-to 1000 ', treatedPDF basenameWithoutExtension.
 	OSSUnixSubprocess new	
-		command: 'pdftoppm';
-		arguments: {'-jpeg' . treatedPDF fullName . '-scale-to 1000' . treatedPDF basenameWithoutExtension };
-		workingDirectory: self sourceSlideImagesFolder;
-		runAndWait.
+		command: '/usr/local/bin/pdftoppm';
+		arguments: {'-jpeg' . treatedPDF fullName . '-scale-to' . '1000' . treatedPDF basenameWithoutExtension };
+		workingDirectory: self sourceSlideImagesFolder fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+		process isSuccess
+			ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+			ifFalse: [
+				Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+				Transcript show: 'Stderr contents: ', errString.
+			]
+	]
 	
 	
 ]
