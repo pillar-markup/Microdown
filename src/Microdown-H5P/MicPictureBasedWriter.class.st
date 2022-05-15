@@ -85,12 +85,19 @@ MicPictureBasedWriter >> compressH5P [
 	"cd Target
 zip -r -D -X ../Generated.h5p *
 cd ../"
-
+	self halt.
 	OSSUnixSubprocess new	
-		command: 'zip';
-		arguments: {'-r' . '-D'. '-X'. '../', sourcePDF basenameWithoutExtension, 'h5p'  };
+		command: '/usr/bin/zip';
+		arguments: {'-r' . '-D'. '-X'. sourcePDF withoutExtension fullName, '.h5p' . '*' };
 		workingDirectory: self target fullName;
-		run.
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
 	
 ]
 
