@@ -52,6 +52,18 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
+{ #category : #accessing }
+MicFigureBlock >> figurePath [
+	"this is a hack waiting for the resolution of resource references"
+	"when we have file://figures/foo.png we want to have figures/foo.png "
+	
+	^ (self url asString beginsWith: 'file://')
+		ifTrue: [ self url asString allButFirst: 'file://' size ]
+		ifFalse: [ self url asString ] 
+	
+	
+]
+
 { #category : #testing }
 MicFigureBlock >> hasAnchor [
 	^self anchor isNotNil
