@@ -41,6 +41,12 @@ MicOutputStream >> contents [
 ]
 
 { #category : #accessing }
+MicOutputStream >> crAsNewLine [
+
+	self configuration crAsNewLine
+]
+
+{ #category : #accessing }
 MicOutputStream >> flush [
 	stream flush
 ]
@@ -55,6 +61,12 @@ MicOutputStream >> initialize [
 MicOutputStream >> isEmpty [
 	
 	^ stream isEmpty
+]
+
+{ #category : #accessing }
+MicOutputStream >> lfAsNewLine [
+
+	self configuration lfAsNewLine
 ]
 
 { #category : #streaming }
