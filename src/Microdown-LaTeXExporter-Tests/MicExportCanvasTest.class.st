@@ -7,6 +7,14 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #running }
+MicExportCanvasTest >> setUp [
+	| stream |
+	super setUp.
+	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	canvas := MicExportCanvas on: stream.
+]
+
 { #category : #tests }
 MicExportCanvasTest >> testCrAsNewLine [ 
 

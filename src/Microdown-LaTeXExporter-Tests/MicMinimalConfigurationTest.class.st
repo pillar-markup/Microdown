@@ -7,6 +7,13 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #running }
+MicMinimalConfigurationTest >> setUp [
+	
+	super setUp.
+	config := MicMinimalConfiguration new.
+]
+
 { #category : #tests }
 MicMinimalConfigurationTest >> testCrAsNewLine [ 
 

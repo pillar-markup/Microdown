@@ -7,6 +7,13 @@ Class {
 	#category : #'Microdown-LaTeXExporter-Tests'
 }
 
+{ #category : #running }
+MicOutputStreamTest >> setUp [
+	
+	super setUp.
+	stream := MicOutputStream new.
+]
+
 { #category : #tests }
 MicOutputStreamTest >> testCrAsNewLine [ 
 
