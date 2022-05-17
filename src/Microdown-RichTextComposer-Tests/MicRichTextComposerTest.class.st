@@ -447,7 +447,7 @@ MicRichTextComposerTest >> testNestedMixedList [
 	runs := richText runs.
 	
 	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
-	self assert: (richText asString copyFrom: 36 to: 37) equals: 'A)'.
+	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
 	self assert: (runs at: 36) first amount equals: 3
 	
 ]
@@ -493,7 +493,7 @@ MicRichTextComposerTest >> testNestedUnorderdList [
 MicRichTextComposerTest >> testNewDictionaryAPI [
 	
 	| dict |
-	dict := Dictionary newFromAssociations: { #a -> 1  . #b -> 2 }.
+	dict := Dictionary newFrom: { #a -> 1  . #b -> 2 }.
 	self assert: (dict at: #a) equals: 1
 ]
 

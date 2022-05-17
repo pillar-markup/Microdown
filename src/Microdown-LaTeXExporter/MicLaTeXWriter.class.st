@@ -39,6 +39,11 @@ MicLaTeXWriter class >> writerName [
 ]
 
 { #category : #accessing }
+MicLaTeXWriter >> canvas [
+	^ canvas
+]
+
+{ #category : #accessing }
 MicLaTeXWriter >> canvasClass [
 	^ MicLaTeXCanvas
 ]
@@ -83,7 +88,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure figurePath ]
+		parameter: [ canvas raw: aFigure figurePath  ]
 	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
 	
 ]

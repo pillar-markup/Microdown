@@ -132,6 +132,13 @@ this is a code
 '
 ]
 
+{ #category : #tests }
+MicLaTeXWriterTest >> testCrAsNewLine [ 
+
+	writer crAsNewLine.
+	self assert: writer canvas stream configuration newLine equals: Character cr
+]
+
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
 
@@ -239,6 +246,13 @@ MicLaTeXWriterTest >> testHorizontalLine [
 MicLaTeXWriterTest >> testItalic [
 
 	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testLfAsNewLine [ 
+
+	writer lfAsNewLine.
+	self assert: writer canvas stream configuration newLine equals: Character lf
 ]
 
 { #category : #'tests - figure/link' }
@@ -506,6 +520,50 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 	self assert: (writer protectUrl: '%') equals: '\%'.
 	self assert: (writer protectUrl: '\') equals: '\\'.
 	self assert: (writer protectUrl: '\~#%') equals: '\\~\#\%'.
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithCr [
+	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsLf [
+	writer lfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithLf [
+	writer lfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
+	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
 ]
 
 { #category : #tests }
