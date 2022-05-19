@@ -32,6 +32,19 @@ this is a code
 ]
 
 { #category : #tests }
+MicSBALaTeXWriterTest >> testCodeblockWithChevron [
+
+	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'MyClass >> foo
+	this is a code').
+	self assert: writer contents equals: '
+\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}
+MyClass >> foo
+ this is a code
+\end{listing}
+'
+]
+
+{ #category : #tests }
 MicSBALaTeXWriterTest >> testCodeblockWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
@@ -70,6 +83,15 @@ writer usedNewLine,
 MicSBALaTeXWriterTest >> testMonospace [
 
 	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\textcode{Foo}'
+]
+
+{ #category : #tests }
+MicSBALaTeXWriterTest >> testParagraphWithChevron [
+
+	self writeFor: (factory textWithChevron).
+	self assert: writer contents equals:'
+Pilou \textgreater{}\textgreater{} bla
+'
 ]
 
 { #category : #tests }

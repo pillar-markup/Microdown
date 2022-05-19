@@ -989,6 +989,12 @@ MicMicrodownSnippetFactory >> textSentenceSample [
 	^ 'Je ne connaitrais pas la peur'
 ]
 
+{ #category : #format }
+MicMicrodownSnippetFactory >> textWithChevron [
+
+	^ 'Pilou >> bla'
+]
+
 { #category : #list }
 MicMicrodownSnippetFactory >> unorderedListEmptySample [
 
