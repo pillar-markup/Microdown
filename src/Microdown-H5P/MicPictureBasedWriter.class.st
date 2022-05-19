@@ -44,9 +44,8 @@ All the manual parts should be done automatically (this is the next step).
 
 ```
 MicPictureBasedWriter new
-	sourcePDF: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/AboutBasket.pdf';
-	treatSourcPDF;
-	splitPDF;
+	sourcePDF: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/Essence-04-Self.pdf';
+	treatSourcePDF;
 	go.
 ```
 
@@ -81,11 +80,65 @@ MicPictureBasedWriter class >> example [
 
 { #category : #operations }
 MicPictureBasedWriter >> compressH5P [
-
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
 	"cd Target
 zip -r -D -X ../Generated.h5p *
 cd ../"
-	self halt.
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+	
+	OSSUnixSubprocess new	
+		shellCommand: '/usr/bin/zip -r -D -X ', sourcePDF withoutExtension fullName, '.h5p *';
+		workingDirectory: self target fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
+	
+]
+
+{ #category : #operations }
+MicPictureBasedWriter >> compressH5P2 [
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+	
+	OSSUnixSubprocess new	
+		shellCommand: '/usr/bin/zip -r -D -X ', sourcePDF withoutExtension fullName, '.h5p *';
+		workingDirectory: self target fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
+	
+]
+
+{ #category : #operations }
+MicPictureBasedWriter >> compressH5POld [
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+"the star is not correct because this is a shell and not the command behavior to expand"
 	OSSUnixSubprocess new	
 		command: '/usr/bin/zip';
 		arguments: {'-r' . '-D'. '-X'. sourcePDF withoutExtension fullName, '.h5p' . '*' };
@@ -130,13 +183,15 @@ MicPictureBasedWriter >> go [
 	"copy all the template to the target"
 	self installSource.
 	
-	"self splitPDF."
+	self splitPDF.
 	
 	"Copy the image from the source to the target"
 	self copyImagesInSource.
 	
 	slideNames := ((self sourceSlideImagesFolder children select: [:each | #('jpeg' 'jpg') includes: each extension]) collect: [:each | each basename]) sorted.
 	self generateContent.
+	
+	self compressH5P
 ]
 
 { #category : #operations }
