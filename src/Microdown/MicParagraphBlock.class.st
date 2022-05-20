@@ -30,8 +30,7 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 
 	text := text
 		ifNil: [ line trim ]
-		ifNotNil: [ text , String cr , line trim ].
-	^ self
+		ifNotNil: [ text , String cr , line trim ]
 ]
 
 { #category : #private }
@@ -44,8 +43,8 @@ MicParagraphBlock >> asUnindented: line [
 { #category : #public }
 MicParagraphBlock >> canConsumeLine: line [
 	"A paragraph is closed by an empty line, "
-
 	| unIndented |
+	
 	"if we are closing block that can contain other elements then do not consume their ends."
 	(line isEmpty or: [ line beginsWith: EnvironmentClosingBlockMarkup]) 
 		ifTrue: [ ^ false ].

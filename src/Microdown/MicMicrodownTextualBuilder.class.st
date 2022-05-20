@@ -212,7 +212,7 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBl
 	aDescriptionBlock value.
 	self raw: LinkNameCloserMarkup.
 	self raw: URLOpenerMarkup.
-	self raw: aURL asString.
+	self raw: aURL asString trimmed.
 	self raw: URLCloserMarkup.
 ]
 

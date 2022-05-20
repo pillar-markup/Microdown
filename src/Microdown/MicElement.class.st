@@ -21,12 +21,26 @@ MicElement >> hasProperty: aKey [
 
 { #category : #public }
 MicElement >> inlineParse: aString [
-	| inlineParser childrenCol |
-	inlineParser := MicInlineParser new.
-	childrenCol := inlineParser parse: aString.
-	childrenCol do: [ :each | each parent: self ].
-	^  childrenCol
+	| inlineParser inlinedChildren |
+	
+	inlineParser := self newInlineParser.
+	inlinedChildren := inlineParser parse: aString.
+	inlinedChildren do: [ :each | each parent: self ].
+	
+	^ inlinedChildren
 
+]
+
+{ #category : #private }
+MicElement >> inlineParserClass [
+
+	^ MicInlineParser
+]
+
+{ #category : #private }
+MicElement >> newInlineParser [
+
+	^ self inlineParserClass new
 ]
 
 { #category : #accessing }

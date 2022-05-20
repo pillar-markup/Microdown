@@ -149,6 +149,12 @@ MicInlineParser >> delimiterFoundProcess [
 
 ]
 
+{ #category : #'instance creation' }
+MicInlineParser >> elementBlockClass [
+		
+	^ MicTextBlock
+]
+
 { #category : #actions }
 MicInlineParser >> identifyMarkupFor: aString [
 	(self class keyBeginSet includes: aString first) ifFalse: [ ^self ].
@@ -287,11 +293,14 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 
 { #category : #'instance creation' }
 MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
-	^ (MicTextBlock
-			from: stIndex
-			to: eIndex
-			withSubstring: (string copyFrom: stIndex to: eIndex)
-			withChildren: Array empty)
+	| text |
+	
+	text := string copyFrom: stIndex to: eIndex.
+	^ self elementBlockClass
+		from: stIndex
+		to: eIndex
+		withSubstring: text
+		withChildren: Array empty
 			
 		"should use copyFrom:to:"
 ]
