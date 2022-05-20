@@ -54,6 +54,12 @@ MicArgumentsSplitter class >> withString: aString [
 ]
 
 { #category : #accessing }
+MicArgumentsSplitter >> children [
+
+	^ #()
+]
+
+{ #category : #accessing }
 MicArgumentsSplitter >> defaultArg [
 
 	^ defaultArg ifNil: [ defaultArg := #defaultArg ]
