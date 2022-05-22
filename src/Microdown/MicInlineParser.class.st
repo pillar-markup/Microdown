@@ -455,10 +455,6 @@ MicInlineParser >> read: aString [
 	[ next isEmpty ] whileFalse: [ 
 		incrementation := 1.
 		self identifyMarkupFor: next.
-		"this is stupid to iterate all. We can stop as soon as we found one. "
-
-		next first = $\ ifTrue: [ 
-			incrementation := incrementation + 1 ].
 		self indexIncrement: incrementation.
 		next := next size > incrementation 
 			ifTrue: [ (next allButFirst: incrementation)]
@@ -476,7 +472,7 @@ MicInlineParser >> resultProcess [
 		| startSubstring endSubstring |
 		e substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := (string indexOfSubCollection: e substring startingAt: e start) max: 1.
+			ifFalse: [  	startSubstring := e start + e openingDelimiter size.
 		endSubstring := startSubstring + e substring size - 1 ].
 		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
