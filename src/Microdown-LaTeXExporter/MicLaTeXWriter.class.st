@@ -39,6 +39,11 @@ MicLaTeXWriter class >> writerName [
 ]
 
 { #category : #accessing }
+MicLaTeXWriter >> canvas [
+	^ canvas
+]
+
+{ #category : #accessing }
 MicLaTeXWriter >> canvasClass [
 	^ MicLaTeXCanvas
 ]
@@ -83,7 +88,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure reference path ]
+		parameter: [ canvas raw: aFigure figurePath  ]
 	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
 	
 ]
@@ -391,14 +396,17 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 
 { #category : #helpers }
 MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
-
+	"we decided not to create an arbitrary label when there is none specified.
+	This decision should be changed but we need to find a way to uniquely identify a figure, math, ..."
+	
 	| label |
 	label := anExternalLink arguments
 		         at: 'label'
-		         ifAbsent: [ anExternalLink url ].
-	canvas command
-		name: 'label';
-		parameter: [ canvas raw: label ]
+		         ifAbsent: [ nil ].
+	label ifNotNil: [ 
+		canvas command
+			name: 'label';
+			parameter: [ canvas raw: label ] ]
 ]
 
 { #category : #helpers }

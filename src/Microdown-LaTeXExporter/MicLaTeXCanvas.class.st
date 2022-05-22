@@ -97,8 +97,17 @@ MicLaTeXCanvas >> environment [
 ]
 
 { #category : #'writing text' }
-MicLaTeXCanvas >> nextPut: aCharacter [
+MicLaTeXCanvas >> interpretedNextPut: aCharacter [
+
 	(LatexCharacters at: aCharacter ifAbsent: nil)
-		ifNil: [ super nextPut: aCharacter ]
+		ifNil: [ self raw: aCharacter ]
 		ifNotNil: [ :string | self raw: string ]
+]
+
+{ #category : #'writing text' }
+MicLaTeXCanvas >> nextPut: aCharacter [
+
+	writingRaw 
+		ifFalse: [ self interpretedNextPut: aCharacter ]
+		ifTrue: [ self raw: aCharacter ]
 ]

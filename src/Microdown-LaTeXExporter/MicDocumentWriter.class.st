@@ -22,13 +22,25 @@ MicDocumentWriter >> contents [
 ]
 
 { #category : #initialization }
+MicDocumentWriter >> crAsNewLine [
+
+	canvas crAsNewLine
+]
+
+{ #category : #initialization }
 MicDocumentWriter >> initialize [
-	| stream2 |
+	| stream |
 	super initialize.
-	stream2 := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream2.
+	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	canvas := self canvasClass on: stream.
 	writingRaw := false.
 	nbListTab := -1
+]
+
+{ #category : #initialization }
+MicDocumentWriter >> lfAsNewLine [
+
+	canvas lfAsNewLine
 ]
 
 { #category : #initialization }
@@ -54,8 +66,9 @@ MicDocumentWriter >> write: aMicElement [
 
 { #category : #writing }
 MicDocumentWriter >> writeRawDuring: aBlock [
+
 	[ 
-	writingRaw := true.
+	canvas writingRaw: true.
 	aBlock value ]
-		ensure: [ writingRaw := false ]
+		ensure: [ canvas writingRaw: false. ]
 ]

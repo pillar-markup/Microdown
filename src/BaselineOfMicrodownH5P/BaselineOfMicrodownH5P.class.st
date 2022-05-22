@@ -23,7 +23,14 @@ Class {
 BaselineOfMicrodownH5P >> baseline: spec [
 	<baseline>
 	
+	spec
+		for: #(unix osx)
+		do: [ spec 
+					baseline: 'OSSubprocess' 
+					with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.4.0/repository' ] ].
+	
 	spec for: #'common' do: [
+		"probably not needed with the latest version e.g. jpeg production."
 		spec 
 			baseline: 'Mustache'
 			with: [ spec
@@ -31,6 +38,6 @@ BaselineOfMicrodownH5P >> baseline: spec [
 						loads: #('Core' 'Tests') ].
 		spec 
 			package: #'Microdown-H5P' 
-			with: [ spec requires: #('Mustache') ]
+			with: [ spec requires: #('Mustache' 'OSSubprocess') ]
 	]
 ]
