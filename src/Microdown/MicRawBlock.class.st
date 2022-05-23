@@ -21,9 +21,9 @@ MicRawBlock >> accept: aVisitor [
 	^ aVisitor visitRaw: self
 ]
 
-{ #category : #testing }
+{ #category : #operations }
 MicRawBlock >> cleanSubstring [
-	"overrides to do nothing - super removes backslash, which we should not in raw"
+	self substring: (MicInlineParser escapeReescape: self substring  except: '')
 ]
 
 { #category : #accessing }

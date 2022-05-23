@@ -35,10 +35,10 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 		start: aStartInteger; 
 		end: anEndInteger; 
 		substring: aString; 
-		children: aChildren; 
-		cleanSubstring; 
+		children: aChildren;
 		url: aURL;
 		closeMe; 
+		cleanSubstring; 
 		yourself
 ]
 
@@ -49,10 +49,10 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 		end: anEndInteger; 
 		substring: aString; 
 		children: aChildren; 
-		cleanSubstring; 
 		url: aURL;
 		parser: aParser;
 		closeMe; 
+		cleanSubstring; 
 		yourself
 ]
 
