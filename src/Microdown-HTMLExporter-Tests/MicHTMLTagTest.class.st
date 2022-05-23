@@ -12,7 +12,7 @@ MicHTMLTagTest >> sampleMicFigureBlock [
 
 	^ MicFigureBlock new 
 		argumentAt: 'label' put: 'sampleClass';
-		argumentAt: 'size' put: '30';
+		argumentAt: 'width' put: '30';
 		yourself.
 ]
 
