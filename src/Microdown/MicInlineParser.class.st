@@ -433,7 +433,7 @@ MicInlineParser >> openerOnlyCase [
 MicInlineParser >> parse: aString [
 
 	aString ifEmpty: [ ^ Array empty ].
-	string := aString.
+	string := self class escapeEncode: aString.
 	^ self read
 ]
 
@@ -473,26 +473,7 @@ MicInlineParser >> read [
 	[ (next := string allButFirst: index-1 ) isEmpty ] whileFalse: [ 
 		incrementation := 1.
 		self identifyMarkupFor: next.
-		"this is stupid to iterate all. We can stop as soon as we found one. "
-
-		next first = $\ ifTrue: [ 
-			incrementation := incrementation + 1 ].
 		self indexIncrement: incrementation.
-	].
-	^ self resultProcess
-]
-
-{ #category : #actions }
-MicInlineParser >> read: aString [
-	| next |
-	next := aString.
-	[ next isEmpty ] whileFalse: [ 
-		incrementation := 1.
-		self identifyMarkupFor: next.
-		self indexIncrement: incrementation.
-		next := next size > incrementation 
-			ifTrue: [ (next allButFirst: incrementation)]
-			ifFalse: [''].
 	].
 	^ self resultProcess
 ]
