@@ -40,9 +40,9 @@ MicMathInlineBlock >> accept: aVisitor [
 	^ aVisitor visitMathInline: self
 ]
 
-{ #category : #testing }
+{ #category : #operations }
 MicMathInlineBlock >> cleanSubstring [
-	"overrides to do nothing - super removes backslash, which we should not in latex"
+	self substring: (MicInlineParser escapeReescape: self substring  except: '')
 ]
 
 { #category : #accessing }

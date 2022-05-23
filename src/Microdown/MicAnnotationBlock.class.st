@@ -38,8 +38,8 @@ MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: 
 		  substring: aString;
 		  children: aChildren;
 		  arguments: splitter;
-		  cleanSubstring;
 		  closeMe;
+		  cleanSubstring;
 		  yourself
 ]
 
