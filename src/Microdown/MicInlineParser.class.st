@@ -47,6 +47,63 @@ MicInlineParser class >> allDelimiters [
 	^ AllDelimiters 
 ]
 
+{ #category : #'escape character' }
+MicInlineParser class >> escapeDecode: aString [
+	"I convert all encoded chars back to their original (without the leading escape character)"
+	"My sister method escapeEncode encodes into the format I decode from"
+	| inStream outStream char special |
+	aString ifEmpty: [ ^aString ].
+	special := [ :c | c asInteger between: self magicCharacter  and: self magicCharacter + 65536 ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(special value: char)
+			ifTrue: [ char := (char asInteger - self magicCharacter ) asCharacter  ].
+		outStream nextPut: char
+	].
+	^ outStream contents
+	
+]
+
+{ #category : #'escape character' }
+MicInlineParser class >> escapeEncode: aString [
+	"I convert all escaped characters (eg '\`' or '\\') into special characters which are not used in Microdown"
+	"My sister method escapeDecode reverts back"
+	| inStream outStream char |
+	aString size <= 1 ifTrue: [ ^aString ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(char = $\ and: [ inStream atEnd not ]) 
+			ifTrue: [ char := (inStream next asInteger + self magicCharacter) asCharacter  ].
+		outStream nextPut: char
+	].
+	^ outStream contents
+	
+]
+
+{ #category : #'escape character' }
+MicInlineParser class >> escapeReescape: aString except: keep [
+	"I convert all encoded back to escaped chars, except the characters in keep"
+	"My sister method escapeEncode encodes into the format I decode from"
+	| inStream outStream char |
+	aString ifEmpty: [ ^aString ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(char asInteger between: self magicCharacter  and: self magicCharacter + 65536)
+			ifTrue: [ 
+				char := (char asInteger - self magicCharacter ) asCharacter.  
+				(keep includes: char) ifFalse: [outStream nextPut: $\]] .
+		outStream nextPut: char
+	].
+	^ outStream contents
+	
+]
+
 { #category : #'class initialization' }
 MicInlineParser class >> initialize [
 	<script>
@@ -57,6 +114,14 @@ MicInlineParser class >> initialize [
 MicInlineParser class >> keyBeginSet [
 	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
 	^ KeyBeginSet
+]
+
+{ #category : #'escape character' }
+MicInlineParser class >> magicCharacter [
+	"All escaped characters are moved out of range. 
+	The unicode range Private Use Area is used, 
+	see https://en.wikipedia.org/wiki/Private_Use_Areas "
+	^ 16r100000 "Private Use Area-B"
 ]
 
 { #category : #'handle basic text' }
@@ -368,8 +433,8 @@ MicInlineParser >> openerOnlyCase [
 MicInlineParser >> parse: aString [
 
 	aString ifEmpty: [ ^ Array empty ].
-	string := aString.
-	^ self read: aString
+	string := self class escapeEncode: aString.
+	^ self read: string
 ]
 
 { #category : #actions }
@@ -390,10 +455,6 @@ MicInlineParser >> read: aString [
 	[ next isEmpty ] whileFalse: [ 
 		incrementation := 1.
 		self identifyMarkupFor: next.
-		"this is stupid to iterate all. We can stop as soon as we found one. "
-
-		next first = $\ ifTrue: [ 
-			incrementation := incrementation + 1 ].
 		self indexIncrement: incrementation.
 		next := next size > incrementation 
 			ifTrue: [ (next allButFirst: incrementation)]
@@ -411,7 +472,7 @@ MicInlineParser >> resultProcess [
 		| startSubstring endSubstring |
 		e substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := (string indexOfSubCollection: e substring startingAt: e start) max: 1.
+			ifFalse: [  	startSubstring := e start + e openingDelimiter size.
 		endSubstring := startSubstring + e substring size - 1 ].
 		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
