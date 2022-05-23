@@ -647,6 +647,16 @@ MicInlineParserTest >> testUnclosedMath [
 		equals: { 'Text(abc$	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
 ]
 
+{ #category : #'tests - math' }
+MicInlineParserTest >> testUnclosedRaw [
+
+	| res |
+	res := self splitter parse: 'abc{{	V_i = C_0 - C_3	&def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: { 'Text(abc{{	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
+]
+
 { #category : #'tests - formats' }
 MicInlineParserTest >> testUnclosedStrike [
 
