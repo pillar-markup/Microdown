@@ -389,7 +389,7 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 	canvas
 		nextPutAll: 'width=';
 		nextPutAll:
-			((anExternalLink arguments at: 'size' ifAbsent: [ 100 ]) asNumber
+			((anExternalLink arguments at: 'width' ifAbsent: [ 100 ]) asNumber
 			 / 100.0) printString;
 		raw: '\textwidth'
 ]

@@ -286,7 +286,7 @@ This is a codeBlock
 MicMicrodownSnippetFactory >> figureBoldSample [
 	^ '
 
-![**Foo**](/anUrl label=figureTest&size=80)
+![**Foo**](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -303,7 +303,7 @@ MicMicrodownSnippetFactory >> figureItalicSample [
 
 	^ '
 
-![_Foo_](/anUrl label=figureTest&size=80)
+![_Foo_](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -312,7 +312,7 @@ MicMicrodownSnippetFactory >> figureMonospaceSample [
 
 	^ '
 
-![`Foo`](/anUrl label=figureTest&size=80)
+![`Foo`](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -321,7 +321,7 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 
 	^ '
 
-![**Foo\_**](/anUrl label=figureTest&size=80)
+![**Foo\_**](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -329,7 +329,7 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 MicMicrodownSnippetFactory >> figureRealSample [
 
 	^ '
-![A logo png under figures folder](figures/logo.png label=figureTest&size=80)
+![A logo png under figures folder](figures/logo.png label=figureTest&width=80)
 '
 ]
 
@@ -338,7 +338,7 @@ MicMicrodownSnippetFactory >> figureSample [
 
 	^ '
 
-![Foo](/anUrl label=figureTest&size=80)
+![Foo](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -356,7 +356,7 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 
 	^ '
 
-![~Foo~](/anUrl label=figureTest&size=80)
+![~Foo~](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -374,7 +374,7 @@ MicMicrodownSnippetFactory >> figureWithoutCaptionSample [
 
 	^ '
 
-![](/anUrl label=figureTest&size=80)
+![](/anUrl label=figureTest&width=80)
 '
 ]
 
@@ -383,7 +383,7 @@ MicMicrodownSnippetFactory >> fileFigureSample [
 
 	^ '
 
-![Foo](file://image.png/ label=figureTest&size=80)
+![Foo](file://image.png/ label=figureTest&width=80)
 '
 ]
 

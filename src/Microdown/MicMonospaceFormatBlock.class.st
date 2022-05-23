@@ -8,11 +8,6 @@ Class {
 }
 
 { #category : #testing }
-MicMonospaceFormatBlock class >> cleanSubstring [
-	"does nothing on purpose"
-]
-
-{ #category : #testing }
 MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
 ]
@@ -24,9 +19,7 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 
 { #category : #operations }
 MicMonospaceFormatBlock >> cleanSubstring [
-	| res |
-	res := self substring copyReplaceAll: '\`' with: '`'..
-	self substring: res
+	self substring: (MicInlineParser escapeReescape: self substring except: '`')
 ]
 
 { #category : #internal }
