@@ -159,12 +159,25 @@ MicDocumentBrowser >> renderSection: micReference [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave|
+	| docToSave sourceScroll editing|
 	docToSave := spDocumentList selectedItem.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
 	self renderSection: docToSave.
-	self setEditStatus:  #canEdit
+	self setEditStatus:  #canEdit.
+	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
+	editing := self isEditing.
+	isEditing := false. "setting it false prevent circular announcements"
+	spRendering adapter widget scrollPane  
+		vScrollbarValue: sourceScroll.
+	isEditing := editing.
+	
+]
+
+{ #category : #'source code' }
+MicDocumentBrowser >> scrollSource:  scrollValue [
+	isEditing ifFalse: [ ^self ].
+	spSource adapter widget scrollPane vScrollbarValue: scrollValue
 ]
 
 { #category : #layout }
@@ -199,7 +212,7 @@ MicDocumentBrowser >> setEditStatus: status [
 { #category : #accessing }
 MicDocumentBrowser >> setEditing: aBoolean [
 	isEditing := aBoolean.
-	self setTopLayout  
+	self setTopLayout.
 	isEditing 
 		ifTrue: [ self setSourceOfSelectedDocument ]
 		ifFalse: [ self saveNewSourceForSelectedDocument ].
@@ -217,6 +230,7 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 		text: original;
 		editable: micRef canSave;
 		whenTextChangedDo: [:text | saveButton state: text ~= original].
+	spRendering adapter widget scrollPane announcer when: RubVerticalScrolled do: [:a | self scrollSource:  a scrollValue].
 	micRef canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]

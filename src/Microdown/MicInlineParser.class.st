@@ -434,7 +434,7 @@ MicInlineParser >> parse: aString [
 
 	aString ifEmpty: [ ^ Array empty ].
 	string := self class escapeEncode: aString.
-	^ self read: string
+	^ self read
 ]
 
 { #category : #actions }
@@ -445,20 +445,35 @@ MicInlineParser >> popFrom: aStartIndex to: anEndIndex [
 
 { #category : #actions }
 MicInlineParser >> pushNewOpener [
-	openersStack push: (delimiterClass index: index)
+	delimiterClass associatedInlineBlock isEvaluated 
+		ifTrue: [ openersStack push: (delimiterClass index: index)]
+		ifFalse: [ self rawRead ]
+]
+
+{ #category : #process }
+MicInlineParser >> rawRead [
+	| open rawType close startIndex endIndex rawContents rawBlock |
+	open := delimiterClass index: index.
+	rawType := open associatedInlineBlock.
+	close := rawType basicNew closingDelimiter.
+	startIndex := index.
+	endIndex := string findString: close startingAt: startIndex+1.
+	endIndex = 0 ifTrue: [ index := index +1. ^self ].
+	rawContents := string copyFrom: (startIndex+open size) to: (endIndex-1).
+	rawBlock := rawType from: startIndex to: endIndex -1 + close size withSubstring: rawContents.
+	openersStack 
+		ifEmpty: [ result add: rawBlock. children := LinkedList new ]
+		ifNotEmpty: [ children add: rawBlock ].
+	index:= endIndex.
 ]
 
 { #category : #actions }
-MicInlineParser >> read: aString [
+MicInlineParser >> read [
 	| next |
-	next := aString.
-	[ next isEmpty ] whileFalse: [ 
+	[ (next := string allButFirst: index-1 ) isEmpty ] whileFalse: [ 
 		incrementation := 1.
 		self identifyMarkupFor: next.
 		self indexIncrement: incrementation.
-		next := next size > incrementation 
-			ifTrue: [ (next allButFirst: incrementation)]
-			ifFalse: [''].
 	].
 	^ self resultProcess
 ]
