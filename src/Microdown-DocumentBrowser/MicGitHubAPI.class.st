@@ -7,7 +7,7 @@ I cache my responses, in a LRU cache of 120 last calls (randomly picked number w
 "
 Class {
 	#name : #MicGitHubAPI,
-	#superclass : #Object,
+	#superclass : #IceGitHubAPI,
 	#classVars : [
 		'APICount',
 		'NextReset',
@@ -44,18 +44,14 @@ MicGitHubAPI class >> reset [
 	
 ]
 
-{ #category : #private }
-MicGitHubAPI >> acceptMediaType [
-
-	^ 'application/vnd.github.v3+json'
-]
-
-{ #category : #operations }
+{ #category : #requesting }
 MicGitHubAPI >> defaultBranch: user project: project [
 	"Looks up the name of the default branch. returns nil if user/project does not exist"
 	| response |
-	response := self get: ('https://api.github.com/repos/{1}/{2}' format: {user. project}).
-	^ response at: 'default_branch' ifAbsent: [ 'main' ]
+	[response := self get: ('repos/{1}/{2}' format: {user. project}).
+	^ response at: 'default_branch' ifAbsent: [ 'main' ]]
+	on: IceGitHubError 
+	do: [ ^ 'main' ]
 ]
 
 { #category : #private }
@@ -67,26 +63,19 @@ MicGitHubAPI >> extractRateInfo: response [
 	^ response
 ]
 
-{ #category : #operations }
+{ #category : #'private - requesting' }
 MicGitHubAPI >> get: apiCallString [
 	"I return a json structure as the result from the github api call"
 	^ self class cache 
 		at: apiCallString 
-		ifAbsentPut: [ self performApiCall: apiCallString]
+		ifAbsentPut: [ super get: apiCallString]
 	
 ]
 
 { #category : #private }
-MicGitHubAPI >> performApiCall: apiCallString [
-	| response json|
-	response :=(ZnClient new  
-		headerAt: 'Accept' put: self acceptMediaType;
-		url: apiCallString) get; response.
+MicGitHubAPI >> responseWithValidationDo: aBlock [
+	| response |
+	response := super responseWithValidationDo: aBlock.
 	self extractRateInfo: response.
-	json := STONJSON fromString: response entity contents.
-	((json includesKey: #message) and: [(json at: #message) beginsWith: 'API rate limit exceeded'])
-		ifTrue: [ MicGitHubAPIRateError new response: json; signal ].
-	^ json
-	
-	
+	^ response
 ]
