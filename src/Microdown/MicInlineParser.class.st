@@ -454,8 +454,8 @@ MicInlineParser >> openerOnlyCase [
 MicInlineParser >> parse: aString [
 
 	aString ifEmpty: [ ^ #() ].
-	string := aString.
-	^ self read: aString
+	string := self class escapeEncode: aString.
+	^ self read
 ]
 
 { #category : #actions }
@@ -491,11 +491,12 @@ MicInlineParser >> rawRead [
 { #category : #actions }
 MicInlineParser >> read [
 	| next |
-	[ (next := string allButFirst: index-1 ) isEmpty ] whileFalse: [ 
-		incrementation := 1.
-		self identifyMarkupFor: next.
-		self indexIncrement: incrementation.
-	].
+	
+	[ (next := string allButFirst: index-1) isEmpty ] 
+	whileFalse: [ 
+		incrementation := self identifyMarkupFor: next.
+		self indexIncrement: incrementation ].
+	
 	^ self resultProcess
 ]
 
@@ -508,7 +509,7 @@ MicInlineParser >> resultProcess [
 		| startSubstring endSubstring |
 		e substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := (string indexOfSubCollection: e substring startingAt: e start) max: 1.
+			ifFalse: [  	startSubstring := e start + e openingDelimiter size.
 		endSubstring := startSubstring + e substring size - 1 ].
 		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
