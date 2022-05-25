@@ -2,20 +2,20 @@
 To support multiple columns in document.
 
 ```
-<?columns
+<!columns
 
-<?column
+<!column
 
 - col 1 item1 a first list
 - col 1 item2 a first list
-?>
+!>
 
-<?column
+<!column
 
 - col 2 item1 a first list
 - col 2 item2 a first list
-?>
-?>
+!>
+!>
 ```
 
 Note that a column can have also a width.

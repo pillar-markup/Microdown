@@ -8,7 +8,7 @@ Class {
 		'baseUrl',
 		'offlineSetting'
 	],
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #'test data' }

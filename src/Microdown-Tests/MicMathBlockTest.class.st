@@ -8,14 +8,11 @@ Class {
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
-	root := (self parserClass parse: '
+	root := self parserClass parse: '
 
-&
+',MathOpeningBlockMarkup,'
 V_i = C_0 - C_3
-&
-
-
-').
+', MathClosingBlockMarkup.
 	self assert: root children first class equals: MicMathBlock 
 ]
 
@@ -23,12 +20,11 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithBackslashCommands [
 	"check that backslash are not expanded for math blocks"
 	| root math |
-	root := (self parserClass parse: '
+	root := self parserClass parse: '
 
-&
+',MathOpeningBlockMarkup,'
 f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
-&
-').
+', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self assert: math body equals: 'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz'.
@@ -41,10 +37,9 @@ MicMathBlockTest >> testMathBlockWithBadClosure [
 	"a MicMathBlock can use the MicMathInlineBlock delimiter"
 	root := self parserClass new parse: '
 
-&key=cite&label=42
+',MathOpeningBlockMarkup,'key=cite&label=42
 V_i = C_0 - C_3 
-$
-'.
+$'.
 	self assert: root children first body equals: 'V_i = C_0 - C_3 
 $'
 ]
@@ -55,10 +50,9 @@ MicMathBlockTest >> testMathBlockWithParameters [
 	| root math |
 	root := self parserClass new parse: '
 
-&key=cite&label=42
+',MathOpeningBlockMarkup,'key=cite&label=42
 V_i = C_0 - C_3 
-&
-'.
+', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self assert: math firstLine equals: 'key=cite&label=42'.
@@ -72,10 +66,9 @@ MicMathBlockTest >> testMathBlockWithParametersCaption [
 	| root math |
 	root := self parserClass new parse: '
 
-&key=cite&label=42&caption=Ze great formula
+', MathOpeningBlockMarkup, 'key=cite&label=42&caption=Ze great formula
 V_i = C_0 - C_3 
-&
-'.
+', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -95,10 +88,9 @@ MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 	| root math |
 	root := self parserClass new parse: '
 
-&key=cite&label=42&caption=Ze **great** formula
+',MathOpeningBlockMarkup,'key=cite&label=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
-&
-'.
+',MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -119,10 +111,9 @@ MicMathBlockTest >> testMathBlockWithParametersWithBlank [
 	| root math |
 	root := self parserClass new parse: '
 
-&key=&label=42
+', MathOpeningBlockMarkup,'key=&label=42
 V_i = C_0 - C_3 
-&
-'.
+', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self assert: math firstLine equals: 'key=&label=42'.

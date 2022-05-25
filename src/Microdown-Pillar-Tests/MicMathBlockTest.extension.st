@@ -4,12 +4,10 @@ Extension { #name : #MicMathBlockTest }
 MicMathBlockTest >> testMathBlockAsPillar [
 	| source root pillar |
 	source := '
-&
+',MathOpeningBlockMarkup,'
 V_i = C_0 - C_3
-&
-	
-'.
-	root := parser parse: source.
+', MathClosingBlockMarkup.
+root := parser parse: source.
 	pillar := root children first asPillar.
 	self assert: pillar class equals: PRMathEnvironment.
 	self assert: pillar children first class equals: PRText.
@@ -20,11 +18,9 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockAsPillarWithArgument [
 	| source root pillar |
 	source := '
-&toto=22&caption=isAlreadyDefined.
+',MathOpeningBlockMarkup,'toto=22&caption=isAlreadyDefined.
 V_i = C_0 - C_3
-&
-	
-'.
+', MathClosingBlockMarkup.
 	root := parser parse: source.
 	pillar := root children first asPillar.
 	self assert: pillar class equals: PRMathEnvironment.
@@ -38,11 +34,9 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockAsPillarWithArgumentWithFormatting [
 	| source root pillar |
 	source := '
-&toto=22&caption=**is**AlreadyDefined.
+',MathOpeningBlockMarkup,'toto=22&caption=**is**AlreadyDefined.
 V_i = C_0 - C_3
-&
-	
-'.
+', MathClosingBlockMarkup.
 	root := parser parse: source.
 	pillar := root children first asPillar.
 	self assert: pillar class equals: PRMathEnvironment.
