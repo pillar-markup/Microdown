@@ -236,10 +236,11 @@ MicInlineParser >> identifyMarkupFor: aString [
 	(self class keyBeginSet includes: aString first) ifFalse: [ ^ 1 ].
 	keys do: [ :key |
 		(aString beginsWith: key) ifTrue: [ 
-			incrementation := key size.
 			delimiterClass := allDelimiters at: key.
 			self delimiterFoundProcess.
-			^ 1 ] ]
+			^ key size ] ].
+	
+	^ 1
 ]
 
 { #category : #actions }
