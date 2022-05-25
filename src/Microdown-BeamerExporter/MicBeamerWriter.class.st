@@ -111,6 +111,12 @@ MicBeamerWriter class >> basicTemplateForTest [
 \end{document}'
 ]
 
+{ #category : #accessing }
+MicBeamerWriter class >> writerName [
+
+	^ #micBeamer
+]
+
 { #category : #helpers }
 MicBeamerWriter >> createFrametitle: aTitle [
 	canvas command
@@ -124,6 +130,11 @@ MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 		name: 'hyperlink';
 		parameter: [ canvas raw: anInternalLink anchor ];
 		parameter: [ canvas raw: anInternalLink alias ]
+]
+
+{ #category : #accessing }
+MicBeamerWriter >> folderName [
+	^ #beamer
 ]
 
 { #category : #helpers }
@@ -143,6 +154,11 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 			((3 > level and: [ 3 <= depth ])
 				ifTrue: [ 'subsubsectionstyle=show/show/show' ]
 				ifFalse: [ 'subsubsectionstyle=hide/hide/hide' ])
+]
+
+{ #category : #accessing }
+MicBeamerWriter >> templateForConfiguration: aConfiguration [
+	^ 'presentation.template'
 ]
 
 { #category : #'blocks - code' }

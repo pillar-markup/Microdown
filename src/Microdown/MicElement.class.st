@@ -11,6 +11,12 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #utilities }
+MicElement class >> extensionClassFor: tag [
+	"I am a utility method used in extension blocks to find the right subclass to instantiate"
+	^ self subclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+]
+
 { #category : #properties }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."

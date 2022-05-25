@@ -11,6 +11,13 @@ Class {
 }
 
 { #category : #accessing }
+MicHTMLBrush >> name [
+	"Answer a <String> with the receiver's name"
+	
+	^ name
+]
+
+{ #category : #accessing }
 MicHTMLBrush >> name: aString [
 	name := aString.
 	stream nextPut: $<; << aString

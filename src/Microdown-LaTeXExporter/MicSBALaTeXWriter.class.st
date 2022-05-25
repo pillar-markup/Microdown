@@ -8,6 +8,16 @@ Class {
 	#category : #'Microdown-LaTeXExporter'
 }
 
+{ #category : #accessing }
+MicSBALaTeXWriter class >> writerName [
+	^ #miclatex:sbabook
+]
+
+{ #category : #accessing }
+MicSBALaTeXWriter >> folderName [
+	^ #latex
+]
+
 { #category : #protected }
 MicSBALaTeXWriter >> monospaceMacro [
 	^ 'textcode'
@@ -28,6 +38,11 @@ MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
 ]
 
+{ #category : #accessing }
+MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
+	^ 'main.mustache'
+]
+
 { #category : #protected }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
 	
@@ -46,7 +61,7 @@ MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
 		parameter: 'smalltalk';
 		parameter: [ aCodeBlock captionElements collect: [ :each | each accept: self ] ];
 		with: [
-			self writeRawDuring: [ 	canvas nextPutAllLines: aCodeBlock body ].
+			self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]
 

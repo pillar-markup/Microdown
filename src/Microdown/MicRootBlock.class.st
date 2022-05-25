@@ -34,3 +34,30 @@ MicRootBlock >> canConsumeLine: line [
 MicRootBlock >> indent [
 	^0
 ]
+
+{ #category : #accessing }
+MicRootBlock >> properties: aConfigurationForPillar [
+	"Pay attention the strong hypothesis here is that keys of microdown properties and pillar configuration should not overlap. A possible solution would be to have clever at: and at:put: that check for example for a prefix for microdown properties.
+	
+	This way the user would write
+		aMicElement at: #prop
+		aMicElement at: #prop put: 123
+				
+		the system would store: #mic_prop
+	
+	"
+
+	"to avoid trashing the potential existing properties of a mic element, 
+	we copied them into the configuration which is a special kind of dictionary and 
+	store the dictionary values in it.
+	"
+	
+	properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
+	properties := aConfigurationForPillar
+]
+
+{ #category : #'pillar integration' }
+MicRootBlock >> transformDocumentFor: aPRPDFDocument [ 
+	"This is a hook to be able to have framework specific transformation hooks.
+	see PRAbstractOutputDocument>>#buildOn:"
+]

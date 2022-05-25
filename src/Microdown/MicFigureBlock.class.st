@@ -13,10 +13,6 @@ What is important to see is that there is a space between the url arguments and 
 Class {
 	#name : #MicFigureBlock,
 	#superclass : #MicInlineBlockWithUrl,
-	#instVars : [
-		'reference',
-		'arguments'
-	],
 	#category : #'Microdown-ModelInline'
 }
 
@@ -41,42 +37,12 @@ MicFigureBlock >> anchor [
 	ifAbsent: [ nil ] 
 ]
 
-{ #category : #accessing }
-MicFigureBlock >> argumentAt: aKey [
-
-	^ self arguments at: aKey
-]
-
-{ #category : #accessing }
-MicFigureBlock >> argumentAt: aKey ifPresent: aBlock [
-	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
-
-	self arguments 
-		at: aKey
-		ifPresent: aBlock
-]
-
-{ #category : #accessing }
-MicFigureBlock >> argumentAt: aKey put: anObject [
-
-	self arguments at: aKey put: anObject
-]
-
-{ #category : #accessing }
-MicFigureBlock >> arguments [
-	^ arguments
-]
-
-{ #category : #accessing }
-MicFigureBlock >> arguments: aDictionary [
-	arguments := aDictionary
-]
-
 { #category : #visiting }
 MicFigureBlock >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
 	| split title|
+	
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 
@@ -86,16 +52,21 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
+{ #category : #accessing }
+MicFigureBlock >> figurePath [
+	"this is a hack waiting for the resolution of resource references"
+	"when we have file://figures/foo.png we want to have figures/foo.png "
+	
+	^ (self url asString beginsWith: 'file://')
+		ifTrue: [ (self url allButFirst: 'file://' size) substrings at: 1 ]
+		ifFalse: [ self url substrings at: 1  ] 
+	
+	
+]
+
 { #category : #testing }
 MicFigureBlock >> hasAnchor [
 	^self anchor isNotNil
-]
-
-{ #category : #accessing }
-MicFigureBlock >> hasArguments [
-	"Answer <true> if the receiver contain at least 1 argument"
-	
-	^ arguments notEmpty
 ]
 
 { #category : #testing }
@@ -106,13 +77,6 @@ MicFigureBlock >> hasCaption [
 { #category : #testing }
 MicFigureBlock >> hasChildren [
 	^ self children notEmpty.
-]
-
-{ #category : #accessing }
-MicFigureBlock >> initialize [
-
-	super initialize.
-	arguments := OrderedDictionary new
 ]
 
 { #category : #accessing }
@@ -147,18 +111,6 @@ MicFigureBlock >> printOn: aStream [
 				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
-]
-
-{ #category : #accessing }
-MicFigureBlock >> reference [
-
-	^ reference
-]
-
-{ #category : #accessing }
-MicFigureBlock >> reference: anObject [
-
-	reference := anObject
 ]
 
 { #category : #accessing }

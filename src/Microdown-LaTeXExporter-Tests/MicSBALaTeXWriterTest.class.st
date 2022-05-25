@@ -13,8 +13,7 @@ MicSBALaTeXWriterTest >> actualClass [
 MicSBALaTeXWriterTest >> testCodeblock [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
-	self assert: writer contents equals: '
-\begin{displaycode}{smalltalk}
+	self assert: writer contents equals: '\begin{displaycode}{smalltalk}
 this is a code
 \end{displaycode}
 '
@@ -24,9 +23,20 @@ this is a code
 MicSBALaTeXWriterTest >> testCodeblockWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}
+	self assert: writer contents equals: '\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}
 this is a code
+\end{listing}
+'
+]
+
+{ #category : #tests }
+MicSBALaTeXWriterTest >> testCodeblockWithChevron [
+
+	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'MyClass >> foo
+	this is a code').
+	self assert: writer contents equals: '\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}
+MyClass >> foo
+ this is a code
 \end{listing}
 '
 ]
@@ -35,8 +45,7 @@ this is a code
 MicSBALaTeXWriterTest >> testCodeblockWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[float, label=Pharo]{smalltalk}{}
+	self assert: writer contents equals: '\begin{listing}[float, label=Pharo]{smalltalk}{}
 this is a code
 \end{listing}
 '
@@ -57,8 +66,7 @@ MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
 	| codeBlock |
 	codeBlock := MicCodeBlock new body: 'foo', writer usedNewLine, 'bar on another line'.
 	self writeForElement: codeBlock.	
-	self assert: writer contents equals: '
-\begin{displaycode}{smalltalk}
+	self assert: writer contents equals: '\begin{displaycode}{smalltalk}
 foo', 
 writer usedNewLine,
 'bar on another line
@@ -70,6 +78,15 @@ writer usedNewLine,
 MicSBALaTeXWriterTest >> testMonospace [
 
 	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\textcode{Foo}'
+]
+
+{ #category : #tests }
+MicSBALaTeXWriterTest >> testParagraphWithChevron [
+
+	self writeFor: (factory textWithChevron).
+	self assert: writer contents equals:'
+Pilou \textgreater{}\textgreater{} bla
+'
 ]
 
 { #category : #tests }
@@ -87,8 +104,7 @@ MicSBALaTeXWriterTest >> testSimpleFloating [
 		caption: 'A caption.';
 		yourself.
 	self writeForElement: codeBlock.
-	self assert: writer contents equals: '
-\begin{listing}[float]{smalltalk}{A caption.}
+	self assert: writer contents equals: '\begin{listing}[float]{smalltalk}{A caption.}
 foo
 \end{listing}
 '
@@ -108,8 +124,7 @@ MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 { #category : #tests }
 MicSBALaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
-	self assert: writer contents equals: '
-\begin{fullwidthtabular}{ll}
+	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}
 \toprule
 \textbf{aaab} & \textbf{jkhjh} \\
 \midrule
@@ -123,8 +138,7 @@ bar & rab \\
 MicSBALaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
-	self assert: writer contents equals: '
-\begin{fullwidthtabular}{ll}
+	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}
 \toprule
 aaab & jkhjh \\
 bar & rab \\
