@@ -66,7 +66,6 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
 
-
 			package: #'Microdown-BeamerExporter'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];
 				
@@ -74,6 +73,9 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
+				with: [ spec requires: #( #Microdown ) ];
+
+			package: #'Microdown-MarkdownStrict'
 				with: [ spec requires: #( #Microdown ) ];
 			
 			"contains the asPillar and converter from MD to Pillar"
@@ -90,6 +92,7 @@ BaselineOfMicrodown >> baseline: spec [
 		spec
 			group: 'Core' with: #('Microdown');
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
+			group: 'MarkdownStrict' with: #('Core' 'Microdown-MarkdownStrict' );
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions' with: #(
 				#'Microdown-RichTextPresenter'
@@ -105,5 +108,5 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'All' with: #('Core' 'Tests' 'Extensions' #'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-MarkdownStrict' 'Microdown-Pharo-Tools' 'RichText') ]
 ]

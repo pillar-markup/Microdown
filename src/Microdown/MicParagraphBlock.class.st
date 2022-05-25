@@ -28,9 +28,15 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
 
-	text := text
+	text := self appendLine: line to: text
+]
+
+{ #category : #private }
+MicParagraphBlock >> appendLine: line to: aString [
+
+	^ aString
 		ifNil: [ line trim ]
-		ifNotNil: [ text , String cr , line trim ]
+		ifNotNil: [ aString, String cr, line trim ]
 ]
 
 { #category : #private }
