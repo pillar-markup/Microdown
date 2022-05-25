@@ -37,13 +37,16 @@ MicInlineParser class >> abstractDelimiterClass [
 
 { #category : #accessing }
 MicInlineParser class >> allDelimiters [
+	
 	AllDelimiters ifNil: [ 
 		AllDelimiters := Dictionary new.
 		self abstractDelimiterClass subclasses 
 			select: [ :subclass | subclass isActive ]
-			thenDo: [ :subclass | AllDelimiters 
-										at: subclass markup 
-										put: subclass ]].
+			thenDo: [ :subclass | 
+				AllDelimiters 
+					at: subclass markup 
+					put: subclass ] ].
+
 	^ AllDelimiters 
 ]
 

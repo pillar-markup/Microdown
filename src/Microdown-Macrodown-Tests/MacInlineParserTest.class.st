@@ -1,17 +1,17 @@
 Class {
-	#name : #MdsInlineParserTest,
+	#name : #MacInlineParserTest,
 	#superclass : #MicInlineParserTest,
 	#category : #'Microdown-Macrodown-Tests'
 }
 
 { #category : #accessing }
-MdsInlineParserTest >> splitter [
+MacInlineParserTest >> splitter [
 
 	^ MacInlineParser new
 ]
 
 { #category : #tests }
-MdsInlineParserTest >> testParseLineBreak [
+MacInlineParserTest >> testParseLineBreak [
 	| blocks |
 
 	blocks := self splitter parse: 'x1  
@@ -23,7 +23,7 @@ x2
 ]
 
 { #category : #tests }
-MdsInlineParserTest >> testParseLineBreakManySpaces [
+MacInlineParserTest >> testParseLineBreakManySpaces [
 	| blocks |
 
 	blocks := self splitter parse: 'a     

@@ -13,6 +13,12 @@ MicLinkNameDelimiter class >> associatedTypes [
 	}
 ]
 
+{ #category : #testing }
+MicLinkNameDelimiter class >> isActive [
+
+	^ self ~= MicLinkNameDelimiter
+]
+
 { #category : #accessing }
 MicLinkNameDelimiter class >> type [
 

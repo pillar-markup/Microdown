@@ -1,17 +1,17 @@
 Class {
-	#name : #MdsParagraphBlockTest,
+	#name : #MacParagraphBlockTest,
 	#superclass : #MicParagraphBlockTest,
 	#category : #'Microdown-Macrodown-Tests'
 }
 
 { #category : #accessing }
-MdsParagraphBlockTest >> parserClass [
+MacParagraphBlockTest >> parserClass [
 
 	^ MacrodownParser
 ]
 
 { #category : #tests }
-MdsParagraphBlockTest >> testTwoSingleLinesWithSpaces [
+MacParagraphBlockTest >> testTwoSingleLinesWithSpaces [
 	| root paragraph |
 	
 	root := parser parse: 'This is  
