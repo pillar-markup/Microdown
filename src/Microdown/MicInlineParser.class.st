@@ -32,6 +32,7 @@ Class {
 
 { #category : #accessing }
 MicInlineParser class >> abstractDelimiterClass [
+
 	^ MicAbstractDelimiter
 ]
 
@@ -40,9 +41,7 @@ MicInlineParser class >> allDelimiters [
 	
 	AllDelimiters ifNil: [ 
 		AllDelimiters := Dictionary new.
-		self abstractDelimiterClass subclasses 
-			select: [ :subclass | subclass isActive ]
-			thenDo: [ :subclass | 
+		self abstractDelimiterClass allActive do: [ :subclass | 
 				AllDelimiters 
 					at: subclass markup 
 					put: subclass ] ].
@@ -115,6 +114,7 @@ MicInlineParser class >> initialize [
 
 { #category : #accessing }
 MicInlineParser class >> keyBeginSet [
+
 	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
 	^ KeyBeginSet
 ]
@@ -184,7 +184,7 @@ MicInlineParser >> allDelimiters [
 MicInlineParser >> bothCase [
 	| indexOfAssociateOpener |
 	indexOfAssociateOpener := self findType: delimiterClass type.
-	(openersStack isEmpty or: [ indexOfAssociateOpener = 0])
+	(openersStack isEmpty or: [ indexOfAssociateOpener = 0 ])
 		ifTrue: [ 
 			"We consider the delimiter as a new opener or it's the first opener"
 			self pushNewOpener ]
@@ -336,8 +336,8 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 	"IF we find a ( just after and a ) after again
 	THEN we add the associate link or figure inline block
 	ELSE we ignore it"
-	
 	| startIndex endIndex urlCloserIndex |
+	
 	((string allButFirst: (closer index + closer size - 1)) beginsWith: URLOpenerMarkup)
 		ifTrue: [ 
 			urlCloserIndex := string indexOfSubCollection: URLCloserMarkup startingAt: closer index ifAbsent: [ 0 ].
@@ -380,7 +380,7 @@ MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 		from: stIndex
 		to: eIndex
 		withSubstring: text
-		withChildren: Array empty
+		withChildren: #()
 			
 		"should use copyFrom:to:"
 ]
@@ -478,6 +478,7 @@ MicInlineParser >> pushNewOpener [
 { #category : #process }
 MicInlineParser >> rawRead [
 	| open rawType close startIndex endIndex rawContents rawBlock |
+
 	open := delimiterClass index: index.
 	rawType := open associatedInlineBlock.
 	close := rawType basicNew closingDelimiter.

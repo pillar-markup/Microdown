@@ -27,6 +27,12 @@ Class {
 }
 
 { #category : #accessing }
+MicAbstractDelimiter class >> allActive [
+
+	^ self allSubclasses select: [ :subclass | subclass isActive ]
+]
+
+{ #category : #accessing }
 MicAbstractDelimiter class >> associatedInlineBlock [
 	^ self subclassResponsibility
 ]
