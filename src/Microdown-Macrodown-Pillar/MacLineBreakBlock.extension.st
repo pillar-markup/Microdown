@@ -1,6 +1,6 @@
 Extension { #name : #MacLineBreakBlock }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : #'*Microdown-Macrodown-Pillar' }
 MacLineBreakBlock >> associatedPillarClass [
 
 	^ PRLineBreak
