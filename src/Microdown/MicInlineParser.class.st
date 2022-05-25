@@ -505,13 +505,13 @@ MicInlineParser >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
 	
 	result ifEmpty: [ ^ { self newBasicInlineBlockFrom: 1 to: string size } ].
-	result do: [ :e | 
+	result do: [ :each | 
 		| startSubstring endSubstring |
-		e substring isEmpty 	
+		each substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := e start + e openingDelimiter size.
-		endSubstring := startSubstring + e substring size - 1 ].
-		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
+			ifFalse: [  	startSubstring := each start + each openingDelimiterSize.
+		endSubstring := startSubstring + each substring size - 1 ].
+		each children: (self insertBasicText: each children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
 ]
 

@@ -18,3 +18,9 @@ MdsLineBreakBlock >> kind [
 
 	^ #lineBreak
 ]
+
+{ #category : #accessing }
+MdsLineBreakBlock >> openingDelimiterSize [ 
+
+	^ 0
+]

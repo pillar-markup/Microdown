@@ -38,14 +38,10 @@ MdsRawParagraphBlock >> accept: aVisitor [
 
 { #category : #'parse support' }
 MdsRawParagraphBlock >> closeMe [
-	| nodes |
 
-	nodes := self inlineParse: text.
-	self children: nodes
-]
-
-{ #category : #private }
-MdsRawParagraphBlock >> inlineParserClass [
-
-	^ MdsRawInlineParser
+	self children: { 
+		MicRawBlock 
+			from: 1 
+			to: text size 
+			withSubstring: text }
 ]
