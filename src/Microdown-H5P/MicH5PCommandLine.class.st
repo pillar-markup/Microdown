@@ -32,7 +32,7 @@ MicH5PCommandLine >> argumentAt: identifier [
 MicH5PCommandLine >> execute [
 	
 	MicPictureBasedWriter new
-		sourcePDF: (self argumentAt: #file) fullname ;
+		sourcePDF: (FileSystem workingDirectory /(self argumentAt: #file)) fullName ;
 		treatSourcePDF;
 		go;
 		compressH5P.
