@@ -390,32 +390,6 @@ MicH5PTemplateWriterTest >> testOneSlideWithOneFigure [
 ]
 
 { #category : #tests }
-MicH5PTemplateWriterTest >> testOneSlideWithOneFigureNotH5P [
-
-	| doc fig |
-	doc := Microdown parse: self slideWithFigure.
-	fig := doc children first children first children first.
-	self assert: (fig isKindOf: MicFigureBlock).
-	self assert: (fig reference uri segments last) equals: 'foo.png'.
-	self assert: (fig arguments at: #position) equals: 'fullscreen'.
-	
-
-]
-
-{ #category : #tests }
-MicH5PTemplateWriterTest >> testOneSlideWithOneFigureSkipped [
-
-	| doc h5p |
-	self skip.
-	doc := Microdown 
-				resolver: (self memoryFileSystem);
-				parse: self slideWithFigure.
-	self assert: (doc children first children first isKindOf: MicFigureBlock).
-	self assert: (doc children first children first filename) equals: 'figures/foo.png'
-
-]
-
-{ #category : #tests }
 MicH5PTemplateWriterTest >> testSlides [
 
 	| doc |
