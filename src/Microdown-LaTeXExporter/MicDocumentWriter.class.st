@@ -29,10 +29,10 @@ MicDocumentWriter >> crAsNewLine [
 
 { #category : #initialization }
 MicDocumentWriter >> initialize [
-	| stream2 |
+	| stream |
 	super initialize.
-	stream2 := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
-	canvas := self canvasClass on: stream2.
+	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
+	canvas := self canvasClass on: stream.
 	writingRaw := false.
 	nbListTab := -1
 ]

@@ -13,8 +13,7 @@ MicBeamerWriterTest >> actualClass [
 MicBeamerWriterTest >> testCode [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}
+	self assert: writer contents equals: '\begin{listing}
 this is a code
 \end{listing}
 '
@@ -24,8 +23,7 @@ this is a code
 MicBeamerWriterTest >> testCodeWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[caption={Pharo is \textbf{cool}}]
+	self assert: writer contents equals: '\begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
 \end{listing}
 '
@@ -35,8 +33,7 @@ this is a code
 MicBeamerWriterTest >> testCodeWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[label=Pharo]
+	self assert: writer contents equals: '\begin{listing}[label=Pharo]
 this is a code
 \end{listing}
 '
@@ -46,8 +43,7 @@ this is a code
 MicBeamerWriterTest >> testColumn [
 
 	self writeFor: (factory columnSample).
-	self assert: writer contents equals:'
-\begin{column}{0.42\textwidth}
+	self assert: writer contents equals:'\begin{column}{0.42\textwidth}
 
 this is a \textbf{text}
 \end{column}
@@ -59,8 +55,7 @@ this is a \textbf{text}
 MicBeamerWriterTest >> testColumns [
 
 	self writeFor: (factory columnsSample).
-	self assert: writer contents equals:'
-\begin{columns}
+	self assert: writer contents equals:'\begin{columns}
 \end{columns}
 
 '
@@ -70,14 +65,11 @@ MicBeamerWriterTest >> testColumns [
 MicBeamerWriterTest >> testColumnsWithChildren [
 
 	self writeFor: factory columnsWithChildrenSample.
-	self assert: writer contents equals:'
-\begin{columns}
-
+	self assert: writer contents equals:'\begin{columns}
 \begin{column}{0.42\textwidth}
 
 this is a \textbf{text}
 \end{column}
-
 
 \begin{column}{0.42\textwidth}
 
@@ -94,7 +86,6 @@ MicBeamerWriterTest >> testFigure [
 
 	self writeFor: factory figureSample.
 	self assert: writer contents equals: '
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{/anUrl}\end{center}
 
@@ -106,7 +97,6 @@ MicBeamerWriterTest >> testFigureBold [
 	"in beamer we do not display caption so bld and the rest goes away."
 	self writeFor: factory figureBoldSample.
 	self assert: writer contents equals:'
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{/anUrl}\end{center}
 
@@ -118,7 +108,6 @@ MicBeamerWriterTest >> testFigureRealSample [
 
 	self writeFor: factory figureRealSample.
 	self assert: writer contents equals: '
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figures/logo.png}\end{center}
 
@@ -133,7 +122,6 @@ MicBeamerWriterTest >> testFrameWithoutOption [
 						Presentation text
 						'
 		andCheckWeGet: '
-
 \begin{frame}[fragile]
 
 \frametitle{Slide title}

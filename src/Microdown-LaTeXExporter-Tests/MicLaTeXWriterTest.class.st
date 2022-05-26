@@ -103,8 +103,7 @@ MicLaTeXWriterTest >> testCitation [
 MicLaTeXWriterTest >> testCodeblock [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}
+	self assert: writer contents equals: '\begin{listing}
 this is a code
 \end{listing}
 '
@@ -114,8 +113,7 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[caption={Pharo is \textbf{cool}}]
+	self assert: writer contents equals: '\begin{listing}[caption={Pharo is \textbf{cool}}]
 this is a code
 \end{listing}
 '
@@ -125,11 +123,17 @@ this is a code
 MicLaTeXWriterTest >> testCodeblockWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	self assert: writer contents equals: '
-\begin{listing}[label=Pharo]
+	self assert: writer contents equals: '\begin{listing}[label=Pharo]
 this is a code
 \end{listing}
 '
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testCrAsNewLine [ 
+
+	writer crAsNewLine.
+	self assert: writer canvas stream configuration newLine equals: Character cr
 ]
 
 { #category : #'tests - figure/link' }
@@ -137,9 +141,7 @@ MicLaTeXWriterTest >> testFigure [
 
 	self writeFor: factory figureSample.
 	self assert: writer contents equals: '
-
 \begin{figure}[htpb]
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{/anUrl}
 \caption{Foo}\label{figureTest}
@@ -153,9 +155,7 @@ MicLaTeXWriterTest >> testFigure [
 MicLaTeXWriterTest >> testFigureBold [
 	self writeFor: factory figureBoldSample.
 	self assert: writer contents equals: '
-
 \begin{figure}[htpb]
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{/anUrl}
 \caption{\textbf{Foo}}\label{figureTest}
@@ -170,9 +170,7 @@ MicLaTeXWriterTest >> testFigureRealSample [
 
 	self writeFor: factory figureRealSample.
 	self assert: writer contents equals: '
-
 \begin{figure}[htpb]
-
 \begin{center}
 \includegraphics[width=0.8\textwidth]{figures/logo.png}
 \caption{A logo png under figures folder}\label{figureTest}
@@ -239,6 +237,13 @@ MicLaTeXWriterTest >> testHorizontalLine [
 MicLaTeXWriterTest >> testItalic [
 
 	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testLfAsNewLine [ 
+
+	writer lfAsNewLine.
+	self assert: writer canvas stream configuration newLine equals: Character lf
 ]
 
 { #category : #'tests - figure/link' }
@@ -394,8 +399,7 @@ this is a \textbf{\textit{paragraph}}
 { #category : #tests }
 MicLaTeXWriterTest >> testQuote [
 
-	self parse: factory quoteSample andCheckWeGet:  '
-\begin{verbatim}
+	self parse: factory quoteSample andCheckWeGet:  '\begin{verbatim}
 Foo
 \end{verbatim}
 '
@@ -419,8 +423,7 @@ MicLaTeXWriterTest >> testStrike [
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
-	self assert: writer contents equals: '
-\begin{tabular}{ll}
+	self assert: writer contents equals: '\begin{tabular}{ll}
 \toprule
 \textbf{aaab} & \textbf{jkhjh} \\
 \midrule
@@ -434,8 +437,7 @@ bar & rab \\
 MicLaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
-	self assert: writer contents equals: '
-\begin{tabular}{ll}
+	self assert: writer contents equals: '\begin{tabular}{ll}
 \toprule
 aaab & jkhjh \\
 bar & rab \\
@@ -506,6 +508,50 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 	self assert: (writer protectUrl: '%') equals: '\%'.
 	self assert: (writer protectUrl: '\') equals: '\\'.
 	self assert: (writer protectUrl: '\~#%') equals: '\\~\#\%'.
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithCr [
+	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsLf [
+	writer lfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithLf [
+	writer lfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
+	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
 ]
 
 { #category : #tests }

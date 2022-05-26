@@ -70,9 +70,9 @@ MicHTMLTag >> initializeArgumentsMap [
 
 	^ Dictionary new
 		at: 'label' put: 'class';
-		at: 'size' put: 'width';
-		at: 'target' put: 'target';
+		at: 'width' put: 'width';
 		at: 'rel' put: 'rel';
+		at: 'target' put: 'target';
 		yourself
 ]
 
