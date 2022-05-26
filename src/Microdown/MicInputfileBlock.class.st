@@ -1,5 +1,9 @@
 "
-may be rename the class later
+I handle input file 
+
+```
+{!inputFile|path=Chapters/withStyle.md!}
+```
 "
 Class {
 	#name : #MicInputfileBlock,

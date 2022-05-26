@@ -4,7 +4,7 @@ A MicZincPathResolverTest is a test class for testing the behavior of MicZincPat
 Class {
 	#name : #MicZincPathResolverTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #tests }

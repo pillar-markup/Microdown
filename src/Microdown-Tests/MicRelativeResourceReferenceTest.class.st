@@ -4,7 +4,7 @@ A MicRelativeResourceReferenceTest is a test class for testing the behavior of M
 Class {
 	#name : #MicRelativeResourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #tests }

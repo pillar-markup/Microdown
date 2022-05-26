@@ -578,25 +578,25 @@ MicMicrodownSnippetFactory >> listWithCommentSample [
 2. Bar'
 ]
 
-{ #category : #anchor }
+{ #category : #math }
 MicMicrodownSnippetFactory >> mathInlineSample [
 	^ '
 $V_i = C_0 - C_3$
 '
 ]
 
-{ #category : #anchor }
+{ #category : #math }
 MicMicrodownSnippetFactory >> mathParametersSample [
-	^ '&label=42
+	^ MathOpeningBlockMarkup, 'label=42
 Foo
-&'
+', MathClosingBlockMarkup
 ]
 
-{ #category : #anchor }
+{ #category : #math }
 MicMicrodownSnippetFactory >> mathParametersWithCaptionSample [
-	^ '&caption=`Math` is good&label=42
+	^ MathOpeningBlockMarkup, 'caption=`Math` is good&label=42
 Foo
-&'
+', MathClosingBlockMarkup.
 ]
 
 { #category : #anchor }
