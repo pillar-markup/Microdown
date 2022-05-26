@@ -9,7 +9,7 @@ Class {
 		'builder'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Tests-Builder'
 }
@@ -348,12 +348,9 @@ MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 	self 
 		assert: mictext 
 		equals: 
-'&label=Math&caption=`Math` is cool
-', self exampleMathTextMultipleLines, 
-
-'
-&
-'
+MathOpeningBlockMarkup, 'label=Math&caption=`Math` is cool
+', self exampleMathTextMultipleLines, String cr, MathClosingBlockMarkup , String cr
+"Bad idea to hardcode String cr"
 
 ]
 
