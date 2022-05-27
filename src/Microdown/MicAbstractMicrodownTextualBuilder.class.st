@@ -11,7 +11,7 @@ Class {
 		'newLineCharacterString'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Parser'
 }

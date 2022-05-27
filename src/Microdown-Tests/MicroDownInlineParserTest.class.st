@@ -5,7 +5,7 @@ Class {
 	#name : #MicrodownInlineParserTest,
 	#superclass : #TestCase,
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Tests-Parser'
 }

@@ -162,7 +162,7 @@ Class {
 		'dispatchTable'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Parser'
 }
