@@ -414,9 +414,9 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
-&
+$$
 \include{nowhere.com}
-&
+$$
 '.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: 'foo
