@@ -54,7 +54,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	arguments := MicArgumentsSplitter 
+	arguments := MicArgumentList 
 		split: lineWithoutMarkup.
 	^ lineWithoutMarkup
 ]
