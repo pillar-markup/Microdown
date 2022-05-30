@@ -3,12 +3,12 @@ I'm a block element defining a slide. I expect a title and optionally a tag (to 
 to have the same slide but on two different layouts and not emit both. 
 
 ```
-<?slide|title=This is a cool title&tag=nh5p
+<!slide|title=This is a cool title&tag=nh5p
 
 - a list of bullet
 - bullet 2
 - bullet 3
-?>
+!>
 ```
 "
 Class {

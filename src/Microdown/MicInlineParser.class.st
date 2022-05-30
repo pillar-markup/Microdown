@@ -25,7 +25,7 @@ Class {
 		'KeyBeginSet'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Parser'
 }

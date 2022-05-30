@@ -133,6 +133,11 @@ params"":{
                      }'
 ]
 
+{ #category : #initialization }
+MicH5PTemplateWriter >> canvasClass [ 
+	^ MicHTMLCanvas 
+]
+
 { #category : #'static document parts' }
 MicH5PTemplateWriter >> creditSlide [
 
@@ -468,7 +473,6 @@ MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 	| oneSlideWriter |
 	oneSlideWriter := self class new.
 	aSlide accept: oneSlideWriter. 
-	self halt.
 	^ self slideTemplate asMustacheTemplate 
 			value: ({ 
 						'SLIDETITLEVARIABLE' -> aSlide title .
@@ -483,8 +487,8 @@ MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 MicH5PTemplateWriter >> fillUpSlides: aCollection [ 
 	
 	aCollection 
-		do: [ :each | stream nextPutAll: (self fillUpOneSlide: each) ] 
-		separatedBy: [ stream  nextPutAll: ','; newLine ].
+		do: [ :each | canvas nextPutAll: (self fillUpOneSlide: each) ] 
+		separatedBy: [  canvas nextPutAll: ','; newLine ].
 	
 ]
 
@@ -5148,17 +5152,17 @@ MicH5PTemplateWriter >> slideTemplate [
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitCode: aCodeBlock [
-	stream nextPutAll: '<pre>'.
- 	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ stream nextPutAll: '\n' ]
-											ifFalse: [ stream nextPut: each  ] ].
-	stream nextPutAll: '\n</pre>\n'.
+	canvas nextPutAll: '<pre>'.
+ 	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ canvas nextPutAll: '\n' ]
+											ifFalse: [ canvas nextPut: each  ] ].
+	canvas nextPutAll: '\n</pre>\n'.
 ]
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitFigure: aFigureBlock [
 	
-	self halt.
-	stream nextPutAll:	
+
+	canvas nextPutAll:	
 	 '{
             "x": 22.875816993464053,
             "y": 25.821222462742128,
@@ -5200,25 +5204,25 @@ MicH5PTemplateWriter >> visitFigure: aFigureBlock [
 { #category : #visiting }
 MicH5PTemplateWriter >> visitOrderedList: anOrderedList [
 
-	stream nextPutAll: '<ol>\n\t'.
+	canvas nextPutAll: '<ol>\n\t'.
 	super visitOrderedList: anOrderedList.
-	stream nextPutAll: '\n<\ol>\n'.
+	canvas nextPutAll: '\n<\ol>\n'.
 ]
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitUnorderedList: anOrderedList [
 
-	stream nextPutAll: '<ul>\n\t'.
+	canvas nextPutAll: '<ul>\n\t'.
 	super visitUnorderedList: anOrderedList.
-	stream nextPutAll: '\n</ul>\n'.
+	canvas nextPutAll: '\n</ul>\n'.
 ]
 
 { #category : #visiting }
 MicH5PTemplateWriter >> visitUnorderedListItem: anUnorderedListItem [
 
-	stream nextPutAll: '<li><span style=\"font-size:1.125em\">'.
-	stream nextPutAll: anUnorderedListItem text.
-	stream nextPutAll: '</span></li>\n\t'.
+	canvas nextPutAll: '<li><span style=\"font-size:1.125em\">'.
+	canvas nextPutAll: anUnorderedListItem text.
+	canvas nextPutAll: '</span></li>\n\t'.
 	
 ]
 

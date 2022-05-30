@@ -6,7 +6,7 @@ Class {
 		'properties'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Model'
 }

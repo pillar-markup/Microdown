@@ -4,15 +4,22 @@ By default I do not handle any form of formatting in the potential arguments.
 
 ## Syntax
 
+```
+<!aTypeOfEnvironment|argument=value&argument2=value2
+
+!>
+```
+Here is an example of a slide (subclass of `MicEnvironmentBlock`)
 
 ```
-<?
+<!slide|title=This is a cool title&tag=nh5p
 
-?>
+- a list of bullet
+- bullet 2
+- bullet 3
+!>
 ```
 
-
-This class needs another pass to support nested mic elements inside its delimiter.
 
 In Pillar
 ```
@@ -55,9 +62,6 @@ ${column:width=40}$
 ${endColumns}$
 ```
 
-
-### Implementation limits
-The contents of an environment cannot really contain other blocks.
 
 "
 Class {

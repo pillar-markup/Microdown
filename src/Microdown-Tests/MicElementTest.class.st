@@ -6,7 +6,7 @@ Class {
 		'instance'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Tests-Parser'
 }

@@ -46,7 +46,8 @@ All the manual parts should be done automatically (this is the next step).
 MicPictureBasedWriter new
 	sourcePDF: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/Essence-04-Self.pdf';
 	treatSourcePDF;
-	go.
+	go;
+	compressH5P.
 ```
 
 

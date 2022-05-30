@@ -1,7 +1,7 @@
 Class {
 	#name : #MicPharoImageResourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #'test support' }

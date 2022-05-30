@@ -1,7 +1,7 @@
 Class {
 	#name : #MicResourceReferenceTest,
 	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #helper }
