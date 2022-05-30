@@ -22,7 +22,7 @@ MicLaTeXWriterTest class >> testParameters [
 		  forSelector: #writer addOptions: { MicLaTeXWriter };
 		  forSelector: #factory addOptions: { MicMicrodownSnippetFactory };
 		  forSelector: #parser addOptions: { Microdown };
-		  forSelector: #newLine addOptions: { String cr . String lf };
+		  forSelector: #newLine addOptions: { String cr . String lf . String crlf};
 		  yourself
 ]
 
@@ -66,6 +66,7 @@ MicLaTeXWriterTest >> factory: aFactory [
 MicLaTeXWriterTest >> newLine: aNewLine [
 	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
 	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
+	(aNewLine = String crlf) ifTrue:[ writer crlfAsNewLine ].
 	newLine := aNewLine
 ]
 
