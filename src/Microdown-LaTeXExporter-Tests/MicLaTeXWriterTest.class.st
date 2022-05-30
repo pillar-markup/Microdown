@@ -146,11 +146,18 @@ MicLaTeXWriterTest >> testCodeblockWithLabel [
 													'\end{listing}', newLine 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testCrAsNewLine [ 
 
 	writer crAsNewLine.
 	self assert: writer canvas stream configuration newLine equals: Character cr
+]
+
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testCrlfAsNewLine [ 
+
+	writer crlfAsNewLine.
+	self assert: writer canvas stream configuration newLine equals: String crlf
 ]
 
 { #category : #'tests - figure/link' }
@@ -251,7 +258,7 @@ MicLaTeXWriterTest >> testItalic [
 	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testLfAsNewLine [ 
 
 	writer lfAsNewLine.
@@ -503,7 +510,7 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 	self assert: (writer protectUrl: '\~#%') equals: '\\~\#\%'.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testWriteAParagraphWithCr [
 	writer crAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -514,7 +521,18 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsCrlf [
+	writer crlfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -525,7 +543,40 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrlf [
+	writer crlfAsNewLine .
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrlfButNewLineIsCr [
+	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testWriteAParagraphWithCrlfButNewLineIsLf [
+	writer lfAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testWriteAParagraphWithLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -536,9 +587,20 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : #'tests - breaklining' }
 MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
 	writer crAsNewLine.
+	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #'tests - breaklining' }
+MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
+	writer crlfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
 car il a etait fait pour cela'.
