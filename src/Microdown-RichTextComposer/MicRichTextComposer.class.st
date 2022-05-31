@@ -459,7 +459,7 @@ MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 	| aString |
 	aString := aMicMathEnvironment body.
 	aString ifEmpty: [ ^self ].
-	canvas << (self latexFor: aString onError: ['& - LATEX ERROR - &' asText] )
+	canvas << (self latexFor: aString onError: ['$$ - LATEX ERROR - $$' asText] )
 ]
 
 { #category : #'visiting - document' }

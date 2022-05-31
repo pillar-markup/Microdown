@@ -414,14 +414,14 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
-&
+$$
 \include{nowhere.com}
-&
+$$
 '.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: 'foo
 
-& - LATEX ERROR - &'
+$$ - LATEX ERROR - $$'
 ]
 
 { #category : #tests }

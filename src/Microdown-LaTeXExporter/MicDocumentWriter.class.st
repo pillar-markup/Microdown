@@ -28,6 +28,12 @@ MicDocumentWriter >> crAsNewLine [
 ]
 
 { #category : #initialization }
+MicDocumentWriter >> crlfAsNewLine [
+
+	canvas crlfAsNewLine
+]
+
+{ #category : #initialization }
 MicDocumentWriter >> initialize [
 	| stream |
 	super initialize.
