@@ -32,18 +32,20 @@ Class {
 
 { #category : #accessing }
 MicInlineParser class >> abstractDelimiterClass [
+
 	^ MicAbstractDelimiter
 ]
 
 { #category : #accessing }
 MicInlineParser class >> allDelimiters [
+	
 	AllDelimiters ifNil: [ 
 		AllDelimiters := Dictionary new.
-		self abstractDelimiterClass subclasses 
-			select: [ :subclass | subclass isActive ]
-			thenDo: [ :subclass | AllDelimiters 
-										at: subclass markup 
-										put: subclass ]].
+		self abstractDelimiterClass allActive do: [ :subclass | 
+				AllDelimiters 
+					at: subclass markup 
+					put: subclass ] ].
+
 	^ AllDelimiters 
 ]
 
@@ -112,6 +114,7 @@ MicInlineParser class >> initialize [
 
 { #category : #accessing }
 MicInlineParser class >> keyBeginSet [
+
 	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
 	^ KeyBeginSet
 ]
@@ -133,34 +136,43 @@ MicInlineParser >> addATextFrom: start to: end toFinalArray: aFinalArray [
 
 { #category : #process }
 MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
-	| startIndex endIndex |
+	
 	opener := openersStack at: indexOfAssociateOpener.
 	closer := delimiterClass index: index.
-	"Check the linkName or figure case"
-	(#(#linkName #figure) includes: opener type ) 
-		ifTrue: [ self linkOrFigureProcess: indexOfAssociateOpener ]
-		ifFalse: [ 
-			startIndex := opener index + opener size.
-			endIndex := closer index - 1.
-			correctSubstring := string copyFrom: startIndex to: endIndex.
-			"Delete openers above in stack, considered as unclosed so ignored"
-			self popFrom: 1 to: indexOfAssociateOpener.
-			"Add found inline block"
-			openersStack 
-				ifNotEmpty: [ 
-					(openersStack size > nestedLevel)
-						ifTrue: [ 
-							children 
-								ifEmpty: [ children add: self newInlineBlock ]
-								ifNotEmpty: [ children addLast: self newInlineBlock ] ]
-						ifFalse: [ children add: self newInlineBlockWithoutChildren ].
-				]
-				ifEmpty: [ 
-					result add: self newInlineBlock.
-					children := LinkedList new.
-				].
-			nestedLevel := openersStack size.
-		]
+
+	opener addInlineBlock: indexOfAssociateOpener to: self
+
+]
+
+{ #category : #process }
+MicInlineParser >> addInlineBlock: indexOfAssociateOpener from: startIndex to: endIndex [
+
+	correctSubstring := string copyFrom: startIndex to: endIndex.
+	"Delete openers above in stack, considered as unclosed so ignored"
+	self popFrom: 1 to: indexOfAssociateOpener.
+	"Add found inline block"
+	openersStack 
+		ifNotEmpty: [ 
+			(openersStack size > nestedLevel)
+				ifTrue: [ 
+					children 
+						ifEmpty: [ children add: self newInlineBlock ]
+						ifNotEmpty: [ children addLast: self newInlineBlock ] ]
+				ifFalse: [ children add: self newInlineBlockWithoutChildren ] ]
+		ifEmpty: [ 
+			result add: self newInlineBlock.
+			children := LinkedList new ].
+
+	nestedLevel := openersStack size
+]
+
+{ #category : #process }
+MicInlineParser >> addRegularInlineBlock: indexOfAssociateOpener [
+	
+	self 
+		addInlineBlock: indexOfAssociateOpener 
+		from: opener index + opener size
+		to: closer endIndex
 ]
 
 { #category : #accessing }
@@ -171,8 +183,8 @@ MicInlineParser >> allDelimiters [
 { #category : #process }
 MicInlineParser >> bothCase [
 	| indexOfAssociateOpener |
-	indexOfAssociateOpener := openersStack findFirst: [ :each | delimiterClass type = each type ].
-	(openersStack isEmpty or: [ indexOfAssociateOpener = 0])
+	indexOfAssociateOpener := self findType: delimiterClass type.
+	(openersStack isEmpty or: [ indexOfAssociateOpener = 0 ])
 		ifTrue: [ 
 			"We consider the delimiter as a new opener or it's the first opener"
 			self pushNewOpener ]
@@ -186,43 +198,52 @@ MicInlineParser >> closerOnlyCase [
 	"IF delimiter found is a closer which can close an opened inline block
 	THEN we add the associate inline block
 	ELSE we ignore it"
-	| indexOfAssociateOpener typesToFind|
-	typesToFind := (#(#linkName #figure) includes: delimiterClass type ) 
-		ifTrue: [#(#linkName #figure)] 
-		ifFalse: [ Array braceWith: delimiterClass type ].
-	indexOfAssociateOpener := openersStack findFirst: [ :each | typesToFind includes: each type ].
-	(indexOfAssociateOpener > 0) ifTrue: [ self addInlineBlock: indexOfAssociateOpener ]
+	| indexOfAssociateOpener |
+	
+	indexOfAssociateOpener := self findAnyType: delimiterClass associatedTypes.
+	(indexOfAssociateOpener > 0) 
+		ifTrue: [ self addInlineBlock: indexOfAssociateOpener ]
 ]
 
 { #category : #process }
 MicInlineParser >> delimiterFoundProcess [
 	"Case 1: it's a opener only"
-	(delimiterClass isOpenerOnly) 
-		ifTrue: [ self openerOnlyCase ]
-		ifFalse: [ 
-					"Case 2: it's both opener and closer"
-			(delimiterClass isBoth) 
-				ifTrue: [ self bothCase ]
-				ifFalse: [ 
-							"Case 3: it's a closer only"
-							self closerOnlyCase
-				]
-			]
-	
-			
-			
+	delimiterClass isOpenerOnly ifTrue: [ ^ self openerOnlyCase ].
+	"Case 2: it's both opener and closer"
+	delimiterClass isBoth ifTrue: [ ^ self bothCase ].
+	"Case 3: it's a closer only"
+	self closerOnlyCase
+]
 
+{ #category : #'instance creation' }
+MicInlineParser >> elementBlockClass [
+		
+	^ MicTextBlock
+]
+
+{ #category : #private }
+MicInlineParser >> findAnyType: aCollectionOfType [
+
+	^ openersStack findFirst: [ :each | aCollectionOfType includes: each type ]
+]
+
+{ #category : #private }
+MicInlineParser >> findType: aType [
+
+	^ self findAnyType: { aType }
 ]
 
 { #category : #actions }
 MicInlineParser >> identifyMarkupFor: aString [
-	(self class keyBeginSet includes: aString first) ifFalse: [ ^self ].
+
+	(self class keyBeginSet includes: aString first) ifFalse: [ ^ 1 ].
 	keys do: [ :key |
 		(aString beginsWith: key) ifTrue: [ 
-			incrementation := key size.
 			delimiterClass := allDelimiters at: key.
 			self delimiterFoundProcess.
-			^ self ] ]
+			^ key size ] ].
+	
+	^ 1
 ]
 
 { #category : #actions }
@@ -315,8 +336,8 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 	"IF we find a ( just after and a ) after again
 	THEN we add the associate link or figure inline block
 	ELSE we ignore it"
-	
 	| startIndex endIndex urlCloserIndex |
+	
 	((string allButFirst: (closer index + closer size - 1)) beginsWith: URLOpenerMarkup)
 		ifTrue: [ 
 			urlCloserIndex := string indexOfSubCollection: URLCloserMarkup startingAt: closer index ifAbsent: [ 0 ].
@@ -352,11 +373,14 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 
 { #category : #'instance creation' }
 MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
-	^ (MicTextBlock
-			from: stIndex
-			to: eIndex
-			withSubstring: (string copyFrom: stIndex to: eIndex)
-			withChildren: Array empty)
+	| text |
+	
+	text := string copyFrom: stIndex to: eIndex.
+	^ self elementBlockClass
+		from: stIndex
+		to: eIndex
+		withSubstring: text
+		withChildren: #()
 			
 		"should use copyFrom:to:"
 ]
@@ -364,6 +388,7 @@ MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 { #category : #'instance creation' }
 MicInlineParser >> newInlineBlock [
 	| inlineBlockClass |
+	
 	inlineBlockClass := opener associatedInlineBlock.
 	^ inlineBlockClass isEvaluated 
 		ifTrue: [ 
@@ -372,8 +397,8 @@ MicInlineParser >> newInlineBlock [
 				to: closer index + closer size - 1
 				withSubstring: correctSubstring
 				withChildren: children asArray ]
-		ifFalse: [  self newInlineBlockWithoutChildren ]
-	
+		ifFalse: [  
+			self newInlineBlockWithoutChildren ]
 ]
 
 { #category : #'instance creation' }
@@ -432,7 +457,7 @@ MicInlineParser >> openerOnlyCase [
 { #category : #public }
 MicInlineParser >> parse: aString [
 
-	aString ifEmpty: [ ^ Array empty ].
+	aString ifEmpty: [ ^ #() ].
 	string := self class escapeEncode: aString.
 	^ self read
 ]
@@ -453,6 +478,7 @@ MicInlineParser >> pushNewOpener [
 { #category : #process }
 MicInlineParser >> rawRead [
 	| open rawType close startIndex endIndex rawContents rawBlock |
+
 	open := delimiterClass index: index.
 	rawType := open associatedInlineBlock.
 	close := rawType basicNew closingDelimiter.
@@ -470,11 +496,12 @@ MicInlineParser >> rawRead [
 { #category : #actions }
 MicInlineParser >> read [
 	| next |
-	[ (next := string allButFirst: index-1 ) isEmpty ] whileFalse: [ 
-		incrementation := 1.
-		self identifyMarkupFor: next.
-		self indexIncrement: incrementation.
-	].
+	
+	[ (next := string allButFirst: index-1) isEmpty ] 
+	whileFalse: [ 
+		incrementation := self identifyMarkupFor: next.
+		self indexIncrement: incrementation ].
+	
 	^ self resultProcess
 ]
 
@@ -482,14 +509,14 @@ MicInlineParser >> read [
 MicInlineParser >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
 	
-	result ifEmpty: [ ^ { (self newBasicInlineBlockFrom: 1 to: string size)} ].
-	result do: [ :e | 
+	result ifEmpty: [ ^ { self newBasicInlineBlockFrom: 1 to: string size } ].
+	result do: [ :each | 
 		| startSubstring endSubstring |
-		e substring isEmpty 	
+		each substring isEmpty 	
 			ifTrue: [ startSubstring := endSubstring := 1 ]
-			ifFalse: [  	startSubstring := e start + e openingDelimiter size.
-		endSubstring := startSubstring + e substring size - 1 ].
-		e children: (self insertBasicText: e children from: startSubstring to: endSubstring) ].
+			ifFalse: [  	startSubstring := each start + each openingDelimiterSize.
+		endSubstring := startSubstring + each substring size - 1 ].
+		each children: (self insertBasicText: each children from: startSubstring to: endSubstring) ].
 	^ self insertBasicText: result
 ]
 

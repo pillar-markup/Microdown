@@ -13,19 +13,8 @@ BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		spec
-			baseline: 'PillarCore'
-			with: [
-				spec  
-					loads: #('Pillar-Core');
-					repository: 'github://pillar-markup/pillar:dev-8' ].
-				
-				spec
-					baseline: 'XMLParserHTML'
-					with: [ 
-						spec
-							loads: #('Core');
-							repository: 'github://pharo-contributions/XML-XMLParserHTML/src' ].
+		self pillar: spec.
+		self xmlParserHtml: spec.				
 
 		spec
 			package: #Microdown;
@@ -91,7 +80,16 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-Pillar' ) ];	
 
 			package: #'Microdown-PrettyPrinter-Tests'
-				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
+				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
+				
+			package: 'Microdown-Macrodown'
+				with: [ spec requires: #( 'Microdown') ];
+			package: #'Microdown-Macrodown-Pillar'
+				with: [ spec requires: #( 'Microdown-Macrodown' 'PillarCore') ];
+			package: 'Microdown-Macrodown-Tests'
+				with: [ spec requires: #( 'Microdown-Macrodown' 'Microdown-Tests') ].
+				
+				
 	
 		"I do not want group without tests for now"
 		spec
@@ -113,5 +111,28 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'All' with: #('Core' 'Tests' 'Extensions' #'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'Macrodown' with: #('Microdown-Macrodown' 'Microdown-Macrodown-Tests');
+			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Macrodown' 'Microdown-Pharo-Tools' 'RichText') ]
+]
+
+{ #category : #'external projects' }
+BaselineOfMicrodown >> pillar: spec [
+		
+	spec
+		baseline: 'PillarCore'
+		with: [
+			spec  
+				loads: #('Pillar-Core');
+				repository: 'github://pillar-markup/pillar:dev-8' ]
+]
+
+{ #category : #'external projects' }
+BaselineOfMicrodown >> xmlParserHtml: spec [
+
+	spec
+		baseline: 'XMLParserHTML'
+		with: [ 
+			spec
+				loads: #('Core');
+				repository: 'github://pharo-contributions/XML-XMLParserHTML/src' ]
 ]

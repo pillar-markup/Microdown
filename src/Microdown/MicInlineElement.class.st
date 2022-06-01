@@ -110,6 +110,18 @@ MicInlineElement >> literal [
 ]
 
 { #category : #accessing }
+MicInlineElement >> openingDelimiter [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+MicInlineElement >> openingDelimiterSize [
+
+	^ self openingDelimiter size
+]
+
+{ #category : #accessing }
 MicInlineElement >> parent: aParent [
 	parent := aParent
 ]
