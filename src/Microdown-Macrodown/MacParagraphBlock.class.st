@@ -29,6 +29,9 @@ MacParagraphBlock >> addLineAndReturnNextNode: line [
 { #category : #visiting }
 MacParagraphBlock >> closeMe [
 
+	textWithoutBreak ifNil: [ 
+		"means is already closed"
+		^ self ]. 
 	self children: self children, (self inlineParse: textWithoutBreak).
 	textWithoutBreak := nil
 ]
