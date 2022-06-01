@@ -9,12 +9,12 @@ Class {
 
 { #category : #helpers }
 MicArgumentsSplitterTest >> splitter [
-	^ MicArgumentsSplitter
+	^ MicArgumentList
 ]
 
 { #category : #helpers }
 MicArgumentsSplitterTest >> subjectUnderTestWith: aString [
-	^ MicArgumentsSplitter withString: aString 
+	^ MicArgumentList withString: aString 
 ]
 
 { #category : #tests }

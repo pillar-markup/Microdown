@@ -47,7 +47,7 @@ MicFigureBlock >> closeMe [
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 
 		trimBoth: [:char | {$". Character space} includes: char].
-	self arguments: (MicArgumentsSplitter withString: title).
+	self arguments: (MicArgumentList withString: title).
 	self captionElements: (self inlineParse: substring).
 	self children: captionElements
 ]

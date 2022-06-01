@@ -64,7 +64,7 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	
 	| lineWithoutMarkup|
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	arguments := MicArgumentsSplitter 
+	arguments := MicArgumentList 
 		split: lineWithoutMarkup 
 		defaultArg: #language 
 		defaultValue: self class defaultLanguage.

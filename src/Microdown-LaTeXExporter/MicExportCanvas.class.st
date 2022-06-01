@@ -41,6 +41,12 @@ MicExportCanvas >> crAsNewLine [
 ]
 
 { #category : #accessing }
+MicExportCanvas >> crlfAsNewLine [
+
+	stream crlfAsNewLine
+]
+
+{ #category : #accessing }
 MicExportCanvas >> flush [
 	stream flush
 ]

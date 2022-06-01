@@ -23,6 +23,13 @@ MicExportCanvasTest >> testCrAsNewLine [
 ]
 
 { #category : #tests }
+MicExportCanvasTest >> testCrlfAsNewLine [ 
+
+	canvas crlfAsNewLine.
+	self assert: canvas stream configuration newLine equals: String crlf
+]
+
+{ #category : #tests }
 MicExportCanvasTest >> testLfAsNewLine [ 
 
 	canvas lfAsNewLine.
@@ -41,6 +48,17 @@ car il a etait fait pour cela'.
 ]
 
 { #category : #tests }
+MicExportCanvasTest >> testWriteAParagraphWithCrButNewLineIsCrlf [
+	canvas crlfAsNewLine.
+	canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
+'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
 MicExportCanvasTest >> testWriteAParagraphWithCrButNewLineIsLf [
 	canvas lfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -48,6 +66,39 @@ cela ne fonctionnerais pas
 car il a etait fait pour cela'.
 	self deny: canvas stream contents equals: 'Je ne vois pas pourquoi', String cr ,
 'cela ne fonctionnerais pas', String cr,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicExportCanvasTest >> testWriteAParagraphWithCrlf [
+	canvas crlfAsNewLine.
+	canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self assert: canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicExportCanvasTest >> testWriteAParagraphWithCrlfButNewLineIsCr [
+	canvas crAsNewLine.
+	canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicExportCanvasTest >> testWriteAParagraphWithCrlfButNewLineIsLf [
+	canvas lfAsNewLine.
+	canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: canvas stream contents equals: 'Je ne vois pas pourquoi', String crlf ,
+'cela ne fonctionnerais pas', String crlf,
 'car il a etait fait pour cela'
 ]
 
@@ -65,6 +116,17 @@ car il a etait fait pour cela'.
 { #category : #tests }
 MicExportCanvasTest >> testWriteAParagraphWithLfButNewLineIsCr [
 	canvas crAsNewLine.
+	canvas nextPutAllLines: 'Je ne vois pas pourquoi
+cela ne fonctionnerais pas
+car il a etait fait pour cela'.
+	self deny: canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
+'cela ne fonctionnerais pas', String lf,
+'car il a etait fait pour cela'
+]
+
+{ #category : #tests }
+MicExportCanvasTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
+	canvas crlfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
 car il a etait fait pour cela'.

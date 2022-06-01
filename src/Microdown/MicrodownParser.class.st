@@ -190,19 +190,19 @@ MicrodownParser >> blockStarterClassFrom: line [
 
 	line ifEmpty: [ ^ nil ].
 	(self matchOrdered: line)
-		ifTrue: [ ^ MicOrderedListBlock ]
+		ifTrue: [ ^ self orderedListBlockClass ]
 		ifFalse: [
 			"the max significant length of a markup is 3"
-			(3 to: 1 by: -1) do: [:i | |prefix|
+			(3 to: 1 by: -1) do: [:i | | prefix |
 				prefix := (line truncateTo: i).
 				"If we have a inline starter, it takes precedence"
 				(Delimiters includes: prefix) 
-					ifTrue: [ ^ MicParagraphBlock ].
+					ifTrue: [ ^ self delimiterBlockClassFor: prefix ].
   				dispatchTable
     		 		at: prefix
-      				ifPresent: [ :blockClass | ^ blockClass ] ]].
-	^ MicParagraphBlock
+      				ifPresent: [ :blockClass | ^ blockClass ] ] ].
 	
+	^ self nonMatchedBlockClassFor: line
 ]
 
 { #category : #accessing }
@@ -216,6 +216,12 @@ MicrodownParser >> builder [
 MicrodownParser >> current [ 
 
 	^ current
+]
+
+{ #category : #'node creation' }
+MicrodownParser >> delimiterBlockClassFor: prefix [
+
+	^ self paragraphBlockClass
 ]
 
 { #category : #parsing }
@@ -238,8 +244,11 @@ MicrodownParser >> handleLine: line [
 	normalized := line copyReplaceAll: String tab with: String space.
 	[ 
 	(current canConsumeLine: normalized)
-		ifTrue: [ ^ current := current addLineAndReturnNextNode: normalized ]
-		ifFalse: [ current closeMe ].
+		ifTrue: [ 
+			current := current addLineAndReturnNextNode: normalized.
+			^ current ]
+		ifFalse: [ 
+			current closeMe ].
 	current := current parent.
 	self handleLine: normalized ] on: Error do: [ self handleErrorInLine: line ]
 ]
@@ -288,6 +297,24 @@ MicrodownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
+{ #category : #'node creation' }
+MicrodownParser >> nonMatchedBlockClassFor: line [
+
+	^ self paragraphBlockClass
+]
+
+{ #category : #'node creation' }
+MicrodownParser >> orderedListBlockClass [
+
+	^ MicOrderedListBlock
+]
+
+{ #category : #'node creation' }
+MicrodownParser >> paragraphBlockClass [
+
+	^ MicParagraphBlock
+]
+
 { #category : #parsing }
 MicrodownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
@@ -299,10 +326,14 @@ MicrodownParser >> parse: aStreamOrString [
 	inStream := aStreamOrString isStream 
 		ifTrue:  [ aStreamOrString readStream ]
 		ifFalse: [  aStreamOrString asString readStream ].
-	[ line := inStream nextLine.
-	line isNil ] whileFalse: [ self handleLine: line ].
+	[ 
+		line := inStream nextLine.
+		line isNil ] 
+	whileFalse: [ 
+		self handleLine: line ].
 	[ current = root ]
-		whileFalse: [ current closeMe.
+		whileFalse: [ 
+			current closeMe.
 			current := current parent ].
 	^ root
 ]

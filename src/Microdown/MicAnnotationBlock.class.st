@@ -24,7 +24,7 @@ Class {
 MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 
 	| splitter tag extensionClass |
-	splitter := MicArgumentsSplitter
+	splitter := MicArgumentList
 		            split: aString
 		            defaultArg: #annotationKind
 		            defaultValue: 'Me'.

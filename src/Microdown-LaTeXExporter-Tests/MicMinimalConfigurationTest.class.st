@@ -22,6 +22,13 @@ MicMinimalConfigurationTest >> testCrAsNewLine [
 ]
 
 { #category : #tests }
+MicMinimalConfigurationTest >> testCrlfAsNewLine [  
+
+	config crlfAsNewLine.
+	self assert: config newLine equals: String crlf
+]
+
+{ #category : #tests }
 MicMinimalConfigurationTest >> testLfAsNewLine [  
 
 	config lfAsNewLine.
