@@ -47,6 +47,12 @@ MicOutputStream >> crAsNewLine [
 ]
 
 { #category : #accessing }
+MicOutputStream >> crlfAsNewLine [
+
+	self configuration crlfAsNewLine
+]
+
+{ #category : #accessing }
 MicOutputStream >> flush [
 	stream flush
 ]

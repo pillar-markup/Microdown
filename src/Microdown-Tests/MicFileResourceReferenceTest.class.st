@@ -9,15 +9,22 @@ Class {
 		'filesystem',
 		'emptyFilesystem'
 	],
-	#category : #'Microdown-Tests-Core'
+	#category : #'Microdown-Tests-Resolution'
 }
 
 { #category : #private }
 MicFileResourceReferenceTest >> exampleMicFileResourceReference [
 
 	| file |
-	
 	file := self exampleReadmeFile.
+	^ MicFileResourceReference fromFileRef: file
+]
+
+{ #category : #private }
+MicFileResourceReferenceTest >> exampleMicFileResourceReferenceInsideSubFolder [
+
+	| file |
+	file := self exampleReadmeFileInsideSubFolder.
 	^ MicFileResourceReference fromFileRef: file
 ]
 
@@ -94,6 +101,15 @@ Link to a document in subfolder:
 '
 ]
 
+{ #category : #private }
+MicFileResourceReferenceTest >> exampleReadmeFileInsideSubFolder [
+	" Answer a <FileReference> on a memory file system for testing purposes "
+	filesystem ensureCreateDirectory: 'figures'.
+	^ (filesystem workingDirectory / 'figures' / 'example2.md')
+		writeStreamDo: [ :stream | stream nextPutAll: self exampleReadmeFileContents ];
+		yourself
+]
+
 { #category : #running }
 MicFileResourceReferenceTest >> setUp [
 	| readme image file |
@@ -114,9 +130,18 @@ MicFileResourceReferenceTest >> setUp [
 
 { #category : #tests }
 MicFileResourceReferenceTest >> testContents [
-	| micFileResource |
-	
+
+	| micFileResource |	
 	micFileResource := self exampleMicFileResourceReference.
+	self assert: micFileResource contents equals: self exampleReadmeFileContents
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testContentsInsideSubFolder [
+
+	| micFileResource |	
+	micFileResource := self exampleMicFileResourceReferenceInsideSubFolder.
+	self assert: micFileResource uri asString equals: 'file:///figures/example2.md'.
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 

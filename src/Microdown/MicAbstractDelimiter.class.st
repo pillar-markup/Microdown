@@ -21,7 +21,7 @@ Class {
 		'index'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Parser'
 }

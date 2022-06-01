@@ -124,6 +124,11 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 		contents
 ]
 
+{ #category : #initialization }
+MicHTMLVisitor >> crAsNewLine [ 
+	canvas crAsNewLine
+]
+
 { #category : #visiting }
 MicHTMLVisitor >> createAnchorWithId: anId [
 
@@ -131,6 +136,11 @@ MicHTMLVisitor >> createAnchorWithId: anId [
 		name: 'a';
 		parameterAt: 'id' put: anId;
 		with: ''
+]
+
+{ #category : #initialization }
+MicHTMLVisitor >> crlfAsNewLine [ 
+	canvas crlfAsNewLine
 ]
 
 { #category : #initialization }
@@ -154,6 +164,11 @@ MicHTMLVisitor >> languageForScript: aScript [
 	^ aScript language isSpecified
 		  ifTrue: [ aScript language ]
 		  ifFalse: [ self configuration defaultScriptLanguage ]
+]
+
+{ #category : #initialization }
+MicHTMLVisitor >> lfAsNewLine [ 
+	canvas lfAsNewLine
 ]
 
 { #category : #initialization }
