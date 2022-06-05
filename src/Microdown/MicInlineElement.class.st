@@ -23,14 +23,7 @@ Class {
 
 { #category : #constructor }
 MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString [
-	^ self new 
-		start: aStartInteger; 
-		end: anEndInteger; 
-		substring: aString; 
-		children: Array empty; 
-		cleanSubstring; 
-		closeMe;
-		yourself.	
+	^ self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: Array new
 ]
 
 { #category : #constructor }
@@ -39,9 +32,9 @@ MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aS
 		start: aStartInteger; 
 		end: anEndInteger; 
 		substring: aString; 
-		children: aChildren; 
+		children: aChildren;
+		closeMe;  
 		cleanSubstring; 
-		closeMe; 
 		yourself.	
 ]
 
@@ -67,15 +60,8 @@ MicInlineElement >> childrenPrintOn [
 
 { #category : #operations }
 MicInlineElement >> cleanSubstring [
-	| keepDoubleEscapes res |
 	"remove all \ left by the MicInlineParser - and replace \\ with single \"
-	self substring ifEmpty: [ ^ self ].
-	keepDoubleEscapes := 16rFFFD asCharacter asString.
-	res := self substring copyReplaceAll: '\\' with: keepDoubleEscapes.
-	res last = $\ ifTrue:[res at: res size put: 16rFFFD asCharacter].
-	res := res copyWithoutAll: '\'.
-	res := res copyReplaceAll: keepDoubleEscapes  with: '\'.
-	self substring: res
+	self substring: (MicInlineParser escapeDecode: self substring )
 ]
 
 { #category : #visiting }
@@ -121,6 +107,18 @@ MicInlineElement >> kind [
 { #category : #accessing }
 MicInlineElement >> literal [
 	^ substring copyFrom: start to: end. 
+]
+
+{ #category : #accessing }
+MicInlineElement >> openingDelimiter [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+MicInlineElement >> openingDelimiterSize [
+
+	^ self openingDelimiter size
 ]
 
 { #category : #accessing }

@@ -14,6 +14,24 @@ Class {
 }
 
 { #category : #facade }
+Microdown class >> asHTMLDocument: aStringOrDoc [
+	"Facade method to serialize a Microdown document or string to HTML"
+	
+	^ MicHTMLVisitor serializeToHTMLDoc: aStringOrDoc.
+		
+	
+]
+
+{ #category : #facade }
+Microdown class >> asHTMLString: aStringOrDoc [
+	"Facade method to render a microdown document or string to HTML"
+	
+	^ MicHTMLVisitor asHTMLString: aStringOrDoc.
+		
+	
+]
+
+{ #category : #facade }
 Microdown class >> asRichText: aStringOrDoc [
 	"Facade method to render a microdown document or string to Text"
 	^ MicRichTextComposer asRichText: aStringOrDoc.
@@ -23,7 +41,7 @@ Microdown class >> asRichText: aStringOrDoc [
 
 { #category : #facade }
 Microdown class >> builder [
-	^ MicroDownParser builder
+	^ MicrodownParser builder
 ]
 
 { #category : #settings }
@@ -38,9 +56,9 @@ Microdown class >> isCachingResources: aBoolean [
 
 	IsCachingResources := aBoolean.
 	"Tell the resouce cache to empty itself"
-	"This should really be done by MicAbstractResolver subscribing to some annoucer
+	"This should really be done by MicHTTPResourceReference subscribing to some annoucer
 	to cut the direct connection - we will do that some other time"
-	aBoolean ifFalse: [ MicAbstractResolver resetResourcesCache ]
+	aBoolean ifFalse: [ MicHTTPResourceReference resetResourcesCache ]
 ]
 
 { #category : #settings }
@@ -96,18 +114,21 @@ Microdown class >> parse: aStreamOrString [
 	^ self new parse: aStreamOrString
 ]
 
-{ #category : #deprecated }
-Microdown class >> resolve: document fromUri: uri [
-	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
-	|baseUri|
-	baseUri := uri.
-	(uri isString | uri isText)
-		ifTrue: [ baseUri := uri asString asUrl ].
-	"ZnUrl treats file:///path as relative as there is no host, so we cannot use the isRelative method"
-	(baseUri isHttp and: [baseUri isRelative] )
-		ifTrue: [ ^ self error: 'can only resolve with absolute uri as base' ].
-	MicZincPathResolver resolve: document  withBase: baseUri.
+{ #category : #facade }
+Microdown class >> resolveDocument: document withBase: base [
+	"resolve all relative urls in document with respect to the absolute uri 
+	base can be a aString | aZnUrl | absoluteResourceReference"
+	base resolveDocument: document.
 	^ document 
+]
+
+{ #category : #facade }
+Microdown class >> resolveString: markup withBase: uri [
+	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl|absoluteResourceReference)"
+	| doc |
+	doc := self parse: markup.
+	self resolveDocument: doc withBase: uri.
+	^ doc
 ]
 
 { #category : #facade }
@@ -119,7 +140,7 @@ Microdown >> builder [
 { #category : #facade }
 Microdown >> parse: aStreamOrString [
 
-	^ MicroDownParser parse: aStreamOrString
+	^ MicrodownParser parse: aStreamOrString
 ]
 
 { #category : #facade }
@@ -127,10 +148,4 @@ Microdown >> render: aStringOrDoc [
 	"Facade method to render a microdown string to Text"
 	^ self class render: aStringOrDoc 
 	
-]
-
-{ #category : #deprecated }
-Microdown >> resolve: document fromUri: uri [
-	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl)"
-	^ self class resolve: document fromUri: uri
 ]

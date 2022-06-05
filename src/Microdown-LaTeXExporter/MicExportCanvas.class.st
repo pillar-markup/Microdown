@@ -8,7 +8,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'stream',
-		'currentBrush'
+		'currentBrush',
+		'writingRaw'
 	],
 	#category : #'Microdown-LaTeXExporter'
 }
@@ -34,8 +35,33 @@ MicExportCanvas >> contents [
 ]
 
 { #category : #accessing }
+MicExportCanvas >> crAsNewLine [
+
+	stream crAsNewLine
+]
+
+{ #category : #accessing }
+MicExportCanvas >> crlfAsNewLine [
+
+	stream crlfAsNewLine
+]
+
+{ #category : #accessing }
 MicExportCanvas >> flush [
 	stream flush
+]
+
+{ #category : #'writing text' }
+MicExportCanvas >> initialize [
+
+	super initialize.
+	writingRaw := false
+]
+
+{ #category : #accessing }
+MicExportCanvas >> lfAsNewLine [
+
+	stream lfAsNewLine
 ]
 
 { #category : #'writing text' }
@@ -118,4 +144,10 @@ MicExportCanvas >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
 			aBlock value: line.
 			str atEnd
 				ifFalse: anotherBlock ]
+]
+
+{ #category : #'writing text' }
+MicExportCanvas >> writingRaw: aBoolean [
+
+	writingRaw := aBoolean
 ]

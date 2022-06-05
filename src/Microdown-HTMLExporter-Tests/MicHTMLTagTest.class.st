@@ -3,38 +3,20 @@ A MicHTMLTagTest is a test class for testing the behavior of MicHTMLTag
 "
 Class {
 	#name : #MicHTMLTagTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'tag'
-	],
+	#superclass : #MicHTMLBrushTest,
 	#category : #'Microdown-HTMLExporter-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> sampleMicFigureBlock [
 
 	^ MicFigureBlock new 
 		argumentAt: 'label' put: 'sampleClass';
-		argumentAt: 'size' put: '30';
+		argumentAt: 'width' put: '30';
 		yourself.
 ]
 
-{ #category : #test }
-MicHTMLTagTest >> setUp [
-
-	super setUp.
-	tag := MicHTMLTag new
-		setStream: (MicOutputStream new setStream: (WriteStream on: (String new: 1000)));
-		yourself.
-]
-
-{ #category : #accessing }
-MicHTMLTagTest >> tag [
-
-	^ tag
-]
-
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testAddArguments [
 
 	self tag addArguments: self sampleMicFigureBlock.
@@ -42,4 +24,58 @@ MicHTMLTagTest >> testAddArguments [
 		assertCollection: ((self tag contents findTokens: '=') collect: #trimBoth)
 		hasSameElements: #('class' '"sampleClass" width' '"30"').
 
+]
+
+{ #category : #test }
+MicHTMLTagTest >> testClose [
+
+	tag close.
+	self assert: tag contents equals: '>'
+]
+
+{ #category : #test }
+MicHTMLTagTest >> testContents [
+
+	tag 
+		name: 'falop';
+		with: 'This is a test'.
+	
+	self assert: tag contents equals: '<falop>This is a test</falop>'
+]
+
+{ #category : #test }
+MicHTMLTagTest >> testInitializeArgumentsMap [
+
+	self 
+		assert: (tag initializeArgumentsMap isKindOf: Dictionary)
+		description: 'It test that the arguments map is of type Dictionary'.
+]
+
+{ #category : #tests }
+MicHTMLTagTest >> testParameterAtPut [
+
+	| keyString valueString tagContents parsedAssoc |
+	keyString := 'aKey'.
+	valueString := 'aValueString'.
+	
+	tag parameterAt: keyString put: valueString.
+	tagContents := tag contents.
+	self 
+		assert: (tagContents beginsWith: ' ')
+		description: 'It tests that we write a parameter named keyString with valueString as value.'.
+	parsedAssoc := tagContents findTokens: '='.
+
+	self assert: parsedAssoc first trimBoth equals: keyString.
+	self assert: parsedAssoc second trimBoth equals: (valueString surroundedBy: '"').
+	
+]
+
+{ #category : #test }
+MicHTMLTagTest >> testWith [
+
+	tag 
+		name: '';
+		with: 'This is a test'.
+	
+	self assert: tag contents equals: '<>This is a test</>'
 ]

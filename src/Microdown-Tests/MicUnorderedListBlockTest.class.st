@@ -213,6 +213,18 @@ expanded'.
 ]
 
 { #category : #tests }
+MicUnorderedListBlockTest >> testSingleLevelListAllBulletTypes [
+	| source root list |
+	source := 
+'& item 1
+& item 2'.
+	'+-*' do: [ :bullet |
+	root := parser parse: (source copyReplaceAll: '&' with: bullet asString).
+	list := root children first.
+	self assert: list children size equals: 2.]
+]
+
+{ #category : #tests }
 MicUnorderedListBlockTest >> testSingleLevelListSplitWithEmptyLine [
 	| source root list |
 	source := 

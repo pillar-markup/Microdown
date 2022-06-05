@@ -5,7 +5,7 @@ Class {
 	#name : #MicInlineParserTest,
 	#superclass : #TestCase,
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Tests-Parser'
 }
@@ -166,6 +166,21 @@ MicInlineParserTest >> testEscapeCharacterWithNoCharacterAfter [
 		assert: res first substring equals: '\'
 ]
 
+{ #category : #tests }
+MicInlineParserTest >> testEscapeEncode [
+	| roundTrip |
+	self assert: (MicInlineParser escapeEncode: '') equals: ''.
+	self assert: (MicInlineParser escapeEncode: 'abc') equals: 'abc'.
+	self assert: (MicInlineParser escapeEncode: 'abc\') equals: 'abc\'.
+	self assert: (MicInlineParser escapeEncode: '\') equals: '\'.
+	roundTrip := [ :str | MicInlineParser escapeDecode: (MicInlineParser escapeEncode: str) ].
+	self assert: (roundTrip value: 'aa\\bb') equals: 'aa\bb'.
+	self assert: (roundTrip value: '\aa\\bb') equals: 'aa\bb'.
+	self assert: (roundTrip value: 'aa\`bb') equals: 'aa`bb'.
+	self assert: (roundTrip value: 'aa\@b@b') equals: 'aa@b@b'.
+	self assert: (roundTrip value: '\\') equals: '\'.
+]
+
 { #category : #'tests - formats' }
 MicInlineParserTest >> testEscapeMonospace [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
@@ -175,6 +190,18 @@ MicInlineParserTest >> testEscapeMonospace [
 	self
 		assert: res second substring equals: '`monospace`'.
 	self assert: res second class equals: MicMonospaceFormatBlock
+]
+
+{ #category : #tests }
+MicInlineParserTest >> testEscapeReEscape [
+	| roundTrip |
+	roundTrip := [ :str :keep | 
+		MicInlineParser escapeReescape: (MicInlineParser escapeEncode: str)  except:  keep ].
+	
+	self assert: (roundTrip value: '' value: 'aa') equals: ''.
+	self assert: (roundTrip value: 'abc' value: '') equals: 'abc'.
+	self assert: (roundTrip value: 'aa\\bb' value: '' ) equals: 'aa\\bb'.
+	self assert: (roundTrip value: '\aa\\bb' value: 'a') equals: 'aa\\bb'.
 ]
 
 { #category : #'tests - escape' }
@@ -644,7 +671,17 @@ MicInlineParserTest >> testUnclosedMath [
 	res := self splitter parse: 'abc$	V_i = C_0 - C_3	&def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc$	V_i = C_0 - C_3	&def)' }
+		equals: { 'Text(abc$	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
+]
+
+{ #category : #'tests - math' }
+MicInlineParserTest >> testUnclosedRaw [
+
+	| res |
+	res := self splitter parse: 'abc{{	V_i = C_0 - C_3	&def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: { 'Text(abc{{	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
 ]
 
 { #category : #'tests - formats' }

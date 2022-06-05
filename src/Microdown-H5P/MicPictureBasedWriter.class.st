@@ -1,10 +1,69 @@
+"
+The idea of a picture based writer is that 	we take a pdf + the list of H5P templates and we 
+- generate a list of jpeg 
+- and an H5P file representing the corresponding slides. 
+
+Right now the creation of the jpeg and the zip of the folder to create the H5P files are done by hand. 
+
+
+- placeOfTemplateFolder is the location of all the JS files.
+- sourceSlideImagesFolder is the place where all the jpeg files are.
+
+
+
+The process is the following:
+
+Once we have generated from the PDF the JPEG using
+
+```
+pdftoppm -jpeg AboutBasket.pdf Tests-01
+
+pdftoppm -jpeg AboutBasket.pdf -scale-to 1000  Basket
+```
+
+- the folder Target contains /content/images will contain all the JPEG
+- then we invoke the method `go` as follow
+
+```
+self new
+		placeOfTemplateFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/Source-Template/';
+		sourceSlideImagesFolder: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/AboutBasket-images/';
+		go
+		
+```
+- and manually the script
+
+```
+cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../
+```
+
+
+All the manual parts should be done automatically (this is the next step).
+
+```
+MicPictureBasedWriter new
+	sourcePDF: '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/Essence-04-Self.pdf';
+	treatSourcePDF;
+	go;
+	compressH5P.
+```
+
+
+
+
+
+
+"
 Class {
 	#name : #MicPictureBasedWriter,
 	#superclass : #Object,
 	#instVars : [
 		'placeOfTemplateFolder',
 		'sourceSlideImagesFolder',
-		'slideNames'
+		'slideNames',
+		'sourcePDF'
 	],
 	#category : #'Microdown-H5P'
 }
@@ -20,6 +79,82 @@ MicPictureBasedWriter class >> example [
 		
 ]
 
+{ #category : #operations }
+MicPictureBasedWriter >> compressH5P [
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+	
+	OSSUnixSubprocess new	
+		shellCommand: '/usr/bin/zip -r -D -X ', sourcePDF withoutExtension fullName, '.h5p *';
+		workingDirectory: self target fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
+	
+]
+
+{ #category : #operations }
+MicPictureBasedWriter >> compressH5P2 [
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+	
+	OSSUnixSubprocess new	
+		shellCommand: '/usr/bin/zip -r -D -X ', sourcePDF withoutExtension fullName, '.h5p *';
+		workingDirectory: self target fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
+	
+]
+
+{ #category : #operations }
+MicPictureBasedWriter >> compressH5POld [
+	"the following expression works on the parent folder of Target. It produces a working H5P file archive."
+	"cd Target
+zip -r -D -X ../Generated.h5p *
+cd ../"
+	"-X  means no extra file attributes 
+	-D no Dir entries
+	-r recursively"
+
+"the star is not correct because this is a shell and not the command behavior to expand"
+	OSSUnixSubprocess new	
+		command: '/usr/bin/zip';
+		arguments: {'-r' . '-D'. '-X'. sourcePDF withoutExtension fullName, '.h5p' . '*' };
+		workingDirectory: self target fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+			process isSuccess
+				ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+				ifFalse: [
+					Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+					Transcript show: 'Stderr contents: ', errString.
+				]
+		]
+	
+]
+
 { #category : #accessing }
 MicPictureBasedWriter >> contentJSON [
 	"I point to the place in the source where the content.json should be located."
@@ -31,6 +166,7 @@ MicPictureBasedWriter >> contentJSON [
 MicPictureBasedWriter >> copyImagesInSource [
 
 	(self target / 'content' / 'images/') ensureDeleteAll.
+	
 	self sourceSlideImagesFolder copyAllTo: self target / 'content' / 'images/'
 ]
 
@@ -45,10 +181,18 @@ MicPictureBasedWriter >> generateContent [
 { #category : #operations }
 MicPictureBasedWriter >> go [
 	
+	"copy all the template to the target"
 	self installSource.
+	
+	self splitPDF.
+	
+	"Copy the image from the source to the target"
 	self copyImagesInSource.
+	
 	slideNames := ((self sourceSlideImagesFolder children select: [:each | #('jpeg' 'jpg') includes: each extension]) collect: [:each | each basename]) sorted.
 	self generateContent.
+	
+	self compressH5P
 ]
 
 { #category : #operations }
@@ -129,6 +273,13 @@ MicPictureBasedWriter >> slidesStringForCollection: aCollection [
 ]
 
 { #category : #accessing }
+MicPictureBasedWriter >> sourcePDF: aString [
+
+	sourcePDF := aString asFileReference.
+	
+]
+
+{ #category : #accessing }
 MicPictureBasedWriter >> sourceSlideImagesFolder [
 	"I'm the place where the slides expressed in jpeg files are. The files in my repository will the copy in the target architecture 
 	and used to generate the presentation in the content.json file."
@@ -142,6 +293,29 @@ MicPictureBasedWriter >> sourceSlideImagesFolder: aString [
 	sourceSlideImagesFolder := aString asFileReference
 ]
 
+{ #category : #operations }
+MicPictureBasedWriter >> splitPDF [
+	
+	| treatedPDF cmd |
+	treatedPDF := (self sourceSlideImagesFolder / sourcePDF basename).
+	
+	cmd := '/usr/local/bin/pdftoppm -jpeg ', treatedPDF fullName, ' -scale-to 1000 ', treatedPDF basenameWithoutExtension.
+	OSSUnixSubprocess new	
+		command: '/usr/local/bin/pdftoppm';
+		arguments: {'-jpeg' . treatedPDF fullName . '-scale-to' . '1000' . treatedPDF basenameWithoutExtension };
+		workingDirectory: self sourceSlideImagesFolder fullName;
+		runAndWaitOnExitDo: [ :process :outString :errString |
+		process isSuccess
+			ifTrue: [ Transcript show: 'Command exited correctly with output: ', outString. ]
+			ifFalse: [
+				Transcript show: 'Command exit with error status: ', process exitStatusInterpreter printString; cr.
+				Transcript show: 'Stderr contents: ', errString.
+			]
+	]
+	
+	
+]
+
 { #category : #accessing }
 MicPictureBasedWriter >> target [
 	"self new target"
@@ -150,8 +324,18 @@ MicPictureBasedWriter >> target [
 
 { #category : #accessing }
 MicPictureBasedWriter >> targetImageFolder [
-
+	"This is the repository inside the target where we should put the images."
+	
 	^ (self placeOfTemplateFolder / 'content' / 'images/') asFileReference
+]
+
+{ #category : #operations }
+MicPictureBasedWriter >> treatSourcePDF [
+
+	self sourceSlideImagesFolder: sourcePDF parent / (sourcePDF basenameWithoutExtension,'Images').
+	self sourceSlideImagesFolder ensureDeleteAll.
+	self sourceSlideImagesFolder createDirectory.
+	sourcePDF copyTo: self sourceSlideImagesFolder / sourcePDF basename .
 ]
 
 { #category : #writing }

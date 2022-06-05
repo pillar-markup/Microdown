@@ -1,6 +1,6 @@
 Class {
 	#name : #MicColumnsBlockTest,
-	#superclass : #MicAnnotationSubclassTest,
+	#superclass : #TestCase,
 	#category : #'Microdown-Tests-Extensions'
 }
 

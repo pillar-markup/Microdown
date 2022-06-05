@@ -6,10 +6,16 @@ Class {
 		'properties'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Model'
 }
+
+{ #category : #utilities }
+MicElement class >> extensionClassFor: tag [
+	"I am a utility method used in extension blocks to find the right subclass to instantiate"
+	^ self subclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+]
 
 { #category : #properties }
 MicElement >> hasProperty: aKey [
@@ -21,12 +27,26 @@ MicElement >> hasProperty: aKey [
 
 { #category : #public }
 MicElement >> inlineParse: aString [
-	| inlineParser childrenCol |
-	inlineParser := MicInlineParser new.
-	childrenCol := inlineParser parse: aString.
-	childrenCol do: [ :each | each parent: self ].
-	^  childrenCol
+	| inlineParser inlinedChildren |
+	
+	inlineParser := self newInlineParser.
+	inlinedChildren := inlineParser parse: aString.
+	inlinedChildren do: [ :each | each parent: self ].
+	
+	^ inlinedChildren
 
+]
+
+{ #category : #private }
+MicElement >> inlineParserClass [
+
+	^ MicInlineParser
+]
+
+{ #category : #private }
+MicElement >> newInlineParser [
+
+	^ self inlineParserClass new
 ]
 
 { #category : #accessing }
@@ -97,4 +117,9 @@ MicElement >> removeProperty: aKey ifAbsent: aBlock [
 	answer := self properties removeKey: aKey ifAbsent: aBlock.
 	self properties isEmpty ifTrue: [ properties := nil ].
 	^ answer
+]
+
+{ #category : #public }
+MicElement >> resolveFrom: aBase [
+	Microdown resolveDocument: self withBase: aBase
 ]

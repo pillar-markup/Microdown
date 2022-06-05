@@ -25,6 +25,19 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #public }
+MicMathBlock class >> alternateBlockClassFor: line [
+
+	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
+	"line is of the form <!slide|title=Schedule"
+	"We know that the two first characters are <? else we would be invoked"
+
+	| tag |
+	tag := ((line allButFirst: MathOpeningBlockMarkup size) 
+		        copyUpTo: $|) trimBoth.
+	^ self extensionClassFor: tag
+]
+
 { #category : #visiting }
 MicMathBlock >> accept: aVisitor [ 
  	^ aVisitor visitMath: self
@@ -41,7 +54,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	arguments := MicArgumentsSplitter 
+	arguments := MicArgumentList 
 		split: lineWithoutMarkup.
 	^ lineWithoutMarkup
 ]

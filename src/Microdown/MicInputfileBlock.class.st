@@ -1,5 +1,9 @@
 "
-may be rename the class later
+I handle input file 
+
+```
+{!inputFile|path=Chapters/withStyle.md!}
+```
 "
 Class {
 	#name : #MicInputfileBlock,
@@ -22,7 +26,7 @@ MicInputfileBlock >> closeMe [
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
-		ifFalse: [ self path: (MicInvalidResourceReference new originalString: substring; yourself) ]
+		ifFalse: [ (MicParsingError new line: self text, ' must have path argument') signal]
 ]
 
 { #category : #accessing }
@@ -52,4 +56,15 @@ MicInputfileBlock >> path [
 MicInputfileBlock >> path: aPath [
 	
 	arguments at: #'path' put: aPath
+]
+
+{ #category : #accessing }
+MicInputfileBlock >> reference [
+	^ self arguments at: #path
+]
+
+{ #category : #accessing }
+MicInputfileBlock >> reference: aMicResourceReference [
+
+	self arguments at: #path put: aMicResourceReference
 ]

@@ -3,7 +3,7 @@ I am the opener delimiter for link name.
 "
 Class {
 	#name : #MicLinkNameOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
+	#superclass : #MicLinkNameDelimiter,
 	#category : #'Microdown-Parser'
 }
 
@@ -25,9 +25,4 @@ MicLinkNameOpenerDelimiter class >> isOpener [
 { #category : #accessing }
 MicLinkNameOpenerDelimiter class >> markup [
 	^ LinkNameOpenerMarkup
-]
-
-{ #category : #accessing }
-MicLinkNameOpenerDelimiter class >> type [
-	^ #linkName
 ]
