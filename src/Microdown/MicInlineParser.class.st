@@ -497,8 +497,9 @@ MicInlineParser >> rawRead [
 MicInlineParser >> read [
 	| next |
 	
-	[ (next := string allButFirst: index-1) isEmpty ] 
-	whileFalse: [ 
+	[ index <= string size ] 
+	whileTrue: [
+		next := string allButFirst: index-1.
 		incrementation := self identifyMarkupFor: next.
 		self indexIncrement: incrementation ].
 	
