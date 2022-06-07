@@ -362,6 +362,17 @@ MicMicrodownTextualBuilder >> mathInline: aText [
 ]
 
 { #category : #'element - math' }
+MicMicrodownTextualBuilder >> mathblock: aString [ 
+
+	self raw: MathOpeningBlockMarkup.
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: MathClosingBlockMarkup.
+	self newLine.
+]
+
+{ #category : #'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 
 	self raw: MathOpeningBlockMarkup.
