@@ -111,7 +111,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'Macrodown' with: #('Microdown-Macrodown' 'Microdown-Macrodown-Tests');
+			group: 'Macrodown' with: #('Core' 'Microdown-Pillar' 'Microdown-Macrodown' 'Microdown-Macrodown-Tests');
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Macrodown' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
