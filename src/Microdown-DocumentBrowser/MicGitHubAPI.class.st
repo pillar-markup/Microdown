@@ -71,11 +71,3 @@ MicGitHubAPI >> get: apiCallString [
 		ifAbsentPut: [ super get: apiCallString]
 	
 ]
-
-{ #category : #private }
-MicGitHubAPI >> responseWithValidationDo: aBlock [
-	| response |
-	response := super responseWithValidationDo: aBlock.
-	self extractRateInfo: response.
-	^ response
-]
