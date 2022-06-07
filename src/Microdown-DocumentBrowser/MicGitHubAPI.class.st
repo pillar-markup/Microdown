@@ -71,3 +71,10 @@ MicGitHubAPI >> get: apiCallString [
 		ifAbsentPut: [ super get: apiCallString]
 	
 ]
+
+{ #category : #responses }
+MicGitHubAPI >> handleUnauthorized: response [
+	"I override this method as it was the least wrong place to access the response"
+	self extractRateInfo: response.
+	super handleUnauthorized: response.
+]
