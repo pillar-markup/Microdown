@@ -41,6 +41,7 @@ MicGitHubAPI class >> cache: aCache [
 MicGitHubAPI class >> reset [
 	<script>
 	ResponseCache := nil.
+	APICount := nil.
 	
 ]
 

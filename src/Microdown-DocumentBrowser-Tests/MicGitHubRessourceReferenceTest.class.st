@@ -129,7 +129,7 @@ MicGitHubRessourceReferenceTest >> testGithubTreesApiRequest [
 	ref := MicResourceReference fromUri: uri.
 	self 
 		assert: ref githubTreesApiRequest  
-		equals: 'https://api.github.com/repos/johndoe/Calculator/git/trees/devBranch'.
+		equals: 'repos/johndoe/Calculator/git/trees/devBranch'.
 ]
 
 { #category : #tests }

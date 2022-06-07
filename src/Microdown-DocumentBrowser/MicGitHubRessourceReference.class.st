@@ -109,15 +109,16 @@ MicGitHubRessourceReference >> githubPathLookup [
 		response := self githubApi get: request.
 		request := ((response at: #tree) 
 			detect: [ :elem | (elem at: #path) = segment ]) at: #url.
+		request := request withoutPrefix: 'https://api.github.com/'.
 		 ].
-	response := STONJSON fromString: (ZnEasy get: request )entity contents.
+	response := STONJSON fromString: (ZnEasy get: ('https://api.github.com/',request) )entity contents.
 	^ response
 ]
 
 { #category : #private }
 MicGitHubRessourceReference >> githubTreesApiRequest [
 	"See documentation at: https://docs.github.com/en/rest/reference/git#get-a-tree"
-	 ^ 'https://api.github.com/repos/{1}/{2}/git/trees/{3}' 
+	 ^ 'repos/{1}/{2}/git/trees/{3}' 
 			format: { user. project. branch }
 ]
 

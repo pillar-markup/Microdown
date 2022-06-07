@@ -33,7 +33,7 @@ MicGitHubAPITest >> setUp [
 MicGitHubAPITest >> testGet [
 	| url res |
 	self ensureApi: 1 for: [
-		url := 'https://api.github.com/repos/pillar-markup/Microdown'.
+		url := 'repos/pillar-markup/Microdown'.
 		res := api get: url.
 		self assert: (res at: 'full_name') equals: 'pillar-markup/Microdown'.
 		self assert: (res at: 'default_branch') equals: 'dev']
@@ -43,7 +43,7 @@ MicGitHubAPITest >> testGet [
 MicGitHubAPITest >> testIsCaching [
 	| url res rate|
 	self ensureApi: 1 for: [
-		url := 'https://api.github.com/repos/pillar-markup/Microdown'.
+		url := 'repos/pillar-markup/Microdown'.
 		res := api get: url.
 		self assert: (api class cache includesKey: url).
 		rate := MicGitHubAPI apiCallsRemaining.
