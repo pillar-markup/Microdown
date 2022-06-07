@@ -1,5 +1,12 @@
 "
-I am rather early in my design and development phase, so all comments are welcome
+I implement a browser and editor for Microdown documents.
+See comment in `MicDocumentBrowser`.
+
+I implement two new kind of Microdown resource references: `MicPharoCommentResourceReference` and `MicGitHubRessourceReference`.
+
+And I extend the MicFileResourceReference with icons for use in the documnt browser.
+
+The classes in tag 'Model' are unused at the moment, but implement hierarchical structure over microdown documents and are just kept for reference for the time being (the issue is that some documents might be large, and it would be nice to browse a large document by sections in the tree view, but then what to do when trying to edit this large document).
 "
 Class {
 	#name : #ManifestMicrodownDocumentBrowser,
