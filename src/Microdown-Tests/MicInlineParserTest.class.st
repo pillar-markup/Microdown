@@ -674,6 +674,17 @@ MicInlineParserTest >> testUnclosedMath [
 		equals: { 'Text(abc$	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
 ]
 
+{ #category : #tests }
+MicInlineParserTest >> testUnclosedOpeners [
+	| openers |
+	openers := MicAbstractDelimiter subclasses select: [ :d | d hasSubclasses not and: [d isOpener  ]] thenCollect: [ :d | d markup ].
+	openers do: [ :opener |
+		Microdown parse: 'foo', opener.
+		Microdown parse: opener,'bar'.
+		Microdown parse: 'foo',opener,'bar'.
+		 ]
+]
+
 { #category : #'tests - math' }
 MicInlineParserTest >> testUnclosedRaw [
 
