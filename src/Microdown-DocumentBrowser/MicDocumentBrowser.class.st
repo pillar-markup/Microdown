@@ -1,6 +1,19 @@
 "
 I am a browser of collections of microdown documents.
-I obtain my documents through DocProviders (through their `loadDocuments` method).
+
+I am work in progress, but reasonable functional.
+
+I open by `MicDocumentBrowser class >> #open`.
+Editing is done using the little edit flag in the lower right corner - there is currently no keyboard shortcut for this.
+I can save some documents, but not all. I can save documents on files, and package/class comments. In particular I **cannot** save to github or the web. Saving is done on the save button when it is not greyed out.
+
+I open with some documents being loaded, those are currently defined in `MicDocumentBrowser >>#documentRoots`. The plan is that an api should be added which will allow to manipulate this rootset, but at present experience and usage drives feature development.
+
+The roots loaded at the moment is:
+- all class and package comments in the Microdown project (read and write)
+- all docs found on github relating to Microdown (read-only as one do not write to github)
+- all doc(s) folders found in iceberg workspace (read and write). This will be the th doc-folders of projects known by iceberg.
+
 
 "
 Class {
@@ -57,7 +70,7 @@ MicDocumentBrowser >> connectPresenters [
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
 	^ ({'comment://package/Microdown'.
-		"'file:///Users/kasper/tmp/pharo/doc'."
+		"'file:/Users/kasper/tmp/pharo/doc'."
 		'github://pillar-markup/Microdown/doc/testMicrodown'
 	 	}, 
 		self loadedDocsInWorkspace  )
