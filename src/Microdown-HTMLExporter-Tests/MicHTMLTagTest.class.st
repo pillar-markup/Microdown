@@ -26,14 +26,14 @@ MicHTMLTagTest >> testAddArguments [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testClose [
 
 	tag close.
 	self assert: tag contents equals: '>'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testContents [
 
 	tag 
@@ -43,7 +43,7 @@ MicHTMLTagTest >> testContents [
 	self assert: tag contents equals: '<falop>This is a test</falop>'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testInitializeArgumentsMap [
 
 	self 
@@ -70,7 +70,7 @@ MicHTMLTagTest >> testParameterAtPut [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLTagTest >> testWith [
 
 	tag 

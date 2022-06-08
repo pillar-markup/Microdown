@@ -25,7 +25,7 @@ MicHTMLBrushTest >> tag [
 	^ tag
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLBrushTest >> testName [
 
 	tag name: 'prueba'.

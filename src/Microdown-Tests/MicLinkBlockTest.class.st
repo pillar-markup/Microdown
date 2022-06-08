@@ -148,7 +148,7 @@ MicLinkBlockTest >> testPrintOn [
 	self assert: link asString equals: '[caption](http://www.pharo.org)'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicLinkBlockTest >> testReferencePath [
 
 	link := self parseLink: self linkSample.

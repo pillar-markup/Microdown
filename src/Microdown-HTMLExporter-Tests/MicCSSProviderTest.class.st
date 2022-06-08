@@ -7,14 +7,14 @@ Class {
 	#category : #'Microdown-HTMLExporter-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 MicCSSProviderTest >> testLibraryNames [
 
 	self assert: (MicCSSProvider libraryNames isKindOf: Collection).
 	self assert: (MicCSSProvider libraryNames allSatisfy: #isString)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicCSSProviderTest >> testNamed [
 	
 	| tufte |
