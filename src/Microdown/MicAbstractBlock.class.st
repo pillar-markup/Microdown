@@ -143,24 +143,24 @@ MicAbstractBlock >> parserClass [
 	^ Microdown
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #replacement }
 MicAbstractBlock >> replace: aBlock by: anotherBlock [ 
 	
 	children replaceAll: aBlock with: anotherBlock 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #replacement }
 MicAbstractBlock >> replace: aBlock byCollection: aCollection [ 
 	
 	children := children copyReplaceAll: {aBlock} with: aCollection 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #replacement }
 MicAbstractBlock >> replaceBy: anotherBlock [ 
 	self parent replace: self by: anotherBlock
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #replacement }
 MicAbstractBlock >> replaceByAll: aCollection [ 
 	self parent replace: self byCollection: aCollection 
 ]
