@@ -4,9 +4,6 @@ A MicGitHubRessourceReferenceTest is a test class for testing the behavior of Mi
 Class {
 	#name : #MicGitHubRessourceReferenceTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'savedCache'
-	],
 	#category : #'Microdown-DocumentBrowser-Tests-ResourceModel'
 }
 
@@ -129,7 +126,7 @@ MicGitHubRessourceReferenceTest >> testGithubTreesApiRequest [
 	ref := MicResourceReference fromUri: uri.
 	self 
 		assert: ref githubTreesApiRequest  
-		equals: 'https://api.github.com/repos/johndoe/Calculator/git/trees/devBranch'.
+		equals: 'repos/johndoe/Calculator/git/trees/devBranch'.
 ]
 
 { #category : #tests }

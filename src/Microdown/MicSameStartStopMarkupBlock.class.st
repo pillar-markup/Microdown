@@ -27,12 +27,6 @@ MicSameStartStopMarkupBlock >> arguments [
 	^ arguments
 ]
 
-{ #category : #accessing }
-MicSameStartStopMarkupBlock >> arguments: aDictionary [
-	self halt: 'Do not set this'.
-	arguments := aDictionary
-]
-
 { #category : #visiting }
 MicSameStartStopMarkupBlock >> caption [
 	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
