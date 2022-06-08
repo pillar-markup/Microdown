@@ -93,12 +93,6 @@ MicAnnotationBlock >> openingDelimiter [
 ]
 
 { #category : #accessing }
-MicAnnotationBlock >> parameterAt: aKey put: aValue [
-	self halt: 'Is this needed???'.
-	^ arguments at: aKey put: aValue
-]
-
-{ #category : #accessing }
 MicAnnotationBlock >> printOn: aStream [
 
 	aStream nextPutAll: self openingDelimiter.

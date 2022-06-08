@@ -133,15 +133,3 @@ MicCodeBlock >> size [
 
 	^ arguments at: #size
 ]
-
-{ #category : #accessing }
-MicCodeBlock >> text [
-	| text |
-	self halt: #todo.
-	"what a terrible idea we concatenate the text of children and store. 
-	I could understand that we keep the text of the parser element but then we do not modify it after
-	and certainly not change it."
-	text := ''.
-	body do: [ :each | text := text , each text ].
-	^ text
-]
