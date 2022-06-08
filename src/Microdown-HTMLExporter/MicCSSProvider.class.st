@@ -35,10 +35,6 @@ To add a new library, add a new method to the class side category _libraries_. T
 Class {
 	#name : #MicCSSProvider,
 	#superclass : #Object,
-	#instVars : [
-		'directory',
-		'name'
-	],
 	#category : #'Microdown-HTMLExporter'
 }
 
