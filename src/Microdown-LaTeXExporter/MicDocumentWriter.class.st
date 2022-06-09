@@ -3,7 +3,6 @@ Class {
 	#superclass : #MicrodownVisitor,
 	#instVars : [
 		'canvas',
-		'stream',
 		'nbListTab',
 		'writingRaw'
 	],
@@ -13,17 +12,30 @@ Class {
 { #category : #accessing }
 MicDocumentWriter >> canvasClass [ 
 
-	^ MicHTMLCanvas
+	^ self subclassResponsibility 
 ]
 
 { #category : #writing }
 MicDocumentWriter >> contents [
 
-	^ stream contents
+	^ canvas contents
 ]
 
 { #category : #initialization }
-MicDocumentWriter >> initialize [ 
+MicDocumentWriter >> crAsNewLine [
+
+	canvas crAsNewLine
+]
+
+{ #category : #initialization }
+MicDocumentWriter >> crlfAsNewLine [
+
+	canvas crlfAsNewLine
+]
+
+{ #category : #initialization }
+MicDocumentWriter >> initialize [
+	| stream |
 	super initialize.
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
 	canvas := self canvasClass on: stream.
@@ -32,16 +44,37 @@ MicDocumentWriter >> initialize [
 ]
 
 { #category : #initialization }
+MicDocumentWriter >> lfAsNewLine [
+
+	canvas lfAsNewLine
+]
+
+{ #category : #initialization }
 MicDocumentWriter >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
-	^ stream usedNewLine
+	^ canvas stream usedNewLine
+]
+
+{ #category : #writing }
+MicDocumentWriter >> visit: aMicElement [
+
+	aMicElement accept: self.
+	^ self contents
+]
+
+{ #category : #writing }
+MicDocumentWriter >> write: aMicElement [
+	"for now for integration with Pillar."
+	self visit: aMicElement.
+	^ self contents
 ]
 
 { #category : #writing }
 MicDocumentWriter >> writeRawDuring: aBlock [
+
 	[ 
-	writingRaw := true.
+	canvas writingRaw: true.
 	aBlock value ]
-		ensure: [ writingRaw := false ]
+		ensure: [ canvas writingRaw: false. ]
 ]

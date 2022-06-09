@@ -9,7 +9,7 @@ Class {
 		'builder'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Tests-Builder'
 }
@@ -58,7 +58,7 @@ MicMicrodownTextualBuilderTest >> testAnnotation [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {'label'->'aLabel' . 'value' -> '42'} asDictionary) contents 
-		equals: MicAnnotationOpenerDelimiter markup,'anAnnotationName | label=aLabel&value=42',MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup,'anAnnotationName | label=aLabel&value=42', AnnotationCloserMarkup 
 ]
 
 { #category : #'tests - anchor' }
@@ -66,7 +66,7 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 
 	self 
 		assert: (builder annotation: 'anAnnotationName' arguments: {} ) contents 
-		equals: MicAnnotationOpenerDelimiter markup,'anAnnotationName',MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup, 'anAnnotationName', AnnotationCloserMarkup
 ]
 
 { #category : #'tests - format' }
@@ -140,6 +140,39 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 ]
 
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testColumns [
+
+	self 
+		assert: (builder 
+					columnsWithBody: [ builder text: 'This is a paragraph in a columns'] ) contents 
+		equals: '<!columns|width=100
+
+This is a paragraph in a columns
+!>
+'
+]
+
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testColumnsWithChildren [
+
+	self 
+		assert: (builder 
+						columnsWithBody: [ builder 
+													columnWidth: '60' 
+													withBody: [ builder text: 'This is a paragraph in a column']] ) contents 
+		equals: '<!columns|width=100
+
+<!column|width=60
+
+This is a paragraph in a column
+!>
+
+
+!>
+'
+]
+
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testComment [
 
@@ -151,8 +184,8 @@ MicMicrodownTextualBuilderTest >> testEnvironment [
 
 	self 
 		assert: (builder environment: 'anEnvironmentName' arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
-		equals: '<?anEnvironmentName|label=aLabel&value=42
-?>'
+		equals: '<!anEnvironmentName|label=aLabel&value=42
+!>'
 ]
 
 { #category : #'tests - anchor' }
@@ -162,9 +195,9 @@ MicMicrodownTextualBuilderTest >> testEnvironmentWithBody [
 		assert: (builder environment: 'anEnvironmentName' 
 					body: [ builder text: 'aText'] 
 					arguments: {'label'->'aLabel' . 'value' -> '42'}) contents 
-		equals: '<?anEnvironmentName|label=aLabel&value=42
+		equals: '<!anEnvironmentName|label=aLabel&value=42
 aText
-?>'
+!>'
 ]
 
 { #category : #'tests - references' }
@@ -286,8 +319,8 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
 		assert: (builder inputFile: 'Chapters/image.png') contents 
-		equals: MicAnnotationOpenerDelimiter markup,
-					'inputfile | path=Chapters/image.png', MicAnnotationCloserDelimiter markup
+		equals: AnnotationOpenerMarkup,
+					'inputfile | path=Chapters/image.png', AnnotationCloserMarkup
 ]
 
 { #category : #'tests - format' }
@@ -315,12 +348,9 @@ MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 	self 
 		assert: mictext 
 		equals: 
-'&label=Math&caption=`Math` is cool
-', self exampleMathTextMultipleLines, 
-
-'
-&
-'
+MathOpeningBlockMarkup, 'label=Math&caption=`Math` is cool
+', self exampleMathTextMultipleLines, String cr, MathClosingBlockMarkup , String cr
+"Bad idea to hardcode String cr"
 
 ]
 
@@ -344,8 +374,23 @@ MicMicrodownTextualBuilderTest >> testMonospace [
 	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
 ]
 
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testOneColumn [
+
+	self 
+		assert: (builder 
+					columnWidth: '60' 
+					withBody: [ builder text: 'This is a paragraph in a column'] ) contents 
+		equals: '<!column|width=60
+
+This is a paragraph in a column
+!>
+
+'
+]
+
 { #category : #'tests - anchor' }
-MicMicrodownTextualBuilderTest >> testOrderedList [
+MicMicrodownTextualBuilderTest >> testOrderedListDuring [
 
 	self 
 		assert: (builder orderedListDuring: [  {'item1' . 'item2' . 'item3' } 
@@ -364,7 +409,7 @@ MicMicrodownTextualBuilderTest >> testParagraph [
 ]
 
 { #category : #'tests - anchor' }
-MicMicrodownTextualBuilderTest >> testQuote [
+MicMicrodownTextualBuilderTest >> testQuoteBlock [
 
 	self assert: (builder quoteBlock: 'aQuote') contents equals: PreformattedMarkup, ' aQuote'
 ]
@@ -372,7 +417,7 @@ MicMicrodownTextualBuilderTest >> testQuote [
 { #category : #'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testRawFormat [
 
-	self assert: (builder rawFormat: 'aRawFormat') contents equals: MicRawOpenerDelimiter markup, 'aRawFormat', MicRawCloserDelimiter markup
+	self assert: (builder rawFormat: 'aRawFormat') contents equals: RawOpenerMarkup, 'aRawFormat', RawCloserMarkup
 ]
 
 { #category : #tests }
@@ -380,6 +425,20 @@ MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 	
 	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock } asDictionary.
 	self assert: builder contents equals: 'label=42&size=MicTextBlock'
+]
+
+{ #category : #'tests - slides' }
+MicMicrodownTextualBuilderTest >> testSimpleSlide [
+
+	self 
+		assert: (builder 
+					slideTitle: 'Ze super cool slide' 
+					withBody: [ builder text: 'This is a paragraph in a slide'] ) contents 
+		equals: '<!slide|title=Ze super cool slide
+
+This is a paragraph in a slide
+!>
+'
 ]
 
 { #category : #'tests - format' }

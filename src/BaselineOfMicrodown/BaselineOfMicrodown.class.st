@@ -13,13 +13,9 @@ BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		spec
-			baseline: 'PillarCore'
-			with: [
-				spec  
-					loads: #('Pillar-Core');
-					repository: 'github://pillar-markup/pillar:dev-8'
-			].
+		self pillar: spec.
+		self xmlParserHtml: spec.				
+
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
@@ -32,6 +28,18 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextComposer-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
+			package: #'Microdown-MathFlaky-Tests'
+				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
+
+			package: #'Microdown-RichTextPresenter'
+				with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-RichTextPresenter-Tests'
+				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
+				
+			package: #'Microdown-DocumentBrowser'
+				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
+			package: #'Microdown-DocumentBrowser-Tests'
+				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];
 
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
@@ -41,16 +49,25 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Evaluator'
 				with: [ spec requires: #( #'Microdown-Transformer' ) ];
 			package: #'Microdown-Evaluator-Tests'
-				with: [ spec requires: #( #'Microdown-Evaluator' ) ];
+				with: [ spec requires: #( #'Microdown-Evaluator') ];
 			
 			package: #'Microdown-HTMLExporter'
 				with: [ spec requires: #( #Microdown #'Microdown-LaTeXExporter') ];
+			package: #'Microdown-HTMLExporter-Tests'
+				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
 			
 			package: #'Microdown-LaTeXExporter'
 				with: [ spec requires: #( #Microdown ) ];
-
+				
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
+
+
+			package: #'Microdown-BeamerExporter'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];
+				
+			package: #'Microdown-BeamerExporter-Tests'
+				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
@@ -63,22 +80,59 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-Pillar' ) ];	
 
 			package: #'Microdown-PrettyPrinter-Tests'
-				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
+				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
+				
+			package: 'Microdown-Macrodown'
+				with: [ spec requires: #( 'Microdown') ];
+			package: #'Microdown-Macrodown-Pillar'
+				with: [ spec requires: #( 'Microdown-Macrodown' 'PillarCore') ];
+			package: 'Microdown-Macrodown-Tests'
+				with: [ spec requires: #( 'Microdown-Macrodown' 'Microdown-Tests') ].
+				
+				
 	
 		"I do not want group without tests for now"
 		spec
 			group: 'Core' with: #('Microdown');
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
-			group: 'Extensions' with: #(   
+			group: 'Extensions' with: #(
+				#'Microdown-RichTextPresenter'
+				#'Microdown-RichTextPresenter-Tests'
+				#'Microdown-DocumentBrowser'
+				#'Microdown-DocumentBrowser-Tests' 
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
 				#'Microdown-PrettyPrinter-Tests'
 				#'Microdown-HTMLExporter'
+				#'Microdown-HTMLExporter-Tests'				
 				#'Microdown-LaTeXExporter'
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'All' with: #('Core' 'Tests' 'Extensions' #'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'Macrodown' with: #('Core' 'Microdown-Pillar' 'Microdown-Macrodown' 'Microdown-Macrodown-Tests');
+			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Macrodown' 'Microdown-Pharo-Tools' 'RichText') ]
+]
+
+{ #category : #'external projects' }
+BaselineOfMicrodown >> pillar: spec [
+		
+	spec
+		baseline: 'PillarCore'
+		with: [
+			spec  
+				loads: #('Pillar-Core');
+				repository: 'github://pillar-markup/pillar:dev-8' ]
+]
+
+{ #category : #'external projects' }
+BaselineOfMicrodown >> xmlParserHtml: spec [
+
+	spec
+		baseline: 'XMLParserHTML'
+		with: [ 
+			spec
+				loads: #('Core');
+				repository: 'github://pharo-contributions/XML-XMLParserHTML/src' ]
 ]

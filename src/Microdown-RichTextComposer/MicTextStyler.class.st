@@ -59,7 +59,7 @@ MicTextStyler >> headerFontSizes [
 MicTextStyler >> headerLevelFont: level [
 	"I return a font annotation to be used with Attributes"
 	headerFonts ifNil: [ self computeHeaderFonts  ].
-	^ headerFonts at: level
+	^ headerFonts at: (level min: 6)
 ]
 
 { #category : #'composer styles' }
@@ -89,9 +89,9 @@ MicTextStyler >> newLineIfNotAlready [
 { #category : #'composer styles' }
 MicTextStyler >> postTextTreatment: aText [
 	"my primary purpose is to replace newLines with space in some styles"
-	((1 to: aText size) 
+	"((1 to: aText size) 
 		select: [ :i | (aText at: i) = Character cr  ]) 
-		do: [ :i | aText at: i put: Character space ].
+		do: [ :i | aText at: i put: Character space ]."
 	^ aText
 	 
 ]

@@ -40,6 +40,21 @@ MicFigureBlockTest >> testAnchor [
 	self assert: figure anchor equals: '233'
 ]
 
+{ #category : #running }
+MicFigureBlockTest >> testArgumentAtIfPresent [
+
+	| expected tested |
+
+	expected := MicFigureBlock new arguments at: 'testKey' put: 'nothing'.
+	tested := self instance argumentAt: 'testKey' ifPresent: [ 'nothing' ].
+	self assert: (tested isKindOf: MicFigureBlock).
+	self assert: (tested arguments isKindOf: OrderedDictionary).
+	self deny: (tested arguments includesKey: 'testKey').
+	tested argumentAt: 'testKey' put: 'object'.
+	self assert: (tested arguments includesKey: 'testKey').
+	self assert: (tested arguments at: 'testKey') equals: 'object'.
+]
+
 { #category : #tests }
 MicFigureBlockTest >> testCaption [
 	| figure |

@@ -13,6 +13,15 @@ MicFigureNameOpenerDelimiter class >> associatedInlineBlock [
 ]
 
 { #category : #accessing }
+MicFigureNameOpenerDelimiter class >> associatedTypes [
+
+	^ {  
+		MicLinkNameDelimiter type.
+		self type.
+	}
+]
+
+{ #category : #accessing }
 MicFigureNameOpenerDelimiter class >> isCloser [
 	^ false
 ]
@@ -30,4 +39,10 @@ MicFigureNameOpenerDelimiter class >> markup [
 { #category : #accessing }
 MicFigureNameOpenerDelimiter class >> type [
 	^ #figure
+]
+
+{ #category : #dispatching }
+MicFigureNameOpenerDelimiter >> addInlineBlock: anIndex to: inlineParser [
+
+	inlineParser linkOrFigureProcess: anIndex
 ]

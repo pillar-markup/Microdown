@@ -36,10 +36,10 @@ MicHeaderBlock >> accept: aVisitor [
  	^ aVisitor visitHeader: self
 ]
 
-{ #category : #testing }
+{ #category : #public }
 MicHeaderBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '#### my heading at forth level'"
-	level := ('(#+)' asRegex
+	self level: ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
 	children := (line copyFrom: level + 1 to: line size) trim.
@@ -80,6 +80,11 @@ MicHeaderBlock >> headerElements: aCollection [
 	
 ]
 
+{ #category : #'*Microdown-DocumentBrowser' }
+MicHeaderBlock >> isHeader [
+	^ true
+]
+
 { #category : #accessing }
 MicHeaderBlock >> level [
 	^ level
@@ -87,6 +92,7 @@ MicHeaderBlock >> level [
 
 { #category : #accessing }
 MicHeaderBlock >> level: anInteger [
+	(anInteger between: 1 and: 6) ifFalse: [ MicParsingError signal: 'header levels must be between 1 and 6' ].
 	level := anInteger
 	
 

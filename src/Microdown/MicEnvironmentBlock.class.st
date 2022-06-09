@@ -4,15 +4,22 @@ By default I do not handle any form of formatting in the potential arguments.
 
 ## Syntax
 
+```
+<!aTypeOfEnvironment|argument=value&argument2=value2
+
+!>
+```
+Here is an example of a slide (subclass of `MicEnvironmentBlock`)
 
 ```
-<?
+<!slide|title=This is a cool title&tag=nh5p
 
-?>
+- a list of bullet
+- bullet 2
+- bullet 3
+!>
 ```
 
-
-This class needs another pass to support nested mic elements inside its delimiter.
 
 In Pillar
 ```
@@ -56,32 +63,27 @@ ${endColumns}$
 ```
 
 
-### Implementation limits
-The contents of an environment cannot really contain other blocks.
-
 "
 Class {
 	#name : #MicEnvironmentBlock,
 	#superclass : #MicStartStopMarkupBlock,
 	#instVars : [
-		'arguments',
-		'name'
+		'arguments'
 	],
 	#category : #'Microdown-Model'
 }
 
 { #category : #public }
 MicEnvironmentBlock class >> alternateBlockClassFor: line [
+
 	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
-	"line is of the form <?slide|title=Schedule"
-	
+	"line is of the form <!slide|title=Schedule"
 	"We know that the two first characters are <? else we would be invoked"
+
 	| tag |
-	tag := ((line allButFirst: 2) copyUpTo: $|) trimBoth.
-	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
-	
-	
-	
+	tag := ((line allButFirst: EnvironmentOpeningBlockMarkup size) 
+		        copyUpTo: $|) trimBoth.
+	^ self extensionClassFor: tag
 ]
 
 { #category : #visiting }
@@ -144,13 +146,19 @@ MicEnvironmentBlock >> closeMe [
 ]
 
 { #category : #accessing }
+MicEnvironmentBlock >> environmentName [
+	^ arguments at: #environmentName
+]
+
+{ #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 
-	| lineWithoutMarkup argumentsSplitter |
+	| lineWithoutMarkup |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	argumentsSplitter := MicArgumentsSplitter withString: lineWithoutMarkup.
-	name := argumentsSplitter name trimBoth.
-	arguments := argumentsSplitter arguments.
+	arguments := MicArgumentList 
+		split: lineWithoutMarkup
+		defaultArg: #environmentName
+		defaultValue: ''.
 	^ lineWithoutMarkup
 ]
 
@@ -164,10 +172,4 @@ MicEnvironmentBlock >> lineStartMarkup [
 MicEnvironmentBlock >> lineStopMarkup [
 	
 	^ EnvironmentClosingBlockMarkup 
-]
-
-{ #category : #accessing }
-MicEnvironmentBlock >> name [
-
-	^ name
 ]

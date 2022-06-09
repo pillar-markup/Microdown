@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'sample',
 		'parser',
-		'composer'
+		'composer',
+		'offlineStatus'
 	],
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
@@ -117,7 +118,7 @@ MicRichTextComposerTest >> richTextFor: aDocument [
 { #category : #helpers }
 MicRichTextComposerTest >> richTextForString: aString [
 
-	^ self composer parseAndCompose: aString
+	^ self composer asRichText: aString
 ]
 
 { #category : #helpers }
@@ -131,6 +132,8 @@ MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := Microdown new.
+	offlineStatus := Microdown offline.
+	Microdown offline: false.
 	MicRichTextComposer initialize.
 ]
 
@@ -153,6 +156,12 @@ MicRichTextComposerTest >> subscriptFormat [
 { #category : #'tests - format' }
 MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
+]
+
+{ #category : #running }
+MicRichTextComposerTest >> tearDown [
+	Microdown offline: offlineStatus.
+	super tearDown.
 ]
 
 { #category : #tests }
@@ -184,16 +193,6 @@ Subclasses may change the definition of names by redefining isCurrentALetter.'.
 MicRichTextComposerTest >> testBoldFormat [
 
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
-]
-
-{ #category : #'tests - list' }
-MicRichTextComposerTest >> testClassExamplesNotBroken [
-
-	"I merely test that the examples do not break"
-	| examples |
-	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class)
-		collect: [ :pragma | pragma method selector ].
-	examples do: [ :selector | MicRichTextComposer perform: selector ]
 ]
 
 { #category : #'tests - codeBlock' }
@@ -276,7 +275,7 @@ MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
 	source := 'See [my anchor](https://pharo.org)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	obj1 := (richText runs at: 10) first. "element 10 is the 'n' in anchor"
 	self assert: obj1 class name equals: #TextAction
@@ -287,7 +286,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
 	source := 'See ![SomeText](https://pharo.org/web/files/pharooooooo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height < 100 "No image embedded"
@@ -298,7 +297,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self deny: (richText asString trim includesSubstring: 'SomeText').
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -309,7 +308,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
-	richText := self composerClass parseAndCompose: source.
+	richText := self composerClass asRichText: source.
 
 	self assert: (richText asString trim first: 5 )equals: 'See ', (String value: 1).
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
@@ -363,6 +362,16 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 		include: self headerLevel6
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testInputfile [
+
+	| source result |
+	source := '{!inputFile|path=comment://class/MicRichTextComposerTest!}'.
+	result := (self richTextForString: source) asString trim.
+	self assert: (result beginsWith: 'MicRichTextComposerTest').
+	self assert: (result includesSubstring: 'This class contains tests')
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testItalicFormat [
 
@@ -374,18 +383,6 @@ MicRichTextComposerTest >> testItalicFormat [
 	self assert: runs first isEmpty. 
 	self assert: ((runs at: 19 "the p in emphasized") includes: self italicFormat ).
 	self deny: ((runs at: 6 "the h in have") includes: self italicFormat  ).
-]
-
-{ #category : #'tests - list' }
-MicRichTextComposerTest >> testLatexMathStyle [
-
-	| source1 source2 richText1 richText2 |
-	"this checks if latex is working by making two formulas, of which the second should be taller"
-	source1 :=  'foo$a+b$bar'.
-	source2 :=  'foo$\frac{A}{B}$bar'.
-	richText1 := self richTextForString: source1.
-	richText2 := self richTextForString: source2.
-	self assert: richText1 asMorph height < richText2 asMorph height
 ]
 
 { #category : #'tests - list' }
@@ -414,36 +411,17 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 ]
 
 { #category : #tests }
-MicRichTextComposerTest >> testMathEnvironment [
-	| source1 source2 richText1 richText2 |
-	"this checks if latex is working by making two formulas, of which the second should be taller"
-	source1 :=  'foo
-&
-a+b
-&
-bar'.
-	source2 :=  'foo
-&
-\frac{A}{B}
-&
-bar'.
-	richText1 := self richTextForString: source1.
-	richText2 := self richTextForString: source2.
-	self assert: richText1 asMorph height < richText2 asMorph height
-]
-
-{ #category : #tests }
 MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
-&
-\foo{a+b}
-&
+$$
+\include{nowhere.com}
+$$
 '.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: 'foo
 
-& - LATEX ERROR - &'
+$$ - LATEX ERROR - $$'
 ]
 
 { #category : #tests }
@@ -469,8 +447,25 @@ MicRichTextComposerTest >> testNestedMixedList [
 	runs := richText runs.
 	
 	"check that 'sub item 2.1' is numbered 'A)' and is rightly indented"
-	self assert: (richText asString copyFrom: 36 to: 37) equals: 'A)'.
+	self assert: (richText asString copyFrom: 35 to: 36) equals: 'A)'.
 	self assert: (runs at: 36) first amount equals: 3
+	
+]
+
+{ #category : #'skipped tests' }
+MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
+
+	| source output |
+	source := 
+'- item 1
+  1. sub item 1.1
+- item 2
+  2. sub item 2.1
+  2. sub item 2.2
+- item 3'.
+	output := (self richTextForString: source) asString trim.
+	self assert: output lines size equals: 6
+	
 	
 ]
 
@@ -498,7 +493,7 @@ MicRichTextComposerTest >> testNestedUnorderdList [
 MicRichTextComposerTest >> testNewDictionaryAPI [
 	
 	| dict |
-	dict := Dictionary newFromAssociations: { #a -> 1  . #b -> 2 }.
+	dict := Dictionary newFrom: { #a -> 1  . #b -> 2 }.
 	self assert: (dict at: #a) equals: 1
 ]
 
@@ -568,6 +563,22 @@ MicRichTextComposerTest >> testQuoteBlock [
 	richText := Microdown asRichText: src.
 	"should at least include foo somehow"
 	self deny: (richText asString findString: 'foo') equals: 0
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testRaw [
+	| text |
+	text := Microdown asRichText: '{{**not bold**}}'.
+	self assert: text asString trim equals: '**not bold**'.
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testRawNewLinesPreserved [
+	| text |
+	text := Microdown asRichText: '{{**not 
+bold**}}'.
+	self assert: text asString trim equals: '**not
+bold**'.
 ]
 
 { #category : #'skipped tests' }

@@ -6,13 +6,22 @@ Class {
 		'builder',
 		'inList'
 	],
+	#pools : [
+		'MicroSharedPool'
+	],
 	#category : #'Microdown-PrettyPrinter'
 }
 
-{ #category : #'visit - format' }
-MicTextualMicrodownExporter >> backSlasher [
+{ #category : #helpers }
+MicTextualMicrodownExporter >> backSlashString: aString [
 
-	^ MicrodownBackSlasher new
+	^ String streamContents: [ :st | 
+		aString doWithIndex: [ :each :i | 
+			((Delimiters includes: each asString) or:
+				 (Delimiters includes:
+					  each asString , (aString at: (i + 1 min: aString size)) asString)) 
+			ifTrue: [ st nextPutAll: '\' ].
+		st nextPutAll: each asString ]]
 ]
 
 { #category : #build }
@@ -120,7 +129,7 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
-	builder annotation: anAnnotation name arguments: anAnnotation arguments
+	builder raw: anAnnotation printString
 ]
 
 { #category : #'visit - format' }
@@ -138,9 +147,9 @@ MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	builder newLine.
-	 builder
+	builder
 		  codeblock: aMicCodeBlock body
-		  firstLineAssociations: aMicCodeBlock argumentAssociations
+		  firstLineAssociations: aMicCodeBlock arguments withoutDefaultValue associations
 		  withCaption: [ super visitCode: aMicCodeBlock ]
 
 ]
@@ -155,9 +164,9 @@ MicTextualMicrodownExporter >> visitComment: aComment [
 MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 	builder newLine.
 	builder
-		environment: anEnvironment name
+		environment: anEnvironment environmentName 
 		body: [ super visitEnvironment: anEnvironment ]
-		arguments: anEnvironment arguments.
+		arguments: anEnvironment arguments justTheArguments .
 	
 ]
 
@@ -217,7 +226,7 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 
 	 builder
 		  mathblock: aMicMath body
-		  firstLineAssociations: aMicMath argumentAssociations
+		  firstLineAssociations: aMicMath arguments associations
 		  withCaption: [ super visitMath: aMicMath ]
 
 ]
@@ -315,7 +324,7 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 	
-	builder text:  (self backSlasher backSlashString: aMicTextBlock substring)
+	builder text:  (self backSlashString: aMicTextBlock substring)
 ]
 
 { #category : #visiting }

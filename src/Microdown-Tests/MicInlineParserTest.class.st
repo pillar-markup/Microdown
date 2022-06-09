@@ -4,6 +4,9 @@ These tests should be merged in MicrodDownInlineParserTest
 Class {
 	#name : #MicInlineParserTest,
 	#superclass : #TestCase,
+	#pools : [
+		'MicMicrodownSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
 
@@ -42,10 +45,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 
 	| res |
 	res := self splitter parse:
-		       'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42',MicAnnotationCloserDelimiter markup,'def'.
+		       'abc', AnnotationOpenerMarkup ,'an annotation|key=cite&label=42',AnnotationCloserMarkup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=cite&label=42', MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup,'an annotation|key=cite&label=42', AnnotationCloserMarkup.
 			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: 'cite'.
@@ -56,10 +59,10 @@ MicInlineParserTest >> testAnnotationWithParameters [
 MicInlineParserTest >> testAnnotationWithParametersWithBlank [
 
 	| res |
-	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup,'def'.
+	res := self splitter parse: 'abc', AnnotationOpenerMarkup,'an annotation|key=&label=42', AnnotationCloserMarkup,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation|key=&label=42',MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup ,'an annotation|key=&label=42', AnnotationCloserMarkup.
 			'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock).
 	self assert: (res second arguments at: 'key') equals: ''.
@@ -163,6 +166,21 @@ MicInlineParserTest >> testEscapeCharacterWithNoCharacterAfter [
 		assert: res first substring equals: '\'
 ]
 
+{ #category : #tests }
+MicInlineParserTest >> testEscapeEncode [
+	| roundTrip |
+	self assert: (MicInlineParser escapeEncode: '') equals: ''.
+	self assert: (MicInlineParser escapeEncode: 'abc') equals: 'abc'.
+	self assert: (MicInlineParser escapeEncode: 'abc\') equals: 'abc\'.
+	self assert: (MicInlineParser escapeEncode: '\') equals: '\'.
+	roundTrip := [ :str | MicInlineParser escapeDecode: (MicInlineParser escapeEncode: str) ].
+	self assert: (roundTrip value: 'aa\\bb') equals: 'aa\bb'.
+	self assert: (roundTrip value: '\aa\\bb') equals: 'aa\bb'.
+	self assert: (roundTrip value: 'aa\`bb') equals: 'aa`bb'.
+	self assert: (roundTrip value: 'aa\@b@b') equals: 'aa@b@b'.
+	self assert: (roundTrip value: '\\') equals: '\'.
+]
+
 { #category : #'tests - formats' }
 MicInlineParserTest >> testEscapeMonospace [
 	"When isEvaluated class method returns false, like monospace's case, inline inside shoudn't be evaluated"
@@ -172,6 +190,18 @@ MicInlineParserTest >> testEscapeMonospace [
 	self
 		assert: res second substring equals: '`monospace`'.
 	self assert: res second class equals: MicMonospaceFormatBlock
+]
+
+{ #category : #tests }
+MicInlineParserTest >> testEscapeReEscape [
+	| roundTrip |
+	roundTrip := [ :str :keep | 
+		MicInlineParser escapeReescape: (MicInlineParser escapeEncode: str)  except:  keep ].
+	
+	self assert: (roundTrip value: '' value: 'aa') equals: ''.
+	self assert: (roundTrip value: 'abc' value: '') equals: 'abc'.
+	self assert: (roundTrip value: 'aa\\bb' value: '' ) equals: 'aa\\bb'.
+	self assert: (roundTrip value: '\aa\\bb' value: 'a') equals: 'aa\\bb'.
 ]
 
 { #category : #'tests - escape' }
@@ -505,10 +535,10 @@ MicInlineParserTest >> testSplitAnnotation [
 
 	| res |
 	res := self splitter parse:
-		       'abc',MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup,'def'.
+		       'abc',AnnotationOpenerMarkup,'type:value|key1=val1&key2=val2', AnnotationCloserMarkup, 'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'type:value|key1=val1&key2=val2',MicAnnotationCloserDelimiter markup.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup,'type:value|key1=val1&key2=val2',AnnotationCloserMarkup .
 			'Text(def)' }
 ]
 
@@ -516,10 +546,11 @@ MicInlineParserTest >> testSplitAnnotation [
 MicInlineParserTest >> testSplitBlockAnnotation [
 
 	| res |
-	res := self splitter parse: 'abc',MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup,'def'.
+	res := self splitter 
+		parse: 'abc', AnnotationOpenerMarkup ,'an annotation', AnnotationCloserMarkup ,'def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc)'. MicAnnotationOpenerDelimiter markup,'an annotation',MicAnnotationCloserDelimiter markup. 'Text(def)' }.
+		equals: { 'Text(abc)'. AnnotationOpenerMarkup ,'an annotation',AnnotationCloserMarkup . 'Text(def)' }.
 	self assert: (res second isKindOf: MicAnnotationBlock)
 ]
 
@@ -640,7 +671,28 @@ MicInlineParserTest >> testUnclosedMath [
 	res := self splitter parse: 'abc$	V_i = C_0 - C_3	&def'.
 	self
 		assert: (res collect: [ :x | x printString ])
-		equals: { 'Text(abc$	V_i = C_0 - C_3	&def)' }
+		equals: { 'Text(abc$	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
+]
+
+{ #category : #tests }
+MicInlineParserTest >> testUnclosedOpeners [
+	| openers |
+	openers := MicAbstractDelimiter subclasses select: [ :d | d hasSubclasses not and: [d isOpener  ]] thenCollect: [ :d | d markup ].
+	openers do: [ :opener |
+		Microdown parse: 'foo', opener.
+		Microdown parse: opener,'bar'.
+		Microdown parse: 'foo',opener,'bar'.
+		 ]
+]
+
+{ #category : #'tests - math' }
+MicInlineParserTest >> testUnclosedRaw [
+
+	| res |
+	res := self splitter parse: 'abc{{	V_i = C_0 - C_3	&def'.
+	self
+		assert: (res collect: [ :x | x printString ])
+		equals: { 'Text(abc{{	V)'. 'ItalicFormat(Text(i = C))'. 'Text(0 - C_3	&def)' }
 ]
 
 { #category : #'tests - formats' }

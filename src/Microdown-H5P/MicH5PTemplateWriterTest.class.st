@@ -4,7 +4,7 @@ Class {
 	#category : #'Microdown-H5P'
 }
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 
 ^ '
@@ -17,12 +17,12 @@ MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> oneSlideWithCodeInMicrodown [
 
 ^ '
 
-<?slide|title=Nice code eh!&tag=nh5p
+<!slide|title=Nice code eh!&tag=nh5p
 
 ```
 SpTextInputFieldWithValidation >> validateInto: aValidationReport
@@ -31,36 +31,36 @@ SpTextInputFieldWithValidation >> validateInto: aValidationReport
 ```
 
 
-?>'
+!>'
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> presentationInMicrodown [
 
 ^ self mainSlideInMicrodown , self twoSlidesInMicrodown 
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodown [
 
 ^ '
-<?slide|title=A nice title isn''t&tag=nh5p
+<!slide|title=A nice title isn''t&tag=nh5p
 
 - slide 1 bullet 1
 - slide 1 bullet 2
 - slide 1 bullet 3
-?>
+!>
 
 
 
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodownWithCode [
 
 ^ '
-<?slide|title=A piece of code&tag=nh5p
+<!slide|title=A piece of code&tag=nh5p
 
 ```
 testMethod
@@ -73,26 +73,38 @@ testFoo
    self assertSpace2
    ^ self
 ```
-?>
+!>
 
 
 
 '
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> slideInMicrodownWithSimpleCode [
 
 ^ '
-<?slide|title=A piece of code&tag=nh5p
+<!slide|title=A piece of code&tag=nh5p
 
 ```
 testMethod
 	self assert: 4 foo equals: 55
 ```
-?>
+!>
 
 
+
+'
+]
+
+{ #category : #sample }
+MicH5PTemplateWriterTest >> slideWithFigure [
+
+^ '
+<!slide|title=A nice title isn''t&tag=nh5p
+
+![A nice figure](file:/figures/foo.png)
+!>
 
 '
 ]
@@ -331,6 +343,53 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
 ]
 
 { #category : #tests }
+MicH5PTemplateWriterTest >> testOneSlideWithOneFigure [
+
+	| doc h5p |
+	doc := Microdown parse: self slideWithFigure.
+	h5p := MicH5PTemplateWriter new.
+	h5p visit: doc children first.
+	self assert: h5p contents equals: '{
+            "x": 22.875816993464053,
+            "y": 25.821222462742128,
+            "width": 61.08050108932463,
+            "height": 51.642444925484256,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "contentName": "Image",
+                "file": {
+                  "path": "images/image-dejfFHSf.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 771,
+                  "height": 330
+                }
+              },
+              "subContentId": "9cdd1cde-7ffa-4306-b811-cf1287e7c0ba",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Untitled Image",
+                "authors": [],
+                "changes": []
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }'
+	
+	
+]
+
+{ #category : #tests }
 MicH5PTemplateWriterTest >> testSlides [
 
 	| doc |
@@ -343,30 +402,30 @@ MicH5PTemplateWriterTest >> testSlides [
     "author":""
 }
 
-<?slide|title=Slide2 Bli&tag=nh5p
+<!slide|title=Slide2 Bli&tag=nh5p
 
 - slide 2 bullet 1
 - slide 2 bullet 2
 - slide 2 bullet 3
-?>.
+!>.
 
-<?slide|title=Slide3 blah&tag=nh5p
+<!slide|title=Slide3 blah&tag=nh5p
 
 - slide 3 bullet 1
 - bullet 2
 - bullet 3
-?>'
+!>'
 ]
 
-{ #category : #tests }
+{ #category : #sample }
 MicH5PTemplateWriterTest >> twoSlidesInMicrodown [
 
 ^ self slideInMicrodown, '
 
-<?slide|title=Slide3 blah&tag=nh5p
+<!slide|title=Slide3 blah&tag=nh5p
 
 - slide 2 bullet 1
 - bullet 2
 - bullet 2
-?>'
+!>'
 ]

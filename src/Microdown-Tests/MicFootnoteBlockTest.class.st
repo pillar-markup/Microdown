@@ -8,7 +8,7 @@ Class {
 MicFootnoteBlockTest >> testCreateTheRightFootnoteObject [
 
 	| doc |
-	doc := parser parse: '?{footnote|note=Duca99a}?'.
+	doc := parser parse: '{!footnote|note=Duca99a!}'.
 	self
 		assert: doc children first children first class
 		equals: MicFootnoteBlock.

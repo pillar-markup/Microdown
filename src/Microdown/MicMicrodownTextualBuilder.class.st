@@ -65,7 +65,7 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
-	self raw: MicAnnotationOpenerDelimiter markup.
+	self raw: AnnotationOpenerMarkup.
 	self raw: aString.
 	aDictionary ifNotEmpty: [ 
 		self raw: ' | '.
@@ -74,7 +74,7 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 			self raw: '='.
 			self raw: value.
 			key = aDictionary keys last ifFalse: [ self raw: '&' ] ] ].
-	self raw: MicAnnotationCloserDelimiter markup
+	self raw: AnnotationCloserMarkup
 ]
 
 { #category : #'element - format' }
@@ -146,6 +146,33 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self raw: CodeblockMarkup.
 ]
 
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> columnWidth: aString withBody: aBodyBlock [ 
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'column|width='.
+	self raw: aString.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
+	self newLine.
+]
+
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> columnsWithBody: aBodyBlock [ 
+	
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'columns|width=100'.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
+]
+
 { #category : #'element - header' }
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
@@ -185,7 +212,7 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBl
 	aDescriptionBlock value.
 	self raw: LinkNameCloserMarkup.
 	self raw: URLOpenerMarkup.
-	self raw: aURL asString.
+	self raw: aURL asString trimmed.
 	self raw: URLCloserMarkup.
 ]
 
@@ -277,10 +304,10 @@ MicMicrodownTextualBuilder >> initialize [
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> inputFile: aPathString [
 
-	self raw: MicAnnotationOpenerDelimiter markup.
+	self raw: AnnotationOpenerMarkup.
 	self raw: 'inputfile | path='.
 	self raw: aPathString.
-	self raw: MicAnnotationCloserDelimiter markup
+	self raw: AnnotationCloserMarkup
 ]
 
 { #category : #'element - annotated' }
@@ -329,9 +356,20 @@ MicMicrodownTextualBuilder >> lines: aString [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> mathInline: aText [
 
-	self raw: MicMathDelimiter markup.
+	self raw: MathMarkup.
 	self raw: aText.
-	self raw: MicMathDelimiter markup.
+	self raw: MathMarkup.
+]
+
+{ #category : #'element - math' }
+MicMicrodownTextualBuilder >> mathblock: aString [ 
+
+	self raw: MathOpeningBlockMarkup.
+	self newLine.
+	self raw: aString.
+	self newLine.
+	self raw: MathClosingBlockMarkup.
+	self newLine.
 ]
 
 { #category : #'element - math' }
@@ -501,9 +539,9 @@ MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 { #category : #'element - format' }
 MicMicrodownTextualBuilder >> rawFormat: aText [
 
-	self raw: MicRawOpenerDelimiter markup.
+	self raw: RawOpenerMarkup.
 	self raw: aText.
-	self raw: MicRawCloserDelimiter markup.
+	self raw: RawCloserMarkup.
 ]
 
 { #category : #'writing low-level' }
@@ -550,6 +588,20 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 MicMicrodownTextualBuilder >> root: aBlock [
 	
 	aBlock value
+]
+
+{ #category : #'element - slide' }
+MicMicrodownTextualBuilder >> slideTitle: aString withBody: aBodyBlock [ 
+	
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'slide|title='.
+	self raw: aString.
+	self newLine.
+	self newLine.
+	aBodyBlock value.
+	self newLine.
+	self raw: EnvironmentClosingBlockMarkup.
+	self newLine.
 ]
 
 { #category : #'element - list' }

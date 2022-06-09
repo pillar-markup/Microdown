@@ -21,14 +21,26 @@ Class {
 		'index'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicMicrodownSharedPool'
 	],
 	#category : #'Microdown-Parser'
 }
 
 { #category : #accessing }
+MicAbstractDelimiter class >> allActive [
+
+	^ self allSubclasses select: [ :subclass | subclass isActive ]
+]
+
+{ #category : #accessing }
 MicAbstractDelimiter class >> associatedInlineBlock [
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+MicAbstractDelimiter class >> associatedTypes [
+
+	^ { self type }
 ]
 
 { #category : #accessing }
@@ -81,9 +93,21 @@ MicAbstractDelimiter class >> type [
 	^ self subclassResponsibility 
 ]
 
+{ #category : #dispatching }
+MicAbstractDelimiter >> addInlineBlock: anIndex to: inlineParser [
+
+	inlineParser addRegularInlineBlock: anIndex
+]
+
 { #category : #accessing }
 MicAbstractDelimiter >> associatedInlineBlock [
 	^ self class associatedInlineBlock 
+]
+
+{ #category : #accessing }
+MicAbstractDelimiter >> endIndex [
+
+	^ self index - 1
 ]
 
 { #category : #accessing }
