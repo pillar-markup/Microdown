@@ -182,6 +182,15 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	
 ]
 
+{ #category : #'source code' }
+MicDocumentBrowser >> scrollSyncRenderToSource [
+	| sourceScroll str |
+	str := spSource text asString.
+	sourceScroll := (str lineNumberCorrespondingToIndex: (spSource selectionInterval first)) -1 /
+		str lineCount.
+	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll
+]
+
 { #category : #layout }
 MicDocumentBrowser >> setDocumentlayout [
 
