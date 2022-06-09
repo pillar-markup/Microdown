@@ -172,18 +172,12 @@ MicDocumentBrowser >> renderSection: micReference [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave sourceScroll editing|
+	| docToSave|
 	docToSave := spDocumentList selectedItem.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
-	self renderSection: docToSave.
-	self setEditStatus:  #canEdit.
-	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
-	editing := self isEditing.
-	isEditing := false. "setting it false prevent circular announcements"
-	spRendering adapter widget scrollPane  
-		vScrollbarValue: sourceScroll.
-	isEditing := editing.
+	self renderSection: docToSave
+	
 	
 ]
 
