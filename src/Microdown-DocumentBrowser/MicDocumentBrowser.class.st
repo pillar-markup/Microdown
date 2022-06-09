@@ -176,15 +176,10 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	docToSave := spDocumentList selectedItem.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
-	self renderSection: docToSave
+	self renderSection: docToSave.
+	self scrollSyncRenderToSource
 	
 	
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> scrollSource:  scrollValue [
-	isEditing ifFalse: [ ^self ].
-	spSource adapter widget scrollPane vScrollbarValue: scrollValue
 ]
 
 { #category : #layout }
@@ -237,7 +232,6 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 		text: original;
 		editable: micRef canSave;
 		whenTextChangedDo: [:text | saveButton state: text ~= original].
-	spRendering adapter widget scrollPane announcer when: RubVerticalScrolled do: [:a | self scrollSource:  a scrollValue].
 	micRef canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
