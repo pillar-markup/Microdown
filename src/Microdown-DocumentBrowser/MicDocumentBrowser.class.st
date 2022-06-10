@@ -35,7 +35,15 @@ Class {
 MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
 
 	rootCommandGroup register:
-		(MicOpenDocumentBrowserCommand forSpec context: presenter)
+		(MicOpenDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicIntoDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicNextDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicUpDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicPreviousDocumentBrowserCommand forSpec context: presenter)	
 ]
 
 { #category : #'instance creation' }
@@ -272,6 +280,24 @@ MicDocumentBrowser >> sourceMode: mode [
 
 	sourceMode := mode.
 	self setTopLayout. 
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spDocumentList [
+
+	^ spDocumentList
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spRendering [
+
+	^ spRendering
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spSource [
+
+	^ spSource
 ]
 
 { #category : #initialization }
