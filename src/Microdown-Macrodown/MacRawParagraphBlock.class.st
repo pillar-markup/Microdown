@@ -30,7 +30,9 @@ MacRawParagraphBlock class >> matches: aString withAnyOf: htmlTags [
 { #category : #testing }
 MacRawParagraphBlock class >> matchesComment: aString [
 
-	^ self matches: aString withAnyOf: { self htmlTags first }
+	^ self 
+		matches: aString trimLeft
+		withAnyOf: { self htmlTags first }
 ]
 
 { #category : #visiting }
