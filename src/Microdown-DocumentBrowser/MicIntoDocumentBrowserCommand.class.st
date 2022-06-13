@@ -4,6 +4,12 @@ Class {
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
+{ #category : #default }
+MicIntoDocumentBrowserCommand class >> defaultShortcutKey [
+
+	^ $i alt
+]
+
 { #category : #executing }
 MicIntoDocumentBrowserCommand >> execute [
 	|list path|

@@ -33,15 +33,14 @@ Class {
 
 { #category : #commands }
 MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
-
 	rootCommandGroup register:
 		(MicOpenDocumentBrowserCommand forSpec context: presenter).
 	rootCommandGroup register:
-		(MicIntoDocumentBrowserCommand forSpec context: presenter).
-	rootCommandGroup register:
-		(MicNextDocumentBrowserCommand forSpec context: presenter).
+		((MicIntoDocumentBrowserCommand forSpec) context: presenter).
 	rootCommandGroup register:
 		(MicUpDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicNextDocumentBrowserCommand forSpec context: presenter).
 	rootCommandGroup register:
 		(MicPreviousDocumentBrowserCommand forSpec context: presenter)	
 ]
