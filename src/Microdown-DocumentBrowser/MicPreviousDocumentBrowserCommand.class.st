@@ -1,14 +1,12 @@
 Class {
 	#name : #MicPreviousDocumentBrowserCommand,
-	#superclass : #MicDocumentBrowserCommand,
+	#superclass : #MicNavigationDocumentBrowserCommand,
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
 { #category : #executing }
 MicPreviousDocumentBrowserCommand >> execute [
-	|list path next|
-	list := context spDocumentList.
-	path := list  selection selectedPath.
+	| next |
 	next := path copy. 
 	next at: next size put: next last - 1.
 	list selectPath: next.

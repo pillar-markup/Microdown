@@ -1,14 +1,11 @@
 Class {
 	#name : #MicUpDocumentBrowserCommand,
-	#superclass : #MicDocumentBrowserCommand,
+	#superclass : #MicNavigationDocumentBrowserCommand,
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
 { #category : #executing }
 MicUpDocumentBrowserCommand >> execute [
-	|list path|
-	list := context spDocumentList.
-	path := list  selection selectedPath.
 	path size <= 1 ifTrue: [ ^self ].
 	list selectPath: path allButLast.
 	list selection selectedItem ifNil: [ list selectPath: path ].

@@ -1,6 +1,6 @@
 Class {
 	#name : #MicIntoDocumentBrowserCommand,
-	#superclass : #MicDocumentBrowserCommand,
+	#superclass : #MicNavigationDocumentBrowserCommand,
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
@@ -12,9 +12,6 @@ MicIntoDocumentBrowserCommand class >> defaultShortcutKey [
 
 { #category : #executing }
 MicIntoDocumentBrowserCommand >> execute [
-	|list path|
-	list := context spDocumentList.
-	path := list  selection selectedPath.
 	list selectPath: path, #(1).
 	list selection selectedItem ifNil: [ list selectPath: path ].
 ]
