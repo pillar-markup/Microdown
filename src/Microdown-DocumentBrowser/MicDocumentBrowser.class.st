@@ -52,6 +52,13 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #navigation }
+MicDocumentBrowser >> childrenOf: aNode [
+	|children|
+	children := aNode loadChildren.
+	^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)]
+]
+
 { #category : #'source code' }
 MicDocumentBrowser >> colorCanEdit [
 	^ self theme backgroundColor 
@@ -73,6 +80,16 @@ MicDocumentBrowser >> connectPresenters [
 		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
 	spSource whenSubmitDo:  [ :newText | self saveNewSourceForSelectedDocument  ]
 	
+]
+
+{ #category : #navigation }
+MicDocumentBrowser >> displayIconOf: aNode [
+	^ aNode browserIcon
+]
+
+{ #category : #navigation }
+MicDocumentBrowser >> displayStringOf: aNode [
+	^aNode browserTitle
 ]
 
 { #category : #private }
@@ -125,9 +142,9 @@ MicDocumentBrowser >> initializePresenters [
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
-		children: [ :aNode | aNode loadChildren sort: [:a :b |a browserTitle < b browserTitle] ];
-		display: [ :aNode | aNode browserTitle ];
-		displayIcon: [ :aNode | aNode browserIcon ].
+		children: [ :aNode | self childrenOf: aNode ];
+		display: [ :aNode | self displayStringOf: aNode ];
+		displayIcon: [ :aNode | self displayIconOf: aNode ].
 	spDocumentList contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter].
 
 	spRendering := self instantiate: MicrodownPresenter.
