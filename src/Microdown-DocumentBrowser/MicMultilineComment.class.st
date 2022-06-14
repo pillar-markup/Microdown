@@ -1,7 +1,10 @@
+"
+I am an experiment in making a multi line comment with the body preserved.
+"
 Class {
 	#name : #MicMultilineComment,
 	#superclass : #MicMathBlock,
-	#category : #'Microdown-DocumentBrowser-Model'
+	#category : #'Microdown-DocumentBrowser-BlockModel'
 }
 
 { #category : #accessing }
