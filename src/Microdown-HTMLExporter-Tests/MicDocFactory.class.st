@@ -1,7 +1,7 @@
 Class {
 	#name : #MicDocFactory,
 	#superclass : #Object,
-	#category : #'Microdown-Tests-Snippets'
+	#category : #'Microdown-HTMLExporter-Tests'
 }
 
 { #category : #examples }
