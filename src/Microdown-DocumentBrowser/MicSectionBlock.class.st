@@ -68,7 +68,7 @@ MicSectionBlock >> canConsumeLine: line [
 
 { #category : #accessing }
 MicSectionBlock >> children [
-	^ { self header. self preamble. self subsections  }
+	^ { self header. self body. self subsections  }
 ]
 
 { #category : #displaying }
