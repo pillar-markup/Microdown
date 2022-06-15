@@ -6,7 +6,7 @@ Class {
 
 { #category : #executing }
 MicOpenDocumentBrowserCommand >> execute [
-	self context halt
+	"to be done"
 ]
 
 { #category : #initialization }

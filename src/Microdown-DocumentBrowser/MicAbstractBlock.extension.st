@@ -1,6 +1,6 @@
 Extension { #name : #MicAbstractBlock }
 
 { #category : #'*Microdown-DocumentBrowser' }
-MicAbstractBlock >> isRootSection [ 
+MicAbstractBlock >> isHeader [
 	^ false
 ]

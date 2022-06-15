@@ -18,7 +18,7 @@ MicHTMLCanvasTest >> setUp [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MicHTMLCanvasTest >> testTag [
 	
 	self assert: (canvas tag isKindOf: MicHTMLTag)

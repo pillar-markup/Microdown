@@ -4,9 +4,6 @@ A MicGitHubRessourceReferenceTest is a test class for testing the behavior of Mi
 Class {
 	#name : #MicGitHubRessourceReferenceTest,
 	#superclass : #TestCase,
-	#instVars : [
-		'savedCache'
-	],
 	#category : #'Microdown-DocumentBrowser-Tests-ResourceModel'
 }
 
