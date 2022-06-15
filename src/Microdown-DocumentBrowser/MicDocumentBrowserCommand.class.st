@@ -1,5 +1,5 @@
 Class {
 	#name : #MicDocumentBrowserCommand,
-	#superclass : #CmCommand,
+	#superclass : #SpToolCommand,
 	#category : #'Microdown-DocumentBrowser-GUI'
 }

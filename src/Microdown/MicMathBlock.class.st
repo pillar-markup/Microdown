@@ -35,6 +35,7 @@ MicMathBlock class >> alternateBlockClassFor: line [
 	| tag |
 	tag := ((line allButFirst: MathOpeningBlockMarkup size) 
 		        copyUpTo: $|) trimBoth.
+	tag := tag withoutPrefix: '%'.
 	^ self extensionClassFor: tag
 ]
 
@@ -54,6 +55,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
+	lineWithoutMarkup := lineWithoutMarkup withoutPrefix: '%'.
 	arguments := MicArgumentList 
 		split: lineWithoutMarkup.
 	^ lineWithoutMarkup

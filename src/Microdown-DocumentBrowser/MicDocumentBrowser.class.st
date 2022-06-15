@@ -26,22 +26,37 @@ Class {
 		'spSource',
 		'isEditing',
 		'sourceMode',
-		'saveButton'
+		'saveButton',
+		'slideMode'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
 { #category : #commands }
 MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
-
 	rootCommandGroup register:
-		(MicOpenDocumentBrowserCommand forSpec context: presenter)
+		(MicOpenDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		((MicIntoDocumentBrowserCommand forSpec) context: presenter).
+	rootCommandGroup register:
+		(MicUpDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicNextDocumentBrowserCommand forSpec context: presenter).
+	rootCommandGroup register:
+		(MicPreviousDocumentBrowserCommand forSpec context: presenter)	
 ]
 
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
 	<example>
 	^ self new open
+]
+
+{ #category : #navigation }
+MicDocumentBrowser >> childrenOf: aNode [
+	|children|
+	children := aNode loadChildren.
+	^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)]
 ]
 
 { #category : #'source code' }
@@ -65,6 +80,16 @@ MicDocumentBrowser >> connectPresenters [
 		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
 	spSource whenSubmitDo:  [ :newText | self saveNewSourceForSelectedDocument  ]
 	
+]
+
+{ #category : #navigation }
+MicDocumentBrowser >> displayIconOf: aNode [
+	^ aNode browserIcon
+]
+
+{ #category : #navigation }
+MicDocumentBrowser >> displayStringOf: aNode [
+	^aNode browserTitle
 ]
 
 { #category : #private }
@@ -93,6 +118,7 @@ MicDocumentBrowser >> initialExtent [
 { #category : #initialization }
 MicDocumentBrowser >> initializeButtons [
 	spButtonBar
+		add: self slideToggleButton;
 		add: (spButtonBar newDropList
 			help: 'source view';
   			items: #( #Horizontal #Vertical #Swap);
@@ -116,9 +142,9 @@ MicDocumentBrowser >> initializePresenters [
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
-		children: [ :aNode | aNode loadChildren sort: [:a :b |a browserTitle < b browserTitle] ];
-		display: [ :aNode | aNode browserTitle ];
-		displayIcon: [ :aNode | aNode browserIcon ].
+		children: [ :aNode | self childrenOf: aNode ];
+		display: [ :aNode | self displayStringOf: aNode ];
+		displayIcon: [ :aNode | self displayIconOf: aNode ].
 	spDocumentList contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter].
 
 	spRendering := self instantiate: MicrodownPresenter.
@@ -172,25 +198,55 @@ MicDocumentBrowser >> renderSection: micReference [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave sourceScroll editing|
+	| docToSave|
 	docToSave := spDocumentList selectedItem.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
 	self renderSection: docToSave.
-	self setEditStatus:  #canEdit.
-	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
-	editing := self isEditing.
-	isEditing := false. "setting it false prevent circular announcements"
-	spRendering adapter widget scrollPane  
-		vScrollbarValue: sourceScroll.
-	isEditing := editing.
+	self scrollSyncRenderToSource
+	
 	
 ]
 
 { #category : #'source code' }
-MicDocumentBrowser >> scrollSource:  scrollValue [
-	isEditing ifFalse: [ ^self ].
-	spSource adapter widget scrollPane vScrollbarValue: scrollValue
+MicDocumentBrowser >> scrollSyncRenderToSource [
+	| sourceScroll str |
+	str := spSource text asString.
+	sourceScroll := (str lineNumberCorrespondingToIndex: (spSource selectionInterval first)) -1 /
+		str lineCount.
+	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> selectChildDocument [
+	(MicIntoDocumentBrowserCommand forContext: self) execute
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> selectNextDocument [
+	(MicNextDocumentBrowserCommand forContext: self) execute
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> selectParentDocument [
+	(MicUpDocumentBrowserCommand forContext: self) execute
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> selectPreviousDocument [
+	(MicPreviousDocumentBrowserCommand forContext: self) execute
+]
+
+{ #category : #layout }
+MicDocumentBrowser >> setBrowserLayout [
+	^SpBoxLayout newTopToBottom
+		add: (SpPanedLayout newLeftToRight
+					add: spDocumentList;
+					add: self setDocumentlayout ;
+					positionOfSlider: 0.3;
+					yourself);
+		add: spButtonBar expand: false;
+		yourself
 ]
 
 { #category : #layout }
@@ -233,6 +289,33 @@ MicDocumentBrowser >> setEditing: aBoolean [
 	
 ]
 
+{ #category : #layout }
+MicDocumentBrowser >> setSlideShowLayout [
+
+	^ SpBoxLayout newVertical
+		add: spRendering;
+		add: (SpBoxLayout newHorizontal
+			add: (SpButtonPresenter new
+				iconName: #back;
+				action: [ self selectPreviousDocument ];
+				yourself);
+			add: (SpButtonPresenter new
+				iconName: #down;
+				action: [ self selectChildDocument ];
+				yourself);
+			add: self slideToggleButton expand: false;
+			add: (SpButtonPresenter new
+				iconName: #up;
+				action: [ self selectParentDocument ];
+				yourself);
+			add: (SpButtonPresenter new
+				iconName: #forward;
+				action: [ self selectNextDocument ];
+				yourself);
+			yourself) expand: false;
+			yourself 
+]
+
 { #category : #'source code' }
 MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
@@ -243,7 +326,6 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 		text: original;
 		editable: micRef canSave;
 		whenTextChangedDo: [:text | saveButton state: text ~= original].
-	spRendering adapter widget scrollPane announcer when: RubVerticalScrolled do: [:a | self scrollSource:  a scrollValue].
 	micRef canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
@@ -253,16 +335,27 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
-	| newLayout |
-	newLayout := SpBoxLayout newTopToBottom
-			add: (SpPanedLayout newLeftToRight
-				add: spDocumentList;
-				add: self setDocumentlayout ;
-				positionOfSlider: 0.3;
-				yourself);
-			add: spButtonBar expand: false;
-			yourself.
-	self layout: newLayout 
+
+	self layout: (self slideMode 
+		ifTrue:[ self setSlideShowLayout]
+		ifFalse: [ self setBrowserLayout ] )
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> slideMode [
+	^ slideMode state
+]
+
+{ #category : #slides }
+MicDocumentBrowser >> slideToggleButton [
+	slideMode ifNil: [ 
+		slideMode := SpCheckBoxPresenter new.
+		slideMode
+			label: 'Slide mode';
+			state: false; 
+			whenChangedDo: [ :val | slideMode state: val. self setTopLayout  ];
+			yourself].
+	^ slideMode
 ]
 
 { #category : #'source code' }
@@ -275,6 +368,24 @@ MicDocumentBrowser >> sourceMode: mode [
 
 	sourceMode := mode.
 	self setTopLayout. 
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spDocumentList [
+
+	^ spDocumentList
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spRendering [
+
+	^ spRendering
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> spSource [
+
+	^ spSource
 ]
 
 { #category : #initialization }
