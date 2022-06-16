@@ -424,7 +424,7 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 		raw: each value;
 		raw: '"'
 		]
-		separatedBy: [ self raw: ' , '].
+		separatedBy: [ self raw: ','. self newLine].
 	self newLine; raw: '}'.
 ]
 
