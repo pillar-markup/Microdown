@@ -1,8 +1,26 @@
 "
-Acts as a repository contains remote metadata off class-less CSS libraries.
-Class methods includes methods containing metadata for each library, where each CSS library is represented by a method. 
+Class side includes methods (protocol named ""libraries"") containing metadata for pre-defined class-less CSS libraries, where each CSS library is represented by a method. This metadata is used to download CSS libraries in a local directory. If not specified, a default destination folder is set automatically.
+
+# Usage
+
+## Download CSS libraries
+
+To download a set of pre-defined class-less CSS libraries, evaluate:
+
+```
+MicCSSLocalProvider getCSSLibs.
+```
+
+The destination folder where CSS libraries are downloaded can be configured with #destinationDir:
+
+```
+MicCSSLocalProvider 
+	destinationDir: 'css_libs';
+	getCSSLibs
+```
 
 ## Querying CSS libraries
+
 
 To inspect the currently available libraries:
 
@@ -31,10 +49,17 @@ To add a new library, add a new method to the class side category _libraries_. T
 - #fluidCss : associate to the Fluid CSS resource (a CSS for responsive UIs).
 - #normalizeCss : associate to the Normalize.CSS library
 
+
+
 "
 Class {
 	#name : #MicCSSProvider,
 	#superclass : #Object,
+	#instVars : [
+		'cssFile',
+		'destinationDir',
+		'cssBasePath'
+	],
 	#category : #'Microdown-HTMLExporter'
 }
 
@@ -107,18 +132,6 @@ MicCSSProvider class >> concretecss [
 ]
 
 { #category : #accessing }
-MicCSSProvider class >> cssResource: libAttributes [
-	"Answer a <String> representing the URL of the CSS resource specified in libAttributes Dictionary"
-
-	^ libAttributes 
-			at: #minCss 
-			ifAbsent: [
-				libAttributes 
-					at: #css
-					ifAbsent: [ nil ] ]
-]
-
-{ #category : #accessing }
 MicCSSProvider class >> installExamples [
 	<script>
 
@@ -134,14 +147,6 @@ MicCSSProvider class >> libAttributesFor: selector [
 	"Answer a <Dictionary> for receiver's method selector"
 
 	^ (self perform: selector) asDictionary.
-]
-
-{ #category : #accessing }
-MicCSSProvider class >> librariesMetadata [
-	"Answer a <Collection> of <Association>"
-
-	^ self librarySelectors collect: [ : selector |
-		selector -> (self cssResource: (self libAttributesFor: selector)) ]
 ]
 
 { #category : #accessing }
@@ -180,14 +185,13 @@ MicCSSProvider class >> mvp [
 		}
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MicCSSProvider class >> named: aString [
 	"Answer a <String> representing a remote URL for CSS resource matching aString"
 
-	| libName |
-	libName :=  (MicCSSProvider librarySelectors 
-		detect: [ : selector | ((self libAttributesFor: selector) at: #name) asLowercase = aString asLowercase ]).
-	^ self cssResource: (self libAttributesFor: libName)
+	^ self new 
+		initializeWithCSSLibrary: aString;
+		yourself
 		
 
 ]
@@ -326,4 +330,211 @@ MicCSSProvider class >> yorha [
 		#css -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.css' .
 		#repository -> 'https://github.com/metakirby5/yorha'
 		}
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> assertNonBinaryResponse: response [ 
+	
+	response contentType isBinary 
+		ifTrue: [ Error signal: 'Did not expect a binary response but got ', response contentType printString ].
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssBasePath [
+
+	^ cssBasePath
+		ifNil: [ cssBasePath := self defaultCSSBasePath ]
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssBasePath: anObject [
+
+	cssBasePath := anObject
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssFile [
+
+	^ cssFile
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssFile: anObject [
+
+	cssFile := anObject
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssPath [
+	"Answer a <String> describing the location path for the receiver"
+	
+	^ String streamContents: [ : stream |
+		stream 
+			<< self cssBasePath;
+			<< self cssFile basename ]
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssResource: libAttributes [
+	"Answer a <String> representing the URL of the CSS resource specified in libAttributes Dictionary"
+
+	^ libAttributes 
+			at: #minCss 
+			ifAbsent: [
+				libAttributes 
+					at: #css
+					ifAbsent: [ nil ] ]
+]
+
+{ #category : #defaults }
+MicCSSProvider >> defaultCSSBasePath [
+	"Answer a default <String> describing the location where receiver's CSS files are stored"
+	
+	^ 'css/'
+]
+
+{ #category : #accessing }
+MicCSSProvider >> destinationDir [
+
+	^ destinationDir
+		ifNil: [ destinationDir := 'support' ]
+]
+
+{ #category : #accessing }
+MicCSSProvider >> destinationDir: aPathname [
+
+	destinationDir := aPathname
+]
+
+{ #category : #private }
+MicCSSProvider >> detectLibraryNamed: aString [
+	"Answer a <Symbol> representing a selector matching aString. A selector is searched in the receiver whose name
+	matches aString, both of them are normalized. If we cannot find aString as a library, then raise a not found exception."
+	
+	^ self librarySelectors 
+		detect: [ : selector | ((self libAttributesFor: selector) at: #name) asLowercase = aString asLowercase ]
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> getCSSLib: cssLibSelector [
+	"Download a CSS library using information provided in cssLibSelector method. Prioritize minified versions."
+
+	| cssLibDict |
+
+	cssLibDict := self libAttributesFor: cssLibSelector.
+	(cssLibDict includesKey: #minCss)
+		ifTrue: [ self getCSSLibFrom: (cssLibDict at: #minCss) ]
+		ifFalse: [ 
+			(cssLibDict includesKey: #css)
+				ifTrue: [ self getCSSLibFrom: (cssLibDict at: #css) ] ]
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> getCSSLibFrom: anURLString [ 
+
+	| client |
+
+	(client := self httpClient) get: anURLString.
+	self assertNonBinaryResponse: client response.
+	self 
+		installCss: client response contents
+		named: client requestedResource
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> getCSSLibs [
+	"Download CSS libraries specified in the class protocol of the receiver, and install them on disk.
+	We download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available"
+
+	self librarySelectors 
+		do: [ : cssLibSelector | self getCSSLib: cssLibSelector ]
+		displayingProgress: 'Downloading CSS libraries'
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> httpClient [
+	"Return a new, specifically configured instance of the HTTP client for internal use.
+	Note how we request GZIP compression and will signal progress."
+
+	^ ZnClient new
+		systemPolicy;
+		beOneShot;
+		signalProgress: true;
+		ifFail: [ :exception | self error: 'Could not load : ', exception printString ];
+		yourself
+]
+
+{ #category : #initialization }
+MicCSSProvider >> initializeWithCSSLibrary: aString [
+	"Answer a <MicCSSFile> representing a CSS resource matching aString"
+
+	| cssFilename |
+	
+	cssFilename := (self urlForLibraryNamed: aString) pathSegments last.
+	self cssFile: (MicCSSFile new
+		fileReference: (self librariesDirectory / cssFilename);
+		yourself).
+		
+
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> installCss: cssString named: cssLibName [
+	"Install all CSS <String> in baseDirectory as cssLibName"
+
+	| destination |
+	destination := self librariesDirectory.
+	destination 	ensureCreateDirectory.
+	(destination / cssLibName) asFileReference 
+		ensureDelete;
+		writeStreamDo: [ : writeStream | writeStream << cssString ].
+
+]
+
+{ #category : #accessing }
+MicCSSProvider >> libAttributesFor: selector [
+	"Answer a <Dictionary> for receiver's method selector"
+	
+	^ self class libAttributesFor: selector
+]
+
+{ #category : #'accessing - downloading' }
+MicCSSProvider >> librariesDirectory [
+	"Answer a <FileReference> containing CSS class-less libraries"
+
+	^ self destinationDir asFileReference
+]
+
+{ #category : #accessing }
+MicCSSProvider >> librariesMetadata [
+	"Answer a <Collection> of <Association>"
+
+	^ self librarySelectors collect: [ : selector |
+		selector -> (self cssResource: (self libAttributesFor: selector)) ]
+]
+
+{ #category : #accessing }
+MicCSSProvider >> librarySelectors [
+	"Answer a <Collection> of <Symbol> matching selectors for CSS libraries"
+	
+	^ self class librarySelectors
+]
+
+{ #category : #'writing - css' }
+MicCSSProvider >> serializeCSSIn: destDirFileRef [
+	"Private - Serialize receiver's CSS resource into destDirFileRef"
+
+	destDirFileRef ensureCreateDirectory.
+	(destDirFileRef / self cssPath) ensureCreateDirectory.
+	self cssFile copyTo: destDirFileRef / self cssPath.
+
+]
+
+{ #category : #private }
+MicCSSProvider >> urlForLibraryNamed: aString [
+	"Answer a <ZnUrl> representing the preferred URL for the receiver"
+
+	| libSelector |
+	libSelector :=  self detectLibraryNamed: aString.
+	^ (self cssResource: (self libAttributesFor: libSelector)) asZnUrl
 ]

@@ -87,7 +87,7 @@ MicDocFactory class >> exampleMicAsHTMLDocument [
 	<example>
 
 	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
+		addCSSProviderNamed: 'Tufte';
 		destinationDir: 'html_output';
 		fromMicrodown: self exampleMic;
 		writeToFileNamed: 'Chapter1.html'.
@@ -110,7 +110,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 	<example>
 
 	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
+		addCSSProviderNamed: 'Tufte';
 		fromMicrodown: self exampleMicAsHTMLString;
 		writeToFile.
 ]

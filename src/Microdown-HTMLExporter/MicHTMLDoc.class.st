@@ -1,5 +1,25 @@
 "
-Represents a Text/HTML file to be displayed in a web browser. It can be created from `Microdown` content through **fromMicrodown:** passing a Microdown `String` as parameter.
+Represents a Text/HTML file to be displayed in a web browser. It can be created with a CSS style **newWithStyle:**, and passing a `Microdown` content String through **fromMicrodown:** as parameter.
+
+## Example
+
+The following generates a HTML String from Microdown contents:
+
+```language=Pharo
+(MicHTMLDoc newWithStyle: 'tufte') 
+	fromMicrodown: MicDocFactory exampleMic;
+	contents.
+```
+
+Select and inspect the following:
+
+```language=Pharo
+MicCSSProvider libraryNames.
+```
+
+to see a list of available CSS libraries.
+
+## Description
 
 A document has multiple properties which can be configured:
 
@@ -34,11 +54,11 @@ Class {
 		'canvas',
 		'languageId',
 		'title',
-		'cssFiles',
 		'description',
 		'keywords',
 		'author',
-		'destinationDir'
+		'destinationDir',
+		'cssProviders'
 	],
 	#category : #'Microdown-HTMLExporter'
 }
@@ -55,15 +75,22 @@ MicHTMLDoc class >> newWithStyle: aStyleName [
 	"Answer a new HTML document styled with aStyleName <String>"
 
 	^ self new
-		addCSSFile: (MicCSSLocalProvider named: aStyleName);
+		addCSSProvider: (MicCSSProvider named: aStyleName);
 		yourself
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> addCSSFile: aCSSFile [
-	"Add aCSSFile to the receiver's linked CSS resources"
+MicHTMLDoc >> addCSSProvider: aMicCSSProvider [
+	"Add aMicCSSProvider to the receiver's linked CSS resources"
 	
-	self cssFiles add: aCSSFile
+	self cssProviders add: aMicCSSProvider
+]
+
+{ #category : #'accessing - css' }
+MicHTMLDoc >> addCSSProviderNamed: aString [
+	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources"
+	
+	self addCSSProvider: (MicCSSProvider named: aString)
 ]
 
 { #category : #'writing - metadata' }
@@ -106,28 +133,11 @@ MicHTMLDoc >> contents [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> cssFiles [
+MicHTMLDoc >> cssProviders [
 	"Answer a <Collection> of <String> each one representing a path to a CSS file"
 	
-	^ cssFiles
-		ifNil: [ cssFiles := OrderedCollection new ]
-]
-
-{ #category : #'accessing - css' }
-MicHTMLDoc >> cssPathFor: cssFile [
-	"Answer a <String> describing the location for CSS resouce cssFile"
-	
-	^ String streamContents: [ : stream |
-		stream 
-			<< self defaultCSSBasePath;
-			<< cssFile basename ]
-]
-
-{ #category : #defaults }
-MicHTMLDoc >> defaultCSSBasePath [
-	"Answer a default <String> describing the location where receiver's CSS files are stored"
-	
-	^ 'css/'
+	^ cssProviders
+		ifNil: [ cssProviders := OrderedCollection new ]
 ]
 
 { #category : #defaults }
@@ -274,15 +284,18 @@ MicHTMLDoc >> newMicStreamOn: aString [
 		yourself
 ]
 
-{ #category : #'writing - css' }
-MicHTMLDoc >> serializeCSSIn: destDirFileRef [
-	"Private - Serialize receiver's CSS resource into destDirFileRef"
+{ #category : #'accessing - css' }
+MicHTMLDoc >> removeCSSProvider: aMicCSSProvider [
+	"Remove aMicCSSProvider from the receiver's linked CSS resources"
+	
+	self cssProviders remove: aMicCSSProvider
+]
 
-	destDirFileRef ensureCreateDirectory.
-	(destDirFileRef / self defaultCSSBasePath) ensureCreateDirectory. 
-	self cssFiles do: [ : cssFile |
-		cssFile copyTo: destDirFileRef / self defaultCSSBasePath ]
-
+{ #category : #'accessing - css' }
+MicHTMLDoc >> removeCSSProviderNamed: aString [
+	"Remove a <MicCSSProvider> named aString to the receiver's linked CSS resources"
+	
+	self removeCSSProvider: (MicCSSProvider named: aString)
 ]
 
 { #category : #writing }
@@ -357,11 +370,11 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 MicHTMLDoc >> writeDocumentCSS [
 	"Add linked CSS resources to the receiver"
 	
-	self cssFiles do: [ : cssFile | 
+	self cssProviders do: [ : cssProvider | 
 		canvas tag
 			name: 'link';
 			parameterAt: 'rel' put: 'stylesheet';
-			parameterAt: 'href' put: (self cssPathFor: cssFile);
+			parameterAt: 'href' put: cssProvider cssPath;
 			close ]
 
 ]
@@ -462,6 +475,5 @@ MicHTMLDoc >> writeToFileNamed: aFilename [
 	
 	destDirFileRef := self destinationDir asFileReference.
 	self serializeHTML: aFilename in: destDirFileRef.
-	self serializeCSSIn: destDirFileRef.
-
+	self cssProviders do: [ : cssProvider | cssProvider serializeCSSIn: destDirFileRef ].
 ]

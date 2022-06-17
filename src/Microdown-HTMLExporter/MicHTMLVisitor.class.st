@@ -65,7 +65,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 	"Serialize aMicrodownString <String> to a HTML file with default for output name, directory and CSS"
 
 	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: 'Tufte');	
+		addCSSProviderNamed: 'Tufte';	
 		fromMicrodown: aMicrodownString;
 		writeToFile
 
@@ -76,7 +76,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
 
 	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: aStyleName);	
+		addCSSProviderNamed: aStyleName;
 		fromMicrodown: aMicrodownString;
 		writeToFile
 
