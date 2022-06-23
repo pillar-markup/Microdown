@@ -15,10 +15,10 @@ Class {
 		'bullets',
 		'counters',
 		'interblockSpacing',
-		'codeBackgroundColor',
-		'newLineIfNotAkready',
 		'defaultFont',
-		'spaceAfterHeader'
+		'spaceAfterHeader',
+		'monospaceBackgroundColor',
+		'newLineIfNotAlready'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
@@ -32,12 +32,6 @@ MicDynamicTextStyler >> bulletForLevel: level [
 MicDynamicTextStyler >> bullets: anObject [
 
 	bullets := anObject
-]
-
-{ #category : #accessing }
-MicDynamicTextStyler >> codeBackgroundColor: colorString [
-
-	codeBackgroundColor := Color fromString: colorString
 ]
 
 { #category : #'composer styles' }
@@ -84,28 +78,53 @@ MicDynamicTextStyler >> initialize [
 	self computeHeaderFonts. "super rely on lazy initilization"
 	bullets := '•-'.
 	counters := '1aA'.
-	interblockSpacing :=0.
-	codeBackgroundColor := Smalltalk ui theme settings windowColor.
-	newLineIfNotAkready :=0.
+	interblockSpacing := (String cr) asText.
+	monospaceBackgroundColor := Smalltalk ui theme settings windowColor.
+	newLineIfNotAlready := String cr asText.
 	defaultFont := 0.
 	spaceAfterHeader := 0.
 ]
 
 { #category : #'composer styles' }
-MicDynamicTextStyler >> interblockSpacing: anObject [
+MicDynamicTextStyler >> interblockSpacing [
+	^ interblockSpacing 
+]
 
-	interblockSpacing := anObject
+{ #category : #accessing }
+MicDynamicTextStyler >> interblockSpacing: spacingSpec [
+	"I can put a number of cr between blocks. "
+	interblockSpacing := ((String cr) repeat: (spacingSpec asNumber)) asText
 ]
 
 { #category : #'composer styles' }
 MicDynamicTextStyler >> monospaceBackgroundColor [
-	^ codeBackgroundColor 
+	^ monospaceBackgroundColor 
+]
+
+{ #category : #accessing }
+MicDynamicTextStyler >> monospaceBackgroundColor: colorString [
+
+	monospaceBackgroundColor := Color fromString: colorString
 ]
 
 { #category : #'composer styles' }
-MicDynamicTextStyler >> newLineIfNotAkready: anObject [
+MicDynamicTextStyler >> newLineIfNotAlready [ 
+	^ newLineIfNotAlready 
+]
 
-	newLineIfNotAkready := anObject
+{ #category : #'composer styles' }
+MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
+	"add extra newline or tab indentation of the following line"
+	"spacingSpec is (cr|tab|space)* with ; as seperator - for example 'cr;tab'"
+	| commands |
+	commands := { 'cr'->String cr. 'tab'->String tab. 'space'->String space } asDictionary.
+	interblockSpacing := ((spacingSpec splitOn: ';') 
+		collect: [ :spec | 
+			commands 
+				at: spec 
+				ifAbsent: [ MicParsingError signal: 'allowed spacings are cr|tab|space, but got: ', spec ]])
+		joinUsing: ''.
+	interblockSpacing := interblockSpacing asText
 ]
 
 { #category : #'composer styles' }

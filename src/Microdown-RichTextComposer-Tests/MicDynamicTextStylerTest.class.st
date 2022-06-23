@@ -18,6 +18,11 @@ MicDynamicTextStylerTest >> testBulletForLevel [
 ]
 
 { #category : #tests }
+MicDynamicTextStylerTest >> testCodeBackgroundColor [
+	
+]
+
+{ #category : #tests }
 MicDynamicTextStylerTest >> testCounterForAtLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -54,4 +59,39 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongLevel [
 	self 
 		should: [styler headerFont: 'Source Sans Pro;72' forLevel: 9]
 		raise: MicParsingError
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testInterblockSpacing [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler interblockSpacing equals: String cr asText.
+	styler interblockSpacing: '0'.
+	self assert: styler interblockSpacing equals: '' asText.
+	styler interblockSpacing: '2'.
+	self assert: styler interblockSpacing equals: (String cr, String cr) asText
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testMonospaceBackgroundColor [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler monospaceBackgroundColor equals: Smalltalk ui theme settings windowColor.
+	styler monospaceBackgroundColor: 'red'.
+	self assert: styler monospaceBackgroundColor equals: Color red.
+	styler monospaceBackgroundColor: '#FF0000'.
+	self assert: styler monospaceBackgroundColor equals: Color red
+	
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testNewLineIfNotAlready [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler newLineIfNotAlready equals: String cr asText.
+	styler newLineIfNotAlready: 'tab'.
+	self assert: styler newLineIfNotAlready equals: String tab asText.
+	styler newLineIfNotAlready: 'cr;tab;space'.
+	self assert: styler newLineIfNotAlready equals: (String cr, String tab, String space) asText
+	
 ]
