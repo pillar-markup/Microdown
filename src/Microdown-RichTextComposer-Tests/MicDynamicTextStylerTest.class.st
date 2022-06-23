@@ -8,6 +8,16 @@ Class {
 }
 
 { #category : #tests }
+MicDynamicTextStylerTest >> testBodyFont [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler bodyFont equals: TextStyle defaultFont.
+	styler bodyFont: 'Source Sans Pro;72'.
+	self assert: styler bodyFont familyName equals: 'Source Sans Pro'.
+	self assert: styler bodyFont pointSize equals: 72.
+]
+
+{ #category : #tests }
 MicDynamicTextStylerTest >> testBulletForLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -15,6 +25,11 @@ MicDynamicTextStylerTest >> testBulletForLevel [
 	self assert: (styler bulletForLevel: 0) equals: 'a' asText.
 	self assert: (styler bulletForLevel: 2) equals: 'c' asText.
 	self assert: (styler bulletForLevel: 3) equals: 'a' asText.
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testBullets [
+	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
 ]
 
 { #category : #tests }
@@ -31,6 +46,11 @@ MicDynamicTextStylerTest >> testCounterForAtLevel [
 	self assert: (styler counterFor: 2 atLevel: 2) equals: 'b)' asText.
 	self assert: (styler counterFor: 3 atLevel: 3) equals: '3.' asText.
 	self assert: (styler counterFor: 5 atLevel: 5) equals: 'e)' asText.
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testCounters [
+	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
 ]
 
 { #category : #tests }
@@ -93,5 +113,16 @@ MicDynamicTextStylerTest >> testNewLineIfNotAlready [
 	self assert: styler newLineIfNotAlready equals: String tab asText.
 	styler newLineIfNotAlready: 'cr;tab;space'.
 	self assert: styler newLineIfNotAlready equals: (String cr, String tab, String space) asText
+	
+]
+
+{ #category : #tests }
+MicDynamicTextStylerTest >> testSpaceAfterHeader [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler spaceAfterHeader equals: #(1 1 1 1 1 1).
+	styler spaceAfterHeader: '2;2'.
+	self assert: styler spaceAfterHeader equals: #(2 2 1 1 1 1).
+	
 	
 ]

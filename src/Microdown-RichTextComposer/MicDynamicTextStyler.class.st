@@ -15,13 +15,29 @@ Class {
 		'bullets',
 		'counters',
 		'interblockSpacing',
-		'defaultFont',
 		'spaceAfterHeader',
 		'monospaceBackgroundColor',
-		'newLineIfNotAlready'
+		'newLineIfNotAlready',
+		'bodyFont'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
+
+{ #category : #accessing }
+MicDynamicTextStyler >> bodyFont [
+	^ bodyFont 
+]
+
+{ #category : #accessing }
+MicDynamicTextStyler >> bodyFont: fontSpec [
+	|list|
+	list := (fontSpec splitOn: $;).
+	list size = 2 
+		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontSpec  ].
+	bodyFont := LogicalFont 
+			familyName: list first
+			pointSize: list second asNumber
+]
 
 { #category : #initialization }
 MicDynamicTextStyler >> bulletForLevel: level [
@@ -52,12 +68,6 @@ MicDynamicTextStyler >> counters: counterTypes [
 	counters := counterTypes
 ]
 
-{ #category : #accessing }
-MicDynamicTextStyler >> defaultFont: anObject [
-
-	defaultFont := anObject
-]
-
 { #category : #'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 	|list|
@@ -81,8 +91,8 @@ MicDynamicTextStyler >> initialize [
 	interblockSpacing := (String cr) asText.
 	monospaceBackgroundColor := Smalltalk ui theme settings windowColor.
 	newLineIfNotAlready := String cr asText.
-	defaultFont := 0.
-	spaceAfterHeader := 0.
+	bodyFont := TextStyle defaultFont.
+	spaceAfterHeader := #(1 1 1 1 1 1).
 ]
 
 { #category : #'composer styles' }
@@ -116,19 +126,28 @@ MicDynamicTextStyler >> newLineIfNotAlready [
 MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 	"add extra newline or tab indentation of the following line"
 	"spacingSpec is (cr|tab|space)* with ; as seperator - for example 'cr;tab'"
-	| commands |
+	| commands spacing|
 	commands := { 'cr'->String cr. 'tab'->String tab. 'space'->String space } asDictionary.
-	interblockSpacing := ((spacingSpec splitOn: ';') 
+	spacing := ((spacingSpec splitOn: ';') 
 		collect: [ :spec | 
 			commands 
 				at: spec 
 				ifAbsent: [ MicParsingError signal: 'allowed spacings are cr|tab|space, but got: ', spec ]])
 		joinUsing: ''.
-	interblockSpacing := interblockSpacing asText
+	newLineIfNotAlready := spacing asText
+]
+
+{ #category : #initialization }
+MicDynamicTextStyler >> spaceAfterHeader [
+	^ spaceAfterHeader 
 ]
 
 { #category : #'composer styles' }
-MicDynamicTextStyler >> spaceAfterHeader: anObject [
-
-	spaceAfterHeader := anObject
+MicDynamicTextStyler >> spaceAfterHeader: spacingSpec [
+	"spacingSpec is a series of numbers 2;2;1;1 - which is the number of new lines to be added 
+	after headers of level1, level2 etc. 1's at the end can be omitted (2;2;1;1 is the same as 2;2)"
+	|spacings|
+	spaceAfterHeader := #(1 1 1 1 1 1) copy. "copy to get non-literal"
+	spacings := ((spacingSpec splitOn: ';') truncateTo: 6) collect: [ :spec |spec asNumber ].
+	spacings doWithIndex: [ :elem :index |spaceAfterHeader at: index put: elem ]
 ]
