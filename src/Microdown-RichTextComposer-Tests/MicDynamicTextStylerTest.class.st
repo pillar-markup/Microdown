@@ -22,9 +22,9 @@ MicDynamicTextStylerTest >> testBulletForLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
 	styler bullets: 'abc'.
-	self assert: (styler bulletForLevel: 0) equals: 'a' asText.
-	self assert: (styler bulletForLevel: 2) equals: 'c' asText.
-	self assert: (styler bulletForLevel: 3) equals: 'a' asText.
+	self assert: (styler bulletForLevel: 1) equals: 'a' asText.
+	self assert: (styler bulletForLevel: 2) equals: 'b' asText.
+	self assert: (styler bulletForLevel: 4) equals: 'a' asText.
 ]
 
 { #category : #tests }
@@ -54,12 +54,23 @@ MicDynamicTextStylerTest >> testCounters [
 ]
 
 { #category : #tests }
+MicDynamicTextStylerTest >> testCrAfterHeader [
+	| styler |
+	styler := MicDynamicTextStyler new.
+	self assert: styler crAfterHeaders equals: #(1 1 1 1 1 1).
+	styler crAfterHeader: '2;2'.
+	self assert: styler crAfterHeaders equals: #(2 2 1 1 1 1).
+	
+	
+]
+
+{ #category : #tests }
 MicDynamicTextStylerTest >> testHeaderFontForLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
 	styler headerFont: 'Source Sans Pro;72' forLevel: 1.
-	self assert: (styler headerLevelFont: 1) familyName equals: 'Source Sans Pro'.
-	self assert: (styler headerLevelFont: 1) pointSize equals: 72.
+	self assert: (styler headerLevelFont: 1) font familyName equals: 'Source Sans Pro'.
+	self assert: (styler headerLevelFont: 1) font pointSize equals: 72.
 ]
 
 { #category : #tests }
@@ -85,11 +96,11 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongLevel [
 MicDynamicTextStylerTest >> testInterblockSpacing [
 	| styler |
 	styler := MicDynamicTextStyler new.
-	self assert: styler interblockSpacing equals: String cr asText.
-	styler interblockSpacing: '0'.
-	self assert: styler interblockSpacing equals: '' asText.
-	styler interblockSpacing: '2'.
-	self assert: styler interblockSpacing equals: (String cr, String cr) asText
+	self assert: styler interBlockSpacing equals: String cr asText.
+	styler interBlockSpacing: '0'.
+	self assert: styler interBlockSpacing equals: '' asText.
+	styler interBlockSpacing: '2'.
+	self assert: styler interBlockSpacing equals: (String cr, String cr) asText
 ]
 
 { #category : #tests }
@@ -113,16 +124,5 @@ MicDynamicTextStylerTest >> testNewLineIfNotAlready [
 	self assert: styler newLineIfNotAlready equals: String tab asText.
 	styler newLineIfNotAlready: 'cr;tab;space'.
 	self assert: styler newLineIfNotAlready equals: (String cr, String tab, String space) asText
-	
-]
-
-{ #category : #tests }
-MicDynamicTextStylerTest >> testSpaceAfterHeader [
-	| styler |
-	styler := MicDynamicTextStyler new.
-	self assert: styler spaceAfterHeader equals: #(1 1 1 1 1 1).
-	styler spaceAfterHeader: '2;2'.
-	self assert: styler spaceAfterHeader equals: #(2 2 1 1 1 1).
-	
 	
 ]

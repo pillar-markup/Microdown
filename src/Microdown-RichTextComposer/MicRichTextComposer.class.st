@@ -273,6 +273,7 @@ MicRichTextComposer >> textStyler [
 MicRichTextComposer >> textStyler: aTextStyler [
 
 	textStyler := aTextStyler.
+	canvas ifNotNil: [ canvas textStyler: aTextStyler  ]
 ]
 
 { #category : #private }
@@ -402,7 +403,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas
 		includeAttribute: (self textStyler headerLevelFont: level)
 		in: [ super visitHeader: aHeader ].
-	canvas << (textStyler spaceAfterHeaderLevel: level)
+	canvas << (textStyler crAfterHeaderLevel: level)
 ]
 
 { #category : #'visiting - document' }
@@ -499,7 +500,7 @@ MicRichTextComposer >> visitOrderedList: aList [
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
-					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
+					put: (self textStyler counterFor: counter atLevel: (canvas nesting // 2) - 1).
 				counter := counter + 1 ].
 		super visitOrderedList: aList ].
 	canvas newLine.
@@ -511,7 +512,7 @@ MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
-	canvas newLine; << textStyler interBlockSpacing 
+	canvas << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -534,6 +535,11 @@ MicRichTextComposer >> visitQuote: aQuote [
 MicRichTextComposer >> visitRaw: aRawFormat [
 
 	canvas << aRawFormat substring asText.
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitRichTextFormatConfiguration: config [
+	self textStyler: config styler
 ]
 
 { #category : #'visiting -  format' }
@@ -574,7 +580,9 @@ MicRichTextComposer >> visitTable: tableBlock [
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	canvas << (textStyler postTextTreatment: (anInlineBlock substring asText) )
+	|text|
+	text := (anInlineBlock substring asText) addAttribute: (TextFontReference toFont: self textStyler bodyFont).
+	canvas << (textStyler postTextTreatment: text )
 ]
 
 { #category : #'visiting - list' }
@@ -587,7 +595,8 @@ MicRichTextComposer >> visitUnorderedList: aList [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
+						"outer level has nesting 1, second level has nesting 3, third level has has nesting 5"
+						put: (self textStyler bulletForLevel: (canvas nesting//2) + 1) ].
 			super visitUnorderedList: aList ].
 	canvas newLine.
 	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing] 

@@ -14,14 +14,14 @@ Class {
 	#category : #'Microdown-RichTextComposer-Composer'
 }
 
+{ #category : #'presenter styles' }
+MicTextStyler >> bodyFont [
+	^ LogicalFont familyName: 'Source Sans Pro' pointSize: 80
+]
+
 { #category : #'composer styles' }
 MicTextStyler >> bulletForLevel: level [
-	| kind |
-	kind := level % 2.
-	kind = 0
-		ifTrue: [ ^ $• asText ].
-	kind = 1
-		ifTrue: [ ^ $- asText ]
+	^ ('•-' at: (level % 2)+1) asText
 ]
 
 { #category : #private }
@@ -48,6 +48,12 @@ MicTextStyler >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
 	kind = 2
 		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
+]
+
+{ #category : #'composer styles' }
+MicTextStyler >> crAfterHeaderLevel: level [
+	"I return Text to make space after a header"
+	^ String cr asText
 ]
 
 { #category : #public }
@@ -94,15 +100,4 @@ MicTextStyler >> postTextTreatment: aText [
 		do: [ :i | aText at: i put: Character space ]."
 	^ aText
 	 
-]
-
-{ #category : #'presenter styles' }
-MicTextStyler >> presenterDefaultFont [
-	^ LogicalFont familyName: 'Source Sans Pro' pointSize: 80
-]
-
-{ #category : #'composer styles' }
-MicTextStyler >> spaceAfterHeaderLevel: level [
-	"I return Text to make space after a header"
-	^ String cr asText
 ]
