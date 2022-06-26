@@ -545,7 +545,9 @@ MicRichTextComposer >> visitRaw: aRawFormat [
 
 { #category : #visiting }
 MicRichTextComposer >> visitRichTextFormatConfiguration: config [
-	self textStyler: config styler
+	self textStyler class = MicDynamicTextStyler 
+		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
+	config adjustStyler: self textStyler
 ]
 
 { #category : #'visiting -  format' }

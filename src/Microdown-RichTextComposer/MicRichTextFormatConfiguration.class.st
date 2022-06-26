@@ -19,9 +19,6 @@ I support the following arguments: {!richtext|bullets=◊»!}
 Class {
 	#name : #MicRichTextFormatConfiguration,
 	#superclass : #MicAnnotationBlock,
-	#instVars : [
-		'styler'
-	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
 
@@ -36,10 +33,9 @@ MicRichTextFormatConfiguration >> accept: visitor [
 ]
 
 { #category : #visiting }
-MicRichTextFormatConfiguration >> closeMe [
+MicRichTextFormatConfiguration >> adjustStyler: styler [
 	| setters |
-	styler := MicDynamicTextStyler new.
-	setters := self setterDictionary.
+	setters := self setterDictionaryFor: styler.
 	arguments justTheArguments  keysAndValuesDo: [ :key :value |
 		setters at: key 
 			ifPresent: [ :block | block value: value]
@@ -48,7 +44,7 @@ MicRichTextFormatConfiguration >> closeMe [
 ]
 
 { #category : #private }
-MicRichTextFormatConfiguration >> setterDictionary [
+MicRichTextFormatConfiguration >> setterDictionaryFor: styler [
 	^ {	
 	'bullets' -> [ :a | styler bullets: a].
 	'counters' -> [ :a | styler counters: a].
@@ -64,9 +60,4 @@ MicRichTextFormatConfiguration >> setterDictionary [
 	'headerFont5' -> [ :a | styler headerFont: a forLevel: 5].
 	'headerFont6' -> [ :a | styler headerFont: a forLevel: 6].
 	} asDictionary
-]
-
-{ #category : #accessing }
-MicRichTextFormatConfiguration >> styler [
-	^ styler 
 ]
