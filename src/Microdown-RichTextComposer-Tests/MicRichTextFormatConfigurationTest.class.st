@@ -11,13 +11,11 @@ Class {
 MicRichTextFormatConfigurationTest >> testBodyFont [
 	| richText |
 	richText := Microdown asRichText: '
-
 foo bar'.
 	self assert: (richText asMorph height < 50).
 	richText := Microdown asRichText: '{!richtext|bodyFont=Lucida Grande;72!}
-
 foo bar'.
-	self assert: (richText asMorph height < 50).
+	self assert: (richText asMorph height > 100).
 
 ]
 
@@ -30,6 +28,26 @@ MicRichTextFormatConfigurationTest >> testBullets [
 	richText := Microdown asRichText: src.
 	self assert: (richText asString includesSubstring: '◊	aaa').
 	self assert: (richText asString includesSubstring: '»	bbb')
+]
+
+{ #category : #tests }
+MicRichTextFormatConfigurationTest >> testChangingSameStyler [
+	| src richText |
+	"Test that the same styler is changed"
+	src := '{!richtext|crAfterHeader=3!}
+# Header 1
+{!richtext|crAfterHeader=1!}
+# Header 2
+last line
+'.
+	richText := Microdown asRichText: src.
+	self assert: (richText asString) equals: 
+'Header 1
+
+
+
+Header 2
+last line'
 ]
 
 { #category : #tests }
@@ -49,7 +67,7 @@ MicRichTextFormatConfigurationTest >> testHeader1 [
 	src := '{!richtext|headerFont1=Lucida Grande;72!}
 # Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -58,7 +76,7 @@ MicRichTextFormatConfigurationTest >> testHeader2 [
 	src := '{!richtext|headerFont2=Lucida Grande;72!}
 ## Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -67,7 +85,7 @@ MicRichTextFormatConfigurationTest >> testHeader3 [
 	src := '{!richtext|headerFont3=Lucida Grande;72!}
 ### Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -76,7 +94,7 @@ MicRichTextFormatConfigurationTest >> testHeader4 [
 	src := '{!richtext|headerFont4=Lucida Grande;72!}
 #### Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -85,7 +103,7 @@ MicRichTextFormatConfigurationTest >> testHeader5 [
 	src := '{!richtext|headerFont5=Lucida Grande;72!}
 ##### Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -94,7 +112,7 @@ MicRichTextFormatConfigurationTest >> testHeader6 [
 	src := '{!richtext|headerFont6=Lucida Grande;72!}
 ###### Huge header'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asMorph height > 150).
+	self assert: (richText asMorph height > 100).
 ]
 
 { #category : #tests }
@@ -126,7 +144,7 @@ bar
 
 boo'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asString lines size) equals: 9
+	self assert: (richText asString lines size) equals: 7
 ]
 
 { #category : #tests }
@@ -138,15 +156,14 @@ foo
 
 bar'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asString) equals: '
-foo
+	self assert: (richText asString) equals: 
+'foo
 	bar'
 ]
 
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testSpaceAfterHeader [
 	| src richText |
-	"newLineIfNotAlready mostely makes sense if interBlockSpacing is 0"
 	src := '{!richtext|crAfterHeader=2;2;1;1!}
 # Header 1
 ## Header 2
@@ -155,14 +172,13 @@ MicRichTextFormatConfigurationTest >> testSpaceAfterHeader [
 ##### Header 5
 ###### Header 6'.
 	richText := Microdown asRichText: src.
-	self assert: (richText asString) equals: '
-Header 1
+	self assert: (richText asString) equals: 
+'Header 1
 
 Header 2
 
 Header 3
 Header 4
 Header 5
-Header 6
-'
+Header 6'
 ]

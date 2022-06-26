@@ -209,11 +209,9 @@ line 2
 	runs := (richText runs collect: [:run | run collect: [:a| a class]]) asArray .	
 		 
 	self assert: (runs second includes: TextIndent).
-	self assert: richText asString equals: 
+	self assert: richText asString trim equals: 
 'line 1
-line 2
-
-'
+line 2'
 ]
 
 { #category : #'tests - codeBlock' }
@@ -262,12 +260,10 @@ line 2
 	self assert: runs first notEmpty. 
 	self assert: (runs second anySatisfy: [ :r | r class = TextIndent]).
 	self assert: ((runs at: 15) includes: self boldFormat ).
-	self assert: richText asString equals: 
+	self assert: richText asString trim equals: 
 'line 1
 line 2
-Roger Rabbit
-
-'
+Roger Rabbit'
 ]
 
 { #category : #'skipped tests' }
@@ -504,9 +500,7 @@ MicRichTextComposerTest >> testNoNSuperfluousNewLines [
 And this is just an other paragraph'.
 	expected := 'This is bold
 
-And this is just an other paragraph
-
-'.
+And this is just an other paragraph'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]
@@ -516,9 +510,7 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 
 	| source richText expected |
 	source :=  'This is **bold**'.
-	expected := 'This is bold
-
-'.
+	expected := 'This is bold'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]
