@@ -7,14 +7,19 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
+{ #category : #'as yet unclassified' }
+MicRichTextFormatConfigurationTest >> fontString [
+	^ TextStyle defaultFont familyName,';72'
+]
+
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testBodyFont [
 	| richText |
 	richText := Microdown asRichText: '
 foo bar'.
 	self assert: (richText asMorph height < 50).
-	richText := Microdown asRichText: '{!richtext|bodyFont=Lucida Grande;72!}
-foo bar'.
+	richText := Microdown asRichText: ('{!richtext|bodyFont=$font$!}
+foo bar' copyReplaceAll: '$font$' with: self fontString).
 	self assert: (richText asMorph height > 100).
 
 ]
@@ -64,8 +69,9 @@ MicRichTextFormatConfigurationTest >> testCounters [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader1 [
 	| src richText |
-	src := '{!richtext|headerFont1=Lucida Grande;72!}
+	src := '{!richtext|headerFont1=$font$!}
 # Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
@@ -73,8 +79,9 @@ MicRichTextFormatConfigurationTest >> testHeader1 [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader2 [
 	| src richText |
-	src := '{!richtext|headerFont2=Lucida Grande;72!}
+	src := '{!richtext|headerFont2=$font$!}
 ## Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
@@ -82,8 +89,9 @@ MicRichTextFormatConfigurationTest >> testHeader2 [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader3 [
 	| src richText |
-	src := '{!richtext|headerFont3=Lucida Grande;72!}
+	src := '{!richtext|headerFont3=$font$!}
 ### Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
@@ -91,8 +99,9 @@ MicRichTextFormatConfigurationTest >> testHeader3 [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader4 [
 	| src richText |
-	src := '{!richtext|headerFont4=Lucida Grande;72!}
+	src := '{!richtext|headerFont4=$font$!}
 #### Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
@@ -100,8 +109,9 @@ MicRichTextFormatConfigurationTest >> testHeader4 [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader5 [
 	| src richText |
-	src := '{!richtext|headerFont5=Lucida Grande;72!}
+	src := '{!richtext|headerFont5=$font$!}
 ##### Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
@@ -109,8 +119,9 @@ MicRichTextFormatConfigurationTest >> testHeader5 [
 { #category : #tests }
 MicRichTextFormatConfigurationTest >> testHeader6 [
 	| src richText |
-	src := '{!richtext|headerFont6=Lucida Grande;72!}
+	src := '{!richtext|headerFont6=$font$!}
 ###### Huge header'.
+	src := src copyReplaceAll: '$font$' with: self fontString. 
 	richText := Microdown asRichText: src.
 	self assert: (richText asMorph height > 100).
 ]
