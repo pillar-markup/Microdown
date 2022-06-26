@@ -306,7 +306,7 @@ MicRichTextComposer >> visit: aDocument [
 		          textStyler: self textStyler;
 		          yourself.
 	super visit: aDocument.
-	^ canvas contents
+	^ canvas contents trim
 ]
 
 { #category : #'visiting - document' }
