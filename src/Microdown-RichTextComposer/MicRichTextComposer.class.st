@@ -256,6 +256,12 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 ]
 
 { #category : #private }
+MicRichTextComposer >> level [
+	"level is the logical indention level of lists. Outer list is indented 1, next is indented 3, etc."
+	^(canvas nesting // 2) +1
+]
+
+{ #category : #private }
 MicRichTextComposer >> renderTableCell: aCell [
 	"a cell is an array of nodes. Each element should be rendered and concatenated"
 	^ aCell inject: Text new into: [ :txt :part | 
@@ -496,11 +502,11 @@ MicRichTextComposer >> visitOrderedList: aList [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [counter := 1.
 		aList children
-			do: [ :item | 
+			do: [ :item |
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
-					put: (self textStyler counterFor: counter atLevel: (canvas nesting // 2) - 1).
+					put: (self textStyler counterFor: counter atLevel: self level).
 				counter := counter + 1 ].
 		super visitOrderedList: aList ].
 	canvas newLine.
@@ -595,8 +601,7 @@ MicRichTextComposer >> visitUnorderedList: aList [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						"outer level has nesting 1, second level has nesting 3, third level has has nesting 5"
-						put: (self textStyler bulletForLevel: (canvas nesting//2) + 1) ].
+						put: (self textStyler bulletForLevel: self level) ].
 			super visitUnorderedList: aList ].
 	canvas newLine.
 	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing] 
