@@ -109,6 +109,7 @@ MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 { #category : #initialization }
 MicDynamicTextStyler >> initialize [
 	self computeHeaderFonts. "super rely on lazy initilization"
+	bodyFont := nil.
 	bullets := '•-'.
 	counters := '1aA'.
 	interBlockSpacing := (String cr) asText.

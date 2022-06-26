@@ -587,7 +587,10 @@ MicRichTextComposer >> visitTable: tableBlock [
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
 	|text|
-	text := (anInlineBlock substring asText) addAttribute: (TextFontReference toFont: self textStyler bodyFont).
+	text := anInlineBlock substring asText.
+	self textStyler bodyFont 
+		ifNotNil: [ 
+			text addAttribute: (TextFontReference toFont: self textStyler bodyFont)].
 	canvas << (textStyler postTextTreatment: text )
 ]
 
