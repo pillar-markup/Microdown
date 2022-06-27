@@ -365,7 +365,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 
 	self 
 		assert: (builder metaDataFromAssociations: {'label'->'aLabel' . 'size'->'142'}) contents 
-		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , MetaDataClosingBlockMarkup
+		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel",' , String cr, '"size" : "142"', String cr , MetaDataClosingBlockMarkup
 ]
 
 { #category : #'tests - format' }
