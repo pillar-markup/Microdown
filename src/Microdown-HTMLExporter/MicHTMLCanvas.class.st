@@ -1,7 +1,7 @@
 Class {
 	#name : #MicHTMLCanvas,
 	#superclass : #MicExportCanvas,
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-Core'
 }
 
 { #category : #accessing }

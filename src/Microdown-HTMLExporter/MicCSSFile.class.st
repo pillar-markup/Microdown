@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'fileReference'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-CSS'
 }
 
 { #category : #accessing }
@@ -17,14 +17,14 @@ MicCSSFile >> basename [
 ]
 
 { #category : #copying }
-MicCSSFile >> copyTo: aDestinationDir [
-	"Copy the receiver into aDestinationDir, if the file already exists, notify, delete it and retry"
+MicCSSFile >> copyTo: aFileReference [
+	"Copy the receiver into aFileReference, if the file already exists, notify, delete it and retry"
 
-	[ self fileReference copyTo: aDestinationDir / self basename ]
+	[ self fileReference copyTo: aFileReference ]
 	on: FileExists 
 	do: [ : ex | 
 		ex printString traceCr.
-		(aDestinationDir / self basename) ensureDelete.
+		(aFileReference / self basename) ensureDelete.
 		ex retry. ]
 ]
 

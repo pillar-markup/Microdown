@@ -44,13 +44,13 @@ MicHTMLDocTest >> setUp [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testAddCSSProvider [
+MicHTMLDocTest >> testAddCSSFramework [
 
 	| aCSSFile |
 	aCSSFile := self sampleMicCSSProvider.
-	doc addCSSProvider: aCSSFile.
+	doc addCSSFramework: aCSSFile.
 	self
-		assertCollection: doc cssProviders
+		assertCollection: doc cssFrameworks
 		hasSameElements: { aCSSFile }
 		
 
@@ -108,14 +108,14 @@ MicHTMLDocTest >> testContents [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testCssProviders [
+MicHTMLDocTest >> testCssFrameworks [
 
 	self
-		assert: (doc cssProviders isKindOf: Collection)
+		assert: (doc cssFrameworks isKindOf: Collection)
 		description: 'It test that the contained CSS files is a Collection'.
 		
 	self
-		assert: doc cssProviders isEmpty
+		assert: doc cssFrameworks isEmpty
 		description: 'It test that the contained CSS files collection is empty'
 ]
 
@@ -306,11 +306,11 @@ MicHTMLDocTest >> testWriteDocumentCSS [
 
 	| parsedContents linkElements |
 	
-	doc addCSSProvider: self sampleMicCSSProvider.
+	doc addCSSFramework: self sampleMicCSSProvider.
 	doc writeDocumentCSS.
 	self deny: doc contents isEmpty.
 
-	doc addCSSProvider: self sampleMicCSSProvider.
+	doc addCSSFramework: self sampleMicCSSProvider.
 	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
 	linkElements := parsedContents descendantElementsNamed: 'link'.
 

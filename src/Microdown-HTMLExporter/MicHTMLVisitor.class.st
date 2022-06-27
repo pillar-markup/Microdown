@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'canvas'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-Visitor'
 }
 
 { #category : #converting }
@@ -65,7 +65,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 	"Serialize aMicrodownString <String> to a HTML file with default for output name, directory and CSS"
 
 	MicHTMLDoc new
-		addCSSProviderNamed: 'Tufte';	
+		addCSSFrameworkNamed: MicCSSProvider defaultFramework;	
 		fromMicrodown: aMicrodownString;
 		writeToFile
 
@@ -76,7 +76,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
 
 	MicHTMLDoc new
-		addCSSProviderNamed: aStyleName;
+		addCSSFrameworkNamed: aStyleName;
 		fromMicrodown: aMicrodownString;
 		writeToFile
 

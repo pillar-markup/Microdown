@@ -8,18 +8,18 @@ Class {
 }
 
 { #category : #tests }
-MicCSSProviderTest >> testLibraryNames [
+MicCSSProviderTest >> testDefaultFrameworks [
 
-	self assert: (MicCSSProvider libraryNames isKindOf: Collection).
-	self assert: (MicCSSProvider libraryNames allSatisfy: #isString)
+	self assert: (MicCSSProvider frameworks isKindOf: Collection).
+	self assert: (MicCSSProvider frameworks allSatisfy: [ : frw | frw isKindOf: MicCSSFramework ])
 ]
 
 { #category : #tests }
-MicCSSProviderTest >> testNamed [
+MicCSSProviderTest >> testForCSSFrameworkNamed [
 	
 	| tufte |
-	self should: [ MicCSSProvider named: 'XXXXXXXX' ] raise: NotFound.
-	tufte := MicCSSProvider named: 'Tufte'.
+	self should: [ MicCSSProvider forCSSFrameworkNamed: 'XXXXXXXX' ] raise: NotFound.
+	tufte := MicCSSProvider forCSSFrameworkNamed: 'Tufte'.
 
 	self assert: (tufte isKindOf: String)	.
 	self deny: tufte isEmpty.
