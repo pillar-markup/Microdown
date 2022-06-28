@@ -90,20 +90,29 @@ MicDynamicTextStyler >> crAfterHeaders [
 	^ crAfterHeader 
 ]
 
+{ #category : #'as yet unclassified' }
+MicDynamicTextStyler >> getFont: fontString size: size [
+	| fileName |
+	fontString first = $§
+		ifFalse: [ ^ LogicalFont 
+						familyName: fontString 
+						pointSize: size].
+	fileName := fontString allButFirst.
+	^ FreeTypeFont fromFile: fileName pointSize: size
+]
+
 { #category : #'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
-	|list|
+	|list font|
 	(level between: 1 and: 6) 
 		ifFalse: [ MicParsingError signal: 'Header levels are 1 to 6 - got: ', level printString ].
 	list := (fontString splitOn: $;).
 	list size = 2 
 		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontString  ].
+	font := self getFont: list first size: list second asNumber.
 	headerFonts 
 		at: level 
-		put: (TextFontReference
-				toFont:(LogicalFont 
-						familyName: list first
-						pointSize: list second asNumber))
+		put: (TextFontReference toFont:font)
 ]
 
 { #category : #initialization }
