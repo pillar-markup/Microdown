@@ -27,7 +27,9 @@ Class {
 		'isEditing',
 		'sourceMode',
 		'saveButton',
-		'slideMode'
+		'slideMode',
+		'sectionDepth',
+		'textStyler'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -52,10 +54,23 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #converting }
+MicDocumentBrowser >> asRichText: doc [
+	"I apply our own styler, not the default one"
+	textStyler ifNil: [ textStyler := MicTextStyler new ].
+	
+	^ MicRichTextComposer new
+		textStyler: textStyler;
+		asRichText: doc
+]
+
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
-	|children|
-	children := aNode loadChildren.
+	|children| 
+	children := (aNode isKindOf: MicElement )
+		ifTrue: [ aNode subsections children]
+		ifFalse: [ aNode loadChildren 
+			ifEmpty: [ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ] ].
 	^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)]
 ]
 
@@ -84,11 +99,13 @@ MicDocumentBrowser >> connectPresenters [
 
 { #category : #navigation }
 MicDocumentBrowser >> displayIconOf: aNode [
+	(aNode isKindOf: MicElement) ifTrue: [ ^ self iconNamed: #smallLeftFlush ].
 	^ aNode browserIcon
 ]
 
 { #category : #navigation }
 MicDocumentBrowser >> displayStringOf: aNode [
+	(aNode isKindOf: MicElement) ifTrue: [ ^ (Microdown asRichText: aNode) asString trim ].
 	^aNode browserTitle
 ]
 
@@ -105,7 +122,7 @@ MicDocumentBrowser >> documentRoots [
 { #category : #events }
 MicDocumentBrowser >> documentSelected: document [
 	"document is newly selected, and should be rendered. If source is needed, re-select to root document"
-	self renderSection: document.
+	self renderDocument: document.
 	self isEditing ifTrue: [ 
 		self setSourceOfSelectedDocument  ]
 ]
@@ -139,6 +156,7 @@ MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
 	isEditing := false.
+	sectionDepth := 2.
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
@@ -187,8 +205,15 @@ MicDocumentBrowser >> newSelection: selection [
 ]
 
 { #category : #rendering }
-MicDocumentBrowser >> renderSection: micReference [ 
-	[ spRendering text:(Microdown asRichText: micReference loadMicrodown )]
+MicDocumentBrowser >> renderDocument: referenceOrSection [ 
+	|doc|
+	[ doc := (referenceOrSection isKindOf: MicElement )
+		ifTrue: [  "should reset styler if new document is selected" 
+			referenceOrSection] 
+		ifFalse: [ 
+			textStyler := nil. "If selecting a new root, reset styler"
+			MicSectionBlock fromRoot: referenceOrSection loadMicrodown ].
+	  spRendering text:(self asRichText: doc )]
 	on: MicResourceReferenceError  
 	do: [ spRendering text: '' ].
 	spRendering selectionInterval: (1 to: 0)
@@ -202,7 +227,7 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	docToSave := spDocumentList selectedItem.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
-	self renderSection: docToSave.
+	self renderDocument: docToSave.
 	self scrollSyncRenderToSource
 	
 	
