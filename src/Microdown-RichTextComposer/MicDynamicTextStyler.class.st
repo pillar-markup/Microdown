@@ -25,6 +25,7 @@ Bullets can be tailored: `{!richtext|bullets=xo!}` {!richtext|bullets=xo!}:
 
 
 Font sizes can be changed `{!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}`
+
 {!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}
 ### Tiny header
 and very small body
