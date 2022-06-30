@@ -27,7 +27,7 @@ MicInputfileBlock >> closeMe [
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
-		ifFalse: [ (MicParsingError new line: self text, ' must have path argument') signal]
+		ifFalse: [ (MicParsingError new line: self firstLine, ' must have path argument') signal]
 ]
 
 { #category : #handle }
