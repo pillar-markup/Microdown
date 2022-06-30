@@ -12,7 +12,8 @@ Class {
 
 { #category : #accessing }
 MicCSSDownloader >> cssProvider [
-
+	"Answer the receiver's <MicCSSProvider>"
+	
 	^ cssProvider
 ]
 
@@ -23,20 +24,15 @@ MicCSSDownloader >> cssProvider: anObject [
 ]
 
 { #category : #'accessing - downloading' }
-MicCSSDownloader >> cssProviderClass [
+MicCSSDownloader >> destinationPath [
+	"Answer a <String> with the location to download the CSS resources"
 
-	^ self cssProvider class
-]
-
-{ #category : #'accessing - downloading' }
-MicCSSDownloader >> destinationDir [
-
-	^ self cssProvider destinationDir
+	^ self cssProvider destinationPath
 ]
 
 { #category : #'accessing - downloading' }
 MicCSSDownloader >> downloadCSSFramework: cssFramework [
-	"Download a CSS library using information provided in cssFramework method. Prioritize minified versions."
+	"Download a CSS library using information provided in cssFramework method"
 
 	cssFramework minCssUrl
 		ifNotEmpty: [ self downloadCSSFrameworkFrom: cssFramework minCssUrl ]
@@ -49,7 +45,7 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 	| client url dest |
 
 	url := anURLString asZnUrl.
-	dest := self destinationDir asFileReference.
+	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.
 	(client := self httpClient) 
 		url: url ;
@@ -59,13 +55,18 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 
 { #category : #'accessing - downloading' }
 MicCSSDownloader >> downloadCSSFrameworks [
-	"Download CSS frameworks specified in the receiver's CSS provider.
-	We download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available"
+	"Download CSS frameworks specified in the receiver's CSS provider"
 
-	self cssProvider frameworks
+	self frameworks
 		do: [ : cssFramework | self downloadCSSFramework: cssFramework ]
 		displayingProgress: 'Downloading CSS frameworks...'.
 
+]
+
+{ #category : #accessing }
+MicCSSDownloader >> frameworks [
+
+	^ self cssProvider frameworks
 ]
 
 { #category : #'accessing - downloading' }

@@ -1,3 +1,19 @@
+"
+A Spec user-interface to browse and apply a CSS style to a Microdown document.
+
+Evaluate the following expression to open it in a browsing mode (only to view available CSS frameworks):
+
+```language=Pharo
+MicCSSStyler open.
+```
+
+To open on a Microdown document, evaluate:
+
+```language=Pharo
+MicCSSStyler openOn: MicDocFactory exampleMic.
+```
+
+"
 Class {
 	#name : #MicCSSStyler,
 	#superclass : #SpPresenter,
@@ -6,7 +22,7 @@ Class {
 		'cssDetailsPresenter',
 		'cssProvider',
 		'cssListPresenter',
-		'cssFramework'
+		'micDocument'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -28,6 +44,14 @@ MicCSSStyler class >> open [
 	<example>
 
 	^ self new open.
+]
+
+{ #category : #'instance creation' }
+MicCSSStyler class >> openOn: aMicrodownString [
+
+	self new
+		micDocument: aMicrodownString;
+		openWithSpec.
 ]
 
 { #category : #private }
@@ -65,6 +89,7 @@ MicCSSStyler >> cssListPresenter [
 
 { #category : #initialization }
 MicCSSStyler >> cssProvider [
+	"Answer a <MicCSSProvider> which handles provisioning of CSS frameworks to the receiver"
 
 	^ cssProvider
 		ifNil: [ cssProvider := MicCSSProvider new ]
@@ -87,6 +112,16 @@ MicCSSStyler >> frameworks [
 	"Answer a <Collection> with CSS libraries"
 	
 	^ self cssProvider frameworks
+]
+
+{ #category : #initialization }
+MicCSSStyler >> initialize [
+	"Private - Initialize the receiver's frameworks before UI display"
+
+	self cssProvider hasFrameworksInstalled
+		ifFalse: [ self cssProvider installFrameworks ].
+
+	super initialize.
 ]
 
 { #category : #initialization }
@@ -134,6 +169,18 @@ MicCSSStyler >> initializeWindow: aWindowPresenter [
 		title: self title;
 		initialExtent: 950 @ 650;
 		whenClosedDo: [ self ].
+]
+
+{ #category : #accessing }
+MicCSSStyler >> micDocument [
+
+	^ micDocument
+]
+
+{ #category : #accessing }
+MicCSSStyler >> micDocument: anObject [
+
+	micDocument := anObject
 ]
 
 { #category : #initialization }

@@ -75,7 +75,7 @@ MicHTMLDoc class >> newWithStyle: aStyleName [
 	"Answer a new HTML document styled with aStyleName <String>"
 
 	^ self new
-		addCSSFramework: (MicCSSProvider forCSSFrameworkNamed: aStyleName);
+		addCSSFramework: (MicCSSProvider forCSSNamed: aStyleName);
 		yourself
 ]
 
@@ -87,10 +87,10 @@ MicHTMLDoc >> addCSSFramework: aMicCSSProvider [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> addCSSFrameworkNamed: aString [
+MicHTMLDoc >> addCSSNamed: aString [
 	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources"
 	
-	self addCSSFramework: (MicCSSProvider forCSSFrameworkNamed: aString)
+	self addCSSFramework: (MicCSSProvider forCSSNamed: aString)
 ]
 
 { #category : #'writing - metadata' }
@@ -174,7 +174,7 @@ MicHTMLDoc >> description: anObject [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> destinationDir [
+MicHTMLDoc >> destinationPath [
 	"Answer a <String> specifying the destination directory where receiver's output is written"
 
 	^ destinationDir
@@ -182,7 +182,7 @@ MicHTMLDoc >> destinationDir [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> destinationDir: anObject [
+MicHTMLDoc >> destinationPath: anObject [
 
 	destinationDir := anObject
 ]
@@ -213,7 +213,7 @@ MicHTMLDoc >> flush [
 	"Write the receiver's contents to a file. If there is no file name, then assign a temporary file name and write contents"
 	
 	self fileName ifNil: [ self fileName: self tempFileName ].
-	(self destinationDir asFileReference / self fileName)
+	(self destinationPath asFileReference / self fileName)
 		ensureCreateFile;
 		writeStreamDo: [ : fileStream | 
 			fileStream 
@@ -232,7 +232,7 @@ MicHTMLDoc >> fromMicrodown: aMicrodownString [
 MicHTMLDoc >> fullName [
 	"Return the full path name of the receiver."
 	
-	^ (self destinationDir asFileReference / self fileName) fullName 
+	^ (self destinationPath asFileReference / self fileName) fullName 
 ]
 
 { #category : #initialization }
@@ -295,7 +295,7 @@ MicHTMLDoc >> removeCSSProvider: aMicCSSProvider [
 MicHTMLDoc >> removeCSSProviderNamed: aString [
 	"Remove a <MicCSSProvider> named aString to the receiver's linked CSS resources"
 	
-	self removeCSSProvider: (MicCSSProvider forCSSFrameworkNamed: aString)
+	self removeCSSProvider: (MicCSSProvider forCSSNamed: aString)
 ]
 
 { #category : #writing }
@@ -370,11 +370,11 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 MicHTMLDoc >> writeDocumentCSS [
 	"Add linked CSS resources to the receiver"
 	
-	self cssFrameworks do: [ : cssProvider | 
+	self cssFrameworks do: [ : cssFramework | 
 		canvas tag
 			name: 'link';
 			parameterAt: 'rel' put: 'stylesheet';
-			parameterAt: 'href' put: cssProvider cssPath;
+			parameterAt: 'href' put: cssFramework cssPath;
 			close ]
 
 ]
@@ -473,7 +473,7 @@ MicHTMLDoc >> writeToFileNamed: aFilename [
 
 	| destDirFileRef |
 	
-	destDirFileRef := self destinationDir asFileReference.
+	destDirFileRef := self destinationPath asFileReference.
 	self serializeHTML: aFilename in: destDirFileRef.
-	self cssFrameworks do: [ : cssProvider | cssProvider writeTo: destDirFileRef ].
+	self cssFrameworks do: [ : cssFramework | cssFramework writeTo: destDirFileRef ].
 ]

@@ -435,7 +435,7 @@ MicHTMLDocTest >> testWriteToFile [
 	file := wd / fileName.
 
 	doc 
-		destinationDir: wd;
+		destinationPath: wd;
 		writeToFile.
 
 	self 
@@ -457,7 +457,7 @@ MicHTMLDocTest >> testWriteToFileNamed [
 	file := wd / fileName.
 
 	doc 
-		destinationDir: wd;
+		destinationPath: wd;
 		writeToFileNamed: fileName.
 
 	self 

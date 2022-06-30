@@ -3,11 +3,17 @@ As there are many CSS frameworks available each with its own set of features, th
 
 Frameworks differ each other in multiple aspects:
 
-  - Contain opinionated styles.
-  - Lower or higher-level, intended to be customized or not.
+  - Each one contains an opinionated style.
+  - They are lower or higher-level, intended to be customized or not.
   - Theme provisioning (for example, light & dark modes).
   - It may contain fully responsive layout, which optimizes content to different types of screens.
   - Is provided through a CDN (Content Delivery Network), which are a set of web servers that can deliver commonly-requested content very quickly all over the world, enabling browser caching and dynamic patching.
+
+This class implements behavior to access each framework, and configure its location on the file system. Additionally:
+
+  - It contains a list of specifications for each CSS framework in #frameworkSpecs.
+  - It uses a `MicCSSDownloader` as helper to download resources. 
+  - Try to download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available
 
 # Usage
 
@@ -67,13 +73,10 @@ Class {
 	#name : #MicCSSProvider,
 	#superclass : #Object,
 	#instVars : [
-		'cssFile',
-		'destinationDir',
 		'cssBasePath',
-		'cssDownloader'
-	],
-	#classVars : [
-		'Frameworks'
+		'cssDownloader',
+		'frameworks',
+		'destinationPath'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
@@ -85,12 +88,37 @@ MicCSSProvider class >> defaultFramework [
 	^ 'AwsmCSS'
 ]
 
+{ #category : #'instance creation' }
+MicCSSProvider class >> forCSSNamed: aString [
+	"Answer the receiver's <MicCSSFramework> matching aString"
+
+	| provider |
+	provider := self new.
+	^ provider findCSSNamed: aString		
+
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssDownloader [
+	"Answer a <MicCSSDownloader>, a helper to download CSS resources"
+
+	^ cssDownloader
+		ifNil: [ cssDownloader := self newCSSDownloader ]
+]
+
+{ #category : #accessing }
+MicCSSProvider >> cssDownloader: anObject [
+
+	cssDownloader := anObject
+]
+
 { #category : #frameworks }
-MicCSSProvider class >> defaultFrameworks [
+MicCSSProvider >> defaultFrameworks [
 	"Answer a <Collection> of available <MicCSSFramework> taken from the receiver's specifications"
 
 	^ self frameworksSpecs collect: [ : frwSpec |
 		MicCSSFramework new
+			cssFile: (self newCSSFile: frwSpec);		
 			name: (frwSpec at: #name);
 			mainUrl: (frwSpec at: #repository);
 			cssUrl: (frwSpec at: #css ifAbsent: [ String empty ]);
@@ -98,30 +126,43 @@ MicCSSProvider class >> defaultFrameworks [
 			normalizeUrl: (frwSpec at: #normalizeCss ifAbsent: [ String empty ]);
 			resetUrl: (frwSpec at: #resetUrl ifAbsent: [ String empty ]);
 			themes: (frwSpec at: #themes ifAbsent: [ OrderedCollection empty ]);
-			fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]) ]
+			fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]);
+			yourself ]
 ]
 
-{ #category : #'instance creation' }
-MicCSSProvider class >> forCSSFrameworkNamed: aString [
-	"Answer a <String> representing a remote URL for CSS resource matching aString"
+{ #category : #accessing }
+MicCSSProvider >> destinationPath [
+	"Answer the <String> used as location to store the receiver's CSS files"
 
-	^ self new 
-		initializeWithCSSFramework: aString;
-		yourself
-		
+	^ destinationPath
+		ifNil: [ destinationPath := 'support' ]
+]
 
+{ #category : #accessing }
+MicCSSProvider >> destinationPath: aPathname [
+
+	destinationPath := aPathname
+]
+
+{ #category : #initialization }
+MicCSSProvider >> findCSSNamed: aString [
+	"Answer a <MicCSSFramework> matching aString"
+	
+	^ self frameworks 
+		detect: [ : framework | framework name = aString ]
 ]
 
 { #category : #frameworks }
-MicCSSProvider class >> frameworks [
+MicCSSProvider >> frameworks [
 	"Answer a <Collection> of available <MicCSSFramework> taken from the receiver's specifications"
 
-	^ Frameworks
-		ifNil: [ Frameworks := self defaultFrameworks ]
+	^ frameworks
+		ifNil: [ frameworks := self defaultFrameworks ]
 ]
 
 { #category : #frameworks }
-MicCSSProvider class >> frameworksSpecs [
+MicCSSProvider >> frameworksSpecs [
+	"Answer a <Collection> of specifications for building CSS framework objects"
 
 	^ { 
 		{ 
@@ -254,125 +295,56 @@ MicCSSProvider class >> frameworksSpecs [
 	} collect: #asDictionary
 ]
 
+{ #category : #testing }
+MicCSSProvider >> hasFrameworksInstalled [
+	"Answer <true> if frameworks has been installed in the receiver's destination path"
+	
+	| destFileRef |
+	
+	destFileRef := self destinationPath asFileReference.
+	^ destFileRef exists and: [ destFileRef entries anySatisfy: [ : entry | entry reference extension = 'css' ] ]
+]
+
 { #category : #accessing }
-MicCSSProvider class >> installFrameworks [
+MicCSSProvider >> installExamples [
 	<script>
 
 	self frameworks do: [ : cssFramework |
 		(MicHTMLDoc newWithStyle: cssFramework name)
-			destinationDir: 'mic_html_examples';
+			destinationPath: 'mic_html_examples';
 			fromMicrodown: MicDocFactory exampleMic;
 			writeToFileNamed: 'MicExample' , cssFramework name , '.html' ]
 ]
 
 { #category : #accessing }
-MicCSSProvider >> cssBasePath [
+MicCSSProvider >> installFrameworks [
+	<script>
 
-	^ cssBasePath
-		ifNil: [ cssBasePath := self defaultCSSBasePath ]
+	self cssDownloader downloadCSSFrameworks
 ]
 
 { #category : #accessing }
-MicCSSProvider >> cssBasePath: anObject [
+MicCSSProvider >> newCSSDownloader [
+	"Answer a new <MicCSSDownloader> configured to download resources in the receiver's destination directory"
 
-	cssBasePath := anObject
+	^ MicCSSDownloader new
+		cssProvider: self;
+		yourself
 ]
 
-{ #category : #accessing }
-MicCSSProvider >> cssDownloader [
+{ #category : #frameworks }
+MicCSSProvider >> newCSSFile: frwSpec [
+	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
 
-	^ cssDownloader
-		ifNil: [ cssDownloader := MicCSSDownloader new ]
-]
-
-{ #category : #accessing }
-MicCSSProvider >> cssDownloader: anObject [
-
-	cssDownloader := anObject
-]
-
-{ #category : #accessing }
-MicCSSProvider >> cssFile [
-
-	^ cssFile
-]
-
-{ #category : #accessing }
-MicCSSProvider >> cssFile: anObject [
-
-	cssFile := anObject
-]
-
-{ #category : #accessing }
-MicCSSProvider >> cssPath [
-	"Answer a <String> describing the location path for the receiver"
-	
-	^ String streamContents: [ : stream |
-		stream 
-			<< self cssBasePath;
-			<< self cssFile basename ]
-]
-
-{ #category : #defaults }
-MicCSSProvider >> defaultCSSBasePath [
-	"Answer a default <String> describing the location where receiver's CSS files are stored"
-	
-	^ 'css/'
-]
-
-{ #category : #accessing }
-MicCSSProvider >> destinationDir [
-	"Answer the <String> used as location to store the receiver's CSS files"
-
-	^ destinationDir
-		ifNil: [ destinationDir := 'support' ]
-]
-
-{ #category : #accessing }
-MicCSSProvider >> destinationDir: aPathname [
-
-	destinationDir := aPathname
-]
-
-{ #category : #accessing }
-MicCSSProvider >> frameworks [
-	"Answer a <Collection> of <MicCSSFramework>"
-
-	^ self class frameworks
-]
-
-{ #category : #'accessing - downloading' }
-MicCSSProvider >> frameworksDirectory [
-	"Answer a <FileReference> containing CSS class-less libraries. If no library is found, then download available libraries and retry."
-
-	| libDir |
-	^ (libDir := self destinationDir asFileReference) exists
-		ifTrue: [ libDir ]
-		ifFalse: [ 
-			self cssDownloader downloadCSSFrameworks.
-			self frameworksDirectory ]
-]
-
-{ #category : #initialization }
-MicCSSProvider >> initializeWithCSSFramework: aString [
-	"Answer a <MicCSSFile> representing a CSS resource matching aString"
-
-	| cssFramework |
-	
-	cssFramework := self frameworks detect: [ : framework | framework name = aString ].
-	cssFramework cssFile: (MicCSSFile new
-		fileReference: (self frameworksDirectory / cssFramework preferredCssUrl);
-		yourself).
-		
-
-]
-
-{ #category : #private }
-MicCSSProvider >> writeTo: destDirFileRef [
-	"Private - Write receiver's CSS resource into destDirFileRef"
-
-	| fullOutputDir |
-	fullOutputDir := (destDirFileRef ensureCreateDirectory / self cssBasePath) ensureCreateDirectory.
-	self cssFile copyTo: fullOutputDir / self cssFile basename.
-
+	| preferredCssUrl fileName |
+	preferredCssUrl := frwSpec 
+		at: #minCss 
+		ifAbsent: [ 
+			frwSpec at: #css 
+			ifAbsent: [ self error: 'CSS framework must have at least a valid CSS url' ] ].
+	preferredCssUrl ifEmpty: [ self error: 'CSS URL cannot be empty' ].
+	fileName := preferredCssUrl asZnUrl pathSegments last.
+	^ MicCSSFile new
+		fileReference: (self destinationPath asFileReference / fileName);
+		yourself.
 ]

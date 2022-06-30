@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'projectUrlPresenter',
 		'cssLinkPresenter',
-		'themesListPresenter'
+		'themesListPresenter',
+		'minCssLinkPresenter',
+		'normalizeCssLinkPresenter',
+		'resetCssLinkPresenter'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -25,12 +28,21 @@ MicCSSStylerMetaInfoPresenter >> cssLinkPresenter [
 MicCSSStylerMetaInfoPresenter >> defaultLayout [
 
 	^ self layout: (SpGridLayout build: [ : builder |
-		builder 
+		builder
 			add: 'Repository';
 			add: projectUrlPresenter;
 			nextRow;
 			add: 'CSS';
 			add: cssLinkPresenter;
+			nextRow;
+			add: 'Minified CSS';
+			add: minCssLinkPresenter;
+			nextRow;
+			add: 'Normalize CSS';
+			add: normalizeCssLinkPresenter;
+			nextRow;
+			add: 'Reset CSS';
+			add: resetCssLinkPresenter;
 			nextRow;
 			add: 'Themes';
 			add: themesListPresenter ])
@@ -41,8 +53,33 @@ MicCSSStylerMetaInfoPresenter >> initializePresenters [
 
 	projectUrlPresenter := self newLink.
 	cssLinkPresenter := self newLink.
-	themesListPresenter := self newList.
+	minCssLinkPresenter := self newLink.
+	normalizeCssLinkPresenter := self newLink.
+	resetCssLinkPresenter := self newLink.
+	themesListPresenter := self newList
+		beSingleSelection;
+		yourself.
 
+]
+
+{ #category : #initialization }
+MicCSSStylerMetaInfoPresenter >> labelIfAvailable: aString [
+	"Answer a <String> with a friendly description if it's empty"
+
+	aString ifEmpty: [ ^ 'Not Available' ].
+	^ aString
+]
+
+{ #category : #accessing }
+MicCSSStylerMetaInfoPresenter >> minCssLinkPresenter [
+
+	^ minCssLinkPresenter
+]
+
+{ #category : #accessing }
+MicCSSStylerMetaInfoPresenter >> normalizeCssLinkPresenter [
+
+	^ normalizeCssLinkPresenter
 ]
 
 { #category : #accessing }
@@ -63,12 +100,30 @@ MicCSSStylerMetaInfoPresenter >> updatePresenter [
 	projectUrlPresenter
 		url: self cssFramework mainUrl;
 		label: self cssFramework mainUrl;
-		action: [ self openLink: projectUrlPresenter url ].		
+		help: 'Open a web browser to visit the main project site'.
+	self updatePresenterLinks.
+	self cssFramework hasThemes
+		ifTrue: [ themesListPresenter items: self cssFramework themes ]
+
+]
+
+{ #category : #initialization }
+MicCSSStylerMetaInfoPresenter >> updatePresenterLinks [
+
 	cssLinkPresenter
 		url: self cssFramework cssUrl;	
-		label: self cssFramework cssUrl;
-		action: [ self openLink: cssLinkPresenter url ].	
-	themesListPresenter items: #().
-
-
+		label: (self labelIfAvailable: self cssFramework cssUrl);
+		help: 'Open a web browser to visit the CSS file'.
+	minCssLinkPresenter 
+		url: self cssFramework minCssUrl;	
+		label: (self labelIfAvailable: self cssFramework minCssUrl);
+		help: 'Open a web browser to visit the minified CSS file'.
+	normalizeCssLinkPresenter 
+		url: self cssFramework normalizeUrl;	
+		label: (self labelIfAvailable: self cssFramework normalizeUrl);
+		help: 'Open a web browser to visit the Normalize CSS file'.
+	resetCssLinkPresenter
+		url: self cssFramework resetUrl;	
+		label: (self labelIfAvailable: self cssFramework resetUrl);
+		help: 'Open a web browser to visit the Reset CSS file'.
 ]

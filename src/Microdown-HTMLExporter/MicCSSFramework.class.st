@@ -44,13 +44,29 @@ Class {
 		'normalizeUrl',
 		'resetUrl',
 		'fonts',
-		'cssFile'
+		'cssFile',
+		'basePath'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
 
 { #category : #accessing }
+MicCSSFramework >> basePath [
+	"Answer a <String> representing the receciver's path without its file name"
+
+	^ basePath
+		ifNil: [ basePath := self defaultBasePath ]
+]
+
+{ #category : #accessing }
+MicCSSFramework >> basePath: anObject [
+
+	basePath := anObject
+]
+
+{ #category : #accessing }
 MicCSSFramework >> cssFile [
+	"Answer the receiver's <MicCSSFile>"
 
 	^ cssFile
 ]
@@ -62,7 +78,18 @@ MicCSSFramework >> cssFile: anObject [
 ]
 
 { #category : #accessing }
+MicCSSFramework >> cssPath [
+	"Answer a <String> describing the location path for the receiver"
+	
+	^ String streamContents: [ : stream |
+		stream 
+			<< self basePath;
+			<< self cssFile basename ]
+]
+
+{ #category : #accessing }
 MicCSSFramework >> cssUrl [
+	"Answer a <String> representing the receiver's human-readable CSS URL"
 
 	^ cssUrl
 ]
@@ -73,8 +100,16 @@ MicCSSFramework >> cssUrl: anObject [
 	cssUrl := anObject
 ]
 
+{ #category : #defaults }
+MicCSSFramework >> defaultBasePath [
+	"Answer a default <String> describing the location where receiver's CSS files are stored"
+	
+	^ 'css/'
+]
+
 { #category : #accessing }
 MicCSSFramework >> fonts [
+	"Answer a <Collection> of receiver's typographies"
 
 	^ fonts
 ]
@@ -85,9 +120,31 @@ MicCSSFramework >> fonts: anObject [
 	fonts := anObject
 ]
 
+{ #category : #testing }
+MicCSSFramework >> hasCDN [
+	"Answer <true> if the receiver is provided through a CDN URL"
+	
+	^ self minCssUrl isCDN or: [ self cssUrl isCDN ]
+]
+
+{ #category : #testing }
+MicCSSFramework >> hasMinifiedVersion [
+	"Anwswer <true> if the receiver contains a minified version"
+	
+	^ self minCssUrl notEmpty
+]
+
+{ #category : #testing }
+MicCSSFramework >> hasThemes [
+	"Answer <true> if the receiver has themes"
+
+	^ self themes notEmpty
+]
+
 { #category : #accessing }
 MicCSSFramework >> mainUrl [
-
+	"Answer a <String> representing the receiver's minified CSS URL"
+	
 	^ mainUrl
 ]
 
@@ -99,8 +156,10 @@ MicCSSFramework >> mainUrl: anObject [
 
 { #category : #accessing }
 MicCSSFramework >> minCssUrl [
+	"Answer a <String> with the URL endpoint of the minified source code, or empty if it is not present"
 
 	^ minCssUrl
+		ifNil: [ minCssUrl := String empty ]
 ]
 
 { #category : #accessing }
@@ -123,8 +182,10 @@ MicCSSFramework >> name: anObject [
 
 { #category : #accessing }
 MicCSSFramework >> normalizeUrl [
-
+	"Answer a <String> with the URL endpoint of the Normalize library source code, or empty if it is not present"
+	
 	^ normalizeUrl
+		ifNil: [ normalizeUrl := String empty ]
 ]
 
 { #category : #accessing }
@@ -134,25 +195,8 @@ MicCSSFramework >> normalizeUrl: anObject [
 ]
 
 { #category : #accessing }
-MicCSSFramework >> preferredCssFilename [
-	"Answer a <String> representing the file name as obtained from the preferred URL"
-
-	^ self preferredCssUrl pathSegments last.
-	
-]
-
-{ #category : #accessing }
-MicCSSFramework >> preferredCssUrl [
-	"Answer a <String> representing the URL of the CSS resource prioritizing by preference"
-
-	^ self minCssUrl 
-		ifEmpty: [ self cssUrl
-			ifEmpty: [ self error: 'Receiver must have at least a valid CSS url' ] ].
-	
-]
-
-{ #category : #accessing }
 MicCSSFramework >> resetUrl [
+	"Answer a <String> with the URL endpoint of a Reset library source code, or empty if it is not present"
 
 	^ resetUrl
 ]
@@ -164,7 +208,15 @@ MicCSSFramework >> resetUrl: anObject [
 ]
 
 { #category : #accessing }
+MicCSSFramework >> sourceCode [
+	"Answer a <String> representing the receiver's CSS source"
+	
+	^ self cssFile contents
+]
+
+{ #category : #accessing }
 MicCSSFramework >> themes [
+	"Answer a <Collection> of receiver's themes"
 
 	^ themes
 ]
@@ -173,4 +225,14 @@ MicCSSFramework >> themes [
 MicCSSFramework >> themes: anObject [
 
 	themes := anObject
+]
+
+{ #category : #private }
+MicCSSFramework >> writeTo: destDirFileRef [
+	"Private - Write receiver's CSS resource into destDirFileRef"
+
+	| fullOutputDir |
+	fullOutputDir := (destDirFileRef ensureCreateDirectory / self basePath) ensureCreateDirectory.
+	self cssFile copyTo: fullOutputDir / self cssFile basename.
+
 ]

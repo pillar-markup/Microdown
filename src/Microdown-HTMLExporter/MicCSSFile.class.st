@@ -12,8 +12,16 @@ Class {
 
 { #category : #accessing }
 MicCSSFile >> basename [
+	"Answer a <String> representing the receiver's file name without its path"
 
 	^ self fileReference basename
+]
+
+{ #category : #accessing }
+MicCSSFile >> contents [
+	"Answer a <String> with the receiver's source code"
+	
+	^ self fileReference contents
 ]
 
 { #category : #copying }
@@ -30,6 +38,7 @@ MicCSSFile >> copyTo: aFileReference [
 
 { #category : #accessing }
 MicCSSFile >> fileReference [
+	"Answer the receiver's <FileReference> CSS"
 
 	^ fileReference
 ]

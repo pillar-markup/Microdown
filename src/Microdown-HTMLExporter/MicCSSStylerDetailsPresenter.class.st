@@ -48,7 +48,12 @@ MicCSSStylerDetailsPresenter >> defaultLayout [
 MicCSSStylerDetailsPresenter >> initializePresenters [ 
 
 	cssMetaInfoPresenter := self instantiate: MicCSSStylerMetaInfoPresenter on: self cssFramework.
-	cssSourceCodePresenter := self newText.
+	cssSourceCodePresenter := self newText
+		beWrapWord;
+		beNotEditable;
+		addStyle: 'iceTipReadonly';
+		text: self cssFramework sourceCode;
+		yourself.
 ]
 
 { #category : #initialization }
@@ -57,9 +62,9 @@ MicCSSStylerDetailsPresenter >> setModelBeforeInitialization: aDomainObject [
 	cssFramework := aDomainObject.
 ]
 
-{ #category : #layout }
+{ #category : #initialization }
 MicCSSStylerDetailsPresenter >> updatePresenter [
 
 	self cssMetaInfoPresenter updatePresenter.
-	self cssSourceCodePresenter text: 'Not downloaded'"self cssFramework cssFile contents."
+	self cssSourceCodePresenter text: self cssFramework sourceCode
 ]
