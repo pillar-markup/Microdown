@@ -1,12 +1,38 @@
 "
-I am working in tandem with `MicFormatAnnotation` to allow control of the formatting of RichTextComposer within microdown.
+I am working in tandem with `MicRichTextFormatConfiguration` to allow control of the formatting of RichTextComposer within microdown.
 ```text
-{!format|
-hearder1Size=48&
-header1Font=Papyrus&
+{!richtext|
+headerFont4=Chalkduster;28&
 bullets=-÷·
 !}
 ```
+
+
+`FreeTypeFontProvider` can give access to all fonts on your system:
+```
+FreeTypeFontProvider current
+	updateFontsFromSystem;
+	updateAvailableFontFamilies.
+```
+
+## Examples:
+Bullets can be tailored: `{!richtext|bullets=xo!}` {!richtext|bullets=xo!}:
+- first level
+  - second level
+    - third level
+  - second level still
+- back to first
+
+
+Font sizes can be changed `{!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}`
+{!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}
+### Tiny header
+and very small body
+- first level
+  - second level
+    - third level
+  - second level still
+- back to first
 "
 Class {
 	#name : #MicDynamicTextStyler,
@@ -18,7 +44,8 @@ Class {
 		'newLineIfNotAlready',
 		'bodyFont',
 		'interBlockSpacing',
-		'crAfterHeader'
+		'crAfterHeader',
+		'keepCRFromInput'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
@@ -90,17 +117,6 @@ MicDynamicTextStyler >> crAfterHeaders [
 	^ crAfterHeader 
 ]
 
-{ #category : #'as yet unclassified' }
-MicDynamicTextStyler >> getFont: fontString size: size [
-	| fileName |
-	fontString first = $§
-		ifFalse: [ ^ LogicalFont 
-						familyName: fontString 
-						pointSize: size].
-	fileName := fontString allButFirst.
-	^ FreeTypeFont fromFile: fileName pointSize: size
-]
-
 { #category : #'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 	|list font|
@@ -109,7 +125,9 @@ MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 	list := (fontString splitOn: $;).
 	list size = 2 
 		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontString  ].
-	font := self getFont: list first size: list second asNumber.
+	font := LogicalFont 
+			familyName: list first 
+			pointSize: list second asNumber.
 	headerFonts 
 		at: level 
 		put: (TextFontReference toFont:font)
