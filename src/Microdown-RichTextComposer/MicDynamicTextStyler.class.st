@@ -144,6 +144,7 @@ MicDynamicTextStyler >> initialize [
 	newLineIfNotAlready := String cr asText.
 	bodyFont := TextStyle defaultFont.
 	crAfterHeader := #(1 1 1 1 1 1).
+	keepCRFromInput := true.
 ]
 
 { #category : #'composer styles' }
@@ -155,6 +156,12 @@ MicDynamicTextStyler >> interBlockSpacing [
 MicDynamicTextStyler >> interBlockSpacing: spacingSpec [
 	"I can put a number of cr between blocks. "
 	interBlockSpacing := ((String cr) repeat: (spacingSpec asNumber)) asText
+]
+
+{ #category : #accessing }
+MicDynamicTextStyler >> keepCRFromInput: aBooleanText [
+	"if aBooleanText is 'false', set keepCRFromInput to false. This will merge lines in text blocks to a single line"
+	keepCRFromInput := aBooleanText ~= 'false'
 ]
 
 { #category : #'composer styles' }
@@ -186,4 +193,15 @@ MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 				ifAbsent: [ MicParsingError signal: 'allowed spacings are cr|tab|space, but got: ', spec ]])
 		joinUsing: ''.
 	newLineIfNotAlready := spacing asText
+]
+
+{ #category : #'composer styles' }
+MicDynamicTextStyler >> postTextTreatment: aText [
+	"my primary purpose is to replace newLines with space in some styles"
+	keepCRFromInput ifTrue: [ ^ aText ].
+	((1 to: aText size) 
+		select: [ :i | (aText at: i) = Character cr  ]) 
+		do: [ :i | aText at: i put: Character space ].
+	^ aText
+	 
 ]

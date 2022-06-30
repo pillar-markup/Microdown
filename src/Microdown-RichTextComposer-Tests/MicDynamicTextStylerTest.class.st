@@ -104,6 +104,17 @@ MicDynamicTextStylerTest >> testInterblockSpacing [
 ]
 
 { #category : #tests }
+MicDynamicTextStylerTest >> testKeepCRFromInput [
+	| styler textSample|
+	styler := MicDynamicTextStyler new.
+	textSample := 'aaa\bbb' withCRs asText.
+	self assert: (styler postTextTreatment: textSample copy) equals: textSample.
+	styler keepCRFromInput: 'false'.
+	self assert: (styler postTextTreatment: textSample copy) equals: 'aaa bbb' asText.
+	
+]
+
+{ #category : #tests }
 MicDynamicTextStylerTest >> testMonospaceBackgroundColor [
 	| styler |
 	styler := MicDynamicTextStyler new.
