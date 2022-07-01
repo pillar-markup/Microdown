@@ -36,11 +36,18 @@ MicCodeStylerSpec class >> buildCache [
 ]
 
 { #category : #stylers }
-MicCodeStylerSpec class >> codeStylerForMethod: aString [
+MicCodeStylerSpec class >> codeStylerForMethod: sourceString [
 	<codeblockStyler: 'Method'>
-	^MicSmalltalkTextStyler new 
-		isForWorkspace: false; 
-		styledTextFor: aString asText
+	| source styler ast|
+	source := sourceString asText.
+	styler := MicSmalltalkTextStyler new.
+	ast := self class compiler
+		source: source asString;
+		parse.				
+	styler style: source ast: ast.
+	^ source 
+	
+	
 ]
 
 { #category : #stylers }
