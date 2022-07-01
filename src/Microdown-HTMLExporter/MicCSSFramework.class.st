@@ -194,6 +194,15 @@ MicCSSFramework >> normalizeUrl: anObject [
 	normalizeUrl := anObject
 ]
 
+{ #category : #printing }
+MicCSSFramework >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream 
+		<< ': ';
+		<< self name.
+]
+
 { #category : #accessing }
 MicCSSFramework >> resetUrl [
 	"Answer a <String> with the URL endpoint of a Reset library source code, or empty if it is not present"

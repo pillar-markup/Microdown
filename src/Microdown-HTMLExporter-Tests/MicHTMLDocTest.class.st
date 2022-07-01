@@ -15,9 +15,9 @@ MicHTMLDocTest class >> resources [
 ]
 
 { #category : #running }
-MicHTMLDocTest >> sampleHTMLContents [
+MicHTMLDocTest >> sampleHTMLBody [
 
-	^ MicDocFactory exampleMicAsHTMLString
+	^ MicDocFactory exampleMicAsHTMLBodyString
 ]
 
 { #category : #tests }
@@ -27,31 +27,29 @@ MicHTMLDocTest >> sampleMicCSSFile [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> sampleMicCSSProvider [
+MicHTMLDocTest >> sampleMicCSSName [
 
-	^ MicCSSProvider new 
-		cssFile: self  sampleMicCSSFile;
-		yourself
+	^ MicCSSProvider defaultFramework
 ]
 
 { #category : #running }
 MicHTMLDocTest >> setUp [
 	
 	super setUp.
-	docString := self sampleHTMLContents.
+	docString := self sampleHTMLBody.
 	doc := MicHTMLDoc new.
 
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testAddCSSFramework [
+MicHTMLDocTest >> testAddCSSNamed [
 
-	| aCSSFile |
-	aCSSFile := self sampleMicCSSProvider.
-	doc addCSSFramework: aCSSFile.
+	|micCSSFrw |
+
+	micCSSFrw := doc addCSSNamed: self sampleMicCSSName.
 	self
 		assertCollection: doc cssFrameworks
-		hasSameElements: { aCSSFile }
+		hasSameElements: { micCSSFrw }
 		
 
 ]
@@ -306,17 +304,17 @@ MicHTMLDocTest >> testWriteDocumentCSS [
 
 	| parsedContents linkElements |
 	
-	doc addCSSFramework: self sampleMicCSSProvider.
+	doc addCSSNamed: self sampleMicCSSName.
 	doc writeDocumentCSS.
 	self deny: doc contents isEmpty.
 
-	doc addCSSFramework: self sampleMicCSSProvider.
+	doc addCSSNamed: self sampleMicCSSName.
 	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
 	linkElements := parsedContents descendantElementsNamed: 'link'.
 
 	self
 		assert: ((linkElements elementsDetect: [ : e | e includesAttribute: 'rel' ]) attributeAt: 'href')
-		equals: 'css/sample.css'.
+		equals: 'css/awsm.min.css'.
 
 
 ]

@@ -82,6 +82,13 @@ Here is an internal link: [heading-1](#heading-1)
 ]
 
 { #category : #examples }
+MicDocFactory class >> exampleMicAsHTMLBodyString [
+	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
+
+	^ Microdown asHTMLString: self exampleMic
+]
+
+{ #category : #examples }
 MicDocFactory class >> exampleMicAsHTMLDocument [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
@@ -111,15 +118,21 @@ MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 
 	MicHTMLDoc new
 		addCSSNamed: 'Tufte';
-		fromMicrodown: self exampleMicAsHTMLString;
+		fromMicrodown: self exampleMicAsHTMLBodyString;
 		writeToFile.
 ]
 
 { #category : #examples }
 MicDocFactory class >> exampleMicAsHTMLString [
-	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
+	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
+	<example>
 
-	^ Microdown asHTMLString: self exampleMic
+	^ MicHTMLDoc new
+		addCSSNamed: 'Tufte';
+		destinationPath: 'html_output';
+		fromMicrodown: self exampleMic;
+		writeToFileNamed: 'Chapter1.html';
+		yourself
 ]
 
 { #category : #examples }

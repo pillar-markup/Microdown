@@ -75,22 +75,15 @@ MicHTMLDoc class >> newWithStyle: aStyleName [
 	"Answer a new HTML document styled with aStyleName <String>"
 
 	^ self new
-		addCSSFramework: (MicCSSProvider forCSSNamed: aStyleName);
+		addCSSNamed: aStyleName;
 		yourself
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> addCSSFramework: aMicCSSProvider [
-	"Add aMicCSSProvider to the receiver's linked CSS resources"
-	
-	self cssFrameworks add: aMicCSSProvider
-]
-
-{ #category : #'accessing - css' }
 MicHTMLDoc >> addCSSNamed: aString [
-	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources"
+	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources. Answer a <MicCSSFramework>"
 	
-	self addCSSFramework: (MicCSSProvider forCSSNamed: aString)
+	^ self cssFrameworks add: (MicCSSProvider forCSSNamed: aString)
 ]
 
 { #category : #'writing - metadata' }

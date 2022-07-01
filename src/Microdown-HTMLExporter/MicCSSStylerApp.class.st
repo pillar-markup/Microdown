@@ -1,3 +1,8 @@
+"
+The Spec hook for the Microdown CSS Styler, a tool to configure document export options from Microdown to HTML.
+
+See class side to open the UI.
+"
 Class {
 	#name : #MicCSSStylerApp,
 	#superclass : #SpApplication,

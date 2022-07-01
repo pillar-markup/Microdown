@@ -1,6 +1,6 @@
 Class {
 	#name : #MicCSSStylerMetaInfoPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MicCSSAbstractPresenter,
 	#instVars : [
 		'projectUrlPresenter',
 		'cssLinkPresenter',
@@ -15,7 +15,13 @@ Class {
 { #category : #private }
 MicCSSStylerMetaInfoPresenter >> cssFramework [
 
-	^ self owner cssFramework
+	^ cssFramework
+]
+
+{ #category : #private }
+MicCSSStylerMetaInfoPresenter >> cssFramework: aMicCSSFramework [
+
+	cssFramework := aMicCSSFramework
 ]
 
 { #category : #accessing }
@@ -27,8 +33,9 @@ MicCSSStylerMetaInfoPresenter >> cssLinkPresenter [
 { #category : #layout }
 MicCSSStylerMetaInfoPresenter >> defaultLayout [
 
-	^ self layout: (SpGridLayout build: [ : builder |
+	^ SpGridLayout build: [ : builder |
 		builder
+			beColumnNotHomogeneous;		
 			add: 'Repository';
 			add: projectUrlPresenter;
 			nextRow;
@@ -45,7 +52,7 @@ MicCSSStylerMetaInfoPresenter >> defaultLayout [
 			add: resetCssLinkPresenter;
 			nextRow;
 			add: 'Themes';
-			add: themesListPresenter ])
+			add: themesListPresenter ]
 ]
 
 { #category : #layout }

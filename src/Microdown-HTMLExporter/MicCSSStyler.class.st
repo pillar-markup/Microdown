@@ -31,17 +31,16 @@ Class {
 MicCSSStyler class >> baseToolbarCommands [
 
 	^ { 
-		StPlaygroundDoItCommand.
-		StPlaygroundPublishCommand.
-		StPlaygroundBindingsCommand.				
-		StPlaygroundVersionsCommand.
-		StPlaygroundPagesCommand.
-	}
+		MicCSSStylerPreviewCommand .
+		MicCSSStylerPublishCommand .
+		MicCSSStylerExportCommand .
+		MicCSSStylerUpdateCommand
+		}
 ]
 
 { #category : #'instance creation' }
 MicCSSStyler class >> open [
-	<example>
+	<script>
 
 	^ self new open.
 ]
@@ -99,6 +98,7 @@ MicCSSStyler >> cssProvider [
 MicCSSStyler >> defaultLayout [
 
 	^ self layout: (SpBoxLayout newTopToBottom 
+		add: toolbarPresenter height: self class toolbarHeight + 15;	
 		add:  (SpPanedLayout newLeftToRight
 			positionOfSlider: 20 percent;
 			add: cssListPresenter;
@@ -125,6 +125,12 @@ MicCSSStyler >> initialize [
 ]
 
 { #category : #initialization }
+MicCSSStyler >> initializeDetailPresenter [
+
+	cssDetailsPresenter := self instantiate: MicCSSStylerDetailsPresenter on: self cssFramework.
+]
+
+{ #category : #initialization }
 MicCSSStyler >> initializeFocus [
 	" Private - See superimplementor's comment "
 
@@ -135,16 +141,8 @@ MicCSSStyler >> initializeFocus [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializePresenters [
-	" Private - See superimplementor's comment "
+MicCSSStyler >> initializeListPresenter [
 
-	toolbarPresenter := self newToolbar
-		addStyle: 'stToolbar';	
-		displayMode: self toolbarDisplayMode;
-		beIcons;
-		fillWith: self toolbarActions;
-		yourself.		
-	cssDetailsPresenter := self instantiate: MicCSSStylerDetailsPresenter on: self cssFramework.
 	cssListPresenter := self newList
 		enableSearch;
 		beSingleSelection;
@@ -159,7 +157,24 @@ MicCSSStyler >> initializePresenters [
 	cssListPresenter items 
 		ifNotEmpty: [ cssListPresenter selectIndex: 1 ]
 		ifEmpty: [ self cssDetailsPresenter updatePresenter ]
+]
 
+{ #category : #initialization }
+MicCSSStyler >> initializePresenters [
+	" Private - See superimplementor's comment "
+
+	self initializeToolbar.
+	self initializeDetailPresenter.
+	self initializeListPresenter.
+
+]
+
+{ #category : #'accessing - toolbar' }
+MicCSSStyler >> initializeToolbar [
+
+	toolbarPresenter := self newToolbar
+		fillWith: self toolbarActions;
+		yourself.
 ]
 
 { #category : #initialization }
@@ -196,12 +211,6 @@ MicCSSStyler >> toolbarActions [
 	^ CmCommandGroup forSpec
 		in: [ :this | self addToolbarCommandsTo: this ];
 		yourself
-]
-
-{ #category : #'accessing - toolbar' }
-MicCSSStyler >> toolbarDisplayMode [
-
-	^ StPharoSettings toolbarDisplayMode
 ]
 
 { #category : #'accessing - toolbar' }

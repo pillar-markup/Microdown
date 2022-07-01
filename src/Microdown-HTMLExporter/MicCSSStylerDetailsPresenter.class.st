@@ -1,13 +1,35 @@
+"
+Provides a presenter to display the currently selected CSS library details, such as:
+
+- The main project web page.
+- Themes list.
+- Minified, Normalize and Reset versions.
+
+"
 Class {
 	#name : #MicCSSStylerDetailsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'cssMetaInfoPresenter',
 		'cssSourceCodePresenter',
-		'cssFramework'
+		'cssFramework',
+		'notebookPresenter',
+		'htmlSourcePresenter',
+		'htmlOptionsPresenter'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
+
+{ #category : #initialization }
+MicCSSStylerDetailsPresenter >> cssDetailsPage [
+
+	^ (SpNotebookPage 
+		title: 'CSS Details' 
+		icon: (self iconNamed: #book) 
+		provider: [ cssMetaInfoPresenter ])
+		yourself
+
+]
 
 { #category : #accessing }
 MicCSSStylerDetailsPresenter >> cssFramework [
@@ -29,9 +51,10 @@ MicCSSStylerDetailsPresenter >> cssMetaInfoPresenter [
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailsPresenter >> cssSourceCodePresenter [
+MicCSSStylerDetailsPresenter >> cssSourcePresenter [
 
 	^ cssSourceCodePresenter
+
 ]
 
 { #category : #layout }
@@ -39,21 +62,55 @@ MicCSSStylerDetailsPresenter >> defaultLayout [
 
 	^ self layout: (SpPanedLayout newTopToBottom 
 		positionOfSlider: 45 percent;
-		add: cssMetaInfoPresenter;
-		add: cssSourceCodePresenter;
+		add: notebookPresenter;
+		add: (SpPanedLayout newLeftToRight 
+			add: cssSourceCodePresenter;
+			add: htmlSourcePresenter;
+			yourself);
 		yourself)
 ]
 
-{ #category : #layout }
-MicCSSStylerDetailsPresenter >> initializePresenters [ 
+{ #category : #initialization }
+MicCSSStylerDetailsPresenter >> htmlOptionsPage [
+
+	^ SpNotebookPage 
+		title: 'HTML Options'
+		icon: (self iconNamed: #configuration)
+		provider: [ htmlOptionsPresenter ].
+]
+
+{ #category : #accessing }
+MicCSSStylerDetailsPresenter >> htmlSourcePresenter [
+
+	^ htmlSourcePresenter
+
+]
+
+{ #category : #initialization }
+MicCSSStylerDetailsPresenter >> initializeNotebookPresenter [
 
 	cssMetaInfoPresenter := self instantiate: MicCSSStylerMetaInfoPresenter on: self cssFramework.
+	htmlOptionsPresenter := self instantiate: MicCSSStylerHTMLOptionsPresenter.
+
+	notebookPresenter := self newNotebook
+		addPage: self htmlOptionsPage;
+		addPage: self cssDetailsPage;
+		yourself
+]
+
+{ #category : #initialization }
+MicCSSStylerDetailsPresenter >> initializePresenters [ 
+
+	htmlSourcePresenter := self newText
+		beWrapWord;
+		beNotEditable;
+		yourself..
 	cssSourceCodePresenter := self newText
 		beWrapWord;
 		beNotEditable;
-		addStyle: 'iceTipReadonly';
 		text: self cssFramework sourceCode;
 		yourself.
+	self initializeNotebookPresenter.
 ]
 
 { #category : #initialization }
@@ -65,6 +122,8 @@ MicCSSStylerDetailsPresenter >> setModelBeforeInitialization: aDomainObject [
 { #category : #initialization }
 MicCSSStylerDetailsPresenter >> updatePresenter [
 
-	self cssMetaInfoPresenter updatePresenter.
-	self cssSourceCodePresenter text: self cssFramework sourceCode
+	self cssMetaInfoPresenter
+		cssFramework: self cssFramework;
+		updatePresenter.
+	self cssSourcePresenter text: self cssFramework sourceCode
 ]
