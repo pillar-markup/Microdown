@@ -5,13 +5,28 @@ Class {
 }
 
 { #category : #tests }
+MicInputFileResolverTest >> builder [ 
+
+	^ self microdown builder
+]
+
+{ #category : #tests }
+MicInputFileResolverTest >> microdown [ 
+
+	^ Microdown
+]
+
+{ #category : #tests }
 MicInputFileResolverTest >> testRelsoveInputFile [
 
 	| fs f1Ast topPath |
 	fs := FileSystem memory.
 	topPath := fs root / 'f1.md'.
-	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=f2.md!}' ].
+	topPath writeStreamDo: [ :stream |
+		self builder
+		 	setStream: stream;
+			inputFile: 'f2.md'
+	 ].
 	fs root / 'f2.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 
@@ -32,12 +47,14 @@ MicInputFileResolverTest >> testRelsoveInputFileWithNestedFile [
 	fs ensureCreateDirectory: 'Depot'.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/f2.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/f2.md'  ].
 	fs root / 'Depot' / 'f2.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 
 
-	f1Ast := Microdown parse: topPath readStream.
+	f1Ast := self microdown parse: topPath readStream.
 	MicInputFileResolver new
 		topPath: topPath;
 		visit: f1Ast.
@@ -53,9 +70,13 @@ MicInputFileResolverTest >> testRelsoveInputFileWithNestedInputFile [
 	fs ensureCreateDirectory: 'Depot'.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/f2.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/f2.md' ].
 	fs root / 'Depot' / 'f2.md' writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/f3.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/f3.md' ].
 	fs root / 'Depot' / 'f3.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 
@@ -77,9 +98,13 @@ MicInputFileResolverTest >> testRelsoveInputFileWithNestedInputFileAndFile [
 	fs ensureCreateDirectory: 'Depot/Depot2'.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/f2.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/f2.md' ].
 	fs root / 'Depot' / 'f2.md' writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/Depot2/f3.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/Depot2/f3.md' ].
 	fs root / 'Depot' / 'Depot2' / 'f3.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 
@@ -100,9 +125,13 @@ MicInputFileResolverTest >> testRelsoveInputFileWithNestedInputFileButNotTheLast
 	fs ensureCreateDirectory: 'Depot'.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=Depot/f2.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'Depot/f2.md' ].
 	fs root / 'Depot' / 'f2.md' writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=f3.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'f3.md' ].
 	fs root / 'f3.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 
@@ -122,9 +151,10 @@ MicInputFileResolverTest >> testRelsoveInputFileWithTwoInputFile [
 	fs := FileSystem memory.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=f2.md!}
-
-{!inputFile|path=f3.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'f2.md';
+			inputFile: 'f3.md' ].
 	fs root / 'f2.md' writeStreamDo: [ :stream | 
 		stream nextPutAll: 'toto' ].
 	fs root / 'f3.md' writeStreamDo: [ :stream | 
@@ -147,7 +177,9 @@ MicInputFileResolverTest >> testRelsoveInputFileWithWrongRef [
 	fs := FileSystem memory.
 	topPath := fs root / 'f1.md'.
 	topPath writeStreamDo: [ :stream | 
-		stream nextPutAll: '{!inputFile|path=f2.md!}' ].
+		self builder
+		 	setStream: stream;
+			inputFile: 'f2.md' ].
 
 
 	f1Ast := Microdown parse: topPath readStream.

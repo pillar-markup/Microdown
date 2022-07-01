@@ -319,8 +319,8 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
 		assert: (builder inputFile: 'Chapters/image.png') contents 
-		equals: AnnotationOpenerMarkup,
-					'inputfile | path=Chapters/image.png', AnnotationCloserMarkup
+		equals: '
+',EnvironmentOpeningBlockMarkup ,'inputFile|path=Chapters/image.png', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #'tests - format' }

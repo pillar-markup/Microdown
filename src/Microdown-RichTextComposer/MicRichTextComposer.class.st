@@ -256,6 +256,12 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 ]
 
 { #category : #private }
+MicRichTextComposer >> level [
+	"level is the logical indention level of lists. Outer list is indented 1, next is indented 3, etc."
+	^(canvas nesting // 2) +1
+]
+
+{ #category : #private }
 MicRichTextComposer >> renderTableCell: aCell [
 	"a cell is an array of nodes. Each element should be rendered and concatenated"
 	^ aCell inject: Text new into: [ :txt :part | 
@@ -273,6 +279,7 @@ MicRichTextComposer >> textStyler [
 MicRichTextComposer >> textStyler: aTextStyler [
 
 	textStyler := aTextStyler.
+	canvas ifNotNil: [ canvas textStyler: aTextStyler  ]
 ]
 
 { #category : #private }
@@ -305,7 +312,7 @@ MicRichTextComposer >> visit: aDocument [
 		          textStyler: self textStyler;
 		          yourself.
 	super visit: aDocument.
-	^ canvas contents
+	^ canvas contents trim
 ]
 
 { #category : #'visiting - document' }
@@ -402,7 +409,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas
 		includeAttribute: (self textStyler headerLevelFont: level)
 		in: [ super visitHeader: aHeader ].
-	canvas << (textStyler spaceAfterHeaderLevel: level)
+	canvas << (textStyler crAfterHeaderLevel: level)
 ]
 
 { #category : #'visiting - document' }
@@ -495,11 +502,11 @@ MicRichTextComposer >> visitOrderedList: aList [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [counter := 1.
 		aList children
-			do: [ :item | 
+			do: [ :item |
 				item propertyAt: #kind put: #ordered.
 				item
 					propertyAt: #counter
-					put: (self textStyler counterFor: counter atLevel: canvas nesting - 1).
+					put: (self textStyler counterFor: counter atLevel: self level).
 				counter := counter + 1 ].
 		super visitOrderedList: aList ].
 	canvas newLine.
@@ -511,7 +518,7 @@ MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
 	super visitParagraph: anObject.
-	canvas newLine; << textStyler interBlockSpacing 
+	canvas << textStyler interBlockSpacing 
 ]
 
 { #category : #'visiting - document' }
@@ -534,6 +541,13 @@ MicRichTextComposer >> visitQuote: aQuote [
 MicRichTextComposer >> visitRaw: aRawFormat [
 
 	canvas << aRawFormat substring asText.
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitRichTextFormatConfiguration: config [
+	self textStyler class = MicDynamicTextStyler 
+		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
+	config adjustStyler: self textStyler
 ]
 
 { #category : #'visiting -  format' }
@@ -574,7 +588,9 @@ MicRichTextComposer >> visitTable: tableBlock [
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	canvas << (textStyler postTextTreatment: (anInlineBlock substring asText) )
+	|text|
+	text := anInlineBlock substring asText.
+	canvas << (textStyler postTextTreatment: text )
 ]
 
 { #category : #'visiting - list' }
@@ -587,7 +603,7 @@ MicRichTextComposer >> visitUnorderedList: aList [
 					item propertyAt: #kind put: #unordered.
 					item
 						propertyAt: #bullet
-						put: (self textStyler bulletForLevel: canvas nesting - 1) ].
+						put: (self textStyler bulletForLevel: self level) ].
 			super visitUnorderedList: aList ].
 	canvas newLine.
 	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing] 
