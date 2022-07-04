@@ -31,7 +31,7 @@ MicCSSStylerPreviewCommand class >> defaultShortcutKey [
 { #category : #accessing }
 MicCSSStylerPreviewCommand class >> order [
 
-	^ 1
+	^ 3
 ]
 
 { #category : #testing }

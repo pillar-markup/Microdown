@@ -21,6 +21,17 @@ Class {
 }
 
 { #category : #initialization }
+MicCSSStylerDetailsPresenter >> convertToHtml: micContents [
+	"Answer a <String> formatted as HTML, applying receiver's setttings, from Microdown document in micContents"
+
+	^ MicHTMLDoc new
+		addCSSNamed: self cssFramework name;
+		destinationPath: 'mic_html_examples';
+		fromMicrodown: micContents;
+		contents
+]
+
+{ #category : #initialization }
 MicCSSStylerDetailsPresenter >> cssDetailsPage [
 
 	^ (SpNotebookPage 
@@ -104,7 +115,7 @@ MicCSSStylerDetailsPresenter >> initializePresenters [
 	htmlSourcePresenter := self newText
 		beWrapWord;
 		beNotEditable;
-		yourself..
+		yourself.
 	cssSourceCodePresenter := self newText
 		beWrapWord;
 		beNotEditable;
@@ -113,15 +124,26 @@ MicCSSStylerDetailsPresenter >> initializePresenters [
 	self initializeNotebookPresenter.
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 MicCSSStylerDetailsPresenter >> setModelBeforeInitialization: aDomainObject [
 
 	cssFramework := aDomainObject.
 ]
 
 { #category : #initialization }
+MicCSSStylerDetailsPresenter >> updateHtmlSourcePresenter [
+
+	| micContents |
+	
+	micContents := self owner micDocument contents.	
+	self htmlSourcePresenter text: (self convertToHtml: micContents).
+
+]
+
+{ #category : #initialization }
 MicCSSStylerDetailsPresenter >> updatePresenter [
 
+	super updatePresenter.
 	self cssMetaInfoPresenter
 		cssFramework: self cssFramework;
 		updatePresenter.

@@ -25,5 +25,5 @@ MicCSSStylerUpdateCommand class >> defaultName [
 { #category : #accessing }
 MicCSSStylerUpdateCommand class >> order [
 
-	^ 5
+	^ 12
 ]

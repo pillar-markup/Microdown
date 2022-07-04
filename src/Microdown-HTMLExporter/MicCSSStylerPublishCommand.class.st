@@ -31,7 +31,7 @@ MicCSSStylerPublishCommand class >> defaultShortcutKey [
 { #category : #accessing }
 MicCSSStylerPublishCommand class >> order [
 
-	^ 3
+	^ 9
 ]
 
 { #category : #execution }

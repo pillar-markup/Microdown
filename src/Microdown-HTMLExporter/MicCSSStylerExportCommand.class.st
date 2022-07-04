@@ -31,7 +31,7 @@ MicCSSStylerExportCommand class >> defaultShortcutKey [
 { #category : #accessing }
 MicCSSStylerExportCommand class >> order [
 
-	^ 2
+	^ 6
 ]
 
 { #category : #testing }

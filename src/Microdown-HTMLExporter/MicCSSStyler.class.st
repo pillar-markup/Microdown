@@ -27,17 +27,6 @@ Class {
 	#category : #'Microdown-HTMLExporter-Spec'
 }
 
-{ #category : #private }
-MicCSSStyler class >> baseToolbarCommands [
-
-	^ { 
-		MicCSSStylerPreviewCommand .
-		MicCSSStylerPublishCommand .
-		MicCSSStylerExportCommand .
-		MicCSSStylerUpdateCommand
-		}
-]
-
 { #category : #'instance creation' }
 MicCSSStyler class >> open [
 	<script>
@@ -53,17 +42,22 @@ MicCSSStyler class >> openOn: aMicrodownString [
 		openWithSpec.
 ]
 
-{ #category : #private }
-MicCSSStyler class >> toolbarCommands [
-
-	^ self baseToolbarCommands sorted: #order ascending
-]
-
 { #category : #'accessing - toolbar' }
 MicCSSStyler >> addToolbarCommandsTo: aGroup [
 
-	self class toolbarCommands do: [ :each | 
+	self toolbarCommands do: [ :each | 
 		aGroup register: (each forSpecContext: self) ]
+]
+
+{ #category : #'accessing - toolbar' }
+MicCSSStyler >> baseToolbarCommands [
+
+	^ { 
+		MicCSSStylerPreviewCommand .
+		MicCSSStylerPublishCommand .
+		MicCSSStylerExportCommand .
+		MicCSSStylerUpdateCommand
+		}
 ]
 
 { #category : #accessing }
@@ -97,14 +91,14 @@ MicCSSStyler >> cssProvider [
 { #category : #layout }
 MicCSSStyler >> defaultLayout [
 
-	^ self layout: (SpBoxLayout newTopToBottom 
+	^ SpBoxLayout newTopToBottom 
 		add: toolbarPresenter height: self class toolbarHeight + 15;	
 		add:  (SpPanedLayout newLeftToRight
 			positionOfSlider: 20 percent;
 			add: cssListPresenter;
 			add: cssDetailsPresenter;
 			yourself);
-		yourself)
+		yourself
 ]
 
 { #category : #initialization }
@@ -114,13 +108,26 @@ MicCSSStyler >> frameworks [
 	^ self cssProvider frameworks
 ]
 
+{ #category : #testing }
+MicCSSStyler >> hasMicDocument [
+	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
+
+	^ self micDocument notNil
+]
+
+{ #category : #accessing }
+MicCSSStyler >> iconForWindow [
+	"Answer a Form to be used during initialization when opening in a SpWindowPresenter."
+
+	^ self iconNamed: #smallWindow
+]
+
 { #category : #initialization }
 MicCSSStyler >> initialize [
 	"Private - Initialize the receiver's frameworks before UI display"
 
 	self cssProvider hasFrameworksInstalled
 		ifFalse: [ self cssProvider installFrameworks ].
-
 	super initialize.
 ]
 
@@ -183,6 +190,7 @@ MicCSSStyler >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
 		initialExtent: 950 @ 650;
+		windowIcon: self iconForWindow;
 		whenClosedDo: [ self ].
 ]
 
@@ -195,7 +203,17 @@ MicCSSStyler >> micDocument [
 { #category : #accessing }
 MicCSSStyler >> micDocument: anObject [
 
-	micDocument := anObject
+	micDocument := anObject.
+	self updatePresenter.
+]
+
+{ #category : #'accessing - toolbar' }
+MicCSSStyler >> optionalToolbarCommands [
+	"Show opening button if this tool was opened externally, i.e. without a user document"
+
+	self hasMicDocument
+		ifFalse: [ ^ { MicCSSStylerOpenCommand } ].
+	^ Array empty 
 ]
 
 { #category : #initialization }
@@ -205,12 +223,26 @@ MicCSSStyler >> title [
 	^ 'Microdown CSS Styler'
 ]
 
+{ #category : #accessing }
+MicCSSStyler >> titleForWindow [ 
+
+	^ self hasMicDocument 
+		ifTrue: [ self title , ' on: ' , self micDocument basename ]
+		ifFalse: [ self title ]
+]
+
 { #category : #'accessing - toolbar' }
 MicCSSStyler >> toolbarActions [
 
 	^ CmCommandGroup forSpec
 		in: [ :this | self addToolbarCommandsTo: this ];
 		yourself
+]
+
+{ #category : #'accessing - toolbar' }
+MicCSSStyler >> toolbarCommands [
+
+	^ self baseToolbarCommands , self optionalToolbarCommands sorted: #order ascending
 ]
 
 { #category : #'accessing - toolbar' }
@@ -225,4 +257,27 @@ MicCSSStyler >> toolbarPresenter: anObject [
 	" Sets the toolbarPresenter of this MicCSSStyler "
 
 	toolbarPresenter := anObject
+]
+
+{ #category : #updating }
+MicCSSStyler >> updateHtmlSourcePresenter [
+
+	self hasMicDocument 
+		ifTrue: [ self cssDetailsPresenter updateHtmlSourcePresenter ]
+]
+
+{ #category : #updating }
+MicCSSStyler >> updatePresenter [
+
+	super updatePresenter.
+	self 
+		updateTitle;
+		updateHtmlSourcePresenter.
+	
+]
+
+{ #category : #updating }
+MicCSSStyler >> updateTitle [
+	
+	self withWindowDo: [ :aWindow | aWindow title: self titleForWindow ]
 ]
