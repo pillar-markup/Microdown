@@ -124,6 +124,13 @@ MicCSSStylerDetailsPresenter >> initializePresenters [
 	self initializeNotebookPresenter.
 ]
 
+{ #category : #transmission }
+MicCSSStylerDetailsPresenter >> setModel: aModel [
+
+	self flag: #review.
+	self htmlSourcePresenter text: aModel
+]
+
 { #category : #'accessing - model' }
 MicCSSStylerDetailsPresenter >> setModelBeforeInitialization: aDomainObject [
 
