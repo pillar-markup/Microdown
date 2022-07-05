@@ -22,7 +22,8 @@ Class {
 		'cssDetailsPresenter',
 		'cssProvider',
 		'cssListPresenter',
-		'micDocument'
+		'micDocumentString',
+		'micHtmlDocument'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -38,7 +39,7 @@ MicCSSStyler class >> open [
 MicCSSStyler class >> openOn: aMicrodownString [
 
 	self new
-		micDocument: aMicrodownString;
+		micDocumentString: aMicrodownString;
 		openWithSpec.
 ]
 
@@ -71,7 +72,13 @@ MicCSSStyler >> cssDetailsPresenter [
 MicCSSStyler >> cssFramework [ 
 	"Answer a <MicCSSFramework>"
 	
-	^ self frameworks first
+	^ self cssListPresenter ifNotNil: [ : cssList |
+		cssList selectedItem ]
+]
+
+{ #category : #accessing }
+MicCSSStyler >> cssFramework: aMicCSSFramework [ 
+	self shouldBeImplemented.
 ]
 
 { #category : #accessing }
@@ -109,10 +116,23 @@ MicCSSStyler >> frameworks [
 ]
 
 { #category : #testing }
+MicCSSStyler >> hasCssSelection [
+
+	^ self cssListPresenter notNil and: [ self cssListPresenter selection isEmpty not ]
+]
+
+{ #category : #testing }
 MicCSSStyler >> hasMicDocument [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
-	^ self micDocument notNil
+	^ micDocumentString notNil
+]
+
+{ #category : #testing }
+MicCSSStyler >> hasMicDocumentFileRef [
+	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
+
+	^ self micDocumentFileRef notNil
 ]
 
 { #category : #accessing }
@@ -134,7 +154,7 @@ MicCSSStyler >> initialize [
 { #category : #initialization }
 MicCSSStyler >> initializeDetailPresenter [
 
-	cssDetailsPresenter := self instantiate: MicCSSStylerDetailsPresenter on: self cssFramework.
+	cssDetailsPresenter := self instantiate: MicCSSStylerDetailsPresenter on: self.
 ]
 
 { #category : #initialization }
@@ -156,13 +176,13 @@ MicCSSStyler >> initializeListPresenter [
 		display: #name;
 		whenSelectionChangedDo: [ : selectionMode | 
 			selectionMode selectedItem
-				ifNotNil: [ : micCSSFrw |  self cssDetailsPresenter cssFramework: micCSSFrw ] ];
+				ifNotNil: [ : micCSSFrw | self cssDetailsPresenter updatePresenter ] ];
 		items: self frameworks;
 		sortingBlock: [ : a : b | a name < b name ];
 		headerTitle: 'Styles';
 		yourself.
 	cssListPresenter items 
-		ifNotEmpty: [ cssListPresenter selectIndex: 1 ]
+		ifNotEmpty: [ cssListPresenter selectIndex: 0 ]
 		ifEmpty: [ self cssDetailsPresenter updatePresenter ]
 ]
 
@@ -171,8 +191,8 @@ MicCSSStyler >> initializePresenters [
 	" Private - See superimplementor's comment "
 
 	self initializeToolbar.
+	self initializeListPresenter.	
 	self initializeDetailPresenter.
-	self initializeListPresenter.
 
 ]
 
@@ -195,16 +215,29 @@ MicCSSStyler >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocument [
+MicCSSStyler >> micDocumentFileRef [
 
-	^ micDocument
+	^ micDocumentString
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocument: anObject [
+MicCSSStyler >> micDocumentFileRef: anObject [
 
-	micDocument := anObject.
+	self halt.
+	micDocumentString := anObject.
 	self updatePresenter.
+]
+
+{ #category : #accessing }
+MicCSSStyler >> micHtmlDocument [
+
+	^ micHtmlDocument
+]
+
+{ #category : #accessing }
+MicCSSStyler >> micHtmlDocument: anObject [
+
+	micHtmlDocument := anObject
 ]
 
 { #category : #'accessing - toolbar' }
@@ -214,6 +247,13 @@ MicCSSStyler >> optionalToolbarCommands [
 	self hasMicDocument
 		ifFalse: [ ^ { MicCSSStylerOpenCommand } ].
 	^ Array empty 
+]
+
+{ #category : #accessing }
+MicCSSStyler >> selectedCssFramework [
+
+	^ self cssListPresenter
+		ifNotNil: [ : cssFrameworkList | cssFrameworkList selectedItem ]
 ]
 
 { #category : #initialization }
@@ -226,9 +266,12 @@ MicCSSStyler >> title [
 { #category : #accessing }
 MicCSSStyler >> titleForWindow [ 
 
-	^ self hasMicDocument 
-		ifTrue: [ self title , ' on: ' , self micDocument basename ]
-		ifFalse: [ self title ]
+	^ self hasMicDocumentFileRef
+		ifTrue: [ self title , ' on: ' , self micDocumentFileRef basename ]
+		ifFalse: [ 
+			self hasMicDocument
+				ifTrue: [ self title , ' on: <Unsaved document>' ]
+				ifFalse: [ self title ] ]
 ]
 
 { #category : #'accessing - toolbar' }

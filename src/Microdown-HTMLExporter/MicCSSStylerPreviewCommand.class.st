@@ -43,5 +43,16 @@ MicCSSStylerPreviewCommand >> canBeExecuted [
 { #category : #execution }
 MicCSSStylerPreviewCommand >> execute [
 
-	self halt
+	self exportToHtml: self context micDocumentFileRef.
+]
+
+{ #category : #executing }
+MicCSSStylerPreviewCommand >> exportToHtml: aFileReference [ 
+	"Write passed Microdown argument formatted as HTML, applying receiver's setttings"
+
+	MicHTMLDoc new
+		addCSSNamed: self cssFramework name;
+		destinationPath: self destinationPath;
+		fromMicrodown: aFileReference contents;
+		writeToFileNamed: self outputFilename.
 ]

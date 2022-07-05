@@ -8,3 +8,66 @@ Class {
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
+
+{ #category : #layout }
+MicCSSStylerExportOptionsPresenter >> defaultLayout [ 
+
+	^ SpGridLayout build: [ : builder |
+		builder
+			beColumnNotHomogeneous;		
+			add: 'Output file name';
+			add: outputFilenameTextPresenter;
+			nextRow;
+			add: 'Output folder';
+			add: outputPathTextPresenter;
+			nextRow;
+			add: 'Overwrite';
+			add: overwriteCheckboxPresenter ]
+]
+
+{ #category : #initialization }
+MicCSSStylerExportOptionsPresenter >> destinationPath [
+
+	^ self styler hasMicDocument
+		ifTrue: [ self styler destinationPath ]
+		ifFalse: [ String empty ]
+]
+
+{ #category : #initialization }
+MicCSSStylerExportOptionsPresenter >> initializePresenters [ 
+
+	outputFilenameTextPresenter := self newTextInput
+		help: 'Output file name';
+		yourself.
+	outputPathTextPresenter := self newTextInput 
+		help: 'Select the output directory';
+		text: self destinationPath;
+		yourself.
+	overwriteCheckboxPresenter := self newCheckBox
+		state: true;
+		yourself.
+]
+
+{ #category : #accessing }
+MicCSSStylerExportOptionsPresenter >> micDocumentFileRef [
+
+	^ self styler micDocumentFileRef
+]
+
+{ #category : #accessing }
+MicCSSStylerExportOptionsPresenter >> outputDestinationPath: aString [
+
+	outputPathTextPresenter text: aString
+]
+
+{ #category : #accessing }
+MicCSSStylerExportOptionsPresenter >> outputFilename: aString [
+
+	outputFilenameTextPresenter text: aString
+]
+
+{ #category : #accessing }
+MicCSSStylerExportOptionsPresenter >> styler [
+
+	^ self owner styler
+]

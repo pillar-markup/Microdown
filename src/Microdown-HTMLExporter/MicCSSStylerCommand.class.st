@@ -17,3 +17,15 @@ MicCSSStylerCommand class >> forSpecContext: anObject [
 		context: anObject;
 		yourself
 ]
+
+{ #category : #accessing }
+MicCSSStylerCommand >> cssFramework [
+	"Answer the currently selected <MicCSSFramework>"
+
+	^ self context cssFramework
+]
+
+{ #category : #accessing }
+MicCSSStylerCommand >> destinationPath [
+	self shouldBeImplemented.
+]

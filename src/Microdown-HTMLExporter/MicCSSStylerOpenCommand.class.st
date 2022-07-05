@@ -46,7 +46,7 @@ MicCSSStylerOpenCommand >> execute [
 	(self requestFileNameForOpen: '*.mic')
 		ifNotNil: [ : answer | 
 			(self isValidMic: answer)
-				ifTrue: [ self context micDocument: answer asFileReference ]
+				ifTrue: [ self context micDocumentFileRef: answer asFileReference ]
 				ifFalse: [ self inform: 'File not recognized as Microdown format' ] ]
 
 ]

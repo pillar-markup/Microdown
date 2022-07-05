@@ -10,12 +10,13 @@ Class {
 	#name : #MicCSSStylerDetailsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
+		'styler',
 		'cssMetaInfoPresenter',
 		'cssSourceCodePresenter',
-		'cssFramework',
 		'notebookPresenter',
 		'htmlSourcePresenter',
-		'htmlOptionsPresenter'
+		'htmlOptionsPresenter',
+		'exportOptionsPresenter'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -31,7 +32,7 @@ MicCSSStylerDetailsPresenter >> convertToHtml: micContents [
 		contents
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - pages' }
 MicCSSStylerDetailsPresenter >> cssDetailsPage [
 
 	^ (SpNotebookPage 
@@ -45,14 +46,20 @@ MicCSSStylerDetailsPresenter >> cssDetailsPage [
 { #category : #accessing }
 MicCSSStylerDetailsPresenter >> cssFramework [
 
-	^ cssFramework
+	^ self styler cssFramework
 ]
 
 { #category : #accessing }
 MicCSSStylerDetailsPresenter >> cssFramework: anObject [
 
-	cssFramework := anObject.
+	self styler cssFramework: anObject.
 	self updatePresenter
+]
+
+{ #category : #accessing }
+MicCSSStylerDetailsPresenter >> cssListPresenter [
+
+	^ self styler cssListPresenter
 ]
 
 { #category : #accessing }
@@ -81,7 +88,17 @@ MicCSSStylerDetailsPresenter >> defaultLayout [
 		yourself)
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - pages' }
+MicCSSStylerDetailsPresenter >> exportOptionsPage [
+
+	^ (SpNotebookPage 
+		title: 'Export Options' 
+		icon: (self iconNamed: #smallExport) 
+		provider: [ exportOptionsPresenter ])
+		yourself
+]
+
+{ #category : #'accessing - pages' }
 MicCSSStylerDetailsPresenter >> htmlOptionsPage [
 
 	^ SpNotebookPage 
@@ -102,10 +119,12 @@ MicCSSStylerDetailsPresenter >> initializeNotebookPresenter [
 
 	cssMetaInfoPresenter := self instantiate: MicCSSStylerMetaInfoPresenter on: self cssFramework.
 	htmlOptionsPresenter := self instantiate: MicCSSStylerHTMLOptionsPresenter.
+	exportOptionsPresenter := self instantiate: MicCSSStylerExportOptionsPresenter.
 
 	notebookPresenter := self newNotebook
 		addPage: self htmlOptionsPage;
 		addPage: self cssDetailsPage;
+		addPage: self exportOptionsPage;
 		yourself
 ]
 
@@ -119,9 +138,37 @@ MicCSSStylerDetailsPresenter >> initializePresenters [
 	cssSourceCodePresenter := self newText
 		beWrapWord;
 		beNotEditable;
-		text: self cssFramework sourceCode;
+		text: self selectedCssFrameworkSourceCode;
 		yourself.
 	self initializeNotebookPresenter.
+]
+
+{ #category : #initialization }
+MicCSSStylerDetailsPresenter >> micDocumentFileRef [
+
+	^ self styler micDocumentFileRef
+
+]
+
+{ #category : #updating }
+MicCSSStylerDetailsPresenter >> micHtmlDocument [
+
+	^ self styler micHtmlDocument
+]
+
+{ #category : #accessing }
+MicCSSStylerDetailsPresenter >> selectedCssFramework [
+
+	^ self styler selectedCssFramework
+]
+
+{ #category : #accessing }
+MicCSSStylerDetailsPresenter >> selectedCssFrameworkSourceCode [
+	"Answer a <String> with the receiver's selected CSS Framework source code"
+
+	^ self cssListPresenter selectedItem
+		ifNotNil: [ : cssFrw | cssFrw sourceCode ]
+		ifNil: [ String empty ]
 ]
 
 { #category : #transmission }
@@ -134,25 +181,37 @@ MicCSSStylerDetailsPresenter >> setModel: aModel [
 { #category : #'accessing - model' }
 MicCSSStylerDetailsPresenter >> setModelBeforeInitialization: aDomainObject [
 
-	cssFramework := aDomainObject.
+	styler := aDomainObject.
 ]
 
 { #category : #initialization }
+MicCSSStylerDetailsPresenter >> styler [
+
+	^ styler
+]
+
+{ #category : #updating }
 MicCSSStylerDetailsPresenter >> updateHtmlSourcePresenter [
 
 	| micContents |
 	
-	micContents := self owner micDocument contents.	
+	micContents := self micDocumentFileRef contents.	
 	self htmlSourcePresenter text: (self convertToHtml: micContents).
 
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MicCSSStylerDetailsPresenter >> updatePresenter [
 
 	super updatePresenter.
+	self styler hasCssSelection ifFalse: [ ^ self ].
 	self cssMetaInfoPresenter
-		cssFramework: self cssFramework;
+		cssFramework: self selectedCssFramework;
 		updatePresenter.
-	self cssSourcePresenter text: self cssFramework sourceCode
+	self cssSourcePresenter text: self selectedCssFrameworkSourceCode.
+	self styler hasMicDocument
+		ifFalse: [ ^ self ].
+	exportOptionsPresenter
+		outputFilename: self micHtmlDocument outputFilename;
+		outputDestinationPath: self micHtmlDocument destinationPath.
 ]

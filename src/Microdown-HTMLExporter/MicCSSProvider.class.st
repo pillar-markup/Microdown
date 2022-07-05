@@ -132,7 +132,7 @@ MicCSSProvider >> defaultFrameworks [
 
 { #category : #accessing }
 MicCSSProvider >> destinationPath [
-	"Answer the <String> used as location to store the receiver's CSS files"
+	"Answer the <String> used as location to store the receiver's CSS frameworks"
 
 	^ destinationPath
 		ifNil: [ destinationPath := 'support' ]

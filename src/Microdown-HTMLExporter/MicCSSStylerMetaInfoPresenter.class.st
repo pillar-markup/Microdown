@@ -104,9 +104,10 @@ MicCSSStylerMetaInfoPresenter >> themesListPresenter [
 { #category : #initialization }
 MicCSSStylerMetaInfoPresenter >> updatePresenter [
 
+	self cssFramework ifNil: [ ^ self ].
 	projectUrlPresenter
 		url: self cssFramework mainUrl;
-		label: self cssFramework mainUrl;
+		label: 'Visit project web';
 		help: 'Open a web browser to visit the main project site'.
 	self updatePresenterLinks.
 	self cssFramework hasThemes
