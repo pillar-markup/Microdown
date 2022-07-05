@@ -28,7 +28,7 @@ MicCSSStylerExportOptionsPresenter >> defaultLayout [
 { #category : #initialization }
 MicCSSStylerExportOptionsPresenter >> destinationPath [
 
-	^ self styler hasMicDocument
+	^ self styler hasMicDocumentString
 		ifTrue: [ self styler destinationPath ]
 		ifFalse: [ String empty ]
 ]
@@ -46,6 +46,13 @@ MicCSSStylerExportOptionsPresenter >> initializePresenters [
 	overwriteCheckboxPresenter := self newCheckBox
 		state: true;
 		yourself.
+]
+
+{ #category : #testing }
+MicCSSStylerExportOptionsPresenter >> isOverwrite [
+	"Answer <true> if overwrite existing file is set"
+	
+	^ overwriteCheckboxPresenter state
 ]
 
 { #category : #accessing }

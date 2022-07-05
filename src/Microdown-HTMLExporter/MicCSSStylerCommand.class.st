@@ -25,7 +25,18 @@ MicCSSStylerCommand >> cssFramework [
 	^ self context cssFramework
 ]
 
-{ #category : #accessing }
-MicCSSStylerCommand >> destinationPath [
-	self shouldBeImplemented.
+{ #category : #executing }
+MicCSSStylerCommand >> exportToHtml: aMicHTMLDoc [ 
+	"Write passed Microdown HTML document to a file"
+
+	(self context isOverwrite not and: [ aMicHTMLDoc exists ])
+		ifTrue: [ ^ self inform: 'Already exists' ].
+	aMicHTMLDoc writeToFileNamed: aMicHTMLDoc fileName.
+	self inform: 'Export finished'
+]
+
+{ #category : #updating }
+MicCSSStylerCommand >> micHtmlDocument [
+
+	^ self context micHtmlDocument
 ]

@@ -43,5 +43,5 @@ MicCSSStylerExportCommand >> canBeExecuted [
 { #category : #execution }
 MicCSSStylerExportCommand >> execute [
 
-	self halt
+	self exportToHtml: self micHtmlDocument.
 ]

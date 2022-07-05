@@ -187,6 +187,13 @@ MicHTMLDoc >> documentType [
 	^ self class documentType
 ]
 
+{ #category : #testing }
+MicHTMLDoc >> exists [
+	"Answer <true> if receiver exists as a file"
+	
+	^ self fileName asFileReference exists
+]
+
 { #category : #accessing }
 MicHTMLDoc >> fileName [
 	"Answer a <String> representing the basename for the receiver when written to disk"
