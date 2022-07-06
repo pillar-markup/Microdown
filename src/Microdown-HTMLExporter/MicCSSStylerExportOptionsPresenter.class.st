@@ -1,6 +1,6 @@
 Class {
 	#name : #MicCSSStylerExportOptionsPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MicCSSStylerAbstractPresenter,
 	#instVars : [
 		'outputFilenameTextPresenter',
 		'outputPathTextPresenter',
@@ -71,10 +71,4 @@ MicCSSStylerExportOptionsPresenter >> outputDestinationPath: aString [
 MicCSSStylerExportOptionsPresenter >> outputFilename: aString [
 
 	outputFilenameTextPresenter text: aString
-]
-
-{ #category : #accessing }
-MicCSSStylerExportOptionsPresenter >> styler [
-
-	^ self owner styler
 ]

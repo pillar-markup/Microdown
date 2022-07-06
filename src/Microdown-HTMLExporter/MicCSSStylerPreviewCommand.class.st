@@ -1,3 +1,6 @@
+"
+Command to export the Microdown document to HTML and open a web browser to preview the results.
+"
 Class {
 	#name : #MicCSSStylerPreviewCommand,
 	#superclass : #MicCSSStylerCommand,

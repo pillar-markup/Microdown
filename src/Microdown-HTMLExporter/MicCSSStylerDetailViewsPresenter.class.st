@@ -21,16 +21,20 @@ Class {
 	#category : #'Microdown-HTMLExporter-Spec'
 }
 
+{ #category : #accessing }
+MicCSSStylerDetailViewsPresenter >> charSet [
+
+	^ htmlOptionsPresenter charSet.
+]
+
 { #category : #initialization }
 MicCSSStylerDetailViewsPresenter >> convertToHtml: micContents [
 	"Answer a <String> formatted as HTML, applying receiver's setttings, from Microdown document in micContents"
 
-	| micHtmlDoc |
-	
-	micHtmlDoc := MicHTMLDoc new.
+	self halt.
 	self styler hasCssSelection
-		ifTrue: [ micHtmlDoc addCSSNamed: self cssFramework name ].
-	^ micHtmlDoc
+		ifTrue: [ self micHtmlDocument addCSSNamed: self cssFramework name ].
+	^ self micHtmlDocument
 		fromMicrodown: micContents;
 		contents
 ]
@@ -128,8 +132,8 @@ MicCSSStylerDetailViewsPresenter >> htmlSourcePresenter [
 MicCSSStylerDetailViewsPresenter >> initializeNotebookPresenter [
 
 	cssMetaInfoPresenter := self instantiate: MicCSSStylerMetaInfoPresenter on: self cssFramework.
-	htmlOptionsPresenter := self instantiate: MicCSSStylerHTMLOptionsPresenter.
-	exportOptionsPresenter := self instantiate: MicCSSStylerExportOptionsPresenter.
+	htmlOptionsPresenter := self instantiate: MicCSSStylerHTMLOptionsPresenter on: self styler.
+	exportOptionsPresenter := self instantiate: MicCSSStylerExportOptionsPresenter on: self styler.
 
 	notebookPresenter := self newNotebook
 		addPage: self htmlOptionsPage;
@@ -210,7 +214,7 @@ MicCSSStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
 { #category : #updating }
 MicCSSStylerDetailViewsPresenter >> updateHtmlSourcePresenter [
 
-	self htmlSourcePresenter text: (self convertToHtml: self micDocument contents).
+	self htmlSourcePresenter text: self micHtmlDocument contents.
 
 ]
 

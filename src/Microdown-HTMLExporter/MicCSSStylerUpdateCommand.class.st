@@ -1,3 +1,6 @@
+"
+Command to update the application source code and styles
+"
 Class {
 	#name : #MicCSSStylerUpdateCommand,
 	#superclass : #MicCSSStylerCommand,

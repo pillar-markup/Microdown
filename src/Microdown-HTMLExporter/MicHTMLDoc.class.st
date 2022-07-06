@@ -58,17 +58,11 @@ Class {
 		'keywords',
 		'author',
 		'destinationDir',
-		'cssFrameworks'
+		'cssFrameworks',
+		'documentType'
 	],
 	#category : #'Microdown-HTMLExporter-Core'
 }
-
-{ #category : #initialization }
-MicHTMLDoc class >> documentType [
-	"Answer a <String> specifying the mandatory document specification tag"
-
-	^ '<!DOCTYPE html>'
-]
 
 { #category : #initialization }
 MicHTMLDoc class >> newWithStyle: aStyleName [
@@ -133,6 +127,13 @@ MicHTMLDoc >> cssFrameworks [
 		ifNil: [ cssFrameworks := OrderedCollection new ]
 ]
 
+{ #category : #initialization }
+MicHTMLDoc >> defaultDocumentType [
+	"Answer a <String> specifying the mandatory document specification tag"
+
+	^ '<!DOCTYPE html>'
+]
+
 { #category : #defaults }
 MicHTMLDoc >> defaultLanguageId [
 
@@ -184,7 +185,14 @@ MicHTMLDoc >> destinationPath: anObject [
 MicHTMLDoc >> documentType [
 	"Answer a <String> specifying the mandatory document specification tag"
 	
-	^ self class documentType
+	^ documentType
+		ifNil: [ documentType := self defaultDocumentType ]
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> documentType: anObject [
+
+	documentType := anObject
 ]
 
 { #category : #testing }
@@ -285,21 +293,14 @@ MicHTMLDoc >> newMicStreamOn: aString [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> removeCSSProvider: aMicCSSProvider [
-	"Remove aMicCSSProvider from the receiver's linked CSS resources"
+MicHTMLDoc >> removeCSSNamed: aString [
+	"Remove <MicCSSFramework> named aString from the receiver's linked CSS resources"
 	
-	self cssFrameworks remove: aMicCSSProvider
-]
-
-{ #category : #'accessing - css' }
-MicHTMLDoc >> removeCSSProviderNamed: aString [
-	"Remove a <MicCSSProvider> named aString to the receiver's linked CSS resources"
-	
-	self removeCSSProvider: (MicCSSProvider forCSSNamed: aString)
+	self cssFrameworks remove: aString
 ]
 
 { #category : #writing }
-MicHTMLDoc >> serializeHTML: aFilename in: destDirFileRef [
+MicHTMLDoc >> serializeHtml: aFilename in: destDirFileRef [
 	"Private - Serialize the receiver's into aFilename in destDirFileRef <FileReference>"
 
 	self fileName: aFilename.
@@ -474,6 +475,6 @@ MicHTMLDoc >> writeToFileNamed: aFilename [
 	| destDirFileRef |
 	
 	destDirFileRef := self destinationPath asFileReference.
-	self serializeHTML: aFilename in: destDirFileRef.
+	self serializeHtml: aFilename in: destDirFileRef.
 	self cssFrameworks do: [ : cssFramework | cssFramework writeTo: destDirFileRef ].
 ]

@@ -1,3 +1,6 @@
+"
+A simple command to request for open .mic files.
+"
 Class {
 	#name : #MicCSSStylerOpenCommand,
 	#superclass : #MicCSSStylerCommand,

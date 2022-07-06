@@ -9,7 +9,7 @@ Provides a presenter to configure common export HTML options, for example:
 "
 Class {
 	#name : #MicCSSStylerHTMLOptionsPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MicCSSStylerAbstractPresenter,
 	#instVars : [
 		'doctypeListPresenter',
 		'embeedCheckboxPresenter',
@@ -18,6 +18,12 @@ Class {
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
+
+{ #category : #layout }
+MicCSSStylerHTMLOptionsPresenter >> charSet [
+
+	^ encodingOptionsListPresenter selectedItem.
+]
 
 { #category : #layout }
 MicCSSStylerHTMLOptionsPresenter >> defaultLayout [ 
@@ -53,6 +59,18 @@ MicCSSStylerHTMLOptionsPresenter >> docTypeOptions [
 		'HTML 3.2'
 		'Compact HTML 2.0'
 		)
+]
+
+{ #category : #accessing }
+MicCSSStylerHTMLOptionsPresenter >> embeedCheckboxPresenter [
+
+	^ embeedCheckboxPresenter
+]
+
+{ #category : #accessing }
+MicCSSStylerHTMLOptionsPresenter >> enableEmbeedCss [
+
+	self embeedCheckboxPresenter enabled: true.
 ]
 
 { #category : #private }
@@ -96,15 +114,34 @@ MicCSSStylerHTMLOptionsPresenter >> initializePresenters [
 	doctypeListPresenter := self newDropList
 		help: 'Select the document type to be generated';
 		items: self docTypeOptions;
+		whenSelectedItemChangedDo: [ : selection |
+			self micHtmlDocument documentType: selection.
+			self updateStylerPresenter ]
 		yourself.
 	encodingOptionsListPresenter := self newDropList 
 		help: 'Select the document encoding';
 		items: self encodingOptions;
+		whenSelectedItemChangedDo: [ : selection | 
+			self micHtmlDocument charSet: selection.
+			self updateStylerPresenter ];
 		yourself.
 	embeedCheckboxPresenter := self newCheckBox
 		state: false;
+		enabled: false;
+		whenChangedDo: [ 
+			self micHtmlDocument embeedCss.
+			self updateStylerPresenter ]
 		yourself.
 	linksOpenNewPage := self newCheckBox 
 		state: true;
+		whenChangedDo: [ 
+			self micHtmlDocument linksOpenNewPage.
+			self updateStylerPresenter ]
 		yourself
+]
+
+{ #category : #layout }
+MicCSSStylerHTMLOptionsPresenter >> updateStylerPresenter [
+
+	self styler updatePresenter
 ]

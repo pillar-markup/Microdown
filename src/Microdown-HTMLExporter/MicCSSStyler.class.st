@@ -58,7 +58,8 @@ MicCSSStyler >> baseToolbarCommands [
 		MicCSSStylerPreviewCommand .
 		MicCSSStylerPublishCommand .
 		MicCSSStylerExportCommand .
-		MicCSSStylerUpdateCommand
+		MicCSSStylerUpdateCommand .
+		MicCSSStylerQuitCommand
 		}
 ]
 
@@ -371,7 +372,9 @@ MicCSSStyler >> updateMicHtmlDocument [
 		ifTrue: [ self micHtmlDocument addCSSNamed: self cssFramework name ].
 	self hasMicDocumentFileRef 
 		ifTrue: [ self micHtmlDocument fileName: self micDocumentFileRef withoutExtension basename , '.html' ].
-	self micHtmlDocument fromMicrodown: self micDocumentContents
+	self micHtmlDocument 
+		charSet: self cssDetailsPresenter charSet;
+		fromMicrodown: self micDocumentContents
 ]
 
 { #category : #updating }

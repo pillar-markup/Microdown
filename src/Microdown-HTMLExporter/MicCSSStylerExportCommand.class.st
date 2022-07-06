@@ -1,3 +1,7 @@
+"
+A command to write the Microdown input file as HTML.
+
+"
 Class {
 	#name : #MicCSSStylerExportCommand,
 	#superclass : #MicCSSStylerCommand,

@@ -172,9 +172,11 @@ MicHTMLDocTest >> testDocumentType [
 		assert: (doc documentType isKindOf: String)
 		description: 'The document type should be described as String'.
 		
+	doc documentType: ''.
+
 	self
 		assert: doc documentType
-		equals: doc class documentType
+		equals: String empty
 ]
 
 { #category : #tests }
