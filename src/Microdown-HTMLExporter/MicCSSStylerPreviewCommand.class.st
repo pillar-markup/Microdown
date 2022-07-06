@@ -37,11 +37,14 @@ MicCSSStylerPreviewCommand class >> order [
 { #category : #testing }
 MicCSSStylerPreviewCommand >> canBeExecuted [
 
-	^ true
+	^ super canBeExecuted and: [ self context hasMicHtmlDocument ]
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MicCSSStylerPreviewCommand >> execute [
+
+	self canBeExecuted 
+		ifFalse: [ ^ self inform: 'Please open a Microdown document first' ].
 
 	self exportToHtml: self micHtmlDocument.
 	WebBrowser openOn: self micHtmlDocument fullName.

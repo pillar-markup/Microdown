@@ -1,13 +1,14 @@
 Class {
 	#name : #MicCSSStylerMetaInfoPresenter,
-	#superclass : #MicCSSAbstractPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'projectUrlPresenter',
 		'cssLinkPresenter',
 		'themesListPresenter',
 		'minCssLinkPresenter',
 		'normalizeCssLinkPresenter',
-		'resetCssLinkPresenter'
+		'resetCssLinkPresenter',
+		'cssFramework'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -55,21 +56,21 @@ MicCSSStylerMetaInfoPresenter >> defaultLayout [
 			add: themesListPresenter ]
 ]
 
-{ #category : #layout }
+{ #category : #initialization }
 MicCSSStylerMetaInfoPresenter >> initializePresenters [ 
 
-	projectUrlPresenter := self newLink.
-	cssLinkPresenter := self newLink.
-	minCssLinkPresenter := self newLink.
-	normalizeCssLinkPresenter := self newLink.
-	resetCssLinkPresenter := self newLink.
+	projectUrlPresenter := self newLink label: String empty; yourself.
+	cssLinkPresenter := self newLink label: String empty; yourself.
+	minCssLinkPresenter := self newLink label: String empty; yourself.
+	normalizeCssLinkPresenter := self newLink label: String empty; yourself.
+	resetCssLinkPresenter := self newLink label: String empty; yourself.
 	themesListPresenter := self newList
 		beSingleSelection;
 		yourself.
 
 ]
 
-{ #category : #initialization }
+{ #category : #private }
 MicCSSStylerMetaInfoPresenter >> labelIfAvailable: aString [
 	"Answer a <String> with a friendly description if it's empty"
 
@@ -95,13 +96,19 @@ MicCSSStylerMetaInfoPresenter >> projectUrlPresenter [
 	^ projectUrlPresenter
 ]
 
+{ #category : #initialization }
+MicCSSStylerMetaInfoPresenter >> setModelBeforeInitialization: aDomainObject [
+
+	cssFramework := aDomainObject
+]
+
 { #category : #accessing }
 MicCSSStylerMetaInfoPresenter >> themesListPresenter [
 
 	^ themesListPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MicCSSStylerMetaInfoPresenter >> updatePresenter [
 
 	self cssFramework ifNil: [ ^ self ].
@@ -115,7 +122,7 @@ MicCSSStylerMetaInfoPresenter >> updatePresenter [
 
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MicCSSStylerMetaInfoPresenter >> updatePresenterLinks [
 
 	cssLinkPresenter

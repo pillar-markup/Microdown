@@ -12,9 +12,9 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'doctypeListPresenter',
-		'markupIndentStyleListPresenter',
 		'embeedCheckboxPresenter',
-		'linksOpenNewPage'
+		'linksOpenNewPage',
+		'encodingOptionsListPresenter'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
@@ -28,8 +28,8 @@ MicCSSStylerHTMLOptionsPresenter >> defaultLayout [
 			add: 'Document Type';
 			add: doctypeListPresenter;
 			nextRow;
-			add: 'Indent Type';
-			add: markupIndentStyleListPresenter;
+			add: 'Encoding';
+			add: encodingOptionsListPresenter;
 			nextRow;
 			add: 'Embeed CSS';
 			add: embeedCheckboxPresenter;
@@ -55,6 +55,41 @@ MicCSSStylerHTMLOptionsPresenter >> docTypeOptions [
 		)
 ]
 
+{ #category : #private }
+MicCSSStylerHTMLOptionsPresenter >> encodingOptions [
+
+	^ #(
+		'UTF-8'
+		'UTF-16'
+		'UTF-32'
+		'ASCII'
+		'ISO 8859-1'
+		'ISO 8859-2'
+		'ISO 8859-3'
+		'ISO 8859-4'
+		'ISO 8859-5'
+		'ISO 8859-6'
+		'ISO 8859-7'
+		'ISO 8859-8'
+		'ISO 8859-9'
+		'ISO 8859-10'
+		'ISO 8859-11'
+		'ISO 8859-13'
+		'ISO 8859-14' 
+		'ISO 8859-15'
+		'ISO 8859-16'
+		'Windows-1250'
+		'Windows-1251'
+		'Windows-1252'
+		'Windows-1253'
+		'Windows-1254'
+		'Windows-1255'
+		'Windows-1256'
+		'Windows-1257'
+		'Windows-1258'
+		)
+]
+
 { #category : #layout }
 MicCSSStylerHTMLOptionsPresenter >> initializePresenters [ 
 
@@ -62,9 +97,9 @@ MicCSSStylerHTMLOptionsPresenter >> initializePresenters [
 		help: 'Select the document type to be generated';
 		items: self docTypeOptions;
 		yourself.
-	markupIndentStyleListPresenter := self newDropList 
-		help: 'Select the spacing character';
-		items: self markupIndentStyleOptions;
+	encodingOptionsListPresenter := self newDropList 
+		help: 'Select the document encoding';
+		items: self encodingOptions;
 		yourself.
 	embeedCheckboxPresenter := self newCheckBox
 		state: false;
@@ -72,13 +107,4 @@ MicCSSStylerHTMLOptionsPresenter >> initializePresenters [
 	linksOpenNewPage := self newCheckBox 
 		state: true;
 		yourself
-]
-
-{ #category : #private }
-MicCSSStylerHTMLOptionsPresenter >> markupIndentStyleOptions [
-
-	^ #(
-		'Spaces'
-		'Tabs'
-		)
 ]

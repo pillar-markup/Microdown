@@ -124,6 +124,13 @@ MicCSSStyler >> hasCssSelection [
 ]
 
 { #category : #testing }
+MicCSSStyler >> hasMicDocument [
+	"Answer <true> if the receiver has a Microdown HTML document opened"
+
+	^ micHtmlDocument notNil
+]
+
+{ #category : #testing }
 MicCSSStyler >> hasMicDocumentFileRef [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
@@ -135,6 +142,13 @@ MicCSSStyler >> hasMicDocumentString [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
 	^ micDocumentString notNil
+]
+
+{ #category : #testing }
+MicCSSStyler >> hasMicHtmlDocument [
+	"Answer <true> if there is content in the HTML preview presenter"
+
+	^ self cssDetailsPresenter hasMicHtmlDocument 
 ]
 
 { #category : #accessing }
@@ -214,6 +228,7 @@ MicCSSStyler >> initializeWindow: aWindowPresenter [
 		initialExtent: 950 @ 650;
 		windowIcon: self iconForWindow;
 		whenClosedDo: [ self ].
+
 ]
 
 { #category : #testing }

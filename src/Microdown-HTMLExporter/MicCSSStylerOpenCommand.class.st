@@ -34,12 +34,6 @@ MicCSSStylerOpenCommand class >> order [
 	^ 2
 ]
 
-{ #category : #testing }
-MicCSSStylerOpenCommand >> canBeExecuted [
-
-	^ true
-]
-
 { #category : #execution }
 MicCSSStylerOpenCommand >> execute [
 
@@ -53,7 +47,7 @@ MicCSSStylerOpenCommand >> execute [
 
 { #category : #testing }
 MicCSSStylerOpenCommand >> isValidMic: aString [ 
-	"Answer <true> if aString is a valid Microdown file"
+	"Answer <true> if aString is a valid Microdown file (determined by its extension)"
 	
 	| fileRef |
 	

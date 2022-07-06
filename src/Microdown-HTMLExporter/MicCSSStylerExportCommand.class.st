@@ -37,11 +37,13 @@ MicCSSStylerExportCommand class >> order [
 { #category : #testing }
 MicCSSStylerExportCommand >> canBeExecuted [
 
-	^ true
+	^ super canBeExecuted and: [ self context hasMicHtmlDocument ]
 ]
 
 { #category : #execution }
 MicCSSStylerExportCommand >> execute [
 
+	self canBeExecuted 
+		ifFalse: [ ^ self inform: 'Please open a Microdown document first' ].
 	self exportToHtml: self micHtmlDocument.
 ]

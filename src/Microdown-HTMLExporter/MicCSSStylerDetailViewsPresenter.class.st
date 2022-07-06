@@ -101,6 +101,13 @@ MicCSSStylerDetailViewsPresenter >> exportOptionsPage [
 		yourself
 ]
 
+{ #category : #testing }
+MicCSSStylerDetailViewsPresenter >> hasMicHtmlDocument [
+	"Answer <true> if there is content in the HTML preview presenter"
+	
+	^ self htmlSourcePresenter text notEmpty
+]
+
 { #category : #'accessing - pages' }
 MicCSSStylerDetailViewsPresenter >> htmlOptionsPage [
 
