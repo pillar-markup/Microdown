@@ -1,6 +1,6 @@
 Class {
 	#name : #MicLinkBlockTest,
-	#superclass : #MicElementTest,
+	#superclass : #MicInstanceTest,
 	#instVars : [
 		'splitterClass',
 		'link'

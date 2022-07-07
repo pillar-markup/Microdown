@@ -231,6 +231,22 @@ toto'.
 ]
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithNestedScript [
+ 
+	| root env |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+
+<!script 
+
+!>
+'.
+	
+	self halt.
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
 
 	
@@ -324,6 +340,49 @@ Yes this is a good idea.'.
 	self assert: root children third text  equals: 'Yes this is a good idea.'.
 	
 
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirst [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+<!script 
+!>
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirstWhenClosingOnTheSameLine [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script!>
+<!script!>
+
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
 ]
 
 { #category : #'tests - default environment' }

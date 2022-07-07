@@ -1,6 +1,6 @@
 Class {
 	#name : #MicFigureBlockTest,
-	#superclass : #MicElementTest,
+	#superclass : #MicInstanceTest,
 	#instVars : [
 		'splitterClass'
 	],
