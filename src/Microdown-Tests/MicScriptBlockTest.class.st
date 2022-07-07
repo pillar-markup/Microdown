@@ -18,6 +18,7 @@ MicScriptBlockTest >> testScriptBloc [
 ]
 
 { #category : #tests }
-MicScriptBlockTest >> testedClass [ 
+MicScriptBlockTest >> testedClass [
+
 	^ MicScriptBlock
 ]
