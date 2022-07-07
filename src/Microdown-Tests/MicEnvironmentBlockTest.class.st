@@ -135,6 +135,22 @@ toto'.
 ]
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
+ 
+	| root env |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+
+<!script 
+
+!>
+'.
+	self assert: root children first children first class equals: MicScriptBlock. 
+	self assert: root children first children first children first class equals: MicScriptBlock 
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
@@ -228,22 +244,6 @@ toto'.
 	self assert: env children first class equals: MicParagraphBlock.
 	self assert: env children second class equals: MicParagraphBlock.
 	self assert: env children second text equals: 'toto'.
-]
-
-{ #category : #'tests - default environment' }
-MicEnvironmentBlockTest >> testEnvironmentWithNestedScript [
- 
-	| root env |
-	root :=  parser parse: '<!slideenvironment
-
-<!script
-
-<!script 
-
-!>
-'.
-	
-	self halt.
 ]
 
 { #category : #'tests - default environment' }
