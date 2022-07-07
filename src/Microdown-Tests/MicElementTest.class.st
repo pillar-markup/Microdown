@@ -57,3 +57,9 @@ MicElementTest >> setUp [
 	super setUp.
 	parser := self parser. 
 ]
+
+{ #category : #tests }
+MicElementTest >> testedClass [
+
+	^ self subclassResponsibility 
+]
