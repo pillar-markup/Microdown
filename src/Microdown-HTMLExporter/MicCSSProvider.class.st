@@ -22,17 +22,17 @@ This class implements behavior to access each framework, and configure its locat
 To download a set of pre-defined CSS frameworks, evaluate:
 
 ```language=Pharo
-MicCSSProvider downloadCSSFrameworks.
+MicCSSProvider new installFrameworks.
 ```
 
-Currently all downloaded frameworks are class-less CSS.
+Currently most downloaded frameworks are class-less CSS.
 
-The destination folder where CSS frameworks are downloaded can be configured with #destinationDir:
+The destination folder where CSS frameworks are downloaded can be configured with #destinationPath:
 
 ```language=Pharo
-MicCSSProvider 
-	destinationDir: 'css_libs';
-	downloadCSSFrameworks
+MicCSSProvider new
+	destinationPath: 'css_libs';
+	installFrameworks
 ```
 
 If not specified, a default destination folder is set automatically.
@@ -42,13 +42,13 @@ If not specified, a default destination folder is set automatically.
 To inspect the currently available libraries:
 
 ```language=Pharo
-MicCSSProvider frameworks.
+MicCSSProvider new frameworks.
 ```
 
 To filter CSS Frameworks delivered through a CDN:
 
 ```language=Pharo
-MicCSSProvider frameworks select: #hasCDN.
+MicCSSProvider new frameworks select: #hasCDN.
 ```
 
 ## Adding a CSS Framework
@@ -125,7 +125,8 @@ MicCSSProvider >> defaultFrameworks [
 			minCssUrl: (frwSpec at: #minCss ifAbsent: [ String empty ]);
 			normalizeUrl: (frwSpec at: #normalizeCss ifAbsent: [ String empty ]);
 			resetUrl: (frwSpec at: #resetUrl ifAbsent: [ String empty ]);
-			themes: (frwSpec at: #themes ifAbsent: [ OrderedCollection empty ]);
+			normalThemes: (frwSpec at: #normalThemes ifAbsent: [ OrderedCollection empty ]);
+			minThemes: (frwSpec at: #minThemes ifAbsent: [ OrderedCollection empty ]);
 			fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]);
 			yourself ]
 ]
@@ -167,14 +168,42 @@ MicCSSProvider >> frameworksSpecs [
 	^ { 
 		{ 
 		#name -> 'AttriCSS' .
-		#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/midnight-green.css' .
-		#repository -> 'https://github.com/raj457036/attriCSS'
+		#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' .
+		#repository -> 'https://github.com/raj457036/attriCSS' .
+		#minThemes -> { 
+			'Brightlight Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' .
+			'Dark Fairy Pink' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkfairy-pink.css' .
+		  	'Dark Forest Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkforest-green.css' .
+			'Light Fairy Pink' ->  'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/lightfairy-pink.css' .
+			'Midnight Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/midnight-green.css'
+			} asDictionary
 		} .
 		
 		{ 
 		#name -> 'AwsmCSS' .
-		#minCss -> 'https://raw.githubusercontent.com/igoradamenko/awsm.css/master/dist/awsm.min.css' .
-		#repository -> 'https://github.com/igoradamenko/awsm.css'
+		#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm.css' .
+		#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm.min.css' .
+		#repository -> 'https://github.com/igoradamenko/awsm.css' .
+		#normalThemes -> { 
+			'White' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.css' .
+			'Gondola' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.css' .
+			'Mischnka' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.css' .
+			'Big Stone' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css' .
+			'Black' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.css' .
+			'Tasman' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.css' .
+			'Pastel Pink' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.css' .
+			'Pearl Lusta' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.css'
+			 } asDictionary .
+		#minThemes -> { 
+			'White' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.min.css' .
+			'Gondola' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.min.css' .
+			'Mischnka' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.min.css' .
+			'Big Stone' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.min.css' .
+			'Black' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.min.css' .
+			'Tasman' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.min.css' .
+			'Pastel Pink' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.min.css' .
+			'Pearl Lusta' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.min.css'
+			 } asDictionary
 		} .
 
 		{ 
@@ -192,7 +221,9 @@ MicCSSProvider >> frameworksSpecs [
 		{ 
 		#name -> 'ClasslessCSS' .	
 		#css -> 'https://classless.de/classless.css' .
-		#repository -> 'https://github.com/emareg/classlesscss'
+		#minCss -> 'https://classless.de/classless-tiny.css' .
+		#repository -> 'https://github.com/emareg/classlesscss' .
+		#normalThemes -> { 'Theme' -> 'https://classless.de/addons/themes.css' } asDictionary
 		} .
 		
 		{ 
@@ -218,7 +249,11 @@ MicCSSProvider >> frameworksSpecs [
 		{ 
 		#name -> 'NewCSS' .	
 		#minCss -> 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css' .
-		#repository -> 'https://github.com/xz/new.css'
+		#repository -> 'https://github.com/xz/new.css' .
+		#normalThemes -> { 
+			'Night' -> 'https://newcss.net/theme/night.css' .
+			'Terminal' ->  'https://newcss.net/theme/terminal.css'
+			} asDictionary
 		} .
 		
 		{ 
@@ -276,7 +311,11 @@ MicCSSProvider >> frameworksSpecs [
 		{ 
 		#name -> 'WaterCSS' .	
 		#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css' .
-		#repository -> 'https://github.com/kognise/water.css'
+		#repository -> 'https://github.com/kognise/water.css' .
+		#minThemes -> { 
+			'Dark' -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css' .
+			'Light' -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/light.min.css' 
+			} asDictionary
 		} .
 		
 		{ 

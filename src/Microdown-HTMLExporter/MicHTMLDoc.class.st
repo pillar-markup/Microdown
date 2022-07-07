@@ -115,6 +115,7 @@ MicHTMLDoc >> charSet: anObject [
 
 { #category : #accessing }
 MicHTMLDoc >> contents [
+	"Update the document with the canvas contents and answer the HTML"
 
 	^ canvas contents
 ]
@@ -199,7 +200,7 @@ MicHTMLDoc >> documentType: anObject [
 MicHTMLDoc >> exists [
 	"Answer <true> if receiver exists as a file"
 	
-	^ self fileName asFileReference exists
+	^ self fullName asFileReference exists
 ]
 
 { #category : #accessing }
@@ -233,6 +234,7 @@ MicHTMLDoc >> flush [
 MicHTMLDoc >> fromMicrodown: aMicrodownString [
 	"Convert to HTML and wrap aMicrodownString in the receiver's HTML stream"
 
+	self initializeCanvas.
 	self writeDocument: (Microdown asHTMLString: aMicrodownString)
 ]
 
@@ -245,13 +247,17 @@ MicHTMLDoc >> fullName [
 
 { #category : #initialization }
 MicHTMLDoc >> initialize [
-	| stream |
 	
 	super initialize.
 	self setCharSetUTF8.
-	stream := MicOutputStream new setStream: (WriteStream on: String empty).
-	canvas := self canvasClass on: stream.
+	self initializeCanvas.
 
+]
+
+{ #category : #initialization }
+MicHTMLDoc >> initializeCanvas [
+
+	canvas := self canvasClass new.
 ]
 
 { #category : #'writing - metadata' }

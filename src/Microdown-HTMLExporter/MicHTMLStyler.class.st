@@ -4,18 +4,18 @@ A Spec user-interface to browse and apply a CSS style to a Microdown document.
 Evaluate the following expression to open it in a browsing mode (only to view available CSS frameworks):
 
 ```language=Pharo
-MicCSSStyler open.
+MicHTMLStyler open.
 ```
 
 To open on a Microdown document, evaluate:
 
 ```language=Pharo
-MicCSSStyler openOn: MicDocFactory exampleMic.
+MicHTMLStyler openOn: MicDocFactory exampleMic.
 ```
 
 "
 Class {
-	#name : #MicCSSStyler,
+	#name : #MicHTMLStyler,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'toolbarPresenter',
@@ -30,14 +30,14 @@ Class {
 }
 
 { #category : #'instance creation' }
-MicCSSStyler class >> open [
+MicHTMLStyler class >> open [
 	<script>
 
 	^ self new open.
 ]
 
 { #category : #'instance creation' }
-MicCSSStyler class >> openOn: aMicrodownString [
+MicHTMLStyler class >> openOn: aMicrodownString [
 
 	self new
 		micDocumentString: aMicrodownString;
@@ -45,14 +45,14 @@ MicCSSStyler class >> openOn: aMicrodownString [
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> addToolbarCommandsTo: aGroup [
+MicHTMLStyler >> addToolbarCommandsTo: aGroup [
 
 	self toolbarCommands do: [ :each | 
 		aGroup register: (each forSpecContext: self) ]
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> baseToolbarCommands [
+MicHTMLStyler >> baseToolbarCommands [
 
 	^ { 
 		MicCSSStylerPreviewCommand .
@@ -64,14 +64,14 @@ MicCSSStyler >> baseToolbarCommands [
 ]
 
 { #category : #accessing }
-MicCSSStyler >> cssDetailsPresenter [
+MicHTMLStyler >> cssDetailsPresenter [
 	" Answer the cssRepositoryContainerPresenter of this MicCSSStyler "
 
 	^ stylerNotebookPresenter
 ]
 
 { #category : #initialization }
-MicCSSStyler >> cssFramework [ 
+MicHTMLStyler >> cssFramework [ 
 	"Answer a <MicCSSFramework>"
 	
 	^ self cssListPresenter ifNotNil: [ : cssList |
@@ -79,18 +79,18 @@ MicCSSStyler >> cssFramework [
 ]
 
 { #category : #accessing }
-MicCSSStyler >> cssFramework: aMicCSSFramework [ 
+MicHTMLStyler >> cssFramework: aMicCSSFramework [ 
 	self shouldBeImplemented.
 ]
 
 { #category : #accessing }
-MicCSSStyler >> cssListPresenter [
+MicHTMLStyler >> cssListPresenter [
 
 	^ cssListPresenter
 ]
 
 { #category : #initialization }
-MicCSSStyler >> cssProvider [
+MicHTMLStyler >> cssProvider [
 	"Answer a <MicCSSProvider> which handles provisioning of CSS frameworks to the receiver"
 
 	^ cssProvider
@@ -98,7 +98,7 @@ MicCSSStyler >> cssProvider [
 ]
 
 { #category : #layout }
-MicCSSStyler >> defaultLayout [
+MicHTMLStyler >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom 
 		add: toolbarPresenter height: self class toolbarHeight + 15;	
@@ -111,56 +111,56 @@ MicCSSStyler >> defaultLayout [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> frameworks [
+MicHTMLStyler >> frameworks [
 	"Answer a <Collection> with CSS libraries"
 	
 	^ self cssProvider frameworks
 ]
 
 { #category : #testing }
-MicCSSStyler >> hasCssSelection [
+MicHTMLStyler >> hasCssSelection [
 
 	^ self cssListPresenter notNil and: [ 
 		  self cssListPresenter selection isEmpty not ]
 ]
 
 { #category : #testing }
-MicCSSStyler >> hasMicDocument [
+MicHTMLStyler >> hasMicDocument [
 	"Answer <true> if the receiver has a Microdown HTML document opened"
 
 	^ micHtmlDocument notNil
 ]
 
 { #category : #testing }
-MicCSSStyler >> hasMicDocumentFileRef [
+MicHTMLStyler >> hasMicDocumentFileRef [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
 	^ micDocumentFileRef notNil
 ]
 
 { #category : #testing }
-MicCSSStyler >> hasMicDocumentString [
+MicHTMLStyler >> hasMicDocumentString [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
 	^ micDocumentString notNil
 ]
 
 { #category : #testing }
-MicCSSStyler >> hasMicHtmlDocument [
+MicHTMLStyler >> hasMicHtmlDocument [
 	"Answer <true> if there is content in the HTML preview presenter"
 
 	^ self cssDetailsPresenter hasMicHtmlDocument 
 ]
 
 { #category : #accessing }
-MicCSSStyler >> iconForWindow [
+MicHTMLStyler >> iconForWindow [
 	"Answer a Form to be used during initialization when opening in a SpWindowPresenter."
 
 	^ self iconNamed: #smallWindow
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initialize [
+MicHTMLStyler >> initialize [
 	"Private - Initialize the receiver's frameworks before UI display"
 
 	self cssProvider hasFrameworksInstalled
@@ -169,13 +169,13 @@ MicCSSStyler >> initialize [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializeDetailPresenter [
+MicHTMLStyler >> initializeDetailPresenter [
 
-	stylerNotebookPresenter := self instantiate: MicCSSStylerDetailViewsPresenter on: self.
+	stylerNotebookPresenter := self instantiate: MicHTMLStylerDetailViewsPresenter on: self.
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializeFocus [
+MicHTMLStyler >> initializeFocus [
 	" Private - See superimplementor's comment "
 
 	self focusOrder
@@ -185,7 +185,7 @@ MicCSSStyler >> initializeFocus [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializeListPresenter [
+MicHTMLStyler >> initializeListPresenter [
 
 	cssListPresenter := self newList
 		enableSearch;
@@ -193,7 +193,7 @@ MicCSSStyler >> initializeListPresenter [
 		display: #name;
 		whenSelectionChangedDo: [ : selectionMode | 
 			selectionMode selectedItem
-				ifNotNil: [ : micCSSFrw | self cssDetailsPresenter updatePresenter ] ];
+				ifNotNil: [ : micCSSFrw | self updatePresenter ] ];
 		items: self frameworks;
 		sortingBlock: [ : a : b | a name < b name ];
 		headerTitle: 'Styles';
@@ -204,7 +204,7 @@ MicCSSStyler >> initializeListPresenter [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializePresenters [
+MicHTMLStyler >> initializePresenters [
 	" Private - See superimplementor's comment "
 
 	self initializeToolbar.
@@ -214,7 +214,7 @@ MicCSSStyler >> initializePresenters [
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> initializeToolbar [
+MicHTMLStyler >> initializeToolbar [
 
 	toolbarPresenter := self newToolbar
 		fillWith: self toolbarActions;
@@ -222,7 +222,7 @@ MicCSSStyler >> initializeToolbar [
 ]
 
 { #category : #initialization }
-MicCSSStyler >> initializeWindow: aWindowPresenter [
+MicHTMLStyler >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: self title;
@@ -233,14 +233,14 @@ MicCSSStyler >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #testing }
-MicCSSStyler >> isOverwrite [
+MicHTMLStyler >> isOverwrite [
 	"Answer <true> if receiver is set to overwrite on exporting"
 	
 	^ self cssDetailsPresenter isOverwrite
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocumentContents [
+MicHTMLStyler >> micDocumentContents [
 	"Answer a <String> representing Microdown contents taken from the receiver. 
 	We could have a micDocumentFileRef pointing to an existing .mic file or 
 	we could have a micDocumentString being a unsaved new Microdown document"
@@ -251,45 +251,46 @@ MicCSSStyler >> micDocumentContents [
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocumentFileRef [
+MicHTMLStyler >> micDocumentFileRef [
 
 	^ micDocumentFileRef
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocumentFileRef: anObject [
+MicHTMLStyler >> micDocumentFileRef: aFileReference [
 	"A document has been opened, update the receiver's views"
 
-	micDocumentFileRef := anObject.
+	micDocumentFileRef := aFileReference.
+	micDocumentString := aFileReference contents.
 	self updatePresenter.
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocumentString [
+MicHTMLStyler >> micDocumentString [
 
 	^ micDocumentString
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micDocumentString: anObject [
+MicHTMLStyler >> micDocumentString: anObject [
 
 	micDocumentString := anObject
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micHtmlDocument [
+MicHTMLStyler >> micHtmlDocument [
 
 	^ micHtmlDocument
 ]
 
 { #category : #accessing }
-MicCSSStyler >> micHtmlDocument: anObject [
+MicHTMLStyler >> micHtmlDocument: anObject [
 
 	micHtmlDocument := anObject
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> optionalToolbarCommands [
+MicHTMLStyler >> optionalToolbarCommands [
 	"Show opening button if this tool was opened externally, i.e. without a user document"
 
 	self hasMicDocumentString
@@ -298,32 +299,29 @@ MicCSSStyler >> optionalToolbarCommands [
 ]
 
 { #category : #accessing }
-MicCSSStyler >> selectedCssFramework [
+MicHTMLStyler >> selectedCssFramework [
 
 	^ self cssListPresenter
 		ifNotNil: [ : cssFrameworkList | cssFrameworkList selectedItem ]
 ]
 
 { #category : #initialization }
-MicCSSStyler >> title [
+MicHTMLStyler >> title [
 	" Private - See superimplementor's comment "
 
-	^ 'Microdown CSS Styler'
+	^ 'Microdown HTML Styler'
 ]
 
 { #category : #accessing }
-MicCSSStyler >> titleForWindow [ 
+MicHTMLStyler >> titleForWindow [ 
 
 	^ self hasMicDocumentFileRef
 		ifTrue: [ self title , ' on: ' , self micDocumentFileRef basename ]
-		ifFalse: [ 
-			self hasMicDocumentString
-				ifTrue: [ self title , ' on: <Unsaved document>' ]
-				ifFalse: [ self title ] ]
+		ifFalse: [ self title ]
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> toolbarActions [
+MicHTMLStyler >> toolbarActions [
 
 	^ CmCommandGroup forSpec
 		in: [ :this | self addToolbarCommandsTo: this ];
@@ -331,40 +329,40 @@ MicCSSStyler >> toolbarActions [
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> toolbarCommands [
+MicHTMLStyler >> toolbarCommands [
 
 	^ self baseToolbarCommands , self optionalToolbarCommands sorted: #order ascending
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> toolbarPresenter [
+MicHTMLStyler >> toolbarPresenter [
 	" Answer the toolbarPresenter of this MicCSSStyler "
 
 	^ toolbarPresenter
 ]
 
 { #category : #'accessing - toolbar' }
-MicCSSStyler >> toolbarPresenter: anObject [
+MicHTMLStyler >> toolbarPresenter: anObject [
 	" Sets the toolbarPresenter of this MicCSSStyler "
 
 	toolbarPresenter := anObject
 ]
 
 { #category : #updating }
-MicCSSStyler >> updateHtmlOptionsPresenter [
+MicHTMLStyler >> updateHtmlOptionsPresenter [
 
 	self cssDetailsPresenter updateHtmlOptionsPresenter
 ]
 
 { #category : #updating }
-MicCSSStyler >> updateHtmlSourcePresenter [
+MicHTMLStyler >> updateHtmlSourcePresenter [
 
-	(self hasMicDocumentString or: [ self hasMicDocumentFileRef ])
+	self hasMicDocumentFileRef
 		ifTrue: [ self cssDetailsPresenter updateHtmlSourcePresenter ]
 ]
 
 { #category : #updating }
-MicCSSStyler >> updateMicHtmlDocument [
+MicHTMLStyler >> updateMicHtmlDocument [
 	"Answer a new Microdown HTML document configured with the receiver's settings"
 	
 	self micHtmlDocument: MicHTMLDoc new.
@@ -373,14 +371,14 @@ MicCSSStyler >> updateMicHtmlDocument [
 	self hasMicDocumentFileRef 
 		ifTrue: [ self micHtmlDocument fileName: self micDocumentFileRef withoutExtension basename , '.html' ].
 	self micHtmlDocument 
-		charSet: self cssDetailsPresenter charSet;
 		fromMicrodown: self micDocumentContents
 ]
 
 { #category : #updating }
-MicCSSStyler >> updatePresenter [
+MicHTMLStyler >> updatePresenter [
 
 	super updatePresenter.
+	self cssDetailsPresenter updatePresenter	.
 	self updateTitle.
 	self 
 		updateMicHtmlDocument;
@@ -390,7 +388,7 @@ MicCSSStyler >> updatePresenter [
 ]
 
 { #category : #updating }
-MicCSSStyler >> updateTitle [
+MicHTMLStyler >> updateTitle [
 	
 	self withWindowDo: [ :aWindow | aWindow title: self titleForWindow ]
 ]

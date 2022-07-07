@@ -34,78 +34,18 @@ Instance Variables
 "
 Class {
 	#name : #MicCSSFramework,
-	#superclass : #Object,
+	#superclass : #MicCSSEntity,
 	#instVars : [
-		'name',
 		'mainUrl',
-		'cssUrl',
 		'minCssUrl',
-		'themes',
 		'normalizeUrl',
 		'resetUrl',
 		'fonts',
-		'cssFile',
-		'basePath'
+		'normalThemes',
+		'minThemes'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
-
-{ #category : #accessing }
-MicCSSFramework >> basePath [
-	"Answer a <String> representing the receciver's path without its file name"
-
-	^ basePath
-		ifNil: [ basePath := self defaultBasePath ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> basePath: anObject [
-
-	basePath := anObject
-]
-
-{ #category : #accessing }
-MicCSSFramework >> cssFile [
-	"Answer the receiver's <MicCSSFile>"
-
-	^ cssFile
-]
-
-{ #category : #accessing }
-MicCSSFramework >> cssFile: anObject [
-
-	cssFile := anObject
-]
-
-{ #category : #accessing }
-MicCSSFramework >> cssPath [
-	"Answer a <String> describing the location path for the receiver"
-	
-	^ String streamContents: [ : stream |
-		stream 
-			<< self basePath;
-			<< self cssFile basename ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> cssUrl [
-	"Answer a <String> representing the receiver's human-readable CSS URL"
-
-	^ cssUrl
-]
-
-{ #category : #accessing }
-MicCSSFramework >> cssUrl: anObject [
-
-	cssUrl := anObject
-]
-
-{ #category : #defaults }
-MicCSSFramework >> defaultBasePath [
-	"Answer a default <String> describing the location where receiver's CSS files are stored"
-	
-	^ 'css/'
-]
 
 { #category : #accessing }
 MicCSSFramework >> fonts [
@@ -124,6 +64,7 @@ MicCSSFramework >> fonts: anObject [
 MicCSSFramework >> hasCDN [
 	"Answer <true> if the receiver is provided through a CDN URL"
 	
+	self halt.
 	^ self minCssUrl isCDN or: [ self cssUrl isCDN ]
 ]
 
@@ -138,7 +79,7 @@ MicCSSFramework >> hasMinifiedVersion [
 MicCSSFramework >> hasThemes [
 	"Answer <true> if the receiver has themes"
 
-	^ self themes notEmpty
+	^ self normalThemes notEmpty or: [ self minThemes notEmpty ]
 ]
 
 { #category : #accessing }
@@ -169,15 +110,43 @@ MicCSSFramework >> minCssUrl: anObject [
 ]
 
 { #category : #accessing }
-MicCSSFramework >> name [
+MicCSSFramework >> minThemes [
 
-	^ name
+	^ minThemes
 ]
 
 { #category : #accessing }
-MicCSSFramework >> name: anObject [
+MicCSSFramework >> minThemes: aDictionary [
+	"Set the receiver's minified themes according to aDictionary"
 
-	name := anObject
+	minThemes := OrderedCollection new.
+	aDictionary associationsDo: [ : assoc |
+		minThemes add: (MicCSSTheme new 
+			name: assoc key;
+			framework: self;
+			cssUrl: assoc value;
+			beMinified;
+			yourself)  ]
+]
+
+{ #category : #accessing }
+MicCSSFramework >> normalThemes [
+	"Answer a <Collection> of receiver's themes"
+
+	^ normalThemes
+]
+
+{ #category : #accessing }
+MicCSSFramework >> normalThemes: aDictionary [
+	"Set the receiver's normal themes according to aDictionary"
+
+	normalThemes := OrderedCollection new.
+	aDictionary associationsDo: [ : assoc |
+		normalThemes add: (MicCSSTheme new 
+			name: assoc key;
+			framework: self;
+			cssUrl: assoc value;
+			yourself)  ]
 ]
 
 { #category : #accessing }
@@ -214,26 +183,6 @@ MicCSSFramework >> resetUrl [
 MicCSSFramework >> resetUrl: anObject [
 
 	resetUrl := anObject
-]
-
-{ #category : #accessing }
-MicCSSFramework >> sourceCode [
-	"Answer a <String> representing the receiver's CSS source"
-	
-	^ self cssFile contents
-]
-
-{ #category : #accessing }
-MicCSSFramework >> themes [
-	"Answer a <Collection> of receiver's themes"
-
-	^ themes
-]
-
-{ #category : #accessing }
-MicCSSFramework >> themes: anObject [
-
-	themes := anObject
 ]
 
 { #category : #private }

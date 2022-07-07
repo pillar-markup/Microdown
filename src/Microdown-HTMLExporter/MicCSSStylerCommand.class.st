@@ -29,8 +29,11 @@ MicCSSStylerCommand >> cssFramework [
 MicCSSStylerCommand >> exportToHtml: aMicHTMLDoc [ 
 	"Write passed Microdown HTML document to a file"
 
-	(self context isOverwrite not and: [ aMicHTMLDoc exists ])
-		ifTrue: [ ^ self inform: 'Already exists' ].
+	aMicHTMLDoc exists
+		ifTrue: [
+			self context isOverwrite
+				ifFalse: [ ^ self inform: 'Already exists' ]
+				ifTrue: [ self removeExport: aMicHTMLDoc fullName asFileReference ] ].
 	aMicHTMLDoc writeToFileNamed: aMicHTMLDoc fileName.
 	self inform: 'Export finished'
 ]
@@ -39,4 +42,10 @@ MicCSSStylerCommand >> exportToHtml: aMicHTMLDoc [
 MicCSSStylerCommand >> micHtmlDocument [
 
 	^ self context micHtmlDocument
+]
+
+{ #category : #private }
+MicCSSStylerCommand >> removeExport: aFileReference [ 
+
+	aFileReference parent ensureDeleteAll.
 ]

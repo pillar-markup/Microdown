@@ -1,6 +1,6 @@
 Class {
-	#name : #MicCSSStylerPublishOptionsPresenter,
-	#superclass : #MicCSSStylerAbstractPresenter,
+	#name : #MicHTMLStylerPublishOptionsPresenter,
+	#superclass : #MicHTMLStylerAbstractPresenter,
 	#instVars : [
 		'urlPresenter',
 		'usernamePresenter'

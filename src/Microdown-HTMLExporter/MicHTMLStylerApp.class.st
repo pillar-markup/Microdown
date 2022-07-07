@@ -4,31 +4,31 @@ The Spec hook for the Microdown CSS Styler, a tool to configure document export 
 See class side to open the UI.
 "
 Class {
-	#name : #MicCSSStylerApp,
+	#name : #MicHTMLStylerApp,
 	#superclass : #SpApplication,
 	#category : #'Microdown-HTMLExporter-Spec'
 }
 
 { #category : #'instance creation' }
-MicCSSStylerApp class >> menuCommandOn: aBuilder [ 
+MicHTMLStylerApp class >> menuCommandOn: aBuilder [ 
 	<worldMenu> 
 	
-	(aBuilder item: #'Microdown CSS Styler')
+	(aBuilder item: #'Microdown HTML Styler')
 		parent: #Tools;
 		action:[ self new run ];
 		icon: self taskbarIcon.
 ]
 
 { #category : #'instance creation' }
-MicCSSStylerApp class >> open [
+MicHTMLStylerApp class >> open [
 	<script>
 
 	self new run
 ]
 
 { #category : #accessing }
-MicCSSStylerApp >> start [
+MicHTMLStylerApp >> start [
 	" Private - See superimplementor's comment "
 
-	(MicCSSStyler newApplication: self) open.
+	(MicHTMLStyler newApplication: self) open.
 ]

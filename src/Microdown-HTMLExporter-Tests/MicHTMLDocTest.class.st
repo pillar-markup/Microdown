@@ -117,6 +117,15 @@ MicHTMLDocTest >> testCssFrameworks [
 		description: 'It test that the contained CSS files collection is empty'
 ]
 
+{ #category : #test }
+MicHTMLDocTest >> testDefaultDocumentType [
+
+	self 
+		assert: (doc defaultDocumentType isKindOf: String)
+		description: 'It tests that the default document type identifier is a String'.
+
+]
+
 { #category : #tests }
 MicHTMLDocTest >> testDefaultLanguageId [
 

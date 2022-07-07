@@ -44,7 +44,7 @@ MicCSSStylerExportCommand >> canBeExecuted [
 	^ super canBeExecuted and: [ self context hasMicHtmlDocument ]
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MicCSSStylerExportCommand >> execute [
 
 	self canBeExecuted 

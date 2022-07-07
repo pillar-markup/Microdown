@@ -7,7 +7,7 @@ Provides a presenter to display the currently selected CSS library details, such
 
 "
 Class {
-	#name : #MicCSSStylerDetailViewsPresenter,
+	#name : #MicHTMLStylerDetailViewsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'styler',
@@ -22,25 +22,13 @@ Class {
 }
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> charSet [
+MicHTMLStylerDetailViewsPresenter >> charSet [
 
 	^ htmlOptionsPresenter charSet.
 ]
 
-{ #category : #initialization }
-MicCSSStylerDetailViewsPresenter >> convertToHtml: micContents [
-	"Answer a <String> formatted as HTML, applying receiver's setttings, from Microdown document in micContents"
-
-	self halt.
-	self styler hasCssSelection
-		ifTrue: [ self micHtmlDocument addCSSNamed: self cssFramework name ].
-	^ self micHtmlDocument
-		fromMicrodown: micContents;
-		contents
-]
-
 { #category : #'accessing - pages' }
-MicCSSStylerDetailViewsPresenter >> cssDetailsPage [
+MicHTMLStylerDetailViewsPresenter >> cssDetailsPage [
 
 	^ (SpNotebookPage 
 		title: 'CSS Details' 
@@ -51,39 +39,39 @@ MicCSSStylerDetailViewsPresenter >> cssDetailsPage [
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> cssFramework [
+MicHTMLStylerDetailViewsPresenter >> cssFramework [
 
 	^ self styler cssFramework
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> cssFramework: anObject [
+MicHTMLStylerDetailViewsPresenter >> cssFramework: anObject [
 
 	self styler cssFramework: anObject.
 	self updatePresenter
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> cssListPresenter [
+MicHTMLStylerDetailViewsPresenter >> cssListPresenter [
 
 	^ self styler cssListPresenter
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> cssMetaInfoPresenter [
+MicHTMLStylerDetailViewsPresenter >> cssMetaInfoPresenter [
 
 	^ cssMetaInfoPresenter
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> cssSourcePresenter [
+MicHTMLStylerDetailViewsPresenter >> cssSourcePresenter [
 
 	^ cssSourceCodePresenter
 
 ]
 
 { #category : #layout }
-MicCSSStylerDetailViewsPresenter >> defaultLayout [ 
+MicHTMLStylerDetailViewsPresenter >> defaultLayout [ 
 
 	^ self layout: (SpPanedLayout newTopToBottom 
 		positionOfSlider: 45 percent;
@@ -95,8 +83,15 @@ MicCSSStylerDetailViewsPresenter >> defaultLayout [
 		yourself)
 ]
 
+{ #category : #accessing }
+MicHTMLStylerDetailViewsPresenter >> documentType [
+	"Answer a <String> describing the selected HTML document type"
+
+	^ htmlOptionsPresenter documentType.
+]
+
 { #category : #'accessing - pages' }
-MicCSSStylerDetailViewsPresenter >> exportOptionsPage [
+MicHTMLStylerDetailViewsPresenter >> exportOptionsPage [
 
 	^ (SpNotebookPage 
 		title: 'Export Options' 
@@ -106,14 +101,14 @@ MicCSSStylerDetailViewsPresenter >> exportOptionsPage [
 ]
 
 { #category : #testing }
-MicCSSStylerDetailViewsPresenter >> hasMicHtmlDocument [
+MicHTMLStylerDetailViewsPresenter >> hasMicHtmlDocument [
 	"Answer <true> if there is content in the HTML preview presenter"
 	
 	^ self htmlSourcePresenter text notEmpty
 ]
 
 { #category : #'accessing - pages' }
-MicCSSStylerDetailViewsPresenter >> htmlOptionsPage [
+MicHTMLStylerDetailViewsPresenter >> htmlOptionsPage [
 
 	^ SpNotebookPage 
 		title: 'HTML Options'
@@ -122,18 +117,18 @@ MicCSSStylerDetailViewsPresenter >> htmlOptionsPage [
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> htmlSourcePresenter [
+MicHTMLStylerDetailViewsPresenter >> htmlSourcePresenter [
 
 	^ htmlSourcePresenter
 
 ]
 
 { #category : #initialization }
-MicCSSStylerDetailViewsPresenter >> initializeNotebookPresenter [
+MicHTMLStylerDetailViewsPresenter >> initializeNotebookPresenter [
 
-	cssMetaInfoPresenter := self instantiate: MicCSSStylerMetaInfoPresenter on: self cssFramework.
-	htmlOptionsPresenter := self instantiate: MicCSSStylerHTMLOptionsPresenter on: self styler.
-	exportOptionsPresenter := self instantiate: MicCSSStylerExportOptionsPresenter on: self styler.
+	cssMetaInfoPresenter := self instantiate: MicHTMLStylerCSSInfoPresenter on: self cssFramework.
+	htmlOptionsPresenter := self instantiate: MicHTMLStylerOptionsPresenter on: self styler.
+	exportOptionsPresenter := self instantiate: MicHTMLStylerExportOptionsPresenter on: self styler.
 
 	notebookPresenter := self newNotebook
 		addPage: self htmlOptionsPage;
@@ -143,7 +138,7 @@ MicCSSStylerDetailViewsPresenter >> initializeNotebookPresenter [
 ]
 
 { #category : #initialization }
-MicCSSStylerDetailViewsPresenter >> initializePresenters [ 
+MicHTMLStylerDetailViewsPresenter >> initializePresenters [ 
 
 	htmlSourcePresenter := self newText
 		beWrapWord;
@@ -158,31 +153,38 @@ MicCSSStylerDetailViewsPresenter >> initializePresenters [
 ]
 
 { #category : #testing }
-MicCSSStylerDetailViewsPresenter >> isOverwrite [
+MicHTMLStylerDetailViewsPresenter >> isOverwrite [
 
 	^ exportOptionsPresenter isOverwrite
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> micDocument [
+MicHTMLStylerDetailViewsPresenter >> micDocument [
 
 	^ self styler micHtmlDocument
 ]
 
 { #category : #updating }
-MicCSSStylerDetailViewsPresenter >> micHtmlDocument [
+MicHTMLStylerDetailViewsPresenter >> micDocumentString [
+
+	^ self styler micDocumentString
+
+]
+
+{ #category : #updating }
+MicHTMLStylerDetailViewsPresenter >> micHtmlDocument [
 
 	^ self styler micHtmlDocument
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> selectedCssFramework [
+MicHTMLStylerDetailViewsPresenter >> selectedCssFramework [
 
 	^ self styler selectedCssFramework
 ]
 
 { #category : #accessing }
-MicCSSStylerDetailViewsPresenter >> selectedCssFrameworkSourceCode [
+MicHTMLStylerDetailViewsPresenter >> selectedCssFrameworkSourceCode [
 	"Answer a <String> with the receiver's selected CSS Framework source code"
 
 	^ self cssListPresenter selectedItem
@@ -191,19 +193,19 @@ MicCSSStylerDetailViewsPresenter >> selectedCssFrameworkSourceCode [
 ]
 
 { #category : #'accessing - model' }
-MicCSSStylerDetailViewsPresenter >> setModelBeforeInitialization: aDomainObject [
+MicHTMLStylerDetailViewsPresenter >> setModelBeforeInitialization: aDomainObject [
 
 	styler := aDomainObject.
 ]
 
 { #category : #initialization }
-MicCSSStylerDetailViewsPresenter >> styler [
+MicHTMLStylerDetailViewsPresenter >> styler [
 
 	^ styler
 ]
 
 { #category : #updating }
-MicCSSStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
+MicHTMLStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
 
 	exportOptionsPresenter 
 		outputDestinationPath: self micDocument destinationPath;
@@ -212,14 +214,17 @@ MicCSSStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
 ]
 
 { #category : #updating }
-MicCSSStylerDetailViewsPresenter >> updateHtmlSourcePresenter [
+MicHTMLStylerDetailViewsPresenter >> updateHtmlSourcePresenter [
+	"Update the receiver's HTML view"
 
-	self htmlSourcePresenter text: self micHtmlDocument contents.
-
+	| updatedMicHtml |
+	
+	updatedMicHtml := self micHtmlDocument fromMicrodown: self micDocumentString.
+	self htmlSourcePresenter text: updatedMicHtml contents
 ]
 
 { #category : #updating }
-MicCSSStylerDetailViewsPresenter >> updatePresenter [
+MicHTMLStylerDetailViewsPresenter >> updatePresenter [
 
 	super updatePresenter.
 	self styler hasCssSelection ifFalse: [ ^ self ].

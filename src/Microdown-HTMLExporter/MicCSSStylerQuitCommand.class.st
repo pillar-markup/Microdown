@@ -31,7 +31,7 @@ MicCSSStylerQuitCommand class >> order [
 	^ 100
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MicCSSStylerQuitCommand >> execute [
 
 	^ self context delete

@@ -36,7 +36,11 @@ MicCSSDownloader >> downloadCSSFramework: cssFramework [
 
 	cssFramework minCssUrl
 		ifNotEmpty: [ self downloadCSSFrameworkFrom: cssFramework minCssUrl ]
-		ifEmpty: [ self downloadCSSFrameworkFrom:cssFramework cssUrl ]
+		ifEmpty: [ self downloadCSSFrameworkFrom:cssFramework cssUrl ].
+	cssFramework normalThemes do: [ : cssFrwThemeUrl |
+		self downloadCSSFrameworkFrom: cssFrwThemeUrl ].
+	cssFramework minThemes do: [ : cssFrwThemeUrl |
+		self downloadCSSFrameworkFrom: cssFrwThemeUrl ].
 ]
 
 { #category : #'accessing - downloading' }
@@ -47,6 +51,7 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 	url := anURLString asZnUrl.
 	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.
+	ZnFileSystemUtils deleteIfExists: dest / url pathSegments last.
 	(client := self httpClient) 
 		url: url ;
 		downloadTo: (dest / url pathSegments last)

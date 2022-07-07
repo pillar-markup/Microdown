@@ -37,7 +37,7 @@ MicCSSStylerOpenCommand class >> order [
 	^ 2
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MicCSSStylerOpenCommand >> execute [
 
 	(self requestFileNameForOpen: '*.mic')

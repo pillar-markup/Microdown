@@ -34,7 +34,7 @@ MicCSSStylerPublishCommand class >> order [
 	^ 9
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MicCSSStylerPublishCommand >> execute [
 
 	self halt

@@ -1,6 +1,15 @@
+"
+Provide a presenter with destination options for export such as:
+
+- Output file name.
+- Destination path.
+- Overwrite existing files.
+
+
+"
 Class {
-	#name : #MicCSSStylerExportOptionsPresenter,
-	#superclass : #MicCSSStylerAbstractPresenter,
+	#name : #MicHTMLStylerExportOptionsPresenter,
+	#superclass : #MicHTMLStylerAbstractPresenter,
 	#instVars : [
 		'outputFilenameTextPresenter',
 		'outputPathTextPresenter',
@@ -10,7 +19,7 @@ Class {
 }
 
 { #category : #layout }
-MicCSSStylerExportOptionsPresenter >> defaultLayout [ 
+MicHTMLStylerExportOptionsPresenter >> defaultLayout [ 
 
 	^ SpGridLayout build: [ : builder |
 		builder
@@ -26,15 +35,15 @@ MicCSSStylerExportOptionsPresenter >> defaultLayout [
 ]
 
 { #category : #initialization }
-MicCSSStylerExportOptionsPresenter >> destinationPath [
+MicHTMLStylerExportOptionsPresenter >> destinationPath [
 
-	^ self styler hasMicDocumentString
+	^ self styler hasMicDocumentFileRef
 		ifTrue: [ self styler destinationPath ]
 		ifFalse: [ String empty ]
 ]
 
 { #category : #initialization }
-MicCSSStylerExportOptionsPresenter >> initializePresenters [ 
+MicHTMLStylerExportOptionsPresenter >> initializePresenters [ 
 
 	outputFilenameTextPresenter := self newTextInput
 		help: 'Output file name';
@@ -49,26 +58,33 @@ MicCSSStylerExportOptionsPresenter >> initializePresenters [
 ]
 
 { #category : #testing }
-MicCSSStylerExportOptionsPresenter >> isOverwrite [
+MicHTMLStylerExportOptionsPresenter >> isOverwrite [
 	"Answer <true> if overwrite existing file is set"
 	
 	^ overwriteCheckboxPresenter state
 ]
 
 { #category : #accessing }
-MicCSSStylerExportOptionsPresenter >> micDocumentFileRef [
+MicHTMLStylerExportOptionsPresenter >> micDocumentFileRef [
 
 	^ self styler micDocumentFileRef
 ]
 
 { #category : #accessing }
-MicCSSStylerExportOptionsPresenter >> outputDestinationPath: aString [
+MicHTMLStylerExportOptionsPresenter >> outputDestinationPath: aString [
 
 	outputPathTextPresenter text: aString
 ]
 
 { #category : #accessing }
-MicCSSStylerExportOptionsPresenter >> outputFilename: aString [
+MicHTMLStylerExportOptionsPresenter >> outputFilename: aString [
 
 	outputFilenameTextPresenter text: aString
+]
+
+{ #category : #private }
+MicHTMLStylerExportOptionsPresenter >> selectDirectory [
+
+	(UIManager default chooseDirectoryFrom: self destinationPath)
+		ifNotNil: [ :selectedDirectory | self micHtmlDocument destinationPath: selectedDirectory ]
 ]
