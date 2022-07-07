@@ -1,7 +1,7 @@
 Class {
 	#name : #MicSlideBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#category : #'Microdown-Tests-Extensions'
 }
 
 { #category : #tests }
