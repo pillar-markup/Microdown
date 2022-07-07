@@ -135,6 +135,25 @@ toto'.
 ]
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenMotherNested [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+
+<!script 
+
+!>
+
+The mother environment is not closed so it will eat everything.
+'.
+	self assert: root children size equals: 1. 
+
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
  
 	| root env |
