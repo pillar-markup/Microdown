@@ -180,6 +180,12 @@ MicrodownVisitor >> visitRoot: aRoot [
 ]
 
 { #category : #'visiting - extensions' }
+MicrodownVisitor >> visitScript: aSlide [
+
+	^ aSlide children collect: [ :each | self visit: each ]
+]
+
+{ #category : #'visiting - extensions' }
 MicrodownVisitor >> visitSlide: aSlide [
 
 	^ aSlide children collect: [ :each | self visit: each ]
