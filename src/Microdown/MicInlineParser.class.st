@@ -235,7 +235,8 @@ MicInlineParser >> findType: aType [
 
 { #category : #actions }
 MicInlineParser >> identifyMarkupFor: aString [
-
+	<protected>
+	
 	(self class keyBeginSet includes: aString first) ifFalse: [ ^ 1 ].
 	keys do: [ :key |
 		(aString beginsWith: key) ifTrue: [ 

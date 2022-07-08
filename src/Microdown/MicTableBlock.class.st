@@ -61,7 +61,7 @@ MicTableBlock >> addLineAndReturnNextNode: line [
 
 { #category : #'parse support' }
 MicTableBlock >> closeMe [ 
-
+	<protected>
 	| firstSize |
 	firstSize := rows first size.
 	rows := rows collect: [ :each | self cut: each toSize: firstSize ].

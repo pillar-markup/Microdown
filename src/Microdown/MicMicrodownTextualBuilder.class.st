@@ -295,6 +295,7 @@ MicMicrodownTextualBuilder >> horizontalLine [
 
 { #category : #initialization }
 MicMicrodownTextualBuilder >> initialize [
+	<protected>
 	super initialize.
 	prefixStack := OrderedCollection new.
 	currentLevel := -1.
@@ -657,7 +658,7 @@ MicMicrodownTextualBuilder >> writeIndentedCodeBlockDuring: aBlockClosure [
 	"The logic of writeIndentedCodeBlockDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
-	
+	<protected>	
 	self
 		writePrefix: PreformattedMarkup
 		forEachLineDuring: aBlockClosure.
@@ -668,6 +669,7 @@ MicMicrodownTextualBuilder >> writePrefix: aString forEachLineDuring: aBlockClos
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
+	<protected>	
 	self pushPrefix: aString.
 	aBlockClosure ensure: [ self popPrefix ].
 ]
@@ -677,6 +679,7 @@ MicMicrodownTextualBuilder >> writeQuoteCodeBlockDuring: aBlockClosure [
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
 It means that within the context of a visitor the visitText: method should do it."
+	<protected>	
 	self
 		writePrefix: PreformattedMarkup, String space
 		forEachLineDuring: aBlockClosure
@@ -685,5 +688,6 @@ It means that within the context of a visitor the visitText: method should do it
 { #category : #'element - list' }
 MicMicrodownTextualBuilder >> writeStartOfOrderedListIndex: anInteger [
 	"does not handle for now nesting"
+	<protected>
 	self raw: anInteger asString, OrderedListSemiMarkup
 ]

@@ -64,7 +64,8 @@ MicAnnotationBlock >> arguments: anArguments [
 ]
 
 { #category : #visiting }
-MicAnnotationBlock >> closeMe [ 
+MicAnnotationBlock >> closeMe [
+	<protected>
 
 	
 ]

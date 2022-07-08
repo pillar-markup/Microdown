@@ -46,7 +46,7 @@ MicSameStartStopMarkupBlock >> captionElements [
 { #category : #public }
 MicSameStartStopMarkupBlock >> closeMe [
 	"The only case where the receiver contains a nested element is in its caption"
-	
+	<protected>
 	super closeMe.
 	body ifNil: [ body := '' ].
 	self arguments

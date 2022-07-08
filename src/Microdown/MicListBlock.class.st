@@ -80,6 +80,7 @@ MicListBlock >> canConsumeLine: line [
 
 { #category : #accessing }
 MicListBlock >> closeMe [
+	<protected>
 	super closeMe.
 	nestedLevel := self computeNestedLevel
 ]

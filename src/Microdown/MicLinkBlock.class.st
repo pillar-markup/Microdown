@@ -14,9 +14,9 @@ MicLinkBlock >> accept: aVisitor [
 
 { #category : #visiting }
 MicLinkBlock >> closeMe [
+	<protected>
 	
 	| split args |
-
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	args := (split second ifNil: [ '' ]) trimBoth: [:char | {$". Character space} includes: char].

@@ -23,8 +23,9 @@ MicQuoteBlock >> accept: aVisitor [
 
 { #category : #visiting }
 MicQuoteBlock >> closeMe [
-	super closeMe.
+	<protected>
 	
+	super closeMe.
 	children := MicInlineParser new parse: text
 ]
 

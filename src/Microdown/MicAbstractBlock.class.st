@@ -48,14 +48,14 @@ MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 { #category : #public }
 MicAbstractBlock >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
-
+	<protected>
 	^ (self parser blockStarterClassFrom: line) ifNotNil: [ :c | c alternateBlockClassFor: line ]
 ]
 
 { #category : #public }
 MicAbstractBlock >> canConsumeLine: line [
 	"return if this block can consume line"
-
+	<protected>
 	^ self subclassResponsibility 
 ]
 
@@ -72,13 +72,13 @@ MicAbstractBlock >> children: aCollection [
 { #category : #public }
 MicAbstractBlock >> closeMe [
 	"I'm hook for closing elements. By default do nothing."
-	
+	<protected>
 	^ self
 ]
 
 { #category : #public }
 MicAbstractBlock >> computeNestedLevel [ 
-
+	<protected>
 	^ 0
 ]
 
@@ -96,6 +96,8 @@ MicAbstractBlock >> indent [
 
 { #category : #initialization }
 MicAbstractBlock >> initialize [
+	<protected>
+	
 	super initialize. 
 	children := OrderedCollection new.
 ]
@@ -107,6 +109,8 @@ MicAbstractBlock >> isRootSection [
 
 { #category : #testing }
 MicAbstractBlock >> listItemBlockClass [
+	<protected>
+	
 	^ MicListItemBlock
 ]
 
@@ -119,6 +123,7 @@ MicAbstractBlock >> nestedLevel [
 
 { #category : #public }
 MicAbstractBlock >> newBlockFor: line parent: parentBlock [
+	<protected>
 	| newBlockClass |
 	newBlockClass := self blockStarterClassFrom: line.
 	newBlockClass ifNil: [ ^parentBlock ].
@@ -140,23 +145,25 @@ MicAbstractBlock >> parserClass [
 
 { #category : #replacement }
 MicAbstractBlock >> replace: aBlock by: anotherBlock [ 
-	
+	<protected>
 	children replaceAll: aBlock with: anotherBlock 
 ]
 
 { #category : #replacement }
 MicAbstractBlock >> replace: aBlock byCollection: aCollection [ 
-	
+	<protected>
 	children := children copyReplaceAll: {aBlock} with: aCollection 
 ]
 
 { #category : #replacement }
-MicAbstractBlock >> replaceBy: anotherBlock [ 
+MicAbstractBlock >> replaceBy: anotherBlock [
+	<protected>
 	self parent replace: self by: anotherBlock
 ]
 
 { #category : #replacement }
-MicAbstractBlock >> replaceByAll: aCollection [ 
+MicAbstractBlock >> replaceByAll: aCollection [
+	<protected>
 	self parent replace: self byCollection: aCollection 
 ]
 

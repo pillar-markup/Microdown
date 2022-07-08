@@ -143,7 +143,7 @@ MicEnvironmentBlock >> closeMe [
 	"body ifNotNil: [ 
 		body :=  self inlineParse: body ].
 	children := body"
-	
+	<protected>	
 	arguments := MicArgumentList 
 		split: firstLine
 		defaultArg: #environmentName

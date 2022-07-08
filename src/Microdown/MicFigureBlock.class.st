@@ -41,6 +41,8 @@ MicFigureBlock >> anchor [
 MicFigureBlock >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
+	<protected>
+		
 	| split title|
 	
 	split := url splitOnFirst: Character space.

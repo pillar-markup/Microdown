@@ -42,7 +42,8 @@ MicMetaDataBlock >> bogusParsing [
 ]
 
 { #category : #markups }
-MicMetaDataBlock >> closeMe [ 
+MicMetaDataBlock >> closeMe [
+	<protected>
 	super closeMe.
 	body := [ STONJSON fromString: '{', body, '}' ] on: STONReaderError do: [ :ex |
 		| dict |

@@ -220,13 +220,15 @@ MicrodownParser >> current [
 
 { #category : #'node creation' }
 MicrodownParser >> delimiterBlockClassFor: prefix [
-
+	<protected>
+	
 	^ self paragraphBlockClass
 ]
 
 { #category : #parsing }
 MicrodownParser >> handleErrorInLine: line [
-		
+	<protected>
+	
 	^ MicParsingError new 
 		line: line;
 		signal
@@ -239,7 +241,7 @@ MicrodownParser >> handleLine: line [
 		-first line is cleaned to avoid noise,
 		-then if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
-		
+	<protected>
 	| normalized |
 	normalized := line copyReplaceAll: String tab with: String space.
 	[ 
@@ -255,7 +257,7 @@ MicrodownParser >> handleLine: line [
 
 { #category : #initialization }
 MicrodownParser >> initialize [
-
+	<protected>
 	super initialize.
 	dispatchTable := Dictionary new.
 	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
@@ -282,11 +284,13 @@ MicrodownParser >> isAList: normalized [
 
 { #category : #'node creation' }
 MicrodownParser >> matchOrdered: line [
+	<protected>
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
 { #category : #'node creation' }
 MicrodownParser >> matchUnordered: line [
+	<protected>
 	^ ( line beginsWith: UnorderedListPlusMarkup ) 
 		| ( line beginsWith: UnorderedListStarMarkup ) 
 		| ( line beginsWith: UnorderedListMarkup )
@@ -294,24 +298,27 @@ MicrodownParser >> matchUnordered: line [
 
 { #category : #parsing }
 MicrodownParser >> newRootBlock [
+	<protected>
 	^ MicRootBlock new
 ]
 
 { #category : #'node creation' }
 MicrodownParser >> nonMatchedBlockClassFor: line [
-
+	<protected>
 	^ self paragraphBlockClass
 ]
 
 { #category : #'node creation' }
 MicrodownParser >> orderedListBlockClass [
-
+	<protected>
+	
 	^ MicOrderedListBlock
 ]
 
 { #category : #'node creation' }
 MicrodownParser >> paragraphBlockClass [
-
+	<protected>
+	
 	^ MicParagraphBlock
 ]
 

@@ -24,6 +24,8 @@ MicInputfileBlock >> accept: aVisitor [
 
 { #category : #visiting }
 MicInputfileBlock >> closeMe [
+	<protected>
+		
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]

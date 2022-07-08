@@ -6,9 +6,9 @@ Class {
 
 { #category : #visiting }
 MicFormatBlock >> closeMe [
+	<protected>
 	
 	| text |
-	
 	children ifEmpty: [
 			text :=  (MicTextBlock
 							from: start

@@ -100,6 +100,7 @@ In this example textElements of the first item will be the elements for
 	item 1 **foo**
    on the same line
 "
+	<protected>
 	super closeMe.
 	textElements :=  self inlineParse: text.	
 	textElements reverseDo: [ :each | 

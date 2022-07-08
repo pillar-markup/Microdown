@@ -99,7 +99,8 @@ MicArgumentList >> hasNonDefaultValue [
 
 { #category : #accessing }
 MicArgumentList >> initialValue: anObject [
-
+	<protected>
+	
 	initialValue := anObject
 ]
 
@@ -130,6 +131,7 @@ MicArgumentList >> printString [
 { #category : #parsing }
 MicArgumentList >> setDefaultAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a value, second to be arguments"
+	<protected>
 	|value|
 	value := barSplit first trim.
 	self at: self defaultArg put: value.
@@ -140,6 +142,7 @@ MicArgumentList >> setDefaultAndArguments: barSplit [
 MicArgumentList >> setDefaultNoArguments: fullString [
 	"fullstring is just a name (containing no arguments)
 	It is interpreted as both a name, and as an argument with no value"
+	<protected>
 	|value|
 	value := fullString trim.
 	self at: self defaultArg put: value
@@ -148,6 +151,7 @@ MicArgumentList >> setDefaultNoArguments: fullString [
 { #category : #parsing }
 MicArgumentList >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
+	<protected>
 	| pairs |
 	pairs := string splitOn: $&.
 	pairs do: [ :p | |keyValue|

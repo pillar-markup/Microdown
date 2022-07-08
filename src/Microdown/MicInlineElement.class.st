@@ -67,7 +67,7 @@ MicInlineElement >> cleanSubstring [
 { #category : #visiting }
 MicInlineElement >> closeMe [
 	"Hook to perform post creation action. The name is the same as for blocks."
-	
+	<protected>
 ]
 
 { #category : #accessing }

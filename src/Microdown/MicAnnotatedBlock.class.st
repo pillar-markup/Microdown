@@ -24,13 +24,14 @@ MicAnnotatedBlock >> accept: aVisitor [
 
 { #category : #'parse support' }
 MicAnnotatedBlock >> closeMe [
+	<protected>
 	super closeMe.
 	body := self inlineParse: body
 ]
 
 { #category : #testing }
 MicAnnotatedBlock >> lineMarkup [
-	
+	<protected>
 	^ AnnotatedParagraphMarkup
 ]
 

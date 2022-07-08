@@ -45,7 +45,8 @@ MicElement >> inlineParserClass [
 
 { #category : #private }
 MicElement >> newInlineParser [
-
+	<protected>
+	
 	^ self inlineParserClass new
 ]
 
@@ -56,6 +57,7 @@ MicElement >> parent [
 
 { #category : #accessing }
 MicElement >> parent: aBlock [
+	<protected>
 	parent := aBlock.
 	aBlock addChild: self
 ]

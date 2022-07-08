@@ -48,6 +48,7 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 
 { #category : #'parse support' }
 MicHeaderBlock >> closeMe [
+	<protected>
 	super closeMe.
 	children :=  self inlineParse: children
 

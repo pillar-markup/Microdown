@@ -63,7 +63,7 @@ MicParagraphBlock >> canConsumeLine: line [
 
 { #category : #'parse support' }
 MicParagraphBlock >> closeMe [
-
+	<protected>
 	super closeMe.
 	self children: (self inlineParse: text)
 ]

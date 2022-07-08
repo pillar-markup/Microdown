@@ -95,7 +95,7 @@ MicAbstractDelimiter class >> type [
 
 { #category : #dispatching }
 MicAbstractDelimiter >> addInlineBlock: anIndex to: inlineParser [
-
+	<protected>
 	inlineParser addRegularInlineBlock: anIndex
 ]
 
