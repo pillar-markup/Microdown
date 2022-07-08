@@ -12,34 +12,35 @@ Class {
 }
 
 { #category : #template }
-MicAgendaGenerator class >> scheduleTemplate [
-
-	^ '						<!-- Schedule Details -->
-					  		<li class="schedule-details">
-                                <div class="block">
-                                    <!-- time -->
-                                    <div class="time">
-                                        <i class="fa fa-clock-o"></i>
-                                        <span class="time">{{TIME}}</span>
-                                    </div>
-                                    <!-- Speaker -->
-                                    <div class="speaker">
-                                        <!-- <img src="images/speakers/speaker-thumb-one.jpg" alt="speaker-thumb-one"> -->
-                                      <span class="name">{{SPEAKER}}</span>
-                                    </div>
-                                    <!-- Subject -->
-                                    <div class="subject">{{SUBJECT}}</div>
-                                    <!-- Venue -->
-                                    <div class="venue">{{ROOM}}</div>
-                                </div>
-                            </li>' 
+MicAgendaGenerator class >> scheduleTemplate: aNewLine [
+	| newLine |
+	newLine := aNewLine asString.
+	^ 
+'						<!-- Schedule Details -->', newLine,
+'								<li class="schedule-details">', newLine,
+'										<div class="block">', newLine,
+'											<!-- time -->', newLine,
+'											<div class="time">', newLine,
+'												<i class="fa fa-clock-o"></i>', newLine,
+'												<span class="time">{{TIME}}</span>', newLine,
+'											</div>', newLine ,
+'											<!-- Speaker -->', newLine,
+'											<div class="speaker">', newLine,
+'												<!-- <img src="images/speakers/speaker-thumb-one.jpg" alt="speaker-thumb-one"> -->', newLine,
+'												<span class="name">{{SPEAKER}}</span>', newLine,
+'											</div>', newLine,
+'											<!-- Subject -->', newLine,
+'											<div class="subject">{{SUBJECT}}</div>', newLine,
+'											<!-- Venue -->', newLine,
+'											<div class="venue">{{ROOM}}</div>', newLine,
+'										</div>', newLine,
+'								</li>'
 ]
 
 { #category : #initialization }
 MicAgendaGenerator >> initialize [
 
 	super initialize.
-	scheduleTemplate := self class scheduleTemplate.
 	time := ''.
 ]
 
@@ -82,7 +83,7 @@ MicAgendaGenerator >> visitBreak: aBreak [
 	length := self time, ' - '.
 	self timePlus: aBreak length.
 	length := length, self time.
-	
+
 	html := (MustacheTemplate on: scheduleTemplate) value: { 
 	'TIME' -> length trim.
 	'SPEAKER' -> aBreak author.
@@ -95,7 +96,6 @@ MicAgendaGenerator >> visitBreak: aBreak [
 { #category : #visiting }
 MicAgendaGenerator >> visitDay: aDay [
 
-	canvas newLine.
 	canvas nextPutAll: aDay start.
 	canvas newLine.
 	self visitChildrenOf: aDay.
@@ -106,6 +106,7 @@ MicAgendaGenerator >> visitDay: aDay [
 MicAgendaGenerator >> visitSegment: aSegment [
 
 	self time: aSegment start.
+	scheduleTemplate := self class scheduleTemplate: canvas stream configuration newLine.
 	self visitChildrenOf: aSegment.
 ]
 
@@ -116,7 +117,6 @@ MicAgendaGenerator >> visitTalk: aTalk [
 	length := self time, ' - '.
 	self timePlus: aTalk length.
 	length := length, self time.
-	
 	html := (MustacheTemplate on: scheduleTemplate) value: { 
 	'TIME' -> length trim.
 	'SPEAKER' -> aTalk author.
