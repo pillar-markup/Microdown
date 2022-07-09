@@ -52,7 +52,7 @@ MicTableBlock >> accept: aVisitor [
 MicTableBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
-
+	<protected>
 	(self isHeader: line)
 		ifTrue: [ hasHeader := true ]
 		ifFalse: [ rows add: (self extractLine: line) ].

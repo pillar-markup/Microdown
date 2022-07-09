@@ -42,7 +42,8 @@ MicOrderedListBlock >> accept: aVisitor [
 MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	"Create a new item, and insert it into me."
 	"line is on the format '1. item text'"
-
+	<protected>
+	
 	line ifEmpty: [ ^ self ].
 	self startIndexFrom: line.
 	"the startindex is for the list and not for the item. 

@@ -12,7 +12,7 @@ Class {
 { #category : #public }
 MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form '!!label some text'"
-
+	<protected>
 	isClosed
 		ifTrue: [ ^ self ].
 	label 

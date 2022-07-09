@@ -42,7 +42,7 @@ Class {
 MicContinuousMarkedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
-
+	<protected>
 	| treatedLine |
 	treatedLine := self extractLine: line.
 	text := text
@@ -60,19 +60,20 @@ MicContinuousMarkedBlock >> canConsumeLine: line [
 { #category : #testing }
 MicContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"
-
+	<protected>
 	^ line beginsWith: self lineMarkup
 	
 ]
 
 { #category : #actions }
 MicContinuousMarkedBlock >> extractLine: line [
+	<protected>
 	^ (line copyFrom: self lineMarkup size + 1 to: line size) trim
 ]
 
 { #category : #markups }
 MicContinuousMarkedBlock >> lineMarkup [
-
+	<protected>
 	^ self subclassResponsibility 
 ]
 

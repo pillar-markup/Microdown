@@ -11,7 +11,7 @@ Class {
 { #category : #public }
 MicSingleLineBlock >> addLineAndReturnNextNode: line [
 	"By default skip the rest of the line."
-
+	<protected>
 	^ self
 ]
 

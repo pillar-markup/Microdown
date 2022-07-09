@@ -18,6 +18,7 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
 
+	<protected>
 	| newBlock |
 	newBlock := self newBlockFor: line parent: self.
 	^ newBlock 

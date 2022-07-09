@@ -96,7 +96,8 @@ MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-	
+
+	<protected>
 	isClosed
 		ifTrue: [ ^ self ].
 	(self doesLineStartWithStopMarkup: line)

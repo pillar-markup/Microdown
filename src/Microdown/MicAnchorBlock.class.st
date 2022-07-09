@@ -26,6 +26,7 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	"# bla
 	@myanchor
 	"
+	<protected>
 	label := (line copyFrom: AnchorMarkup size + 1 to: line size) trim.
 	^ self
 ]

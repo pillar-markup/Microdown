@@ -16,6 +16,7 @@ MicIntermediateBlock >> accept: aVisitor [
 { #category : #public }
 MicIntermediateBlock >> addLineAndReturnNextNode: line [
 	"I am not supposed to be generated during parsing, and this method should not be called on me"
+	<protected>
 	self shouldNotImplement
 ]
 

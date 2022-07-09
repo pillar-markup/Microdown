@@ -55,7 +55,8 @@ Class {
 MicListBlock >> addLineAndReturnNextNode: inLine [
 	"Create a new item, and insert it into me.
 	line is on the format 'markup text'"
-
+	<protected>
+	
 	| line |
 	inLine ifEmpty: [ ^ self ].
 	"A list accept an empty - like that it avoids to close the block (the list) and we can have space between list item.

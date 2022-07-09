@@ -39,6 +39,7 @@ MicHeaderBlock >> accept: aVisitor [
 { #category : #public }
 MicHeaderBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '#### my heading at forth level'"
+	<protected>
 	self level: ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
