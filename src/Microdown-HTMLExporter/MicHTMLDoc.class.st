@@ -370,7 +370,10 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 
 	canvas tag
 		name: 'body';
-		with: aHTMLString
+		with: [ 
+			canvas tag 
+				name: 'main';
+				with: aHTMLString ]
 ]
 
 { #category : #'writing - css' }

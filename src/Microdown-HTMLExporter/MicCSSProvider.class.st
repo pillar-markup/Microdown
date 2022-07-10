@@ -117,18 +117,7 @@ MicCSSProvider >> defaultFrameworks [
 	"Answer a <Collection> of available <MicCSSFramework> taken from the receiver's specifications"
 
 	^ self frameworksSpecs collect: [ : frwSpec |
-		MicCSSFramework new
-			cssFile: (self newCSSFile: frwSpec);		
-			name: (frwSpec at: #name);
-			mainUrl: (frwSpec at: #repository);
-			cssUrl: (frwSpec at: #css ifAbsent: [ String empty ]);
-			minCssUrl: (frwSpec at: #minCss ifAbsent: [ String empty ]);
-			normalizeUrl: (frwSpec at: #normalizeCss ifAbsent: [ String empty ]);
-			resetUrl: (frwSpec at: #resetUrl ifAbsent: [ String empty ]);
-			normalThemes: (frwSpec at: #normalThemes ifAbsent: [ OrderedCollection empty ]);
-			minThemes: (frwSpec at: #minThemes ifAbsent: [ OrderedCollection empty ]);
-			fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]);
-			yourself ]
+		self newCssFrameworkFrom: frwSpec ]
 ]
 
 { #category : #accessing }
@@ -357,7 +346,7 @@ MicCSSProvider >> installExamples [
 
 { #category : #accessing }
 MicCSSProvider >> installFrameworks [
-	<script>
+	"Download CSS libraries to local system"
 
 	self cssDownloader downloadCSSFrameworks
 ]
@@ -372,18 +361,43 @@ MicCSSProvider >> newCSSDownloader [
 ]
 
 { #category : #frameworks }
-MicCSSProvider >> newCSSFile: frwSpec [
+MicCSSProvider >> newCSSFile: frwSpec version: versionSymbol [
+	"Private - Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
+
+	^ frwSpec 
+		at: versionSymbol
+		ifPresent: [ : cssUrl | 	
+			MicCSSFile new
+				fileReference: (self destinationPath asFileReference / cssUrl asZnUrl filename);
+				yourself ]
+		ifAbsent: [ MicCSSNullFile new  ].
+
+]
+
+{ #category : #frameworks }
+MicCSSProvider >> newCSSFiles: frwSpec for: aMicCSSFramework [
 	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
 
-	| preferredCssUrl fileName |
-	preferredCssUrl := frwSpec 
-		at: #minCss 
-		ifAbsent: [ 
-			frwSpec at: #css 
-			ifAbsent: [ self error: 'CSS framework must have at least a valid CSS url' ] ].
-	preferredCssUrl ifEmpty: [ self error: 'CSS URL cannot be empty' ].
-	fileName := preferredCssUrl asZnUrl pathSegments last.
-	^ MicCSSFile new
-		fileReference: (self destinationPath asFileReference / fileName);
-		yourself.
+	aMicCSSFramework cssFile: (self newCSSFile: frwSpec version: #css).
+	aMicCSSFramework minCssFile: (self newCSSFile: frwSpec version: #minCss)
+]
+
+{ #category : #private }
+MicCSSProvider >> newCssFrameworkFrom: frwSpec [
+
+	| micCssFrw |
+	
+	micCssFrw := MicCSSFramework new.
+	self newCSSFiles: frwSpec for: micCssFrw.
+	^ micCssFrw
+		name: (frwSpec at: #name);
+		projectUrl: (frwSpec at: #repository);
+		cssUrl: (frwSpec at: #css ifAbsent: [ String empty ]);
+		minCssUrl: (frwSpec at: #minCss ifAbsent: [ String empty ]);
+		normalizeUrl: (frwSpec at: #normalizeCss ifAbsent: [ String empty ]);
+		resetUrl: (frwSpec at: #resetUrl ifAbsent: [ String empty ]);
+		normalThemes: (frwSpec at: #normalThemes ifAbsent: [ OrderedCollection empty ]);
+		minThemes: (frwSpec at: #minThemes ifAbsent: [ OrderedCollection empty ]);
+		fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]);
+		yourself
 ]

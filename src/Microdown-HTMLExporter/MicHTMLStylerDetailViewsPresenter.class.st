@@ -63,6 +63,24 @@ MicHTMLStylerDetailViewsPresenter >> cssMetaInfoPresenter [
 	^ cssMetaInfoPresenter
 ]
 
+{ #category : #updating }
+MicHTMLStylerDetailViewsPresenter >> cssSourceCodeForSelection [
+	"Answer a <String> which is the source code matching the user selected options"
+
+	self halt.
+	^ self cssMetaInfoPresenter hasThemeSelection
+		ifFalse: [
+			self cssMetaInfoPresenter isMinifiedSelection
+				ifFalse: [ self cssFramework sourceCode ]
+				ifTrue: [ self cssFramework minifiedSourceCode ] ]
+		ifTrue: [ 
+			| currentTheme |
+			currentTheme := self cssFramework themeNamed: self cssMetaInfoPresenter themeSelection.
+			self cssMetaInfoPresenter isMinifiedSelection
+				ifTrue: [ currentTheme  minifiedSourceCode ]
+				ifFalse: [ currentTheme sourceCode ] ]
+]
+
 { #category : #accessing }
 MicHTMLStylerDetailViewsPresenter >> cssSourcePresenter [
 
@@ -126,7 +144,7 @@ MicHTMLStylerDetailViewsPresenter >> htmlSourcePresenter [
 { #category : #initialization }
 MicHTMLStylerDetailViewsPresenter >> initializeNotebookPresenter [
 
-	cssMetaInfoPresenter := self instantiate: MicHTMLStylerCSSInfoPresenter on: self cssFramework.
+	cssMetaInfoPresenter := self instantiate: MicHTMLStylerCSSInfoPresenter on: self styler.
 	htmlOptionsPresenter := self instantiate: MicHTMLStylerOptionsPresenter on: self styler.
 	exportOptionsPresenter := self instantiate: MicHTMLStylerExportOptionsPresenter on: self styler.
 
@@ -228,9 +246,14 @@ MicHTMLStylerDetailViewsPresenter >> updatePresenter [
 
 	super updatePresenter.
 	self styler hasCssSelection ifFalse: [ ^ self ].
-	self cssMetaInfoPresenter
-		cssFramework: self selectedCssFramework;
-		updatePresenter.
-	self cssSourcePresenter text: self cssFramework sourceCode.
+	self cssMetaInfoPresenter updatePresenter.
+	self updateSourceCodePresenter.
+
+]
+
+{ #category : #updating }
+MicHTMLStylerDetailViewsPresenter >> updateSourceCodePresenter [
+
+	self cssSourcePresenter text: self cssSourceCodeForSelection.
 
 ]

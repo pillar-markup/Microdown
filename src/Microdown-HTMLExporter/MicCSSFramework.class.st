@@ -36,13 +36,12 @@ Class {
 	#name : #MicCSSFramework,
 	#superclass : #MicCSSEntity,
 	#instVars : [
-		'mainUrl',
-		'minCssUrl',
 		'normalizeUrl',
 		'resetUrl',
 		'fonts',
 		'normalThemes',
-		'minThemes'
+		'minThemes',
+		'projectUrl'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
@@ -69,6 +68,13 @@ MicCSSFramework >> hasCDN [
 ]
 
 { #category : #testing }
+MicCSSFramework >> hasMinifiedThemes [
+	"Answer <true> if the receiver has minified themes"
+
+	^ self minThemes notEmpty
+]
+
+{ #category : #testing }
 MicCSSFramework >> hasMinifiedVersion [
 	"Anwswer <true> if the receiver contains a minified version"
 	
@@ -76,37 +82,24 @@ MicCSSFramework >> hasMinifiedVersion [
 ]
 
 { #category : #testing }
+MicCSSFramework >> hasNormalThemes [
+	"Answer <true> if the receiver has normal themes"
+
+	^ self normalThemes notEmpty
+]
+
+{ #category : #testing }
+MicCSSFramework >> hasNormalVersion [
+	"Anwswer <true> if the receiver contains a normal (human-legible) version"
+	
+	^ self cssUrl notEmpty
+]
+
+{ #category : #testing }
 MicCSSFramework >> hasThemes [
 	"Answer <true> if the receiver has themes"
 
 	^ self normalThemes notEmpty or: [ self minThemes notEmpty ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> mainUrl [
-	"Answer a <String> representing the receiver's minified CSS URL"
-	
-	^ mainUrl
-]
-
-{ #category : #accessing }
-MicCSSFramework >> mainUrl: anObject [
-
-	mainUrl := anObject
-]
-
-{ #category : #accessing }
-MicCSSFramework >> minCssUrl [
-	"Answer a <String> with the URL endpoint of the minified source code, or empty if it is not present"
-
-	^ minCssUrl
-		ifNil: [ minCssUrl := String empty ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> minCssUrl: anObject [
-
-	minCssUrl := anObject
 ]
 
 { #category : #accessing }
@@ -163,13 +156,17 @@ MicCSSFramework >> normalizeUrl: anObject [
 	normalizeUrl := anObject
 ]
 
-{ #category : #printing }
-MicCSSFramework >> printOn: aStream [
+{ #category : #accessing }
+MicCSSFramework >> projectUrl [
+	"Answer a <String> representing the receiver's minified CSS URL"
+	
+	^ projectUrl
+]
 
-	super printOn: aStream.
-	aStream 
-		<< ': ';
-		<< self name.
+{ #category : #accessing }
+MicCSSFramework >> projectUrl: anObject [
+
+	projectUrl := anObject
 ]
 
 { #category : #accessing }

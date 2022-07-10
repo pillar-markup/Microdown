@@ -65,7 +65,7 @@ MicHTMLStyler >> baseToolbarCommands [
 
 { #category : #accessing }
 MicHTMLStyler >> cssDetailsPresenter [
-	" Answer the cssRepositoryContainerPresenter of this MicCSSStyler "
+	" Answer the Notebook container of this MicCSSStyler "
 
 	^ stylerNotebookPresenter
 ]

@@ -29,3 +29,9 @@ MicHTMLStylerAbstractPresenter >> styler [
 
 	^ styler
 ]
+
+{ #category : #'as yet unclassified' }
+MicHTMLStylerAbstractPresenter >> stylerDetailsPresenter [
+
+	^ self styler cssDetailsPresenter
+]

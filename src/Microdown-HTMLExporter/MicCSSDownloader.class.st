@@ -34,13 +34,13 @@ MicCSSDownloader >> destinationPath [
 MicCSSDownloader >> downloadCSSFramework: cssFramework [
 	"Download a CSS library using information provided in cssFramework method"
 
-	cssFramework minCssUrl
-		ifNotEmpty: [ self downloadCSSFrameworkFrom: cssFramework minCssUrl ]
-		ifEmpty: [ self downloadCSSFrameworkFrom:cssFramework cssUrl ].
+	self downloadCSSFrameworkFrom: cssFramework minCssUrl.
+	self downloadCSSFrameworkFrom: cssFramework cssUrl.
+
 	cssFramework normalThemes do: [ : cssFrwThemeUrl |
-		self downloadCSSFrameworkFrom: cssFrwThemeUrl ].
+		self downloadCSSFrameworkFrom: cssFrwThemeUrl cssUrl ].
 	cssFramework minThemes do: [ : cssFrwThemeUrl |
-		self downloadCSSFrameworkFrom: cssFrwThemeUrl ].
+		self downloadCSSFrameworkFrom: cssFrwThemeUrl cssUrl ].
 ]
 
 { #category : #'accessing - downloading' }
@@ -48,6 +48,7 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 
 	| client url dest |
 
+	anURLString ifEmpty: [ ^ self ].
 	url := anURLString asZnUrl.
 	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.

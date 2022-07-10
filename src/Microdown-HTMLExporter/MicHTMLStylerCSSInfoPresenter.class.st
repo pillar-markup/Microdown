@@ -4,7 +4,7 @@ Presents details about the selected CSS library.
 "
 Class {
 	#name : #MicHTMLStylerCSSInfoPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MicHTMLStylerAbstractPresenter,
 	#instVars : [
 		'projectUrlPresenter',
 		'cssLinkPresenter',
@@ -12,7 +12,6 @@ Class {
 		'minCssLinkPresenter',
 		'normalizeCssLinkPresenter',
 		'resetCssLinkPresenter',
-		'cssFramework',
 		'useNormalButton',
 		'useMinifiedButton',
 		'versionButtons'
@@ -23,13 +22,7 @@ Class {
 { #category : #private }
 MicHTMLStylerCSSInfoPresenter >> cssFramework [
 
-	^ cssFramework
-]
-
-{ #category : #private }
-MicHTMLStylerCSSInfoPresenter >> cssFramework: aMicCSSFramework [
-
-	cssFramework := aMicCSSFramework
+	^ self styler cssFramework
 ]
 
 { #category : #accessing }
@@ -42,6 +35,7 @@ MicHTMLStylerCSSInfoPresenter >> cssLinkPresenter [
 MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight 
+		add: themesListPresenter expand: false fill: true padding: 10;	
 		add: (SpGridLayout build: [ : builder |
 			builder
 				beColumnNotHomogeneous;		
@@ -60,15 +54,18 @@ MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 				add: 'Reset CSS';
 				add: resetCssLinkPresenter;
 				nextRow;
-				add: (SpBoxLayout newLeftToRight
+				add: 'Versions';
+				add: (SpBoxLayout newTopToBottom
 					add: useNormalButton;
 					add: useMinifiedButton;
 					yourself) ]);
-		add: (SpGridLayout build: [ : builder |
-			builder 
-				add: 'Themes';
-				add: themesListPresenter ]);
 		yourself
+]
+
+{ #category : #testing }
+MicHTMLStylerCSSInfoPresenter >> hasThemeSelection [
+
+	^ self themesListPresenter selection isEmpty not
 ]
 
 { #category : #initialization }
@@ -80,15 +77,31 @@ MicHTMLStylerCSSInfoPresenter >> initializePresenters [
 	normalizeCssLinkPresenter := self newLink label: String empty; yourself.
 	resetCssLinkPresenter := self newLink label: String empty; yourself.
 	themesListPresenter := self newList
-		display: #name;
 		beSingleSelection;
+		display: #name;
+		headerTitle: 'Themes';
+		items: (OrderedCollection new: 10);
+		sortingBlock: [ : a : b | a name < b name ];
 		yourself.
-	useNormalButton := self newRadioButton label: 'Use normal'.
-	useMinifiedButton := self newRadioButton label: 'Use minified'.
+	useNormalButton := self newRadioButton 
+		label: 'Use normal';
+		whenActivatedDo: [ self updatePresenter ];
+		yourself.
+	useMinifiedButton := self newRadioButton 
+		label: 'Use minified';
+		whenActivatedDo: [ self updatePresenter ];
+		yourself.
 	useNormalButton associatedRadioButtons: { useMinifiedButton  }.
 	versionButtons := Dictionary newFrom: { 
 		#normal -> useNormalButton .
 		#minified -> useMinifiedButton }.
+]
+
+{ #category : #testing }
+MicHTMLStylerCSSInfoPresenter >> isMinifiedSelection [
+	"Answer <true> if the minified version option is selected"
+
+	^ self useMinifiedButton state
 ]
 
 { #category : #accessing }
@@ -124,12 +137,6 @@ MicHTMLStylerCSSInfoPresenter >> setLink: aLinkPresenter url: anEmptyStringOrUrl
 				help: helpString ]
 ]
 
-{ #category : #initialization }
-MicHTMLStylerCSSInfoPresenter >> setModelBeforeInitialization: aDomainObject [
-
-	cssFramework := aDomainObject
-]
-
 { #category : #accessing }
 MicHTMLStylerCSSInfoPresenter >> themesListPresenter [
 
@@ -139,16 +146,15 @@ MicHTMLStylerCSSInfoPresenter >> themesListPresenter [
 { #category : #updating }
 MicHTMLStylerCSSInfoPresenter >> updatePresenter [
 
+	super updatePresenter.
 	self cssFramework ifNil: [ ^ self ].
 	projectUrlPresenter
-		url: self cssFramework mainUrl;
+		url: self cssFramework projectUrl;
 		label: 'Visit project web';
 		help: 'Open a web browser to visit the main project site'.
 	self updatePresenterLinks.
-	(self cssFramework hasThemes and: [ self useNormalButton state ])
-		ifTrue: [ themesListPresenter items: self cssFramework normalThemes ]
-		ifFalse: [ themesListPresenter items: self cssFramework minThemes ]
-
+	self updatePresenterRadioOptions.
+	self stylerDetailsPresenter updateSourceCodePresenter.
 ]
 
 { #category : #updating }
@@ -164,6 +170,27 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenterLinks [
 			setLink: linkArray first 
 			url: linkArray second 
 			help: linkArray third ]
+]
+
+{ #category : #updating }
+MicHTMLStylerCSSInfoPresenter >> updatePresenterRadioOptions [
+
+	self useNormalButton enable.
+	self useMinifiedButton enable.
+	(self cssFramework hasNormalThemes and: [ self useNormalButton state ])
+		ifTrue: [ 
+			themesListPresenter items: self cssFramework normalThemes.
+			self useMinifiedButton state: false.
+			self cssFramework hasMinifiedVersion 
+				ifFalse: [ self useMinifiedButton disable ].
+			self useNormalButton state: true ]
+		ifFalse: [ 
+			themesListPresenter items: self cssFramework minThemes.
+			self useNormalButton state: false.			
+			self cssFramework hasNormalVersion
+				ifFalse: [ self useNormalButton disable ].
+			self useMinifiedButton state: true ]
+
 ]
 
 { #category : #accessing }
