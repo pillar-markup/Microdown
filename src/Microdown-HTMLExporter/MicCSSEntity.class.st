@@ -19,32 +19,10 @@ Class {
 		'minCssUrl',
 		'cssFile',
 		'minCssFile',
-		'basePath',
-		'minified'
+		'destinationPath'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
-
-{ #category : #accessing }
-MicCSSEntity >> basePath [
-	"Answer a <String> representing the receciver's path without its file name"
-
-	^ basePath
-		ifNil: [ basePath := self defaultBasePath ]
-]
-
-{ #category : #accessing }
-MicCSSEntity >> basePath: anObject [
-
-	basePath := anObject
-]
-
-{ #category : #testing }
-MicCSSEntity >> beMinified [
-	"Set the receiver to represent a minified version of a theme"
-	
-	minified := true
-]
 
 { #category : #accessing }
 MicCSSEntity >> cssFile [
@@ -67,7 +45,7 @@ MicCSSEntity >> cssPath [
 	
 	^ String streamContents: [ : stream |
 		stream 
-			<< self basePath;
+			<< self destinationPath;
 			<< self cssFile basename ]
 ]
 
@@ -91,18 +69,18 @@ MicCSSEntity >> defaultBasePath [
 	^ 'css/'
 ]
 
-{ #category : #testing }
-MicCSSEntity >> initialize [
+{ #category : #accessing }
+MicCSSEntity >> destinationPath [
+	"Answer a <String> representing the receciver's path without its file name"
 
-	super initialize.
-	minified := false
+	^ destinationPath
+		ifNil: [ destinationPath := self defaultBasePath ]
 ]
 
-{ #category : #testing }
-MicCSSEntity >> isMinified [
-	"Answer <true> if the receiver represents a minified version"
-	
-	^ minified
+{ #category : #accessing }
+MicCSSEntity >> destinationPath: anObject [
+
+	destinationPath := anObject
 ]
 
 { #category : #accessing }

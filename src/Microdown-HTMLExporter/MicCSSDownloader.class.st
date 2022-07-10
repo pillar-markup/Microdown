@@ -40,7 +40,7 @@ MicCSSDownloader >> downloadCSSFramework: cssFramework [
 	cssFramework normalThemes do: [ : cssFrwThemeUrl |
 		self downloadCSSFrameworkFrom: cssFrwThemeUrl cssUrl ].
 	cssFramework minThemes do: [ : cssFrwThemeUrl |
-		self downloadCSSFrameworkFrom: cssFrwThemeUrl cssUrl ].
+		self downloadCSSFrameworkFrom: cssFrwThemeUrl minCssUrl ].
 ]
 
 { #category : #'accessing - downloading' }

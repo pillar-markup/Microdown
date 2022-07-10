@@ -118,7 +118,6 @@ MicCSSFramework >> minThemes: aDictionary [
 			name: assoc key;
 			framework: self;
 			cssUrl: assoc value;
-			beMinified;
 			yourself)  ]
 ]
 
@@ -187,7 +186,7 @@ MicCSSFramework >> writeTo: destDirFileRef [
 	"Private - Write receiver's CSS resource into destDirFileRef"
 
 	| fullOutputDir |
-	fullOutputDir := (destDirFileRef ensureCreateDirectory / self basePath) ensureCreateDirectory.
+	fullOutputDir := (destDirFileRef ensureCreateDirectory / self destinationPath) ensureCreateDirectory.
 	self cssFile copyTo: fullOutputDir / self cssFile basename.
 
 ]
