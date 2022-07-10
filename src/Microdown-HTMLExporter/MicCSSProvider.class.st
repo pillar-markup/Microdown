@@ -94,7 +94,7 @@ MicCSSProvider class >> forCSSNamed: aString [
 
 	| provider |
 	provider := self new.
-	^ provider findCSSNamed: aString		
+	^ provider findCssNamed: aString		
 
 ]
 
@@ -103,7 +103,7 @@ MicCSSProvider >> cssDownloader [
 	"Answer a <MicCSSDownloader>, a helper to download CSS resources"
 
 	^ cssDownloader
-		ifNil: [ cssDownloader := self newCSSDownloader ]
+		ifNil: [ cssDownloader := self newCssDownloader ]
 ]
 
 { #category : #accessing }
@@ -135,7 +135,7 @@ MicCSSProvider >> destinationPath: aPathname [
 ]
 
 { #category : #initialization }
-MicCSSProvider >> findCSSNamed: aString [
+MicCSSProvider >> findCssNamed: aString [
 	"Answer a <MicCSSFramework> matching aString"
 	
 	^ self frameworks 
@@ -352,7 +352,7 @@ MicCSSProvider >> installFrameworks [
 ]
 
 { #category : #accessing }
-MicCSSProvider >> newCSSDownloader [
+MicCSSProvider >> newCssDownloader [
 	"Answer a new <MicCSSDownloader> configured to download resources in the receiver's destination directory"
 
 	^ MicCSSDownloader new
@@ -361,25 +361,30 @@ MicCSSProvider >> newCSSDownloader [
 ]
 
 { #category : #frameworks }
-MicCSSProvider >> newCSSFile: frwSpec version: versionSymbol [
+MicCSSProvider >> newCssFile: frwSpec version: versionSymbol [
 	"Private - Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
 
 	^ frwSpec 
 		at: versionSymbol
-		ifPresent: [ : cssUrl | 	
-			MicCSSFile new
-				fileReference: (self destinationPath asFileReference / cssUrl asZnUrl filename);
-				yourself ]
+		ifPresent: [ : cssUrl | self newCssFileFor: cssUrl ]
 		ifAbsent: [ MicCSSNullFile new  ].
 
 ]
 
 { #category : #frameworks }
-MicCSSProvider >> newCSSFiles: frwSpec for: aMicCSSFramework [
+MicCSSProvider >> newCssFileFor: aCssUrl [
+
+	^ MicCSSFile new
+		fileReference: (self destinationPath asFileReference / aCssUrl asZnUrl filename);
+		yourself
+]
+
+{ #category : #frameworks }
+MicCSSProvider >> newCssFiles: frwSpec for: aMicCSSFramework [
 	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
 
-	aMicCSSFramework cssFile: (self newCSSFile: frwSpec version: #css).
-	aMicCSSFramework minCssFile: (self newCSSFile: frwSpec version: #minCss)
+	aMicCSSFramework cssFile: (self newCssFile: frwSpec version: #css).
+	aMicCSSFramework minCssFile: (self newCssFile: frwSpec version: #minCss)
 ]
 
 { #category : #private }
@@ -388,9 +393,10 @@ MicCSSProvider >> newCssFrameworkFrom: frwSpec [
 	| micCssFrw |
 	
 	micCssFrw := MicCSSFramework new.
-	self newCSSFiles: frwSpec for: micCssFrw.
+	self newCssFiles: frwSpec for: micCssFrw.
 	^ micCssFrw
 		name: (frwSpec at: #name);
+		destinationPath: self destinationPath;		
 		projectUrl: (frwSpec at: #repository);
 		cssUrl: (frwSpec at: #css ifAbsent: [ String empty ]);
 		minCssUrl: (frwSpec at: #minCss ifAbsent: [ String empty ]);

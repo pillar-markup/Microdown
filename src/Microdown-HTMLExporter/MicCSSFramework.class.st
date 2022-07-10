@@ -1,21 +1,27 @@
 "
-A Cascading Style Sheets (CSS) framework is a library of prepared and ready-to-use standards-compliant CSS rules which implements cross-browser functionality. A Microdown CSS framework represents a library intended to be used as part of setting up a `MicHTMLDoc`. It contains CSS helper classes, typography, structures, equalizers (to create equivalent height content), reset (browser normalization).
+A Cascading Style Sheets (CSS) **framework** is a library of prepared and ready-to-use standards-compliant CSS rules which implements cross-browser functionality. A Microdown CSS framework represents a library intended to be used as part of setting up a `MicHTMLDoc`. It contains CSS artifacts such as helper classes, typography, structures, equalizers (to create equivalent height content) and reset (browser normalization) resources.
 
 It also could have:
   - A minified version (usually named as .min.css) where extra comments and white space were removed.
   - A normalized URL to apply browser default styling.
   - A Collection of fonts URL's. _These should be downloaded manually for now_
-  - A Collection of themes URL's.
+  - A Collection of themes URL's, which could be minified or normal (human-readable).
 
 # Usage
 
-To include a Microdown CSS Framework, send the message #addCSSFrameworkNamed: with a String representing the name of the framework.
+To include a Microdown CSS Framework, send the message #addCSSNamed: with a String representing the name of the framework.
 
 ```language=Pharo
-MMicHTMLDoc new
-	addCSSFrameworkNamed: 'Tufte';
+MicHTMLDoc new
+	addCSSNamed: 'Tufte';
 	fromMicrodown: 'Your Microdown document';
 	writeToFile.
+```
+
+To query the name of the available frameworks, open the Microdown HTML Styler application, or evaluate:
+
+```language=pharo
+MicCSSProvider new frameworks.
 ```
 
 # Internal Representation and Key Implementation Points.
@@ -117,7 +123,8 @@ MicCSSFramework >> minThemes: aDictionary [
 		minThemes add: (MicCSSTheme new 
 			name: assoc key;
 			framework: self;
-			cssUrl: assoc value;
+			minCssUrl: assoc value;
+			cssFile: (self newCssFileFor: assoc value);
 			yourself)  ]
 ]
 
@@ -138,6 +145,7 @@ MicCSSFramework >> normalThemes: aDictionary [
 			name: assoc key;
 			framework: self;
 			cssUrl: assoc value;
+			cssFile: (self newCssFileFor: assoc value);			
 			yourself)  ]
 ]
 
@@ -181,12 +189,11 @@ MicCSSFramework >> resetUrl: anObject [
 	resetUrl := anObject
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 MicCSSFramework >> writeTo: destDirFileRef [
 	"Private - Write receiver's CSS resource into destDirFileRef"
 
 	| fullOutputDir |
 	fullOutputDir := (destDirFileRef ensureCreateDirectory / self destinationPath) ensureCreateDirectory.
 	self cssFile copyTo: fullOutputDir / self cssFile basename.
-
 ]
