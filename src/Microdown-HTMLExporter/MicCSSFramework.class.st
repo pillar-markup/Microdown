@@ -146,12 +146,3 @@ MicCSSFramework >> themes: aDictionary [
 			minCssUrl: (themeInfoDict at: #minCss ifAbsent: [ String empty ]);
 			yourself)  ]
 ]
-
-{ #category : #accessing }
-MicCSSFramework >> writeTo: destDirFileRef [
-	"Private - Write receiver's CSS resource into destDirFileRef"
-
-	| fullOutputDir |
-	fullOutputDir := (destDirFileRef ensureCreateDirectory / self destinationPath) ensureCreateDirectory.
-	self cssFile copyTo: fullOutputDir / self cssFile basename.
-]

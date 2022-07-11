@@ -30,7 +30,7 @@ MicHTMLStylerAbstractPresenter >> styler [
 	^ styler
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicHTMLStylerAbstractPresenter >> stylerDetailsPresenter [
 
 	^ self styler cssDetailsPresenter

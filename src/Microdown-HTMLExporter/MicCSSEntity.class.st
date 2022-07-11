@@ -199,3 +199,12 @@ MicCSSEntity >> sourceCode [
 	
 	^ self cssFile contents
 ]
+
+{ #category : #accessing }
+MicCSSEntity >> writeTo: destDirFileRef [
+	"Private - Write receiver's CSS resource into destDirFileRef"
+
+	| fullOutputDir |
+	fullOutputDir := (destDirFileRef ensureCreateDirectory / self basePath) ensureCreateDirectory.
+	self cssFile copyTo: fullOutputDir / self cssFile basename.
+]

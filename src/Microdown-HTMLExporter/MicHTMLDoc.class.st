@@ -380,6 +380,7 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 		with: [ 
 			canvas tag 
 				name: 'main';
+				parameterAt: 'role' put: 'main';
 				with: aHTMLString ]
 ]
 
@@ -492,5 +493,5 @@ MicHTMLDoc >> writeToFileNamed: aFilename [
 	
 	destDirFileRef := self destinationPath asFileReference.
 	self serializeHtml: aFilename in: destDirFileRef.
-	self cssFrameworks do: [ : cssFramework | cssFramework writeTo: destDirFileRef ].
+	self cssFrameworks do: [ : cssEntity | cssEntity writeTo: destDirFileRef ].
 ]

@@ -259,7 +259,10 @@ MicHTMLStyler >> micDocumentContents [
 	we could have a micDocumentString being a unsaved new Microdown document"
 	
 	^ self hasMicDocumentFileRef 
-		ifTrue: [ micDocumentFileRef contents ]
+		ifTrue: [ 
+			micDocumentFileRef exists
+				ifFalse: [ self error: 'File moved or deleted' ].
+			micDocumentFileRef contents ]
 		ifFalse: [ micDocumentString  ]
 ]
 

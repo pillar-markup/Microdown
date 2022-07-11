@@ -73,7 +73,6 @@ Class {
 	#name : #MicCSSProvider,
 	#superclass : #Object,
 	#instVars : [
-		'cssBasePath',
 		'cssDownloader',
 		'frameworks',
 		'destinationPath'
