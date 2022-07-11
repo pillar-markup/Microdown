@@ -30,18 +30,6 @@ MicInputfileBlock >> closeMe [
 		ifFalse: [ (MicParsingError new line: self firstLine, ' must have path argument') signal]
 ]
 
-{ #category : #handle }
-MicInputfileBlock >> extractFirstLineFrom: line [
-	"we got <! inputFile .... or !> <! inputFile .... and we return inputFile .... "
-	
-	super extractFirstLineFrom: line.
-	^ (firstLine endsWith: EnvironmentClosingBlockMarkup) 
-		ifTrue: [ 
-			isClosed := true.
-			firstLine allButLast: EnvironmentClosingBlockMarkup size ]
-		ifFalse: [ firstLine ]
-]
-
 { #category : #accessing }
 MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 	"I search my file."

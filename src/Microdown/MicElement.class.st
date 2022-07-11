@@ -14,7 +14,7 @@ Class {
 { #category : #utilities }
 MicElement class >> extensionClassFor: tag [
 	"I am a utility method used in extension blocks to find the right subclass to instantiate"
-	^ self subclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 ]
 
 { #category : #properties }
