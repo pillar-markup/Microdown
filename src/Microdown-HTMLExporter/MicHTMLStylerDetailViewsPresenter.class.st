@@ -107,6 +107,12 @@ MicHTMLStylerDetailViewsPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
+MicHTMLStylerDetailViewsPresenter >> destinationPath [
+	
+	^ exportOptionsPresenter destinationPath
+]
+
+{ #category : #accessing }
 MicHTMLStylerDetailViewsPresenter >> documentType [
 	"Answer a <String> describing the selected HTML document type"
 
@@ -190,6 +196,7 @@ MicHTMLStylerDetailViewsPresenter >> isOverwrite [
 { #category : #accessing }
 MicHTMLStylerDetailViewsPresenter >> micDocument [
 
+	self flag: #toDelete.
 	^ self styler micHtmlDocument
 ]
 
@@ -236,9 +243,7 @@ MicHTMLStylerDetailViewsPresenter >> styler [
 { #category : #updating }
 MicHTMLStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
 
-	exportOptionsPresenter 
-		outputDestinationPath: self micDocument destinationPath;
-		outputFilename: self micDocument fileName.
+	exportOptionsPresenter outputFilename: self micDocument fileName.
 
 ]
 

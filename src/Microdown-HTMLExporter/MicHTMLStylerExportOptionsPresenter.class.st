@@ -13,33 +13,48 @@ Class {
 	#instVars : [
 		'outputFilenameTextPresenter',
 		'outputPathTextPresenter',
-		'overwriteCheckboxPresenter'
+		'overwriteCheckboxPresenter',
+		'browseOutputButton'
 	],
 	#category : #'Microdown-HTMLExporter-Spec'
 }
+
+{ #category : #defaults }
+MicHTMLStylerExportOptionsPresenter >> defaultDestinationPath [ 
+
+	^ 'mic_html_output'
+]
 
 { #category : #layout }
 MicHTMLStylerExportOptionsPresenter >> defaultLayout [ 
 
 	^ SpGridLayout build: [ : builder |
 		builder
-			beColumnNotHomogeneous;		
+			beColumnNotHomogeneous;
+			rowSpacing: 15;
 			add: 'Output file name';
 			add: outputFilenameTextPresenter;
 			nextRow;
 			add: 'Output folder';
 			add: outputPathTextPresenter;
+			add: browseOutputButton;
 			nextRow;
 			add: 'Overwrite';
 			add: overwriteCheckboxPresenter ]
 ]
 
+{ #category : #defaults }
+MicHTMLStylerExportOptionsPresenter >> defaultOutputFilename [
+
+	^ 'index.html'
+]
+
 { #category : #initialization }
 MicHTMLStylerExportOptionsPresenter >> destinationPath [
+	"Answer a <String> representing the path where the output files will be exported"
 
-	^ self styler hasMicDocumentFileRef
-		ifTrue: [ self styler destinationPath ]
-		ifFalse: [ String empty ]
+	^ outputPathTextPresenter text
+		ifEmpty: [ self defaultDestinationPath ]
 ]
 
 { #category : #initialization }
@@ -47,10 +62,16 @@ MicHTMLStylerExportOptionsPresenter >> initializePresenters [
 
 	outputFilenameTextPresenter := self newTextInput
 		help: 'Output file name';
+		text: self defaultOutputFilename;
 		yourself.
 	outputPathTextPresenter := self newTextInput 
 		help: 'Select the output directory';
-		text: self destinationPath;
+		text: self defaultDestinationPath;
+		yourself.
+	browseOutputButton := self newButton
+		label: 'Select';
+		icon: (self iconNamed: #smallOpen);
+		action: [ self selectOutputDirectory ];
 		yourself.
 	overwriteCheckboxPresenter := self newCheckBox
 		state: true;
@@ -82,9 +103,20 @@ MicHTMLStylerExportOptionsPresenter >> outputFilename: aString [
 	outputFilenameTextPresenter text: aString
 ]
 
-{ #category : #private }
-MicHTMLStylerExportOptionsPresenter >> selectDirectory [
+{ #category : #initialization }
+MicHTMLStylerExportOptionsPresenter >> requestDirectoryForOpen [
+	" Open request dialog to select a directory "
+	
+	^ UIManager default chooseDirectory: 'Choose a directory'
+]
 
-	(UIManager default chooseDirectoryFrom: self destinationPath)
-		ifNotNil: [ :selectedDirectory | self micHtmlDocument destinationPath: selectedDirectory ]
+{ #category : #initialization }
+MicHTMLStylerExportOptionsPresenter >> selectOutputDirectory [
+	"Private - Callback for choose directory button"
+	
+	self requestDirectoryForOpen
+		ifNotNil: [ : dirRef | 
+			self styler hasMicHtmlDocument 
+				ifTrue: [ self micHtmlDocument destinationPath: dirRef fullName ].
+			outputPathTextPresenter text: dirRef fullName ].
 ]

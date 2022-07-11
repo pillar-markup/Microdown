@@ -401,6 +401,7 @@ MicHTMLStyler >> updateMicHtmlDocument [
 	self hasMicDocumentFileRef 
 		ifTrue: [ self micHtmlDocument fileName: self micDocumentFileRef withoutExtension basename , '.html' ].
 	self micHtmlDocument 
+		destinationPath: self cssDetailsPresenter destinationPath;
 		fromMicrodown: self micDocumentContents
 ]
 

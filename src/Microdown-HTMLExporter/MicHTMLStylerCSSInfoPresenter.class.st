@@ -179,7 +179,7 @@ MicHTMLStylerCSSInfoPresenter >> themesListPresenter [
 	^ themesListPresenter
 ]
 
-{ #category : #updating }
+{ #category : #initialization }
 MicHTMLStylerCSSInfoPresenter >> updatePresenter [
 
 	super updatePresenter.
