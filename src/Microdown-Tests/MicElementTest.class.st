@@ -2,8 +2,7 @@ Class {
 	#name : #MicElementTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'parser',
-		'instance'
+		'parser'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
@@ -15,12 +14,6 @@ Class {
 MicElementTest class >> isAbstract [ 
 
 	^ self = MicElementTest
-]
-
-{ #category : #tests }
-MicElementTest >> instance [
-
-	^ instance ifNil: [ instance := self testedClass new ]
 ]
 
 { #category : #factory }
@@ -51,7 +44,7 @@ MicElementTest >> rootBlockClass [
 	^ MicRootBlock
 ]
 
-{ #category : #running }
+{ #category : #initialization }
 MicElementTest >> setUp [
 
 	super setUp.

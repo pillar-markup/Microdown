@@ -135,6 +135,41 @@ toto'.
 ]
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenMotherNested [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+
+<!script 
+
+!>
+
+The mother environment is not closed so it will eat everything.
+'.
+	self assert: root children size equals: 1. 
+
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
+ 
+	| root env |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+
+<!script 
+
+!>
+'.
+	self assert: root children first children first class equals: MicScriptBlock. 
+	self assert: root children first children first children first class equals: MicScriptBlock 
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
@@ -324,6 +359,49 @@ Yes this is a good idea.'.
 	self assert: root children third text  equals: 'Yes this is a good idea.'.
 	
 
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirst [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+<!script 
+!>
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirstWhenClosingOnTheSameLine [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script!>
+<!script!>
+
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
 ]
 
 { #category : #'tests - default environment' }
