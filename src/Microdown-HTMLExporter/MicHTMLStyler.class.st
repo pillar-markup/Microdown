@@ -97,6 +97,13 @@ MicHTMLStyler >> cssProvider [
 		ifNil: [ cssProvider := MicCSSProvider new ]
 ]
 
+{ #category : #accessing }
+MicHTMLStyler >> cssTheme [
+	"Answer the currently selected MicCSSTheme"
+	
+	^ self cssDetailsPresenter cssTheme
+]
+
 { #category : #layout }
 MicHTMLStyler >> defaultLayout [
 
@@ -150,6 +157,12 @@ MicHTMLStyler >> hasMicHtmlDocument [
 	"Answer <true> if there is content in the HTML preview presenter"
 
 	^ self cssDetailsPresenter hasMicHtmlDocument 
+]
+
+{ #category : #testing }
+MicHTMLStyler >> hasThemeSelection [
+
+	^ self cssDetailsPresenter hasThemeSelection
 ]
 
 { #category : #accessing }
@@ -349,6 +362,20 @@ MicHTMLStyler >> toolbarPresenter: anObject [
 ]
 
 { #category : #updating }
+MicHTMLStyler >> updateCssSelection [
+
+	self hasCssSelection
+		ifTrue: [ 
+			| selectedCss |
+			selectedCss := self hasThemeSelection 
+				ifTrue: [ self cssTheme ]
+				ifFalse: [ self cssFramework ].
+			self micHtmlDocument addCSS: selectedCss ]
+
+
+]
+
+{ #category : #updating }
 MicHTMLStyler >> updateHtmlOptionsPresenter [
 
 	self cssDetailsPresenter updateHtmlOptionsPresenter
@@ -356,6 +383,7 @@ MicHTMLStyler >> updateHtmlOptionsPresenter [
 
 { #category : #updating }
 MicHTMLStyler >> updateHtmlSourcePresenter [
+	"Update the HTML source presenter only if we have a FileReference to it, i.e. a Microdown file was opened. We still allow MicHTMLDoc to be present because the user could set options before opening a Microdown file"
 
 	self hasMicDocumentFileRef
 		ifTrue: [ self cssDetailsPresenter updateHtmlSourcePresenter ]
@@ -366,8 +394,7 @@ MicHTMLStyler >> updateMicHtmlDocument [
 	"Answer a new Microdown HTML document configured with the receiver's settings"
 	
 	self micHtmlDocument: MicHTMLDoc new.
-	self hasCssSelection
-		ifTrue: [ self micHtmlDocument addCSSNamed: self cssFramework name ].
+	self updateCssSelection.
 	self hasMicDocumentFileRef 
 		ifTrue: [ self micHtmlDocument fileName: self micDocumentFileRef withoutExtension basename , '.html' ].
 	self micHtmlDocument 

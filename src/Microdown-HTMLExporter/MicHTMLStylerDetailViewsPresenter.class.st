@@ -67,7 +67,6 @@ MicHTMLStylerDetailViewsPresenter >> cssMetaInfoPresenter [
 MicHTMLStylerDetailViewsPresenter >> cssSourceCodeForSelection [
 	"Answer a <String> which is the source code matching the user selected options"
 
-	self halt.
 	^ self cssMetaInfoPresenter hasThemeSelection
 		ifFalse: [
 			self cssMetaInfoPresenter isMinifiedSelection
@@ -75,7 +74,7 @@ MicHTMLStylerDetailViewsPresenter >> cssSourceCodeForSelection [
 				ifTrue: [ self cssFramework minifiedSourceCode ] ]
 		ifTrue: [ 
 			| currentTheme |
-			currentTheme := self cssFramework themeNamed: self cssMetaInfoPresenter themeSelection.
+			currentTheme := self cssMetaInfoPresenter themeSelection.
 			self cssMetaInfoPresenter isMinifiedSelection
 				ifTrue: [ currentTheme  minifiedSourceCode ]
 				ifFalse: [ currentTheme sourceCode ] ]
@@ -86,6 +85,12 @@ MicHTMLStylerDetailViewsPresenter >> cssSourcePresenter [
 
 	^ cssSourceCodePresenter
 
+]
+
+{ #category : #accessing }
+MicHTMLStylerDetailViewsPresenter >> cssTheme [
+
+	^ self cssMetaInfoPresenter cssTheme
 ]
 
 { #category : #layout }
@@ -123,6 +128,12 @@ MicHTMLStylerDetailViewsPresenter >> hasMicHtmlDocument [
 	"Answer <true> if there is content in the HTML preview presenter"
 	
 	^ self htmlSourcePresenter text notEmpty
+]
+
+{ #category : #testing }
+MicHTMLStylerDetailViewsPresenter >> hasThemeSelection [
+	
+	^ self cssMetaInfoPresenter hasThemeSelection
 ]
 
 { #category : #'accessing - pages' }
@@ -249,6 +260,14 @@ MicHTMLStylerDetailViewsPresenter >> updatePresenter [
 	self cssMetaInfoPresenter updatePresenter.
 	self updateSourceCodePresenter.
 
+]
+
+{ #category : #updating }
+MicHTMLStylerDetailViewsPresenter >> updatePresentersAfterThemeSelection [
+
+	self styler hasMicDocumentFileRef ifFalse: [ ^ self ].
+	self styler updateMicHtmlDocument.
+	self updateHtmlSourcePresenter
 ]
 
 { #category : #updating }

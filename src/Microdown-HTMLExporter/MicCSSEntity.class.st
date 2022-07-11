@@ -19,10 +19,19 @@ Class {
 		'minCssUrl',
 		'cssFile',
 		'minCssFile',
-		'destinationPath'
+		'destinationPath',
+		'basePath'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
 }
+
+{ #category : #defaults }
+MicCSSEntity >> basePath [
+	"Answer a <String> with the location where the receiver will be installed"
+	
+	^ basePath
+		ifNil: [ basePath := self defaultBasePath ]
+]
 
 { #category : #accessing }
 MicCSSEntity >> cssFile [
@@ -45,7 +54,7 @@ MicCSSEntity >> cssPath [
 	
 	^ String streamContents: [ : stream |
 		stream 
-			<< self destinationPath;
+			<< self basePath;
 			<< self cssFile basename ]
 ]
 
@@ -64,23 +73,43 @@ MicCSSEntity >> cssUrl: anObject [
 
 { #category : #defaults }
 MicCSSEntity >> defaultBasePath [
+
+	^ 'css/'
+]
+
+{ #category : #defaults }
+MicCSSEntity >> defaultDestinationPath [
 	"Answer a default <String> describing the location where receiver's CSS files are stored"
 	
-	^ 'css/'
+	^ 'support/'
 ]
 
 { #category : #accessing }
 MicCSSEntity >> destinationPath [
-	"Answer a <String> representing the receciver's path without its file name"
+	"Answer a <String> representing the location used to store the receiver"
 
 	^ destinationPath
-		ifNil: [ destinationPath := self defaultBasePath ]
+		ifNil: [ destinationPath := self defaultDestinationPath ]
 ]
 
 { #category : #accessing }
 MicCSSEntity >> destinationPath: anObject [
 
 	destinationPath := anObject
+]
+
+{ #category : #testing }
+MicCSSEntity >> hasMinifiedVersion [
+	"Anwswer <true> if the receiver contains a minified version"
+	
+	^ self minCssUrl notEmpty
+]
+
+{ #category : #testing }
+MicCSSEntity >> hasNormalVersion [
+	"Anwswer <true> if the receiver contains a normal (human-legible) version"
+	
+	^ self cssUrl notEmpty
 ]
 
 { #category : #accessing }
@@ -109,7 +138,7 @@ MicCSSEntity >> minCssUrl: anObject [
 	minCssUrl := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - source code' }
 MicCSSEntity >> minifiedSourceCode [
 	"Answer a <String> representing the receiver's minified CSS source version"
 
@@ -128,6 +157,33 @@ MicCSSEntity >> name: anObject [
 	name := anObject
 ]
 
+{ #category : #'instance creation' }
+MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
+	"Private - Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
+
+	^ frwSpec 
+		at: versionSymbol
+		ifPresent: [ : frwSpecCssUrl | self newCssFileFor: frwSpecCssUrl ]
+		ifAbsent: [ MicCSSNullFile new  ].
+
+]
+
+{ #category : #accessing }
+MicCSSEntity >> newCssFileFor: aCssUrl [
+
+	^ MicCSSFile new
+		fileReference: (self destinationPath asFileReference / aCssUrl asZnUrl filename);
+		yourself
+]
+
+{ #category : #'instance creation' }
+MicCSSEntity >> newCssFiles: frwSpec [
+	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
+
+	self cssFile: (self newCssFile: frwSpec version: #css).
+	self minCssFile: (self newCssFile: frwSpec version: #minCss)
+]
+
 { #category : #printing }
 MicCSSEntity >> printOn: aStream [
 
@@ -137,7 +193,7 @@ MicCSSEntity >> printOn: aStream [
 		<< self name.
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - source code' }
 MicCSSEntity >> sourceCode [
 	"Answer a <String> representing the receiver's CSS source"
 	

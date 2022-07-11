@@ -74,6 +74,13 @@ MicHTMLDoc class >> newWithStyle: aStyleName [
 ]
 
 { #category : #'accessing - css' }
+MicHTMLDoc >> addCSS: aMicCSSEntity [
+	"Add a <aMicCSSEntity> to the receiver's linked CSS resources. Answer a <MicCSSFramework>"
+	
+	^ self cssFrameworks add: aMicCSSEntity
+]
+
+{ #category : #'accessing - css' }
 MicHTMLDoc >> addCSSNamed: aString [
 	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources. Answer a <MicCSSFramework>"
 	

@@ -31,6 +31,13 @@ MicHTMLStylerCSSInfoPresenter >> cssLinkPresenter [
 	^ cssLinkPresenter
 ]
 
+{ #category : #accessing }
+MicHTMLStylerCSSInfoPresenter >> cssTheme [
+	"Answer the currently selected <MicCSSTheme>"
+
+	^ themesListPresenter selectedItem 
+]
+
 { #category : #layout }
 MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 
@@ -76,20 +83,43 @@ MicHTMLStylerCSSInfoPresenter >> initializePresenters [
 	minCssLinkPresenter := self newLink label: String empty; yourself.
 	normalizeCssLinkPresenter := self newLink label: String empty; yourself.
 	resetCssLinkPresenter := self newLink label: String empty; yourself.
+	self initializeThemesPresenter.
+	self initializeVersionOptions.
+]
+
+{ #category : #initialization }
+MicHTMLStylerCSSInfoPresenter >> initializeThemesPresenter [
+
 	themesListPresenter := self newList
 		beSingleSelection;
 		display: #name;
 		headerTitle: 'Themes';
-		items: (OrderedCollection new: 10);
+		items: OrderedCollection new;
 		sortingBlock: [ : a : b | a name < b name ];
+		whenSelectionChangedDo: [ : selectionMode | 
+			selectionMode selectedItem
+				ifNotNil: [ : micCSSTheme | 	
+						self updatePresenterRadioOptions.
+						self stylerDetailsPresenter 
+							updatePresentersAfterThemeSelection;
+							updateSourceCodePresenter ] ];
 		yourself.
+]
+
+{ #category : #initialization }
+MicHTMLStylerCSSInfoPresenter >> initializeVersionOptions [
+
 	useNormalButton := self newRadioButton 
 		label: 'Use normal';
-		whenActivatedDo: [ self updatePresenter ];
+		whenActivatedDo: [ 
+			useMinifiedButton state: false. 
+			self updatePresenter ];
 		yourself.
 	useMinifiedButton := self newRadioButton 
 		label: 'Use minified';
-		whenActivatedDo: [ self updatePresenter ];
+		whenActivatedDo: [ 
+			useNormalButton state: false.
+			self updatePresenter ];
 		yourself.
 	useNormalButton associatedRadioButtons: { useMinifiedButton  }.
 	versionButtons := Dictionary newFrom: { 
@@ -137,6 +167,12 @@ MicHTMLStylerCSSInfoPresenter >> setLink: aLinkPresenter url: anEmptyStringOrUrl
 				help: helpString ]
 ]
 
+{ #category : #initialization }
+MicHTMLStylerCSSInfoPresenter >> themeSelection [
+
+	^ themesListPresenter selectedItem
+]
+
 { #category : #accessing }
 MicHTMLStylerCSSInfoPresenter >> themesListPresenter [
 
@@ -177,20 +213,28 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenterRadioOptions [
 
 	self useNormalButton enable.
 	self useMinifiedButton enable.
-	(self cssFramework hasNormalThemes and: [ self useNormalButton state ])
-		ifTrue: [ 
-			themesListPresenter items: self cssFramework normalThemes.
-			self useMinifiedButton state: false.
-			self cssFramework hasMinifiedVersion 
-				ifFalse: [ self useMinifiedButton disable ].
-			self useNormalButton state: true ]
-		ifFalse: [ 
-			themesListPresenter items: self cssFramework minThemes.
-			self useNormalButton state: false.			
-			self cssFramework hasNormalVersion
-				ifFalse: [ self useNormalButton disable ].
-			self useMinifiedButton state: true ]
 
+	self cssFramework hasThemes
+		ifTrue: [ 
+			themesListPresenter items: self cssFramework themes.
+			self cssFramework hasNormalThemes
+				ifFalse: [ 
+					self useNormalButton disable.
+					self useMinifiedButton state: true ].
+			self cssFramework hasMinifiedThemes 
+				ifFalse: [ 
+					self useMinifiedButton disable.
+					self useNormalButton state: true ] ]
+		ifFalse: [
+			themesListPresenter items: OrderedCollection new.
+			self cssFramework hasNormalVersion
+				ifFalse: [ 
+					self useNormalButton disable.
+					self useMinifiedButton state: true ].
+			self cssFramework hasMinifiedVersion 
+				ifFalse: [ 
+					self useMinifiedButton disable.
+					self useNormalButton state: true ] ]
 ]
 
 { #category : #accessing }

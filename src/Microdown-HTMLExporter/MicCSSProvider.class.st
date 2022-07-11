@@ -98,6 +98,13 @@ MicCSSProvider class >> forCSSNamed: aString [
 
 ]
 
+{ #category : #'instance creation' }
+MicCSSProvider class >> installFrameworks [ 
+	<script>
+
+	^ self new installFrameworks inspect.
+]
+
 { #category : #accessing }
 MicCSSProvider >> cssDownloader [
 	"Answer a <MicCSSDownloader>, a helper to download CSS resources"
@@ -159,13 +166,27 @@ MicCSSProvider >> frameworksSpecs [
 		#name -> 'AttriCSS' .
 		#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' .
 		#repository -> 'https://github.com/raj457036/attriCSS' .
-		#minThemes -> { 
-			'Brightlight Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' .
-			'Dark Fairy Pink' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkfairy-pink.css' .
-		  	'Dark Forest Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkforest-green.css' .
-			'Light Fairy Pink' ->  'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/lightfairy-pink.css' .
-			'Midnight Green' -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/midnight-green.css'
-			} asDictionary
+		#themes -> ({ 
+			{ 
+			#name -> 	'Brightlight Green' .
+			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' 
+			} .
+			{ 
+			#name -> 'Dark Fairy Pink' .
+			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkfairy-pink.css' 
+			} .
+			{ 
+			#name -> 'Dark Forest Green' .
+			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkforest-green.css'
+			} .
+			{ 
+			#name -> 'Light Fairy Pink' .
+			#minCss ->  'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/lightfairy-pink.css' 
+			} .
+			{ 
+			#name -> 'Midnight Green' .
+			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/midnight-green.css' 
+			} } collect: #asDictionary)
 		} .
 		
 		{ 
@@ -173,26 +194,47 @@ MicCSSProvider >> frameworksSpecs [
 		#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm.css' .
 		#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm.min.css' .
 		#repository -> 'https://github.com/igoradamenko/awsm.css' .
-		#normalThemes -> { 
-			'White' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.css' .
-			'Gondola' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.css' .
-			'Mischnka' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.css' .
-			'Big Stone' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css' .
-			'Black' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.css' .
-			'Tasman' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.css' .
-			'Pastel Pink' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.css' .
-			'Pearl Lusta' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.css'
-			 } asDictionary .
-		#minThemes -> { 
-			'White' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.min.css' .
-			'Gondola' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.min.css' .
-			'Mischnka' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.min.css' .
-			'Big Stone' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.min.css' .
-			'Black' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.min.css' .
-			'Tasman' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.min.css' .
-			'Pastel Pink' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.min.css' .
-			'Pearl Lusta' -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.min.css'
-			 } asDictionary
+		#themes -> ({
+			{ 
+			#name -> 'White' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.min.css'
+			} .
+			{ 
+			#name -> 	'Gondola' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.min.css' 
+			} .
+			{ 
+			#name -> 'Mischnka' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.min.css' 
+			} .
+			{ 
+			#name -> 'Big Stone' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.min.css'
+			} .
+			{ 
+			#name -> 'Black' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.min.css'
+			} .
+			{ 
+			#name -> 'Tasman' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.min.css'
+			} .
+			{ 
+			#name -> 'Pastel Pink' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.min.css' 
+			} .
+			{ 
+			#name -> 'Pearl Lusta' .
+			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.css' .
+			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.min.css'
+			 } } collect: #asDictionary)
 		} .
 
 		{ 
@@ -212,7 +254,11 @@ MicCSSProvider >> frameworksSpecs [
 		#css -> 'https://classless.de/classless.css' .
 		#minCss -> 'https://classless.de/classless-tiny.css' .
 		#repository -> 'https://github.com/emareg/classlesscss' .
-		#normalThemes -> { 'Theme' -> 'https://classless.de/addons/themes.css' } asDictionary
+		#themes -> ({ 
+			{ 
+			#name -> 'Theme' . 
+			#css -> 'https://classless.de/addons/themes.css'
+			} } collect: #asDictionary)
 		} .
 		
 		{ 
@@ -239,10 +285,16 @@ MicCSSProvider >> frameworksSpecs [
 		#name -> 'NewCSS' .	
 		#minCss -> 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css' .
 		#repository -> 'https://github.com/xz/new.css' .
-		#normalThemes -> { 
-			'Night' -> 'https://newcss.net/theme/night.css' .
-			'Terminal' ->  'https://newcss.net/theme/terminal.css'
-			} asDictionary
+		#themes -> ({ 
+			{ 
+			#name -> 'Night' .
+			#css -> 'https://newcss.net/theme/night.css'
+			} .
+			{ 
+			#name -> 'Terminal' .
+			#css ->  'https://newcss.net/theme/terminal.css'
+			}
+			} collect: #asDictionary)
 		} .
 		
 		{ 
@@ -301,10 +353,15 @@ MicCSSProvider >> frameworksSpecs [
 		#name -> 'WaterCSS' .	
 		#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css' .
 		#repository -> 'https://github.com/kognise/water.css' .
-		#minThemes -> { 
-			'Dark' -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css' .
-			'Light' -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/light.min.css' 
-			} asDictionary
+		#themes -> ({
+			{ 
+			#name -> 'Dark' . 
+			#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css' 
+			} .
+			{ 
+			#name -> 'Light' .
+			#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/light.min.css' 
+			} } collect: #asDictionary)
 		} .
 		
 		{ 
@@ -334,20 +391,11 @@ MicCSSProvider >> hasFrameworksInstalled [
 ]
 
 { #category : #accessing }
-MicCSSProvider >> installExamples [
-	<script>
-
-	self frameworks do: [ : cssFramework |
-		(MicHTMLDoc newWithStyle: cssFramework name)
-			destinationPath: 'mic_html_examples';
-			fromMicrodown: MicDocFactory exampleMic;
-			writeToFileNamed: 'MicExample' , cssFramework name , '.html' ]
-]
-
-{ #category : #accessing }
 MicCSSProvider >> installFrameworks [
 	"Download CSS libraries to local system"
 
+	self destinationPath asFileReference exists
+		ifTrue: [ self destinationPath asFileReference ensureDeleteAll ].
 	self cssDownloader downloadCSSFrameworks
 ]
 
@@ -360,50 +408,19 @@ MicCSSProvider >> newCssDownloader [
 		yourself
 ]
 
-{ #category : #frameworks }
-MicCSSProvider >> newCssFile: frwSpec version: versionSymbol [
-	"Private - Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
-
-	^ frwSpec 
-		at: versionSymbol
-		ifPresent: [ : cssUrl | self newCssFileFor: cssUrl ]
-		ifAbsent: [ MicCSSNullFile new  ].
-
-]
-
-{ #category : #frameworks }
-MicCSSProvider >> newCssFileFor: aCssUrl [
-
-	^ MicCSSFile new
-		fileReference: (self destinationPath asFileReference / aCssUrl asZnUrl filename);
-		yourself
-]
-
-{ #category : #frameworks }
-MicCSSProvider >> newCssFiles: frwSpec for: aMicCSSFramework [
-	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
-
-	aMicCSSFramework cssFile: (self newCssFile: frwSpec version: #css).
-	aMicCSSFramework minCssFile: (self newCssFile: frwSpec version: #minCss)
-]
-
 { #category : #private }
 MicCSSProvider >> newCssFrameworkFrom: frwSpec [
 
-	| micCssFrw |
-	
-	micCssFrw := MicCSSFramework new.
-	self newCssFiles: frwSpec for: micCssFrw.
-	^ micCssFrw
+	^ MicCSSFramework new
 		name: (frwSpec at: #name);
+		newCssFiles: frwSpec;
 		destinationPath: self destinationPath;		
 		projectUrl: (frwSpec at: #repository);
 		cssUrl: (frwSpec at: #css ifAbsent: [ String empty ]);
 		minCssUrl: (frwSpec at: #minCss ifAbsent: [ String empty ]);
 		normalizeUrl: (frwSpec at: #normalizeCss ifAbsent: [ String empty ]);
 		resetUrl: (frwSpec at: #resetUrl ifAbsent: [ String empty ]);
-		normalThemes: (frwSpec at: #normalThemes ifAbsent: [ OrderedCollection empty ]);
-		minThemes: (frwSpec at: #minThemes ifAbsent: [ OrderedCollection empty ]);
+		themes: (frwSpec at: #themes ifAbsent: [ OrderedCollection empty ]);
 		fonts: (frwSpec at: #fontsDir ifAbsent: [ OrderedCollection empty ]);
 		yourself
 ]

@@ -45,8 +45,7 @@ Class {
 		'normalizeUrl',
 		'resetUrl',
 		'fonts',
-		'normalThemes',
-		'minThemes',
+		'themes',
 		'projectUrl'
 	],
 	#category : #'Microdown-HTMLExporter-CSS'
@@ -66,87 +65,24 @@ MicCSSFramework >> fonts: anObject [
 ]
 
 { #category : #testing }
-MicCSSFramework >> hasCDN [
-	"Answer <true> if the receiver is provided through a CDN URL"
-	
-	self halt.
-	^ self minCssUrl isCDN or: [ self cssUrl isCDN ]
-]
-
-{ #category : #testing }
 MicCSSFramework >> hasMinifiedThemes [
-	"Answer <true> if the receiver has minified themes"
-
-	^ self minThemes notEmpty
-]
-
-{ #category : #testing }
-MicCSSFramework >> hasMinifiedVersion [
-	"Anwswer <true> if the receiver contains a minified version"
+	"Answer <true> if the receiver has any minified themes"
 	
-	^ self minCssUrl notEmpty
+	^ self themes anySatisfy: #hasMinifiedVersion
 ]
 
 { #category : #testing }
 MicCSSFramework >> hasNormalThemes [
-	"Answer <true> if the receiver has normal themes"
-
-	^ self normalThemes notEmpty
-]
-
-{ #category : #testing }
-MicCSSFramework >> hasNormalVersion [
-	"Anwswer <true> if the receiver contains a normal (human-legible) version"
+	"Answer <true> if the receiver has any human-readable themes"
 	
-	^ self cssUrl notEmpty
+	^ self themes anySatisfy: #hasNormalVersion
 ]
 
 { #category : #testing }
 MicCSSFramework >> hasThemes [
 	"Answer <true> if the receiver has themes"
 
-	^ self normalThemes notEmpty or: [ self minThemes notEmpty ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> minThemes [
-
-	^ minThemes
-]
-
-{ #category : #accessing }
-MicCSSFramework >> minThemes: aDictionary [
-	"Set the receiver's minified themes according to aDictionary"
-
-	minThemes := OrderedCollection new.
-	aDictionary associationsDo: [ : assoc |
-		minThemes add: (MicCSSTheme new 
-			name: assoc key;
-			framework: self;
-			minCssUrl: assoc value;
-			cssFile: (self newCssFileFor: assoc value);
-			yourself)  ]
-]
-
-{ #category : #accessing }
-MicCSSFramework >> normalThemes [
-	"Answer a <Collection> of receiver's themes"
-
-	^ normalThemes
-]
-
-{ #category : #accessing }
-MicCSSFramework >> normalThemes: aDictionary [
-	"Set the receiver's normal themes according to aDictionary"
-
-	normalThemes := OrderedCollection new.
-	aDictionary associationsDo: [ : assoc |
-		normalThemes add: (MicCSSTheme new 
-			name: assoc key;
-			framework: self;
-			cssUrl: assoc value;
-			cssFile: (self newCssFileFor: assoc value);			
-			yourself)  ]
+	^ self themes notEmpty
 ]
 
 { #category : #accessing }
@@ -187,6 +123,28 @@ MicCSSFramework >> resetUrl [
 MicCSSFramework >> resetUrl: anObject [
 
 	resetUrl := anObject
+]
+
+{ #category : #accessing }
+MicCSSFramework >> themes [
+	"Answer a <Collection> of receiver's themes"
+
+	^ themes
+]
+
+{ #category : #accessing }
+MicCSSFramework >> themes: aDictionary [
+	"Set the receiver's normal themes according to aDictionary"
+
+	themes := OrderedCollection new.
+	aDictionary associationsDo: [ : themeInfoDict |
+		themes add: (MicCSSTheme new
+			name: (themeInfoDict at: #name);
+			newCssFiles: themeInfoDict;
+			framework: self;
+			cssUrl: (themeInfoDict at: #css ifAbsent: [ String empty ]);
+			minCssUrl: (themeInfoDict at: #minCss ifAbsent: [ String empty ]);
+			yourself)  ]
 ]
 
 { #category : #accessing }
