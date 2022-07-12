@@ -17,16 +17,6 @@ MicElementTest class >> isAbstract [
 ]
 
 { #category : #factory }
-MicElementTest >> listBlockClass [
-	^ MicListBlock
-]
-
-{ #category : #factory }
-MicElementTest >> orderedListBlockClass [
-	^ MicOrderedListBlock
-]
-
-{ #category : #factory }
 MicElementTest >> parser [
 	^ self parserClass new
 ]
@@ -37,11 +27,6 @@ MicElementTest >> parserClass [
 	Replacing it by Microdown does not work."
 	
 	^ MicrodownParser
-]
-
-{ #category : #factory }
-MicElementTest >> rootBlockClass [
-	^ MicRootBlock
 ]
 
 { #category : #initialization }
