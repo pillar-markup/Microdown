@@ -143,6 +143,11 @@ MicEnvironmentBlock >> closeMe [
 	"body ifNotNil: [ 
 		body :=  self inlineParse: body ].
 	children := body"
+	
+	arguments := MicArgumentList 
+		split: firstLine
+		defaultArg: #environmentName
+		defaultValue: ''.
 ]
 
 { #category : #accessing }
@@ -152,14 +157,14 @@ MicEnvironmentBlock >> environmentName [
 
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
-
-	| lineWithoutMarkup |
-	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	arguments := MicArgumentList 
-		split: lineWithoutMarkup
-		defaultArg: #environmentName
-		defaultValue: ''.
-	^ lineWithoutMarkup
+	"we got <! env ...x !> <! env ...x and we return env ...x "
+	
+	firstLine := super extractFirstLineFrom: aLine.
+	^ (firstLine endsWith: EnvironmentClosingBlockMarkup) 
+		ifTrue: [ 
+			isClosed := true.
+			firstLine allButLast: EnvironmentClosingBlockMarkup size ]
+		ifFalse: [ firstLine ]
 ]
 
 { #category : #markups }

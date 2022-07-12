@@ -26,12 +26,9 @@ MicInputFileResolver >> visitInputFile: anInputFile [
 	
 	fileToInput := topPath parent resolve: anInputFile path path.
 	
-	astToInput := Microdown parse: fileToInput readStream.
-	
+	astToInput := anInputFile parser parse: fileToInput readStream.
+
 	self visit: astToInput.
 	
-	"An input file should not be inserted as an inline element.
-	Instead it shoud be inserted as a block.
-	So, we replace the parent of the input file annotation by the file."
-	anInputFile parent replaceByAll: astToInput children
+	anInputFile replaceByAll: astToInput children
 ]

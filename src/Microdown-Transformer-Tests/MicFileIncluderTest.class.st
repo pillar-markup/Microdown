@@ -47,14 +47,12 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 	| root file reference |	
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample1.md!}' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>' ].
 	
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem .
 	root := reference loadMicrodown.
 	
-	"here we verify that {! ... !} is not a block and an element of a paragraph"
-	self assert: root children first class equals: MicParagraphBlock.
-	self assert: root children first children first class equals: MicInputfileBlock.
+	self assert: root children first class equals: MicInputfileBlock.
 	
 
 ]
@@ -87,11 +85,11 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=SUnit/anExample1.md!}' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=SUnit/anExample1.md!>' ].
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
-{!inputFile|path=anExample2.md!}''
+<!inputFile|path=anExample2.md!>
 
 ' ].
 	
@@ -104,15 +102,11 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
 
-	self assert: root children first children first class equals: MicHeaderBlock.
-	self assert: root children first children first header equals: 'Foo'.
-	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first class equals: MicHeaderBlock.
+	self assert: root children first header equals: 'Foo'.
 	
-	self flag: #tofix. 
-	"this is wrong the header should not be inside a paragraph"
-	
-	self assert: root children first children second children first class equals: MicHeaderBlock.
-	self assert: root children first children second children first header equals: 'Example2'.
+	self assert: root children second class equals: MicHeaderBlock.
+	self assert: root children second header equals: 'Example2'.
 
 
 
@@ -135,20 +129,20 @@ Pharo is cool
 ' ].
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample1.md!}' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>' ].
 	
 	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.md') filesystem: filesystem.
 	root := reference loadMicrodown.
 					
-	self assert: root children first children first class equals: MicInputfileBlock.
-	self assert: (root children first children first path isKindOf: MicResourceReference).			
+	self assert: root children first class equals: MicInputfileBlock.
+	self assert: (root children first path isKindOf: MicResourceReference).			
 
 	includer visit: root.
 
-	self assert: root children first children first class equals: MicHeaderBlock.
-	self assert: root children first children first header equals: 'Foo'.
-	self assert: root children first children second class equals: MicParagraphBlock.
-	self assert: root children first children third class equals: MicCodeBlock.
+	self assert: root children first class equals: MicHeaderBlock.
+	self assert: root children first header equals: 'Foo'.
+	self assert: root children second class equals: MicParagraphBlock.
+	self assert: root children third class equals: MicCodeBlock.
 
 
 
@@ -161,49 +155,23 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	| root file reference |
 
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample1.md!}
-{!inputFile|path=anExample2.md!}' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>
+<!inputFile|path=anExample2.md!>' ].
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
 
-	self assert: root children size equals: 1.
-	self assert: root children first children first class equals: MicHeaderBlock.
-	self assert: root children first children first header equals: 'Foo'.
-	self assert: root children first children first level equals: 1.
-	self assert: root children first children second class equals: MicParagraphBlock.
-	self assert: root children first children third class equals: MicCodeBlock.
+	self assert: root children first class equals: MicHeaderBlock.
+	self assert: root children first header equals: 'Foo'.
+	self assert: root children first level equals: 1.
+	self assert: root children second class equals: MicParagraphBlock.
+	self assert: root children third class equals: MicCodeBlock.
 	
-	self assert: root children first children fifth class equals: MicHeaderBlock.
-	self assert: root children first children fifth header equals: 'Bar'.
-	self assert: root children first children fifth level equals: 2.
-	self assert: root children first children sixth class equals: MicParagraphBlock.
-	self assert: root children first children seventh class equals: MicCodeBlock
-]
-
-{ #category : #tests }
-MicFileIncluderTest >> testIncluderIncludesInputFilesWithoutNewline [
-
-	| root file reference |
-
-	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample1.md!} {!inputFile|path=anExample2.md!}' ].
-	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
-	root := reference loadMicrodown.
-	
-	includer visit: root.
-
-	self assert: root children first children first class equals: MicHeaderBlock.
-	self assert: root children first children second class equals: MicParagraphBlock.
-	self assert: root children first children third class equals: MicCodeBlock.
-	
-	self assert: root children first children fourth class equals: MicTextBlock.
-	
-	self assert: root children first children fifth class equals: MicHeaderBlock.
-	self assert: root children first children fifth header equals: 'Bar'.
-	self assert: root children first children fifth level equals: 2.
-	self assert: root children first children sixth class equals: MicParagraphBlock.
-	self assert: root children first children seventh class equals: MicCodeBlock
+	self assert: root children fourth class equals: MicHeaderBlock.
+	self assert: root children fourth header equals: 'Bar'.
+	self assert: root children fourth level equals: 2.
+	self assert: root children fifth class equals: MicParagraphBlock.
+	self assert: root children sixth class equals: MicCodeBlock
 ]
 
 { #category : #tests }
@@ -211,7 +179,7 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 
 	| root file reference |
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample3.md!}'].
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample3.md!>'].
 	
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
@@ -219,28 +187,28 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 	includer beRelaxed.
 	includer visit: root.
 	
-	self assert: root children first children first class equals: MicInputfileBlock.
+	self assert: root children first class equals: MicInputfileBlock.
 ]
 
 { #category : #tests }
 MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
-	"This test works because we have two paragraphs each one containing an inputfile."
+
 	| root file reference |
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '{!inputFile|path=anExample1.md!}
+	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>
 
-{!inputFile|path=anExample2.md!}' ].
+<!inputFile|path=anExample2.md!>' ].
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
 
-	self assert: root children first children first class equals: MicHeaderBlock.
-	self assert: root children first children second class equals: MicParagraphBlock.
-	self assert: root children first children third class equals: MicCodeBlock.
+	self assert: root children first class equals: MicHeaderBlock.
+	self assert: root children second class equals: MicParagraphBlock.
+	self assert: root children third class equals: MicCodeBlock.
 	
-	self assert: root children second children first class equals: MicHeaderBlock.
-	self assert: root children second children second class equals: MicParagraphBlock.
+	self assert: root children fourth class equals: MicHeaderBlock.
+	self assert: root children fifth class equals: MicParagraphBlock.
 	
-	self assert: root children second children second children size equals: 2.
-	self assert: root children second children third class equals: MicCodeBlock
+	self assert: root children fifth children size equals: 2.
+	self assert: root children sixth class equals: MicCodeBlock
 ]

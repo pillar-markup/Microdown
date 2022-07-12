@@ -122,13 +122,6 @@ MicGitHubRessourceReference >> githubTreesApiRequest [
 			format: { user. project. branch }
 ]
 
-{ #category : #testing }
-MicGitHubRessourceReference >> isMicrodownOrFolder: elem [
-
-	^ ((elem at: #type) = #tree)
-		or:[(elem at: #type) = #blob and:[ #(md mic) includes: ((elem at: #path) copyAfterLast: $.) ]]
-]
-
 { #category : #accessing }
 MicGitHubRessourceReference >> loadChildren [
 	children 

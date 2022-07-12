@@ -18,8 +18,7 @@ MicCodeStylerSpecTest >> setUp [
 MicCodeStylerSpecTest >> testStylerForMethod [
 	
 	| code richText blueLocation textColor |
-	code := '
-codeStylerFor: aString
+	code := 'codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
 
 ^bobby new 
