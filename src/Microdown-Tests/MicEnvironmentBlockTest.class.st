@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> subjectClass [ 
+	^ MicEnvironmentBlock  
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironment [
 	"'<?card
 blbababbab bababba
@@ -402,9 +407,4 @@ MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirstWhenClosingOnT
 	self assert: 
 		root children first "environment" 
 		children size equals: 2
-]
-
-{ #category : #'tests - default environment' }
-MicEnvironmentBlockTest >> testedClass [ 
-	^ MicEnvironmentBlock  
 ]

@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #tests }
+MicMetaDataBlockTest >> subjectClass [ 
+	^ MicMetaDataBlock 
+]
+
+{ #category : #tests }
 MicMetaDataBlockTest >> testCorrectJSONMetaDataProducesDictionary [
 
 	| source root metadata |
@@ -123,9 +128,4 @@ MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents3
 "title" "Pharo by Example"'.
 	self assert: metadata bogusParsing
 	
-]
-
-{ #category : #tests }
-MicMetaDataBlockTest >> testedClass [ 
-	^ MicMetaDataBlock 
 ]

@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
+{ #category : #running }
+MicHeaderBlockTest >> subjectClass [ 
+	^ MicHeaderBlock  
+]
+
 { #category : #tests }
 MicHeaderBlockTest >> testCanConsumeLine [
 
@@ -112,9 +117,4 @@ MicHeaderBlockTest >> testHeaderLongElements [
 		assert: header children first class
 		equals: MicTextBlock.
 	
-]
-
-{ #category : #running }
-MicHeaderBlockTest >> testedClass [ 
-	^ MicHeaderBlock  
 ]
