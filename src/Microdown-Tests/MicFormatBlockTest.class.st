@@ -4,6 +4,11 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
+{ #category : #tests }
+MicFormatBlockTest >> subjectClass [ 
+	^ MicBoldFormatBlock 
+]
+
 { #category : #'tests - bold' }
 MicFormatBlockTest >> testBoldAPIToAccessText [
 
@@ -75,10 +80,10 @@ MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 { #category : #tests }
 MicFormatBlockTest >> testHasProperty [
 
-	self assert: (self instance propertyAt: #foo ifAbsent: [ true ]) .
-	self instance propertyAt: #foo put: 'bar'.
-	self assert: (self instance hasProperty: #foo).
-	self deny: (self instance hasProperty: #bar)
+	self assert: (self subject propertyAt: #foo ifAbsent: [ true ]) .
+	self subject propertyAt: #foo put: 'bar'.
+	self assert: (self subject hasProperty: #foo).
+	self deny: (self subject hasProperty: #bar)
 ]
 
 { #category : #'tests - italic' }
@@ -197,23 +202,18 @@ MicFormatBlockTest >> testPrintingItalic [
 { #category : #tests }
 MicFormatBlockTest >> testProperties [
 
-	self assert: self instance properties isNotNil.
-	self instance instVarNamed: 'properties' put: nil.
+	self assert: self subject properties isNotNil.
+	self subject instVarNamed: 'properties' put: nil.
 
-	self instance propertyAt: #foo put: #bar.
-	self instance instVarNamed: 'properties' put: nil.
+	self subject propertyAt: #foo put: #bar.
+	self subject instVarNamed: 'properties' put: nil.
 
-	self instance propertyAt: #foo ifAbsent: [ nil ].
-	self instance instVarNamed: 'properties' put: nil.
+	self subject propertyAt: #foo ifAbsent: [ nil ].
+	self subject instVarNamed: 'properties' put: nil.
 
-	self instance propertyAt: #foo ifAbsentPut: [ #bar ].
-	self instance instVarNamed: 'properties' put: nil.
+	self subject propertyAt: #foo ifAbsentPut: [ #bar ].
+	self subject instVarNamed: 'properties' put: nil.
 
-	self instance hasProperty: #foo.
-	self instance instVarNamed: 'properties' put: nil
-]
-
-{ #category : #tests }
-MicFormatBlockTest >> testedClass [ 
-	^ MicBoldFormatBlock 
+	self subject hasProperty: #foo.
+	self subject instVarNamed: 'properties' put: nil
 ]

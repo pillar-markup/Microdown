@@ -1,12 +1,39 @@
 "
-I am working in tandem with `MicFormatAnnotation` to allow control of the formatting of RichTextComposer within microdown.
+I am working in tandem with `MicRichTextFormatConfiguration` to allow control of the formatting of RichTextComposer within microdown.
 ```text
-{!format|
-hearder1Size=48&
-header1Font=Papyrus&
+{!richtext|
+headerFont4=Chalkduster;28&
 bullets=-÷·
 !}
 ```
+
+
+`FreeTypeFontProvider` can give access to all fonts on your system:
+```
+FreeTypeFontProvider current
+	updateFontsFromSystem;
+	updateAvailableFontFamilies.
+```
+
+## Examples:
+Bullets can be tailored: `{!richtext|bullets=xo!}` {!richtext|bullets=xo!}:
+- first level
+  - second level
+    - third level
+  - second level still
+- back to first
+
+
+Font sizes can be changed `{!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}`
+
+{!richtext|headerFont3=Source Sans Pro;10&bodyFont=Source Sans Pro;7!}
+### Tiny header
+and very small body
+- first level
+  - second level
+    - third level
+  - second level still
+- back to first
 "
 Class {
 	#name : #MicDynamicTextStyler,
@@ -18,7 +45,8 @@ Class {
 		'newLineIfNotAlready',
 		'bodyFont',
 		'interBlockSpacing',
-		'crAfterHeader'
+		'crAfterHeader',
+		'keepCRFromInput'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
@@ -92,18 +120,18 @@ MicDynamicTextStyler >> crAfterHeaders [
 
 { #category : #'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
-	|list|
+	|list font|
 	(level between: 1 and: 6) 
 		ifFalse: [ MicParsingError signal: 'Header levels are 1 to 6 - got: ', level printString ].
 	list := (fontString splitOn: $;).
 	list size = 2 
 		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontString  ].
+	font := LogicalFont 
+			familyName: list first 
+			pointSize: list second asNumber.
 	headerFonts 
 		at: level 
-		put: (TextFontReference
-				toFont:(LogicalFont 
-						familyName: list first
-						pointSize: list second asNumber))
+		put: (TextFontReference toFont:font)
 ]
 
 { #category : #initialization }
@@ -117,6 +145,7 @@ MicDynamicTextStyler >> initialize [
 	newLineIfNotAlready := String cr asText.
 	bodyFont := TextStyle defaultFont.
 	crAfterHeader := #(1 1 1 1 1 1).
+	keepCRFromInput := true.
 ]
 
 { #category : #'composer styles' }
@@ -128,6 +157,12 @@ MicDynamicTextStyler >> interBlockSpacing [
 MicDynamicTextStyler >> interBlockSpacing: spacingSpec [
 	"I can put a number of cr between blocks. "
 	interBlockSpacing := ((String cr) repeat: (spacingSpec asNumber)) asText
+]
+
+{ #category : #accessing }
+MicDynamicTextStyler >> keepCRFromInput: aBooleanText [
+	"if aBooleanText is 'false', set keepCRFromInput to false. This will merge lines in text blocks to a single line"
+	keepCRFromInput := aBooleanText ~= 'false'
 ]
 
 { #category : #'composer styles' }
@@ -159,4 +194,15 @@ MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 				ifAbsent: [ MicParsingError signal: 'allowed spacings are cr|tab|space, but got: ', spec ]])
 		joinUsing: ''.
 	newLineIfNotAlready := spacing asText
+]
+
+{ #category : #'composer styles' }
+MicDynamicTextStyler >> postTextTreatment: aText [
+	"my primary purpose is to replace newLines with space in some styles"
+	keepCRFromInput ifTrue: [ ^ aText ].
+	((1 to: aText size) 
+		select: [ :i | (aText at: i) = Character cr  ]) 
+		do: [ :i | aText at: i put: Character space ].
+	^ aText
+	 
 ]

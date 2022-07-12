@@ -1,8 +1,21 @@
 Class {
 	#name : #MicParserTest,
-	#superclass : #MicElementTest,
+	#superclass : #TestCase,
+	#instVars : [
+		'parser'
+	],
+	#pools : [
+		'MicMicrodownSharedPool'
+	],
 	#category : #'Microdown-Tests-Parser'
 }
+
+{ #category : #running }
+MicParserTest >> setUp [
+
+	super setUp.
+	parser := MicrodownParser new. 
+]
 
 { #category : #tests }
 MicParserTest >> testEmpty [

@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #tests }
+MicCommentTest >> subjectClass [
+
+	^ MicCommentBlock
+]
+
+{ #category : #tests }
 MicCommentTest >> testCommentAPI [
 
 	| comment |
@@ -12,10 +18,4 @@ MicCommentTest >> testCommentAPI [
 	self assert: comment class equals: MicCommentBlock.
 	self assert: comment text equals: '**a b**'.
 
-]
-
-{ #category : #tests }
-MicCommentTest >> testedClass [
-
-	^ MicCommentBlock
 ]

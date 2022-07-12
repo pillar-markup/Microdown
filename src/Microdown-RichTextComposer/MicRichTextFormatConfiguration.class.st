@@ -52,6 +52,7 @@ MicRichTextFormatConfiguration >> setterDictionaryFor: styler [
 	'crAfterHeader' -> [ :a | styler crAfterHeader: a].
 	'monospaceBackgroundColor' -> [ :a | styler monospaceBackgroundColor: a].
 	'newLineIfNotAlready' -> [ :a | styler newLineIfNotAlready: a].
+	'keepCRFromInput' -> [ :a | styler keepCRFromInput: a ].
 	'bodyFont' -> [ :a | styler bodyFont: a].
 	'headerFont1' -> [ :a | styler headerFont: a forLevel: 1].
 	'headerFont2' -> [ :a | styler headerFont: a forLevel: 2].

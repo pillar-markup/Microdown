@@ -40,8 +40,8 @@ MicZincPathResolverTest >> testVisitHttpImage [
 { #category : #tests }
 MicZincPathResolverTest >> testVisitHttpInput [
 	| doc inputNode |
-	doc := Microdown parse: '{!inputFile|path=otherFile.md!}'.
-	inputNode := doc children first children first.
+	doc := Microdown parse: '<!inputFile|path=otherFile.md!>'.
+	inputNode := doc children first .
 	self assert:  inputNode reference relativePath equals: 'otherFile.md'.
 	
 	MicZincPathResolver
@@ -53,8 +53,8 @@ MicZincPathResolverTest >> testVisitHttpInput [
 { #category : #tests }
 MicZincPathResolverTest >> testVisitHttpInput_WithReference [
 	| doc inputNode |
-	doc := Microdown parse: '{!inputFile|path=otherFile.md!}'.
-	inputNode := doc children first children first.
+	doc := Microdown parse: '<!inputFile|path=otherFile.md!>'.
+	inputNode := doc children first.
 	self assert:  inputNode reference relativePath equals: 'otherFile.md'.
 	
 	MicZincPathResolver
