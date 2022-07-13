@@ -277,6 +277,17 @@ line 2
 Roger Rabbit'
 ]
 
+{ #category : #tests }
+MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
+	| src |
+	src := '
+<!card 
+stuff
+!>
+'.
+	Microdown asRichText: src
+]
+
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testExternaLink [
 

@@ -391,10 +391,10 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 ]
 
 { #category : #'visiting - document' }
-MicRichTextComposer >> visitEnvironment: anObject [
+MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 	"Environment is an abstract class, and if we end here it is because of error"
-	canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText
+	canvas << ('>>> Environment ''' , aMicEnvironmentBlock environmentName , 
+						''' is not defined <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
