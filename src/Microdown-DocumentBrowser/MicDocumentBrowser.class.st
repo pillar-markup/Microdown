@@ -28,8 +28,8 @@ Class {
 		'saveButton',
 		'slideMode',
 		'sectionDepth',
-		'textStyler',
-		'isSourceShowing'
+		'isSourceShowing',
+		'textComposer'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -56,12 +56,10 @@ MicDocumentBrowser class >> open [
 
 { #category : #converting }
 MicDocumentBrowser >> asRichText: doc [
-	"I apply our own styler, not the default one"
-	textStyler ifNil: [ textStyler := MicTextStyler new ].
+	"reuse composer with its existing textStyler"
+	textComposer ifNil: [ textComposer := MicRichTextComposer new ].
 	
-	^ MicRichTextComposer new
-		textStyler: textStyler;
-		asRichText: doc
+	^ textComposer asRichText: doc
 ]
 
 { #category : #navigation }
@@ -211,7 +209,7 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 		ifTrue: [  "should reset styler if new document is selected" 
 			referenceOrSection] 
 		ifFalse: [ 
-			textStyler := nil. "If selecting a new root, reset styler"
+			textComposer := nil. "If selecting a new root, reset composer"
 			MicSectionBlock fromRoot: referenceOrSection loadMicrodown ].
 	  spRendering text:(self asRichText: doc )]
 	on: MicResourceReferenceError  
