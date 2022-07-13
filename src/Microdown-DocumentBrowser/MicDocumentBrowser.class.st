@@ -206,11 +206,11 @@ MicDocumentBrowser >> newSelection: selection [
 MicDocumentBrowser >> renderDocument: referenceOrSection [ 
 	|doc|
 	[ doc := (referenceOrSection isKindOf: MicElement )
-		ifTrue: [  "should reset styler if new document is selected" 
+		ifTrue: [  "should reuse composer when selecting section" 
 			referenceOrSection] 
 		ifFalse: [ 
 			textComposer := nil. "If selecting a new root, reset composer"
-			MicSectionBlock fromRoot: referenceOrSection loadMicrodown ].
+			referenceOrSection loadMicrodown ].
 	  spRendering text:(self asRichText: doc )]
 	on: MicResourceReferenceError  
 	do: [ spRendering text: '' ].
