@@ -330,6 +330,13 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitCenter: aMicCenterBlock [ 
+	canvas 
+		includeAttribute: TextAlignment centered 
+		in: [ super visitChildrenOf: aMicCenterBlock  ]
+]
+
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
 
@@ -548,6 +555,13 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 	self textStyler class = MicDynamicTextStyler 
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
 	config adjustStyler: self textStyler
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [ 
+	canvas
+		includeAttribute: TextAlignment rightFlush 
+		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
 ]
 
 { #category : #'visiting -  format' }
