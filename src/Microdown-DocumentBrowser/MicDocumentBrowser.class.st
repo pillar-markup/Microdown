@@ -24,12 +24,12 @@ Class {
 		'spButtonBar',
 		'spRendering',
 		'spSource',
-		'isEditing',
 		'sourceMode',
 		'saveButton',
 		'slideMode',
 		'sectionDepth',
-		'textStyler'
+		'textStyler',
+		'isSourceShowing'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -123,7 +123,7 @@ MicDocumentBrowser >> documentRoots [
 MicDocumentBrowser >> documentSelected: document [
 	"document is newly selected, and should be rendered. If source is needed, re-select to root document"
 	self renderDocument: document.
-	self isEditing ifTrue: [ 
+	self isSourceShowing ifTrue: [ 
 		self setSourceOfSelectedDocument  ]
 ]
 
@@ -142,12 +142,12 @@ MicDocumentBrowser >> initializeButtons [
   			whenSelectedItemChangedDo: [ :item | self sourceMode: item ]);
 		add: (saveButton := spButtonBar newButton 
 			label: 'Save';
-			state: self isEditing;
+			state: self isSourceShowing;
 			action: [ self saveNewSourceForSelectedDocument]);
 		add: (spButtonBar newCheckBox
-			label: 'Edit';
-			state: self isEditing;
-			whenChangedDo: [ :val | self setEditing: val ])
+			label: 'Show Source';
+			state: self isSourceShowing;
+			whenChangedDo: [ :val | self setSourceShowing: val ])
 		
 ]
 
@@ -155,7 +155,7 @@ MicDocumentBrowser >> initializeButtons [
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
-	isEditing := false.
+	isSourceShowing := false.
 	sectionDepth := 2.
 	spDocumentList := self newTree.
 	spDocumentList 
@@ -177,8 +177,8 @@ MicDocumentBrowser >> initializePresenters [
 ]
 
 { #category : #accessing }
-MicDocumentBrowser >> isEditing [
-	^ isEditing ifNil: [ isEditing := false ]
+MicDocumentBrowser >> isSourceShowing [
+	^ isSourceShowing ifNil: [ isSourceShowing := false ]
 
 	
 ]
@@ -280,7 +280,7 @@ MicDocumentBrowser >> setDocumentlayout [
 	"Depending on the state of EditDocument, show an editing pane in addition to document pane"
 
 	| pane |
-	self isEditing ifFalse: [ ^ spRendering ].
+	self isSourceShowing ifFalse: [ ^ spRendering ].
 	self sourceMode = #Swap ifTrue: [ ^ spSource ].
 	pane := self sourceMode = #Horizontal
 		        ifTrue: [ SpPanedLayout newTopToBottom ]
@@ -301,17 +301,6 @@ MicDocumentBrowser >> setEditStatus: status [
 	status = #cannotEdit
 		ifTrue: [ spSource adapter widget color: self colorCannotEdit. saveButton state: false. ^ self]
 		
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> setEditing: aBoolean [
-	isEditing := aBoolean.
-	self setTopLayout.
-	isEditing 
-		ifTrue: [ self setSourceOfSelectedDocument ]
-		ifFalse: [ self saveNewSourceForSelectedDocument ].
-
-	
 ]
 
 { #category : #layout }
@@ -355,6 +344,17 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
 		
+	
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> setSourceShowing: aBoolean [
+	isSourceShowing := aBoolean.
+	self setTopLayout.
+	isSourceShowing 
+		ifTrue: [ self setSourceOfSelectedDocument ]
+		ifFalse: [ self saveNewSourceForSelectedDocument ].
+
 	
 ]
 
