@@ -7,6 +7,7 @@ Class {
 { #category : #executing }
 MicOpenDocumentBrowserCommand >> execute [
 	"to be done"
+	self context spDocumentList selectedItem inspect
 ]
 
 { #category : #initialization }

@@ -295,11 +295,11 @@ MicDocumentBrowser >> setDocumentlayout [
 MicDocumentBrowser >> setEditStatus: status [
 	"can be #canEdit, #connotEdit, #hasBeenEdited"
 	status = #hasBeenEdited
-		ifTrue: [ spSource color: self colorCanEdit. saveButton state: true. ^ self].
+		ifTrue: [ spSource adapter widget color: self colorCanEdit. saveButton state: true. ^ self].
 	status = #canEdit
-		ifTrue: [ spSource color: self colorCanEdit. saveButton state: false. ^ self].
+		ifTrue: [ spSource adapter widget color: self colorCanEdit. saveButton state: false. ^ self].
 	status = #cannotEdit
-		ifTrue: [ spSource color: self colorCannotEdit. saveButton state: false. ^ self]
+		ifTrue: [ spSource adapter widget color: self colorCannotEdit. saveButton state: false. ^ self]
 		
 ]
 
