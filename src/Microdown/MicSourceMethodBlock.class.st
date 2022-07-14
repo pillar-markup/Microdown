@@ -1,5 +1,5 @@
 "
-I am an extension to include source code into markdown document. I am to be used as:
+I am an extension for including source code into markdown document. I am to be used as:
 ```text
 <!source|class=MicSourceMethodBlock&method=accept:&side=instance!>
 ```
