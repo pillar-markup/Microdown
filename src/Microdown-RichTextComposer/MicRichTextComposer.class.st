@@ -330,6 +330,13 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitCenter: aMicCenterBlock [ 
+	canvas 
+		includeAttribute: TextAlignment centered 
+		in: [ super visitChildrenOf: aMicCenterBlock  ]
+]
+
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
 
@@ -384,10 +391,10 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 ]
 
 { #category : #'visiting - document' }
-MicRichTextComposer >> visitEnvironment: anObject [
+MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 	"Environment is an abstract class, and if we end here it is because of error"
-	canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText
+	canvas << ('>>> Environment ''' , aMicEnvironmentBlock environmentName , 
+						''' is not defined <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
@@ -548,6 +555,13 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 	self textStyler class = MicDynamicTextStyler 
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
 	config adjustStyler: self textStyler
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [ 
+	canvas
+		includeAttribute: TextAlignment rightFlush 
+		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
 ]
 
 { #category : #'visiting -  format' }
