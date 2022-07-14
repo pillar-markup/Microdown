@@ -24,6 +24,15 @@ MicSourceMethodBlock >> accept: aVisitor [
 	aVisitor visitAll: self children 
 ]
 
+{ #category : #'parse support' }
+MicSourceMethodBlock >> closeMe [
+	|builder|
+	super closeMe.
+	builder := Microdown builder. 
+	builder codeblock: self sourceCode firstLineAssociations: { #language -> #Method }.
+	self children:  (Microdown parse: builder contents) children.
+]
+
 { #category : #accessing }
 MicSourceMethodBlock >> sourceCode [
 
