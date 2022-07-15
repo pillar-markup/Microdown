@@ -162,7 +162,7 @@ MicHTMLStylerDetailViewsPresenter >> htmlSourcePresenter [
 MicHTMLStylerDetailViewsPresenter >> initializeNotebookPresenter [
 
 	cssMetaInfoPresenter := self instantiate: MicHTMLStylerCSSInfoPresenter on: self styler.
-	htmlOptionsPresenter := self instantiate: MicHTMLStylerOptionsPresenter on: self styler.
+	htmlOptionsPresenter := self instantiate: MicHTMLStylerHTMLOptionsPresenter on: self styler.
 	exportOptionsPresenter := self instantiate: MicHTMLStylerExportOptionsPresenter on: self styler.
 
 	notebookPresenter := self newNotebook

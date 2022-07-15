@@ -4,7 +4,7 @@ A MicHTMLTagTest is a test class for testing the behavior of MicHTMLTag
 Class {
 	#name : #MicHTMLTagTest,
 	#superclass : #MicHTMLBrushTest,
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-HTML'
 }
 
 { #category : #tests }

@@ -4,13 +4,13 @@ Class {
 	#instVars : [
 		'micCSSFile'
 	],
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-Resources'
 }
 
 { #category : #initialization }
 MicCSSFileResource >> cssPath [
 
-	^ FileSystem memory root / 'css'
+	^ FileSystem memory workingDirectory / 'css'
 ]
 
 { #category : #accessing }

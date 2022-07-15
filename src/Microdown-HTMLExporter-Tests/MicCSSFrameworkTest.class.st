@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'cssFramework'
 	],
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-CSS'
 }
 
 { #category : #accessing }

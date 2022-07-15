@@ -8,7 +8,7 @@ Provides a presenter to configure common export HTML options, for example:
 
 "
 Class {
-	#name : #MicHTMLStylerOptionsPresenter,
+	#name : #MicHTMLStylerHTMLOptionsPresenter,
 	#superclass : #MicHTMLStylerAbstractPresenter,
 	#instVars : [
 		'doctypeListPresenter',
@@ -21,13 +21,21 @@ Class {
 }
 
 { #category : #layout }
-MicHTMLStylerOptionsPresenter >> charSet [
+MicHTMLStylerHTMLOptionsPresenter >> charSet [
 
 	^ encodingOptionsListPresenter selectedItem.
 ]
 
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> defaultLanguageSelection [
+
+	^ (ISOLanguageDefinition iso2LanguageTable associations 
+		select: [ : assoc | assoc key = 'en' ] 
+		thenCollect: [ : assoc | assoc key , ' - ' , assoc value language ]) anyOne
+]
+
 { #category : #layout }
-MicHTMLStylerOptionsPresenter >> defaultLayout [ 
+MicHTMLStylerHTMLOptionsPresenter >> defaultLayout [ 
 
 	^ SpGridLayout build: [ : builder |
 		builder
@@ -49,13 +57,13 @@ MicHTMLStylerOptionsPresenter >> defaultLayout [
 ]
 
 { #category : #private }
-MicHTMLStylerOptionsPresenter >> docTypeOptionNames [
+MicHTMLStylerHTMLOptionsPresenter >> docTypeOptionNames [
 
 	^ self docTypeOptions keys
 ]
 
 { #category : #private }
-MicHTMLStylerOptionsPresenter >> docTypeOptions [
+MicHTMLStylerHTMLOptionsPresenter >> docTypeOptions [
 
 	^ OrderedDictionary new
 		at: 'HTML 5' put: '<!DOCTYPE html>';	
@@ -79,26 +87,26 @@ MicHTMLStylerOptionsPresenter >> docTypeOptions [
 ]
 
 { #category : #layout }
-MicHTMLStylerOptionsPresenter >> documentType [
+MicHTMLStylerHTMLOptionsPresenter >> documentType [
 	"Answer a <String> describing the selected HTML document type"
 	
 	^ doctypeListPresenter selectedItem
 ]
 
 { #category : #accessing }
-MicHTMLStylerOptionsPresenter >> embeedCheckboxPresenter [
+MicHTMLStylerHTMLOptionsPresenter >> embeedCheckboxPresenter [
 
 	^ embeedCheckboxPresenter
 ]
 
 { #category : #accessing }
-MicHTMLStylerOptionsPresenter >> enableEmbeedCss [
+MicHTMLStylerHTMLOptionsPresenter >> enableEmbeedCss [
 
 	self embeedCheckboxPresenter enabled: true.
 ]
 
 { #category : #private }
-MicHTMLStylerOptionsPresenter >> encodingOptions [
+MicHTMLStylerHTMLOptionsPresenter >> encodingOptions [
 
 	^ #(
 		'UTF-8'
@@ -133,7 +141,7 @@ MicHTMLStylerOptionsPresenter >> encodingOptions [
 ]
 
 { #category : #initialization }
-MicHTMLStylerOptionsPresenter >> initializePresenters [ 
+MicHTMLStylerHTMLOptionsPresenter >> initializeDocTypeListPresenter [
 
 	doctypeListPresenter := self newDropList
 		help: 'Select the document type to be generated';
@@ -141,20 +149,14 @@ MicHTMLStylerOptionsPresenter >> initializePresenters [
 		whenSelectedItemChangedDo: [ : selection |
 			self micHtmlDocument documentType: (self docTypeOptions at: selection).
 			self styler updateHtmlSourcePresenter ]
-		yourself.
-	encodingOptionsListPresenter := self newDropList 
-		help: 'Select the document encoding';
-		items: self encodingOptions;
-		whenSelectedItemChangedDo: [ : selection | 
-			self micHtmlDocument charSet: selection.
-			self styler updateHtmlSourcePresenter ];
-		yourself.
-	languageOptionsPresenter := self newDropList 
-		help: 'Select the document language';
-		items: self languageOptions;
-		whenSelectedItemChangedDo: [ : selection |
-			self micHtmlDocument languageId: (selection first: 2).
-			self styler updateHtmlSourcePresenter ].
+		yourself.		
+
+
+]
+
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> initializeEmbeedingCheckPresenter [
+
 	embeedCheckboxPresenter := self newCheckBox
 		state: false;
 		enabled: false;
@@ -162,6 +164,38 @@ MicHTMLStylerOptionsPresenter >> initializePresenters [
 			self micHtmlDocument embeedCss.
 			self styler updateHtmlSourcePresenter ]
 		yourself.
+]
+
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> initializeEncodingOptionsListPresenter [
+
+	encodingOptionsListPresenter := self newDropList 
+		help: 'Select the document encoding';
+		items: self encodingOptions;
+		whenSelectedItemChangedDo: [ : selection | 
+			self micHtmlDocument charSet: selection.
+			self styler updateHtmlSourcePresenter ];
+		yourself.
+
+]
+
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> initializeLanguageOptionsListPresenter [
+
+	languageOptionsPresenter := self newDropList 
+		help: 'Select the document language';
+		items: self languageOptions;
+		selectItem: self defaultLanguageSelection;
+		whenSelectedItemChangedDo: [ : selection |
+			self micHtmlDocument languageId: (selection first: 2).
+			self styler updateHtmlSourcePresenter ].
+
+]
+
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> initializeLinksOptionCheckPresenter [
+
+		
 	linksOpenNewPage := self newCheckBox 
 		state: true;
 		whenChangedDo: [ 
@@ -171,7 +205,18 @@ MicHTMLStylerOptionsPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MicHTMLStylerOptionsPresenter >> languageOptions [
+MicHTMLStylerHTMLOptionsPresenter >> initializePresenters [ 
+
+	self
+		initializeDocTypeListPresenter;
+		initializeEncodingOptionsListPresenter;
+		initializeLanguageOptionsListPresenter;
+		initializeEmbeedingCheckPresenter;
+		initializeLinksOptionCheckPresenter.
+]
+
+{ #category : #initialization }
+MicHTMLStylerHTMLOptionsPresenter >> languageOptions [
 
 	^ (ISOLanguageDefinition iso2LanguageTable associations 
 		select: [ : assoc | assoc key size = 2 ] 

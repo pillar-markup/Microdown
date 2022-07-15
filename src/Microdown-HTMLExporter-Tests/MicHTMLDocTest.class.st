@@ -5,7 +5,7 @@ Class {
 		'doc',
 		'docString'
 	],
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-HTML'
 }
 
 { #category : #tests }
