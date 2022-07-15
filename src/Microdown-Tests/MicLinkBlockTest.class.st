@@ -1,6 +1,6 @@
 Class {
 	#name : #MicLinkBlockTest,
-	#superclass : #MicInstanceTest,
+	#superclass : #MicBlockTest,
 	#instVars : [
 		'splitterClass',
 		'link'
@@ -69,6 +69,11 @@ MicLinkBlockTest >> setUp [
 	super setUp.
 	parser := self parser. 
 	splitterClass := MicInlineParser
+]
+
+{ #category : #tests }
+MicLinkBlockTest >> subjectClass [ 
+	^ MicHorizontalLineBlock
 ]
 
 { #category : #tests }
@@ -162,9 +167,4 @@ MicLinkBlockTest >> testUrl [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.
 	self assert: link url equals: 'http://www.pharo.org:8080'
-]
-
-{ #category : #tests }
-MicLinkBlockTest >> testedClass [ 
-	^ MicHorizontalLineBlock
 ]

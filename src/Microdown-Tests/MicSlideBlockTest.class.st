@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #tests }
+MicSlideBlockTest >> subjectClass [ 
+	^ MicSlideBlock 
+]
+
+{ #category : #tests }
 MicSlideBlockTest >> testSlideBloc [
 
 	| doc |
@@ -32,9 +37,4 @@ MicSlideBlockTest >> testSlideBlocIsParsed [
 - bullet 3
 !>'.
 	self assert: doc children first class equals: MicSlideBlock
-]
-
-{ #category : #tests }
-MicSlideBlockTest >> testedClass [ 
-	^ MicSlideBlock 
 ]

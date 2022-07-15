@@ -160,12 +160,12 @@ MicPharoPackageCommentResourceReference >> loadChildren [
 MicPharoPackageCommentResourceReference >> loadMicrodown [
 	"I override to provide the comment produced by beautifulComments"
 	| builder |
-	self isPackage ifFalse: [ ^ Microdown parse: '' ].
+	self isPackage ifFalse: [ ^ Microdown parse: 'No documentation for tags or package prefixes' ].
 	builder := Microdown builder.
 	self categoryName asPackage  
 		buildMicroDownUsing: builder 
 		withComment: self contents.
-	^ builder contents
+	^ Microdown parse: builder contents
 ]
 
 { #category : #testing }

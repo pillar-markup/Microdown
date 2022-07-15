@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #tests }
+MicParagraphBlockTest >> subjectClass [ 
+	^ MicParagraphBlock 
+]
+
+{ #category : #tests }
 MicParagraphBlockTest >> testANewLineCreatesANewParagraph [
 	"**Hello 
 	
@@ -157,9 +162,4 @@ a paragraph on two lines'.
 	self assert: root children first text equals: 'This is'.
 	self assert: root children second text equals: 'a paragraph on two lines'.
 	
-]
-
-{ #category : #tests }
-MicParagraphBlockTest >> testedClass [ 
-	^ MicParagraphBlock 
 ]

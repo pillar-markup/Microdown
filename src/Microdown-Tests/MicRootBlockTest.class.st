@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #tests }
+MicRootBlockTest >> subjectClass [ 
+	^ MicRootBlock 
+]
+
+{ #category : #tests }
 MicRootBlockTest >> testRootCanConsumeLine [
 	"a root block can consume anything"
 	
@@ -15,9 +20,4 @@ MicRootBlockTest >> testRootCanConsumeLine [
 	rootNode := MicRootBlock new.
 	self assert: (rootNode canConsumeLine: '#').
 	self assert: (rootNode canConsumeLine: '- ')
-]
-
-{ #category : #tests }
-MicRootBlockTest >> testedClass [ 
-	^ MicRootBlock 
 ]

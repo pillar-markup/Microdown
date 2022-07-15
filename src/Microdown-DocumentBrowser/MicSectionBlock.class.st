@@ -23,17 +23,12 @@ Class {
 
 { #category : #'instance creation' }
 MicSectionBlock class >> fromRoot: document [
-	^ self fromRoot: document header: 'Document root header'
-]
-
-{ #category : #'instance creation' }
-MicSectionBlock class >> fromRoot: document header: header [
 	| newSection |
 	newSection := self new
 		from: document children readStream.
 	"If the document used header level 1 as title (ie it was the only level 1 header), 
 	do not introduce an intermediate level"
-	^ newSection body children isEmpty & (newSection subsections children size = 1)
+	^ (newSection body children isEmpty and: [newSection subsections children size = 1])
 		ifTrue: [ newSection subsections children first ]
 		ifFalse: [ newSection ]
 ]
@@ -68,7 +63,9 @@ MicSectionBlock >> canConsumeLine: line [
 
 { #category : #accessing }
 MicSectionBlock >> children [
-	^ { self header. self body. self subsections  }
+	^ self header 
+		ifNil: [ { self body. self subsections  } ]
+		ifNotNil: [ { self header. self body. self subsections  } ]
 ]
 
 { #category : #displaying }
@@ -112,6 +109,7 @@ MicSectionBlock >> header: headerBlock [
 { #category : #initialization }
 MicSectionBlock >> initialize [
 	super initialize.
+	header := nil.
 	body := MicIntermediateBlock new parent: self; yourself.
 	subsections := MicIntermediateBlock new parent: self; yourself.
 ]
