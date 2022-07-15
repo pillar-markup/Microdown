@@ -51,11 +51,19 @@ Class {
 	#category : #'Microdown-HTMLExporter-CSS'
 }
 
+{ #category : #adding }
+MicCSSFramework >> addTheme: aMicCSSTheme [
+	"Add aMicCSSTheme to the receiver themes. Answer the receiver"
+	
+	self themes add: aMicCSSTheme
+]
+
 { #category : #accessing }
 MicCSSFramework >> fonts [
 	"Answer a <Collection> of receiver's typographies"
 
 	^ fonts
+		ifNil: [ fonts := OrderedCollection new ]
 ]
 
 { #category : #accessing }
@@ -85,6 +93,19 @@ MicCSSFramework >> hasThemes [
 	^ self themes notEmpty
 ]
 
+{ #category : #private }
+MicCSSFramework >> newCssTheme: themeInfoDict [ 
+	"Answer a new <MicCSSTheme> configured with values in aMicCSSTheme"
+
+	^ MicCSSTheme new
+			name: (themeInfoDict at: #name);
+			newCssFiles: themeInfoDict;
+			framework: self;
+			cssUrl: (themeInfoDict at: #css ifAbsent: [ String empty ]);
+			minCssUrl: (themeInfoDict at: #minCss ifAbsent: [ String empty ]);
+			yourself
+]
+
 { #category : #accessing }
 MicCSSFramework >> normalizeUrl [
 	"Answer a <String> with the URL endpoint of the Normalize library source code, or empty if it is not present"
@@ -104,6 +125,7 @@ MicCSSFramework >> projectUrl [
 	"Answer a <String> representing the receiver's minified CSS URL"
 	
 	^ projectUrl
+		ifNil: [ projectUrl := String empty ]
 ]
 
 { #category : #accessing }
@@ -117,6 +139,7 @@ MicCSSFramework >> resetUrl [
 	"Answer a <String> with the URL endpoint of a Reset library source code, or empty if it is not present"
 
 	^ resetUrl
+		ifNil: [ resetUrl := String empty ]
 ]
 
 { #category : #accessing }
@@ -127,9 +150,10 @@ MicCSSFramework >> resetUrl: anObject [
 
 { #category : #accessing }
 MicCSSFramework >> themes [
-	"Answer a <Collection> of receiver's themes"
+	"Answer a <Collection> of <MicCSSTheme>"
 
 	^ themes
+		ifNil: [ themes := OrderedCollection new ]
 ]
 
 { #category : #accessing }
@@ -138,11 +162,5 @@ MicCSSFramework >> themes: aDictionary [
 
 	themes := OrderedCollection new.
 	aDictionary associationsDo: [ : themeInfoDict |
-		themes add: (MicCSSTheme new
-			name: (themeInfoDict at: #name);
-			newCssFiles: themeInfoDict;
-			framework: self;
-			cssUrl: (themeInfoDict at: #css ifAbsent: [ String empty ]);
-			minCssUrl: (themeInfoDict at: #minCss ifAbsent: [ String empty ]);
-			yourself)  ]
+		themes add: (self newCssTheme: themeInfoDict) ]
 ]

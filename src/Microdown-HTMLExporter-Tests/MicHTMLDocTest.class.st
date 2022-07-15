@@ -325,7 +325,7 @@ MicHTMLDocTest >> testWriteDocumentCSS [
 
 	self
 		assert: ((linkElements elementsDetect: [ : e | e includesAttribute: 'rel' ]) attributeAt: 'href')
-		equals: 'css/awsm.min.css'.
+		equals: 'css/awsm.css'.
 
 
 ]

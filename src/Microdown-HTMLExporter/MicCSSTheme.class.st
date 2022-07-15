@@ -14,6 +14,7 @@ Class {
 
 { #category : #accessing }
 MicCSSTheme >> framework [
+	"Answer the receiver's <MicCSSFramework>"
 
 	^ framework
 ]

@@ -76,18 +76,11 @@ MicCSSDownloader >> frameworks [
 
 { #category : #'accessing - downloading' }
 MicCSSDownloader >> httpClient [
-	"Return a new, specifically configured instance of the HTTP client for internal use.
-	Note how we request GZIP compression and will signal progress."
+	"Answer a new <ZnClient> configured HTTP client for internal use"
 
 	^ ZnClient new
 		systemPolicy;
 		signalProgress: true;
 		ifFail: [ :exception | self error: 'Could not load : ', exception printString ];
 		yourself
-]
-
-{ #category : #'accessing - downloading' }
-MicCSSDownloader >> provider [
-
-	^ MicCSSProvider
 ]
