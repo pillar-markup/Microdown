@@ -56,7 +56,7 @@ MicHTMLStyler >> baseToolbarCommands [
 
 	^ { 
 		MicCSSStylerPreviewCommand .
-		MicCSSStylerPublishCommand .
+		MicCSSStylerHelpCommand .
 		MicCSSStylerExportCommand .
 		MicCSSStylerUpdateCommand .
 		MicCSSStylerQuitCommand

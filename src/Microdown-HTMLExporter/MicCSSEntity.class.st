@@ -50,7 +50,7 @@ MicCSSEntity >> cssFile: anObject [
 
 { #category : #accessing }
 MicCSSEntity >> cssPath [
-	"Answer a <String> describing the location path for the receiver"
+	"Answer a <String> describing the location path for the receiver, including its file name"
 	
 	^ String streamContents: [ : stream |
 		stream 
@@ -73,6 +73,7 @@ MicCSSEntity >> cssUrl: anObject [
 
 { #category : #defaults }
 MicCSSEntity >> defaultBasePath [
+	"Answer a non-empty <String> representing the location where the receiver's files will be written"
 
 	^ 'css/'
 ]
@@ -86,7 +87,7 @@ MicCSSEntity >> defaultDestinationPath [
 
 { #category : #accessing }
 MicCSSEntity >> destinationPath [
-	"Answer a <String> representing the location used to store the receiver"
+	"Answer a <String> representing the location used to store the receiver. This location is used as a repository of CSS entities opposed to the #basePath which is the user-location of a specific installation"
 
 	^ destinationPath
 		ifNil: [ destinationPath := self defaultDestinationPath ]
@@ -114,6 +115,7 @@ MicCSSEntity >> hasNormalVersion [
 
 { #category : #accessing }
 MicCSSEntity >> minCssFile [
+	"Answer the recceiver's <MicCSSFile>, or nil if absent"
 
 	^ minCssFile
 ]
@@ -147,6 +149,7 @@ MicCSSEntity >> minifiedSourceCode [
 
 { #category : #accessing }
 MicCSSEntity >> name [
+	"Answer a <String> representing the receiver's name"
 
 	^ name
 ]
@@ -159,7 +162,7 @@ MicCSSEntity >> name: anObject [
 
 { #category : #'instance creation' }
 MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
-	"Private - Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
+	"Private - Answer a new <MicCSSFile> configured with the CSS URL specified in versionSymbol. If there is no resolvable versionSymbol in frwSpec, answer a new <MicCSSNullFile>"
 
 	^ frwSpec 
 		at: versionSymbol
@@ -178,7 +181,7 @@ MicCSSEntity >> newCssFileFor: aCssUrl [
 
 { #category : #'instance creation' }
 MicCSSEntity >> newCssFiles: frwSpec [
-	"Answer a new valid <MicCSSFile> configured with the minified CSS URL if present, if not try to resolve a normal CSS URL. Raise an <Error> if frwSpec does not have a CSS URL"
+	"Private - Configure receiver's CSS files using specifications in fwrSpec"
 
 	self cssFile: (self newCssFile: frwSpec version: #css).
 	self minCssFile: (self newCssFile: frwSpec version: #minCss)

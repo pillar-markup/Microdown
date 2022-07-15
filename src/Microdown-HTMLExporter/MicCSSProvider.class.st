@@ -128,7 +128,7 @@ MicCSSProvider >> defaultFrameworks [
 
 { #category : #accessing }
 MicCSSProvider >> destinationPath [
-	"Answer the <String> used as location to store the receiver's CSS frameworks"
+	"Answer a <String> used as location to store the receiver's CSS frameworks"
 
 	^ destinationPath
 		ifNil: [ destinationPath := 'support' ]
@@ -158,7 +158,7 @@ MicCSSProvider >> frameworks [
 
 { #category : #frameworks }
 MicCSSProvider >> frameworksSpecs [
-	"Answer a <Collection> of specifications for building CSS framework objects"
+	"Answer a <Collection> of <Array> representing specifications for building CSS framework objects"
 
 	^ { 
 		{ 
