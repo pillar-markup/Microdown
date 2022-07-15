@@ -1,6 +1,6 @@
 Class {
 	#name : #MicFigureBlockTest,
-	#superclass : #MicInstanceTest,
+	#superclass : #MicBlockTest,
 	#instVars : [
 		'splitterClass'
 	],
@@ -13,6 +13,11 @@ MicFigureBlockTest >> setUp [
 	super setUp.
 	parser := self parser.
 	splitterClass := MicInlineParser 
+]
+
+{ #category : #tests }
+MicFigureBlockTest >> subjectClass [ 
+	^ MicFigureBlock 
 ]
 
 { #category : #tests }
@@ -46,7 +51,7 @@ MicFigureBlockTest >> testArgumentAtIfPresent [
 	| expected tested |
 
 	expected := MicFigureBlock new arguments at: 'testKey' put: 'nothing'.
-	tested := self instance argumentAt: 'testKey' ifPresent: [ 'nothing' ].
+	tested := self subject argumentAt: 'testKey' ifPresent: [ 'nothing' ].
 	self assert: (tested isKindOf: MicFigureBlock).
 	self assert: (tested arguments isKindOf: OrderedDictionary).
 	self deny: (tested arguments includesKey: 'testKey').
@@ -159,9 +164,4 @@ MicFigureBlockTest >> testUrlWithoutMicrodownParameters2 [
 	figure := (splitterClass new parse: '![caption](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true)') first.
 	self assert: figure reference uri asString equals: 'https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true'.
 	
-]
-
-{ #category : #tests }
-MicFigureBlockTest >> testedClass [ 
-	^ MicFigureBlock 
 ]

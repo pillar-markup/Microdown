@@ -195,6 +195,17 @@ MicRichTextComposerTest >> testBoldFormat [
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
+{ #category : #'tests - format' }
+MicRichTextComposerTest >> testCenter [
+	| src doc|
+	src := '
+<!center
+This is centered
+!>'.
+	doc := Microdown parse: src.
+	self assertWriting: doc include: TextAlignment centered 
+]
+
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 
@@ -264,6 +275,17 @@ line 2
 'line 1
 line 2
 Roger Rabbit'
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
+	| src |
+	src := '
+<!card 
+stuff
+!>
+'.
+	Microdown asRichText: src
 ]
 
 { #category : #'skipped tests' }
@@ -583,6 +605,17 @@ MicRichTextComposerTest >> testRawNewLinesPreserved [
 bold**}}'.
 	self assert: text asString trim equals: '**not
 bold**'.
+]
+
+{ #category : #'tests - format' }
+MicRichTextComposerTest >> testRightAllignment [ 
+	| src doc|
+	src := '
+<!right
+This is righted
+!>'.
+	doc := Microdown parse: src.
+	self assertWriting: doc include: TextAlignment rightFlush  
 ]
 
 { #category : #'skipped tests' }
