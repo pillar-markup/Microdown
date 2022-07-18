@@ -1,3 +1,6 @@
+"
+Help book to explain export options for the Microdown HTML styler.
+"
 Class {
 	#name : #MicHTMLStylerExportHelp,
 	#superclass : #MicHTMLStylerHelp,

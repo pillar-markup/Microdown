@@ -194,12 +194,13 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeLanguageOptionsListPresenter [
 
 { #category : #initialization }
 MicHTMLStylerHTMLOptionsPresenter >> initializeLinksOptionCheckPresenter [
-
 		
 	linksOpenNewPage := self newCheckBox 
 		state: true;
-		whenChangedDo: [ 
-			self micHtmlDocument linksOpenNewPage.
+		whenChangedDo: [ : state |
+			state 
+				ifFalse: [ self micHtmlDocumentConfiguration beTargetAttributeSelf ]
+				ifTrue: [ self micHtmlDocumentConfiguration beTargetAttributeBlank ].
 			self styler updateHtmlSourcePresenter ]
 		yourself
 ]
@@ -221,4 +222,11 @@ MicHTMLStylerHTMLOptionsPresenter >> languageOptions [
 	^ (ISOLanguageDefinition iso2LanguageTable associations 
 		select: [ : assoc | assoc key size = 2 ] 
 		thenCollect: [ : assoc | assoc key , ' - ' , assoc value language ]) asSortedCollection
+]
+
+{ #category : #accessing }
+MicHTMLStylerHTMLOptionsPresenter >> micHtmlDocumentConfiguration [
+	"Answer a <MicHTMLConfiguration> for the receiver's document"
+
+	^ self micHtmlDocument configuration.
 ]

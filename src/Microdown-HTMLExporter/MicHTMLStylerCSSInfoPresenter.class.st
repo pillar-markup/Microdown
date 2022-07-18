@@ -152,6 +152,12 @@ MicHTMLStylerCSSInfoPresenter >> projectUrlPresenter [
 	^ projectUrlPresenter
 ]
 
+{ #category : #accessing }
+MicHTMLStylerCSSInfoPresenter >> resetCssLinkPresenter [
+
+	^ resetCssLinkPresenter
+]
+
 { #category : #private }
 MicHTMLStylerCSSInfoPresenter >> setLink: aLinkPresenter url: anEmptyStringOrUrl help: helpString [
 
@@ -197,10 +203,10 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenter [
 MicHTMLStylerCSSInfoPresenter >> updatePresenterLinks [
 
 	{ 
-		{ cssLinkPresenter . self cssFramework cssUrl . 'Open a web browser to visit the CSS file' } .
-		{ minCssLinkPresenter . self cssFramework minCssUrl . 'Open a web browser to visit the minified CSS file' } .
-		{ normalizeCssLinkPresenter . self cssFramework normalizeUrl . 'Open a web browser to visit the Normalize CSS file' } .
-		{ resetCssLinkPresenter . self cssFramework resetUrl . 'Open a web browser to visit the Reset CSS file' } 
+		{ self cssLinkPresenter . self cssFramework cssUrl . 'Open a web browser to visit the CSS file' } .
+		{ self minCssLinkPresenter . self cssFramework minCssUrl . 'Open a web browser to visit the minified CSS file' } .
+		{ self normalizeCssLinkPresenter . self cssFramework normalizeUrl . 'Open a web browser to visit the Normalize CSS file' } .
+		{ self resetCssLinkPresenter . self cssFramework resetUrl . 'Open a web browser to visit the Reset CSS file' } 
 	} do: [ : linkArray |
 		self 
 			setLink: linkArray first 

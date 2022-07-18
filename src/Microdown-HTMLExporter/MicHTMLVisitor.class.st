@@ -6,7 +6,8 @@ Class {
 	#name : #MicHTMLVisitor,
 	#superclass : #MicrodownVisitor,
 	#instVars : [
-		'canvas'
+		'canvas',
+		'configuration'
 	],
 	#category : #'Microdown-HTMLExporter-Visitor'
 }
@@ -23,6 +24,15 @@ MicHTMLVisitor class >> asHTMLString: aMicrodownString [
 	"Answer a <String> formatted as HTML from aMicrodownString as input"
 
 	^ self new convertMicString: aMicrodownString
+]
+
+{ #category : #converting }
+MicHTMLVisitor class >> asHTMLString: aMicrodownString configuration: aMicHTMLConfiguration [
+	"Answer a <String> formatted as HTML from aMicrodownString as input"
+
+	^ self new 
+		configuration: aMicHTMLConfiguration;
+		convertMicString: aMicrodownString
 ]
 
 { #category : #examples }
@@ -76,6 +86,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
 
 	MicHTMLDoc new
+		configuration: self configuration;	
 		addCSSNamed: aStyleName;
 		fromMicrodown: aMicrodownString;
 		writeToFile
@@ -86,6 +97,19 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 MicHTMLVisitor >> canvasClass [
 
 	^ MicHTMLCanvas
+]
+
+{ #category : #accessing }
+MicHTMLVisitor >> configuration [
+
+	^ configuration
+		ifNil: [ configuration := MicHTMLConfiguration new ]
+]
+
+{ #category : #accessing }
+MicHTMLVisitor >> configuration: anObject [
+
+	configuration := anObject
 ]
 
 { #category : #accessing }
@@ -120,6 +144,7 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 
 	self visit: (Microdown parse: aMicString).
 	^ MicHTMLDoc new
+		configuration: self configuration;
 		writeDocument: self contents;
 		contents
 ]
@@ -127,15 +152,6 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 { #category : #initialization }
 MicHTMLVisitor >> crAsNewLine [ 
 	canvas crAsNewLine
-]
-
-{ #category : #visiting }
-MicHTMLVisitor >> createAnchorWithId: anId [
-
-	canvas tag
-		name: 'a';
-		parameterAt: 'id' put: anId;
-		with: ''
 ]
 
 { #category : #initialization }
@@ -153,13 +169,8 @@ MicHTMLVisitor >> initialize [
 ]
 
 { #category : #visiting }
-MicHTMLVisitor >> isSyntaxHighlightingPossible [
-
-	^ true
-]
-
-{ #category : #visiting }
 MicHTMLVisitor >> languageForScript: aScript [
+	"Answer a <PRAbstractScriptLanguage>"
 
 	^ aScript language isSpecified
 		  ifTrue: [ aScript language ]
@@ -180,8 +191,24 @@ MicHTMLVisitor >> usedNewLine [
 
 { #category : #visiting }
 MicHTMLVisitor >> visitAnchor: anAnchor [
+	"Target could be any tag, h1, h2, a, etc., it is only a placeholder for a hyperlink"
 
-	self createAnchorWithId: anAnchor label 
+	canvas tag
+		name: 'a';
+		parameterAt: 'id' put: anAnchor label;
+		with: String empty
+
+]
+
+{ #category : #visiting }
+MicHTMLVisitor >> visitAnchorReference: anAnchor [
+	"Linking to an element on the same page"
+
+	canvas tag
+		name: 'a';
+		parameterAt: 'href' put: '#' , anAnchor substring;
+		with: anAnchor substring
+
 ]
 
 { #category : #visiting }
@@ -190,13 +217,11 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 	canvas newLine.
 	canvas tag
 		name: 'section';
-		parameterAt: 'class' put: 'annotation';
+		parameterAt: 'id' put: anAnnotatedParagraph label;
 		with: [ 
 			canvas tag
 				name: 'label';
-				with: anAnnotatedParagraph label.
-			canvas tag
-				name: 'div';
+				parameterAt: 'for' put: anAnnotatedParagraph label;
 				with: [ super visitAnnotated: anAnnotatedParagraph ] ].
 ]
 
@@ -256,15 +281,14 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 					code := canvas tag
 						        name: 'code';
 						        yourself.
-					language := self languageForScript: aCodeBlock.
-					language isSyntaxHighlightingPossible ifTrue: [ 
-						code parameterAt: 'class' put: language printString ].
+					(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
+						ifTrue: [ code parameterAt: 'class' put: language printString ].
 					code with: [ canvas lines: aCodeBlock text ] ].
 			canvas tag
 				name: 'figcaption';
 				with: [ 
 					aCodeBlock hasLabel ifTrue: [ 
-							self createAnchorWithId: aCodeBlock label.
+							self visitAnchor: aCodeBlock.
 							self writeCounterForScript: aCodeBlock ].
 					aCodeBlock hasCaption ifTrue: [ 
 							self visitAll: aCodeBlock caption children ] ] ].
@@ -312,6 +336,14 @@ MicHTMLVisitor >> visitHeader: aHeader [
 ]
 
 { #category : #visiting }
+MicHTMLVisitor >> visitHorizontalLine: aHorizontalLine [
+
+	canvas tag
+		name: 'hr';
+		with: ''
+]
+
+{ #category : #visiting }
 MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	"Write mark up elements related with image tag in the receiver's canvas.
 	Mandatory attributes:
@@ -337,13 +369,22 @@ MicHTMLVisitor >> visitItalic: aItalicText [
 { #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitLink: aLink [
 	"Write markup hyperlink, which is used to link from one page to another"
-	
+
 	canvas tag
 		name: 'a';
+		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
 		with: aLink caption
 
+]
+
+{ #category : #'visiting - extensions' }
+MicHTMLVisitor >> visitMath: anObject [
+
+	"<script src=""https://polyfill.io/v3/polyfill.min.js?features=es6""></script>
+<script id=""MathJax-script"" async src=""https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js""></script>"
+	self shouldBeImplemented
 ]
 
 { #category : #'visiting - inline elements' }
@@ -352,6 +393,40 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 	canvas tag
 		name: 'code';
 		with: [ super visitMonospace: aMonospace ]
+]
+
+{ #category : #'visiting - list' }
+MicHTMLVisitor >> visitOrderedList: anOrderedList [
+	"Target could be any tag, h1, h2, a, etc., it is only a placeholder for a hyperlink"
+
+	canvas tag
+		name: 'ol';
+		with: [ 
+			canvas newLine. 
+			super visitOrderedList: anOrderedList  ]
+]
+
+{ #category : #'visiting - list' }
+MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
+	"will not work with we have text decorators such as bold, italic, monospace"
+
+	canvas tag
+		name: 'li';
+		with: anOrderedListItem listItemText.
+	canvas newLine.
+	anOrderedListItem hasChildren
+		ifTrue: [ 
+			 anOrderedListItem hasNestedChildren
+				ifTrue: [ 
+					| listItemWithoutText |
+					listItemWithoutText := anOrderedListItem copy.
+					listItemWithoutText children removeFirst.
+					self visitOrderedList: listItemWithoutText ]
+				ifFalse: [ 
+					| listItemWithoutFirst |
+					listItemWithoutFirst := anOrderedListItem copy.
+					listItemWithoutFirst children removeFirst.					
+					self visitOrderedList: listItemWithoutFirst ] ]
 ]
 
 { #category : #visiting }

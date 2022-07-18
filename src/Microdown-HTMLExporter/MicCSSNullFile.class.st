@@ -1,3 +1,6 @@
+"
+A special type of Microdown CSS file with contents empty.
+"
 Class {
 	#name : #MicCSSNullFile,
 	#superclass : #MicCSSFile,

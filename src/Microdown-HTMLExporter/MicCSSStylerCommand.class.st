@@ -1,3 +1,6 @@
+"
+Abstract command concerning Microdown HTML Styler.
+"
 Class {
 	#name : #MicCSSStylerCommand,
 	#superclass : #CmCommand,
@@ -16,6 +19,12 @@ MicCSSStylerCommand class >> forSpecContext: anObject [
 	^ (self forSpecWithIconNamed: self defaultIconName)
 		context: anObject;
 		yourself
+]
+
+{ #category : #accessing }
+MicCSSStylerCommand class >> order [
+	^ self subclassResponsibility
+
 ]
 
 { #category : #accessing }

@@ -46,7 +46,7 @@ Body Text With Smallcaps Introduction: Margin note 1. A random Wikipedia link. A
 
 ##Horizontal Rulers
 
- ----
+****
 
 ##Tabular Data
 

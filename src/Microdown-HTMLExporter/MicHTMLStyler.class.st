@@ -367,15 +367,14 @@ MicHTMLStyler >> toolbarPresenter: anObject [
 { #category : #updating }
 MicHTMLStyler >> updateCssSelection [
 
-	self hasCssSelection
-		ifTrue: [ 
-			| selectedCss |
-			selectedCss := self hasThemeSelection 
-				ifTrue: [ self cssTheme ]
-				ifFalse: [ self cssFramework ].
-			self micHtmlDocument addCSS: selectedCss ]
-
-
+	| selectedCss |
+	
+	self hasCssSelection 
+		ifFalse: [ ^ self ].
+   selectedCss := self hasThemeSelection
+      ifTrue: [ self cssTheme ]
+      ifFalse: [ self cssFramework ].
+    self micHtmlDocument addCSS: selectedCss.
 ]
 
 { #category : #updating }
@@ -405,7 +404,7 @@ MicHTMLStyler >> updateMicHtmlDocument [
 		fromMicrodown: self micDocumentContents
 ]
 
-{ #category : #updating }
+{ #category : #initialization }
 MicHTMLStyler >> updatePresenter [
 
 	super updatePresenter.

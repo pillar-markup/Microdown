@@ -1,3 +1,6 @@
+"
+This is a custom help book for the Microdown HTML Styler application.
+"
 Class {
 	#name : #MicHTMLStylerHelp,
 	#superclass : #CustomHelp2,
@@ -14,6 +17,12 @@ MicHTMLStylerHelp class >> bookName [
 	"Return the name of the help book"
 
 	^ 'Microdown HTML Styler Help'
+]
+
+{ #category : #accessing }
+MicHTMLStylerHelp class >> headingText [
+	^ self subclassResponsibility
+
 ]
 
 { #category : #accessing }

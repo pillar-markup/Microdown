@@ -1,3 +1,6 @@
+"
+A specialized canvas to emit HTML tags.
+"
 Class {
 	#name : #MicHTMLCanvas,
 	#superclass : #MicExportCanvas,

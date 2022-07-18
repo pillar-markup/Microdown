@@ -193,13 +193,6 @@ MicHTMLStylerDetailViewsPresenter >> isOverwrite [
 	^ exportOptionsPresenter isOverwrite
 ]
 
-{ #category : #accessing }
-MicHTMLStylerDetailViewsPresenter >> micDocument [
-
-	self flag: #toDelete.
-	^ self styler micHtmlDocument
-]
-
 { #category : #updating }
 MicHTMLStylerDetailViewsPresenter >> micDocumentString [
 
@@ -243,7 +236,7 @@ MicHTMLStylerDetailViewsPresenter >> styler [
 { #category : #updating }
 MicHTMLStylerDetailViewsPresenter >> updateHtmlOptionsPresenter [
 
-	exportOptionsPresenter outputFilename: self micDocument fileName.
+	exportOptionsPresenter outputFilename: self micHtmlDocument fileName.
 
 ]
 

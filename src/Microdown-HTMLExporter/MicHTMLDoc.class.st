@@ -6,7 +6,7 @@ Represents a Text/HTML file to be displayed in a web browser. It can be created 
 The following generates a HTML String from Microdown contents:
 
 ```language=Pharo
-(MicHTMLDoc newWithStyle: 'tufte') 
+(MicHTMLDoc newWithStyle: 'NewCSS') 
 	fromMicrodown: MicDocFactory exampleMic;
 	contents.
 ```
@@ -37,9 +37,10 @@ A Microdown HTML document can receive as input a raw HTML String, without any su
 
 ## Internals
 
-Internally some properties are configured by default:
+A HTML document uses a canvas which acts as a brush to render content.
 
-- A canvas which acts as a brush to render content.
+Internally, it uses a Configuration object (instance of `MicHTMLConfiguration`) to set important HTML properties, prividing widely used defaults:
+
 - The viewport, specified in **defaultViewport**, to control layout in mobile browsers.
 - The language identifier is set by default to 'en' (English).
 - A subdirectory where the linked CSS files are stored, specified in `MicHTMLDoc >> cssBasePath`.
@@ -59,7 +60,8 @@ Class {
 		'author',
 		'destinationDir',
 		'cssFrameworks',
-		'documentType'
+		'documentType',
+		'configuration'
 	],
 	#category : #'Microdown-HTMLExporter-Core'
 }
@@ -118,6 +120,14 @@ MicHTMLDoc >> charSet [
 MicHTMLDoc >> charSet: anObject [
 
 	charSet := anObject
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> configuration [
+	"Answer the receiver's <MicHTMLConfiguration>"
+
+	^ configuration
+		ifNil: [ configuration := MicHTMLConfiguration new ]
 ]
 
 { #category : #accessing }
@@ -242,7 +252,9 @@ MicHTMLDoc >> fromMicrodown: aMicrodownString [
 	"Convert to HTML and wrap aMicrodownString in the receiver's HTML stream"
 
 	self initializeCanvas.
-	self writeDocument: (Microdown asHTMLString: aMicrodownString)
+	self writeDocument: (Microdown 
+		asHTMLString: aMicrodownString 
+		configuration: self configuration)
 ]
 
 { #category : #accessing }

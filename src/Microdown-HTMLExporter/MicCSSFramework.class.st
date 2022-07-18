@@ -13,7 +13,7 @@ To include a Microdown CSS Framework, send the message #addCSSNamed: with a Stri
 
 ```language=Pharo
 MicHTMLDoc new
-	addCSSNamed: 'Tufte';
+	addCSSNamed: 'AwsmCSS';
 	fromMicrodown: 'Your Microdown document';
 	writeToFile.
 ```

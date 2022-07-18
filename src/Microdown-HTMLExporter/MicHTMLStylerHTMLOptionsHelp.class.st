@@ -1,3 +1,6 @@
+"
+Help book for the HTML options page of the Microdown HTML Styler application.
+"
 Class {
 	#name : #MicHTMLStylerHTMLOptionsHelp,
 	#superclass : #MicHTMLStylerHelp,
