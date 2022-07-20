@@ -21,19 +21,15 @@ to see a list of available CSS libraries.
 
 ## Description
 
-A document has multiple properties which can be configured:
+A document has multiple primary properties which can be configured:
 
 - A **fileName** `String`.
 - A `Collection` of CSS files to define the look of the document, through **addCSSFile:**.
-- A default character set (**charSet**) as UTF-8 by default (**setCharSetUTF8**)..
-- A language (**languageId**) `String` of element's contents (matches the lang attribute in HTML specification).
-- A title `String` acting as document short explanation.
-- A `Collection` of Keywords (**keywords**).
-- A `Collection` of authors (**authors**), each one being a `String`.
 - A destination directory (**destinationDir**) representing the output path of the document.
 
-A Microdown HTML document can receive as input a raw HTML String, without any surrounding header tags, and it builds a header and body tags around it.
+Additional properties, for example those specified in a Microdown header, are translated into HTML meta tags and they are handled in its `MicHTMLConfiguration` object.
 
+A Microdown HTML document can receive as input a raw HTML String, without any surrounding header tags, and it builds a header and body tags around it.
 
 ## Internals
 
@@ -51,16 +47,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'fileName',
-		'charSet',
 		'canvas',
-		'languageId',
-		'title',
-		'description',
-		'keywords',
-		'author',
 		'destinationDir',
 		'cssFrameworks',
-		'documentType',
 		'configuration'
 	],
 	#category : #'Microdown-HTMLExporter-Core'
@@ -89,18 +78,30 @@ MicHTMLDoc >> addCSSNamed: aString [
 	^ self cssFrameworks add: (MicCSSProvider forCSSNamed: aString)
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : #accessing }
 MicHTMLDoc >> author [
-	"Answer a <String> representing the author of the receiver"
+	"Refer to comment in MicHTMLConfiguration>>author"
 	
-	^ author
-		ifNil: [ author := String empty ]
+	^ self configuration author
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> author: anObject [
+MicHTMLDoc >> author: aString [
+	"Refer to comment in MicHTMLConfiguration>>author:"
+	
+	^ self configuration author: aString
+]
 
-	author := anObject
+{ #category : #accessing }
+MicHTMLDoc >> canvas [
+
+	^ canvas
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> canvas: anObject [
+
+	canvas := anObject
 ]
 
 { #category : #private }
@@ -113,13 +114,13 @@ MicHTMLDoc >> canvasClass [
 MicHTMLDoc >> charSet [
 	"Answer a <String> with specifies the character encoding for the HTML document"
 
-	^ charSet
+	^ self configuration charSet
 ]
 
 { #category : #accessing }
 MicHTMLDoc >> charSet: anObject [
 
-	charSet := anObject
+	self configuration charSet: anObject
 ]
 
 { #category : #accessing }
@@ -127,7 +128,12 @@ MicHTMLDoc >> configuration [
 	"Answer the receiver's <MicHTMLConfiguration>"
 
 	^ configuration
-		ifNil: [ configuration := MicHTMLConfiguration new ]
+]
+
+{ #category : #accessing }
+MicHTMLDoc >> configuration: anObject [
+
+	configuration := anObject
 ]
 
 { #category : #accessing }
@@ -145,44 +151,18 @@ MicHTMLDoc >> cssFrameworks [
 		ifNil: [ cssFrameworks := OrderedCollection new ]
 ]
 
-{ #category : #initialization }
-MicHTMLDoc >> defaultDocumentType [
-	"Answer a <String> specifying the mandatory document specification tag"
-
-	^ '<!DOCTYPE html>'
-]
-
-{ #category : #defaults }
-MicHTMLDoc >> defaultLanguageId [
-
-	^ 'en'
-]
-
-{ #category : #defaults }
-MicHTMLDoc >> defaultTitle [
-
-	^ 'Untitled document'
-]
-
-{ #category : #defaults }
-MicHTMLDoc >> defaultViewport [
-	"Answer a <String> to give the browser instructions on how to control the page's dimensions and scaling"
-
-	^ 'width=device-width,initial-scale=1.0,user-scalable=yes'
-]
-
-{ #category : #'writing - metadata' }
+{ #category : #accessing }
 MicHTMLDoc >> description [
-	"Answer a <String> which define a description for the receiver"
+	"Refer to comment in MicHTMLConfiguration>>description"
 	
-	^ description
-		ifNil: [ description := String empty ]
+	^ self configuration description
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> description: anObject [
-
-	description := anObject
+MicHTMLDoc >> description: aString [
+	"Refer to comment in MicHTMLConfiguration>>description:"
+	
+	^ self configuration description: aString
 ]
 
 { #category : #accessing }
@@ -199,18 +179,18 @@ MicHTMLDoc >> destinationPath: anObject [
 	destinationDir := anObject
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 MicHTMLDoc >> documentType [
-	"Answer a <String> specifying the mandatory document specification tag"
+	"Refer to comment in MicHTMLConfiguration>>documentType"
 	
-	^ documentType
-		ifNil: [ documentType := self defaultDocumentType ]
+	^ self configuration documentType
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> documentType: anObject [
-
-	documentType := anObject
+MicHTMLDoc >> documentType: aString [
+	"Refer to comment in MicHTMLConfiguration>>documentType:"
+	
+	^ self configuration documentType: aString
 ]
 
 { #category : #testing }
@@ -268,6 +248,9 @@ MicHTMLDoc >> fullName [
 MicHTMLDoc >> initialize [
 	
 	super initialize.
+	self configuration: (MicHTMLConfiguration new 
+		document: self;
+		yourself).	
 	self setCharSetUTF8.
 	self initializeCanvas.
 
@@ -277,34 +260,35 @@ MicHTMLDoc >> initialize [
 MicHTMLDoc >> initializeCanvas [
 
 	canvas := self canvasClass new.
-]
 
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> keywords [
-	"Answer a <Collection> of <String> which define keywords for search engines"
-	
-	^ keywords
-		ifNil: [ keywords := OrderedCollection new ]
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> keywords: anObject [
+MicHTMLDoc >> keywords [
+	"Refer to comment in MicHTMLConfiguration>>keywords"
+	
+	^ self configuration keywords
+]
 
-	keywords := anObject
+{ #category : #accessing }
+MicHTMLDoc >> keywords: aCollection [
+	"Refer to comment in MicHTMLConfiguration>>keywords:"
+	
+	^ self configuration keywords: aCollection
 ]
 
 { #category : #accessing }
 MicHTMLDoc >> languageId [
-	"Answer a <String> representing the target language of the receiver"
+	"Refer to comment in MicHTMLConfiguration>>languageId"
 	
-	^ languageId
-		ifNil: [ languageId := self defaultLanguageId ]
+	^ self configuration languageId
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> languageId: anObject [
-
-	languageId := anObject
+MicHTMLDoc >> languageId: aString [
+	"Refer to comment in MicHTMLConfiguration>>languageId:"
+	
+	^ self configuration languageId: aString
 ]
 
 { #category : #accessing }
@@ -356,30 +340,22 @@ MicHTMLDoc >> tempFileName [
 
 { #category : #accessing }
 MicHTMLDoc >> title [
-	"Answer a <String> representing the required title element"
+	"Refer to comment in MicHTMLConfiguration>>title"
 	
-	^ title
-		ifNil: [ title := self defaultTitle ]
-]
-
-{ #category : #accessing }
-MicHTMLDoc >> title: anObject [
-
-	title := anObject
+	^ self configuration title
 ]
 
 { #category : #writing }
 MicHTMLDoc >> writeDocument: aHTMLString [
 	"Write markup from anHTMLString to the receiver's body part"
 
-	self writeDocumentType.
+	self configuration writeDocumentType.
 	canvas tag
 		name: 'html';
 		parameterAt: 'lang' put: self languageId;
 		with: [ 
-			self 
-				writeDocumentHead;
-				writeDocumentBody: aHTMLString ].
+			self configuration writeDocumentHead.
+			self writeDocumentBody: aHTMLString ].
 	self flush.
 ]
 
@@ -394,100 +370,6 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 				name: 'main';
 				parameterAt: 'role' put: 'main';
 				with: aHTMLString ]
-]
-
-{ #category : #'writing - css' }
-MicHTMLDoc >> writeDocumentCSS [
-	"Add linked CSS resources to the receiver"
-	
-	self cssFrameworks do: [ : cssFramework | 
-		canvas tag
-			name: 'link';
-			parameterAt: 'rel' put: 'stylesheet';
-			parameterAt: 'href' put: cssFramework cssPath;
-			close ]
-
-]
-
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> writeDocumentCharSet [
-	"Write the character encoding for the receiver"
-
-	canvas tag
-		name: 'meta';
-		parameterAt: 'http-equiv' put: 'Content-Type';
-		parameterAt: 'content' put: 'text/html; charset=' , self charSet;
-		close.
-]
-
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> writeDocumentDescription [
-	"Write a description for the receiver"
-
-	canvas tag
-		name: 'description';
-		parameterAt: 'content' put: self description;
-		close.
-]
-
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> writeDocumentGenerator [
-
-	canvas tag
-		name: 'meta';
-		parameterAt: 'name' put: 'generator';
-		parameterAt: 'content' put: 'microdown';
-		close.
-]
-
-{ #category : #writing }
-MicHTMLDoc >> writeDocumentHead [
-
-	canvas tag
-		name: 'head';
-		with: [ 
-			self 
-				writeDocumentMetadata;
-				writeDocumentTitle;
-				writeDocumentCSS ]
-
-]
-
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> writeDocumentMetadata [
-
-	self 
-		writeDocumentCharSet;
-		writeDocumentGenerator;
-		writeDocumentViewport
-]
-
-{ #category : #writing }
-MicHTMLDoc >> writeDocumentTitle [
-	"Write the mandatory title tag which defines the title of the receiver"
-
-	canvas tag
-		name: 'title';
-		with: self title
-]
-
-{ #category : #writing }
-MicHTMLDoc >> writeDocumentType [
-	"Write the mandatory DOCTYPE HTML declaration in the receiver"
-
-	canvas raw: self documentType
-
-]
-
-{ #category : #'writing - metadata' }
-MicHTMLDoc >> writeDocumentViewport [
-	"Set the receiver's visible area to look good on all devices"
-	
-	canvas tag
-		name: 'meta';
-		parameterAt: 'name' put: 'viewport';
-		parameterAt: 'content' put: self defaultViewport;
-		close
 ]
 
 { #category : #writing }

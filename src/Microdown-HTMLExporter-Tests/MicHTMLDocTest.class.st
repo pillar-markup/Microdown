@@ -42,6 +42,13 @@ MicHTMLDocTest >> setUp [
 ]
 
 { #category : #tests }
+MicHTMLDocTest >> tearDown [ 
+
+	super tearDown.
+	doc fullName asFileReference ensureDelete
+]
+
+{ #category : #tests }
 MicHTMLDocTest >> testAddCSSNamed [
 
 	|micCSSFrw |
@@ -94,6 +101,15 @@ MicHTMLDocTest >> testCharSet [
 ]
 
 { #category : #tests }
+MicHTMLDocTest >> testConfiguration [
+
+	self 
+		assert: (doc configuration isKindOf: MicHTMLConfiguration)
+		description: 'It tests that the configuration is a MicHTMLConfiguration'.
+
+]
+
+{ #category : #tests }
 MicHTMLDocTest >> testContents [
 
 	self 
@@ -117,47 +133,6 @@ MicHTMLDocTest >> testCssFrameworks [
 		description: 'It test that the contained CSS files collection is empty'
 ]
 
-{ #category : #test }
-MicHTMLDocTest >> testDefaultDocumentType [
-
-	self 
-		assert: (doc defaultDocumentType isKindOf: String)
-		description: 'It tests that the default document type identifier is a String'.
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testDefaultLanguageId [
-
-	self
-		assert: (doc defaultLanguageId isKindOf: String)
-		description: 'It test that the default language identifier is a String'.
-		
-	self
-		assert: doc defaultLanguageId notEmpty
-		description: 'It test that the default language identifier is not empty'
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testDefaultTitle [
-
-	self
-		assert: (doc defaultTitle isKindOf: String)
-		description: 'It test that the default title of a document is a String'.
-		
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testDefaultViewport [
-
-	self
-		assert: (doc defaultViewport isKindOf: String)
-		description: 'It test that the default viewport of a document is a String'.
-		
-
-]
-
 { #category : #tests }
 MicHTMLDocTest >> testDescription [
 
@@ -175,6 +150,14 @@ MicHTMLDocTest >> testDescription [
 ]
 
 { #category : #tests }
+MicHTMLDocTest >> testDestinationPath [
+
+	self assert: (doc destinationPath isKindOf: String).
+	self deny: doc destinationPath isEmpty.
+
+]
+
+{ #category : #tests }
 MicHTMLDocTest >> testDocumentType [
 
 	self 
@@ -186,6 +169,18 @@ MicHTMLDocTest >> testDocumentType [
 	self
 		assert: doc documentType
 		equals: String empty
+]
+
+{ #category : #tests }
+MicHTMLDocTest >> testExists [
+
+	self 
+		deny: doc exists 
+		description: 'It tests the document has not been yet created'.
+	doc writeToFile.
+	self
+		assert: doc exists
+		description: 'It tests the document has been created'
 ]
 
 { #category : #tests }
@@ -308,130 +303,6 @@ MicHTMLDocTest >> testWriteDocumentBody [
 	self deny: doc contents isEmpty.
 	self assert: (doc contents beginsWith: '<body>').
 	self assert: (doc contents endsWith: '</body>')
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentCSS [
-
-	| parsedContents linkElements |
-	
-	doc addCSSNamed: self sampleMicCSSName.
-	doc writeDocumentCSS.
-	self deny: doc contents isEmpty.
-
-	doc addCSSNamed: self sampleMicCSSName.
-	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
-	linkElements := parsedContents descendantElementsNamed: 'link'.
-
-	self
-		assert: ((linkElements elementsDetect: [ : e | e includesAttribute: 'rel' ]) attributeAt: 'href')
-		equals: 'css/awsm.css'.
-
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentCharSet [
-
-	| parsedTag |
-
-	doc writeDocumentCharSet.
-	self deny: doc contents isEmpty.
-
-	parsedTag := (doc contents copyWithoutAll: '<">') substrings.
-	self assert: (parsedTag includes: 'charset=' , doc charSet)
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentDescription [
-
-	| parsedTag |
-
-	doc writeDocumentDescription.
-	self deny: doc contents isEmpty.
-
-	parsedTag := (doc contents copyWithoutAll: '<">') substrings.
-	self assert: (parsedTag includes: 'content=' , doc description ).	
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentGenerator [
-
-	| parsedTag |
-
-	doc writeDocumentGenerator.
-	self deny: doc contents isEmpty.
-
-	parsedTag := (doc contents copyWithoutAll: '<">') substrings.
-	self assert: (parsedTag includes: 'name=generator').
-	self assert: (parsedTag includes: 'content=microdown' ).	
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentHead [
-
-	doc writeDocumentHead.
-	self deny: doc contents isEmpty.
-	self assert: (doc contents beginsWith: '<head>').
-	self assert: (doc contents endsWith: '</head>')
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentMetadata [
-
-	| parsedContents metaElements |
-	doc writeDocumentMetadata.
-	self deny: doc contents isEmpty.
-	self assert: (doc contents beginsWith: '<meta').
-	parsedContents := (XMLHTMLParser on: doc contents) parseDocument.
-	metaElements := parsedContents descendantElementsNamed: 'meta'.
-
-	self
-		assert: ((metaElements elementsDetect: [ : e | e includesAttribute: 'http-equiv' ]) attributeAt: 'content')
-		equals: 'text/html; charset=utf-8'.
-	self
-		assert: ((metaElements elementsDetect: [ : e | (e attributeNodeAt: 'name') value = 'generator' ]) attributeAt: 'content')
-		equals: 'microdown'.
-	self
-		assert: ((metaElements elementsDetect: [ : e | (e attributeNodeAt: 'name') value = 'viewport' ]) attributeAt: 'content')
-		equals: 'width=device-width,initial-scale=1.0,user-scalable=yes'.
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentTitle [
-
-	doc writeDocumentTitle.
-	self deny: doc contents isEmpty.
-	
-	self assert: (doc contents beginsWith: '<title>').
-	self assert: (doc contents endsWith: '</title>')
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentType [
-
-	doc writeDocumentType.
-	self deny: doc contents isEmpty.
-	
-	self 
-		assert: doc contents
-		equals: doc documentType.
-
-]
-
-{ #category : #tests }
-MicHTMLDocTest >> testWriteDocumentViewport [
-
-	| parsedTag |
-
-	doc writeDocumentViewport.
-	self deny: doc contents isEmpty.
-
-	parsedTag := (doc contents copyWithoutAll: '<">') substrings.
-	self assert: (parsedTag includes: 'name=viewport').	
-	self assert: (parsedTag includes: 'content=' , doc defaultViewport ).	
 ]
 
 { #category : #tests }

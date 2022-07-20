@@ -192,17 +192,8 @@ MicHTMLVisitorTest >> testCreateItalic [
 MicHTMLVisitorTest >> testVisitAnchor [
 
 	self assert: writer contents equals: String empty.
-	writer visitAnchor: (MicAnchorBlock new target: 'target').
+	writer visitAnchor: (MicAnchorBlock new label: 'target').
 	self assert: writer contents equals: '<a id="target"></a>'.
-
-]
-
-{ #category : #tests }
-MicHTMLVisitorTest >> testVisitAnchorWithLabel [
-
-	self assert: writer contents equals: String empty.
-	writer visitAnchor: (MicAnchorBlock new label: 'label'; target: 'target'; yourself).
-	self assert: writer contents equals: '<a id="target">label</a>'.
 
 ]
 

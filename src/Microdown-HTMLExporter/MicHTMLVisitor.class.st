@@ -182,6 +182,15 @@ MicHTMLVisitor >> lfAsNewLine [
 	canvas lfAsNewLine
 ]
 
+{ #category : #'visiting - list' }
+MicHTMLVisitor >> metaDataFromAssociations: aDictionary [
+	"Write the receiver's metadata from aDictionary"
+
+	aDictionary associationsDo: [ : metadataAssociation |
+		self configuration writeFromMetadataAssociation: metadataAssociation ].
+
+]
+
 { #category : #initialization }
 MicHTMLVisitor >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
@@ -379,12 +388,26 @@ MicHTMLVisitor >> visitLink: aLink [
 
 ]
 
+{ #category : #'visiting - list' }
+MicHTMLVisitor >> visitListItem: anItem [
+
+	canvas raw: [ super visitListItem: anItem ].
+
+]
+
 { #category : #'visiting - extensions' }
 MicHTMLVisitor >> visitMath: anObject [
 
 	"<script src=""https://polyfill.io/v3/polyfill.min.js?features=es6""></script>
 <script id=""MathJax-script"" async src=""https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js""></script>"
 	self shouldBeImplemented
+]
+
+{ #category : #'visiting - list' }
+MicHTMLVisitor >> visitMetaData: aMetaData [
+
+	self metaDataFromAssociations: aMetaData body.
+	super visitMetaData: aMetaData.
 ]
 
 { #category : #'visiting - inline elements' }
@@ -397,8 +420,8 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 
 { #category : #'visiting - list' }
 MicHTMLVisitor >> visitOrderedList: anOrderedList [
-	"Target could be any tag, h1, h2, a, etc., it is only a placeholder for a hyperlink"
 
+	canvas newLine.
 	canvas tag
 		name: 'ol';
 		with: [ 
@@ -412,21 +435,9 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 
 	canvas tag
 		name: 'li';
-		with: anOrderedListItem listItemText.
+		with: [ super visitOrderedListItem: anOrderedListItem ].
 	canvas newLine.
-	anOrderedListItem hasChildren
-		ifTrue: [ 
-			 anOrderedListItem hasNestedChildren
-				ifTrue: [ 
-					| listItemWithoutText |
-					listItemWithoutText := anOrderedListItem copy.
-					listItemWithoutText children removeFirst.
-					self visitOrderedList: listItemWithoutText ]
-				ifFalse: [ 
-					| listItemWithoutFirst |
-					listItemWithoutFirst := anOrderedListItem copy.
-					listItemWithoutFirst children removeFirst.					
-					self visitOrderedList: listItemWithoutFirst ] ]
+
 ]
 
 { #category : #visiting }
@@ -457,19 +468,53 @@ MicHTMLVisitor >> visitStrike: aStrike [
 { #category : #visiting }
 MicHTMLVisitor >> visitTable: aTable [
 
-	| restRows |
 	canvas newLine.
 	canvas tag
 		name: 'table';
 		with: [ 
 			canvas newLine.
-			aTable hasHeader
-				ifTrue: [ 
-					self writeTableHeaders: aTable rows first. 
-					restRows := aTable rows allButFirst  ] 
-				ifFalse: [ restRows := aTable rows ].
-			self writeTableRows: restRows.
-			 ]
+			self visitTableRows: aTable ]
+]
+
+{ #category : #writing }
+MicHTMLVisitor >> visitTableHeaders: header [
+
+	self visitTableRow: header withTag: 'th'.
+		
+]
+
+{ #category : #writing }
+MicHTMLVisitor >> visitTableRow: row [
+
+	self visitTableRow: row withTag: 'td'
+]
+
+{ #category : #writing }
+MicHTMLVisitor >> visitTableRow: row withTag: aString [
+	"Private - Generalized visiting row to handle both table header and table row (td)"
+
+	canvas tag
+		name: 'tr';
+		with: [ 
+			row do: [ : cell |
+				canvas tag 
+					name: aString; 
+					with: [ self visitAll: cell ] ] ].
+	canvas newLine			
+]
+
+{ #category : #writing }
+MicHTMLVisitor >> visitTableRows: aTable [
+
+	| remainingRows |
+
+	aTable hasHeader
+		ifTrue: [ 
+			self visitTableHeaders: aTable rows first. 
+			remainingRows := aTable rows allButFirst  ] 
+		ifFalse: [ remainingRows := aTable rows ].
+
+	remainingRows do: [ : row | self visitTableRow: row ]
 ]
 
 { #category : #'visiting - inline elements' }
@@ -495,21 +540,9 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 
 	canvas tag
 		name: 'li';
-		with: anUnorderedListItem listItemText.
+		with: [ super visitUnorderedListItem: anUnorderedListItem ].
 	canvas newLine.
-	anUnorderedListItem hasChildren
-		ifTrue: [ 
-			 anUnorderedListItem hasNestedChildren
-				ifTrue: [ 
-					| listItemWithoutText |
-					listItemWithoutText := anUnorderedListItem copy.
-					listItemWithoutText children removeFirst.
-					self visitUnorderedList: listItemWithoutText ]
-				ifFalse: [ 
-					| listItemWithoutFirst |
-					listItemWithoutFirst := anUnorderedListItem copy.
-					listItemWithoutFirst children removeFirst.					
-					self visitUnorderedListItem: listItemWithoutFirst ] ]
+
 ]
 
 { #category : #visiting }
@@ -535,28 +568,15 @@ MicHTMLVisitor >> writeCounterElement: aCounterElement [
 ]
 
 { #category : #visiting }
+MicHTMLVisitor >> writeCounterElementSeparator [
+
+	self shouldBeImplemented
+]
+
+{ #category : #visiting }
 MicHTMLVisitor >> writeCounterForScript: aScript [
 
 	aScript counter isValidCounter ifFalse: [ ^ self ].
 	self writeCounter: aScript counter.
 	self writeCounterDefinitionSeparator
-]
-
-{ #category : #writing }
-MicHTMLVisitor >> writeTableHeaders: headers [
-	canvas tag
-		name: 'tr';
-		with: [ headers do: [ :cell | canvas tag name: 'th'; with: [self visitAll: cell]] ].
-	canvas newLine
-		
-]
-
-{ #category : #writing }
-MicHTMLVisitor >> writeTableRows: rows [
-	rows do: [ :row |
-		canvas tag
-			name: 'tr';
-			with: [ row do: [ :cell | canvas tag name: 'td'; with: [self visitAll: cell]] ].
-		canvas newLine]
-		
 ]
