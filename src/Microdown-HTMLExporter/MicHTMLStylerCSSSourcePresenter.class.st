@@ -48,7 +48,7 @@ MicHTMLStylerCSSSourcePresenter >> initializePresenters [
 		beWrapWord;
 		beNotEditable;
 		text: self selectedCssFrameworkSourceCode;
-		whenChangedDo: [ : text | self cssStatusbarPresenter pushMessage: text size asString ]
+		whenTextChangedDo: [ : text | self updateSizeMessage: text size ]
 		yourself.
 	cssStatusbarPresenter := self newStatusBar
 ]
@@ -63,4 +63,15 @@ MicHTMLStylerCSSSourcePresenter >> selectedCssFrameworkSourceCode [
 MicHTMLStylerCSSSourcePresenter >> text: aString [
 
 	self cssSourceCodePresenter text: aString
+]
+
+{ #category : #initialization }
+MicHTMLStylerCSSSourcePresenter >> updateSizeMessage: anInteger [
+
+	self cssStatusbarPresenter 
+		pushMessage: 
+			(String streamContents: [ : stream |
+				stream
+					<< 'File size: ';
+					<< anInteger asFileSizeString ])
 ]

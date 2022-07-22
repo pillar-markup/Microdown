@@ -187,10 +187,7 @@ MicHTMLStylerDetailViewsPresenter >> initializeNotebookPresenter [
 { #category : #initialization }
 MicHTMLStylerDetailViewsPresenter >> initializePresenters [ 
 
-	htmlSourcePresenter := self newText
-		beWrapWord;
-		beNotEditable;
-		yourself.
+	htmlSourcePresenter := MicHTMLStylerHTMLSourcePresenter on: self.
 	cssSourceCodePresenter := MicHTMLStylerCSSSourcePresenter on: self.
 	self initializeNotebookPresenter.
 ]
