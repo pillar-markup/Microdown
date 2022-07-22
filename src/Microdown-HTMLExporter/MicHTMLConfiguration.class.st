@@ -499,7 +499,7 @@ MicHTMLConfiguration >> writeDocumentKeywords [
 	self canvas tag
 		name: 'meta';
 		parameterAt: 'name' put: 'keywords';
-		parameterAt: 'content' put: self configuration keywords;
+		parameterAt: 'content' put: self keywords;
 		close
 ]
 
