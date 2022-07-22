@@ -191,6 +191,13 @@ MicHTMLVisitor >> metaDataFromAssociations: aDictionary [
 
 ]
 
+{ #category : #defaults }
+MicHTMLVisitor >> minQuoteThreshold [
+	"Answer a <Number> which is the number of characters used as the limit between short and long quotations"
+	
+	^ 50
+]
+
 { #category : #initialization }
 MicHTMLVisitor >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
@@ -403,7 +410,7 @@ MicHTMLVisitor >> visitMath: anObject [
 	self shouldBeImplemented
 ]
 
-{ #category : #'visiting - list' }
+{ #category : #visiting }
 MicHTMLVisitor >> visitMetaData: aMetaData [
 
 	self metaDataFromAssociations: aMetaData body.
@@ -451,9 +458,14 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 
 { #category : #visiting }
 MicHTMLVisitor >> visitQuote: aQuote [
-
+	"If the quote text size exceeds a minimum threshold, use blockquote which is appropriate for long quotations"
+	
+	| tagName |
+	tagName := aQuote text size > self minQuoteThreshold
+		ifTrue: [ 'blockquote' ]
+		ifFalse: [ 'q' ].
 	canvas tag
-		name: 'q';
+		name: tagName;
 		with: [ super visitQuote: aQuote ]
 ]
 
@@ -520,7 +532,10 @@ MicHTMLVisitor >> visitTableRows: aTable [
 { #category : #'visiting - inline elements' }
 MicHTMLVisitor >> visitText: aText [
 
-	canvas nextPutAll: aText text
+	canvas nextPutAll: (
+		(aText text copyReplaceAll: String cr with: '<br>') 
+			copyReplaceAll: String lf with: '<br />'). 
+
 ]
 
 { #category : #'visiting - list' }

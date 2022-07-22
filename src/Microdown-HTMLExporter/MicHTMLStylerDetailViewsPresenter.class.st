@@ -152,6 +152,18 @@ MicHTMLStylerDetailViewsPresenter >> htmlOptionsPage [
 ]
 
 { #category : #accessing }
+MicHTMLStylerDetailViewsPresenter >> htmlOptionsPresenter [
+
+	^ htmlOptionsPresenter
+]
+
+{ #category : #accessing }
+MicHTMLStylerDetailViewsPresenter >> htmlOptionsPresenter: anObject [
+
+	htmlOptionsPresenter := anObject
+]
+
+{ #category : #accessing }
 MicHTMLStylerDetailViewsPresenter >> htmlSourcePresenter [
 
 	^ htmlSourcePresenter
@@ -179,11 +191,7 @@ MicHTMLStylerDetailViewsPresenter >> initializePresenters [
 		beWrapWord;
 		beNotEditable;
 		yourself.
-	cssSourceCodePresenter := self newText
-		beWrapWord;
-		beNotEditable;
-		text: self selectedCssFrameworkSourceCode;
-		yourself.
+	cssSourceCodePresenter := MicHTMLStylerCSSSourcePresenter on: self.
 	self initializeNotebookPresenter.
 ]
 
@@ -252,12 +260,13 @@ MicHTMLStylerDetailViewsPresenter >> updateHtmlSourcePresenter [
 
 { #category : #updating }
 MicHTMLStylerDetailViewsPresenter >> updatePresenter [
+	"Callback after CSS framework selection"
 
 	super updatePresenter.
 	self styler hasCssSelection ifFalse: [ ^ self ].
 	self cssMetaInfoPresenter updatePresenter.
 	self updateSourceCodePresenter.
-
+	self htmlOptionsPresenter enableEmbeedCss.
 ]
 
 { #category : #updating }
@@ -265,7 +274,8 @@ MicHTMLStylerDetailViewsPresenter >> updatePresentersAfterThemeSelection [
 
 	self styler hasMicDocumentFileRef ifFalse: [ ^ self ].
 	self styler updateMicHtmlDocument.
-	self updateHtmlSourcePresenter
+	self updateHtmlSourcePresenter.
+
 ]
 
 { #category : #updating }

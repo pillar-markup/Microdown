@@ -92,6 +92,20 @@ MicHTMLDoc >> author: aString [
 	^ self configuration author: aString
 ]
 
+{ #category : #'accessing - css' }
+MicHTMLDoc >> beCssEmbeeded [
+	"Set the receiver to embeed its CSS"
+
+	self configuration beCssEmbeeded
+]
+
+{ #category : #'accessing - css' }
+MicHTMLDoc >> beCssLinked [
+	"Set the receiver to embeed its CSS"
+
+	self configuration beCssLinked
+]
+
 { #category : #accessing }
 MicHTMLDoc >> canvas [
 

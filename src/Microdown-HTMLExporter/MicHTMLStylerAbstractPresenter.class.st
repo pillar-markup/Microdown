@@ -25,6 +25,12 @@ MicHTMLStylerAbstractPresenter >> setModelBeforeInitialization: aDomainObject [
 ]
 
 { #category : #accessing }
+MicHTMLStylerAbstractPresenter >> statusBarHeight [
+
+	^ 25
+]
+
+{ #category : #accessing }
 MicHTMLStylerAbstractPresenter >> styler [
 
 	^ styler

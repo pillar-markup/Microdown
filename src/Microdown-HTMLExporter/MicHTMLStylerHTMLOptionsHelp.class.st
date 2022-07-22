@@ -20,30 +20,30 @@ MicHTMLStylerHTMLOptionsHelp class >> bookName [
 ]
 
 { #category : #accessing }
-MicHTMLStylerHTMLOptionsHelp class >> headingText [
+MicHTMLStylerHTMLOptionsHelp class >> docTypeHeadingText [
 
-	^ self heading: 'Why to specify HTML options'
+	^ self heading: 'Why to specify Document Type options'
 ]
 
 { #category : #accessing }
-MicHTMLStylerHTMLOptionsHelp class >> htmlOptions [
+MicHTMLStylerHTMLOptionsHelp class >> docTypeOptions [
 
 	^ HelpTopic 
-		title: 'HTML Options'
-		contents: self htmlOptionsHelp
+		title: 'Document Type'
+		contents: self docTypeOptionsHelp
 ]
 
 { #category : #accessing }
-MicHTMLStylerHTMLOptionsHelp class >> htmlOptionsHelp [
+MicHTMLStylerHTMLOptionsHelp class >> docTypeOptionsHelp [
 
 	^ String streamContents: [ : stream |
 		stream
-			<< self headingText;
-			<< self htmlOptionsHelpText ]
+			<< self docTypeHeadingText;
+			<< self docTypeOptionsHelpText ]
 ]
 
 { #category : #accessing }
-MicHTMLStylerHTMLOptionsHelp class >> htmlOptionsHelpText [
+MicHTMLStylerHTMLOptionsHelp class >> docTypeOptionsHelpText [
 
 	^ 'HTML validation requires the DOCTYPE declaration. If the web page coding does not include a DOCTYPE Declaration (DTD or Document Type Declaration) or it is done incorrectly, you will not be able to use a HTML (HyperText Markup Language) Validator to check the page coding. 
 	
@@ -68,7 +68,36 @@ MicHTMLStylerHTMLOptionsHelp class >> htmlOptionsHelpText [
 ]
 
 { #category : #accessing }
+MicHTMLStylerHTMLOptionsHelp class >> embeedCssHeadingText [
+
+	^ self heading: 'Embeed CSS'
+]
+
+{ #category : #accessing }
+MicHTMLStylerHTMLOptionsHelp class >> embeedCssOptionHelp [
+
+	^ String streamContents: [ : stream |
+		stream
+			<< self embeedCssHeadingText;
+			<< self embeedOptionsHelpText ]
+]
+
+{ #category : #accessing }
+MicHTMLStylerHTMLOptionsHelp class >> embeedCssOptionn [
+
+	^ HelpTopic 
+		title: 'Embeed CSS'
+		contents: self embeedCssOptionHelp
+]
+
+{ #category : #accessing }
+MicHTMLStylerHTMLOptionsHelp class >> embeedOptionsHelpText [
+
+	^ 'Embedded style sheets allows to define style sheet information into an HTML document as a whole in one place. This enables to deliver style specific to one page or during testing purposes. This is useful also if you want to isolate a web page from other (linked) resources.'
+]
+
+{ #category : #accessing }
 MicHTMLStylerHTMLOptionsHelp class >> pages [
 
-	^ #(htmlOptions)
+	^ #(#docTypeOptions embeedCssOptionn)
 ]

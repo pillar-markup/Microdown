@@ -6,6 +6,7 @@ Handle and provides writing methods of additional information (metadata) of a Mi
 - A title `String` acting as document short explanation.
 - A `Collection` of Keywords (**keywords**).
 - A `Collection` of authors (**authors**), each one being a `String`.
+- A `Boolean` parameter which specifies if the CSS will be embeeded or linked.
 
 It also parses Pillar-like headers converting a `Dictionary` of metadata attributes to their equivalent tag in the HTML header.
 
@@ -26,7 +27,8 @@ Class {
 		'viewport',
 		'document',
 		'robots',
-		'date'
+		'date',
+		'embeedCss'
 	],
 	#category : #'Microdown-HTMLExporter-Core'
 }
@@ -43,6 +45,18 @@ MicHTMLConfiguration >> author [
 MicHTMLConfiguration >> author: anObject [
 
 	author := anObject
+]
+
+{ #category : #'writing - css' }
+MicHTMLConfiguration >> beCssEmbeeded [
+
+	embeedCss := true
+]
+
+{ #category : #'writing - css' }
+MicHTMLConfiguration >> beCssLinked [
+
+	embeedCss := false
 ]
 
 { #category : #'accessing - robots' }
@@ -264,6 +278,19 @@ MicHTMLConfiguration >> documentType: anObject [
 	documentType := anObject
 ]
 
+{ #category : #initialization }
+MicHTMLConfiguration >> initialize [
+	
+	super initialize.
+	self beCssLinked
+]
+
+{ #category : #'writing - css' }
+MicHTMLConfiguration >> isCssEmbeeded [
+
+	^ embeedCss
+]
+
 { #category : #'writing - metadata' }
 MicHTMLConfiguration >> keywords [
 	"Answer a <Collection> of <String> which define keywords for search engines"
@@ -365,6 +392,28 @@ MicHTMLConfiguration >> viewport: anObject [
 	viewport := anObject
 ]
 
+{ #category : #'writing - css' }
+MicHTMLConfiguration >> writeCssEmbeed [
+
+	self canvas tag
+		name: 'style';
+		parameterAt: 'type' put: 'text/css';
+		with: ((self cssFrameworks collect: #sourceCode) joinUsing: Character cr).
+]
+
+{ #category : #'writing - css' }
+MicHTMLConfiguration >> writeCssLinked [
+	"Add linked CSS resources to the receiver"
+	
+	self cssFrameworks do: [ : cssFramework | 
+		self canvas tag
+			name: 'link';
+			parameterAt: 'rel' put: 'stylesheet';
+			parameterAt: 'href' put: cssFramework cssPath;
+			close ]
+
+]
+
 { #category : #'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentAuthor [
 	"Set the receiver's authors, who write the content of the document"
@@ -379,13 +428,11 @@ MicHTMLConfiguration >> writeDocumentAuthor [
 { #category : #'writing - css' }
 MicHTMLConfiguration >> writeDocumentCSS [
 	"Add linked CSS resources to the receiver"
-	
-	self cssFrameworks do: [ : cssFramework | 
-		self canvas tag
-			name: 'link';
-			parameterAt: 'rel' put: 'stylesheet';
-			parameterAt: 'href' put: cssFramework cssPath;
-			close ]
+
+	self isCssEmbeeded
+		ifFalse: [ self writeCssLinked ]
+		ifTrue: [ self writeCssEmbeed ]
+
 
 ]
 
