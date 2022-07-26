@@ -33,17 +33,18 @@ MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [
 
 { #category : #opening }
 MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
-	| path kind |
+	| kind |
 	anAbsoluteResourceReference isRelative 
 		ifTrue: [ MicResourceReferenceError 
 			signal: 'Cannot open relative path: ', anAbsoluteResourceReference uri printString ].
-	path := anAbsoluteResourceReference path.
-	kind := path copyAfterLast: $. .
-	(kind isEmpty "eg. https://pharo.org or https://pharo.org/download"
-	 or: [kind = 'html'] ) ifTrue: [ ^ self openWebLink: anAbsoluteResourceReference  ].
+	kind := self guessKindOf: anAbsoluteResourceReference.
+	(self resolveKind: kind andOpen: anAbsoluteResourceReference)
+		ifTrue: [ ^ self ].
+	"no special handler found - is it image?"
 	(ImageReadWriter allTypicalFileExtensions includes: kind)
 		ifTrue: [ ^ self openFormOn: anAbsoluteResourceReference  ].
-	^ self resolveKind: kind andOpen: anAbsoluteResourceReference
+	"last, we try with an external browser"
+	^ self openWebLink: anAbsoluteResourceReference
 	
 ]
 
@@ -56,13 +57,14 @@ MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
 MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"
-	| implementation |
+	| implementation implementerClass |
 	implementation := (Pragma allNamed: #richtextlinkpresenter:)
 		select: [ :pragma | pragma arguments first = kind ].
 	implementation
 		ifEmpty: [ ^ false ].
+	implementerClass := implementation first method methodClass soleInstance.
 	implementation first method 
-		valueWithReceiver: implementation first method methodClass
+		valueWithReceiver: implementerClass 
 		 arguments: {aMicHTTPResourceReference}.
 	^ true
 	 
