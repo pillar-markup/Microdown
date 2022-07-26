@@ -461,6 +461,17 @@ MicRichTextComposer >> visitLink: aLink [
 	| attribute |
 	attribute := TextAction new
 		             actOnClickBlock: [ 
+			             MicRichTextLinkPresenter new openLink: aLink reference ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
+]
+
+{ #category : #'visiting - document' }
+MicRichTextComposer >> visitLink_old: aLink [
+
+	| attribute |
+	attribute := TextAction new
+		             actOnClickBlock: [ 
 			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
