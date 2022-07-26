@@ -19,6 +19,18 @@ Class {
 }
 
 { #category : #opening }
+MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [ 
+	|kind|
+	kind := aMicAbsoluteResourceReference path copyAfterLast: $. .
+	kind ifNotEmpty: [ ^ kind].
+	((aMicAbsoluteResourceReference contents lines first) includesSubstring: 'html')
+		ifTrue: [ ^ 'html' ].
+	"we make Microdown the default"
+	^ 'md'
+	
+]
+
+{ #category : #opening }
 MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [ 
 	|image window |
 	image := aMicResourceReference loadImage.
