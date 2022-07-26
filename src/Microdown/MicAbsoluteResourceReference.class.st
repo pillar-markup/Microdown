@@ -50,7 +50,10 @@ MicAbsoluteResourceReference >> loadChildren [
 
 { #category : #loading }
 MicAbsoluteResourceReference >> loadImage [
-	^ ImageReadWriter formFromStream: self binaryReadStream
+	^ [ImageReadWriter formFromStream: self binaryReadStream]
+		on: UnrecognizedImageFormatError 
+		do: [ ('Unknown image format at: ', String cr, self uri printString) asMorph ]
+	
 ]
 
 { #category : #loading }
