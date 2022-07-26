@@ -48,6 +48,11 @@ MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
 ]
 
 { #category : #opening }
+MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
+	WebBrowser openOn: aHtmlResource uri
+]
+
+{ #category : #opening }
 MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"

@@ -54,6 +54,13 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #opening }
+MicDocumentBrowser class >> openDocument: aMicResourceReference [
+	<richtextlinkpresenter: #md>
+	<richtextlinkpresenter: #mic>
+	1halt.
+]
+
 { #category : #converting }
 MicDocumentBrowser >> asRichText: doc [
 	"I apply our own styler, not the default one"
