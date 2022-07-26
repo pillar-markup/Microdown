@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
-		'includer'
+		'includer',
+		'builder'
 	],
 	#category : #'Microdown-Transformer-Tests'
 }
@@ -37,7 +38,7 @@ MicFileIncluderTest >> setUp [
 	
 	includer := MicFileIncluder new.
 	includer topFile: filesystem root.
-	
+	builder := Microdown builder.
 	self generateFilesystemExample.
 
 ]
@@ -47,7 +48,10 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 	| root file reference |	
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>' ].
+	file writeStreamDo: [ :stream |
+		builder
+		 	setStream: stream;
+			inputFile: 'anExample1.md' ].
 	
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem .
 	root := reference loadMicrodown.
@@ -85,23 +89,71 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=SUnit/anExample1.md!>' ].
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			inputfile: 'SUnit/anExample1.md' ].
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
-<!inputFile|path=anExample2.md!>
-
-' ].
-	
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			header: [builder text: 'Foo'] withLevel: 1;
+			inputfile: 'anExample2.md' ].
+		
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample2.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Example2
-' ].
+	file writeStreamDo: [ :stream |  
+		builder
+		 	setStream: stream;
+			header: [builder text: 'Example2'] withLevel: 1 ].
 	
 	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') filesystem: filesystem.
-
+	
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
+	
+	self assert: root children first class equals: MicHeaderBlock.
+	self assert: root children first header equals: 'Foo'.
+	
+	self assert: root children second class equals: MicHeaderBlock.
+	self assert: root children second header equals: 'Example2'.
 
+
+
+]
+
+{ #category : #tests }
+MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
+
+	| root file reference |
+	(filesystem workingDirectory / 'Chapters') createDirectory.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub') createDirectory.
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			inputfile: 'SUnit/anExample1.md' ].
+	
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			header: [builder text: 'Foo'] withLevel: 1;
+			inputfile: 'Sub/anExample2.md' ].
+		
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub' / 'anExample2.md'.
+	file writeStreamDo: [ :stream |  
+		builder
+		 	setStream: stream;
+			header: [builder text: 'Example2'] withLevel: 1 ].
+	
+	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') filesystem: filesystem.
+	
+	includer topFile: reference fileReference parent.
+	includer visit: (root := reference loadMicrodown).
+	
 	self assert: root children first class equals: MicHeaderBlock.
 	self assert: root children first header equals: 'Foo'.
 	
@@ -120,16 +172,18 @@ MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
-Pharo is cool
-
-```
-	this is a code
-```
-' ].
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			header: [ builder text: 'Foo' ] withLevel: 1;
+			text: 'Pharo is cool';
+			codeblock: 'This is a code'].
 	
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>' ].
+	file writeStreamDo: [ :stream | 
+		builder
+		 	setStream: stream;
+			inputfile: 'anExample1.md' ].
 	
 	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.md') filesystem: filesystem.
 	root := reference loadMicrodown.
@@ -150,13 +204,15 @@ Pharo is cool
 
 { #category : #tests }
 MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
-	"As a general remark I do not like that the input can produce document that are not correct from a parser 
-	point of view. For example we should have a paragraph containing an header and this is what the transformation of the includer is doing."
+	"As a general remark I do not like that the input can produce document that are not correct from a parser point of view. For example we should have a paragraph containing an header and this is what the transformation of the includer is doing."
 	| root file reference |
 
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>
-<!inputFile|path=anExample2.md!>' ].
+	file writeStreamDo: [ :stream |   
+		builder
+		 	setStream: stream;
+			inputfile: 'anExample1.md';
+			inputfile: 'anExample2.md' ].
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
@@ -179,7 +235,10 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 
 	| root file reference |
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample3.md!>'].
+	file writeStreamDo: [ :stream |  
+		builder
+		 	setStream: stream;
+			inputfile: 'anExample3.md'].
 	
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
@@ -195,9 +254,12 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 
 	| root file reference |
 	file := filesystem workingDirectory / 'test.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '<!inputFile|path=anExample1.md!>
-
-<!inputFile|path=anExample2.md!>' ].
+	file writeStreamDo: [ :stream |  
+		builder
+		 	setStream: stream;
+			inputfile: 'anExample1.md';
+			paragraph: '';
+			inputfile: 'anExample2.md' ].
 	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
