@@ -54,6 +54,26 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #opening }
+MicDocumentBrowser class >> openDocument: aMicResourceReference [
+	<richtextlinkpresenter: #md>
+	Browser ifNil: [ self new open ].
+	Browser addRoot: aMicResourceReference 
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> addRoot: document [
+	(self documentRoots includes: document)
+		ifFalse: [ 
+			self documentRoots add: document.
+			self setTopLayout ]. 
+	self spDocumentList selection selectItem: document.
+	self documentSelected: document
+		
+	
+	
+]
+
 { #category : #converting }
 MicDocumentBrowser >> asRichText: doc [
 	"reuse composer with its existing textStyler"
@@ -64,12 +84,12 @@ MicDocumentBrowser >> asRichText: doc [
 
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
-	|children| 
-	children := (aNode isKindOf: MicElement )
-		ifTrue: [ aNode subsections children]
-		ifFalse: [ aNode loadChildren 
-			ifEmpty: [ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ] ].
-	^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)]
+	(aNode isKindOf: MicElement)
+		ifTrue: [ ^ aNode subsections children].
+	aNode loadChildren
+		ifNotEmpty: [ :children |  ^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)] ]
+		ifEmpty: [ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ].
+	
 ]
 
 { #category : #'source code' }
@@ -95,6 +115,16 @@ MicDocumentBrowser >> connectPresenters [
 	
 ]
 
+{ #category : #private }
+MicDocumentBrowser >> defaultDocumentRoots [
+	^ ({'comment://package/Microdown'.
+		"'file:/Users/kasper/tmp/pharo/doc'."
+		'github://pillar-markup/Microdown/doc/testMicrodown'
+	 	}, 
+		self loadedDocsInWorkspace  )
+			collect: #asMicResourceReference
+]
+
 { #category : #navigation }
 MicDocumentBrowser >> displayIconOf: aNode [
 	(aNode isKindOf: MicElement) ifTrue: [ ^ self iconNamed: #smallLeftFlush ].
@@ -103,18 +133,13 @@ MicDocumentBrowser >> displayIconOf: aNode [
 
 { #category : #navigation }
 MicDocumentBrowser >> displayStringOf: aNode [
-	(aNode isKindOf: MicElement) ifTrue: [ ^ (Microdown asRichText: aNode) asString trim ].
+	(aNode isKindOf: MicSectionBlock) ifTrue: [ ^ (Microdown asRichText: aNode header) asString trim ].
 	^aNode browserTitle
 ]
 
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
-	^ ({'comment://package/Microdown'.
-		"'file:/Users/kasper/tmp/pharo/doc'."
-		'github://pillar-markup/Microdown/doc/testMicrodown'
-	 	}, 
-		self loadedDocsInWorkspace  )
-			collect: #asMicResourceReference
+	^ documentRoots ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
 ]
 
 { #category : #events }
@@ -153,6 +178,7 @@ MicDocumentBrowser >> initializeButtons [
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
+	Browser := self.
 	isSourceShowing := false.
 	sectionDepth := 2.
 	spDocumentList := self newTree.
@@ -172,6 +198,12 @@ MicDocumentBrowser >> initializePresenters [
 
 
 
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> initializeWindow: aWindowPresenter [
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter whenClosedDo: [ Browser := nil ].
 ]
 
 { #category : #accessing }

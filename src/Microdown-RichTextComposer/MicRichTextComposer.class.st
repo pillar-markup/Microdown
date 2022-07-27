@@ -408,6 +408,19 @@ MicRichTextComposer >> visitFigure: aFigure [
 	do: [ self visitAll: aFigure captionElements  ]
 ]
 
+{ #category : #visiting }
+MicRichTextComposer >> visitFootnote: aFootnote [
+	"Adds support for footnotes by use of BalloonMorph (because it is silly and retro)"
+	| popAction popText |
+	popAction := TextAction new actOnClickBlock: [ 
+		             (BalloonMorph
+			              string: aFootnote note
+			              for: WorldMorph cursorOwnerWorld activeHand) 
+			             popUpForHand: WorldMorph cursorOwnerWorld activeHand ].
+	popText := '«note»' asText addAttribute: popAction.
+	canvas << popText
+]
+
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitHeader: aHeader [
 	| level |
@@ -444,6 +457,17 @@ MicRichTextComposer >> visitItalic: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitLink: aLink [
+
+	| attribute |
+	attribute := TextAction new
+		             actOnClickBlock: [ 
+			             MicRichTextLinkPresenter new openLink: aLink reference ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
+]
+
+{ #category : #'visiting - document' }
+MicRichTextComposer >> visitLink_old: aLink [
 
 	| attribute |
 	attribute := TextAction new
