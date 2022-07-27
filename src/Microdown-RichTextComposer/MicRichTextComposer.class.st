@@ -404,7 +404,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	[ image := aFigure reference loadImage.
 		anchor := self anchorFor: image of: aFigure.
 		canvas << (self textWithImage: image usingAnchor: anchor)]
-	on: MicResourceReferenceError
+	on: MicResourceReferenceError, UnrecognizedImageFormatError
 	do: [ self visitAll: aFigure captionElements  ]
 ]
 
