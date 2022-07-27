@@ -50,10 +50,8 @@ MicAbsoluteResourceReference >> loadChildren [
 
 { #category : #loading }
 MicAbsoluteResourceReference >> loadImage [
-	^ [ImageReadWriter formFromStream: self binaryReadStream]
-		on: UnrecognizedImageFormatError 
-		do: [ ('Unknown image format at: ', String cr, self uri printString) asMorph ]
-	
+	"Throws UnrecognizedImageFormatError in case Pharo does not understand this image type (for exampel svg is not supported)"
+	^ ImageReadWriter formFromStream: self binaryReadStream
 ]
 
 { #category : #loading }
