@@ -11,23 +11,6 @@ Class {
 	#category : #'Microdown-Visitor'
 }
 
-{ #category : #'reflective operations' }
-MicrodownVisitor >> doesNotUnderstand: aMessage [
-	"I try to gard against a specific problem, namely unknown visitX: methods caused by extension"
-	| arg |
-	(aMessage selector beginsWith: 'visit') ifFalse: [ ^ super doesNotUnderstand: aMessage  ].
-	aMessage numArgs = 1 ifFalse: [ ^ super doesNotUnderstand: aMessage ].
-	"Perhaps someone will come up with a more general check - for now these are hardcoded"
-	arg := aMessage arguments first.
-	(arg isKindOf: MicAnnotationBlock)
-		ifTrue: [ ^ self visitAnnotation: arg ].
-	(arg isKindOf: MicEnvironmentBlock)
-		ifTrue: [ ^ self visitEnvironment: arg ].
-	(arg isKindOf: MicMathBlock)
-		ifTrue: [ ^ self visitMath: arg ].
-	^ super doesNotUnderstand: aMessage
-]
-
 { #category : #'visiting main API' }
 MicrodownVisitor >> visit: aMicElement [
 
