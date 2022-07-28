@@ -126,6 +126,8 @@ MicFileResourceReferenceTest >> setUp [
 	file := filesystem workingDirectory / 'toplevel.png'.
 	PNGReadWriter putForm: image onStream: file binaryWriteStream.
 	
+	(filesystem workingDirectory / 'subdir') ensureCreateDirectory.
+	
 ]
 
 { #category : #tests }
@@ -174,6 +176,15 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 ]
 
 { #category : #tests }
+MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
+	| fileRef micRef |
+	fileRef := (filesystem workingDirectory / '/subdir') asFileReference.
+	micRef := fileRef asMicResourceReference.
+	self assert: micRef isDirectory.
+	self assert: (micRef uri printString endsWith: '/')
+]
+
+{ #category : #tests }
 MicFileResourceReferenceTest >> testIsDirectory [ 
 	| ref |
 	ref := filesystem workingDirectory asMicResourceReference.
@@ -185,7 +196,7 @@ MicFileResourceReferenceTest >> testLoadChildren [
 	| ref files |
 	ref := filesystem workingDirectory asMicResourceReference.
 	files := ref loadChildren.
-	self assert: files size equals: 2.
+	self assert: files size equals: 3.
 	self assert: files first class equals: MicFileResourceReference
 ]
 
