@@ -76,6 +76,6 @@ MicRootBlock >> properties: aConfigurationForPillar [
 MicRootBlock >> transformDocumentFor: aPRPDFDocument [ 
 	"This is a hook to be able to have framework specific transformation hooks.
 	see PRAbstractOutputDocument>>#buildOn:"
-	self halt.
-	^ aPRPDFDocument transformDocument: (self resolveFrom: aPRPDFDocument project baseDirectory)
+
+	^ aPRPDFDocument transformDocument: (self resolveFrom: aPRPDFDocument project baseDirectory asMicResourceReference )
 ]
