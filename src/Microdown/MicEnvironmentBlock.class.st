@@ -157,13 +157,17 @@ MicEnvironmentBlock >> environmentName [
 
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
-	"we got <! env ...x !> <! env ...x and we return env ...x "
+	"we got <! env ...x !> foo bar or <! env ...x and we return env ...x "
 	
+	| extract |
 	firstLine := super extractFirstLineFrom: aLine.
-	^ (firstLine endsWith: EnvironmentClosingBlockMarkup) 
+	firstLine := firstLine trimBoth.
+	extract := firstLine copyUpToSubstring: EnvironmentClosingBlockMarkup.
+	"we got !> ..."
+	^ extract size < firstLine size 
 		ifTrue: [ 
 			isClosed := true.
-			firstLine allButLast: EnvironmentClosingBlockMarkup size ]
+			extract trimRight ]
 		ifFalse: [ firstLine ]
 ]
 
