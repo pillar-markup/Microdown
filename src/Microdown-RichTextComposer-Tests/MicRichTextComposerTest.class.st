@@ -195,6 +195,17 @@ MicRichTextComposerTest >> testBoldFormat [
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
+{ #category : #'tests - format' }
+MicRichTextComposerTest >> testCenter [
+	| src doc|
+	src := '
+<!center
+This is centered
+!>'.
+	doc := Microdown parse: src.
+	self assertWriting: doc include: TextAlignment centered 
+]
+
 { #category : #'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 
@@ -209,11 +220,9 @@ line 2
 	runs := (richText runs collect: [:run | run collect: [:a| a class]]) asArray .	
 		 
 	self assert: (runs second includes: TextIndent).
-	self assert: richText asString equals: 
+	self assert: richText asString trim equals: 
 'line 1
-line 2
-
-'
+line 2'
 ]
 
 { #category : #'tests - codeBlock' }
@@ -262,12 +271,21 @@ line 2
 	self assert: runs first notEmpty. 
 	self assert: (runs second anySatisfy: [ :r | r class = TextIndent]).
 	self assert: ((runs at: 15) includes: self boldFormat ).
-	self assert: richText asString equals: 
+	self assert: richText asString trim equals: 
 'line 1
 line 2
-Roger Rabbit
+Roger Rabbit'
+]
 
-'
+{ #category : #tests }
+MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
+	| src |
+	src := '
+<!card 
+stuff
+!>
+'.
+	Microdown asRichText: src
 ]
 
 { #category : #'skipped tests' }
@@ -366,7 +384,7 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 MicRichTextComposerTest >> testInputfile [
 
 	| source result |
-	source := '{!inputFile|path=comment://class/MicRichTextComposerTest!}'.
+	source := '<!inputFile|path=comment://class/MicRichTextComposerTest!>'.
 	result := (self richTextForString: source) asString trim.
 	self assert: (result beginsWith: 'MicRichTextComposerTest').
 	self assert: (result includesSubstring: 'This class contains tests')
@@ -472,7 +490,7 @@ MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
 { #category : #'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
 
-	| source richText runs |
+	| source richText |
 	source := 
 '- item 1
   - sub item 1.1
@@ -481,11 +499,9 @@ MicRichTextComposerTest >> testNestedUnorderdList [
   - sub item 2.2
 - item 3'.
 	richText := self richTextForString: source.
-	runs := richText runs.
-	
 	"check that 'sub item 1.1' is bulleted and is rightly indented"
-	self assert: (richText asString at: 10) equals: $•.
-	self assert: (runs at: 12) first amount equals: 4
+	self assert: (richText asString includesSubstring: '•	item 2').
+	self assert: (richText asString includesSubstring: '-	sub item 2.1')
 	
 ]
 
@@ -506,9 +522,7 @@ MicRichTextComposerTest >> testNoNSuperfluousNewLines [
 And this is just an other paragraph'.
 	expected := 'This is bold
 
-And this is just an other paragraph
-
-'.
+And this is just an other paragraph'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]
@@ -518,9 +532,7 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 
 	| source richText expected |
 	source :=  'This is **bold**'.
-	expected := 'This is bold
-
-'.
+	expected := 'This is bold'.
 	richText := self richTextForString: source.
 	self assert: richText asString equals: expected
 ]
@@ -540,6 +552,20 @@ MicRichTextComposerTest >> testOrderedList [
 	self assert: runs first first amount equals: 1.
 	self assert: (runs at: 30) "the first o in 'on two lines'" first class equals: TextIndent.
 	self assert: (runs at: 30) first amount equals: 2.
+	
+]
+
+{ #category : #tests }
+MicRichTextComposerTest >> testOrderedNestedList [
+	| source richText   |
+	source := '
+1. First item
+   2. Second item
+      3. Third item'.
+	richText := self richTextForString: source.
+	self assert: (richText asString includesSubstring: '1.	First item').
+	self assert: (richText asString includesSubstring: 'A)	Second item').
+	self assert: (richText asString includesSubstring: 'a)	Third item')
 	
 ]
 
@@ -579,6 +605,17 @@ MicRichTextComposerTest >> testRawNewLinesPreserved [
 bold**}}'.
 	self assert: text asString trim equals: '**not
 bold**'.
+]
+
+{ #category : #'tests - format' }
+MicRichTextComposerTest >> testRightAllignment [ 
+	| src doc|
+	src := '
+<!right
+This is righted
+!>'.
+	doc := Microdown parse: src.
+	self assertWriting: doc include: TextAlignment rightFlush  
 ]
 
 { #category : #'skipped tests' }

@@ -530,18 +530,6 @@ MicrodownInlineParserTest >> testStructureOfAnnotation [
 ]
 
 { #category : #'tests - structure' }
-MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
-
- 	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: AnnotationOpenerMarkup , 'inputFile|path=PharoTour.mic' , AnnotationCloserMarkup ) first.
-	self assert: element name equals: 'inputFile'.
-	self assert: element children equals: #().
-	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
-	self assert: (element arguments at: 'path') relativePath equals: 'PharoTour.mic'
-	
-]
-
-{ #category : #'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfBoldNestedText [
 
  	| element |

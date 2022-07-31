@@ -236,7 +236,9 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testInputfile [
 
-	self verifyObtain: factory inputfileSample
+	| inputFile |
+	inputFile := parser parse: factory inputfileSample.
+	self assert: inputFile children first path path equals: 'Chapters/text.md'
 ]
 
 { #category : #'tests - link' }

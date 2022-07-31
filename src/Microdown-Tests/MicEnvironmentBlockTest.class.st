@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> subjectClass [ 
+	^ MicEnvironmentBlock  
+]
+
+{ #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironment [
 	"'<?card
 blbababbab bababba
@@ -132,6 +137,41 @@ toto'.
 	self assert: (environment arguments at: 'a') equals: '1'.
 	self assert: (environment arguments at: 'b') equals: '17'.
 	self assert: (environment arguments at: 'c') equals: nil.
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenMotherNested [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+
+<!script 
+
+!>
+
+The mother environment is not closed so it will eat everything.
+'.
+	self assert: root children size equals: 1. 
+
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
+ 
+	| root env |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+
+<!script 
+
+!>
+'.
+	self assert: root children first children first class equals: MicScriptBlock. 
+	self assert: root children first children first children first class equals: MicScriptBlock 
 ]
 
 { #category : #'tests - default environment' }
@@ -271,6 +311,33 @@ toto'.
 	
 ]
 
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkAfter [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkSpaceBeforeEnd [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic     ', EnvironmentClosingBlockMarkup.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic  ', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
@@ -327,6 +394,44 @@ Yes this is a good idea.'.
 ]
 
 { #category : #'tests - default environment' }
-MicEnvironmentBlockTest >> testedClass [ 
-	^ MicEnvironmentBlock  
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirst [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script
+!>
+<!script 
+!>
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
+]
+
+{ #category : #'tests - default environment' }
+MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirstWhenClosingOnTheSameLine [
+ 
+	| root |
+	root :=  parser parse: '<!slideenvironment
+
+<!script!>
+<!script!>
+
+!>
+'.
+
+	self assert: 
+		root children first "environment" 
+		children first "script"
+		children isEmpty.
+	self assert: 
+		root children first "environment" 
+		children size equals: 2
 ]

@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #tests }
+MicUnorderedListBlockTest >> subjectClass [ 
+	^ MicUnorderedListBlock  
+]
+
+{ #category : #tests }
 MicUnorderedListBlockTest >> testEmbeddedOrdered [
 	| source root list |
 	source := 
@@ -374,9 +379,4 @@ MicUnorderedListBlockTest >> testTwoLevelList [
 			children second "sub item"
 			text equals: 'sublevel2'
 			
-]
-
-{ #category : #tests }
-MicUnorderedListBlockTest >> testedClass [ 
-	^ MicUnorderedListBlock  
 ]

@@ -2,13 +2,13 @@
 I handle input file 
 
 ```
-{!inputFile|path=Chapters/withStyle.md!}
+<!inputFile|path=Chapters/withStyle.md!>
 ```
 "
 Class {
 	#name : #MicInputfileBlock,
-	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-Extensions'
+	#superclass : #MicEnvironmentBlock,
+	#category : #'Microdown-Model'
 }
 
 { #category : #accessing }
@@ -18,6 +18,7 @@ MicInputfileBlock class >> tag [
 
 { #category : #visiting }
 MicInputfileBlock >> accept: aVisitor [
+
 	aVisitor visitInputFile: self
 ]
 
@@ -26,7 +27,7 @@ MicInputfileBlock >> closeMe [
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
-		ifFalse: [ (MicParsingError new line: self text, ' must have path argument') signal]
+		ifFalse: [ (MicParsingError new line: self firstLine, ' must have path argument') signal]
 ]
 
 { #category : #accessing }

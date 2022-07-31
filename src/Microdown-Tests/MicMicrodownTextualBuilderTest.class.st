@@ -319,8 +319,8 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
 		assert: (builder inputFile: 'Chapters/image.png') contents 
-		equals: AnnotationOpenerMarkup,
-					'inputfile | path=Chapters/image.png', AnnotationCloserMarkup
+		equals: '
+',EnvironmentOpeningBlockMarkup ,'inputFile|path=Chapters/image.png', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #'tests - format' }
@@ -365,7 +365,7 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 
 	self 
 		assert: (builder metaDataFromAssociations: {'label'->'aLabel' . 'size'->'142'}) contents 
-		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel" , "size" : "142"', String cr , MetaDataClosingBlockMarkup
+		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel",' , String cr, '"size" : "142"', String cr , MetaDataClosingBlockMarkup
 ]
 
 { #category : #'tests - format' }

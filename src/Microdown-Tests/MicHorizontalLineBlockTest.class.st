@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #tests }
-MicHorizontalLineBlockTest >> testedClass [ 
+MicHorizontalLineBlockTest >> subjectClass [ 
 	^ MicHorizontalLineBlock
 ]

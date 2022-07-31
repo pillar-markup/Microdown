@@ -14,14 +14,15 @@ Class {
 	#category : #'Microdown-RichTextComposer-Composer'
 }
 
+{ #category : #'presenter styles' }
+MicTextStyler >> bodyFont [
+	^ nil
+]
+
 { #category : #'composer styles' }
 MicTextStyler >> bulletForLevel: level [
-	| kind |
-	kind := level % 2.
-	kind = 0
-		ifTrue: [ ^ $• asText ].
-	kind = 1
-		ifTrue: [ ^ $- asText ]
+	"first level is 1, then 2, then 3..."
+	^ ('•-' at: (level-1 % 2)+1) asText
 ]
 
 { #category : #private }
@@ -41,13 +42,20 @@ MicTextStyler >> computeHeaderFonts [
 { #category : #'composer styles' }
 MicTextStyler >> counterFor: counter atLevel: level [
 	| kind |
+	"first level is 1"
 	kind := level % 3.
-	kind = 0
-		ifTrue: [ ^ counter asString asText , '.' ].
 	kind = 1
-		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ].
+		ifTrue: [ ^ counter asString asText , '.' ].
 	kind = 2
-		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ]
+		ifTrue: [ ^ ($A asInteger + (counter - 1)) asCharacter asText , ')' ].
+	kind = 0
+		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ]
+]
+
+{ #category : #'composer styles' }
+MicTextStyler >> crAfterHeaderLevel: level [
+	"I return Text to make space after a header"
+	^ String cr asText
 ]
 
 { #category : #public }
@@ -64,8 +72,8 @@ MicTextStyler >> headerLevelFont: level [
 
 { #category : #'composer styles' }
 MicTextStyler >> interBlockSpacing [
-	"I return the space to be put between blocks"
-	^ String cr asText
+	"I return the space to be put between blocks, first cr to end block, second to make empty line"
+	^ (String cr, String cr) asText
 ]
 
 { #category : #'composer styles' }
@@ -94,15 +102,4 @@ MicTextStyler >> postTextTreatment: aText [
 		do: [ :i | aText at: i put: Character space ]."
 	^ aText
 	 
-]
-
-{ #category : #'presenter styles' }
-MicTextStyler >> presenterDefaultFont [
-	^ LogicalFont familyName: 'Source Sans Pro' pointSize: 80
-]
-
-{ #category : #'composer styles' }
-MicTextStyler >> spaceAfterHeaderLevel: level [
-	"I return Text to make space after a header"
-	^ String cr asText
 ]

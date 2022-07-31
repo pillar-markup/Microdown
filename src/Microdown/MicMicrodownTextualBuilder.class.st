@@ -304,10 +304,11 @@ MicMicrodownTextualBuilder >> initialize [
 { #category : #'element - annotated' }
 MicMicrodownTextualBuilder >> inputFile: aPathString [
 
-	self raw: AnnotationOpenerMarkup.
-	self raw: 'inputfile | path='.
+	self newLine.
+	self raw: EnvironmentOpeningBlockMarkup.
+	self raw: 'inputFile|path='.
 	self raw: aPathString.
-	self raw: AnnotationCloserMarkup
+	self raw: EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #'element - annotated' }
@@ -424,7 +425,7 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 		raw: each value;
 		raw: '"'
 		]
-		separatedBy: [ self raw: ' , '].
+		separatedBy: [ self raw: ','. self newLine].
 	self newLine; raw: '}'.
 ]
 

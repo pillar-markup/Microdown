@@ -486,11 +486,9 @@ MicMicrodownSnippetFactory >> initialize [
 	parserClass := Microdown
 ]
 
-{ #category : #sample }
+{ #category : #inputFile }
 MicMicrodownSnippetFactory >> inputfileSample [
-	^ '
-?{inputfile | path=Chapters/text.mic}?
-'
+	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #format }
@@ -687,6 +685,11 @@ MicMicrodownSnippetFactory >> newlineLFSample [
 MicMicrodownSnippetFactory >> newlineSample [
 
 	^ Smalltalk os lineEnding
+]
+
+{ #category : #inputFile }
+MicMicrodownSnippetFactory >> oneLineInputFileSample [
+	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #sample }
@@ -993,6 +996,18 @@ MicMicrodownSnippetFactory >> textSentenceSample [
 MicMicrodownSnippetFactory >> textWithChevron [
 
 	^ 'Pilou >> bla'
+]
+
+{ #category : #sample }
+MicMicrodownSnippetFactory >> trySlide [
+
+	^ '<!slide|title=This is a cool title&tag=nh5p
+
+- a list of bullet
+- bullet 2
+- bullet 3
+{!inputFile|path=f1.md!}
+!>'
 ]
 
 { #category : #list }

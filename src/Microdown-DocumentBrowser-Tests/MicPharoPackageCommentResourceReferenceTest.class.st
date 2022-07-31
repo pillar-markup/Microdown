@@ -113,7 +113,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	| ref dir |
-	ref := 'comment://package/Microdown-RichTextComposer' asMicResourceReference.
+	ref := 'comment://package/Microdown-DocumentBrowser' asMicResourceReference.
 	dir := ref loadChildren.
 	self assert: dir size equals: 2.
 ]

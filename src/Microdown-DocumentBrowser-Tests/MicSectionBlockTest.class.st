@@ -1,23 +1,23 @@
 Class {
-	#name : #MicSectionModelTest,
+	#name : #MicSectionBlockTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-DocumentBrowser-Tests-BlockModel'
 }
 
 { #category : #tests }
-MicSectionModelTest >> testEmpty [
+MicSectionBlockTest >> testEmpty [
 	"An empty document should not break sectioning"
 	| doc sec |
 	doc := Microdown parse: ''.
 	sec := MicSectionBlock fromRoot: doc.
 	self assert: sec class equals: MicSectionBlock.
-	self assert: sec header equals: nil.
+	self assert: sec header isNil.
 	self assert: sec body children isEmpty.
 	self assert: sec subsections children isEmpty
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testNoHeader [
+MicSectionBlockTest >> testNoHeader [
 	| doc sec |
 	doc := Microdown parse: 'This is **just**
 
@@ -29,7 +29,7 @@ a few lines'.
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testOneHeader [
+MicSectionBlockTest >> testOneHeader [
 	"With one header, only one section is created and become the root"
 	| doc sec |
 	doc := Microdown parse: 
@@ -44,7 +44,7 @@ a few lines'.
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testOneHeaderWithInitialBody [
+MicSectionBlockTest >> testOneHeaderWithInitialBody [
 	"With one header, but body, a level 0 section is created and become the root"
 	| doc sec |
 	doc := Microdown parse: 
@@ -61,7 +61,7 @@ a few lines'.
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testOneHeaderWithSubHeader [
+MicSectionBlockTest >> testOneHeaderWithSubHeader [
 	"With one top header, only one section is created and become the root, subsections as its subsections"
 	| doc sec |
 	doc := Microdown parse: 
@@ -74,7 +74,7 @@ MicSectionModelTest >> testOneHeaderWithSubHeader [
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testSubHeaders [
+MicSectionBlockTest >> testSubHeaders [
 	"Check more complex mixture of sections"
 	| doc sec header1 |
 	doc := Microdown parse: 
@@ -94,7 +94,7 @@ MicSectionModelTest >> testSubHeaders [
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testTwoHeaders [
+MicSectionBlockTest >> testTwoHeaders [
 	"With several headers, the top section has empty header"
 	| doc sec |
 	doc := Microdown parse: 
@@ -111,7 +111,7 @@ a few lines
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testTwoHeadersAtDeeperLevel [
+MicSectionBlockTest >> testTwoHeadersAtDeeperLevel [
 	"With several headers, the top section has empty header"
 	| doc sec |
 	doc := Microdown parse: 
@@ -128,7 +128,7 @@ a few lines
 ]
 
 { #category : #tests }
-MicSectionModelTest >> testTwoHeadersWithInitialBody [
+MicSectionBlockTest >> testTwoHeadersWithInitialBody [
 	"With several headers, the top section has empty header"
 	| doc sec |
 	doc := Microdown parse: 
