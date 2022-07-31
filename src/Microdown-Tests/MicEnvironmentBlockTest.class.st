@@ -311,6 +311,33 @@ toto'.
 	
 ]
 
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkAfter [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkSpaceBeforeEnd [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic     ', EnvironmentClosingBlockMarkup.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
+{ #category : #'tests - better parsing' }
+MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
+
+	| mic infileReference |
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic  ', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	infileReference := mic children first path.
+	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+]
+
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
