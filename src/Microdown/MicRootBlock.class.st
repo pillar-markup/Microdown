@@ -30,9 +30,25 @@ MicRootBlock >> canConsumeLine: line [
 	^ true
 ]
 
+{ #category : #'pillar integration' }
+MicRootBlock >> includeFor: aFile [
+
+	| inclusionVisitor |
+	inclusionVisitor := MicFileIncluder new.
+	inclusionVisitor topFile: aFile file.
+	inclusionVisitor visit: self.
+	^ self
+]
+
 { #category : #accessing }
 MicRootBlock >> indent [
 	^0
+]
+
+{ #category : #'pillar integration' }
+MicRootBlock >> pdfTransformationsFor: aDocument [
+
+	^ #()
 ]
 
 { #category : #accessing }
@@ -60,4 +76,6 @@ MicRootBlock >> properties: aConfigurationForPillar [
 MicRootBlock >> transformDocumentFor: aPRPDFDocument [ 
 	"This is a hook to be able to have framework specific transformation hooks.
 	see PRAbstractOutputDocument>>#buildOn:"
+
+	^ aPRPDFDocument transformDocument: (self resolveFrom: aPRPDFDocument project baseDirectory asMicResourceReference )
 ]
