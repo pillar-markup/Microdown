@@ -65,9 +65,7 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	| lineWithoutMarkup|
 	lineWithoutMarkup := super extractFirstLineFrom: aLine.
 	arguments := MicArgumentList 
-		split: lineWithoutMarkup 
-		defaultArg: #language 
-		defaultValue: self class defaultLanguage.
+		split: lineWithoutMarkup.
 	^ lineWithoutMarkup
 ]
 
@@ -116,7 +114,7 @@ MicCodeBlock >> label: aString [
 
 { #category : #accessing }
 MicCodeBlock >> language [
-	^ arguments at: #language
+	^ arguments at: #language ifAbsent: [ '' ]
 ]
 
 { #category : #utilities }
