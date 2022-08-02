@@ -35,7 +35,7 @@ Class {
 MicResourceReference class >> fromUri: aString [
 	| uri refClass |
 	(aString beginsWith: '/')
-		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: 'file://',aString) ].
+		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
 		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].

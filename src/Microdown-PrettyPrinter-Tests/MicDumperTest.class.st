@@ -235,7 +235,7 @@ MicDumperTest >> testFigureBoldFormat [
 	result := micFigure accept: visitor.
 	self
 		assert: result contents
-		 equals: '(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		 equals: '(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 		
 ]
 
@@ -250,7 +250,7 @@ MicDumperTest >> testFigureBoldFormat2 [
 	self
 		assert: result contents 
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Bold'')) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''bold''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Bold'')) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''bold''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -264,7 +264,7 @@ MicDumperTest >> testFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -278,7 +278,7 @@ MicDumperTest >> testFigureItalicFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -292,7 +292,7 @@ MicDumperTest >> testFigureMonospaceFormat [
 	self
 		assert: result contents 
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -306,7 +306,7 @@ MicDumperTest >> testFigureNestedFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -320,7 +320,7 @@ MicDumperTest >> testFigureStrikeFormat [
 	self
 		assert: result contents  
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file:///anUrl'' ; caption: { (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }

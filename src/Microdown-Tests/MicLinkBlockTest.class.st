@@ -158,7 +158,7 @@ MicLinkBlockTest >> testReferencePath [
 
 	link := self parseLink: self linkSample.
 	self assert: (link referencePath isKindOf: String).
-	self assert: link referencePath equals: 'file:///anUrl'
+	self assert: link referencePath equals: '/anUrl'
 
 ]
 
