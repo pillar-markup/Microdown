@@ -92,7 +92,7 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 MicCodeBlockTest >> testCodeCreatesInnerText [
 
 	| code |
-	code := (self parser parse: '```language=a b```') children first.
+	code := (self parser parse: '```a b```') children first.
 	self assert: code class equals: MicCodeBlock.
 	self assert: (code arguments at: #language) equals: 'a b```'
 ]
@@ -109,7 +109,7 @@ Color >> asMorph
 	| source root code  textBody argument |
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
-	argument := 'language=Method'.
+	argument := 'Method'.
 	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
 	root := self parser parse: source.
 	self assert: root children size equals: 1.

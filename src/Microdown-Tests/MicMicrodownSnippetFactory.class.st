@@ -118,7 +118,7 @@ MicMicrodownSnippetFactory >> blockWithNewLineSample [
 
 { #category : #'code block' }
 MicMicrodownSnippetFactory >> blockWithParameterTrueByDefaultSample [
-	^ self codeblock: 'language=foo' body: 'bar'
+	^ self codeblock: 'foo' body: 'bar'
 	
 ]
 
