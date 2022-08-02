@@ -2,7 +2,7 @@
 I handle input file 
 
 ```
-{!inputFile|path=Chapters/withStyle.md!}
+<!inputFile|path=Chapters/withStyle.md!>
 ```
 "
 Class {
