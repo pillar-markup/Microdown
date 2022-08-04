@@ -330,6 +330,13 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitCenter: aMicCenterBlock [ 
+	canvas 
+		includeAttribute: TextAlignment centered 
+		in: [ super visitChildrenOf: aMicCenterBlock  ]
+]
+
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
 
@@ -384,10 +391,10 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 ]
 
 { #category : #'visiting - document' }
-MicRichTextComposer >> visitEnvironment: anObject [
+MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 	"Environment is an abstract class, and if we end here it is because of error"
-	canvas << ('>>> Environment ' , anObject name , 
-						'is not supported in RichText Pillar <<<') asText
+	canvas << ('>>> Environment ''' , aMicEnvironmentBlock environmentName , 
+						''' is not defined <<<') asText
 ]
 
 { #category : #'visiting - inline elements' }
@@ -399,6 +406,19 @@ MicRichTextComposer >> visitFigure: aFigure [
 		canvas << (self textWithImage: image usingAnchor: anchor)]
 	on: MicResourceReferenceError
 	do: [ self visitAll: aFigure captionElements  ]
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitFootnote: aFootnote [
+	"Adds support for footnotes by use of BalloonMorph (because it is silly and retro)"
+	| popAction popText |
+	popAction := TextAction new actOnClickBlock: [ 
+		             (BalloonMorph
+			              string: aFootnote note
+			              for: WorldMorph cursorOwnerWorld activeHand) 
+			             popUpForHand: WorldMorph cursorOwnerWorld activeHand ].
+	popText := '«note»' asText addAttribute: popAction.
+	canvas << popText
 ]
 
 { #category : #'visiting - document' }
@@ -548,6 +568,13 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 	self textStyler class = MicDynamicTextStyler 
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
 	config adjustStyler: self textStyler
+]
+
+{ #category : #visiting }
+MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [ 
+	canvas
+		includeAttribute: TextAlignment rightFlush 
+		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
 ]
 
 { #category : #'visiting -  format' }

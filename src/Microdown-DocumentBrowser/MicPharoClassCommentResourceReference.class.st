@@ -52,7 +52,7 @@ MicPharoClassCommentResourceReference >> loadMicrodown [
 	self classReference 
 		buildMicroDownUsing: builder 
 		withComment: self contents.
-	^ builder contents
+	^ Microdown parse: builder contents
 ]
 
 { #category : #accessing }
