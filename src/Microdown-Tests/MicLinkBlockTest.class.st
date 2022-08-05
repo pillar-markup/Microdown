@@ -42,7 +42,6 @@ MicLinkBlockTest >> linkNestedSample [
 
 { #category : #functions }
 MicLinkBlockTest >> linkSample [
-
 	^ '
 [Foo](/anUrl)
 '
@@ -158,7 +157,7 @@ MicLinkBlockTest >> testReferencePath [
 
 	link := self parseLink: self linkSample.
 	self assert: (link referencePath isKindOf: String).
-	self assert: link referencePath equals: '/anUrl'
+	self assert: link fullName equals: '/anUrl'
 
 ]
 

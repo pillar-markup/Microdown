@@ -25,6 +25,11 @@ MicLinkBlock >> closeMe [
 "	self children: captionElements"
 ]
 
+{ #category : #accessing }
+MicLinkBlock >> fullName [
+	^ self reference fullName
+]
+
 { #category : #testing }
 MicLinkBlock >> hasArguments [
 	"Answer <true> if the receiver contain at least 1 argument"
@@ -46,9 +51,8 @@ MicLinkBlock >> openingDelimiter [
 
 { #category : #accessing }
 MicLinkBlock >> referencePath [
-	"Answer a <String> with the URL the receiver is pointing at"
 	
-	^ self referenceUri asString
+	^ self referenceUri path
 ]
 
 { #category : #accessing }

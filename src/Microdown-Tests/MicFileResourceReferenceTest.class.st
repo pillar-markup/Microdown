@@ -185,6 +185,15 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
 ]
 
 { #category : #tests }
+MicFileResourceReferenceTest >> testFullName [
+
+	self assert: 'figures/foo.png' asMicResourceReference fullName equals: 'figures/foo.png'.
+	self assert: '/figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'.
+	self assert: 'file:/figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'.
+	self assert: 'file:///figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'
+]
+
+{ #category : #tests }
 MicFileResourceReferenceTest >> testIsDirectory [ 
 	| ref |
 	ref := filesystem workingDirectory asMicResourceReference.
@@ -267,4 +276,13 @@ MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 		self fail
 	] on: Error do: [ :e |
 		self assert: e messageText equals: 'Microdown file not found' ]
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testPath [
+
+	self assert: 'figures/foo.png' asMicResourceReference path equals: 'figures/foo.png'.
+	self assert: '/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:///figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'
 ]

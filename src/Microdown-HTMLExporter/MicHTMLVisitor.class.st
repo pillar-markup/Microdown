@@ -340,7 +340,7 @@ MicHTMLVisitor >> visitLink: aLink [
 	
 	canvas tag
 		name: 'a';
-		parameterAt: 'href' put: aLink referencePath;
+		parameterAt: 'href' put: aLink fullName;
 		addArguments: aLink;
 		with: aLink caption
 

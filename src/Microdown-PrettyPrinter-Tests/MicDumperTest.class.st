@@ -334,7 +334,7 @@ MicDumperTest >> testFileFigureFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''file://image.png/'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''image.png/'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself) '
 ]
 
 { #category : #'tests - section' }

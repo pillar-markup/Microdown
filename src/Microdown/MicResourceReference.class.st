@@ -35,7 +35,7 @@ Class {
 MicResourceReference class >> fromUri: aString [
 	| uri refClass |
 	(aString beginsWith: '/')
-		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: aString) ].
+		ifTrue: [ ^ MicFileResourceReference new uri: (ZnUrl fromString: 'file://',aString) ].
 	uri := ZnUrl fromString: aString.
 	uri scheme
 		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
@@ -57,6 +57,13 @@ MicResourceReference class >> handlesUriScheme: scheme [
 MicResourceReference class >> newFromUri: uri [
 	"Default implementation"
 	^ self new uri: uri; yourself
+]
+
+{ #category : #accessing }
+MicResourceReference >> fullName [
+	"Returns the full name of the resources (without microdown arguments) i.e, http://pharo.org/community/foo.png"
+	
+	^ self uriString 
 ]
 
 { #category : #testing }
