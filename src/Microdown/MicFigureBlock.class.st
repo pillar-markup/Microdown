@@ -42,8 +42,8 @@ MicFigureBlock >> anchor [
 MicFigureBlock >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
+
 	| split title|
-	
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 
@@ -65,19 +65,27 @@ MicFigureBlock >> figurePath [
 	
 ]
 
-{ #category : #testing }
-MicFigureBlock >> hasAnchor [
-	^self anchor isNotNil
+{ #category : #printing }
+MicFigureBlock >> fullName [
+
+	^ reference fullName
 ]
 
 { #category : #testing }
-MicFigureBlock >> hasCaption [ 	
+MicFigureBlock >> hasAnchor [
+
+	^ self anchor isNotNil
+]
+
+{ #category : #testing }
+MicFigureBlock >> hasCaption [
+	
 	^ captionElements notNil 
 ]
 
 { #category : #testing }
 MicFigureBlock >> hasChildren [
-	^ self children notEmpty.
+	^ self children notEmpty
 ]
 
 { #category : #accessing }
@@ -109,7 +117,7 @@ MicFigureBlock >> printOn: aStream [
  			nextPut: $(.
 		aStream nextPutAll: (
 			url
-				ifNotNil: [ url. ] 
+				ifNotNil: [ url ] 
 				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		

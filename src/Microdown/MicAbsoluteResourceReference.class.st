@@ -65,7 +65,7 @@ MicAbsoluteResourceReference >> loadMicrodown [
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	"return the path part of my uri"
-	^ '/',uri path
+	^ '/', uri path
 ]
 
 { #category : #printing }

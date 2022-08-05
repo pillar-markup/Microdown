@@ -172,7 +172,7 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	micRef := fileRef asMicResourceReference.
 	self assert: micRef class equals: MicFileResourceReference.
 	self assert: micRef fullName equals: '/path/to/nowhere.md'.
-	self assert: micRef fileReference path asString equals: fileRef path asString
+	self assert: micRef fullName equals: fileRef fullName
 ]
 
 { #category : #tests }
