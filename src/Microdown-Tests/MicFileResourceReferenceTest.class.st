@@ -143,7 +143,7 @@ MicFileResourceReferenceTest >> testContentsInsideSubFolder [
 
 	| micFileResource |	
 	micFileResource := self exampleMicFileResourceReferenceInsideSubFolder.
-	self assert: micFileResource uri asString equals: 'file:///figures/example2.md'.
+	self assert: micFileResource fullName equals: '/figures/example2.md'.
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 
@@ -171,7 +171,7 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	fileRef := '/path/to/nowhere.md' asFileReference.
 	micRef := fileRef asMicResourceReference.
 	self assert: micRef class equals: MicFileResourceReference.
-	self assert: micRef uriString equals: 'file:///path/to/nowhere.md'.
+	self assert: micRef fullName equals: '/path/to/nowhere.md'.
 	self assert: micRef fileReference path asString equals: fileRef path asString
 ]
 
@@ -181,6 +181,7 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
 	fileRef := (filesystem workingDirectory / '/subdir') asFileReference.
 	micRef := fileRef asMicResourceReference.
 	self assert: micRef isDirectory.
+	"This test explicitly uses uri because we want to make sure that the uri is well configured as a directory and not a file."
 	self assert: (micRef uri printString endsWith: '/')
 ]
 

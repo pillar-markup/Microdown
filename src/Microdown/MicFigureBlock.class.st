@@ -33,8 +33,9 @@ MicFigureBlock >> alt: aString [
 
 { #category : #accessing }
 MicFigureBlock >> anchor [
-	^self arguments at: #anchor 
-	ifAbsent: [ nil ] 
+	^ self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ] 
 ]
 
 { #category : #visiting }
@@ -52,7 +53,7 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
-{ #category : #accessing }
+{ #category : #'to be removed' }
 MicFigureBlock >> figurePath [
 	"this is a hack waiting for the resolution of resource references"
 	"when we have file://figures/foo.png we want to have figures/foo.png "
@@ -94,8 +95,9 @@ MicFigureBlock >> openingDelimiter [
 
 { #category : #accessing }
 MicFigureBlock >> originUrl [
-	^ self properties at: #originUrl ifAbsent: [ 
-		^ url ]
+	^ self properties 
+		at: #originUrl 
+		ifAbsent: [ url ]
 ]
 
 { #category : #printing }
@@ -111,16 +113,4 @@ MicFigureBlock >> printOn: aStream [
 				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
-]
-
-{ #category : #accessing }
-MicFigureBlock >> resources [ 
-
-	^ url 
-]
-
-{ #category : #accessing }
-MicFigureBlock >> resources: micResources [
-
-	url := micResources
 ]

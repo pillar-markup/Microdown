@@ -48,16 +48,3 @@ MicLinkBlock >> openingDelimiter [
 
  	^ LinkNameOpenerMarkup
 ]
-
-{ #category : #accessing }
-MicLinkBlock >> referencePath [
-	
-	^ self referenceUri path
-]
-
-{ #category : #accessing }
-MicLinkBlock >> referenceUri [
-	"Answer a <ZnUrl> with the target URL of the receiver"
-	
-	^ self reference uri
-]

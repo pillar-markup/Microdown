@@ -97,7 +97,7 @@ MicFigureBlockTest >> testHasNoArguments [
 MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.pharo.org)') first.
-	self assert: figure reference uri asString equals: 'http://www.pharo.org/'
+	self assert: figure reference fullName asString equals: 'http://www.pharo.org/'
 ]
 
 { #category : #tests }
@@ -123,7 +123,7 @@ MicFigureBlockTest >> testUrlWitMicrodownParameterAndUrlParameters [
 	figure := (splitterClass new parse:
 		           '![caption](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true nolog=1&delog=1)')
 		          first.
-	self assert: figure reference uri asString equals: 'https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true'. 
+	self assert: figure reference fullName equals: 'https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true'. 
 	self assert: (figure arguments at: 'nolog') equals: '1'.
 	self assert: (figure arguments at: 'delog') equals: '1'
 ]
@@ -139,29 +139,13 @@ MicFigureBlockTest >> testUrlWithMicrodownParameters [
 ]
 
 { #category : #tests }
-MicFigureBlockTest >> testUrlWithoutMicrodownParameters [
-
-	| figure |
-	figure := (splitterClass new parse:
-		           '![caption](http://www.Pharo.orG)') first.
-	self assert: figure reference uri asString equals: 'http://www.pharo.org/'.
-
-	figure := (splitterClass new parse:
-		           '![caption](https://biblio.toutapprendre.com/newbiblio/index.aspx nolog=1&delog=1)')
-		          first.
-	self assert: figure reference uri asString equals: 'https://biblio.toutapprendre.com/newbiblio/index.aspx'.
-	self assert: (figure arguments at: 'nolog') equals: '1'.
-	self assert: (figure arguments at: 'delog') equals: '1'
-]
-
-{ #category : #tests }
 MicFigureBlockTest >> testUrlWithoutMicrodownParameters2 [
 
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
-	self assert: figure reference uri asString equals: 'http://www.pharo.org/'.
+	self assert: figure reference fullName equals: 'http://www.pharo.org/'.
 
 	figure := (splitterClass new parse: '![caption](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true)') first.
-	self assert: figure reference uri asString equals: 'https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true'.
+	self assert: figure reference fullName equals: 'https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true'.
 	
 ]
