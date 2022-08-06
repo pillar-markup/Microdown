@@ -11,7 +11,7 @@ MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
 	mic := parser parse: '<!inputFile|path=/chapters/withStyle.mic!>'.
 	resourceReference := mic children first reference.
 	self assert: resourceReference isRelative not.
-	self assert: resourceReference uriString equals: 'file:///chapters/withStyle.mic'
+	self assert: resourceReference path equals: '/chapters/withStyle.mic'
 ]
 
 { #category : #tests }

@@ -16,6 +16,16 @@ MicRelativeResourceReferenceTest >> testIsRelative [
 ]
 
 { #category : #tests }
+MicRelativeResourceReferenceTest >> testPath [
+
+	self assert: 'figures/foo.png' asMicResourceReference path equals: 'figures/foo.png'.
+	self assert: '/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:///figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+		self assert: '../figures/foo.png' asMicResourceReference path equals: '../figures/foo.png'
+]
+
+{ #category : #tests }
 MicRelativeResourceReferenceTest >> testPrintOn [
 	| mic ref print |
 	mic := Microdown parse: '[look here](../images/rudolf.png)'.

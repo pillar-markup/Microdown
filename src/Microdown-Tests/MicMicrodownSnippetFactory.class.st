@@ -383,7 +383,7 @@ MicMicrodownSnippetFactory >> fileFigureSample [
 
 	^ '
 
-![Foo](file://image.png/ label=figureTest&width=80)
+![Foo](image.png/ label=figureTest&width=80)
 '
 ]
 
@@ -517,6 +517,13 @@ MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 MicMicrodownSnippetFactory >> linkBoldSample [
 	^ '
 [**Foo**](/anUrl)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> linkHttpSample [
+	^ '
+[Foo](http://pharo.org/Community/)
 '
 ]
 

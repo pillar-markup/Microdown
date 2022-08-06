@@ -143,7 +143,7 @@ MicFileResourceReferenceTest >> testContentsInsideSubFolder [
 
 	| micFileResource |	
 	micFileResource := self exampleMicFileResourceReferenceInsideSubFolder.
-	self assert: micFileResource uri asString equals: 'file:///figures/example2.md'.
+	self assert: micFileResource fullName equals: '/figures/example2.md'.
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 
@@ -171,8 +171,8 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	fileRef := '/path/to/nowhere.md' asFileReference.
 	micRef := fileRef asMicResourceReference.
 	self assert: micRef class equals: MicFileResourceReference.
-	self assert: micRef uriString equals: 'file:///path/to/nowhere.md'.
-	self assert: micRef fileReference path asString equals: fileRef path asString
+	self assert: micRef fullName equals: '/path/to/nowhere.md'.
+	self assert: micRef fullName equals: fileRef fullName
 ]
 
 { #category : #tests }
@@ -181,7 +181,17 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
 	fileRef := (filesystem workingDirectory / '/subdir') asFileReference.
 	micRef := fileRef asMicResourceReference.
 	self assert: micRef isDirectory.
+	"This test explicitly uses uri because we want to make sure that the uri is well configured as a directory and not a file."
 	self assert: (micRef uri printString endsWith: '/')
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testFullName [
+
+	self assert: 'figures/foo.png' asMicResourceReference fullName equals: 'figures/foo.png'.
+	self assert: '/figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'.
+	self assert: 'file:/figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'.
+	self assert: 'file:///figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'
 ]
 
 { #category : #tests }
@@ -267,4 +277,13 @@ MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 		self fail
 	] on: Error do: [ :e |
 		self assert: e messageText equals: 'Microdown file not found' ]
+]
+
+{ #category : #tests }
+MicFileResourceReferenceTest >> testPath [
+
+	self assert: 'figures/foo.png' asMicResourceReference path equals: 'figures/foo.png'.
+	self assert: '/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:/figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'.
+	self assert: 'file:///figures/foo.png' asMicResourceReference path equals: '/figures/foo.png'
 ]

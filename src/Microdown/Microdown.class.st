@@ -131,3 +131,12 @@ Microdown >> render: aStringOrDoc [
 	^ self class render: aStringOrDoc 
 	
 ]
+
+{ #category : #facade }
+Microdown >> resolveDocument: document withBase: base [
+	"resolve all relative urls in document with respect to the absolute uri 
+	base can be a aString | aZnUrl | absoluteResourceReference"
+	
+	base asMicResourceReference resolveDocument: document.
+	^ document 
+]

@@ -22,7 +22,7 @@ MicAbsoluteResourceReference >> binaryReadStream [
 { #category : #testing }
 MicAbsoluteResourceReference >> canSave [
 	"return true if I implement contents: "
-	^false
+	^ false
 ]
 
 { #category : #accessing }
@@ -66,7 +66,7 @@ MicAbsoluteResourceReference >> loadMicrodown [
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	"return the path part of my uri"
-	^ '/',uri path
+	^ '/', uri path
 ]
 
 { #category : #printing }
