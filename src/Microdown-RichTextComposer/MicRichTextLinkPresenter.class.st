@@ -23,7 +23,7 @@ MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [
 	|kind|
 	kind := aMicAbsoluteResourceReference path copyAfterLast: $. .
 	kind ifNotEmpty: [ ^ kind].
-	((aMicAbsoluteResourceReference contents lines first) includesSubstring: 'html')
+	((aMicAbsoluteResourceReference contents) includesSubstring: '<!doctype')
 		ifTrue: [ ^ 'html' ].
 	"we make Microdown the default"
 	^ 'md'
@@ -66,12 +66,19 @@ MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
 ]
 
 { #category : #opening }
+MicRichTextLinkPresenter >> pragmaForKind: kind [
+		| implementation |
+	implementation := (Pragma allNamed: #richtextlinkpresenter:)
+		select: [ :pragma | pragma arguments first = kind ].
+	^ implementation
+]
+
+{ #category : #opening }
 MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"
 	| implementation implementerClass |
-	implementation := (Pragma allNamed: #richtextlinkpresenter:)
-		select: [ :pragma | pragma arguments first = kind ].
+	implementation := self pragmaForKind: kind.
 	implementation
 		ifEmpty: [ ^ false ].
 	implementerClass := implementation first method methodClass soleInstance.
