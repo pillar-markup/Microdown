@@ -41,7 +41,7 @@ MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
 	self assert: mf isFileReference.
-	self assert: mf uriString equals: 'file:///chapter1/figures/m.mic'.
+	self assert: mf fullName equals: '/chapter1/figures/m.mic'.
 	
 ]
 

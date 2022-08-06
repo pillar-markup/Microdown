@@ -114,8 +114,8 @@ MicGitHubRessourceReferenceTest >> testExtractMicrodownDocReferencesFrom [
 	self assert: documents size equals: 2.
 	expectedRaw := 'https://raw.githubusercontent.com/pillar-markup/Microdown/testBranch/doc/testMicrodown'.
 	self assert: (documents 
-		allSatisfy: [:doc |
-			doc uri printString beginsWith: expectedRaw]) 
+		allSatisfy: [ :doc |
+			doc fullName beginsWith: expectedRaw ]) 
 	
 ]
 

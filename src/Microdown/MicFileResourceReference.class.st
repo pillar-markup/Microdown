@@ -89,6 +89,11 @@ MicFileResourceReference >> filesystem: anObject [
 	filesystem := anObject
 ]
 
+{ #category : #accessing }
+MicFileResourceReference >> fullName [ 
+	^ self path
+]
+
 { #category : #initialization }
 MicFileResourceReference >> initialize [
 	super initialize.

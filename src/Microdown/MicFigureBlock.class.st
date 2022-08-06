@@ -33,16 +33,17 @@ MicFigureBlock >> alt: aString [
 
 { #category : #accessing }
 MicFigureBlock >> anchor [
-	^self arguments at: #anchor 
-	ifAbsent: [ nil ] 
+	^ self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ] 
 ]
 
 { #category : #visiting }
 MicFigureBlock >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
+
 	| split title|
-	
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 
@@ -52,7 +53,7 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
-{ #category : #accessing }
+{ #category : #'to be removed' }
 MicFigureBlock >> figurePath [
 	"this is a hack waiting for the resolution of resource references"
 	"when we have file://figures/foo.png we want to have figures/foo.png "
@@ -64,19 +65,27 @@ MicFigureBlock >> figurePath [
 	
 ]
 
-{ #category : #testing }
-MicFigureBlock >> hasAnchor [
-	^self anchor isNotNil
+{ #category : #printing }
+MicFigureBlock >> fullName [
+
+	^ reference fullName
 ]
 
 { #category : #testing }
-MicFigureBlock >> hasCaption [ 	
+MicFigureBlock >> hasAnchor [
+
+	^ self anchor isNotNil
+]
+
+{ #category : #testing }
+MicFigureBlock >> hasCaption [
+	
 	^ captionElements notNil 
 ]
 
 { #category : #testing }
 MicFigureBlock >> hasChildren [
-	^ self children notEmpty.
+	^ self children notEmpty
 ]
 
 { #category : #accessing }
@@ -94,8 +103,9 @@ MicFigureBlock >> openingDelimiter [
 
 { #category : #accessing }
 MicFigureBlock >> originUrl [
-	^ self properties at: #originUrl ifAbsent: [ 
-		^ url ]
+	^ self properties 
+		at: #originUrl 
+		ifAbsent: [ url ]
 ]
 
 { #category : #printing }
@@ -107,20 +117,8 @@ MicFigureBlock >> printOn: aStream [
  			nextPut: $(.
 		aStream nextPutAll: (
 			url
-				ifNotNil: [ url. ] 
+				ifNotNil: [ url ] 
 				ifNil: [ String empty ]).		 
 		aStream nextPut: $).
  		
-]
-
-{ #category : #accessing }
-MicFigureBlock >> resources [ 
-
-	^ url 
-]
-
-{ #category : #accessing }
-MicFigureBlock >> resources: micResources [
-
-	url := micResources
 ]
