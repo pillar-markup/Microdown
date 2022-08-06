@@ -29,7 +29,11 @@ Class {
 		'slideMode',
 		'sectionDepth',
 		'isSourceShowing',
-		'textComposer'
+		'textComposer',
+		'documentRoots'
+	],
+	#classVars : [
+		'Browser'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
