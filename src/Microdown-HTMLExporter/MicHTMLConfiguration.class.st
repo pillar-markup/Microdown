@@ -49,12 +49,14 @@ MicHTMLConfiguration >> author: anObject [
 
 { #category : #'writing - css' }
 MicHTMLConfiguration >> beCssEmbeeded [
+	"Answer the receiver. Set CSS to be inserted into its the receiver's document"
 
 	embeedCss := true
 ]
 
 { #category : #'writing - css' }
 MicHTMLConfiguration >> beCssLinked [
+	"Answer the receiver. Link CSS in the receiver's document"
 
 	embeedCss := false
 ]
@@ -173,7 +175,7 @@ MicHTMLConfiguration >> charSet: anObject [
 
 { #category : #'writing - css' }
 MicHTMLConfiguration >> cssFrameworks [
-	"See comment in MicHTMLDoc>>cssFrameworks"
+	"Answer the receiver's <Collection> of <MicCSSEntity>"
 	
 	^ self document cssFrameworks
 ]

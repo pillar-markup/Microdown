@@ -99,7 +99,7 @@ MicHTMLStylerDetailViewsPresenter >> defaultLayout [
 	^ self layout: (SpPanedLayout newTopToBottom 
 		positionOfSlider: 45 percent;
 		add: notebookPresenter;
-		add: (SpPanedLayout newLeftToRight 
+		add: (SpPanedLayout newLeftToRight
 			add: cssSourceCodePresenter;
 			add: htmlSourcePresenter;
 			yourself);

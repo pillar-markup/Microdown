@@ -12,6 +12,7 @@ Class {
 MicHTMLStylerHTMLSourcePresenter >> defaultLayout [ 
 
 	^ self layout: (SpBoxLayout newTopToBottom 
+		add: 'HTML' height: self class labelHeight;
 		add: htmlSourceCodePresenter;
 		add: htmlStatusbarPresenter height: self statusBarHeight;
 		yourself)

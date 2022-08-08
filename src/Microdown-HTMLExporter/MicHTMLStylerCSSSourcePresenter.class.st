@@ -36,6 +36,7 @@ MicHTMLStylerCSSSourcePresenter >> cssStatusbarPresenter: anObject [
 MicHTMLStylerCSSSourcePresenter >> defaultLayout [ 
 
 	^ self layout: (SpBoxLayout newTopToBottom 
+		add: 'CSS' height: self class labelHeight;
 		add: cssSourceCodePresenter;
 		add: cssStatusbarPresenter height: self statusBarHeight;
 		yourself)
