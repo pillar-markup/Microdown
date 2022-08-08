@@ -121,9 +121,9 @@ MicDocumentBrowser >> connectPresenters [
 
 { #category : #private }
 MicDocumentBrowser >> defaultDocumentRoots [
-	^ ({'comment://package/Microdown'.
+	^ ({"'comment://package/Microdown'".
 		"'file:/Users/kasper/tmp/pharo/doc'."
-		'github://pillar-markup/Microdown/doc/testMicrodown'
+		"'github://pillar-markup/Microdown/doc/testMicrodown'"
 	 	}, 
 		self loadedDocsInWorkspace  )
 			collect: #asMicResourceReference
