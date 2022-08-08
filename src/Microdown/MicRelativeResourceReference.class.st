@@ -12,6 +12,11 @@ Class {
 	#category : #'Microdown-Core'
 }
 
+{ #category : #accessing }
+MicRelativeResourceReference >> fullName [ 
+	^ self path
+]
+
 { #category : #testing }
 MicRelativeResourceReference >> isRelative [
 	^ true

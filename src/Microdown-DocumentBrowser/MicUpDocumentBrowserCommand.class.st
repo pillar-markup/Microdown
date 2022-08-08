@@ -1,3 +1,6 @@
+"
+I am a command to move to my parent document in the document browser
+"
 Class {
 	#name : #MicUpDocumentBrowserCommand,
 	#superclass : #MicNavigationDocumentBrowserCommand,

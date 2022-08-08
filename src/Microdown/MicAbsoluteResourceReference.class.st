@@ -22,7 +22,7 @@ MicAbsoluteResourceReference >> binaryReadStream [
 { #category : #testing }
 MicAbsoluteResourceReference >> canSave [
 	"return true if I implement contents: "
-	^false
+	^ false
 ]
 
 { #category : #accessing }
@@ -50,6 +50,7 @@ MicAbsoluteResourceReference >> loadChildren [
 
 { #category : #loading }
 MicAbsoluteResourceReference >> loadImage [
+	"Throws UnrecognizedImageFormatError in case Pharo does not understand this image type (for exampel svg is not supported)"
 	^ ImageReadWriter formFromStream: self binaryReadStream
 ]
 
@@ -65,7 +66,7 @@ MicAbsoluteResourceReference >> loadMicrodown [
 { #category : #accessing }
 MicAbsoluteResourceReference >> path [
 	"return the path part of my uri"
-	^ '/',uri path
+	^ '/', uri path
 ]
 
 { #category : #printing }

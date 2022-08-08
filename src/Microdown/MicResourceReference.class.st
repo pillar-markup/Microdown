@@ -59,6 +59,13 @@ MicResourceReference class >> newFromUri: uri [
 	^ self new uri: uri; yourself
 ]
 
+{ #category : #accessing }
+MicResourceReference >> fullName [
+	"Returns the full name of the resources (without microdown arguments) i.e, http://pharo.org/community/foo.png"
+	
+	^ self uriString 
+]
+
 { #category : #testing }
 MicResourceReference >> isDirectory [ 
 	^ false

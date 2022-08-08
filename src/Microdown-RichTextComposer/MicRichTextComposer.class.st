@@ -404,7 +404,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	[ image := aFigure reference loadImage.
 		anchor := self anchorFor: image of: aFigure.
 		canvas << (self textWithImage: image usingAnchor: anchor)]
-	on: MicResourceReferenceError
+	on: MicResourceReferenceError, UnrecognizedImageFormatError
 	do: [ self visitAll: aFigure captionElements  ]
 ]
 
@@ -457,6 +457,17 @@ MicRichTextComposer >> visitItalic: anObject [
 
 { #category : #'visiting - document' }
 MicRichTextComposer >> visitLink: aLink [
+
+	| attribute |
+	attribute := TextAction new
+		             actOnClickBlock: [ 
+			             MicRichTextLinkPresenter new openLink: aLink reference ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
+]
+
+{ #category : #'visiting - document' }
+MicRichTextComposer >> visitLink_old: aLink [
 
 	| attribute |
 	attribute := TextAction new

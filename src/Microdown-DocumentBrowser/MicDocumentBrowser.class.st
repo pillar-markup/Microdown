@@ -3,11 +3,12 @@ I am a browser of collections of microdown documents.
 
 I am work in progress, but reasonable functional.
 
-I open by `MicDocumentBrowser class >> #open`.
+I open by `MicDocumentBrowser class >> #open`, or a specific document using: `MicDocumentBrowser class >> #openDocument:` which takes a `MicAbsoluteResourceReference` as argument.
+
 Editing is done using the little edit flag in the lower right corner - there is currently no keyboard shortcut for this.
 I can save some documents, but not all. I can save documents on files, and package/class comments. In particular I **cannot** save to github or the web. Saving is done on the save button when it is not greyed out.
 
-I open with some documents being loaded, those are currently defined in `MicDocumentBrowser >>#documentRoots`. The plan is that an api should be added which will allow to manipulate this rootset, but at present experience and usage drives feature development.
+I open with some documents being loaded, those are currently defined in `MicDocumentBrowser >>#defaultDocumentRoots`. 
 
 The roots loaded at the moment is:
 - all class and package comments in the Microdown project (read and write)
@@ -28,8 +29,12 @@ Class {
 		'saveButton',
 		'slideMode',
 		'sectionDepth',
-		'textStyler',
-		'isSourceShowing'
+		'isSourceShowing',
+		'textComposer',
+		'documentRoots'
+	],
+	#classVars : [
+		'Browser'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -37,7 +42,7 @@ Class {
 { #category : #commands }
 MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
 	rootCommandGroup register:
-		(MicOpenDocumentBrowserCommand forSpec context: presenter).
+		(MicInspectDocumentBrowserCommand forSpec context: presenter).
 	rootCommandGroup register:
 		((MicIntoDocumentBrowserCommand forSpec) context: presenter).
 	rootCommandGroup register:
@@ -54,24 +59,45 @@ MicDocumentBrowser class >> open [
 	^ self new open
 ]
 
+{ #category : #opening }
+MicDocumentBrowser class >> openDocument: aMicResourceReference [
+	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
+	I am called when following links in rich text to microdown documents, but can also be used as api method."
+	
+	<richtextlinkpresenter: #md>
+	Browser ifNil: [ self new open ].
+	Browser addRoot: aMicResourceReference 
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> addRoot: document [
+	(self documentRoots includes: document)
+		ifFalse: [ 
+			self documentRoots add: document.
+			self setTopLayout ]. 
+	self spDocumentList selection selectItem: document.
+	self documentSelected: document
+		
+	
+	
+]
+
 { #category : #converting }
 MicDocumentBrowser >> asRichText: doc [
-	"I apply our own styler, not the default one"
-	textStyler ifNil: [ textStyler := MicTextStyler new ].
+	"reuse composer with its existing textStyler"
+	textComposer ifNil: [ textComposer := MicRichTextComposer new ].
 	
-	^ MicRichTextComposer new
-		textStyler: textStyler;
-		asRichText: doc
+	^ textComposer asRichText: doc
 ]
 
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
-	|children| 
-	children := (aNode isKindOf: MicElement )
-		ifTrue: [ aNode subsections children]
-		ifFalse: [ aNode loadChildren 
-			ifEmpty: [ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ] ].
-	^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)]
+	(aNode isKindOf: MicElement)
+		ifTrue: [ ^ aNode subsections children].
+	aNode loadChildren
+		ifNotEmpty: [ :children |  ^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)] ]
+		ifEmpty: [ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ].
+	
 ]
 
 { #category : #'source code' }
@@ -97,6 +123,16 @@ MicDocumentBrowser >> connectPresenters [
 	
 ]
 
+{ #category : #private }
+MicDocumentBrowser >> defaultDocumentRoots [
+	^ ({"'comment://package/Microdown'".
+		"'file:/Users/kasper/tmp/pharo/doc'."
+		"'github://pillar-markup/Microdown/doc/testMicrodown'"
+	 	}, 
+		self loadedDocsInWorkspace  )
+			collect: #asMicResourceReference
+]
+
 { #category : #navigation }
 MicDocumentBrowser >> displayIconOf: aNode [
 	(aNode isKindOf: MicElement) ifTrue: [ ^ self iconNamed: #smallLeftFlush ].
@@ -105,18 +141,13 @@ MicDocumentBrowser >> displayIconOf: aNode [
 
 { #category : #navigation }
 MicDocumentBrowser >> displayStringOf: aNode [
-	(aNode isKindOf: MicElement) ifTrue: [ ^ (Microdown asRichText: aNode) asString trim ].
+	(aNode isKindOf: MicSectionBlock) ifTrue: [ ^ (Microdown asRichText: aNode header) asString trim ].
 	^aNode browserTitle
 ]
 
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
-	^ ({'comment://package/Microdown'.
-		"'file:/Users/kasper/tmp/pharo/doc'."
-		'github://pillar-markup/Microdown/doc/testMicrodown'
-	 	}, 
-		self loadedDocsInWorkspace  )
-			collect: #asMicResourceReference
+	^ documentRoots ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
 ]
 
 { #category : #events }
@@ -155,6 +186,7 @@ MicDocumentBrowser >> initializeButtons [
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
+	Browser := self.
 	isSourceShowing := false.
 	sectionDepth := 2.
 	spDocumentList := self newTree.
@@ -174,6 +206,12 @@ MicDocumentBrowser >> initializePresenters [
 
 
 
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> initializeWindow: aWindowPresenter [
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter whenClosedDo: [ Browser := nil ].
 ]
 
 { #category : #accessing }
@@ -208,11 +246,11 @@ MicDocumentBrowser >> newSelection: selection [
 MicDocumentBrowser >> renderDocument: referenceOrSection [ 
 	|doc|
 	[ doc := (referenceOrSection isKindOf: MicElement )
-		ifTrue: [  "should reset styler if new document is selected" 
+		ifTrue: [  "should reuse composer when selecting section" 
 			referenceOrSection] 
 		ifFalse: [ 
-			textStyler := nil. "If selecting a new root, reset styler"
-			MicSectionBlock fromRoot: referenceOrSection loadMicrodown ].
+			textComposer := nil. "If selecting a new root, reset composer"
+			referenceOrSection loadMicrodown ].
 	  spRendering text:(self asRichText: doc )]
 	on: MicResourceReferenceError  
 	do: [ spRendering text: '' ].

@@ -148,7 +148,7 @@ MicRealDumper >> visitFigure: aMicFigure [
 	stream nextPutAll: ' new '.
 	aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
 	stream nextPutAll: 'url: '.
-	stream print: aMicFigure reference uri asString.
+	stream print: aMicFigure reference fullName.
 	stream
 		space;
 		nextPutAll: ';'.

@@ -1,3 +1,6 @@
+"
+I am a command to move to my following siebling document (if any exist)
+"
 Class {
 	#name : #MicNextDocumentBrowserCommand,
 	#superclass : #MicNavigationDocumentBrowserCommand,
