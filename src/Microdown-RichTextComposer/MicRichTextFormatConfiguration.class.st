@@ -19,7 +19,7 @@ I support the following arguments: {!richtext|bullets=◊»!}
 Class {
 	#name : #MicRichTextFormatConfiguration,
 	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : #'Microdown-RichTextComposer-BlockExtensions'
 }
 
 { #category : #accessing }
