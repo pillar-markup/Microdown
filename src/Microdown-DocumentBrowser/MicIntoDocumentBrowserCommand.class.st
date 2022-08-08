@@ -1,3 +1,6 @@
+"
+I am a command to move down into the children of the currently selected document (if any exist)
+"
 Class {
 	#name : #MicIntoDocumentBrowserCommand,
 	#superclass : #MicNavigationDocumentBrowserCommand,

@@ -1,3 +1,6 @@
+"
+I am a commant to move to my previous document in the document browser
+"
 Class {
 	#name : #MicPreviousDocumentBrowserCommand,
 	#superclass : #MicNavigationDocumentBrowserCommand,

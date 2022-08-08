@@ -1,3 +1,6 @@
+"
+I am the superclass for navigation in the document hierarchy of the document browser
+"
 Class {
 	#name : #MicNavigationDocumentBrowserCommand,
 	#superclass : #MicDocumentBrowserCommand,
