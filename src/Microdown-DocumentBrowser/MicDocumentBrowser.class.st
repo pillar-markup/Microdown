@@ -3,11 +3,12 @@ I am a browser of collections of microdown documents.
 
 I am work in progress, but reasonable functional.
 
-I open by `MicDocumentBrowser class >> #open`.
+I open by `MicDocumentBrowser class >> #open`, or a specific document using: `MicDocumentBrowser class >> #openDocument:` which takes a `MicAbsoluteResourceReference` as argument.
+
 Editing is done using the little edit flag in the lower right corner - there is currently no keyboard shortcut for this.
 I can save some documents, but not all. I can save documents on files, and package/class comments. In particular I **cannot** save to github or the web. Saving is done on the save button when it is not greyed out.
 
-I open with some documents being loaded, those are currently defined in `MicDocumentBrowser >>#documentRoots`. The plan is that an api should be added which will allow to manipulate this rootset, but at present experience and usage drives feature development.
+I open with some documents being loaded, those are currently defined in `MicDocumentBrowser >>#defaultDocumentRoots`. 
 
 The roots loaded at the moment is:
 - all class and package comments in the Microdown project (read and write)
@@ -60,6 +61,9 @@ MicDocumentBrowser class >> open [
 
 { #category : #opening }
 MicDocumentBrowser class >> openDocument: aMicResourceReference [
+	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
+	I am called when following links in rich text to microdown documents, but can also be used as api method."
+	
 	<richtextlinkpresenter: #md>
 	Browser ifNil: [ self new open ].
 	Browser addRoot: aMicResourceReference 
