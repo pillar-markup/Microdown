@@ -546,9 +546,11 @@ MicHTMLConfigurationTest >> testWriteDocumentAuthor [
 { #category : #tests }
 MicHTMLConfigurationTest >> testWriteDocumentCSS [
 
-	| parsedContents linkElements |
+	"| parsedContents linkElements |"
 	
-	doc addCSSNamed: self sampleMicCSSName.
+	self skip.
+	"Need to think about creating referenced CSS files on the fly/on demand"
+	"doc addCSSNamed: self sampleMicCSSName.
 	configuration writeDocumentCSS.
 	self deny: doc contents isEmpty.
 
@@ -558,7 +560,7 @@ MicHTMLConfigurationTest >> testWriteDocumentCSS [
 
 	self
 		assert: ((linkElements elementsDetect: [ : e | e includesAttribute: 'rel' ]) attributeAt: 'href')
-		equals: 'css/awsm.css'.
+		equals: 'css/awsm.css'."
 
 
 ]

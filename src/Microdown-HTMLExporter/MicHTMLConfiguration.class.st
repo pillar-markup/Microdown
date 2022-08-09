@@ -409,7 +409,7 @@ MicHTMLConfiguration >> writeCssEmbeed [
 
 { #category : #'writing - css' }
 MicHTMLConfiguration >> writeCssLinked [
-	"Add linked CSS resources to the receiver"
+	"Add linked CSS resources to the receiver. This does not guarantee the CSS file exists, it only appends the tag to the document header"
 	
 	self cssFrameworks do: [ : cssFramework | 
 		self canvas tag
