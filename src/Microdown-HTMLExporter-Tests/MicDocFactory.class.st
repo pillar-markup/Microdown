@@ -93,7 +93,7 @@ MicDocFactory class >> exampleMicAsHTMLDocument [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
 
-	MicHTMLDoc new
+	MicHTMLDocument new
 		addCSSNamed: 'Tufte';
 		destinationPath: 'html_output';
 		fromMicrodown: self exampleMic;
@@ -105,7 +105,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentInBrowser [
 
 	| htmlDoc |
 	
-	htmlDoc :=  MicHTMLDoc new 
+	htmlDoc :=  MicHTMLDocument new 
 		fromMicrodown: self exampleMic;
 		yourself.
 	WebBrowser openOn: htmlDoc fullName.
@@ -116,7 +116,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 	"This example is a Minimum Working Example to write a HTML document from Microdown content."
 	<example>
 
-	MicHTMLDoc new
+	MicHTMLDocument new
 		addCSSNamed: 'Tufte';
 		fromMicrodown: self exampleMicAsHTMLBodyString;
 		writeToFile.
@@ -127,7 +127,7 @@ MicDocFactory class >> exampleMicAsHTMLString [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
 
-	^ MicHTMLDoc new
+	^ MicHTMLDocument new
 		addCSSNamed: 'Tufte';
 		destinationPath: 'html_output';
 		fromMicrodown: self exampleMic;

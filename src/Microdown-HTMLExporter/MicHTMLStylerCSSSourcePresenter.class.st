@@ -1,3 +1,7 @@
+"
+Holds a text presenter to display CSS source, and a status bar indicating the size of the CSS.
+
+"
 Class {
 	#name : #MicHTMLStylerCSSSourcePresenter,
 	#superclass : #MicHTMLStylerAbstractPresenter,

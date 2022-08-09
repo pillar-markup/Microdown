@@ -45,10 +45,10 @@ To inspect the currently available libraries:
 MicCSSProvider new frameworks.
 ```
 
-To filter CSS Frameworks delivered through a CDN:
+To filter CSS Frameworks with themes:
 
 ```language=Pharo
-MicCSSProvider new frameworks select: #hasCDN.
+MicCSSProvider new frameworks select: #hasThemes.
 ```
 
 ## Adding a CSS Framework
@@ -66,6 +66,7 @@ To add a new framework, see the class method #frameworks. At least one of the tw
 - #fluidCss : associate to the Fluid CSS resource (a CSS for responsive UIs).
 - #normalizeCss : associate to the Normalize.CSS library
 
+**Important: After adding a CSS framework, do not forget to download it executing #installFrameworks**
 
 
 "
@@ -158,7 +159,8 @@ MicCSSProvider >> frameworks [
 
 { #category : #frameworks }
 MicCSSProvider >> frameworksSpecs [
-	"Answer a <Collection> of <Array> representing specifications for building CSS framework objects"
+	"Answer a <Collection> of <Array> representing specifications for building CSS framework objects.
+	Re-execute #installFrameworks after modifying this method."
 
 	^ { 
 		{ 
@@ -374,6 +376,13 @@ MicCSSProvider >> frameworksSpecs [
 		#minCss -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.min.css' .
 		#css -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.css' .
 		#repository -> 'https://github.com/metakirby5/yorha'
+		} .
+		
+		{ 
+		#name -> 'LaTeX' .
+		#css -> 'https://latex.vercel.app/style.css' .
+		#minCss -> 'https://unpkg.com/latex.css/style.min.css' .
+		#repository -> 'https://github.com/vincentdoerig/latex-css' 
 		}
 		
 	} collect: #asDictionary

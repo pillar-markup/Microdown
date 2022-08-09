@@ -74,19 +74,16 @@ MicHTMLVisitor class >> exampleHTMLStringWithLink [
 MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 	"Serialize aMicrodownString <String> to a HTML file with default for output name, directory and CSS"
 
-	MicHTMLDoc new
-		addCSSNamed: MicCSSProvider defaultFramework;	
-		fromMicrodown: aMicrodownString;
-		writeToFile
-
+	self
+		serializeToHTMLDoc: aMicrodownString
+		withStyle: MicCSSProvider defaultFramework
 ]
 
 { #category : #converting }
 MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleName [
 	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
 
-	MicHTMLDoc new
-		configuration: self configuration;	
+	MicHTMLDocument new
 		addCSSNamed: aStyleName;
 		fromMicrodown: aMicrodownString;
 		writeToFile
@@ -143,7 +140,7 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
 
 	self visit: (Microdown parse: aMicString).
-	^ MicHTMLDoc new
+	^ MicHTMLDocument new
 		configuration: self configuration;
 		writeDocument: self contents;
 		contents
@@ -402,7 +399,7 @@ MicHTMLVisitor >> visitListItem: anItem [
 
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : #visiting }
 MicHTMLVisitor >> visitMath: anObject [
 
 	"<script src=""https://polyfill.io/v3/polyfill.min.js?features=es6""></script>

@@ -2,43 +2,43 @@
 A simple command to request for open .mic files.
 "
 Class {
-	#name : #MicCSSStylerOpenCommand,
-	#superclass : #MicCSSStylerCommand,
+	#name : #MicHTMLStylerOpenCommand,
+	#superclass : #MicHTMLStylerCommand,
 	#category : #'Microdown-HTMLExporter-Spec-Commands'
 }
 
-{ #category : #'accessing - defaults' }
-MicCSSStylerOpenCommand class >> defaultDescription [ 
+{ #category : #default }
+MicHTMLStylerOpenCommand class >> defaultDescription [ 
 
 	^ 'Open a Microdown document'
 ]
 
-{ #category : #'accessing - defaults' }
-MicCSSStylerOpenCommand class >> defaultIconName [ 
+{ #category : #initialization }
+MicHTMLStylerOpenCommand class >> defaultIconName [ 
 
 	^ #smallOpen
 ]
 
-{ #category : #'accessing - defaults' }
-MicCSSStylerOpenCommand class >> defaultName [
+{ #category : #default }
+MicHTMLStylerOpenCommand class >> defaultName [
 
 	^ 'Open'
 ]
 
 { #category : #'accessing - defaults' }
-MicCSSStylerOpenCommand class >> defaultShortcutKey [ 
+MicHTMLStylerOpenCommand class >> defaultShortcutKey [ 
 
 	^ $o command mac | $o ctrl win | $o ctrl unix
 ]
 
 { #category : #accessing }
-MicCSSStylerOpenCommand class >> order [
+MicHTMLStylerOpenCommand class >> order [
 
 	^ 2
 ]
 
 { #category : #executing }
-MicCSSStylerOpenCommand >> execute [
+MicHTMLStylerOpenCommand >> execute [
 
 	(self requestFileNameForOpen: '*.mic')
 		ifNotNil: [ : answer | 
@@ -49,7 +49,7 @@ MicCSSStylerOpenCommand >> execute [
 ]
 
 { #category : #testing }
-MicCSSStylerOpenCommand >> isValidMic: aString [ 
+MicHTMLStylerOpenCommand >> isValidMic: aString [ 
 	"Answer <true> if aString is a valid Microdown file (determined by its extension)"
 	
 	| fileRef |
@@ -59,7 +59,7 @@ MicCSSStylerOpenCommand >> isValidMic: aString [
 ]
 
 { #category : #execution }
-MicCSSStylerOpenCommand >> requestFileNameForOpen: extensionString [
+MicHTMLStylerOpenCommand >> requestFileNameForOpen: extensionString [
 	" Open request dialog to select a file "
 	
 	^ UIManager default 

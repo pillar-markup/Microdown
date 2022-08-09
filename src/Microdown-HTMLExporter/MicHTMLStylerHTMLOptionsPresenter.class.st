@@ -162,7 +162,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeEmbeedingCheckPresenter [
 		enabled: false;
 		whenChangedDo: [ 
 			embeedCheckboxPresenter state
-				ifTrue: [ self micHtmlDocument beCssEmbeeded ]
+				ifTrue: [ self micHtmlDocument beCssEmbedded ]
 				ifFalse: [ self micHtmlDocument beCssLinked ].
 			self styler updateHtmlSourcePresenter ];
 		yourself.

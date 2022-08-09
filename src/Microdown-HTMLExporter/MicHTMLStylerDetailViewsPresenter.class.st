@@ -255,7 +255,7 @@ MicHTMLStylerDetailViewsPresenter >> updateHtmlSourcePresenter [
 	self htmlSourcePresenter text: updatedMicHtml contents
 ]
 
-{ #category : #updating }
+{ #category : #initialization }
 MicHTMLStylerDetailViewsPresenter >> updatePresenter [
 	"Callback after CSS framework selection"
 

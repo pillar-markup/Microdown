@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-HTMLExporter-Core'
 }
 
-{ #category : #initialization }
+{ #category : #'writing text' }
 MicHTMLCanvas >> initialize [
 	"Private - Initialize the receiver's stream"
 
@@ -17,8 +17,8 @@ MicHTMLCanvas >> initialize [
 
 { #category : #initialization }
 MicHTMLCanvas >> initializeWith: aString [
+	"Private - Set the receiver's stream to store the HTML contents"
 
-	super initialize.
 	self setStream: (self newMicStreamOn: aString)
 ]
 

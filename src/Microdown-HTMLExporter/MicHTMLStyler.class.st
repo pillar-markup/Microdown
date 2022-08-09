@@ -55,11 +55,11 @@ MicHTMLStyler >> addToolbarCommandsTo: aGroup [
 MicHTMLStyler >> baseToolbarCommands [
 
 	^ { 
-		MicCSSStylerPreviewCommand .
-		MicCSSStylerHelpCommand .
-		MicCSSStylerExportCommand .
-		MicCSSStylerUpdateCommand .
-		MicCSSStylerQuitCommand
+		MicHTMLStylerPreviewCommand .
+		MicHTMLStylerHelpCommand .
+		MicHTMLStylerExportCommand .
+		MicHTMLStylerUpdateCommand .
+		MicHTMLStylerQuitCommand
 		}
 ]
 
@@ -127,8 +127,7 @@ MicHTMLStyler >> frameworks [
 { #category : #testing }
 MicHTMLStyler >> hasCssSelection [
 
-	^ self cssListPresenter notNil and: [ 
-		  self cssListPresenter selection isEmpty not ]
+	^ self cssListPresenter notNil and: [ self cssListPresenter selection isEmpty not ]
 ]
 
 { #category : #testing }
@@ -310,7 +309,7 @@ MicHTMLStyler >> optionalToolbarCommands [
 	"Show opening button if this tool was opened externally, i.e. without a user document"
 
 	self hasMicDocumentString
-		ifFalse: [ ^ { MicCSSStylerOpenCommand } ].
+		ifFalse: [ ^ { MicHTMLStylerOpenCommand } ].
 	^ Array empty 
 ]
 
@@ -395,7 +394,7 @@ MicHTMLStyler >> updateHtmlSourcePresenter [
 MicHTMLStyler >> updateMicHtmlDocument [
 	"Answer a new Microdown HTML document configured with the receiver's settings"
 	
-	self micHtmlDocument: MicHTMLDoc new.
+	self micHtmlDocument: MicHTMLDocument new.
 	self updateCssSelection.
 	self hasMicDocumentFileRef 
 		ifTrue: [ self micHtmlDocument fileName: self micDocumentFileRef withoutExtension basename , '.html' ].

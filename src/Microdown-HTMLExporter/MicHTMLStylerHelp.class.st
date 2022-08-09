@@ -20,12 +20,6 @@ MicHTMLStylerHelp class >> bookName [
 ]
 
 { #category : #accessing }
-MicHTMLStylerHelp class >> headingText [
-	^ self subclassResponsibility
-
-]
-
-{ #category : #accessing }
 MicHTMLStylerHelp class >> intro [
 
 	^ HelpTopic 

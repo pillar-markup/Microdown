@@ -6,7 +6,7 @@ Represents a Text/HTML file to be displayed in a web browser. It can be created 
 The following generates a HTML String from Microdown contents:
 
 ```language=Pharo
-(MicHTMLDoc newWithStyle: 'NewCSS') 
+(MicHTMLDocument newWithStyle: 'NewCSS') 
 	fromMicrodown: MicDocFactory exampleMic;
 	contents.
 ```
@@ -43,7 +43,7 @@ Internally, it uses a Configuration object (instance of `MicHTMLConfiguration`) 
 
 "
 Class {
-	#name : #MicHTMLDoc,
+	#name : #MicHTMLDocument,
 	#superclass : #Object,
 	#instVars : [
 		'fileName',
@@ -56,7 +56,7 @@ Class {
 }
 
 { #category : #initialization }
-MicHTMLDoc class >> newWithStyle: aStyleName [
+MicHTMLDocument class >> newWithStyle: aStyleName [
 	"Answer a new HTML document styled with aStyleName <String>"
 
 	^ self new
@@ -65,100 +65,100 @@ MicHTMLDoc class >> newWithStyle: aStyleName [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> addCSS: aMicCSSEntity [
+MicHTMLDocument >> addCSS: aMicCSSEntity [
 	"Add a <aMicCSSEntity> to the receiver's linked CSS resources. Answer a <MicCSSFramework>"
 	
 	^ self cssFrameworks add: aMicCSSEntity
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> addCSSNamed: aString [
+MicHTMLDocument >> addCSSNamed: aString [
 	"Add a <MicCSSProvider> named aString to the receiver's linked CSS resources. Answer a <MicCSSFramework>"
 	
 	^ self cssFrameworks add: (MicCSSProvider forCSSNamed: aString)
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> author [
+MicHTMLDocument >> author [
 	"Refer to comment in MicHTMLConfiguration>>author"
 	
 	^ self configuration author
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> author: aString [
+MicHTMLDocument >> author: aString [
 	"Refer to comment in MicHTMLConfiguration>>author:"
 	
 	^ self configuration author: aString
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> beCssEmbeeded [
+MicHTMLDocument >> beCssEmbedded [
 	"Set the receiver to embeed its CSS"
 
-	self configuration beCssEmbeeded
+	self configuration beCssEmbedded
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> beCssLinked [
+MicHTMLDocument >> beCssLinked [
 	"Set the receiver to embeed its CSS"
 
 	self configuration beCssLinked
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> canvas [
+MicHTMLDocument >> canvas [
 
 	^ canvas
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> canvas: anObject [
+MicHTMLDocument >> canvas: anObject [
 
 	canvas := anObject
 ]
 
 { #category : #private }
-MicHTMLDoc >> canvasClass [
+MicHTMLDocument >> canvasClass [
 
 	^ MicHTMLCanvas
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> charSet [
+MicHTMLDocument >> charSet [
 	"Answer a <String> with specifies the character encoding for the HTML document"
 
 	^ self configuration charSet
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> charSet: anObject [
+MicHTMLDocument >> charSet: anObject [
 
 	self configuration charSet: anObject
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> configuration [
+MicHTMLDocument >> configuration [
 	"Answer the receiver's <MicHTMLConfiguration>"
 
 	^ configuration
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> configuration: anObject [
+MicHTMLDocument >> configuration: anObject [
 
 	configuration := anObject
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> contents [
+MicHTMLDocument >> contents [
 	"Update the document with the canvas contents and answer the HTML"
 
 	^ canvas contents
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> cssFrameworks [
+MicHTMLDocument >> cssFrameworks [
 	"Answer a <Collection> of <String> each one representing a path to a CSS file"
 	
 	^ cssFrameworks
@@ -166,21 +166,21 @@ MicHTMLDoc >> cssFrameworks [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> description [
+MicHTMLDocument >> description [
 	"Refer to comment in MicHTMLConfiguration>>description"
 	
 	^ self configuration description
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> description: aString [
+MicHTMLDocument >> description: aString [
 	"Refer to comment in MicHTMLConfiguration>>description:"
 	
 	^ self configuration description: aString
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> destinationPath [
+MicHTMLDocument >> destinationPath [
 	"Answer a <String> specifying the destination directory where receiver's output is written"
 
 	^ destinationDir
@@ -188,34 +188,34 @@ MicHTMLDoc >> destinationPath [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> destinationPath: anObject [
+MicHTMLDocument >> destinationPath: anObject [
 
 	destinationDir := anObject
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> documentType [
+MicHTMLDocument >> documentType [
 	"Refer to comment in MicHTMLConfiguration>>documentType"
 	
 	^ self configuration documentType
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> documentType: aString [
+MicHTMLDocument >> documentType: aString [
 	"Refer to comment in MicHTMLConfiguration>>documentType:"
 	
 	^ self configuration documentType: aString
 ]
 
 { #category : #testing }
-MicHTMLDoc >> exists [
+MicHTMLDocument >> exists [
 	"Answer <true> if receiver exists as a file"
 	
 	^ self fullName asFileReference exists
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> fileName [
+MicHTMLDocument >> fileName [
 	"Answer a <String> representing the basename for the receiver when written to disk"
 	
 	^ fileName 
@@ -223,13 +223,13 @@ MicHTMLDoc >> fileName [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> fileName: anObject [
+MicHTMLDocument >> fileName: anObject [
 
 	fileName := anObject
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> flush [
+MicHTMLDocument >> flush [
 	"Write the receiver's contents to a file. If there is no file name, then assign a temporary file name and write contents"
 	
 	self fileName ifNil: [ self fileName: self tempFileName ].
@@ -242,7 +242,7 @@ MicHTMLDoc >> flush [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> fromMicrodown: aMicrodownString [
+MicHTMLDocument >> fromMicrodown: aMicrodownString [
 	"Convert to HTML and wrap aMicrodownString in the receiver's HTML stream"
 
 	self initializeCanvas.
@@ -252,14 +252,14 @@ MicHTMLDoc >> fromMicrodown: aMicrodownString [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> fullName [
+MicHTMLDocument >> fullName [
 	"Return the full path name of the receiver."
 	
 	^ (self destinationPath asFileReference / self fileName) fullName 
 ]
 
 { #category : #initialization }
-MicHTMLDoc >> initialize [
+MicHTMLDocument >> initialize [
 	
 	super initialize.
 	self configuration: (MicHTMLConfiguration new 
@@ -271,42 +271,42 @@ MicHTMLDoc >> initialize [
 ]
 
 { #category : #initialization }
-MicHTMLDoc >> initializeCanvas [
+MicHTMLDocument >> initializeCanvas [
 
 	canvas := self canvasClass new.
 
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> keywords [
+MicHTMLDocument >> keywords [
 	"Refer to comment in MicHTMLConfiguration>>keywords"
 	
 	^ self configuration keywords
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> keywords: aCollection [
+MicHTMLDocument >> keywords: aCollection [
 	"Refer to comment in MicHTMLConfiguration>>keywords:"
 	
 	^ self configuration keywords: aCollection
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> languageId [
+MicHTMLDocument >> languageId [
 	"Refer to comment in MicHTMLConfiguration>>languageId"
 	
 	^ self configuration languageId
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> languageId: aString [
+MicHTMLDocument >> languageId: aString [
 	"Refer to comment in MicHTMLConfiguration>>languageId:"
 	
 	^ self configuration languageId: aString
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> newMicStreamOn: aString [
+MicHTMLDocument >> newMicStreamOn: aString [
 	"Answer a new wrapper over aString to help not hardcoding line ending everywhere."
 
 	^ MicOutputStream new 
@@ -316,14 +316,14 @@ MicHTMLDoc >> newMicStreamOn: aString [
 ]
 
 { #category : #'accessing - css' }
-MicHTMLDoc >> removeCSSNamed: aString [
+MicHTMLDocument >> removeCSSNamed: aString [
 	"Remove <MicCSSFramework> named aString from the receiver's linked CSS resources"
 	
 	self cssFrameworks remove: aString
 ]
 
 { #category : #writing }
-MicHTMLDoc >> serializeHtml: aFilename in: destDirFileRef [
+MicHTMLDocument >> serializeHtml: aFilename in: destDirFileRef [
 	"Private - Serialize the receiver's into aFilename in destDirFileRef <FileReference>"
 
 	self fileName: aFilename.
@@ -335,13 +335,13 @@ MicHTMLDoc >> serializeHtml: aFilename in: destDirFileRef [
 ]
 
 { #category : #'writing - metadata' }
-MicHTMLDoc >> setCharSetUTF8 [
+MicHTMLDocument >> setCharSetUTF8 [
 
 	self charSet: 'utf-8'
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> tempFileName [
+MicHTMLDocument >> tempFileName [
 	"Answer a <String> representing a random file in a temporary location in the receiver's file system"
 
 	^ String streamContents: [ : str | 
@@ -353,14 +353,14 @@ MicHTMLDoc >> tempFileName [
 ]
 
 { #category : #accessing }
-MicHTMLDoc >> title [
+MicHTMLDocument >> title [
 	"Refer to comment in MicHTMLConfiguration>>title"
 	
 	^ self configuration title
 ]
 
 { #category : #writing }
-MicHTMLDoc >> writeDocument: aHTMLString [
+MicHTMLDocument >> writeDocument: aHTMLString [
 	"Write markup from anHTMLString to the receiver's body part"
 
 	self configuration writeDocumentType.
@@ -374,7 +374,7 @@ MicHTMLDoc >> writeDocument: aHTMLString [
 ]
 
 { #category : #writing }
-MicHTMLDoc >> writeDocumentBody: aHTMLString [
+MicHTMLDocument >> writeDocumentBody: aHTMLString [
 	"Write aHTMLString representing a valid HTML body for the receiver"
 
 	canvas tag
@@ -387,14 +387,14 @@ MicHTMLDoc >> writeDocumentBody: aHTMLString [
 ]
 
 { #category : #writing }
-MicHTMLDoc >> writeToFile [
+MicHTMLDocument >> writeToFile [
 	"Write the receiver's contents to the default file name"
 
 	self writeToFileNamed: self fileName
 ]
 
 { #category : #writing }
-MicHTMLDoc >> writeToFileNamed: aFilename [
+MicHTMLDocument >> writeToFileNamed: aFilename [
 	"Ensure a new file named aFilename and write the receiver's contents into it"
 
 	| destDirFileRef |

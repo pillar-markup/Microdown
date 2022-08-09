@@ -1,3 +1,7 @@
+"
+Holds a text presenter to display HTML source, and a status bar indicating the size of the HTML.
+
+"
 Class {
 	#name : #MicHTMLStylerHTMLSourcePresenter,
 	#superclass : #MicHTMLStylerAbstractPresenter,
@@ -51,6 +55,12 @@ MicHTMLStylerHTMLSourcePresenter >> initializePresenters [
 		whenTextChangedDo: [ : text | self updateSizeMessage: text size ]		
 		yourself.
 	htmlStatusbarPresenter := self newStatusBar.
+]
+
+{ #category : #accessing }
+MicHTMLStylerHTMLSourcePresenter >> text [
+
+	^ self htmlSourceCodePresenter text
 ]
 
 { #category : #accessing }

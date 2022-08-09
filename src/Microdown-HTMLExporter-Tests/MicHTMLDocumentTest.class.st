@@ -1,5 +1,5 @@
 Class {
-	#name : #MicHTMLDocTest,
+	#name : #MicHTMLDocumentTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'doc',
@@ -9,47 +9,47 @@ Class {
 }
 
 { #category : #tests }
-MicHTMLDocTest class >> resources [
+MicHTMLDocumentTest class >> resources [
 
 	^ Array with: MicCSSFileResource
 ]
 
 { #category : #running }
-MicHTMLDocTest >> sampleHTMLBody [
+MicHTMLDocumentTest >> sampleHTMLBody [
 
 	^ MicDocFactory exampleMicAsHTMLBodyString
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> sampleMicCSSFile [
+MicHTMLDocumentTest >> sampleMicCSSFile [
 
 	^ MicCSSFileResource current micCSSFile
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> sampleMicCSSName [
+MicHTMLDocumentTest >> sampleMicCSSName [
 
 	^ MicCSSProvider defaultFramework
 ]
 
 { #category : #running }
-MicHTMLDocTest >> setUp [
+MicHTMLDocumentTest >> setUp [
 	
 	super setUp.
 	docString := self sampleHTMLBody.
-	doc := MicHTMLDoc new.
+	doc := MicHTMLDocument new.
 
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> tearDown [ 
+MicHTMLDocumentTest >> tearDown [ 
 
 	super tearDown.
 	doc fullName asFileReference ensureDelete
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testAddCSSNamed [
+MicHTMLDocumentTest >> testAddCSSNamed [
 
 	|micCSSFrw |
 
@@ -62,7 +62,7 @@ MicHTMLDocTest >> testAddCSSNamed [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testAuthor [
+MicHTMLDocumentTest >> testAuthor [
 
 	self
 		assert: (doc author isKindOf: String)
@@ -79,7 +79,7 @@ MicHTMLDocTest >> testAuthor [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testCanvasClass [
+MicHTMLDocumentTest >> testCanvasClass [
 
 	self
 		assert: (doc canvasClass = MicHTMLCanvas)
@@ -87,7 +87,7 @@ MicHTMLDocTest >> testCanvasClass [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testCharSet [
+MicHTMLDocumentTest >> testCharSet [
 
 	self 
 		assert: (doc charSet isKindOf: String)
@@ -101,7 +101,7 @@ MicHTMLDocTest >> testCharSet [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testConfiguration [
+MicHTMLDocumentTest >> testConfiguration [
 
 	self 
 		assert: (doc configuration isKindOf: MicHTMLConfiguration)
@@ -110,7 +110,7 @@ MicHTMLDocTest >> testConfiguration [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testContents [
+MicHTMLDocumentTest >> testContents [
 
 	self 
 		assert: (doc contents isKindOf: String) 
@@ -122,7 +122,7 @@ MicHTMLDocTest >> testContents [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testCssFrameworks [
+MicHTMLDocumentTest >> testCssFrameworks [
 
 	self
 		assert: (doc cssFrameworks isKindOf: Collection)
@@ -134,7 +134,7 @@ MicHTMLDocTest >> testCssFrameworks [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testDescription [
+MicHTMLDocumentTest >> testDescription [
 
 	| sampleDescription |
 	
@@ -150,7 +150,7 @@ MicHTMLDocTest >> testDescription [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testDestinationPath [
+MicHTMLDocumentTest >> testDestinationPath [
 
 	self assert: (doc destinationPath isKindOf: String).
 	self deny: doc destinationPath isEmpty.
@@ -158,7 +158,7 @@ MicHTMLDocTest >> testDestinationPath [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testDocumentType [
+MicHTMLDocumentTest >> testDocumentType [
 
 	self 
 		assert: (doc documentType isKindOf: String)
@@ -172,7 +172,7 @@ MicHTMLDocTest >> testDocumentType [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testExists [
+MicHTMLDocumentTest >> testExists [
 
 	self 
 		deny: doc exists 
@@ -184,7 +184,7 @@ MicHTMLDocTest >> testExists [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testFileName [
+MicHTMLDocumentTest >> testFileName [
 
 	self 
 		assert: doc fileName = 'index.html'
@@ -193,7 +193,7 @@ MicHTMLDocTest >> testFileName [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testFromMicrodown [
+MicHTMLDocumentTest >> testFromMicrodown [
 
 	| html |
 	
@@ -203,7 +203,7 @@ MicHTMLDocTest >> testFromMicrodown [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testKeywords [
+MicHTMLDocumentTest >> testKeywords [
 
 	self
 		assert: (doc keywords isKindOf: Collection)
@@ -222,7 +222,7 @@ MicHTMLDocTest >> testKeywords [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testLanguageId [
+MicHTMLDocumentTest >> testLanguageId [
 
 	self
 		assert: (doc languageId isKindOf: String)
@@ -236,7 +236,7 @@ MicHTMLDocTest >> testLanguageId [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testNewMicStreamOn [
+MicHTMLDocumentTest >> testNewMicStreamOn [
 
 	self 
 		assert: ((doc newMicStreamOn: String empty) isKindOf: MicOutputStream)
@@ -244,7 +244,7 @@ MicHTMLDocTest >> testNewMicStreamOn [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testSetCharSetUTF8 [
+MicHTMLDocumentTest >> testSetCharSetUTF8 [
 
 	doc charSet: nil.
 	self assert: doc charSet isNil.
@@ -255,7 +255,7 @@ MicHTMLDocTest >> testSetCharSetUTF8 [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testTempFileName [
+MicHTMLDocumentTest >> testTempFileName [
 
 	self 
 		assert: (doc tempFileName isKindOf: String)
@@ -271,7 +271,7 @@ MicHTMLDocTest >> testTempFileName [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testTitle [
+MicHTMLDocumentTest >> testTitle [
 
 	self
 		assert: (doc title isKindOf: String)
@@ -283,7 +283,7 @@ MicHTMLDocTest >> testTitle [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testWriteDocument [
+MicHTMLDocumentTest >> testWriteDocument [
 
 	| parsedContents |
 	doc writeDocument: 'Prueba'.
@@ -297,7 +297,7 @@ MicHTMLDocTest >> testWriteDocument [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testWriteDocumentBody [
+MicHTMLDocumentTest >> testWriteDocumentBody [
 
 	doc writeDocumentBody: 'Prueba'.
 	self deny: doc contents isEmpty.
@@ -306,7 +306,7 @@ MicHTMLDocTest >> testWriteDocumentBody [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testWriteToFile [
+MicHTMLDocumentTest >> testWriteToFile [
 
 	| fileName file wd |
 	
@@ -328,7 +328,7 @@ MicHTMLDocTest >> testWriteToFile [
 ]
 
 { #category : #tests }
-MicHTMLDocTest >> testWriteToFileNamed [
+MicHTMLDocumentTest >> testWriteToFileNamed [
 
 	| fileName file wd |
 	

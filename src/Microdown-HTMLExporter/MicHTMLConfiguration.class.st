@@ -1,7 +1,7 @@
 "
 Handle and provides writing methods of additional information (metadata) of a Microdown HTML document:
 
-- A default character set (**charSet**) as UTF-8 by default (**setCharSetUTF8**)..
+- A default character set (**charSet**) as UTF-8 by default (**setCharSetUTF8**).
 - A language (**languageId**) `String` of element's contents (matches the lang attribute in HTML specification).
 - A title `String` acting as document short explanation.
 - A `Collection` of Keywords (**keywords**).
@@ -33,7 +33,7 @@ Class {
 	#category : #'Microdown-HTMLExporter-Core'
 }
 
-{ #category : #'writing - metadata' }
+{ #category : #accessing }
 MicHTMLConfiguration >> author [
 	"Answer a <String> representing the author of the receiver"
 	
@@ -48,7 +48,7 @@ MicHTMLConfiguration >> author: anObject [
 ]
 
 { #category : #'writing - css' }
-MicHTMLConfiguration >> beCssEmbeeded [
+MicHTMLConfiguration >> beCssEmbedded [
 	"Answer the receiver. Set CSS to be inserted into its the receiver's document"
 
 	embeedCss := true
@@ -182,6 +182,7 @@ MicHTMLConfiguration >> cssFrameworks [
 
 { #category : #accessing }
 MicHTMLConfiguration >> date [
+	"Answer a <String> describing the receiver's date"
 
 	^ date
 ]
@@ -239,7 +240,7 @@ MicHTMLConfiguration >> defaultViewport [
 	^ 'width=device-width,initial-scale=1.0,user-scalable=yes'
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : #accessing }
 MicHTMLConfiguration >> description [
 	"Answer a <String> which define a description for the receiver"
 	
@@ -255,6 +256,7 @@ MicHTMLConfiguration >> description: anObject [
 
 { #category : #accessing }
 MicHTMLConfiguration >> document [
+	"Answer a <MicHTMLDocument> if configured, or nil otherwise"
 
 	^ document
 
@@ -287,13 +289,13 @@ MicHTMLConfiguration >> initialize [
 	self beCssLinked
 ]
 
-{ #category : #'writing - css' }
-MicHTMLConfiguration >> isCssEmbeeded [
+{ #category : #testing }
+MicHTMLConfiguration >> isCssEmbedded [
 
 	^ embeedCss
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : #accessing }
 MicHTMLConfiguration >> keywords [
 	"Answer a <Collection> of <String> which define keywords for search engines"
 	
@@ -323,6 +325,7 @@ MicHTMLConfiguration >> languageId: anObject [
 
 { #category : #private }
 MicHTMLConfiguration >> metadataSelectorMap [
+	"Answer a <Dictionary> mapping Pillar metadata keys to receiver's selectors. Corresponding methods will use the meta HTML tag and write its parameter as value"
 
 	^ { 
 		'description' -> #description: .
@@ -335,6 +338,7 @@ MicHTMLConfiguration >> metadataSelectorMap [
 
 { #category : #'accessing - robots' }
 MicHTMLConfiguration >> robots [
+	"Answer a <Collection> of <String> with information to control how the receiver's document should be indexed and served"
 
 	^ robots
 		ifNil: [ robots := OrderedCollection new ]
@@ -431,7 +435,7 @@ MicHTMLConfiguration >> writeDocumentAuthor [
 MicHTMLConfiguration >> writeDocumentCSS [
 	"Add linked CSS resources to the receiver"
 
-	self isCssEmbeeded
+	self isCssEmbedded
 		ifFalse: [ self writeCssLinked ]
 		ifTrue: [ self writeCssEmbeed ]
 
