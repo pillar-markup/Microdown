@@ -17,6 +17,11 @@ MicElement class >> extensionClassFor: tag [
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 ]
 
+{ #category : #visiting }
+MicElement >> accept: aVisitor [
+	self subclassResponsibility 
+]
+
 { #category : #properties }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."
