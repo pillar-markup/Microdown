@@ -66,6 +66,16 @@ MicrodownVisitor >> visitCode: aCodeBlock [
 ]
 
 { #category : #visiting }
+MicrodownVisitor >> visitColumn: aColumn [
+	^ self visitEnvironment: aColumn
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitColumns: aColumns [
+	^ self visitEnvironment: aColumns
+]
+
+{ #category : #visiting }
 MicrodownVisitor >> visitComment: aComment [
 ]
 
