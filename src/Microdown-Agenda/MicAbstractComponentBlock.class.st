@@ -16,7 +16,7 @@ MicAbstractComponentBlock class >> isAbstract [
 { #category : #accessing }
 MicAbstractComponentBlock >> author [
 	
-	^ self arguments at: #author ifAbsent: [ 'There is no author' ]
+	^ self arguments at: #author ifAbsent: [ 'Not Specified' ]
 ]
 
 { #category : #accessing }
@@ -40,7 +40,7 @@ MicAbstractComponentBlock >> length: aLength [
 { #category : #accessing }
 MicAbstractComponentBlock >> room [
 	
-	^ self arguments at: #room ifAbsent: [ 'There is no room' ]
+	^ self arguments at: #room ifAbsent: [ 'Not Specified' ]
 ]
 
 { #category : #accessing }
