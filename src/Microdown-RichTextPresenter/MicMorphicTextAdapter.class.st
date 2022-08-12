@@ -69,7 +69,10 @@ MicMorphicTextAdapter >> setSelection: interval [
 { #category : #'presenter->morph' }
 MicMorphicTextAdapter >> setText: aText [
 	"called by presenter to set text in morph"
-	widget ifNotNil: [ widget setText: aText ]
+	widget ifNotNil: [ 
+		widget 
+			setText: aText;
+			resetState ]
 ]
 
 { #category : #'morph->presenter' }
