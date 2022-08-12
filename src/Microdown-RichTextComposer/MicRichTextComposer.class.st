@@ -366,29 +366,30 @@ MicRichTextComposer >> visitColumn: columnBlock [
 	
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : #visiting }
 MicRichTextComposer >> visitColumns: columnsBlock [
 	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
 	| columns columnsBlocks totalWidth|
 	canvas newLineIfNotAlready.
 	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
-	columns := columnsBlocks collect: [ :column | |colText|
-		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
-		RubScrolledTextMorph new setText: colText].
+	columns := columnsBlocks collect: [ :column | |colText| 
+		colText := self class new
+			textStyler: self textStyler copy;
+			asRichText: (MicRootBlock new children: column children;yourself).
+		RubScrolledTextMorph new 
+			wrapped: true;
+			scrollbarsShowNever;
+			setText: colText].
 	totalWidth := columns sum: [ :col | col textArea width].
 	columns do: [ :morph |
 		canvas << ((String value: 1) asText addAttribute: 
 			(MicScalingTextAnchor new 
 				original: morph;
 				"There need to be a bit of extra space assigned (5%)"
-				scale: (morph textArea width / totalWidth * 100)-5;
-				"Need to add a bit of space (15) for the scrollbar to disappear"
-				freezeHeight: morph textArea height+15))].
+				scale: (morph textArea width / totalWidth * 100)-5))].
 	canvas 
 		newLine; 
-		<< textStyler interBlockSpacing 
-	
-	
+		<< textStyler interBlockSpacing
 ]
 
 { #category : #'visiting - document' }
