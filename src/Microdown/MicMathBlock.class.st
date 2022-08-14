@@ -1,21 +1,21 @@
 "
-I'm a math environment. I'm a block it means that I start by a newline with character `&` and optional parameters, and I finish by a line with the same character. 
+I'm a math environment. I'm a block it means that I start by a newline with character `$$` and optional parameters, and I finish by a line with the same characters. 
 My body can be on multiple line and may contain LaTeX expressions.
 In particular it means that my body does not contain nested elements.
 
 Here is an example 
 
 ```
-&
+$$
 V_i = C_0 - C_3
-&
+$$
 ```
 
 produces 
 
-&
+$$
 V_i = C_0 - C_3
-&
+$$
 
 
 "
