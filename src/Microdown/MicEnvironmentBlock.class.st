@@ -21,47 +21,6 @@ Here is an example of a slide (subclass of `MicEnvironmentBlock`)
 ```
 
 
-In Pillar
-```
-${begin:column|width=40}$
-blah blah
-${end:column}$
-```
-
-```
-${begin:card}$
-
-# I'm Cool
-
-A paragraph about the card.
-I will be interpreted as part of the card.
-
-${end:card}$ 
-```
-
-
-
-
-
-This is important to support better column in the future:
-
-```
-${slide:title=Class Methods}$
-
-${columns}$
-
-${column:width=60}$
-
-+>file://figures/Point-xy-class-method.png|width=90+
-
-${column:width=40}$
-
-- press the button ==class== to define a class method
-- in lectures, we add ==class==
-
-${endColumns}$
-```
-
 
 "
 Class {
