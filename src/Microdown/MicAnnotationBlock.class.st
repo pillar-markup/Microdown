@@ -20,6 +20,31 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #documentation }
+MicAnnotationBlock class >> addDocumentDefinedAnnotations: aBuilder [
+	| currentDefinedTags |
+	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
+	aBuilder newLine.
+	aBuilder header: [ aBuilder text: 'Defined annotations' ] withLevel: 2.
+	aBuilder unorderedListDuring: [ 
+		currentDefinedTags do: [:tagAndClass | 
+	
+			aBuilder item: [ 
+				aBuilder 
+					bold: [aBuilder text: tagAndClass key];
+					text: ' defined by ';
+					monospace: tagAndClass value
+					]]
+		 ]
+]
+
+{ #category : #documentation }
+MicAnnotationBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
+	
+	super buildMicroDownUsing: aBuilder withComment: aString.
+	self addDocumentDefinedAnnotations: aBuilder
+]
+
 { #category : #constructor }
 MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 

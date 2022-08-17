@@ -76,8 +76,19 @@ Class {
 { #category : #documentation }
 MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
 	| currentDefinedTags |
-	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass ].
+	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
+	aBuilder newLine.
+	aBuilder header: [ aBuilder text: 'Defined environments' ] withLevel: 2.
+	aBuilder unorderedListDuring: [ 
+		currentDefinedTags do: [:tagAndClass | 
 	
+			aBuilder item: [ 
+				aBuilder 
+					bold: [aBuilder text: tagAndClass key];
+					text: ' defined by ';
+					monospace: tagAndClass value
+					]]
+		 ]
 ]
 
 { #category : #public }
