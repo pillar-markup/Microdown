@@ -22,14 +22,14 @@ Note that a column can have also a width.
 
 
 ```
-<?columns
+<!columns
 
-<?column|width=80
+<!column|width=80
 
 - col 1 item1 a first list
 - col 1 item2 a first list
-?>
-?>
+!>
+!>
 ```
 "
 Class {

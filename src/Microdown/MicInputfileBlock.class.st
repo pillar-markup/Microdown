@@ -1,5 +1,6 @@
 "
-I handle input file 
+I handle input file. 
+Note that I should start a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
 
 ```
 <!inputFile|path=Chapters/withStyle.md!>
