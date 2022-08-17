@@ -4,9 +4,9 @@ By default I do not handle any form of formatting in the potential arguments.
 
 ## Syntax
 
-```
+```text
 <!aTypeOfEnvironment|argument=value&argument2=value2
-
+...
 !>
 ```
 Here is an example of a slide (subclass of `MicEnvironmentBlock`)
@@ -73,6 +73,13 @@ Class {
 	#category : #'Microdown-Model'
 }
 
+{ #category : #documentation }
+MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
+	| currentDefinedTags |
+	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass ].
+	
+]
+
 { #category : #public }
 MicEnvironmentBlock class >> alternateBlockClassFor: line [
 
@@ -84,6 +91,13 @@ MicEnvironmentBlock class >> alternateBlockClassFor: line [
 	tag := ((line allButFirst: EnvironmentOpeningBlockMarkup size) 
 		        copyUpTo: $|) trimBoth.
 	^ self extensionClassFor: tag
+]
+
+{ #category : #documentation }
+MicEnvironmentBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
+	
+	super buildMicroDownUsing: aBuilder withComment: aString.
+	self addDocumentDefinedEnvironments: aBuilder
 ]
 
 { #category : #visiting }
