@@ -72,11 +72,3 @@ MicResourceReferenceTest >> testStringExtensionMethod [
 	self assert: ref class equals: MicHTTPResourceReference.
 	self assert: ref path equals: '/path/to/image.png'
 ]
-
-{ #category : #tests }
-MicResourceReferenceTest >> testUnknownSchemeGivesError [
-	| ref |
-	self 
-		should: [ ref := 'wrong://somewhere.org' asMicResourceReference]
-		raise: MicResourceReferenceError 
-]

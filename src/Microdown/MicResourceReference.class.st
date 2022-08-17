@@ -41,7 +41,7 @@ MicResourceReference class >> fromUri: aString [
 		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
 	refClass := self allSubclasses 
 		detect: [ :rc | rc handlesUriScheme: uri scheme ]
-		ifNone: [ MicResourceReferenceError signal: 'Unknown uri scheme: ', uri scheme ].
+		ifNone: [ MicUnknownResourceUri ].
 	^ refClass newFromUri: uri
 	
 ]

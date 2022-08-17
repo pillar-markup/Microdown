@@ -60,13 +60,15 @@ MicDocumentBrowser class >> open [
 ]
 
 { #category : #opening }
-MicDocumentBrowser class >> openDocument: aMicResourceReference [
+MicDocumentBrowser class >> openDocument: aMicResourceReferenceOrString [
 	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
 	I am called when following links in rich text to microdown documents, but can also be used as api method."
 	
 	<richtextlinkpresenter: #md>
 	Browser ifNil: [ self new open ].
-	Browser addRoot: aMicResourceReference 
+	Browser addRoot: (aMicResourceReferenceOrString isString
+		ifTrue: [ aMicResourceReferenceOrString asMicResourceReference  ]
+		ifFalse: [aMicResourceReferenceOrString ])
 ]
 
 { #category : #accessing }
@@ -125,9 +127,9 @@ MicDocumentBrowser >> connectPresenters [
 
 { #category : #private }
 MicDocumentBrowser >> defaultDocumentRoots [
-	^ ({"'comment://package/Microdown'".
+	^ ({'comment://package/Microdown-DocumentBrowser'.
 		"'file:/Users/kasper/tmp/pharo/doc'."
-		"'github://pillar-markup/Microdown/doc/testMicrodown'"
+		'github://pharo-project/pharo:Pharo11/doc/Regex'
 	 	}, 
 		self loadedDocsInWorkspace  )
 			collect: #asMicResourceReference

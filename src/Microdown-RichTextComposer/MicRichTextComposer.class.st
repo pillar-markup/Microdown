@@ -290,7 +290,8 @@ MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
 	"Adding a zero width no-break space circumvents two errors in rubrics when
 		using images as links. Adding it even if the image is not a link causes no
 		harm (it is invisible), and this is the easiest place to add it."
-	^ text, 16rFEFF asCharacter asString asText
+	"See https://en.wikipedia.org/wiki/Zero-width_space"
+	^ text, 16r200B asCharacter asString asText
 ]
 
 { #category : #initialization }
@@ -365,29 +366,30 @@ MicRichTextComposer >> visitColumn: columnBlock [
 	
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : #visiting }
 MicRichTextComposer >> visitColumns: columnsBlock [
 	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
 	| columns columnsBlocks totalWidth|
 	canvas newLineIfNotAlready.
 	columnsBlocks := columnsBlock children select: [ :c | c isKindOf: MicColumnBlock].
-	columns := columnsBlocks collect: [ :column | |colText|
-		colText := Microdown asRichText: (MicRootBlock new children: column children;yourself).
-		RubScrolledTextMorph new setText: colText].
+	columns := columnsBlocks collect: [ :column | |colText| 
+		colText := self class new
+			textStyler: self textStyler copy;
+			asRichText: (MicRootBlock new children: column children;yourself).
+		RubScrolledTextMorph new 
+			wrapped: true;
+			scrollbarsShowNever;
+			setText: colText].
 	totalWidth := columns sum: [ :col | col textArea width].
 	columns do: [ :morph |
 		canvas << ((String value: 1) asText addAttribute: 
 			(MicScalingTextAnchor new 
 				original: morph;
 				"There need to be a bit of extra space assigned (5%)"
-				scale: (morph textArea width / totalWidth * 100)-5;
-				"Need to add a bit of space (15) for the scrollbar to disappear"
-				freezeHeight: morph textArea height+15))].
+				scale: (morph textArea width / totalWidth * 100)-5))].
 	canvas 
 		newLine; 
-		<< textStyler interBlockSpacing 
-	
-	
+		<< textStyler interBlockSpacing
 ]
 
 { #category : #'visiting - document' }
