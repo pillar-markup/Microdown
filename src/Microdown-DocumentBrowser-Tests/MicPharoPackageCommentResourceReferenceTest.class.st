@@ -87,7 +87,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 	| dir prefixes |
-	dir := 'comment://package/*' asMicResourceReference loadChildren.
+	dir := 'comment://package/' asMicResourceReference loadChildren.
 	self assert: (dir size between: 100 and: 200).
 	"check that four known prefises are in the found set."
 	prefixes := dir collect: [ :ref | ref uri segments first ].

@@ -206,7 +206,7 @@ MicPharoPackageCommentResourceReference >> uri: aUri [
 	packageName can be a prefix of a full package name"
 	super uri: aUri.
 	categoryName := aUri segments
-		ifNil: ['']
+		ifNil: ['*']
 		ifNotNil: [ :segments | segments first ].
 	kind := (categoryName endsWith: '*') 
 		ifTrue: [ categoryName := categoryName withoutSuffix: '*'. 'prefix' ]
