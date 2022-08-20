@@ -60,10 +60,10 @@ MicPharoPackageCommentResourceReferenceTest >> testIsTag [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testKind [
 	self 
-		assert: 'comment://package/Microdown' asMicResourceReference kind 
+		assert: 'comment://package/Microdown*' asMicResourceReference kind 
 		equals: #prefix.
 	self 
-		assert: 'comment://package/Microdown?kind=package' asMicResourceReference kind 
+		assert: 'comment://package/Microdown' asMicResourceReference kind 
 		equals: #package.
 	self 
 		assert: 'comment://package/Microdown-Core' asMicResourceReference kind 
@@ -81,14 +81,13 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 	dir := ref loadChildren.
 	self assert: dir notEmpty.
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoPackageCommentResourceReference  ] ).
-	self assert: (dir first uri segments first beginsWith: 'Microdown').
-	self assert: (dir first uri query at: #kind) equals: #package
+	self assert: (dir first uri segments first beginsWith: 'Microdown')
 ]
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 	| dir prefixes |
-	dir := 'comment://package/' asMicResourceReference loadChildren.
+	dir := 'comment://package/*' asMicResourceReference loadChildren.
 	self assert: (dir size between: 100 and: 200).
 	"check that four known prefises are in the found set."
 	prefixes := dir collect: [ :ref | ref uri segments first ].
@@ -115,7 +114,7 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_prefix [
 	| ref dir |
 	ref := 'comment://package/Microdown-DocumentBrowser' asMicResourceReference.
 	dir := ref loadChildren.
-	self assert: dir size equals: 2.
+	self assert: dir size equals: 3.
 ]
 
 { #category : #tests }
