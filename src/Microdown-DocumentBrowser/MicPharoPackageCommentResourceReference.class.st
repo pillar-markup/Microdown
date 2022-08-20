@@ -37,8 +37,15 @@ Class {
 MicPharoPackageCommentResourceReference >> browserIcon [
 	self kind = #prefix ifTrue: [ ^ self iconNamed: #group ].
 	self kind = #package ifTrue: [ ^ self iconNamed: #package ].
-	self kind = #tag ifTrue: [ ^ self iconNamed: #book ].
+	self kind = #tag ifTrue: [ ^ self iconNamed: #blank ].
 	^ self iconNamed: #error
+]
+
+{ #category : #'document browser' }
+MicPharoPackageCommentResourceReference >> browserTitle [
+	kind = 'prefix'
+		ifTrue: [ ^categoryName ,'*' ].
+	^ categoryName 
 ]
 
 { #category : #testing }
@@ -67,19 +74,13 @@ MicPharoPackageCommentResourceReference >> childrenOfAllCategories [
 MicPharoPackageCommentResourceReference >> childrenOfCategoryPrefix [
 	"I am a prefix of a set of categories, 
 	my children are those categories with one more depth in their name"
-	| children packageChild|
-	packageChild := OrderedCollection new.
+	| children |
 	categoryName ifEmpty: [ ^ self childrenOfAllCategories ].
 	children := SystemOrganizer default categories
-				select: [ :cat |  cat beginsWith: categoryName,'-' ].
-	self isPackage 
-		ifTrue: [ |tags| "remove the children which are actually tags"
-			tags :=  categoryName asPackage classTags collect: [:tag | categoryName,'-',tag name].
-			children := children \ tags.
-			packageChild add: ('comment://package/', categoryName,'?kind=package') asMicResourceReference ].
-	children := (children collect: [:cat | self reduceCategoryName: cat]) asSet asOrderedCollection sort
-					collect: [ :cat | ('comment://package/',cat) asMicResourceReference  ].
-	^ packageChild , children
+				select: [ :cat |  (cat beginsWith: categoryName) and: [ self isPackage: cat ] ]
+				thenCollect: [:cat | ('comment://package/', cat) asMicResourceReference ].
+
+	^ children
 	
 ]
 
@@ -99,7 +100,7 @@ MicPharoPackageCommentResourceReference >> childrenOfRPackage [
 			reject: [:tag | #(Manifest Extensions) includes: tag name].
 	tags := tags asArray sort: [ :a :b | a name < b name ].
 	^ tags collect: [ :tag |
-		('comment://package/', (categoryName, '-', tag name,'?kind=tag')) asMicResourceReference  ]
+		('comment://package/', ( categoryName, '-', tag name )) asMicResourceReference  ]
 ]
 
 { #category : #accessing }
@@ -119,6 +120,12 @@ MicPharoPackageCommentResourceReference >> contents: aNewComment [
 { #category : #testing }
 MicPharoPackageCommentResourceReference >> isPackage [
 	categoryName asPackageIfAbsent: [ ^ false ].
+	^true
+]
+
+{ #category : #'private - utilities' }
+MicPharoPackageCommentResourceReference >> isPackage: cat [
+	cat asPackageIfAbsent: [ ^ false ].
 	^true
 ]
 
@@ -201,8 +208,11 @@ MicPharoPackageCommentResourceReference >> uri: aUri [
 	categoryName := aUri segments
 		ifNil: ['']
 		ifNotNil: [ :segments | segments first ].
-	kind := aUri query 
-		ifNil: [ 'prefix' ]
-		ifNotNil: [ :query | query at: #kind ifAbsent: [ 'prefix']].
-	self isTag ifTrue: [ kind := #tag ]
+	kind := (categoryName endsWith: '*') 
+		ifTrue: [ categoryName := categoryName withoutSuffix: '*'. 'prefix' ]
+		ifFalse: [ 
+			self isPackage 
+				ifTrue:['package']
+				ifFalse: [ 'tag' ]
+			]
 ]
