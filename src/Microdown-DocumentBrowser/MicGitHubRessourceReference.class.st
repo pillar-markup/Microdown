@@ -64,7 +64,7 @@ MicGitHubRessourceReference >> contents [
 	response := self githubPathLookup.
 	content := response 
 		at: #content 
-		ifAbsent: [MicResourceReferenceError signal: 'I am a directory and has no contents'].
+		ifAbsent: [^ 'I am a directory and has no contents'].
 	^ content base64Decoded asString
 ]
 

@@ -263,18 +263,26 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave path|
+	| docToSave path sourceSelection sourceScroll str|
 	docToSave := spDocumentList selectedItem.
 	path := spDocumentList selection selectedPath.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
 	self renderDocument: docToSave.
-	self scrollSyncRenderToSource.
+	str := spSource text asString.
+	sourceSelection := spSource selectionInterval.
+	sourceScroll := (str lineNumberCorrespondingToIndex: (spSource selectionInterval first)) -1 /
+		str lineCount.
+	"self scrollSyncRenderToSource."
 	self setTopLayout.
 	"self documentSelected: docToSave."
 	spDocumentList 
 		expandPath: path;
-		selectPath: path
+		selectPath: path.
+	spSource selectionInterval: sourceSelection.
+	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll.
+	spSource takeKeyboardFocus.
+	
 	
 	
 	
