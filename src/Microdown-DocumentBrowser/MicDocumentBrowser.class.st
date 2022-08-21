@@ -3,7 +3,7 @@ I am a browser of collections of microdown documents.
 
 I am work in progress, but reasonable functional.
 
-I open by `MicDocumentBrowser class >> #open`, or a specific document using: `MicDocumentBrowser class >> #openDocument:` which takes a `MicAbsoluteResourceReference` as argument.
+I open by `MicDocumentBrowser class >> #open`, or a specific document using: `MicDocumentBrowser class >> #openDocument:` which takes a `MicAbsoluteResourceReference` or a `String URI` as argument. 
 
 Editing is done using the little edit flag in the lower right corner - there is currently no keyboard shortcut for this.
 I can save some documents, but not all. I can save documents on files, and package/class comments. In particular I **cannot** save to github or the web. Saving is done on the save button when it is not greyed out.
@@ -70,6 +70,7 @@ MicDocumentBrowser class >> itemsForDirectory: aFileDirectory [
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
 	<example>
+	Browser := nil.
 	^ self new open
 ]
 
