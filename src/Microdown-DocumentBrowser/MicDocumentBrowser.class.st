@@ -53,6 +53,20 @@ MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootComma
 		(MicPreviousDocumentBrowserCommand forSpec context: presenter)	
 ]
 
+{ #category : #'services menu' }
+MicDocumentBrowser class >> fileReaderServicesForFile: fullName suffix: suffix [
+	<fileService>
+	suffix = 'md' ifFalse:[^ #() ].
+	^ { self serviceOpenMicrodownDocument  }
+]
+
+{ #category : #'services menu' }
+MicDocumentBrowser class >> itemsForDirectory: aFileDirectory [
+	<directoryService>
+	
+	^ { self serviceOpenMicrodownDirectory }
+]
+
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
 	<example>
@@ -63,12 +77,37 @@ MicDocumentBrowser class >> open [
 MicDocumentBrowser class >> openDocument: aMicResourceReferenceOrString [
 	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
 	I am called when following links in rich text to microdown documents, but can also be used as api method."
-	
 	<richtextlinkpresenter: #md>
 	Browser ifNil: [ self new open ].
 	Browser addRoot: (aMicResourceReferenceOrString isString
 		ifTrue: [ aMicResourceReferenceOrString asMicResourceReference  ]
 		ifFalse: [aMicResourceReferenceOrString ])
+]
+
+{ #category : #'services menu' }
+MicDocumentBrowser class >> serviceOpenMicrodownDirectory [
+	"Answer the service of opening a file-contents browser"
+
+	^ (SimpleServiceEntry
+		provider: self 
+		label: 'Open Micodown document'
+		selector: #openDocument:
+		description: 'Open a this document in Microdown Document Browser'
+		buttonLabel: 'Microdown')
+		argumentGetter: [ :file| file fullName]
+]
+
+{ #category : #'services menu' }
+MicDocumentBrowser class >> serviceOpenMicrodownDocument [
+	"Answer the service of opening a file-contents browser"
+
+	^ (SimpleServiceEntry
+		provider: self 
+		label: 'Open Micodown document'
+		selector: #openDocument:
+		description: 'Open a this document in Microdown Document Browser'
+		buttonLabel: 'Microdown')
+		argumentGetter: [ :file| file fullName]
 ]
 
 { #category : #accessing }
