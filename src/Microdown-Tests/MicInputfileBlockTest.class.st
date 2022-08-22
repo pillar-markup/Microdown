@@ -33,12 +33,11 @@ MicInputfileBlockTest >> testMicInputfilePath [
 
 { #category : #tests }
 MicInputfileBlockTest >> testMicInputfilePathError [
-	[parser parse: '<!inputFile|path:errror=fchapters/withStyle.mic!>']
-		on: MicParsingError
-		do: [:error |
-			^ self 
-				assert: error line 
-				equals: 'inputFile|path:errror=fchapters/withStyle.mic must have path argument'].
-	self fail.
+	| doc fileInputBlock |
+	doc := parser parse: '<!inputFile|pa=fchapters/withStyle.mic!>'.
+	fileInputBlock := doc children first.
+	self 
+		assert: fileInputBlock reference relativePath 
+		equals: 'error: inputFile should have a path argument'
 		
 ]

@@ -226,11 +226,7 @@ MicrodownParser >> delimiterBlockClassFor: prefix [
 
 { #category : #parsing }
 MicrodownParser >> handleErrorInLine: line [
-		
-	^ MicParsingError new 
-		line: line;
-		signal
-	
+	current := MicErrorBlock new errorMessage: line
 ]
 
 { #category : #parsing }
