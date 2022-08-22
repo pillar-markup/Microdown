@@ -39,7 +39,7 @@ MicRichTextFormatConfiguration >> adjustStyler: styler [
 	arguments justTheArguments  keysAndValuesDo: [ :key :value |
 		setters at: key 
 			ifPresent: [ :block | block value: value]
-			ifAbsent: [ MicParsingError signal: 'richtext annotation - unknown argument: ', key ]
+			ifAbsent: [ styler addError: 'richtext annotation - unknown argument: ', key ]
 		 ].
 ]
 

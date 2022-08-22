@@ -77,9 +77,8 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel [
 MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongFormat [
 	| styler |
 	styler := MicDynamicTextStyler new.
-	self 
-		should: [ styler headerFont: 'Source Sans Pro' forLevel: 1 ]
-	 	raise: MicParsingError .
+	styler headerFont: 'Source Sans Pro' forLevel: 1.
+	self assert: styler errors isNotEmpty 
 	
 ]
 
@@ -87,9 +86,8 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongFormat [
 MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
-	self 
-		should: [styler headerFont: 'Source Sans Pro;72' forLevel: 9]
-		raise: MicParsingError
+	styler headerFont: 'Source Sans Pro;72' forLevel: 9.
+	self assert: styler errors isNotEmpty 
 ]
 
 { #category : #tests }
