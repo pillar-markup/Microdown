@@ -60,6 +60,16 @@ MicMorphicTextAdapter >> selectionInterval: anInterval [
 	
 ]
 
+{ #category : #initialization }
+MicMorphicTextAdapter >> setScrollValue: aValue [
+
+	self widgetDo: [ :w | 
+		w scrollPane
+			hScrollbarValue: aValue x;
+			vScrollbarValue: aValue y;
+			updateScrollbars ]
+]
+
 { #category : #'morph->presenter' }
 MicMorphicTextAdapter >> setSelection: interval [
 	"Called when a selection happens in the widget"
