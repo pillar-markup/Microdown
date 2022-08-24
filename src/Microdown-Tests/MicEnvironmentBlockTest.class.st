@@ -161,17 +161,16 @@ The mother environment is not closed so it will eat everything.
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
  
-	| root env |
+	| root |
 	root :=  parser parse: '<!slideenvironment
 
-<!script
+$$script
 
-<!script 
+$$script 
 
 !>
 '.
-	self assert: root children first children first class equals: MicScriptBlock. 
-	self assert: root children first children first children first class equals: MicScriptBlock 
+	self assert: root children first children first class equals: MicScriptBlock.
 ]
 
 { #category : #'tests - default environment' }
