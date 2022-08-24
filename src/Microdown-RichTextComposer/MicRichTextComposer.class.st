@@ -7,16 +7,6 @@ I'm a visitor that produces rich text (class `Text`) based on a microdown model.
 I'm implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
 a not rendering mode, and a not catching exceptions (to ease debugging). {!footnote|note=This is my comment!}
 
-$$plantuml
-@startuml
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: Another authentication Response
-@enduml
-$$
-
 The main API is the methods: `MicRichTextComposer class >> #renderComment:of:` and `MicRichTextComposer class >> #asRichText:`
 
 Web-based images or LaTeX rendering requires network access and are cached.
@@ -648,6 +638,30 @@ MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [
 	canvas
 		includeAttribute: TextAlignment rightFlush 
 		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
+]
+
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitScript: aScriptBlock [
+	" I execute the body. I handle four types of results:
+	Text - inserted verbatim
+	Microdown tree - rendered to text then inserted verbatim
+	String - Parsed, then rendered, then inserted.
+	Other results - printString asText - then inserted verbatim
+	"
+	| script  result resText |
+	script := aScriptBlock body.
+	result := OpalCompiler new evaluate: script.
+	result isString  ifTrue: [  resText := Microdown asRichText:  result ].
+	result  isText ifTrue: [  resText := result ].
+	( result isKindOf:  MicElement )
+		ifTrue: [ resText := Microdown asRichText: result ].
+	resText ifNil: [ resText  := result printString asText ].
+	canvas 
+		newLineIfNotAlready;
+		<< resText;
+		newLine
+	
+	
 ]
 
 { #category : #'visiting -  format' }
