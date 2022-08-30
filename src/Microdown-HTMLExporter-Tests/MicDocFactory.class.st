@@ -1,7 +1,7 @@
 Class {
 	#name : #MicDocFactory,
 	#superclass : #Object,
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-Resources'
 }
 
 { #category : #examples }
@@ -46,7 +46,7 @@ Body Text With Smallcaps Introduction: Margin note 1. A random Wikipedia link. A
 
 ##Horizontal Rulers
 
- ----
+****
 
 ##Tabular Data
 
@@ -82,13 +82,20 @@ Here is an internal link: [heading-1](#heading-1)
 ]
 
 { #category : #examples }
+MicDocFactory class >> exampleMicAsHTMLBodyString [
+	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
+
+	^ Microdown asHTMLString: self exampleMic
+]
+
+{ #category : #examples }
 MicDocFactory class >> exampleMicAsHTMLDocument [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
 
-	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
-		destinationDir: 'html_output';
+	MicHTMLDocument new
+		addCSSNamed: 'Tufte';
+		destinationPath: 'html_output';
 		fromMicrodown: self exampleMic;
 		writeToFileNamed: 'Chapter1.html'.
 ]
@@ -98,7 +105,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentInBrowser [
 
 	| htmlDoc |
 	
-	htmlDoc :=  MicHTMLDoc new 
+	htmlDoc :=  MicHTMLDocument new 
 		fromMicrodown: self exampleMic;
 		yourself.
 	WebBrowser openOn: htmlDoc fullName.
@@ -109,17 +116,23 @@ MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 	"This example is a Minimum Working Example to write a HTML document from Microdown content."
 	<example>
 
-	MicHTMLDoc new
-		addCSSFile: (MicCSSLocalProvider named: 'Tufte');
-		fromMicrodown: self exampleMicAsHTMLString;
+	MicHTMLDocument new
+		addCSSNamed: 'Tufte';
+		fromMicrodown: self exampleMicAsHTMLBodyString;
 		writeToFile.
 ]
 
 { #category : #examples }
 MicDocFactory class >> exampleMicAsHTMLString [
-	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
+	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
+	<example>
 
-	^ Microdown asHTMLString: self exampleMic
+	^ MicHTMLDocument new
+		addCSSNamed: 'Tufte';
+		destinationPath: 'html_output';
+		fromMicrodown: self exampleMic;
+		writeToFileNamed: 'Chapter1.html';
+		yourself
 ]
 
 { #category : #examples }
