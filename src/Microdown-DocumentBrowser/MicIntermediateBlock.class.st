@@ -1,6 +1,10 @@
 "
 I am a block that is used to group other nodes internally in a microdown trees.
-I am not used by the parser, but by post-processing tools.
+I am not used by the parser, but by post-processing tools. hjkhjhkjhkjhaksjdhakjdhaskjhakfjh\
+
+kl;k;lk
+
+jlklkjkljlkj
 "
 Class {
 	#name : #MicIntermediateBlock,
