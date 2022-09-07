@@ -649,10 +649,14 @@ MicRichTextComposer >> visitScript: aScriptBlock [
 	Other results - printString asText - then inserted verbatim
 	"
 	| script  result resText |
+	"There is a bit too much type testing here - double dispatch or different kinds of scripts, or..."
 	script := aScriptBlock body.
 	result := OpalCompiler new evaluate: script.
 	result isString  ifTrue: [  resText := Microdown asRichText:  result ].
 	result  isText ifTrue: [  resText := result ].
+	(result isForm or: [ result isMorph ]) ifTrue: [ | anchor  | 
+		anchor := self anchorFor: result of: aScriptBlock.
+		resText := (self textWithImage: result usingAnchor: anchor), ' ' asText ].
 	( result isKindOf:  MicElement )
 		ifTrue: [ resText := Microdown asRichText: result ].
 	resText ifNil: [ resText  := result printString asText ].

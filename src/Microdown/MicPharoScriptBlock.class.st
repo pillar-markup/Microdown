@@ -10,25 +10,31 @@ $$script
 		do:  [:class |  aBuilder  item:  [ aBuilder monospace:  (class name, '>>#visitScript:') 
 ]]]]) contents
 $$
+
+or
+
+$$script|width=100
+Morph new
+$$
 "
 Class {
-	#name : #MicScriptBlock,
+	#name : #MicPharoScriptBlock,
 	#superclass : #MicMathBlock,
 	#category : #'Microdown-Extensions'
 }
 
 { #category : #accessing }
-MicScriptBlock class >> tag [
+MicPharoScriptBlock class >> tag [
 
 	^ #script
 ]
 
 { #category : #visiting }
-MicScriptBlock >> accept: aVisitor [
+MicPharoScriptBlock >> accept: aVisitor [
 	^ aVisitor visitScript: self
 ]
 
 { #category : #accessing }
-MicScriptBlock >> title [
+MicPharoScriptBlock >> title [
 	^ arguments at: 'title' ifAbsent: [ '' ]
 ]

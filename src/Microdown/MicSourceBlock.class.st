@@ -4,28 +4,28 @@ I am an extension for including source code into markdown document. I am to be u
 <!source|class=MicSourceMethodBlock&method=accept:&side=instance!>
 ```
 Yielding:
-<!source|class=MicSourceMethodBlock&method=accept:&side=instance!>
+<!source|class=MicSourceBlock&method=accept:&side=instance!>
 
 The `side` argument can be `instance` or `class`. If can be omitted, and is then assumed to be `instance`
 "
 Class {
-	#name : #MicSourceMethodBlock,
+	#name : #MicSourceBlock,
 	#superclass : #MicEnvironmentBlock,
 	#category : #'Microdown-Extensions'
 }
 
 { #category : #accessing }
-MicSourceMethodBlock class >> tag [
+MicSourceBlock class >> tag [
 	^#source
 ]
 
 { #category : #visiting }
-MicSourceMethodBlock >> accept: aVisitor [
+MicSourceBlock >> accept: aVisitor [
 	aVisitor visitAll: self children 
 ]
 
 { #category : #'parse support' }
-MicSourceMethodBlock >> closeMe [
+MicSourceBlock >> closeMe [
 	|builder|
 	super closeMe.
 	builder := Microdown builder. 
@@ -34,7 +34,7 @@ MicSourceMethodBlock >> closeMe [
 ]
 
 { #category : #accessing }
-MicSourceMethodBlock >> sourceCode [
+MicSourceBlock >> sourceCode [
 
 	| className class methodName method|
 	className := self arguments at:  #class ifAbsent: [MicParsingError signal: 'No class argument in <!source... '].

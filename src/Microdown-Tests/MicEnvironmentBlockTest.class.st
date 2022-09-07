@@ -170,7 +170,7 @@ $$script
 
 !>
 '.
-	self assert: root children first children first class equals: MicScriptBlock.
+	self assert: root children first children first class equals: MicPharoScriptBlock.
 ]
 
 { #category : #'tests - default environment' }
