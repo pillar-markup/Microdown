@@ -17,6 +17,11 @@ MicrodownVisitor >> visit: aMicElement [
 	^ aMicElement accept: self
 ]
 
+{ #category : #visiting }
+MicrodownVisitor >> visitAgenda: anAgenda [
+	"subclassResponsibility"
+]
+
 { #category : #'visiting main API' }
 MicrodownVisitor >> visitAll: aCollection [
 
@@ -48,6 +53,11 @@ MicrodownVisitor >> visitBold: aFormat [
 
 ]
 
+{ #category : #visiting }
+MicrodownVisitor >> visitBreak: aBreak [
+	"subclassResponsibility"
+]
+
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitChildrenOf: anElement [
 
@@ -77,6 +87,11 @@ MicrodownVisitor >> visitColumns: aColumns [
 
 { #category : #visiting }
 MicrodownVisitor >> visitComment: aComment [
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitDay: aDay [
+	"subclassResponsibility"
 ]
 
 { #category : #visiting }
@@ -200,6 +215,11 @@ MicrodownVisitor >> visitScript: aSlide [
 	^ aSlide children collect: [ :each | self visit: each ]
 ]
 
+{ #category : #visiting }
+MicrodownVisitor >> visitSegment: aSegment [
+	"subclassResponsibility"
+]
+
 { #category : #'visiting - extensions' }
 MicrodownVisitor >> visitSlide: aSlide [
 
@@ -215,6 +235,11 @@ MicrodownVisitor >> visitStrike: aFormat [
 
 { #category : #visiting }
 MicrodownVisitor >> visitTable: aTable [
+	"subclassResponsibility"
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitTalk: aTalk [
 	"subclassResponsibility"
 ]
 

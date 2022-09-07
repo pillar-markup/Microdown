@@ -10,7 +10,7 @@ MicCodeblockEvaluatorTest >> actualClass [
 ]
 
 { #category : #private }
-MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
+MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
 	| input |
 	input := MicRootBlock new
 		addChild:
@@ -23,7 +23,8 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalThatDoesntReturnAParagraph [
 	self actualClass new visit: input.
 	self assert: input children first class equals: MicParagraphBlock.
 	self assert: input children first children first class equals: MicUnorderedListBlock.
-	self assert: input children first children first children first class equals: MicListItemBlock
+	self assert: input children first children first children first class equals: MicListItemBlock.
+	self assert: input children first children first children first text equals: 'test'
 ]
 
 { #category : #tests }
@@ -35,7 +36,10 @@ MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 						eval: true;
 						yourself);
 		yourself.
-	self assert: (self actualClass new visit: input) equals: input
+	self actualClass new visit: input.
+	self 
+		assert: input children first text 
+		equals: 'Instance of Object class did not understand #SomethingThatIsNotAMethod'
 ]
 
 { #category : #tests }
@@ -50,4 +54,30 @@ MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 	self actualClass new visit: input.
 	self assert: input children first class equals: MicCodeBlock.
 	self assert: input children first body equals: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
+]
+
+{ #category : #tests }
+MicCodeblockEvaluatorTest >> testParsedCodeblockEvaluated [
+	| input |
+	input := MicCodeblockEvaluator new  visit: (Microdown
+ parse: '```eval=true
+stream nextPutAll: ''Hello world''
+```').
+
+	self actualClass new visit: input.
+	self assert: input children first class equals: MicParagraphBlock.
+	self assert: input children first text equals: 'Hello world'
+]
+
+{ #category : #tests }
+MicCodeblockEvaluatorTest >> testParsedCodeblockNonEvaluated [
+	| input |
+	input := MicCodeblockEvaluator new  visit: (Microdown
+ parse: '```eval=grgrgr
+stream nextPutAll: ''Hello world''
+```').
+
+	self actualClass new visit: input.
+	self assert: input children first class equals: MicCodeBlock.
+	self assert: input children first body equals: 'stream nextPutAll: ''Hello world'''
 ]

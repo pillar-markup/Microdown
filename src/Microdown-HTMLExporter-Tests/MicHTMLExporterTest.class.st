@@ -7,7 +7,7 @@ Class {
 		'factory',
 		'newLine'
 	],
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-HTML'
 }
 
 { #category : #tests }
