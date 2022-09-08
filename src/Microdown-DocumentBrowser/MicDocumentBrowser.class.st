@@ -123,7 +123,7 @@ MicDocumentBrowser >> addRoot: document [
 	
 ]
 
-{ #category : #converting }
+{ #category : #rendering }
 MicDocumentBrowser >> asRichText: doc [
 	"reuse composer with its existing textStyler"
 	textComposer ifNil: [ textComposer := MicRichTextComposer new ].
