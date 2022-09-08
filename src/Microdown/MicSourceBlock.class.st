@@ -37,11 +37,11 @@ MicSourceBlock >> closeMe [
 MicSourceBlock >> sourceCode [
 
 	| className class methodName method|
-	className := self arguments at:  #class ifAbsent: [MicParsingError signal: 'No class argument in <!source... '].
-	class := self class environment at: className asSymbol ifAbsent: [MicParsingError signal: 'Unknown class in <!source... ', className].
+	methodName := self arguments at: #method ifAbsent: [^ 'No method argument in <!source... '].
+	className := self arguments at:  #class ifAbsent: [ ^ 'No class argument in <!source... '].
+	class := self class environment at: className asSymbol ifAbsent: [^ 'Unknown class in <!source... ', className].
 	((self arguments at: #side ifAbsent: [ 'instance' ]) = 'class')
 		ifTrue: [ class := class class ].
-	methodName := self arguments at: #method ifAbsent: [MicParsingError signal: 'No method argument in <!source... '].
 	method := class >> methodName asSymbol.
 	^ method sourceCode 
 	
