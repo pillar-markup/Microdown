@@ -27,10 +27,10 @@ Class {
 		'spSource',
 		'sourceMode',
 		'saveButton',
-		'sectionDepth',
 		'isSourceShowing',
 		'textComposer',
-		'documentRoots'
+		'documentRoots',
+		'currentReference'
 	],
 	#classVars : [
 		'Browser'
@@ -231,7 +231,6 @@ MicDocumentBrowser >> initializePresenters [
 	super initializePresenters.
 	Browser := self.
 	isSourceShowing := false.
-	sectionDepth := 2.
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
