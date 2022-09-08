@@ -196,7 +196,10 @@ MicDocumentBrowser >> documentRoots [
 
 { #category : #events }
 MicDocumentBrowser >> documentSelected: document [
-	"document is newly selected, and should be rendered. If source is needed, re-select to root document"
+	"document is newly selected, and should be rendered. If source is needed, set it as well"
+	(document ~= currentReference and: [self isCurrentDirty]) 
+		ifTrue: [ currentReference contents: spSource text  ].
+	currentReference := document.
 	self renderDocument: document.
 	self isSourceShowing ifTrue: [ 
 		self setSourceOfSelectedDocument  ]
@@ -256,6 +259,12 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter whenClosedDo: [ Browser := nil ].
 ]
 
+{ #category : #testing }
+MicDocumentBrowser >> isCurrentDirty [
+	currentReference ifNil: [ ^ false ].
+	^ spSource text ~= (currentReference contents)
+]
+
 { #category : #accessing }
 MicDocumentBrowser >> isSourceShowing [
 	^ isSourceShowing ifNil: [ isSourceShowing := false ]
@@ -280,6 +289,7 @@ MicDocumentBrowser >> newSelection: selection [
 	selection ifNil: [ 
 			spRendering text: '' asText.
 			spSource text: ''.
+			currentReference := nil.
 			^ self ].
 	self documentSelected: selection
 ]
@@ -303,14 +313,13 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave path sourceSelection sourceScroll|
-	docToSave := spDocumentList selectedItem.
-	docToSave ifNil: [ ^ self ].
-	path := spDocumentList selection selectedPath.
-	spSource text = (docToSave contents) ifTrue: [ ^ self ].
-	docToSave contents: spSource text.
-	self renderDocument: docToSave.
+	| path sourceSelection sourceScroll|
+	currentReference ifNil: [ ^ self ].
+	self isCurrentDirty ifFalse: [ ^ self ].
+	currentReference contents: spSource text.
+	self renderDocument: currentReference.
 	"Sync the views"
+	path := spDocumentList selection selectedPath.
 	sourceSelection := spSource selectionInterval.
 	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
 	spDocumentList roots: self documentRoots .
@@ -370,15 +379,15 @@ MicDocumentBrowser >> setEditStatus: status [
 { #category : #'source code' }
 MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
-	| micRef original |
-	micRef := spDocumentList selectedItem.
-	micRef ifNil: [ ^ self ].
-	original := micRef contents.
+	| original |
+	currentReference := spDocumentList selectedItem.
+	currentReference ifNil: [ ^ self ].
+	original := currentReference contents.
 	spSource 
 		text: original;
-		editable: micRef canSave;
+		editable: currentReference canSave;
 		whenTextChangedDo: [:text | saveButton state: text ~= original].
-	micRef canSave
+	currentReference canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
 		
