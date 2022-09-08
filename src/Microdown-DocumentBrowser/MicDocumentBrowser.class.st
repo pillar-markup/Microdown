@@ -137,7 +137,10 @@ MicDocumentBrowser >> childrenOf: aNode [
 		ifTrue: [ ^ aNode subsections children].
 	aNode loadChildren
 		ifNotEmpty: [ :children |  ^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)] ]
-		ifEmpty: [ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ].
+		ifEmpty: [ 
+			[ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ] 
+			on: Error  
+			do: [ ^ #() ]]
 	
 ]
 
