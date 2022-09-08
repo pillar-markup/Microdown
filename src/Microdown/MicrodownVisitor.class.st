@@ -100,11 +100,6 @@ MicrodownVisitor >> visitEnvironment: anEnvironment [
 	^ anEnvironment bodyElements do: [ :each | each accept: self ]
 ]
 
-{ #category : #visiting }
-MicrodownVisitor >> visitError: errorNode [
-	"subclasses can override this to handle errors - by default they are ignored"
-]
-
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitFigure: aFigure [
 	
