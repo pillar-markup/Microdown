@@ -209,7 +209,7 @@ MicDocumentBrowser >> initializeButtons [
 	spButtonBar
 		add: (spButtonBar newDropList
 			help: 'source view';
-  			items: #( 'Source left' 'Source right' 'Source top' 'Source bottom' #Swap);
+  			items: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap );
   			whenSelectedItemChangedDo: [ :item | self sourceMode: item ]);
 		add: (saveButton := spButtonBar newButton 
 			label: 'Save';
@@ -341,7 +341,7 @@ MicDocumentBrowser >> setDocumentlayout [
 
 	| pane |
 	self isSourceShowing ifFalse: [ ^ spRendering ].
-	"#source modes are: #( 'Source left' 'Source right' 'Source top' 'Source bottom' #Swap)"
+	"#source modes are: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap )"
 	self sourceMode = #Swap ifTrue: [ ^ spSource ].
 	pane := (#('Source top' 'Source bottom') includes: self sourceMode)
 		        ifTrue: [ SpPanedLayout newTopToBottom ]
@@ -406,7 +406,7 @@ MicDocumentBrowser >> setTopLayout [
 
 { #category : #'source code' }
 MicDocumentBrowser >> sourceMode [
-	^ sourceMode ifNil: [ sourceMode := 'Source right' ]
+	^ sourceMode ifNil: [ sourceMode := 'Source bottom' ]
 ]
 
 { #category : #'source code' }
