@@ -303,6 +303,7 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
 	| docToSave path sourceSelection sourceScroll|
 	docToSave := spDocumentList selectedItem.
+	docToSave ifNil: [ ^ self ].
 	path := spDocumentList selection selectedPath.
 	spSource text = (docToSave contents) ifTrue: [ ^ self ].
 	docToSave contents: spSource text.
@@ -369,6 +370,7 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
 	| micRef original |
 	micRef := spDocumentList selectedItem.
+	micRef ifNil: [ ^ self ].
 	original := micRef contents.
 	spSource 
 		text: original;
