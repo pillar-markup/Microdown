@@ -16,7 +16,7 @@ FreeTypeFontProvider current
 ```
 
 ## Errors
-I do some checkts. If I find any errors they can be checked using the `errors` method. It should be nil, but can contain a string with one line per error.
+I do some checks. If I find any errors they can be checked using the `errors` method. It should be nil, but can contain a string with one line per error.
 
 ## Examples:
 Bullets can be tailored: `{!richtext|bullets=xo!}` {!richtext|bullets=xo!}:
@@ -57,9 +57,7 @@ Class {
 
 { #category : #accessing }
 MicDynamicTextStyler >> addError: error [
-	errors 
-		ifNil: [ errors := error]
-		ifNotNil: [ errors := errors , String cr, error ]
+	errors add: error
 ]
 
 { #category : #accessing }
@@ -153,7 +151,7 @@ MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 { #category : #initialization }
 MicDynamicTextStyler >> initialize [
 	self computeHeaderFonts. "super rely on lazy initilization"
-	errors := nil.
+	errors := OrderedCollection new.
 	bodyFont := nil.
 	bullets := '•-'.
 	counters := '1aA'.

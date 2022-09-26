@@ -630,7 +630,8 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
 	config adjustStyler: self textStyler.
 	self textStyler errors 
-		ifNotNil: [:errors |  canvas << errors ]
+		ifNotEmpty: [:errors |  
+			canvas << (errors joinUsing: String cr) ]
 ]
 
 { #category : #visiting }
