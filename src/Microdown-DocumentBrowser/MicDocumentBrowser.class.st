@@ -262,7 +262,7 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 { #category : #testing }
 MicDocumentBrowser >> isCurrentDirty [
 	currentReference ifNil: [ ^ false ].
-	^ spSource text ~= (currentReference contents)
+	^ spSource text ~= currentReference contents
 ]
 
 { #category : #accessing }
