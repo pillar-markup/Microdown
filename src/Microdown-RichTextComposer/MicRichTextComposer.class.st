@@ -1,7 +1,42 @@
 "
 I'm a visitor that produces rich text (class `Text`) based on a microdown model.
 I'm implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
-a not rendering mode, and a not catching exceptions (to ease debugging).
+a not rendering mode, and a not catching exceptions (to ease debugging). {!footnote|note=This is my comment!}
+
+I'm a visitor that produces rich text (class `Text`) based on a microdown model.
+I'm implemented using a canvas/brush pattern. The class offers multiple configurations: an offline mode, 
+a not rendering mode, and a not catching exceptions (to ease debugging). {!footnote|note=This is my comment!}
+
+The main API is the methods: `MicRichTextComposer class >> #renderComment:of:` and `MicRichTextComposer class >> #asRichText:`
+
+Web-based images or LaTeX rendering requires network access and are cached.
+
+#### Advanced  
+For the LaTeX rendering, internet connexion is required. 
+You can also turn it off/on doing
+
+```
+MicRichTextComposer putOffLine
+```
+
+In addition, images fetched via http requests are cached to avoid multiple http requests.
+The cache can be reset executing `MicRichTextComposer resetCache`. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).
+When the system is online but the request failed I display an uncached placeholder.
+
+It means that web-based images can be prefilled and Pharo images can be provided preloaded. 
+
+When you want to get all the errors (typically to debug and fix them), you can configure the system to stop capturing errors using 
+
+```
+MicRichTextComposer captureErrors: false
+
+```
+
+
+
+#### Known limits
+Monospaced text (e.g., `Point`, `Point class`,  `Point>>#setX:setY:`, or `#'Pillar-ExporterPillar'`) uses TextAction to trigger browser opening on the corresponding element. It would be better to use a TextLink because the styler is aware of them. 
+
 
 The main API is the methods: `MicRichTextComposer class >> #renderComment:of:` and `MicRichTextComposer class >> #asRichText:`
 
@@ -291,7 +326,7 @@ MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
 		using images as links. Adding it even if the image is not a link causes no
 		harm (it is invisible), and this is the easiest place to add it."
 	"See https://en.wikipedia.org/wiki/Zero-width_space"
-	^ text, 16r200B asCharacter asString asText
+	^ text, "16rFEFF asCharacter asString" ' ' asText
 ]
 
 { #category : #initialization }
@@ -321,6 +356,13 @@ MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	"Do nothing - You are supposed to use specialized annotations"
 	self error: 'You are not supposed to be here - did you misspell an annotation type?'
 	
+]
+
+{ #category : #'visiting - document' }
+MicRichTextComposer >> visitAnnotation: aMicAnnotationBlock [
+	"Environment is an abstract class, and if we end here it is because of error"
+	canvas << ('>>> Annotation ''' , aMicAnnotationBlock name , 
+						''' is not defined <<<') asText
 ]
 
 { #category : #'visiting -  format' }
@@ -403,11 +445,15 @@ MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 MicRichTextComposer >> visitFigure: aFigure [
 
 	| image anchor|
-	[ image := aFigure reference loadImage.
+	[[ image := aFigure reference loadImage.
 		anchor := self anchorFor: image of: aFigure.
-		canvas << (self textWithImage: image usingAnchor: anchor)]
-	on: MicResourceReferenceError, UnrecognizedImageFormatError
-	do: [ self visitAll: aFigure captionElements  ]
+		canvas << (self textWithImage: image usingAnchor: anchor)
+	 ]
+		on: MicResourceReferenceError, UnrecognizedImageFormatError
+		do: [ self visitAll: aFigure captionElements  ]
+	]
+		on: Error
+		do: [ :error | canvas << ('>>> ', error printString, ' <<<') ]
 ]
 
 { #category : #visiting }
@@ -446,6 +492,8 @@ MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 MicRichTextComposer >> visitInputFile: inputFileBloc [
 	| inputRef includedText |
 	inputRef := inputFileBloc reference.
+	inputRef isRelative 
+		ifTrue: [ ^ canvas << ('*** Cannot input relative reference: ''', inputRef path, ''' ***')].
 	includedText := Microdown asRichText: inputRef loadMicrodown.
 	canvas << (textStyler postTextTreatment: includedText )
 ]
@@ -580,7 +628,10 @@ MicRichTextComposer >> visitRaw: aRawFormat [
 MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 	self textStyler class = MicDynamicTextStyler 
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
-	config adjustStyler: self textStyler
+	config adjustStyler: self textStyler.
+	self textStyler errors 
+		ifNotEmpty: [:errors |  
+			canvas << (errors joinUsing: String cr) ]
 ]
 
 { #category : #visiting }
@@ -588,6 +639,34 @@ MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [
 	canvas
 		includeAttribute: TextAlignment rightFlush 
 		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
+]
+
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitScript: aScriptBlock [
+	" I execute the body. I handle four types of results:
+	Text - inserted verbatim
+	Microdown tree - rendered to text then inserted verbatim
+	String - Parsed, then rendered, then inserted.
+	Other results - printString asText - then inserted verbatim
+	"
+	| script  result resText |
+	"There is a bit too much type testing here - double dispatch or different kinds of scripts, or..."
+	script := aScriptBlock body.
+	result := OpalCompiler new evaluate: script.
+	result isString  ifTrue: [  resText := Microdown asRichText:  result ].
+	result  isText ifTrue: [  resText := result ].
+	(result isForm or: [ result isMorph ]) ifTrue: [ | anchor  | 
+		anchor := self anchorFor: result of: aScriptBlock.
+		resText := (self textWithImage: result usingAnchor: anchor), ' ' asText ].
+	( result isKindOf:  MicElement )
+		ifTrue: [ resText := Microdown asRichText: result ].
+	resText ifNil: [ resText  := result printString asText ].
+	canvas 
+		newLineIfNotAlready;
+		<< resText;
+		newLine
+	
+	
 ]
 
 { #category : #'visiting -  format' }

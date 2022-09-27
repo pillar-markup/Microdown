@@ -1,7 +1,10 @@
 "
 I'm the favored entry point to use microdown. I'm a kind of facade to steer Microdown services.
-In particular I invoke a resolver for paths after parsing documents.
- 
+
+
+In particular I invoke a resolver for paths after parsing documents .
+
+<!inputFile|path=pharo:///Microdown/facadeMethods!>
 "
 Class {
 	#name : #Microdown,
@@ -24,6 +27,22 @@ Microdown class >> asRichText: aStringOrDoc [
 { #category : #facade }
 Microdown class >> builder [
 	^ MicrodownParser builder
+]
+
+{ #category : #facade }
+Microdown class >> facadeMethods [
+	| facadeMethods aBuilder |
+	facadeMethods := self methodsInProtocol: 'facade'.
+	aBuilder := self builder.
+	aBuilder header: [ aBuilder text: 'Facade methods' ] withLevel: 4.
+	aBuilder unorderedListDuring: [ 
+		facadeMethods do: [:method | 
+			aBuilder item: [ 
+				aBuilder monospace: ('Microdown >>#', method selector)
+			]]
+		 ].
+	^ self parse: aBuilder contents
+	
 ]
 
 { #category : #settings }

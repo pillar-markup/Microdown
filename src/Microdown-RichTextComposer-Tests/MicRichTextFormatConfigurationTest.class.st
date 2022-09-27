@@ -130,8 +130,8 @@ MicRichTextFormatConfigurationTest >> testHeader6 [
 MicRichTextFormatConfigurationTest >> testIllegalArgument [
 	| src richText |
 	src := '{!richtext|foo=bar!}'.
-	self should: [ 	richText := Microdown asRichText: src]
-		raise: MicParsingError 
+	richText := Microdown asRichText: src.
+	self assert: richText asString  equals: 'richtext annotation - unknown argument: foo'
 ]
 
 { #category : #tests }

@@ -27,11 +27,10 @@ Class {
 		'spSource',
 		'sourceMode',
 		'saveButton',
-		'slideMode',
-		'sectionDepth',
 		'isSourceShowing',
 		'textComposer',
-		'documentRoots'
+		'documentRoots',
+		'currentReference'
 	],
 	#classVars : [
 		'Browser'
@@ -124,7 +123,7 @@ MicDocumentBrowser >> addRoot: document [
 	
 ]
 
-{ #category : #converting }
+{ #category : #rendering }
 MicDocumentBrowser >> asRichText: doc [
 	"reuse composer with its existing textStyler"
 	textComposer ifNil: [ textComposer := MicRichTextComposer new ].
@@ -138,7 +137,10 @@ MicDocumentBrowser >> childrenOf: aNode [
 		ifTrue: [ ^ aNode subsections children].
 	aNode loadChildren
 		ifNotEmpty: [ :children |  ^ children sort: [:a :b | (self displayStringOf: a) < (self displayStringOf: b)] ]
-		ifEmpty: [ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ].
+		ifEmpty: [ 
+			[ ^ self childrenOf: (MicSectionBlock fromRoot: aNode loadMicrodown) ] 
+			on: Error  
+			do: [ ^ #() ]]
 	
 ]
 
@@ -194,7 +196,10 @@ MicDocumentBrowser >> documentRoots [
 
 { #category : #events }
 MicDocumentBrowser >> documentSelected: document [
-	"document is newly selected, and should be rendered. If source is needed, re-select to root document"
+	"document is newly selected, and should be rendered. If source is needed, set it as well"
+	(document ~= currentReference and: [self isCurrentDirty]) 
+		ifTrue: [ currentReference contents: spSource text  ].
+	currentReference := document.
 	self renderDocument: document.
 	self isSourceShowing ifTrue: [ 
 		self setSourceOfSelectedDocument  ]
@@ -208,10 +213,9 @@ MicDocumentBrowser >> initialExtent [
 { #category : #initialization }
 MicDocumentBrowser >> initializeButtons [
 	spButtonBar
-		add: self slideToggleButton;
 		add: (spButtonBar newDropList
 			help: 'source view';
-  			items: #( #Horizontal #Vertical #Swap);
+  			items: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap );
   			whenSelectedItemChangedDo: [ :item | self sourceMode: item ]);
 		add: (saveButton := spButtonBar newButton 
 			label: 'Save';
@@ -230,7 +234,6 @@ MicDocumentBrowser >> initializePresenters [
 	super initializePresenters.
 	Browser := self.
 	isSourceShowing := false.
-	sectionDepth := 2.
 	spDocumentList := self newTree.
 	spDocumentList 
 		roots: self documentRoots ;
@@ -254,6 +257,12 @@ MicDocumentBrowser >> initializePresenters [
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter whenClosedDo: [ Browser := nil ].
+]
+
+{ #category : #testing }
+MicDocumentBrowser >> isCurrentDirty [
+	currentReference ifNil: [ ^ false ].
+	^ spSource text ~= currentReference contents
 ]
 
 { #category : #accessing }
@@ -280,6 +289,7 @@ MicDocumentBrowser >> newSelection: selection [
 	selection ifNil: [ 
 			spRendering text: '' asText.
 			spSource text: ''.
+			currentReference := nil.
 			^ self ].
 	self documentSelected: selection
 ]
@@ -303,13 +313,13 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 { #category : #'source code' }
 MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	"Selected document must be a root section"
-	| docToSave path sourceSelection sourceScroll|
-	docToSave := spDocumentList selectedItem.
-	path := spDocumentList selection selectedPath.
-	spSource text = (docToSave contents) ifTrue: [ ^ self ].
-	docToSave contents: spSource text.
-	self renderDocument: docToSave.
+	| path sourceSelection sourceScroll|
+	currentReference ifNil: [ ^ self ].
+	self isCurrentDirty ifFalse: [ ^ self ].
+	currentReference contents: spSource text.
+	self renderDocument: currentReference.
 	"Sync the views"
+	path := spDocumentList selection selectedPath.
 	sourceSelection := spSource selectionInterval.
 	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
 	spDocumentList roots: self documentRoots .
@@ -336,38 +346,6 @@ MicDocumentBrowser >> scrollSyncRenderToSource [
 	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll
 ]
 
-{ #category : #slides }
-MicDocumentBrowser >> selectChildDocument [
-	(MicIntoDocumentBrowserCommand forContext: self) execute
-]
-
-{ #category : #slides }
-MicDocumentBrowser >> selectNextDocument [
-	(MicNextDocumentBrowserCommand forContext: self) execute
-]
-
-{ #category : #slides }
-MicDocumentBrowser >> selectParentDocument [
-	(MicUpDocumentBrowserCommand forContext: self) execute
-]
-
-{ #category : #slides }
-MicDocumentBrowser >> selectPreviousDocument [
-	(MicPreviousDocumentBrowserCommand forContext: self) execute
-]
-
-{ #category : #layout }
-MicDocumentBrowser >> setBrowserLayout [
-	^SpBoxLayout newTopToBottom
-		add: (SpPanedLayout newLeftToRight
-					add: spDocumentList;
-					add: self setDocumentlayout ;
-					positionOfSlider: 0.3;
-					yourself);
-		add: spButtonBar expand: false;
-		yourself
-]
-
 { #category : #layout }
 MicDocumentBrowser >> setDocumentlayout [
 
@@ -375,13 +353,14 @@ MicDocumentBrowser >> setDocumentlayout [
 
 	| pane |
 	self isSourceShowing ifFalse: [ ^ spRendering ].
+	"#source modes are: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap )"
 	self sourceMode = #Swap ifTrue: [ ^ spSource ].
-	pane := self sourceMode = #Horizontal
+	pane := (#('Source top' 'Source bottom') includes: self sourceMode)
 		        ifTrue: [ SpPanedLayout newTopToBottom ]
 		        ifFalse: [ SpPanedLayout newLeftToRight ].
-	pane
-		first: spRendering;
-		second: spSource.
+	(#('Source left' 'Source top') includes: self sourceMode)
+		ifTrue: [ pane first: spSource; second: spRendering ]
+		ifFalse: [ pane first: spRendering; second: spSource].
 	^ pane
 ]
 
@@ -397,44 +376,18 @@ MicDocumentBrowser >> setEditStatus: status [
 		
 ]
 
-{ #category : #layout }
-MicDocumentBrowser >> setSlideShowLayout [
-
-	^ SpBoxLayout newVertical
-		add: spRendering;
-		add: (SpBoxLayout newHorizontal
-			add: (SpButtonPresenter new
-				iconName: #back;
-				action: [ self selectPreviousDocument ];
-				yourself);
-			add: (SpButtonPresenter new
-				iconName: #down;
-				action: [ self selectChildDocument ];
-				yourself);
-			add: self slideToggleButton expand: false;
-			add: (SpButtonPresenter new
-				iconName: #up;
-				action: [ self selectParentDocument ];
-				yourself);
-			add: (SpButtonPresenter new
-				iconName: #forward;
-				action: [ self selectNextDocument ];
-				yourself);
-			yourself) expand: false;
-			yourself 
-]
-
 { #category : #'source code' }
 MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
-	| micRef original |
-	micRef := spDocumentList selectedItem.
-	original := micRef contents.
+	| original |
+	currentReference := spDocumentList selectedItem.
+	currentReference ifNil: [ ^ self ].
+	original := currentReference contents.
 	spSource 
 		text: original;
-		editable: micRef canSave;
+		editable: currentReference canSave;
 		whenTextChangedDo: [:text | saveButton state: text ~= original].
-	micRef canSave
+	currentReference canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
 		
@@ -454,32 +407,19 @@ MicDocumentBrowser >> setSourceShowing: aBoolean [
 
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
-
-	self layout: (self slideMode 
-		ifTrue:[ self setSlideShowLayout]
-		ifFalse: [ self setBrowserLayout ] )
-]
-
-{ #category : #slides }
-MicDocumentBrowser >> slideMode [
-	^ slideMode state
-]
-
-{ #category : #slides }
-MicDocumentBrowser >> slideToggleButton [
-	slideMode ifNil: [ 
-		slideMode := SpCheckBoxPresenter new.
-		slideMode
-			label: 'Slide mode';
-			state: false; 
-			whenChangedDo: [ :val | slideMode state: val. self setTopLayout  ];
-			yourself].
-	^ slideMode
+	self layout: ( SpBoxLayout newTopToBottom
+		add: (SpPanedLayout newLeftToRight
+					add: spDocumentList;
+					add: self setDocumentlayout ;
+					positionOfSlider: 0.3;
+					yourself);
+		add: spButtonBar expand: false;
+		yourself)
 ]
 
 { #category : #'source code' }
 MicDocumentBrowser >> sourceMode [
-	^ sourceMode ifNil: [ sourceMode := #Horizontal ]
+	^ sourceMode ifNil: [ sourceMode := 'Source bottom' ]
 ]
 
 { #category : #'source code' }

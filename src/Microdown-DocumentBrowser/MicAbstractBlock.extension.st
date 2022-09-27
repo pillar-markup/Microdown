@@ -9,7 +9,8 @@ MicAbstractBlock >> canSave [
 { #category : #'*Microdown-DocumentBrowser' }
 MicAbstractBlock >> contents [
 	"polymorphic with MicResourceReference - returns the source code of me - here generated"
-	^ MicTextualMicrodownExporter new visit: self
+	^ 'You cannot edit subsections of a document.
+Select the whole document for editing'
 ]
 
 { #category : #'*Microdown-DocumentBrowser' }
