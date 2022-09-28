@@ -262,6 +262,7 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 { #category : #testing }
 MicDocumentBrowser >> isCurrentDirty [
 	currentReference ifNil: [ ^ false ].
+	currentReference canSave ifFalse: [ ^ false ].
 	^ spSource text ~= currentReference contents
 ]
 
