@@ -417,9 +417,9 @@ MicrodownParserTest >> testParseEmpty [
 
 	| file system mic |
 	system := FileSystem memory workingDirectory.
-	file := system / 'test.mic'.
+	file := system / 'test.md'.
 	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
+	file := system / 'folder/file.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '' ].
 	mic := parser parse: file asFileReference contents.
 	self assert: mic children isEmpty. 
