@@ -88,16 +88,15 @@ MicHTMLVisitorTest >> testContents [
 
 { #category : #tests }
 MicHTMLVisitorTest >> testConvertMicFile [
-	
+
 	writer convertMicFile: (fileSystem / 'anExample1.md') asFileReference.
-	
+
 	self assert: (fileSystem / 'anExample1.html') asFileReference exists.
-	self 
-		assert: (fileSystem / 'anExample1.html') asFileReference contents 
-		equals: newLine ,
-'<h1>Foo</h1><a id="sec1"></a>', newLine ,
-'<p>Pharo is cool</p>', newLine ,
-'<pre><code> this is a code blu blu</code></pre>', newLine
+	self
+		assert: (fileSystem / 'anExample1.html') asFileReference contents
+		equals: newLine , '<h1>Foo</h1><a id="sec1"></a>' , newLine
+			, '<p>Pharo is cool</p>' , newLine
+			, '<pre><code>	this is a code blu blu</code></pre>' , newLine
 ]
 
 { #category : #tests }
