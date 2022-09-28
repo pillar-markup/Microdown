@@ -21,6 +21,23 @@ MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 	^ dict
 ]
 
+{ #category : #'class initialization' }
+MicSmalltalkTextStyler class >> initialize [
+	"I have my own set of class side variables. I should not, but alas, so it is"
+	"do not super initialize, that whould interfer with settings"
+	styleTable := SHRBTextStyler styleTable. "Not super, as that would just refer to my class-side variables"
+	formatIncompleteIdentifiers := false.
+	textAttributesByPixelHeight := nil.
+]
+
+{ #category : #'instance creation' }
+MicSmalltalkTextStyler class >> new [
+	"I need to stay in sync with my superclass, so I initilize on each instantiation. Performance says a few micro seconds, so OK"
+	self styleTable = SHRBTextStyler styleTable "style table was changed"
+		ifFalse: [ self initialize ]. 
+	^ super new 
+]
+
 { #category : #private }
 MicSmalltalkTextStyler >> resolveStyleFor: aVariableNode [
 	"This circumvent an error in my super"
