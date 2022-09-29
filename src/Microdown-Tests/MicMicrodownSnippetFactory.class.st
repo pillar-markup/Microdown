@@ -634,11 +634,11 @@ MicMicrodownSnippetFactory >> nestedOrderedList2Sample [
 	^ '
 - Foo
 - Bar
-		1. B
-		1. a
-		1. r
-					- 3rdlvel
-					- 3rdlevl2
+  1. B
+  1. a
+  1. r
+     - 3rdlvel
+     - 3rdlevl2
 - Zork
 '
 ]
@@ -648,9 +648,9 @@ MicMicrodownSnippetFactory >> nestedOrderedListSample [
 	^ '
 - Foo
 - Bar
-		1. B
-		1. a
-		1. r
+  1. B
+  1. a
+  1. r
 '
 ]
 
@@ -659,9 +659,9 @@ MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 	^ '
 - Foo
 - Bar
-		- B
-		- a
-		- r
+  - B
+  - a
+  - r
 '
 ]
 

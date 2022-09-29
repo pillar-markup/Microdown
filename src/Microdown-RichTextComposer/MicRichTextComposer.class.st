@@ -382,7 +382,6 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
-
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
