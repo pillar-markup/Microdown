@@ -11,6 +11,6 @@ MicrodownVisitor >> visitRichTextFormatConfiguration: config [
 ]
 
 { #category : #'*Microdown-RichTextComposer' }
-MicrodownVisitor >> visitRightAllignment: aMicRightAllignmentBlock [ 
-	self visitEnvironment:  aMicRightAllignmentBlock
+MicrodownVisitor >> visitRightAlignment: aMicRightAlignmentBlock [ 
+	self visitEnvironment:  aMicRightAlignmentBlock
 ]

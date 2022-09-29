@@ -608,7 +608,7 @@ bold**'.
 ]
 
 { #category : #'tests - format' }
-MicRichTextComposerTest >> testRightAllignment [ 
+MicRichTextComposerTest >> testRightAlignment [ 
 	| src doc|
 	src := '
 <!right
