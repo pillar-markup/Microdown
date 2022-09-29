@@ -30,17 +30,17 @@ MicPharoPackageCommentResourceReferenceTest >> testCategoryName [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testContents [
 	| ref |
-	ref := 'comment://package/Microdown' asMicResourceReference.
-	self assert: ref contents equals: 'Microdown' asPackage packageComment.
+	ref := 'comment://package/Microdown-Core' asMicResourceReference.
+	self assert: ref contents equals: 'Microdown-Core' asPackage packageComment.
 	self assert: ref contents notEmpty
 	
 ]
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testIsPackage [
-	self assert: 'comment://package/Microdown' asMicResourceReference isPackage.
+	self assert: 'comment://package/Microdown-Core' asMicResourceReference isPackage.
 	self assert: 'comment://package/Microdown-RichTextComposer' asMicResourceReference isPackage.
-	self deny: 'comment://package/Microdown-Core' asMicResourceReference isPackage.
+	self deny: 'comment://package/Microdown-Core-Base' asMicResourceReference isPackage.
 	self deny: 'comment://package/Microup' asMicResourceReference isPackage.
 	
 	
@@ -48,9 +48,9 @@ MicPharoPackageCommentResourceReferenceTest >> testIsPackage [
 
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testIsTag [
-	self deny: 'comment://package/Microdown' asMicResourceReference isTag .
+	self deny: 'comment://package/Microdown-Base' asMicResourceReference isTag .
 	self 
-		assert: 'comment://package/Microdown-Core' asMicResourceReference isTag .
+		assert: 'comment://package/Microdown-Core-Base' asMicResourceReference isTag .
 	self 
 		assert: 'comment://package/Microdown-RichTextComposer-Table-Support' asMicResourceReference isTag.
 	self
@@ -63,10 +63,10 @@ MicPharoPackageCommentResourceReferenceTest >> testKind [
 		assert: 'comment://package/Microdown*' asMicResourceReference kind 
 		equals: #prefix.
 	self 
-		assert: 'comment://package/Microdown' asMicResourceReference kind 
+		assert: 'comment://package/Microdown-Core' asMicResourceReference kind 
 		equals: #package.
 	self 
-		assert: 'comment://package/Microdown-Core' asMicResourceReference kind 
+		assert: 'comment://package/Microdown-Core-Base' asMicResourceReference kind 
 		equals: #tag.
 	self 
 		assert: 'comment://package/Microdown-RichTextComposer-Table-Support' asMicResourceReference kind 
@@ -77,7 +77,7 @@ MicPharoPackageCommentResourceReferenceTest >> testKind [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory [
 	| ref dir |
-	ref := 'comment://package/Microdown' asMicResourceReference.
+	ref := 'comment://package/Microdown-Core' asMicResourceReference.
 	dir := ref loadChildren.
 	self assert: dir notEmpty.
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoPackageCommentResourceReference  ] ).
@@ -98,10 +98,10 @@ MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_emptyPrefix [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testLoadDirectory_package [
 	| ref dir |
-	ref := 'comment://package/Microdown?kind=package' asMicResourceReference.
+	ref := 'comment://package/Microdown-Core?kind=package' asMicResourceReference.
 	dir := ref loadChildren.
 	"Expect Extension and Manifest tags removed"
-	self assert: dir size equals: ('Microdown' asPackage classTags size - 2).
+	self assert: dir size equals: ('Microdown-Core' asPackage classTags size - 1). "Manifest"
 	self assert: (dir allSatisfy: [ :r |r class = MicPharoPackageCommentResourceReference  ] ).
 	self assert: (dir first uri segments first beginsWith: 'Microdown-').
 	self assert: (dir allSatisfy: [:r | r kind = #tag])
@@ -153,11 +153,11 @@ MicPharoPackageCommentResourceReferenceTest >> testPackageComment_NotThere [
 { #category : #tests }
 MicPharoPackageCommentResourceReferenceTest >> testParentPackage [
 	self 
-		assert: 'comment://package/Microdown' asMicResourceReference parentPackage 
-		equals: 'Microdown' asPackage.
-	self 
 		assert: 'comment://package/Microdown-Core' asMicResourceReference parentPackage 
-		equals: 'Microdown' asPackage.
+		equals: 'Microdown-Core' asPackage.
+	self 
+		assert: 'comment://package/Microdown-Core-Base' asMicResourceReference parentPackage 
+		equals: 'Microdown-Core' asPackage.
 	self 
 		assert: 'comment://package/Microdown-RichTextComposer-Table-Support' asMicResourceReference parentPackage 
 		equals: 'Microdown-RichTextComposer' asPackage.
