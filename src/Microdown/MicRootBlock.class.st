@@ -65,3 +65,4 @@ MicRootBlock >> properties: aConfigurationForPillar [
 	properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
 	properties := aConfigurationForPillar
 ]
+
