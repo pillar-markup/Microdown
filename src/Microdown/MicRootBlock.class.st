@@ -45,12 +45,6 @@ MicRootBlock >> indent [
 	^0
 ]
 
-{ #category : #'pillar integration' }
-MicRootBlock >> pdfTransformationsFor: aDocument [
-
-	^ #()
-]
-
 { #category : #accessing }
 MicRootBlock >> properties: aConfigurationForPillar [
 	"Pay attention the strong hypothesis here is that keys of microdown properties and pillar configuration should not overlap. A possible solution would be to have clever at: and at:put: that check for example for a prefix for microdown properties.
@@ -70,12 +64,4 @@ MicRootBlock >> properties: aConfigurationForPillar [
 	
 	properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
 	properties := aConfigurationForPillar
-]
-
-{ #category : #'pillar integration' }
-MicRootBlock >> transformDocumentFor: aPRPDFDocument [ 
-	"This is a hook to be able to have framework specific transformation hooks.
-	see PRAbstractOutputDocument>>#buildOn:"
-
-	^ aPRPDFDocument transformDocument: (self resolveFrom: aPRPDFDocument project baseDirectory asMicResourceReference )
 ]
