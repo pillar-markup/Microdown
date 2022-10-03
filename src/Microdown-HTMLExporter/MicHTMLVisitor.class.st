@@ -165,15 +165,6 @@ MicHTMLVisitor >> initialize [
 	
 ]
 
-{ #category : #visiting }
-MicHTMLVisitor >> languageForScript: aScript [
-	"Answer a <PRAbstractScriptLanguage>"
-
-	^ aScript language isSpecified
-		  ifTrue: [ aScript language ]
-		  ifFalse: [ self configuration defaultScriptLanguage ]
-]
-
 { #category : #initialization }
 MicHTMLVisitor >> lfAsNewLine [ 
 	canvas lfAsNewLine
@@ -294,8 +285,8 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 					code := canvas tag
 						        name: 'code';
 						        yourself.
-					(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
-						ifTrue: [ code parameterAt: 'class' put: language printString ].
+					"(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
+						ifTrue: [ code parameterAt: 'class' put: language printString ]."
 					code with: [ canvas lines: aCodeBlock text ] ].
 			canvas tag
 				name: 'figcaption';
