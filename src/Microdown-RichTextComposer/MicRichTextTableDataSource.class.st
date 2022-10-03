@@ -12,7 +12,7 @@ Class {
 	#category : #'Microdown-RichTextComposer-Table-Support'
 }
 
-{ #category : #'tests - instance creation' }
+{ #category : #'instance creation' }
 MicRichTextTableDataSource class >> headers: headers rows: theRows [
 	^ self new headers: headers rows: theRows
 ]
