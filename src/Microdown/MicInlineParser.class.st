@@ -129,7 +129,7 @@ MicInlineParser class >> magicCharacter [
 
 { #category : #'handle basic text' }
 MicInlineParser >> addATextFrom: start to: end toFinalArray: aFinalArray [
-	start > end
+	(start > end or: [end > string size])
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
 ]
