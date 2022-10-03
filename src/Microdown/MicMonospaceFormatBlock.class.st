@@ -17,9 +17,19 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
-{ #category : #operations }
-MicMonospaceFormatBlock >> cleanSubstring [
-	self substring: (MicInlineParser escapeReescape: self substring except: '`')
+{ #category : #visiting }
+MicMonospaceFormatBlock >> closeMe [
+	
+	| text decodedString |
+	decodedString := MicInlineParser escapeReescape: substring except: '`'.
+	self substring: decodedString.
+	children ifEmpty: [
+			text :=  (MicTextBlock
+							from: start
+							to: end
+							withSubstring: decodedString 
+							withChildren: Array empty).
+			self children: { text } ]
 ]
 
 { #category : #internal }
