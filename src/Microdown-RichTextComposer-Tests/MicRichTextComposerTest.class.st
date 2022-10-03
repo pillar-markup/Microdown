@@ -277,6 +277,21 @@ line 2
 Roger Rabbit'
 ]
 
+{ #category : #'tests - codeBlock' }
+MicRichTextComposerTest >> testCodeBlockWithTabbedCode [
+
+	| source richText |
+	source := '
+```
+7
+	8
+```
+'.
+	richText := self richTextForString: source.
+	self assert: richText asString trim equals: '7
+	8'
+]
+
 { #category : #tests }
 MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
 	| src |
@@ -608,7 +623,7 @@ bold**'.
 ]
 
 { #category : #'tests - format' }
-MicRichTextComposerTest >> testRightAllignment [ 
+MicRichTextComposerTest >> testRightAlignment [ 
 	| src doc|
 	src := '
 <!right

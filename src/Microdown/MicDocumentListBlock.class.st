@@ -12,7 +12,7 @@ MicDocumentListBlock class >> tag [
 { #category : #visiting }
 MicDocumentListBlock >> accept: aVisitor [
 
-	^ aVisitor visitDocListAnnotation: self
+	"^ aVisitor visitDocListAnnotation: self"
 ]
 
 { #category : #visiting }

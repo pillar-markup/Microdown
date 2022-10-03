@@ -161,17 +161,16 @@ The mother environment is not closed so it will eat everything.
 { #category : #'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
  
-	| root env |
+	| root |
 	root :=  parser parse: '<!slideenvironment
 
-<!script
+$$script
 
-<!script 
+$$script 
 
 !>
 '.
-	self assert: root children first children first class equals: MicScriptBlock. 
-	self assert: root children first children first children first class equals: MicScriptBlock 
+	self assert: root children first children first class equals: MicPharoScriptBlock.
 ]
 
 { #category : #'tests - default environment' }
@@ -315,27 +314,27 @@ toto'.
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkAfter [
 
 	| mic infileReference |
-	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.md', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
 	infileReference := mic children first path.
-	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+	self assert: infileReference path equals: 'chapters/withStyle.md' 
 ]
 
 { #category : #'tests - better parsing' }
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkSpaceBeforeEnd [
 
 	| mic infileReference |
-	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic     ', EnvironmentClosingBlockMarkup.
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.md     ', EnvironmentClosingBlockMarkup.
 	infileReference := mic children first path.
-	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+	self assert: infileReference path equals: 'chapters/withStyle.md'
 ]
 
 { #category : #'tests - better parsing' }
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 
 	| mic infileReference |
-	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.mic  ', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
+	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.md  ', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
 	infileReference := mic children first path.
-	self assert: infileReference path equals: 'chapters/withStyle.mic' 
+	self assert: infileReference path equals: 'chapters/withStyle.md' 
 ]
 
 { #category : #'tests - default environment' }

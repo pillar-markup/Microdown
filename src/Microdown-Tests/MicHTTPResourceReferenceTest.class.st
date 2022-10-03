@@ -64,6 +64,13 @@ MicHTTPResourceReferenceTest >> testErrorNonExistingImage [
 ]
 
 { #category : #tests }
+MicHTTPResourceReferenceTest >> testFullName [
+
+	self assert: 'http://pharo.org/figures/foo.png' asMicResourceReference fullName equals: 'http://pharo.org/figures/foo.png'.
+	
+]
+
+{ #category : #tests }
 MicHTTPResourceReferenceTest >> testLoadErrorMicrodown [
 	| ref |
 	ref := MicResourceReference fromUri:  baseUrl ,'toplevel.png'.

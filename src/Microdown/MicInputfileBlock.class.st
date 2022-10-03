@@ -1,9 +1,19 @@
 "
-I handle input file 
+I handle input file. 
+Note that I should start a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
 
-```
+```text
 <!inputFile|path=Chapters/withStyle.md!>
 ```
+
+Example:
+```text
+<!inputFile|path=https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/readme.md!>
+```
+
+Gives:
+<!inputFile|path=https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/readme.md!>
+
 "
 Class {
 	#name : #MicInputfileBlock,
@@ -27,7 +37,7 @@ MicInputfileBlock >> closeMe [
 	super closeMe.
 	(arguments includesKey: #path)
 		ifTrue: [self path: (MicResourceReference fromUri: (arguments at: #path)) ]
-		ifFalse: [ (MicParsingError new line: self firstLine, ' must have path argument') signal]
+		ifFalse: [ self path: (MicResourceReference fromUri: 'error: inputFile should have a path argument')]
 ]
 
 { #category : #accessing }

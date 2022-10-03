@@ -15,6 +15,9 @@ FreeTypeFontProvider current
 	updateAvailableFontFamilies.
 ```
 
+## Errors
+I do some checks. If I find any errors they can be checked using the `errors` method. It should be nil, but can contain a string with one line per error.
+
 ## Examples:
 Bullets can be tailored: `{!richtext|bullets=xo!}` {!richtext|bullets=xo!}:
 - first level
@@ -46,10 +49,16 @@ Class {
 		'bodyFont',
 		'interBlockSpacing',
 		'crAfterHeader',
-		'keepCRFromInput'
+		'keepCRFromInput',
+		'errors'
 	],
 	#category : #'Microdown-RichTextComposer-Composer'
 }
+
+{ #category : #accessing }
+MicDynamicTextStyler >> addError: error [
+	errors add: error
+]
 
 { #category : #accessing }
 MicDynamicTextStyler >> bodyFont [
@@ -61,7 +70,7 @@ MicDynamicTextStyler >> bodyFont: fontSpec [
 	|list|
 	list := (fontSpec splitOn: $;).
 	list size = 2 
-		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontSpec  ].
+		ifFalse: [ ^self addError: 'Font specs should be name;size - was: ',fontSpec  ].
 	bodyFont := LogicalFont 
 			familyName: list first
 			pointSize: list second asNumber
@@ -118,14 +127,19 @@ MicDynamicTextStyler >> crAfterHeaders [
 	^ crAfterHeader 
 ]
 
+{ #category : #accessing }
+MicDynamicTextStyler >> errors [
+	^ errors 
+]
+
 { #category : #'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 	|list font|
 	(level between: 1 and: 6) 
-		ifFalse: [ MicParsingError signal: 'Header levels are 1 to 6 - got: ', level printString ].
+		ifFalse: [ ^ self addError: 'Header levels are 1 to 6 - got: ', level printString ].
 	list := (fontString splitOn: $;).
 	list size = 2 
-		ifFalse: [ MicParsingError signal: 'Font specs should be name;size - was: ',fontString  ].
+		ifFalse: [ ^ self addError: 'Font specs should be name;size - was: ',fontString  ].
 	font := LogicalFont 
 			familyName: list first 
 			pointSize: list second asNumber.
@@ -137,6 +151,7 @@ MicDynamicTextStyler >> headerFont: fontString forLevel: level [
 { #category : #initialization }
 MicDynamicTextStyler >> initialize [
 	self computeHeaderFonts. "super rely on lazy initilization"
+	errors := OrderedCollection new.
 	bodyFont := nil.
 	bullets := '•-'.
 	counters := '1aA'.
@@ -191,7 +206,7 @@ MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 		collect: [ :spec | 
 			commands 
 				at: spec 
-				ifAbsent: [ MicParsingError signal: 'allowed spacings are cr|tab|space, but got: ', spec ]])
+				ifAbsent: [ ^ self addError: 'allowed spacings are cr|tab|space, but got: ', spec ]])
 		joinUsing: ''.
 	newLineIfNotAlready := spacing asText
 ]

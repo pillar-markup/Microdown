@@ -42,7 +42,6 @@ MicLinkBlockTest >> linkNestedSample [
 
 { #category : #functions }
 MicLinkBlockTest >> linkSample [
-
 	^ '
 [Foo](/anUrl)
 '
@@ -74,6 +73,14 @@ MicLinkBlockTest >> setUp [
 { #category : #tests }
 MicLinkBlockTest >> subjectClass [ 
 	^ MicHorizontalLineBlock
+]
+
+{ #category : #tests }
+MicLinkBlockTest >> testFullName [
+
+	link := self parseLink: self linkSample.
+	self assert: link fullName equals: '/anUrl'
+
 ]
 
 { #category : #tests }
@@ -151,15 +158,6 @@ MicLinkBlockTest >> testPrintOn [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
 	self assert: link asString equals: '[caption](http://www.pharo.org)'
-]
-
-{ #category : #tests }
-MicLinkBlockTest >> testReferencePath [
-
-	link := self parseLink: self linkSample.
-	self assert: (link referencePath isKindOf: String).
-	self assert: link referencePath equals: 'file:///anUrl'
-
 ]
 
 { #category : #tests }

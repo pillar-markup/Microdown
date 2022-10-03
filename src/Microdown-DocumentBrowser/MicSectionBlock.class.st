@@ -125,13 +125,6 @@ MicSectionBlock >> inspectionSection [
 		  yourself
 ]
 
-{ #category : #displaying }
-MicSectionBlock >> inspectionSectionRendered [
-
-	<inspectorPresentationOrder: 850 title: 'Rendered'>
-	^ MicrodownPresenter new document: self;yourself
-]
-
 { #category : #accessing }
 MicSectionBlock >> level [
 	header ifNil: [ ^0 ].

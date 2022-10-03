@@ -52,9 +52,9 @@ MicGitHubRessourceReference >> browserIcon [
 
 { #category : #'document browser' }
 MicGitHubRessourceReference >> browserTitle [
-	^ self uri query
+	^ uri query
 		ifNotNil:[:query | query at: #fullPath]
-		ifNil: [ self uri printString ]
+		ifNil: [ uri printString ]
 ]
 
 { #category : #accessing }
@@ -64,7 +64,7 @@ MicGitHubRessourceReference >> contents [
 	response := self githubPathLookup.
 	content := response 
 		at: #content 
-		ifAbsent: [MicResourceReferenceError signal: 'I am a directory and has no contents'].
+		ifAbsent: [^ 'I am a directory and has no contents'].
 	^ content base64Decoded asString
 ]
 
@@ -148,9 +148,9 @@ MicGitHubRessourceReference >> pathStringForRawAccess [
 		format: { user. project}.
 	self docFolder 
 		ifNotEmpty: [ ^ path, '/' , self branch, '/', (self docFolder joinUsing: '/') ].
-	self uri query 
+	uri query 
 		ifNil: [ ^ path, '/', self branch ].
-	^ path ,'/', (self uri query at: #fullPath ifAbsent: [''])
+	^ path ,'/', (uri query at: #fullPath ifAbsent: [''])
 ]
 
 { #category : #accessing }

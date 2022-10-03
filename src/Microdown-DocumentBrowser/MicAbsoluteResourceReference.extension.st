@@ -7,7 +7,11 @@ MicAbsoluteResourceReference >> browserIcon [
 
 { #category : #'*Microdown-DocumentBrowser' }
 MicAbsoluteResourceReference >> browserTitle [
-	^ self uri segments 
-		ifNotNil:[:seg | (seg last: (seg size min: 3)) joinUsing: '/']
-		ifNil: [ self uri printString ]
+	| title slashes |
+	title := self uriString.
+	slashes := title allRangesOfSubstring: '/'.
+	slashes size <= 3 ifTrue: [ ^ title ].
+	^ '...', (title 
+		copyFrom: (slashes at: (slashes size - 2)) first
+		to: title size)
 ]

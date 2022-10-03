@@ -9,7 +9,7 @@ Class {
 		'newLine',
 		'fileSystem'
 	],
-	#category : #'Microdown-HTMLExporter-Tests'
+	#category : #'Microdown-HTMLExporter-Tests-HTML'
 }
 
 { #category : #tests }
@@ -72,6 +72,12 @@ MicHTMLVisitorTest >> testCanvasClass [
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
+{ #category : #test }
+MicHTMLVisitorTest >> testConfiguration [
+
+	self assert: (writer configuration isKindOf: MicHTMLConfiguration). 
+]
+
 { #category : #tests }
 MicHTMLVisitorTest >> testContents [ 
 
@@ -82,16 +88,15 @@ MicHTMLVisitorTest >> testContents [
 
 { #category : #tests }
 MicHTMLVisitorTest >> testConvertMicFile [
-	
+
 	writer convertMicFile: (fileSystem / 'anExample1.md') asFileReference.
-	
+
 	self assert: (fileSystem / 'anExample1.html') asFileReference exists.
-	self 
-		assert: (fileSystem / 'anExample1.html') asFileReference contents 
-		equals: newLine ,
-'<h1>Foo</h1><a id="sec1"></a>', newLine ,
-'<p>Pharo is cool</p>', newLine ,
-'<pre><code> this is a code blu blu</code></pre>', newLine
+	self
+		assert: (fileSystem / 'anExample1.html') asFileReference contents
+		equals: newLine , '<h1>Foo</h1><a id="sec1"></a>' , newLine
+			, '<p>Pharo is cool</p>' , newLine
+			, '<pre><code>	this is a code blu blu</code></pre>' , newLine
 ]
 
 { #category : #tests }
@@ -127,20 +132,12 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 ]
 
 { #category : #tests }
-MicHTMLVisitorTest >> testCreateAnchorWithId [
-
-	self assert: writer contents equals: String empty.
-	writer createAnchorWithId: 'id1'.
-	self assert: writer contents equals: '<a id="id1"></a>'.
-]
-
-{ #category : #tests }
 MicHTMLVisitorTest >> testCreateAnchorWithLink [
 
 	| result |
 	self assert: writer contents equals: String empty.
 	result := writer convertMicString: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)'.
-	self assert: result trimBoth equals: '<p><a href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
+	self assert: result trimBoth equals: '<p><a target="_blank" href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
 ]
 
 { #category : #tests }
@@ -153,7 +150,7 @@ MicHTMLVisitorTest >> testCreateAnnotationCompound [
 
 this is another string'.
 	self assert: result trimBoth equals: '<h1>This is a title</h1>', newLine ,
-'<section class="annotation"><label>LabelOfAnnotatedBlock</label><div>Body of annotated block</div></section>', newLine ,
+'<section id="LabelOfAnnotatedBlock"><label for="LabelOfAnnotatedBlock">Body of annotated block</label></section>', newLine ,
 '<p>this is another string</p>'.
 ]
 
@@ -164,7 +161,7 @@ MicHTMLVisitorTest >> testCreateAnnotationSimple [
 	self assert: writer contents equals: String empty.
 	
 	result := writer convertMicString: '!!LabelOfAnnotatedBlock Body of annotated block'.
-	self assert: result trimBoth equals: '<section class="annotation"><label>LabelOfAnnotatedBlock</label><div>Body of annotated block</div></section>'.	
+	self assert: result trimBoth equals: '<section id="LabelOfAnnotatedBlock"><label for="LabelOfAnnotatedBlock">Body of annotated block</label></section>'.	
 
 ]
 
@@ -187,6 +184,15 @@ MicHTMLVisitorTest >> testCreateItalic [
 	
 	result := writer convertMicString: '_Text with italic_'.
 	self assert: result trimBoth equals: '<p><i>Text with italic</i></p>'.	
+
+]
+
+{ #category : #tests }
+MicHTMLVisitorTest >> testVisitAnchor [
+
+	self assert: writer contents equals: String empty.
+	writer visitAnchor: (MicAnchorBlock new label: 'target').
+	self assert: writer contents equals: '<a id="target"></a>'.
 
 ]
 

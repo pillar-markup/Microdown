@@ -2,7 +2,12 @@ Extension { #name : #MicCodeBlock }
 
 { #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> eval: aBoolean [
-	arguments at: #eval put: aBoolean
+	
+	"the string conversion is due to the fact that the arguments are not converted so normally the parser returns strings and not boolean. 
+	This could be changed but it means that the parser (closeMe method), the isEvaluated method and this one should be in sync.
+	"
+	
+	arguments at: #eval put: aBoolean asString
 
 ]
 
@@ -32,12 +37,11 @@ MicCodeBlock >> evaluationString [
 				on: Error
 				do: [ :e | 
 					stream
-						nextPutAll: '= ';
 						nextPutAll: e description ] ]
 ]
 
 { #category : #'*Microdown-Evaluator' }
 MicCodeBlock >> isEvaluated [ 
 	arguments at: #eval ifAbsent: [ ^ false ].
-	^ arguments at: #eval
+	^ (arguments at: #eval) = 'true'
 ]
