@@ -330,16 +330,6 @@ MicHTMLConfigurationTest >> testDefaultLanguageId [
 ]
 
 { #category : #tests }
-MicHTMLConfigurationTest >> testDefaultScriptLanguage [
-
-	self
-		assert: (configuration defaultScriptLanguage isKindOf: PRAbstractScriptLanguage)
-		description: 'It test that the default script language of a document is a PRAbstractScriptLanguage'.
-		
-
-]
-
-{ #category : #tests }
 MicHTMLConfigurationTest >> testDefaultTargetAttribute [
 
 	| validTargetAttributes |
