@@ -414,6 +414,14 @@ MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
 ]
 
 { #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithTwoBackslashes [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: '`\a+\b`'.
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: '\a+\b'
+]
+
+{ #category : #'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef'.
