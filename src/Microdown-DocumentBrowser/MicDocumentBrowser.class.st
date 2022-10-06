@@ -30,7 +30,8 @@ Class {
 		'isSourceShowing',
 		'textComposer',
 		'documentRoots',
-		'currentReference'
+		'currentReference',
+		'browserModel'
 	],
 	#classVars : [
 		'Browser'
