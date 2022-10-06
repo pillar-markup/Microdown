@@ -31,17 +31,17 @@ MicResourceReferenceTest >> testIsDirectory [
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
-	mf := self resourceClass fromUri: 'http://server/m.mic'.
-	self assert: mf uriString equals: 'http://server/m.mic'.
+	mf := self resourceClass fromUri: 'http://server/m.md'.
+	self assert: mf uriString equals: 'http://server/m.md'.
 
 ]
 
 { #category : #'tests - file reference conversion' }
 MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 	| mf |
-	mf := self resourceClass fromUri: '/chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: '/chapter1/figures/m.md'.
 	self assert: mf isFileReference.
-	self assert: mf fullName equals: '/chapter1/figures/m.mic'.
+	self assert: mf fullName equals: '/chapter1/figures/m.md'.
 	
 ]
 
@@ -49,9 +49,9 @@ MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 MicResourceReferenceTest >> testPurePathIsRelativeFile [
 	
 	| mf |
-	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: 'chapter1/figures/m.md'.
 	self assert: mf isRelative.
-	self assert: mf relativePath equals: 'chapter1/figures/m.mic'.
+	self assert: mf relativePath equals: 'chapter1/figures/m.md'.
 	
 ]
 
@@ -59,9 +59,9 @@ MicResourceReferenceTest >> testPurePathIsRelativeFile [
 MicResourceReferenceTest >> testRelativeFileRecognized [
 	
 	| mf |
-	mf := self resourceClass fromUri: 'chapter1/figures/m.mic'.
+	mf := self resourceClass fromUri: 'chapter1/figures/m.md'.
 	self assert: mf isRelative.
-	self assert: mf relativePath equals: 'chapter1/figures/m.mic'.
+	self assert: mf relativePath equals: 'chapter1/figures/m.md'.
 	
 ]
 

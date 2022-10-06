@@ -4,17 +4,17 @@ I implement a centering environment which can be rendered using RichText.
 !>
 "
 Class {
-	#name : #MicCenterAllignmentBlock,
+	#name : #MicCenterAlignmentBlock,
 	#superclass : #MicEnvironmentBlock,
 	#category : #'Microdown-RichTextComposer-BlockExtensions'
 }
 
 { #category : #accessing }
-MicCenterAllignmentBlock class >> tag [
+MicCenterAlignmentBlock class >> tag [
 	^ #center
 ]
 
 { #category : #visiting }
-MicCenterAllignmentBlock >> accept: aVisitor [
+MicCenterAlignmentBlock >> accept: aVisitor [
 	^ aVisitor visitCenter: self
 ]

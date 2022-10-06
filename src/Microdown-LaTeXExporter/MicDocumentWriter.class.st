@@ -1,3 +1,7 @@
+"
+I'm the superclass of writers in various formats.
+I managed end of line conventions, canvas responsible for the encodings of specific commands to output a given format and I support raw ouputting.
+"
 Class {
 	#name : #MicDocumentWriter,
 	#superclass : #MicrodownVisitor,

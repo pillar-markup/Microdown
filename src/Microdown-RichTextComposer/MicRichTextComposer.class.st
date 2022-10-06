@@ -382,7 +382,6 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
-
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
@@ -635,10 +634,10 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 ]
 
 { #category : #visiting }
-MicRichTextComposer >> visitRightAllignment: aMicRightAllignmentBlock [ 
+MicRichTextComposer >> visitRightAlignment: aMicRightAlignmentBlock [ 
 	canvas
 		includeAttribute: TextAlignment rightFlush 
-		in: [ super visitChildrenOf: aMicRightAllignmentBlock  ]
+		in: [ self visitChildrenOf: aMicRightAlignmentBlock  ]
 ]
 
 { #category : #'visiting - extensions' }

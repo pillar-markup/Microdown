@@ -41,12 +41,17 @@ MicSBALaTeXWriterTest >> testCodeblockWithCaption [
 { #category : #tests }
 MicSBALaTeXWriterTest >> testCodeblockWithChevron [
 
-	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'MyClass >> foo
-	this is a code').
-	self assert: writer contents equals: '\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}', newLine ,
-													'MyClass >> foo', newLine ,
-													' this is a code', newLine ,
-													'\end{listing}', newLine
+	self writeFor:
+		(factory
+			 codeblock: 'caption=Pharo is **cool**'
+			 body: 'MyClass >> foo
+ this is a code').
+	self
+		assert: writer contents
+		equals:
+			'\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}'
+			, newLine , 'MyClass >> foo' , newLine , ' this is a code'
+			, newLine , '\end{listing}' , newLine
 ]
 
 { #category : #tests }

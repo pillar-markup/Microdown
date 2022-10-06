@@ -40,7 +40,7 @@ MicHTMLStylerOpenCommand class >> order [
 { #category : #executing }
 MicHTMLStylerOpenCommand >> execute [
 
-	(self requestFileNameForOpen: '*.mic')
+	(self requestFileNameForOpen: '*.md')
 		ifNotNil: [ : answer | 
 			(self isValidMic: answer)
 				ifTrue: [ self context micDocumentFileRef: answer asFileReference ]
