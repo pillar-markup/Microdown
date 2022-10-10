@@ -27,27 +27,14 @@ Class {
 		'saveButton',
 		'documentRoots',
 		'documentModel',
-		'layoutModel'
+		'layoutModel',
+		'disableEvents'
 	],
 	#classVars : [
 		'Browser'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
-
-{ #category : #commands }
-MicDocumentBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
-	rootCommandGroup register:
-		(MicInspectDocumentBrowserCommand forSpec context: presenter).
-	rootCommandGroup register:
-		((MicIntoDocumentBrowserCommand forSpec) context: presenter).
-	rootCommandGroup register:
-		(MicUpDocumentBrowserCommand forSpec context: presenter).
-	rootCommandGroup register:
-		(MicNextDocumentBrowserCommand forSpec context: presenter).
-	rootCommandGroup register:
-		(MicPreviousDocumentBrowserCommand forSpec context: presenter)	
-]
 
 { #category : #'services menu' }
 MicDocumentBrowser class >> fileReaderServicesForFile: fullName suffix: suffix [
@@ -109,12 +96,12 @@ MicDocumentBrowser class >> serviceOpenMicrodownDocument [
 
 { #category : #navigation }
 MicDocumentBrowser >> addRoot: document [
-	(self documentRoots includes: document)
-		ifFalse: [ 
-			self documentRoots add: document.
-			"self setTopLayout" ].
-	self disconnectPresentersDuring: [
-	spDocumentList selection selectItem: document].
+	self disableEventsDuring: [
+		(self documentRoots includes: document)
+			ifFalse: [ 
+				self documentRoots add: document.
+				spDocumentList roots: self documentRoots  ].
+		spDocumentList selection selectItem: document].
 	self documentSelected: document
 		
 	
@@ -156,15 +143,12 @@ MicDocumentBrowser >> colorCannotEdit [
 
 { #category : #initialization }
 MicDocumentBrowser >> connectPresenters [
-
+	
 	spDocumentList 
 		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
-	self isSourceShowing 
-		ifTrue: [ 
-			spSource 
-				whenSubmitDo: [:text|  self saveSource ];
-				whenTextChangedDo: [ :newSource | self setSource: newSource ]
-			 ]
+	spSource 
+		whenSubmitDo: [:text|  self saveSource ];
+		whenTextChangedDo: [ :newSource | self setSource: newSource ]
 ]
 
 { #category : #private }
@@ -178,20 +162,10 @@ MicDocumentBrowser >> defaultDocumentRoots [
 ]
 
 { #category : #initialization }
-MicDocumentBrowser >> disconnectPresenters [
-1halt.
-	spDocumentList 
-		whenSelectionChangedDo: [ :selection | 1halt ].
-	spSource 
-		whenSubmitDo: [:text|  ];
-		whenTextChangedDo: [ :newSource |  ]
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> disconnectPresentersDuring: aBlock [
-	self disconnectPresenters.
+MicDocumentBrowser >> disableEventsDuring: aBlock [
+	disableEvents := true.
 	aBlock value.
-	self connectPresenters 
+	disableEvents := false. 
 ]
 
 { #category : #navigation }
@@ -230,6 +204,7 @@ MicDocumentBrowser >> initialize [
 
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
+	disableEvents := false.
 	super initialize
 ]
 
@@ -245,7 +220,7 @@ MicDocumentBrowser >> initializeButtons [
 				 help: 'source view';
 				 items: layoutModel sourceModes;
 				 whenSelectedItemChangedDo: [ :item | 
-					 layoutModel sourceMode: item ]);
+					 self setSourceMode: item ]);
 		right: (saveButton := spButtonBar newButton
 				 label: 'Save';
 				 state: self isSourceShowing;
@@ -285,7 +260,9 @@ MicDocumentBrowser >> initializePresenters [
 { #category : #initialization }
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter whenClosedDo: [ Browser := nil ].
+	aWindowPresenter whenClosedDo: [ 
+		self saveSource.
+		Browser := nil ].
 ]
 
 { #category : #testing }
@@ -323,12 +300,6 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 ]
 
 { #category : #'instance creation' }
-MicDocumentBrowser >> newButtonBar [
-
-	^ MicDocumentBrowserButtonBar new parent: self.
-]
-
-{ #category : #'instance creation' }
 MicDocumentBrowser >> newDocumentButtonBar [
 
 	^ self instantiate: MicDocumentBrowserButtonBar 
@@ -338,7 +309,7 @@ MicDocumentBrowser >> newDocumentButtonBar [
 MicDocumentBrowser >> newSelection: selection [
 
 	"I am the raw user selection in the spDocumentList"
-
+	disableEvents ifTrue: [ ^ self ].
 	documentModel save.
 	documentModel resourceReference: selection.
 	self updateRenderAndSource
@@ -363,8 +334,9 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 MicDocumentBrowser >> saveSource [
 	"Selected document must be a root section"
 	| path sourceSelection sourceScroll|
+	disableEvents ifTrue: [ ^ self ].
 	documentModel isDirty ifFalse: [ ^self ].
-	self disconnectPresentersDuring: [
+	self disableEventsDuring: [
 	documentModel source: spSource text; save.
 	self renderDocument: documentModel document.
 	"Sync the views"
@@ -416,8 +388,15 @@ MicDocumentBrowser >> setListShowing: aBoolean [
 { #category : #events }
 MicDocumentBrowser >> setSource: newSource [
 	('Document browser setSource: ', (newSource truncateTo: 20)) traceCr.
+	disableEvents ifTrue: [ ^ self ].
 	documentModel source: newSource
 	
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> setSourceMode: sourceMode [
+	layoutModel sourceMode: sourceMode.
+	self disableEventsDuring: [ self setTopLayout  ]
 ]
 
 { #category : #'source code' }
@@ -437,24 +416,9 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 MicDocumentBrowser >> setSourceShowing: showSource [
 
 	layoutModel showSource: showSource.
-	self disconnectPresentersDuring: 
-		[ self setTopLayout]
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> setSourceShowing_old: showSource [
-
-	layoutModel showSource: showSource.
-	showSource ifFalse: [ 
-		spSource
-			whenSubmitDo: [  ];
-			whenTextChangedDo: [  ] ].
-	self setTopLayout.
-	showSource ifTrue: [ 
-		spSource
-			text: documentModel source;
-			whenSubmitDo: [ :text | self saveSource ];
-			whenTextChangedDo: [ :newSource | self setSource: newSource ] ]
+	self disableEventsDuring: 
+		[ 	showSource ifTrue: [ spSource text: documentModel source ].
+			self setTopLayout ]
 ]
 
 { #category : #layout }
