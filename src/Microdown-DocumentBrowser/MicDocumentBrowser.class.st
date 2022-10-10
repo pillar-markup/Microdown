@@ -15,23 +15,19 @@ The roots loaded at the moment is:
 - all docs found on github relating to Microdown (read-only as one do not write to github)
 - all doc(s) folders found in iceberg workspace (read and write). This will be the th doc-folders of projects known by iceberg.
 
-
 "
 Class {
 	#name : #MicDocumentBrowser,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'spDocumentList',
 		'spButtonBar',
+		'spDocumentList',
 		'spRendering',
 		'spSource',
-		'sourceMode',
 		'saveButton',
-		'isSourceShowing',
-		'textComposer',
 		'documentRoots',
-		'currentReference',
-		'browserModel'
+		'documentModel',
+		'layoutModel'
 	],
 	#classVars : [
 		'Browser'
@@ -111,13 +107,14 @@ MicDocumentBrowser class >> serviceOpenMicrodownDocument [
 		argumentGetter: [ :file| file fullName]
 ]
 
-{ #category : #accessing }
+{ #category : #navigation }
 MicDocumentBrowser >> addRoot: document [
 	(self documentRoots includes: document)
 		ifFalse: [ 
 			self documentRoots add: document.
-			self setTopLayout ]. 
-	self spDocumentList selection selectItem: document.
+			"self setTopLayout" ].
+	self disconnectPresentersDuring: [
+	spDocumentList selection selectItem: document].
 	self documentSelected: document
 		
 	
@@ -127,9 +124,7 @@ MicDocumentBrowser >> addRoot: document [
 { #category : #rendering }
 MicDocumentBrowser >> asRichText: doc [
 	"reuse composer with its existing textStyler"
-	textComposer ifNil: [ textComposer := MicRichTextComposer new ].
-	
-	^ textComposer asRichText: doc
+	^ Microdown asRichText: doc
 ]
 
 { #category : #navigation }
@@ -161,11 +156,15 @@ MicDocumentBrowser >> colorCannotEdit [
 
 { #category : #initialization }
 MicDocumentBrowser >> connectPresenters [
- 
-	spDocumentList
+
+	spDocumentList 
 		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
-	spSource whenSubmitDo:  [ :newText | self saveNewSourceForSelectedDocument  ]
-	
+	self isSourceShowing 
+		ifTrue: [ 
+			spSource 
+				whenSubmitDo: [:text|  self saveSource ];
+				whenTextChangedDo: [ :newSource | self setSource: newSource ]
+			 ]
 ]
 
 { #category : #private }
@@ -176,6 +175,23 @@ MicDocumentBrowser >> defaultDocumentRoots [
 	 	}, 
 		self loadedDocsInWorkspace  )
 			collect: #asMicResourceReference
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> disconnectPresenters [
+1halt.
+	spDocumentList 
+		whenSelectionChangedDo: [ :selection | 1halt ].
+	spSource 
+		whenSubmitDo: [:text|  ];
+		whenTextChangedDo: [ :newSource |  ]
+]
+
+{ #category : #initialization }
+MicDocumentBrowser >> disconnectPresentersDuring: aBlock [
+	self disconnectPresenters.
+	aBlock value.
+	self connectPresenters 
 ]
 
 { #category : #navigation }
@@ -192,18 +208,16 @@ MicDocumentBrowser >> displayStringOf: aNode [
 
 { #category : #private }
 MicDocumentBrowser >> documentRoots [
-	^ documentRoots ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
+	^ documentRoots 
+		ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
 ]
 
 { #category : #events }
 MicDocumentBrowser >> documentSelected: document [
 	"document is newly selected, and should be rendered. If source is needed, set it as well"
-	(document ~= currentReference and: [self isCurrentDirty]) 
-		ifTrue: [ currentReference contents: spSource text  ].
-	currentReference := document.
-	self renderDocument: document.
-	self isSourceShowing ifTrue: [ 
-		self setSourceOfSelectedDocument  ]
+	documentModel save.
+	documentModel resourceReference: document.
+	self updateRenderAndSource.
 ]
 
 { #category : #initialization }
@@ -212,46 +226,60 @@ MicDocumentBrowser >> initialExtent [
 ]
 
 { #category : #initialization }
+MicDocumentBrowser >> initialize [
+
+	documentModel := MicDocumentBrowserModel new.
+	layoutModel := MicDocumentBrowserLayoutModel new.
+	super initialize
+]
+
+{ #category : #initialization }
 MicDocumentBrowser >> initializeButtons [
+
 	spButtonBar
-		add: (spButtonBar newDropList
-			help: 'source view';
-  			items: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap );
-  			whenSelectedItemChangedDo: [ :item | self sourceMode: item ]);
-		add: (saveButton := spButtonBar newButton 
-			label: 'Save';
-			state: self isSourceShowing;
-			action: [ self saveNewSourceForSelectedDocument]);
-		add: (spButtonBar newCheckBox
-			label: 'Show Source';
-			state: self isSourceShowing;
-			whenChangedDo: [ :val | self setSourceShowing: val ])
-		
+		left: (spButtonBar newCheckBox
+				 label: 'Show List';
+				 state: self listShowing;
+				 whenChangedDo: [ :val | self setListShowing: val ]);
+		right: (spButtonBar newDropList
+				 help: 'source view';
+				 items: layoutModel sourceModes;
+				 whenSelectedItemChangedDo: [ :item | 
+					 layoutModel sourceMode: item ]);
+		right: (saveButton := spButtonBar newButton
+				 label: 'Save';
+				 state: self isSourceShowing;
+				  action: [ self saveSource ]);
+		right: (spButtonBar newCheckBox
+				 label: 'Show Source';
+				 state: self isSourceShowing;
+				 whenChangedDo: [ :val | self setSourceShowing: val ])
 ]
 
 { #category : #initialization }
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
+	'Start initializePresenters' traceCr.
+	
 	Browser := self.
-	isSourceShowing := false.
 	spDocumentList := self newTree.
-	spDocumentList 
-		roots: self documentRoots ;
+	spDocumentList
+		roots: self documentRoots;
 		children: [ :aNode | self childrenOf: aNode ];
 		display: [ :aNode | self displayStringOf: aNode ];
 		displayIcon: [ :aNode | self displayIconOf: aNode ].
-	spDocumentList contextMenu: [ self rootCommandsGroup beRoot asMenuPresenter].
+	spDocumentList contextMenu: [ 
+		self rootCommandsGroup beRoot asMenuPresenter ].
 
 	spRendering := self instantiate: MicrodownPresenter.
-	spSource := self newText.
-	spButtonBar := self newButtonBar.
+	spSource := self newText
+		text: documentModel source.
+	spButtonBar := self newDocumentButtonBar.
 	self initializeButtons.
-	self setTopLayout
-
-
-
-
+	"self setTopLayout."
+	
+	'End initializePresenters' traceCr.
 ]
 
 { #category : #initialization }
@@ -262,16 +290,25 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 
 { #category : #testing }
 MicDocumentBrowser >> isCurrentDirty [
-	currentReference ifNil: [ ^ false ].
-	currentReference canSave ifFalse: [ ^ false ].
-	^ spSource text ~= currentReference contents
+	^ documentModel isDirty
 ]
 
 { #category : #accessing }
 MicDocumentBrowser >> isSourceShowing [
-	^ isSourceShowing ifNil: [ isSourceShowing := false ]
+	^ layoutModel showSource 
 
 	
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> layout [
+	layout ifNil: [ self setTopLayout  ].
+	^ layout 
+]
+
+{ #category : #'as yet unclassified' }
+MicDocumentBrowser >> listShowing [
+	^ layoutModel showDocumentList 
 ]
 
 { #category : #private }
@@ -285,15 +322,26 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 		select: [ :dir | #('doc' 'docs') includes: dir basename ]
 ]
 
+{ #category : #'instance creation' }
+MicDocumentBrowser >> newButtonBar [
+
+	^ MicDocumentBrowserButtonBar new parent: self.
+]
+
+{ #category : #'instance creation' }
+MicDocumentBrowser >> newDocumentButtonBar [
+
+	^ self instantiate: MicDocumentBrowserButtonBar 
+]
+
 { #category : #events }
 MicDocumentBrowser >> newSelection: selection [
+
 	"I am the raw user selection in the spDocumentList"
-	selection ifNil: [ 
-			spRendering text: '' asText.
-			spSource text: ''.
-			currentReference := nil.
-			^ self ].
-	self documentSelected: selection
+
+	documentModel save.
+	documentModel resourceReference: selection.
+	self updateRenderAndSource
 ]
 
 { #category : #rendering }
@@ -303,7 +351,6 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 		ifTrue: [  "should reuse composer when selecting section" 
 			referenceOrSection] 
 		ifFalse: [ 
-			textComposer := nil. "If selecting a new root, reset composer"
 			referenceOrSection loadMicrodown ].
 	  spRendering text:(self asRichText: doc )]
 	on: MicResourceReferenceError  
@@ -313,13 +360,13 @@ MicDocumentBrowser >> renderDocument: referenceOrSection [
 ]
 
 { #category : #'source code' }
-MicDocumentBrowser >> saveNewSourceForSelectedDocument [
+MicDocumentBrowser >> saveSource [
 	"Selected document must be a root section"
 	| path sourceSelection sourceScroll|
-	currentReference ifNil: [ ^ self ].
-	self isCurrentDirty ifFalse: [ ^ self ].
-	currentReference contents: spSource text.
-	self renderDocument: currentReference.
+	documentModel isDirty ifFalse: [ ^self ].
+	self disconnectPresentersDuring: [
+	documentModel source: spSource text; save.
+	self renderDocument: documentModel document.
 	"Sync the views"
 	path := spDocumentList selection selectedPath.
 	sourceSelection := spSource selectionInterval.
@@ -331,7 +378,7 @@ MicDocumentBrowser >> saveNewSourceForSelectedDocument [
 	spSource selectionInterval: sourceSelection.
 	spSource adapter setScrollValue: 0 @ sourceScroll.
 	spRendering adapter setScrollValue: 0 @ sourceScroll.
-	spSource takeKeyboardFocus.
+	spSource takeKeyboardFocus.]
 	
 	
 	
@@ -348,24 +395,6 @@ MicDocumentBrowser >> scrollSyncRenderToSource [
 	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll
 ]
 
-{ #category : #layout }
-MicDocumentBrowser >> setDocumentlayout [
-
-	"Depending on the state of EditDocument, show an editing pane in addition to document pane"
-
-	| pane |
-	self isSourceShowing ifFalse: [ ^ spRendering ].
-	"#source modes are: #( 'Source bottom' 'Source top' 'Source right' 'Source left' #Swap )"
-	self sourceMode = #Swap ifTrue: [ ^ spSource ].
-	pane := (#('Source top' 'Source bottom') includes: self sourceMode)
-		        ifTrue: [ SpPanedLayout newTopToBottom ]
-		        ifFalse: [ SpPanedLayout newLeftToRight ].
-	(#('Source left' 'Source top') includes: self sourceMode)
-		ifTrue: [ pane first: spSource; second: spRendering ]
-		ifFalse: [ pane first: spRendering; second: spSource].
-	^ pane
-]
-
 { #category : #'source code' }
 MicDocumentBrowser >> setEditStatus: status [
 	"can be #canEdit, #connotEdit, #hasBeenEdited"
@@ -378,18 +407,26 @@ MicDocumentBrowser >> setEditStatus: status [
 		
 ]
 
+{ #category : #initialization }
+MicDocumentBrowser >> setListShowing: aBoolean [
+	layoutModel showDocumentList: aBoolean.
+	self setTopLayout 
+]
+
+{ #category : #events }
+MicDocumentBrowser >> setSource: newSource [
+	('Document browser setSource: ', (newSource truncateTo: 20)) traceCr.
+	documentModel source: newSource
+	
+]
+
 { #category : #'source code' }
 MicDocumentBrowser >> setSourceOfSelectedDocument [
 	"I set the source of the selected document"
-	| original |
-	currentReference := spDocumentList selectedItem.
-	currentReference ifNil: [ ^ self ].
-	original := currentReference contents.
-	spSource 
-		text: original;
-		editable: currentReference canSave;
-		whenTextChangedDo: [:text | saveButton state: text ~= original].
-	currentReference canSave
+	|  |
+	documentModel resourceReference:  spDocumentList selectedItem.
+	documentModel resourceReference  ifNil: [ ^ self ].
+	documentModel canSave
 		ifTrue: [self setEditStatus: #canEdit]
 		ifFalse: [self setEditStatus: #cannotEdit]
 		
@@ -397,59 +434,54 @@ MicDocumentBrowser >> setSourceOfSelectedDocument [
 ]
 
 { #category : #accessing }
-MicDocumentBrowser >> setSourceShowing: aBoolean [
-	isSourceShowing := aBoolean.
-	self setTopLayout.
-	isSourceShowing 
-		ifTrue: [ self setSourceOfSelectedDocument ]
-		ifFalse: [ self saveNewSourceForSelectedDocument ].
+MicDocumentBrowser >> setSourceShowing: showSource [
 
-	
+	layoutModel showSource: showSource.
+	self disconnectPresentersDuring: 
+		[ self setTopLayout]
+]
+
+{ #category : #accessing }
+MicDocumentBrowser >> setSourceShowing_old: showSource [
+
+	layoutModel showSource: showSource.
+	showSource ifFalse: [ 
+		spSource
+			whenSubmitDo: [  ];
+			whenTextChangedDo: [  ] ].
+	self setTopLayout.
+	showSource ifTrue: [ 
+		spSource
+			text: documentModel source;
+			whenSubmitDo: [ :text | self saveSource ];
+			whenTextChangedDo: [ :newSource | self setSource: newSource ] ]
 ]
 
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
-	self layout: ( SpBoxLayout newTopToBottom
-		add: (SpPanedLayout newLeftToRight
-					add: spDocumentList;
-					add: self setDocumentlayout ;
-					positionOfSlider: 0.3;
-					yourself);
-		add: spButtonBar expand: false;
-		yourself)
-]
 
-{ #category : #'source code' }
-MicDocumentBrowser >> sourceMode [
-	^ sourceMode ifNil: [ sourceMode := 'Source bottom' ]
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> sourceMode: mode [
-
-	sourceMode := mode.
-	self setTopLayout. 
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> spDocumentList [
-
-	^ spDocumentList
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> spRendering [
-
-	^ spRendering
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> spSource [
-
-	^ spSource
+	'Start toplayout' traceCr.
+	self layout: (SpBoxLayout newTopToBottom
+			 add: (layoutModel
+					  layoutList: spDocumentList
+					  rendering: spRendering
+					  source: spSource);
+			 add: spButtonBar expand: false;
+			 yourself).
+	'End toplayout' traceCr.
 ]
 
 { #category : #initialization }
 MicDocumentBrowser >> title [
 	^ 'Microdown document browser'
+]
+
+{ #category : #'as yet unclassified' }
+MicDocumentBrowser >> updateRenderAndSource [
+
+	documentModel resourceReference 
+		ifNotNil: [ 
+			spRendering document: documentModel document.
+			layoutModel showSource 
+				ifTrue: [ spSource text: documentModel source ]  ]
 ]

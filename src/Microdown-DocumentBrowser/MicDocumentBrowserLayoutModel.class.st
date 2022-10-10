@@ -8,7 +8,7 @@ the document browser ask for a layout using the method: `MicDocumentBrowserLayou
 "
 Class {
 	#name : #MicDocumentBrowserLayoutModel,
-	#superclass : #SpPresenter,
+	#superclass : #Model,
 	#instVars : [
 		'showDocumentList',
 		'showSource',

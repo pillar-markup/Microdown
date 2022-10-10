@@ -1,19 +1,14 @@
 "
-I am a model used by the document browser.
-
-I keep
-- reference or section
-- its source code
-- its document in rendered format
+[ documentModel source  ]
 "
 Class {
 	#name : #MicDocumentBrowserModel,
-	#superclass : #SpPresenter,
+	#superclass : #Model,
 	#instVars : [
-		'resourceReference',
 		'document',
 		'source',
-		'isDirty'
+		'isDirty',
+		'resourceReference'
 	],
 	#classVars : [
 		'Browser'
@@ -53,14 +48,11 @@ MicDocumentBrowserModel >> resourceReference [
 { #category : #accessing }
 MicDocumentBrowserModel >> resourceReference: refereceSectionOrNil [
 	"I set the document and source of the argument"
+	('Document model set reference: ', refereceSectionOrNil printString) traceCr.
+	refereceSectionOrNil ifNil: [ 1halt].
 	resourceReference := refereceSectionOrNil.
 	isDirty := false.
-	refereceSectionOrNil 
-		ifNil: [ source := document := nil ]
-		ifNotNil: [ 
-			document := refereceSectionOrNil loadMicrodown.
-			source := refereceSectionOrNil contents.
-	]
+	self updateDocumentFromSource
 	
 ]
 
@@ -69,6 +61,7 @@ MicDocumentBrowserModel >> save [
 	"store the source into resourceReference. Do nothing if not dirty or if not canSave"
 	(isDirty and: [ self canSave ]) ifFalse: [ ^ self ].
 	resourceReference contents: source.
+	self updateDocumentFromSource.
 	isDirty := false.
 ]
 
@@ -81,7 +74,21 @@ MicDocumentBrowserModel >> source [
 { #category : #accessing }
 MicDocumentBrowserModel >> source: markupString [
 	"Assumes we can save"
-	self canSave ifFalse: [ ^ Error signal: 'A test is missing at my caller' ].
+	('Document model source: ', (markupString truncateTo: 20)) traceCr.
+	self canSave ifFalse: [ ^ Error signal: 'Cannot save to ', resourceReference uri ].
 	source := markupString.
 	isDirty := true.
+]
+
+{ #category : #accessing }
+MicDocumentBrowserModel >> updateDocumentFromSource [
+
+	resourceReference ifNil: [ ^ source := document := nil ].
+	[ 
+	document := resourceReference loadMicrodown.
+	source := resourceReference contents ]
+		on: MicResourceReferenceError
+		do: [ :error | 
+			document := Microdown parse: '# Error: ' , error message.
+			source := '# Resorce error' ].
 ]

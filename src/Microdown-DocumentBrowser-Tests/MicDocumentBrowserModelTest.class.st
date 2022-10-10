@@ -92,6 +92,16 @@ MicDocumentBrowserModelTest >> testSave [
 ]
 
 { #category : #tests }
+MicDocumentBrowserModelTest >> testSave_not [
+	"Pick a resource which is read-only"
+	model resourceReference: 'pharo:///MicDocumentBrowserModelTest/backupComment' asMicResourceReference.
+	self 
+		should: [ model source: 'Dummy source' ]
+		raise: Error	
+		
+]
+
+{ #category : #tests }
 MicDocumentBrowserModelTest >> testSource [
 	model resourceReference: self class myCommentRefernce.
 	self 

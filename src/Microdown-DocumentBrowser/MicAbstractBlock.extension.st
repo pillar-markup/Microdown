@@ -17,3 +17,9 @@ Select the whole document for editing'
 MicAbstractBlock >> isHeader [
 	^ false
 ]
+
+{ #category : #'*Microdown-DocumentBrowser' }
+MicAbstractBlock >> loadMicrodown [
+	"polymorphic with resource references"
+	^ self
+]
