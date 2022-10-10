@@ -429,7 +429,8 @@ MicLaTeXWriterTest >> testStrike [
 { #category : #tests }
 MicLaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
-	self assert: writer contents equals: '\begin{tabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+													'\begin{tabular}{ll}', newLine ,
 													'\toprule', newLine ,
 													'\textbf{aaab} & \textbf{jkhjh} \\', newLine ,
 													'\midrule', newLine ,
@@ -442,7 +443,8 @@ MicLaTeXWriterTest >> testTable [
 MicLaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
-	self assert: writer contents equals: '\begin{tabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+													'\begin{tabular}{ll}', newLine ,
 													'\toprule', newLine ,
 													'aaab & jkhjh \\', newLine ,
 													'bar & rab \\', newLine ,
