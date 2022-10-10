@@ -10,13 +10,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-MicHTMLStylerApp class >> menuCommandOn: aBuilder [ 
-	<worldMenu> 
-	
+MicHTMLStylerApp class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
 	(aBuilder item: #'Microdown HTML Styler')
 		parent: #Tools;
-		action:[ self new run ];
-		icon: self taskbarIcon.
+		action: [ self new run ];
+		icon: (self iconNamed: self taskbarIconName)
 ]
 
 { #category : #'instance creation' }
