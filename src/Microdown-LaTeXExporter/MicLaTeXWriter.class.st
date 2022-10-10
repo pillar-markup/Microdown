@@ -302,6 +302,7 @@ MicLaTeXWriter >> visitStrike: aStrike [
 { #category : #'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
 	| environment |
+	canvas newLine.
 	environment := canvas environment name: self tabularEnvironment.
 	aTable rows size = 0
 		ifTrue: [ environment with: [  ].
