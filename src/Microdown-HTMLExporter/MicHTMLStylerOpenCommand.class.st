@@ -55,7 +55,7 @@ MicHTMLStylerOpenCommand >> isValidMic: aString [
 	| fileRef |
 	
 	fileRef := aString asFileReference.
-	^ fileRef exists and: [ fileRef extension asLowercase = 'mic'  ]
+	^ fileRef exists and: [ fileRef extension asLowercase = 'md'  ]
 ]
 
 { #category : #execution }
