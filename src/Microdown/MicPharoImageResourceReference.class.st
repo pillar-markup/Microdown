@@ -32,7 +32,7 @@ MicPharoImageResourceReference >> binaryReadStream [
 { #category : #accessing }
 MicPharoImageResourceReference >> contents [
 	"I am not needed, I implement loadMicrodown directly"
-	^ self shouldBeImplemented
+	^ self perform
 ]
 
 { #category : #loading }
