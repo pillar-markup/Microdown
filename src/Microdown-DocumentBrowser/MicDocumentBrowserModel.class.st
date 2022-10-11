@@ -1,5 +1,13 @@
 "
-[ documentModel source  ]
+I am a model used by the document browser.
+
+I keep
+- reference or section
+- its source code
+- its document in rendered format
+- isDirty indicated if the source has not been saved
+
+Setting the resourceReference renders updates the source and document
 "
 Class {
 	#name : #MicDocumentBrowserModel,
@@ -9,9 +17,6 @@ Class {
 		'source',
 		'isDirty',
 		'resourceReference'
-	],
-	#classVars : [
-		'Browser'
 	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
@@ -46,11 +51,9 @@ MicDocumentBrowserModel >> resourceReference [
 ]
 
 { #category : #accessing }
-MicDocumentBrowserModel >> resourceReference: refereceSectionOrNil [
+MicDocumentBrowserModel >> resourceReference: ref [
 	"I set the document and source of the argument"
-	('Document model set reference: ', refereceSectionOrNil printString) traceCr.
-	refereceSectionOrNil ifNil: [ 1halt].
-	resourceReference := refereceSectionOrNil.
+	resourceReference := ref.
 	isDirty := false.
 	self updateDocumentFromSource
 	
@@ -74,8 +77,7 @@ MicDocumentBrowserModel >> source [
 { #category : #accessing }
 MicDocumentBrowserModel >> source: markupString [
 	"Assumes we can save"
-	('Document model source: ', (markupString truncateTo: 20)) traceCr.
-	self canSave ifFalse: [ ^ Error signal: 'Cannot save to ', resourceReference uri ].
+	self canSave ifFalse: [ ^ self ].
 	source := markupString.
 	isDirty := true.
 ]

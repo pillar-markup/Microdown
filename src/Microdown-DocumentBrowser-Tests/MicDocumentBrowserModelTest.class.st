@@ -95,9 +95,8 @@ MicDocumentBrowserModelTest >> testSave [
 MicDocumentBrowserModelTest >> testSave_not [
 	"Pick a resource which is read-only"
 	model resourceReference: 'pharo:///MicDocumentBrowserModelTest/backupComment' asMicResourceReference.
-	self 
-		should: [ model source: 'Dummy source' ]
-		raise: Error	
+	model source: 'Should not be written'.
+	self deny: model source equals: 'Should not be written'
 		
 ]
 

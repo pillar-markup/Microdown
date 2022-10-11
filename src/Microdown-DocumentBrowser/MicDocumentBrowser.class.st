@@ -14,7 +14,11 @@ The roots loaded at the moment is:
 - all class and package comments in the Microdown project (read and write)
 - all docs found on github relating to Microdown (read-only as one do not write to github)
 - all doc(s) folders found in iceberg workspace (read and write). This will be the th doc-folders of projects known by iceberg.
+## Auto saving
+Moving to an other document or closing the browser will save changes made in source
 
+## Preventing cyclic events
+In order to prevent cycles in the events, all methods called through gui actions are garding some parts of their actions with a check on the variable `disabledEvents'. 
 "
 Class {
 	#name : #MicDocumentBrowser,
@@ -52,17 +56,22 @@ MicDocumentBrowser class >> itemsForDirectory: aFileDirectory [
 
 { #category : #'instance creation' }
 MicDocumentBrowser class >> open [
-	<example>
-	Browser := nil.
-	^ self new open
+	"I ensure the browser to be open. If no browser exist, I instantiate one"
+	<script>
+	Browser ifNil: [ Browser := self new ].
+	(Browser owner isNil or: [ Browser owner isClosed ])
+		ifTrue: [ Browser open ].
+	
+	
 ]
 
 { #category : #opening }
 MicDocumentBrowser class >> openDocument: aMicResourceReferenceOrString [
 	"I open microdown documents. If an existing browser instance is present, add the reference to the browser.
 	I am called when following links in rich text to microdown documents, but can also be used as api method."
+	
 	<richtextlinkpresenter: #md>
-	Browser ifNil: [ self new open ].
+	self open.
 	Browser addRoot: (aMicResourceReferenceOrString isString
 		ifTrue: [ aMicResourceReferenceOrString asMicResourceReference  ]
 		ifFalse: [aMicResourceReferenceOrString ])
@@ -96,26 +105,24 @@ MicDocumentBrowser class >> serviceOpenMicrodownDocument [
 
 { #category : #navigation }
 MicDocumentBrowser >> addRoot: document [
+	"Add document to the documents list and select it. If already in the list, just select it"
+	| toSelect |
+	"Notice, once equals is defined for resource references this code should make use of it"
+	toSelect := self documentRoots 
+		detect: [ :root | root uri = document uri ] 
+		ifNone: [self documentRoots add: document. document].
 	self disableEventsDuring: [
-		(self documentRoots includes: document)
-			ifFalse: [ 
-				self documentRoots add: document.
-				spDocumentList roots: self documentRoots  ].
-		spDocumentList selection selectItem: document].
+		spDocumentList roots: self documentRoots.
+		spDocumentList selection selectItem: toSelect].
 	self documentSelected: document
 		
 	
 	
 ]
 
-{ #category : #rendering }
-MicDocumentBrowser >> asRichText: doc [
-	"reuse composer with its existing textStyler"
-	^ Microdown asRichText: doc
-]
-
 { #category : #navigation }
 MicDocumentBrowser >> childrenOf: aNode [
+	"I am a utility method to find children in a node"
 	(aNode isKindOf: MicElement)
 		ifTrue: [ ^ aNode subsections children].
 	aNode loadChildren
@@ -127,55 +134,45 @@ MicDocumentBrowser >> childrenOf: aNode [
 	
 ]
 
-{ #category : #'source code' }
-MicDocumentBrowser >> colorCanEdit [
-	^ self theme backgroundColor 
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> colorCannotEdit [
-	| bgColor |
-	bgColor := self theme backgroundColor.
-	^ bgColor lightness < 0.5
-		ifTrue: [ bgColor + (Color r: 0.0 g: 0.04 b:0.08 )]
-		ifFalse: [ bgColor darker ]
-]
-
 { #category : #initialization }
 MicDocumentBrowser >> connectPresenters [
-	
+	"Listen to gui input"
 	spDocumentList 
-		whenSelectionChangedDo: [ :selection | self newSelection: selection selectedItem ].
+		whenSelectionChangedDo: [ :selection | self guiNewSelection: selection selectedItem ].
 	spSource 
-		whenSubmitDo: [:text|  self saveSource ];
-		whenTextChangedDo: [ :newSource | self setSource: newSource ]
+		whenSubmitDo: [:text|  self guiSaveSource ];
+		whenTextChangedDo: [ :newSource | self guiSetSource: newSource ]
 ]
 
 { #category : #private }
 MicDocumentBrowser >> defaultDocumentRoots [
-	^ ({'comment://package/Microdown-DocumentBrowser'.
-		"'file:/Users/kasper/tmp/pharo/doc'."
-		'github://pharo-project/pharo:Pharo11/doc/Regex'
-	 	}, 
+	"By default include the pharo doc and the docs of loaded projects"
+	^ ({'github://pharo-project/pharo/doc'}, 
 		self loadedDocsInWorkspace  )
 			collect: #asMicResourceReference
 ]
 
-{ #category : #initialization }
+{ #category : #events }
 MicDocumentBrowser >> disableEventsDuring: aBlock [
+	| old | 
+	"The clue of old is to allow multible nested diableEventsDuring calls
+	and only the outermost will reset back to the default false value"
+	old := disableEvents.
 	disableEvents := true.
 	aBlock value.
-	disableEvents := false. 
+	disableEvents := old. 
 ]
 
 { #category : #navigation }
 MicDocumentBrowser >> displayIconOf: aNode [
+	"Utility method to put icons on the document list"
 	(aNode isKindOf: MicElement) ifTrue: [ ^ self iconNamed: #smallLeftFlush ].
 	^ aNode browserIcon
 ]
 
 { #category : #navigation }
 MicDocumentBrowser >> displayStringOf: aNode [
+	"Utility method to generate the titles used in document list"
 	(aNode isKindOf: MicSectionBlock) ifTrue: [ ^ (Microdown asRichText: aNode header) asString trim ].
 	^aNode browserTitle
 ]
@@ -186,12 +183,80 @@ MicDocumentBrowser >> documentRoots [
 		ifNil: [ documentRoots := self defaultDocumentRoots asOrderedCollection  ].
 ]
 
-{ #category : #events }
+{ #category : #navigation }
 MicDocumentBrowser >> documentSelected: document [
-	"document is newly selected, and should be rendered. If source is needed, set it as well"
+	"document is newly selected, and should be rendered. If source is showing, set it as well"
 	documentModel save.
 	documentModel resourceReference: document.
-	self updateRenderAndSource.
+	documentModel resourceReference 
+		ifNotNil: [ 
+			spRendering document: documentModel document.
+			layoutModel showSource 
+				ifTrue: [ spSource text: documentModel source ].
+			self owner title: (self displayStringOf: documentModel resourceReference )  ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiNewSelection: selection [
+	"I am called when a user selects a new element in spDocumentList"
+	disableEvents ifTrue: [ ^ self ].
+	self documentSelected: selection
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiSaveSource [
+	"called by save button or accept in spSource"
+	| path sourceSelection sourceScroll |
+	disableEvents ifTrue: [ ^ self ].
+	documentModel isDirty ifFalse: [ ^ self ].
+	self disableEventsDuring: [ 
+		documentModel
+			source: spSource text;
+			save.
+		spRendering document: documentModel document.
+		"Sync the views"
+		path := spDocumentList selection selectedPath.
+		sourceSelection := spSource selectionInterval.
+		sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
+		spDocumentList roots: self documentRoots.
+		spDocumentList
+			expandPath: path;
+			selectPath: path.
+		spSource selectionInterval: sourceSelection.
+		spSource adapter setScrollValue: 0 @ sourceScroll.
+		spRendering adapter setScrollValue: 0 @ sourceScroll.
+		spSource takeKeyboardFocus ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiSetListShowing: aBoolean [
+	"Change layout to include the document list or not"
+	layoutModel showDocumentList: aBoolean.
+	self disableEventsDuring: [ self setTopLayout ] 
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiSetSource: newSource [
+	"called by changes to spSource"
+	disableEvents ifTrue: [ ^ self ].
+	documentModel source: newSource
+	
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiSetSourceMode: sourceMode [
+	"Change the layout as how spRendering and spSource are placed"
+	layoutModel sourceMode: sourceMode.
+	self disableEventsDuring: [ self setTopLayout  ]
+]
+
+{ #category : #events }
+MicDocumentBrowser >> guiSetSourceShowing: showSource [
+	"change layout to include spSource or not"
+	layoutModel showSource: showSource.
+	self disableEventsDuring: 
+		[ 	showSource ifTrue: [ spSource text: documentModel source ].
+			self setTopLayout ]
 ]
 
 { #category : #initialization }
@@ -201,7 +266,7 @@ MicDocumentBrowser >> initialExtent [
 
 { #category : #initialization }
 MicDocumentBrowser >> initialize [
-
+	"Initialize my models first"
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
 	disableEvents := false.
@@ -210,32 +275,32 @@ MicDocumentBrowser >> initialize [
 
 { #category : #initialization }
 MicDocumentBrowser >> initializeButtons [
-
+	"initialize the button bar"
+	spButtonBar := self instantiate: MicDocumentBrowserButtonBar.
 	spButtonBar
 		left: (spButtonBar newCheckBox
 				 label: 'Show List';
-				 state: self listShowing;
-				 whenChangedDo: [ :val | self setListShowing: val ]);
+				 state: layoutModel showDocumentList;
+				 whenChangedDo: [ :val | self guiSetListShowing: val ]);
 		right: (spButtonBar newDropList
 				 help: 'source view';
 				 items: layoutModel sourceModes;
 				 whenSelectedItemChangedDo: [ :item | 
-					 self setSourceMode: item ]);
+					 self guiSetSourceMode: item ]);
 		right: (saveButton := spButtonBar newButton
 				 label: 'Save';
-				 state: self isSourceShowing;
-				  action: [ self saveSource ]);
+				 state: layoutModel showSource;
+				  action: [ self guiSaveSource ]);
 		right: (spButtonBar newCheckBox
 				 label: 'Show Source';
-				 state: self isSourceShowing;
-				 whenChangedDo: [ :val | self setSourceShowing: val ])
+				 state: layoutModel showSource;
+				 whenChangedDo: [ :val | self guiSetSourceShowing: val ])
 ]
 
 { #category : #initialization }
 MicDocumentBrowser >> initializePresenters [
 
 	super initializePresenters.
-	'Start initializePresenters' traceCr.
 	
 	Browser := self.
 	spDocumentList := self newTree.
@@ -244,17 +309,9 @@ MicDocumentBrowser >> initializePresenters [
 		children: [ :aNode | self childrenOf: aNode ];
 		display: [ :aNode | self displayStringOf: aNode ];
 		displayIcon: [ :aNode | self displayIconOf: aNode ].
-	spDocumentList contextMenu: [ 
-		self rootCommandsGroup beRoot asMenuPresenter ].
-
 	spRendering := self instantiate: MicrodownPresenter.
-	spSource := self newText
-		text: documentModel source.
-	spButtonBar := self newDocumentButtonBar.
-	self initializeButtons.
-	"self setTopLayout."
-	
-	'End initializePresenters' traceCr.
+	spSource := self newText.
+	self initializeButtons
 ]
 
 { #category : #initialization }
@@ -265,27 +322,11 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 		Browser := nil ].
 ]
 
-{ #category : #testing }
-MicDocumentBrowser >> isCurrentDirty [
-	^ documentModel isDirty
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> isSourceShowing [
-	^ layoutModel showSource 
-
-	
-]
-
-{ #category : #accessing }
+{ #category : #layout }
 MicDocumentBrowser >> layout [
+	"I use dynamic layout"
 	layout ifNil: [ self setTopLayout  ].
 	^ layout 
-]
-
-{ #category : #'as yet unclassified' }
-MicDocumentBrowser >> listShowing [
-	^ layoutModel showDocumentList 
 ]
 
 { #category : #private }
@@ -299,153 +340,19 @@ MicDocumentBrowser >> loadedDocsInWorkspace [
 		select: [ :dir | #('doc' 'docs') includes: dir basename ]
 ]
 
-{ #category : #'instance creation' }
-MicDocumentBrowser >> newDocumentButtonBar [
-
-	^ self instantiate: MicDocumentBrowserButtonBar 
-]
-
-{ #category : #events }
-MicDocumentBrowser >> newSelection: selection [
-
-	"I am the raw user selection in the spDocumentList"
-	disableEvents ifTrue: [ ^ self ].
-	documentModel save.
-	documentModel resourceReference: selection.
-	self updateRenderAndSource
-]
-
-{ #category : #rendering }
-MicDocumentBrowser >> renderDocument: referenceOrSection [ 
-	|doc|
-	[ doc := (referenceOrSection isKindOf: MicElement )
-		ifTrue: [  "should reuse composer when selecting section" 
-			referenceOrSection] 
-		ifFalse: [ 
-			referenceOrSection loadMicrodown ].
-	  spRendering text:(self asRichText: doc )]
-	on: MicResourceReferenceError  
-	do: [ spRendering text: '' ].
-	spRendering selectionInterval: (1 to: 0)
-	
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> saveSource [
-	"Selected document must be a root section"
-	| path sourceSelection sourceScroll|
-	disableEvents ifTrue: [ ^ self ].
-	documentModel isDirty ifFalse: [ ^self ].
-	self disableEventsDuring: [
-	documentModel source: spSource text; save.
-	self renderDocument: documentModel document.
-	"Sync the views"
-	path := spDocumentList selection selectedPath.
-	sourceSelection := spSource selectionInterval.
-	sourceScroll := spSource adapter widget scrollPane vScrollbarValue.
-	spDocumentList roots: self documentRoots .
-	spDocumentList 
-		expandPath: path;
-		selectPath: path.
-	spSource selectionInterval: sourceSelection.
-	spSource adapter setScrollValue: 0 @ sourceScroll.
-	spRendering adapter setScrollValue: 0 @ sourceScroll.
-	spSource takeKeyboardFocus.]
-	
-	
-	
-	
-	
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> scrollSyncRenderToSource [
-	| sourceScroll str |
-	str := spSource text asString.
-	sourceScroll := (str lineNumberCorrespondingToIndex: (spSource selectionInterval first)) -1 /
-		str lineCount.
-	spRendering adapter widget scrollPane vScrollbarValue: sourceScroll
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> setEditStatus: status [
-	"can be #canEdit, #connotEdit, #hasBeenEdited"
-	status = #hasBeenEdited
-		ifTrue: [ spSource adapter widget color: self colorCanEdit. saveButton state: true. ^ self].
-	status = #canEdit
-		ifTrue: [ spSource adapter widget color: self colorCanEdit. saveButton state: false. ^ self].
-	status = #cannotEdit
-		ifTrue: [ spSource adapter widget color: self colorCannotEdit. saveButton state: false. ^ self]
-		
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> setListShowing: aBoolean [
-	layoutModel showDocumentList: aBoolean.
-	self setTopLayout 
-]
-
-{ #category : #events }
-MicDocumentBrowser >> setSource: newSource [
-	('Document browser setSource: ', (newSource truncateTo: 20)) traceCr.
-	disableEvents ifTrue: [ ^ self ].
-	documentModel source: newSource
-	
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> setSourceMode: sourceMode [
-	layoutModel sourceMode: sourceMode.
-	self disableEventsDuring: [ self setTopLayout  ]
-]
-
-{ #category : #'source code' }
-MicDocumentBrowser >> setSourceOfSelectedDocument [
-	"I set the source of the selected document"
-	|  |
-	documentModel resourceReference:  spDocumentList selectedItem.
-	documentModel resourceReference  ifNil: [ ^ self ].
-	documentModel canSave
-		ifTrue: [self setEditStatus: #canEdit]
-		ifFalse: [self setEditStatus: #cannotEdit]
-		
-	
-]
-
-{ #category : #accessing }
-MicDocumentBrowser >> setSourceShowing: showSource [
-
-	layoutModel showSource: showSource.
-	self disableEventsDuring: 
-		[ 	showSource ifTrue: [ spSource text: documentModel source ].
-			self setTopLayout ]
-]
-
 { #category : #layout }
 MicDocumentBrowser >> setTopLayout [
-
-	'Start toplayout' traceCr.
+	"I set the layout of the browser. The dynamic part of the layout is done by layoutModel"
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (layoutModel
-					  layoutList: spDocumentList
-					  rendering: spRendering
-					  source: spSource);
-			 add: spButtonBar expand: false;
-			 yourself).
-	'End toplayout' traceCr.
+		add: (layoutModel
+			layoutList: spDocumentList
+			rendering: spRendering
+			source: spSource);
+		add: spButtonBar expand: false;
+		yourself)
 ]
 
 { #category : #initialization }
 MicDocumentBrowser >> title [
 	^ 'Microdown document browser'
-]
-
-{ #category : #'as yet unclassified' }
-MicDocumentBrowser >> updateRenderAndSource [
-
-	documentModel resourceReference 
-		ifNotNil: [ 
-			spRendering document: documentModel document.
-			layoutModel showSource 
-				ifTrue: [ spSource text: documentModel source ]  ]
 ]
