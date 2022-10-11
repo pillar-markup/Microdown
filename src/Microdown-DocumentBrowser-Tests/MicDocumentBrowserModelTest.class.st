@@ -33,7 +33,7 @@ MicDocumentBrowserModelTest >> setUp [
 
 { #category : #tests }
 MicDocumentBrowserModelTest >> testCanSave [
-	model resourceReference: 'https://dummy.org' asMicResourceReference.
+	model resourceReference: 'https://nowhere.atall' asMicResourceReference.
 	self deny: model canSave.
 ]
 
