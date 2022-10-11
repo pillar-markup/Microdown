@@ -77,6 +77,15 @@ MicDocumentBrowser class >> openDocument: aMicResourceReferenceOrString [
 		ifFalse: [aMicResourceReferenceOrString ])
 ]
 
+{ #category : #'class initialization' }
+MicDocumentBrowser class >> reset [
+	<script>
+	Browser ifNil: [ ^ self ].
+	Browser owner ifNil: [ Browser := nil. ^ self ].
+	Browser owner close.
+	Browser := nil.
+]
+
 { #category : #'services menu' }
 MicDocumentBrowser class >> serviceOpenMicrodownDirectory [
 	"Answer the service of opening a file-contents browser"
@@ -260,11 +269,6 @@ MicDocumentBrowser >> guiSetSourceShowing: showSource [
 ]
 
 { #category : #initialization }
-MicDocumentBrowser >> initialExtent [
-	^ 1000@600
-]
-
-{ #category : #initialization }
 MicDocumentBrowser >> initialize [
 	"Initialize my models first"
 	documentModel := MicDocumentBrowserModel new.
@@ -316,9 +320,13 @@ MicDocumentBrowser >> initializePresenters [
 
 { #category : #initialization }
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
+	"Adds window closing behaviour"
 	super initializeWindow: aWindowPresenter.
+	aWindowPresenter 
+		initialExtent: 1000@600;
+		title: 'Microdown document browser'.
 	aWindowPresenter whenClosedDo: [ 
-		self saveSource.
+		self guiSaveSource.
 		Browser := nil ].
 ]
 
@@ -350,9 +358,4 @@ MicDocumentBrowser >> setTopLayout [
 			source: spSource);
 		add: spButtonBar expand: false;
 		yourself)
-]
-
-{ #category : #initialization }
-MicDocumentBrowser >> title [
-	^ 'Microdown document browser'
 ]
