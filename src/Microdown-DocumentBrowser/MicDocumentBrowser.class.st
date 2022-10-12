@@ -199,35 +199,25 @@ MicDocumentBrowser >> documentSelected: document [
 	"document is newly selected, and should be rendered. If source is showing, set it as well"
 	documentModel save.
 	documentModel resourceReference: document.
-	documentModel resourceReference 
-		ifNotNil: [ 
-			spRendering document: documentModel document.
-			spRendering selectionInterval: (1 to: 0).
-			layoutModel showSource 
-				ifTrue: [ spSource text: documentModel source ].
-			self owner title: (self displayStringOf: documentModel resourceReference )  ]
+	documentModel resourceReference ifNil: [ ^ self ].
+	spRendering document: documentModel document.
+	spRendering selectionInterval: (1 to: 0).
+	self updateSourcePresenter.
+	self owner title:
+		(self displayStringOf: documentModel resourceReference)
 ]
 
 { #category : #events }
 MicDocumentBrowser >> guiCancelSourceChange [
-	"called by save button or accept in spSource"
-	| path renderedScroll |
+	"called by whenResetDo: on spSource "
 	disableEvents ifTrue: [ ^ self ].
 	documentModel isDirty ifFalse: [ ^ self ].
+
 	self disableEventsDuring: [ 
 		documentModel source: nil.
 		self showSourceNotDirty.
-		spRendering document: documentModel document.
-		"Sync the canceled source virwe to the rendered view"
-		path := spDocumentList selection selectedPath.
-		renderedScroll := spRendering adapter widget scrollPane vScrollbarValue.
-		spDocumentList roots: self documentRoots.
-		spDocumentList
-			expandPath: path;
-			selectPath: path.
-		spSource text: documentModel source.
-		spSource adapter setScrollValue: 0 @ renderedScroll.
-		spSource takeKeyboardFocus ]
+		spSource 
+			text: documentModel source]
 ]
 
 { #category : #events }
@@ -247,6 +237,7 @@ MicDocumentBrowser >> guiSaveSource [
 		documentModel
 			source: spSource text;
 			save.
+		self showSourceNotDirty.
 		spRendering document: documentModel document.
 		"Sync the views"
 		path := spDocumentList selection selectedPath.
@@ -289,9 +280,9 @@ MicDocumentBrowser >> guiSetSourceMode: sourceMode [
 MicDocumentBrowser >> guiSetSourceShowing: showSource [
 	"change layout to include spSource or not"
 	layoutModel showSource: showSource.
-	self disableEventsDuring: 
-		[ 	showSource ifTrue: [ spSource text: documentModel source ].
-			self setTopLayout ]
+	self disableEventsDuring: [
+		self setTopLayout.
+		self updateSourcePresenter]
 ]
 
 { #category : #initialization }
@@ -371,9 +362,9 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 		Browser := nil ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'dirty indication' }
 MicDocumentBrowser >> intializeApplication [
-	browserApp = SpApplication new.
+	browserApp := SpApplication new.
 	self initializeStylesheet.
 	self application: browserApp.
 	
@@ -409,12 +400,26 @@ MicDocumentBrowser >> setTopLayout [
 		yourself)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'dirty indication' }
 MicDocumentBrowser >> showSourceDirty [
 	spSource removeStyle: 'notDirty'; addStyle: 'dirty'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'dirty indication' }
 MicDocumentBrowser >> showSourceNotDirty [
 	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
+]
+
+{ #category : #updating }
+MicDocumentBrowser >> updateSourcePresenter [
+	""
+	layoutModel showSource ifTrue: [ 
+		self disableEventsDuring: [ 
+			spSource
+				editable: documentModel canSave;
+				text: documentModel source.
+			spSource adapter color: (documentModel canSave
+					 ifTrue: [ self theme backgroundColor ]
+					 ifFalse: [ self theme lightBaseColor ]).
+			self showSourceNotDirty ] ]
 ]
