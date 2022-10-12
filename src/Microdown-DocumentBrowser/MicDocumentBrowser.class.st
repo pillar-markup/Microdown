@@ -200,6 +200,7 @@ MicDocumentBrowser >> documentSelected: document [
 	documentModel resourceReference 
 		ifNotNil: [ 
 			spRendering document: documentModel document.
+			spRendering selectionInterval: (1 to: 0).
 			layoutModel showSource 
 				ifTrue: [ spSource text: documentModel source ].
 			self owner title: (self displayStringOf: documentModel resourceReference )  ]
