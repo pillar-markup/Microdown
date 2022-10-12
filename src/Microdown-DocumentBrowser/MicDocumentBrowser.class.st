@@ -32,7 +32,8 @@ Class {
 		'documentRoots',
 		'documentModel',
 		'layoutModel',
-		'disableEvents'
+		'disableEvents',
+		'browserApp'
 	],
 	#classVars : [
 		'Browser'
@@ -150,6 +151,7 @@ MicDocumentBrowser >> connectPresenters [
 		whenSelectionChangedDo: [ :selection | self guiNewSelection: selection selectedItem ].
 	spSource 
 		whenSubmitDo: [:text|  self guiSaveSource ];
+		whenResetDo: [ :text | self guiCancelSourceChange ];
 		whenTextChangedDo: [ :newSource | self guiSetSource: newSource ]
 ]
 
@@ -207,6 +209,28 @@ MicDocumentBrowser >> documentSelected: document [
 ]
 
 { #category : #events }
+MicDocumentBrowser >> guiCancelSourceChange [
+	"called by save button or accept in spSource"
+	| path renderedScroll |
+	disableEvents ifTrue: [ ^ self ].
+	documentModel isDirty ifFalse: [ ^ self ].
+	self disableEventsDuring: [ 
+		documentModel source: nil.
+		self showSourceNotDirty.
+		spRendering document: documentModel document.
+		"Sync the canceled source virwe to the rendered view"
+		path := spDocumentList selection selectedPath.
+		renderedScroll := spRendering adapter widget scrollPane vScrollbarValue.
+		spDocumentList roots: self documentRoots.
+		spDocumentList
+			expandPath: path;
+			selectPath: path.
+		spSource text: documentModel source.
+		spSource adapter setScrollValue: 0 @ renderedScroll.
+		spSource takeKeyboardFocus ]
+]
+
+{ #category : #events }
 MicDocumentBrowser >> guiNewSelection: selection [
 	"I am called when a user selects a new element in spDocumentList"
 	disableEvents ifTrue: [ ^ self ].
@@ -249,7 +273,8 @@ MicDocumentBrowser >> guiSetListShowing: aBoolean [
 MicDocumentBrowser >> guiSetSource: newSource [
 	"called by changes to spSource"
 	disableEvents ifTrue: [ ^ self ].
-	documentModel source: newSource
+	documentModel source: newSource.
+	self showSourceDirty
 	
 ]
 
@@ -275,6 +300,7 @@ MicDocumentBrowser >> initialize [
 	documentModel := MicDocumentBrowserModel new.
 	layoutModel := MicDocumentBrowserLayoutModel new.
 	disableEvents := false.
+	self intializeApplication.
 	super initialize
 ]
 
@@ -320,6 +346,20 @@ MicDocumentBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
+MicDocumentBrowser >> initializeStylesheet [
+	browserApp backend name = #Morphic
+		ifTrue: [ browserApp  addStyleSheetFromString: '.application [
+    .dirty [ Container { #borderColor: #red, #borderWidth: 1 } ],
+    .notDirty [ Container { #borderColor: #transparent, #borderWidth: 1 } ]]'].
+	browserApp backend name = #Gtk
+		ifTrue: [ browserApp addCSSProviderFromString: '
+.dirty { 
+    border-color: red; 
+    border-width: 1px; }
+' ]
+]
+
+{ #category : #initialization }
 MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	"Adds window closing behaviour"
 	super initializeWindow: aWindowPresenter.
@@ -329,6 +369,14 @@ MicDocumentBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter whenClosedDo: [ 
 		self guiSaveSource.
 		Browser := nil ].
+]
+
+{ #category : #'as yet unclassified' }
+MicDocumentBrowser >> intializeApplication [
+	browserApp = SpApplication new.
+	self initializeStylesheet.
+	self application: browserApp.
+	
 ]
 
 { #category : #layout }
@@ -359,4 +407,14 @@ MicDocumentBrowser >> setTopLayout [
 			source: spSource);
 		add: spButtonBar expand: false;
 		yourself)
+]
+
+{ #category : #'as yet unclassified' }
+MicDocumentBrowser >> showSourceDirty [
+	spSource removeStyle: 'notDirty'; addStyle: 'dirty'
+]
+
+{ #category : #'as yet unclassified' }
+MicDocumentBrowser >> showSourceNotDirty [
+	spSource removeStyle: 'dirty'; addStyle: 'notDirty'
 ]
