@@ -343,7 +343,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
 
-	self assert: (richText asString trim first: 5 )equals: 'See ', (String value: 1).
+	self assert: (richText asString trim first: 6) equals: 'See  ', (String value: 1).
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
 ]
 
