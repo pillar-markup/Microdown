@@ -131,7 +131,8 @@ MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 { #category : #tests }
 MicSBALaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
-	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+'\begin{fullwidthtabular}{ll}', newLine ,
 '\toprule', newLine ,
 '\textbf{aaab} & \textbf{jkhjh} \\', newLine ,
 '\midrule', newLine ,
@@ -144,7 +145,8 @@ MicSBALaTeXWriterTest >> testTable [
 MicSBALaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
-	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+'\begin{fullwidthtabular}{ll}', newLine ,
 '\toprule', newLine ,
 'aaab & jkhjh \\', newLine ,
 'bar & rab \\', newLine ,

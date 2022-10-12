@@ -326,7 +326,8 @@ MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
 		using images as links. Adding it even if the image is not a link causes no
 		harm (it is invisible), and this is the easiest place to add it."
 	"See https://en.wikipedia.org/wiki/Zero-width_space"
-	^ text, "16rFEFF asCharacter asString" ' ' asText
+	"16rFEFF asCharacter asString asText"
+	^ ' ' asText , text, ' ' asText
 ]
 
 { #category : #initialization }
