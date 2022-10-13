@@ -26,13 +26,14 @@ Class {
 }
 
 { #category : #public }
-MicMathBlock class >> alternateBlockClassFor: line [
+MicMathBlock class >> alternateBlockClassFor_old: line [
 
 	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
 	"line is of the form <!slide|title=Schedule"
 	"We know that the two first characters are <? else we would be invoked"
 
 	| tag |
+	1halt: 'I should not extent'.
 	tag := ((line allButFirst: MathOpeningBlockMarkup size) 
 		        copyUpTo: $|) trimBoth.
 	tag := tag withoutPrefix: '%'.

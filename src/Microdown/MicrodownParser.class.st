@@ -247,7 +247,7 @@ MicrodownParser >> initialize [
 	dispatchTable := Dictionary new.
 	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
 	dispatchTable at: HeaderMarkup put: MicHeaderBlock.
-	dispatchTable at: CodeblockMarkup put: MicCodeBlock.
+	dispatchTable at: CodeblockMarkup put: MicAbstractCodeBlock.
 	dispatchTable at: AnnotatedParagraphMarkup put: MicAnnotatedBlock.
 	dispatchTable at: CommentedLineMarkup put: MicCommentBlock.
 	dispatchTable at: HorizontalLineMarkup put: MicHorizontalLineBlock.

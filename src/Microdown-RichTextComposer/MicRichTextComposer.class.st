@@ -661,6 +661,8 @@ MicRichTextComposer >> visitScript: aScriptBlock [
 	( result isKindOf:  MicElement )
 		ifTrue: [ resText := Microdown asRichText: result ].
 	resText ifNil: [ resText  := result printString asText ].
+	(aScriptBlock arguments at: #show ifAbsent: [ #result ]) = #both
+		ifTrue: [ self visitCode: aScriptBlock ].
 	canvas 
 		newLineIfNotAlready;
 		<< resText;
