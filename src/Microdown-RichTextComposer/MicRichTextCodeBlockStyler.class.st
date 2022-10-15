@@ -43,3 +43,8 @@ MicRichTextCodeBlockStyler class >> stylerFor: languageName [
 		ifNone: [ MicRichTextCodeBlockStylerDefault]) new
 
 ]
+
+{ #category : #accessing }
+MicRichTextCodeBlockStyler >> style: sourceString [ 
+	^ self subclassResponsibility
+]
