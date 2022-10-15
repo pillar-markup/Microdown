@@ -230,7 +230,7 @@ MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
 
 	| source richText expected |
 	source := '
-```language=dummy
+```language=dummyForTest
 line 1
 line 2
 ```
@@ -245,7 +245,7 @@ MicRichTextComposerTest >> testCodeBlockStylerShortHand [
 
 	| source richText expected |
 	source := '
-```dummy
+```dummyForTest
 line 1
 line 2
 ```

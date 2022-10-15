@@ -194,9 +194,9 @@ MicRichTextComposer class >> exampleMicrodown6 [
 '### Latex mathematics 
 It is possible to render latex math via a web services. We allow inline math $x ^ 2$, or math blocks
 
-&
+$$
  \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
-&
+$$
 
 Cool eh?
 '
@@ -220,12 +220,6 @@ this is just _first_ line
 
 !!todo remember to do annotations
 and this is the second line'
-]
-
-{ #category : #'class initialization' }
-MicRichTextComposer class >> initialize [ 
-	"self initialize"
-	MicCodeStylerSpec initializeCache.
 ]
 
 { #category : #'visiting - document' }
@@ -268,7 +262,7 @@ MicRichTextComposer >> codeStylerClass [
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
-	codeStylerClass := MicCodeStylerSpec.
+	codeStylerClass := MicRichTextCodeBlockStyler.
 	self textStyler:  MicTextStyler new.
 ]
 
@@ -386,9 +380,8 @@ MicRichTextComposer >> visitCode: aCodeBlock [
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< (self codeStylerClass 
-				style: aCodeBlock body 
-				asLanguage: aCodeBlock language);
+			<< ((self codeStylerClass stylerFor: aCodeBlock language)
+					style: aCodeBlock body );
 			newLine.
 		aCodeBlock hasCaption ifTrue: [ 
 			canvas 
