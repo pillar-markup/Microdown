@@ -341,7 +341,7 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
 	root := parser parse: 'What a super day for a ride.
-	
+
 <!card
 Sunn Special S3
 
