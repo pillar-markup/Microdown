@@ -190,8 +190,8 @@ MicCodeBlockTest >> testFourBackQuotesOnMultipleLinesWithText [
 	| codeBlock |
 	codeBlock := parser parse: '
 Before	
-	
-	
+
+
 ````pharo
 something in the way
 pif
@@ -211,7 +211,7 @@ MicCodeBlockTest >> testFourBackQuotesWithTextAround [
 	| codeBlock |
 	codeBlock := parser parse: '
 Start text here
-	
+
 ```` 
 something in the way
 ````

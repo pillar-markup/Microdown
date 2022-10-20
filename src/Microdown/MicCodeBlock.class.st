@@ -46,6 +46,19 @@ MicCodeBlock >> accept: aVisitor [
  	^ aVisitor visitCode: self
 ]
 
+{ #category : #public }
+MicCodeBlock >> closeMe [
+	"adjust prefix tabs based on first line
+	I am allowing the codeblock itself to be indented in the input, see motivation in Microdown issue: 543"
+	| codeLines tabs |
+	super closeMe.
+	codeLines := self code lines.
+	codeLines ifEmpty: [ ^ self ].
+	tabs := codeLines first size - codeLines first withoutPreTabs size.
+	self body: ((codeLines collect: [:line | line allButFirst: tabs]) joinUsing: String cr)
+	
+]
+
 { #category : #accessing }
 MicCodeBlock >> code [
 	^ self body
