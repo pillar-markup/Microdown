@@ -103,6 +103,11 @@ MicAbstractDelimiter class >> markup [
 ]
 
 { #category : #'as yet unclassified' }
+MicAbstractDelimiter class >> rawStyleOpeningMarkups [
+	^ self allActive select: [ :del | del isOpener and: [ del associatedInlineBlock isEvaluated not ] ]
+]
+
+{ #category : #'as yet unclassified' }
 MicAbstractDelimiter class >> regExNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
 	| str prefix|

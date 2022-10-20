@@ -76,22 +76,6 @@ MicInlineParser2 class >> magicCharacter [
 	^ 16r100000 "Private Use Area-B"
 ]
 
-{ #category : #parsing }
-MicInlineParser2 >> compactRaws: tokenStream [
-	"compact tokenStream so raw/unevaluated is single tokens"
-	
-	
-]
-
-{ #category : #'as yet unclassified' }
-MicInlineParser2 >> createInlineBlock: token [
-	"token is an opening delimiter"
-	| closer |
-	closer := (delimiterDictionary at: token) associatedInlineBlock closingDelimiter
-	
-	
-]
-
 { #category : #'as yet unclassified' }
 MicInlineParser2 >> createInlineBlock: openingDelimiter inStream: aReadStream [ 
 	| pos closer bodyStream newBlock|
@@ -103,14 +87,31 @@ MicInlineParser2 >> createInlineBlock: openingDelimiter inStream: aReadStream [
 			^ self createTextBlock: openingDelimiter markup].
 	bodyStream := ReadStream 
 		on: aReadStream contents
-		from: pos
+		from: pos + 1
 		to: aReadStream position - 1.
 	newBlock := openingDelimiter associatedInlineBlock new
 		substring: (aReadStream contents copyFrom: pos to: aReadStream position -1);
-		children: (self eagerParse: bodyStream ).
+		children: (self parseChildrenIn: bodyStream ).
 	^ newBlock 
 	
 	
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineParser2 >> createRawStyleBlock: token [
+	| opener block substring|
+	opener := (MicAbstractDelimiter rawStyleOpeningMarkups)
+		detect: [ :o | token beginsWith: o markup]
+		ifNone: [ nil ].
+	opener ifNil: [ ^ self createTextBlock: token ].
+	block := opener associatedInlineBlock new.
+	substring := token 
+		copyFrom: opener markup size + 1 
+		to: token size - block closingDelimiter size.
+	^ block
+		substring: substring;
+		children: { self createTextBlock: substring }
+		
 ]
 
 { #category : #'as yet unclassified' }
@@ -121,29 +122,32 @@ MicInlineParser2 >> createTextBlock: token [
 ]
 
 { #category : #'as yet unclassified' }
-MicInlineParser2 >> eagerParse: tokenStream [
-	"return an array of blocks from parsing tokenStream"
-	| children child |
-	children := OrderedCollection new.
-	[ tokenStream atEnd ]
-		whileFalse: [ | token delType |
-			token := tokenStream next.
-			delType := delimiterDictionary at: token ifAbsent: [ nil ].
-			child := (delType
-				ifNil: [ self createTextBlock: token ]
-				ifNotNil: [ 
-					delType isOpener 
-						ifTrue: [self createInlineBlock: delType inStream: tokenStream]
-						ifFalse: [ self createTextBlock: token] ]).
-			children add: child.
-		].
-	^ children
-]
-
-{ #category : #'as yet unclassified' }
 MicInlineParser2 >> initialize [
 	delimiterRegEx := MicAbstractDelimiter allRegex.
 	delimiterDictionary := (MicAbstractDelimiter allActive collect: [ :del | del markup -> del ]) asDictionary .
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineParser2 >> joinTextNodesOf: children [
+	"children might have several text blocks following each other - join them and remove empty Text blocks"
+	| outStream bufferText  |
+	outStream := WriteStream on: OrderedCollection new.
+	bufferText := nil.
+	children do: [ :child |
+		child class = MicTextBlock
+			ifTrue: [ bufferText 
+				ifNil: [ bufferText := child ]
+				ifNotNil: [ bufferText substring: (bufferText substring , child substring) ] ]
+			ifFalse: [ bufferText
+				ifNil: [ outStream nextPut: child ]
+				ifNotNil: [ 
+					bufferText substring ifNotEmpty: [outStream nextPut: bufferText].
+					outStream nextPut: child. bufferText := nil ]
+				 ]
+		 ].
+	(bufferText isNotNil and: [ bufferText substring isNotEmpty  ]) 
+		ifTrue: [ outStream nextPut: bufferText ].
+	 ^ outStream contents
 ]
 
 { #category : #parsing }
@@ -152,7 +156,27 @@ MicInlineParser2 >> parse: aString [
 	| escapedStream  tokenStream |
 	escapedStream := self class escapeEncode: aString.
 	tokenStream := self tokenize: escapedStream.
-	^ self eagerParse: tokenStream 
+	^ self parseChildrenIn: tokenStream 
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineParser2 >> parseChildrenIn: tokenStream [
+	"return an array of blocks from parsing tokenStream"
+	| children child |
+	children := OrderedCollection new.
+	[ tokenStream atEnd ]
+		whileFalse: [ | token delType |
+			token := tokenStream next.
+			delType := delimiterDictionary at: token ifAbsent: [ nil ].
+			child := (delType
+				ifNil: [ self createRawStyleBlock: token ]
+				ifNotNil: [ 
+					delType isOpener 
+						ifTrue: [self createInlineBlock: delType inStream: tokenStream]
+						ifFalse: [ self createTextBlock: token] ]).
+			children add: child.
+		].
+	^ self joinTextNodesOf: children
 ]
 
 { #category : #'as yet unclassified' }
