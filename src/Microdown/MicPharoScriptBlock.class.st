@@ -1,37 +1,37 @@
 "
 I am a block containing a Pharo expression.
 
-I am given semantics by these visitors:
-$$script
+A script showing my visitors:
+```pharoscript|show=both
 (Microdown builder  in:  [ :aBuilder |
 	aBuilder unorderedListDuring: [
 		(MicrodownVisitor allSubclasses 
 		select: [ :class |  class includesSelector: #visitScript: ])
 		do:  [:class |  aBuilder  item:  [ aBuilder monospace:  (class name, '>>#visitScript:') 
 ]]]]) contents
-$$
+```
 
-or
+or generating a morph
 
-$$script|width=100
+```pharoscript|width=100&show=both
 Morph new
-$$
+```
 "
 Class {
 	#name : #MicPharoScriptBlock,
-	#superclass : #MicMathBlock,
+	#superclass : #MicScriptBlock,
 	#category : #'Microdown-Extensions'
 }
 
 { #category : #accessing }
 MicPharoScriptBlock class >> tag [
 
-	^ #script
+	^ #pharoscript
 ]
 
 { #category : #visiting }
 MicPharoScriptBlock >> accept: aVisitor [
-	^ aVisitor visitScript: self
+	^ aVisitor visitPharoScript: self
 ]
 
 { #category : #accessing }

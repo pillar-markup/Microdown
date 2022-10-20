@@ -37,14 +37,9 @@ Second if we want to treat lines separatedly we have to reparse it. Now we do no
 "
 Class {
 	#name : #MicCodeBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
+	#superclass : #MicAbstractCodeBlock,
 	#category : #'Microdown-Model'
 }
-
-{ #category : #accessing }
-MicCodeBlock class >> defaultLanguage [
-	^ 'Pharo'
-]
 
 { #category : #visiting }
 MicCodeBlock >> accept: aVisitor [
@@ -112,18 +107,6 @@ MicCodeBlock >> label [
 MicCodeBlock >> label: aString [
 
 	self arguments at: #label put: aString
-]
-
-{ #category : #accessing }
-MicCodeBlock >> language [
-	^ arguments at: #language
-]
-
-{ #category : #utilities }
-MicCodeBlock >> lineStartMarkup [
-	"a code block is delimited by ``` "
-	
-	^ CodeblockMarkup 
 ]
 
 { #category : #accessing }

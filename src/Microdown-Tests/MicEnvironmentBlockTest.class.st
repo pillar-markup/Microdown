@@ -164,9 +164,9 @@ MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
 	| root |
 	root :=  parser parse: '<!slideenvironment
 
-$$script
+```pharoscript
 
-$$script 
+```pharoscript 
 
 !>
 '.
