@@ -32,6 +32,25 @@ MicAbstractDelimiter class >> allActive [
 	^ self allSubclasses select: [ :subclass | subclass isActive ]
 ]
 
+{ #category : #'as yet unclassified' }
+MicAbstractDelimiter class >> allRegex [
+	^ ((self allActive collect: [ :del | |str| 
+		str := WriteStream on: ''. 
+		(del associatedInlineBlock 
+			ifNil: [true] ifNotNil: [:block | block isEvaluated])
+			ifTrue: [ 
+				del markup do: [:char| str nextPut: $\;nextPut: char] ]
+			ifFalse: [
+				del markup do: [:char| str nextPut: $\;nextPut: char].
+				del associatedInlineBlock new closingDelimiter in: [ :other |
+					str nextPutAll: (self regExNot: other).
+					other do: [:char| str nextPut: $\;nextPut: char].
+					 ]
+				]. 
+		str contents]) joinUsing: '|') asRegex
+	
+]
+
 { #category : #accessing }
 MicAbstractDelimiter class >> associatedInlineBlock [
 	^ self subclassResponsibility
@@ -81,6 +100,21 @@ MicAbstractDelimiter class >> isOpenerOnly [
 { #category : #accessing }
 MicAbstractDelimiter class >> markup [
 	^ self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+MicAbstractDelimiter class >> regExNot: markup [
+	"return a regular expression (string), which is recognizing anything but markup"
+	| str prefix|
+	str := WriteStream on: ''.
+	str nextPut: $(.
+	prefix := ''.
+	1 to: markup size do: [ :idx |
+		str nextPutAll: prefix; nextPut: $[;nextPut: $^; nextPut: (markup at: idx); nextPut: $].
+		prefix := '|', (markup copyFrom: 1 to: idx) escapeAll.
+		 ].
+	str nextPut: $);nextPut: $*.
+	^ str contents
 ]
 
 { #category : #accessing }
