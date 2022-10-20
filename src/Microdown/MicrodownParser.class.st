@@ -231,7 +231,7 @@ MicrodownParser >> handleLine: line [
 		-if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
 
-	(current canConsumeLine: line)
+	(current canConsumeLine: (line withoutPreTabs))
 		ifTrue: [ 
 			current := current addLineAndReturnNextNode: line.
 			^ current ]
@@ -247,7 +247,7 @@ MicrodownParser >> initialize [
 	dispatchTable := Dictionary new.
 	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
 	dispatchTable at: HeaderMarkup put: MicHeaderBlock.
-	dispatchTable at: CodeblockMarkup put: MicCodeBlock.
+	dispatchTable at: CodeblockMarkup put: MicAbstractCodeBlock.
 	dispatchTable at: AnnotatedParagraphMarkup put: MicAnnotatedBlock.
 	dispatchTable at: CommentedLineMarkup put: MicCommentBlock.
 	dispatchTable at: HorizontalLineMarkup put: MicHorizontalLineBlock.

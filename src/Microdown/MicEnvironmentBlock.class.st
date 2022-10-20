@@ -98,15 +98,16 @@ MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-	
+	| withoutPreTabs |
 	isClosed
 		ifTrue: [ ^ self ].
-	(self doesLineStartWithStopMarkup: line)
+	withoutPreTabs := line withoutPreTabs.
+	(self doesLineStartWithStopMarkup: withoutPreTabs)
 		ifTrue: [ ^ self ].
 	firstLine
 		ifNil:
-			[ firstLine := self extractFirstLineFrom: line ]
-		ifNotNil: [ ^ self bodyFromLine: line ].
+			[ firstLine := self extractFirstLineFrom: withoutPreTabs ]
+		ifNotNil: [ ^ self bodyFromLine: withoutPreTabs ].
 	^ self
 ]
 

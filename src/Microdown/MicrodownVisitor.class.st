@@ -187,6 +187,11 @@ MicrodownVisitor >> visitParagraph: aParagraph [
 	^ self visitChildrenOf: aParagraph
 ]
 
+{ #category : #'visiting - extensions' }
+MicrodownVisitor >> visitPharoScript: aPharoScriptNode [
+	^ self visitScript: aPharoScriptNode 
+]
+
 { #category : #visiting }
 MicrodownVisitor >> visitQuote: aQuote [
 	^ self visitChildrenOf: aQuote

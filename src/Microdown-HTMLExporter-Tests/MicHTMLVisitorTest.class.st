@@ -38,7 +38,7 @@ MicHTMLVisitorTest >> generateFilesystemExample [
 Pharo is cool
 
 ```
-	this is a code blu blu
+this is a code blu blu
 ```
 ' ].
 	file := fileSystem workingDirectory / 'anExample2.md'.
@@ -47,7 +47,7 @@ Pharo is cool
 Pharo is **cool**
 
 ```
-	this is a code 2
+this is a code 2
 ```
 ' ]
 ]
@@ -96,7 +96,7 @@ MicHTMLVisitorTest >> testConvertMicFile [
 		assert: (fileSystem / 'anExample1.html') asFileReference contents
 		equals: newLine , '<h1>Foo</h1><a id="sec1"></a>' , newLine
 			, '<p>Pharo is cool</p>' , newLine
-			, '<pre><code>	this is a code blu blu</code></pre>' , newLine
+			, '<pre><code>this is a code blu blu</code></pre>' , newLine
 ]
 
 { #category : #tests }

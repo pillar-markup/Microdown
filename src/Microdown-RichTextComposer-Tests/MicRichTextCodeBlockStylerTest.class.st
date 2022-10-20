@@ -1,21 +1,27 @@
 "
-A MicCodeStylerSpecTest is a test class for testing the behavior of MicCodeStylerSpec
+A MicRichTextCodeBlockStylerTest is a test class for testing the behavior of MicRichTextCodeBlockStyler
 "
 Class {
-	#name : #MicCodeStylerSpecTest,
+	#name : #MicRichTextCodeBlockStylerTest,
 	#superclass : #TestCase,
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
-{ #category : #running }
-MicCodeStylerSpecTest >> setUp [
-	super setUp.
-	
-	MicCodeStylerSpec initializeCache
+{ #category : #accessing }
+MicRichTextCodeBlockStylerTest >> stylerFor: aLanguage [
+	^ MicRichTextCodeBlockStyler stylerFor: aLanguage
 ]
 
 { #category : #tests }
-MicCodeStylerSpecTest >> testStylerForMethod [
+MicRichTextCodeBlockStylerTest >> testDefaultStylerIsFound [
+
+	| defaultStyler |
+	defaultStyler := self stylerFor: 'blblbl'.
+	self assert: defaultStyler class equals: MicRichTextCodeBlockStylerDefault
+]
+
+{ #category : #tests }
+MicRichTextCodeBlockStylerTest >> testStylerForMethod [
 	
 	| code richText blueLocation textColor |
 	code := 'codeStylerFor: aString
@@ -25,7 +31,7 @@ MicCodeStylerSpecTest >> testStylerForMethod [
 isForWorkspace: blue; 
 styledTextFor: aString asFest'.
 	
-	richText := MicCodeStylerSpec style: code asLanguage: 'Method'.
+	richText := (self stylerFor: 'method') style: code.
 	
 	self assert: richText asString trim equals: code trim.
 	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold).
@@ -36,14 +42,14 @@ styledTextFor: aString asFest'.
 ]
 
 { #category : #tests }
-MicCodeStylerSpecTest >> testStylerForSmalltalk [
+MicRichTextCodeBlockStylerTest >> testStylerForSmalltalk [
 	
 	| code richText blueLocation textColor |
 	code := '
 green isColored: yellow
 
 ^ blue & red'.
-	richText := MicCodeStylerSpec style: code asLanguage: 'Smalltalk'.
+	richText := (self stylerFor: 'Smalltalk') style: code.
 	
 	self assert: richText asString trim equals: code trim.
 	"style smalltalk is assumes the code to be a code fragment, not a full method def"
@@ -54,19 +60,10 @@ green isColored: yellow
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #'tests - stylers' }
-MicCodeStylerSpecTest >> testStylersAreRegistered [
+{ #category : #tests }
+MicRichTextCodeBlockStylerTest >> testStylersForText [
 
 	| defaultStyler |
-	defaultStyler := MicCodeStylerSpec styleFor: 'blblbl'.
-	self assert: defaultStyler selector equals: #defaultStyler:
-]
-
-{ #category : #'tests - stylers' }
-MicCodeStylerSpecTest >> testStylersForText [
-
-	| defaultStyler |
-	defaultStyler := MicCodeStylerSpec styleFor: 'text'.
-	self assert: defaultStyler selector equals: #textStyler:.
-	 "Stylers are used for codeblock, and a test should be included for this"
+	defaultStyler := self stylerFor: 'text'.
+	self assert: defaultStyler class equals: MicRichTextCodeBlockStylerUnstyledText
 ]
