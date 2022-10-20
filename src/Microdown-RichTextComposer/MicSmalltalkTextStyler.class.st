@@ -44,3 +44,9 @@ MicSmalltalkTextStyler >> resolveStyleFor: aVariableNode [
 	aVariableNode isUndeclaredVariable ifTrue: [ ^#undefinedIdentifier ].
 	^ super resolveStyleFor: aVariableNode
 ]
+
+{ #category : #styling }
+MicSmalltalkTextStyler >> styledTextFor: aText [ 
+	aText ifEmpty: [ ^ aText ].
+	^self privateStyle: aText
+]
