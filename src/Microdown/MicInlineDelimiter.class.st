@@ -21,6 +21,12 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicInlineDelimiter class >> at: markup [
+	"return delimiter at markup, or nil"
+	^ DelimiterMap at: markup ifAbsent: [ nil ]
+]
+
 { #category : #initialization }
 MicInlineDelimiter class >> initialize [
 	<script>
@@ -44,6 +50,21 @@ MicInlineDelimiter class >> initializeDelimiters [
 	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock; opener: true; closer: true; addMe.
 	self new markup: LinkNameCloserMarkup; blockClass: nil; opener: false; closer: true; addMe.
 	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; opener: true; closer: false; addMe.
+]
+
+{ #category : #'private utilities' }
+MicInlineDelimiter class >> regExNot: markup [
+	"return a regular expression (string), which is recognizing anything but markup"
+	| str prefix|
+	str := WriteStream on: ''.
+	str nextPut: $(.
+	prefix := ''.
+	1 to: markup size do: [ :idx |
+		str nextPutAll: prefix; nextPut: $[;nextPut: $^; nextPut: (markup at: idx); nextPut: $].
+		prefix := '|', (markup copyFrom: 1 to: idx) escapeAll.
+		 ].
+	str nextPut: $);nextPut: $*.
+	^ str contents
 ]
 
 { #category : #adding }
@@ -86,6 +107,22 @@ MicInlineDelimiter >> markup [
 MicInlineDelimiter >> markup: anObject [
 
 	markup := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MicInlineDelimiter >> markupAsRegEx [
+	| str |
+	str := WriteStream on: ''. 
+	blockClass isEvaluated
+		ifFalse: [ 
+				markup do: [:char| str nextPut: $\;nextPut: char].
+				blockClass closingDelimiter in: [ :other |
+					str nextPutAll: (self class regExNot: other).
+					other do: [:char| str nextPut: $\;nextPut: char].
+					 ]
+				 ]
+		ifTrue: [ markup do: [:char| str nextPut: $\;nextPut: char] ].
+	^ str contents
 ]
 
 { #category : #accessing }
