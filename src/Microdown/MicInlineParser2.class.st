@@ -1,14 +1,15 @@
+"
+I am a parser for paragraphs with substructure in Microdown.
+
+My only external method is `parse:`.
+"
 Class {
 	#name : #MicInlineParser2,
 	#superclass : #Object,
-	#instVars : [
-		'delimiterRegEx',
-		'delimiterDictionary'
-	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Parser'
+	#category : #'Microdown-InlineParser'
 }
 
 { #category : #'escape character' }
@@ -155,7 +156,7 @@ MicInlineParser2 >> parse: aString [
 	"I return an array of inline blocks"
 	| escapedStream  tokenStream |
 	escapedStream := self class escapeEncode: aString.
-	tokenStream := self tokenize: escapedStream.
+	tokenStream := MicInlineTokenStream on: escapedStream.
 	^ self parseChildrenIn: tokenStream 
 ]
 
@@ -190,21 +191,5 @@ MicInlineParser2 >> skipTo: closer inStream: tokenStream [
 			token = closer ifTrue: [ ^true ]
 			 ].
 	^ false
-	
-]
-
-{ #category : #parsing }
-MicInlineParser2 >> tokenize: escapedStream [
-	| splits tokens from|
-	splits := delimiterRegEx matchingRangesIn: escapedStream.
-	tokens := OrderedCollection new.
-	from := 1.
-	splits do: [ :delMatch |
-		tokens add: (escapedStream copyFrom: from to: delMatch first - 1).
-		tokens add: (escapedStream copyFrom: delMatch first to: delMatch last).
-		from := delMatch last + 1
-		 ].
-	from <= escapedStream size ifTrue: [ tokens add: (escapedStream copyFrom: from to: escapedStream size) ].
-	^ ReadStream on: tokens
 	
 ]
