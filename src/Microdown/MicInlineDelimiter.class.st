@@ -9,8 +9,7 @@ Class {
 	#instVars : [
 		'markup',
 		'blockClass',
-		'closer',
-		'opener'
+		'closer'
 	],
 	#classVars : [
 		'DelimiterMap'
@@ -22,9 +21,29 @@ Class {
 }
 
 { #category : #accessing }
+MicInlineDelimiter class >> all [
+	^ DelimiterMap values
+]
+
+{ #category : #accessing }
 MicInlineDelimiter class >> at: markup [
 	"return delimiter at markup, or nil"
 	^ DelimiterMap at: markup ifAbsent: [ nil ]
+]
+
+{ #category : #'private utilities' }
+MicInlineDelimiter class >> generateInitialization [
+	|tpl|
+	self flag: #removeLater.
+	tpl := '	self new markup: {1}; blockClass: {2}; closer: {3}; addMe.'. 
+	^ (MicAbstractDelimiter allActive 
+		collect: [ :cl | |markupName closer| 
+			markupName := ((cl class>> #markup) allLiterals detect: [ :lit |lit isClassVariable ]) name asString.
+			closer := cl isCloser ifFalse: [
+				((cl associatedInlineBlock class >> #closingDelimiter) 
+					allLiterals detect: [ :lit |lit isClassVariable ]) name asString] ifTrue: ['nil'].
+			tpl format: { markupName . cl associatedInlineBlock printString. closer} ]
+	) joinUsing: String cr.
 ]
 
 { #category : #initialization }
@@ -36,24 +55,23 @@ MicInlineDelimiter class >> initialize [
 
 { #category : #initialization }
 MicInlineDelimiter class >> initializeDelimiters [
-	self new markup: AnchorReferenceCloserMarkup; blockClass: MicAnchorReferenceBlock; opener: false; closer: true; addMe.
-	self new markup: AnchorReferenceOpenerMarkup; blockClass: MicAnchorReferenceBlock; opener: true; closer: false; addMe.
-	self new markup: AnnotationCloserMarkup; blockClass: MicAnnotationBlock; opener: false; closer: true; addMe.
-	self new markup: AnnotationOpenerMarkup; blockClass: MicAnnotationBlock; opener: true; closer: false; addMe.
-	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock; opener: true; closer: true; addMe.
-	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; opener: true; closer: false; addMe.
-	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock; opener: true; closer: true; addMe.
-	self new markup: MathMarkup; blockClass: MicMathInlineBlock; opener: true; closer: true; addMe.
-	self new markup: MonospaceMarkup; blockClass: MicMonospaceFormatBlock; opener: true; closer: true; addMe.
-	self new markup: RawCloserMarkup; blockClass: MicRawBlock; opener: false; closer: true; addMe.
-	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; opener: true; closer: false; addMe.
-	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock; opener: true; closer: true; addMe.
-	self new markup: LinkNameCloserMarkup; blockClass: nil; opener: false; closer: true; addMe.
-	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; opener: true; closer: false; addMe.
+	self new markup: AnchorReferenceCloserMarkup; blockClass: MicAnchorReferenceBlock; closer: nil; addMe.
+	self new markup: AnchorReferenceOpenerMarkup; blockClass: MicAnchorReferenceBlock; closer: AnchorReferenceCloserMarkup; addMe.
+	self new markup: AnnotationCloserMarkup; blockClass: MicAnnotationBlock; closer: nil; addMe.
+	self new markup: AnnotationOpenerMarkup; blockClass: MicAnnotationBlock; closer: AnnotationCloserMarkup; addMe.
+	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock; closer: nil; addMe.
+	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; closer: NameCloserUrlOpener; addMe.
+	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock; closer: nil; addMe.
+	self new markup: MathMarkup; blockClass: MicMathInlineBlock; closer: nil; addMe.
+	self new markup: MonospaceMarkup; blockClass: MicMonospaceFormatBlock; closer: nil; addMe.
+	self new markup: RawCloserMarkup; blockClass: MicRawBlock; closer: nil; addMe.
+	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; closer: RawCloserMarkup; addMe.
+	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock; closer: nil; addMe.
+	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; closer: NameCloserUrlOpener; addMe.
 ]
 
 { #category : #'private utilities' }
-MicInlineDelimiter class >> regExNot: markup [
+MicInlineDelimiter class >> regexNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
 	| str prefix|
 	str := WriteStream on: ''.
@@ -97,6 +115,11 @@ MicInlineDelimiter >> closer: anObject [
 	closer := anObject
 ]
 
+{ #category : #testing }
+MicInlineDelimiter >> isEvaluated [
+	^ blockClass isEvaluated 
+]
+
 { #category : #accessing }
 MicInlineDelimiter >> markup [
 
@@ -110,14 +133,15 @@ MicInlineDelimiter >> markup: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-MicInlineDelimiter >> markupAsRegEx [
+MicInlineDelimiter >> markupAsRegex [
+	"return a regex (as string) matching this delimiter"
 	| str |
 	str := WriteStream on: ''. 
 	blockClass isEvaluated
 		ifFalse: [ 
 				markup do: [:char| str nextPut: $\;nextPut: char].
 				blockClass closingDelimiter in: [ :other |
-					str nextPutAll: (self class regExNot: other).
+					str nextPutAll: (self class regexNot: other).
 					other do: [:char| str nextPut: $\;nextPut: char].
 					 ]
 				 ]
@@ -125,14 +149,7 @@ MicInlineDelimiter >> markupAsRegEx [
 	^ str contents
 ]
 
-{ #category : #accessing }
-MicInlineDelimiter >> opener [
-
-	^ opener
-]
-
-{ #category : #accessing }
-MicInlineDelimiter >> opener: anObject [
-
-	opener := anObject
+{ #category : #printing }
+MicInlineDelimiter >> printOn: stream [
+	stream << $« << markup << $»
 ]

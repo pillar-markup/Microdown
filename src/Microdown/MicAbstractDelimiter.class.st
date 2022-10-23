@@ -43,7 +43,7 @@ MicAbstractDelimiter class >> allRegex [
 			ifFalse: [
 				del markup do: [:char| str nextPut: $\;nextPut: char].
 				del associatedInlineBlock new closingDelimiter in: [ :other |
-					str nextPutAll: (self regExNot: other).
+					str nextPutAll: (self regexNot: other).
 					other do: [:char| str nextPut: $\;nextPut: char].
 					 ]
 				]. 
@@ -108,7 +108,7 @@ MicAbstractDelimiter class >> rawStyleOpeningMarkups [
 ]
 
 { #category : #'as yet unclassified' }
-MicAbstractDelimiter class >> regExNot: markup [
+MicAbstractDelimiter class >> regexNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
 	| str prefix|
 	str := WriteStream on: ''.

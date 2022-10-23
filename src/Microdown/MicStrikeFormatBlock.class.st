@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicStrikeFormatBlock class >> closingDelimiter [
+
+ 	^ StrikeMarkup
+]
+
+{ #category : #accessing }
+MicStrikeFormatBlock class >> openingDelimiter [
+
+ 	^ StrikeMarkup
+]
+
 { #category : #visiting }
 MicStrikeFormatBlock >> accept: aVisitor [
 	^ aVisitor visitStrike: self
@@ -14,8 +26,7 @@ MicStrikeFormatBlock >> accept: aVisitor [
 
 { #category : #accessing }
 MicStrikeFormatBlock >> closingDelimiter [
-
- 	^ StrikeMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -25,6 +36,5 @@ MicStrikeFormatBlock >> kind [
 
 { #category : #accessing }
 MicStrikeFormatBlock >> openingDelimiter [
-
- 	^ StrikeMarkup
+	^ self class openingDelimiter
 ]

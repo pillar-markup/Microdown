@@ -16,6 +16,18 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicFigureBlock class >> closingDelimiter [
+
+ 	^ NameCloserUrlOpener
+]
+
+{ #category : #accessing }
+MicFigureBlock class >> openingDelimiter [
+
+ 	^ FigureNameOpenerMarkup
+]
+
 { #category : #converting }
 MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
@@ -97,8 +109,7 @@ MicFigureBlock >> kind [
 
 { #category : #accessing }
 MicFigureBlock >> openingDelimiter [
-
- 	^ FigureNameOpenerMarkup
+	^ self class openingDelimiter
 ]
 
 { #category : #accessing }

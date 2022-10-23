@@ -44,6 +44,12 @@ MicInlineElement class >> isEvaluated [
 ]
 
 { #category : #accessing }
+MicInlineElement class >> openingDelimiter [
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 MicInlineElement >> children [
 	^ children
 ]
@@ -111,8 +117,7 @@ MicInlineElement >> literal [
 
 { #category : #accessing }
 MicInlineElement >> openingDelimiter [
-
-	self subclassResponsibility
+	^ self class openingDelimiter
 ]
 
 { #category : #accessing }

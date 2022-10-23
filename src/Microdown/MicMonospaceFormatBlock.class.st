@@ -7,9 +7,21 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicMonospaceFormatBlock class >> closingDelimiter [
+
+ 	^ MonospaceMarkup
+]
+
 { #category : #testing }
 MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
+]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock class >> openingDelimiter [
+
+ 	^ MonospaceMarkup
 ]
 
 { #category : #visiting }
@@ -32,10 +44,9 @@ MicMonospaceFormatBlock >> closeMe [
 			self children: { text } ]
 ]
 
-{ #category : #internal }
+{ #category : #accessing }
 MicMonospaceFormatBlock >> closingDelimiter [
-
- 	^ MonospaceMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -43,8 +54,7 @@ MicMonospaceFormatBlock >> kind [
 	^ #monospace
 ]
 
-{ #category : #internal }
+{ #category : #accessing }
 MicMonospaceFormatBlock >> openingDelimiter [
-
- 	^ MonospaceMarkup
+	^ self class openingDelimiter
 ]

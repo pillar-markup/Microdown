@@ -7,15 +7,26 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicBoldFormatBlock class >> closingDelimiter [
+
+ 	^ BoldMarkup
+]
+
+{ #category : #accessing }
+MicBoldFormatBlock class >> openingDelimiter [
+
+ 	^ BoldMarkup
+]
+
 { #category : #utilities }
 MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]
 
-{ #category : #utilities }
+{ #category : #accessing }
 MicBoldFormatBlock >> closingDelimiter [
-
- 	^ BoldMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #utilities }
@@ -23,8 +34,7 @@ MicBoldFormatBlock >> kind [
 	^ #bold
 ]
 
-{ #category : #utilities }
+{ #category : #accessing }
 MicBoldFormatBlock >> openingDelimiter [
-
- 	^ BoldMarkup
+	^ self class openingDelimiter
 ]

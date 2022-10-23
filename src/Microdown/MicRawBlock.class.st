@@ -11,9 +11,21 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicRawBlock class >> closingDelimiter [
+
+ 	^ RawCloserMarkup
+]
+
 { #category : #testing }
 MicRawBlock class >> isEvaluated [
 	^ false
+]
+
+{ #category : #accessing }
+MicRawBlock class >> openingDelimiter [
+
+ 	^ RawOpenerMarkup
 ]
 
 { #category : #visiting }
@@ -28,8 +40,7 @@ MicRawBlock >> cleanSubstring [
 
 { #category : #accessing }
 MicRawBlock >> closingDelimiter [
-
- 	^ RawCloserMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -40,6 +51,5 @@ MicRawBlock >> kind [
 
 { #category : #accessing }
 MicRawBlock >> openingDelimiter [
-
- 	^ RawOpenerMarkup
+	^ self class openingDelimiter
 ]

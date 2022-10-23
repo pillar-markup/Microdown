@@ -168,7 +168,7 @@ MicInlineParser2 >> parseChildrenIn: tokenStream [
 	[ tokenStream atEnd ]
 		whileFalse: [ | token delType |
 			token := tokenStream next.
-			delType := delimiterDictionary at: token ifAbsent: [ nil ].
+			delType := token halt.
 			child := (delType
 				ifNil: [ self createRawStyleBlock: token ]
 				ifNotNil: [ 

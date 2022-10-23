@@ -15,9 +15,21 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicAnchorReferenceBlock class >> closingDelimiter [
+
+ 	^ AnchorReferenceCloserMarkup
+]
+
 { #category : #testing }
 MicAnchorReferenceBlock class >> isEvaluated [
 	^ false
+]
+
+{ #category : #accessing }
+MicAnchorReferenceBlock class >> openingDelimiter [
+
+ 	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : #visiting }
@@ -25,10 +37,9 @@ MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]
 
-{ #category : #visiting }
+{ #category : #accessing }
 MicAnchorReferenceBlock >> closingDelimiter [
-
- 	^ AnchorReferenceCloserMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #initialization }
@@ -37,10 +48,9 @@ MicAnchorReferenceBlock >> kind [
 	^ #anchorReference
 ]
 
-{ #category : #visiting }
+{ #category : #accessing }
 MicAnchorReferenceBlock >> openingDelimiter [
-
- 	^ AnchorReferenceOpenerMarkup
+	^ self class openingDelimiter
 ]
 
 { #category : #accessing }

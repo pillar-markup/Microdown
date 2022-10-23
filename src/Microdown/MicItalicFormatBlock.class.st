@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicItalicFormatBlock class >> closingDelimiter [
+
+ 	^ ItalicMarkup
+]
+
+{ #category : #accessing }
+MicItalicFormatBlock class >> openingDelimiter [
+
+ 	^ ItalicMarkup
+]
+
 { #category : #visiting }
 MicItalicFormatBlock >> accept: aVisitor [
 	^ aVisitor visitItalic: self
@@ -14,8 +26,7 @@ MicItalicFormatBlock >> accept: aVisitor [
 
 { #category : #accessing }
 MicItalicFormatBlock >> closingDelimiter [
-
- 	^ ItalicMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -26,6 +37,5 @@ MicItalicFormatBlock >> kind [
 
 { #category : #accessing }
 MicItalicFormatBlock >> openingDelimiter [
-
- 	^ ItalicMarkup
+	^ self class openingDelimiter
 ]

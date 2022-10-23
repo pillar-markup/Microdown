@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicLinkBlock class >> closingDelimiter [
+
+ 	^ NameCloserUrlOpener
+]
+
+{ #category : #accessing }
+MicLinkBlock class >> openingDelimiter [
+
+ 	^ LinkNameOpenerMarkup
+]
+
 { #category : #visiting }
 MicLinkBlock >> accept: aVisitor [
 	^ aVisitor visitLink: self
@@ -45,6 +57,5 @@ MicLinkBlock >> kind [
 
 { #category : #accessing }
 MicLinkBlock >> openingDelimiter [
-
- 	^ LinkNameOpenerMarkup
+	^ self class openingDelimiter
 ]

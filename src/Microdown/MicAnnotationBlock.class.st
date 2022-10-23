@@ -45,6 +45,12 @@ MicAnnotationBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
 	self addDocumentDefinedAnnotations: aBuilder
 ]
 
+{ #category : #accessing }
+MicAnnotationBlock class >> closingDelimiter [
+
+ 	^ AnnotationCloserMarkup
+]
+
 { #category : #constructor }
 MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 
@@ -66,6 +72,12 @@ MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: 
 		  closeMe;
 		  cleanSubstring;
 		  yourself
+]
+
+{ #category : #accessing }
+MicAnnotationBlock class >> openingDelimiter [
+
+ 	^ AnnotationOpenerMarkup
 ]
 
 { #category : #accessing }
@@ -96,8 +108,7 @@ MicAnnotationBlock >> closeMe [
 
 { #category : #accessing }
 MicAnnotationBlock >> closingDelimiter [
-
- 	^ AnnotationCloserMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -113,8 +124,7 @@ MicAnnotationBlock >> name [
 
 { #category : #accessing }
 MicAnnotationBlock >> openingDelimiter [
-
- 	^ AnnotationOpenerMarkup
+	^ self class openingDelimiter
 ]
 
 { #category : #accessing }

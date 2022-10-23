@@ -30,9 +30,21 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicMathInlineBlock class >> closingDelimiter [
+
+ 	^ MathMarkup
+]
+
 { #category : #testing }
 MicMathInlineBlock class >> isEvaluated [
 	^ false
+]
+
+{ #category : #accessing }
+MicMathInlineBlock class >> openingDelimiter [
+
+ 	^ MathMarkup
 ]
 
 { #category : #visiting }
@@ -47,8 +59,7 @@ MicMathInlineBlock >> cleanSubstring [
 
 { #category : #accessing }
 MicMathInlineBlock >> closingDelimiter [
-
- 	^ MathMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
@@ -59,6 +70,5 @@ MicMathInlineBlock >> kind [
 
 { #category : #accessing }
 MicMathInlineBlock >> openingDelimiter [
-
- 	^ MathMarkup
+	^ self class openingDelimiter
 ]

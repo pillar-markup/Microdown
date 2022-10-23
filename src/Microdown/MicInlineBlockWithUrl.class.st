@@ -20,6 +20,12 @@ Class {
 	#category : #'Microdown-ModelInline'
 }
 
+{ #category : #accessing }
+MicInlineBlockWithUrl class >> closingDelimiter [
+
+ 	^ URLCloserMarkup
+]
+
 { #category : #private }
 MicInlineBlockWithUrl class >> fileStringWithoutHostFile: aString [
 	| localFileIndicator |
@@ -109,8 +115,7 @@ MicInlineBlockWithUrl >> captionElements: aCollection [
 
 { #category : #accessing }
 MicInlineBlockWithUrl >> closingDelimiter [
-
- 	^ URLCloserMarkup
+	^ self class closingDelimiter
 ]
 
 { #category : #accessing }
