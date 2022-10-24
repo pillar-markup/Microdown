@@ -22,6 +22,7 @@ Class {
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
 		'FigureNameOpenerMarkup',
+		'FixiousTextDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
 		'ItalicMarkup',
@@ -97,6 +98,7 @@ MicMicrodownSharedPool class >> initialize [
 	URLCloserMarkup := ')'. 
 	URLOpenerMarkup := '('.
 	NameCloserUrlOpener := ']('.
+	FixiousTextDelimiter := 0 asCharacter asString.
 
 	Delimiters := { AnchorReferenceCloserMarkup . 
 	AnchorReferenceOpenerMarkup .

@@ -32,6 +32,15 @@ MicAnchorReferenceBlock class >> openingDelimiter [
  	^ AnchorReferenceOpenerMarkup
 ]
 
+{ #category : #parsing }
+MicAnchorReferenceBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
+	^ aParser
+		  parseNonEvaluatedBlock: self
+		  token: delimiter
+		  stream: aTokenStream
+]
+
 { #category : #visiting }
 MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self

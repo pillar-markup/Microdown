@@ -4,8 +4,59 @@ A MicInlineTokenStreamTest is a test class for testing the behavior of MicInline
 Class {
 	#name : #MicInlineTokenStreamTest,
 	#superclass : #TestCase,
+	#pools : [
+		'MicMicrodownSharedPool'
+	],
 	#category : #'Microdown-Tests-InlineParser'
 }
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash [
+	| src tokens |
+	src := 'aa\xbb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens first substring equals: 'aaxbb'
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash_AnchorReference [
+	| src tokens |
+	src := 'aa*@oo\xoo\@oo`@*bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens second substring equals: '*@oo\xoo@oo`@*'
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash_InFormattedElements [
+	| src tokens |
+	src := 'aa**oo\xoo**bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens third substring equals: 'ooxoo'
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash_InMath [
+	| src tokens |
+	src := 'aa$oo\xoo\$oo$bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens second substring equals: '$oo\xoo$oo$'
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash_InMonospace [
+	| src tokens |
+	src := 'aa`oo\xoo\`oo`$bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens second substring equals: '`oo\xoo`oo`'
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testBackslash_InRaw [
+	| src tokens |
+	src := 'aa{{oo\xoo\}oo`}}bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens second substring equals: '{{oo\xoo}oo`}}'
+]
 
 { #category : #tests }
 MicInlineTokenStreamTest >> testTokenize [
@@ -15,9 +66,116 @@ MicInlineTokenStreamTest >> testTokenize [
 ]
 
 { #category : #tests }
-MicInlineTokenStreamTest >> testTokenize_justText [
+MicInlineTokenStreamTest >> testTokenize_Annotation [
+	| tokens | 
+	tokens := (MicInlineTokenStream on: 'aa',AnnotationOpenerMarkup ,'bbb', AnnotationCloserMarkup) contents.
+	self assert: tokens second substring equals: (AnnotationOpenerMarkup ,'bbb', AnnotationCloserMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: AnnotationOpenerMarkup)
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_FigureWithURL [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',FigureNameOpenerMarkup  ,'bbb', NameCloserUrlOpener ,'ccc', URLCloserMarkup) contents.
+	self assert: tokens second substring equals: FigureNameOpenerMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: FigureNameOpenerMarkup).
+	self assert: tokens fourth substring equals: (NameCloserUrlOpener ,'ccc', URLCloserMarkup).
+	self assert: tokens fourth delimiter equals: (MicInlineDelimiter at: NameCloserUrlOpener).
+	
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_Text [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aaaa') contents.
 	self assert: tokens first substring equals: 'aaaa'.
-	self assert: tokens first delimiter equals: nil.
+	self assert: tokens first delimiter markup equals: FixiousTextDelimiter.
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_UrlPart [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',NameCloserUrlOpener ,'bbb', URLCloserMarkup) contents.
+	self assert: tokens second substring equals: (NameCloserUrlOpener ,'bbb', URLCloserMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: NameCloserUrlOpener)
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_anchorRefs [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',AnchorReferenceOpenerMarkup ,'bbb', AnchorReferenceCloserMarkup) contents.
+	self assert: tokens second substring equals: (AnchorReferenceOpenerMarkup,'bbb', AnchorReferenceCloserMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: AnchorReferenceOpenerMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_bold [
+	| tokens | 
+	tokens := (MicInlineTokenStream on: 'aa',BoldMarkup ,'bbb') contents.
+	self assert: tokens second substring equals: BoldMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: BoldMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_figureName [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',FigureNameOpenerMarkup ,'bbb', NameCloserUrlOpener) contents.
+	self assert: tokens second substring equals: FigureNameOpenerMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: FigureNameOpenerMarkup)
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_italic [
+	| tokens | 
+	tokens := (MicInlineTokenStream on: 'aa',ItalicMarkup ,'bbb') contents.
+	self assert: tokens second substring equals: ItalicMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: ItalicMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_linkName [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',LinkNameOpenerMarkup ,'bbb', NameCloserUrlOpener) contents.
+	self assert: tokens second substring equals: LinkNameOpenerMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: LinkNameOpenerMarkup)
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_math [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa', MathMarkup,'bbb', MathMarkup) contents.
+	self assert: tokens second substring equals: (MathMarkup,'bbb', MathMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: MathMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_monospace [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa',MonospaceMarkup ,'bbb', MonospaceMarkup) contents.
+	self assert: tokens second substring equals: (MonospaceMarkup,'bbb', MonospaceMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: MonospaceMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_raw [
+	| tokens | 
+	"anchors are not evaluated, but bodied directly"
+	tokens := (MicInlineTokenStream on: 'aa', RawOpenerMarkup ,'bbb', RawCloserMarkup) contents.
+	self assert: tokens second substring equals: (RawOpenerMarkup,'bbb', RawCloserMarkup).
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: RawOpenerMarkup).
+]
+
+{ #category : #tests }
+MicInlineTokenStreamTest >> testTokenize_strike [
+	| tokens | 
+	tokens := (MicInlineTokenStream on: 'aa',StrikeMarkup ,'bbb') contents.
+	self assert: tokens second substring equals: StrikeMarkup.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: StrikeMarkup).
 ]

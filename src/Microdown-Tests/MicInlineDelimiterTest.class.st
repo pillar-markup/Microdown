@@ -13,6 +13,7 @@ MicInlineDelimiterTest >> testAddMe [
 		self assert: (MicInlineDelimiter at: del markup) equals: del
 		 ].
 	"All instances should have registred"
+	Smalltalk garbageCollect.
 	MicInlineDelimiter allInstances do: [ :del | 
 		self assert: (MicInlineDelimiter at: del markup) equals: del
 		 ].
@@ -26,6 +27,14 @@ MicInlineDelimiterTest >> testMarkupAsRegex [
 		self assert: (regex matches: del markup  ).
 		self assert: (regex search: ('aaa', del markup) ).
 		self assert: (regex search: (del markup, 'aaa') ).
+		 ]
+]
+
+{ #category : #tests }
+MicInlineDelimiterTest >> testRawEvaluatedConsistency [
+	"this test is only for evaluated delimiters"
+	(MicInlineDelimiter all select: #isOpener) do: [ :del |
+		self assert: (del isEvaluated ~= del isRawkind )
 		 ]
 ]
 

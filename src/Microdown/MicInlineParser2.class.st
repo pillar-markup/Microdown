@@ -12,93 +12,17 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #'escape character' }
-MicInlineParser2 class >> escapeDecode: aString [
-	"I convert all encoded chars back to their original (without the leading escape character)"
-	"My sister method escapeEncode encodes into the format I decode from"
-	| inStream outStream char special |
-	aString ifEmpty: [ ^aString ].
-	special := [ :c | c asInteger between: self magicCharacter  and: self magicCharacter + 65536 ].
-	inStream := ReadStream on: aString.
-	outStream := WriteStream on: String new.
-	[ inStream atEnd ] whileFalse: [ 
-		char := inStream next.
-		(special value: char)
-			ifTrue: [ char := (char asInteger - self magicCharacter ) asCharacter  ].
-		outStream nextPut: char
-	].
-	^ outStream contents
-	
-]
-
-{ #category : #'escape character' }
-MicInlineParser2 class >> escapeEncode: aString [
-	"I convert all escaped characters (eg '\`' or '\\') into special characters which are not used in Microdown"
-	"My sister method escapeDecode reverts back"
-	| inStream outStream char |
-	aString size <= 1 ifTrue: [ ^aString ].
-	inStream := ReadStream on: aString.
-	outStream := WriteStream on: String new.
-	[ inStream atEnd ] whileFalse: [ 
-		char := inStream next.
-		(char = $\ and: [ inStream atEnd not ]) 
-			ifTrue: [ char := (inStream next asInteger + self magicCharacter) asCharacter  ].
-		outStream nextPut: char
-	].
-	^ outStream contents
-	
-]
-
-{ #category : #'escape character' }
-MicInlineParser2 class >> escapeReescape: aString except: keep [
-	"I convert all encoded back to escaped chars, except the characters in keep"
-	"My sister method escapeEncode encodes into the format I decode from"
-	| inStream outStream char |
-	aString ifEmpty: [ ^aString ].
-	inStream := ReadStream on: aString.
-	outStream := WriteStream on: String new.
-	[ inStream atEnd ] whileFalse: [ 
-		char := inStream next.
-		(char asInteger between: self magicCharacter  and: self magicCharacter + 65536)
-			ifTrue: [ 
-				char := (char asInteger - self magicCharacter ) asCharacter.  
-				(keep includes: char) ifFalse: [outStream nextPut: $\]] .
-		outStream nextPut: char
-	].
-	^ outStream contents
-	
-]
-
-{ #category : #'escape character' }
-MicInlineParser2 class >> magicCharacter [
-	"All escaped characters are moved out of range. 
-	The unicode range Private Use Area is used, 
-	see https://en.wikipedia.org/wiki/Private_Use_Areas "
-	^ 16r100000 "Private Use Area-B"
-]
-
-{ #category : #'as yet unclassified' }
-MicInlineParser2 >> createInlineBlock: openingDelimiter inStream: aReadStream [ 
-	| pos closer bodyStream newBlock|
-	pos := aReadStream position.
-	closer := openingDelimiter associatedInlineBlock new closingDelimiter.
-	(self skipTo: closer inStream: aReadStream)
-		ifFalse: [ 
-			aReadStream position: pos.
-			^ self createTextBlock: openingDelimiter markup].
-	bodyStream := ReadStream 
-		on: aReadStream contents
-		from: pos + 1
-		to: aReadStream position - 1.
-	newBlock := openingDelimiter associatedInlineBlock new
-		substring: (aReadStream contents copyFrom: pos to: aReadStream position -1);
-		children: (self parseChildrenIn: bodyStream ).
+{ #category : #'block creation' }
+MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [ 
+	| blockClass newBlock|
+	blockClass := token delimiter blockClass.
+	newBlock := blockClass parse: token stream: aReadStream for: self.
 	^ newBlock 
 	
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'block creation' }
 MicInlineParser2 >> createRawStyleBlock: token [
 	| opener block substring|
 	opener := (MicAbstractDelimiter rawStyleOpeningMarkups)
@@ -115,27 +39,21 @@ MicInlineParser2 >> createRawStyleBlock: token [
 		
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'block creation' }
 MicInlineParser2 >> createTextBlock: token [
-	^ MicTextBlock new
+	^ MicTextBlock2 new
 		substring: token;
 		children: #()
 ]
 
-{ #category : #'as yet unclassified' }
-MicInlineParser2 >> initialize [
-	delimiterRegEx := MicAbstractDelimiter allRegex.
-	delimiterDictionary := (MicAbstractDelimiter allActive collect: [ :del | del markup -> del ]) asDictionary .
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'private parsing' }
 MicInlineParser2 >> joinTextNodesOf: children [
 	"children might have several text blocks following each other - join them and remove empty Text blocks"
 	| outStream bufferText  |
 	outStream := WriteStream on: OrderedCollection new.
 	bufferText := nil.
 	children do: [ :child |
-		child class = MicTextBlock
+		child class = MicTextBlock2
 			ifTrue: [ bufferText 
 				ifNil: [ bufferText := child ]
 				ifNotNil: [ bufferText substring: (bufferText substring , child substring) ] ]
@@ -154,42 +72,77 @@ MicInlineParser2 >> joinTextNodesOf: children [
 { #category : #parsing }
 MicInlineParser2 >> parse: aString [
 	"I return an array of inline blocks"
-	| escapedStream  tokenStream |
-	escapedStream := self class escapeEncode: aString.
-	tokenStream := MicInlineTokenStream on: escapedStream.
-	^ self parseChildrenIn: tokenStream 
+	| tokenStream |
+	tokenStream := MicInlineTokenStream on: aString.
+	^ (self parseChildrenIn: tokenStream) asArray 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private parsing' }
 MicInlineParser2 >> parseChildrenIn: tokenStream [
 	"return an array of blocks from parsing tokenStream"
 	| children child |
 	children := OrderedCollection new.
 	[ tokenStream atEnd ]
-		whileFalse: [ | token delType |
+		whileFalse: [ | token |
 			token := tokenStream next.
-			delType := token halt.
-			child := (delType
-				ifNil: [ self createRawStyleBlock: token ]
-				ifNotNil: [ 
-					delType isOpener 
-						ifTrue: [self createInlineBlock: delType inStream: tokenStream]
-						ifFalse: [ self createTextBlock: token] ]).
+			child := token delimiter isOpener 
+				ifTrue: [self createInlineBlock: token inStream: tokenStream]
+				ifFalse: [ self createTextBlock: token substring].
 			children add: child.
 		].
 	^ self joinTextNodesOf: children
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'private parsing' }
+MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStream [
+	| skipRes |
+	skipRes := (self skipTo: token delimiter closer inStream: tokenStream).
+	skipRes ifNil: [ ^ self createTextBlock: token substring].
+	tokenStream next. "skip closer"
+	^ blockType new
+		children: (self parseChildrenIn: skipRes second );
+		closeMe
+]
+
+{ #category : #'private parsing' }
+MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token [
+	| skipRes children urlToken|
+	skipRes := (self skipTo: token delimiter closer inStream: aTokenStream).
+	skipRes ifNil: [ ^ self createTextBlock: token substring].
+	children := self parseChildrenIn: skipRes second.
+	urlToken := aTokenStream next.
+	^ blockType new
+		children: children;
+		url: urlToken undelimitedSubstring;
+		closeMe.
+		
+	
+
+]
+
+{ #category : #'private parsing' }
+MicInlineParser2 >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
+	^ blockClass new
+		substring: token undelimitedSubstring;
+		closeMe
+]
+
+{ #category : #'private parsing' }
 MicInlineParser2 >> skipTo: closer inStream: tokenStream [
-	"skip tokenStream to closer, ignore closers in non-evaluated. return true if we found it"
-	| startPos|
+	"skip tokenStream to closer, ignore closers in non-evaluated. if we find it return the accumulates text and a subtokenstream to read it from"
+	| startPos substringStream |
 	startPos := tokenStream position.
+	substringStream := WriteStream on: ''.
 	[ tokenStream atEnd]
 		whileFalse: [ | token|
-			token := tokenStream next.
-			token = closer ifTrue: [ ^true ]
-			 ].
-	^ false
+			token := tokenStream peek.
+			token delimiter markup = closer ifTrue: [ 
+				^ { substringStream contents.  
+					 ReadStream on: tokenStream contents from: startPos + 1 to: tokenStream position} ].
+			substringStream nextPutAll: token substring.
+			tokenStream next.
+			].
+	tokenStream position: startPos.
+	^ nil
 	
 ]

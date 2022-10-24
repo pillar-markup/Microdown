@@ -15,10 +15,69 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #'as yet unclassified' }
-MicInlineTokenStream class >> allRegex [
-	^ ((MicInlineDelimiter all collect: #markupAsRegex) joinUsing: '|') asRegex
+{ #category : #'escape character' }
+MicInlineTokenStream class >> backslashDecode: aString [
+	"I convert all encoded chars back to their original (without the leading escape character)"
+	"My sister method escapeEncode encodes into the format I decode from"
+	| inStream outStream char special |
+	aString ifEmpty: [ ^aString ].
+	special := [ :c | c asInteger between: self magicCharacter  and: self magicCharacter + 65536 ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(special value: char)
+			ifTrue: [ char := (char asInteger - self magicCharacter ) asCharacter  ].
+		outStream nextPut: char
+	].
+	^ outStream contents
 	
+]
+
+{ #category : #'escape character' }
+MicInlineTokenStream class >> backslashEncode: aString [
+	"I convert all escaped characters (eg '\`' or '\\') into special characters which are not used in Microdown"
+	"My sister method escapeDecode reverts back"
+	| inStream outStream char |
+	aString size <= 1 ifTrue: [ ^aString ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(char = $\ and: [ inStream atEnd not ]) 
+			ifTrue: [ char := (inStream next asInteger + self magicCharacter) asCharacter  ].
+		outStream nextPut: char
+	].
+	^ outStream contents
+	
+]
+
+{ #category : #'escape character' }
+MicInlineTokenStream class >> backslashReescape: aString except: keep [
+	"I convert all encoded back to escaped chars, except the characters in keep"
+	"My sister method escapeEncode encodes into the format I decode from"
+	| inStream outStream char |
+	aString ifEmpty: [ ^aString ].
+	inStream := ReadStream on: aString.
+	outStream := WriteStream on: String new.
+	[ inStream atEnd ] whileFalse: [ 
+		char := inStream next.
+		(char asInteger between: self magicCharacter  and: self magicCharacter + 65536)
+			ifTrue: [ 
+				char := (char asInteger - self magicCharacter ) asCharacter.  
+				(keep includes: char) ifFalse: [outStream nextPut: $\]] .
+		outStream nextPut: char
+	].
+	^ outStream contents
+	
+]
+
+{ #category : #'escape character' }
+MicInlineTokenStream class >> magicCharacter [
+	"All escaped characters are moved out of range. 
+	The unicode range Private Use Area is used, 
+	see https://en.wikipedia.org/wiki/Private_Use_Areas "
+	^ 16r100000 "Private Use Area-B"
 ]
 
 { #category : #'instance creation' }
@@ -26,32 +85,25 @@ MicInlineTokenStream class >> on: escapedStream [
 	^ self new tokenize: escapedStream 
 ]
 
-{ #category : #initialization }
-MicInlineTokenStream >> add: string [
-	"Transform into token, and add it"
-	| delimiter token |
-	delimiter := MicInlineDelimiter at: string.
-	delimiter
-		ifNil: [ self addRawOrText: string ]
-		ifNotNil: [ self addDelimiter: delimiter ]
-]
-
 { #category : #adding }
-MicInlineTokenStream >> addDelimiter: matchedString [
+MicInlineTokenStream >> addDelimiter: string [
+	| delimiter decodedString|
+	delimiter := (MicInlineDelimiter at: string)
+		ifNil: [ (MicInlineDelimiter all reject: #isEvaluated) detect: [ :o | string beginsWith: o markup] ].
+	decodedString := delimiter isRawkind 
+		ifTrue: [self class backslashReescape: string except: delimiter closer first asString]
+		ifFalse: [string].
 	tokens add: (MicInlineToken new 
-		substring: matchedString;
-		delimiter: (MicInlineDelimiter at: matchedString ))
+		substring: decodedString;
+		delimiter: delimiter)
 ]
 
 { #category : #adding }
-MicInlineTokenStream >> addRawOrText: matchedString [
-	| opener token |
-	opener := (MicInlineDelimiter all reject: #isEvaluated)
-		detect: [ :o | matchedString beginsWith: o markup]
-		ifNone: [ nil ].
+MicInlineTokenStream >> addText: matchedString [
+	| token |
 	token := MicInlineToken new 
-		substring: matchedString;
-		delimiter: opener.
+		substring: (self class backslashDecode: matchedString);
+		delimiter: (MicInlineDelimiter at: FixiousTextDelimiter).
 	tokens add: token
 ]
 
@@ -61,17 +113,18 @@ MicInlineTokenStream >> initialize [
 ]
 
 { #category : #parsing }
-MicInlineTokenStream >> tokenize: escapedStream [
-	| splits from|
-	splits := self class allRegex matchingRangesIn: escapedStream.
+MicInlineTokenStream >> tokenize: rawString [
+	| inlineString splits from|
+	inlineString := self class backslashEncode: rawString.
+	splits := MicInlineDelimiter allRegex matchingRangesIn: inlineString.
 	tokens := OrderedCollection new.
 	from := 1.
 	splits do: [ :delMatch |
-		self add: (escapedStream copyFrom: from to: delMatch first - 1).
-		self add: (escapedStream copyFrom: delMatch first to: delMatch last).
+		self addText: (inlineString copyFrom: from to: delMatch first - 1).
+		self addDelimiter: (inlineString copyFrom: delMatch first to: delMatch last).
 		from := delMatch last + 1
 		 ].
-	from <= escapedStream size ifTrue: [ self add: (escapedStream copyFrom: from to: escapedStream size) ].
+	from <= inlineString size ifTrue: [ self addText: (inlineString copyFrom: from to: inlineString size) ].
 	^ ReadStream on: tokens
 	
 ]

@@ -28,6 +28,15 @@ MicRawBlock class >> openingDelimiter [
  	^ RawOpenerMarkup
 ]
 
+{ #category : #parsing }
+MicRawBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
+	^ aParser
+		  parseNonEvaluatedBlock: self
+		  token: delimiter
+		  stream: aTokenStream
+]
+
 { #category : #visiting }
 MicRawBlock >> accept: aVisitor [
 	^ aVisitor visitRaw: self

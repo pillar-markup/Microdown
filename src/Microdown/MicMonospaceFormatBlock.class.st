@@ -24,6 +24,15 @@ MicMonospaceFormatBlock class >> openingDelimiter [
  	^ MonospaceMarkup
 ]
 
+{ #category : #parsing }
+MicMonospaceFormatBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
+	^ aParser
+		  parseNonEvaluatedBlock: self
+		  token: delimiter
+		  stream: aTokenStream
+]
+
 { #category : #visiting }
 MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
@@ -57,4 +66,13 @@ MicMonospaceFormatBlock >> kind [
 { #category : #accessing }
 MicMonospaceFormatBlock >> openingDelimiter [
 	^ self class openingDelimiter
+]
+
+{ #category : #printing }
+MicMonospaceFormatBlock >> printOn: aStream [
+
+	self printWithoutConventions: aStream.
+	aStream nextPut: $(.
+	aStream nextPutAll: substring.
+	aStream nextPut: $)
 ]

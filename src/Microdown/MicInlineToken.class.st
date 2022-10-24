@@ -30,6 +30,11 @@ MicInlineToken >> delimiter: anObject [
 	delimiter := anObject
 ]
 
+{ #category : #printing }
+MicInlineToken >> printOn: aStream [
+	aStream << delimiter printString << $( << substring << $)
+]
+
 { #category : #accessing }
 MicInlineToken >> substring [
 
@@ -40,4 +45,12 @@ MicInlineToken >> substring [
 MicInlineToken >> substring: anObject [
 
 	substring := anObject
+]
+
+{ #category : #accessing }
+MicInlineToken >> undelimitedSubstring [
+	"assume I am a token for a unevaluated delimiter, containing raw body - remove my delimiters"
+	^substring 
+		copyFrom: delimiter markup size + 1 
+		to: (substring size - delimiter closer size)
 ]

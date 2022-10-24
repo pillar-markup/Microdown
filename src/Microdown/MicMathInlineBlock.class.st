@@ -47,6 +47,15 @@ MicMathInlineBlock class >> openingDelimiter [
  	^ MathMarkup
 ]
 
+{ #category : #parsing }
+MicMathInlineBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
+	^ aParser
+		  parseNonEvaluatedBlock: self
+		  token: delimiter
+		  stream: aTokenStream
+]
+
 { #category : #visiting }
 MicMathInlineBlock >> accept: aVisitor [
 	^ aVisitor visitMathInline: self

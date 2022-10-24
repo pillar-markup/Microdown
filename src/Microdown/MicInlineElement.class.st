@@ -49,6 +49,15 @@ MicInlineElement class >> openingDelimiter [
 	self subclassResponsibility
 ]
 
+{ #category : #parsing }
+MicInlineElement class >> parse: token stream: aTokenStream for: aParser [
+
+	^ aParser
+		  parseEvaluatedBlock: self
+		  token: token
+		  stream: aTokenStream
+]
+
 { #category : #accessing }
 MicInlineElement >> children [
 	^ children
