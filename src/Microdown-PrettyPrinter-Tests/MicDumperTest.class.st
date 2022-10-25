@@ -246,7 +246,7 @@ MicDumperTest >> testFigureBoldFormat [
 	result := micFigure accept: visitor.
 	self
 		assert: result contents
-		 equals: '(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		 equals: '(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})}; yourself) '
 		
 ]
 
@@ -261,7 +261,7 @@ MicDumperTest >> testFigureBoldFormat2 [
 	self
 		assert: result contents 
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Bold'')) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''bold''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Bold'')}) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''bold'')})}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -317,7 +317,7 @@ MicDumperTest >> testFigureNestedFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo_''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo_'')})}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -438,7 +438,7 @@ MicDumperTest >> testOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -509,7 +509,7 @@ MicDumperTest >> testPrintHeader [
 MicDumperTest >> testPrintOrderedList [
 
 	| resString |
-	resString := '(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'.
+	resString := '(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'.
 	self
 		parse: factory orderedListWithTwoItemsBoldSample
 		andCheckWeGet: resString
@@ -643,7 +643,7 @@ MicDumperTest >> testUnOrderedListWithTwoItemsBold [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
