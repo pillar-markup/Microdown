@@ -376,19 +376,6 @@ MicDumperTest >> testItalicFormat [
 ]
 
 { #category : #'test - inline - blocks' }
-MicDumperTest >> testLinkFormat [
-
-	| micLink result |
-	micLink := (parser parse: factory linkSample) children first children
-		           first.
-	self assert: micLink class equals: MicLinkBlock.
-	result := micLink accept: visitor.
-	self
-		assert: result contents
-		equals: '(MicLinkBlock new textElement: [Foo](/anUrl)'
-]
-
-{ #category : #'test - inline - blocks' }
 MicDumperTest >> testMonospaceFormat [
 
 	| mic result |
@@ -556,6 +543,18 @@ MicDumperTest >> testRawBlock [
 		assert: visitor contents
 		equals:
 		'(MicParagraphBlock new textElement: (MicTextBlock new substring: ''Foo'')))'
+]
+
+{ #category : #'test - inline - blocks' }
+MicDumperTest >> testSimpleLinkFormat [
+
+	| micLink result |
+	micLink := (parser parse: '[Pharo url](http://www.pharo.org)') children first children first.
+	self assert: micLink class equals: MicLinkBlock.
+	result := micLink accept: visitor.
+	self
+		assert: result contents
+		equals: '(MicLinkBlock new captionElements: {(MicTextBlock new substring: ''Pharo url'')} ; url: ''http://www.pharo.org'' ; yourself)'
 ]
 
 { #category : #'test - inline - blocks' }

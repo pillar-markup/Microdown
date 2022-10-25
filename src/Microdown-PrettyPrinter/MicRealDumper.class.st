@@ -198,13 +198,12 @@ MicRealDumper >> visitLink: aMicLink [
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'textElement: '.
-	stream nextPut: $[.
-	stream nextPutAll: aMicLink substring.
-	stream nextPut: $].
-	stream nextPut: $(.
-	stream nextPutAll: aMicLink url.
-	stream nextPut: $)
+	stream nextPutAll: 'captionElements: '.
+	stream nextPutAll: '{'.
+	aMicLink captionElements do: [ :each | self visit: each  ] separatedBy: [ stream nextPutAll: ' . ' ].
+	stream nextPutAll: '} ; url: '.
+	stream print: aMicLink url.
+	stream nextPutAll: ' ; yourself)'
 ]
 
 { #category : #'visit - section' }
