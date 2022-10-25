@@ -102,8 +102,10 @@ MicRealDumper >> visitBold: aMicBold [
 	stream
 		nextPutAll: 'new';
 		space.
-	stream nextPutAll: 'textElement: '.
-	aMicBold children first accept: self.
+	stream nextPutAll: 'textElements: '.
+	stream nextPutAll: '{'.
+	aMicBold children do: [ :each | each accept: self ] separatedBy: [ stream nextPutAll: ' . '].
+	stream nextPutAll: '}'.
 	stream nextPut: $)
 ]
 

@@ -38,6 +38,17 @@ MicDumperTest >> testAnchorFormat [
 ]
 
 { #category : #'test - inline - blocks' }
+MicDumperTest >> testBold [
+
+	self 
+		assert: (MicRealDumper new 
+						visit: (Microdown parse: '**aaa_bbb_ccc**')) contents  
+						
+		equals: '(MicParagraphBlock new textElements: {(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''aaa'') . (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''bbb'')) . (MicTextBlock new substring: ''ccc'')})})'
+						
+]
+
+{ #category : #'test - inline - blocks' }
 MicDumperTest >> testBoldFormat [
 
 	| micBold |
@@ -48,7 +59,7 @@ MicDumperTest >> testBoldFormat [
 	self
 		assert: visitor contents
 		equals:
-		'(MicBoldFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
+		'(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
 { #category : #'test - inline - blocks' }
