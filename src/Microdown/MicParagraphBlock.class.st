@@ -87,3 +87,9 @@ MicParagraphBlock >> textElements [
  
 	^ children
 ]
+
+{ #category : #accessing }
+MicParagraphBlock >> textElements: aCollection [
+ 
+	children := aCollection
+]
