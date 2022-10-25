@@ -535,14 +535,13 @@ MicDumperTest >> testQuote [
 MicDumperTest >> testRawBlock [
 
 	| micRaw |
-	self skip.
-	micRaw := (parser parse: factory rawFormatSample) children first.
+	micRaw := (parser parse: factory rawFormatSample) children first children second.
 	self assert: micRaw class equals: MicRawBlock.
 	visitor visit: micRaw.
 	self
 		assert: visitor contents
 		equals:
-		'(MicParagraphBlock new textElement: (MicTextBlock new substring: ''Foo'')))'
+		'(MicRawBlock new substring: ''Foo'')'
 ]
 
 { #category : #'test - inline - blocks' }

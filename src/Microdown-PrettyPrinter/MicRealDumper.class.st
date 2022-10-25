@@ -265,10 +265,8 @@ MicRealDumper >> visitRaw: aMicRaw [
 	self 
 		element: aMicRaw 
 		during: [
-			stream nextPutAll: 'textElement: '.
-			self flag: #arg.
-			"We should check if raw has a text or not in anycase we should emit a string."
-			aMicRaw do: [ :each | each accept: self ] ]
+			stream nextPutAll: 'substring: ' ; print: aMicRaw substring
+			]
 ]
 
 { #category : #'visit - format' }
