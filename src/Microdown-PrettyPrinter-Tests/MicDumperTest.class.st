@@ -44,7 +44,7 @@ MicDumperTest >> testBold [
 		assert: (MicRealDumper new 
 						visit: (Microdown parse: '**aaa_bbb_ccc**')) contents  
 						
-		equals: '(MicParagraphBlock new textElements: {(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''aaa'') . (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''bbb'')) . (MicTextBlock new substring: ''ccc'')})})'
+		equals: '(MicParagraphBlock new textElements: {(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''aaa'') . (MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''bbb'')}) . (MicTextBlock new substring: ''ccc'')})})'
 						
 ]
 
@@ -289,7 +289,7 @@ MicDumperTest >> testFigureItalicFormat [
 	self
 		assert: result contents
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -331,7 +331,7 @@ MicDumperTest >> testFigureStrikeFormat [
 	self
 		assert: result contents  
 		equals:
-		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself) '
+		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})}; yourself) '
 ]
 
 { #category : #'test - inline - blocks' }
@@ -372,7 +372,7 @@ MicDumperTest >> testItalicFormat [
 	result := micItalic accept: visitor.
 	self
 		assert: result contents
-		equals: '(MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
+		equals: '(MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
 { #category : #'test - inline - blocks' }
@@ -453,7 +453,7 @@ MicDumperTest >> testOrderedListWithTwoItemsItalic [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -481,7 +481,7 @@ MicDumperTest >> testOrderedListWithTwoItemsStrike [
 	self
 		assert: visitor contents
 		equals:
-		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
+		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -565,7 +565,7 @@ MicDumperTest >> testStrike [
 	| micStrike result |
 	micStrike := (parser parse: factory strikethroughFormatSample) children first children first.
 	result := micStrike accept: visitor.
-	self assert: result contents equals: '(MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
+	self assert: result contents equals: '(MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 
 ]
 
@@ -675,7 +675,7 @@ MicDumperTest >> testUnOrderedListWithTwoItemsNested [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: ''Foo'')))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElements: {(MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})})) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
 { #category : #'tests - section' }
@@ -690,5 +690,5 @@ MicDumperTest >> testUnOrderedListWithTwoItemsStrike [
 	self
 		assert: visitor contents
 		equals:
-		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
+		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]

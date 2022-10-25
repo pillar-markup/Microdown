@@ -94,7 +94,7 @@ MicRealDumper >> visitAnchor: aMicAnchor [
 ]
 
 { #category : #'visit - format' }
-MicRealDumper >> visitBold: aMicBold [
+MicRealDumper >> visitAttributedText: aMicBold [
 
 	stream nextPut: $(.
 	self emitClassNameOf: aMicBold.
@@ -107,6 +107,12 @@ MicRealDumper >> visitBold: aMicBold [
 	aMicBold children do: [ :each | each accept: self ] separatedBy: [ stream nextPutAll: ' . '].
 	stream nextPutAll: '}'.
 	stream nextPut: $)
+]
+
+{ #category : #'visit - format' }
+MicRealDumper >> visitBold: aMicItalic [
+
+	self visitAttributedText: aMicItalic
 ]
 
 { #category : #'visit - section' }
@@ -180,15 +186,7 @@ MicRealDumper >> visitHeader: aHeader [
 { #category : #'visit - format' }
 MicRealDumper >> visitItalic: aMicItalic [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicItalic.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aMicItalic children first accept: self.
-	stream nextPut: $)
+	self visitAttributedText: aMicItalic
 ]
 
 { #category : #'visit - section' }
@@ -292,17 +290,9 @@ MicRealDumper >> visitRaw: aMicRaw [
 ]
 
 { #category : #'visit - format' }
-MicRealDumper >> visitStrike: aMicStrike [
+MicRealDumper >> visitStrike: aMicItalic [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicStrike.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aMicStrike children first accept: self.
-	stream nextPut: $)
+	self visitAttributedText: aMicItalic
 ]
 
 { #category : #'visit - section' }
