@@ -7,16 +7,12 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #'as yet unclassified' }
+MicMonospaceFormatBlock2 class >> blockName [
+	^ (super blockName) withoutSuffix: 'Format'
+]
+
 { #category : #visiting }
 MicMonospaceFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
-]
-
-{ #category : #printing }
-MicMonospaceFormatBlock2 >> printOn: aStream [
-
-	self printWithoutConventions: aStream.
-	aStream nextPut: $(.
-	aStream nextPutAll: substring.
-	aStream nextPut: $)
 ]

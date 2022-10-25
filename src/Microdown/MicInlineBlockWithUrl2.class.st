@@ -9,8 +9,9 @@ My subclasses manage figures and links.
 "
 Class {
 	#name : #MicInlineBlockWithUrl2,
-	#superclass : #MicInlineElement2,
+	#superclass : #MicInlineBlock2,
 	#instVars : [
+		'children',
 		'url',
 		'reference'
 	],
@@ -23,24 +24,24 @@ MicInlineBlockWithUrl2 class >> parse: token stream: aTokenStream for: aParser [
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> captionElements [ 
-	"caption is an old mistake for the part between the square brackets [caption](url)"
+MicInlineBlockWithUrl2 >> children [
+
 	^ children
 ]
 
+{ #category : #accessing }
+MicInlineBlockWithUrl2 >> children: anObject [
+
+	children := anObject
+]
+
 { #category : #printing }
-MicInlineBlockWithUrl2 >> printOn: aStream [
-	| contents |
-	contents := children
-		            ifEmpty: [ self substring ]
-		            ifNotEmpty: [ self childrenPrintOn ].
-	aStream
-		nextPut: $[;
-		nextPutAll: contents;
-		nextPut: $];
-		nextPut: $(.
-		aStream nextPutAll: url. 
-	aStream nextPut: $)
+MicInlineBlockWithUrl2 >> printOn: stream [
+	stream << self blockName << '{ '.
+	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
+	stream << $}.
+	stream << $( << url << $)
+	
 ]
 
 { #category : #accessing }

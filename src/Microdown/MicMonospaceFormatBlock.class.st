@@ -67,12 +67,3 @@ MicMonospaceFormatBlock >> kind [
 MicMonospaceFormatBlock >> openingDelimiter [
 	^ self class openingDelimiter
 ]
-
-{ #category : #printing }
-MicMonospaceFormatBlock >> printOn: aStream [
-
-	self printWithoutConventions: aStream.
-	aStream nextPut: $(.
-	aStream nextPutAll: substring.
-	aStream nextPut: $)
-]

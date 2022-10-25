@@ -12,6 +12,11 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #parsing }
+MicInlineParser2 class >> parse: string [
+	^ self new parse: string
+]
+
 { #category : #'block creation' }
 MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [ 
 	| blockClass newBlock|
@@ -23,27 +28,8 @@ MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [
 ]
 
 { #category : #'block creation' }
-MicInlineParser2 >> createRawStyleBlock: token [
-	| opener block substring|
-	opener := (MicAbstractDelimiter rawStyleOpeningMarkups)
-		detect: [ :o | token beginsWith: o markup]
-		ifNone: [ nil ].
-	opener ifNil: [ ^ self createTextBlock: token ].
-	block := opener associatedInlineBlock new.
-	substring := token 
-		copyFrom: opener markup size + 1 
-		to: token size - block closingDelimiter size.
-	^ block
-		substring: substring;
-		children: { self createTextBlock: substring }
-		
-]
-
-{ #category : #'block creation' }
 MicInlineParser2 >> createTextBlock: token [
-	^ MicTextBlock2 new
-		substring: token;
-		children: #()
+	^ MicTextBlock2 new substring: token
 ]
 
 { #category : #'private parsing' }
@@ -66,7 +52,7 @@ MicInlineParser2 >> joinTextNodesOf: children [
 		 ].
 	(bufferText isNotNil and: [ bufferText substring isNotEmpty  ]) 
 		ifTrue: [ outStream nextPut: bufferText ].
-	 ^ outStream contents
+	 ^ outStream contents asArray
 ]
 
 { #category : #parsing }
@@ -107,7 +93,7 @@ MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStr
 { #category : #'private parsing' }
 MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 	| skipRes children urlToken|
-	skipRes := (self skipTo: token delimiter closer inStream: aTokenStream).
+	skipRes := (self skipToUrlStartInStream: aTokenStream).
 	skipRes ifNil: [ ^ self createTextBlock: token substring].
 	children := self parseChildrenIn: skipRes second.
 	urlToken := aTokenStream next.
@@ -139,6 +125,31 @@ MicInlineParser2 >> skipTo: closer inStream: tokenStream [
 			token delimiter markup = closer ifTrue: [ 
 				^ { substringStream contents.  
 					 ReadStream on: tokenStream contents from: startPos + 1 to: tokenStream position} ].
+			substringStream nextPutAll: token substring.
+			tokenStream next.
+			].
+	tokenStream position: startPos.
+	^ nil
+	
+]
+
+{ #category : #'private parsing' }
+MicInlineParser2 >> skipToUrlStartInStream: tokenStream [
+	"Skip to my UrlStart. Notice, I might find a nested url construct"
+	| startPos substringStream nestingLevel|
+	startPos := tokenStream position.
+	substringStream := WriteStream on: ''.
+	nestingLevel := 0.
+	[ tokenStream atEnd]
+		whileFalse: [ | token|
+			token := tokenStream peek.
+			({ LinkNameOpenerMarkup. FigureNameOpenerMarkup  } includes: token delimiter markup)
+				ifTrue: [ nestingLevel := nestingLevel + 1 ].
+			token delimiter markup = NameCloserUrlOpener
+				ifTrue: [ nestingLevel = 0
+					ifFalse: [ nestingLevel := nestingLevel -1 ]
+			 		ifTrue: [ ^ { substringStream contents.  
+						 ReadStream on: tokenStream contents from: startPos + 1 to: tokenStream position} ]].
 			substringStream nextPutAll: token substring.
 			tokenStream next.
 			].

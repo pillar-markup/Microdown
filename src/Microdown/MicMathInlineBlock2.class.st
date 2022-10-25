@@ -29,3 +29,8 @@ Class {
 	#superclass : #MicUnEvaluatedBlock2,
 	#category : #'Microdown-InlineParser'
 }
+
+{ #category : #visiting }
+MicMathInlineBlock2 >> accept: aVisitor [
+	^ aVisitor visitMathInline: self
+]

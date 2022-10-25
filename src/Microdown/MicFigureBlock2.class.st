@@ -20,6 +20,11 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #visiting }
+MicFigureBlock2 >> accept: aVisitor [
+ 	^ aVisitor visitFigure: self
+]
+
 { #category : #accessing }
 MicFigureBlock2 >> arguments [
 
@@ -30,6 +35,12 @@ MicFigureBlock2 >> arguments [
 MicFigureBlock2 >> arguments: anObject [
 
 	arguments := anObject
+]
+
+{ #category : #printing }
+MicFigureBlock2 >> caption [
+	"print helper"
+	^ String streamContents: [:st | self children do: [ :each | st nextPutAll: each substring ] ] 
 ]
 
 { #category : #visiting }
@@ -43,19 +54,4 @@ MicFigureBlock2 >> closeMe [
 	title := (split second ifNil: [ '' ]) 
 		trimBoth: [:char | {$". Character space} includes: char].
 	self arguments: (MicArgumentList withString: title)
-]
-
-{ #category : #printing }
-MicFigureBlock2 >> printOn: aStream [
- 		aStream nextPut: $!;
- 			nextPut: $[;
- 			nextPutAll: self caption;
- 			nextPut: $];
- 			nextPut: $(.
-		aStream nextPutAll: (
-			url
-				ifNotNil: [ url ] 
-				ifNil: [ String empty ]).		 
-		aStream nextPut: $).
- 		
 ]

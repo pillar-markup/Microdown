@@ -7,10 +7,7 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #printing }
-MicTextBlock2 >> printOn: aStream [
-
-	self printWithoutConventions: aStream.
-	self print: self substring surroundedOn: aStream.
-
+{ #category : #visiting }
+MicTextBlock2 >> accept: aVisitor [
+	^ aVisitor visitText: self
 ]

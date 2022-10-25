@@ -10,3 +10,8 @@ Class {
 	#superclass : #MicUnEvaluatedBlock2,
 	#category : #'Microdown-InlineParser'
 }
+
+{ #category : #visiting }
+MicRawBlock2 >> accept: aVisitor [
+	^ aVisitor visitRaw: self
+]
