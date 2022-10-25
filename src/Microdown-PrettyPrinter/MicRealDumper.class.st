@@ -12,6 +12,19 @@ MicRealDumper >> contents [
 	^ stream contents
 ]
 
+{ #category : #'visit - section' }
+MicRealDumper >> element: anElement during: aBlock [
+	
+	stream nextPut: $(.
+	self emitClassNameOf: anElement.
+	stream space.
+	stream
+		nextPutAll: 'new';
+		space.
+	aBlock value.
+	stream nextPut: $)
+]
+
 { #category : #utilities }
 MicRealDumper >> emitClassNameOf: aMicElement [
 
@@ -21,17 +34,14 @@ MicRealDumper >> emitClassNameOf: aMicElement [
 { #category : #'visit - section' }
 MicRealDumper >> emitList: aList [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aList.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'children: { '.
-	aList children
-		do: [ :each | each accept: self ]
-		separatedBy: [ stream nextPutAll: ' . ' ].
-	stream nextPutAll: ' }; yourself)'
+	self 
+		element: aList 
+		during: [
+			stream nextPutAll: 'children: { '.
+			aList children
+				do: [ :each | each accept: self ]
+				separatedBy: [ stream nextPutAll: ' . ' ].
+	stream nextPutAll: ' }; yourself']
 ]
 
 { #category : #build }
@@ -79,34 +89,26 @@ MicRealDumper >> visit: aMicElement [
 { #category : #'visit - section' }
 MicRealDumper >> visitAnchor: aMicAnchor [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicAnchor.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	stream
-		nextPutAll: '" ';
-		nextPutAll: aMicAnchor label;
-		nextPutAll: ' "'.
-	stream nextPut: $)
+	self
+		element: aMicAnchor 
+		during: [
+			stream nextPutAll: 'textElement: '.
+			stream
+				nextPutAll: '" ';
+				nextPutAll: aMicAnchor label;
+				nextPutAll: ' "' ]
 ]
 
 { #category : #'visit - format' }
 MicRealDumper >> visitAttributedText: aMicBold [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicBold.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElements: '.
-	stream nextPutAll: '{'.
-	aMicBold children do: [ :each | each accept: self ] separatedBy: [ stream nextPutAll: ' . '].
-	stream nextPutAll: '}'.
-	stream nextPut: $)
+	self 
+		element: aMicBold 
+		during: [
+			stream nextPutAll: 'textElements: '.
+			stream nextPutAll: '{'.
+			aMicBold children do: [ :each | each accept: self ] separatedBy: [ stream nextPutAll: ' . '].
+			stream nextPutAll: '}' ]
 ]
 
 { #category : #'visit - format' }
@@ -118,69 +120,62 @@ MicRealDumper >> visitBold: aMicItalic [
 { #category : #'visit - section' }
 MicRealDumper >> visitCode: aCodeBlock [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aCodeBlock.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	aCodeBlock hasNonDefaultArguments ifTrue: [ self emitParameters: aCodeBlock ].
-	aCodeBlock hasBody ifTrue: [ 
-		stream nextPutAll: 'body: '.
-		stream
-			nextPutAll: '''';
-			nextPutAll: aCodeBlock body;
-			nextPutAll: '''' ].
-	stream nextPut: $)
+	self 
+		element: aCodeBlock 
+		during: [
+			aCodeBlock hasNonDefaultArguments ifTrue: [ self emitParameters: aCodeBlock ].
+			aCodeBlock hasBody ifTrue: [ 
+				stream nextPutAll: 'body: '.
+				stream
+					nextPutAll: '''';
+					nextPutAll: aCodeBlock body;
+					nextPutAll: '''' ]]
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitComment: aComment [
-
-	stream nextPut: $(.
-	self emitClassNameOf: aComment.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	stream nextPutAll: '''Foo'''.
-	stream nextPut: $)
+	
+	self flag: #argh.
+	self 
+		element: aComment 
+		during: [
+			stream nextPutAll: 'textElement: '.
+			stream nextPutAll: '''Foo''' ]
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitFigure: aMicFigure [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicFigure.
-	stream nextPutAll: ' new '.
-	aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
-	stream nextPutAll: 'url: '.
-	stream print: aMicFigure reference fullName.
-	stream
-		space;
-		nextPutAll: ';'.
-	stream nextPutAll: ' caption: { '.
-	aMicFigure captionElements
-		do: [ :each | self visit: each ]
-		separatedBy: [ stream nextPutAll: ' . ' ].
-	stream nextPutAll: '}; yourself) '
+	self flag: #arg.
+	self 
+		element: aMicFigure 
+		during: [
+			aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
+			stream nextPutAll: 'url: '.
+			stream print: aMicFigure reference fullName.
+			stream
+				space;
+				nextPutAll: ';'.
+			stream nextPutAll: ' caption: { '.
+			aMicFigure captionElements
+				do: [ :each | self visit: each ]
+				separatedBy: [ stream nextPutAll: ' . ' ].
+			stream nextPutAll: '}; yourself' ]
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitHeader: aHeader [
 	
-	stream nextPut: $(.
-	self emitClassNameOf: aHeader.
-	stream nextPutAll: ' new '.
-	stream nextPutAll: 'level: '.
-	aHeader level printOn: stream. 
-	stream nextPutAll: '; '.
-	stream nextPutAll: 'headerElements: '.
-	stream nextPut: ${.
-	self visitChildrenOf: aHeader.
-	stream nextPut: $}.
-	stream nextPut: $)
+	self 
+		element: aHeader 
+		during: [
+			stream nextPutAll: 'level: '.
+			aHeader level printOn: stream. 
+			stream nextPutAll: '; '.
+			stream nextPutAll: 'headerElements: '.
+			stream nextPut: ${.
+			self visitChildrenOf: aHeader.
+			stream nextPut: $}]
 ]
 
 { #category : #'visit - format' }
@@ -192,49 +187,39 @@ MicRealDumper >> visitItalic: aMicItalic [
 { #category : #'visit - section' }
 MicRealDumper >> visitLink: aMicLink [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicLink.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'captionElements: '.
-	stream nextPutAll: '{'.
-	aMicLink captionElements do: [ :each | self visit: each  ] separatedBy: [ stream nextPutAll: ' . ' ].
-	stream nextPutAll: '} ; url: '.
-	stream print: aMicLink url.
-	stream nextPutAll: ' ; yourself)'
+	self 
+		element: aMicLink 
+		during: [
+			stream nextPutAll: 'captionElements: '.
+			stream nextPutAll: '{'.
+			aMicLink captionElements do: [ :each | self visit: each  ] separatedBy: [ stream nextPutAll: ' . ' ].
+			stream nextPutAll: '} ; url: '.
+			stream print: aMicLink url.
+			stream nextPutAll: ' ; yourself' ]
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitListItem: anItem [
 
-	stream nextPut: $(.
-	self emitClassNameOf: anItem.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	anItem children 
-		do: [ :each | each accept: self ]
-		separatedBy: [ ''.	'' ].
-	stream nextPut: $).
-	self flag: #todo.
-	"qd on a une liste elle contient des items e.g. une liste de inline model"
+	self flag: #arg.
+	self 
+		element: anItem 
+		during: [
+			anItem children 
+				do: [ :each | each accept: self ]
+				separatedBy: [ ''.	'' ] ]
+
 ]
 
 { #category : #'visit - format' }
 MicRealDumper >> visitMonospace: aMonospace [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMonospace.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aMonospace children first accept: self.
-	stream nextPut: $)
+	self 
+		element: aMonospace 
+		during: [
+			stream nextPutAll: 'textElement: '.
+			aMonospace children first accept: self ]
+	
 ]
 
 { #category : #'visit - section' }
@@ -277,15 +262,13 @@ MicRealDumper >> visitQuote: aQuote [
 { #category : #'visit - section' }
 MicRealDumper >> visitRaw: aMicRaw [
 
-	stream nextPut: $(.
-	self emitClassNameOf: aMicRaw.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'textElement: '.
-	aMicRaw do: [ :each | each accept: self ].
-	stream nextPut: $)
+	self 
+		element: aMicRaw 
+		during: [
+			stream nextPutAll: 'textElement: '.
+			self flag: #arg.
+			"We should check if raw has a text or not in anycase we should emit a string."
+			aMicRaw do: [ :each | each accept: self ] ]
 ]
 
 { #category : #'visit - format' }
@@ -296,35 +279,25 @@ MicRealDumper >> visitStrike: aMicItalic [
 
 { #category : #'visit - section' }
 MicRealDumper >> visitTable: aTable [
-	
-	stream nextPut: $(.
-	self emitClassNameOf: aTable.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream nextPutAll: 'string: '.
-	self flag: #todo.
-	"we should check the API of table and grab the rows."
-	aTable children first accept: self.
-	stream nextPut: $)
+	self flag: #arg.
+	self 
+		element: aTable 
+		during: [
+				stream nextPutAll: 'string: '.
+	aTable children first accept: self ]
 ]
 
 { #category : #'visit - section' }
 MicRealDumper >> visitText: aText [
 	
-	stream nextPut: $(.
-	self emitClassNameOf: aText.
-	stream space.
-	stream
-		nextPutAll: 'new';
-		space.
-	stream
-		nextPutAll: 'substring: ';
-		nextPutAll: '''';
-		nextPutAll: aText substring;
-		nextPutAll: ''''.
-	stream nextPut: $)
+	self 
+		element: aText 
+		during: [
+			stream
+				nextPutAll: 'substring: ';
+				nextPutAll: '''';
+				nextPutAll: aText substring;
+				nextPutAll: '''' ]
 ]
 
 { #category : #'visit - section' }
