@@ -33,5 +33,5 @@ MicAnnotationBlock2 >> arguments [
 
 { #category : #visiting }
 MicAnnotationBlock2 >> closeMe [
-	arguments := MicArgumentList split: substring.
+	arguments := MicArgumentList split: bodystring.
 ]

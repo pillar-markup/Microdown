@@ -9,8 +9,8 @@ Class {
 	#name : #MicInlineToken,
 	#superclass : #Object,
 	#instVars : [
-		'substring',
-		'delimiter'
+		'delimiter',
+		'string'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
@@ -32,25 +32,25 @@ MicInlineToken >> delimiter: anObject [
 
 { #category : #printing }
 MicInlineToken >> printOn: aStream [
-	aStream << delimiter printString << $( << substring << $)
+	aStream << delimiter printString << $( << string << $)
 ]
 
 { #category : #accessing }
-MicInlineToken >> substring [
+MicInlineToken >> string [
 
-	^ substring
+	^ string
 ]
 
 { #category : #accessing }
-MicInlineToken >> substring: anObject [
+MicInlineToken >> string: anObject [
 
-	substring := anObject
+	string := anObject
 ]
 
 { #category : #accessing }
 MicInlineToken >> undelimitedSubstring [
 	"assume I am a token for a unevaluated delimiter, containing raw body - remove my delimiters"
-	^substring 
+	^string 
 		copyFrom: delimiter markup size + 1 
-		to: (substring size - delimiter closer size)
+		to: (string size - delimiter closer size)
 ]

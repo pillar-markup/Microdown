@@ -94,7 +94,7 @@ MicInlineTokenStream >> addDelimiter: string [
 		ifTrue: [self class backslashReescape: string except: delimiter closer first asString]
 		ifFalse: [string].
 	tokens add: (MicInlineToken new 
-		substring: decodedString;
+		string: decodedString;
 		delimiter: delimiter)
 ]
 
@@ -102,7 +102,7 @@ MicInlineTokenStream >> addDelimiter: string [
 MicInlineTokenStream >> addText: matchedString [
 	| token |
 	token := MicInlineToken new 
-		substring: (self class backslashDecode: matchedString);
+		string: (self class backslashDecode: matchedString);
 		delimiter: (MicInlineDelimiter at: FixiousTextDelimiter).
 	tokens add: token
 ]

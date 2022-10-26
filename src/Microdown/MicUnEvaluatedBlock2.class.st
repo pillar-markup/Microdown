@@ -5,7 +5,7 @@ Class {
 	#name : #MicUnEvaluatedBlock2,
 	#superclass : #MicInlineBlock2,
 	#instVars : [
-		'substring'
+		'bodystring'
 	],
 	#category : #'Microdown-InlineParser'
 }
@@ -20,20 +20,20 @@ MicUnEvaluatedBlock2 class >> parse: delimiter stream: aTokenStream for: aParser
 	^ aParser parseNonEvaluatedBlock: self token: delimiter stream: aTokenStream
 ]
 
+{ #category : #accessing }
+MicUnEvaluatedBlock2 >> bodystring [
+
+	^ bodystring
+]
+
+{ #category : #accessing }
+MicUnEvaluatedBlock2 >> bodystring: anObject [
+
+	bodystring := anObject
+]
+
 { #category : #printing }
 MicUnEvaluatedBlock2 >> printOn: stream [
-	stream << self blockName << '(' << substring << ')'
+	stream << self blockName << '(' << bodystring << ')'
 	
-]
-
-{ #category : #accessing }
-MicUnEvaluatedBlock2 >> substring [
-
-	^ substring
-]
-
-{ #category : #accessing }
-MicUnEvaluatedBlock2 >> substring: anObject [
-
-	substring := anObject
 ]

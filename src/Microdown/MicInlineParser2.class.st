@@ -29,7 +29,7 @@ MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [
 
 { #category : #'block creation' }
 MicInlineParser2 >> createTextBlock: token [
-	^ MicTextBlock2 new substring: token
+	^ MicTextBlock2 new bodystring: token
 ]
 
 { #category : #'private parsing' }
@@ -42,15 +42,15 @@ MicInlineParser2 >> joinTextNodesOf: children [
 		child class = MicTextBlock2
 			ifTrue: [ bufferText 
 				ifNil: [ bufferText := child ]
-				ifNotNil: [ bufferText substring: (bufferText substring , child substring) ] ]
+				ifNotNil: [ bufferText bodystring: (bufferText bodystring , child bodystring) ] ]
 			ifFalse: [ bufferText
 				ifNil: [ outStream nextPut: child ]
 				ifNotNil: [ 
-					bufferText substring ifNotEmpty: [outStream nextPut: bufferText].
+					bufferText bodystring ifNotEmpty: [outStream nextPut: bufferText].
 					outStream nextPut: child. bufferText := nil ]
 				 ]
 		 ].
-	(bufferText isNotNil and: [ bufferText substring isNotEmpty  ]) 
+	(bufferText isNotNil and: [ bufferText bodystring isNotEmpty  ]) 
 		ifTrue: [ outStream nextPut: bufferText ].
 	 ^ outStream contents asArray
 ]
@@ -73,7 +73,7 @@ MicInlineParser2 >> parseChildrenIn: tokenStream [
 			token := tokenStream next.
 			child := token delimiter isOpener 
 				ifTrue: [self createInlineBlock: token inStream: tokenStream]
-				ifFalse: [ self createTextBlock: token substring].
+				ifFalse: [ self createTextBlock: token string].
 			children add: child.
 		].
 	^ self joinTextNodesOf: children
@@ -83,7 +83,7 @@ MicInlineParser2 >> parseChildrenIn: tokenStream [
 MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStream [
 	| skipRes |
 	skipRes := (self skipTo: token delimiter closer inStream: tokenStream).
-	skipRes ifNil: [ ^ self createTextBlock: token substring].
+	skipRes ifNil: [ ^ self createTextBlock: token string].
 	tokenStream next. "skip closer"
 	^ blockType new
 		children: (self parseChildrenIn: skipRes second );
@@ -94,7 +94,7 @@ MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStr
 MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 	| skipRes children urlToken|
 	skipRes := (self skipToUrlStartInStream: aTokenStream).
-	skipRes ifNil: [ ^ self createTextBlock: token substring].
+	skipRes ifNil: [ ^ self createTextBlock: token string].
 	children := self parseChildrenIn: skipRes second.
 	urlToken := aTokenStream next.
 	^ blockType new
@@ -109,7 +109,7 @@ MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token
 { #category : #'private parsing' }
 MicInlineParser2 >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
 	^ blockClass new
-		substring: token undelimitedSubstring;
+		bodystring: token undelimitedSubstring;
 		closeMe
 ]
 
@@ -125,7 +125,7 @@ MicInlineParser2 >> skipTo: closer inStream: tokenStream [
 			token delimiter markup = closer ifTrue: [ 
 				^ { substringStream contents.  
 					 ReadStream on: tokenStream contents from: startPos + 1 to: tokenStream position} ].
-			substringStream nextPutAll: token substring.
+			substringStream nextPutAll: token string.
 			tokenStream next.
 			].
 	tokenStream position: startPos.
@@ -150,7 +150,7 @@ MicInlineParser2 >> skipToUrlStartInStream: tokenStream [
 					ifFalse: [ nestingLevel := nestingLevel -1 ]
 			 		ifTrue: [ ^ { substringStream contents.  
 						 ReadStream on: tokenStream contents from: startPos + 1 to: tokenStream position} ]].
-			substringStream nextPutAll: token substring.
+			substringStream nextPutAll: token string.
 			tokenStream next.
 			].
 	tokenStream position: startPos.
