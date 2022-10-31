@@ -57,7 +57,7 @@ MicListBlock >> addLineAndReturnNextNode: inLine [
 	line is on the format 'markup text'"
 
 	| line |
-	inLine ifEmpty: [ ^ self ].
+	inLine withoutPreTabs ifEmpty: [ ^ self ].
 	"A list accept an empty - like that it avoids to close the block (the list) and we can have space between list item.
 	Now we do nothing with empty so just do not create new item or whatever."
 	line := inLine trim.
