@@ -360,7 +360,7 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 { #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
 
-	canvas nextPutAllLines: aText substring
+	canvas nextPutAllLines: aText bodystring
 ]
 
 { #category : #'blocks - list' }

@@ -323,8 +323,8 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 
 { #category : #'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
-	
-	builder text:  (self backSlashString: aMicTextBlock substring)
+
+	builder text: (self backSlashString: aMicTextBlock bodystring)
 ]
 
 { #category : #visiting }

@@ -377,21 +377,19 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
+
 	canvas newLineIfNotAlready.
 	canvas indentIn: [ 
 		canvas
-			<< ((self codeStylerClass stylerFor: aCodeBlock language)
-					style: aCodeBlock body );
+			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
+						 aCodeBlock body);
 			newLine.
 		aCodeBlock hasCaption ifTrue: [ 
-			canvas 
-				includeAttribute: TextEmphasis bold 
-				in: [ 
-					canvas
-						<< aCodeBlock caption asText;
-					newLine ]]].
+			canvas includeAttribute: TextEmphasis bold in: [ 
+				canvas
+					<< aCodeBlock testCaptionString asText;
+					newLine ] ] ].
 	canvas << textStyler interBlockSpacing
-		
 ]
 
 { #category : #'visiting -  format' }
@@ -690,10 +688,12 @@ MicRichTextComposer >> visitTable: tableBlock [
 
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
+
 	"we should set attribute because it would override link and others."
-	|text|
-	text := anInlineBlock substring asText.
-	canvas << (textStyler postTextTreatment: text )
+
+	| text |
+	text := anInlineBlock bodystring asText.
+	canvas << (textStyler postTextTreatment: text)
 ]
 
 { #category : #'visiting - list' }

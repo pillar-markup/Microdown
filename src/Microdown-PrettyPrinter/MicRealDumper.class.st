@@ -287,15 +287,13 @@ MicRealDumper >> visitTable: aTable [
 
 { #category : #'visit - section' }
 MicRealDumper >> visitText: aText [
-	
-	self 
-		element: aText 
-		during: [
-			stream
-				nextPutAll: 'substring: ';
-				nextPutAll: '''';
-				nextPutAll: aText substring;
-				nextPutAll: '''' ]
+
+	self element: aText during: [ 
+		stream
+			nextPutAll: 'substring: ';
+			nextPutAll: '''';
+			nextPutAll: aText bodystring;
+			nextPutAll: '''' ]
 ]
 
 { #category : #'visit - section' }

@@ -29,7 +29,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
 		equals: MicListItemBlock.
 	self
 		assert: input children first children first children first testText
-		equals: 'test'
+		equals: 'Text(test)'
 ]
 
 { #category : #tests }
