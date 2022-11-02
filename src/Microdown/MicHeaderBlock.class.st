@@ -53,10 +53,9 @@ MicHeaderBlock >> formattedCode [
 
 { #category : #accessing }
 MicHeaderBlock >> header [
-	
-	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
-	
-	
+
+	^ String streamContents: [ :s | 
+		  children do: [ :e | s nextPutAll: e bodystring ] ]
 ]
 
 { #category : #accessing }

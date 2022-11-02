@@ -12,7 +12,7 @@ MicFigureBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser.
-	splitterClass := MicInlineParser 
+	splitterClass := MicInlineParser2 
 ]
 
 { #category : #tests }
@@ -28,8 +28,8 @@ MicFigureBlockTest >> testAlt [
 		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&alt=je suis le alt texte)')
 		          first.
 
-	self assert: figure hasArguments.
-	self assert: figure alt equals: 'je suis le alt texte'
+	self assert: figure arguments notEmpty.
+	self assert: (figure arguments at: #alt) equals: 'je suis le alt texte'
 ]
 
 { #category : #tests }
@@ -104,7 +104,7 @@ MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 MicFigureBlockTest >> testPrintOn [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
-	self assert: figure asString equals: '![caption](http://www.Pharo.ORG)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://www.Pharo.ORG)'
 	
 	"not really good but let us make it work"
 ]
@@ -113,7 +113,7 @@ MicFigureBlockTest >> testPrintOn [
 MicFigureBlockTest >> testPrintOnWithParameters [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://anURL.org?label=1&title=testFigure)') first.
-	self assert: figure printString equals: '![caption](http://anURL.org?label=1&title=testFigure)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://anURL.org?label=1&title=testFigure)'
 ]
 
 { #category : #tests }

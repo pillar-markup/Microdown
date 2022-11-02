@@ -114,7 +114,7 @@ MicListItemBlock >> nestedLevel [
 { #category : #accessing }
 MicListItemBlock >> testText [
 	"I am used to make it easier to write tests"
-	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each substring ] ]
+	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each printString ] ]
 ]
 
 { #category : #accessing }

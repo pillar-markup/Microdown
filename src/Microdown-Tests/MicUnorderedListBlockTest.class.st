@@ -33,7 +33,8 @@ MicUnorderedListBlockTest >> testEmbeddedOrdered [
 MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 
 	| source root list item4 |
-	source := '- item 1
+	source := 
+'- item 1
   1. **sublevel** ~item 1~
   4. **sublevel4** ~item 24~
 - item 2'.
@@ -44,7 +45,7 @@ MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 	item4 := list children first children second children second. "item 1" "unordered list"
 
 	self assert: item4 testText equals: 'sublevel4 item 24'.
-	self assert: item4 textElements first kind equals: 'bold'.
+	self assert: item4 textElements first kind equals: 'boldformat'.
 	self assert: item4 textElements first substring equals: 'sublevel4'.
 
 	self assert: item4 textElements third kind equals: 'strike'.

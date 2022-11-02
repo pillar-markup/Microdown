@@ -53,7 +53,8 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 MicOrderedListBlockTest >> testNestedLevel [
 
 	| source root list item1 |
-	source := '1. item 1
+	source := 
+'1. item 1
    6) sublevel
 1. item 2'.
 	root := parser parse: source.
@@ -61,7 +62,7 @@ MicOrderedListBlockTest >> testNestedLevel [
 	self assert: list children size equals: 2.
 
 	item1 := list children first.
-	self assert: item1 testText equals: 'item 1'.
+	self assert: item1 children first bodystring equals: 'item 1'.
 	self assert: item1 class equals: MicListItemBlock.
 	self assert: item1 nestedLevel equals: 1.
 
@@ -71,7 +72,7 @@ MicOrderedListBlockTest >> testNestedLevel [
 
 	"this is the inner list first item"
 	self
-		assert: item1 children second children first text
+		assert: item1 children second children first children first bodystring 
 		equals: 'sublevel'.
 	self
 		assert: item1 children second children first class
@@ -99,14 +100,16 @@ MicOrderedListBlockTest >> testNestedLevel2 [
 	self assert: item1 children second class equals: MicOrderedListBlock.
 
 	"this is the inner list first item"
-	self assert: sublevelItem testText equals: 'sublevel'.
+	self
+		assert: sublevelItem children first bodystring
+		equals: 'sublevel'.
 	self assert: sublevelItem class equals: MicListItemBlock.
 
 	self
 		assert: sublevelItem children second children first nestedLevel
 		equals: 3.
 	self
-		assert: sublevelItem children second children first text
+		assert: sublevelItem children second children first children first bodystring
 		equals: 'subsublevel'
 ]
 
@@ -240,5 +243,5 @@ MicOrderedListBlockTest >> testUnOrderedListAPIToAccessText [
 
 	self assert: list class equals: MicListItemBlock.
 	self assert: list nestedLevel equals: 1.
-	self assert: list testText equals: '_first_'
+	self assert: list children first children first children first bodystring equals: 'first'
 ]

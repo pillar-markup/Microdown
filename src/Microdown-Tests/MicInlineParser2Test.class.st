@@ -508,5 +508,5 @@ MicInlineParser2Test >> testText_backSlashed [
 MicInlineParser2Test >> testText_isEvaluated [
 	| res |
 	res := self inlineParse: 'bb**cccc**bb'.
-	self assert: res printString equals: 'an Array(Text(bb) Bold{ Text(cccc) } Text(bb))'
+	self assert: res printString equals: 'an Array(Text(bb) BoldFormat{ Text(cccc) } Text(bb))'
 ]

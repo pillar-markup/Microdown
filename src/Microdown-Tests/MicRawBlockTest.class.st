@@ -17,5 +17,5 @@ MicRawBlockTest >> testRaw [
 	self assert: root children first class equals: MicParagraphBlock.
 	self
 		assert: root children first children second class
-		equals: MicRawBlock
+		equals: MicRawBlock2
 ]

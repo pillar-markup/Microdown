@@ -17,6 +17,6 @@ MicInlineBlock2Test >> testAllTerminalNodesImplementsAccept [
 { #category : #tests }
 MicInlineBlock2Test >> testBlockName [
 	self assert: MicFigureBlock2 blockName equals: 'Figure'.
-	self assert: MicBoldFormatBlock2 blockName equals: 'Bold'
+	self assert: MicBoldFormatBlock2 blockName equals: 'BoldFormat'
 	
 ]

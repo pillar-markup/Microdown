@@ -420,10 +420,10 @@ Color >> asMorph
 	self assert: (code arguments at: #language) equals: 'pharo'.
 	
 	self assert: code caption equals: 'Color is a class.'.
-	self assert: code captionElements first kind equals: 'monospace'.
+	self assert: code captionElements first blockName asLowercase equals: 'monospace'.
 	self assert: code captionElements first substring equals: 'Color'.
 	
-	self assert: code captionElements second kind equals: 'basic'.
+	self assert: code captionElements second blockName asLowercase equals: 'text'.
 	self assert: code captionElements second substring equals: ' is a class.'.
 	
 	self assert: code label equals: 'scr:asMorphInColor'.

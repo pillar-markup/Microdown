@@ -12,7 +12,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 MicEvaluatedBlock2 class >> blockName [
-	^ (super blockName) withoutSuffix: 'Format'
+	^ (super blockName) "withoutSuffix: 'Format'"
 ]
 
 { #category : #parsing }
@@ -38,4 +38,24 @@ MicEvaluatedBlock2 >> printOn: stream [
 	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
 	stream << $}
 	
+]
+
+{ #category : #accessing }
+MicEvaluatedBlock2 >> textElement [
+	"Should only be used for tests"
+	self deprecated: 'Just use children' transformWith: '`@rec textElement' -> '`@rec children first'.
+	^ children first
+]
+
+{ #category : #accessing }
+MicEvaluatedBlock2 >> textElement: elem [
+	"Should only be used for tests"
+	self deprecated: 'Just use children' transformWith: '`@rec textElement: `@arg' -> '`@rec children: {`@arg}'.
+	^ children := { elem }
+]
+
+{ #category : #accessing }
+MicEvaluatedBlock2 >> wrappedElements [
+	self deprecated: 'Just use children' transformWith: '`@rec wrappedElements' -> '`@rec children'.
+	^ children 
 ]

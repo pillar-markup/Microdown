@@ -45,3 +45,10 @@ MicInlineBlock2 >> inlineParserClass [
 
 	^ MicInlineParser2
 ]
+
+{ #category : #accessing }
+MicInlineBlock2 >> kind [
+	"Should only be used for tests"
+	self deprecated: 'use blockName instead' transformWith: '`@rec kind' -> '`@rec blockName asLowercase'.
+	^ self blockName asLowercase 
+]

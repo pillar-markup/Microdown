@@ -27,8 +27,8 @@ MicHeaderBlockTest >> testHeaderAPIToAccessText [
 	| header |
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
-	self assert: header children first class equals: MicTextBlock.
-	self assert: header children first substring equals: 'titre1'
+	self assert: header children first class equals: MicTextBlock2.
+	self assert: header children first bodystring equals: 'titre1'
 ]
 
 { #category : #tests }
@@ -48,8 +48,8 @@ MicHeaderBlockTest >> testHeaderCreatesInnerText [
 	| header |
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
-	self assert: header children first class equals: MicTextBlock.
-	self assert: header children first substring equals: 'titre1'
+	self assert: header children first class equals: MicTextBlock2.
+	self assert: header children first bodystring equals: 'titre1'
 ]
 
 { #category : #tests }
@@ -114,6 +114,6 @@ MicHeaderBlockTest >> testHeaderLongElements [
 	self assert: header children size equals: 1.
 	self
 		assert: header children first class
-		equals: MicTextBlock.
+		equals: MicTextBlock2.
 	
 ]

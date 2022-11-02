@@ -11,9 +11,3 @@ Class {
 MicLinkBlock2 >> accept: aVisitor [
 	^ aVisitor visitLink: self
 ]
-
-{ #category : #visiting }
-MicLinkBlock2 >> closeMe [
-	
-	self reference: (MicResourceReference fromUri: url).
-]
