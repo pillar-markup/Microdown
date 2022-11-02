@@ -25,7 +25,7 @@ MicQuoteBlock >> accept: aVisitor [
 MicQuoteBlock >> closeMe [
 	super closeMe.
 	
-	children := MicInlineParser new parse: text
+	children := self inlineParse: text
 ]
 
 { #category : #testing }
