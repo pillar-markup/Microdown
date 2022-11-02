@@ -55,7 +55,7 @@ MicCodeBlock >> closeMe [
 	codeLines := self code lines.
 	codeLines ifEmpty: [ ^ self ].
 	tabs := codeLines first size - codeLines first withoutPreTabs size.
-	self body: ((codeLines collect: [:line | line allButFirst: tabs]) joinUsing: String cr)
+	self body: ((codeLines collect: [:line | line stripNtabs: tabs]) joinUsing: String cr)
 	
 ]
 
