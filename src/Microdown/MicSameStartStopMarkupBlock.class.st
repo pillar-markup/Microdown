@@ -35,7 +35,6 @@ MicSameStartStopMarkupBlock >> caption [
 
 { #category : #'accessing-delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
-	self error: 'This is most likely wrong to call this method'.
 	arguments at: #caption put: (self inlineParse: aString)
 ]
 

@@ -37,7 +37,7 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'item 2'.
+	self assert: list children second testText equals: 'Text(item 2)'.
 
 	"item 1 + nested list"
 	self assert: list children first children size equals: 2.
@@ -46,7 +46,7 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 
 	self
 		assert: list children first children second children first testText
-		equals: 'sublevel item 1' "list item"
+		equals: 'Text(sublevel item 1)' "list item"
 ]
 
 { #category : #'tests - nested' }
@@ -126,8 +126,8 @@ MicOrderedListBlockTest >> testNotSpawingNewParagraph [
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
 	self assert: list startIndex equals: 1.
-	self assert: list children second testText equals: 'second item
-follow up of second item'
+	self assert: list children second testText equals: 'Text(second item
+follow up of second item)'
 ]
 
 { #category : #tests }
@@ -140,8 +140,8 @@ MicOrderedListBlockTest >> testSingleLevelList2 [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children first testText equals: 'item 1
-expanded'.
+	self assert: list children first testText equals: 'Text(item 1
+expanded)'.
 	self assert: list startIndex equals: 19
 ]
 
@@ -160,13 +160,13 @@ expanded as new paragraph
 	"two lists + one paragraph"
 	list := root children first.
 	self assert: list children size equals: 1.
-	self assert: list children first testText equals: 'item 1'.
+	self assert: list children first testText equals: 'Text(item 1)'.
 	self assert: list startIndex equals: 19.
 
 	self
 		assert: root children last children first testText
-		equals: 'item 2
-part of item2'
+		equals: 'Text(item 2
+part of item2)'
 ]
 
 { #category : #tests }
@@ -179,7 +179,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
 	self assert: list startIndex equals: 1.
-	self assert: list children second testText equals: 'second item'
+	self assert: list children second testText equals: 'Text(second item)'
 ]
 
 { #category : #tests }
@@ -196,7 +196,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumberingWithEmptyLines 
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
 	self assert: list startIndex equals: 1.
-	self assert: list children second testText equals: 'second item'
+	self assert: list children second testText equals: 'Text(second item)'
 ]
 
 { #category : #tests }
@@ -209,7 +209,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	self assert: list children size equals: 2.
 	self assert: list class equals: self orderedListBlockClass.
 	self assert: list startIndex equals: 11.
-	self assert: list children second testText equals: 'item 2'
+	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -224,13 +224,13 @@ a new paragraph.
 	self assert: root children size equals: 3.
 	self
 		assert: root children first children first testText
-		equals: 'first item
-with a follow up'.
+		equals: 'Text(first item
+with a follow up)'.
 	self assert: root children third startIndex equals: 2.
 	self
 		assert: root children third children first testText
-		equals: 'second list first item
-follow up of second item'
+		equals: 'Text(second list first item
+follow up of second item)'
 ]
 
 { #category : #'tests - list' }

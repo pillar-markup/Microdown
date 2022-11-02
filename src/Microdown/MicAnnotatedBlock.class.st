@@ -37,7 +37,8 @@ MicAnnotatedBlock >> lineMarkup [
 { #category : #accessing }
 MicAnnotatedBlock >> text [
 
-	^ String streamContents: [ :s | self textElements do: [ :each | s nextPutAll: each substring ] ]
+	^ String streamContents: [ :s | 
+		  self textElements do: [ :each | s nextPutAll: each bodystring ] ]
 ]
 
 { #category : #accessing }

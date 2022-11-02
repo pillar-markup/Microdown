@@ -23,18 +23,17 @@ MicUnorderedListBlockTest >> testEmbeddedOrdered [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'item 2'.
+	self assert: list children second testText equals: 'Text(item 2)'.
 	self
 		assert: list children first children second children second testText
-		equals: 'sublevel item 2' "item 1" "unordered list" "sub item"
+		equals: 'Text(sublevel item 2)' "item 1" "unordered list" "sub item"
 ]
 
 { #category : #tests }
 MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 
 	| source root list item4 |
-	source := 
-'- item 1
+	source := '- item 1
   1. **sublevel** ~item 1~
   4. **sublevel4** ~item 24~
 - item 2'.
@@ -44,12 +43,23 @@ MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 
 	item4 := list children first children second children second. "item 1" "unordered list"
 
-	self assert: item4 testText equals: 'sublevel4 item 24'.
-	self assert: item4 textElements first kind equals: 'boldformat'.
-	self assert: item4 textElements first substring equals: 'sublevel4'.
+	self
+		assert: item4 testText
+		equals:
+		'BoldFormat{ Text(sublevel4) }Text( )StrikeFormat{ Text(item 24) }'.
+	self
+		assert: item4 children first blockName asLowercase
+		equals: 'boldformat'.
+	self
+		assert: item4 children first children first bodystring
+		equals: 'sublevel4'.
 
-	self assert: item4 textElements third kind equals: 'strike'.
-	self assert: item4 textElements third substring equals: 'item 24'
+	self
+		assert: item4 children third blockName asLowercase
+		equals: 'strikeformat'.
+	self
+		assert: item4 children third children first bodystring
+		equals: 'item 24'
 ]
 
 { #category : #tests }
@@ -71,11 +81,11 @@ MicUnorderedListBlockTest >> testMixing2 [
 	self assert: root children size equals: 2.
 	list1 := root children first.
 	self assert: list1 children size equals: 2.
-	self assert: list1 children second testText equals: 'item 2'.
+	self assert: list1 children second testText equals: 'Text(item 2)'.
 
 	list2 := root children second.
 	self assert: list2 children size equals: 2.
-	self assert: list2 children second testText equals: 'item 2'
+	self assert: list2 children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -94,13 +104,13 @@ MicUnorderedListBlockTest >> testMixingOrderedInsideUnorderedWithParagraph [
 	self assert: root children size equals: 1.
 	list1 := root children first.
 	self assert: list1 children size equals: 2.
-	self assert: list1 children second testText equals: 'item 2'.
+	self assert: list1 children second testText equals: 'Text(item 2)'.
 
-	self assert: list1 children first testText equals: 'item 1
+	self assert: list1 children first testText equals: 'Text(item 1
 on 
 multiple lines
  1. sub item 1 
- 3. sub item 2'
+ 3. sub item 2)'
 ]
 
 { #category : #'tests - nested' }
@@ -115,7 +125,7 @@ MicUnorderedListBlockTest >> testNestedLevel [
 	self assert: list children size equals: 2.
 
 	item1 := list children first.
-	self assert: item1 testText equals: 'item 1'.
+	self assert: item1 children first bodystring equals: 'item 1'.
 	self assert: item1 class equals: MicListItemBlock.
 	self assert: item1 nestedLevel equals: 1.
 
@@ -125,7 +135,7 @@ MicUnorderedListBlockTest >> testNestedLevel [
 
 	"this is the inner list first item"
 	self
-		assert: item1 children second children first text
+		assert: item1 children second children first children first bodystring
 		equals: 'sublevel'.
 	self
 		assert: item1 children second children first class
@@ -155,14 +165,16 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 		equals: MicUnorderedListBlock.
 
 	"this is the inner list first item"
-	self assert: sublevelItem testText equals: 'sublevel'.
+	self
+		assert: sublevelItem children first bodystring
+		equals: 'sublevel'.
 	self assert: sublevelItem class equals: MicListItemBlock.
 
 	self
 		assert: sublevelItem children second children first nestedLevel
 		equals: 3.
 	self
-		assert: sublevelItem children second children first text
+		assert: sublevelItem children second children first children first bodystring
 		equals: 'subsublevel'
 ]
 
@@ -173,7 +185,7 @@ MicUnorderedListBlockTest >> testOrderedListAPIToAccessText [
 	list := (self parser parse: '1.a 2.b') children first children first.
 	self assert: list class equals: MicListItemBlock.
 	self assert: list nestedLevel equals: 1.
-	self assert: list testText equals: '2.b'
+	self assert: list testText equals: 'Text(2.b)'
 ]
 
 { #category : #tests }
@@ -185,7 +197,7 @@ MicUnorderedListBlockTest >> testSingleLevelList [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'item 2'
+	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -200,8 +212,8 @@ MicUnorderedListBlockTest >> testSingleLevelList2 [
 	"root contains only a list."
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children first testText equals: 'item 1
-expanded'
+	self assert: list children first testText equals: 'Text(item 1
+expanded)'
 ]
 
 { #category : #tests }
@@ -213,20 +225,22 @@ MicUnorderedListBlockTest >> testSingleLevelList2WithFormatting [
 - item 2'.
 	root := parser parse: source.
 	list := root children first.
-	self assert: list children first testText equals: 'item 1
-expanded'.
-	self assert: list children first textElements size equals: 3.
 	self
-		assert: list children first textElements first kind
-		equals: 'bold'.
+		assert: list children first testText
+		equals: 'BoldFormat{ Text(item 1) }Text(
+)Monospace(expanded)'.
+	self assert: list children first children size equals: 3.
 	self
-		assert: list children first textElements first substring
+		assert: list children first children first blockName asLowercase
+		equals: 'boldformat'.
+	self
+		assert: list children first children first children first bodystring
 		equals: 'item 1'.
 	self
-		assert: list children first textElements third kind
+		assert: list children first children third blockName asLowercase
 		equals: 'monospace'.
 	self
-		assert: list children first textElements third substring
+		assert: list children first children third substring
 		equals: 'expanded'
 ]
 
@@ -256,10 +270,10 @@ MicUnorderedListBlockTest >> testSingleLevelListSplitWithEmptyLine [
 
 	list := root children first.
 	self assert: list children size equals: 3.
-	self assert: list children first testText equals: 'item 1'.
+	self assert: list children first testText equals: 'Text(item 1)'.
 	self
 		assert: list children third testText
-		equals: 'item 3 of the same list'
+		equals: 'Text(item 3 of the same list)'
 ]
 
 { #category : #tests }
@@ -279,10 +293,10 @@ MicUnorderedListBlockTest >> testSingleLevelListSplitWithMultipleEmptyLines [
 
 	list := root children first.
 	self assert: list children size equals: 3.
-	self assert: list children first testText equals: 'item 1'.
+	self assert: list children first testText equals: 'Text(item 1)'.
 	self
 		assert: list children third testText
-		equals: 'item 3 of the same list'
+		equals: 'Text(item 3 of the same list)'
 ]
 
 { #category : #tests }
@@ -299,11 +313,11 @@ and here
 
 	list := root children first.
 	self assert: list children size equals: 1.
-	self assert: list children first testText equals: 'item 1
-expanded'.
+	self assert: list children first testText equals: 'Text(item 1
+expanded)'.
 	self
 		assert: root children third children first testText
-		equals: 'item 2'
+		equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -320,10 +334,10 @@ MicUnorderedListBlockTest >> testSingleLevelListStartingWithoutSpaceSplitParagra
 
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children first testText equals: 'item 1
+	self assert: list children first testText equals: 'Text(item 1
 expanded
-same indentation no new paragraph'.
-	self assert: list children second testText equals: 'item 2'
+same indentation no new paragraph)'.
+	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -337,8 +351,8 @@ MicUnorderedListBlockTest >> testSingleLevelListWithItemSpawning [
   follow up of second item'.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'second item
-follow up of second item'
+	self assert: list children second testText equals: 'Text(second item
+follow up of second item)'
 ]
 
 { #category : #tests }
@@ -350,7 +364,7 @@ MicUnorderedListBlockTest >> testSingleLevelListWithStar [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'item 2'
+	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -363,7 +377,7 @@ MicUnorderedListBlockTest >> testSingleLevelMixedList [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 3.
-	self assert: list children second testText equals: 'item 2'
+	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
 { #category : #tests }
@@ -378,11 +392,11 @@ MicUnorderedListBlockTest >> testTwoLevelList [
 	root := parser parse: source.
 	list := root children first.
 	self assert: list children size equals: 2.
-	self assert: list children second testText equals: 'item 2'.
+	self assert: list children second testText equals: 'Text(item 2)'.
 	self
 		assert: list children first children second children first testText
-		equals: 'sublevel1'. "item 1 list" "unorded list" "sub item"
+		equals: 'Text(sublevel1)'. "item 1 list" "unorded list" "sub item"
 	self
 		assert: list children first children second children second testText
-		equals: 'sublevel2' "item 1" "unorded list" "sub item"
+		equals: 'Text(sublevel2)' "item 1" "unorded list" "sub item"
 ]
