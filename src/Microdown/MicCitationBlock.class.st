@@ -9,7 +9,7 @@ this is a text with a {!citation|ref=Duca99a!}
 "
 Class {
 	#name : #MicCitationBlock,
-	#superclass : #MicAnnotationBlock,
+	#superclass : #MicAnnotationBlock2,
 	#category : #'Microdown-Extensions'
 }
 

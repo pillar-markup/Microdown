@@ -11,3 +11,8 @@ Class {
 MicTextBlock2 >> accept: aVisitor [
 	^ aVisitor visitText: self
 ]
+
+{ #category : #accessing }
+MicTextBlock2 >> text [
+	^ bodystring 
+]

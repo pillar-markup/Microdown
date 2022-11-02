@@ -261,7 +261,9 @@ MicrodownInlineParserTest >> testFigureWithParameters [
 	self assert: elements size equals: 1.
 	figure := elements first.
 	self assert: figure caption equals: 'caption terminating with a .'.
-	self assert: figure captionElements first text equals: 'caption terminating with a .'.
+	self
+		assert: figure children first text
+		equals: 'caption terminating with a .'.
 	self assert: figure arguments keys size equals: 2
 ]
 
@@ -274,7 +276,9 @@ MicrodownInlineParserTest >> testFigureWithParameters_withoutQuotes [
 	self assert: elements size equals: 1.
 	figure := elements first.
 	self assert: figure caption equals: 'caption terminating with a .'.
-	self assert: figure captionElements first text equals: 'caption terminating with a .'.
+	self
+		assert: figure children first text
+		equals: 'caption terminating with a .'.
 	self assert: figure arguments keys size equals: 2
 ]
 

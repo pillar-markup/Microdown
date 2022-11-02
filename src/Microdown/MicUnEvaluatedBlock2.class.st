@@ -32,6 +32,17 @@ MicUnEvaluatedBlock2 >> bodystring: anObject [
 	bodystring := anObject
 ]
 
+{ #category : #accessing }
+MicUnEvaluatedBlock2 >> children [
+	"to be nicely polymorphic all nodes have children"
+	^#()
+]
+
+{ #category : #accessing }
+MicUnEvaluatedBlock2 >> children: newChildren [
+	"to be nicely polymorphic all nodes have children"
+]
+
 { #category : #printing }
 MicUnEvaluatedBlock2 >> printOn: stream [
 	stream << self blockName << '(' << bodystring << ')'

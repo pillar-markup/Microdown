@@ -5,7 +5,7 @@ this is a text with a `{!footnote|note=Here is a nice footenote.!}`
 "
 Class {
 	#name : #MicFootnoteBlock,
-	#superclass : #MicAnnotationBlock,
+	#superclass : #MicAnnotationBlock2,
 	#category : #'Microdown-Extensions'
 }
 
