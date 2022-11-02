@@ -437,16 +437,16 @@ MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image anchor|
-	[[ image := aFigure reference loadImage.
-		anchor := self anchorFor: image of: aFigure.
-		canvas << (self textWithImage: image usingAnchor: anchor)
-	 ]
-		on: MicResourceReferenceError, UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure captionElements  ]
-	]
+	| image anchor |
+	[ 
+	[ 
+	image := aFigure reference loadImage.
+	anchor := self anchorFor: image of: aFigure.
+	canvas << (self textWithImage: image usingAnchor: anchor) ]
+		on: MicResourceReferenceError , UnrecognizedImageFormatError
+		do: [ self visitAll: aFigure children ] ]
 		on: Error
-		do: [ :error | canvas << ('>>> ', error printString, ' <<<') ]
+		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
 { #category : #visiting }
@@ -505,17 +505,6 @@ MicRichTextComposer >> visitLink: aLink [
 	attribute := TextAction new
 		             actOnClickBlock: [ 
 			             MicRichTextLinkPresenter new openLink: aLink reference ];
-		             yourself.
-	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
-]
-
-{ #category : #'visiting - document' }
-MicRichTextComposer >> visitLink_old: aLink [
-
-	| attribute |
-	attribute := TextAction new
-		             actOnClickBlock: [ 
-			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]

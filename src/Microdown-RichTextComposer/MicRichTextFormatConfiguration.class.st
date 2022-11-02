@@ -18,7 +18,7 @@ I support the following arguments: {!richtext|bullets=◊»!}
 "
 Class {
 	#name : #MicRichTextFormatConfiguration,
-	#superclass : #MicAnnotationBlock,
+	#superclass : #MicAnnotationBlock2,
 	#category : #'Microdown-RichTextComposer-BlockExtensions'
 }
 

@@ -23,6 +23,12 @@ MicInlineBlockWithUrl2 class >> parse: token stream: aTokenStream for: aParser [
 	^ aParser parseNameUrlBlock: self from: aTokenStream token: token
 ]
 
+{ #category : #visiting }
+MicInlineBlockWithUrl2 >> captionElements [
+	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
+	^ children
+]
+
 { #category : #accessing }
 MicInlineBlockWithUrl2 >> children [
 

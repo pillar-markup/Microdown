@@ -17,6 +17,12 @@ MicInlineParser2 class >> parse: string [
 	^ self new parse: string
 ]
 
+{ #category : #'as yet unclassified' }
+MicInlineParser2 class >> rootParse: aString [
+	"I am used for test, returning a root block with my children"
+	^ MicRootBlock new children: (self parse: aString)
+]
+
 { #category : #'block creation' }
 MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [ 
 	| blockClass newBlock|

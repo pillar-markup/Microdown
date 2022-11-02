@@ -42,15 +42,8 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	self level: ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
-	children := (line copyFrom: level + 1 to: line size) trim.
+	children := self inlineParse: (line copyFrom: level + 1 to: line size) trim.
 	^ self
-]
-
-{ #category : #'parse support' }
-MicHeaderBlock >> closeMe [
-	super closeMe.
-	children :=  self inlineParse: children
-
 ]
 
 { #category : #accessing }

@@ -37,3 +37,9 @@ MicUnEvaluatedBlock2 >> printOn: stream [
 	stream << self blockName << '(' << bodystring << ')'
 	
 ]
+
+{ #category : #obsolete }
+MicUnEvaluatedBlock2 >> substring [
+	self flag: 'to be obsoleted, use bodystring'.
+	^ bodystring
+]

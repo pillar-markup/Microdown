@@ -16,3 +16,15 @@ MicMonospaceFormatBlock2 class >> blockName [
 MicMonospaceFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock2 >> children [
+	"should be deprecated"
+	^ Array with: (MicTextBlock2 new bodystring: self bodystring)
+]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock2 >> text [
+	"should be deprecated "
+	^ self bodystring 
+]

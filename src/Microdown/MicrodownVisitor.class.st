@@ -137,8 +137,7 @@ MicrodownVisitor >> visitItalic: aFormat [
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
-	^ aLink captionElements do: [:each | each accept: self ].
-
+	^ aLink children do: [ :each | each accept: self ]
 ]
 
 { #category : #'visiting - list' }
