@@ -11,3 +11,8 @@ Class {
 MicLinkBlock2 >> accept: aVisitor [
 	^ aVisitor visitLink: self
 ]
+
+{ #category : #printing }
+MicLinkBlock2 >> plainText [
+	^ '[', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
+]

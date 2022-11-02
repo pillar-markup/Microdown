@@ -314,9 +314,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
 		name: 'figcaption';
-		with: [ 
-			aFigCaptionBlock hasCaption ifTrue: [ 
-				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
+		with: [ self visitAll: aFigCaptionBlock children ]
 ]
 
 { #category : #'visiting - inline elements' }
@@ -357,7 +355,7 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	canvas tag
 		name: 'img';
 		parameterAt: 'src' put: aMicFigureBlock reference path;
-		parameterAt: 'alt' put: (aMicFigureBlock hasChildren ifTrue: [ aMicFigureBlock text ] ifFalse: [ '' ]);
+		parameterAt: 'alt' put: aMicFigureBlock altText;
 		addArguments: aMicFigureBlock;
 		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
@@ -379,7 +377,7 @@ MicHTMLVisitor >> visitLink: aLink [
 		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
-		with: aLink caption
+		with: [self visitAll: aLink children]
 
 ]
 

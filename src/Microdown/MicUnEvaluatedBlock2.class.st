@@ -44,6 +44,11 @@ MicUnEvaluatedBlock2 >> children: newChildren [
 ]
 
 { #category : #printing }
+MicUnEvaluatedBlock2 >> plainText [
+	^ bodystring 
+]
+
+{ #category : #printing }
 MicUnEvaluatedBlock2 >> printOn: stream [
 	stream << self blockName << '(' << bodystring << ')'
 	

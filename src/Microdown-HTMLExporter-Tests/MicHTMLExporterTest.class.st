@@ -106,7 +106,7 @@ MicHTMLExporterTest >> testFigureBold [
 	self 
 		parse: factory figureBoldSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="**Foo**" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure></p>'
+'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -115,7 +115,7 @@ MicHTMLExporterTest >> testFigureItalic [
 	self 
 		parse: factory figureItalicSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="_Foo_" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure></p>'
+'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -124,7 +124,7 @@ MicHTMLExporterTest >> testFigureNested [
 	self 
 		parse: factory figureNestedSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="**Foo_**" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure></p>'
+'<p><figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -142,7 +142,7 @@ MicHTMLExporterTest >> testFigureStrike [
 	self 
 		parse: factory figureStrikeSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="~Foo~" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure></p>'
+'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }
@@ -178,7 +178,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 	self 
 		parse: factory figureGoutDeFraise 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème : _Un goût de fraise_"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure></p>'
+'<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure></p>'
 ]
 
 { #category : #tests }

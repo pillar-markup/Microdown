@@ -20,3 +20,8 @@ Class {
 MicFigureBlock2 >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
+
+{ #category : #printing }
+MicFigureBlock2 >> plainText [
+	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
+]

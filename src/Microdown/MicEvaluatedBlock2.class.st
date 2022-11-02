@@ -33,6 +33,11 @@ MicEvaluatedBlock2 >> children: anObject [
 ]
 
 { #category : #printing }
+MicEvaluatedBlock2 >> plainText [
+	^ (self children collect: #plainText) joinUsing: ' '
+]
+
+{ #category : #printing }
 MicEvaluatedBlock2 >> printOn: stream [
 	stream << self blockName << '{ '.
 	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
