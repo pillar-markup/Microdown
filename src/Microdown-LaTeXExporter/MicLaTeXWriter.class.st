@@ -227,12 +227,25 @@ MicLaTeXWriter >> visitItalic: anItalic [
 
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
+	| reference |
+	reference := aLink fileStringWithoutHostFile.
+	canvas command
+		name: 'href';
+		parameter: reference;
+		parameter: [ self visitAll: aLink children ].
+	canvas command
+		name: 'footnotesize';
+		parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ]
+]
+
+{ #category : #'blocks - inline' }
+MicLaTeXWriter >> visitLink_old: aLink [
 	| text reference |
 	reference := aLink fileStringWithoutHostFile.
 	self flag: #todo.
 	"I do not get this logic if the string does not have file:// it can still be
 	something else than a url... all this logic is bogus."
-	text := aLink text.
+	text := aLink halt.
 	(text isEmptyOrNil or: [ reference = text ])
 		ifTrue: [ canvas command
 				name: 'url';
@@ -381,7 +394,8 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 
 { #category : #helpers }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
-	self visitAll: anExternalLink captionElements
+
+	self visitAll: anExternalLink children
 ]
 
 { #category : #helpers }

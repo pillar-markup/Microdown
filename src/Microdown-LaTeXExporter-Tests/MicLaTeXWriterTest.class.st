@@ -276,12 +276,9 @@ MicLaTeXWriterTest >> testLink [
 { #category : #'tests - figure/link' }
 MicLaTeXWriterTest >> testLinkBold [
 
-	self flag: 'caption do not use bold in the caption'.
 	self writeFor: factory linkBoldSample.
-	self flag: #toFix.
-	"\textbf{Foo}" 
 	self assert: writer contents equals: newLine ,
-'\href{/anUrl}{**Foo**}\footnotesize{\url{/anUrl}}', newLine
+		'\href{/anUrl}{\textbf{Foo}}\footnotesize{\url{/anUrl}}', newLine
 ]
 
 { #category : #'tests - formats' }
