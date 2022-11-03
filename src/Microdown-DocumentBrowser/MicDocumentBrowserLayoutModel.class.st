@@ -15,9 +15,6 @@ Class {
 		'sourceMode',
 		'sourceLayouts'
 	],
-	#classVars : [
-		'Browser'
-	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
