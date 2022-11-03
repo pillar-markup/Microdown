@@ -29,7 +29,7 @@ MicElementTest >> parserClass [
 	^ MicrodownParser
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MicElementTest >> setUp [
 
 	super setUp.

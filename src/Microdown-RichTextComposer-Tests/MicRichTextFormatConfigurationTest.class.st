@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #helpers }
 MicRichTextFormatConfigurationTest >> fontString [
 	^ TextStyle defaultFont familyName,';72'
 ]
