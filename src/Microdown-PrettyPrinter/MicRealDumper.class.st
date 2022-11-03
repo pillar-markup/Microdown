@@ -147,20 +147,18 @@ MicRealDumper >> visitComment: aComment [
 MicRealDumper >> visitFigure: aMicFigure [
 
 	self flag: #arg.
-	self 
-		element: aMicFigure 
-		during: [
-			aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
-			stream nextPutAll: 'url: '.
-			stream print: aMicFigure reference fullName.
-			stream
-				space;
-				nextPutAll: ';'.
-			stream nextPutAll: ' caption: { '.
-			aMicFigure captionElements
-				do: [ :each | self visit: each ]
-				separatedBy: [ stream nextPutAll: ' . ' ].
-			stream nextPutAll: '}; yourself' ]
+	self element: aMicFigure during: [ 
+		aMicFigure hasArguments ifTrue: [ self emitParameters: aMicFigure ].
+		stream nextPutAll: 'url: '.
+		stream print: aMicFigure reference fullName.
+		stream
+			space;
+			nextPutAll: ';'.
+		stream nextPutAll: ' caption: { '.
+		aMicFigure children
+			do: [ :each | self visit: each ]
+			separatedBy: [ stream nextPutAll: ' . ' ].
+		stream nextPutAll: '}; yourself' ]
 ]
 
 { #category : #'visit - section' }
@@ -187,15 +185,15 @@ MicRealDumper >> visitItalic: aMicItalic [
 { #category : #'visit - section' }
 MicRealDumper >> visitLink: aMicLink [
 
-	self 
-		element: aMicLink 
-		during: [
-			stream nextPutAll: 'captionElements: '.
-			stream nextPutAll: '{'.
-			aMicLink captionElements do: [ :each | self visit: each  ] separatedBy: [ stream nextPutAll: ' . ' ].
-			stream nextPutAll: '} ; url: '.
-			stream print: aMicLink url.
-			stream nextPutAll: ' ; yourself' ]
+	self element: aMicLink during: [ 
+		stream nextPutAll: 'captionElements: '.
+		stream nextPutAll: '{'.
+		aMicLink children
+			do: [ :each | self visit: each ]
+			separatedBy: [ stream nextPutAll: ' . ' ].
+		stream nextPutAll: '} ; url: '.
+		stream print: aMicLink url.
+		stream nextPutAll: ' ; yourself' ]
 ]
 
 { #category : #'visit - section' }

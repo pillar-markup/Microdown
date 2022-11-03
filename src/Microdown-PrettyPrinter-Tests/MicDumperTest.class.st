@@ -54,12 +54,12 @@ MicDumperTest >> testBoldFormat [
 	| micBold |
 	micBold := (parser parse: factory boldFormatSample) children first
 		           children first.
-	self assert: micBold children first class equals: MicTextBlock2.
+	self assert: micBold children first class equals: MicTextBlock. 
 	visitor visit: micBold.
 	self
 		assert: visitor contents
 		equals:
-		'(MicBoldFormatBlock2 new children: (MicTextBlock2 new substring: ''Foo''))'
+		'(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
 { #category : #'test - inline - blocks' }
