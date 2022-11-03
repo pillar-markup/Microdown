@@ -26,7 +26,6 @@ MicDocumentBrowserLayoutModel >> initialize [
 	showDocumentList := true.
 	showSource := false.
 	sourceMode := self sourceBotton.
-	sourceLayouts := nil.
 	
 ]
 

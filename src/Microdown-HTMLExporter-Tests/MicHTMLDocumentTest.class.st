@@ -44,8 +44,8 @@ MicHTMLDocumentTest >> setUp [
 { #category : #running }
 MicHTMLDocumentTest >> tearDown [ 
 
+	doc fullName asFileReference ensureDelete.
 	super tearDown.
-	doc fullName asFileReference ensureDelete
 ]
 
 { #category : #tests }
