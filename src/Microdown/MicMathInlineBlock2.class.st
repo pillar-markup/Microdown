@@ -30,6 +30,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicMathInlineBlock2 class >> closingDelimiter [
+
+ 	^ MathMarkup
+]
+
+{ #category : #accessing }
+MicMathInlineBlock2 class >> openingDelimiter [
+
+ 	^ MathMarkup
+]
+
 { #category : #visiting }
 MicMathInlineBlock2 >> accept: aVisitor [
 	^ aVisitor visitMathInline: self

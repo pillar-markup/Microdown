@@ -102,9 +102,8 @@ MicrodownVisitor >> visitEnvironment: anEnvironment [
 
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitFigure: aFigure [
-	
-	^ aFigure captionElements do: [:each | each accept: self ]
-		
+
+	^ aFigure children do: [ :each | each accept: self ]
 ]
 
 { #category : #visiting }

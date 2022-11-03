@@ -20,6 +20,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicAnnotationBlock2 class >> closingDelimiter [
+
+ 	^ AnnotationCloserMarkup
+]
+
+{ #category : #accessing }
+MicAnnotationBlock2 class >> openingDelimiter [
+
+ 	^ AnnotationOpenerMarkup
+]
+
 { #category : #parsing }
 MicAnnotationBlock2 class >> parse: delimiter stream: aTokenStream for: aParser [
 	| bodystring arguments tag extensionClass |

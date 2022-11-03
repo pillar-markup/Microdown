@@ -16,6 +16,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicFigureBlock2 class >> closingDelimiter [
+
+ 	^ NameCloserUrlOpener
+]
+
+{ #category : #accessing }
+MicFigureBlock2 class >> openingDelimiter [
+
+ 	^ FigureNameOpenerMarkup
+]
+
 { #category : #visiting }
 MicFigureBlock2 >> accept: aVisitor [
  	^ aVisitor visitFigure: self

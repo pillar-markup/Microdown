@@ -12,6 +12,18 @@ MicMonospaceFormatBlock2 class >> blockName [
 	^ (super blockName) withoutSuffix: 'Format'
 ]
 
+{ #category : #accessing }
+MicMonospaceFormatBlock2 class >> closingDelimiter [
+
+ 	^ MonospaceMarkup
+]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock2 class >> openingDelimiter [
+
+ 	^ MonospaceMarkup
+]
+
 { #category : #visiting }
 MicMonospaceFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitMonospace: self

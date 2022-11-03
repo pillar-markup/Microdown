@@ -15,6 +15,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicAnchorReferenceBlock2 class >> closingDelimiter [
+
+ 	^ AnchorReferenceCloserMarkup
+]
+
+{ #category : #accessing }
+MicAnchorReferenceBlock2 class >> openingDelimiter [
+
+ 	^ AnchorReferenceOpenerMarkup
+]
+
 { #category : #visiting }
 MicAnchorReferenceBlock2 >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self

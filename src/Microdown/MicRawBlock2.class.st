@@ -11,6 +11,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicRawBlock2 class >> closingDelimiter [
+
+ 	^ RawCloserMarkup
+]
+
+{ #category : #accessing }
+MicRawBlock2 class >> openingDelimiter [
+
+ 	^ RawOpenerMarkup
+]
+
 { #category : #visiting }
 MicRawBlock2 >> accept: aVisitor [
 	^ aVisitor visitRaw: self

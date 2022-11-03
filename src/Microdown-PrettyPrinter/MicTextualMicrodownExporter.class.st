@@ -129,7 +129,9 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 { #category : #'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
-	builder raw: anAnnotation printString
+	builder raw: anAnnotation openingDelimiter.
+	builder raw: anAnnotation bodystring.
+	builder raw: anAnnotation closingDelimiter 
 ]
 
 { #category : #'visit - format' }
@@ -175,7 +177,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
 	builder newLine.
 	builder
-		figureURL: aFigure originUrl
+		figureURL: aFigure url
 		withCaption: [ super visitFigure: aFigure ]
 		
 ]
@@ -329,7 +331,8 @@ MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 { #category : #visiting }
 MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
-	builder text: aMicTextBlock substring
+
+	builder text: aMicTextBlock bodystring
 ]
 
 { #category : #'visit - block' }

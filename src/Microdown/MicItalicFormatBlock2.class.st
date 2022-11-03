@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicItalicFormatBlock2 class >> closingDelimiter [
+
+ 	^ ItalicMarkup
+]
+
+{ #category : #accessing }
+MicItalicFormatBlock2 class >> openingDelimiter [
+
+ 	^ ItalicMarkup
+]
+
 { #category : #visiting }
 MicItalicFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitItalic: self

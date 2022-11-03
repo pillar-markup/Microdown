@@ -15,14 +15,24 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicInlineBlock2 class >> blockName [
 	^ (self instanceSide name asString withoutPrefix: 'Mic') withoutSuffix: 'Block2'
+]
+
+{ #category : #accessing }
+MicInlineBlock2 class >> closingDelimiter [
+	^ self subclassResponsibility
 ]
 
 { #category : #testing }
 MicInlineBlock2 class >> isEvaluated [
 	^ true
+]
+
+{ #category : #accessing }
+MicInlineBlock2 class >> openingDelimiter [
+	^ self subclassResponsibility
 ]
 
 { #category : #visiting }
@@ -40,6 +50,11 @@ MicInlineBlock2 >> closeMe [
 	"use for post parsing initialization"
 ]
 
+{ #category : #accessing }
+MicInlineBlock2 >> closingDelimiter [ 
+	^ self class closingDelimiter
+]
+
 { #category : #private }
 MicInlineBlock2 >> inlineParserClass [
 
@@ -51,4 +66,9 @@ MicInlineBlock2 >> kind [
 	"Should only be used for tests"
 	self deprecated: 'use blockName instead' transformWith: '`@rec kind' -> '`@rec blockName asLowercase'.
 	^ self blockName asLowercase 
+]
+
+{ #category : #accessing }
+MicInlineBlock2 >> openingDelimiter [
+	^ self class openingDelimiter
 ]

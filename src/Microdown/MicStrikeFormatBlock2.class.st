@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicStrikeFormatBlock2 class >> closingDelimiter [
+
+ 	^ StrikeMarkup
+]
+
+{ #category : #accessing }
+MicStrikeFormatBlock2 class >> openingDelimiter [
+
+ 	^ StrikeMarkup
+]
+
 { #category : #visiting }
 MicStrikeFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitStrike: self

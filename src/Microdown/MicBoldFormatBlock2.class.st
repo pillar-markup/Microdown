@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicBoldFormatBlock2 class >> closingDelimiter [
+
+ 	^ BoldMarkup
+]
+
+{ #category : #accessing }
+MicBoldFormatBlock2 class >> openingDelimiter [
+
+ 	^ BoldMarkup
+]
+
 { #category : #visiting }
 MicBoldFormatBlock2 >> accept: aVisitor [
 	^ aVisitor visitBold: self

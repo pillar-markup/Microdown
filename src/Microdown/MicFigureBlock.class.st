@@ -116,7 +116,7 @@ MicFigureBlock >> openingDelimiter [
 MicFigureBlock >> originUrl [
 	^ self properties 
 		at: #originUrl 
-		ifAbsent: [ url ]
+		ifAbsent: [ url halt]
 ]
 
 { #category : #printing }

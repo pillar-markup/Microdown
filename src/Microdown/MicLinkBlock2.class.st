@@ -7,6 +7,18 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
+{ #category : #accessing }
+MicLinkBlock2 class >> closingDelimiter [
+
+ 	^ NameCloserUrlOpener
+]
+
+{ #category : #accessing }
+MicLinkBlock2 class >> openingDelimiter [
+
+ 	^ LinkNameOpenerMarkup
+]
+
 { #category : #visiting }
 MicLinkBlock2 >> accept: aVisitor [
 	^ aVisitor visitLink: self
