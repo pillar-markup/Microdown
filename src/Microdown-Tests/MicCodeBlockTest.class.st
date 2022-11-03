@@ -61,7 +61,7 @@ MicCodeBlockTest >> testCaption [
 	codeBlock := self subjectClass new.
 	codeBlock caption: '**Here** is a nice caption.'.
 	self assert: codeBlock hasCaption. 
-	self assert: codeBlock captionElements first class equals: MicBoldFormatBlock2.
+	self assert: codeBlock captionElements first class equals: MicBoldFormatBlock.
 	self assert: codeBlock captionElements size equals: 2.
 ]
 

@@ -4,7 +4,7 @@ I am a parser for paragraphs with substructure in Microdown.
 My only external method is `parse:`.
 "
 Class {
-	#name : #MicInlineParser2,
+	#name : #MicInlineParser,
 	#superclass : #Object,
 	#pools : [
 		'MicMicrodownSharedPool'
@@ -13,18 +13,18 @@ Class {
 }
 
 { #category : #parsing }
-MicInlineParser2 class >> parse: string [
+MicInlineParser class >> parse: string [
 	^ self new parse: string
 ]
 
 { #category : #'as yet unclassified' }
-MicInlineParser2 class >> rootParse: aString [
+MicInlineParser class >> rootParse: aString [
 	"I am used for test, returning a root block with my children"
 	^ MicRootBlock new children: (self parse: aString)
 ]
 
 { #category : #'block creation' }
-MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [ 
+MicInlineParser >> createInlineBlock: token inStream: aReadStream [ 
 	| blockClass newBlock|
 	blockClass := token delimiter blockClass.
 	newBlock := blockClass parse: token stream: aReadStream for: self.
@@ -34,18 +34,18 @@ MicInlineParser2 >> createInlineBlock: token inStream: aReadStream [
 ]
 
 { #category : #'block creation' }
-MicInlineParser2 >> createTextBlock: token [
-	^ MicTextBlock2 new bodystring: token
+MicInlineParser >> createTextBlock: token [
+	^ MicTextBlock new bodystring: token
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> joinTextNodesOf: children [
+MicInlineParser >> joinTextNodesOf: children [
 	"children might have several text blocks following each other - join them and remove empty Text blocks"
 	| outStream bufferText  |
 	outStream := WriteStream on: OrderedCollection new.
 	bufferText := nil.
 	children do: [ :child |
-		child class = MicTextBlock2
+		child class = MicTextBlock
 			ifTrue: [ bufferText 
 				ifNil: [ bufferText := child ]
 				ifNotNil: [ bufferText bodystring: (bufferText bodystring , child bodystring) ] ]
@@ -62,7 +62,7 @@ MicInlineParser2 >> joinTextNodesOf: children [
 ]
 
 { #category : #parsing }
-MicInlineParser2 >> parse: aString [
+MicInlineParser >> parse: aString [
 	"I return an array of inline blocks"
 	| tokenStream |
 	tokenStream := MicInlineTokenStream on: aString.
@@ -70,7 +70,7 @@ MicInlineParser2 >> parse: aString [
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> parseChildrenIn: tokenStream [
+MicInlineParser >> parseChildrenIn: tokenStream [
 	"return an array of blocks from parsing tokenStream"
 	| children child |
 	children := OrderedCollection new.
@@ -86,7 +86,7 @@ MicInlineParser2 >> parseChildrenIn: tokenStream [
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStream [
+MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStream [
 	| skipRes |
 	skipRes := (self skipTo: token delimiter closer inStream: tokenStream).
 	skipRes ifNil: [ ^ self createTextBlock: token string].
@@ -97,7 +97,7 @@ MicInlineParser2 >> parseEvaluatedBlock: blockType token: token stream: tokenStr
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token [
+MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 	| skipRes children urlToken|
 	skipRes := (self skipToUrlStartInStream: aTokenStream).
 	skipRes ifNil: [ ^ self createTextBlock: token string].
@@ -113,14 +113,14 @@ MicInlineParser2 >> parseNameUrlBlock: blockType from: aTokenStream token: token
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
+MicInlineParser >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
 	^ blockClass new
 		bodystring: token undelimitedSubstring;
 		closeMe
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> skipTo: closer inStream: tokenStream [
+MicInlineParser >> skipTo: closer inStream: tokenStream [
 	"skip tokenStream to closer, ignore closers in non-evaluated. if we find it return the accumulates text and a subtokenstream to read it from"
 	| startPos substringStream |
 	startPos := tokenStream position.
@@ -140,7 +140,7 @@ MicInlineParser2 >> skipTo: closer inStream: tokenStream [
 ]
 
 { #category : #'private parsing' }
-MicInlineParser2 >> skipToUrlStartInStream: tokenStream [
+MicInlineParser >> skipToUrlStartInStream: tokenStream [
 	"Skip to my UrlStart. Notice, I might find a nested url construct"
 	| startPos substringStream nestingLevel|
 	startPos := tokenStream position.

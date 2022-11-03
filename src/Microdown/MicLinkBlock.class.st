@@ -2,29 +2,29 @@
 I represent a reference in a text. For example `[http://pharo.org](http://pharo.org)` creates [http://pharo.org](http://pharo.org).
 "
 Class {
-	#name : #MicLinkBlock2,
-	#superclass : #MicInlineBlockWithUrl2,
+	#name : #MicLinkBlock,
+	#superclass : #MicInlineBlockWithUrl,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicLinkBlock2 class >> closingDelimiter [
+MicLinkBlock class >> closingDelimiter [
 
  	^ NameCloserUrlOpener
 ]
 
 { #category : #accessing }
-MicLinkBlock2 class >> openingDelimiter [
+MicLinkBlock class >> openingDelimiter [
 
  	^ LinkNameOpenerMarkup
 ]
 
 { #category : #visiting }
-MicLinkBlock2 >> accept: aVisitor [
+MicLinkBlock >> accept: aVisitor [
 	^ aVisitor visitLink: self
 ]
 
 { #category : #printing }
-MicLinkBlock2 >> plainText [
+MicLinkBlock >> plainText [
 	^ '[', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
 ]

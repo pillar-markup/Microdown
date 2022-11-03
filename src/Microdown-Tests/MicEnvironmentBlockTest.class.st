@@ -107,7 +107,7 @@ blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	self assert: env children first children size equals: 2.
 	self assert: env children first children first class equals: MicListItemBlock.
 	self assert: env children second class equals: MicParagraphBlock.
-	self assert: env children second children first class equals: MicTextBlock2.
+	self assert: env children second children first class equals: MicTextBlock.
 	
 ]
 
@@ -242,7 +242,7 @@ blbababbab bababba' , String cr , EnvironmentClosingBlockMarkup
 		equals: MicListItemBlock.
 	self
 		assert: env children first children first children second class
-		equals: MicBoldFormatBlock2
+		equals: MicBoldFormatBlock
 ]
 
 { #category : #'tests - default environment' }

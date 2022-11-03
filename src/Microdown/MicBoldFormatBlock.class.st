@@ -2,24 +2,24 @@
 I represent a bold text section. I'm delimited using `**` as in `**bold**` to obtain **bold**.
 "
 Class {
-	#name : #MicBoldFormatBlock2,
-	#superclass : #MicEvaluatedBlock2,
+	#name : #MicBoldFormatBlock,
+	#superclass : #MicEvaluatedBlock,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicBoldFormatBlock2 class >> closingDelimiter [
+MicBoldFormatBlock class >> closingDelimiter [
 
  	^ BoldMarkup
 ]
 
 { #category : #accessing }
-MicBoldFormatBlock2 class >> openingDelimiter [
+MicBoldFormatBlock class >> openingDelimiter [
 
  	^ BoldMarkup
 ]
 
 { #category : #visiting }
-MicBoldFormatBlock2 >> accept: aVisitor [
+MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
 ]

@@ -8,8 +8,8 @@ My subclasses manage figures and links.
 ![Pharologo](https://files.pharo.org/media/logo/logo.png)
 "
 Class {
-	#name : #MicInlineBlockWithUrl2,
-	#superclass : #MicInlineBlock2,
+	#name : #MicInlineBlockWithUrl,
+	#superclass : #MicInlineBlock,
 	#instVars : [
 		'children',
 		'url',
@@ -20,55 +20,55 @@ Class {
 }
 
 { #category : #parsing }
-MicInlineBlockWithUrl2 class >> parse: token stream: aTokenStream for: aParser [
+MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
 	^ aParser parseNameUrlBlock: self from: aTokenStream token: token
 ]
 
 { #category : #testing }
-MicInlineBlockWithUrl2 >> anchor [
+MicInlineBlockWithUrl >> anchor [
 	^ self arguments 
 		at: #anchor 
 		ifAbsent: [ nil ] 
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> arguments [
+MicInlineBlockWithUrl >> arguments [
 
 	^ arguments
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> arguments: anObject [
+MicInlineBlockWithUrl >> arguments: anObject [
 
 	arguments := anObject
 ]
 
 { #category : #visiting }
-MicInlineBlockWithUrl2 >> captionElements [
+MicInlineBlockWithUrl >> captionElements [
 	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
 	^ children
 ]
 
 { #category : #visiting }
-MicInlineBlockWithUrl2 >> captionElements: someChildren [
+MicInlineBlockWithUrl >> captionElements: someChildren [
 	self deprecated: 'Use children: instead' transformWith: '`@rec captionElements: `@arg' -> '`@rec children: `@arg'.
 	children := someChildren 
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> children [
+MicInlineBlockWithUrl >> children [
 
 	^ children
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> children: anObject [
+MicInlineBlockWithUrl >> children: anObject [
 
 	children := anObject
 ]
 
 { #category : #visiting }
-MicInlineBlockWithUrl2 >> closeMe [
+MicInlineBlockWithUrl >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
 
@@ -81,18 +81,18 @@ MicInlineBlockWithUrl2 >> closeMe [
 ]
 
 { #category : #testing }
-MicInlineBlockWithUrl2 >> hasAnchor [
+MicInlineBlockWithUrl >> hasAnchor [
 
 	^ self anchor isNotNil
 ]
 
 { #category : #testing }
-MicInlineBlockWithUrl2 >> hasArguments [
+MicInlineBlockWithUrl >> hasArguments [
 	^ arguments size > 0
 ]
 
 { #category : #printing }
-MicInlineBlockWithUrl2 >> printOn: stream [
+MicInlineBlockWithUrl >> printOn: stream [
 	stream << self blockName << '{ '.
 	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
 	stream << $}.
@@ -101,25 +101,25 @@ MicInlineBlockWithUrl2 >> printOn: stream [
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> reference [
+MicInlineBlockWithUrl >> reference [
 
 	^ reference
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> reference: anObject [
+MicInlineBlockWithUrl >> reference: anObject [
 
 	reference := anObject
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> url [
+MicInlineBlockWithUrl >> url [
 
 	^ url
 ]
 
 { #category : #accessing }
-MicInlineBlockWithUrl2 >> url: anObject [
+MicInlineBlockWithUrl >> url: anObject [
 
 	url := anObject
 ]

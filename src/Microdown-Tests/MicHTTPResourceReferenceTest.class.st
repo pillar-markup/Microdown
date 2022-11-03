@@ -109,7 +109,7 @@ MicHTTPResourceReferenceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent
 	doc := ref loadMicrodown.
 
 	topLevelImageRef := doc children fourth children first.
-	self assert: topLevelImageRef class equals: MicFigureBlock2.
+	self assert: topLevelImageRef class equals: MicFigureBlock.
 	self
 		assert: (topLevelImageRef reference loadImage) height
 		equals: 90

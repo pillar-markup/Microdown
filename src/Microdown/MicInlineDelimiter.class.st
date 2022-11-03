@@ -47,25 +47,25 @@ MicInlineDelimiter class >> initialize [
 { #category : #initialization }
 MicInlineDelimiter class >> initializeDelimiters [
 	"The fixious text delimiter"
-	self new markup: FixiousTextDelimiter; blockClass: MicTextBlock2; closer: nil; addMe.
+	self new markup: FixiousTextDelimiter; blockClass: MicTextBlock; closer: nil; addMe.
 	"formating"
-	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock2; closer: BoldMarkup; addMe.
-	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock2; closer: ItalicMarkup; addMe.
-	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock2; closer: StrikeMarkup; addMe.
+	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock; closer: BoldMarkup; addMe.
+	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock; closer: ItalicMarkup; addMe.
+	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock; closer: StrikeMarkup; addMe.
 	"anchors & annotations"
-	self new markup: AnchorReferenceOpenerMarkup; blockClass: MicAnchorReferenceBlock2; closer: AnchorReferenceCloserMarkup; addMe.
+	self new markup: AnchorReferenceOpenerMarkup; blockClass: MicAnchorReferenceBlock; closer: AnchorReferenceCloserMarkup; addMe.
 	self new markup: AnchorReferenceCloserMarkup; blockClass: nil; closer: nil; addMe.
 	self new markup: AnnotationCloserMarkup; blockClass: nil; closer: nil; addMe.
-	self new markup: AnnotationOpenerMarkup; blockClass: MicAnnotationBlock2; closer: AnnotationCloserMarkup; addMe.
+	self new markup: AnnotationOpenerMarkup; blockClass: MicAnnotationBlock; closer: AnnotationCloserMarkup; addMe.
 	"unevaluated"
-	self new markup: MathMarkup; blockClass: MicMathInlineBlock2; closer: MathMarkup; addMe.
-	self new markup: MonospaceMarkup; blockClass: MicMonospaceFormatBlock2; closer: MonospaceMarkup; addMe.
-	self new markup: RawOpenerMarkup; blockClass: MicRawBlock2; closer: RawCloserMarkup; addMe.
+	self new markup: MathMarkup; blockClass: MicMathInlineBlock; closer: MathMarkup; addMe.
+	self new markup: MonospaceMarkup; blockClass: MicMonospaceFormatBlock; closer: MonospaceMarkup; addMe.
+	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; closer: RawCloserMarkup; addMe.
 	self new markup: RawCloserMarkup; blockClass: nil; closer: nil; addMe.
 	"Containing URLs"
-	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock2; closer: NameCloserUrlOpener; addMe.
-	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock2; closer: NameCloserUrlOpener; addMe.
-	self new markup: NameCloserUrlOpener; blockClass: MicRawBlock2 ; closer: URLCloserMarkup; addMe.
+	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; closer: NameCloserUrlOpener; addMe.
+	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; closer: NameCloserUrlOpener; addMe.
+	self new markup: NameCloserUrlOpener; blockClass: MicRawBlock ; closer: URLCloserMarkup; addMe.
 	self new markup: URLCloserMarkup; blockClass: nil ; closer: nil; addMe
 		
 ]

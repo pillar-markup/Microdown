@@ -47,12 +47,12 @@ another line** and more'.
 
 	self
 		assert:
-			(MicInlineParser2 new parse: root children first text) first
+			(MicInlineParser new parse: root children first text) first
 				blockName asLowercase
 		equals: #boldformat.
 	self
 		assert:
-			(MicInlineParser2 new parse: root children second text) first
+			(MicInlineParser new parse: root children second text) first
 				blockName asLowercase
 		equals: #text
 ]

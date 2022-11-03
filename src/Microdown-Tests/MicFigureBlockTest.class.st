@@ -12,7 +12,7 @@ MicFigureBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser.
-	splitterClass := MicInlineParser2 
+	splitterClass := MicInlineParser 
 ]
 
 { #category : #tests }

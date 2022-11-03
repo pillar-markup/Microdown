@@ -2,24 +2,24 @@
 I represent an italic text section. I'm delimited using `_` as in `_italic_` to obtain _italic_.
 "
 Class {
-	#name : #MicItalicFormatBlock2,
-	#superclass : #MicEvaluatedBlock2,
+	#name : #MicItalicFormatBlock,
+	#superclass : #MicEvaluatedBlock,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicItalicFormatBlock2 class >> closingDelimiter [
+MicItalicFormatBlock class >> closingDelimiter [
 
  	^ ItalicMarkup
 ]
 
 { #category : #accessing }
-MicItalicFormatBlock2 class >> openingDelimiter [
+MicItalicFormatBlock class >> openingDelimiter [
 
  	^ ItalicMarkup
 ]
 
 { #category : #visiting }
-MicItalicFormatBlock2 >> accept: aVisitor [
+MicItalicFormatBlock >> accept: aVisitor [
 	^ aVisitor visitItalic: self
 ]

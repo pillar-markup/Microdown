@@ -7,8 +7,8 @@ See *@fig1@*
 
 "
 Class {
-	#name : #MicAnchorReferenceBlock2,
-	#superclass : #MicUnEvaluatedBlock2,
+	#name : #MicAnchorReferenceBlock,
+	#superclass : #MicUnEvaluatedBlock,
 	#instVars : [
 		'reference'
 	],
@@ -16,18 +16,18 @@ Class {
 }
 
 { #category : #accessing }
-MicAnchorReferenceBlock2 class >> closingDelimiter [
+MicAnchorReferenceBlock class >> closingDelimiter [
 
  	^ AnchorReferenceCloserMarkup
 ]
 
 { #category : #accessing }
-MicAnchorReferenceBlock2 class >> openingDelimiter [
+MicAnchorReferenceBlock class >> openingDelimiter [
 
  	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : #visiting }
-MicAnchorReferenceBlock2 >> accept: aVisitor [
+MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]

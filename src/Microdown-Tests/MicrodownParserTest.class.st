@@ -162,9 +162,9 @@ MicrodownParserTest >> testAnnotatedBlockTextElements [
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
-	self assert: root children first textElements first class equals: MicTextBlock2.
-	self assert: root children first textElements second class equals: MicBoldFormatBlock2.
-	self assert: root children first textElements third class equals: MicTextBlock2
+	self assert: root children first textElements first class equals: MicTextBlock.
+	self assert: root children first textElements second class equals: MicBoldFormatBlock.
+	self assert: root children first textElements third class equals: MicTextBlock
 	
 
 ]
@@ -551,7 +551,7 @@ MicrodownParserTest >> testSimpleTable [
 	self assert: mic class equals: MicTableBlock.
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
-	self assert: mic rows first first first class equals: MicTextBlock2
+	self assert: mic rows first first first class equals: MicTextBlock
 ]
 
 { #category : #'tests - error' }
@@ -582,7 +582,7 @@ MicrodownParserTest >> testSimpleTableWithFormatting [
 	self assert: mic class equals: MicTableBlock.
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
-	self assert: mic rows first first first class equals: MicBoldFormatBlock2
+	self assert: mic rows first first first class equals: MicBoldFormatBlock
 ]
 
 { #category : #'tests - table' }
@@ -601,11 +601,11 @@ MicrodownParserTest >> testSimpleTableWithFormattingWithSomeElements [
 	self assert: mic rows first size equals: 2.
 	self
 		assert: mic rows first first first class
-		equals: MicBoldFormatBlock2.
-	self assert: mic rows first first second class equals: MicTextBlock2.
+		equals: MicBoldFormatBlock.
+	self assert: mic rows first first second class equals: MicTextBlock.
 	self
 		assert: mic rows first first third class
-		equals: MicItalicFormatBlock2
+		equals: MicItalicFormatBlock
 ]
 
 { #category : #'tests - table' }
@@ -622,7 +622,7 @@ MicrodownParserTest >> testSimpleTableWithMoreLongRow [
 	self assert: mic class equals: MicTableBlock.
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
-	self assert: mic rows first first first class equals: MicTextBlock2
+	self assert: mic rows first first first class equals: MicTextBlock
 ]
 
 { #category : #'tests - table' }
@@ -639,7 +639,7 @@ MicrodownParserTest >> testSimpleTableWithShortRow [
 	self assert: mic class equals: MicTableBlock.
 	self assert: mic rows size equals: 2.
 	self assert: mic rows first size equals: 2.
-	self assert: mic rows first first first class equals: MicTextBlock2
+	self assert: mic rows first first first class equals: MicTextBlock
 ]
 
 { #category : #'tests - comments' }

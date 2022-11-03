@@ -14,8 +14,8 @@ MicFormatBlockTest >> testBoldAPIToAccessText [
 
 	| bold |
 	bold := (self parser parse: '**a b**') children first children first.
-	self assert: bold class equals: MicBoldFormatBlock2.
-	self assert: bold children first class equals: MicTextBlock2.
+	self assert: bold class equals: MicBoldFormatBlock.
+	self assert: bold children first class equals: MicTextBlock.
 	self assert: bold children first bodystring equals: 'a b'
 ]
 
@@ -24,8 +24,8 @@ MicFormatBlockTest >> testBoldAPIToSetText [
 
 	| bold |
 	bold := (self parser parse: '**a b**') children first children first.
-	self assert: bold class equals: MicBoldFormatBlock2.
-	bold children: { (MicTextBlock2 new bodystring: 'Blblbl') }.
+	self assert: bold class equals: MicBoldFormatBlock.
+	bold children: { (MicTextBlock new bodystring: 'Blblbl') }.
 	self assert: bold children first bodystring equals: 'Blblbl'
 ]
 
@@ -34,8 +34,8 @@ MicFormatBlockTest >> testBoldCreatesInnerText [
 
 	| bold |
 	bold := (self parser parse: '**a b**') children first children first.
-	self assert: bold class equals: MicBoldFormatBlock2.
-	self assert: bold children first class equals: MicTextBlock2.
+	self assert: bold class equals: MicBoldFormatBlock.
+	self assert: bold children first class equals: MicTextBlock.
 	self assert: bold children first bodystring equals: 'a b'
 ]
 
@@ -45,13 +45,13 @@ MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 	| italic |
 	italic := (self parser parse: '**_a b_**') children first children
 		          first.
-	self assert: italic class equals: MicBoldFormatBlock2.
+	self assert: italic class equals: MicBoldFormatBlock.
 	self
 		assert: italic children first class
-		equals: MicItalicFormatBlock2.
+		equals: MicItalicFormatBlock.
 	self
 		assert: italic children first children first class
-		equals: MicTextBlock2.
+		equals: MicTextBlock.
 	self
 		assert: italic children first children first bodystring
 		equals: 'a b'
@@ -66,10 +66,10 @@ MicFormatBlockTest >> testBoldWrappedElements [
 	self assert: paragraph children first children size equals: 1.
 	self
 		assert: paragraph children first class
-		equals: MicBoldFormatBlock2.
+		equals: MicBoldFormatBlock.
 	self
 		assert: paragraph children first children first class
-		equals: MicTextBlock2
+		equals: MicTextBlock
 ]
 
 { #category : #'tests - bold' }
@@ -81,7 +81,7 @@ MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 	self
 		assert: paragraph children first children first bodystring
 		equals: 'aa bb'.
-	self assert: paragraph children second class equals: MicTextBlock2.
+	self assert: paragraph children second class equals: MicTextBlock.
 	self assert: paragraph children second bodystring equals: ' c'
 ]
 
@@ -99,8 +99,8 @@ MicFormatBlockTest >> testItalicAPIToAccessText [
 
 	| italic |
 	italic := (self parser parse: '_a b_') children first children first.
-	self assert: italic class equals: MicItalicFormatBlock2.
-	self assert: italic children first class equals: MicTextBlock2.
+	self assert: italic class equals: MicItalicFormatBlock.
+	self assert: italic children first class equals: MicTextBlock.
 	self assert: italic children first bodystring equals: 'a b'
 ]
 
@@ -109,8 +109,8 @@ MicFormatBlockTest >> testItalicAPIToSetText [
 
 	| italic |
 	italic := (self parser parse: '_a b_') children first children first.
-	self assert: italic class equals: MicItalicFormatBlock2.
-	italic children: { (MicTextBlock2 new bodystring: 'Blblbl') }.
+	self assert: italic class equals: MicItalicFormatBlock.
+	italic children: { (MicTextBlock new bodystring: 'Blblbl') }.
 	self assert: italic children first bodystring equals: 'Blblbl'
 ]
 
@@ -119,8 +119,8 @@ MicFormatBlockTest >> testItalicCreatesInnerText [
 
 	| italic |
 	italic := (self parser parse: '_a b_') children first children first.
-	self assert: italic class equals: MicItalicFormatBlock2.
-	self assert: italic children first class equals: MicTextBlock2.
+	self assert: italic class equals: MicItalicFormatBlock.
+	self assert: italic children first class equals: MicTextBlock.
 	self assert: italic children first bodystring equals: 'a b'
 ]
 
@@ -133,10 +133,10 @@ MicFormatBlockTest >> testItalicWrappedElements [
 	self assert: paragraph children first children size equals: 1.
 	self
 		assert: paragraph children first class
-		equals: MicItalicFormatBlock2.
+		equals: MicItalicFormatBlock.
 	self
 		assert: paragraph children first children first class
-		equals: MicTextBlock2
+		equals: MicTextBlock
 ]
 
 { #category : #'tests - italic' }
@@ -148,7 +148,7 @@ MicFormatBlockTest >> testItalicWrappedWithAccessAPIElements [
 	self
 		assert: paragraph children first children first bodystring
 		equals: 'aa bb'.
-	self assert: paragraph children second class equals: MicTextBlock2.
+	self assert: paragraph children second class equals: MicTextBlock.
 	self assert: paragraph children second bodystring equals: ' c'
 ]
 
@@ -157,8 +157,8 @@ MicFormatBlockTest >> testMonospaceCreatesInnerText [
 
 	| mono |
 	mono := (self parser parse: '`a b`') children first children first.
-	self assert: mono class equals: MicMonospaceFormatBlock2.
-	self assert: mono children first class equals: MicTextBlock2.
+	self assert: mono class equals: MicMonospaceFormatBlock.
+	self assert: mono children first class equals: MicTextBlock.
 	self assert: mono children first bodystring equals: 'a b'
 ]
 
@@ -167,7 +167,7 @@ MicFormatBlockTest >> testMonospaceTextCreatesInnerText [
 
 	| mono |
 	mono := (self parser parse: '`a b`') children first children first.
-	self assert: mono class equals: MicMonospaceFormatBlock2.
+	self assert: mono class equals: MicMonospaceFormatBlock.
 	self assert: mono bodystring equals: 'a b'.
 	
 ]
@@ -177,7 +177,7 @@ MicFormatBlockTest >> testMonospaceWrappedElements [
 
 	| mono |
 	mono := (self parser parse: '`a b`') children first children first.
-	self assert: mono class equals: MicMonospaceFormatBlock2 .
+	self assert: mono class equals: MicMonospaceFormatBlock .
 	self assert: mono substring equals: 'a b'
 ]
 

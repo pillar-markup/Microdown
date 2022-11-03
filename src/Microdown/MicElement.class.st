@@ -67,7 +67,7 @@ MicElement >> inlineParse: aString [
 { #category : #private }
 MicElement >> inlineParserClass [
 
-	^ MicInlineParser2
+	^ MicInlineParser
 ]
 
 { #category : #private }

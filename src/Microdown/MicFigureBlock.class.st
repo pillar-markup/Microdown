@@ -11,29 +11,29 @@ I have a resources, i.e. an object referencing either a file (in relative or abs
 What is important to see is that there is a space between the url arguments and microdown arguments. 
 "
 Class {
-	#name : #MicFigureBlock2,
-	#superclass : #MicInlineBlockWithUrl2,
+	#name : #MicFigureBlock,
+	#superclass : #MicInlineBlockWithUrl,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicFigureBlock2 class >> closingDelimiter [
+MicFigureBlock class >> closingDelimiter [
 
  	^ NameCloserUrlOpener
 ]
 
 { #category : #accessing }
-MicFigureBlock2 class >> openingDelimiter [
+MicFigureBlock class >> openingDelimiter [
 
  	^ FigureNameOpenerMarkup
 ]
 
 { #category : #visiting }
-MicFigureBlock2 >> accept: aVisitor [
+MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
 { #category : #printing }
-MicFigureBlock2 >> plainText [
+MicFigureBlock >> plainText [
 	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
 ]

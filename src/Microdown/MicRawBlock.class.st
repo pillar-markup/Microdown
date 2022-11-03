@@ -6,24 +6,24 @@ Raw lets the user place anything (so don't use it).
 ```
 "
 Class {
-	#name : #MicRawBlock2,
-	#superclass : #MicUnEvaluatedBlock2,
+	#name : #MicRawBlock,
+	#superclass : #MicUnEvaluatedBlock,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicRawBlock2 class >> closingDelimiter [
+MicRawBlock class >> closingDelimiter [
 
  	^ RawCloserMarkup
 ]
 
 { #category : #accessing }
-MicRawBlock2 class >> openingDelimiter [
+MicRawBlock class >> openingDelimiter [
 
  	^ RawOpenerMarkup
 ]
 
 { #category : #visiting }
-MicRawBlock2 >> accept: aVisitor [
+MicRawBlock >> accept: aVisitor [
 	^ aVisitor visitRaw: self
 ]

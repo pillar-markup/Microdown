@@ -19,7 +19,7 @@ MicCitationBlockTest >> testDefaultingClassWhenNoTag [
 	
 	| doc |
 	doc := parser parse: '{!citation2|key=Duca99a!}'.
-	self assert: doc children first children first class equals: MicAnnotationBlock2.
+	self assert: doc children first children first class equals: MicAnnotationBlock.
 	self assert: doc children first children first name equals: 'citation2'.
 	self assert: (doc children first children first arguments at: #key) equals: 'Duca99a'.
 ]

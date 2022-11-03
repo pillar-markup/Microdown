@@ -67,7 +67,7 @@ MicLinkBlockTest >> setUp [
 
 	super setUp.
 	parser := self parser. 
-	splitterClass := MicInlineParser2
+	splitterClass := MicInlineParser
 ]
 
 { #category : #tests }
@@ -98,7 +98,7 @@ MicLinkBlockTest >> testHasArguments [
 MicLinkBlockTest >> testLinkAPIToAccessText [
 
 	link := self parseLink: self linkSample.
-	self assert: link class equals: MicLinkBlock2.
+	self assert: link class equals: MicLinkBlock.
 	self assert: link url equals: '/anUrl'
 ]
 
@@ -106,9 +106,9 @@ MicLinkBlockTest >> testLinkAPIToAccessText [
 MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 
 	link := self parseLink: self linkBoldSample.
-	self assert: link class equals: MicLinkBlock2.
-	self assert: link children first class equals: MicBoldFormatBlock2.
-	self assert: link children first children first class equals: MicTextBlock2.
+	self assert: link class equals: MicLinkBlock.
+	self assert: link children first class equals: MicBoldFormatBlock.
+	self assert: link children first children first class equals: MicTextBlock.
 
 	self assert: link url equals: '/anUrl'
 ]
@@ -117,7 +117,7 @@ MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 MicLinkBlockTest >> testLinkCreatesInnerText [
 
 	link := self parseLink: '[ab](https://ab.com)'.
-	self assert: link class equals: MicLinkBlock2.
+	self assert: link class equals: MicLinkBlock.
 	self assert: link url equals: 'https://ab.com'
 ]
 
@@ -125,11 +125,11 @@ MicLinkBlockTest >> testLinkCreatesInnerText [
 MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 
 	link := self parseLink: self linkItalicSample.
-	self assert: link class equals: MicLinkBlock2.
-	self assert: link children first class equals: MicItalicFormatBlock2.
+	self assert: link class equals: MicLinkBlock.
+	self assert: link children first class equals: MicItalicFormatBlock.
 	self
 		assert: link children first children first class
-		equals: MicTextBlock2.
+		equals: MicTextBlock.
 
 	self assert: link url equals: '/anUrl'
 ]

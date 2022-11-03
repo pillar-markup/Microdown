@@ -2,8 +2,8 @@
 I represent blocks whose contents is not microdown markup as such.
 "
 Class {
-	#name : #MicUnEvaluatedBlock2,
-	#superclass : #MicInlineBlock2,
+	#name : #MicUnEvaluatedBlock,
+	#superclass : #MicInlineBlock,
 	#instVars : [
 		'bodystring'
 	],
@@ -11,51 +11,51 @@ Class {
 }
 
 { #category : #testing }
-MicUnEvaluatedBlock2 class >> isEvaluated [
+MicUnEvaluatedBlock class >> isEvaluated [
 	^ false
 ]
 
 { #category : #parsing }
-MicUnEvaluatedBlock2 class >> parse: delimiter stream: aTokenStream for: aParser [
+MicUnEvaluatedBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	^ aParser parseNonEvaluatedBlock: self token: delimiter stream: aTokenStream
 ]
 
 { #category : #accessing }
-MicUnEvaluatedBlock2 >> bodystring [
+MicUnEvaluatedBlock >> bodystring [
 
 	^ bodystring
 ]
 
 { #category : #accessing }
-MicUnEvaluatedBlock2 >> bodystring: anObject [
+MicUnEvaluatedBlock >> bodystring: anObject [
 
 	bodystring := anObject
 ]
 
 { #category : #accessing }
-MicUnEvaluatedBlock2 >> children [
+MicUnEvaluatedBlock >> children [
 	"to be nicely polymorphic all nodes have children"
 	^#()
 ]
 
 { #category : #accessing }
-MicUnEvaluatedBlock2 >> children: newChildren [
+MicUnEvaluatedBlock >> children: newChildren [
 	"to be nicely polymorphic all nodes have children"
 ]
 
 { #category : #printing }
-MicUnEvaluatedBlock2 >> plainText [
+MicUnEvaluatedBlock >> plainText [
 	^ bodystring 
 ]
 
 { #category : #printing }
-MicUnEvaluatedBlock2 >> printOn: stream [
+MicUnEvaluatedBlock >> printOn: stream [
 	stream << self blockName << '(' << bodystring << ')'
 	
 ]
 
 { #category : #obsolete }
-MicUnEvaluatedBlock2 >> substring [
+MicUnEvaluatedBlock >> substring [
 	self flag: 'to be obsoleted, use bodystring'.
 	^ bodystring
 ]
