@@ -1,6 +1,6 @@
 Class {
 	#name : #MicDocumentListBlock,
-	#superclass : #MicAnnotationBlock,
+	#superclass : #MicAnnotationBlock2,
 	#category : #'Microdown-Extensions'
 }
 

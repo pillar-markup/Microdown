@@ -423,8 +423,8 @@ MicMicrodownTextualBuilderTest >> testRawFormat [
 { #category : #tests }
 MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 	
-	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock } asDictionary.
-	self assert: builder contents equals: 'label=42&size=MicTextBlock'
+	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock2 } asDictionary.
+	self assert: builder contents equals: 'label=42&size=MicTextBlock2'
 ]
 
 { #category : #'tests - slides' }
