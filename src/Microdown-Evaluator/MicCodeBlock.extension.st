@@ -17,8 +17,10 @@ MicCodeBlock >> evaluate [
 	| content |
 	content := self evaluationString.
 	^ [ (self parserClass parse: content) children ]
-		on: Error
-		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
+		  on: Error
+		  do: [ :e | 
+			  MicBoldFormatBlock new children:
+				  { (MicTextBlock new bodystring: e messageText) } ]
 ]
 
 { #category : #'*Microdown-Evaluator' }

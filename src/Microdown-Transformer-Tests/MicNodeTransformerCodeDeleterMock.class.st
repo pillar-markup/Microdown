@@ -16,5 +16,5 @@ MicNodeTransformerCodeDeleterMock >> visitCode: aCode [
 { #category : #visiting }
 MicNodeTransformerCodeDeleterMock >> visitParagraph: aParagraph [
 
-	self replaceCurrentNodeBy: { MicTextBlock new substring: 'test' }
+	self replaceCurrentNodeBy: { (MicTextBlock new bodystring: 'test') }
 ]
