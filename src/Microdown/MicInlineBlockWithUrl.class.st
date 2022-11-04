@@ -91,6 +91,11 @@ MicInlineBlockWithUrl >> hasArguments [
 	^ arguments size > 0
 ]
 
+{ #category : #initialization }
+MicInlineBlockWithUrl >> initialize [
+	arguments := OrderedDictionary new.
+]
+
 { #category : #printing }
 MicInlineBlockWithUrl >> printOn: stream [
 	stream << self blockName << '{ '.
