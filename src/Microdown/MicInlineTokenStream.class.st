@@ -6,8 +6,7 @@ Class {
 	#name : #MicInlineTokenStream,
 	#superclass : #Object,
 	#instVars : [
-		'tokens',
-		'parser'
+		'tokens'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'

@@ -43,8 +43,7 @@ Class {
 	#name : #MicListItemBlock,
 	#superclass : #MicAbstractBlock,
 	#instVars : [
-		'text',
-		'textElements'
+		'text'
 	],
 	#category : #'Microdown-Model'
 }

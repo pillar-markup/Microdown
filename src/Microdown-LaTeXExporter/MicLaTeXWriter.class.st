@@ -238,28 +238,6 @@ MicLaTeXWriter >> visitLink: aLink [
 		parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ]
 ]
 
-{ #category : #'blocks - inline' }
-MicLaTeXWriter >> visitLink_old: aLink [
-	| text reference |
-	reference := aLink fileStringWithoutHostFile.
-	self flag: #todo.
-	"I do not get this logic if the string does not have file:// it can still be
-	something else than a url... all this logic is bogus."
-	text := aLink halt.
-	(text isEmptyOrNil or: [ reference = text ])
-		ifTrue: [ canvas command
-				name: 'url';
-				parameter: reference ]
-		ifFalse: [
-			canvas command
-				name: 'href';
-				parameter: reference;
-				parameter: [ canvas nextPutAll: text ].
-			canvas command
-				name: 'footnotesize';
-				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
-]
-
 { #category : #'blocks - list' }
 MicLaTeXWriter >> visitListItem: anItem [
 	self tabList.

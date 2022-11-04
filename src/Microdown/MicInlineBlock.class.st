@@ -40,7 +40,7 @@ MicInlineBlock >> accept: dummy [
 	"implemented in subclasses"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicInlineBlock >> blockName [
 	^ self class blockName
 ]

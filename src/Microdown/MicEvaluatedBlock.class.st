@@ -10,7 +10,7 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 MicEvaluatedBlock class >> blockName [
 	^ (super blockName) "withoutSuffix: 'Format'"
 ]

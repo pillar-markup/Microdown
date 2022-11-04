@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-Tests-InlineParser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateAllTests [
 	<script>
 	| testGenerators |
@@ -16,7 +16,7 @@ MicInlineParserTest class >> generateAllTests [
 	testGenerators do: [ :method | method valueWithReceiver: self arguments: #() ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateEvaluatedTests [
 	| template tests|
 	template := 'test{1}
@@ -34,7 +34,7 @@ MicInlineParserTest class >> generateEvaluatedTests [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateEvaluatedTests_BackslashNotNested [
 	| template tests|
 	template := 'test{1}_BackslashNotNested
@@ -53,7 +53,7 @@ MicInlineParserTest class >> generateEvaluatedTests_BackslashNotNested [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateEvaluatedTests_Nested [
 	| template tests|
 	template := 'test{1}_Nested
@@ -75,7 +75,7 @@ MicInlineParserTest class >> generateEvaluatedTests_Nested [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateEvaluatedTests_UnclompletedNested [
 	| template tests|
 	template := 'test{1}_UnclompletedNested
@@ -94,7 +94,7 @@ MicInlineParserTest class >> generateEvaluatedTests_UnclompletedNested [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateUnEvaluated [
 	| template tests|
 	template := 'test{1}
@@ -113,7 +113,7 @@ MicInlineParserTest class >> generateUnEvaluated [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateUnEvaluated_backSlashed [
 	| template tests|
 	template := 'test{1}_backSlashed
@@ -132,7 +132,7 @@ MicInlineParserTest class >> generateUnEvaluated_backSlashed [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateUnEvaluated_unevaluated [
 	| template tests|
 	template := 'test{1}_unevaluated
@@ -151,7 +151,7 @@ MicInlineParserTest class >> generateUnEvaluated_unevaluated [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateUrlTests [
 	| template tests|
 	template := 'test{1}
@@ -169,7 +169,7 @@ MicInlineParserTest class >> generateUrlTests [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'method generation' }
 MicInlineParserTest class >> generateUrlTests_Refs [
 	| template tests|
 	template := 'test{1}_Refs

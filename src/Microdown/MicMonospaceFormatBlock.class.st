@@ -7,7 +7,7 @@ Class {
 	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MicMonospaceFormatBlock class >> blockName [
 	^ (super blockName) withoutSuffix: 'Format'
 ]
