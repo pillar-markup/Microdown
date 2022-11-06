@@ -9,9 +9,6 @@ Class {
 		'left',
 		'right'
 	],
-	#classVars : [
-		'Browser'
-	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 

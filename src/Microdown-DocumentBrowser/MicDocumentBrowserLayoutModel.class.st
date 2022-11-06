@@ -15,9 +15,6 @@ Class {
 		'sourceMode',
 		'sourceLayouts'
 	],
-	#classVars : [
-		'Browser'
-	],
 	#category : #'Microdown-DocumentBrowser-GUI'
 }
 
@@ -26,7 +23,6 @@ MicDocumentBrowserLayoutModel >> initialize [
 	showDocumentList := true.
 	showSource := false.
 	sourceMode := self sourceBotton.
-	sourceLayouts := nil.
 	
 ]
 

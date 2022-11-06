@@ -14,19 +14,19 @@ MicHTMLDocumentTest class >> resources [
 	^ Array with: MicCSSFileResource
 ]
 
-{ #category : #running }
+{ #category : #helpers }
 MicHTMLDocumentTest >> sampleHTMLBody [
 
 	^ MicDocFactory exampleMicAsHTMLBodyString
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 MicHTMLDocumentTest >> sampleMicCSSFile [
 
 	^ MicCSSFileResource current micCSSFile
 ]
 
-{ #category : #tests }
+{ #category : #helpers }
 MicHTMLDocumentTest >> sampleMicCSSName [
 
 	^ MicCSSProvider defaultFramework
@@ -41,11 +41,11 @@ MicHTMLDocumentTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MicHTMLDocumentTest >> tearDown [ 
 
+	doc fullName asFileReference ensureDelete.
 	super tearDown.
-	doc fullName asFileReference ensureDelete
 ]
 
 { #category : #tests }
