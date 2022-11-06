@@ -405,7 +405,7 @@ MicTextualMicrodownExporterTest >> testParagraphWithItalic [
 MicTextualMicrodownExporterTest >> testParagraphWithMicroDownMarkup [
 
 	| mic |
-	mic := parser parse: 'blab\~l\**a*1'.
+	mic := parser parse: 'blab\~l\*\*a*1'.
 	self assert: (mic accept: visitor) contents equals: '
 blab\~l\**a*1
 '
