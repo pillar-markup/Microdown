@@ -1,18 +1,16 @@
 "
-I am a class representing a inline delimiter (for example `**` for bold).
+I am a superclass for the inline delimiters.
+I am an administrer class which gathers delimiters from my subclasses.
 
-My class side manages the set of delimiters. The delimiters are defined and set up in class side `initializeDelimiters`
+I store the actual delimiters in the class variable `DelimiterDictionary`.
+My class side method `initializeDelimiters` gathers delimiters from my subclasses.
+
 "
 Class {
 	#name : #MicInlineDelimiter,
 	#superclass : #Object,
-	#instVars : [
-		'markup',
-		'blockClass',
-		'closer'
-	],
 	#classVars : [
-		'DelimiterMap'
+		'DelimiterDictionary'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
@@ -22,7 +20,8 @@ Class {
 
 { #category : #accessing }
 MicInlineDelimiter class >> all [
-	^ DelimiterMap values
+	DelimiterDictionary ifNil: [ self initializeDelimiters ].
+	^ DelimiterDictionary values
 ]
 
 { #category : #'private utilities' }
@@ -34,40 +33,26 @@ MicInlineDelimiter class >> allRegex [
 { #category : #accessing }
 MicInlineDelimiter class >> at: markup [
 	"return delimiter at markup, or nil"
-	^ DelimiterMap at: markup ifAbsent: [ nil ]
+	^ DelimiterDictionary at: markup ifAbsent: [ nil ]
 ]
 
 { #category : #initialization }
 MicInlineDelimiter class >> initialize [
 	<script>
-	DelimiterMap := Dictionary new.
-	self initializeDelimiters.
+	DelimiterDictionary := nil
 ]
 
 { #category : #initialization }
 MicInlineDelimiter class >> initializeDelimiters [
-	"The fixious text delimiter"
-	self new markup: FixiousTextDelimiter; blockClass: MicTextBlock; closer: nil; addMe.
-	"formating"
-	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock; closer: BoldMarkup; addMe.
-	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock; closer: ItalicMarkup; addMe.
-	self new markup: StrikeMarkup; blockClass: MicStrikeFormatBlock; closer: StrikeMarkup; addMe.
-	"anchors & annotations"
-	self new markup: AnchorReferenceOpenerMarkup; blockClass: MicAnchorReferenceBlock; closer: AnchorReferenceCloserMarkup; addMe.
-	self new markup: AnchorReferenceCloserMarkup; blockClass: nil; closer: nil; addMe.
-	self new markup: AnnotationCloserMarkup; blockClass: nil; closer: nil; addMe.
-	self new markup: AnnotationOpenerMarkup; blockClass: MicAnnotationBlock; closer: AnnotationCloserMarkup; addMe.
-	"unevaluated"
-	self new markup: MathMarkup; blockClass: MicMathInlineBlock; closer: MathMarkup; addMe.
-	self new markup: MonospaceMarkup; blockClass: MicMonospaceFormatBlock; closer: MonospaceMarkup; addMe.
-	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; closer: RawCloserMarkup; addMe.
-	self new markup: RawCloserMarkup; blockClass: nil; closer: nil; addMe.
-	"Containing URLs"
-	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; closer: NameCloserUrlOpener; addMe.
-	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; closer: NameCloserUrlOpener; addMe.
-	self new markup: NameCloserUrlOpener; blockClass: MicRawBlock ; closer: URLCloserMarkup; addMe.
-	self new markup: URLCloserMarkup; blockClass: nil ; closer: nil; addMe
-		
+	self = MicInlineDelimiter ifFalse: [ ^self ].
+	DelimiterDictionary := Dictionary new.
+	self allSubclasses do: [ :class | class initializeDelimiters ]
+]
+
+{ #category : #compiling }
+MicInlineDelimiter class >> noteCompilationOf: aSelector meta: isMeta [
+	"I reset when any method is recompiled"
+	self initialize
 ]
 
 { #category : #'private utilities' }
@@ -88,77 +73,42 @@ MicInlineDelimiter class >> regexNot: markup [
 { #category : #adding }
 MicInlineDelimiter >> addMe [
 	"add me to the dictionary in my class"
-	DelimiterMap at: markup put: self
+	DelimiterDictionary at: self markup put: self
 ]
 
 { #category : #accessing }
 MicInlineDelimiter >> blockClass [
-
-	^ blockClass
-]
-
-{ #category : #accessing }
-MicInlineDelimiter >> blockClass: anObject [
-
-	blockClass := anObject
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
 MicInlineDelimiter >> closer [
-
-	^ closer
-]
-
-{ #category : #accessing }
-MicInlineDelimiter >> closer: anObject [
-
-	closer := anObject
+	self subclassResponsibility
 ]
 
 { #category : #testing }
 MicInlineDelimiter >> isEvaluated [
 	"I am an opener whose resultering block will need further inline parsing"
-	^ self isOpener and: [blockClass isEvaluated ]
+	^ self isOpener and: [self blockClass isEvaluated ]
 ]
 
 { #category : #testing }
 MicInlineDelimiter >> isOpener [
-	^ closer notNil or: [ markup = closer ]
+	^ self closer notNil or: [ self markup = self closer ]
 ]
 
 { #category : #testing }
 MicInlineDelimiter >> isRawkind [
 	"I am an opener whose resulting nodes body is not further parsed"
-	^ self isOpener and: [ blockClass isEvaluated not ]
+	^ self isOpener and: [ self blockClass isEvaluated not ]
 ]
 
 { #category : #accessing }
 MicInlineDelimiter >> markup [
-
-	^ markup
-]
-
-{ #category : #accessing }
-MicInlineDelimiter >> markup: anObject [
-
-	markup := anObject
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
 MicInlineDelimiter >> markupAsRegex [
-	"return a regex (as string) matching this delimiter"
-	| str |
-	str := WriteStream on: ''. 
-	self isRawkind
-		ifTrue: [ 
-				markup do: [:char| str nextPut: $\;nextPut: char].
-				str nextPutAll: (self class regexNot: closer).
-				closer do: [:char| str nextPut: $\;nextPut: char]]
-		ifFalse: [ markup do: [:char| str nextPut: $\;nextPut: char] ].
-	^ str contents
-]
-
-{ #category : #printing }
-MicInlineDelimiter >> printOn: stream [
-	stream << $« << markup << $»
+	self subclassResponsibility
 ]
