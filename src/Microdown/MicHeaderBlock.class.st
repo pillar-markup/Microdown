@@ -53,7 +53,7 @@ MicHeaderBlock >> formattedCode [
 
 { #category : #accessing }
 MicHeaderBlock >> header [
-
+	"I am used to get an adhoc string for the header"
 	^ String streamContents: [ :s | 
 		  children do: [ :e | s nextPutAll: e bodystring ] ]
 ]

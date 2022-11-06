@@ -330,7 +330,7 @@ MicrodownParserTest >> testHeaderLevel4 [
 	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level four'.
+	self assert: root children first children first bodystring equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 

@@ -113,10 +113,10 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 	includer visit: (root := reference loadMicrodown).
 	
 	self assert: root children first class equals: MicHeaderBlock.
-	self assert: root children first header equals: 'Foo'.
+	self assert: root children first children first bodystring equals: 'Foo'.
 	
 	self assert: root children second class equals: MicHeaderBlock.
-	self assert: root children second header equals: 'Example2'.
+	self assert: root children second children first bodystring equals: 'Example2'.
 
 
 
@@ -155,10 +155,10 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 	includer visit: (root := reference loadMicrodown).
 	
 	self assert: root children first class equals: MicHeaderBlock.
-	self assert: root children first header equals: 'Foo'.
+	self assert: root children first children first bodystring equals: 'Foo'.
 	
 	self assert: root children second class equals: MicHeaderBlock.
-	self assert: root children second header equals: 'Example2'.
+	self assert: root children second children first bodystring equals: 'Example2'.
 
 
 
@@ -194,7 +194,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 	includer visit: root.
 
 	self assert: root children first class equals: MicHeaderBlock.
-	self assert: root children first header equals: 'Foo'.
+	self assert: root children first children first bodystring equals: 'Foo'.
 	self assert: root children second class equals: MicParagraphBlock.
 	self assert: root children third class equals: MicCodeBlock.
 
@@ -218,13 +218,13 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	includer visit: root.
 
 	self assert: root children first class equals: MicHeaderBlock.
-	self assert: root children first header equals: 'Foo'.
+	self assert: root children first children first bodystring equals: 'Foo'.
 	self assert: root children first level equals: 1.
 	self assert: root children second class equals: MicParagraphBlock.
 	self assert: root children third class equals: MicCodeBlock.
 	
 	self assert: root children fourth class equals: MicHeaderBlock.
-	self assert: root children fourth header equals: 'Bar'.
+	self assert: root children fourth children first bodystring equals: 'Bar'.
 	self assert: root children fourth level equals: 2.
 	self assert: root children fifth class equals: MicParagraphBlock.
 	self assert: root children sixth class equals: MicCodeBlock

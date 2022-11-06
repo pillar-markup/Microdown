@@ -57,7 +57,7 @@ MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
 	root := parser parse: HeaderMarkup, ' Level1'.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level1'.
+	self assert: root children first children first bodystring equals: 'Level1'.
 	self assert: root children first level equals: 1
 ]
 
@@ -68,7 +68,7 @@ MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 	source := HeaderMarkup, 'Level1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level1'.
+	self assert: root children first children first bodystring equals: 'Level1'.
 	self assert: root children first level equals: 1
 ]
 
@@ -79,7 +79,7 @@ MicHeaderBlockTest >> testHeaderLevel4 [
 	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level four'.
+	self assert: root children first children first bodystring equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 
@@ -89,7 +89,7 @@ MicHeaderBlockTest >> testHeaderLevel6 [
 	source := (HeaderMarkup repeat: 6), '    Level six'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level six'.
+	self assert: root children first children first bodystring equals: 'Level six'.
 	self assert: root children first level equals: 6
 ]
 
