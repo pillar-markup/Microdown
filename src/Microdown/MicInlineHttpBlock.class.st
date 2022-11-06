@@ -28,3 +28,8 @@ MicInlineHttpBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 		url: delimiter string;
 		closeMe
 ]
+
+{ #category : #visiting }
+MicInlineHttpBlock >> accept: dummy [
+	self error: 'I should not be instantiatied and used by visitor'
+]
