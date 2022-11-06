@@ -1,0 +1,30 @@
+"
+I implement the inline use of `https://somewhere.com` as a link directly in microdown.
+My parse method on the class side transform me directly into a MicLinkBlock, and as such, I am never instantiated
+"
+Class {
+	#name : #MicInlineHttpBlock,
+	#superclass : #MicUnEvaluatedBlock,
+	#category : #'Microdown-InlineParser'
+}
+
+{ #category : #accessing }
+MicInlineHttpBlock class >> closingDelimiter [
+	"I am never instantiated, but transformed into a MicLinkBlock"
+	^ self shouldNotImplement 
+]
+
+{ #category : #accessing }
+MicInlineHttpBlock class >> openingDelimiter [
+	"I am never instantiated, but transformed into a MicLinkBlock"
+	^ self shouldNotImplement 
+]
+
+{ #category : #parsing }
+MicInlineHttpBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+	"I transform myself into a MicLinkBlock"
+	^ MicLinkBlock new
+		children: { MicTextBlock new bodystring: delimiter string};
+		url: delimiter string;
+		closeMe
+]
