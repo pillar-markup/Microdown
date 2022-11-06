@@ -333,7 +333,7 @@ MicHTMLVisitor >> visitHeader: aHeader [
 	canvas newLine.	
 	canvas tag 
 		name: 'h',  aHeader level asString;
-		with: aHeader header
+		with: [ self visitAll: aHeader children]
 	
 ]
 
