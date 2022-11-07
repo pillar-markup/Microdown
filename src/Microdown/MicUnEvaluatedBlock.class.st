@@ -3,7 +3,7 @@ I represent blocks whose contents is not microdown markup as such.
 "
 Class {
 	#name : #MicUnEvaluatedBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'bodystring'
 	],

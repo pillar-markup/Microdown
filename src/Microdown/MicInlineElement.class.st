@@ -10,65 +10,65 @@ I am characterized by:
 
 "
 Class {
-	#name : #MicInlineBlock,
+	#name : #MicInlineElement,
 	#superclass : #MicElement,
 	#category : #'Microdown-InlineParser'
 }
 
 { #category : #accessing }
-MicInlineBlock class >> blockName [
+MicInlineElement class >> blockName [
 	^ (self instanceSide name asString withoutPrefix: 'Mic') withoutSuffix: 'Block'
 ]
 
 { #category : #accessing }
-MicInlineBlock class >> closingDelimiter [
+MicInlineElement class >> closingDelimiter [
 	^ self subclassResponsibility
 ]
 
 { #category : #testing }
-MicInlineBlock class >> isEvaluated [
+MicInlineElement class >> isEvaluated [
 	^ true
 ]
 
 { #category : #accessing }
-MicInlineBlock class >> openingDelimiter [
+MicInlineElement class >> openingDelimiter [
 	^ self subclassResponsibility
 ]
 
 { #category : #visiting }
-MicInlineBlock >> accept: dummy [
+MicInlineElement >> accept: dummy [
 	"implemented in subclasses"
 ]
 
 { #category : #accessing }
-MicInlineBlock >> blockName [
+MicInlineElement >> blockName [
 	^ self class blockName
 ]
 
 { #category : #visiting }
-MicInlineBlock >> closeMe [
+MicInlineElement >> closeMe [
 	"use for post parsing initialization"
 ]
 
 { #category : #accessing }
-MicInlineBlock >> closingDelimiter [ 
+MicInlineElement >> closingDelimiter [ 
 	^ self class closingDelimiter
 ]
 
 { #category : #private }
-MicInlineBlock >> inlineParserClass [
+MicInlineElement >> inlineParserClass [
 
 	^ MicInlineParser
 ]
 
 { #category : #accessing }
-MicInlineBlock >> kind [
+MicInlineElement >> kind [
 	"Should only be used for tests"
 	self deprecated: 'use blockName instead' transformWith: '`@rec kind' -> '`@rec blockName asLowercase'.
 	^ self blockName asLowercase 
 ]
 
 { #category : #accessing }
-MicInlineBlock >> openingDelimiter [
+MicInlineElement >> openingDelimiter [
 	^ self class openingDelimiter
 ]

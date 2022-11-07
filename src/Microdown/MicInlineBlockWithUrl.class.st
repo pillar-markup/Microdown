@@ -9,7 +9,7 @@ My subclasses manage figures and links.
 "
 Class {
 	#name : #MicInlineBlockWithUrl,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'children',
 		'url',

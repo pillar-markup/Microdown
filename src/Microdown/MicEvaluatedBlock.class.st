@@ -3,7 +3,7 @@ I represent blocks with sub structure. Typically italics inside bold
 "
 Class {
 	#name : #MicEvaluatedBlock,
-	#superclass : #MicInlineBlock,
+	#superclass : #MicInlineElement,
 	#instVars : [
 		'children'
 	],
