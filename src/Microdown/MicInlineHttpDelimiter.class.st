@@ -1,5 +1,8 @@
 "
-I implement the inline use of `https://somewhere.com` as a link directly in microdown
+I implement the inline use of `https://somewhere.com` as a link directly in microdown.
+I am recognized by `http[s]://(something not whitespace)+`.
+I have an unfortunate restiction, if I am inlined in an other inline block, I should be followed by a whitespace.
+Forexample `**https://somewhere.org_**` (`_` representing Character space)
 "
 Class {
 	#name : #MicInlineHttpDelimiter,
