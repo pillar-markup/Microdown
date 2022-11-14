@@ -10,6 +10,12 @@ Class {
 	#category : #'Microdown-RichTextComposer-Tests-Composer'
 }
 
+{ #category : #'as yet unclassified' }
+MicRichTextComposerTest class >> sampleMicrodownForInputTest [
+	^ '# TestHeader
+body for testing'
+]
+
 { #category : #helpers }
 MicRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute [
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
@@ -391,10 +397,10 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 MicRichTextComposerTest >> testInputfile [
 
 	| source result |
-	source := '<!inputFile|path=comment://class/MicRichTextComposerTest!>'.
+	source := '<!inputFile|path=pharo:///MicRichTextComposerTest/sampleMicrodownForInputTest!>'.
 	result := (self richTextForString: source) asString trim.
-	self assert: (result beginsWith: 'MicRichTextComposerTest').
-	self assert: (result includesSubstring: 'This class contains tests')
+	self assert: (result beginsWith: 'TestHeader').
+	self assert: (result includesSubstring: 'body for test')
 ]
 
 { #category : #'skipped tests' }
