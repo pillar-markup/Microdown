@@ -44,7 +44,7 @@ MicFigureBlock >> closeMe [
 	(url ""title"") "
 
 	| split title|
-	split := url splitOnFirst: Character space.
+	split := url splitOnFirst: $|.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 
 		trimBoth: [:char | {$". Character space} includes: char].
