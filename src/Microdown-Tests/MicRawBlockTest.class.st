@@ -1,8 +1,13 @@
 Class {
 	#name : #MicRawBlockTest,
-	#superclass : #MicElementTest,
+	#superclass : #MicBlockTest,
 	#category : #'Microdown-Tests-Parser'
 }
+
+{ #category : #tests }
+MicRawBlockTest >> subjectClass [
+	^ MicRawBlock  
+]
 
 { #category : #tests }
 MicRawBlockTest >> testRaw [

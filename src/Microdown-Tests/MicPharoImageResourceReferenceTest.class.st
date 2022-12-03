@@ -29,3 +29,12 @@ MicPharoImageResourceReferenceTest >> testMicrodownImport [
 
 	self assert: doc children notEmpty
 ]
+
+{ #category : #tests }
+MicPharoImageResourceReferenceTest >> testSingleSlash [
+
+	| uri |
+	uri := 'pharo:/Object/iconNamed:/info' asMicResourceReference.
+	self assert: uri isRelative. "If this fails, ZnUrl has been fixed"
+	self assert: uri class ~= MicPharoImageResourceReference  
+]

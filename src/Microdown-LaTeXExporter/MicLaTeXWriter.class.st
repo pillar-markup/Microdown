@@ -88,7 +88,7 @@ MicLaTeXWriter >> includeGraphicsFor: aFigure [
 	canvas command
 		name: 'includegraphics';
 		optParameter: [ self writeGraphicsParametersOfExternalLink: aFigure ];
-		parameter: [ canvas raw: aFigure figurePath  ]
+		parameter: [ canvas raw: aFigure fullName ]
 	"we should see when the reference is resolved if we really emit well figures in the case of file://figures/logo.png"
 	
 ]
@@ -302,6 +302,7 @@ MicLaTeXWriter >> visitStrike: aStrike [
 { #category : #'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
 	| environment |
+	canvas newLine.
 	environment := canvas environment name: self tabularEnvironment.
 	aTable rows size = 0
 		ifTrue: [ environment with: [  ].

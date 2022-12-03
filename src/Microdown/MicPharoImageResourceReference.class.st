@@ -1,10 +1,10 @@
 "
 I am a reference to a image or microdown ressource in the image.
 
-I follow the url scheme `pharo:///class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///Object/iconNamed:/nameOfIcon`.
+I follow the url scheme `pharo:/class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///Object/iconNamed:/nameOfIcon`. 
 
 Examples:
-- abstract: ![](pharo:///Object/iconNamed:/abstract) 
+- abstract: ![](pharo:///Object/iconNamed:/abstract)
 - bitbucket: ![](pharo:///Object/iconNamed:/bitbucket)
 - thumbsUp: ![](pharo:///Object/iconNamed:/thumbsUp)
 
@@ -32,7 +32,7 @@ MicPharoImageResourceReference >> binaryReadStream [
 { #category : #accessing }
 MicPharoImageResourceReference >> contents [
 	"I am not needed, I implement loadMicrodown directly"
-	^ self shouldBeImplemented
+	^ self perform
 ]
 
 { #category : #loading }
@@ -43,7 +43,7 @@ MicPharoImageResourceReference >> loadImage [
 
 { #category : #loading }
 MicPharoImageResourceReference >> loadMicrodown [
-	"Assume the method just returns a form"
+	"Assume the method just returns a document"
 	^ self perform
 ]
 

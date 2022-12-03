@@ -17,3 +17,12 @@ Microdown class >> asHTMLString: aStringOrDoc [
 		
 	
 ]
+
+{ #category : #'*Microdown-HTMLExporter' }
+Microdown class >> asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration [
+	"Facade method to render a microdown document or string to HTML"
+	
+	^ MicHTMLVisitor asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration
+		
+	
+]

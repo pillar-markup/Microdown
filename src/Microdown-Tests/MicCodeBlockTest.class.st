@@ -19,6 +19,11 @@ Class {
 }
 
 { #category : #tests }
+MicCodeBlockTest >> subjectClass [ 
+	^ MicCodeBlock 
+]
+
+{ #category : #tests }
 MicCodeBlockTest >> testBody [
 	| source root textBody |
 	textBody := 'my fancy code
@@ -53,7 +58,7 @@ is really cool'.
 MicCodeBlockTest >> testCaption [
 
 	| codeBlock |
-	codeBlock := self testedClass new.
+	codeBlock := self subjectClass new.
 	codeBlock caption: '**Here** is a nice caption.'.
 	self assert: codeBlock hasCaption. 
 	self assert: codeBlock captionElements first class equals: MicBoldFormatBlock.
@@ -185,8 +190,8 @@ MicCodeBlockTest >> testFourBackQuotesOnMultipleLinesWithText [
 	| codeBlock |
 	codeBlock := parser parse: '
 Before	
-	
-	
+
+
 ````pharo
 something in the way
 pif
@@ -206,7 +211,7 @@ MicCodeBlockTest >> testFourBackQuotesWithTextAround [
 	| codeBlock |
 	codeBlock := parser parse: '
 Start text here
-	
+
 ```` 
 something in the way
 ````
@@ -363,7 +368,7 @@ is really cool'.
 MicCodeBlockTest >> testSetLabel [
 
 	| codeBlock |
-	codeBlock := self testedClass new.
+	codeBlock := self subjectClass new.
 	codeBlock label: 'sec123'.
 	self assert: codeBlock hasLabel. 
 	self assert: codeBlock label equals: 'sec123'
@@ -433,9 +438,4 @@ something in the way
 ````'.
 
 	self assert: codeBlock children first body equals: 'something in the way'
-]
-
-{ #category : #tests }
-MicCodeBlockTest >> testedClass [ 
-	^ MicCodeBlock 
 ]

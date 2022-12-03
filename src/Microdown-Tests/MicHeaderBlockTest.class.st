@@ -7,6 +7,11 @@ Class {
 	#category : #'Microdown-Tests-Parser'
 }
 
+{ #category : #running }
+MicHeaderBlockTest >> subjectClass [ 
+	^ MicHeaderBlock  
+]
+
 { #category : #tests }
 MicHeaderBlockTest >> testCanConsumeLine [
 
@@ -91,14 +96,13 @@ MicHeaderBlockTest >> testHeaderLevel6 [
 { #category : #tests }
 MicHeaderBlockTest >> testHeaderLevelOutOfRange [
 	| source header |
-	self 
-		should: [parser parse: (HeaderMarkup repeat: 7), '    Level seven']
-		raise: MicParsingError.
 	source := (HeaderMarkup repeat: 1), '    Level one'.
 	header := (parser parse: source) children first.
-	self
-		should: [ header level: 0 ]
-		raise: MicParsingError 
+	header level: 0.
+	self assert: header level equals: 1.
+	header level: 7.
+	self assert: header level equals: 6.
+	
 ]
 
 { #category : #tests }
@@ -112,9 +116,4 @@ MicHeaderBlockTest >> testHeaderLongElements [
 		assert: header children first class
 		equals: MicTextBlock.
 	
-]
-
-{ #category : #running }
-MicHeaderBlockTest >> testedClass [ 
-	^ MicHeaderBlock  
 ]

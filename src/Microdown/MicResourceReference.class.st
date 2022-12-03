@@ -41,7 +41,7 @@ MicResourceReference class >> fromUri: aString [
 		ifNil: [ ^ MicRelativeResourceReference new relativePath: aString ].
 	refClass := self allSubclasses 
 		detect: [ :rc | rc handlesUriScheme: uri scheme ]
-		ifNone: [ MicResourceReferenceError signal: 'Unknown uri scheme: ', uri scheme ].
+		ifNone: [ MicUnknownResourceUri ].
 	^ refClass newFromUri: uri
 	
 ]
@@ -57,6 +57,13 @@ MicResourceReference class >> handlesUriScheme: scheme [
 MicResourceReference class >> newFromUri: uri [
 	"Default implementation"
 	^ self new uri: uri; yourself
+]
+
+{ #category : #accessing }
+MicResourceReference >> fullName [
+	"Returns the full name of the resources (without microdown arguments) i.e, http://pharo.org/community/foo.png"
+	
+	^ self uriString 
 ]
 
 { #category : #testing }

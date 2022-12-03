@@ -1,8 +1,13 @@
 Class {
 	#name : #MicSlideBlockTest,
 	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#category : #'Microdown-Tests-Extensions'
 }
+
+{ #category : #tests }
+MicSlideBlockTest >> subjectClass [ 
+	^ MicSlideBlock 
+]
 
 { #category : #tests }
 MicSlideBlockTest >> testSlideBloc [
@@ -32,9 +37,4 @@ MicSlideBlockTest >> testSlideBlocIsParsed [
 - bullet 3
 !>'.
 	self assert: doc children first class equals: MicSlideBlock
-]
-
-{ #category : #tests }
-MicSlideBlockTest >> testedClass [ 
-	^ MicSlideBlock 
 ]

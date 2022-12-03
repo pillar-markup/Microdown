@@ -41,12 +41,17 @@ MicSBALaTeXWriterTest >> testCodeblockWithCaption [
 { #category : #tests }
 MicSBALaTeXWriterTest >> testCodeblockWithChevron [
 
-	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'MyClass >> foo
-	this is a code').
-	self assert: writer contents equals: '\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}', newLine ,
-													'MyClass >> foo', newLine ,
-													' this is a code', newLine ,
-													'\end{listing}', newLine
+	self writeFor:
+		(factory
+			 codeblock: 'caption=Pharo is **cool**'
+			 body: 'MyClass >> foo
+ this is a code').
+	self
+		assert: writer contents
+		equals:
+			'\begin{listing}[float]{smalltalk}{Pharo is \textbf{cool}}'
+			, newLine , 'MyClass >> foo' , newLine , ' this is a code'
+			, newLine , '\end{listing}' , newLine
 ]
 
 { #category : #tests }
@@ -126,7 +131,8 @@ MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 { #category : #tests }
 MicSBALaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
-	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+'\begin{fullwidthtabular}{ll}', newLine ,
 '\toprule', newLine ,
 '\textbf{aaab} & \textbf{jkhjh} \\', newLine ,
 '\midrule', newLine ,
@@ -139,7 +145,8 @@ MicSBALaTeXWriterTest >> testTable [
 MicSBALaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
-	self assert: writer contents equals: '\begin{fullwidthtabular}{ll}', newLine ,
+	self assert: writer contents equals: newLine,
+'\begin{fullwidthtabular}{ll}', newLine ,
 '\toprule', newLine ,
 'aaab & jkhjh \\', newLine ,
 'bar & rab \\', newLine ,

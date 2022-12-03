@@ -383,7 +383,7 @@ MicMicrodownSnippetFactory >> fileFigureSample [
 
 	^ '
 
-![Foo](file://image.png/ label=figureTest&width=80)
+![Foo](image.png/ label=figureTest&width=80)
 '
 ]
 
@@ -486,11 +486,9 @@ MicMicrodownSnippetFactory >> initialize [
 	parserClass := Microdown
 ]
 
-{ #category : #sample }
+{ #category : #inputFile }
 MicMicrodownSnippetFactory >> inputfileSample [
-	^ '
-?{inputfile | path=Chapters/text.mic}?
-'
+	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #format }
@@ -519,6 +517,13 @@ MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 MicMicrodownSnippetFactory >> linkBoldSample [
 	^ '
 [**Foo**](/anUrl)
+'
+]
+
+{ #category : #format }
+MicMicrodownSnippetFactory >> linkHttpSample [
+	^ '
+[Foo](http://pharo.org/Community/)
 '
 ]
 
@@ -629,11 +634,11 @@ MicMicrodownSnippetFactory >> nestedOrderedList2Sample [
 	^ '
 - Foo
 - Bar
-		1. B
-		1. a
-		1. r
-					- 3rdlvel
-					- 3rdlevl2
+  1. B
+  1. a
+  1. r
+     - 3rdlvel
+     - 3rdlevl2
 - Zork
 '
 ]
@@ -643,9 +648,9 @@ MicMicrodownSnippetFactory >> nestedOrderedListSample [
 	^ '
 - Foo
 - Bar
-		1. B
-		1. a
-		1. r
+  1. B
+  1. a
+  1. r
 '
 ]
 
@@ -654,9 +659,9 @@ MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 	^ '
 - Foo
 - Bar
-		- B
-		- a
-		- r
+  - B
+  - a
+  - r
 '
 ]
 
@@ -687,6 +692,11 @@ MicMicrodownSnippetFactory >> newlineLFSample [
 MicMicrodownSnippetFactory >> newlineSample [
 
 	^ Smalltalk os lineEnding
+]
+
+{ #category : #inputFile }
+MicMicrodownSnippetFactory >> oneLineInputFileSample [
+	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
 { #category : #sample }
@@ -993,6 +1003,18 @@ MicMicrodownSnippetFactory >> textSentenceSample [
 MicMicrodownSnippetFactory >> textWithChevron [
 
 	^ 'Pilou >> bla'
+]
+
+{ #category : #sample }
+MicMicrodownSnippetFactory >> trySlide [
+
+	^ '<!slide|title=This is a cool title&tag=nh5p
+
+- a list of bullet
+- bullet 2
+- bullet 3
+{!inputFile|path=f1.md!}
+!>'
 ]
 
 { #category : #list }

@@ -17,6 +17,11 @@ MicrodownVisitor >> visit: aMicElement [
 	^ aMicElement accept: self
 ]
 
+{ #category : #visiting }
+MicrodownVisitor >> visitAgenda: anAgenda [
+	"subclassResponsibility"
+]
+
 { #category : #'visiting main API' }
 MicrodownVisitor >> visitAll: aCollection [
 
@@ -48,6 +53,11 @@ MicrodownVisitor >> visitBold: aFormat [
 
 ]
 
+{ #category : #visiting }
+MicrodownVisitor >> visitBreak: aBreak [
+	"subclassResponsibility"
+]
+
 { #category : #'visiting - inline elements' }
 MicrodownVisitor >> visitChildrenOf: anElement [
 
@@ -66,7 +76,22 @@ MicrodownVisitor >> visitCode: aCodeBlock [
 ]
 
 { #category : #visiting }
+MicrodownVisitor >> visitColumn: aColumn [
+	^ self visitEnvironment: aColumn
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitColumns: aColumns [
+	^ self visitEnvironment: aColumns
+]
+
+{ #category : #visiting }
 MicrodownVisitor >> visitComment: aComment [
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitDay: aDay [
+	"subclassResponsibility"
 ]
 
 { #category : #visiting }
@@ -162,6 +187,11 @@ MicrodownVisitor >> visitParagraph: aParagraph [
 	^ self visitChildrenOf: aParagraph
 ]
 
+{ #category : #'visiting - extensions' }
+MicrodownVisitor >> visitPharoScript: aPharoScriptNode [
+	^ self visitScript: aPharoScriptNode 
+]
+
 { #category : #visiting }
 MicrodownVisitor >> visitQuote: aQuote [
 	^ self visitChildrenOf: aQuote
@@ -180,6 +210,17 @@ MicrodownVisitor >> visitRoot: aRoot [
 ]
 
 { #category : #'visiting - extensions' }
+MicrodownVisitor >> visitScript: aSlide [
+
+	^ aSlide children collect: [ :each | self visit: each ]
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitSegment: aSegment [
+	"subclassResponsibility"
+]
+
+{ #category : #'visiting - extensions' }
 MicrodownVisitor >> visitSlide: aSlide [
 
 	^ aSlide children collect: [ :each | self visit: each ]
@@ -194,6 +235,11 @@ MicrodownVisitor >> visitStrike: aFormat [
 
 { #category : #visiting }
 MicrodownVisitor >> visitTable: aTable [
+	"subclassResponsibility"
+]
+
+{ #category : #visiting }
+MicrodownVisitor >> visitTalk: aTalk [
 	"subclassResponsibility"
 ]
 
