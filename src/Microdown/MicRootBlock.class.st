@@ -30,16 +30,6 @@ MicRootBlock >> canConsumeLine: line [
 	^ true
 ]
 
-{ #category : #'pillar integration' }
-MicRootBlock >> includeFor: aFile [
-
-	| inclusionVisitor |
-	inclusionVisitor := MicFileIncluder new.
-	inclusionVisitor topFile: aFile file.
-	inclusionVisitor visit: self.
-	^ self
-]
-
 { #category : #accessing }
 MicRootBlock >> indent [
 	^0
