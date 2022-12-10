@@ -32,3 +32,4 @@ MicMathCheckerTest >> testIsOkWithWrongExpression
 	mic := MicMathChecker new visitMath: expression.
 	self assert: (mic errors size) equals: 1.
 ]
+}

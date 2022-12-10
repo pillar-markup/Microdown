@@ -27,3 +27,4 @@ MicMathChecker class >> errors
 MicMathChecker class >> initialize 
 	errors := OrderedCollection new.
 ]
+}
