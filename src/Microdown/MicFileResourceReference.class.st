@@ -106,7 +106,7 @@ MicFileResourceReference >> isDirectory [
 ]
 
 { #category : #testing }
-MicFileResourceReference >> isFileReference [
+MicFileResourceReference >> isMicrodownResourceFileReference [
 	^ true
 ]
 
