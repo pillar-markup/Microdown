@@ -33,7 +33,7 @@ MicAbstractBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-
+	<protected> 
 	self subclassResponsibility.
 	^ self
 ]
@@ -123,7 +123,7 @@ MicAbstractBlock >> nestedLevel [
 
 { #category : #public }
 MicAbstractBlock >> newBlockFor: line parent: parentBlock [
-	<protected>
+
 	| newBlockClass |
 	newBlockClass := self blockStarterClassFrom: line.
 	newBlockClass ifNil: [ ^parentBlock ].
