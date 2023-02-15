@@ -53,7 +53,7 @@ MicZincPathResolver >> resolveReferenceIn: aNode [
 	aNode reference isRelative ifFalse: [ ^ self ].
 	resolvedUri := absoluteReference uri withRelativeReference: aNode reference relativePath.
 	resolvedReference := MicResourceReference fromUri: resolvedUri printString.
-	resolvedReference isFileReference ifTrue: [ resolvedReference filesystem: absoluteReference filesystem ].
+	resolvedReference isMicrodownResourceFileReference ifTrue: [ resolvedReference filesystem: absoluteReference filesystem ].
 	aNode reference: resolvedReference
 ]
 

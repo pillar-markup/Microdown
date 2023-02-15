@@ -40,7 +40,7 @@ MicResourceReferenceTest >> testParseFullUrl [
 MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.md'.
-	self assert: mf isFileReference.
+	self assert: mf isMicrodownResourceFileReference.
 	self assert: mf fullName equals: '/chapter1/figures/m.md'.
 	
 ]
