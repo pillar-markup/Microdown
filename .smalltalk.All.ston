@@ -27,6 +27,8 @@ SmalltalkCISpec {
   			#OutOfMemoryTest,
   			#TraitFileOutTest,
   			#PlatformResolverTest,
+  			#SystemDependenciesTest,
+  			#DAMessageSendAnalyzerTest,
   			#ProcessSpecificTest
   		] 
   	}
