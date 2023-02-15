@@ -1,4 +1,4 @@
-name: currentMaster
+name: MicroDown tests
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -6,9 +6,11 @@ env:
 on:
   push:
     branches:
+      - dev
       - master
   pull_request:
     branches:
+      - dev
       - master
   workflow_dispatch:
   
