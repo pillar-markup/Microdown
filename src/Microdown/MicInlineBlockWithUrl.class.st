@@ -125,7 +125,7 @@ MicInlineBlockWithUrl >> hasArguments [
 	^ arguments notEmpty
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MicInlineBlockWithUrl >> initialize [
 
 	super initialize.
