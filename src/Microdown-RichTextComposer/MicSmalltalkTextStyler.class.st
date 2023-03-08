@@ -17,7 +17,7 @@ MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 	| dict |
 	dict := super initialTextAttributesForPixelHeight: aNumber.
 	dict at: #undefinedIdentifier put: (dict at: #instVar).
-	dict at: #undefinedSelector put: (dict at: #patternSelecton).
+	dict at: #undefinedSelector put: (dict at: #patternSelector).
 	^ dict
 ]
 
