@@ -11,13 +11,13 @@ Class {
 { #category : #attributes }
 MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 	"Render undefined same way as defined"
+
 	"Perhaps this is not the right spot to hook into stuff, but it seems to work"
+
 	| dict |
 	dict := super initialTextAttributesForPixelHeight: aNumber.
 	dict at: #undefinedIdentifier put: (dict at: #instVar).
-	dict at: #undefinedKeyword put: (dict at: #patternKeyword).
-	dict at: #undefinedBinary put: (dict at: #patternBinary).
-	dict at: #undefinedUnary put: (dict at: #patternUnary).
+	dict at: #undefinedSelector put: (dict at: #patternSelector).
 	^ dict
 ]
 
