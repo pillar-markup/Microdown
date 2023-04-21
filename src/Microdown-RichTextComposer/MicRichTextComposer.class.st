@@ -259,6 +259,32 @@ MicRichTextComposer >> codeStylerClass [
 	^ codeStylerClass
 ]
 
+{ #category : #private }
+MicRichTextComposer >> doVisitCode: aCodeBlock [
+
+	self 
+		doVisitCode: aCodeBlock 
+		code: aCodeBlock body
+]
+
+{ #category : #private }
+MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
+
+	canvas indentIn: [ 
+		canvas
+			<< ((self codeStylerClass stylerFor: aCodeBlock language)
+					style: aStringOrText );
+			newLine.
+		aCodeBlock hasCaption ifTrue: [ 
+			canvas 
+				includeAttribute: TextEmphasis bold 
+				in: [ 
+					canvas
+						<< aCodeBlock caption asText;
+					newLine ]]].
+	canvas << textStyler interBlockSpacing
+]
+
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
@@ -377,21 +403,9 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 
 { #category : #visiting }
 MicRichTextComposer >> visitCode: aCodeBlock [
+
 	canvas newLineIfNotAlready.
-	canvas indentIn: [ 
-		canvas
-			<< ((self codeStylerClass stylerFor: aCodeBlock language)
-					style: aCodeBlock body );
-			newLine.
-		aCodeBlock hasCaption ifTrue: [ 
-			canvas 
-				includeAttribute: TextEmphasis bold 
-				in: [ 
-					canvas
-						<< aCodeBlock caption asText;
-					newLine ]]].
-	canvas << textStyler interBlockSpacing
-		
+	self doVisitCode: aCodeBlock
 ]
 
 { #category : #'visiting -  format' }
@@ -600,6 +614,39 @@ MicRichTextComposer >> visitParameters: anObject [
 	"do nothing for now"
 	
 	^ self
+]
+
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
+	"I execute the body. I handle four types of results:
+	Text - inserted verbatim
+	Microdown tree - rendered to text then inserted verbatim
+	String - Parsed, then rendered, then inserted.
+	Other results - printString asText - then inserted verbatim"
+	| label script textWithForm codeText oldCanvas |
+	
+	script := aScriptBlock body.
+	label := aScriptBlock label ifNil: [ String value: 1 ].
+
+	oldCanvas := canvas.
+	canvas := MicRichTextCanvas new
+		textStyler: self textStyler;
+		yourself.
+	self doVisitCode: aScriptBlock.
+	codeText := canvas contents trim. 
+	canvas := oldCanvas.	
+
+	codeText addAttribute: (MicRichTextDoIt new 
+		actOnClickBlock: [ self class evaluate: script ];
+		yourself).
+	
+	textWithForm := ((Form 
+		extent: 16@22 depth: Display depth) 
+		mergeWith:(self iconNamed: #smallDoIt) at: 0@8)
+		asText.
+		
+	canvas << textWithForm << codeText.
+	canvas newLineIfNotAlready
 ]
 
 { #category : #visiting }
