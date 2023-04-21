@@ -623,7 +623,7 @@ MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
 	Microdown tree - rendered to text then inserted verbatim
 	String - Parsed, then rendered, then inserted.
 	Other results - printString asText - then inserted verbatim"
-	| label script textWithForm codeText oldCanvas |
+	| label script doitForm codeText oldCanvas |
 	
 	script := aScriptBlock body.
 	label := aScriptBlock label ifNil: [ String value: 1 ].
@@ -639,13 +639,15 @@ MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
 	codeText addAttribute: (MicRichTextDoIt new 
 		actOnClickBlock: [ self class evaluate: script ];
 		yourself).
-	
-	textWithForm := ((Form 
+
+	"this is a hack, because the align of the icon is attached to some top-left of the 
+	 letters that I do not understand, and I want it aligned with the actual text"	
+	doitForm := ((Form 
 		extent: 16@22 depth: Display depth) 
 		mergeWith:(self iconNamed: #smallDoIt) at: 0@8)
 		asText.
 		
-	canvas << textWithForm << codeText.
+	canvas << doitForm << codeText.
 	canvas newLineIfNotAlready
 ]
 
