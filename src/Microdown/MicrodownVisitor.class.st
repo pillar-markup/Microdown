@@ -188,6 +188,12 @@ MicrodownVisitor >> visitParagraph: aParagraph [
 ]
 
 { #category : #'visiting - extensions' }
+MicrodownVisitor >> visitPharoEvaluator: aScriptBlock [
+
+	self visitScript: aScriptBlock
+]
+
+{ #category : #'visiting - extensions' }
 MicrodownVisitor >> visitPharoScript: aPharoScriptNode [
 	^ self visitScript: aPharoScriptNode 
 ]
