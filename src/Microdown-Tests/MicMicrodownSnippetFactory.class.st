@@ -31,24 +31,6 @@ Class {
 	#category : #'Microdown-Tests-Snippets'
 }
 
-{ #category : #utilities }
-MicMicrodownSnippetFactory class >> buildDocument [
-	"Answer a <String> with a whole document made up from the receiver's methods containing Microdown samples"
-
-	^ String streamContents: [ : stream | 
-		| factory |
-		factory := self new.
-		(self protocols difference: { #initialization . #utilities })
-			collect: [ : protoName | self organization listAtCategoryNamed: protoName ]
-			thenDo: [ : protoCollection |
-				protoCollection 
-					select: #isUnary
-					thenDo: [ : elementTypeSelector |
-						stream 
-							cr;
-							<< (factory perform: elementTypeSelector) ] ] ]
-]
-
 { #category : #anchor }
 MicMicrodownSnippetFactory >> anchorAreTrimedSample [
 	^ AnchorMarkup, '  test  '
