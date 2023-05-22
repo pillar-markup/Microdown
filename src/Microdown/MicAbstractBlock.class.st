@@ -101,11 +101,6 @@ MicAbstractBlock >> initialize [
 ]
 
 { #category : #'*Microdown-DocumentBrowser' }
-MicAbstractBlock >> isHeader [
-	^ false
-]
-
-{ #category : #'*Microdown-DocumentBrowser' }
 MicAbstractBlock >> isRootSection [ 
 	^ false
 ]
@@ -140,7 +135,7 @@ MicAbstractBlock >> parser [
 
 { #category : #private }
 MicAbstractBlock >> parserClass [ 
-	^ Microdown
+	^ MicrodownParser
 ]
 
 { #category : #replacement }

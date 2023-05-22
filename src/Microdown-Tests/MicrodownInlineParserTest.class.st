@@ -414,6 +414,14 @@ MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
 ]
 
 { #category : #'tests - format' }
+MicrodownInlineParserTest >> testMonospacesWithTwoBackslashes [
+ 	| elements |
+ 	elements := self parseAndReturnElementsOfParagraphFor: '`\a+\b`'.
+ 	self assert: elements size equals: 1.
+ 	self assert: elements first substring equals: '\a+\b'
+]
+
+{ #category : #'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef'.
@@ -526,18 +534,6 @@ MicrodownInlineParserTest >> testStructureOfAnnotation [
 	self assert: element text equals: 'annotation'.
 	self assert: element name equals: 'annotation'.
 	self assert: element children equals: #()
-	
-]
-
-{ #category : #'tests - structure' }
-MicrodownInlineParserTest >> testStructureOfAnnotationWithParameters [
-
- 	| element |
- 	element := (self parseAndReturnElementsOfParagraphFor: AnnotationOpenerMarkup , 'inputFile|path=PharoTour.mic' , AnnotationCloserMarkup ) first.
-	self assert: element name equals: 'inputFile'.
-	self assert: element children equals: #().
-	self assert: element text equals: 'inputFile|path=PharoTour.mic'.
-	self assert: (element arguments at: 'path') relativePath equals: 'PharoTour.mic'
 	
 ]
 

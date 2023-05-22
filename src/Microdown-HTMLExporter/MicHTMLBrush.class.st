@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-Core'
 }
 
 { #category : #accessing }

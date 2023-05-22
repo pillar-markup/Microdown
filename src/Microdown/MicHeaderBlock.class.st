@@ -80,11 +80,6 @@ MicHeaderBlock >> headerElements: aCollection [
 	
 ]
 
-{ #category : #'*Microdown-DocumentBrowser' }
-MicHeaderBlock >> isHeader [
-	^ true
-]
-
 { #category : #accessing }
 MicHeaderBlock >> level [
 	^ level
@@ -92,8 +87,8 @@ MicHeaderBlock >> level [
 
 { #category : #accessing }
 MicHeaderBlock >> level: anInteger [
-	(anInteger between: 1 and: 6) ifFalse: [ MicParsingError signal: 'header levels must be between 1 and 6' ].
-	level := anInteger
+	"(anInteger between: 1 and: 6) ifFalse: [ MicParsingError signal: 'header levels must be between 1 and 6' ]."
+	level := anInteger beBetween: 1 and: 6
 	
 
 

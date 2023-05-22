@@ -1,7 +1,10 @@
 "
 I'm the favored entry point to use microdown. I'm a kind of facade to steer Microdown services.
-In particular I invoke a resolver for paths after parsing documents.
- 
+
+
+In particular I invoke a resolver for paths after parsing documents .
+
+<!inputFile|path=pharo:///Microdown/facadeMethods!>
 "
 Class {
 	#name : #Microdown,
@@ -14,24 +17,6 @@ Class {
 }
 
 { #category : #facade }
-Microdown class >> asHTMLDocument: aStringOrDoc [
-	"Facade method to serialize a Microdown document or string to HTML"
-	
-	^ MicHTMLVisitor serializeToHTMLDoc: aStringOrDoc.
-		
-	
-]
-
-{ #category : #facade }
-Microdown class >> asHTMLString: aStringOrDoc [
-	"Facade method to render a microdown document or string to HTML"
-	
-	^ MicHTMLVisitor asHTMLString: aStringOrDoc.
-		
-	
-]
-
-{ #category : #facade }
 Microdown class >> asRichText: aStringOrDoc [
 	"Facade method to render a microdown document or string to Text"
 	^ MicRichTextComposer asRichText: aStringOrDoc.
@@ -42,6 +27,22 @@ Microdown class >> asRichText: aStringOrDoc [
 { #category : #facade }
 Microdown class >> builder [
 	^ MicrodownParser builder
+]
+
+{ #category : #facade }
+Microdown class >> facadeMethods [
+	| facadeMethods aBuilder |
+	facadeMethods := self methodsInProtocol: 'facade'.
+	aBuilder := self builder.
+	aBuilder header: [ aBuilder text: 'Facade methods' ] withLevel: 4.
+	aBuilder unorderedListDuring: [ 
+		facadeMethods do: [:method | 
+			aBuilder item: [ 
+				aBuilder monospace: ('Microdown >>#', method selector)
+			]]
+		 ].
+	^ self parse: aBuilder contents
+	
 ]
 
 { #category : #settings }
@@ -148,4 +149,13 @@ Microdown >> render: aStringOrDoc [
 	"Facade method to render a microdown string to Text"
 	^ self class render: aStringOrDoc 
 	
+]
+
+{ #category : #facade }
+Microdown >> resolveDocument: document withBase: base [
+	"resolve all relative urls in document with respect to the absolute uri 
+	base can be a aString | aZnUrl | absoluteResourceReference"
+	
+	base asMicResourceReference resolveDocument: document.
+	^ document 
 ]

@@ -13,7 +13,7 @@ BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		self pillar: spec.
+		
 		self xmlParserHtml: spec.				
 
 		spec
@@ -28,10 +28,11 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextComposer-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
+
 			package: #'Microdown-MathFlaky-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
 
-			package: #'Microdown-RichTextPresenter'
+			"package: #'Microdown-RichTextPresenter'
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextPresenter-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
@@ -39,7 +40,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-DocumentBrowser'
 				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
 			package: #'Microdown-DocumentBrowser-Tests'
-				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];
+				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];"
 
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
@@ -57,38 +58,20 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
 			
 			package: #'Microdown-LaTeXExporter'
-				with: [ spec requires: #( #Microdown ) ];
-				
+				with: [ spec requires: #( #Microdown ) ];				
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
 
-
 			package: #'Microdown-BeamerExporter'
-				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];
-				
+				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];				
 			package: #'Microdown-BeamerExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
 			
-			"contains the asPillar and converter from MD to Pillar"
-			package: #'Microdown-Pillar'
-				with: [ spec requires: #( #Microdown 'PillarCore') ];
-				
-			package: #'Microdown-Pillar-Tests'
-				with: [ spec requires: #( #'Microdown-Pillar' ) ];	
-
 			package: #'Microdown-PrettyPrinter-Tests'
-				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
-				
-			package: 'Microdown-Macrodown'
-				with: [ spec requires: #( 'Microdown') ];
-			package: #'Microdown-Macrodown-Pillar'
-				with: [ spec requires: #( 'Microdown-Macrodown' 'PillarCore') ];
-			package: 'Microdown-Macrodown-Tests'
-				with: [ spec requires: #( 'Microdown-Macrodown' 'Microdown-Tests') ].
-				
+				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
 				
 	
 		"I do not want group without tests for now"
@@ -97,10 +80,12 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions' with: #(
+				"
 				#'Microdown-RichTextPresenter'
 				#'Microdown-RichTextPresenter-Tests'
 				#'Microdown-DocumentBrowser'
-				#'Microdown-DocumentBrowser-Tests' 
+				#'Microdown-DocumentBrowser-Tests'
+				"
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
@@ -111,8 +96,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
-			group: 'Macrodown' with: #('Core' 'Microdown-Pillar' 'Microdown-Macrodown' 'Microdown-Macrodown-Tests');
-			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Macrodown' 'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
 { #category : #'external projects' }

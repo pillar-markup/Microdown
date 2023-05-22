@@ -4,14 +4,14 @@ By default I do not handle any form of formatting in the potential arguments.
 
 ## Syntax
 
-```
+```text
 <!aTypeOfEnvironment|argument=value&argument2=value2
-
+...
 !>
 ```
 Here is an example of a slide (subclass of `MicEnvironmentBlock`)
 
-```
+```text
 <!slide|title=This is a cool title&tag=nh5p
 
 - a list of bullet
@@ -20,46 +20,24 @@ Here is an example of a slide (subclass of `MicEnvironmentBlock`)
 !>
 ```
 
-
-In Pillar
-```
-${begin:column|width=40}$
-blah blah
-${end:column}$
-```
-
-```
-${begin:card}$
-
-# I'm Cool
-
-A paragraph about the card.
-I will be interpreted as part of the card.
-
-${end:card}$ 
-```
-
-
-
-
-
 This is important to support better column in the future:
 
-```
-${slide:title=Class Methods}$
+```text
+<!slide|title=Class Methods!>
 
-${columns}$
+<!columns!>
 
-${column:width=60}$
+<!column|width=60!>
 
-+>file://figures/Point-xy-class-method.png|width=90+
+![](file://figures/Point-xy-class-method.png width=90)
+!>
 
-${column:width=40}$
+<!column|width=40!>
 
 - press the button ==class== to define a class method
 - in lectures, we add ==class==
-
-${endColumns}$
+!>
+!>
 ```
 
 
@@ -72,6 +50,23 @@ Class {
 	],
 	#category : #'Microdown-Model'
 }
+
+{ #category : #documentation }
+MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
+	| currentDefinedTags |
+	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
+	aBuilder newLine.
+	aBuilder header: [ aBuilder text: 'Defined environments' ] withLevel: 2.
+	aBuilder unorderedListDuring: [ 
+		currentDefinedTags do: [:tagAndClass | 
+			aBuilder item: [ 
+				aBuilder 
+					bold: [aBuilder text: tagAndClass key];
+					text: ' defined by ';
+					monospace: tagAndClass value
+					]]
+		 ]
+]
 
 { #category : #public }
 MicEnvironmentBlock class >> alternateBlockClassFor: line [
@@ -86,6 +81,13 @@ MicEnvironmentBlock class >> alternateBlockClassFor: line [
 	^ self extensionClassFor: tag
 ]
 
+{ #category : #documentation }
+MicEnvironmentBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
+	
+	super buildMicroDownUsing: aBuilder withComment: aString.
+	self addDocumentDefinedEnvironments: aBuilder
+]
+
 { #category : #visiting }
 MicEnvironmentBlock >> accept: aVisitor [
  	^ aVisitor visitEnvironment: self
@@ -96,15 +98,16 @@ MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-	
+	| withoutPreTabs |
 	isClosed
 		ifTrue: [ ^ self ].
-	(self doesLineStartWithStopMarkup: line)
+	withoutPreTabs := line withoutPreTabs.
+	(self doesLineStartWithStopMarkup: withoutPreTabs)
 		ifTrue: [ ^ self ].
 	firstLine
 		ifNil:
-			[ firstLine := self extractFirstLineFrom: line ]
-		ifNotNil: [ ^ self bodyFromLine: line ].
+			[ firstLine := self extractFirstLineFrom: withoutPreTabs ]
+		ifNotNil: [ ^ self bodyFromLine: withoutPreTabs ].
 	^ self
 ]
 
@@ -143,6 +146,11 @@ MicEnvironmentBlock >> closeMe [
 	"body ifNotNil: [ 
 		body :=  self inlineParse: body ].
 	children := body"
+	
+	arguments := MicArgumentList 
+		split: firstLine
+		defaultArg: #environmentName
+		defaultValue: ''.
 ]
 
 { #category : #accessing }
@@ -152,14 +160,18 @@ MicEnvironmentBlock >> environmentName [
 
 { #category : #accessing }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
-
-	| lineWithoutMarkup |
-	lineWithoutMarkup := super extractFirstLineFrom: aLine.
-	arguments := MicArgumentList 
-		split: lineWithoutMarkup
-		defaultArg: #environmentName
-		defaultValue: ''.
-	^ lineWithoutMarkup
+	"we got <! env ...x !> foo bar or <! env ...x and we return env ...x "
+	
+	| extract |
+	firstLine := super extractFirstLineFrom: aLine.
+	firstLine := firstLine trimBoth.
+	extract := firstLine copyUpToSubstring: EnvironmentClosingBlockMarkup.
+	"we got !> ..."
+	^ extract size < firstLine size 
+		ifTrue: [ 
+			isClosed := true.
+			extract trimRight ]
+		ifFalse: [ firstLine ]
 ]
 
 { #category : #markups }

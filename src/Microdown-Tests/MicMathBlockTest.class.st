@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #tests }
+MicMathBlockTest >> subjectClass [ 
+	^ MicMathBlock 
+]
+
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
@@ -51,6 +56,22 @@ MicMathBlockTest >> testMathBlockWithParameters [
 	root := self parserClass new parse: '
 
 ',MathOpeningBlockMarkup,'key=cite&label=42
+V_i = C_0 - C_3 
+', MathClosingBlockMarkup.
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: (math arguments at: 'key') equals: 'cite'.
+	self assert: (math arguments at: 'label') equals: '42'
+]
+
+{ #category : #tests }
+MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
+
+	| root math |
+	root := self parserClass new parse: '
+
+',MathOpeningBlockMarkup,'%key=cite&label=42
 V_i = C_0 - C_3 
 ', MathClosingBlockMarkup.
 	math := root children first.
@@ -119,9 +140,4 @@ V_i = C_0 - C_3
 	self assert: math firstLine equals: 'key=&label=42'.
 	self assert: (math arguments at: 'key') equals: ''.
 	self assert: (math arguments at: 'label') equals: '42'
-]
-
-{ #category : #tests }
-MicMathBlockTest >> testedClass [ 
-	^ MicMathBlock 
 ]

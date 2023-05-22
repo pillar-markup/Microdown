@@ -18,9 +18,16 @@ Class {
 
 { #category : #public }
 MicRichTextCanvas >> << aText [
-	brushes do: [ :brush | brush paint: aText ].
-	out << aText.
-	aText ifNotEmpty: [crAtEnd := aText last = Character cr].
+	|text|
+	aText ifEmpty: [ ^ self ].
+	text := aText asText.
+	brushes do: [ :brush | brush paint: text ].
+	"If no font is already put, and a body font is defined, apply it"
+	((self hasFontDefinitions: text) not and: [ self textStyler bodyFont notNil])
+		ifTrue: [
+			text addAttribute: (TextFontReference toFont: self textStyler bodyFont)].
+	out << text.
+	text ifNotEmpty: [crAtEnd := text last = Character cr].
 ]
 
 { #category : #public }
@@ -31,6 +38,12 @@ MicRichTextCanvas >> contents [
 { #category : #public }
 MicRichTextCanvas >> cr [
 	self newLine
+]
+
+{ #category : #testing }
+MicRichTextCanvas >> hasFontDefinitions: aText [
+	"Answer the fontfor characters in the run beginning at characterIndex."
+	^ (aText runs flattened asSet select: [ :attr | attr isKindOf: TextFontReference  ]) isNotEmpty.
 ]
 
 { #category : #public }

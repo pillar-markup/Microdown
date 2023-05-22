@@ -37,18 +37,26 @@ Second if we want to treat lines separatedly we have to reparse it. Now we do no
 "
 Class {
 	#name : #MicCodeBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
+	#superclass : #MicAbstractCodeBlock,
 	#category : #'Microdown-Model'
 }
-
-{ #category : #accessing }
-MicCodeBlock class >> defaultLanguage [
-	^ 'Pharo'
-]
 
 { #category : #visiting }
 MicCodeBlock >> accept: aVisitor [
  	^ aVisitor visitCode: self
+]
+
+{ #category : #public }
+MicCodeBlock >> closeMe [
+	"adjust prefix tabs based on first line
+	I am allowing the codeblock itself to be indented in the input, see motivation in Microdown issue: 543"
+	| codeLines tabs |
+	super closeMe.
+	codeLines := self code lines.
+	codeLines ifEmpty: [ ^ self ].
+	tabs := codeLines first size - codeLines first withoutPreTabs size.
+	self body: ((codeLines collect: [:line | line stripNtabs: tabs]) joinUsing: String cr)
+	
 ]
 
 { #category : #accessing }
@@ -112,18 +120,6 @@ MicCodeBlock >> label [
 MicCodeBlock >> label: aString [
 
 	self arguments at: #label put: aString
-]
-
-{ #category : #accessing }
-MicCodeBlock >> language [
-	^ arguments at: #language
-]
-
-{ #category : #utilities }
-MicCodeBlock >> lineStartMarkup [
-	"a code block is delimited by ``` "
-	
-	^ CodeblockMarkup 
 ]
 
 { #category : #accessing }

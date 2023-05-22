@@ -85,14 +85,14 @@ MicTextualMicrodownExporterTest >> testCodeBlock [
 
 { #category : #'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlockNewLine [
-	
+
 	| mic |
 	mic := parser parse: '```
-	this is a codeblock
+this is a codeblock
 ```'.
 	self assert: (mic accept: visitor) contents equals: '
 ```
- this is a codeblock
+this is a codeblock
 ```
 '
 ]
@@ -236,7 +236,9 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 { #category : #'tests-anchor' }
 MicTextualMicrodownExporterTest >> testInputfile [
 
-	self verifyObtain: factory inputfileSample
+	| inputFile |
+	inputFile := parser parse: factory inputfileSample.
+	self assert: inputFile children first path path equals: 'Chapters/text.md'
 ]
 
 { #category : #'tests - link' }

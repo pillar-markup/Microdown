@@ -55,9 +55,3 @@ MicRootBlock >> properties: aConfigurationForPillar [
 	properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
 	properties := aConfigurationForPillar
 ]
-
-{ #category : #'pillar integration' }
-MicRootBlock >> transformDocumentFor: aPRPDFDocument [ 
-	"This is a hook to be able to have framework specific transformation hooks.
-	see PRAbstractOutputDocument>>#buildOn:"
-]

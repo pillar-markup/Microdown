@@ -298,6 +298,32 @@ this is the end.'.
 	
 ]
 
+{ #category : #tests }
+MicrodownParserTest >> testHandlePrefixTabs [
+	| source tree columns column codeBlock |
+	source := '
+<!columns
+	<!column
+		```
+		foo := 2 + 3
+			ifHuge: [ "Well, it is not" ]
+		```
+		- List 
+		- Line 2
+	!>
+!>'.
+	tree := self parser parse: source.
+	columns := tree children first.
+	column := columns children first.
+	codeBlock := column children first.
+	self assert: columns class equals: MicColumnsBlock.
+	self assert: column class equals: MicColumnBlock.
+	self assert: codeBlock class equals: MicCodeBlock.
+	self assert: column children second class equals: MicUnorderedListBlock.
+	self assert: codeBlock body lines first equals: 'foo := 2 + 3'.
+	self assert: codeBlock body lines second equals: (String tab, 'ifHuge: [ "Well, it is not" ]').
+]
+
 { #category : #'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
 	| source root |
@@ -417,9 +443,9 @@ MicrodownParserTest >> testParseEmpty [
 
 	| file system mic |
 	system := FileSystem memory workingDirectory.
-	file := system / 'test.mic'.
+	file := system / 'test.md'.
 	(system / 'folder') createDirectory.
-	file := system / 'folder/file.mic'.
+	file := system / 'folder/file.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '' ].
 	mic := parser parse: file asFileReference contents.
 	self assert: mic children isEmpty. 

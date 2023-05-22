@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #tests }
+MicQuoteBlockTest >> subjectClass [ 
+	^ MicQuoteBlock 
+]
+
+{ #category : #tests }
 MicQuoteBlockTest >> testBasicQuoteBlock [
 	| source root |
 	source := '> test1
@@ -90,9 +95,4 @@ MicQuoteBlockTest >> testSingleQuoteBlockFollowedByList [
 text2'.
 	list := root children second.
 	self assert: list children size equals: 3
-]
-
-{ #category : #tests }
-MicQuoteBlockTest >> testedClass [ 
-	^ MicQuoteBlock 
 ]

@@ -7,29 +7,38 @@ Class {
 	#instVars : [
 		'fileReference'
 	],
-	#category : #'Microdown-HTMLExporter'
+	#category : #'Microdown-HTMLExporter-CSS'
 }
 
 { #category : #accessing }
 MicCSSFile >> basename [
+	"Answer a <String> representing the receiver's file name without its path"
 
 	^ self fileReference basename
 ]
 
-{ #category : #copying }
-MicCSSFile >> copyTo: aDestinationDir [
-	"Copy the receiver into aDestinationDir, if the file already exists, notify, delete it and retry"
+{ #category : #accessing }
+MicCSSFile >> contents [
+	"Answer a <String> with the receiver's source code"
+	
+	^ self fileReference contents
+]
 
-	[ self fileReference copyTo: aDestinationDir / self basename ]
+{ #category : #copying }
+MicCSSFile >> copyTo: aFileReference [
+	"Copy the receiver into aFileReference, if the file already exists, notify, delete it and retry"
+
+	[ self fileReference copyTo: aFileReference ]
 	on: FileExists 
 	do: [ : ex | 
 		ex printString traceCr.
-		(aDestinationDir / self basename) ensureDelete.
+		(aFileReference / self basename) ensureDelete.
 		ex retry. ]
 ]
 
 { #category : #accessing }
 MicCSSFile >> fileReference [
+	"Answer the receiver's <FileReference> CSS"
 
 	^ fileReference
 ]

@@ -28,8 +28,12 @@ Class {
 { #category : #'instance creation' }
 MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
+	| znUrl |
+	znUrl := aFileReference asZnUrl.
+	aFileReference isDirectory 
+		ifTrue: [ znUrl addPathSegment: $/ "Yes, a Character not a string" ].
 	^ self new
-		uri: aFileReference asZnUrl;
+		uri: znUrl;
 		filesystem: aFileReference fileSystem 
 ]
 
@@ -85,6 +89,11 @@ MicFileResourceReference >> filesystem: anObject [
 	filesystem := anObject
 ]
 
+{ #category : #accessing }
+MicFileResourceReference >> fullName [ 
+	^ self path
+]
+
 { #category : #initialization }
 MicFileResourceReference >> initialize [
 	super initialize.
@@ -97,7 +106,7 @@ MicFileResourceReference >> isDirectory [
 ]
 
 { #category : #testing }
-MicFileResourceReference >> isFileReference [
+MicFileResourceReference >> isMicrodownResourceFileReference [
 	^ true
 ]
 

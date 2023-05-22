@@ -1,3 +1,9 @@
+"
+I am Parsing error.
+I should be obsoleted.
+
+<!inputFile|pa=foo!> 
+"
 Class {
 	#name : #MicParsingError,
 	#superclass : #Error,

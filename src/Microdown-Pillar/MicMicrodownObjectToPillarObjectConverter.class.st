@@ -27,6 +27,9 @@ MicMicrodownObjectToPillarObjectConverter >> urlBlock: aMicUrlBlock [
 	aMicUrlBlock reference uri query: nil.
 	"UGLY we remove the query dicrtionary just to print."
 	urlString := aMicUrlBlock reference uri asString.
+	"the following test is needed as reported in https://github.com/pillar-markup/Microdown/issues/527"
+	urlString first = $/ ifTrue: [ urlString := urlString allButFirst ].
+	
 	aMicUrlBlock reference uri query: queries.
 	^ aMicUrlBlock associatedPillarClass new
 		  setChildren:

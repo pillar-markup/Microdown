@@ -42,7 +42,7 @@ MicMathInlineBlock >> accept: aVisitor [
 
 { #category : #operations }
 MicMathInlineBlock >> cleanSubstring [
-	self substring: (MicInlineParser escapeReescape: self substring  except: '')
+	self substring: (MicInlineParser escapeReescape: self substring  except: '$')
 ]
 
 { #category : #accessing }
