@@ -31,6 +31,8 @@ MicSmalltalkTextStyler >> attributesFor: aSymbol [
 
 	| symbol |
 	symbol := aSymbol.
+	
+	"In microdown we do not want a special color for undefinied selectors and identifiers so we just ask the common color instead."
 	symbol = #undefinedIdentifier ifTrue: [ symbol := #instVar ].
 	symbol = #undefinedSelector ifTrue: [ symbol := #patternSelector ].
 	^ super attributesFor: symbol
