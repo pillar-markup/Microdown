@@ -100,11 +100,6 @@ MicAbstractBlock >> initialize [
 	children := OrderedCollection new.
 ]
 
-{ #category : #'*Microdown-DocumentBrowser' }
-MicAbstractBlock >> isRootSection [ 
-	^ false
-]
-
 { #category : #testing }
 MicAbstractBlock >> listItemBlockClass [
 	^ MicListItemBlock
