@@ -35,18 +35,18 @@ Class {
 MicMicrodownSnippetFactory class >> buildDocument [
 	"Answer a <String> with a whole document made up from the receiver's methods containing Microdown samples"
 
-	^ String streamContents: [ : stream | 
-		| factory |
-		factory := self new.
-		(self protocolNames difference: { #initialization . #utilities })
-			collect: [ : protoName | self organization listAtCategoryNamed: protoName ]
-			thenDo: [ : protoCollection |
-				protoCollection 
-					select: #isUnary
-					thenDo: [ : elementTypeSelector |
-						stream 
-							cr;
-							<< (factory perform: elementTypeSelector) ] ] ]
+	^ String streamContents: [ :stream |
+		  | factory |
+		  factory := self new.
+		  (self protocolNames difference: { #initialization. #utilities })
+			  collect: [ :protoName | self selectorsInProtocol: protoName ]
+			  thenDo: [ :protoCollection |
+				  protoCollection
+					  select: #isUnary
+					  thenDo: [ :elementTypeSelector |
+						  stream
+							  cr;
+							  << (factory perform: elementTypeSelector) ] ] ]
 ]
 
 { #category : #anchor }
