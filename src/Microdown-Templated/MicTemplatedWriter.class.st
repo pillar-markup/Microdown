@@ -376,7 +376,7 @@ MicTemplatedWriter >> visitAnchor: aPRAnchor [
 		ifAbsent: [ defaultWriter visitAnchor: aPRAnchor ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 
 	| arguments |
@@ -393,16 +393,16 @@ MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 				ifAbsent: [ defaultWriter visitAnnotatedParagraph: anAnnotatedParagraph ] ]
 ]
 
-{ #category : #visiting }
-MicTemplatedWriter >> visitBoldFormat: aPRBoldFormat [
+{ #category : #'visiting - format' }
+MicTemplatedWriter >> visitBold: aPRBoldFormat [
 
 	self
 		write: aPRBoldFormat
 		withTemplateFileName: self boldTemplateFileName
-		ifAbsent: [ defaultWriter visitBoldFormat: aPRBoldFormat ]
+		ifAbsent: [ defaultWriter visitBold: aPRBoldFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitCodeblock: aPRCodeblock [ 
 
 	self
@@ -412,7 +412,7 @@ MicTemplatedWriter >> visitCodeblock: aPRCodeblock [
 		ifAbsent: [ defaultWriter visitCodeblock: aPRCodeblock ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitCommentedLine: aPRText [ 
 
 	self
@@ -421,7 +421,7 @@ MicTemplatedWriter >> visitCommentedLine: aPRText [
 		ifAbsent: [ defaultWriter visitCommentedLine: aPRText  ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitDataItem: aPRListItem [
 
 	self
@@ -430,7 +430,7 @@ MicTemplatedWriter >> visitDataItem: aPRListItem [
 		ifAbsent: [ defaultWriter visitDataItem: aPRListItem ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitDefinitionList: aPRList [
 
 	self
@@ -439,7 +439,7 @@ MicTemplatedWriter >> visitDefinitionList: aPRList [
 		ifAbsent: [ defaultWriter visitDefinitionList: aPRList ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitEmptyParagraph: anEmptyParagraph [
 	
 	self
@@ -460,7 +460,7 @@ MicTemplatedWriter >> visitEnvironment: anEnvironment [
 	self popEnvironment.
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitExternalLink: aPRExternalLink [
 
 	self
@@ -492,7 +492,7 @@ MicTemplatedWriter >> visitHeader: aHeader [
 		ifAbsent: [ defaultWriter visitHeader: aHeader ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 
 	self
@@ -501,7 +501,7 @@ MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
 
 	self
@@ -511,16 +511,16 @@ MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
 		ifAbsent: [ defaultWriter visitInternalLink: aPRInternalLink ]
 ]
 
-{ #category : #visiting }
-MicTemplatedWriter >> visitItalicFormat: aPRItalicFormat [ 
+{ #category : #'visiting - format' }
+MicTemplatedWriter >> visitItalic: aPRItalicFormat [ 
 	
 	self
 		write: aPRItalicFormat
 		withTemplateFileName: self italicTemplateFileName
-		ifAbsent: [ defaultWriter visitItalicFormat: aPRItalicFormat ]
+		ifAbsent: [ defaultWriter visitItalic: aPRItalicFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 
 	self
@@ -538,7 +538,7 @@ MicTemplatedWriter >> visitListItem: aPRListItem [
 		ifAbsent: [ defaultWriter visitListItem: aPRListItem ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitMailLink: aPRMailLink [
 
 	self
@@ -548,13 +548,13 @@ MicTemplatedWriter >> visitMailLink: aPRMailLink [
 		ifAbsent: [ defaultWriter visitExternalLink: aPRMailLink ]
 ]
 
-{ #category : #visiting }
-MicTemplatedWriter >> visitMonospaceFormat: aPRMonospaceFormat [ 
+{ #category : #'visiting - format' }
+MicTemplatedWriter >> visitMonospace: aPRMonospaceFormat [ 
 	
 	self
 		write: aPRMonospaceFormat
 		withTemplateFileName: self monospaceTemplateFileName
-		ifAbsent: [ defaultWriter visitMonospaceFormat: aPRMonospaceFormat ]
+		ifAbsent: [ defaultWriter visitMonospace: aPRMonospaceFormat ]
 ]
 
 { #category : #visiting }
@@ -575,7 +575,7 @@ MicTemplatedWriter >> visitParagraph: aParagraph [
 		ifAbsent: [ defaultWriter visitParagraph: aParagraph ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 
 	self
@@ -590,7 +590,7 @@ MicTemplatedWriter >> visitRaw: aPRRaw [
 	defaultWriter visitRaw: aPRRaw
 ]
 
-{ #category : #visiting }
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitSection: aPRSection [
 
 	self
