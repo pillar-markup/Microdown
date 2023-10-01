@@ -69,7 +69,7 @@ MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTempla
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-formatting' }
 MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 
 	self
@@ -197,13 +197,13 @@ MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
 		forNode: (PRInternalLink new reference: 'bla.pillar')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-formatting' }
 MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter italicTemplateFileName
 		writesValue: 'italicTemplate'
-		forNode: (PRItalicFormat with: (PRText content: 'Bar'))
+		forNode: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'Bar'))
 ]
 
 { #category : #'tests-templatefiles' }
