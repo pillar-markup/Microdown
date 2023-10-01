@@ -661,7 +661,9 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
 		
 	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
-	self visitRaw: (PRRaw content: result type: defaultWriter writerName)
+
+	self visitText: (MicTextBlock new substring: result)
+
 ]
 
 { #category : #writing }
