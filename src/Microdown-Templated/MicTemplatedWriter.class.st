@@ -608,7 +608,7 @@ MicTemplatedWriter >> visitOrderedList: aPROrderedList [
 		ifAbsent: [ defaultWriter visitOrderedList: aPROrderedList ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitParagraph: aParagraph [
 
 	self
