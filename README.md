@@ -141,6 +141,7 @@ The other packages in this repository are the extensions made to produce Pillar 
 Such packages should be moved in the future to other location (probably pillar itself).
 
 
-this is a lengthy paragraph. The other packages in this repository are the extensions made to produce Pillar model.
+this is a lengthy paragraph. The other packages in this repository are the extensions made
+to produce Pillar model.
 Such packages should be moved in the future to other location (probably pillar itself).
 
