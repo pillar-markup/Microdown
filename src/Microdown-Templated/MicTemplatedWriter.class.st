@@ -91,7 +91,7 @@ MicTemplatedWriter class >> exampleHeader [
 	"let us assume that we have a folder templates/html that contains the file bold.mustache 
 	
 	more header.mustache
-	<H1>{{{contents}}}</H1>
+	<H{{{level}}}>{{{contents}}}</H{{{level}}}>
 	"
 
 	| templater | 
@@ -101,7 +101,7 @@ MicTemplatedWriter class >> exampleHeader [
 		outputDocument: (MicHTMLMaker new
 			baseDirectory: FileSystem workingDirectory; yourself).
 	templater visit: (Microdown parse: '#### Header 4') children first.
-	templater contents "'<H1>Header 4</H1>'"
+	templater contents "'<H4>Header 4</H4>'"
 
 
 ]
@@ -408,7 +408,7 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 	^ self class unorderedListTemplateFileName
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitAnchor: anAnchor [
 
 	self
@@ -571,7 +571,7 @@ MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 		ifAbsent: [ defaultWriter visitLineBreak: aPRLineBreak ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitListItem: aPRListItem [
 
 	self
@@ -600,12 +600,12 @@ MicTemplatedWriter >> visitMonospace: aMonospaceFormat [
 ]
 
 { #category : #visiting }
-MicTemplatedWriter >> visitOrderedList: aPROrderedList [
+MicTemplatedWriter >> visitOrderedList: anOrderedList [
 
 	self
-		write: aPROrderedList
+		write: anOrderedList
 		withTemplateFileName: self orderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitOrderedList: aPROrderedList ]
+		ifAbsent: [ defaultWriter visitOrderedList: anOrderedList ]
 ]
 
 { #category : #'visiting - converted' }
@@ -647,13 +647,13 @@ MicTemplatedWriter >> visitText: aPRText [
 	defaultWriter visitText: aPRText
 ]
 
-{ #category : #visiting }
-MicTemplatedWriter >> visitUnorderedList: aPRUnorderedList [ 
+{ #category : #'visiting - converted' }
+MicTemplatedWriter >> visitUnorderedList: anUnorderedList [ 
 
 	self
-		write: aPRUnorderedList
+		write: anUnorderedList
 		withTemplateFileName: self unorderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitUnorderedList: aPRUnorderedList ]
+		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList ]
 ]
 
 { #category : #writing }
@@ -701,7 +701,6 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 		ifNone: [ ^ aBlock value ].
 	
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
-		
 	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
 
 	self visitText: (MicTextBlock new substring: result)

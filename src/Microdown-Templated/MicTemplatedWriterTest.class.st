@@ -216,13 +216,13 @@ MicTemplatedWriterTest >> testWriteLineBreakUsesLineBreakTemplate [
 		forNode: PRLineBreak new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter listItemTemplateFileName
 		writesValue: 'list item'
-		forNode: PRListItem new
+		forNode: MicListItemBlock new
 ]
 
 { #category : #'tests-templatefiles' }
@@ -276,22 +276,22 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
 					yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 
 	self
-		assertTemplate: MicTemplatedWriter orderedListTemplateFileName
-		writesValue: 'ordered list'
-		forNode: PROrderedList new
+		assertTemplate: MicTemplatedWriter unorderedListTemplateFileName
+		writesValue: 'unordered list'
+		forNode: MicUnorderedListBlock  new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteParagraphUsesParagraphTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter paragraphTemplateFileName
-		writesValue: 'unorderedList'
-		forNode: PRParagraph new
+		writesValue: 'paragraph'
+		forNode: MicParagraphBlock new
 ]
 
 { #category : #'tests-templatefiles' }
