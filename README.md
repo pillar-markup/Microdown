@@ -1,10 +1,6 @@
 # Microdown Parser and Elements
 
-I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
-Microdown is a smaller markdown but it is more extensible.  
-
-[![Microdown-Pharo-Integration](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml)  
-[![currentDev](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml)  
+I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. Microdown is a smaller markdown but it is more extensible.   
 
 ## Quick start
 ### Loading specific version
@@ -145,4 +141,6 @@ The other packages in this repository are the extensions made to produce Pillar 
 Such packages should be moved in the future to other location (probably pillar itself).
 
 
+this is a lengthy paragraph. The other packages in this repository are the extensions made to produce Pillar model.
+Such packages should be moved in the future to other location (probably pillar itself).
 
