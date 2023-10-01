@@ -64,6 +64,48 @@ MicTemplatedWriter class >> emptyParagraphTemplateFileName [
 	^ 'emptyParagraph.mustache'
 ]
 
+{ #category : #example }
+MicTemplatedWriter class >> example [
+	"let us assume that we have a folder templates/html that contains the file bold.mustache 
+	
+	more bold.mustache
+	Yes bold my friend <b>{{{contents}}}</b>
+
+	"
+
+	| templater | 
+	templater := MicTemplatedWriter new.
+	templater
+		defaultWriter: MicHTMLVisitor new;
+		outputDocument: (MicHTMLMaker new
+			baseDirectory: FileSystem workingDirectory; yourself).
+	templater visit: (Microdown parse: '**BOLD BOLD**') children first children first.
+	templater contents
+	
+	"Yes bold my friend <b>{{{BOLD BOLD}}}</b>"
+
+]
+
+{ #category : #example }
+MicTemplatedWriter class >> exampleHeader [
+	"let us assume that we have a folder templates/html that contains the file bold.mustache 
+	
+	more header.mustache
+	<H1>{{{contents}}}</H1>
+	"
+
+	| templater | 
+	templater := MicTemplatedWriter new.
+	templater
+		defaultWriter: MicHTMLVisitor new;
+		outputDocument: (MicHTMLMaker new
+			baseDirectory: FileSystem workingDirectory; yourself).
+	templater visit: (Microdown parse: '#### Header 4') children first.
+	templater contents "'<H1>Header 4</H1>'"
+
+
+]
+
 { #category : #templates }
 MicTemplatedWriter class >> externalLinkTemplateFileName [
 	
@@ -367,13 +409,13 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 ]
 
 { #category : #visiting }
-MicTemplatedWriter >> visitAnchor: aPRAnchor [
+MicTemplatedWriter >> visitAnchor: anAnchor [
 
 	self
 		writeRawText: ''
 		withTemplateFileName: self anchorTemplateFileName
-		extraArguments: { 'name' -> aPRAnchor name }
-		ifAbsent: [ defaultWriter visitAnchor: aPRAnchor ]
+		extraArguments: { 'name' -> anAnchor name }
+		ifAbsent: [ defaultWriter visitAnchor: anAnchor ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -393,13 +435,13 @@ MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 				ifAbsent: [ defaultWriter visitAnnotatedParagraph: anAnnotatedParagraph ] ]
 ]
 
-{ #category : #'visiting - format' }
-MicTemplatedWriter >> visitBold: aPRBoldFormat [
+{ #category : #'visiting - converted' }
+MicTemplatedWriter >> visitBold: aBoldFormat [
 
 	self
-		write: aPRBoldFormat
+		write: aBoldFormat
 		withTemplateFileName: self boldTemplateFileName
-		ifAbsent: [ defaultWriter visitBold: aPRBoldFormat ]
+		ifAbsent: [ defaultWriter visitBold: aBoldFormat ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -482,7 +524,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitHeader: aHeader [
 
 	self
@@ -511,13 +553,13 @@ MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
 		ifAbsent: [ defaultWriter visitInternalLink: aPRInternalLink ]
 ]
 
-{ #category : #'visiting - format' }
-MicTemplatedWriter >> visitItalic: aPRItalicFormat [ 
+{ #category : #'visiting - converted' }
+MicTemplatedWriter >> visitItalic: anItalicFormat [ 
 	
 	self
-		write: aPRItalicFormat
+		write: anItalicFormat
 		withTemplateFileName: self italicTemplateFileName
-		ifAbsent: [ defaultWriter visitItalic: aPRItalicFormat ]
+		ifAbsent: [ defaultWriter visitItalic: anItalicFormat ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -548,13 +590,13 @@ MicTemplatedWriter >> visitMailLink: aPRMailLink [
 		ifAbsent: [ defaultWriter visitExternalLink: aPRMailLink ]
 ]
 
-{ #category : #'visiting - format' }
-MicTemplatedWriter >> visitMonospace: aPRMonospaceFormat [ 
+{ #category : #'visiting - converted' }
+MicTemplatedWriter >> visitMonospace: aMonospaceFormat [ 
 	
 	self
-		write: aPRMonospaceFormat
+		write: aMonospaceFormat
 		withTemplateFileName: self monospaceTemplateFileName
-		ifAbsent: [ defaultWriter visitMonospace: aPRMonospaceFormat ]
+		ifAbsent: [ defaultWriter visitMonospace: aMonospaceFormat ]
 ]
 
 { #category : #visiting }

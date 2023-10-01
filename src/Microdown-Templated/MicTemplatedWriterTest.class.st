@@ -69,7 +69,7 @@ MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTempla
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
 ]
 
-{ #category : #'tests-formatting' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 
 	self
@@ -168,15 +168,16 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 		forNode: (PRFigure reference: 'bla.png')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter headerTemplateFileName
 		writesValue: 'aHeader'
-		forNode: (PRHeader new
+		forNode: (MicHeaderBlock new
 			level: 2;
-			add: (PRText content: 'foo'))
+			headerElements: { (MicTextBlock new substring: 'foo') } ;
+			yourself)
 ]
 
 { #category : #'tests-templatefiles' }
@@ -197,7 +198,7 @@ MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
 		forNode: (PRInternalLink new reference: 'bla.pillar')
 ]
 
-{ #category : #'tests-formatting' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 
 	self
