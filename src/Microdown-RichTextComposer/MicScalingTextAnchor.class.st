@@ -11,47 +11,49 @@ optionally one can freeze the height of the embedded image. This is mostly usefu
 New width is given by targetWidth: - this is not a user function, but is called by the scaling mechanism.
 "
 Class {
-	#name : #MicScalingTextAnchor,
-	#superclass : #TextAnchor,
+	#name : 'MicScalingTextAnchor',
+	#superclass : 'TextAnchor',
 	#instVars : [
 		'original',
 		'scale',
 		'freezeHeight'
 	],
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> freezeHeight [
 
 	^ freezeHeight
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> freezeHeight: anObject [
 
 	freezeHeight := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> original [
 
 	^ original
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> original: aForm [
 
 	original := aForm.
 	anchoredMorph := aForm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> scale: percentOrNil [
 	scale := percentOrNil 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicScalingTextAnchor >> targetWidth: rightMargin [
 
 	| newWidth newHeight |

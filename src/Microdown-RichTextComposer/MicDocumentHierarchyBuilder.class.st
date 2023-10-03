@@ -16,8 +16,8 @@ SpDocumentHierarchyBuilder new
 ```
 "
 Class {
-	#name : #MicDocumentHierarchyBuilder,
-	#superclass : #Object,
+	#name : 'MicDocumentHierarchyBuilder',
+	#superclass : 'Object',
 	#instVars : [
 		'topClass',
 		'flattenTree',
@@ -26,10 +26,11 @@ Class {
 		'class',
 		'fromClass'
 	],
-	#category : #'Microdown-RichTextComposer'
+	#category : 'Microdown-RichTextComposer',
+	#package : 'Microdown-RichTextComposer'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> addLevel: level from: aClass [
 	"'├ ─ ╰ │'"
 	| path |
@@ -61,7 +62,7 @@ MicDocumentHierarchyBuilder >> addLevel: level from: aClass [
 			from: each ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> addLevel: level from: aClass to: stream [
 	"'├ ─ ╰ │'"
 	| path |
@@ -90,14 +91,14 @@ MicDocumentHierarchyBuilder >> addLevel: level from: aClass to: stream [
 			to: stream ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> applyFilterTo: aCollection [
 
 	filterBlock ifNil: [ ^ aCollection ].
 	^ aCollection select: filterBlock
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicDocumentHierarchyBuilder >> buildFor: aClass [
 
 	self fillTreeOf: aClass.
@@ -106,7 +107,7 @@ MicDocumentHierarchyBuilder >> buildFor: aClass [
 		from: self fromClass
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicDocumentHierarchyBuilder >> buildStringFor: aClass [
 	
 	self fillTreeOf: aClass.
@@ -117,13 +118,13 @@ MicDocumentHierarchyBuilder >> buildStringFor: aClass [
 			to: (ZnNewLineWriterStream on: stream) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> builder: aBuilder [
 
 	builder := aBuilder
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> fillTreeOf: aClass [
 
 	class := aClass.
@@ -134,7 +135,7 @@ MicDocumentHierarchyBuilder >> fillTreeOf: aClass [
 	^ flattenTree
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> fillTreeWithSubclassesOf: aClass [
 		
 	flattenTree at: aClass put: (self applyFilterTo: aClass subclasses).
@@ -142,7 +143,7 @@ MicDocumentHierarchyBuilder >> fillTreeWithSubclassesOf: aClass [
 		self fillTreeWithSubclassesOf: each ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicDocumentHierarchyBuilder >> fillTreeWithSuperclassesOf: aClass [
 	| superclasses |
 
@@ -156,25 +157,25 @@ MicDocumentHierarchyBuilder >> fillTreeWithSuperclassesOf: aClass [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> filter: aBlock [
 
 	filterBlock := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> fromClass [
 
 	 ^  fromClass ifNil: [ SpAbstractPresenter ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> fromClass: aClass [
 
 	fromClass := aClass
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicDocumentHierarchyBuilder >> isPassingThrough: aClass topLevel: aTopClass [
 	| superclasses |
 	
@@ -185,13 +186,13 @@ MicDocumentHierarchyBuilder >> isPassingThrough: aClass topLevel: aTopClass [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> topClass [
 
 	^ topClass ifNil: [ self fromClass superclass ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentHierarchyBuilder >> topClass: aClass [
 
 	topClass := aClass
