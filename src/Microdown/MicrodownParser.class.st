@@ -154,8 +154,8 @@ Now the implementation for now does not create a paragraph in the list_item elem
 
 "
 Class {
-	#name : #MicrodownParser,
-	#superclass : #Object,
+	#name : 'MicrodownParser',
+	#superclass : 'Object',
 	#instVars : [
 		'current',
 		'root',
@@ -164,27 +164,29 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #builder }
+{ #category : 'builder' }
 MicrodownParser class >> builder [
 	^ MicMicrodownTextualBuilder new
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicrodownParser class >> example [
 	<sampleInstance>
 	^ self parse: self comment
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicrodownParser class >> parse: aString [
 
 	^ self new parse: aString
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
 
@@ -205,26 +207,26 @@ MicrodownParser >> blockStarterClassFrom: line [
 	^ self nonMatchedBlockClassFor: line
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownParser >> builder [
 	"return a little helper to build microdown correct expression"
 	
 	^ self class builder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownParser >> current [ 
 
 	^ current
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> delimiterBlockClassFor: prefix [
 
 	^ self paragraphBlockClass
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownParser >> handleLine: line [
 
 	"The logic is the following: 
@@ -240,7 +242,7 @@ MicrodownParser >> handleLine: line [
 	self handleLine: line
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicrodownParser >> initialize [
 
 	super initialize.
@@ -261,48 +263,48 @@ MicrodownParser >> initialize [
 	dispatchTable at: TableCellMarkup put: MicTableBlock.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicrodownParser >> isAList: normalized [
 	
 	^ (self matchUnordered: normalized) or: [ self matchOrdered: normalized ]
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> matchOrdered: line [
 	^ line prefixMatchesRegex: '\d+(\.|\))'
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> matchUnordered: line [
 	^ ( line beginsWith: UnorderedListPlusMarkup ) 
 		| ( line beginsWith: UnorderedListStarMarkup ) 
 		| ( line beginsWith: UnorderedListMarkup )
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownParser >> newRootBlock [
 	^ MicRootBlock new
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> nonMatchedBlockClassFor: line [
 
 	^ self paragraphBlockClass
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> orderedListBlockClass [
 
 	^ MicOrderedListBlock
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MicrodownParser >> paragraphBlockClass [
 
 	^ MicParagraphBlock
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
@@ -325,7 +327,7 @@ MicrodownParser >> parse: aStreamOrString [
 	^ root
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicrodownParser >> setCurrent: aBlock [
 	"aBlock parent = current 
 		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].

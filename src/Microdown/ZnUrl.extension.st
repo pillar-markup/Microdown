@@ -1,11 +1,11 @@
-Extension { #name : #ZnUrl }
+Extension { #name : 'ZnUrl' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 ZnUrl >> asMicResourceReference [
 	^ MicResourceReference fromUri: self
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 ZnUrl >> resolveDocument: document [
 	^ self asMicResourceReference resolveDocument: document.
 ]

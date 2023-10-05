@@ -44,17 +44,19 @@ It produces
 
 "
 Class {
-	#name : #MicUnorderedListBlock,
-	#superclass : #MicListBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicUnorderedListBlock',
+	#superclass : 'MicListBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicUnorderedListBlock >> accept: aVisitor [
  	^ aVisitor visitUnorderedList: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicUnorderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
 

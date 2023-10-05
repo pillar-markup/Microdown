@@ -2,37 +2,39 @@
 I'm the opener delimiter for URL.
 "
 Class {
-	#name : #MicURLOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicURLOpenerDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLOpenerDelimiter class >> associatedInlineBlock [
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicURLOpenerDelimiter class >> isActive [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLOpenerDelimiter class >> isCloser [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLOpenerDelimiter class >> markup [
 	^ URLOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLOpenerDelimiter class >> type [
 	^ #url
 ]

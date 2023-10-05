@@ -2,121 +2,123 @@
 I'm a little wrapper on stream to provide a nicer API. In particular I help not hardcoding line ending everywhere.
 "
 Class {
-	#name : #MicOutputStream,
-	#superclass : #Object,
+	#name : 'MicOutputStream',
+	#superclass : 'Object',
 	#instVars : [
 		'stream',
 		'configuration'
 	],
-	#category : #'Microdown-Utils'
+	#category : 'Microdown-Utils',
+	#package : 'Microdown',
+	#tag : 'Utils'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicOutputStream class >> on: aStream [
 
 	^ self new setStream: aStream; yourself
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> << anObject [
 	anObject isBlock
 		ifTrue: anObject
 		ifFalse: [ stream << anObject ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> configuration [ 
 	^ configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> configuration: aConfiguration [
 	configuration := aConfiguration 
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> contents [
 
 	^ stream contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> crAsNewLine [
 
 	self configuration crAsNewLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> crlfAsNewLine [
 
 	self configuration crlfAsNewLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> flush [
 	stream flush
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicOutputStream >> initialize [ 
 	super initialize.
 	configuration := MicMinimalConfiguration new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicOutputStream >> isEmpty [
 	
 	^ stream isEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> lfAsNewLine [
 
 	self configuration lfAsNewLine
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> newLine [
 	self << self usedNewLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> nextPut: aCharacter [ 
 	stream nextPut: aCharacter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> nextPutAll: aCharacter [ 
 	stream nextPutAll: aCharacter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOutputStream >> print: anObject [
 	stream print: anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicOutputStream >> setStream: aWriteStream [
 	stream := aWriteStream
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> space [
 	stream space
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicOutputStream >> stream [
 
 	^ stream
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> tab [
 	stream tab
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> trimLastNewLine [
 	| newLine |
 	newLine := self usedNewLine.
@@ -125,7 +127,7 @@ MicOutputStream >> trimLastNewLine [
 	stream position: stream position - newLine size.
 ]
 
-{ #category : #streaming }
+{ #category : 'streaming' }
 MicOutputStream >> usedNewLine [
 	^ self configuration newLine
 ]

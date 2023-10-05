@@ -2,23 +2,25 @@
 I'm a special inline block representing the fact that there is not markup. 
 "
 Class {
-	#name : #MicTextBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicTextBlock',
+	#superclass : 'MicInlineElement',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTextBlock >> accept: aVisitor [
 	^ aVisitor visitText: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextBlock >> kind [
 
 	^ #basic
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextBlock >> printOn: aStream [
 
 	self printWithoutConventions: aStream.

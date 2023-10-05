@@ -2,22 +2,24 @@
 I represent a monospaced text section. I'm delimited using `\`` as in `\`monospace\`` to obtain `monospace`.
 "
 Class {
-	#name : #MicMonospaceFormatBlock,
-	#superclass : #MicFormatBlock,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicMonospaceFormatBlock',
+	#superclass : 'MicFormatBlock',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicMonospaceFormatBlock class >> isEvaluated [
 	^ false
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMonospaceFormatBlock >> closeMe [
 	
 	| text decodedString |
@@ -32,18 +34,18 @@ MicMonospaceFormatBlock >> closeMe [
 			self children: { text } ]
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MicMonospaceFormatBlock >> closingDelimiter [
 
  	^ MonospaceMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock >> kind [
 	^ #monospace
 ]
 
-{ #category : #internal }
+{ #category : 'internal' }
 MicMonospaceFormatBlock >> openingDelimiter [
 
  	^ MonospaceMarkup

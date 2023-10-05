@@ -1,39 +1,41 @@
 Class {
-	#name : #MicDocumentListBlock,
-	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicDocumentListBlock',
+	#superclass : 'MicAnnotationBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentListBlock class >> tag [ 
 	^ #documentlist
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> accept: aVisitor [
 
 	"^ aVisitor visitDocListAnnotation: self"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> limit [
 
 	^ self arguments at: #limit ifAbsent: [ '3' ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> path [
 
 	^ self arguments at: #path
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> sort [
 
 	^ self arguments at: #sort ifAbsent: [ '' ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> summaryMaxSize [
 
 	^ self arguments at: #summaryMaxSize
@@ -41,7 +43,7 @@ MicDocumentListBlock >> summaryMaxSize [
 		ifAbsent: [ 500 ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentListBlock >> templates [
 
 	^ self arguments at: #templates ifAbsent: [ #() ]

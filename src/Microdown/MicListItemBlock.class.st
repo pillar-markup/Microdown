@@ -40,21 +40,23 @@ Pay attention my instance variable text is only used during the parsing time.
 
 "
 Class {
-	#name : #MicListItemBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicListItemBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'text',
 		'textElements'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicListItemBlock >> accept: aVisitor [
  	^ aVisitor visitListItem: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -75,20 +77,20 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 			text := text , String cr , normalized ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> basicText [
 
 	^ text
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
 	^ line beginsWith: (' ' repeat: parent indent)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicListItemBlock >> closeMe [
 
 "1. item 1 **foo**
@@ -106,38 +108,38 @@ In this example textElements of the first item will be the elements for
 		children addFirst: each ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> computeNestedLevel [
 	"An item has the same nested level than its parent."
 	^ self parent computeNestedLevel
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> isAList: normalized [
 
 	^ parser isAList: normalized
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> nestedLevel [
 	"Return the nesting level of main blocks. Basically only list increases this."
 	
 	^ self parent nestedLevel 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> text [
 
 	^ String streamContents: [ :str | textElements do: [ :each | str nextPutAll: each substring ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> textElements [ 
 	
 	^ textElements 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> textElements: aCollection [ 
 	
 	textElements := aCollection

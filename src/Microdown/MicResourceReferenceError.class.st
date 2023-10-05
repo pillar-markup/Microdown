@@ -5,7 +5,9 @@ I am signalled when one tries to access a resource which can not be accessed for
 In particular, the methods `loadImage` and `loadMicrodown` in (subclasses of) `MicAbsoluteResourceReference` can signal me.
 "
 Class {
-	#name : #MicResourceReferenceError,
-	#superclass : #Error,
-	#category : #'Microdown-Core'
+	#name : 'MicResourceReferenceError',
+	#superclass : 'Error',
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }

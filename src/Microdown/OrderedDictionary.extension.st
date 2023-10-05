@@ -1,6 +1,6 @@
-Extension { #name : #OrderedDictionary }
+Extension { #name : 'OrderedDictionary' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 OrderedDictionary >> at: key add: value [
 	"Store value under key. If key already exists, store multiple values as Array"
 	

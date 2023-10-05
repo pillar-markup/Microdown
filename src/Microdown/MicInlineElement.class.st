@@ -10,23 +10,25 @@ I am characterized by:
 
 "
 Class {
-	#name : #MicInlineElement,
-	#superclass : #MicElement,
+	#name : 'MicInlineElement',
+	#superclass : 'MicElement',
 	#instVars : [
 		'start',
 		'end',
 		'children',
 		'substring'
 	],
-	#category : #'Microdown-ModelInline'
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #constructor }
+{ #category : 'constructor' }
 MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString [
 	^ self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: Array new
 ]
 
-{ #category : #constructor }
+{ #category : 'constructor' }
 MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 	^ self new 
 		start: aStartInteger; 
@@ -38,54 +40,54 @@ MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aS
 		yourself.	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineElement class >> isEvaluated [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> children [
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> children: anArray [
 	children := anArray
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineElement >> childrenPrintOn [
 	^ (children asString allButFirst: 9) allButLast
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 MicInlineElement >> cleanSubstring [
 	"remove all \ left by the MicInlineParser - and replace \\ with single \"
 	self substring: (MicInlineParser escapeDecode: self substring )
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineElement >> closeMe [
 	"Hook to perform post creation action. The name is the same as for blocks."
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> end [
 	^ end
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> end: anInteger [
 	end := anInteger
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 MicInlineElement >> escapeCharacter [
 	^ '\'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineElement >> initialize [
 
 	super initialize. 
@@ -93,40 +95,40 @@ MicInlineElement >> initialize [
 	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineElement >> isOnlyChild [
 	^ children isEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> kind [
 	"we are deprecating the state"
 	^ self error
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> literal [
 	^ substring copyFrom: start to: end. 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> openingDelimiter [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> openingDelimiterSize [
 
 	^ self openingDelimiter size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> parent: aParent [
 	parent := aParent
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineElement >> print: aString surroundedOn: aStream [
 
 	aStream 
@@ -136,7 +138,7 @@ MicInlineElement >> print: aString surroundedOn: aStream [
 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineElement >> printOn: aStream [
 
 	| contents |
@@ -152,7 +154,7 @@ MicInlineElement >> printOn: aStream [
 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineElement >> printWithoutConventions: aStream [
 	"Remove Mic and Block from the class."
 	
@@ -160,27 +162,27 @@ MicInlineElement >> printWithoutConventions: aStream [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> start [ 	
 	^ start
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> start: anInteger [
 	start := anInteger 
 ]
 
-{ #category : #obsolete }
+{ #category : 'obsolete' }
 MicInlineElement >> substring [
 	^ substring
 ]
 
-{ #category : #obsolete }
+{ #category : 'obsolete' }
 MicInlineElement >> substring: aSubString [
 	substring := aSubString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> text [
  	^ substring
 ]
