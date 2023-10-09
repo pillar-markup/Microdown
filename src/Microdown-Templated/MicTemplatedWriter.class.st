@@ -419,6 +419,23 @@ MicTemplatedWriter >> visitAnchor: anAnchor [
 ]
 
 { #category : #'visit - to be migrated or removed' }
+MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
+
+	| arguments |
+	arguments := { 'annotation' -> anAnnotatedParagraph annotation }.
+	self
+		write: anAnnotatedParagraph
+		withTemplateFileName: anAnnotatedParagraph annotation , '.mustache'
+		extraArguments: arguments 
+		ifAbsent: [
+			self
+				write: anAnnotatedParagraph
+				withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
+				extraArguments: arguments 
+				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
+]
+
+{ #category : #'visit - to be migrated or removed' }
 MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 
 	| arguments |
@@ -455,12 +472,12 @@ MicTemplatedWriter >> visitCodeblock: aPRCodeblock [
 ]
 
 { #category : #'visit - to be migrated or removed' }
-MicTemplatedWriter >> visitCommentedLine: aPRText [ 
+MicTemplatedWriter >> visitComment: aCommentBlock [ 
 
 	self
-		writeRawText: aPRText text
+		writeRawText: aCommentBlock text
 		withTemplateFileName: self commentedLineTemplateFileName
-		ifAbsent: [ defaultWriter visitCommentedLine: aPRText  ]
+		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -535,7 +552,7 @@ MicTemplatedWriter >> visitHeader: aHeader [
 ]
 
 { #category : #'visit - to be migrated or removed' }
-MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
+MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
 
 	self
 		writeRawText: ''

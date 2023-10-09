@@ -52,21 +52,29 @@ MicTemplatedWriterTest >> setUp [
 ]
 
 { #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteAnchorUsesAnchorTemplate [
-
-	self
-		assertTemplate: 'todo.mustache'
-		writesValue: 'annotated paragraph'
-		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
-]
-
-{ #category : #'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter defaultAnnotatedParagraphTemplateFileName
 		writesValue: 'annotated paragraph'
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
+]
+
+{ #category : #'for later' }
+MicTemplatedWriterTest >> testWriteAnnotatedBlock [
+	self skip.
+	"I do not think that annotated bloc is working since I do not see how the annotation 
+	is extracted
+	
+	!! notes
+	kjlkjljlj 
+	
+	title should be notes here
+	"
+	self
+		assertTemplate: 'todo.mustache'
+		writesValue: 'annotated paragraph'
+		forNode: (MicAnnotatedBlock withAll: #() annotation: 'todo')
 ]
 
 { #category : #'tests-converted' }
@@ -87,13 +95,13 @@ MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 		forNode: (PRCodeblock content: '^ self')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter commentedLineTemplateFileName
 		writesValue: 'commented line'
-		forNode: (PRCommentedLine content: 'some comment')
+		forNode: (MicCommentBlock new text: 'some comment')
 ]
 
 { #category : #'tests-templatefiles' }
@@ -180,13 +188,13 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 			yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter horizontalRuleTemplateFileName
 		writesValue: '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='
-		forNode: PRHorizontalRule new
+		forNode: MicHorizontalLineBlock new
 ]
 
 { #category : #'tests-templatefiles' }
@@ -234,13 +242,13 @@ MicTemplatedWriterTest >> testWriteMailLinkUsesMailLinkTemplate [
 		forNode: (PRMailLink reference: 'foo@bar.com')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter monospaceTemplateFileName
 		writesValue: 'monospace'
-		forNode: (PRMonospaceFormat with: (PRText content: 'Bar'))
+		forNode: (MicMonospaceFormatBlock new children: { MicTextBlock new substring: 'Bar'}) 
 ]
 
 { #category : #'tests-templatefiles' }

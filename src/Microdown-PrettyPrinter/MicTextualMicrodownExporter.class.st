@@ -344,3 +344,8 @@ MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 	builder unorderedListDuring: [ super visitUnorderedList: aUnorderedList ].
 	block value
 ]
+
+{ #category : #accessing }
+MicTextualMicrodownExporter >> writerName [
+	^ #templatedWriter
+]
