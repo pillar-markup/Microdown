@@ -41,21 +41,9 @@ MicTemplatedWriter class >> commentedLineTemplateFileName [
 ]
 
 { #category : #templates }
-MicTemplatedWriter class >> dataItemTemplateFileName [
-	
-	^ 'dataItem.mustache'
-]
-
-{ #category : #templates }
 MicTemplatedWriter class >> defaultAnnotatedParagraphTemplateFileName [
 	
 	^ 'defaultAnnotatedParagraph.mustache'
-]
-
-{ #category : #templates }
-MicTemplatedWriter class >> definitionListTemplateFileName [
-	
-	^ 'definitionList.mustache'
 ]
 
 { #category : #templates }
@@ -143,12 +131,6 @@ MicTemplatedWriter class >> italicTemplateFileName [
 ]
 
 { #category : #templates }
-MicTemplatedWriter class >> lineBreakTemplateFileName [
-	
-	^ 'lineBreak.mustache'
-]
-
-{ #category : #templates }
 MicTemplatedWriter class >> listItemTemplateFileName [
 
 	^ 'listItem.mustache'
@@ -182,12 +164,6 @@ MicTemplatedWriter class >> paragraphTemplateFileName [
 MicTemplatedWriter class >> preformattedTemplateFileName [
 	
 	^ 'preformatted.mustache'
-]
-
-{ #category : #templates }
-MicTemplatedWriter class >> sectionTemplateFileName [
-	
-	^ 'section.mustache'
 ]
 
 { #category : #templates }
@@ -239,12 +215,6 @@ MicTemplatedWriter >> currentEnvironmentPath [
 ]
 
 { #category : #'accessing - templates' }
-MicTemplatedWriter >> dataItemTemplateFileName [
-
-	^ self class dataItemTemplateFileName
-]
-
-{ #category : #'accessing - templates' }
 MicTemplatedWriter >> defaultAnnotatedParagraphTemplateFileName [
 
 	^ self class defaultAnnotatedParagraphTemplateFileName
@@ -258,12 +228,6 @@ MicTemplatedWriter >> defaultWriter [
 { #category : #accessing }
 MicTemplatedWriter >> defaultWriter: anObject [
 	defaultWriter := anObject
-]
-
-{ #category : #'accessing - templates' }
-MicTemplatedWriter >> definitionListTemplateFileName [
-
-	^ self class definitionListTemplateFileName
 ]
 
 { #category : #'accessing - templates' }
@@ -327,12 +291,6 @@ MicTemplatedWriter >> italicTemplateFileName [
 ]
 
 { #category : #'accessing - templates' }
-MicTemplatedWriter >> lineBreakTemplateFileName [
-
-	^ self class lineBreakTemplateFileName
-]
-
-{ #category : #'accessing - templates' }
 MicTemplatedWriter >> listItemTemplateFileName [
 
 	^ self class listItemTemplateFileName
@@ -388,12 +346,6 @@ MicTemplatedWriter >> preformattedTemplateFileName [
 MicTemplatedWriter >> pushEnvironment: aPREnvironment [ 
 	
 	environmentStack addFirst: aPREnvironment
-]
-
-{ #category : #'accessing - templates' }
-MicTemplatedWriter >> sectionTemplateFileName [
-
-	^ self class sectionTemplateFileName
 ]
 
 { #category : #accessing }
@@ -461,41 +413,24 @@ MicTemplatedWriter >> visitBold: aBoldFormat [
 		ifAbsent: [ defaultWriter visitBold: aBoldFormat ]
 ]
 
-{ #category : #'visit - to be migrated or removed' }
-MicTemplatedWriter >> visitCodeblock: aPRCodeblock [ 
+{ #category : #'visiting - converted' }
+MicTemplatedWriter >> visitCode: aPRCodeblock [ 
 
+	"will need to treat arguments."
 	self
 		writeRawText: aPRCodeblock text
 		withTemplateFileName: self codeBlockTemplateFileName
-		extraArguments: { 'language' -> (defaultWriter languageForScript: aPRCodeblock) }
+		extraArguments: { 'language' -> 'For now Pharo' }
 		ifAbsent: [ defaultWriter visitCodeblock: aPRCodeblock ]
 ]
 
-{ #category : #'visit - to be migrated or removed' }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitComment: aCommentBlock [ 
 
 	self
 		writeRawText: aCommentBlock text
 		withTemplateFileName: self commentedLineTemplateFileName
 		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
-]
-
-{ #category : #'visit - to be migrated or removed' }
-MicTemplatedWriter >> visitDataItem: aPRListItem [
-
-	self
-		write: aPRListItem
-		withTemplateFileName: self dataItemTemplateFileName
-		ifAbsent: [ defaultWriter visitDataItem: aPRListItem ]
-]
-
-{ #category : #'visit - to be migrated or removed' }
-MicTemplatedWriter >> visitDefinitionList: aPRList [
-
-	self
-		write: aPRList
-		withTemplateFileName: self definitionListTemplateFileName
-		ifAbsent: [ defaultWriter visitDefinitionList: aPRList ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -589,12 +524,12 @@ MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 ]
 
 { #category : #'visiting - converted' }
-MicTemplatedWriter >> visitListItem: aPRListItem [
+MicTemplatedWriter >> visitListItem: listItem [
 
 	self
-		write: aPRListItem
+		write: listItem
 		withTemplateFileName: self listItemTemplateFileName
-		ifAbsent: [ defaultWriter visitListItem: aPRListItem ]
+		ifAbsent: [ defaultWriter visitListItem: listItem ]
 ]
 
 { #category : #'visit - to be migrated or removed' }
@@ -616,7 +551,7 @@ MicTemplatedWriter >> visitMonospace: aMonospaceFormat [
 		ifAbsent: [ defaultWriter visitMonospace: aMonospaceFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - converted' }
 MicTemplatedWriter >> visitOrderedList: anOrderedList [
 
 	self
@@ -665,12 +600,12 @@ MicTemplatedWriter >> visitText: aPRText [
 ]
 
 { #category : #'visiting - converted' }
-MicTemplatedWriter >> visitUnorderedList: anUnorderedList [ 
+MicTemplatedWriter >> visitUnorderedList: anOrderedList [
 
 	self
-		write: anUnorderedList
+		write: anOrderedList
 		withTemplateFileName: self unorderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList ]
+		ifAbsent: [ defaultWriter visitUnorderedList: anOrderedList ]
 ]
 
 { #category : #writing }

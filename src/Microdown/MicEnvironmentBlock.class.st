@@ -185,3 +185,8 @@ MicEnvironmentBlock >> lineStopMarkup [
 	
 	^ EnvironmentClosingBlockMarkup 
 ]
+
+{ #category : #accessing }
+MicEnvironmentBlock >> name [
+	^ self environmentName
+]

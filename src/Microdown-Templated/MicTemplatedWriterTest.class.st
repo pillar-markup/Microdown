@@ -27,7 +27,7 @@ MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 	document := MicRootBlock new
 		addChild: node;
 		yourself.
-	
+
 	result := textDocument writer write: document.
 
 	self assert: result equals: contents
@@ -86,13 +86,13 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 		forNode: (MicBoldFormatBlock new children: { MicTextBlock new substring: 'Bar'}) 
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter codeBlockTemplateFileName
 		writesValue: 'codeBlockTemplate'
-		forNode: (PRCodeblock content: '^ self')
+		forNode: (MicCodeBlock new body: '^ self')
 ]
 
 { #category : #'tests-converted' }
@@ -104,44 +104,15 @@ MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 		forNode: (MicCommentBlock new text: 'some comment')
 ]
 
-{ #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteDataItemUsesDataItemTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter dataItemTemplateFileName
-		writesValue: 'dataitem'
-		forNode: PRDataItem new
-]
-
-{ #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteDefinitionListUsesDefinitionListTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter definitionListTemplateFileName
-		writesValue: 'definitionList'
-		forNode: PRDefinitionList new
-]
-
-{ #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteEmptyParagraphsUsesEmptyParagraphTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter emptyParagraphTemplateFileName
-		writesValue: 'emptyParagraph'
-		forNode: PREmptyParagraph new
-]
-
-{ #category : #'tests-templatefiles' }
+{ #category : #'tests-converted' }
 MicTemplatedWriterTest >> testWriteEnvironmentItselfUsesMainTemplate [
 
 	self
 		assertTemplatePath: RelativePath * 'cards' / 'main.mustache'
 		writesValue: 'Template for cards itself'
-		forNode: ((PREnvironment named: 'cards')
-						add: (PRParagraph new
-							add: (PRText content: 'Foo');
-							yourself);
-			yourself)
+		forNode: (MicrodownParser parse: '<!cards
+						Foo
+!s>') children first
 ]
 
 { #category : #'tests-templatefiles' }
@@ -215,13 +186,15 @@ MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 		forNode: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'Bar'))
 ]
 
-{ #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteLineBreakUsesLineBreakTemplate [
+{ #category : #'tests-converted' }
+MicTemplatedWriterTest >> testWriteListItemUseListItemTemplate [
 
 	self
-		assertTemplate: MicTemplatedWriter lineBreakTemplateFileName
-		writesValue: 'line break'
-		forNode: PRLineBreak new
+		assertTemplate: MicTemplatedWriter listItemTemplateFileName
+		writesValue: 'list '
+		forNode: (MicrodownParser parse: '- item 1
+- item 2
+- item 3') children first children first
 ]
 
 { #category : #'tests-converted' }
@@ -257,11 +230,11 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
 	self
 		assertTemplatePath: RelativePath * 'cards' / 'card' / 'main.mustache'
 		writesValue: 'Template for the card itself'
-		forNode: ((PREnvironment named: 'cards')
-						add: ((PREnvironment named: 'card')
-									add: (PRParagraph new add: (PRText content: 'Foo');
-							yourself));
-					yourself)
+		forNode: (MicrodownParser parse: '<!cards 
+<!card 
+Foo
+!>
+!>') children first
 ]
 
 { #category : #'tests-templatefiles' }
@@ -312,15 +285,6 @@ MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
 ]
 
 { #category : #'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteSectionUsesSectionTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter sectionTemplateFileName
-		writesValue: 'section'
-		forNode: PRSection new
-]
-
-{ #category : #'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironment [
 
 	self
@@ -344,4 +308,15 @@ MicTemplatedWriterTest >> testWriteTextInsideEnvironmentUsesTemplateInsideEnviro
 				add: (PRText content: 'Foo');
 				yourself);
 			yourself)
+]
+
+{ #category : #'tests-converted' }
+MicTemplatedWriterTest >> testWriteUnorderedListUsesUnorderedListTemplate [
+
+	self
+		assertTemplate: MicTemplatedWriter unorderedListTemplateFileName
+		writesValue: 'list '
+		forNode: (MicrodownParser parse: '- item 1
+- item 2
+- item 3') children first
 ]
