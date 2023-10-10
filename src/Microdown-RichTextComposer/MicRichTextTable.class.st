@@ -2,18 +2,20 @@
 I am a Morphic table used by `MicRichTextComposer>>visitTable:` to render tables. I serve no other purpose. 
 "
 Class {
-	#name : #MicRichTextTable,
-	#superclass : #FTTableMorph,
-	#category : #'Microdown-RichTextComposer-Table-Support'
+	#name : 'MicRichTextTable',
+	#superclass : 'FTTableMorph',
+	#category : 'Microdown-RichTextComposer-Table-Support',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Table-Support'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicRichTextTable class >> headers: headers rows: rows [
 	"headers is an array of column names, and rows are an array of array of string"
 	^ self new headers: headers rows: rows
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicRichTextTable >> addHeaders: headers with: renderedRows [
 	|totalWidth totalHeight  |
 	totalWidth := 0.
@@ -32,7 +34,7 @@ MicRichTextTable >> addHeaders: headers with: renderedRows [
 	self extent: (totalWidth + (headers size * 5)) @ (totalHeight+(renderedRows size +1 *5) )
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicRichTextTable >> headers: headers rows: rows [
 	self
 		addHeaders: headers with: rows ;
@@ -42,7 +44,7 @@ MicRichTextTable >> headers: headers rows: rows [
 	
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MicRichTextTable >> renderCell: aCell [
 	"a cell is an array of nodes. Each element should be rendered and concatenated"
 	^ aCell inject: Text new into: [ :txt :part | 
@@ -50,7 +52,7 @@ MicRichTextTable >> renderCell: aCell [
 		 ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextTable >> resizeAllSubviews [
 	"This method is just like its super, except it prevents the vertical scroll bar to appear"
 	self resizeContainer.

@@ -2,17 +2,19 @@
 I am a class for formating codeblocks containing smalltalk methods
 "
 Class {
-	#name : #MicRichTextCodeBlockStylerFullMethod,
-	#superclass : #MicRichTextCodeBlockStyler,
-	#category : #'Microdown-RichTextComposer-Composer'
+	#name : 'MicRichTextCodeBlockStylerFullMethod',
+	#superclass : 'MicRichTextCodeBlockStyler',
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStylerFullMethod class >> styleTags [
 	^ #(method)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStylerFullMethod >> style: sourceString [
 
 	| source styler ast |
