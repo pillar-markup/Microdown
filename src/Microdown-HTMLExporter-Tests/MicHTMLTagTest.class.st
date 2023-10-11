@@ -2,12 +2,14 @@
 A MicHTMLTagTest is a test class for testing the behavior of MicHTMLTag
 "
 Class {
-	#name : #MicHTMLTagTest,
-	#superclass : #MicHTMLBrushTest,
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#name : 'MicHTMLTagTest',
+	#superclass : 'MicHTMLBrushTest',
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> sampleMicFigureBlock [
 
 	^ MicFigureBlock new 
@@ -16,7 +18,7 @@ MicHTMLTagTest >> sampleMicFigureBlock [
 		yourself.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testAddArguments [
 
 	self tag addArguments: self sampleMicFigureBlock.
@@ -26,14 +28,14 @@ MicHTMLTagTest >> testAddArguments [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testClose [
 
 	tag close.
 	self assert: tag contents equals: '>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testContents [
 
 	tag 
@@ -43,7 +45,7 @@ MicHTMLTagTest >> testContents [
 	self assert: tag contents equals: '<falop>This is a test</falop>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testInitializeArgumentsMap [
 
 	self 
@@ -51,7 +53,7 @@ MicHTMLTagTest >> testInitializeArgumentsMap [
 		description: 'It test that the arguments map is of type Dictionary'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testParameterAtPut [
 
 	| keyString valueString tagContents parsedAssoc |
@@ -70,7 +72,7 @@ MicHTMLTagTest >> testParameterAtPut [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLTagTest >> testWith [
 
 	tag 

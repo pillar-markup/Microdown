@@ -1,15 +1,17 @@
 Class {
-	#name : #MicAbstractAnnotatedBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicAbstractAnnotatedBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'label',
 		'isClosed',
 		'body'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form '!!label some text'"
 
@@ -26,12 +28,12 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 		ifNotNil: [ body := body , String cr , line ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractAnnotatedBlock >> body [
 	^ body
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractAnnotatedBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
@@ -39,19 +41,19 @@ MicAbstractAnnotatedBlock >> canConsumeLine: line [
 	^ line isNotEmpty 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAbstractAnnotatedBlock >> initialize [
 
 	super initialize.
 	isClosed := false.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractAnnotatedBlock >> label [
 	^ label
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractAnnotatedBlock >> lineMarkup [
 
 	^ self subclassResponsibility

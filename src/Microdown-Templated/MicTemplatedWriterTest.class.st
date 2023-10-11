@@ -1,26 +1,27 @@
 Class {
-	#name : #MicTemplatedWriterTest,
-	#superclass : #TestCase,
+	#name : 'MicTemplatedWriterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'textDocument'
 	],
-	#category : #'Microdown-Templated'
+	#category : 'Microdown-Templated',
+	#package : 'Microdown-Templated'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicTemplatedWriterTest >> assertTemplate: template writesValue: value forNode: node [
 
 	self assertTemplatePath: Path * template writesValue: value forNode: node 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents forNode: node [
 
 	self createTemplateFileAt: templatePath withContents: contents.
 	self assertWritingNode: node writes: contents.
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 
 	| document result |
@@ -33,7 +34,7 @@ MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 	self assert: result equals: contents
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 
 	| templateFileReference |
@@ -42,7 +43,7 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 	templateFileReference writeStreamDo: [ :stream | stream nextPutAll: contents ].
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicTemplatedWriterTest >> setUp [
 
 	super setUp.
@@ -51,7 +52,7 @@ MicTemplatedWriterTest >> setUp [
 				yourself.
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteAnchorUsesAnchorTemplate [
 
 	self
@@ -60,7 +61,7 @@ MicTemplatedWriterTest >> testWriteAnchorUsesAnchorTemplate [
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTemplate [
 
 	self
@@ -69,7 +70,7 @@ MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTempla
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 
 	self
@@ -78,7 +79,7 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 		forNode: (MicBoldFormatBlock new children: { MicTextBlock new substring: 'Bar'}) 
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 
 	self
@@ -87,7 +88,7 @@ MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 		forNode: (PRCodeblock content: '^ self')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 
 	self
@@ -96,7 +97,7 @@ MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 		forNode: (PRCommentedLine content: 'some comment')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteDataItemUsesDataItemTemplate [
 
 	self
@@ -105,7 +106,7 @@ MicTemplatedWriterTest >> testWriteDataItemUsesDataItemTemplate [
 		forNode: PRDataItem new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteDefinitionListUsesDefinitionListTemplate [
 
 	self
@@ -114,7 +115,7 @@ MicTemplatedWriterTest >> testWriteDefinitionListUsesDefinitionListTemplate [
 		forNode: PRDefinitionList new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteEmptyParagraphsUsesEmptyParagraphTemplate [
 
 	self
@@ -123,7 +124,7 @@ MicTemplatedWriterTest >> testWriteEmptyParagraphsUsesEmptyParagraphTemplate [
 		forNode: PREmptyParagraph new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteEnvironmentItselfUsesMainTemplate [
 
 	self
@@ -136,7 +137,7 @@ MicTemplatedWriterTest >> testWriteEnvironmentItselfUsesMainTemplate [
 			yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 
 	self
@@ -150,7 +151,7 @@ MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 		writes: 'before test after'
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 
 	self
@@ -159,7 +160,7 @@ MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 		forNode: (PRExternalLink new reference: 'http://pharo.org')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 
 	self
@@ -168,7 +169,7 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 		forNode: (PRFigure reference: 'bla.png')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
 	self
@@ -179,7 +180,7 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 			add: (PRText content: 'foo'))
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 
 	self
@@ -188,7 +189,7 @@ MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 		forNode: PRHorizontalRule new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
 
 	self
@@ -197,7 +198,7 @@ MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
 		forNode: (PRInternalLink new reference: 'bla.pillar')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 
 	self
@@ -206,7 +207,7 @@ MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 		forNode: (PRItalicFormat with: (PRText content: 'Bar'))
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteLineBreakUsesLineBreakTemplate [
 
 	self
@@ -215,7 +216,7 @@ MicTemplatedWriterTest >> testWriteLineBreakUsesLineBreakTemplate [
 		forNode: PRLineBreak new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 
 	self
@@ -224,7 +225,7 @@ MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 		forNode: PRListItem new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteMailLinkUsesMailLinkTemplate [
 
 	self
@@ -233,7 +234,7 @@ MicTemplatedWriterTest >> testWriteMailLinkUsesMailLinkTemplate [
 		forNode: (PRMailLink reference: 'foo@bar.com')
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 
 	self
@@ -242,7 +243,7 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 		forNode: (PRMonospaceFormat with: (PRText content: 'Bar'))
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
 
 	self
@@ -255,7 +256,7 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
 					yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
 
 	self
@@ -275,7 +276,7 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
 					yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 
 	self
@@ -284,7 +285,7 @@ MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 		forNode: PROrderedList new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteParagraphUsesParagraphTemplate [
 
 	self
@@ -293,7 +294,7 @@ MicTemplatedWriterTest >> testWriteParagraphUsesParagraphTemplate [
 		forNode: PRParagraph new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
 
 	self
@@ -302,7 +303,7 @@ MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
 		forNode: (PRPreformatted with: (PRText content: 'Bar'))
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteSectionUsesSectionTemplate [
 
 	self
@@ -311,7 +312,7 @@ MicTemplatedWriterTest >> testWriteSectionUsesSectionTemplate [
 		forNode: PRSection new
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironment [
 
 	self
@@ -324,7 +325,7 @@ MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironmen
 			yourself)
 ]
 
-{ #category : #'tests-templatefiles' }
+{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentUsesTemplateInsideEnvironment [
 
 	self

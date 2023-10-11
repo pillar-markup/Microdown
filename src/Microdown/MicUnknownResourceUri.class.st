@@ -2,12 +2,14 @@
 I am used for representing unknow uri rferences, for example `foo://bar.baz/path`
 "
 Class {
-	#name : #MicUnknownResourceUri,
-	#superclass : #MicAbsoluteResourceReference,
-	#category : #'Microdown-Core'
+	#name : 'MicUnknownResourceUri',
+	#superclass : 'MicAbsoluteResourceReference',
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicUnknownResourceUri >> binaryReadStream [
 	"Return an image with my contents (an error message)"
 	| file |
@@ -16,7 +18,7 @@ MicUnknownResourceUri >> binaryReadStream [
 	^ file binaryReadStream 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicUnknownResourceUri >> contents [
 	"Just return an error message"
 	^'No resource type for `', self uriString ,'`'

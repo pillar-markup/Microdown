@@ -1,16 +1,17 @@
 Class {
-	#name : #MacParagraphBlockTest,
-	#superclass : #MicParagraphBlockTest,
-	#category : #'Microdown-Macrodown-Tests'
+	#name : 'MacParagraphBlockTest',
+	#superclass : 'MicParagraphBlockTest',
+	#category : 'Microdown-Macrodown-Tests',
+	#package : 'Microdown-Macrodown-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacParagraphBlockTest >> parserClass [
 
 	^ MacrodownParser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MacParagraphBlockTest >> testTwoSingleLinesWithSpaces [
 	| root paragraph |
 	

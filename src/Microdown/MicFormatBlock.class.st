@@ -1,10 +1,12 @@
 Class {
-	#name : #MicFormatBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicFormatBlock',
+	#superclass : 'MicInlineElement',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicFormatBlock >> closeMe [
 	
 	| text |
@@ -18,7 +20,7 @@ MicFormatBlock >> closeMe [
 			self children: { text } ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicFormatBlock >> printOn: aStream [
 
 	self printWithoutConventions: aStream.
@@ -28,33 +30,33 @@ MicFormatBlock >> printOn: aStream [
 	aStream nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> text [
 
  	^ String streamContents: [:st | self wrappedElements do: [ :each | st nextPutAll: each text ]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> textElement [
 	^ children first
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> textElement: aMicTextBlock [ 
 	children := { aMicTextBlock }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> textElements [
 	^ children 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> textElements: aCollection [ 
 	children := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFormatBlock >> wrappedElements [
 	^ children
 ]

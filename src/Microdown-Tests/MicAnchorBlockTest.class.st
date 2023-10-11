@@ -1,15 +1,17 @@
 Class {
-	#name : #MicAnchorBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicAnchorBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAnchorBlockTest >> subjectClass [ 
 	^ MicAnchorBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAnchorBlockTest >> testModifyLabel [
 	| mic |
 	mic := (parser parse: '@label') children first.

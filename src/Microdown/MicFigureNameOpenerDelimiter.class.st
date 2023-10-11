@@ -2,17 +2,19 @@
 I am the opener delimiter for figure name.
 "
 Class {
-	#name : #MicFigureNameOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicFigureNameOpenerDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> associatedInlineBlock [
 	^ MicFigureBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> associatedTypes [
 
 	^ {  
@@ -21,27 +23,27 @@ MicFigureNameOpenerDelimiter class >> associatedTypes [
 	}
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> isCloser [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> markup [
 	^ FigureNameOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureNameOpenerDelimiter class >> type [
 	^ #figure
 ]
 
-{ #category : #dispatching }
+{ #category : 'dispatching' }
 MicFigureNameOpenerDelimiter >> addInlineBlock: anIndex to: inlineParser [
 
 	inlineParser linkOrFigureProcess: anIndex

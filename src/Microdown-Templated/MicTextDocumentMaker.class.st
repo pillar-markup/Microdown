@@ -1,16 +1,17 @@
 Class {
-	#name : #MicTextDocumentMaker,
-	#superclass : #MicAbstractOutputDocumentMaker,
-	#category : #'Microdown-Templated'
+	#name : 'MicTextDocumentMaker',
+	#superclass : 'MicAbstractOutputDocumentMaker',
+	#category : 'Microdown-Templated',
+	#package : 'Microdown-Templated'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextDocumentMaker >> basicWriter [
 
 	^ MicTextualMicrodownExporter new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextDocumentMaker >> extension [
 
 	^ 'md'

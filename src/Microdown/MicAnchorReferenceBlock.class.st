@@ -7,53 +7,55 @@ See *@fig1@*
 
 "
 Class {
-	#name : #MicAnchorReferenceBlock,
-	#superclass : #MicInlineElement,
+	#name : 'MicAnchorReferenceBlock',
+	#superclass : 'MicInlineElement',
 	#instVars : [
 		'reference'
 	],
-	#category : #'Microdown-ModelInline'
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAnchorReferenceBlock class >> isEvaluated [
 	^ false
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorReferenceBlock >> closingDelimiter [
 
  	^ AnchorReferenceCloserMarkup
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAnchorReferenceBlock >> kind [
 
 	^ #anchorReference
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorReferenceBlock >> openingDelimiter [
 
  	^ AnchorReferenceOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference [
 	^ reference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference: aReference [
 	reference := aReference
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorReferenceBlock >> referenceAsHTML [	
 	| ref |
 	self flag: #todo.

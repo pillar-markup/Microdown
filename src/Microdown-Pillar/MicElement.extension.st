@@ -1,6 +1,6 @@
-Extension { #name : #MicElement }
+Extension { #name : 'MicElement' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicElement >> asPillar [
 
 	^ self accept: MicMicrodownObjectToPillarObjectConverter new

@@ -3,22 +3,23 @@ I'm a little file wrapper so that we can mix pillar and microdown file within a 
 As such I'm responsible to determine how my instances are parsed.
 "
 Class {
-	#name : #MicInputDocument,
-	#superclass : #Object,
+	#name : 'MicInputDocument',
+	#superclass : 'Object',
 	#instVars : [
 		'project',
 		'file'
 	],
-	#category : #'Microdown-Transformer'
+	#category : 'Microdown-Transformer',
+	#package : 'Microdown-Transformer'
 }
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicInputDocument class >> forFile: aFile [
 	
 	^ (self inputClassForFile: aFile) new file: aFile ; yourself
 ]
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicInputDocument class >> inputClassForFile: aFile [
 	
 	^ self subclasses
@@ -26,13 +27,13 @@ MicInputDocument class >> inputClassForFile: aFile [
 		ifNone: [ MicNoInputDocument  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> basename [
 	
 	^ file basename
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicInputDocument >> contributeToPipelineBuilding: aPRPipelineBuilder [ 
 	
 	self error: 'To be fixed'.
@@ -42,28 +43,28 @@ MicInputDocument >> contributeToPipelineBuilding: aPRPipelineBuilder [
 	aPRPipelineBuilder parser: self parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> file [
 	^ file
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> file: aFileReference [ 
 	file := aFileReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> fullName [
 	^ file fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> path [
 	
 	^ file path
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInputDocument >> printOn: aStream [
 	aStream
 		nextPutAll: self class name;
@@ -72,12 +73,12 @@ MicInputDocument >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> project [
 	^ project
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputDocument >> project: aProject [ 
 	project := aProject
 ]

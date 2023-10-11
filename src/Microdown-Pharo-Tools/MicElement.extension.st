@@ -1,6 +1,6 @@
-Extension { #name : #MicElement }
+Extension { #name : 'MicElement' }
 
-{ #category : #'*Microdown-Pharo-Tools' }
+{ #category : '*Microdown-Pharo-Tools' }
 MicElement >> inspectionMicTree [
 	"
 	(MicroDownParser parse: '# hello 

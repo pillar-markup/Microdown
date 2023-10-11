@@ -1,6 +1,6 @@
-Extension { #name : #ZnUrl }
+Extension { #name : 'ZnUrl' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 ZnUrl >> filename [
 
 	^ self pathSegments last

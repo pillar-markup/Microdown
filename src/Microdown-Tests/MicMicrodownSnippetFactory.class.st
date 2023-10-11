@@ -20,18 +20,20 @@ Internal Representation and Key Implementation Points.
 This class uses Microdown as parser, but it could be specialized to change the parser class rewriting the initialize method.
 "
 Class {
-	#name : #MicMicrodownSnippetFactory,
-	#superclass : #Object,
+	#name : 'MicMicrodownSnippetFactory',
+	#superclass : 'Object',
 	#instVars : [
 		'parserClass'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-Snippets'
+	#category : 'Microdown-Tests-Snippets',
+	#package : 'Microdown-Tests',
+	#tag : 'Snippets'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicMicrodownSnippetFactory class >> buildDocument [
 	"Answer a <String> with a whole document made up from the receiver's methods containing Microdown samples"
 
@@ -49,41 +51,41 @@ MicMicrodownSnippetFactory class >> buildDocument [
 							  << (factory perform: elementTypeSelector) ] ] ]
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorAreTrimedSample [
 	^ AnchorMarkup, '  test  '
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorReferenceSample [
 	^ '*@Foo@*'
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorSample [
 	^ AnchorMarkup, 'test'
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorWithNewLineSample [
 
 	^ AnchorMarkup , 'foo' , self newLine
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorWithSpaceInsideSample [
 	
 	^ AnchorMarkup, 'foo bar'
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> annotatedSample [
 	^ '!!label 
 Foo _bar_
 '
 ]
 
-{ #category : #annotations }
+{ #category : 'annotations' }
 MicMicrodownSnippetFactory >> annotationSample [
 
 	^ '
@@ -91,13 +93,13 @@ abc',  AnnotationOpenerMarkup , 'Foo | value=aFoo&label=42 ', AnnotationCloserMa
 '
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockParameterWithLiteralArraySample [
 
 	^ self codeblock: 'foo=#(1 2 true)'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockSampleOnMultipleLines [
 
 	^ self codeblockNoParamBody: 'first line 
@@ -105,55 +107,55 @@ second line
 third line **b**'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithLanguageSample [
 	^ self codeblock: 'language=smalltalk' body: 'foo'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithNewLineSample [
 
 	^ (self codeblockNoParamBody: 'foo') , self newLine
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParameterTrueByDefaultSample [
 	^ self codeblock: 'foo' body: 'bar'
 	
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParameterWithFloatSample [
 	^ self codeblock: 'ratio=0.8' body: 'bar'
 	
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParameterWithLiteralArraySample [
 	^ self codeblock: 'foo=#(1 2 true)'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParameterWithNoValuesSample [
 	^ self codeblock: 'foo=' body: 'bar'
 
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParametersSample [
 	^ self 
 		codeblock:   'foo=true&bar=2'
 		body: 'bla'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithParametersWithCaptionSample [
 	^ self 
 		codeblock:   'caption=`Color` is beautifull&bar=2'
 		body: 'bla'
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithSpaceAtTheEndSample [
 		
 	 ^ (self codeblockNoParamBody: 'foo'), '  '.
@@ -161,31 +163,31 @@ MicMicrodownSnippetFactory >> blockWithSpaceAtTheEndSample [
 
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> blockWithSpacedParametersSample [
 	^ self 
 		codeblock:   ' foo = true & bar = 2'
 		body: 'bla'
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> boldFormatEmptySample [
 	^ self surround: '' withMarkup: BoldMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> boldFormatSample [
 	^ self surroundWithMarkup: BoldMarkup
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> codeBlockSample [
 	^ '
 ```ab```
 '
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> codeblock: param [ 
 
 	^ String streamContents: [ :st | 
@@ -197,7 +199,7 @@ MicMicrodownSnippetFactory >> codeblock: param [
 	]
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> codeblock: param body: body [
 	
 	^ String streamContents: [ :st | 
@@ -211,7 +213,7 @@ MicMicrodownSnippetFactory >> codeblock: param body: body [
 	]
 ]
 
-{ #category : #'code block' }
+{ #category : 'code block' }
 MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 
 	^ String streamContents: [ :st | 
@@ -224,20 +226,20 @@ MicMicrodownSnippetFactory >> codeblockNoParamBody: body [
 	]
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> columnSample [
 	^ EnvironmentOpeningBlockMarkup, 'column|width=42
 	this is a **text**
 ',EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> columnsSample [
 	^ EnvironmentOpeningBlockMarkup, 'columns|width=42
 ',EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> columnsWithChildrenSample [
 	^ EnvironmentOpeningBlockMarkup,'columns|width=42
 ', self columnSample ,'
@@ -245,17 +247,17 @@ MicMicrodownSnippetFactory >> columnsWithChildrenSample [
 ',EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #block }
+{ #category : 'block' }
 MicMicrodownSnippetFactory >> commentSample [
 	^ '% Foo'
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicMicrodownSnippetFactory >> documentFrom: aString [
 	^ parserClass new parse: aString
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> environmentSample [
 
 	^ '
@@ -266,7 +268,7 @@ Foo
 ',EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> environmentWithInnerBlockSample [
 	^ '
 ',EnvironmentOpeningBlockMarkup,'Foo|value=aFoo&label=42
@@ -282,7 +284,7 @@ This is a codeBlock
 ',EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureBoldSample [
 	^ '
 
@@ -290,7 +292,7 @@ MicMicrodownSnippetFactory >> figureBoldSample [
 '
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> figureGoutDeFraise [
 	^ '
 
@@ -298,7 +300,7 @@ MicMicrodownSnippetFactory >> figureGoutDeFraise [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureItalicSample [
 
 	^ '
@@ -307,7 +309,7 @@ MicMicrodownSnippetFactory >> figureItalicSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureMonospaceSample [
 
 	^ '
@@ -316,7 +318,7 @@ MicMicrodownSnippetFactory >> figureMonospaceSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureNestedSample [
 
 	^ '
@@ -325,7 +327,7 @@ MicMicrodownSnippetFactory >> figureNestedSample [
 '
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> figureRealSample [
 
 	^ '
@@ -333,7 +335,7 @@ MicMicrodownSnippetFactory >> figureRealSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureSample [
 
 	^ '
@@ -342,7 +344,7 @@ MicMicrodownSnippetFactory >> figureSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureSampleWithoutSizeAndLabel [
 
 	^ '
@@ -351,7 +353,7 @@ MicMicrodownSnippetFactory >> figureSampleWithoutSizeAndLabel [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> figureStrikeSample [
 
 	^ '
@@ -360,7 +362,7 @@ MicMicrodownSnippetFactory >> figureStrikeSample [
 '
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> figureWithLabelWithoutSizeSample [
 
 	^ '
@@ -369,7 +371,7 @@ MicMicrodownSnippetFactory >> figureWithLabelWithoutSizeSample [
 '
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> figureWithoutCaptionSample [
 
 	^ '
@@ -378,7 +380,7 @@ MicMicrodownSnippetFactory >> figureWithoutCaptionSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> fileFigureSample [
 
 	^ '
@@ -387,60 +389,60 @@ MicMicrodownSnippetFactory >> fileFigureSample [
 '
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> footnoteSample [
 	^ AnnotationOpenerMarkup ,'footnote|note=Pharo is cool', AnnotationCloserMarkup
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerEmptySample [
 
 	^ self newLine , HeaderMarkup
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel1Sample [
 
 	^ self newLine , (self headerLevel: 1)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel2Sample [
 
 	^ self newLine , (self headerLevel: 2)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel3Sample [
 
 	^ self newLine , (self headerLevel: 3)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel3SampleWithNewLine [
 
 	^ self newLine , (self headerLevel: 3) , self newLine
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel4Sample [
 
 	^ self newLine , (self headerLevel: 4)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel5Sample [
 
 	^ self newLine , (self headerLevel: 5)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel6Sample [
 
 	^ self newLine , (self headerLevel: 6)
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerLevel: n [
 
 	^ String streamContents: [ :st |
@@ -448,121 +450,121 @@ MicMicrodownSnippetFactory >> headerLevel: n [
 		 st nextPutAll: ' Foo']
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerWithFormatSample [
 
 	^ self newLine , HeaderMarkup , self space
 	  , self boldFormatSample
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerWithFormatSampleWithNewLine [
 	^ self headerWithFormatSample, self newLine
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerWithNestedFormatSampleWithNewLine [
 
 	^ self newLine , HeaderMarkup , self space
 	  , self nestedBoldFormatSample , self newLine
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> headerWithNewLineSample [
 
 	^ self newLine , HeaderMarkup , 'Foo' , self newLine
 ]
 
-{ #category : #headers }
+{ #category : 'headers' }
 MicMicrodownSnippetFactory >> horizontalLineSample [
 
 	^ HorizontalLineMarkup , self newLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicMicrodownSnippetFactory >> initialize [
 	
 	super initialize.
 	parserClass := Microdown
 ]
 
-{ #category : #inputFile }
+{ #category : 'inputFile' }
 MicMicrodownSnippetFactory >> inputfileSample [
 	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> italicFormatEmptySample [
 	^ self surround: '' withMarkup: ItalicMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> italicFormatSample [
 	^ self surroundWithMarkup: ItalicMarkup
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> lineEndSample [
 
 	^  ''
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> lineEndwithNewlineSample [
 
 	^ String lf
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkBoldSample [
 	^ '
 [**Foo**](/anUrl)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkHttpSample [
 	^ '
 [Foo](http://pharo.org/Community/)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkItalicSample [
 	^ '
 [_Foo_](/anUrl)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkMonospaceSample [
 	^ '
 [`Foo`](/anUrl)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkNestedSample [
 	^ '
 [**_Foo_**](/anUrl)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkSample [
 	^ '
 [Foo](/anUrl)
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> linkStrikeSample [
 	^ '
 [~Foo~](/anUrl)
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> listMultiSample [
 
 	| unordered |
@@ -576,35 +578,35 @@ MicMicrodownSnippetFactory >> listMultiSample [
 	  , unordered , '2. 8'
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> listWithCommentSample [
 	^ '1. Foo
 %Comment
 2. Bar'
 ]
 
-{ #category : #math }
+{ #category : 'math' }
 MicMicrodownSnippetFactory >> mathInlineSample [
 	^ '
 $V_i = C_0 - C_3$
 '
 ]
 
-{ #category : #math }
+{ #category : 'math' }
 MicMicrodownSnippetFactory >> mathParametersSample [
 	^ MathOpeningBlockMarkup, 'label=42
 Foo
 ', MathClosingBlockMarkup
 ]
 
-{ #category : #math }
+{ #category : 'math' }
 MicMicrodownSnippetFactory >> mathParametersWithCaptionSample [
 	^ MathOpeningBlockMarkup, 'caption=`Math` is good&label=42
 Foo
 ', MathClosingBlockMarkup.
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> metaDataSample [
 	^ '{
 "author": "G. Foo",
@@ -613,23 +615,23 @@ MicMicrodownSnippetFactory >> metaDataSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> monospaceFormatEmptySample [
 	^ self surround: '' withMarkup: MonospaceMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> monospaceFormatSample [
 	^ self surroundWithMarkup: MonospaceMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> nestedBoldFormatSample [
 	"self new nestedBoldFormatSample"
 	^ self surround: (self surround: 'Foo' withMarkup: BoldMarkup) withMarkup: ItalicMarkup  
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> nestedOrderedList2Sample [
 	^ '
 - Foo
@@ -643,7 +645,7 @@ MicMicrodownSnippetFactory >> nestedOrderedList2Sample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> nestedOrderedListSample [
 	^ '
 - Foo
@@ -654,7 +656,7 @@ MicMicrodownSnippetFactory >> nestedOrderedListSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 	^ '
 - Foo
@@ -665,41 +667,41 @@ MicMicrodownSnippetFactory >> nestedUnorderedListSample [
 '
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicMicrodownSnippetFactory >> newLine [
 	^  String cr
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> newlineCRLFSample [
 
 	^ String crlf
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> newlineCRSample [
 
 	^ self newLine
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> newlineLFSample [
 
 	^ String lf
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> newlineSample [
 
 	^ Smalltalk os lineEnding
 ]
 
-{ #category : #inputFile }
+{ #category : 'inputFile' }
 MicMicrodownSnippetFactory >> oneLineInputFileSample [
 	^ EnvironmentOpeningBlockMarkup , 'inputFile | path=Chapters/text.md', EnvironmentClosingBlockMarkup 
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> oneSlide [
 
 	^ '<!slide|title=This is a cool title&tag=nh5p
@@ -710,20 +712,20 @@ MicMicrodownSnippetFactory >> oneSlide [
 !>'
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListEmptySample [
 	^ '
 1. '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListSample [
 	^ '
 1. Foo
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldFirstSample [
 	
 	^ 
@@ -733,7 +735,7 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldFirstSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
 	
 	^ 
@@ -743,7 +745,7 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsBoldSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
 	
 	^ 
@@ -753,7 +755,7 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsItalicSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
 	
 	^ 
@@ -763,7 +765,7 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsMonospaceSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 	
 	^ 
@@ -773,7 +775,7 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
 	
 	^ 
@@ -783,65 +785,65 @@ MicMicrodownSnippetFactory >> orderedListWithTwoItemsStrikeSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphBoldSample [
 	^ '
 this is a **paragraph**
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphItalicSample [
 	^ '
 this is a _paragraph_
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphMonospaceSample [
 	^ '
 this is a `paragraph`
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphNestedSample [
 	^ '
 this is a **_paragraph_**
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphOnMultipleLinesSample [
 	^ 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphSample [
 	^ '
 Foo
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> paragraphStrikeSample [
 	^ '
 this is a ~paragraph~
 '
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicMicrodownSnippetFactory >> parserClass [
 
 	^ parserClass
 ]
 
-{ #category : #anchor }
+{ #category : 'anchor' }
 MicMicrodownSnippetFactory >> quoteSample [
 	^ '>  Foo'
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> rawFormatInline [
 
 	^ '
@@ -849,21 +851,21 @@ a{{_$Foo_}}b
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> rawFormatSample [
 	^ '
 a{{Foo}}b
 '
 ]
 
-{ #category : #figures }
+{ #category : 'figures' }
 MicMicrodownSnippetFactory >> realLinkSample [
 	^ '
 [The Pharo Project](http://www.pharo.org)
 '
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MicMicrodownSnippetFactory >> rootSample [
 
 	| stream |
@@ -876,51 +878,51 @@ MicMicrodownSnippetFactory >> rootSample [
 	^ stream contents
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterEscapeSample [
 	^ 'value\==foo'
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterSample [
 	^ 'value=foo'
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterValueSample [
 	^ '=foo'
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterWithSpacesBeforeAndAfterSample [
 	^ ' foo = true & bar = 2 
 '
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParameterWithoutValueSample [
 	^ 'foo'
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParametersEscapeSample [
 	^ 'value=foo\&&bar
 '
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptParametersMultipleSample [
 	^ 'value=foo&bar
 '
 ]
 
-{ #category : #'code block parameter' }
+{ #category : 'code block parameter' }
 MicMicrodownSnippetFactory >> scriptTwoParametersNoValueSample [
 	^ 'foo&bar
 '
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> simpleTable [
 	^ '
 | aaab | jkhjh |
@@ -928,7 +930,7 @@ MicMicrodownSnippetFactory >> simpleTable [
 | bar | rab |'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> simpleTableFormat [
 	^ '
 | **aaab** | jkhjh |
@@ -936,7 +938,7 @@ MicMicrodownSnippetFactory >> simpleTableFormat [
 | bar | rab |'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> simpleTableMoreFormat [
 	^ '
 | **aaab** bbbc _cccd_ | jkhjh |
@@ -944,7 +946,7 @@ MicMicrodownSnippetFactory >> simpleTableMoreFormat [
 | bar | rab |'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> simpleTableShortRow [
 	^ '
 | aaab | jkhjh |
@@ -952,40 +954,40 @@ MicMicrodownSnippetFactory >> simpleTableShortRow [
 | bar |'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> simpleTableWithoutHeaderTable [
 	^ '
 | aaab | jkhjh |
 | bar | rab |'
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicMicrodownSnippetFactory >> space [ 
 
 	^ String space
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> strikethroughFormatEmptySample [
 	^ self surround: '' withMarkup: StrikeMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> strikethroughFormatSample [
 	^ self surroundWithMarkup: StrikeMarkup
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> surround: aWord withMarkup: aMarkup [
 	^ (aMarkup, aWord, aMarkup) asString
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> surroundWithMarkup: aMarkup [
 	^ self surround: 'Foo' withMarkup: aMarkup
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> tableSample [
 	^ '| aaab | jkhjh |
 | --- | --- |
@@ -993,19 +995,19 @@ MicMicrodownSnippetFactory >> tableSample [
 '
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> textSentenceSample [
 
 	^ 'Je ne connaitrais pas la peur'
 ]
 
-{ #category : #format }
+{ #category : 'format' }
 MicMicrodownSnippetFactory >> textWithChevron [
 
 	^ 'Pilou >> bla'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicMicrodownSnippetFactory >> trySlide [
 
 	^ '<!slide|title=This is a cool title&tag=nh5p
@@ -1017,13 +1019,13 @@ MicMicrodownSnippetFactory >> trySlide [
 !>'
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListEmptySample [
 
 	^ UnorderedListMarkup
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListSample [
 
 	^ '
@@ -1031,7 +1033,7 @@ MicMicrodownSnippetFactory >> unorderedListSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
 
 	| listMarkup |
@@ -1040,7 +1042,7 @@ MicMicrodownSnippetFactory >> unorderedListWithSubListSample [
 	  , listMarkup , 'Bar'
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsBoldSample [
 
 	| listMarkup |
@@ -1050,7 +1052,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsBoldSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsItalicSample [
 
 	| listMarkup |
@@ -1060,7 +1062,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsItalicSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsMonospaceSample [
 
 	| listMarkup |
@@ -1070,7 +1072,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsMonospaceSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
 
 	| listMarkup |
@@ -1080,7 +1082,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsNestedSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
 
 	| listMarkup |
@@ -1090,7 +1092,7 @@ MicMicrodownSnippetFactory >> unorderedListWithTwoItemsSample [
 '
 ]
 
-{ #category : #list }
+{ #category : 'list' }
 MicMicrodownSnippetFactory >> unorderedListWithTwoItemsStrikeSample [
 
 	| listMarkup |

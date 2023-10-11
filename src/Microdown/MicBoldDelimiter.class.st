@@ -2,32 +2,34 @@
 I am the delimiter for bold/strong format.
 "
 Class {
-	#name : #MicBoldDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicBoldDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBoldDelimiter class >> associatedInlineBlock [
 	^ MicBoldFormatBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBoldDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBoldDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBoldDelimiter class >> markup [
 	^ BoldMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBoldDelimiter class >> type [
 	^ #bold
 ]

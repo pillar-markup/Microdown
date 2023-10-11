@@ -1,15 +1,16 @@
 Class {
-	#name : #MicCodeblockEvaluatorTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Evaluator-Tests'
+	#name : 'MicCodeblockEvaluatorTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Evaluator-Tests',
+	#package : 'Microdown-Evaluator-Tests'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicCodeblockEvaluatorTest >> actualClass [
 	^ MicCodeblockEvaluator 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
 	| input |
 	input := MicRootBlock new
@@ -27,7 +28,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
 	self assert: input children first children first children first text equals: 'test'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 	| input |
 	input := MicRootBlock new
@@ -42,7 +43,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithProblematicEval [
 		equals: 'Instance of Object class did not understand #SomethingThatIsNotAMethod'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 	| input |
 	input := MicRootBlock new
@@ -56,7 +57,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithoutEval [
 	self assert: input children first body equals: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockEvaluatorTest >> testParsedCodeblockEvaluated [
 	| input |
 	input := MicCodeblockEvaluator new  visit: (Microdown
@@ -69,7 +70,7 @@ stream nextPutAll: ''Hello world''
 	self assert: input children first text equals: 'Hello world'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockEvaluatorTest >> testParsedCodeblockNonEvaluated [
 	| input |
 	input := MicCodeblockEvaluator new  visit: (Microdown

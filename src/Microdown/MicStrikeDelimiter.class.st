@@ -2,32 +2,34 @@
 I'm the delimiter for strikethrough format.
 "
 Class {
-	#name : #MicStrikeDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicStrikeDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeDelimiter class >> associatedInlineBlock [
 	^ MicStrikeFormatBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeDelimiter class >> markup [
 	^ StrikeMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeDelimiter class >> type [
 	^ #strike
 ]

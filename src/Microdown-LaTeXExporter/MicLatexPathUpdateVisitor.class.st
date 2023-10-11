@@ -10,40 +10,41 @@ C:/Program Files/Something
 For now I'm a copy and paste from Pillar (to avoid to have to patch all the visit API).
 "
 Class {
-	#name : #MicLatexPathUpdateVisitor,
-	#superclass : #MicrodownVisitor,
-	#category : #'Microdown-LaTeXExporter'
+	#name : 'MicLatexPathUpdateVisitor',
+	#superclass : 'MicrodownVisitor',
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLatexPathUpdateVisitor class >> isAbstract [
 	^ false
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLatexPathUpdateVisitor class >> key [
 
 	^ #latexPathUpdate
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLatexPathUpdateVisitor class >> start: aDocument [
 	^ self new start: aDocument
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicLatexPathUpdateVisitor >> newReferenceFor: aReference [
 	
 	^ aReference reference copyReplaceAll: '\' with: '/'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLatexPathUpdateVisitor >> visitFigure: aFigure [
 	aFigure reference: (self newReferenceFor: aFigure).
 	super visitFigure: aFigure
 ]
 
-{ #category : #unused }
+{ #category : 'unused' }
 MicLatexPathUpdateVisitor >> visitInternalLink: anInternalLink [
 	anInternalLink hasReference  
 		ifTrue: [ anInternalLink reference: (self newReferenceFor: anInternalLink) ].

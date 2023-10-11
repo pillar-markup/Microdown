@@ -2,17 +2,19 @@
 I am the root of the github markup tree
 "
 Class {
-	#name : #MicRootBlock,
-	#superclass : #MicAbstractBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicRootBlock',
+	#superclass : 'MicAbstractBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRootBlock >> accept: aVisitor [
  	^ aVisitor visitRoot: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicRootBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -23,19 +25,19 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 	^ newBlock 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicRootBlock >> canConsumeLine: line [
 	"The root block can always consume everything no matter what it is."
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRootBlock >> indent [
 	^0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRootBlock >> properties: aConfigurationForPillar [
 	"Pay attention the strong hypothesis here is that keys of microdown properties and pillar configuration should not overlap. A possible solution would be to have clever at: and at:put: that check for example for a prefix for microdown properties.
 	

@@ -13,41 +13,43 @@ Examples:
 - Only string arguments can be passed
 "
 Class {
-	#name : #MicPharoImageResourceReference,
-	#superclass : #MicAbsoluteResourceReference,
-	#category : #'Microdown-Core'
+	#name : 'MicPharoImageResourceReference',
+	#superclass : 'MicAbsoluteResourceReference',
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicPharoImageResourceReference class >> handlesUriScheme: scheme [
 	^ scheme = 'pharo'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoImageResourceReference >> binaryReadStream [
 	"I am not needed, I implement loadImage directly"
 	^ self shouldBeImplemented
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoImageResourceReference >> contents [
 	"I am not needed, I implement loadMicrodown directly"
 	^ self perform
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicPharoImageResourceReference >> loadImage [
 	"Assume the method just returns a form"
 	^ self perform
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicPharoImageResourceReference >> loadMicrodown [
 	"Assume the method just returns a document"
 	^ self perform
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicPharoImageResourceReference >> perform [
 	"I assume the uri to have the form: 'pharo:///class/selector:/arg1/arg2"
 	| class selector size args |

@@ -3,27 +3,28 @@ I'm version producing LaTeX for the SBA template.
 In the future (once the templatedWriter is working) I should get removed.
 "
 Class {
-	#name : #MicSBALaTeXWriter,
-	#superclass : #MicLaTeXWriter,
-	#category : #'Microdown-LaTeXExporter'
+	#name : 'MicSBALaTeXWriter',
+	#superclass : 'MicLaTeXWriter',
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter class >> writerName [
 	^ #miclatex:sbabook
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter >> folderName [
 	^ #latex
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> monospaceMacro [
 	^ 'textcode'
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 
 	| parameters |
@@ -33,17 +34,17 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	^ parameters asCommaString
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
 	^ 'main.mustache'
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
 	
 	aCodeBlock hasCaption | aCodeBlock hasLabel
@@ -51,7 +52,7 @@ MicSBALaTeXWriter >> visitCode: aCodeBlock [
 		ifFalse: [ self writeInFlowCodeSnippet: aCodeBlock ]
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [ 
 	canvas environment
 		name: 'listing';
@@ -65,7 +66,7 @@ MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
 			canvas newLine ]
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> writeInFlowCodeSnippet: aCodeBlock [
 	canvas environment
 		name: 'displaycode';

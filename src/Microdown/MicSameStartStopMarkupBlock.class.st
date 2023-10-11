@@ -8,42 +8,44 @@ endMarkup
 My subclass should define lineMarkup
 "
 Class {
-	#name : #MicSameStartStopMarkupBlock,
-	#superclass : #MicStartStopMarkupBlock,
+	#name : 'MicSameStartStopMarkupBlock',
+	#superclass : 'MicStartStopMarkupBlock',
 	#instVars : [
 		'arguments'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicSameStartStopMarkupBlock class >> isAbstract [
 
 	^ self == MicSameStartStopMarkupBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSameStartStopMarkupBlock >> arguments [
 	^ arguments
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSameStartStopMarkupBlock >> caption [
 	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
 ]
 
-{ #category : #'accessing-delegated' }
+{ #category : 'accessing-delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
 	
 	arguments at: #caption put: (MicInlineParser new parse: aString)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSameStartStopMarkupBlock >> captionElements [
 	^ arguments at: #caption ifAbsent: [ #() ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicSameStartStopMarkupBlock >> closeMe [
 	"The only case where the receiver contains a nested element is in its caption"
 	
@@ -55,12 +57,12 @@ MicSameStartStopMarkupBlock >> closeMe [
 		arguments at: #caption put: (self inlineParse: cp) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSameStartStopMarkupBlock >> hasCaption [
 	^ arguments includesKey:  #caption
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicSameStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self lineStartMarkup

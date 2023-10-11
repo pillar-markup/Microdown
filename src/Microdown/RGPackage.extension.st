@@ -1,6 +1,6 @@
-Extension { #name : #RGPackage }
+Extension { #name : 'RGPackage' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 RGPackage >> buildMicroDownUsing: aMicMicrodownTextualBuilder withComment: aString [
 
 	aMicMicrodownTextualBuilder

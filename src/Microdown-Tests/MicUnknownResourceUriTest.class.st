@@ -2,12 +2,14 @@
 A MicUnknownResourceUriTest is a test class for testing the behavior of MicUnknownResourceUri
 "
 Class {
-	#name : #MicUnknownResourceUriTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Resolution'
+	#name : 'MicUnknownResourceUriTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Tests-Resolution',
+	#package : 'Microdown-Tests',
+	#tag : 'Resolution'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnknownResourceUriTest >> testBinaryStream [
 	| ref errorUri |
 	errorUri := 'sqaf://foo/bar'.
@@ -16,7 +18,7 @@ MicUnknownResourceUriTest >> testBinaryStream [
 	self assert: ref loadImage class equals: Form
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnknownResourceUriTest >> testContents [
 	| ref errorUri |
 	errorUri := 'sqaf://foo/bar'.
@@ -24,7 +26,7 @@ MicUnknownResourceUriTest >> testContents [
 	self assert: (ref contents includesSubstring:  errorUri)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnknownResourceUriTest >> testIsCatchAll [
 	| ref |
 	ref := MicResourceReference fromUri: 'sqaf://foo/bar'.

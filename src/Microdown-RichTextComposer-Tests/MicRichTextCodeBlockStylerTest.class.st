@@ -2,17 +2,19 @@
 A MicRichTextCodeBlockStylerTest is a test class for testing the behavior of MicRichTextCodeBlockStyler
 "
 Class {
-	#name : #MicRichTextCodeBlockStylerTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#name : 'MicRichTextCodeBlockStylerTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStylerTest >> stylerFor: aLanguage [
 	^ MicRichTextCodeBlockStyler stylerFor: aLanguage
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextCodeBlockStylerTest >> testDefaultStylerIsFound [
 
 	| defaultStyler |
@@ -20,7 +22,7 @@ MicRichTextCodeBlockStylerTest >> testDefaultStylerIsFound [
 	self assert: defaultStyler class equals: MicRichTextCodeBlockStylerDefault
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextCodeBlockStylerTest >> testStylerForMethod [
 	
 	| code richText blueLocation textColor |
@@ -41,7 +43,7 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextCodeBlockStylerTest >> testStylerForSmalltalk [
 	
 	| code richText blueLocation textColor |
@@ -60,7 +62,7 @@ green isColored: yellow
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextCodeBlockStylerTest >> testStylersForText [
 
 	| defaultStyler |

@@ -2,21 +2,23 @@
 A MicRichTextLinkPresenterTest is a test class for testing the behavior of MicRichTextLinkPresenter
 "
 Class {
-	#name : #MicRichTextLinkPresenterTest,
-	#superclass : #TestCase,
+	#name : 'MicRichTextLinkPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'linkPresenter'
 	],
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicRichTextLinkPresenterTest >> setUp [
 	super setUp.
 	linkPresenter := MicRichTextLinkPresenter new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextLinkPresenterTest >> testGuessKindOf [
 	"Testing default"
 	| ref file |
@@ -26,7 +28,7 @@ MicRichTextLinkPresenterTest >> testGuessKindOf [
 	self assert: (linkPresenter guessKindOf: ref) equals: 'md'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextLinkPresenterTest >> testGuessKindOf_html [
 	"Testing default"
 	| ref file |
@@ -36,7 +38,7 @@ MicRichTextLinkPresenterTest >> testGuessKindOf_html [
 	self assert: (linkPresenter guessKindOf: ref) equals: 'html'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextLinkPresenterTest >> testGuessKindOf_html_with_comment [
 	"Testing default"
 	| ref file |
@@ -48,7 +50,7 @@ MicRichTextLinkPresenterTest >> testGuessKindOf_html_with_comment [
 	self assert: (linkPresenter guessKindOf: ref) equals: 'html'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextLinkPresenterTest >> testGuessKindOf_withExtension [
 	"Testing default"
 	| ref file |
@@ -57,7 +59,7 @@ MicRichTextLinkPresenterTest >> testGuessKindOf_withExtension [
 	self assert: (linkPresenter guessKindOf: ref) equals: 'foo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextLinkPresenterTest >> testPragmaForKind [
 	"Testing default"
 	

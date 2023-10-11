@@ -4,24 +4,25 @@ I am the place where the visitors will write stuff. I output everything to a str
 Copied from Pillar
 "
 Class {
-	#name : #MicExportCanvas,
-	#superclass : #Object,
+	#name : 'MicExportCanvas',
+	#superclass : 'Object',
 	#instVars : [
 		'stream',
 		'currentBrush',
 		'writingRaw'
 	],
-	#category : #'Microdown-LaTeXExporter'
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicExportCanvas class >> on: aStream [ 
 	^ self new
 		setStream: aStream;
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicExportCanvas >> brush: aBrush [
 	self flush.
 	currentBrush := aBrush.
@@ -29,49 +30,49 @@ MicExportCanvas >> brush: aBrush [
 	^ aBrush
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> contents [ 
 	^ stream contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> crAsNewLine [
 
 	stream crAsNewLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> crlfAsNewLine [
 
 	stream crlfAsNewLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> flush [
 	stream flush
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> initialize [
 
 	super initialize.
 	writingRaw := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> lfAsNewLine [
 
 	stream lfAsNewLine
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> line: aString [
 	self
 		nextPutAll: aString;
 		newLine
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> lines: aString [
 	"Output aString and take care of line ending within aString."
 	| str |
@@ -84,55 +85,55 @@ MicExportCanvas >> lines: aString [
 	 ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> newLine [
 	stream newLine
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> nextPut: aCharacter [
 	stream nextPut: aCharacter
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> nextPutAll: aString [
 	aString do: [ :char | self nextPut: char ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> nextPutAllLines: aString [
 	self withLinesIn: aString do: [ :line | self nextPutAll: line ] separatedBy: [ self newLine ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> raw: aString [
 	stream << aString
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> rawLines: aString [
 	"Output aString and take care of line ending within aString."
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicExportCanvas >> setStream: aStream [ 
 	stream := aStream
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> space [
 	stream space
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicExportCanvas >> stream [
 	"Pay attention to what you do with this stream. You may break the canvas logic"
 	
 	^ stream
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicExportCanvas >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
 	"this method shows that the body of code block is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
 	| str |
@@ -146,7 +147,7 @@ MicExportCanvas >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
 				ifFalse: anotherBlock ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicExportCanvas >> writingRaw: aBoolean [
 
 	writingRaw := aBoolean

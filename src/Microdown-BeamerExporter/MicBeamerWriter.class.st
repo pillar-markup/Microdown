@@ -47,12 +47,13 @@ Metacello new
 ```
 "
 Class {
-	#name : #MicBeamerWriter,
-	#superclass : #MicLaTeXWriter,
-	#category : #'Microdown-BeamerExporter'
+	#name : 'MicBeamerWriter',
+	#superclass : 'MicLaTeXWriter',
+	#category : 'Microdown-BeamerExporter',
+	#package : 'Microdown-BeamerExporter'
 }
 
-{ #category : #'basic ressources' }
+{ #category : 'basic ressources' }
 MicBeamerWriter class >> basicTemplateForTest [
 
 	^ '% -*- mode: latex; -*- mustache tags: {{=« »=}} «! the ''&'' below prevents HTML escaping. »
@@ -111,20 +112,20 @@ MicBeamerWriter class >> basicTemplateForTest [
 \end{document}'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBeamerWriter class >> writerName [
 
 	^ #micBeamer
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicBeamerWriter >> createFrametitle: aTitle [
 	canvas command
 		name: 'frametitle';
 		parameter: aTitle
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
 		name: 'hyperlink';
@@ -132,12 +133,12 @@ MicBeamerWriter >> createLinkToLabelWithAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink alias ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBeamerWriter >> folderName [
 	^ #beamer
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 	parameters
 		add:
@@ -156,12 +157,12 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 				ifFalse: [ 'subsubsectionstyle=hide/hide/hide' ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBeamerWriter >> templateForConfiguration: aConfiguration [
 	^ 'presentation.template'
 ]
 
-{ #category : #'blocks - code' }
+{ #category : 'blocks - code' }
 MicBeamerWriter >> visitCode: aCodeBlock [
 	| env |
 	env := (aCodeBlock hasCaption and: [ aCodeBlock hasLabel ])
@@ -192,7 +193,7 @@ MicBeamerWriter >> visitCode: aCodeBlock [
 	env with: [ canvas nextPutAllLines: aCodeBlock body. canvas newLine ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicBeamerWriter >> visitColumn: aColumn [
 	canvas environment
 		name: 'column';
@@ -204,7 +205,7 @@ MicBeamerWriter >> visitColumn: aColumn [
 	canvas newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicBeamerWriter >> visitColumns: aColumns [
 	canvas environment
 		name: 'columns';
@@ -213,14 +214,14 @@ MicBeamerWriter >> visitColumns: aColumns [
 	canvas newLine
 ]
 
-{ #category : #'blocks - inline' }
+{ #category : 'blocks - inline' }
 MicBeamerWriter >> visitFigure: aFigure [
 	canvas environment
 		name: 'center';
 		with: [ self includeGraphicsFor: aFigure ]
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicBeamerWriter >> visitSlide: aSlide [
 	canvas newLine.
 	canvas environment

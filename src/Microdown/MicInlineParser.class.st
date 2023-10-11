@@ -2,8 +2,8 @@
 I'm a parser of block text. I'm responsible to generate text, annotation, format, link, url kind of objects.
 "
 Class {
-	#name : #MicInlineParser,
-	#superclass : #Object,
+	#name : 'MicInlineParser',
+	#superclass : 'Object',
 	#instVars : [
 		'openersStack',
 		'result',
@@ -27,16 +27,18 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser class >> abstractDelimiterClass [
 
 	^ MicAbstractDelimiter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser class >> allDelimiters [
 	
 	AllDelimiters ifNil: [ 
@@ -49,7 +51,7 @@ MicInlineParser class >> allDelimiters [
 	^ AllDelimiters 
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineParser class >> escapeDecode: aString [
 	"I convert all encoded chars back to their original (without the leading escape character)"
 	"My sister method escapeEncode encodes into the format I decode from"
@@ -68,7 +70,7 @@ MicInlineParser class >> escapeDecode: aString [
 	
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineParser class >> escapeEncode: aString [
 	"I convert all escaped characters (eg '\`' or '\\') into special characters which are not used in Microdown"
 	"My sister method escapeDecode reverts back"
@@ -86,7 +88,7 @@ MicInlineParser class >> escapeEncode: aString [
 	
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineParser class >> escapeReescape: aString except: keep [
 	"I convert all encoded back to escaped chars, except the characters in keep"
 	"My sister method escapeEncode encodes into the format I decode from"
@@ -106,20 +108,20 @@ MicInlineParser class >> escapeReescape: aString except: keep [
 	
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicInlineParser class >> initialize [
 	<script>
 	AllDelimiters := KeyBeginSet := nil.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser class >> keyBeginSet [
 
 	KeyBeginSet ifNil: [ KeyBeginSet := (self allDelimiters keys collect: #first) asSet ].
 	^ KeyBeginSet
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineParser class >> magicCharacter [
 	"All escaped characters are moved out of range. 
 	The unicode range Private Use Area is used, 
@@ -127,14 +129,14 @@ MicInlineParser class >> magicCharacter [
 	^ 16r100000 "Private Use Area-B"
 ]
 
-{ #category : #'handle basic text' }
+{ #category : 'handle basic text' }
 MicInlineParser >> addATextFrom: start to: end toFinalArray: aFinalArray [
 	(start > end or: [end > string size])
 		ifTrue: [ " do nothing "]
 		ifFalse: [ aFinalArray add: (self newBasicInlineBlockFrom: start to: end ) ]
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
 	
 	opener := openersStack at: indexOfAssociateOpener.
@@ -144,7 +146,7 @@ MicInlineParser >> addInlineBlock: indexOfAssociateOpener [
 
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> addInlineBlock: indexOfAssociateOpener from: startIndex to: endIndex [
 
 	correctSubstring := string copyFrom: startIndex to: endIndex.
@@ -166,7 +168,7 @@ MicInlineParser >> addInlineBlock: indexOfAssociateOpener from: startIndex to: e
 	nestedLevel := openersStack size
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> addRegularInlineBlock: indexOfAssociateOpener [
 	
 	self 
@@ -175,12 +177,12 @@ MicInlineParser >> addRegularInlineBlock: indexOfAssociateOpener [
 		to: closer endIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser >> allDelimiters [
 	^ allDelimiters 
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> bothCase [
 	| indexOfAssociateOpener |
 	indexOfAssociateOpener := self findType: delimiterClass type.
@@ -193,7 +195,7 @@ MicInlineParser >> bothCase [
 			self addInlineBlock: indexOfAssociateOpener ]
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> closerOnlyCase [
 	"IF delimiter found is a closer which can close an opened inline block
 	THEN we add the associate inline block
@@ -205,7 +207,7 @@ MicInlineParser >> closerOnlyCase [
 		ifTrue: [ self addInlineBlock: indexOfAssociateOpener ]
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> delimiterFoundProcess [
 	"Case 1: it's a opener only"
 	delimiterClass isOpenerOnly ifTrue: [ ^ self openerOnlyCase ].
@@ -215,25 +217,25 @@ MicInlineParser >> delimiterFoundProcess [
 	self closerOnlyCase
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> elementBlockClass [
 		
 	^ MicTextBlock
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicInlineParser >> findAnyType: aCollectionOfType [
 
 	^ openersStack findFirst: [ :each | aCollectionOfType includes: each type ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicInlineParser >> findType: aType [
 
 	^ self findAnyType: { aType }
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> identifyMarkupFor: aString [
 
 	(self class keyBeginSet includes: aString first) ifFalse: [ ^ 1 ].
@@ -246,17 +248,17 @@ MicInlineParser >> identifyMarkupFor: aString [
 	^ 1
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> indexIncrement [
 	^ self indexIncrement: 1
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> indexIncrement: anInteger [
 	index := index + anInteger
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineParser >> initialize [
 	super initialize.
 	self initializeDelimiters.
@@ -268,13 +270,13 @@ MicInlineParser >> initialize [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineParser >> initializeDelimiters [
 	allDelimiters := self class allDelimiters.
 	keys := allDelimiters keys.
 ]
 
-{ #category : #'handle basic text' }
+{ #category : 'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks [
 	^ self 
 		insertBasicText: anArrayOfInlineBlocks 
@@ -283,7 +285,7 @@ MicInlineParser >> insertBasicText: anArrayOfInlineBlocks [
 			to: string size
 ]
 
-{ #category : #'handle basic text' }
+{ #category : 'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: endIndex [
 	^ self 
 		insertBasicText: anArrayOfInlineBlocks 
@@ -293,7 +295,7 @@ MicInlineParser >> insertBasicText: anArrayOfInlineBlocks from: startIndex to: e
 		
 ]
 
-{ #category : #'handle basic text' }
+{ #category : 'handle basic text' }
 MicInlineParser >> insertBasicText: anArrayOfInlineBlocks 
 	withFinalArray: finalArray 
 	from: startIndex 
@@ -331,7 +333,7 @@ MicInlineParser >> insertBasicText: anArrayOfInlineBlocks
 	
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 	"IF we find a ( just after and a ) after again
 	THEN we add the associate link or figure inline block
@@ -371,7 +373,7 @@ MicInlineParser >> linkOrFigureProcess: indexOfAssociateOpener [
 		ifFalse: [ "do nothing" ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 	| text |
 	
@@ -385,7 +387,7 @@ MicInlineParser >> newBasicInlineBlockFrom: stIndex to: eIndex [
 		"should use copyFrom:to:"
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newInlineBlock [
 	| inlineBlockClass |
 	
@@ -401,7 +403,7 @@ MicInlineParser >> newInlineBlock [
 			self newInlineBlockWithoutChildren ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
@@ -410,7 +412,7 @@ MicInlineParser >> newInlineBlockWithoutChildren [
 			
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	| inlineBlockClass |
 	
@@ -429,7 +431,7 @@ MicInlineParser >> newURLInlineBlockWithCloser: aCloserIndex [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newURLInlineBlockWithoutChildren [
 	^ opener associatedInlineBlock
 			from: opener index
@@ -439,7 +441,7 @@ MicInlineParser >> newURLInlineBlockWithoutChildren [
 			withURL: correctURL
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineParser >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 	^ opener associatedInlineBlock
 			from: opener index
@@ -449,12 +451,12 @@ MicInlineParser >> newURLInlineBlockWithoutChildrenWithCloser: aCloserIndex [
 			withURL: correctURL
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> openerOnlyCase [
 	self pushNewOpener
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicInlineParser >> parse: aString [
 
 	aString ifEmpty: [ ^ #() ].
@@ -462,20 +464,20 @@ MicInlineParser >> parse: aString [
 	^ self read
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> popFrom: aStartIndex to: anEndIndex [
 	aStartIndex to: anEndIndex do: [ :i | openersStack pop ]
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> pushNewOpener [
 	delimiterClass associatedInlineBlock isEvaluated 
 		ifTrue: [ openersStack push: (delimiterClass index: index)]
 		ifFalse: [ self rawRead ]
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> rawRead [
 	| open rawType close startIndex endIndex rawContents rawBlock |
 
@@ -493,7 +495,7 @@ MicInlineParser >> rawRead [
 	index:= endIndex.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicInlineParser >> read [
 	| next |
 	
@@ -506,7 +508,7 @@ MicInlineParser >> read [
 	^ self resultProcess
 ]
 
-{ #category : #process }
+{ #category : 'process' }
 MicInlineParser >> resultProcess [
 	"At the end, we add all basic text between found inline blocks"
 	
@@ -521,18 +523,18 @@ MicInlineParser >> resultProcess [
 	^ self insertBasicText: result
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicInlineParser >> start: aString [
 	self deprecated: 'Use parse: instead' transformWith: '`@receiver start: `@arg' -> '`@receiver parse: `@arg'.
 	^ self parse: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser >> urlCloserDelimiterClass [
 	^ MicURLCloserDelimiter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineParser >> urlOpenerDelimiterClass [
 	^ MicURLOpenerDelimiter 
 ]

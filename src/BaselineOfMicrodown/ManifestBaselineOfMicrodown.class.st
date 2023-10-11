@@ -3,7 +3,9 @@ The Microdown project is a parser and document model for Microdown a clean and l
 See `#'Microdown'`
 "
 Class {
-	#name : #ManifestBaselineOfMicrodown,
-	#superclass : #PackageManifest,
-	#category : #'BaselineOfMicrodown-Manifest'
+	#name : 'ManifestBaselineOfMicrodown',
+	#superclass : 'PackageManifest',
+	#category : 'BaselineOfMicrodown-Manifest',
+	#package : 'BaselineOfMicrodown',
+	#tag : 'Manifest'
 }

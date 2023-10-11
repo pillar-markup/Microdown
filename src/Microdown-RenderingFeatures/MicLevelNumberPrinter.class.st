@@ -1,10 +1,11 @@
 Class {
-	#name : #MicLevelNumberPrinter,
-	#superclass : #MicTitlePrinterSpecification,
-	#category : #'Microdown-RenderingFeatures'
+	#name : 'MicLevelNumberPrinter',
+	#superclass : 'MicTitlePrinterSpecification',
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #'rendering-element' }
+{ #category : 'rendering-element' }
 MicLevelNumberPrinter >> renderElement: aNumber on: stream [
 	aNumber printOn: stream
 ]

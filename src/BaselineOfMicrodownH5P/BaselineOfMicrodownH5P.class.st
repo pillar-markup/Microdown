@@ -14,12 +14,13 @@ baseline: spec
 	]
 "
 Class {
-	#name : #BaselineOfMicrodownH5P,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodownH5P
+	#name : 'BaselineOfMicrodownH5P',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodownH5P',
+	#package : 'BaselineOfMicrodownH5P'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicrodownH5P >> baseline: spec [
 	<baseline>
 	

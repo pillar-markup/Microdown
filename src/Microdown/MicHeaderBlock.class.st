@@ -23,20 +23,22 @@ produces
 
 "
 Class {
-	#name : #MicHeaderBlock,
-	#superclass : #MicSingleLineBlock,
+	#name : 'MicHeaderBlock',
+	#superclass : 'MicSingleLineBlock',
 	#instVars : [
 		'level'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHeaderBlock >> accept: aVisitor [ 
  	^ aVisitor visitHeader: self
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicHeaderBlock >> addLineAndReturnNextNode: line [
 	"Line is on the form '#### my heading at forth level'"
 	self level: ('(#+)' asRegex
@@ -46,19 +48,19 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicHeaderBlock >> closeMe [
 	super closeMe.
 	children :=  self inlineParse: children
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> formattedCode [ 
 	^super formattedCode , '[ ', self level printString, '/', self header, ' ]'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> header [
 	
 	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
@@ -66,26 +68,26 @@ MicHeaderBlock >> header [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> headerElements [
 	
 	^ self children
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> headerElements: aCollection [
 	
 	children := aCollection
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> level [
 	^ level
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderBlock >> level: anInteger [
 	"(anInteger between: 1 and: 6) ifFalse: [ MicParsingError signal: 'header levels must be between 1 and 6' ]."
 	level := anInteger beBetween: 1 and: 6
