@@ -4,15 +4,16 @@ Inline parser to detect and parse extended parse functionality.
 - line break with two (or more) spaces.
 "
 Class {
-	#name : #MacInlineParser,
-	#superclass : #MicInlineParser,
+	#name : 'MacInlineParser',
+	#superclass : 'MicInlineParser',
 	#pools : [
 		'MacConstants'
 	],
-	#category : #'Microdown-Macrodown'
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MacInlineParser >> addLineBreakInlineBlock: indexOfAssociateOpener [
 	| startIndex endIndex |
 	
@@ -28,13 +29,13 @@ MacInlineParser >> addLineBreakInlineBlock: indexOfAssociateOpener [
 		to: endIndex
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MacInlineParser >> extentedDelimiters [
 		
 	^ { MacLineBreakDelimiter }
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MacInlineParser >> identifyMarkupFor: aString [
 	
 	^ self extentedDelimiters
@@ -45,7 +46,7 @@ MacInlineParser >> identifyMarkupFor: aString [
 		ifNone: [ super identifyMarkupFor: aString ]
 ]
 
-{ #category : #applying }
+{ #category : 'applying' }
 MacInlineParser >> processLineBreak [
 
 	self delimiterFoundProcess.

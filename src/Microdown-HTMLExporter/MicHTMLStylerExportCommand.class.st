@@ -3,48 +3,50 @@ A command to write the Microdown input file as HTML.
 
 "
 Class {
-	#name : #MicHTMLStylerExportCommand,
-	#superclass : #MicHTMLStylerCommand,
-	#category : #'Microdown-HTMLExporter-Spec-Commands'
+	#name : 'MicHTMLStylerExportCommand',
+	#superclass : 'MicHTMLStylerCommand',
+	#category : 'Microdown-HTMLExporter-Spec-Commands',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec-Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerExportCommand class >> defaultDescription [
 
 	^ 'Export Microdown to HTML'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerExportCommand class >> defaultIconName [
 
 	^ #smallExport
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerExportCommand class >> defaultName [
 
 	^ 'Export'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerExportCommand class >> defaultShortcutKey [
 
 	^ $g command mac | $g ctrl win | $g ctrl unix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerExportCommand class >> order [
 
 	^ 6
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLStylerExportCommand >> canBeExecuted [
 
 	^ super canBeExecuted and: [ self context hasMicHtmlDocument ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MicHTMLStylerExportCommand >> execute [
 
 	self canBeExecuted 

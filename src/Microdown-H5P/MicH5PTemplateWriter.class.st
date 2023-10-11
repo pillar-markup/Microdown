@@ -97,12 +97,13 @@ params"""":{
                      }
 "
 Class {
-	#name : #MicH5PTemplateWriter,
-	#superclass : #MicDocumentWriter,
-	#category : #'Microdown-H5P'
+	#name : 'MicH5PTemplateWriter',
+	#superclass : 'MicDocumentWriter',
+	#category : 'Microdown-H5P',
+	#package : 'Microdown-H5P'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MicH5PTemplateWriter class >> docString [
 	"since we may lose class comment..."
 	^ 'I''m a slide converter to a limited subset of H5P.
@@ -133,12 +134,12 @@ params"":{
                      }'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicH5PTemplateWriter >> canvasClass [ 
 	^ MicHTMLCanvas 
 ]
 
-{ #category : #'static document parts' }
+{ #category : 'static document parts' }
 MicH5PTemplateWriter >> creditSlide [
 
 	^ '{
@@ -388,7 +389,7 @@ MicH5PTemplateWriter >> creditSlide [
          }'
 ]
 
-{ #category : #'to debug generation' }
+{ #category : 'to debug generation' }
 MicH5PTemplateWriter >> fillTemplateWithVariables [
 	"self new fillTemplateWithVariables"
 	
@@ -403,7 +404,7 @@ MicH5PTemplateWriter >> fillTemplateWithVariables [
 						}) asDictionary.
 ]
 
-{ #category : #'to debug generation' }
+{ #category : 'to debug generation' }
 MicH5PTemplateWriter >> fillTemplateWithVariables2 [
 	"self new fillTemplateWithVariables"
 	
@@ -418,7 +419,7 @@ MicH5PTemplateWriter >> fillTemplateWithVariables2 [
 						}) asDictionary.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicH5PTemplateWriter >> fillTemplateWithVariables: aMicPresentation [
 	"aMicPresentation is a collection with metadata and slides."
 	
@@ -437,7 +438,7 @@ MicH5PTemplateWriter >> fillTemplateWithVariables: aMicPresentation [
 						}) asDictionary.
 ]
 
-{ #category : #'to debug generation' }
+{ #category : 'to debug generation' }
 MicH5PTemplateWriter >> fillUpOneSlide [
 	" works too"
 	"self new fillUpOneSlide"
@@ -452,7 +453,7 @@ MicH5PTemplateWriter >> fillUpOneSlide [
 	
 ]
 
-{ #category : #'to debug generation' }
+{ #category : 'to debug generation' }
 MicH5PTemplateWriter >> fillUpOneSlide2 [
 	"works"
 	"self new fillUpOneSlide"
@@ -467,7 +468,7 @@ MicH5PTemplateWriter >> fillUpOneSlide2 [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 	
 	| oneSlideWriter |
@@ -483,7 +484,7 @@ MicH5PTemplateWriter >> fillUpOneSlide: aSlide [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicH5PTemplateWriter >> fillUpSlides: aCollection [ 
 	
 	aCollection 
@@ -492,7 +493,7 @@ MicH5PTemplateWriter >> fillUpSlides: aCollection [
 	
 ]
 
-{ #category : #'old working templates' }
+{ #category : 'old working templates' }
 MicH5PTemplateWriter >> fullTemplateString [ 
  ^ '{
    "presentation":{
@@ -1170,7 +1171,7 @@ MicH5PTemplateWriter >> fullTemplateString [
 }'
 ]
 
-{ #category : #'old working templates' }
+{ #category : 'old working templates' }
 MicH5PTemplateWriter >> fullTemplateString2 [
 	"Working too"
  ^ '{
@@ -1945,7 +1946,7 @@ MicH5PTemplateWriter >> fullTemplateString2 [
 }'
 ]
 
-{ #category : #'old working templates' }
+{ #category : 'old working templates' }
 MicH5PTemplateWriter >> fullTemplateString3 [
 	"working too"
  ^ '{
@@ -2693,7 +2694,7 @@ MicH5PTemplateWriter >> fullTemplateString3 [
 }'
 ]
 
-{ #category : #'old working templates' }
+{ #category : 'old working templates' }
 MicH5PTemplateWriter >> fullTemplateString4 [
 	"no subcomponentid"
  ^ '{
@@ -3421,7 +3422,7 @@ MicH5PTemplateWriter >> fullTemplateString4 [
 }'
 ]
 
-{ #category : #'old working templates' }
+{ #category : 'old working templates' }
 MicH5PTemplateWriter >> fullTemplateString5 [
 	"Cleaned subcomponents 
 	removed some extra space"
@@ -4103,7 +4104,7 @@ MicH5PTemplateWriter >> fullTemplateString5 [
 }'
 ]
 
-{ #category : #'working templates with parameters' }
+{ #category : 'working templates with parameters' }
 MicH5PTemplateWriter >> fullTemplateStringParam [
 	"with slides and credit variables."
  ^ '{
@@ -4375,7 +4376,7 @@ MicH5PTemplateWriter >> fullTemplateStringParam [
 }'
 ]
 
-{ #category : #'working templates with parameters' }
+{ #category : 'working templates with parameters' }
 MicH5PTemplateWriter >> fullTemplateStringParam2 [
 	"This one is working"
  ^ '{
@@ -4811,7 +4812,7 @@ MicH5PTemplateWriter >> fullTemplateStringParam2 [
 }'
 ]
 
-{ #category : #'working templates with parameters' }
+{ #category : 'working templates with parameters' }
 MicH5PTemplateWriter >> fullTemplateStringParam3 [
 	"with slides and credit variables."
  ^ '{
@@ -5083,7 +5084,7 @@ MicH5PTemplateWriter >> fullTemplateStringParam3 [
 }'
 ]
 
-{ #category : #'working templates with parameters' }
+{ #category : 'working templates with parameters' }
 MicH5PTemplateWriter >> slideTemplate [
 
 	^ '{
@@ -5150,7 +5151,7 @@ MicH5PTemplateWriter >> slideTemplate [
          }'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicH5PTemplateWriter >> visitCode: aCodeBlock [
 	canvas nextPutAll: '<pre>'.
  	aCodeBlock body do: [ :each | each = Character cr ifTrue: [ canvas nextPutAll: '\n' ]
@@ -5158,7 +5159,7 @@ MicH5PTemplateWriter >> visitCode: aCodeBlock [
 	canvas nextPutAll: '\n</pre>\n'.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicH5PTemplateWriter >> visitFigure: aFigureBlock [
 	
 
@@ -5201,7 +5202,7 @@ MicH5PTemplateWriter >> visitFigure: aFigureBlock [
           }'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicH5PTemplateWriter >> visitOrderedList: anOrderedList [
 
 	canvas nextPutAll: '<ol>\n\t'.
@@ -5209,7 +5210,7 @@ MicH5PTemplateWriter >> visitOrderedList: anOrderedList [
 	canvas nextPutAll: '\n<\ol>\n'.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicH5PTemplateWriter >> visitUnorderedList: anOrderedList [
 
 	canvas nextPutAll: '<ul>\n\t'.
@@ -5217,7 +5218,7 @@ MicH5PTemplateWriter >> visitUnorderedList: anOrderedList [
 	canvas nextPutAll: '\n</ul>\n'.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicH5PTemplateWriter >> visitUnorderedListItem: anUnorderedListItem [
 
 	canvas nextPutAll: '<li><span style=\"font-size:1.125em\">'.
@@ -5226,7 +5227,7 @@ MicH5PTemplateWriter >> visitUnorderedListItem: anUnorderedListItem [
 	
 ]
 
-{ #category : #'to debug generation' }
+{ #category : 'to debug generation' }
 MicH5PTemplateWriter >> writeContentJSONOnDisk [
 	"self new writeContentJSONOnDisk"
 	
@@ -5236,7 +5237,7 @@ MicH5PTemplateWriter >> writeContentJSONOnDisk [
 		writeStreamDo: [ :str | str nextPutAll: self fillTemplateWithVariables  ] 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicH5PTemplateWriter >> writeContentJSONOnDisk: aMicDocument [
 	"self new writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new mainSlideInMicrodown, MicH5PTemplateWriterTest new oneSlideWithCodeInMicrodown )"
 	 '/Users/ducasse/Workspace/FirstCircle/MyBooks/Bk-Writing/AdvancedOODesign/h5p/pharo-Template-withVariableNames2/content/content.json' asFileReference ensureDelete.

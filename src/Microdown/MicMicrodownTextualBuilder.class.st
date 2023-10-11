@@ -14,16 +14,18 @@ In particular since ordered and unordered do not have the same indentation lengt
 we would have to know all the nested path and not just the level.
 "
 Class {
-	#name : #MicMicrodownTextualBuilder,
-	#superclass : #MicAbstractMicrodownTextualBuilder,
+	#name : 'MicMicrodownTextualBuilder',
+	#superclass : 'MicAbstractMicrodownTextualBuilder',
 	#instVars : [
 		'prefixStack',
 		'currentLevel'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> anchor: aLabel [
 
 	self raw: AnchorMarkup.
@@ -31,7 +33,7 @@ MicMicrodownTextualBuilder >> anchor: aLabel [
 
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> anchorReference: aText [
 
 	self raw: AnchorReferenceOpenerMarkup.
@@ -39,7 +41,7 @@ MicMicrodownTextualBuilder >> anchorReference: aText [
 	self raw: AnchorReferenceCloserMarkup.
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aBlock [
 	"!!Important 
 	
@@ -49,7 +51,7 @@ MicMicrodownTextualBuilder >> annotated: annotation paragraph:  aBlock [
 
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 	"I'm made to be followed by a paragraph. I manage the space between the annotation/label and the paragraph."
 	
@@ -62,7 +64,7 @@ MicMicrodownTextualBuilder >> annotatedAnnotation: annotation [
 
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 
 	self raw: AnnotationOpenerMarkup.
@@ -77,26 +79,26 @@ MicMicrodownTextualBuilder >> annotation: aString arguments: aDictionary [
 	self raw: AnnotationCloserMarkup
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> bold: aBlock [
 	self raw: BoldMarkup.
 	aBlock value.
 	self raw: BoldMarkup.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMicrodownTextualBuilder >> cell: aCellBlock [
 	self raw: '| '.
 	aCellBlock value.
 	self raw: ' '
 ]
 
-{ #category : #'element - code block' }
+{ #category : 'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString [ 
 	self codeblock: aString firstLineAssociations: #() 
 ]
 
-{ #category : #'element - code block' }
+{ #category : 'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
 	self raw: CodeblockMarkup.
 	aCol do: [ :each | self 
@@ -112,7 +114,7 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol [
 	self newLine.
 ]
 
-{ #category : #'element - code block' }
+{ #category : 'element - code block' }
 MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
 	self raw: CodeblockMarkup.
 	aCol do: [ :each | self 
@@ -130,7 +132,7 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol wit
 	self newLine.
 ]
 
-{ #category : #'element - code block' }
+{ #category : 'element - code block' }
 MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self flag: #fixme. 
 	"missing first line stuff and we need a block for value of keys
@@ -146,7 +148,7 @@ MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self raw: CodeblockMarkup.
 ]
 
-{ #category : #'element - slide' }
+{ #category : 'element - slide' }
 MicMicrodownTextualBuilder >> columnWidth: aString withBody: aBodyBlock [ 
 	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: 'column|width='.
@@ -160,7 +162,7 @@ MicMicrodownTextualBuilder >> columnWidth: aString withBody: aBodyBlock [
 	self newLine.
 ]
 
-{ #category : #'element - slide' }
+{ #category : 'element - slide' }
 MicMicrodownTextualBuilder >> columnsWithBody: aBodyBlock [ 
 	
 	self raw: EnvironmentOpeningBlockMarkup.
@@ -173,7 +175,7 @@ MicMicrodownTextualBuilder >> columnsWithBody: aBodyBlock [
 	self newLine.
 ]
 
-{ #category : #'element - header' }
+{ #category : 'element - header' }
 MicMicrodownTextualBuilder >> comment: aText [
 	self 
 		withLinesIn: aText 
@@ -182,7 +184,7 @@ MicMicrodownTextualBuilder >> comment: aText [
 	
 ]
 
-{ #category : #'element - environment' }
+{ #category : 'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
 	self raw: EnvironmentOpeningBlockMarkup.
 	self raw: aName.
@@ -192,7 +194,7 @@ MicMicrodownTextualBuilder >> environment: aName arguments: aCol [
 	self raw: EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #'element - environment' }
+{ #category : 'element - environment' }
 MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCol [
 	
 	self raw: EnvironmentOpeningBlockMarkup.
@@ -205,7 +207,7 @@ MicMicrodownTextualBuilder >> environment: aName body: aBodyBlock arguments: aCo
 	self raw: EnvironmentClosingBlockMarkup
 ]
 
-{ #category : #'element - references' }
+{ #category : 'element - references' }
 MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBlock [
 
 	self raw: LinkNameOpenerMarkup.
@@ -216,7 +218,7 @@ MicMicrodownTextualBuilder >> externalLink: aURL withDescription: aDescriptionBl
 	self raw: URLCloserMarkup.
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 
 	self rawFigureDescription: aDescriptionBlock.
@@ -225,7 +227,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock [
 	self raw: URLCloserMarkup
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
 	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png"
 	self deprecated: 'Better use figureURLString:withCaption:withParameters:'.
@@ -245,7 +247,7 @@ MicMicrodownTextualBuilder >> figureURL: aUrl withCaption: aDescriptionBlock wit
 			self raw: URLCloserMarkup ]
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock [
 	"aString can be 'http://www.pharo.org or http://www.pharo.org?width=80&language=en'"
 	
@@ -255,7 +257,7 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 	self raw: URLCloserMarkup.
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescriptionBlock withParameters: anOrderedDictionary [
 	"If you specify association of arguments then asSting is not the url but the url without the query part, i.e., http://www.pharo.org/figures/light.png
 	
@@ -275,25 +277,25 @@ MicMicrodownTextualBuilder >> figureURLString: aString withCaption: aDescription
 			self raw: URLCloserMarkup ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMicrodownTextualBuilder >> headCell [
 	self raw: '| --- '.
 ]
 
-{ #category : #'element - header' }
+{ #category : 'element - header' }
 MicMicrodownTextualBuilder >> header: aBloc withLevel: anInteger [
 	self rawHeader: aBloc withLevel: anInteger.
 	self newLine
 ]
 
-{ #category : #'element - header' }
+{ #category : 'element - header' }
 MicMicrodownTextualBuilder >> horizontalLine [
 	self raw: HorizontalLineMarkup.
    self newLine
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicMicrodownTextualBuilder >> initialize [
 	super initialize.
 	prefixStack := OrderedCollection new.
@@ -301,7 +303,7 @@ MicMicrodownTextualBuilder >> initialize [
 	
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> inputFile: aPathString [
 
 	self newLine.
@@ -311,13 +313,13 @@ MicMicrodownTextualBuilder >> inputFile: aPathString [
 	self raw: EnvironmentClosingBlockMarkup 
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> inputfile: aPathString [
 	"deprecated"
 	self inputFile: aPathString
 ]
 
-{ #category : #'element - references' }
+{ #category : 'element - references' }
 MicMicrodownTextualBuilder >> internalLink: aLabel [
 	self 
 		writeText: aLabel 
@@ -326,14 +328,14 @@ MicMicrodownTextualBuilder >> internalLink: aLabel [
 	
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> italic: aBlock [
 	self raw: ItalicMarkup.
 	aBlock value.
 	self raw: ItalicMarkup
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> item: aBlock [
 
 	self raw: (self startOfUnorderedListForLevel: currentLevel).
@@ -341,7 +343,7 @@ MicMicrodownTextualBuilder >> item: aBlock [
 	self potentialNewLine.
 ]
 
-{ #category : #'ugly line handling' }
+{ #category : 'ugly line handling' }
 MicMicrodownTextualBuilder >> lines: aString [
 	"Output aString and take care of line ending within aString."
 	| str |
@@ -354,7 +356,7 @@ MicMicrodownTextualBuilder >> lines: aString [
 	 ]
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> mathInline: aText [
 
 	self raw: MathMarkup.
@@ -362,7 +364,7 @@ MicMicrodownTextualBuilder >> mathInline: aText [
 	self raw: MathMarkup.
 ]
 
-{ #category : #'element - math' }
+{ #category : 'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString [ 
 
 	self raw: MathOpeningBlockMarkup.
@@ -373,7 +375,7 @@ MicMicrodownTextualBuilder >> mathblock: aString [
 	self newLine.
 ]
 
-{ #category : #'element - math' }
+{ #category : 'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 
 	self raw: MathOpeningBlockMarkup.
@@ -390,7 +392,7 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol [
 	self newLine.
 ]
 
-{ #category : #'element - math' }
+{ #category : 'element - math' }
 MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol withCaption: aCaptionBlock [
 
 	self raw: MathOpeningBlockMarkup.
@@ -409,13 +411,13 @@ MicMicrodownTextualBuilder >> mathblock: aString firstLineAssociations: aCol wit
 	self newLine.
 ]
 
-{ #category : #'element - metadata' }
+{ #category : 'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [ 
 
 	self metaDataFromAssociations: aDictionary associations
 ]
 
-{ #category : #'element - metadata' }
+{ #category : 'element - metadata' }
 MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [ 
 	self raw: '{'; newLine.
 	aCollection do: [ :each | 
@@ -429,7 +431,7 @@ MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
 	self newLine; raw: '}'.
 ]
 
-{ #category : #'ugly line handling' }
+{ #category : 'ugly line handling' }
 MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 	self 
 		withLinesIn: aString 
@@ -437,7 +439,7 @@ MicMicrodownTextualBuilder >> nextPutAllLines: aString [
 		separatedBy: [ self newLine ]
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> orderedItem: aBlock [
 
 	self raw: (self startOfOrderedListForLevel: currentLevel).
@@ -446,7 +448,7 @@ MicMicrodownTextualBuilder >> orderedItem: aBlock [
 	
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> orderedItem: aBlock startingAt: aNumber [
 
 	self writeStartOfOrderedListIndex: aNumber.
@@ -454,7 +456,7 @@ MicMicrodownTextualBuilder >> orderedItem: aBlock startingAt: aNumber [
 	self newLine.
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
@@ -472,32 +474,32 @@ MicMicrodownTextualBuilder >> orderedListDuring: aBlockClosure [
 		
 ]
 
-{ #category : #'element - paragraph' }
+{ #category : 'element - paragraph' }
 MicMicrodownTextualBuilder >> paragraph: aBlock [
 
 	self rawParagraph: aBlock.
 	self newLine
 ]
 
-{ #category : #'private utilities' }
+{ #category : 'private utilities' }
 MicMicrodownTextualBuilder >> popPrefix [
 	
 	prefixStack removeLast
 ]
 
-{ #category : #'private utilities' }
+{ #category : 'private utilities' }
 MicMicrodownTextualBuilder >> pushPrefix: aString [ 
 	
 	prefixStack addLast: aString
 ]
 
-{ #category : #'element - quote block' }
+{ #category : 'element - quote block' }
 MicMicrodownTextualBuilder >> quoteBlock: aText [
 
 	self writeText: aText beginsWith: PreformattedMarkup
 ]
 
-{ #category : #'writing low-level' }
+{ #category : 'writing low-level' }
 MicMicrodownTextualBuilder >> raw: aString [
 	"We have in the prefix potentially many nesting level '> ', '```' and for each new line 
 	we want to make sure that prefixes are written prior to aString.
@@ -515,7 +517,7 @@ MicMicrodownTextualBuilder >> raw: aString [
 	lastIsNewLine := false
 ]
 
-{ #category : #'element - annotated' }
+{ #category : 'element - annotated' }
 MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 	"!!Important 
 	
@@ -529,7 +531,7 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 
 	self raw: FigureNameOpenerMarkup.
@@ -537,7 +539,7 @@ MicMicrodownTextualBuilder >> rawFigureDescription: aBlock [
 	self raw: LinkNameCloserMarkup
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> rawFormat: aText [
 
 	self raw: RawOpenerMarkup.
@@ -545,7 +547,7 @@ MicMicrodownTextualBuilder >> rawFormat: aText [
 	self raw: RawCloserMarkup.
 ]
 
-{ #category : #'writing low-level' }
+{ #category : 'writing low-level' }
 MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 
 	self raw: (HeaderMarkup repeat: anInteger).
@@ -557,13 +559,13 @@ MicMicrodownTextualBuilder >> rawHeader: aBloc withLevel: anInteger [
 	
 ]
 
-{ #category : #'ugly line handling' }
+{ #category : 'ugly line handling' }
 MicMicrodownTextualBuilder >> rawLines: aString [
 	"Output aString and take care of line ending within aString."
 	self withLinesIn: aString do: [ :line | self raw: line ] separatedBy: [ self newLine ]
 ]
 
-{ #category : #'writing low-level' }
+{ #category : 'writing low-level' }
 MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 
 	aBlock value
@@ -573,7 +575,7 @@ MicMicrodownTextualBuilder >> rawParagraph: aBlock [
 	
 ]
 
-{ #category : #'element - figure' }
+{ #category : 'element - figure' }
 MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 	"should be better to use do: separatedBy:"
 	
@@ -585,13 +587,13 @@ MicMicrodownTextualBuilder >> rawParameters: aZnDictionary [
 			self raw: ArgumentListDelimiter ] ]
 ]
 
-{ #category : #'ugly line handling' }
+{ #category : 'ugly line handling' }
 MicMicrodownTextualBuilder >> root: aBlock [
 	
 	aBlock value
 ]
 
-{ #category : #'element - slide' }
+{ #category : 'element - slide' }
 MicMicrodownTextualBuilder >> slideTitle: aString withBody: aBodyBlock [ 
 	
 	self raw: EnvironmentOpeningBlockMarkup.
@@ -605,26 +607,26 @@ MicMicrodownTextualBuilder >> slideTitle: aString withBody: aBodyBlock [
 	self newLine.
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> startOfOrderedListForLevel: aNumber [
 
 	^ ('  ' repeat: aNumber) ,'1', OrderedListSemiMarkup
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> startOfUnorderedListForLevel: aNumber [
 
 	^ ('  ' repeat: aNumber) , UnorderedListMarkup
 ]
 
-{ #category : #'element - format' }
+{ #category : 'element - format' }
 MicMicrodownTextualBuilder >> strike: aBlock [
 	self raw: StrikeMarkup.
 	aBlock value.
 	self raw: StrikeMarkup.
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	"For list we do not emit empty line at the end because we do not want to force the creation of a paragraph 
 	in the middle of nested list. And from a builder point of view this is difficult to know it."
@@ -638,7 +640,7 @@ MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	currentLevel := currentLevel - 1.
 ]
 
-{ #category : #'ugly line handling' }
+{ #category : 'ugly line handling' }
 MicMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anotherBlock [
 	"this method shows that the body of code block is weak because it should encapsulate the way it internally represents lines. Now this is exposed in clients."
 	| str |
@@ -652,7 +654,7 @@ MicMicrodownTextualBuilder >> withLinesIn: aString do: aBlock separatedBy: anoth
 				ifFalse: anotherBlock ]
 ]
 
-{ #category : #'writing during' }
+{ #category : 'writing during' }
 MicMicrodownTextualBuilder >> writeIndentedCodeBlockDuring: aBlockClosure [ 
 	"The logic of writeIndentedCodeBlockDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
@@ -663,7 +665,7 @@ It means that within the context of a visitor the visitText: method should do it
 		forEachLineDuring: aBlockClosure.
 ]
 
-{ #category : #'writing during' }
+{ #category : 'writing during' }
 MicMicrodownTextualBuilder >> writePrefix: aString forEachLineDuring: aBlockClosure [ 
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
@@ -672,7 +674,7 @@ It means that within the context of a visitor the visitText: method should do it
 	aBlockClosure ensure: [ self popPrefix ].
 ]
 
-{ #category : #'writing during' }
+{ #category : 'writing during' }
 MicMicrodownTextualBuilder >> writeQuoteCodeBlockDuring: aBlockClosure [ 
 	"The logic of writePrefix:forEachLineDuring: only works if the raw: method managing the prefixes
 is invoked. Therefore somehow the blockclosure execution should invoke it.
@@ -682,7 +684,7 @@ It means that within the context of a visitor the visitText: method should do it
 		forEachLineDuring: aBlockClosure
 ]
 
-{ #category : #'element - list' }
+{ #category : 'element - list' }
 MicMicrodownTextualBuilder >> writeStartOfOrderedListIndex: anInteger [
 	"does not handle for now nesting"
 	self raw: anInteger asString, OrderedListSemiMarkup

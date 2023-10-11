@@ -1,6 +1,6 @@
-Extension { #name : #MicRichTextComposerTest }
+Extension { #name : 'MicRichTextComposerTest' }
 
-{ #category : #'*Microdown-MathFlaky-Tests' }
+{ #category : '*Microdown-MathFlaky-Tests' }
 MicRichTextComposerTest >> testClassExamplesNotBroken [
 
 	"I merely test that the examples do not break"
@@ -10,7 +10,7 @@ MicRichTextComposerTest >> testClassExamplesNotBroken [
 	examples do: [ :selector | MicRichTextComposer perform: selector ]
 ]
 
-{ #category : #'*Microdown-MathFlaky-Tests' }
+{ #category : '*Microdown-MathFlaky-Tests' }
 MicRichTextComposerTest >> testLatexMathStyle [
 
 	| source1 source2 richText1 richText2 |
@@ -22,7 +22,7 @@ MicRichTextComposerTest >> testLatexMathStyle [
 	self assert: richText1 asMorph height < richText2 asMorph height
 ]
 
-{ #category : #'*Microdown-MathFlaky-Tests' }
+{ #category : '*Microdown-MathFlaky-Tests' }
 MicRichTextComposerTest >> testMathEnvironment [
 	| source1 source2 richText1 richText2 |
 	"this checks if latex is working by making two formulas, of which the second should be taller"

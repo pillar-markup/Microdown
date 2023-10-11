@@ -2,18 +2,19 @@
 I represent unknown file extension.
 "
 Class {
-	#name : #MicNoInputDocument,
-	#superclass : #MicInputDocument,
-	#category : #'Microdown-Transformer'
+	#name : 'MicNoInputDocument',
+	#superclass : 'MicInputDocument',
+	#category : 'Microdown-Transformer',
+	#package : 'Microdown-Transformer'
 }
 
-{ #category : #registration }
+{ #category : 'registration' }
 MicNoInputDocument class >> doesHandleExtension: anExtension [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicNoInputDocument >> parserClass [ 
 	"may be the error should not be raised here."
 	

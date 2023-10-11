@@ -2,8 +2,8 @@
 I define all the constants for parsing Microdown blocks.
 "
 Class {
-	#name : #MicMicrodownSharedPool,
-	#superclass : #SharedPool,
+	#name : 'MicMicrodownSharedPool',
+	#superclass : 'SharedPool',
 	#classVars : [
 		'AnchorMarkup',
 		'AnchorReferenceCloserMarkup',
@@ -45,10 +45,12 @@ Class {
 		'UnorderedListPlusMarkup',
 		'UnorderedListStarMarkup'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicMicrodownSharedPool class >> initialize [
 	"self initialize"
 	

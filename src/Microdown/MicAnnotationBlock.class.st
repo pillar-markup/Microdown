@@ -12,15 +12,17 @@ MicroDownParser parse: '{!citation|name=Duca99a!}'
 ```
 "
 Class {
-	#name : #MicAnnotationBlock,
-	#superclass : #MicInlineElement,
+	#name : 'MicAnnotationBlock',
+	#superclass : 'MicInlineElement',
 	#instVars : [
 		'arguments'
 	],
-	#category : #'Microdown-ModelInline'
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 MicAnnotationBlock class >> addDocumentDefinedAnnotations: aBuilder [
 	| currentDefinedTags |
 	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
@@ -38,14 +40,14 @@ MicAnnotationBlock class >> addDocumentDefinedAnnotations: aBuilder [
 		 ]
 ]
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 MicAnnotationBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	super buildMicroDownUsing: aBuilder withComment: aString.
 	self addDocumentDefinedAnnotations: aBuilder
 ]
 
-{ #category : #constructor }
+{ #category : 'constructor' }
 MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
 
 	| splitter tag extensionClass |
@@ -68,56 +70,56 @@ MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: 
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock class >> tag [
 	^ #empty
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnnotationBlock >> accept: aVisitor [
 	^ aVisitor visitAnnotation: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> arguments [
 	^ arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> arguments: anArguments [
 	arguments := anArguments
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnnotationBlock >> closeMe [ 
 
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> closingDelimiter [
 
  	^ AnnotationCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> kind [
 
 	^ #annotation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> name [
 	^ arguments defaultValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> openingDelimiter [
 
  	^ AnnotationOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> printOn: aStream [
 
 	aStream nextPutAll: self openingDelimiter.

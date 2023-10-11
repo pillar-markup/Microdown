@@ -1,6 +1,6 @@
-Extension { #name : #MicFigureBlock }
+Extension { #name : 'MicFigureBlock' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicFigureBlock >> associatedPillarClass [
 	^PRFigure
 ]

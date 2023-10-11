@@ -15,132 +15,134 @@ My index refers to the index character in global string which is parsed.
 Always instantiate me with my constructor ""index:"" to precise it.
 "
 Class {
-	#name : #MicAbstractDelimiter,
-	#superclass : #Object,
+	#name : 'MicAbstractDelimiter',
+	#superclass : 'Object',
 	#instVars : [
 		'index'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> allActive [
 
 	^ self allSubclasses select: [ :subclass | subclass isActive ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> associatedInlineBlock [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> associatedTypes [
 
 	^ { self type }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> index: anIndex [
 	^ self new index: anIndex; yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter class >> isActive [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter class >> isBoth [
 	^ self isCloser and: self isOpener
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> isCloser [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter class >> isCloserOnly [
 	^ self isCloser and: self isOpener not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> isOpener [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter class >> isOpenerOnly [
 	^ self isCloser not and: [ self isOpener ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> markup [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> size [
 	^ self markup size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter class >> type [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #dispatching }
+{ #category : 'dispatching' }
 MicAbstractDelimiter >> addInlineBlock: anIndex to: inlineParser [
 
 	inlineParser addRegularInlineBlock: anIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> associatedInlineBlock [
 	^ self class associatedInlineBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> endIndex [
 
 	^ self index - 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> index [
 	^ index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> index: anInteger [
 	index := anInteger
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter >> isActive [
 	^ self class isActive
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter >> isCloser [
 	^ self class isCloser
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter >> isOpener [
 	^ self class isOpener
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractDelimiter >> markup [
 	^ self class markup
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicAbstractDelimiter >> printOn: aStream [
 	| name |
 	name := self class name.
@@ -149,12 +151,12 @@ MicAbstractDelimiter >> printOn: aStream [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> size [
 	^ self class size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractDelimiter >> type [
 	^ self class type
 ]

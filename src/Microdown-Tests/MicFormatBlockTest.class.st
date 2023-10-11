@@ -1,15 +1,17 @@
 Class {
-	#name : #MicFormatBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicFormatBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFormatBlockTest >> subjectClass [ 
 	^ MicBoldFormatBlock 
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testBoldAPIToAccessText [
 
 	| bold |
@@ -19,7 +21,7 @@ MicFormatBlockTest >> testBoldAPIToAccessText [
 	self assert: bold textElement substring equals: 'a b'
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testBoldAPIToSetText [
 
 	| bold |
@@ -29,7 +31,7 @@ MicFormatBlockTest >> testBoldAPIToSetText [
 	self assert: bold textElement substring equals: 'Blblbl'
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testBoldCreatesInnerText [
 
 	| bold |
@@ -39,7 +41,7 @@ MicFormatBlockTest >> testBoldCreatesInnerText [
 	self assert: bold children first substring equals: 'a b'
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 
 	| italic |
@@ -52,7 +54,7 @@ MicFormatBlockTest >> testBoldItalicAPIToAccessText [
 	self assert: italic textElement substring equals: 'a b'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFormatBlockTest >> testBoldWrappedElements [
 	
 	| paragraph |
@@ -64,7 +66,7 @@ MicFormatBlockTest >> testBoldWrappedElements [
 	
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 
 	| paragraph |
@@ -77,7 +79,7 @@ MicFormatBlockTest >> testBoldWrappedWithAccessAPIElements [
 	self assert: paragraph children second substring equals: ' c'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFormatBlockTest >> testHasProperty [
 
 	self assert: (self subject propertyAt: #foo ifAbsent: [ true ]) .
@@ -86,7 +88,7 @@ MicFormatBlockTest >> testHasProperty [
 	self deny: (self subject hasProperty: #bar)
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testItalicAPIToAccessText [
 
 	| italic |
@@ -96,7 +98,7 @@ MicFormatBlockTest >> testItalicAPIToAccessText [
 	self assert: italic textElement substring equals: 'a b'
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testItalicAPIToSetText [
 
 	| italic |
@@ -106,7 +108,7 @@ MicFormatBlockTest >> testItalicAPIToSetText [
 	self assert: italic textElement substring equals: 'Blblbl'
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testItalicCreatesInnerText [
 
 	| italic |
@@ -116,7 +118,7 @@ MicFormatBlockTest >> testItalicCreatesInnerText [
 	self assert: italic children first substring equals: 'a b'
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testItalicWrappedElements [
 
 	| paragraph |
@@ -131,7 +133,7 @@ MicFormatBlockTest >> testItalicWrappedElements [
 		equals: MicTextBlock
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testItalicWrappedWithAccessAPIElements [
 
 	| paragraph |
@@ -144,7 +146,7 @@ MicFormatBlockTest >> testItalicWrappedWithAccessAPIElements [
 	self assert: paragraph children second substring equals: ' c'
 ]
 
-{ #category : #'tests - monospace' }
+{ #category : 'tests - monospace' }
 MicFormatBlockTest >> testMonospaceCreatesInnerText [
 
 	| mono |
@@ -154,7 +156,7 @@ MicFormatBlockTest >> testMonospaceCreatesInnerText [
 	self assert: mono children first substring equals: 'a b'
 ]
 
-{ #category : #'tests - monospace' }
+{ #category : 'tests - monospace' }
 MicFormatBlockTest >> testMonospaceTextCreatesInnerText [
 
 	| mono |
@@ -165,7 +167,7 @@ MicFormatBlockTest >> testMonospaceTextCreatesInnerText [
 	self assert: mono textElement substring equals: 'a b'
 ]
 
-{ #category : #'tests - monospace' }
+{ #category : 'tests - monospace' }
 MicFormatBlockTest >> testMonospaceWrappedElements [
 
 	| mono |
@@ -174,7 +176,7 @@ MicFormatBlockTest >> testMonospaceWrappedElements [
 	self assert: mono wrappedElements first substring equals: 'a b'
 ]
 
-{ #category : #'tests - bold' }
+{ #category : 'tests - bold' }
 MicFormatBlockTest >> testPrintingBold [
 
 	| bold |
@@ -183,7 +185,7 @@ MicFormatBlockTest >> testPrintingBold [
 	
 ]
 
-{ #category : #'tests - monospace' }
+{ #category : 'tests - monospace' }
 MicFormatBlockTest >> testPrintingBold2 [
 
 	| bold |
@@ -191,7 +193,7 @@ MicFormatBlockTest >> testPrintingBold2 [
 	self assert: bold printString equals: 'MonospaceFormat(Text(_a b_))'
 ]
 
-{ #category : #'tests - italic' }
+{ #category : 'tests - italic' }
 MicFormatBlockTest >> testPrintingItalic [
 
 	| bold |
@@ -199,7 +201,7 @@ MicFormatBlockTest >> testPrintingItalic [
 	self assert: bold printString equals: 'ItalicFormat(Text(a b))'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFormatBlockTest >> testProperties [
 
 	self assert: self subject properties isNotNil.

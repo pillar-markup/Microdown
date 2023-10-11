@@ -25,20 +25,22 @@ Notice how the following line of the second item is indented with the previous o
 
 "
 Class {
-	#name : #MicOrderedListBlock,
-	#superclass : #MicListBlock,
+	#name : 'MicOrderedListBlock',
+	#superclass : 'MicListBlock',
 	#instVars : [
 		'startIndex'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicOrderedListBlock >> accept: aVisitor [
  	^ aVisitor visitOrderedList: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	"Create a new item, and insert it into me."
 	"line is on the format '1. item text'"
@@ -51,7 +53,7 @@ MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	^ super addLineAndReturnNextNode: line
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicOrderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
 	
@@ -59,12 +61,12 @@ MicOrderedListBlock >> canConsumeLine: line [
 	^ (super canConsumeLine: line) and: [line trim  prefixMatchesRegex: '\d+(\.|\))']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOrderedListBlock >> startIndex [
 	^ startIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicOrderedListBlock >> startIndexFrom: line [
 	startIndex ifNotNil: [ ^self ].
 	startIndex := line asInteger

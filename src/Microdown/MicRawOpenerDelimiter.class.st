@@ -2,32 +2,34 @@
 I am the opener delimiter for raw.
 "
 Class {
-	#name : #MicRawOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicRawOpenerDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRawOpenerDelimiter class >> associatedInlineBlock [
 	^ MicRawBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRawOpenerDelimiter class >> isCloser [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRawOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRawOpenerDelimiter class >> markup [
 	^ RawOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRawOpenerDelimiter class >> type [
 	^ #raw
 ]

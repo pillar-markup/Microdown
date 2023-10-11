@@ -1,10 +1,11 @@
 Class {
-	#name : #MicBeamerWriterTest,
-	#superclass : #MicLaTeXWriterTest,
-	#category : #'Microdown-BeamerExporter-Tests'
+	#name : 'MicBeamerWriterTest',
+	#superclass : 'MicLaTeXWriterTest',
+	#category : 'Microdown-BeamerExporter-Tests',
+	#package : 'Microdown-BeamerExporter-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
@@ -15,12 +16,12 @@ MicBeamerWriterTest class >> testParameters [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicBeamerWriterTest >> actualClass [ 
 	^ MicBeamerWriter 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testCode [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
@@ -29,7 +30,7 @@ MicBeamerWriterTest >> testCode [
 													'\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testCodeWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
@@ -38,7 +39,7 @@ MicBeamerWriterTest >> testCodeWithCaption [
 													'\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testCodeWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
@@ -47,7 +48,7 @@ MicBeamerWriterTest >> testCodeWithLabel [
 '\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testColumn [
 
 	self writeFor: (factory columnSample).
@@ -56,7 +57,7 @@ MicBeamerWriterTest >> testColumn [
 '\end{column}', newLine, newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testColumns [
 
 	self writeFor: (factory columnsSample).
@@ -64,7 +65,7 @@ MicBeamerWriterTest >> testColumns [
 '\end{columns}', newLine , newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testColumnsWithChildren [
 
 	self writeFor: factory columnsWithChildrenSample.
@@ -78,7 +79,7 @@ MicBeamerWriterTest >> testColumnsWithChildren [
 '\end{columns}', newLine , newLine
 ]
 
-{ #category : #'tests - figure/link' }
+{ #category : 'tests - figure/link' }
 MicBeamerWriterTest >> testFigure [
 
 	self writeFor: factory figureSample.
@@ -87,7 +88,7 @@ MicBeamerWriterTest >> testFigure [
 '\includegraphics[width=0.8\textwidth]{/anUrl}\end{center}', newLine, newLine
 ]
 
-{ #category : #'tests - figure/link' }
+{ #category : 'tests - figure/link' }
 MicBeamerWriterTest >> testFigureBold [
 	"in beamer we do not display caption so bld and the rest goes away."
 	self writeFor: factory figureBoldSample.
@@ -96,7 +97,7 @@ MicBeamerWriterTest >> testFigureBold [
 '\includegraphics[width=0.8\textwidth]{/anUrl}\end{center}', newLine , newLine
 ]
 
-{ #category : #'tests - figure/link' }
+{ #category : 'tests - figure/link' }
 MicBeamerWriterTest >> testFigureRealSample [
 
 	self writeFor: factory figureRealSample.
@@ -105,7 +106,7 @@ MicBeamerWriterTest >> testFigureRealSample [
 '\includegraphics[width=0.8\textwidth]{figures/logo.png}\end{center}', newLine , newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicBeamerWriterTest >> testFrameWithoutOption [
 
 	self

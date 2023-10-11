@@ -1,6 +1,6 @@
-Extension { #name : #MicCodeBlock }
+Extension { #name : 'MicCodeBlock' }
 
-{ #category : #'*Microdown-RenderingFeatures' }
+{ #category : '*Microdown-RenderingFeatures' }
 MicCodeBlock >> lineNumber: aBoolean [ 
 	arguments at: 'lineNumber' put: aBoolean
 ]

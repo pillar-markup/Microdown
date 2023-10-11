@@ -6,33 +6,35 @@ See *@fig1*
 ```
 "
 Class {
-	#name : #MicAnnotationCloserDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicAnnotationCloserDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationCloserDelimiter class >> associatedInlineBlock [
 	^ MicAnnotationBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationCloserDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationCloserDelimiter class >> isOpener [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationCloserDelimiter class >> markup [
 
 	^ AnnotationCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationCloserDelimiter class >> type [
 	^ #annotation
 ]

@@ -2,32 +2,34 @@
 I am the delimiter for monospace/inline code format.
 "
 Class {
-	#name : #MicMonospaceDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicMonospaceDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceDelimiter class >> associatedInlineBlock [
 	^ MicMonospaceFormatBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceDelimiter class >> markup [
 	^ MonospaceMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceDelimiter class >> type [
 	^ #monospace
 ]

@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-RichTextComposer-Tests' }
+Package { #name : 'Microdown-RichTextComposer-Tests' }

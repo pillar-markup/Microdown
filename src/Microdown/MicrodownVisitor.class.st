@@ -6,262 +6,264 @@ of MicElement.
 
 "
 Class {
-	#name : #MicrodownVisitor,
-	#superclass : #Object,
-	#category : #'Microdown-Visitor'
+	#name : 'MicrodownVisitor',
+	#superclass : 'Object',
+	#category : 'Microdown-Visitor',
+	#package : 'Microdown',
+	#tag : 'Visitor'
 }
 
-{ #category : #'visiting main API' }
+{ #category : 'visiting main API' }
 MicrodownVisitor >> visit: aMicElement [
 
 	^ aMicElement accept: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitAgenda: anAgenda [
 	"subclassResponsibility"
 ]
 
-{ #category : #'visiting main API' }
+{ #category : 'visiting main API' }
 MicrodownVisitor >> visitAll: aCollection [
 
 	^ aCollection collect: [ :each | each accept: self ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitAnchor: anAnchor [
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitAnchorReference: anAnchorReference [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitAnnotated: anAnnotated [
 
 	^ anAnnotated body do: [ :each | each accept: self ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitAnnotation: anAnnotation [
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitBold: aFormat [
 
 	^ self visitChildrenOf: aFormat.
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitBreak: aBreak [
 	"subclassResponsibility"
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitChildrenOf: anElement [
 
 	^ anElement children collect: [ :each | each accept: self ]
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicrodownVisitor >> visitCitation: aVisitor [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitCode: aCodeBlock [ 
 	 
 	^ aCodeBlock captionElements collect: [ :each |each accept: self ]
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitColumn: aColumn [
 	^ self visitEnvironment: aColumn
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitColumns: aColumns [
 	^ self visitEnvironment: aColumns
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitComment: aComment [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitDay: aDay [
 	"subclassResponsibility"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitEnvironment: anEnvironment [
 
 	^ anEnvironment bodyElements do: [ :each | each accept: self ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitFigure: aFigure [
 	
 	^ aFigure captionElements do: [:each | each accept: self ]
 		
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitFootnote: aFootnote [
 	"subclassResponsibility"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitHeader: aHeader [
 
 	^  aHeader headerElements do: [ :each | each accept: self ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitInputFile: anInputfile [
 	"subclassResponsibility"
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitItalic: aFormat [
 
 	^ self visitChildrenOf: aFormat.
 
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
 	^ aLink captionElements do: [:each | each accept: self ].
 
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicrodownVisitor >> visitListItem: anItem [
 
 	^ self visitChildrenOf: anItem
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitMath: aMicMath [
 
 	^ aMicMath captionElements collect: [ :each | each accept: self ]
 
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitMathInline: aMicMathInline [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitMetaData: aMetaData [
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitMonospace: aFormat [
 
 	^ self visitChildrenOf: aFormat.
 
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
 
 	^ anOrderedList children collect: [ :each | self visitOrderedListItem: each ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedListItem: anItem [
 
 	^ self visitListItem: anItem
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitParagraph: aParagraph [
 	
 	^ self visitChildrenOf: aParagraph
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicrodownVisitor >> visitPharoEvaluator: aScriptBlock [
 
 	self visitScript: aScriptBlock
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicrodownVisitor >> visitPharoScript: aPharoScriptNode [
 	^ self visitScript: aPharoScriptNode 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitQuote: aQuote [
 	^ self visitChildrenOf: aQuote
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitRaw: aRawFormat [
 
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitRoot: aRoot [
 
 	^ self visitChildrenOf: aRoot
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicrodownVisitor >> visitScript: aSlide [
 
 	^ aSlide children collect: [ :each | self visit: each ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitSegment: aSegment [
 	"subclassResponsibility"
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicrodownVisitor >> visitSlide: aSlide [
 
 	^ aSlide children collect: [ :each | self visit: each ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitStrike: aFormat [
 
 	^ self visitChildrenOf: aFormat.
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitTable: aTable [
 	"subclassResponsibility"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicrodownVisitor >> visitTalk: aTalk [
 	"subclassResponsibility"
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitText: aMicTextBlock [
 
 	"do nothing"
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicrodownVisitor >> visitUnorderedList: anUnorderedList [
 
 	^ anUnorderedList children collect: [ :each | self visitUnorderedListItem: each ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicrodownVisitor >> visitUnorderedListItem: anUnorderedList [
 
 	^ self visitListItem: anUnorderedList

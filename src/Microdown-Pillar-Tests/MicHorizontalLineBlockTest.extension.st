@@ -1,6 +1,6 @@
-Extension { #name : #MicHorizontalLineBlockTest }
+Extension { #name : 'MicHorizontalLineBlockTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicHorizontalLineBlockTest >> testHorizontalLineBlockAsPillar [
 	| source root pillar |
 	source := '***

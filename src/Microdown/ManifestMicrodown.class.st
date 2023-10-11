@@ -64,17 +64,19 @@ Such packages should be moved in the future to other location (probably pillar i
 I was implemented by S. Ducasse, L. Dargaud and G. Polito. It is based on the work on markdown parsing of K. Osterbye. 
 "
 Class {
-	#name : #ManifestMicrodown,
-	#superclass : #PackageManifest,
-	#category : #'Microdown-Manifest'
+	#name : 'ManifestMicrodown',
+	#superclass : 'PackageManifest',
+	#category : 'Microdown-Manifest',
+	#package : 'Microdown',
+	#tag : 'Manifest'
 }
 
-{ #category : #'code-critics' }
+{ #category : 'code-critics' }
 ManifestMicrodown class >> ruleAnySatisfyRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#'MicFileResourceReference class' #hostOf: #true)) #'2022-01-15T12:11:48.574879+01:00') )
 ]
 
-{ #category : #'code-critics' }
+{ #category : 'code-critics' }
 ManifestMicrodown class >> ruleUtilityMethodsRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#MicElement #resolveFrom: #false)) #'2022-04-27T08:53:19.440198+02:00') )
 ]

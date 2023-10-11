@@ -1,16 +1,17 @@
 Class {
-	#name : #MicHeadRenumbererTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RenderingFeatures'
+	#name : 'MicHeadRenumbererTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicHeadRenumbererTest >> actualClass [
 
 	^ MicHeaderRenumberer
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHeadRenumbererTest >> checkWithOffset: offset [
 
 	| result input configuration |
@@ -24,19 +25,19 @@ MicHeadRenumbererTest >> checkWithOffset: offset [
 	self assert: result level equals: offset + 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> configuration [
 
 	^ self configurationClass new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> configurationClass [
 
 	^ MicMinimalConfiguration 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> executePhase: anInput with: aConfig [
 
 	^ (self actualClass executeOn:
@@ -45,19 +46,19 @@ MicHeadRenumbererTest >> executePhase: anInput with: aConfig [
 			    withConfiguration: aConfig)) input
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> testNegativeOffset [
 
 	self checkWithOffset: -4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> testPositiveOffset [
 
 	self checkWithOffset: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHeadRenumbererTest >> testZeroOffset [
 
 	self checkWithOffset: 0

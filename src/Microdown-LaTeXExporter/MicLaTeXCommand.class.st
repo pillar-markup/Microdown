@@ -8,12 +8,13 @@ To emit `\mycommand` potentially with arguments and optionals.
 ```
 "
 Class {
-	#name : #MicLaTeXCommand,
-	#superclass : #MicLaTeXBrush,
-	#category : #'Microdown-LaTeXExporter'
+	#name : 'MicLaTeXCommand',
+	#superclass : 'MicLaTeXBrush',
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLaTeXCommand >> name: aString [ 
 
 	stream

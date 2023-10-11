@@ -1,6 +1,6 @@
-Extension { #name : #Text }
+Extension { #name : 'Text' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Text >> attributeAt: idx ofKind: aClass [
 	(self attributesAt: idx)
 			detect: [ :attr | attr isKindOf: aClass  ] 

@@ -3,8 +3,8 @@ I'm a copy of Pillar textual canvas. I should be fusioned in my subclass.
 We should revisit the API because parsing lines is a not really good design.
 "
 Class {
-	#name : #MicAbstractMicrodownTextualBuilder,
-	#superclass : #Object,
+	#name : 'MicAbstractMicrodownTextualBuilder',
+	#superclass : 'Object',
 	#instVars : [
 		'stream',
 		'lastIsNewLine',
@@ -13,33 +13,35 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicAbstractMicrodownTextualBuilder class >> on: aStream [ 
 	^ self new
 		setStream: aStream;
 		yourself
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicAbstractMicrodownTextualBuilder >> bold: aText [
 
 	self writeText: aText surroundBy: BoldMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractMicrodownTextualBuilder >> contents [
 	^ stream contents
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAbstractMicrodownTextualBuilder >> flush [
 	stream flush
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAbstractMicrodownTextualBuilder >> initialize [
 	super initialize.
 	stream := (String new: 1000) writeStream.
@@ -47,86 +49,86 @@ MicAbstractMicrodownTextualBuilder >> initialize [
 	lastIsNewLine := true
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicAbstractMicrodownTextualBuilder >> italic: aText [
 
 	self writeText: aText surroundBy: ItalicMarkup
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbstractMicrodownTextualBuilder >> lastIsNewLine [
 	^ lastIsNewLine
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> line: aString [
 	self
 		nextPutAll: aString;
 		newLine
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicAbstractMicrodownTextualBuilder >> monospace: aText [
 
 	self writeText: aText surroundBy: MonospaceMarkup
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> newLine [
 	self raw: newLineCharacterString.
 	lastIsNewLine := true
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> nextPut: aCharacter [
 	stream nextPut: aCharacter.
 	lastIsNewLine := false
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> nextPutAll: aString [
 	
 	aString do: [ :char | self nextPut: char ]
 ]
 
-{ #category : #'writing low-level' }
+{ #category : 'writing low-level' }
 MicAbstractMicrodownTextualBuilder >> potentialNewLine [
 	lastIsNewLine ifFalse: [ self newLine ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> raw: aString [
 	stream << aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAbstractMicrodownTextualBuilder >> setNewLineCharacterString: aLine [
 	newLineCharacterString := aLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAbstractMicrodownTextualBuilder >> setStream: aStream [ 
 	stream := aStream
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicAbstractMicrodownTextualBuilder >> space [
 	stream space
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicAbstractMicrodownTextualBuilder >> strike: aText [
 
 	self writeText: aText surroundBy: StrikeMarkup
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> text: aText [
 	self raw: aText
 	
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeDuring: aBlock surroundBy: anOpenerMarkup and: aCloserMarkup [
 
 	self raw: anOpenerMarkup.
@@ -134,7 +136,7 @@ MicAbstractMicrodownTextualBuilder >> writeDuring: aBlock surroundBy: anOpenerMa
 	self raw: aCloserMarkup
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aString [ 
 	
 	self
@@ -143,7 +145,7 @@ MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination
 		title: nil
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination: aDestination title: aTitle [ 
 
 	self raw: '['.
@@ -162,13 +164,13 @@ MicAbstractMicrodownTextualBuilder >> writeLinkDuring: aBlockClosure destination
 	 ]
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeNewLine [
 	self raw: String cr
 	
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeText: aText beginsWith: aMarkup [
 	self
 		raw: aMarkup;
@@ -176,12 +178,12 @@ MicAbstractMicrodownTextualBuilder >> writeText: aText beginsWith: aMarkup [
 		raw: aText
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: aMarkup [
 	self writeText: aText surroundBy: aMarkup and: aMarkup
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicAbstractMicrodownTextualBuilder >> writeText: aText surroundBy: anOpenerMarkup and: aCloserMarkup [
 	self
 		raw: anOpenerMarkup;

@@ -1,18 +1,19 @@
 Class {
-	#name : #MicRealDumper,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicRealDumper',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'stream'
 	],
-	#category : #'Microdown-PrettyPrinter'
+	#category : 'Microdown-PrettyPrinter',
+	#package : 'Microdown-PrettyPrinter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRealDumper >> contents [ 
 	^ stream contents
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> element: anElement during: aBlock [
 	
 	stream nextPut: $(.
@@ -25,13 +26,13 @@ MicRealDumper >> element: anElement during: aBlock [
 	stream nextPut: $)
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicRealDumper >> emitClassNameOf: aMicElement [
 
 	stream nextPutAll: aMicElement class asString
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> emitList: aList [
 
 	self 
@@ -44,7 +45,7 @@ MicRealDumper >> emitList: aList [
 	stream nextPutAll: ' }; yourself']
 ]
 
-{ #category : #build }
+{ #category : 'build' }
 MicRealDumper >> emitParameters: aCodeBlock [
 
 	stream nextPutAll: 'arguments: { '.
@@ -52,14 +53,14 @@ MicRealDumper >> emitParameters: aCodeBlock [
 	stream nextPutAll: ' } asDictionary ; '
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicRealDumper >> initialize [
 
 	super initialize.
 	stream := MicOutputStream new setStream: (WriteStream on: (String new: 1000)).
 ]
 
-{ #category : #build }
+{ #category : 'build' }
 MicRealDumper >> parametersPrint: aDictionnary [
 
 	| lastKey |
@@ -79,14 +80,14 @@ MicRealDumper >> parametersPrint: aDictionnary [
 		k = lastKey ifFalse: [ stream nextPutAll: ' . ' ] ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visit: aMicElement [
 
 	aMicElement accept: self.
 	stream contents
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitAnchor: aMicAnchor [
 
 	self
@@ -99,7 +100,7 @@ MicRealDumper >> visitAnchor: aMicAnchor [
 				nextPutAll: ' "' ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visitAttributedText: aMicBold [
 
 	self 
@@ -111,13 +112,13 @@ MicRealDumper >> visitAttributedText: aMicBold [
 			stream nextPutAll: '}' ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visitBold: aMicItalic [
 
 	self visitAttributedText: aMicItalic
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitCode: aCodeBlock [
 
 	self 
@@ -132,7 +133,7 @@ MicRealDumper >> visitCode: aCodeBlock [
 					nextPutAll: '''' ]]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitComment: aComment [
 	
 	self flag: #argh.
@@ -143,7 +144,7 @@ MicRealDumper >> visitComment: aComment [
 			stream nextPutAll: '''Foo''' ]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitFigure: aMicFigure [
 
 	self flag: #arg.
@@ -163,7 +164,7 @@ MicRealDumper >> visitFigure: aMicFigure [
 			stream nextPutAll: '}; yourself' ]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitHeader: aHeader [
 	
 	self 
@@ -178,13 +179,13 @@ MicRealDumper >> visitHeader: aHeader [
 			stream nextPut: $}]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visitItalic: aMicItalic [
 
 	self visitAttributedText: aMicItalic
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitLink: aMicLink [
 
 	self 
@@ -198,7 +199,7 @@ MicRealDumper >> visitLink: aMicLink [
 			stream nextPutAll: ' ; yourself' ]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitListItem: anItem [
 
 	self flag: #arg.
@@ -211,7 +212,7 @@ MicRealDumper >> visitListItem: anItem [
 
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visitMonospace: aMonospace [
 
 	self 
@@ -222,13 +223,13 @@ MicRealDumper >> visitMonospace: aMonospace [
 	
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitOrderedList: anOrderedList [
 
 	self emitList: anOrderedList
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitParagraph: aParagraph [
 
 	stream nextPut: $(.
@@ -245,7 +246,7 @@ MicRealDumper >> visitParagraph: aParagraph [
 	stream nextPut: $)
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitQuote: aQuote [
 
 	stream nextPut: $(.
@@ -259,7 +260,7 @@ MicRealDumper >> visitQuote: aQuote [
 	stream nextPut: $)
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitRaw: aMicRaw [
 
 	self 
@@ -269,13 +270,13 @@ MicRealDumper >> visitRaw: aMicRaw [
 			]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicRealDumper >> visitStrike: aMicItalic [
 
 	self visitAttributedText: aMicItalic
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitTable: aTable [
 	self flag: #arg.
 	self 
@@ -285,7 +286,7 @@ MicRealDumper >> visitTable: aTable [
 	aTable children first accept: self ]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitText: aText [
 	
 	self 
@@ -298,7 +299,7 @@ MicRealDumper >> visitText: aText [
 				nextPutAll: '''' ]
 ]
 
-{ #category : #'visit - section' }
+{ #category : 'visit - section' }
 MicRealDumper >> visitUnorderedList: aUnOrderedList [
 
 	self emitList: aUnOrderedList

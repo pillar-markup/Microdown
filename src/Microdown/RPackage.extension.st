@@ -1,6 +1,6 @@
-Extension { #name : #RPackage }
+Extension { #name : 'RPackage' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 RPackage >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	"I'm on a package and the package is a baseline package."

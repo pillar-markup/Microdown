@@ -1,6 +1,6 @@
-Extension { #name : #TestCase }
+Extension { #name : 'TestCase' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 TestCase class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	| number |

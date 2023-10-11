@@ -2,17 +2,19 @@
 A MicRichTextFormatConfigurationTest is a test class for testing the behavior of MicRichTextFormatConfiguration
 "
 Class {
-	#name : #MicRichTextFormatConfigurationTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#name : 'MicRichTextFormatConfigurationTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextFormatConfigurationTest >> fontString [
 	^ TextStyle defaultFont familyName,';72'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testBodyFont [
 	| richText |
 	richText := Microdown asRichText: '
@@ -24,7 +26,7 @@ foo bar' copyReplaceAll: '$font$' with: self fontString).
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testBullets [
 	| src richText |
 	src := '{!richtext|bullets=◊»!}
@@ -35,7 +37,7 @@ MicRichTextFormatConfigurationTest >> testBullets [
 	self assert: (richText asString includesSubstring: '»	bbb')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testChangingSameStyler [
 	| src richText |
 	"Test that the same styler is changed"
@@ -55,7 +57,7 @@ Header 2
 last line'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testCounters [
 	| src richText |
 	src := '{!richtext|counters=A1!}
@@ -66,7 +68,7 @@ MicRichTextFormatConfigurationTest >> testCounters [
 	self assert: (richText asString includesSubstring: '1.	bbb')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader1 [
 	| src richText |
 	src := '{!richtext|headerFont1=$font$!}
@@ -76,7 +78,7 @@ MicRichTextFormatConfigurationTest >> testHeader1 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader2 [
 	| src richText |
 	src := '{!richtext|headerFont2=$font$!}
@@ -86,7 +88,7 @@ MicRichTextFormatConfigurationTest >> testHeader2 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader3 [
 	| src richText |
 	src := '{!richtext|headerFont3=$font$!}
@@ -96,7 +98,7 @@ MicRichTextFormatConfigurationTest >> testHeader3 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader4 [
 	| src richText |
 	src := '{!richtext|headerFont4=$font$!}
@@ -106,7 +108,7 @@ MicRichTextFormatConfigurationTest >> testHeader4 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader5 [
 	| src richText |
 	src := '{!richtext|headerFont5=$font$!}
@@ -116,7 +118,7 @@ MicRichTextFormatConfigurationTest >> testHeader5 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testHeader6 [
 	| src richText |
 	src := '{!richtext|headerFont6=$font$!}
@@ -126,7 +128,7 @@ MicRichTextFormatConfigurationTest >> testHeader6 [
 	self assert: (richText asMorph height > 100).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testIllegalArgument [
 	| src richText |
 	src := '{!richtext|foo=bar!}'.
@@ -134,7 +136,7 @@ MicRichTextFormatConfigurationTest >> testIllegalArgument [
 	self assert: richText asString  equals: 'richtext annotation - unknown argument: foo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testInterBlockSpacing [ 
 	| src richText |
 	src := '{!richtext|interBlockSpacing=0!}fooo
@@ -146,7 +148,7 @@ boo'.
 	self assert: (richText asString lines size) equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testInterBlockSpacing_three [
 	| src richText |
 	src := '{!richtext|interBlockSpacing=3!}fooo
@@ -158,7 +160,7 @@ boo'.
 	self assert: (richText asString lines size) equals: 7
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testNewLineIfNotAlready [
 	| src richText |
 	"newLineIfNotAlready mostely makes sense if interBlockSpacing is 0"
@@ -172,7 +174,7 @@ bar'.
 	bar'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextFormatConfigurationTest >> testSpaceAfterHeader [
 	| src richText |
 	src := '{!richtext|crAfterHeader=2;2;1;1!}

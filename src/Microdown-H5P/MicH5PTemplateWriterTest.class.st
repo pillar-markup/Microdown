@@ -1,10 +1,11 @@
 Class {
-	#name : #MicH5PTemplateWriterTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-H5P'
+	#name : 'MicH5PTemplateWriterTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-H5P',
+	#package : 'Microdown-H5P'
 }
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 
 ^ '
@@ -17,7 +18,7 @@ MicH5PTemplateWriterTest >> mainSlideInMicrodown [
 '
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> oneSlideWithCodeInMicrodown [
 
 ^ '
@@ -34,13 +35,13 @@ SpTextInputFieldWithValidation >> validateInto: aValidationReport
 !>'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> presentationInMicrodown [
 
 ^ self mainSlideInMicrodown , self twoSlidesInMicrodown 
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> slideInMicrodown [
 
 ^ '
@@ -56,7 +57,7 @@ MicH5PTemplateWriterTest >> slideInMicrodown [
 '
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> slideInMicrodownWithCode [
 
 ^ '
@@ -80,7 +81,7 @@ testFoo
 '
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> slideInMicrodownWithSimpleCode [
 
 ^ '
@@ -97,7 +98,7 @@ testMethod
 '
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> slideWithFigure [
 
 ^ '
@@ -109,7 +110,7 @@ MicH5PTemplateWriterTest >> slideWithFigure [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicH5PTemplateWriterTest >> testNSlide [
 
 	| doc h5p |
@@ -242,7 +243,7 @@ MicH5PTemplateWriterTest >> testNSlide [
          }' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicH5PTemplateWriterTest >> testOneSlide [
 
 	| doc h5p |
@@ -312,7 +313,7 @@ MicH5PTemplateWriterTest >> testOneSlide [
          }' 
 ]
 
-{ #category : #'low level visitor tests' }
+{ #category : 'low level visitor tests' }
 MicH5PTemplateWriterTest >> testOneSlideBodyWithBullets [
 
 	| doc h5p |
@@ -322,7 +323,7 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithBullets [
 	self assert: h5p contents equals: '<ul>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 1</span></li>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 2</span></li>\n\t<li><span style=\"font-size:1.125em\">slide 1 bullet 3</span></li>\n\t\n</ul>\n' 
 ]
 
-{ #category : #'low level visitor tests' }
+{ #category : 'low level visitor tests' }
 MicH5PTemplateWriterTest >> testOneSlideBodyWithCode [
 
 	| doc h5p |
@@ -332,7 +333,7 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithCode [
 	self assert: h5p contents equals: '<pre>testMethod\n self assert: 4 foo equals: 55\n</pre>\n<pre>testFoo\n   self assertSpace.\n   self assertSpace2\n   ^ self\n</pre>\n' 
 ]
 
-{ #category : #'low level visitor tests' }
+{ #category : 'low level visitor tests' }
 MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
 
 	| doc h5p |
@@ -342,7 +343,7 @@ MicH5PTemplateWriterTest >> testOneSlideBodyWithSimpleCode [
 	self assert: h5p contents equals: '<pre>testMethod\n self assert: 4 foo equals: 55\n</pre>\n'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicH5PTemplateWriterTest >> testOneSlideWithOneFigure [
 
 	| doc h5p |
@@ -389,7 +390,7 @@ MicH5PTemplateWriterTest >> testOneSlideWithOneFigure [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicH5PTemplateWriterTest >> testSlides [
 
 	| doc |
@@ -417,7 +418,7 @@ MicH5PTemplateWriterTest >> testSlides [
 !>'
 ]
 
-{ #category : #sample }
+{ #category : 'sample' }
 MicH5PTemplateWriterTest >> twoSlidesInMicrodown [
 
 ^ self slideInMicrodown, '

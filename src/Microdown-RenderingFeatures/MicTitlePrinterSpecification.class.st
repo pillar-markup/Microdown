@@ -1,6 +1,6 @@
 Class {
-	#name : #MicTitlePrinterSpecification,
-	#superclass : #Object,
+	#name : 'MicTitlePrinterSpecification',
+	#superclass : 'Object',
 	#instVars : [
 		'numbering',
 		'size',
@@ -11,20 +11,21 @@ Class {
 		'printer',
 		'renderAs'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : 'accessing - defaults' }
 MicTitlePrinterSpecification class >> defaultLevel [
 	^ 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicTitlePrinterSpecification class >> new [
 	^ self with: Dictionary new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicTitlePrinterSpecification class >> with: aDictionary [
 	"what a ugly API"
 	| inst |
@@ -39,34 +40,34 @@ MicTitlePrinterSpecification class >> with: aDictionary [
 	^ inst
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> autoAnchor [
 	^ autoAnchor 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> autoAnchor: anObject [ 
 
 	autoAnchor := anObject 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> capitalization [
 	^ capitalization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> capitalization: anObject [
 	capitalization := anObject 
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MicTitlePrinterSpecification >> elementSeparator [
 	"why hardcoding it?"
 	^ $.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTitlePrinterSpecification >> fillFromAnother: another [
 	"copy all the field from another instance this is used to convert a configuration specification to an instance of one of the subclasses."
 	"the equivalent of a changeClassToThatOf:"
@@ -79,12 +80,12 @@ MicTitlePrinterSpecification >> fillFromAnother: another [
 	self size: another size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> headerSize [
 	^ size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> headerSize: anInteger [
 	"Pay attention changing the size only makes sense when numbering is true."
 
@@ -93,7 +94,7 @@ MicTitlePrinterSpecification >> headerSize: anInteger [
 		ifFalse: [ 0 ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTitlePrinterSpecification >> initialize [
 
 	super initialize.
@@ -104,40 +105,40 @@ MicTitlePrinterSpecification >> initialize [
 	renderAs := 'number'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> level [
 	^ level ifNil: [ self class defaultLevel ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> level: anObject [
 	level := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> numbering [
 	^ numbering
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> numbering: anObject [
 	numbering := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> predecessor [
 	^ level = 1
 			ifTrue: [ nil ]
 			ifFalse: [ self printer perform: ('level' , (self level - 1) asString) asSymbol ]
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MicTitlePrinterSpecification >> printCounter: aCollection [
 	^ String streamContents: [ :s | self printCounter: aCollection withMaxSize: self size on: s ]
 
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MicTitlePrinterSpecification >> printCounter: aCollection withMaxSize: aSize on: stream [
 	aSize > 0
 		ifTrue: [ (self predecessor isNotNil and: [ aSize - 1 > 0 ])
@@ -147,13 +148,13 @@ MicTitlePrinterSpecification >> printCounter: aCollection withMaxSize: aSize on:
 			self printElement: aCollection last on: stream ]
 ]
 
-{ #category : #'rendering-element' }
+{ #category : 'rendering-element' }
 MicTitlePrinterSpecification >> printElement: aNumber on: stream [
 	aNumber = -1
 		ifFalse: [ self renderElement: aNumber on: stream ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicTitlePrinterSpecification >> printOn: aStream [
 
 	super printOn: aStream.
@@ -163,41 +164,41 @@ MicTitlePrinterSpecification >> printOn: aStream [
 		nextPutAll: self autoAnchor asString.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> printer [
 
 	^ printer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> printer: aPrinter [
 
 	printer := aPrinter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> renderAs [
 	"only use during serialisation to serve as an marker to create instance of adequate subclasses"
 	^ renderAs 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> renderAs: aString [
 	"only use during serialisation"
 	renderAs := aString
 ]
 
-{ #category : #'rendering-element' }
+{ #category : 'rendering-element' }
 MicTitlePrinterSpecification >> renderElement: aNumber on: stream [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> size [
 	^ self headerSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTitlePrinterSpecification >> size: anInteger [
 	"Pay attention changing the size only makes sense when numbering is true."
 	self headerSize: anInteger

@@ -1,10 +1,11 @@
 Class {
-	#name : #MicSBALaTeXWriterTest,
-	#superclass : #MicLaTeXWriterTest,
-	#category : #'Microdown-LaTeXExporter-Tests'
+	#name : 'MicSBALaTeXWriterTest',
+	#superclass : 'MicLaTeXWriterTest',
+	#category : 'Microdown-LaTeXExporter-Tests',
+	#package : 'Microdown-LaTeXExporter-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
@@ -15,12 +16,12 @@ MicSBALaTeXWriterTest class >> testParameters [
 		  yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicSBALaTeXWriterTest >> actualClass [
 	^ MicSBALaTeXWriter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testCodeblock [
 
 	self writeFor: (factory codeblockNoParamBody: 'this is a code').
@@ -29,7 +30,7 @@ MicSBALaTeXWriterTest >> testCodeblock [
 													'\end{displaycode}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testCodeblockWithCaption [
 
 	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
@@ -38,7 +39,7 @@ MicSBALaTeXWriterTest >> testCodeblockWithCaption [
 '\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testCodeblockWithChevron [
 
 	self writeFor:
@@ -54,7 +55,7 @@ MicSBALaTeXWriterTest >> testCodeblockWithChevron [
 			, newLine , '\end{listing}' , newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testCodeblockWithLabel [
 
 	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
@@ -63,7 +64,7 @@ MicSBALaTeXWriterTest >> testCodeblockWithLabel [
 													'\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
 	| codeBlock |
 	codeBlock := (MicCodeBlock new body: 'foo')
@@ -73,7 +74,7 @@ MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
 	self assertWriting: codeBlock includesTexts: #('label=myScript')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
 	| codeBlock |
 	codeBlock := MicCodeBlock new body: 'foo', newLine , 'bar on another line'.
@@ -84,13 +85,13 @@ MicSBALaTeXWriterTest >> testInFlowOnTwoLines [
 '\end{displaycode}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testMonospace [
 
 	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\textcode{Foo}'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testParagraphWithChevron [
 
 	self writeFor: (factory textWithChevron).
@@ -98,14 +99,14 @@ MicSBALaTeXWriterTest >> testParagraphWithChevron [
 'Pilou \textgreater{}\textgreater{} bla', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testParagraphWithMonospace [
 	
 	self parse: factory paragraphMonospaceSample andCheckWeGet: newLine,
 'this is a \textcode{paragraph}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testSimpleFloating [
 	| codeBlock |
 	codeBlock := (MicCodeBlock new body: 'foo')
@@ -117,7 +118,7 @@ MicSBALaTeXWriterTest >> testSimpleFloating [
 '\end{listing}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 	| codeBlock |
 	codeBlock := (MicCodeBlock new body: 'foo')
@@ -128,7 +129,7 @@ MicSBALaTeXWriterTest >> testSimpleFloatingNoLanguage [
 	self assertWriting: codeBlock includesText: '{smalltalk}'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testTable [
 	self writeFor: factory tableSample.
 	self assert: writer contents equals: newLine,
@@ -141,7 +142,7 @@ MicSBALaTeXWriterTest >> testTable [
 '\end{fullwidthtabular}', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSBALaTeXWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).

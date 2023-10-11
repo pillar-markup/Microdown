@@ -1,10 +1,12 @@
 Class {
-	#name : #MicLinkNameDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicLinkNameDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLinkNameDelimiter class >> associatedTypes [
 
 	^ {  
@@ -13,19 +15,19 @@ MicLinkNameDelimiter class >> associatedTypes [
 	}
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicLinkNameDelimiter class >> isActive [
 
 	^ self ~= MicLinkNameDelimiter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLinkNameDelimiter class >> type [
 
 	^ #linkName
 ]
 
-{ #category : #dispatching }
+{ #category : 'dispatching' }
 MicLinkNameDelimiter >> addInlineBlock: anIndex to: inlineParser [
 
 	inlineParser linkOrFigureProcess: anIndex

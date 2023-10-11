@@ -2,17 +2,19 @@
 I represent a reference in a text. For example `[http://pharo.org](http://pharo.org)` creates [http://pharo.org](http://pharo.org).
 "
 Class {
-	#name : #MicLinkBlock,
-	#superclass : #MicInlineBlockWithUrl,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicLinkBlock',
+	#superclass : 'MicInlineBlockWithUrl',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLinkBlock >> accept: aVisitor [
 	^ aVisitor visitLink: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicLinkBlock >> closeMe [
 	
 	| split args |
@@ -25,25 +27,25 @@ MicLinkBlock >> closeMe [
 "	self children: captionElements"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLinkBlock >> fullName [
 	^ self reference fullName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicLinkBlock >> hasArguments [
 	"Answer <true> if the receiver contain at least 1 argument"
 	
 	^ (self url trimBoth findTokens: ' ') size > 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLinkBlock >> kind [
 
  	^ #linkName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLinkBlock >> openingDelimiter [
 
  	^ LinkNameOpenerMarkup

@@ -16,23 +16,25 @@ Gives:
 
 "
 Class {
-	#name : #MicInputfileBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicInputfileBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock class >> tag [ 
 	^ #inputFile
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInputfileBlock >> accept: aVisitor [
 
 	aVisitor visitInputFile: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInputfileBlock >> closeMe [
 	super closeMe.
 	(arguments includesKey: #path)
@@ -40,41 +42,41 @@ MicInputfileBlock >> closeMe [
 		ifFalse: [ self path: (MicResourceReference fromUri: 'error: inputFile should have a path argument')]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 	"I search my file."
 	self flag: 'can be better to use the MicPathResolver'.
 	^ aConfiguration baseDirectory resolve: self path
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInputfileBlock >> isRelativeFilePath [
 	^ (self path beginsWith: '/') not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> originalPath [
 	^ self properties at: #originalPath ifAbsent: [ self path ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> path [
 	
 	^ self arguments at: #path  ifAbsent: [ 'path is absent' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> path: aPath [
 	
 	arguments at: #'path' put: aPath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> reference [
 	^ self arguments at: #path
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInputfileBlock >> reference: aMicResourceReference [
 
 	self arguments at: #path put: aMicResourceReference

@@ -2,18 +2,19 @@
 Paragraph extension to process the extended inlines.
 "
 Class {
-	#name : #MacParagraphBlock,
-	#superclass : #MicParagraphBlock,
+	#name : 'MacParagraphBlock',
+	#superclass : 'MicParagraphBlock',
 	#instVars : [
 		'textWithoutBreak'
 	],
 	#pools : [
 		'MacConstants'
 	],
-	#category : #'Microdown-Macrodown'
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
-{ #category : #parising }
+{ #category : 'parising' }
 MacParagraphBlock >> addLineAndReturnNextNode: line [
 
 	super addLineAndReturnNextNode: line.
@@ -26,7 +27,7 @@ MacParagraphBlock >> addLineAndReturnNextNode: line [
 	textWithoutBreak := nil
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MacParagraphBlock >> closeMe [
 
 	textWithoutBreak ifNil: [ 

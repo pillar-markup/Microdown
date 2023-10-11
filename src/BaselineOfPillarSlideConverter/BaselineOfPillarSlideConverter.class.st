@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfPillarSlideConverter,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfPillarSlideConverter
+	#name : 'BaselineOfPillarSlideConverter',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfPillarSlideConverter',
+	#package : 'BaselineOfPillarSlideConverter'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfPillarSlideConverter >> baseline: spec [
 	<baseline>
 	

@@ -2,15 +2,17 @@
 A MicHTMLConfigurationTest is a test class for testing the behavior of MicHTMLConfiguration
 "
 Class {
-	#name : #MicHTMLConfigurationTest,
-	#superclass : #MicHTMLDocumentTest,
+	#name : 'MicHTMLConfigurationTest',
+	#superclass : 'MicHTMLDocumentTest',
 	#instVars : [
 		'configuration'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> docTypeOptions [
 
 	^ #('<!DOCTYPE html>'
@@ -41,7 +43,7 @@ MicHTMLConfigurationTest >> docTypeOptions [
 '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0 Strict Level 2//EN">')
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLConfigurationTest >> setUp [
 
 	super setUp.
@@ -50,7 +52,7 @@ MicHTMLConfigurationTest >> setUp [
 		yourself
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testAuthor [
 
 	self
@@ -65,7 +67,7 @@ MicHTMLConfigurationTest >> testAuthor [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeCssEmbedded [
 
 	self
@@ -80,7 +82,7 @@ MicHTMLConfigurationTest >> testBeCssEmbedded [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeCssLinked [
 
 	configuration beCssEmbedded.
@@ -97,7 +99,7 @@ MicHTMLConfigurationTest >> testBeCssLinked [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotFollow [
 
 	self
@@ -113,7 +115,7 @@ MicHTMLConfigurationTest >> testBeRobotFollow [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotIndex [
 
 	self
@@ -129,7 +131,7 @@ MicHTMLConfigurationTest >> testBeRobotIndex [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoArchive [
 
 	self
@@ -145,7 +147,7 @@ MicHTMLConfigurationTest >> testBeRobotNoArchive [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoCache [
 
 	self
@@ -161,7 +163,7 @@ MicHTMLConfigurationTest >> testBeRobotNoCache [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoFollow [
 
 	self
@@ -177,7 +179,7 @@ MicHTMLConfigurationTest >> testBeRobotNoFollow [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoImageIndex [
 
 	self
@@ -193,7 +195,7 @@ MicHTMLConfigurationTest >> testBeRobotNoImageIndex [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoIndex [
 
 	self
@@ -209,7 +211,7 @@ MicHTMLConfigurationTest >> testBeRobotNoIndex [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoSnippet [
 
 	self
@@ -225,7 +227,7 @@ MicHTMLConfigurationTest >> testBeRobotNoSnippet [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeRobotNoTranslate [
 
 	self
@@ -241,35 +243,35 @@ MicHTMLConfigurationTest >> testBeRobotNoTranslate [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeTargetAttributeBlank [
 
 	configuration beTargetAttributeBlank.
 	self assert: configuration targetAttribute equals: '_blank'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeTargetAttributeParent [
 
 	configuration beTargetAttributeParent.
 	self assert: configuration targetAttribute equals: '_parent'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeTargetAttributeSelf [
 
 	configuration beTargetAttributeSelf.
 	self assert: configuration targetAttribute equals: '_self'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testBeTargetAttributeTop [
 
 	configuration beTargetAttributeTop.
 	self assert: configuration targetAttribute equals: '_top'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testCssFrameworks [
 
 	self
@@ -281,7 +283,7 @@ MicHTMLConfigurationTest >> testCssFrameworks [
 		description: 'It test that the contained CSS files collection is empty'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDate [
 
 	self
@@ -296,7 +298,7 @@ MicHTMLConfigurationTest >> testDate [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDefaultCharset [
 
 	self
@@ -308,7 +310,7 @@ MicHTMLConfigurationTest >> testDefaultCharset [
 		equals: 'utf-8'
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 MicHTMLConfigurationTest >> testDefaultDocumentType [
 
 	self 
@@ -317,7 +319,7 @@ MicHTMLConfigurationTest >> testDefaultDocumentType [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDefaultLanguageId [
 
 	self
@@ -329,7 +331,7 @@ MicHTMLConfigurationTest >> testDefaultLanguageId [
 		description: 'It test that the default language identifier is not empty'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDefaultTargetAttribute [
 
 	| validTargetAttributes |
@@ -345,7 +347,7 @@ MicHTMLConfigurationTest >> testDefaultTargetAttribute [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDefaultTitle [
 
 	self
@@ -355,7 +357,7 @@ MicHTMLConfigurationTest >> testDefaultTitle [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDefaultViewport [
 
 	self
@@ -365,7 +367,7 @@ MicHTMLConfigurationTest >> testDefaultViewport [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDescription [
 
 	self
@@ -381,7 +383,7 @@ MicHTMLConfigurationTest >> testDescription [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDocument [
 
 	self
@@ -397,7 +399,7 @@ MicHTMLConfigurationTest >> testDocument [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testDocumentType [
 
 	self 
@@ -412,7 +414,7 @@ MicHTMLConfigurationTest >> testDocumentType [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testIsCssEmbedded [
 
 	self deny: configuration isCssEmbedded.
@@ -422,7 +424,7 @@ MicHTMLConfigurationTest >> testIsCssEmbedded [
 	self assert: configuration isCssEmbedded
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testKeywords [
 
 	self
@@ -443,7 +445,7 @@ MicHTMLConfigurationTest >> testKeywords [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testLanguageId [
 
 	self
@@ -458,7 +460,7 @@ MicHTMLConfigurationTest >> testLanguageId [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testMetadataSelectorMap [
 
 	self
@@ -471,7 +473,7 @@ MicHTMLConfigurationTest >> testMetadataSelectorMap [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testRobots [
 
 	self
@@ -498,7 +500,7 @@ MicHTMLConfigurationTest >> testRobots [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testTitle [
 
 	self 
@@ -514,7 +516,7 @@ MicHTMLConfigurationTest >> testTitle [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentAuthor [
 
 	| parsedContents metaElements |
@@ -533,7 +535,7 @@ MicHTMLConfigurationTest >> testWriteDocumentAuthor [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentCSS [
 
 	"| parsedContents linkElements |"
@@ -555,7 +557,7 @@ MicHTMLConfigurationTest >> testWriteDocumentCSS [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentCharSet [
 
 	| parsedTag |
@@ -567,7 +569,7 @@ MicHTMLConfigurationTest >> testWriteDocumentCharSet [
 	self assert: (parsedTag includes: 'charset=' , doc charSet)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentDate [
 
 	| parsedContents metaElements |
@@ -586,7 +588,7 @@ MicHTMLConfigurationTest >> testWriteDocumentDate [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentDescription [
 
 	| parsedTag |
@@ -598,7 +600,7 @@ MicHTMLConfigurationTest >> testWriteDocumentDescription [
 	self assert: (parsedTag includes: 'content=' , doc description ).	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentGenerator [
 
 	| parsedTag |
@@ -611,7 +613,7 @@ MicHTMLConfigurationTest >> testWriteDocumentGenerator [
 	self assert: (parsedTag includes: 'content=Microdown' ).	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentHead [
 
 	configuration writeDocumentHead.
@@ -620,7 +622,7 @@ MicHTMLConfigurationTest >> testWriteDocumentHead [
 	self assert: (doc contents endsWith: '</head>')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentKeywords [
 
 	| parsedContents metaElements |
@@ -639,7 +641,7 @@ MicHTMLConfigurationTest >> testWriteDocumentKeywords [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentMetadata [
 
 	| parsedContents metaElements |
@@ -662,7 +664,7 @@ MicHTMLConfigurationTest >> testWriteDocumentMetadata [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentRobots [
 
 	| parsedContents metaElements |
@@ -681,7 +683,7 @@ MicHTMLConfigurationTest >> testWriteDocumentRobots [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentTitle [
 
 	configuration writeDocumentTitle.
@@ -692,7 +694,7 @@ MicHTMLConfigurationTest >> testWriteDocumentTitle [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentType [
 
 	configuration writeDocumentType.
@@ -704,7 +706,7 @@ MicHTMLConfigurationTest >> testWriteDocumentType [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLConfigurationTest >> testWriteDocumentViewport [
 
 	| parsedTag |

@@ -6,15 +6,16 @@ the user can use the stream to generate a different body of the codeblock using 
 stream messages.
 "
 Class {
-	#name : #MicCodeblockEvaluatorEnv,
-	#superclass : #Object,
+	#name : 'MicCodeblockEvaluatorEnv',
+	#superclass : 'Object',
 	#instVars : [
 		'stream'
 	],
-	#category : #'Microdown-Evaluator'
+	#category : 'Microdown-Evaluator',
+	#package : 'Microdown-Evaluator'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicCodeblockEvaluatorEnv >> setStream: aStream [
 	stream := aStream
 ]

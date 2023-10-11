@@ -2,37 +2,39 @@
 I am the closer delimiter for URL.
 "
 Class {
-	#name : #MicURLCloserDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicURLCloserDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLCloserDelimiter class >> associatedInlineBlock [
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicURLCloserDelimiter class >> isActive [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLCloserDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLCloserDelimiter class >> isOpener [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLCloserDelimiter class >> markup [
 	^ URLCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicURLCloserDelimiter class >> type [
 	^ #url
 ]
