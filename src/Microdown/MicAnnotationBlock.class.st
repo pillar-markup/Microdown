@@ -90,12 +90,6 @@ MicAnnotationBlock >> arguments: anArguments [
 	arguments := anArguments
 ]
 
-{ #category : 'visiting' }
-MicAnnotationBlock >> closeMe [ 
-
-	
-]
-
 { #category : 'accessing' }
 MicAnnotationBlock >> closingDelimiter [
 
