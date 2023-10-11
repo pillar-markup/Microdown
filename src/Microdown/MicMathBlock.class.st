@@ -32,12 +32,6 @@ MicMathBlock >> accept: aVisitor [
  	^ aVisitor visitMath: self
 ]
 
-{ #category : 'accessing' }
-MicMathBlock >> arguments [
-
-	^ arguments
-]
-
 { #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 

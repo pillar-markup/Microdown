@@ -34,7 +34,7 @@ MicSameStartStopMarkupBlock >> caption [
 	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
 ]
 
-{ #category : 'accessing-delegated' }
+{ #category : 'accessing - delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
 	
 	arguments at: #caption put: (MicInlineParser new parse: aString)
