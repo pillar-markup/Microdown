@@ -101,6 +101,17 @@ BaselineOfMicrodown >> baseline: spec [
 ]
 
 { #category : 'external projects' }
+BaselineOfMicrodown >> pillar: spec [
+		
+	spec
+		baseline: 'PillarCore'
+		with: [
+			spec  
+				loads: #('Pillar-Core');
+				repository: 'github://pillar-markup/pillar:dev-8' ]
+]
+
+{ #category : 'external projects' }
 BaselineOfMicrodown >> xmlParserHtml: spec [
 
 	spec
