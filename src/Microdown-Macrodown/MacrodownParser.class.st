@@ -7,6 +7,16 @@ Class {
 	#category : #'Microdown-Macrodown'
 }
 
+{ #category : #public }
+MacrodownParser >> blockStarterClassFrom: line [
+
+	self flag: #HACK. "This is a special case because it collides with environment"
+	(MacRawParagraphBlock matchesComment: line) 
+		ifTrue: [ ^ self nonMatchedBlockClassFor: line ]. 
+		
+	^ super blockStarterClassFrom: line
+]
+
 { #category : #'node creation' }
 MacrodownParser >> elementBlockClasses [
 		

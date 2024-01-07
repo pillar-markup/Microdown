@@ -38,7 +38,7 @@ MicMicrodownSnippetFactory class >> buildDocument [
 	^ String streamContents: [ : stream | 
 		| factory |
 		factory := self new.
-		(self protocols difference: { #initialization . #utilities })
+		(self protocolNames difference: { #initialization . #utilities })
 			collect: [ : protoName | self organization listAtCategoryNamed: protoName ]
 			thenDo: [ : protoCollection |
 				protoCollection 

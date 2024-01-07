@@ -38,7 +38,7 @@ MicAbsoluteResourceReference >> contents: aString [
 ]
 
 { #category : #testing }
-MicAbsoluteResourceReference >> isFileReference [
+MicAbsoluteResourceReference >> isMicrodownResourceFileReference [
 	^ false
 ]
 

@@ -46,12 +46,12 @@ MicHTTPResourceReference class >> handlesUriScheme: scheme [
 	^ scheme beginsWith: 'http'
 ]
 
-{ #category : #testing }
+{ #category : #'class initialization' }
 MicHTTPResourceReference class >> initialize [
 	"self initialize"
-	
+
 	<script>
-	self resetResourcesCache 
+	self resetResourcesCache
 ]
 
 { #category : #testing }

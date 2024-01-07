@@ -259,6 +259,32 @@ MicRichTextComposer >> codeStylerClass [
 	^ codeStylerClass
 ]
 
+{ #category : #private }
+MicRichTextComposer >> doVisitCode: aCodeBlock [
+
+	self 
+		doVisitCode: aCodeBlock 
+		code: aCodeBlock body
+]
+
+{ #category : #private }
+MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
+
+	canvas indentIn: [ 
+		canvas
+			<< ((self codeStylerClass stylerFor: aCodeBlock language)
+					style: aStringOrText );
+			newLine.
+		aCodeBlock hasCaption ifTrue: [ 
+			canvas 
+				includeAttribute: TextEmphasis bold 
+				in: [ 
+					canvas
+						<< aCodeBlock caption asText;
+					newLine ]]].
+	canvas << textStyler interBlockSpacing
+]
+
 { #category : #initialization }
 MicRichTextComposer >> initialize [
 	super initialize.
@@ -379,6 +405,7 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 MicRichTextComposer >> visitCode: aCodeBlock [
 
 	canvas newLineIfNotAlready.
+
 	canvas indentIn: [ 
 		canvas
 			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
@@ -587,6 +614,41 @@ MicRichTextComposer >> visitParameters: anObject [
 	"do nothing for now"
 	
 	^ self
+]
+
+{ #category : #'visiting - extensions' }
+MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
+	"I execute the body. I handle four types of results:
+	Text - inserted verbatim
+	Microdown tree - rendered to text then inserted verbatim
+	String - Parsed, then rendered, then inserted.
+	Other results - printString asText - then inserted verbatim"
+	| label script doitForm codeText oldCanvas |
+	
+	script := aScriptBlock body.
+	label := aScriptBlock label ifNil: [ String value: 1 ].
+
+	oldCanvas := canvas.
+	canvas := MicRichTextCanvas new
+		textStyler: self textStyler;
+		yourself.
+	self doVisitCode: aScriptBlock.
+	codeText := canvas contents trim. 
+	canvas := oldCanvas.	
+
+	codeText addAttribute: (MicRichTextDoIt new 
+		actOnClickBlock: [ self class evaluate: script ];
+		yourself).
+
+	"this is a hack, because the align of the icon is attached to some top-left of the 
+	 letters that I do not understand, and I want it aligned with the actual text"	
+	doitForm := ((Form 
+		extent: 16@22 depth: Display depth) 
+		mergeWith:(self iconNamed: #smallDoIt) at: 0@8)
+		asText.
+		
+	canvas << doitForm << codeText.
+	canvas newLineIfNotAlready
 ]
 
 { #category : #visiting }

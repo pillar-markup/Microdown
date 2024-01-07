@@ -1,7 +1,7 @@
-Extension { #name : #SequenceableCollection }
+Extension { #name : #OrderedCollection }
 
-{ #category : #'*Microdown-RichTextPresenter' }
-SequenceableCollection >> truncateTo: smallSize [
+{ #category : #'*Microdown-RichTextComposer' }
+OrderedCollection >> truncateTo: smallSize [
 	"return myself or a copy shortened to smallSize."
 
 	^ self size <= smallSize
