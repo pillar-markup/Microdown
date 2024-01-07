@@ -7,39 +7,23 @@ Raw lets the user place anything (so don't use it).
 "
 Class {
 	#name : #MicRawBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#superclass : #MicUnEvaluatedBlock,
+	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #testing }
-MicRawBlock class >> isEvaluated [
-	^ false
-]
-
-{ #category : #visiting }
-MicRawBlock >> accept: aVisitor [
-	^ aVisitor visitRaw: self
-]
-
-{ #category : #operations }
-MicRawBlock >> cleanSubstring [
-	self substring: (MicInlineParser escapeReescape: self substring  except: '')
-]
-
 { #category : #accessing }
-MicRawBlock >> closingDelimiter [
+MicRawBlock class >> closingDelimiter [
 
  	^ RawCloserMarkup
 ]
 
 { #category : #accessing }
-MicRawBlock >> kind [
-
- 	^ #raw
-]
-
-{ #category : #accessing }
-MicRawBlock >> openingDelimiter [
+MicRawBlock class >> openingDelimiter [
 
  	^ RawOpenerMarkup
+]
+
+{ #category : #visiting }
+MicRawBlock >> accept: aVisitor [
+	^ aVisitor visitRaw: self
 ]

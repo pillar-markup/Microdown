@@ -3,13 +3,25 @@ I represent a monospaced text section. I'm delimited using `\`` as in `\`monospa
 "
 Class {
 	#name : #MicMonospaceFormatBlock,
-	#superclass : #MicFormatBlock,
-	#category : #'Microdown-ModelInline'
+	#superclass : #MicUnEvaluatedBlock,
+	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #testing }
-MicMonospaceFormatBlock class >> isEvaluated [
-	^ false
+{ #category : #accessing }
+MicMonospaceFormatBlock class >> blockName [
+	^ (super blockName) withoutSuffix: 'Format'
+]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock class >> closingDelimiter [
+
+ 	^ MonospaceMarkup
+]
+
+{ #category : #accessing }
+MicMonospaceFormatBlock class >> openingDelimiter [
+
+ 	^ MonospaceMarkup
 ]
 
 { #category : #visiting }
@@ -17,34 +29,14 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
-{ #category : #visiting }
-MicMonospaceFormatBlock >> closeMe [
-	
-	| text decodedString |
-	decodedString := MicInlineParser escapeReescape: substring except: '`'.
-	self substring: decodedString.
-	children ifEmpty: [
-			text :=  (MicTextBlock
-							from: start
-							to: end
-							withSubstring: decodedString 
-							withChildren: Array empty).
-			self children: { text } ]
-]
-
-{ #category : #internal }
-MicMonospaceFormatBlock >> closingDelimiter [
-
- 	^ MonospaceMarkup
+{ #category : #accessing }
+MicMonospaceFormatBlock >> children [
+	"should be deprecated"
+	^ Array with: (MicTextBlock new bodystring: self bodystring)
 ]
 
 { #category : #accessing }
-MicMonospaceFormatBlock >> kind [
-	^ #monospace
-]
-
-{ #category : #internal }
-MicMonospaceFormatBlock >> openingDelimiter [
-
- 	^ MonospaceMarkup
+MicMonospaceFormatBlock >> text [
+	"should be deprecated "
+	^ self bodystring 
 ]

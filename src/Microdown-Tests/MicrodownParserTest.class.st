@@ -148,10 +148,10 @@ paragraph on two lines.'.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
 	self assert: annotated label equals: 'important'.
-	self assert: annotated text equals: 'this is an important
-paragraph on two lines.'.
-	self assert: annotated textElements first kind equals: 'bold'.
-	self assert: annotated textElements third kind equals: 'italic'.
+	self 
+		assert: annotated children asArray asString 
+		equals: 'an Array(BoldFormat{ Text(this) } Text( is an ) ItalicFormat{ Text(important) } Text(
+paragraph on two lines.))'
 ]
 
 { #category : #'tests - annotated-paragraph' }
@@ -330,7 +330,7 @@ MicrodownParserTest >> testHeaderLevel4 [
 	source := (HeaderMarkup repeat: 4), '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level four'.
+	self assert: root children first children first bodystring equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 
@@ -338,15 +338,15 @@ MicrodownParserTest >> testHeaderLevel4 [
 MicrodownParserTest >> testHeaderLevel4WithBold [
 
 	| source root |
-	source := (HeaderMarkup repeat: 4), 'Level **four** `mono` end'.
+	source := (HeaderMarkup repeat: 4) , 'Level **four** `mono` end'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first children first substring equals: 'Level '.
-	self assert: root children first children second substring equals: 'four'.
-	self assert: root children first children third substring equals: ' '.
-	self assert: root children first children fourth substring equals: 'mono'.
-	self assert: root children first children fifth substring equals: ' end'.
-	self assert: root children first level equals: 4.
+	self
+		assert: root children first children first bodystring
+		equals: 'Level '.
+	self
+		assert: root children first children asString
+		equals: 'an Array(Text(Level ) BoldFormat{ Text(four) } Text( ) Monospace(mono) Text( end))'.
 ]
 
 { #category : #'tests - horizontal' }
@@ -427,15 +427,19 @@ support(I) \geq minsup \}'
 MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
-	source := MathOpeningBlockMarkup, 'label=equation&caption=doNiceMath' , String cr, 
-	 '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}', String cr,
-	MathClosingBlockMarkup, String cr.
+	source := MathOpeningBlockMarkup
+	          , 'label=equation&caption=doNiceMath' , String cr
+	          ,
+	          '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}'
+	          , String cr , MathClosingBlockMarkup , String cr.
 
-	root :=  parser parse: source.
+	root := parser parse: source.
 	self assert: root children size equals: 1.
 	math := root children first.
 	self assert: (math arguments at: 'label') equals: 'equation'.
-	self assert: (math arguments at: 'caption') first substring equals: 'doNiceMath'
+	self
+		assert: (math arguments at: 'caption') first bodystring
+		equals: 'doNiceMath'
 ]
 
 { #category : #'tests - path' }
@@ -503,14 +507,15 @@ this is a code block
 { #category : #'tests - table' }
 MicrodownParserTest >> testPipeEscape [
 
-	| tableBlock firstElementOfSecondRowAsString|
+	| tableBlock firstElementOfSecondRowAsString |
 	tableBlock := (parser parse: '
 |foo|bar|
 |12\|3|456|') children first.
 	"Extract the text node"
 	firstElementOfSecondRowAsString := tableBlock rows second first.
 	"now get to the actual string stored there"
-	firstElementOfSecondRowAsString := firstElementOfSecondRowAsString first substring.
+	firstElementOfSecondRowAsString := firstElementOfSecondRowAsString
+		                                   first bodystring.
 	self assert: firstElementOfSecondRowAsString equals: '12|3'
 ]
 

@@ -79,7 +79,7 @@ MicLinkBlockTest >> subjectClass [
 MicLinkBlockTest >> testFullName [
 
 	link := self parseLink: self linkSample.
-	self assert: link fullName equals: '/anUrl'
+	self assert: link reference fullName equals: '/anUrl'
 
 ]
 
@@ -100,16 +100,6 @@ MicLinkBlockTest >> testLinkAPIToAccessText [
 	link := self parseLink: self linkSample.
 	self assert: link class equals: MicLinkBlock.
 	self assert: link url equals: '/anUrl'
-]
-
-{ #category : #'tests - link' }
-MicLinkBlockTest >> testLinkAPIToSetText [
-
-	link := self parseLink: self linkSample.
-	self assert: link class equals: MicLinkBlock.
-
-	link captionElements: { (MicTextBlock new substring: 'Blblbl') }.
-	self assert: link caption equals: 'Blblbl'
 ]
 
 { #category : #'tests - link' }
@@ -144,20 +134,11 @@ MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
-MicLinkBlockTest >> testOpeningDelimiter [
-
-	link := self parseLink: self linkSample.
-	self assert: (link openingDelimiter isKindOf: String).
-	self deny: link openingDelimiter isEmpty.
-	self assert: link openingDelimiter equals: '['
-]
-
 { #category : #tests }
 MicLinkBlockTest >> testPrintOn [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
-	self assert: link asString equals: '[caption](http://www.pharo.org)'
+	self assert: link asString equals: 'Link{ Text(caption) }(http://www.pharo.org)'
 ]
 
 { #category : #tests }

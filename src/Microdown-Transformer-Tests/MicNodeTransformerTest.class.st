@@ -34,5 +34,5 @@ MicNodeTransformerTest >> testReplaceNodeByAnotherNode [
 	self assert: root children first class equals: MicParagraphBlock.
 	transformer visit: root.
 	self assert: root children first class equals: MicTextBlock.
-	self assert: root children first substring equals: 'test'
+	self assert: root children first bodystring equals: 'test'
 ]

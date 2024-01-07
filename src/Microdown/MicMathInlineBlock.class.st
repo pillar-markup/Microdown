@@ -26,39 +26,23 @@ $f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz$
 "
 Class {
 	#name : #MicMathInlineBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#superclass : #MicUnEvaluatedBlock,
+	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #testing }
-MicMathInlineBlock class >> isEvaluated [
-	^ false
+{ #category : #accessing }
+MicMathInlineBlock class >> closingDelimiter [
+
+ 	^ MathMarkup
+]
+
+{ #category : #accessing }
+MicMathInlineBlock class >> openingDelimiter [
+
+ 	^ MathMarkup
 ]
 
 { #category : #visiting }
 MicMathInlineBlock >> accept: aVisitor [
 	^ aVisitor visitMathInline: self
-]
-
-{ #category : #operations }
-MicMathInlineBlock >> cleanSubstring [
-	self substring: (MicInlineParser escapeReescape: self substring  except: '$')
-]
-
-{ #category : #accessing }
-MicMathInlineBlock >> closingDelimiter [
-
- 	^ MathMarkup
-]
-
-{ #category : #accessing }
-MicMathInlineBlock >> kind [
-
- 	^ #math
-]
-
-{ #category : #accessing }
-MicMathInlineBlock >> openingDelimiter [
-
- 	^ MathMarkup
 ]

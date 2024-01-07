@@ -405,7 +405,18 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 MicRichTextComposer >> visitCode: aCodeBlock [
 
 	canvas newLineIfNotAlready.
-	self doVisitCode: aCodeBlock
+
+	canvas indentIn: [ 
+		canvas
+			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
+						 aCodeBlock body);
+			newLine.
+		aCodeBlock hasCaption ifTrue: [ 
+			canvas includeAttribute: TextEmphasis bold in: [ 
+				canvas
+					<< aCodeBlock testCaptionString asText;
+					newLine ] ] ].
+	canvas << textStyler interBlockSpacing
 ]
 
 { #category : #'visiting -  format' }
@@ -451,16 +462,16 @@ MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 { #category : #'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image anchor|
-	[[ image := aFigure reference loadImage.
-		anchor := self anchorFor: image of: aFigure.
-		canvas << (self textWithImage: image usingAnchor: anchor)
-	 ]
-		on: MicResourceReferenceError, UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure captionElements  ]
-	]
+	| image anchor |
+	[ 
+	[ 
+	image := aFigure reference loadImage.
+	anchor := self anchorFor: image of: aFigure.
+	canvas << (self textWithImage: image usingAnchor: anchor) ]
+		on: MicResourceReferenceError , UnrecognizedImageFormatError
+		do: [ self visitAll: aFigure children ] ]
 		on: Error
-		do: [ :error | canvas << ('>>> ', error printString, ' <<<') ]
+		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
 { #category : #visiting }
@@ -519,17 +530,6 @@ MicRichTextComposer >> visitLink: aLink [
 	attribute := TextAction new
 		             actOnClickBlock: [ 
 			             MicRichTextLinkPresenter new openLink: aLink reference ];
-		             yourself.
-	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
-]
-
-{ #category : #'visiting - document' }
-MicRichTextComposer >> visitLink_old: aLink [
-
-	| attribute |
-	attribute := TextAction new
-		             actOnClickBlock: [ 
-			             WebBrowser openOn: aLink url ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
@@ -750,10 +750,12 @@ MicRichTextComposer >> visitTable: tableBlock [
 
 { #category : #'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
+
 	"we should set attribute because it would override link and others."
-	|text|
-	text := anInlineBlock substring asText.
-	canvas << (textStyler postTextTreatment: text )
+
+	| text |
+	text := anInlineBlock bodystring asText.
+	canvas << (textStyler postTextTreatment: text)
 ]
 
 { #category : #'visiting - list' }

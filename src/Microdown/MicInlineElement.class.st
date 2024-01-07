@@ -12,30 +12,17 @@ I am characterized by:
 Class {
 	#name : #MicInlineElement,
 	#superclass : #MicElement,
-	#instVars : [
-		'start',
-		'end',
-		'children',
-		'substring'
-	],
-	#category : #'Microdown-ModelInline'
+	#category : #'Microdown-InlineParser'
 }
 
-{ #category : #constructor }
-MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString [
-	^ self from: aStartInteger to: anEndInteger withSubstring: aString withChildren: Array new
+{ #category : #accessing }
+MicInlineElement class >> blockName [
+	^ (self instanceSide name asString withoutPrefix: 'Mic') withoutSuffix: 'Block'
 ]
 
-{ #category : #constructor }
-MicInlineElement class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
-	^ self new 
-		start: aStartInteger; 
-		end: anEndInteger; 
-		substring: aString; 
-		children: aChildren;
-		closeMe;  
-		cleanSubstring; 
-		yourself.	
+{ #category : #accessing }
+MicInlineElement class >> closingDelimiter [
+	^ self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -44,143 +31,44 @@ MicInlineElement class >> isEvaluated [
 ]
 
 { #category : #accessing }
-MicInlineElement >> children [
-	^ children
+MicInlineElement class >> openingDelimiter [
+	^ self subclassResponsibility
+]
+
+{ #category : #visiting }
+MicInlineElement >> accept: dummy [
+	"implemented in subclasses"
 ]
 
 { #category : #accessing }
-MicInlineElement >> children: anArray [
-	children := anArray
-]
-
-{ #category : #printing }
-MicInlineElement >> childrenPrintOn [
-	^ (children asString allButFirst: 9) allButLast
-]
-
-{ #category : #operations }
-MicInlineElement >> cleanSubstring [
-	"remove all \ left by the MicInlineParser - and replace \\ with single \"
-	self substring: (MicInlineParser escapeDecode: self substring )
+MicInlineElement >> blockName [
+	^ self class blockName
 ]
 
 { #category : #visiting }
 MicInlineElement >> closeMe [
-	"Hook to perform post creation action. The name is the same as for blocks."
-	
+	"use for post parsing initialization"
 ]
 
 { #category : #accessing }
-MicInlineElement >> end [
-	^ end
+MicInlineElement >> closingDelimiter [ 
+	^ self class closingDelimiter
 ]
 
-{ #category : #accessing }
-MicInlineElement >> end: anInteger [
-	end := anInteger
-]
+{ #category : #private }
+MicInlineElement >> inlineParserClass [
 
-{ #category : #operations }
-MicInlineElement >> escapeCharacter [
-	^ '\'
-]
-
-{ #category : #initialization }
-MicInlineElement >> initialize [
-
-	super initialize. 
-	children := #().
-	
-]
-
-{ #category : #testing }
-MicInlineElement >> isOnlyChild [
-	^ children isEmpty
+	^ MicInlineParser
 ]
 
 { #category : #accessing }
 MicInlineElement >> kind [
-	"we are deprecating the state"
-	^ self error
-]
-
-{ #category : #accessing }
-MicInlineElement >> literal [
-	^ substring copyFrom: start to: end. 
+	"Should only be used for tests"
+	self deprecated: 'use blockName instead' transformWith: '`@rec kind' -> '`@rec blockName asLowercase'.
+	^ self blockName asLowercase 
 ]
 
 { #category : #accessing }
 MicInlineElement >> openingDelimiter [
-
-	self subclassResponsibility
-]
-
-{ #category : #accessing }
-MicInlineElement >> openingDelimiterSize [
-
-	^ self openingDelimiter size
-]
-
-{ #category : #accessing }
-MicInlineElement >> parent: aParent [
-	parent := aParent
-]
-
-{ #category : #printing }
-MicInlineElement >> print: aString surroundedOn: aStream [
-
-	aStream 
-		nextPut: $(;
-		nextPutAll: aString;
-		nextPut: $) 
-
-]
-
-{ #category : #printing }
-MicInlineElement >> printOn: aStream [
-
-	| contents |
-	contents := children 
-		ifEmpty: [ self substring ] 
-		ifNotEmpty: [ self childrenPrintOn ].
-	aStream nextPut: $[;
-				nextPutAll: contents;
-				nextPut: $];
-				nextPut: $(;
-				nextPutAll: self kind;
-				nextPut: $) 
-
-]
-
-{ #category : #printing }
-MicInlineElement >> printWithoutConventions: aStream [
-	"Remove Mic and Block from the class."
-	
-	aStream nextPutAll: ((self class name allButFirst: 3) allButLast: 5).
-
-]
-
-{ #category : #accessing }
-MicInlineElement >> start [ 	
-	^ start
-]
-
-{ #category : #accessing }
-MicInlineElement >> start: anInteger [
-	start := anInteger 
-]
-
-{ #category : #obsolete }
-MicInlineElement >> substring [
-	^ substring
-]
-
-{ #category : #obsolete }
-MicInlineElement >> substring: aSubString [
-	substring := aSubString
-]
-
-{ #category : #accessing }
-MicInlineElement >> text [
- 	^ substring
+	^ self class openingDelimiter
 ]

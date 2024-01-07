@@ -227,24 +227,15 @@ MicLaTeXWriter >> visitItalic: anItalic [
 
 { #category : #'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
-	| text reference |
+	| reference |
 	reference := aLink fileStringWithoutHostFile.
-	self flag: #todo.
-	"I do not get this logic if the string does not have file:// it can still be
-	something else than a url... all this logic is bogus."
-	text := aLink text.
-	(text isEmptyOrNil or: [ reference = text ])
-		ifTrue: [ canvas command
-				name: 'url';
-				parameter: reference ]
-		ifFalse: [
-			canvas command
-				name: 'href';
-				parameter: reference;
-				parameter: [ canvas nextPutAll: text ].
-			canvas command
-				name: 'footnotesize';
-				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
+	canvas command
+		name: 'href';
+		parameter: reference;
+		parameter: [ self visitAll: aLink children ].
+	canvas command
+		name: 'footnotesize';
+		parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ]
 ]
 
 { #category : #'blocks - list' }
@@ -360,7 +351,7 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 { #category : #blocks }
 MicLaTeXWriter >> visitText: aText [
 
-	canvas nextPutAllLines: aText substring
+	canvas nextPutAllLines: aText bodystring
 ]
 
 { #category : #'blocks - list' }
@@ -381,7 +372,8 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 
 { #category : #helpers }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
-	self visitAll: anExternalLink captionElements
+
+	self visitAll: anExternalLink children
 ]
 
 { #category : #helpers }

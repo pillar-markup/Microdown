@@ -3,8 +3,8 @@ I'm a special inline block representing the fact that there is not markup.
 "
 Class {
 	#name : #MicTextBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#superclass : #MicUnEvaluatedBlock,
+	#category : #'Microdown-InlineParser'
 }
 
 { #category : #visiting }
@@ -12,16 +12,21 @@ MicTextBlock >> accept: aVisitor [
 	^ aVisitor visitText: self
 ]
 
-{ #category : #accessing }
-MicTextBlock >> kind [
+{ #category : #obsolete }
+MicTextBlock >> substring [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodystring' transformWith: '`@rec substring' -> '`@rec bodystring'.
+	^ bodystring 
+]
 
-	^ #basic
+{ #category : #obsolete }
+MicTextBlock >> substring: aBody [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodystring:' transformWith: '`@rec substring: `@arg' -> '`@rec bodystring: `@arg'.
+	^ bodystring 
 ]
 
 { #category : #accessing }
-MicTextBlock >> printOn: aStream [
-
-	self printWithoutConventions: aStream.
-	self print: self substring surroundedOn: aStream.
-
+MicTextBlock >> text [
+	^ bodystring 
 ]

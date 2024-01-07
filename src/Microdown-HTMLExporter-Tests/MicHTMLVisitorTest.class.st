@@ -79,11 +79,12 @@ MicHTMLVisitorTest >> testConfiguration [
 ]
 
 { #category : #tests }
-MicHTMLVisitorTest >> testContents [ 
+MicHTMLVisitorTest >> testContents [
 
 	self assert: writer contents equals: String empty.
-	writer visitItalic: (MicItalicFormatBlock new textElement: (MicTextBlock new substring: 'test')).
-	self assert: writer contents equals: '<i>test</i>'.
+	writer visitItalic: (MicItalicFormatBlock new children:
+			 { (MicTextBlock new bodystring: 'test') }).
+	self assert: writer contents equals: '<i>test</i>'
 ]
 
 { #category : #tests }

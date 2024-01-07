@@ -29,13 +29,13 @@ MicSameStartStopMarkupBlock >> arguments [
 
 { #category : #visiting }
 MicSameStartStopMarkupBlock >> caption [
-	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
+	self deprecated: 'Should only be used for test' transformWith: '`@rec caption' -> '`@rec testCaptionString'.
+	^ self testCaptionString.
 ]
 
 { #category : #'accessing-delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
-	
-	arguments at: #caption put: (MicInlineParser new parse: aString)
+	arguments at: #caption put: (self inlineParse: aString)
 ]
 
 { #category : #visiting }
@@ -64,4 +64,10 @@ MicSameStartStopMarkupBlock >> hasCaption [
 MicSameStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self lineStartMarkup
+]
+
+{ #category : #visiting }
+MicSameStartStopMarkupBlock >> testCaptionString [
+
+	^ (self arguments at: #caption ifAbsent: [ ^'No Caption' ]) printString
 ]

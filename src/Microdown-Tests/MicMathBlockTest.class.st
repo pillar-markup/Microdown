@@ -87,9 +87,10 @@ MicMathBlockTest >> testMathBlockWithParametersCaption [
 	| root math |
 	root := self parserClass new parse: '
 
-', MathOpeningBlockMarkup, 'key=cite&label=42&caption=Ze great formula
+' , MathOpeningBlockMarkup
+		        , 'key=cite&label=42&caption=Ze great formula
 V_i = C_0 - C_3 
-', MathClosingBlockMarkup.
+' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -98,9 +99,9 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: (math arguments at: 'label') equals: '42'.
 	self
-		assert: (math arguments at: 'caption') first substring
+		assert: (math arguments at: 'caption') first bodystring
 		equals: 'Ze great formula'.
-	self assert: math caption equals: 'Ze great formula'
+	self assert: math testCaptionString equals: 'an Array(Text(Ze great formula))'
 ]
 
 { #category : #tests }
@@ -109,9 +110,10 @@ MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 	| root math |
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'key=cite&label=42&caption=Ze **great** formula
+' , MathOpeningBlockMarkup
+		        , 'key=cite&label=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
-',MathClosingBlockMarkup.
+' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -120,10 +122,15 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: (math arguments at: 'label') equals: '42'.
 	self
-		assert: (math arguments at: 'caption') first kind
-		equals: 'basic'.
-	self assert: math caption equals: 'Ze great formula'.
-	self assert: math captionElements second kind equals: 'bold'
+		assert: (math arguments at: 'caption') first blockName asLowercase
+		equals: 'text'.
+	self
+		assert: math testCaptionString asString
+		equals:
+		'an Array(Text(Ze ) BoldFormat{ Text(great) } Text( formula))'.
+	self
+		assert: math captionElements second blockName asLowercase
+		equals: 'boldformat'
 ]
 
 { #category : #tests }

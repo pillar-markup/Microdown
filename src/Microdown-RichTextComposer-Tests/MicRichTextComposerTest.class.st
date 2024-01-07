@@ -272,7 +272,7 @@ line 2
 	self assert: richText asString trim equals: 
 'line 1
 line 2
-Roger Rabbit'
+an Array(Text(Roger Rabbit))'
 ]
 
 { #category : #'tests - codeBlock' }

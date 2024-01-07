@@ -22,6 +22,7 @@ Class {
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
 		'FigureNameOpenerMarkup',
+		'FixiousTextDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
 		'ItalicMarkup',
@@ -33,6 +34,7 @@ Class {
 		'MetaDataClosingBlockMarkup',
 		'MetaDataOpeningBlockMarkup',
 		'MonospaceMarkup',
+		'NameCloserUrlOpener',
 		'OrderedListSemiMarkup',
 		'PreformattedMarkup',
 		'RawCloserMarkup',
@@ -94,7 +96,9 @@ MicMicrodownSharedPool class >> initialize [
 	RawOpenerMarkup := '{{'. 
 	StrikeMarkup := '~'. 
 	URLCloserMarkup := ')'. 
-	URLOpenerMarkup := '('. 
+	URLOpenerMarkup := '('.
+	NameCloserUrlOpener := ']('.
+	FixiousTextDelimiter := 0 asCharacter asString.
 
 	Delimiters := { AnchorReferenceCloserMarkup . 
 	AnchorReferenceOpenerMarkup .
@@ -106,6 +110,7 @@ MicMicrodownSharedPool class >> initialize [
 	LinkNameCloserMarkup .  
 	LinkNameOpenerMarkup .  
 	MathMarkup .
+	NameCloserUrlOpener.
 	MonospaceMarkup .  
 	RawCloserMarkup . 
 	RawOpenerMarkup .
