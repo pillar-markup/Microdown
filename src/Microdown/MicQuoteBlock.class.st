@@ -11,24 +11,26 @@ In githubmarkdown the definitions are just super complex and we do not follow th
 
 "
 Class {
-	#name : #MicQuoteBlock,
-	#superclass : #MicContinuousMarkedBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicQuoteBlock',
+	#superclass : 'MicContinuousMarkedBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicQuoteBlock >> accept: aVisitor [
  	^ aVisitor visitQuote: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicQuoteBlock >> closeMe [
 	super closeMe.
 	
 	children := self inlineParse: text
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicQuoteBlock >> lineMarkup [
 
 	^ PreformattedMarkup

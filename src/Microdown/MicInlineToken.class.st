@@ -6,8 +6,8 @@ I have two instance variables:
 - delimiter, which is a reference to a subclass of MicAbstractDelimiter
 "
 Class {
-	#name : #MicInlineToken,
-	#superclass : #Object,
+	#name : 'MicInlineToken',
+	#superclass : 'Object',
 	#instVars : [
 		'delimiter',
 		'string'
@@ -15,39 +15,41 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineToken >> delimiter [
 
 	^ delimiter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineToken >> delimiter: anObject [
 
 	delimiter := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineToken >> printOn: aStream [
 	aStream << delimiter printString << $( << string << $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineToken >> string [
 
 	^ string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineToken >> string: anObject [
 
 	string := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineToken >> undelimitedSubstring [
 	"assume I am a token for a unevaluated delimiter, containing raw body - remove my delimiters"
 	^string 

@@ -4,15 +4,17 @@ I am a http reference encapsulating a http uri (`http//host/path/to/some/file.md
 
 "
 Class {
-	#name : #MicHTTPResourceReference,
-	#superclass : #MicAbsoluteResourceReference,
+	#name : 'MicHTTPResourceReference',
+	#superclass : 'MicAbsoluteResourceReference',
 	#classVars : [
 		'ResourcesCache'
 	],
-	#category : #'Microdown-Core'
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTTPResourceReference class >> bytesForUrl: url [
 	"I do the offline and isCachingResources logic
 	In particular notice that #getBytesByHttp: throws an 
@@ -27,7 +29,7 @@ MicHTTPResourceReference class >> bytesForUrl: url [
 		ifFalse: [ ^ self getBytesByHttp: url ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTTPResourceReference class >> getBytesByHttp: uri [
 	| client |
 	[(client := ZnEasy client)
@@ -41,12 +43,12 @@ MicHTTPResourceReference class >> getBytesByHttp: uri [
 			error resignalAs: (MicResourceReferenceError new messageText: 'Could not access ', uri printString)  ].
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicHTTPResourceReference class >> handlesUriScheme: scheme [
 	^ scheme beginsWith: 'http'
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicHTTPResourceReference class >> initialize [
 	"self initialize"
 
@@ -54,36 +56,36 @@ MicHTTPResourceReference class >> initialize [
 	self resetResourcesCache
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTTPResourceReference class >> isCachingResources [
 
 	^ Microdown isCachingResources 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTTPResourceReference class >> offline [
 	^ Microdown offline
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTTPResourceReference class >> resetResourcesCache [ 
 
 	ResourcesCache := nil 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTTPResourceReference class >> resourcesCache [
 
 	ResourcesCache ifNil: [ ResourcesCache := LRUCache new ].
 	^ ResourcesCache
 ]
 
-{ #category : #streams }
+{ #category : 'streams' }
 MicHTTPResourceReference >> binaryReadStream [
 	^ (self class bytesForUrl: self uri) readStream 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTTPResourceReference >> contents [
 	^ (self class bytesForUrl: self uri) utf8Decoded.
 ]

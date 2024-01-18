@@ -3,18 +3,20 @@ I am a stream of tokens.
 I have some logic for assigning delimiter types to the tokens as I build them.
 "
 Class {
-	#name : #MicInlineTokenStream,
-	#superclass : #Object,
+	#name : 'MicInlineTokenStream',
+	#superclass : 'Object',
 	#instVars : [
 		'tokens'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineTokenStream class >> backslashDecode: aString [
 	"I convert all encoded chars back to their original (without the leading escape character)"
 	"My sister method escapeEncode encodes into the format I decode from"
@@ -33,7 +35,7 @@ MicInlineTokenStream class >> backslashDecode: aString [
 	
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineTokenStream class >> backslashEncode: aString [
 	"I convert all escaped characters (eg '\`' or '\\') into special characters which are not used in Microdown"
 	"My sister method escapeDecode reverts back"
@@ -51,7 +53,7 @@ MicInlineTokenStream class >> backslashEncode: aString [
 	
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineTokenStream class >> backslashReescape: aString except: keep [
 	"I convert all encoded back to escaped chars, except the characters in keep"
 	"My sister method escapeEncode encodes into the format I decode from"
@@ -71,7 +73,7 @@ MicInlineTokenStream class >> backslashReescape: aString except: keep [
 	
 ]
 
-{ #category : #'escape character' }
+{ #category : 'escape character' }
 MicInlineTokenStream class >> magicCharacter [
 	"All escaped characters are moved out of range. 
 	The unicode range Private Use Area is used, 
@@ -79,12 +81,12 @@ MicInlineTokenStream class >> magicCharacter [
 	^ 16r100000 "Private Use Area-B"
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineTokenStream class >> on: escapedStream [
 	^ self new tokenize: escapedStream 
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicInlineTokenStream >> addDelimiter: string [
 	| delimiter decodedString|
 	delimiter := (MicInlineDelimiter at: string)
@@ -97,7 +99,7 @@ MicInlineTokenStream >> addDelimiter: string [
 		delimiter: delimiter)
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicInlineTokenStream >> addText: matchedString [
 	| token |
 	token := MicInlineToken new 
@@ -106,12 +108,12 @@ MicInlineTokenStream >> addText: matchedString [
 	tokens add: token
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineTokenStream >> initialize [
 	tokens := OrderedCollection new
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicInlineTokenStream >> tokenize: rawString [
 	| inlineString splits from|
 	inlineString := self class backslashEncode: rawString.

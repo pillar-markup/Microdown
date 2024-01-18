@@ -20,23 +20,25 @@ $$
 
 "
 Class {
-	#name : #MicMathBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicMathBlock',
+	#superclass : 'MicSameStartStopMarkupBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMathBlock >> accept: aVisitor [ 
  	^ aVisitor visitMath: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathBlock >> arguments [
 
 	^ arguments
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
@@ -47,7 +49,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 	^ lineWithoutMarkup
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicMathBlock >> lineStartMarkup [
 	
 	^ MathOpeningBlockMarkup

@@ -7,16 +7,18 @@ In particular I invoke a resolver for paths after parsing documents .
 <!inputFile|path=pharo:///Microdown/facadeMethods!>
 "
 Class {
-	#name : #Microdown,
-	#superclass : #Object,
+	#name : 'Microdown',
+	#superclass : 'Object',
 	#classVars : [
 		'IsCachingResources',
 		'Offline'
 	],
-	#category : #'Microdown-Core'
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> asRichText: aStringOrDoc [
 	"Facade method to render a microdown document or string to Text"
 	^ MicRichTextComposer asRichText: aStringOrDoc.
@@ -24,12 +26,12 @@ Microdown class >> asRichText: aStringOrDoc [
 	
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> builder [
 	^ MicrodownParser builder
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> facadeMethods [
 	| facadeMethods aBuilder |
 	facadeMethods := self methodsInProtocol: 'facade'.
@@ -45,14 +47,14 @@ Microdown class >> facadeMethods [
 	
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> isCachingResources [
 	IsCachingResources ifNil: [ IsCachingResources := true ].
 
 	^ IsCachingResources 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> isCachingResources: aBoolean [
 
 	IsCachingResources := aBoolean.
@@ -62,12 +64,12 @@ Microdown class >> isCachingResources: aBoolean [
 	aBoolean ifFalse: [ MicHTTPResourceReference resetResourcesCache ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> isCachingResourcesDocForSetting [
 	^ 'When we refer to an HTTP resources, use a  cache it instead of systematically refetch it.'
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> microdownPreferenceSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #microdownAndcomments)
@@ -88,34 +90,34 @@ Microdown class >> microdownPreferenceSettingsOn: aBuilder [
 			]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> offline [
 	Offline ifNil: [ Offline := false ].
 	^ Offline
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> offline: aBoolean [
 
 	Offline := aBoolean
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Microdown class >> offlineDocForSetting [
 	^ 'When online is chosen, requests to external images are only performed when they are not in the image cache (since requesting systematically HTTP may lead of latency. Each figure is cached, so the request is at most done one per external references. When the system is online but the request failed we return a placeholder that is not cached.
 			
 			When offline, requests to external images are not performed. The cache can be reset executing PRRichTextComposer resetCache. When the system is off line and an image is requested, a placeholder is computed but not put in the cache. This way when the system is put online the requested elements will be requested and put in the cache (without needing to flush placeholders from the cache).'
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> parse: aStreamOrString [
 
 	^ self new parse: aStreamOrString
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> resolveDocument: document withBase: base [
 	"resolve all relative urls in document with respect to the absolute uri 
 	base can be a aString | aZnUrl | absoluteResourceReference"
@@ -123,7 +125,7 @@ Microdown class >> resolveDocument: document withBase: base [
 	^ document 
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown class >> resolveString: markup withBase: uri [
 	"resolve all relative urls in document with respect to the absolute uri (aString|aZnUrl|absoluteResourceReference)"
 	| doc |
@@ -132,26 +134,26 @@ Microdown class >> resolveString: markup withBase: uri [
 	^ doc
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown >> builder [
 
 	^ self class builder
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown >> parse: aStreamOrString [
 
 	^ MicrodownParser parse: aStreamOrString
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown >> render: aStringOrDoc [
 	"Facade method to render a microdown string to Text"
 	^ self class render: aStringOrDoc 
 	
 ]
 
-{ #category : #facade }
+{ #category : 'facade' }
 Microdown >> resolveDocument: document withBase: base [
 	"resolve all relative urls in document with respect to the absolute uri 
 	base can be a aString | aZnUrl | absoluteResourceReference"

@@ -7,38 +7,40 @@ See *@fig1@*
 
 "
 Class {
-	#name : #MicAnchorReferenceBlock,
-	#superclass : #MicUnEvaluatedBlock,
+	#name : 'MicAnchorReferenceBlock',
+	#superclass : 'MicUnEvaluatedBlock',
 	#instVars : [
 		'reference'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock class >> closingDelimiter [
 
  	^ AnchorReferenceCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock class >> openingDelimiter [
 
  	^ AnchorReferenceOpenerMarkup
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference [
 
 	^ reference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference: anObject [
 
 	reference := anObject

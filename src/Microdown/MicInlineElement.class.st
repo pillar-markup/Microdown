@@ -10,65 +10,67 @@ I am characterized by:
 
 "
 Class {
-	#name : #MicInlineElement,
-	#superclass : #MicElement,
-	#category : #'Microdown-InlineParser'
+	#name : 'MicInlineElement',
+	#superclass : 'MicElement',
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement class >> blockName [
 	^ (self instanceSide name asString withoutPrefix: 'Mic') withoutSuffix: 'Block'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement class >> closingDelimiter [
 	^ self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineElement class >> isEvaluated [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement class >> openingDelimiter [
 	^ self subclassResponsibility
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineElement >> accept: dummy [
 	"implemented in subclasses"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> blockName [
 	^ self class blockName
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineElement >> closeMe [
 	"use for post parsing initialization"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> closingDelimiter [ 
 	^ self class closingDelimiter
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicInlineElement >> inlineParserClass [
 
 	^ MicInlineParser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> kind [
 	"Should only be used for tests"
 	self deprecated: 'use blockName instead' transformWith: '`@rec kind' -> '`@rec blockName asLowercase'.
 	^ self blockName asLowercase 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineElement >> openingDelimiter [
 	^ self class openingDelimiter
 ]

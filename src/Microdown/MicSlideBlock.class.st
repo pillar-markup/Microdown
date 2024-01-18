@@ -12,35 +12,37 @@ to have the same slide but on two different layouts and not emit both.
 ```
 "
 Class {
-	#name : #MicSlideBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicSlideBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSlideBlock class >> tag [
 
 	^ #slide
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSlideBlock >> accept: aVisitor [
 	^ aVisitor visitSlide: self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicSlideBlock >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream nextPutAll: ' -- ' ; nextPutAll: self title
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSlideBlock >> tag [
 	^ arguments at: 'tag' ifAbsent: [ '' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSlideBlock >> title [
 	^ arguments at: 'title' ifAbsent: [ '' ]
 ]

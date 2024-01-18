@@ -5,42 +5,44 @@ I have an unfortunate restiction, if I am inlined in an other inline block, I sh
 Forexample `**https://somewhere.org_**` (`_` representing Character space)
 "
 Class {
-	#name : #MicInlineHttpDelimiter,
-	#superclass : #MicInlineDelimiter,
+	#name : 'MicInlineHttpDelimiter',
+	#superclass : 'MicInlineDelimiter',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineHttpDelimiter class >> initializeDelimiters [
 	self new addMe.
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpDelimiter >> blockClass [
 	^ MicInlineHttpBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpDelimiter >> closer [
 	^ String space
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineHttpDelimiter >> isRawkind [
 	"I am an opener whose resulting nodes body is not further parsed"
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpDelimiter >> markup [
 	^ 'http'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpDelimiter >> markupAsRegex [
 	^ 'http(s)?\://[\S]+' 
 ]

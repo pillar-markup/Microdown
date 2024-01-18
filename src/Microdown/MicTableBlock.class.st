@@ -34,21 +34,23 @@ No support for \|
 
 "
 Class {
-	#name : #MicTableBlock,
-	#superclass : #MicContinuousMarkedBlock,
+	#name : 'MicTableBlock',
+	#superclass : 'MicContinuousMarkedBlock',
 	#instVars : [
 		'rows',
 		'hasHeader'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTableBlock >> accept: aVisitor [
 	^ aVisitor visitTable: self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicTableBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
@@ -59,7 +61,7 @@ MicTableBlock >> addLineAndReturnNextNode: line [
 	
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicTableBlock >> closeMe [ 
 
 	| firstSize |
@@ -69,13 +71,13 @@ MicTableBlock >> closeMe [
 		        each collect: [ :e | self inlineParse: e ] ].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicTableBlock >> cut: row toSize: firstSize [
 
 	^ row copyFrom: 1 to: ( row size min: firstSize)
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicTableBlock >> extractLine: line [
 	"recondition line starts with |
 	
@@ -95,19 +97,19 @@ MicTableBlock >> extractLine: line [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTableBlock >> hasHeader [
 	^ hasHeader
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTableBlock >> initialize [ 
 	super initialize.
 	rows := OrderedCollection new.
 	hasHeader := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicTableBlock >> isHeader: line [
 	"Return true whether a line is a table header identification i.e., | --- | --- |"
 	
@@ -117,13 +119,13 @@ MicTableBlock >> isHeader: line [
 	
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicTableBlock >> lineMarkup [
 
 	^ TableCellMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTableBlock >> rows [
 	^ rows
 ]

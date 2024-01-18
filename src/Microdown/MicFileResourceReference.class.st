@@ -17,15 +17,17 @@ You can get an instance of me from a pharo `FileReference` using `MicFileResourc
 The test class `MicFileResourceTest` has two tests `testLoadImage` and `testLoadMicrodown` which show how to use me.
 "
 Class {
-	#name : #MicFileResourceReference,
-	#superclass : #MicAbsoluteResourceReference,
+	#name : 'MicFileResourceReference',
+	#superclass : 'MicAbsoluteResourceReference',
 	#instVars : [
 		'filesystem'
 	],
-	#category : #'Microdown-Core'
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicFileResourceReference class >> fromFileRef: aFileReference [
 	"return an instance of me which references aFileReference"
 	| znUrl |
@@ -37,12 +39,12 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 		filesystem: aFileReference fileSystem 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicFileResourceReference class >> handlesUriScheme: scheme [
 	^ scheme = 'file'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> binaryReadStream [
 	[^ self fileReference binaryReadStream]
 	on: FileDoesNotExistException 
@@ -50,13 +52,13 @@ MicFileResourceReference >> binaryReadStream [
 		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFileResourceReference >> canSave [
 	"return true if I implement contents: "
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> contents [
 	[^ self fileReference isDirectory ifTrue: [''] ifFalse: [self fileReference contents] ]
 	on: FileDoesNotExistException 
@@ -64,7 +66,7 @@ MicFileResourceReference >> contents [
 		error resignalAs: (MicResourceReferenceError new messageText: 'Microdown file not found')  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> contents: aString [
 	"write the contents of a string to my file"
 	|fileRef|
@@ -73,44 +75,44 @@ MicFileResourceReference >> contents: aString [
 	self fileReference writeStreamDo: [ :stream | stream nextPutAll: aString ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> fileReference [ 
 	^ self filesystem referenceTo: self path
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> filesystem [
 	^ filesystem
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> filesystem: anObject [
 
 	filesystem := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> fullName [ 
 	^ self path
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicFileResourceReference >> initialize [
 	super initialize.
 	filesystem := FileSystem disk.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> isDirectory [
 	^ self fileReference isDirectory 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFileResourceReference >> isMicrodownResourceFileReference [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileResourceReference >> loadChildren [
 	"return a collection of MifResourceReferences if I am a directory, empty if I am not a directory"
 	self isDirectory ifFalse: [ ^ #() ].

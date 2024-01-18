@@ -8,66 +8,68 @@ My subclasses manage figures and links.
 ![Pharologo](https://files.pharo.org/media/logo/logo.png)
 "
 Class {
-	#name : #MicInlineBlockWithUrl,
-	#superclass : #MicInlineElement,
+	#name : 'MicInlineBlockWithUrl',
+	#superclass : 'MicInlineElement',
 	#instVars : [
 		'children',
 		'url',
 		'reference',
 		'arguments'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
 	^ aParser parseNameUrlBlock: self from: aTokenStream token: token
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineBlockWithUrl >> anchor [
 	^ self arguments 
 		at: #anchor 
 		ifAbsent: [ nil ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments [
 
 	^ arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments: anObject [
 
 	arguments := anObject
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements [
 	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
 	^ children
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements: someChildren [
 	self deprecated: 'Use children: instead' transformWith: '`@rec captionElements: `@arg' -> '`@rec children: `@arg'.
 	children := someChildren 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> children [
 
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> children: anObject [
 
 	children := anObject
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineBlockWithUrl >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
@@ -80,23 +82,23 @@ MicInlineBlockWithUrl >> closeMe [
 	self arguments: (MicArgumentList withString: title)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineBlockWithUrl >> hasAnchor [
 
 	^ self anchor isNotNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineBlockWithUrl >> hasArguments [
 	^ arguments size > 0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
 	arguments := OrderedDictionary new.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineBlockWithUrl >> printOn: stream [
 	stream << self blockName << '{ '.
 	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
@@ -105,25 +107,25 @@ MicInlineBlockWithUrl >> printOn: stream [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference [
 
 	^ reference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference: anObject [
 
 	reference := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> url [
 
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> url: anObject [
 
 	url := anObject
