@@ -1,6 +1,6 @@
-Extension { #name : #Text }
+Extension { #name : 'Text' }
 
-{ #category : #'*Microdown-RichTextComposer' }
+{ #category : '*Microdown-RichTextComposer' }
 Text >> trim [
 	| left right |
 	left := 1.

@@ -11,12 +11,14 @@ I will find a subclass matching `languageTag`.
 My subclasses identify tags it they will handle.
 "
 Class {
-	#name : #MicRichTextCodeBlockStyler,
-	#superclass : #Object,
-	#category : #'Microdown-RichTextComposer-Composer'
+	#name : 'MicRichTextCodeBlockStyler',
+	#superclass : 'Object',
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 MicRichTextCodeBlockStyler class >> buildMicroDownUsing: aBuilder  withComment: aComment [
 	super buildMicroDownUsing: aBuilder  withComment: aComment.
 	"Only add this list here, not in my subclasses"
@@ -31,12 +33,12 @@ MicRichTextCodeBlockStyler class >> buildMicroDownUsing: aBuilder  withComment: 
 			]]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStyler class >> styleTags [
 	^ #()
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStyler class >> stylerFor: languageName [
 	^ (self allSubclasses 
 		detect: [ :cl | (cl styleTags collect: #asLowercase) includes: languageName asLowercase   ] 
@@ -44,7 +46,7 @@ MicRichTextCodeBlockStyler class >> stylerFor: languageName [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCodeBlockStyler >> style: sourceString [ 
 	^ self subclassResponsibility
 ]

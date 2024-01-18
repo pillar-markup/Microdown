@@ -17,22 +17,24 @@ I support the following arguments: {!richtext|bullets=◊»!}
 - spaceAfterHeader
 "
 Class {
-	#name : #MicRichTextFormatConfiguration,
-	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-RichTextComposer-BlockExtensions'
+	#name : 'MicRichTextFormatConfiguration',
+	#superclass : 'MicAnnotationBlock',
+	#category : 'Microdown-RichTextComposer-BlockExtensions',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'BlockExtensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextFormatConfiguration class >> tag [
 	^ #richtext
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextFormatConfiguration >> accept: visitor [
 	visitor visitRichTextFormatConfiguration: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextFormatConfiguration >> adjustStyler: styler [
 	| setters |
 	setters := self setterDictionaryFor: styler.
@@ -43,7 +45,7 @@ MicRichTextFormatConfiguration >> adjustStyler: styler [
 		 ].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextFormatConfiguration >> setterDictionaryFor: styler [
 	^ {	
 	'bullets' -> [ :a | styler bullets: a].

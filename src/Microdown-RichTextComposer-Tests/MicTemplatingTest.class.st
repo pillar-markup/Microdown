@@ -1,10 +1,12 @@
 Class {
-	#name : #MicTemplatingTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#name : 'MicTemplatingTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTemplatingTest >> testBaselineWithoutBaselineMethodShouldNotBreak [
 	
 	
