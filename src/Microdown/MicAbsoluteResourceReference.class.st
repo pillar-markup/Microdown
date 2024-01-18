@@ -5,56 +5,58 @@ A reference will then be resolved and produces a resource.
 Common for all absolute references is that they store their reference in a uri (ZnUrl).
 "
 Class {
-	#name : #MicAbsoluteResourceReference,
-	#superclass : #MicResourceReference,
+	#name : 'MicAbsoluteResourceReference',
+	#superclass : 'MicResourceReference',
 	#instVars : [
 		'uri'
 	],
-	#category : #'Microdown-Core'
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> binaryReadStream [
 	"return the binaryStream I refer to"
 	self subclassResponsibility.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbsoluteResourceReference >> canSave [
 	"return true if I implement contents: "
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> contents [
 	"return the contents I refer to"
 	self subclassResponsibility.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> contents: aString [
 	"Some of my subclasses can be written to. By default you cannot, and I then give an error"
 	MicResourceReferenceError signal: self printString, ' can not be given new contents'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAbsoluteResourceReference >> isMicrodownResourceFileReference [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> loadChildren [
 	"return a collection of absolute child references"
 	^#()
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicAbsoluteResourceReference >> loadImage [
 	"Throws UnrecognizedImageFormatError in case Pharo does not understand this image type (for exampel svg is not supported)"
 	^ ImageReadWriter formFromStream: self binaryReadStream
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 MicAbsoluteResourceReference >> loadMicrodown [
 	"I am an absolute reference, so I can load completely"
 	| doc| 
@@ -63,13 +65,13 @@ MicAbsoluteResourceReference >> loadMicrodown [
 	^ doc
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> path [
 	"return the path part of my uri"
 	^ '/', uri path
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicAbsoluteResourceReference >> printOn: aStream [
 	super printOn: aStream.
 	aStream
@@ -78,7 +80,7 @@ MicAbsoluteResourceReference >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAbsoluteResourceReference >> resolveDocument: document [
 	MicZincPathResolver 
 		resolve: document 
@@ -86,18 +88,18 @@ MicAbsoluteResourceReference >> resolveDocument: document [
 	^ document
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> uri [
 
 	^ uri
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> uri: aZnUrl [
 	uri := aZnUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbsoluteResourceReference >> uriString [
 	^ uri printString
 ]

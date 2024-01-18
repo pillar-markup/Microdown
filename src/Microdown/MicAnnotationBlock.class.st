@@ -12,27 +12,29 @@ MicroDownParser parse: '{!citation|name=Duca99a!}'
 ```
 "
 Class {
-	#name : #MicAnnotationBlock,
-	#superclass : #MicUnEvaluatedBlock,
+	#name : 'MicAnnotationBlock',
+	#superclass : 'MicUnEvaluatedBlock',
 	#instVars : [
 		'arguments'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock class >> closingDelimiter [
 
  	^ AnnotationCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock class >> openingDelimiter [
 
  	^ AnnotationOpenerMarkup
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	| bodystring arguments tag extensionClass |
 	bodystring := delimiter undelimitedSubstring.
@@ -49,24 +51,24 @@ MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 		arguments: arguments
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnnotationBlock >> accept: aVisitor [
 	^ aVisitor visitAnnotation: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> arguments [
 
 	^ arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> arguments: argumentList [
 
 	arguments := argumentList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationBlock >> name [
 	^ arguments defaultValue
 ]

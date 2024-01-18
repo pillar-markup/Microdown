@@ -1,20 +1,22 @@
 Class {
-	#name : #MicInlineBlockTest,
-	#superclass : #TestCase,
+	#name : 'MicInlineBlockTest',
+	#superclass : 'TestCase',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-InlineParser'
+	#category : 'Microdown-Tests-InlineParser',
+	#package : 'Microdown-Tests',
+	#tag : 'InlineParser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineBlockTest >> testAllTerminalNodesImplementsAccept [
 	(MicInlineElement allSubclasses select: [ :cl | cl allSubclasses isEmpty ])
 		do: [ :class |  self assert: (class includesSelector: #accept:) ]
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineBlockTest >> testBlockName [
 	self assert: MicFigureBlock blockName equals: 'Figure'.
 	self assert: MicBoldFormatBlock blockName equals: 'BoldFormat'

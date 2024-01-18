@@ -7,21 +7,23 @@ I'm block that represents an anchor to a section. This way text can refer to the
 ``` 
 "
 Class {
-	#name : #MicAnchorBlock,
-	#superclass : #MicSingleLineBlock,
+	#name : 'MicAnchorBlock',
+	#superclass : 'MicSingleLineBlock',
 	#instVars : [
 		'label',
 		'target'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorBlock >> accept: aVisitor [
  	^ aVisitor visitAnchor: self
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicAnchorBlock >> addLineAndReturnNextNode: line [
 	"# bla
 	@myanchor
@@ -30,28 +32,28 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAnchorBlock >> hasLabel [ 
 	label ifNil: [ ^ false ].
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorBlock >> label [
 	^ label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorBlock >> label: anObject [
 	label := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorBlock >> target [
 	^ target
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorBlock >> target: aMicHeaderBlock [ 
 	target := aMicHeaderBlock
 ]

@@ -2,40 +2,42 @@
 I represent a monospaced text section. I'm delimited using `\`` as in `\`monospace\`` to obtain `monospace`.
 "
 Class {
-	#name : #MicMonospaceFormatBlock,
-	#superclass : #MicUnEvaluatedBlock,
-	#category : #'Microdown-InlineParser'
+	#name : 'MicMonospaceFormatBlock',
+	#superclass : 'MicUnEvaluatedBlock',
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock class >> blockName [
 	^ (super blockName) withoutSuffix: 'Format'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock class >> closingDelimiter [
 
  	^ MonospaceMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock class >> openingDelimiter [
 
  	^ MonospaceMarkup
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMonospaceFormatBlock >> accept: aVisitor [
 	^ aVisitor visitMonospace: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock >> children [
 	"should be deprecated"
 	^ Array with: (MicTextBlock new bodystring: self bodystring)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMonospaceFormatBlock >> text [
 	"should be deprecated "
 	^ self bodystring 

@@ -2,12 +2,14 @@
 A MicrodownVisitorTest is a test class for testing the behavior of MicrodownVisitor
 "
 Class {
-	#name : #MicrodownVisitorTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Visitor'
+	#name : 'MicrodownVisitorTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Tests-Visitor',
+	#package : 'Microdown-Tests',
+	#tag : 'Visitor'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownVisitorTest >> testAllVisitMethodsExists [
 	"Check that all visitSomeBlockType: used in an accept: method are implemented in MicrodownVisitor.
 	See Issue https://github.com/pillar-markup/Microdown/issues/533"

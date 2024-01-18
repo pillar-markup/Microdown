@@ -18,23 +18,25 @@ Morph new
 ```
 "
 Class {
-	#name : #MicPharoScriptBlock,
-	#superclass : #MicScriptBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicPharoScriptBlock',
+	#superclass : 'MicScriptBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoScriptBlock class >> tag [
 
 	^ #pharoscript
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicPharoScriptBlock >> accept: aVisitor [
 	^ aVisitor visitPharoScript: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicPharoScriptBlock >> title [
 	^ arguments at: 'title' ifAbsent: [ '' ]
 ]

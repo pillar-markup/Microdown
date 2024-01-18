@@ -1,10 +1,12 @@
 Class {
-	#name : #MicInputfileBlockTest,
-	#superclass : #MicAnnotationSubclassTest,
-	#category : #'Microdown-Tests-Extensions'
+	#name : 'MicInputfileBlockTest',
+	#superclass : 'MicAnnotationSubclassTest',
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
 	| mic resourceReference |
 	"a path starting with / should give an absolute file reference"
@@ -14,7 +16,7 @@ MicInputfileBlockTest >> testMicInputfileIsNotRelativeFilePath [
 	self assert: resourceReference path equals: '/chapters/withStyle.md'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInputfileBlockTest >> testMicInputfileIsRelativeFilePath [
 	| mic infileReference |
 	mic := parser parse: '<!inputFile|path=chapters/withStyle.md!>'.
@@ -23,7 +25,7 @@ MicInputfileBlockTest >> testMicInputfileIsRelativeFilePath [
 	self assert: infileReference relativePath equals: 'chapters/withStyle.md'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInputfileBlockTest >> testMicInputfilePath [
 	| mic infileReference |
 	mic := parser parse: '<!inputFile|path=chapters/withStyle.md!>'.
@@ -31,7 +33,7 @@ MicInputfileBlockTest >> testMicInputfilePath [
 	self assert: infileReference relativePath equals: 'chapters/withStyle.md' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInputfileBlockTest >> testMicInputfilePathError [
 	| doc fileInputBlock |
 	doc := parser parse: '<!inputFile|pa=fchapters/withStyle.md!>'.

@@ -1,11 +1,11 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 String >> asMicResourceReference [
 	^ MicResourceReference fromUri: self
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 String >> escapeAll [
 	| escaped |
 	escaped := String new: self size * 2.
@@ -15,12 +15,12 @@ String >> escapeAll [
 	^ escaped
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 String >> resolveDocument: document [
 	^ self asMicResourceReference resolveDocument: document.
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 String >> stripNtabs: n [
 	"remove up to N tabs from the beginning"
 	| count max |
@@ -31,7 +31,7 @@ String >> stripNtabs: n [
 	^ self allButFirst: count-1
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 String >> withoutPreTabs [
 	"return a copy of me, without tabs in the begining "
 	^ self trimLeft: [ :char | char = Character tab ]

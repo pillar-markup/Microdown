@@ -1,6 +1,6 @@
-Extension { #name : #MicFigureBlock }
+Extension { #name : 'MicFigureBlock' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicFigureBlock >> altText [
 	^ (self children collect: #plainText) joinUsing: ' '
 ]

@@ -2,42 +2,44 @@
 A command to open a Help window explaining Microdown HTML styler topics.
 "
 Class {
-	#name : #MicHTMLStylerHelpCommand,
-	#superclass : #MicHTMLStylerCommand,
-	#category : #'Microdown-HTMLExporter-Spec-Commands'
+	#name : 'MicHTMLStylerHelpCommand',
+	#superclass : 'MicHTMLStylerCommand',
+	#category : 'Microdown-HTMLExporter-Spec-Commands',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec-Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerHelpCommand class >> defaultDescription [ 
 
 	^ 'Help'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHelpCommand class >> defaultIconName [
 
 	^ #smallHelp
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerHelpCommand class >> defaultName [
 
 	^ 'Help'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerHelpCommand class >> defaultShortcutKey [
 
 	^ $p command mac | $p ctrl win | $p ctrl unix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerHelpCommand class >> order [
 
 	^ 9
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MicHTMLStylerHelpCommand >> execute [
 	"Open a Help"
 

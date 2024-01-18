@@ -2,8 +2,8 @@
 A MicMicrodownTextualBuilderTest is a test class for testing the behavior of MicMicrodownTextualBuilder
 "
 Class {
-	#name : #MicMicrodownTextualBuilderTest,
-	#superclass : #TestCase,
+	#name : 'MicMicrodownTextualBuilderTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'factory',
 		'builder'
@@ -11,35 +11,37 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-Builder'
+	#category : 'Microdown-Tests-Builder',
+	#package : 'Microdown-Tests',
+	#tag : 'Builder'
 }
 
-{ #category : #'tests - codeblock' }
+{ #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> exampleMathTextMultipleLines [
 	^ 'y = 3
 x = 2 + y'
 ]
 
-{ #category : #'tests - codeblock' }
+{ #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> exampleTextMultipleLines [
 	^ 'Hello
 Pharo'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicMicrodownTextualBuilderTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
 	builder := Microdown builder
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchor [
 
 	self assert: (builder anchor: 'Anchor') contents equals:  AnchorMarkup, 'Anchor'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnchorReference [
 
 	self 
@@ -47,13 +49,13 @@ MicMicrodownTextualBuilderTest >> testAnchorReference [
 		equals: AnchorReferenceOpenerMarkup, 'AnchorReference', AnchorReferenceCloserMarkup
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnnotated [
 
 	self assert: (builder annotated: 'anAnnotation' paragraph:  [ builder text: 'anAnnotatedParagraph' ]) contents equals: '!!anAnnotation anAnnotatedParagraph', String cr
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnnotation [
 
 	self 
@@ -61,7 +63,7 @@ MicMicrodownTextualBuilderTest >> testAnnotation [
 		equals: AnnotationOpenerMarkup,'anAnnotationName | label=aLabel&value=42', AnnotationCloserMarkup 
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 
 	self 
@@ -69,13 +71,13 @@ MicMicrodownTextualBuilderTest >> testAnnotationNoArgs [
 		equals: AnnotationOpenerMarkup, 'anAnnotationName', AnnotationCloserMarkup
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicMicrodownTextualBuilderTest >> testBold [
 
 	self assert: (builder bold: [builder text: 'Bold']) contents equals: '**Bold**'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMicrodownTextualBuilderTest >> testCell [
 
 	self
@@ -86,7 +88,7 @@ MicMicrodownTextualBuilderTest >> testCell [
 		equals: '| this is **bold** '
 ]
 
-{ #category : #'tests - codeblock' }
+{ #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlock [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -112,7 +114,7 @@ MicMicrodownTextualBuilderTest >> testCodeBlock [
 
 ]
 
-{ #category : #'tests - codeblock' }
+{ #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -140,7 +142,7 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 
 ]
 
-{ #category : #'tests - slides' }
+{ #category : 'tests - slides' }
 MicMicrodownTextualBuilderTest >> testColumns [
 
 	self 
@@ -153,7 +155,7 @@ This is a paragraph in a columns
 '
 ]
 
-{ #category : #'tests - slides' }
+{ #category : 'tests - slides' }
 MicMicrodownTextualBuilderTest >> testColumnsWithChildren [
 
 	self 
@@ -173,13 +175,13 @@ This is a paragraph in a column
 '
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testComment [
 
 	self assert: (builder comment: 'Comment') contents equals: CommentedLineMarkup, ' Comment'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testEnvironment [
 
 	self 
@@ -188,7 +190,7 @@ MicMicrodownTextualBuilderTest >> testEnvironment [
 !>'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testEnvironmentWithBody [
 
 	self 
@@ -200,7 +202,7 @@ aText
 !>'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLink [
 
 	self 
@@ -208,7 +210,7 @@ MicMicrodownTextualBuilderTest >> testExternalLink [
 		equals: '[aDescription](anUrl)'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLinkWithBold [
 
 	self 
@@ -216,7 +218,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithBold [
 		equals: '[**aDescription**](anUrl)'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLinkWithItalic [
 
 	self 
@@ -224,7 +226,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithItalic [
 		equals: '[_aDescription_](anUrl)'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLinkWithMonospace [
 
 	self 
@@ -232,7 +234,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithMonospace [
 		equals: '[`aDescription`](anUrl)'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLinkWithNested [
 
 	self 
@@ -240,7 +242,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithNested [
 		equals: '[**_aDescription_**](anUrl)'
 ]
 
-{ #category : #'tests - references' }
+{ #category : 'tests - references' }
 MicMicrodownTextualBuilderTest >> testExternalLinkWithStrike [
 
 	self 
@@ -248,7 +250,7 @@ MicMicrodownTextualBuilderTest >> testExternalLinkWithStrike [
 		contents equals: '[~aDescription~](anUrl)'
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicMicrodownTextualBuilderTest >> testFigureInPresenceOfParagraph [
 	| dictionnary |
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
@@ -264,7 +266,7 @@ MicMicrodownTextualBuilderTest >> testFigureInPresenceOfParagraph [
 ![it is a beautifull figure](http://www.pharo.org/files/ouf.png label=aLabel&size=80)'
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicMicrodownTextualBuilderTest >> testFigureWithBold [
 
 	self 
@@ -275,7 +277,7 @@ MicMicrodownTextualBuilderTest >> testFigureWithBold [
 		equals: '![it is a**beautifull**figure](http://www.pharo.org/light.jpeg)'
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicMicrodownTextualBuilderTest >> testFigureWithParameters [
 	| dictionnary |
 	dictionnary := {'label'->'aLabel' . 'size'->'80'} asOrderedDictionary.
@@ -288,12 +290,12 @@ MicMicrodownTextualBuilderTest >> testFigureWithParameters [
 		equals: '![it is a beautifull figure](http://www.pharo.org/flo.png label=aLabel&size=80)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMicrodownTextualBuilderTest >> testHeadCell [
 	self assert: builder headCell contents equals: '| --- '
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 
 	self 
@@ -306,7 +308,7 @@ MicMicrodownTextualBuilderTest >> testHeaderWithItalic [
 '
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testHorizontalLine [
 
 	self 
@@ -314,7 +316,7 @@ MicMicrodownTextualBuilderTest >> testHorizontalLine [
 		equals: HorizontalLineMarkup, String cr
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testInputfile [
 
 	self 
@@ -323,13 +325,13 @@ MicMicrodownTextualBuilderTest >> testInputfile [
 ',EnvironmentOpeningBlockMarkup ,'inputFile|path=Chapters/image.png', EnvironmentClosingBlockMarkup 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicMicrodownTextualBuilderTest >> testItalic [
 
 	self assert: (builder italic: [ builder text: 'Italic' ]) contents equals: '_Italic_'
 ]
 
-{ #category : #'tests - codeblock' }
+{ #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testMathBlockCaptionContainsMonospace [
 
 	"```language2=Pharo&caption=`Color` is cool
@@ -354,13 +356,13 @@ MathOpeningBlockMarkup, 'label=Math&caption=`Math` is cool
 
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMathInline [
 
 	self assert: (builder mathInline: 'x = 2 + y') contents equals: '$x = 2 + y$'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testMetaData [
 
 	self 
@@ -368,13 +370,13 @@ MicMicrodownTextualBuilderTest >> testMetaData [
 		equals: MetaDataOpeningBlockMarkup , String cr ,'"label" : "aLabel",' , String cr, '"size" : "142"', String cr , MetaDataClosingBlockMarkup
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicMicrodownTextualBuilderTest >> testMonospace [
 
 	self assert: (builder monospace: 'Monospace') contents equals: '`Monospace`'
 ]
 
-{ #category : #'tests - slides' }
+{ #category : 'tests - slides' }
 MicMicrodownTextualBuilderTest >> testOneColumn [
 
 	self 
@@ -389,7 +391,7 @@ This is a paragraph in a column
 '
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testOrderedListDuring [
 
 	self 
@@ -402,32 +404,32 @@ MicMicrodownTextualBuilderTest >> testOrderedListDuring [
 '
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
 	self assert: (builder paragraph: [ builder text: 'aParagraph' ]) contents equals: 'aParagraph', String cr
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testQuoteBlock [
 
 	self assert: (builder quoteBlock: 'aQuote') contents equals: PreformattedMarkup, ' aQuote'
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testRawFormat [
 
 	self assert: (builder rawFormat: 'aRawFormat') contents equals: RawOpenerMarkup, 'aRawFormat', RawCloserMarkup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMicrodownTextualBuilderTest >> testRawParametersWithNotStringAtValue [
 	
 	builder rawParameters: { 'label'->42 . 'size'->MicTextBlock } asDictionary.
 	self assert: builder contents equals: 'label=42&size=MicTextBlock'
 ]
 
-{ #category : #'tests - slides' }
+{ #category : 'tests - slides' }
 MicMicrodownTextualBuilderTest >> testSimpleSlide [
 
 	self 
@@ -441,13 +443,13 @@ This is a paragraph in a slide
 '
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicMicrodownTextualBuilderTest >> testStrike [
 
 	self assert: (builder strike: [ builder text: 'Strike']) contents equals: '~Strike~'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicMicrodownTextualBuilderTest >> testStrikeInHeader [
 	
 	self assert: (builder 
@@ -460,7 +462,7 @@ MicMicrodownTextualBuilderTest >> testStrikeInHeader [
 '
 ]
 
-{ #category : #'tests - anchor' }
+{ #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testUnorderedList [
 
 	self 

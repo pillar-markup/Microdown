@@ -1,11 +1,11 @@
-Extension { #name : #FileReference }
+Extension { #name : 'FileReference' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 FileReference >> asMicResourceReference [ 
 	^ MicFileResourceReference fromFileRef: self
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 FileReference >> resolveDocument: document [
 	^ self asMicResourceReference resolveDocument: document.
 ]

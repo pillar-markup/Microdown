@@ -1,6 +1,6 @@
-Extension { #name : #MicInlineBlockWithUrl }
+Extension { #name : 'MicInlineBlockWithUrl' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
 
@@ -9,7 +9,7 @@ MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 		ifPresent: aBlock
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicInlineBlockWithUrl >> argumentAt: aKey put: value [
 	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
 
@@ -18,7 +18,7 @@ MicInlineBlockWithUrl >> argumentAt: aKey put: value [
 		put: value
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicInlineBlockWithUrl >> hasChildren [
 	^ self children notEmpty
 ]

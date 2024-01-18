@@ -7,55 +7,57 @@ My class side method `initializeDelimiters` gathers delimiters from my subclasse
 
 "
 Class {
-	#name : #MicInlineDelimiter,
-	#superclass : #Object,
+	#name : 'MicInlineDelimiter',
+	#superclass : 'Object',
 	#classVars : [
 		'DelimiterDictionary'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter class >> all [
 	DelimiterDictionary ifNil: [ self initializeDelimiters ].
 	^ DelimiterDictionary values
 ]
 
-{ #category : #'private utilities' }
+{ #category : 'private utilities' }
 MicInlineDelimiter class >> allRegex [
 	^ ((MicInlineDelimiter all collect: #markupAsRegex) joinUsing: '|') asRegex
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter class >> at: markup [
 	"return delimiter at markup, or nil"
 	^ DelimiterDictionary at: markup ifAbsent: [ nil ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineDelimiter class >> initialize [
 	<script>
 	DelimiterDictionary := nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineDelimiter class >> initializeDelimiters [
 	self = MicInlineDelimiter ifFalse: [ ^self ].
 	DelimiterDictionary := Dictionary new.
 	self allSubclasses do: [ :class | class initializeDelimiters ]
 ]
 
-{ #category : #compiling }
+{ #category : 'compiling' }
 MicInlineDelimiter class >> noteCompilationOf: aSelector meta: isMeta [
 	"I reset when any method is recompiled"
 	self initialize
 ]
 
-{ #category : #'private utilities' }
+{ #category : 'private utilities' }
 MicInlineDelimiter class >> regexNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
 	| str prefix|
@@ -70,45 +72,45 @@ MicInlineDelimiter class >> regexNot: markup [
 	^ str contents
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicInlineDelimiter >> addMe [
 	"add me to the dictionary in my class"
 	DelimiterDictionary at: self markup put: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter >> blockClass [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter >> closer [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineDelimiter >> isEvaluated [
 	"I am an opener whose resultering block will need further inline parsing"
 	^ self isOpener and: [self blockClass isEvaluated ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineDelimiter >> isOpener [
 	^ self closer notNil or: [ self markup = self closer ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicInlineDelimiter >> isRawkind [
 	"I am an opener whose resulting nodes body is not further parsed"
 	^ self isOpener and: [ self blockClass isEvaluated not ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter >> markup [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineDelimiter >> markupAsRegex [
 	self subclassResponsibility
 ]

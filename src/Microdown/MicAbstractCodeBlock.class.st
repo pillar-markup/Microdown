@@ -2,12 +2,14 @@
 I am common class for two extension blocks which at the moment shares the same syntax.
 "
 Class {
-	#name : #MicAbstractCodeBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicAbstractCodeBlock',
+	#superclass : 'MicSameStartStopMarkupBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MicAbstractCodeBlock class >> alternateBlockClassFor: line [
 
 	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
@@ -20,17 +22,17 @@ MicAbstractCodeBlock class >> alternateBlockClassFor: line [
 	^ MicScriptBlock allSubclasses detect: [ :each | each tag = tag ] ifNone: [ MicCodeBlock ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractCodeBlock class >> defaultLanguage [
 	^ 'Pharo'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAbstractCodeBlock >> language [
 	^ arguments at: #language
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicAbstractCodeBlock >> lineStartMarkup [
 	"a code block is delimited by ``` "
 	

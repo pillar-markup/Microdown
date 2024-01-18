@@ -6,15 +6,17 @@ I add bold also with `__`, and italic with `*`.
 
 "
 Class {
-	#name : #MicInlineAlternativesDelimiter,
-	#superclass : #MicInlineStandardDelimiter,
+	#name : 'MicInlineAlternativesDelimiter',
+	#superclass : 'MicInlineStandardDelimiter',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineAlternativesDelimiter class >> initializeDelimiters [
 	"formating"
 	self new markup: '__'; blockClass: MicBoldFormatBlock; closer: '__'; addMe.

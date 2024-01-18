@@ -2,8 +2,8 @@
 I define the standard inline delimiters
 "
 Class {
-	#name : #MicInlineStandardDelimiter,
-	#superclass : #MicInlineDelimiter,
+	#name : 'MicInlineStandardDelimiter',
+	#superclass : 'MicInlineDelimiter',
 	#instVars : [
 		'markup',
 		'closer',
@@ -12,10 +12,12 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineStandardDelimiter class >> initializeDelimiters [
 	"The fixious text delimiter"
 	self new markup: FixiousTextDelimiter; blockClass: MicTextBlock; closer: nil; addMe.
@@ -41,43 +43,43 @@ MicInlineStandardDelimiter class >> initializeDelimiters [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> blockClass [
 
 	^ blockClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> blockClass: anObject [
 
 	blockClass := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> closer [
 
 	^ closer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> closer: anObject [
 
 	closer := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> markup [
 
 	^ markup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> markup: anObject [
 
 	markup := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineStandardDelimiter >> markupAsRegex [
 	"return a regex (as string) matching this delimiter"
 	| str |
@@ -91,7 +93,7 @@ MicInlineStandardDelimiter >> markupAsRegex [
 	^ str contents
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineStandardDelimiter >> printOn: stream [
 	stream << $« << markup << $»
 ]

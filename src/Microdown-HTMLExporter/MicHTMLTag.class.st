@@ -18,15 +18,17 @@ This class contains utility methods to append HTML tags to a stream, and to mana
 
 "
 Class {
-	#name : #MicHTMLTag,
-	#superclass : #MicHTMLBrush,
+	#name : 'MicHTMLTag',
+	#superclass : 'MicHTMLBrush',
 	#instVars : [
 		'htmlArgumentsMap'
 	],
-	#category : #'Microdown-HTMLExporter-Core'
+	#category : 'Microdown-HTMLExporter-Core',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> addArguments: aMicInlineBlockWithUrl [
 
 	aMicInlineBlockWithUrl hasArguments ifFalse: [ ^ self ].
@@ -36,21 +38,21 @@ MicHTMLTag >> addArguments: aMicInlineBlockWithUrl [
 			ifPresent: [ :labelString | self parameterAt: argAssoc value put: labelString ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> close [
 	"Close the receiver's tag. Note that this method does not check if the tag is opened"
 
 	stream << $>
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> contents [
 	"Answer a <String> with receiver's output without modifying the stream position"
 	
 	^ stream contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> htmlArgumentsMap [
 	"Answer a <Dictionary> of receiver's associations between Microdown attributes and HTML attributes"
 	
@@ -58,14 +60,14 @@ MicHTMLTag >> htmlArgumentsMap [
 		ifNil: [ htmlArgumentsMap := self initializeArgumentsMap ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> htmlArgumentsMapDo: aFullBlockClosure [ 
 	"Iterate over the receiver's mapping of Microdown to HTML attributes"
 
 	self htmlArgumentsMap associationsDo: aFullBlockClosure
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLTag >> initializeArgumentsMap [
 
 	^ Dictionary new
@@ -76,7 +78,7 @@ MicHTMLTag >> initializeArgumentsMap [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> parameterAt: keyString put: valueString [
 	"Write a parameter named keyString with valueString as value. Note that this method does not close the tag"
 
@@ -88,7 +90,7 @@ MicHTMLTag >> parameterAt: keyString put: valueString [
 		<< '"'
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicHTMLTag >> printOn: aStream [
 
 	super printOn: aStream.
@@ -102,7 +104,7 @@ MicHTMLTag >> printOn: aStream [
 		<< ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLTag >> with: aString [
 	stream 
 		nextPut: $>; 

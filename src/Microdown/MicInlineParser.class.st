@@ -4,20 +4,22 @@ I am a parser for paragraphs with substructure in Microdown.
 My only external method is `parse:`.
 "
 Class {
-	#name : #MicInlineParser,
-	#superclass : #Object,
+	#name : 'MicInlineParser',
+	#superclass : 'Object',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-InlineParser'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicInlineParser class >> parse: string [
 	^ self new parse: string
 ]
 
-{ #category : #'block creation' }
+{ #category : 'block creation' }
 MicInlineParser >> createInlineBlock: token inStream: aReadStream [ 
 	| blockClass newBlock|
 	blockClass := token delimiter blockClass.
@@ -27,12 +29,12 @@ MicInlineParser >> createInlineBlock: token inStream: aReadStream [
 	
 ]
 
-{ #category : #'block creation' }
+{ #category : 'block creation' }
 MicInlineParser >> createTextBlock: token [
 	^ MicTextBlock new bodystring: token
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> joinTextNodesOf: children [
 	"children might have several text blocks following each other - join them and remove empty Text blocks"
 	| outStream bufferText  |
@@ -55,7 +57,7 @@ MicInlineParser >> joinTextNodesOf: children [
 	 ^ outStream contents asArray
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicInlineParser >> parse: aString [
 	"I return an array of inline blocks"
 	| tokenStream |
@@ -63,7 +65,7 @@ MicInlineParser >> parse: aString [
 	^ (self parseChildrenIn: tokenStream) asArray 
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> parseChildrenIn: tokenStream [
 	"return an array of blocks from parsing tokenStream"
 	| children child |
@@ -79,7 +81,7 @@ MicInlineParser >> parseChildrenIn: tokenStream [
 	^ self joinTextNodesOf: children
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStream [
 	| skipRes |
 	skipRes := (self skipTo: token delimiter closer inStream: tokenStream).
@@ -90,7 +92,7 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 		closeMe
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 	| skipRes children urlToken|
 	skipRes := (self skipToUrlStartInStream: aTokenStream).
@@ -106,14 +108,14 @@ MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token 
 
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
 	^ blockClass new
 		bodystring: token undelimitedSubstring;
 		closeMe
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> skipTo: closer inStream: tokenStream [
 	"skip tokenStream to closer, ignore closers in non-evaluated. if we find it return the accumulates text and a subtokenstream to read it from"
 	| startPos substringStream |
@@ -133,7 +135,7 @@ MicInlineParser >> skipTo: closer inStream: tokenStream [
 	
 ]
 
-{ #category : #'private parsing' }
+{ #category : 'private parsing' }
 MicInlineParser >> skipToUrlStartInStream: tokenStream [
 	"Skip to my UrlStart. Notice, I might find a nested url construct"
 	| startPos substringStream nestingLevel|

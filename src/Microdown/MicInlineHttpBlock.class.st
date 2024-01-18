@@ -3,24 +3,26 @@ I implement the inline use of `https://somewhere.com` as a link directly in micr
 My parse method on the class side transform me directly into a MicLinkBlock, and as such, I am never instantiated
 "
 Class {
-	#name : #MicInlineHttpBlock,
-	#superclass : #MicUnEvaluatedBlock,
-	#category : #'Microdown-InlineParser'
+	#name : 'MicInlineHttpBlock',
+	#superclass : 'MicUnEvaluatedBlock',
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpBlock class >> closingDelimiter [
 	"I am never instantiated, but transformed into a MicLinkBlock"
 	^ self shouldNotImplement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineHttpBlock class >> openingDelimiter [
 	"I am never instantiated, but transformed into a MicLinkBlock"
 	^ self shouldNotImplement 
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicInlineHttpBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	"I transform myself into a MicLinkBlock"
 	^ MicLinkBlock new
@@ -29,7 +31,7 @@ MicInlineHttpBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 		closeMe
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineHttpBlock >> accept: dummy [
 	self error: 'I should not be instantiatied and used by visitor'
 ]

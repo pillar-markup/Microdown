@@ -2,17 +2,19 @@
 I'm a test class for testing the behavior of MicUnorderedListBlock
 "
 Class {
-	#name : #MicUnorderedListBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicUnorderedListBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> subjectClass [ 
 	^ MicUnorderedListBlock  
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testEmbeddedOrdered [
 
 	| source root list |
@@ -29,7 +31,7 @@ MicUnorderedListBlockTest >> testEmbeddedOrdered [
 		equals: 'Text(sublevel item 2)' "item 1" "unordered list" "sub item"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 
 	| source root list item4 |
@@ -62,7 +64,7 @@ MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 		equals: 'item 24'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testMixing2 [
 
 	| source root list1 list2 |
@@ -88,7 +90,7 @@ MicUnorderedListBlockTest >> testMixing2 [
 	self assert: list2 children second testText equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testMixingOrderedInsideUnorderedWithParagraph [
 
 	| source root list1 |
@@ -113,7 +115,7 @@ multiple lines
  3. sub item 2)'
 ]
 
-{ #category : #'tests - nested' }
+{ #category : 'tests - nested' }
 MicUnorderedListBlockTest >> testNestedLevel [
 
 	| source root list item1 |
@@ -142,7 +144,7 @@ MicUnorderedListBlockTest >> testNestedLevel [
 		equals: MicListItemBlock
 ]
 
-{ #category : #'tests - nested' }
+{ #category : 'tests - nested' }
 MicUnorderedListBlockTest >> testNestedLevel2 [
 
 	| source root list item1 sublevelItem |
@@ -178,7 +180,7 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 		equals: 'subsublevel'
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicUnorderedListBlockTest >> testOrderedListAPIToAccessText [
 
 	| list |
@@ -188,7 +190,7 @@ MicUnorderedListBlockTest >> testOrderedListAPIToAccessText [
 	self assert: list testText equals: 'Text(2.b)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelList [
 
 	| source root list |
@@ -200,7 +202,7 @@ MicUnorderedListBlockTest >> testSingleLevelList [
 	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelList2 [
 
 	| source root list |
@@ -216,7 +218,7 @@ MicUnorderedListBlockTest >> testSingleLevelList2 [
 expanded)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelList2WithFormatting [
 
 	| source root list |
@@ -244,7 +246,7 @@ MicUnorderedListBlockTest >> testSingleLevelList2WithFormatting [
 		equals: 'expanded'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListAllBulletTypes [
 	| source root list |
 	source := 
@@ -256,7 +258,7 @@ MicUnorderedListBlockTest >> testSingleLevelListAllBulletTypes [
 	self assert: list children size equals: 2.]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListSplitWithEmptyLine [
 
 	| source root list |
@@ -276,7 +278,7 @@ MicUnorderedListBlockTest >> testSingleLevelListSplitWithEmptyLine [
 		equals: 'Text(item 3 of the same list)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListSplitWithMultipleEmptyLines [
 
 	| source root list |
@@ -299,7 +301,7 @@ MicUnorderedListBlockTest >> testSingleLevelListSplitWithMultipleEmptyLines [
 		equals: 'Text(item 3 of the same list)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListStartingWithoutSpaceSplitParagraph [
 
 	| source root list |
@@ -320,7 +322,7 @@ expanded)'.
 		equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListStartingWithoutSpaceSplitParagraph2 [
 
 	| source root list |
@@ -340,7 +342,7 @@ same indentation no new paragraph)'.
 	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListWithItemSpawning [
 
 	| root list |
@@ -355,7 +357,7 @@ MicUnorderedListBlockTest >> testSingleLevelListWithItemSpawning [
 follow up of second item)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelListWithStar [
 
 	| source root list |
@@ -367,7 +369,7 @@ MicUnorderedListBlockTest >> testSingleLevelListWithStar [
 	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testSingleLevelMixedList [
 
 	| source root list |
@@ -380,7 +382,7 @@ MicUnorderedListBlockTest >> testSingleLevelMixedList [
 	self assert: list children second testText equals: 'Text(item 2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicUnorderedListBlockTest >> testTwoLevelList [
 
 	| source root list |

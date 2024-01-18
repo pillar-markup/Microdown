@@ -2,17 +2,19 @@
 I'm a test class for testing the behavior of MicBlockTextBlock
 "
 Class {
-	#name : #MicQuoteBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicQuoteBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> subjectClass [ 
 	^ MicQuoteBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> testBasicQuoteBlock [
 	| source root |
 	source := '> test1
@@ -26,7 +28,7 @@ test 2'.
 "note that this is wrong because the body of a quoteblock is a paragraph and can containsTruePositive: formatting else this is just a code block"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> testNotLazy [
 	"the spec says that the last > could be omitted but we do not support it."
 	| source root text  |
@@ -43,7 +45,7 @@ text3'.
 - text2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> testQuoteBlockDoesNotInterpretOtherBlockMarkup [
 	| source root text  |
 	source := '> text1
@@ -62,7 +64,7 @@ MicQuoteBlockTest >> testQuoteBlockDoesNotInterpretOtherBlockMarkup [
 Yeah cool'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> testSingleQuoteBlock [
 	| source root text  |
 	source := '> text1
@@ -77,7 +79,7 @@ MicQuoteBlockTest >> testSingleQuoteBlock [
 text2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicQuoteBlockTest >> testSingleQuoteBlockFollowedByList [
 	| source root text list |
 	source := '> text1

@@ -1,10 +1,12 @@
 Class {
-	#name : #MicCitationBlockTest,
-	#superclass : #MicAnnotationSubclassTest,
-	#category : #'Microdown-Tests-Extensions'
+	#name : 'MicCitationBlockTest',
+	#superclass : 'MicAnnotationSubclassTest',
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCitationBlockTest >> testCreateTheRightCitationObject [
 	
 	| doc |
@@ -14,7 +16,7 @@ MicCitationBlockTest >> testCreateTheRightCitationObject [
 	self assert: (doc children first children first arguments at: #key) equals: 'Duca99a'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCitationBlockTest >> testDefaultingClassWhenNoTag [
 	
 	| doc |

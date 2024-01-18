@@ -1,6 +1,6 @@
-Extension { #name : #SequenceableCollection }
+Extension { #name : 'SequenceableCollection' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 SequenceableCollection >> splitOnFirst: char [
 	| indexOfChar |
 	indexOfChar := self indexOf: char.

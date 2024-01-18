@@ -1,14 +1,16 @@
 Class {
-	#name : #MicLinkBlockTest,
-	#superclass : #MicBlockTest,
+	#name : 'MicLinkBlockTest',
+	#superclass : 'MicBlockTest',
 	#instVars : [
 		'splitterClass',
 		'link'
 	],
-	#category : #'Microdown-Tests-Parser'
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkBoldSample [
 
 	^ '
@@ -16,7 +18,7 @@ MicLinkBlockTest >> linkBoldSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkItalicSample [
 
 	^ '
@@ -24,7 +26,7 @@ MicLinkBlockTest >> linkItalicSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkMonospaceSample [
 
 	^ '
@@ -32,7 +34,7 @@ MicLinkBlockTest >> linkMonospaceSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkNestedSample [
 
 	^ '
@@ -40,14 +42,14 @@ MicLinkBlockTest >> linkNestedSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkSample [
 	^ '
 [Foo](/anUrl)
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkStrikeSample [
 
 	^ '
@@ -55,14 +57,14 @@ MicLinkBlockTest >> linkStrikeSample [
 '
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> parseLink: aString [
 	"Parse aString containing Microdown link to a MicLinkBlock"
 
 	^ (self parser parse: aString) children first children first.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicLinkBlockTest >> setUp [
 
 	super setUp.
@@ -70,12 +72,12 @@ MicLinkBlockTest >> setUp [
 	splitterClass := MicInlineParser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> subjectClass [ 
 	^ MicHorizontalLineBlock
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testFullName [
 
 	link := self parseLink: self linkSample.
@@ -83,7 +85,7 @@ MicLinkBlockTest >> testFullName [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testHasArguments [
 	| figure |
 	figure := (splitterClass new parse: '[caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
@@ -94,7 +96,7 @@ MicLinkBlockTest >> testHasArguments [
 	
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkAPIToAccessText [
 
 	link := self parseLink: self linkSample.
@@ -102,7 +104,7 @@ MicLinkBlockTest >> testLinkAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 
 	link := self parseLink: self linkBoldSample.
@@ -113,7 +115,7 @@ MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkCreatesInnerText [
 
 	link := self parseLink: '[ab](https://ab.com)'.
@@ -121,7 +123,7 @@ MicLinkBlockTest >> testLinkCreatesInnerText [
 	self assert: link url equals: 'https://ab.com'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 
 	link := self parseLink: self linkItalicSample.
@@ -134,14 +136,14 @@ MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testPrintOn [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
 	self assert: link asString equals: 'Link{ Text(caption) }(http://www.pharo.org)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testUrl [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.

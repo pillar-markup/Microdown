@@ -1,7 +1,7 @@
-Extension { #name : #RPackage }
+Extension { #name : 'Package' }
 
-{ #category : #'*Microdown' }
-RPackage >> buildMicroDownUsing: aBuilder withComment: aString [
+{ #category : '*Microdown' }
+Package >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	"I'm on a package and the package is a baseline package."
 	self class environment

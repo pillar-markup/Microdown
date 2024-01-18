@@ -1,10 +1,12 @@
 Class {
-	#name : #MicInlineExtenedSyntaxTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Tests-InlineParser'
+	#name : 'MicInlineExtenedSyntaxTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Tests-InlineParser',
+	#package : 'Microdown-Tests',
+	#tag : 'InlineParser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testBoldAndItalicAlternatives [
 	"MicInlineAlternativesDelimiter should add `__` as a bold delimiter and `*` as an italic delimiter"
 	| doc |
@@ -17,7 +19,7 @@ MicInlineExtenedSyntaxTest >> testBoldAndItalicAlternatives [
 		assert: doc third children first bodystring equals: 'cccc'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp [
 	"MicInlineHttpDelimiter recognizes `http://somewhere.org` as a link (and generates a link)"
 	| doc |
@@ -35,7 +37,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_Newline [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| bold |
@@ -49,7 +51,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp_Newline [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_inBold [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| bold |
@@ -62,7 +64,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp_inBold [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_inContext [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| doc |
@@ -74,7 +76,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp_inContext [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_inItalic [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| bold |
@@ -87,7 +89,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp_inItalic [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_tab [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| bold |
@@ -100,7 +102,7 @@ MicInlineExtenedSyntaxTest >> testInlineHttp_tab [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineExtenedSyntaxTest >> testInlineHttp_tabAndNewline [
 	"The closer of inline http is a blank (or tab, newline, etc)"
 	| doc |

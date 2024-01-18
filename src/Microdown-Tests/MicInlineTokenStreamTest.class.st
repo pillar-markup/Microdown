@@ -2,15 +2,17 @@
 A MicInlineTokenStreamTest is a test class for testing the behavior of MicInlineTokenStream
 "
 Class {
-	#name : #MicInlineTokenStreamTest,
-	#superclass : #TestCase,
+	#name : 'MicInlineTokenStreamTest',
+	#superclass : 'TestCase',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-InlineParser'
+	#category : 'Microdown-Tests-InlineParser',
+	#package : 'Microdown-Tests',
+	#tag : 'InlineParser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash [
 	| src tokens |
 	src := 'aa\xbb'.
@@ -18,7 +20,7 @@ MicInlineTokenStreamTest >> testBackslash [
 	self assert: tokens first string equals: 'aaxbb'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash_AnchorReference [
 	| src tokens |
 	src := 'aa*@oo\xoo\@oo`@*bb'.
@@ -26,7 +28,7 @@ MicInlineTokenStreamTest >> testBackslash_AnchorReference [
 	self assert: tokens second string equals: '*@oo\xoo@oo`@*'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash_InFormattedElements [
 	| src tokens |
 	src := 'aa**oo\xoo**bb'.
@@ -34,7 +36,7 @@ MicInlineTokenStreamTest >> testBackslash_InFormattedElements [
 	self assert: tokens third string equals: 'ooxoo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash_InMath [
 	| src tokens |
 	src := 'aa$oo\xoo\$oo$bb'.
@@ -42,7 +44,7 @@ MicInlineTokenStreamTest >> testBackslash_InMath [
 	self assert: tokens second string equals: '$oo\xoo$oo$'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash_InMonospace [
 	| src tokens |
 	src := 'aa`oo\xoo\`oo`$bb'.
@@ -50,7 +52,7 @@ MicInlineTokenStreamTest >> testBackslash_InMonospace [
 	self assert: tokens second string equals: '`oo\xoo`oo`'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testBackslash_InRaw [
 	| src tokens |
 	src := 'aa{{oo\xoo\}oo`}}bb'.
@@ -58,14 +60,14 @@ MicInlineTokenStreamTest >> testBackslash_InRaw [
 	self assert: tokens second string equals: '{{oo\xoo}oo`}}'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize [
 	| tokens | 
 	tokens := MicInlineTokenStream on: ''.
 	self assert: tokens isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_Annotation [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aa',AnnotationOpenerMarkup ,'bbb', AnnotationCloserMarkup) contents.
@@ -73,7 +75,7 @@ MicInlineTokenStreamTest >> testTokenize_Annotation [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: AnnotationOpenerMarkup)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_FigureWithURL [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -85,7 +87,7 @@ MicInlineTokenStreamTest >> testTokenize_FigureWithURL [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_Text [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aaaa') contents.
@@ -93,7 +95,7 @@ MicInlineTokenStreamTest >> testTokenize_Text [
 	self assert: tokens first delimiter markup equals: FixiousTextDelimiter.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_UrlPart [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -102,7 +104,7 @@ MicInlineTokenStreamTest >> testTokenize_UrlPart [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: NameCloserUrlOpener)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_anchorRefs [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -111,7 +113,7 @@ MicInlineTokenStreamTest >> testTokenize_anchorRefs [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: AnchorReferenceOpenerMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_bold [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aa',BoldMarkup ,'bbb') contents.
@@ -119,7 +121,7 @@ MicInlineTokenStreamTest >> testTokenize_bold [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: BoldMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_figureName [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -128,7 +130,7 @@ MicInlineTokenStreamTest >> testTokenize_figureName [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: FigureNameOpenerMarkup)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_italic [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aa',ItalicMarkup ,'bbb') contents.
@@ -136,7 +138,7 @@ MicInlineTokenStreamTest >> testTokenize_italic [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: ItalicMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_linkName [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -145,7 +147,7 @@ MicInlineTokenStreamTest >> testTokenize_linkName [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: LinkNameOpenerMarkup)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_math [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -154,7 +156,7 @@ MicInlineTokenStreamTest >> testTokenize_math [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: MathMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_monospace [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -163,7 +165,7 @@ MicInlineTokenStreamTest >> testTokenize_monospace [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: MonospaceMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_raw [
 	| tokens | 
 	"anchors are not evaluated, but bodied directly"
@@ -172,7 +174,7 @@ MicInlineTokenStreamTest >> testTokenize_raw [
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: RawOpenerMarkup).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize_strike [
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aa',StrikeMarkup ,'bbb') contents.
