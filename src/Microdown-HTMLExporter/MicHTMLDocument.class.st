@@ -350,7 +350,7 @@ MicHTMLDocument >> tempFileName [
 		str 
 			<< FileLocator temp fullName;
 			<< DiskStore delimiter asString;
-			<< UUIDGenerator new next asString36;
+			<< UUID new asString36;
 			<< '.html' ]
 ]
 
