@@ -96,7 +96,7 @@ MicHTMLDocumentTest >> testCharSet [
 		description: 'It tests that the charSet identifier is a String'.
 		
 	self
-		assert: doc charSet notNil
+		assert: doc charSet isNotNil
 		description: 'It test that the document charset has beed initialized'.
 
 	

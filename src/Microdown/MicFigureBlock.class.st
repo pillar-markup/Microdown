@@ -82,7 +82,7 @@ MicFigureBlock >> hasAnchor [
 { #category : 'testing' }
 MicFigureBlock >> hasCaption [
 	
-	^ captionElements notNil 
+	^ captionElements isNotNil 
 ]
 
 { #category : 'testing' }
