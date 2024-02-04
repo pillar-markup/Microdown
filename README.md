@@ -6,6 +6,8 @@ I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. 
 ## Why should you use Microdown
 
 Microdown is a smaller markdown but it is more extensible.
+It is used to produce books, slides, websites, doc.
+It can be read on github but also on pharo itself using the documentationBrowser
 
 It supports
 - Header
