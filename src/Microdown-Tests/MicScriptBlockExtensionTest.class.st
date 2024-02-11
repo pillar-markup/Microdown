@@ -1,13 +1,15 @@
 Class {
-	#name : #MicScriptBlockExtensionTest,
-	#superclass : #TestCase,
+	#name : 'MicScriptBlockExtensionTest',
+	#superclass : 'TestCase',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-Extensions'
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicScriptBlockExtensionTest >> testExtension [
 	"test that codeblock syntax be extended.
 	The helper class MicScriptBlockExtensionForTest has extension tag scriptBlockExtentionTest"
@@ -23,7 +25,7 @@ stuff which is left for the extension to handle
 	self assert: extension body equals: 'stuff which is left for the extension to handle'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicScriptBlockExtensionTest >> testExtensionWithArguments [
 	"test that script interpret the arguments correctly"
 	
@@ -39,13 +41,13 @@ stuff which is left for the extension to handle
 		assert: (extension arguments at: 'foe') equals: '42'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicScriptBlockExtensionTest >> testExtensionsAreNotDoneToCodeBlock [
 	"One should not make subclasses of codeblock, but script block"
 	self assert: MicCodeBlock allSubclasses isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicScriptBlockExtensionTest >> testUndefinedExtensionIsCodeblock [
 	"test that unknown script extensions result in codeblock"
 	

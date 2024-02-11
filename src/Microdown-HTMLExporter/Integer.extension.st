@@ -1,6 +1,6 @@
-Extension { #name : #Integer }
+Extension { #name : 'Integer' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 Integer >> asFileSizeString [
 	" From Magritte-Model.MetaGUI-SeanDeNigris.459.mcz "
 

@@ -1,6 +1,6 @@
-Extension { #name : #OrderedCollection }
+Extension { #name : 'OrderedCollection' }
 
-{ #category : #'*Microdown-RichTextComposer' }
+{ #category : '*Microdown-RichTextComposer' }
 OrderedCollection >> truncateTo: smallSize [
 	"return myself or a copy shortened to smallSize."
 

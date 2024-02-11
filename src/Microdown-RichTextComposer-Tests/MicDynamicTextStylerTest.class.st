@@ -2,12 +2,14 @@
 A MicDynamicTextStylerTest is a test class for testing the behavior of MicDynamicTextStyler
 "
 Class {
-	#name : #MicDynamicTextStylerTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#name : 'MicDynamicTextStylerTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testBodyFont [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -17,7 +19,7 @@ MicDynamicTextStylerTest >> testBodyFont [
 	self assert: styler bodyFont pointSize equals: 72.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testBulletForLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -27,17 +29,17 @@ MicDynamicTextStylerTest >> testBulletForLevel [
 	self assert: (styler bulletForLevel: 4) equals: 'a' asText.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testBullets [
 	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testCodeBackgroundColor [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testCounterForAtLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -48,12 +50,12 @@ MicDynamicTextStylerTest >> testCounterForAtLevel [
 	self assert: (styler counterFor: 5 atLevel: 5) equals: 'e)' asText.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testCounters [
 	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testCrAfterHeader [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -64,7 +66,7 @@ MicDynamicTextStylerTest >> testCrAfterHeader [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testHeaderFontForLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -73,7 +75,7 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel [
 	self assert: (styler headerLevelFont: 1) font pointSize equals: 72.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongFormat [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -82,7 +84,7 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongFormat [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -90,7 +92,7 @@ MicDynamicTextStylerTest >> testHeaderFontForLevel_wrongLevel [
 	self assert: styler errors isNotEmpty 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testInterblockSpacing [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -101,7 +103,7 @@ MicDynamicTextStylerTest >> testInterblockSpacing [
 	self assert: styler interBlockSpacing equals: (String cr, String cr) asText
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testKeepCRFromInput [
 	| styler textSample|
 	styler := MicDynamicTextStyler new.
@@ -112,7 +114,7 @@ MicDynamicTextStylerTest >> testKeepCRFromInput [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testMonospaceBackgroundColor [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -124,7 +126,7 @@ MicDynamicTextStylerTest >> testMonospaceBackgroundColor [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDynamicTextStylerTest >> testNewLineIfNotAlready [
 	| styler |
 	styler := MicDynamicTextStyler new.

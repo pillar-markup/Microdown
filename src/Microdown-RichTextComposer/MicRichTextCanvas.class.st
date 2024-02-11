@@ -4,8 +4,8 @@ As texts can have multiple annotations, I have a stack of brushes to paint a tex
 My only method for adding text to my stream is `<<`.
 "
 Class {
-	#name : #MicRichTextCanvas,
-	#superclass : #Object,
+	#name : 'MicRichTextCanvas',
+	#superclass : 'Object',
 	#instVars : [
 		'out',
 		'brushes',
@@ -13,10 +13,12 @@ Class {
 		'crAtEnd',
 		'textStyler'
 	],
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> << aText [
 	|text|
 	aText ifEmpty: [ ^ self ].
@@ -30,30 +32,30 @@ MicRichTextCanvas >> << aText [
 	text ifNotEmpty: [crAtEnd := text last = Character cr].
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> contents [
 	^ out contents
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> cr [
 	self newLine
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicRichTextCanvas >> hasFontDefinitions: aText [
 	"Answer the fontfor characters in the run beginning at characterIndex."
 	^ (aText runs flattened asSet select: [ :attr | attr isKindOf: TextFontReference  ]) isNotEmpty.
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> includeAttribute: attr in: aBlock [
 	brushes addLast: (MicRichTextBrush on: self attribute: attr).
 	aBlock value.
 	brushes removeLast
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> includeBrush: aBrush in: aBlock [
 	"Add for the course of aBlock, a brush (aBrush) to the currently used brushes."
 	brushes addLast: aBrush.
@@ -61,7 +63,7 @@ MicRichTextCanvas >> includeBrush: aBrush in: aBlock [
 	brushes removeLast
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> indentIn: aBlock [ 
 	nesting := nesting + 1.
 	aBlock value.
@@ -70,7 +72,7 @@ MicRichTextCanvas >> indentIn: aBlock [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicRichTextCanvas >> initialize [
 	super initialize.
 	out := WriteStream on: '' asText.
@@ -79,41 +81,41 @@ MicRichTextCanvas >> initialize [
 	crAtEnd := true. "Prevent newlines in beginning"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCanvas >> nesting [
 	^ nesting
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> newLine [
 	self newLineBody.
 	crAtEnd := true
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextCanvas >> newLineBody [
 	self << self textStyler newLineBody 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextCanvas >> newLineIfNotAlready [
 	crAtEnd
 		ifFalse: [ self << self textStyler newLineIfNotAlready  ].
 	crAtEnd := true
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextCanvas >> tab [
 	self << String tab asText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCanvas >> textStyler [
 
 	^ textStyler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextCanvas >> textStyler: anObject [
 
 	textStyler := anObject

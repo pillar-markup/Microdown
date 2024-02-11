@@ -1,10 +1,12 @@
 Class {
-	#name : #MicAnchorLinkerTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicAnchorLinkerTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAnchorLinkerTest >> testAnchorIsAttachedToItsTarget [
 	| linker doc |
 	linker := MicAnchorLinker new.
@@ -20,7 +22,7 @@ this is a sentence
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAnchorLinkerTest >> testAnchorIsAttachedToItsTarget2 [
 	| linker doc |
 	linker := MicAnchorLinker new.
@@ -38,7 +40,7 @@ this is a sentence
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAnchorLinkerTest >> testHeaderLast [
 	| linker doc |
 	linker := MicAnchorLinker new.

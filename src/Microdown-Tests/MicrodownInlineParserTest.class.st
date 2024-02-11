@@ -2,22 +2,24 @@
 The logic is to call the main parser so that the inline elements are in the blocks as after the closeMe phase of a Block (this is where the inline block are parsed). 
 "
 Class {
-	#name : #MicrodownInlineParserTest,
-	#superclass : #TestCase,
+	#name : 'MicrodownInlineParserTest',
+	#superclass : 'TestCase',
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-Parser'
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownInlineParserTest >> parse: aString [
 	"self new parse: 'foo_abbb_zz' "
 
 	^ self parserClass parse: aString
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [ 
  	"self new parse: 'foo_abbb_zz' "
 	
@@ -25,17 +27,17 @@ MicrodownInlineParserTest >> parseAndReturnElementsOfParagraphFor: aString [
  
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownInlineParserTest >> parser [
 	^ self parserClass new 
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicrodownInlineParserTest >> parserClass [ 
 	^ Microdown 
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> rawTestingFor: aString [
 
  	| elements |
@@ -48,7 +50,7 @@ MicrodownInlineParserTest >> rawTestingFor: aString [
  	self assert: elements second closingDelimiter equals: '}}'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 
  	| elements bold |
@@ -68,7 +70,7 @@ MicrodownInlineParserTest >> testAPIToAccessChildrenOfNestedElements [
 	self assert: bold children second class equals: MicTextBlock.
 ]
 
-{ #category : #'tests - anchors' }
+{ #category : 'tests - anchors' }
 MicrodownInlineParserTest >> testAnchorReferenceWithoutClosure [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchorsdef').
@@ -76,7 +78,7 @@ MicrodownInlineParserTest >> testAnchorReferenceWithoutClosure [
  	self assert: elements first substring equals: 'abc*@anchorsdef'
 ]
 
-{ #category : #'tests - anchors' }
+{ #category : 'tests - anchors' }
 MicrodownInlineParserTest >> testAnchorRefernce [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc*@anchors@*def').
@@ -88,7 +90,7 @@ MicrodownInlineParserTest >> testAnchorRefernce [
  	self assert: elements second closingDelimiter equals: '@*'
 ]
 
-{ #category : #'tests - annotations' }
+{ #category : 'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationBasic [
  	| elements annotation |
  	elements := self parseAndReturnElementsOfParagraphFor: 'needed ', AnnotationOpenerMarkup ,'footnote | value=A foonote is annotation.', AnnotationCloserMarkup.
@@ -103,7 +105,7 @@ MicrodownInlineParserTest >> testAnnotationBasic [
  
 ]
 
-{ #category : #'tests - annotations' }
+{ #category : 'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationPrintString [
  	
 	| elements |
@@ -113,7 +115,7 @@ MicrodownInlineParserTest >> testAnnotationPrintString [
 	self assert: elements second name equals: 'footnote'
 ]
 
-{ #category : #'tests - annotations' }
+{ #category : 'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotations [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc', AnnotationOpenerMarkup,'footnote | value=A foonote is annotation.', AnnotationCloserMarkup,'def'.
@@ -126,7 +128,7 @@ MicrodownInlineParserTest >> testAnnotations [
  
 ]
 
-{ #category : #'tests - annotations' }
+{ #category : 'tests - annotations' }
 MicrodownInlineParserTest >> testAnnotationsWithoutClosure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc<?footnote | value=A foonote is anannotation.def'.
@@ -135,7 +137,7 @@ MicrodownInlineParserTest >> testAnnotationsWithoutClosure [
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testBold [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc**bolds**def'.
@@ -152,7 +154,7 @@ MicrodownInlineParserTest >> testBold [
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testBoldsAndCorrectNestedItalics [
 
  	| elements bold italic |
@@ -173,7 +175,7 @@ MicrodownInlineParserTest >> testBoldsAndCorrectNestedItalics [
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testBoldsAndNestedItalics [ 
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc**_bolds_**def').
@@ -185,7 +187,7 @@ MicrodownInlineParserTest >> testBoldsAndNestedItalics [
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testBoldsAndNestedItalicsWithClosureAfterOpenItalics [
 
  	| elements |
@@ -199,7 +201,7 @@ MicrodownInlineParserTest >> testBoldsAndNestedItalicsWithClosureAfterOpenItalic
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testBoldsWithoutClosure [ 
 
  	| elements |
@@ -209,7 +211,7 @@ MicrodownInlineParserTest >> testBoldsWithoutClosure [
  
 ]
 
-{ #category : #'tests - others' }
+{ #category : 'tests - others' }
 MicrodownInlineParserTest >> testEscape [
 
  	| elements |
@@ -220,7 +222,7 @@ MicrodownInlineParserTest >> testEscape [
  
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicrodownInlineParserTest >> testEscapeAsLastCharacterDoesNotBreak [
 	
 	| elts  |
@@ -240,7 +242,7 @@ MicrodownInlineParserTest >> testEscapeAsLastCharacterDoesNotBreak [
 	self assert: elts first substring  equals: 'cha'.
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicrodownInlineParserTest >> testFigure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc![caption](http://www.pharo.org?parameters=value)def'.
@@ -252,7 +254,7 @@ MicrodownInlineParserTest >> testFigure [
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicrodownInlineParserTest >> testFigureWithParameters [
 
 	| elements figure |
@@ -265,7 +267,7 @@ MicrodownInlineParserTest >> testFigureWithParameters [
 	self assert: figure arguments keys size equals: 2
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicrodownInlineParserTest >> testFigureWithParameters_withoutQuotes [
 
 	| elements figure |
@@ -278,7 +280,7 @@ MicrodownInlineParserTest >> testFigureWithParameters_withoutQuotes [
 	self assert: figure arguments keys size equals: 2
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testItalic [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc_italics_def'.
@@ -289,7 +291,7 @@ MicrodownInlineParserTest >> testItalic [
  	self assert: elements second openingDelimiter equals: '_'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testItalicsAndNestedBolds [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc_**italics**_def').
@@ -300,7 +302,7 @@ MicrodownInlineParserTest >> testItalicsAndNestedBolds [
  	self assert: elements second openingDelimiter equals: '_'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testItalicsAndNestedBoldsWithClosureAfterOpenBolds [
 
  	| elements |
@@ -314,7 +316,7 @@ MicrodownInlineParserTest >> testItalicsAndNestedBoldsWithClosureAfterOpenBolds 
  
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testItalicsWithoutClosure [
 
  	| elements |
@@ -323,7 +325,7 @@ MicrodownInlineParserTest >> testItalicsWithoutClosure [
  	self assert: elements first substring equals: 'abc_italicsdef'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicrodownInlineParserTest >> testLink [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[Pharo.Org](http://www.pharo.org)def').
@@ -339,7 +341,7 @@ MicrodownInlineParserTest >> testLink [
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicrodownInlineParserTest >> testLinkWithParameters [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc[GH Ducasse](https://github.com/Ducasse?tab=repositories)def').
@@ -354,7 +356,7 @@ MicrodownInlineParserTest >> testLinkWithParameters [
  	self assert: elements second closingDelimiter equals: ')'
 ]
 
-{ #category : #'tests - others' }
+{ #category : 'tests - others' }
 MicrodownInlineParserTest >> testMath [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: 'abc$V_i = C_0 - C_3$def').
@@ -365,7 +367,7 @@ MicrodownInlineParserTest >> testMath [
  	self assert: elements second openingDelimiter equals: '$'
 ]
 
-{ #category : #'tests - others' }
+{ #category : 'tests - others' }
 MicrodownInlineParserTest >> testMathBackslash [
  	| elements |
  	elements := (self parseAndReturnElementsOfParagraphFor: '$ f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz $').
@@ -373,7 +375,7 @@ MicrodownInlineParserTest >> testMathBackslash [
 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospace [
 
  	| elements |
@@ -386,7 +388,7 @@ MicrodownInlineParserTest >> testMonospace [
 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithBackQuote [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\`bar`def'.
@@ -395,7 +397,7 @@ MicrodownInlineParserTest >> testMonospacesWithBackQuote [
 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithBackSlash [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\bar`def'.
@@ -404,7 +406,7 @@ MicrodownInlineParserTest >> testMonospacesWithBackSlash [
 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`foo\\bar`def'.
@@ -413,7 +415,7 @@ MicrodownInlineParserTest >> testMonospacesWithDoubleBackSlash [
 
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithTwoBackslashes [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: '`\a+\b`'.
@@ -421,7 +423,7 @@ MicrodownInlineParserTest >> testMonospacesWithTwoBackslashes [
  	self assert: elements first substring equals: '\a+\b'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testMonospacesWithoutClosure [
  	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc`monospacesdef'.
@@ -430,7 +432,7 @@ MicrodownInlineParserTest >> testMonospacesWithoutClosure [
 
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawWitoutClosure [
 
  	| elements |
@@ -439,12 +441,12 @@ MicrodownInlineParserTest >> testRawWitoutClosure [
  	self assert: elements first substring equals: 'abc{{rawsdef'
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRaws [
 	self rawTestingFor: 'anything'
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
 	| elements |
  	elements := self parseAndReturnElementsOfParagraphFor: 'abc{{', 'anything}', '}}def'.
@@ -458,43 +460,43 @@ MicrodownInlineParserTest >> testRawsDoesNotHandleWellCurly [
 	
 ]
 
-{ #category : #'tests - escape' }
+{ #category : 'tests - escape' }
 MicrodownInlineParserTest >> testRawsDoesNotHandleWellEscape [
 	"Well, actually it does"
 	self rawTestingFor: 'anything\*foo'.
 	
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsHandleWellCurlyIfNotLast [
 	
 	self rawTestingFor: 'anything}88'.
 
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsWithBold [
 
  	self rawTestingFor: '**bold**'
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsWithItalic [
 
  	self rawTestingFor: '_italic_'
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsWithMonospace [
  	self rawTestingFor: '`monononono`'
 ]
 
-{ #category : #'tests - raw' }
+{ #category : 'tests - raw' }
 MicrodownInlineParserTest >> testRawsWithStrike [
  	self rawTestingFor: '~strikkkkk~'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testStrike [
 
  	| elements |
@@ -506,7 +508,7 @@ MicrodownInlineParserTest >> testStrike [
  	self assert: elements second openingDelimiter equals: '~'
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicrodownInlineParserTest >> testStrikesWithoutClosure [
 
  	| elements |
@@ -516,7 +518,7 @@ MicrodownInlineParserTest >> testStrikesWithoutClosure [
 
 ]
 
-{ #category : #'tests - structure' }
+{ #category : 'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfAnchorReference [
 
  	| element |
@@ -526,7 +528,7 @@ MicrodownInlineParserTest >> testStructureOfAnchorReference [
 	
 ]
 
-{ #category : #'tests - structure' }
+{ #category : 'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfAnnotation [
 
  	| element |
@@ -537,7 +539,7 @@ MicrodownInlineParserTest >> testStructureOfAnnotation [
 	
 ]
 
-{ #category : #'tests - structure' }
+{ #category : 'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfBoldNestedText [
 
  	| element |
@@ -553,7 +555,7 @@ MicrodownInlineParserTest >> testStructureOfBoldNestedText [
 	
 ]
 
-{ #category : #'tests - structure' }
+{ #category : 'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfBoldSimpleText [
 
  	| element |
@@ -565,7 +567,7 @@ MicrodownInlineParserTest >> testStructureOfBoldSimpleText [
 	
 ]
 
-{ #category : #'tests - structure' }
+{ #category : 'tests - structure' }
 MicrodownInlineParserTest >> testStructureOfPlainText [
 
  	| element |

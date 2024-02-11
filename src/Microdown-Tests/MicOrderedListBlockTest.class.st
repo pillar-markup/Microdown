@@ -2,17 +2,19 @@
 I'm a test class for testing the behavior of ordered list blocks
 "
 Class {
-	#name : #MicOrderedListBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicOrderedListBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #factory }
+{ #category : 'factory' }
 MicOrderedListBlockTest >> orderedListBlockClass [
 	^ MicOrderedListBlock
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicOrderedListBlockTest >> orderedListWithTwoItemsBoldFirstSample [
 
 	^ '
@@ -21,12 +23,12 @@ MicOrderedListBlockTest >> orderedListWithTwoItemsBoldFirstSample [
 '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> subjectClass [ 
 	^ MicOrderedListBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testEmbeddedUnordered [
 	| source root list |
 	source := 
@@ -49,7 +51,7 @@ MicOrderedListBlockTest >> testEmbeddedUnordered [
 			children second children first text equals: 'sublevel item 1'.	
 ]
 
-{ #category : #'tests - nested' }
+{ #category : 'tests - nested' }
 MicOrderedListBlockTest >> testNestedLevel [
 	| source root list item1 |
 	source := 
@@ -77,7 +79,7 @@ MicOrderedListBlockTest >> testNestedLevel [
 
 ]
 
-{ #category : #'tests - nested' }
+{ #category : 'tests - nested' }
 MicOrderedListBlockTest >> testNestedLevel2 [
 	| source root list item1 sublevelItem |
 	source := 
@@ -107,7 +109,7 @@ MicOrderedListBlockTest >> testNestedLevel2 [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testNotSpawingNewParagraph [
 	| root list |
 	root :=  parser
@@ -126,7 +128,7 @@ follow up of second item'.
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSingleLevelList2 [
 	| source root list |
 	source := 
@@ -141,7 +143,7 @@ expanded'.
 	self assert: list  startIndex equals: 19
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSingleLevelList2WithNoIndent [
 	"when we want a paragraph to be part of an item it should be indented "
 
@@ -163,7 +165,7 @@ expanded as new paragraph
 part of item2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	| root list |
 	root :=  parser
@@ -178,7 +180,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumbering [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSingleLevelListWithNormalNumberingWithEmptyLines [
 	| root list |
 	root :=  parser
@@ -197,7 +199,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithNormalNumberingWithEmptyLines 
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	| root list |
 	root := parser
@@ -211,7 +213,7 @@ MicOrderedListBlockTest >> testSingleLevelListWithStrangelyNumberedItems [
 	self assert: list children second text equals: 'item 2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOrderedListBlockTest >> testSpawingNewParagraph [
 	| root |
 	root :=  parser
@@ -230,7 +232,7 @@ follow up of second item'.
 	
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicOrderedListBlockTest >> testUnOrderedListAPIToAccessText [
 
 	| list |

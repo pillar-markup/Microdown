@@ -1,6 +1,6 @@
-Extension { #name : #MicRelativeResourceReference }
+Extension { #name : 'MicRelativeResourceReference' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicRelativeResourceReference >> uri [
 	"Answer the receiver's reference in a uri (ZnUrl)."
 

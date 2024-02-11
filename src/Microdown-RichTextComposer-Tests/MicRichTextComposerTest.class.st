@@ -1,168 +1,169 @@
 Class {
-	#name : #MicRichTextComposerTest,
-	#superclass : #TestCase,
+	#name : 'MicRichTextComposerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'sample',
 		'parser',
 		'composer',
 		'offlineStatus'
 	],
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MicRichTextComposerTest class >> sampleMicrodownForInputTest [
 	^ '# TestHeader
 body for testing'
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> assertWriting: aPRDocument include: expectedAttribute [
 	self assert: ((self runsOf: aPRDocument) includes: {expectedAttribute})
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> boldFormat [
 	^ TextEmphasis bold
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> composer [
 	
 	composer ifNotNil: [ ^ composer ].
 	^ composer := self composerClass new
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> composerClass [
 	^ MicRichTextComposer
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> externalLink: aLink [
 	^ TextAction new actOnClickBlock: [WebBrowser openOn: aLink]
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> figure: aFigureLink [
 	| url |
 	url := aFigureLink.
 	^ TextAnchor new anchoredMorph: (ZnEasy getPng: url)
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel1 [
 
 	^ self composer textStyler headerLevelFont: 1
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel2 [
 
 	^ self composer textStyler headerLevelFont: 2
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel3 [
 
 	^ self composer textStyler headerLevelFont: 3
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel4 [
 
 	^ self composer textStyler headerLevelFont: 4
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel5 [
 
 	^ self composer textStyler headerLevelFont: 5
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> headerLevel6 [
 
 	^ self composer textStyler headerLevelFont: 6
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> italicFormat [
 	^ TextEmphasis italic
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> microElementsFrom: aString [
 	^ sample documentFrom: aString.
 	
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> monospaceFormat [
 	^ TextBackgroundColor color: Smalltalk ui theme settings windowColor
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> normalFormat [
 	^ TextEmphasis normal
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> richTextFor: aDocument [
 
 	^ self composer visit: aDocument
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> richTextForString: aString [
 
 	^ self composer asRichText: aString
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> runsOf: aDocument [
 	
 	^ (self richTextFor: aDocument) runs
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicRichTextComposerTest >> setUp [
 	super setUp.
 	sample := MicMicrodownSnippetFactory new.
 	parser := Microdown new.
 	offlineStatus := Microdown offline.
 	Microdown offline: false.
-	MicRichTextComposer initialize.
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> strikethroughtFormat [
 	^ TextEmphasis struckOut
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicRichTextComposerTest >> stringOf: aPRDocument [
 	
 	^ (self richTextFor: aPRDocument) string
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> subscriptFormat [
 	^ TextColor red
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> superscriptFormat [
 	^ TextColor blue
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicRichTextComposerTest >> tearDown [
 	Microdown offline: offlineStatus.
 	super tearDown.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testBackslashLast [
 	| source richText |
 	source := 'I am a text which ends in \'.
@@ -170,7 +171,7 @@ MicRichTextComposerTest >> testBackslashLast [
 	self assert: richText asString trim equals: source
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testBackslashNoBreak [
 	"This test is related to issue: https://github.com/pillar-markup/Microdown/issues/107"
 	| source richText |
@@ -187,13 +188,13 @@ Subclasses may change the definition of names by redefining isCurrentALetter.'.
 	self assert: true "I did not fail"
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> testBoldFormat [
 
 	self assertWriting: (self microElementsFrom: sample boldFormatSample) include: self boldFormat
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> testCenter [
 	| src doc|
 	src := '
@@ -204,7 +205,7 @@ This is centered
 	self assertWriting: doc include: TextAlignment centered 
 ]
 
-{ #category : #'tests - codeBlock' }
+{ #category : 'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlock [
 
 	| source runs richText |
@@ -223,7 +224,7 @@ line 2
 line 2'
 ]
 
-{ #category : #'tests - codeBlock' }
+{ #category : 'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerExplicitLanguage [
 
 	| source richText expected |
@@ -238,7 +239,7 @@ line 2
 	self assert: richText asString trim equals: expected
 ]
 
-{ #category : #'tests - codeBlock' }
+{ #category : 'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockStylerShortHand [
 
 	| source richText expected |
@@ -253,7 +254,7 @@ line 2
 	self assert: richText asString trim equals: expected
 ]
 
-{ #category : #'tests - codeBlock' }
+{ #category : 'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockWithCaption [
 
 	| source runs richText |
@@ -275,7 +276,7 @@ line 2
 Roger Rabbit'
 ]
 
-{ #category : #'tests - codeBlock' }
+{ #category : 'tests - codeBlock' }
 MicRichTextComposerTest >> testCodeBlockWithTabbedCode [
 
 	| source richText |
@@ -290,7 +291,7 @@ MicRichTextComposerTest >> testCodeBlockWithTabbedCode [
 	8'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
 	| src |
 	src := '
@@ -301,7 +302,7 @@ stuff
 	Microdown asRichText: src
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testExternaLink [
 
 	| source richText obj1 |
@@ -312,7 +313,7 @@ MicRichTextComposerTest >> testExternaLink [
 	self assert: obj1 class name equals: #TextAction
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 	| source richText|
@@ -323,7 +324,7 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 	self assert: richText asTextMorph height < 100 "No image embedded"
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionRemote [
 
 	| source richText |
@@ -334,7 +335,7 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureNoCaptionRemote [
 
 	| source richText |
@@ -345,7 +346,7 @@ MicRichTextComposerTest >> testFigureNoCaptionRemote [
 	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel1 [
 
 	self 
@@ -353,7 +354,7 @@ MicRichTextComposerTest >> testHeaderLevel1 [
 		include: self headerLevel1
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel2 [
 
 	self 
@@ -361,7 +362,7 @@ MicRichTextComposerTest >> testHeaderLevel2 [
 		include: self headerLevel2
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel3 [
 
 	self 
@@ -369,7 +370,7 @@ MicRichTextComposerTest >> testHeaderLevel3 [
 		include: self headerLevel3
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel4 [
 
 	self 
@@ -377,7 +378,7 @@ MicRichTextComposerTest >> testHeaderLevel4 [
 		include: self headerLevel4
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel5 [
 
 	self 
@@ -385,7 +386,7 @@ MicRichTextComposerTest >> testHeaderLevel5 [
 		include: self headerLevel5
 ]
 
-{ #category : #'tests - header' }
+{ #category : 'tests - header' }
 MicRichTextComposerTest >> testHeaderLevel6 [
 
 	self 
@@ -393,7 +394,7 @@ MicRichTextComposerTest >> testHeaderLevel6 [
 		include: self headerLevel6
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testInputfile [
 
 	| source result |
@@ -403,7 +404,7 @@ MicRichTextComposerTest >> testInputfile [
 	self assert: (result includesSubstring: 'body for test')
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testItalicFormat [
 
 	| source runs richText |
@@ -416,7 +417,7 @@ MicRichTextComposerTest >> testItalicFormat [
 	self deny: ((runs at: 6 "the h in have") includes: self italicFormat  ).
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testLatexMathStyleEmpty [
 
 	| source richText |
@@ -425,7 +426,7 @@ MicRichTextComposerTest >> testLatexMathStyleEmpty [
 	self assert: richText asString trim equals: 'foobar' .
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 
 	| source richText |
@@ -441,7 +442,7 @@ MicRichTextComposerTest >> testListAreCorrectlyNumbered [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testMathEnvironmentError [
 	| source richText |
 	source :=  'foo
@@ -455,7 +456,7 @@ $$
 $$ - LATEX ERROR - $$'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testNestedList [
 	"I just need to be here and succeed to override an existing test which is obsolete"
 	| silly |
@@ -463,7 +464,7 @@ MicRichTextComposerTest >> testNestedList [
 	self assert: silly equals: silly
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testNestedMixedList [
 
 	| source richText runs |
@@ -483,7 +484,7 @@ MicRichTextComposerTest >> testNestedMixedList [
 	
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
 
 	| source output |
@@ -500,7 +501,7 @@ MicRichTextComposerTest >> testNestedMixedListNoEmptyLinesEfterSubLists [
 	
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testNestedUnorderdList [
 
 	| source richText |
@@ -518,7 +519,7 @@ MicRichTextComposerTest >> testNestedUnorderdList [
 	
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testNewDictionaryAPI [
 	
 	| dict |
@@ -526,7 +527,7 @@ MicRichTextComposerTest >> testNewDictionaryAPI [
 	self assert: (dict at: #a) equals: 1
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testNoNSuperfluousNewLines [
 
 	| source richText expected |
@@ -540,7 +541,7 @@ And this is just an other paragraph'.
 	self assert: richText asString equals: expected
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testNosuperfluousNewLines [
 
 	| source richText expected |
@@ -550,7 +551,7 @@ MicRichTextComposerTest >> testNosuperfluousNewLines [
 	self assert: richText asString equals: expected
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testOrderedList [
 
 	| source richText runs  |
@@ -568,7 +569,7 @@ MicRichTextComposerTest >> testOrderedList [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testOrderedNestedList [
 	| source richText   |
 	source := '
@@ -582,7 +583,7 @@ MicRichTextComposerTest >> testOrderedNestedList [
 	
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicRichTextComposerTest >> testParagraphNotFormat [
 
 	| runs richText |
@@ -594,7 +595,7 @@ barwith a space').
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testQuoteBlock [
 	| src richText |
 	"Quote blocks have not been implemented"
@@ -604,14 +605,14 @@ MicRichTextComposerTest >> testQuoteBlock [
 	self deny: (richText asString findString: 'foo') equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testRaw [
 	| text |
 	text := Microdown asRichText: '{{**not bold**}}'.
 	self assert: text asString trim equals: '**not bold**'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testRawNewLinesPreserved [
 	| text |
 	text := Microdown asRichText: '{{**not 
@@ -620,7 +621,7 @@ bold**}}'.
 bold**'.
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> testRightAlignment [ 
 	| src doc|
 	src := '
@@ -631,7 +632,7 @@ This is righted
 	self assertWriting: doc include: TextAlignment rightFlush  
 ]
 
-{ #category : #'skipped tests' }
+{ #category : 'skipped tests' }
 MicRichTextComposerTest >> testStrikethroughFormat [ 
 	| source runs richText |
 	source := 'This have been ~deleted~'.
@@ -643,11 +644,11 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 	self deny: ((runs at: 6 "the h in have") includes: self strikethroughtFormat ).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	self composerClass initialize.
+
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
@@ -669,7 +670,7 @@ styledTextFor: aString asFest'.
 	self assert: textColor color red equals: 0.
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicRichTextComposerTest >> testUnorderedList [
 
 	| source richText runs  |
@@ -685,7 +686,7 @@ MicRichTextComposerTest >> testUnorderedList [
 	self assert: (runs at: 29) first amount equals: 2.
 ]
 
-{ #category : #'tests - format' }
+{ #category : 'tests - format' }
 MicRichTextComposerTest >> underlineFormat [
 	^ TextEmphasis underlined
 ]

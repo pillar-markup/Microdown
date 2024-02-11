@@ -3,12 +3,14 @@ I am a smalltalk code styler which renders undefined variables and methods same 
 I am used to render smalltalk codeblocks.
 "
 Class {
-	#name : #MicSmalltalkTextStyler,
-	#superclass : #SHRBTextStyler,
-	#category : #'Microdown-RichTextComposer-Composer'
+	#name : 'MicSmalltalkTextStyler',
+	#superclass : 'SHRBTextStyler',
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #attributes }
+{ #category : 'attributes' }
 MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 	"Render undefined same way as defined"
 
@@ -21,7 +23,7 @@ MicSmalltalkTextStyler class >> initialTextAttributesForPixelHeight: aNumber [
 	^ dict
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicSmalltalkTextStyler class >> initialize [
 	"I have my own set of class side variables. I should not, but alas, so it is"
 	"do not super initialize, that whould interfer with settings"
@@ -30,7 +32,7 @@ MicSmalltalkTextStyler class >> initialize [
 	textAttributesByPixelHeight := nil.
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSmalltalkTextStyler class >> new [
 	"I need to stay in sync with my superclass, so I initilize on each instantiation. Performance says a few micro seconds, so OK"
 	self styleTable = SHRBTextStyler styleTable "style table was changed"
@@ -38,14 +40,14 @@ MicSmalltalkTextStyler class >> new [
 	^ super new 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicSmalltalkTextStyler >> resolveStyleFor: aVariableNode [
 	"This circumvent an error in my super"
 	aVariableNode isUndeclaredVariable ifTrue: [ ^#undefinedIdentifier ].
 	^ super resolveStyleFor: aVariableNode
 ]
 
-{ #category : #styling }
+{ #category : 'styling' }
 MicSmalltalkTextStyler >> styledTextFor: aText [ 
 	aText ifEmpty: [ ^ aText ].
 	^self privateStyle: aText
