@@ -11,34 +11,36 @@ I have a resources, i.e. an object referencing either a file (in relative or abs
 What is important to see is that there is a space between the url arguments and microdown arguments. 
 "
 Class {
-	#name : #MicFigureBlock,
-	#superclass : #MicInlineBlockWithUrl,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicFigureBlock',
+	#superclass : 'MicInlineBlockWithUrl',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> alt [
   ^ self arguments at: #alt ifAbsent: ['']
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> alt: aString [
     self arguments at: #alt put: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> anchor [
 	^ self arguments 
 		at: #anchor 
 		ifAbsent: [ nil ] 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicFigureBlock >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
@@ -53,7 +55,7 @@ MicFigureBlock >> closeMe [
 	self children: captionElements
 ]
 
-{ #category : #'to be removed' }
+{ #category : 'to be removed' }
 MicFigureBlock >> figurePath [
 	"this is a hack waiting for the resolution of resource references"
 	"when we have file://figures/foo.png we want to have figures/foo.png "
@@ -65,50 +67,50 @@ MicFigureBlock >> figurePath [
 	
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicFigureBlock >> fullName [
 
 	^ reference fullName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFigureBlock >> hasAnchor [
 
 	^ self anchor isNotNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFigureBlock >> hasCaption [
 	
 	^ captionElements notNil 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFigureBlock >> hasChildren [
 	^ self children notEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> kind [
 	self flag: #todo. 
 	"remove me"
  	^ #figure
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> openingDelimiter [
 
  	^ FigureNameOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFigureBlock >> originUrl [
 	^ self properties 
 		at: #originUrl 
 		ifAbsent: [ url ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicFigureBlock >> printOn: aStream [
  		aStream nextPut: $!;
  			nextPut: $[;

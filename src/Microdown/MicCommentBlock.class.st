@@ -6,17 +6,19 @@ Each line to be commented should start with %.
 I should be a subclass of SingleLineBlock and not continuousMarkedBlock.
 "
 Class {
-	#name : #MicCommentBlock,
-	#superclass : #MicContinuousMarkedBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicCommentBlock',
+	#superclass : 'MicContinuousMarkedBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicCommentBlock >> accept: aVisitor [
  	^ aVisitor visitComment: self
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicCommentBlock >> lineMarkup [
 
 	^ CommentedLineMarkup 

@@ -12,27 +12,29 @@ I'm a bloc element that represents a column. I have one optional argument that i
 ```
 "
 Class {
-	#name : #MicColumnBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicColumnBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicColumnBlock class >> tag [
 	^ #column
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicColumnBlock >> accept: aVisitor [
 	^ aVisitor visitColumn: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicColumnBlock >> width [
 	^ arguments at: #width
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicColumnBlock >> width: anObject [
 	arguments at: #width put: anObject
 ]

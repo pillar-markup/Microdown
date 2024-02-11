@@ -1,6 +1,6 @@
-Extension { #name : #Class }
+Extension { #name : 'Class' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> addDocumentSectionExampleCodeTo: aBuilder [
 
 	| exampleCode |
@@ -13,7 +13,7 @@ Class >> addDocumentSectionExampleCodeTo: aBuilder [
 	aBuilder codeblock: exampleCode
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> addDocumentSectionTo: aBuilder label: label methods: methods [
 	
 	methods ifEmpty: [ ^ self ].
@@ -26,7 +26,7 @@ Class >> addDocumentSectionTo: aBuilder label: label methods: methods [
 				aBuilder monospace: (each methodClass name, '>>#', each selector) ] ] ]
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	aBuilder 
@@ -43,7 +43,7 @@ Class >> buildMicroDownUsing: aBuilder withComment: aString [
 		methods: (self class methods select: [ :each | each protocol = self documentExamplesProtocol ])
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> documentExampleCode [
 	| exampleMethod |
 	
@@ -60,13 +60,13 @@ Class >> documentExampleCode [
 		trimmed
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> documentExampleCodeSelector [
 	
 	^ 'example*'
 ]
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 Class >> documentExamplesProtocol [
 	
 	^ #'*Examples'

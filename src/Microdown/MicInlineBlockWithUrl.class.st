@@ -8,8 +8,8 @@ My subclasses manage figures and links.
 ![Pharologo](https://files.pharo.org/media/logo/logo.png)
 "
 Class {
-	#name : #MicInlineBlockWithUrl,
-	#superclass : #MicInlineElement,
+	#name : 'MicInlineBlockWithUrl',
+	#superclass : 'MicInlineElement',
 	#instVars : [
 		'url',
 		'parser',
@@ -17,10 +17,12 @@ Class {
 		'arguments',
 		'reference'
 	],
-	#category : #'Microdown-ModelInline'
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicInlineBlockWithUrl class >> fileStringWithoutHostFile: aString [
 	| localFileIndicator |
 	localFileIndicator := 'file://'.
@@ -29,7 +31,7 @@ MicInlineBlockWithUrl class >> fileStringWithoutHostFile: aString [
 			ifFalse: [ aString ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
 	^ self new 
 		start: aStartInteger; 
@@ -42,7 +44,7 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL withParser: aParser [
 	^ self new 
 		start: aStartInteger; 
@@ -56,18 +58,18 @@ MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aK
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
 	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> argumentAt: aKey [
 
 	^ self arguments at: aKey
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
 
@@ -76,73 +78,73 @@ MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 		ifPresent: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> argumentAt: aKey put: anObject [
 
 	self arguments at: aKey put: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments [
 	^ arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments: aDictionary [
 	arguments := aDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> caption [
 	^ String streamContents: [:st | self captionElements do: [ :each | st nextPutAll: each text ] ] 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements [ 
 	^ captionElements ifNil: [ OrderedCollection new ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements: aCollection [ 
 	captionElements := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> closingDelimiter [
 
  	^ URLCloserMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> fileStringWithoutHostFile [
 	^ self class fileStringWithoutHostFile: url asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> hasArguments [
 	"Answer <true> if the receiver contain at least 1 argument"
 	
 	^ arguments notEmpty
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
 
 	super initialize.
 	arguments := OrderedDictionary new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> parser [ 
 	^ parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> parser: aParser [
 	parser := aParser
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicInlineBlockWithUrl >> printOn: aStream [
 	| contents |
 	contents := children
@@ -157,24 +159,24 @@ MicInlineBlockWithUrl >> printOn: aStream [
 	aStream nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference [
 
 	^ reference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference: anObject [
 
 	reference := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> url [
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> url: anURL [
 
 	url := anURL

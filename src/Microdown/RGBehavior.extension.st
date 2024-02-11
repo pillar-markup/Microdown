@@ -1,6 +1,6 @@
-Extension { #name : #RGBehavior }
+Extension { #name : 'RGBehavior' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 RGBehavior >> buildMicroDownUsing: aMicMicrodownTextualBuilder withComment: aString [
 
 	aMicMicrodownTextualBuilder

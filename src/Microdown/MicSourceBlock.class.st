@@ -9,22 +9,24 @@ Yielding:
 The `side` argument can be `instance` or `class`. If can be omitted, and is then assumed to be `instance`
 "
 Class {
-	#name : #MicSourceBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicSourceBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSourceBlock class >> tag [
 	^#source
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSourceBlock >> accept: aVisitor [
 	aVisitor visitAll: self children 
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicSourceBlock >> closeMe [
 	|builder|
 	super closeMe.
@@ -33,7 +35,7 @@ MicSourceBlock >> closeMe [
 	self children:  (Microdown parse: builder contents) children.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSourceBlock >> sourceCode [
 
 	| className class methodName method|

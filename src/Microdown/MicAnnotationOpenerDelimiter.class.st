@@ -1,31 +1,33 @@
 Class {
-	#name : #MicAnnotationOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicAnnotationOpenerDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationOpenerDelimiter class >> associatedInlineBlock [
 	^ MicAnnotationBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationOpenerDelimiter class >> isCloser [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationOpenerDelimiter class >> markup [
 
 	^ AnnotationOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotationOpenerDelimiter class >> type [
 	^ #annotation
 ]

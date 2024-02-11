@@ -1,6 +1,6 @@
-Extension { #name : #BaselineOf }
+Extension { #name : 'BaselineOf' }
 
-{ #category : #'*Microdown' }
+{ #category : '*Microdown' }
 BaselineOf class >> buildMicroDownUsing: aBuilder withComment: aString [
 	aBuilder
 		header: [ aBuilder text: self name ] withLevel: 1;

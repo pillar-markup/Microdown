@@ -8,23 +8,25 @@ this is a text with a {!citation|ref=Duca99a!}
 
 "
 Class {
-	#name : #MicCitationBlock,
-	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicCitationBlock',
+	#superclass : 'MicAnnotationBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCitationBlock class >> tag [
 
 	^ #citation
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicCitationBlock >> accept: aVisitor [
 	aVisitor visitCitation: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCitationBlock >> ref [
 	^ arguments at: 'ref' ifAbsent: [ '' ]
 ]

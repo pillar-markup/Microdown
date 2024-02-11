@@ -4,23 +4,25 @@ I'm an inline element that represents a footnote as in LaTeX for example. The bi
 this is a text with a `{!footnote|note=Here is a nice footenote.!}`
 "
 Class {
-	#name : #MicFootnoteBlock,
-	#superclass : #MicAnnotationBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicFootnoteBlock',
+	#superclass : 'MicAnnotationBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFootnoteBlock class >> tag [
 
 	^ #footnote
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicFootnoteBlock >> accept: aVisitor [
 	aVisitor visitFootnote: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFootnoteBlock >> note [
 	arguments ifNotEmpty: [ 
 		^ arguments at: #note ifAbsent: [ '' ] ]

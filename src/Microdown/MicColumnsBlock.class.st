@@ -33,17 +33,19 @@ Note that a column can have also a width.
 ```
 "
 Class {
-	#name : #MicColumnsBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Extensions'
+	#name : 'MicColumnsBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Extensions',
+	#package : 'Microdown',
+	#tag : 'Extensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicColumnsBlock class >> tag [
 	^ #columns
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicColumnsBlock >> accept: aVisitor [
 	^ aVisitor visitColumns: self
 ]

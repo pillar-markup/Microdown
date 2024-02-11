@@ -2,28 +2,30 @@
 I represent a strike text section. I'm delimited using `~` as in `~strike~` to obtain ~strike~.
 "
 Class {
-	#name : #MicStrikeFormatBlock,
-	#superclass : #MicFormatBlock,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicStrikeFormatBlock',
+	#superclass : 'MicFormatBlock',
+	#category : 'Microdown-ModelInline',
+	#package : 'Microdown',
+	#tag : 'ModelInline'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicStrikeFormatBlock >> accept: aVisitor [
 	^ aVisitor visitStrike: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeFormatBlock >> closingDelimiter [
 
  	^ StrikeMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeFormatBlock >> kind [ 
 	^ #strike
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStrikeFormatBlock >> openingDelimiter [
 
  	^ StrikeMarkup

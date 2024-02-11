@@ -3,32 +3,34 @@ I'm a delimiter for math inline. An example is $V_i = C_0 - C_3$.
 I delimits `MicMathInlineBlock`.
 "
 Class {
-	#name : #MicMathDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicMathDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathDelimiter class >> associatedInlineBlock [
 	^ MicMathInlineBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathDelimiter class >> isCloser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathDelimiter class >> markup [
 	^ MathMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicMathDelimiter class >> type [
 	^ #math
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #MicAbstractBlock }
+Extension { #name : 'MicAbstractBlock' }
 
-{ #category : #'*Microdown-DocumentBrowser' }
+{ #category : '*Microdown-DocumentBrowser' }
 MicAbstractBlock >> isRootSection [ 
 	^ false
 ]

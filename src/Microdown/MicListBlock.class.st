@@ -42,16 +42,18 @@ Now an ordered list can also contain an unordered list.
 
 "
 Class {
-	#name : #MicListBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicListBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'indent',
 		'nestedLevel'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListBlock >> addLineAndReturnNextNode: inLine [
 	"Create a new item, and insert it into me.
 	line is on the format 'markup text'"
@@ -68,7 +70,7 @@ MicListBlock >> addLineAndReturnNextNode: inLine [
 		addLineAndReturnNextNode: (line copyFrom: indent - parent indent to: line size)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListBlock >> canConsumeLine: line [
 	"to consume this line there must be a ListItem starting at the right indentation"
 	
@@ -78,24 +80,24 @@ MicListBlock >> canConsumeLine: line [
 	^true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListBlock >> closeMe [
 	super closeMe.
 	nestedLevel := self computeNestedLevel
 ]
 
-{ #category : #indent }
+{ #category : 'indent' }
 MicListBlock >> computeNestedLevel [
 	
 	^ self parent computeNestedLevel + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListBlock >> indent [
 	^ indent
 ]
 
-{ #category : #indent }
+{ #category : 'indent' }
 MicListBlock >> indentFromLine: aLine [
 	"The line is expected to have the form: '<bullet> space+ [text]', where bullet is one of *,+,- or 1. or 1). More than one space is allowed. 
 	indentFromLine returns the position of the last character before the text.
@@ -108,7 +110,7 @@ MicListBlock >> indentFromLine: aLine [
 	indent := parent indent + (regEx subexpression: 1) size
 ]
 
-{ #category : #indent }
+{ #category : 'indent' }
 MicListBlock >> nestedLevel [
 	"Return the nesting level of main blocks. Basically only list increases this."
 	

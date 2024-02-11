@@ -6,32 +6,34 @@ See *@fig1@*
 ```
 "
 Class {
-	#name : #MicAnchorReferenceOpenerDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Parser'
+	#name : 'MicAnchorReferenceOpenerDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceOpenerDelimiter class >> associatedInlineBlock [
 	^ MicAnchorReferenceBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceOpenerDelimiter class >> isCloser [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceOpenerDelimiter class >> isOpener [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceOpenerDelimiter class >> markup [
 	^ AnchorReferenceOpenerMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnchorReferenceOpenerDelimiter class >> type [
 	^ #anchorReference
 ]
