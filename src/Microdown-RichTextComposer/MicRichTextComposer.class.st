@@ -520,7 +520,7 @@ MicRichTextComposer >> visitLink: aLink [
 	| attribute |
 	attribute := TextAction new
 		             actOnClickBlock: [ 
-			             MicRichTextLinkPresenter new openLink: aLink reference ];
+			             MicRichTextLinkDisplayer new openLink: aLink reference ];
 		             yourself.
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
@@ -644,8 +644,7 @@ MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
 
 	"this is a hack, because the align of the icon is attached to some top-left of the 
 	 letters that I do not understand, and I want it aligned with the actual text"	
-	doitForm := ((Form 
-		extent: 16@22 depth: Display depth) 
+	doitForm := ((Form  extent: 16@22) 
 		mergeWith:(self iconNamed: #smallDoIt) at: 0@8)
 		asText.
 		

@@ -18,7 +18,7 @@ MicRichTextCodeBlockStylerDefault class >> styleTags [
 MicRichTextCodeBlockStylerDefault >> style: sourceString [
 	"I style a set of smalltalk expressions"
 
-	^ MicSmalltalkTextStyler new
+	^ MicCodeTextStyler new
 		  isScripting: true;
 		  styledTextFor: sourceString asText
 ]

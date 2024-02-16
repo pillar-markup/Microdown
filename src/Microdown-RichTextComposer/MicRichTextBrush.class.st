@@ -17,15 +17,17 @@ Class {
 
 { #category : 'instance creation' }
 MicRichTextBrush class >> on: canvas [ 
-	^self new
-		canvas: canvas
+	^ self new
+		canvas: canvas ; 
+		yourself
 ]
 
 { #category : 'instance creation' }
 MicRichTextBrush class >> on: canvas attribute: attr [
-	^self new
+	^ self new
 		canvas: canvas;
-		attribute: attr
+		attribute: attr; 
+		yourself
 ]
 
 { #category : 'accessing' }

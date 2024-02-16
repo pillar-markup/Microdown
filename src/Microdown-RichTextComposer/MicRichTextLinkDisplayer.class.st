@@ -18,7 +18,7 @@ A link to the microdown
 Relative references must be resolved before invoking this presenter.
 "
 Class {
-	#name : 'MicRichTextLinkPresenter',
+	#name : 'MicRichTextLinkDisplayer',
 	#superclass : 'Object',
 	#category : 'Microdown-RichTextComposer-Composer',
 	#package : 'Microdown-RichTextComposer',
@@ -26,7 +26,7 @@ Class {
 }
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [ 
+MicRichTextLinkDisplayer >> guessKindOf: aMicAbsoluteResourceReference [ 
 	|kind|
 	kind := aMicAbsoluteResourceReference path copyAfterLast: $. .
 	kind ifNotEmpty: [ ^ kind].
@@ -38,7 +38,7 @@ MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [ 
+MicRichTextLinkDisplayer >> openFormOn: aMicResourceReference [ 
 	|image window |
 	image := aMicResourceReference loadImage.
 	window := SpImagePresenter new 
@@ -51,7 +51,7 @@ MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
+MicRichTextLinkDisplayer >> openLink: anAbsoluteResourceReference [
 	| kind |
 	anAbsoluteResourceReference isRelative 
 		ifTrue: [ MicResourceReferenceError 
@@ -68,12 +68,12 @@ MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
+MicRichTextLinkDisplayer >> openWebLink: aHtmlResource [
 	WebBrowser openOn: aHtmlResource uri
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> pragmaForKind: kind [
+MicRichTextLinkDisplayer >> pragmaForKind: kind [
 		| implementation |
 	implementation := (Pragma allNamed: #richtextlinkpresenter:)
 		select: [ :pragma | pragma arguments first = kind ].
@@ -81,7 +81,7 @@ MicRichTextLinkPresenter >> pragmaForKind: kind [
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
+MicRichTextLinkDisplayer >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"
 	| implementation implementerClass |

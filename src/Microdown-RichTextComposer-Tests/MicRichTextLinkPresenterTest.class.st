@@ -15,7 +15,7 @@ Class {
 { #category : 'running' }
 MicRichTextLinkPresenterTest >> setUp [
 	super setUp.
-	linkPresenter := MicRichTextLinkPresenter new.
+	linkPresenter := MicRichTextLinkDisplayer new.
 ]
 
 { #category : 'tests' }

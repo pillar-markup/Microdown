@@ -19,7 +19,7 @@ MicRichTextCodeBlockStylerFullMethod >> style: sourceString [
 
 	| source styler ast |
 	source := sourceString asText.
-	styler := MicSmalltalkTextStyler new.
+	styler := MicCodeTextStyler new.
 	ast := self class compiler       
 		source: source asString;
 		"the optionParseErrors is to allow code with syntax errors, just as when you type in the editor
