@@ -74,13 +74,29 @@ There are three ways to create anchors
 
 - % comments
 - *** horizontal line
-- `$$` mathematical environment 
+- File meta data is plain JSON
+
+```
+{
+"date" : "12 december 2025"
+}
+```
+
+### Math support
+
+- `$$` mathematical environment
+
+```
+$$%key=cite&label=refToTheGreatEquation
+V_i = C_0 - C_3 
+$$
+```
 - Math in text
 
 ```
 'abc$	V_i = C_0 - C_3	$def'.
 ```
-will generate LaTeX $	V_i = C_0 - C_3	$
+will generate LaTeX equivalent.
 
 ### Codeblock
 
@@ -104,8 +120,25 @@ codeBlockMarkupString
 
 ### Extensions
 
+- `{! aTag | parameters!}` is the way to use an extension with parameters
+- Environments are defined using `<!tag | parameters !>`
+
+```
+<!agenda|title=International Workshop on Smalltalk Technologies
+
+<!day|start=2023 August 29th&title=Monday
+
+<!segment|start=10:30
+
+<!talk|subject=Pharo DataFrame: Past, Present, and Future&length=30&author=Safina, Zaitsev, Ferlicot-Delbecque and Sow&room=Room B!>
+<!talk|subject=Improving Performance Through Object Lifetime Profiling: the DataFrame Case&length=30&author=Jordan-Montaño, Palumbo, Polito, Ducasse and Tesone&room=Room B!> <!talk|subject=Garbage Collector Tuning in Pathological Allocation Pattern Applications&length=30&author=Palumbo, Jordan-Montaño, Polito, Tesone and Ducasse&room=Room B!>
+!>
+!>
+!>
+```  
 - Citations `{!citation|ref=Blac09a!}` -- note that the bib file should be defined in the pillar.conf file
-  
+
+
 ## Known limits
 
 #### Math should be tested
