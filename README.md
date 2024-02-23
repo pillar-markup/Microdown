@@ -81,7 +81,10 @@ There are three ways to create anchors
 "date" : "12 december 2025"
 }
 ```
-
+- Raw text
+```
+{{ raw text }}
+```
 ### Math support
 
 - `$$` mathematical environment
