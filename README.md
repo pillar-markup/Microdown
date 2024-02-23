@@ -69,7 +69,19 @@ There are three ways to create anchors
 - `@anchorlabel` will create an anchor to the preceeding element. 
 - Figures, mathematical environments, environment can specify label as arguments (`label`)
 - Code block can specify label as argument (argument named `label`)
-- Citations `{!citation|ref=Blac09a!}` -- note that the bib file should be defined in the pillar.conf file
+
+### Various
+
+- % comments
+- *** horizontal line
+- `$$` mathematical environment 
+- Math in text
+
+```
+'abc$	V_i = C_0 - C_3	$def'.
+```
+will generate LaTeX $	V_i = C_0 - C_3	$
+
 ### Codeblock
 
 Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo&label=code1&caption=this is my great piece of code`
@@ -89,6 +101,11 @@ codeBlockMarkupString
 ```
 ````
 
+
+### Extensions
+
+- Citations `{!citation|ref=Blac09a!}` -- note that the bib file should be defined in the pillar.conf file
+  
 ## Known limits
 
 #### Math should be tested
