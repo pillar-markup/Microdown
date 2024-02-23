@@ -31,7 +31,7 @@ But also
 ## Core Syntax in 2 seconds
 
 ```
-   	#Header
+   	# Header
         @anchor
 	% This is line comment
 
@@ -69,10 +69,10 @@ There are three ways to create anchors
 - `@anchorlabel` will create an anchor to the preceeding element. 
 - Figures, mathematical environments, environment can specify label as arguments (`label`)
 - Code block can specify label as argument (argument named `label`)
-
+- Citations `{!citation|ref=Blac09a!}` -- note that the bib file should be defined in the pillar.conf file
 ### Codeblock
 
-Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo|label=code1|caption=this is my great piece of code`
+Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo&label=code1&caption=this is my great piece of code`
 
 The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
 
