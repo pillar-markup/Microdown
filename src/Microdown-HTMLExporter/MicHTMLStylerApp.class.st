@@ -4,12 +4,14 @@ The Spec hook for the Microdown CSS Styler, a tool to configure document export 
 See class side to open the UI.
 "
 Class {
-	#name : #MicHTMLStylerApp,
-	#superclass : #SpApplication,
-	#category : #'Microdown-HTMLExporter-Spec'
+	#name : 'MicHTMLStylerApp',
+	#superclass : 'SpApplication',
+	#category : 'Microdown-HTMLExporter-Spec',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicHTMLStylerApp class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -19,14 +21,14 @@ MicHTMLStylerApp class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: self taskbarIconName)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicHTMLStylerApp class >> open [
 	<script>
 
 	self new run
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerApp >> start [
 	" Private - See superimplementor's comment "
 

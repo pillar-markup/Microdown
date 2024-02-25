@@ -8,8 +8,8 @@ Provides a presenter to configure common export HTML options, for example:
 
 "
 Class {
-	#name : #MicHTMLStylerHTMLOptionsPresenter,
-	#superclass : #MicHTMLStylerAbstractPresenter,
+	#name : 'MicHTMLStylerHTMLOptionsPresenter',
+	#superclass : 'MicHTMLStylerAbstractPresenter',
 	#instVars : [
 		'doctypeListPresenter',
 		'embeedCheckboxPresenter',
@@ -17,16 +17,18 @@ Class {
 		'encodingOptionsListPresenter',
 		'languageOptionsPresenter'
 	],
-	#category : #'Microdown-HTMLExporter-Spec'
+	#category : 'Microdown-HTMLExporter-Spec',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicHTMLStylerHTMLOptionsPresenter >> charSet [
 
 	^ encodingOptionsListPresenter selectedItem.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> defaultLanguageSelection [
 
 	^ (ISOLanguageDefinition iso2LanguageTable associations 
@@ -34,7 +36,7 @@ MicHTMLStylerHTMLOptionsPresenter >> defaultLanguageSelection [
 		thenCollect: [ : assoc | assoc key , ' - ' , assoc value language ]) anyOne
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicHTMLStylerHTMLOptionsPresenter >> defaultLayout [ 
 
 	^ SpGridLayout build: [ : builder |
@@ -56,13 +58,13 @@ MicHTMLStylerHTMLOptionsPresenter >> defaultLayout [
 			add: linksOpenNewPage ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerHTMLOptionsPresenter >> docTypeOptionNames [
 
 	^ self docTypeOptions keys
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerHTMLOptionsPresenter >> docTypeOptions [
 
 	^ OrderedDictionary new
@@ -86,26 +88,26 @@ MicHTMLStylerHTMLOptionsPresenter >> docTypeOptions [
 		yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicHTMLStylerHTMLOptionsPresenter >> documentType [
 	"Answer a <String> describing the selected HTML document type"
 	
 	^ doctypeListPresenter selectedItem
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerHTMLOptionsPresenter >> embeedCheckboxPresenter [
 
 	^ embeedCheckboxPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerHTMLOptionsPresenter >> enableEmbeedCss [
 
 	self embeedCheckboxPresenter enabled: true.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerHTMLOptionsPresenter >> encodingOptions [
 
 	^ #(
@@ -140,7 +142,7 @@ MicHTMLStylerHTMLOptionsPresenter >> encodingOptions [
 		)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializeDocTypeListPresenter [
 
 	doctypeListPresenter := self newDropList
@@ -154,7 +156,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeDocTypeListPresenter [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializeEmbeedingCheckPresenter [
 
 	embeedCheckboxPresenter := self newCheckBox
@@ -168,7 +170,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeEmbeedingCheckPresenter [
 		yourself.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializeEncodingOptionsListPresenter [
 
 	encodingOptionsListPresenter := self newDropList 
@@ -181,7 +183,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeEncodingOptionsListPresenter [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializeLanguageOptionsListPresenter [
 
 	languageOptionsPresenter := self newDropList 
@@ -194,7 +196,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeLanguageOptionsListPresenter [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializeLinksOptionCheckPresenter [
 		
 	linksOpenNewPage := self newCheckBox 
@@ -207,7 +209,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeLinksOptionCheckPresenter [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> initializePresenters [ 
 
 	self
@@ -218,7 +220,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializePresenters [
 		initializeLinksOptionCheckPresenter.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerHTMLOptionsPresenter >> languageOptions [
 
 	^ (ISOLanguageDefinition iso2LanguageTable associations 
@@ -226,7 +228,7 @@ MicHTMLStylerHTMLOptionsPresenter >> languageOptions [
 		thenCollect: [ : assoc | assoc key , ' - ' , assoc value language ]) asSortedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerHTMLOptionsPresenter >> micHtmlDocumentConfiguration [
 	"Answer a <MicHTMLConfiguration> for the receiver's document"
 

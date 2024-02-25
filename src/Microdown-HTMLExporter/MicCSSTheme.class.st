@@ -4,22 +4,24 @@ A theme is a variation in style of a CSS framework. Commonly this variation is m
 See superclass comments for details.
 "
 Class {
-	#name : #MicCSSTheme,
-	#superclass : #MicCSSEntity,
+	#name : 'MicCSSTheme',
+	#superclass : 'MicCSSEntity',
 	#instVars : [
 		'framework'
 	],
-	#category : #'Microdown-HTMLExporter-CSS'
+	#category : 'Microdown-HTMLExporter-CSS',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'CSS'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSTheme >> framework [
 	"Answer the receiver's <MicCSSFramework>"
 
 	^ framework
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSTheme >> framework: aMicCSSFramework [
 	"Set the receiver's <MicCSSFramework>"
 

@@ -11,8 +11,8 @@ A CSS entity provides:
 The basePath defaults to the value in #defaultBasePath (commonly ""css/""), however, the location of css files could be changed using the setter #basePath: and a folder `String` as parameter.
 "
 Class {
-	#name : #MicCSSEntity,
-	#superclass : #Object,
+	#name : 'MicCSSEntity',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'cssUrl',
@@ -22,10 +22,12 @@ Class {
 		'destinationPath',
 		'basePath'
 	],
-	#category : #'Microdown-HTMLExporter-CSS'
+	#category : 'Microdown-HTMLExporter-CSS',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'CSS'
 }
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicCSSEntity >> basePath [
 	"Answer a <String> with the location where the receiver will be installed"
 	
@@ -33,7 +35,7 @@ MicCSSEntity >> basePath [
 		ifNil: [ basePath := self defaultBasePath ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> cssFile [
 	"Answer the receiver's <MicCSSFile>"
 
@@ -42,13 +44,13 @@ MicCSSEntity >> cssFile [
 		ifNotEmpty: [ cssFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> cssFile: anObject [
 
 	cssFile := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> cssPath [
 	"Answer a <String> describing the location path for the receiver, including its file name"
 	
@@ -58,34 +60,34 @@ MicCSSEntity >> cssPath [
 			<< self cssFile basename ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> cssUrl [
 	"Answer a <String> representing the receiver's human-readable CSS URL"
 
 	^ cssUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> cssUrl: anObject [
 
 	cssUrl := anObject
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicCSSEntity >> defaultBasePath [
 	"Answer a non-empty <String> representing the location where the receiver's files will be written"
 
 	^ 'css/'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicCSSEntity >> defaultDestinationPath [
 	"Answer a default <String> describing the location where receiver's CSS files are stored"
 	
 	^ 'support/'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> destinationPath [
 	"Answer a <String> representing the location used to store the receiver. This location is used as a repository of CSS entities opposed to the #basePath which is the user-location of a specific installation"
 
@@ -93,40 +95,40 @@ MicCSSEntity >> destinationPath [
 		ifNil: [ destinationPath := self defaultDestinationPath ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> destinationPath: anObject [
 
 	destinationPath := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCSSEntity >> hasMinifiedVersion [
 	"Anwswer <true> if the receiver contains a minified version"
 	
 	^ self minCssUrl notEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCSSEntity >> hasNormalVersion [
 	"Anwswer <true> if the receiver contains a normal (human-legible) version"
 	
 	^ self cssUrl notEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> minCssFile [
 	"Answer the recceiver's <MicCSSFile>, or nil if absent"
 
 	^ minCssFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> minCssFile: anObject [
 
 	minCssFile := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> minCssUrl [
 	"Answer a <String> with the URL endpoint of the minified source code, or empty if it is not present"
 
@@ -134,33 +136,33 @@ MicCSSEntity >> minCssUrl [
 		ifNil: [ minCssUrl := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> minCssUrl: anObject [
 
 	minCssUrl := anObject
 ]
 
-{ #category : #'accessing - source code' }
+{ #category : 'accessing - source code' }
 MicCSSEntity >> minifiedSourceCode [
 	"Answer a <String> representing the receiver's minified CSS source version"
 
 	^ self minCssFile contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> name [
 	"Answer a <String> representing the receiver's name"
 
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> name: anObject [
 
 	name := anObject
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
 	"Private - Answer a new <MicCSSFile> configured with the CSS URL specified in versionSymbol. If there is no resolvable versionSymbol in frwSpec, answer a new <MicCSSNullFile>"
 
@@ -171,7 +173,7 @@ MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> newCssFileFor: aCssUrl [
 
 	^ MicCSSFile new
@@ -179,7 +181,7 @@ MicCSSEntity >> newCssFileFor: aCssUrl [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCSSEntity >> newCssFiles: frwSpec [
 	"Private - Configure receiver's CSS files using specifications in fwrSpec"
 
@@ -187,7 +189,7 @@ MicCSSEntity >> newCssFiles: frwSpec [
 	self minCssFile: (self newCssFile: frwSpec version: #minCss)
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicCSSEntity >> printOn: aStream [
 
 	super printOn: aStream.
@@ -196,14 +198,14 @@ MicCSSEntity >> printOn: aStream [
 		<< self name.
 ]
 
-{ #category : #'accessing - source code' }
+{ #category : 'accessing - source code' }
 MicCSSEntity >> sourceCode [
 	"Answer a <String> representing the receiver's CSS source"
 	
 	^ self cssFile contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSEntity >> writeTo: destDirFileRef [
 	"Private - Write receiver's CSS resource into destDirFileRef"
 

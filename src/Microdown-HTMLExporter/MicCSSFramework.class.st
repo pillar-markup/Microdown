@@ -39,8 +39,8 @@ Instance Variables
 
 "
 Class {
-	#name : #MicCSSFramework,
-	#superclass : #MicCSSEntity,
+	#name : 'MicCSSFramework',
+	#superclass : 'MicCSSEntity',
 	#instVars : [
 		'normalizeUrl',
 		'resetUrl',
@@ -48,17 +48,19 @@ Class {
 		'themes',
 		'projectUrl'
 	],
-	#category : #'Microdown-HTMLExporter-CSS'
+	#category : 'Microdown-HTMLExporter-CSS',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'CSS'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicCSSFramework >> addTheme: aMicCSSTheme [
 	"Add aMicCSSTheme to the receiver themes. Answer the receiver"
 	
 	self themes add: aMicCSSTheme
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> fonts [
 	"Answer a <Collection> of receiver's typographies"
 
@@ -66,34 +68,34 @@ MicCSSFramework >> fonts [
 		ifNil: [ fonts := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> fonts: anObject [
 
 	fonts := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCSSFramework >> hasMinifiedThemes [
 	"Answer <true> if the receiver has any minified themes"
 	
 	^ self themes anySatisfy: #hasMinifiedVersion
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCSSFramework >> hasNormalThemes [
 	"Answer <true> if the receiver has any human-readable themes"
 	
 	^ self themes anySatisfy: #hasNormalVersion
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCSSFramework >> hasThemes [
 	"Answer <true> if the receiver has themes"
 
 	^ self themes notEmpty
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicCSSFramework >> newCssTheme: themeInfoDict [ 
 	"Answer a new <MicCSSTheme> configured with values in aMicCSSTheme"
 
@@ -106,7 +108,7 @@ MicCSSFramework >> newCssTheme: themeInfoDict [
 			yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> normalizeUrl [
 	"Answer a <String> with the URL endpoint of the Normalize library source code, or empty if it is not present"
 	
@@ -114,13 +116,13 @@ MicCSSFramework >> normalizeUrl [
 		ifNil: [ normalizeUrl := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> normalizeUrl: anObject [
 
 	normalizeUrl := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> projectUrl [
 	"Answer a <String> representing the receiver's minified CSS URL"
 	
@@ -128,13 +130,13 @@ MicCSSFramework >> projectUrl [
 		ifNil: [ projectUrl := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> projectUrl: anObject [
 
 	projectUrl := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> resetUrl [
 	"Answer a <String> with the URL endpoint of a Reset library source code, or empty if it is not present"
 
@@ -142,13 +144,13 @@ MicCSSFramework >> resetUrl [
 		ifNil: [ resetUrl := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> resetUrl: anObject [
 
 	resetUrl := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> themes [
 	"Answer a <Collection> of <MicCSSTheme>"
 
@@ -156,7 +158,7 @@ MicCSSFramework >> themes [
 		ifNil: [ themes := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCSSFramework >> themes: aDictionary [
 	"Set the receiver's normal themes according to aDictionary"
 

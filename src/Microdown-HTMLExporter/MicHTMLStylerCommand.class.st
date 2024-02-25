@@ -2,17 +2,19 @@
 Abstract command concerning Microdown HTML Styler.
 "
 Class {
-	#name : #MicHTMLStylerCommand,
-	#superclass : #CmCommand,
-	#category : #'Microdown-HTMLExporter-Spec-Commands'
+	#name : 'MicHTMLStylerCommand',
+	#superclass : 'CmCommand',
+	#category : 'Microdown-HTMLExporter-Spec-Commands',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec-Commands'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCommand class >> defaultIconName [
 	^self subclassResponsibility 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicHTMLStylerCommand class >> forSpecContext: anObject [
 
 	self flag: 'This helper is needed so icons can be displayed through #defaultIconName in class side subclasses (oposed to sending #iconNamed: to the command manually)'.
@@ -21,20 +23,20 @@ MicHTMLStylerCommand class >> forSpecContext: anObject [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCommand class >> order [
 	^ self subclassResponsibility
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCommand >> cssFramework [
 	"Answer the currently selected <MicCSSFramework>"
 
 	^ self context cssFramework
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MicHTMLStylerCommand >> exportToHtml: aMicHTMLDoc [ 
 	"Write passed Microdown HTML document to a file"
 
@@ -47,13 +49,13 @@ MicHTMLStylerCommand >> exportToHtml: aMicHTMLDoc [
 	self inform: 'Export finished'
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MicHTMLStylerCommand >> micHtmlDocument [
 
 	^ self context micHtmlDocument
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerCommand >> removeExport: aFileReference [ 
 
 	aFileReference parent ensureDeleteAll.

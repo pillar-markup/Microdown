@@ -12,8 +12,8 @@ It also parses Pillar-like headers converting a `Dictionary` of metadata attribu
 
 "
 Class {
-	#name : #MicHTMLConfiguration,
-	#superclass : #Object,
+	#name : 'MicHTMLConfiguration',
+	#superclass : 'Object',
 	#instVars : [
 		'scriptLanguage',
 		'targetAttribute',
@@ -30,10 +30,12 @@ Class {
 		'date',
 		'embeedCss'
 	],
-	#category : #'Microdown-HTMLExporter-Core'
+	#category : 'Microdown-HTMLExporter-Core',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> author [
 	"Answer a <String> representing the author of the receiver"
 	
@@ -41,125 +43,125 @@ MicHTMLConfiguration >> author [
 		ifNil: [ author := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> author: anObject [
 
 	author := anObject
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> beCssEmbedded [
 	"Answer the receiver. Set CSS to be inserted into its the receiver's document"
 
 	embeedCss := true
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> beCssLinked [
 	"Answer the receiver. Link CSS in the receiver's document"
 
 	embeedCss := false
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotFollow [
 	"Instruct search engines to follow all the links in the receiver's document"
 	
 	self robots add: 'follow'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotIndex [
 	"Instruct search engines to index the whole receiver's document"
 	
 	self robots add: 'index'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoArchive [
 	"Instruct search engines to NOT show a cached copy of the receiver's document"
 	
 	self robots add: 'noarchive'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoCache [
 	"Same as noarchive but only used by MSN/Live"
 	
 	self robots add: 'nocache'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoFollow [
 	"Instruct search engines to NOT follow all the links in the receiver's document"
 	
 	self robots add: 'nofollow'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoImageIndex [
 	"Instruct search engines to NOT index the images in the receiver's document"
 	
 	self robots add: 'noimageindex'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoIndex [
 	"Instruct search engines to NOT index the whole receiver's document"
 	
 	self robots add: 'noindex'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoSnippet [
 	"Prevents the search engines from showing a text or video snippet of this page in the search results, and prevents them from showing a cached copy of this page in their search results listings"
 	
 	self robots add: 'nosnippet'
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> beRobotNoTranslate [
 	"Prevents search engines from showing translations of the page in their search results"
 	
 	self robots add: 'notranslate'
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> beTargetAttributeBlank [
 	"Opens the linked document in a new window or tab (Microdown default)"
 	
 	self targetAttribute: '_blank'
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> beTargetAttributeParent [
 	"Opens the linked document in the parent frame"
 	
 	self targetAttribute: '_parent'
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> beTargetAttributeSelf [
 	"Opens the linked document in the same frame as it was clicked (W3C default)"
 	
 	self targetAttribute: '_self'
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> beTargetAttributeTop [
 	"Opens the linked document in the full body of the window"
 	
 	self targetAttribute: '_top'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> canvas [
 	"Answer the receiver's document <MicHTMLCanvas>"
 
 	^ self document canvas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> charSet [
 	"Answer a <String> with specifies the character encoding for the HTML document"
 
@@ -167,80 +169,80 @@ MicHTMLConfiguration >> charSet [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> charSet: anObject [
 
 	charSet := anObject
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> cssFrameworks [
 	"Answer the receiver's <Collection> of <MicCSSEntity>"
 	
 	^ self document cssFrameworks
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> date [
 	"Answer a <String> describing the receiver's date"
 
 	^ date
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> date: anObject [
 
 	date := anObject
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultCharset [
 	"Answer a <String> representing the default character set used in a HTML document"
 	
 	^ 'utf-8'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLConfiguration >> defaultDocumentType [
 	"Answer a <String> specifying the mandatory document specification tag"
 
 	^ '<!DOCTYPE html>'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultLanguageId [
 
 	^ 'en'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultScriptLanguage [
 	"Answer a <PRAbstractScriptLanguage>"
 
 	^ PRRealScriptLanguage for: 'pharo'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultTargetAttribute [
 	"By default, opens the linked document in a new window or tab"
 
 	^ '_blank'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultTitle [
 
 	^ 'Untitled document'
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultViewport [
 	"Answer a <String> to give the browser instructions on how to control the page's dimensions and scaling"
 
 	^ 'width=device-width,initial-scale=1.0,user-scalable=yes'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> description [
 	"Answer a <String> which define a description for the receiver"
 	
@@ -248,13 +250,13 @@ MicHTMLConfiguration >> description [
 		ifNil: [ description := String empty ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> description: anObject [
 
 	description := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> document [
 	"Answer a <MicHTMLDocument> if configured, or nil otherwise"
 
@@ -262,13 +264,13 @@ MicHTMLConfiguration >> document [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> document: anObject [
 
 	document := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLConfiguration >> documentType [
 	"Answer a <String> specifying the mandatory document specification tag"
 	
@@ -276,26 +278,26 @@ MicHTMLConfiguration >> documentType [
 		ifNil: [ documentType := self defaultDocumentType ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> documentType: anObject [
 
 	documentType := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLConfiguration >> initialize [
 	
 	super initialize.
 	self beCssLinked
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLConfiguration >> isCssEmbedded [
 
 	^ embeedCss
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> keywords [
 	"Answer a <Collection> of <String> which define keywords for search engines"
 	
@@ -303,13 +305,13 @@ MicHTMLConfiguration >> keywords [
 		ifNil: [ keywords := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> keywords: anObject [
 
 	keywords := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> languageId [
 	"Answer a <String> representing the target language of the receiver"
 	
@@ -317,13 +319,13 @@ MicHTMLConfiguration >> languageId [
 		ifNil: [ languageId := self defaultLanguageId ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> languageId: anObject [
 
 	languageId := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLConfiguration >> metadataSelectorMap [
 	"Answer a <Dictionary> mapping Pillar metadata keys to receiver's selectors. Corresponding methods will use the meta HTML tag and write its parameter as value"
 
@@ -336,7 +338,7 @@ MicHTMLConfiguration >> metadataSelectorMap [
 	} asDictionary
 ]
 
-{ #category : #'accessing - robots' }
+{ #category : 'accessing - robots' }
 MicHTMLConfiguration >> robots [
 	"Answer a <Collection> of <String> with information to control how the receiver's document should be indexed and served"
 
@@ -344,19 +346,19 @@ MicHTMLConfiguration >> robots [
 		ifNil: [ robots := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> scriptLanguage [
 
 	^ scriptLanguage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> scriptLanguage: anObject [
 
 	scriptLanguage := anObject
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> targetAttribute [
 	"Answer a <String>. The target attribute specifies where to open the linked document."
 
@@ -364,14 +366,14 @@ MicHTMLConfiguration >> targetAttribute [
 		ifNil: [ targetAttribute := self defaultTargetAttribute ]
 ]
 
-{ #category : #'accessing - links' }
+{ #category : 'accessing - links' }
 MicHTMLConfiguration >> targetAttribute: aString [
 	"Set the receiver's target to be aString"
 	
 	targetAttribute := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> title [
 	"Answer a <String> representing the required title element"
 	
@@ -379,26 +381,26 @@ MicHTMLConfiguration >> title [
 		ifNil: [ title := self defaultTitle ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> title: anObject [
 
 	title := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> viewport [
 
 	^ viewport 
 		ifNil: [ viewport := self defaultViewport ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLConfiguration >> viewport: anObject [
 
 	viewport := anObject
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> writeCssEmbeed [
 
 	self canvas tag
@@ -407,7 +409,7 @@ MicHTMLConfiguration >> writeCssEmbeed [
 		with: ((self cssFrameworks collect: #sourceCode) joinUsing: Character cr).
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> writeCssLinked [
 	"Add linked CSS resources to the receiver. This does not guarantee the CSS file exists, it only appends the tag to the document header"
 	
@@ -420,7 +422,7 @@ MicHTMLConfiguration >> writeCssLinked [
 
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentAuthor [
 	"Set the receiver's authors, who write the content of the document"
 	
@@ -431,7 +433,7 @@ MicHTMLConfiguration >> writeDocumentAuthor [
 		close
 ]
 
-{ #category : #'writing - css' }
+{ #category : 'writing - css' }
 MicHTMLConfiguration >> writeDocumentCSS [
 	"Add linked CSS resources to the receiver"
 
@@ -442,7 +444,7 @@ MicHTMLConfiguration >> writeDocumentCSS [
 
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentCharSet [
 	"Write the character encoding for the receiver"
 
@@ -453,7 +455,7 @@ MicHTMLConfiguration >> writeDocumentCharSet [
 		close.
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentDate [
 	"Set the receiver's authors, who write the content of the document"
 	
@@ -464,7 +466,7 @@ MicHTMLConfiguration >> writeDocumentDate [
 		close
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentDescription [
 	"Write a description for the receiver"
 
@@ -474,7 +476,7 @@ MicHTMLConfiguration >> writeDocumentDescription [
 		close.
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentGenerator [
 	"Write the automation tool used to generate the page content"
 
@@ -485,7 +487,7 @@ MicHTMLConfiguration >> writeDocumentGenerator [
 		close.
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLConfiguration >> writeDocumentHead [
 
 	self canvas tag
@@ -498,7 +500,7 @@ MicHTMLConfiguration >> writeDocumentHead [
 
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentKeywords [
 	"Set the receiver's page-related keywords, which help for better ranking on search engines"
 
@@ -509,7 +511,7 @@ MicHTMLConfiguration >> writeDocumentKeywords [
 		close
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentMetadata [
 
 	self 
@@ -518,7 +520,7 @@ MicHTMLConfiguration >> writeDocumentMetadata [
 		writeDocumentViewport
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentRobots [
 	"Set the receiver's robot’s values, which gives instructions to search engines how the web page should be indexed or not"
 	
@@ -529,7 +531,7 @@ MicHTMLConfiguration >> writeDocumentRobots [
 		close
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLConfiguration >> writeDocumentTitle [
 	"Write the mandatory title tag which defines the title of the receiver"
 
@@ -538,7 +540,7 @@ MicHTMLConfiguration >> writeDocumentTitle [
 		with: self title
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLConfiguration >> writeDocumentType [
 	"Write the mandatory DOCTYPE HTML declaration in the receiver"
 
@@ -546,7 +548,7 @@ MicHTMLConfiguration >> writeDocumentType [
 
 ]
 
-{ #category : #'writing - metadata' }
+{ #category : 'writing - metadata' }
 MicHTMLConfiguration >> writeDocumentViewport [
 	"Set the receiver's visible area to look good on all devices"
 	
@@ -557,7 +559,7 @@ MicHTMLConfiguration >> writeDocumentViewport [
 		close
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLConfiguration >> writeFromMetadataAssociation: anAssociation [ 
 
 	anAssociation key = 'metadata'
@@ -565,7 +567,7 @@ MicHTMLConfiguration >> writeFromMetadataAssociation: anAssociation [
 		ifFalse: [ self writeHeaderFromMetadataAssociation: anAssociation ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLConfiguration >> writeHeaderFromMetadata: aDictionary [ 
 
 	aDictionary associationsDo: [ : assoc |
@@ -573,7 +575,7 @@ MicHTMLConfiguration >> writeHeaderFromMetadata: aDictionary [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLConfiguration >> writeHeaderFromMetadataAssociation: anAssociation [ 
 
 	self metadataSelectorMap associationsDo: [ : metaSelectorPair | 

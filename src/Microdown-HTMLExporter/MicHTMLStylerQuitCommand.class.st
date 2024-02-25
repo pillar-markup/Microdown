@@ -2,36 +2,38 @@
 Command to close the application
 "
 Class {
-	#name : #MicHTMLStylerQuitCommand,
-	#superclass : #MicHTMLStylerCommand,
-	#category : #'Microdown-HTMLExporter-Spec-Commands'
+	#name : 'MicHTMLStylerQuitCommand',
+	#superclass : 'MicHTMLStylerCommand',
+	#category : 'Microdown-HTMLExporter-Spec-Commands',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec-Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerQuitCommand class >> defaultDescription [ 
 
 	^ 'Close the Styler'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerQuitCommand class >> defaultIconName [ 
 
 	^ #smallQuit
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerQuitCommand class >> defaultName [
 
 	^ 'Quit'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerQuitCommand class >> order [
 
 	^ 100
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MicHTMLStylerQuitCommand >> execute [
 
 	^ self context delete

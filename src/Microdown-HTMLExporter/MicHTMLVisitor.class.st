@@ -3,30 +3,32 @@ A first version of an HTML writer.
 We should rewrite it once the templatedWriter is working.
 "
 Class {
-	#name : #MicHTMLVisitor,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicHTMLVisitor',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'canvas',
 		'configuration'
 	],
-	#category : #'Microdown-HTMLExporter-Visitor'
+	#category : 'Microdown-HTMLExporter-Visitor',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Visitor'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor class >> asHTMLDocument: aMicrodownString [
 	"Answer a <String> formatted as HTML with UTF-8 encoding from aMicrodownString as input"
 
 	^ self new convertMicStringToDoc: aMicrodownString
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor class >> asHTMLString: aMicrodownString [
 	"Answer a <String> formatted as HTML from aMicrodownString as input"
 
 	^ self new convertMicString: aMicrodownString
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor class >> asHTMLString: aMicrodownString configuration: aMicHTMLConfiguration [
 	"Answer a <String> formatted as HTML from aMicrodownString as input"
 
@@ -35,42 +37,42 @@ MicHTMLVisitor class >> asHTMLString: aMicrodownString configuration: aMicHTMLCo
 		convertMicString: aMicrodownString
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLDocument [
 	<example>
 	
 	^ (Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument) inspect.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLDocumentWithFigure [
 	<example>
 	
 	^ (Microdown asHTMLDocument: '![AltText](my_directory/image.png label=42&width=90)') inspect.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLDocumentWithLink [
 	<example>
 	
 	^ (Microdown asHTMLDocument: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)') inspect.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLString [
 	<example>
 	
 	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLStringWithLink [
 	<example>
 	
 	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 	"Serialize aMicrodownString <String> to a HTML file with default for output name, directory and CSS"
 
@@ -79,7 +81,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString [
 		withStyle: MicCSSProvider defaultFramework
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleName [
 	"Serialize aMicrodownString <String> to a HTML file with CSS style named aStyleName and default for output directory and file name"
 
@@ -90,33 +92,33 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> canvasClass [
 
 	^ MicHTMLCanvas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitor >> configuration [
 
 	^ configuration
 		ifNil: [ configuration := MicHTMLConfiguration new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitor >> configuration: anObject [
 
 	configuration := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitor >> contents [ 
 	"Answer a <String> of HTML formatted receiver's canvas"
 
 	^ canvas contents
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor >> convertMicFile: aFilename [
 
 	| fileRef |
@@ -127,7 +129,7 @@ MicHTMLVisitor >> convertMicFile: aFilename [
 		writeStreamDo: [ : writeStream | writeStream nextPutAll: self contents ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor >> convertMicString: aMicString [
 	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
 
@@ -135,7 +137,7 @@ MicHTMLVisitor >> convertMicString: aMicString [
 	^ self contents
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 	"Answer a <String> representing the HTML equivalent of Microdown formatted aMicString "
 
@@ -146,17 +148,17 @@ MicHTMLVisitor >> convertMicStringToDoc: aMicString [
 		contents
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> crAsNewLine [ 
 	canvas crAsNewLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> crlfAsNewLine [ 
 	canvas crlfAsNewLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> initialize [ 
 	| stream |
 	super initialize.
@@ -165,12 +167,12 @@ MicHTMLVisitor >> initialize [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> lfAsNewLine [ 
 	canvas lfAsNewLine
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> metaDataFromAssociations: aDictionary [
 	"Write the receiver's metadata from aDictionary"
 
@@ -179,21 +181,21 @@ MicHTMLVisitor >> metaDataFromAssociations: aDictionary [
 
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLVisitor >> minQuoteThreshold [
 	"Answer a <Number> which is the number of characters used as the limit between short and long quotations"
 	
 	^ 50
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLVisitor >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
 	^ canvas stream usedNewLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitAnchor: anAnchor [
 	"Target could be any tag, h1, h2, a, etc., it is only a placeholder for a hyperlink"
 
@@ -204,7 +206,7 @@ MicHTMLVisitor >> visitAnchor: anAnchor [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitAnchorReference: anAnchor [
 	"Linking to an element on the same page"
 
@@ -215,7 +217,7 @@ MicHTMLVisitor >> visitAnchorReference: anAnchor [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 
 	canvas newLine.
@@ -229,7 +231,7 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 				with: [ super visitAnnotated: anAnnotatedParagraph ] ].
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitBold: aBoldText [
 
 	canvas tag
@@ -237,7 +239,7 @@ MicHTMLVisitor >> visitBold: aBoldText [
 		with: [ super visitBold: aBoldText ]
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicHTMLVisitor >> visitCitation: aCitation [
 
 	canvas tag
@@ -246,7 +248,7 @@ MicHTMLVisitor >> visitCitation: aCitation [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitCode: aCodeBlock [
 
 	canvas newLine.
@@ -272,7 +274,7 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 	canvas newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 
 	canvas tag
@@ -299,17 +301,17 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 	canvas newLine
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitColumn: aMicColumnsBlock [ 
 	"??"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitColumns: aMicColumnsBlock [ 
 	"??"
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
@@ -319,7 +321,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitFigure: aFigure [
 	"Write mark up elements related with photo in the receiver's canvas"
 
@@ -329,7 +331,7 @@ MicHTMLVisitor >> visitFigure: aFigure [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitHeader: aHeader [
 
 	canvas newLine.	
@@ -339,7 +341,7 @@ MicHTMLVisitor >> visitHeader: aHeader [
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitHorizontalLine: aHorizontalLine [
 
 	canvas tag
@@ -347,7 +349,7 @@ MicHTMLVisitor >> visitHorizontalLine: aHorizontalLine [
 		with: ''
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	"Write mark up elements related with image tag in the receiver's canvas.
 	Mandatory attributes:
@@ -362,7 +364,7 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitItalic: aItalicText [
 
 	canvas tag
@@ -370,7 +372,7 @@ MicHTMLVisitor >> visitItalic: aItalicText [
 		with: [ super visitItalic: aItalicText ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitLink: aLink [
 	"Write markup hyperlink, which is used to link from one page to another"
 
@@ -383,14 +385,14 @@ MicHTMLVisitor >> visitLink: aLink [
 
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> visitListItem: anItem [
 
 	canvas raw: [ super visitListItem: anItem ].
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitMath: anObject [
 
 	"<script src=""https://polyfill.io/v3/polyfill.min.js?features=es6""></script>
@@ -398,14 +400,14 @@ MicHTMLVisitor >> visitMath: anObject [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitMetaData: aMetaData [
 
 	self metaDataFromAssociations: aMetaData body.
 	super visitMetaData: aMetaData.
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitMonospace: aMonospace [
 
 	canvas tag
@@ -413,7 +415,7 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 		with: [ super visitMonospace: aMonospace ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedList: anOrderedList [
 
 	canvas newLine.
@@ -424,7 +426,7 @@ MicHTMLVisitor >> visitOrderedList: anOrderedList [
 			super visitOrderedList: anOrderedList  ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 	"will not work with we have text decorators such as bold, italic, monospace"
 
@@ -435,7 +437,7 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
@@ -444,7 +446,7 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 		with: [ super visitParagraph: aParagraph ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitQuote: aQuote [
 	"If the quote text size exceeds a minimum threshold, use blockquote which is appropriate for long quotations"
 	
@@ -457,7 +459,7 @@ MicHTMLVisitor >> visitQuote: aQuote [
 		with: [ super visitQuote: aQuote ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitStrike: aStrike [
 
 	canvas tag
@@ -465,7 +467,7 @@ MicHTMLVisitor >> visitStrike: aStrike [
 		with: [ super visitStrike: aStrike ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> visitTable: aTable [
 
 	canvas newLine.
@@ -476,20 +478,20 @@ MicHTMLVisitor >> visitTable: aTable [
 			self visitTableRows: aTable ]
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLVisitor >> visitTableHeaders: header [
 
 	self visitTableRow: header withTag: 'th'.
 		
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLVisitor >> visitTableRow: row [
 
 	self visitTableRow: row withTag: 'td'
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLVisitor >> visitTableRow: row withTag: aString [
 	"Private - Generalized visiting row to handle both table header and table row (td)"
 
@@ -503,7 +505,7 @@ MicHTMLVisitor >> visitTableRow: row withTag: aString [
 	canvas newLine			
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicHTMLVisitor >> visitTableRows: aTable [
 
 	| remainingRows |
@@ -517,7 +519,7 @@ MicHTMLVisitor >> visitTableRows: aTable [
 	remainingRows do: [ : row | self visitTableRow: row ]
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitText: aText [
 
 	canvas nextPutAll: (
@@ -526,7 +528,7 @@ MicHTMLVisitor >> visitText: aText [
 
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 
 	canvas newLine.
@@ -537,7 +539,7 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 			super visitUnorderedList: anUnorderedList  ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	"will not work with we have text decorators such as bold, italic, monospace"
 
@@ -548,7 +550,7 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> writeCounter: aCounter [
 
 	"Write on the canvas the string representation of ==aCounter=="
@@ -558,25 +560,25 @@ MicHTMLVisitor >> writeCounter: aCounter [
 		  separatedBy: [ self writeCounterElementSeparator ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> writeCounterDefinitionSeparator [
 
 	canvas nextPutAll: '. '
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> writeCounterElement: aCounterElement [
 
 	canvas nextPutAll: aCounterElement asString
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> writeCounterElementSeparator [
 
 	self shouldBeImplemented
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHTMLVisitor >> writeCounterForScript: aScript [
 
 	aScript counter isValidCounter ifFalse: [ ^ self ].

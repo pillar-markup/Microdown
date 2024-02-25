@@ -1,13 +1,13 @@
-Extension { #name : #MicListItemBlock }
+Extension { #name : 'MicListItemBlock' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicListItemBlock >> hasChildren [
 	"Answer <true> if the receiver has any children"
 	
 	^ self children size > 1
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicListItemBlock >> hasNestedChildren [
 	"Answer <true> if the receiver's children are list items and they are nested"
 
@@ -15,7 +15,7 @@ MicListItemBlock >> hasNestedChildren [
 		self children second nestedLevel > self nestedLevel  ]
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicListItemBlock >> listItemText [
 
 	^ text

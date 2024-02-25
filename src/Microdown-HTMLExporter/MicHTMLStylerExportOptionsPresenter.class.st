@@ -8,24 +8,26 @@ Provide a presenter with destination options for export such as:
 
 "
 Class {
-	#name : #MicHTMLStylerExportOptionsPresenter,
-	#superclass : #MicHTMLStylerAbstractPresenter,
+	#name : 'MicHTMLStylerExportOptionsPresenter',
+	#superclass : 'MicHTMLStylerAbstractPresenter',
 	#instVars : [
 		'outputFilenameTextPresenter',
 		'outputPathTextPresenter',
 		'overwriteCheckboxPresenter',
 		'browseOutputButton'
 	],
-	#category : #'Microdown-HTMLExporter-Spec'
+	#category : 'Microdown-HTMLExporter-Spec',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec'
 }
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLStylerExportOptionsPresenter >> defaultDestinationPath [ 
 
 	^ 'mic_html_output'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicHTMLStylerExportOptionsPresenter >> defaultLayout [ 
 
 	^ SpGridLayout build: [ : builder |
@@ -43,13 +45,13 @@ MicHTMLStylerExportOptionsPresenter >> defaultLayout [
 			add: overwriteCheckboxPresenter ]
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MicHTMLStylerExportOptionsPresenter >> defaultOutputFilename [
 
 	^ 'index.html'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerExportOptionsPresenter >> destinationPath [
 	"Answer a <String> representing the path where the output files will be exported"
 
@@ -57,7 +59,7 @@ MicHTMLStylerExportOptionsPresenter >> destinationPath [
 		ifEmpty: [ self defaultDestinationPath ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerExportOptionsPresenter >> initializePresenters [ 
 
 	outputFilenameTextPresenter := self newTextInput
@@ -78,39 +80,39 @@ MicHTMLStylerExportOptionsPresenter >> initializePresenters [
 		yourself.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLStylerExportOptionsPresenter >> isOverwrite [
 	"Answer <true> if overwrite existing file is set"
 	
 	^ overwriteCheckboxPresenter state
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerExportOptionsPresenter >> micDocumentFileRef [
 
 	^ self styler micDocumentFileRef
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerExportOptionsPresenter >> outputDestinationPath: aString [
 
 	outputPathTextPresenter text: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerExportOptionsPresenter >> outputFilename: aString [
 
 	outputFilenameTextPresenter text: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerExportOptionsPresenter >> requestDirectoryForOpen [
 	" Open request dialog to select a directory "
 	
 	^ UIManager default chooseDirectory: 'Choose a directory'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerExportOptionsPresenter >> selectOutputDirectory [
 	"Private - Callback for choose directory button"
 	

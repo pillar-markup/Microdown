@@ -1,6 +1,6 @@
-Extension { #name : #Microdown }
+Extension { #name : 'Microdown' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 Microdown class >> asHTMLDocument: aStringOrDoc [
 	"Facade method to serialize a Microdown document or string to HTML"
 	
@@ -9,7 +9,7 @@ Microdown class >> asHTMLDocument: aStringOrDoc [
 	
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 Microdown class >> asHTMLString: aStringOrDoc [
 	"Facade method to render a microdown document or string to HTML"
 	
@@ -18,7 +18,7 @@ Microdown class >> asHTMLString: aStringOrDoc [
 	
 ]
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 Microdown class >> asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration [
 	"Facade method to render a microdown document or string to HTML"
 	

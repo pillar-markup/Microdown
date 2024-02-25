@@ -4,39 +4,41 @@ The **styler** is an instance of `MicHTMLStyler` passed as model before initiali
 
 "
 Class {
-	#name : #MicHTMLStylerAbstractPresenter,
-	#superclass : #SpPresenter,
+	#name : 'MicHTMLStylerAbstractPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'styler'
 	],
-	#category : #'Microdown-HTMLExporter-Spec'
+	#category : 'Microdown-HTMLExporter-Spec',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec'
 }
 
-{ #category : #updating }
+{ #category : 'updating' }
 MicHTMLStylerAbstractPresenter >> micHtmlDocument [ 
 
 	^ self styler micHtmlDocument 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerAbstractPresenter >> setModelBeforeInitialization: aDomainObject [
 
 	styler := aDomainObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerAbstractPresenter >> statusBarHeight [
 
 	^ 25
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerAbstractPresenter >> styler [
 
 	^ styler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerAbstractPresenter >> stylerDetailsPresenter [
 
 	^ self styler cssDetailsPresenter

@@ -2,48 +2,50 @@
 Command to export the Microdown document to HTML and open a web browser to preview the results.
 "
 Class {
-	#name : #MicHTMLStylerPreviewCommand,
-	#superclass : #MicHTMLStylerCommand,
-	#category : #'Microdown-HTMLExporter-Spec-Commands'
+	#name : 'MicHTMLStylerPreviewCommand',
+	#superclass : 'MicHTMLStylerCommand',
+	#category : 'Microdown-HTMLExporter-Spec-Commands',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec-Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerPreviewCommand class >> defaultDescription [
 
 	^ 'Preview the selected style'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerPreviewCommand class >> defaultIconName [
 
 	^ #forward
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerPreviewCommand class >> defaultName [
 
 	^ 'Preview'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MicHTMLStylerPreviewCommand class >> defaultShortcutKey [
 
 	^ $v command mac | $v ctrl win | $v ctrl unix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerPreviewCommand class >> order [
 
 	^ 3
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLStylerPreviewCommand >> canBeExecuted [
 
 	^ super canBeExecuted and: [ self context hasMicHtmlDocument ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MicHTMLStylerPreviewCommand >> execute [
 
 	self canBeExecuted 
