@@ -1,6 +1,6 @@
-Extension { #name : #MicCodeBlockTest }
+Extension { #name : 'MicCodeBlockTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicCodeBlockTest >> testSingleCodeBlockTwoLinesAsPillar [
 	| source root code textBody argument |
 	textBody := 'my fancy code

@@ -1,38 +1,40 @@
 Class {
-	#name : #MicHTMLDocumentTest,
-	#superclass : #TestCase,
+	#name : 'MicHTMLDocumentTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'doc',
 		'docString'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest class >> resources [
 
 	^ Array with: MicCSSFileResource
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicHTMLDocumentTest >> sampleHTMLBody [
 
 	^ MicDocFactory exampleMicAsHTMLBodyString
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicHTMLDocumentTest >> sampleMicCSSFile [
 
 	^ MicCSSFileResource current micCSSFile
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicHTMLDocumentTest >> sampleMicCSSName [
 
 	^ MicCSSProvider defaultFramework
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLDocumentTest >> setUp [
 	
 	super setUp.
@@ -41,14 +43,14 @@ MicHTMLDocumentTest >> setUp [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLDocumentTest >> tearDown [ 
 
 	doc fullName asFileReference ensureDelete.
 	super tearDown.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testAddCSSNamed [
 
 	|micCSSFrw |
@@ -61,7 +63,7 @@ MicHTMLDocumentTest >> testAddCSSNamed [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testAuthor [
 
 	self
@@ -78,7 +80,7 @@ MicHTMLDocumentTest >> testAuthor [
 		equals: 'Nicole Neumann'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testCanvasClass [
 
 	self
@@ -86,7 +88,7 @@ MicHTMLDocumentTest >> testCanvasClass [
 		description: 'It tests that the canvas class of a document is a HTML canvas' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testCharSet [
 
 	self 
@@ -100,7 +102,7 @@ MicHTMLDocumentTest >> testCharSet [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testConfiguration [
 
 	self 
@@ -109,7 +111,7 @@ MicHTMLDocumentTest >> testConfiguration [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testContents [
 
 	self 
@@ -121,7 +123,7 @@ MicHTMLDocumentTest >> testContents [
 		description: 'It test that a HTML document contents is not empty'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testCssFrameworks [
 
 	self
@@ -133,7 +135,7 @@ MicHTMLDocumentTest >> testCssFrameworks [
 		description: 'It test that the contained CSS files collection is empty'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testDescription [
 
 	| sampleDescription |
@@ -149,7 +151,7 @@ MicHTMLDocumentTest >> testDescription [
 		equals: sampleDescription
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testDestinationPath [
 
 	self assert: (doc destinationPath isKindOf: String).
@@ -157,7 +159,7 @@ MicHTMLDocumentTest >> testDestinationPath [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testDocumentType [
 
 	self 
@@ -171,7 +173,7 @@ MicHTMLDocumentTest >> testDocumentType [
 		equals: String empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testExists [
 
 	self 
@@ -183,7 +185,7 @@ MicHTMLDocumentTest >> testExists [
 		description: 'It tests the document has been created'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testFileName [
 
 	self 
@@ -192,7 +194,7 @@ MicHTMLDocumentTest >> testFileName [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testFromMicrodown [
 
 	| html |
@@ -202,7 +204,7 @@ MicHTMLDocumentTest >> testFromMicrodown [
 		deny: html contents isEmpty.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testKeywords [
 
 	self
@@ -221,7 +223,7 @@ MicHTMLDocumentTest >> testKeywords [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testLanguageId [
 
 	self
@@ -235,7 +237,7 @@ MicHTMLDocumentTest >> testLanguageId [
 		equals: 'es'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testNewMicStreamOn [
 
 	self 
@@ -243,7 +245,7 @@ MicHTMLDocumentTest >> testNewMicStreamOn [
 		description: 'It checks that we obtain a new Microdown stream wrapper'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testSetCharSetUTF8 [
 
 	doc charSet: nil.
@@ -254,7 +256,7 @@ MicHTMLDocumentTest >> testSetCharSetUTF8 [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testTempFileName [
 
 	self 
@@ -270,7 +272,7 @@ MicHTMLDocumentTest >> testTempFileName [
 		equals: '.'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testTitle [
 
 	self
@@ -282,7 +284,7 @@ MicHTMLDocumentTest >> testTitle [
 		description: 'It test that the default title of a document is not empty'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testWriteDocument [
 
 	| parsedContents |
@@ -296,7 +298,7 @@ MicHTMLDocumentTest >> testWriteDocument [
 		equals: 'Prueba'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testWriteDocumentBody [
 
 	doc writeDocumentBody: 'Prueba'.
@@ -305,7 +307,7 @@ MicHTMLDocumentTest >> testWriteDocumentBody [
 	self assert: (doc contents endsWith: '</body>')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testWriteToFile [
 
 	| fileName file wd |
@@ -327,7 +329,7 @@ MicHTMLDocumentTest >> testWriteToFile [
 	wd ensureDeleteAllChildren.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLDocumentTest >> testWriteToFileNamed [
 
 	| fileName file wd |

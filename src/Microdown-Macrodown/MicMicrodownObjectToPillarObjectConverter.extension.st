@@ -1,12 +1,12 @@
-Extension { #name : #MicMicrodownObjectToPillarObjectConverter }
+Extension { #name : 'MicMicrodownObjectToPillarObjectConverter' }
 
-{ #category : #'*Microdown-Macrodown' }
+{ #category : '*Microdown-Macrodown' }
 MicMicrodownObjectToPillarObjectConverter >> visitLineBreak: aBreak [ 
 
 	^ PRLineBreak new
 ]
 
-{ #category : #'*Microdown-Macrodown' }
+{ #category : '*Microdown-Macrodown' }
 MicMicrodownObjectToPillarObjectConverter >> visitRawParagraph: aRawParagraph [ 
 
 	^ PRRaw content: aRawParagraph text

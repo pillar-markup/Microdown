@@ -1,6 +1,6 @@
 Class {
-	#name : #MicSegmentBlockTest,
-	#superclass : #TestCase,
+	#name : 'MicSegmentBlockTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'builder',
 		'parser'
@@ -8,10 +8,11 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicSegmentBlockTest >> setUp [
 
 	super setUp.
@@ -19,7 +20,7 @@ MicSegmentBlockTest >> setUp [
 	parser := Microdown new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSegmentBlockTest >> testSegment [
 	"'<!segment
 !>
@@ -33,7 +34,7 @@ MicSegmentBlockTest >> testSegment [
 	self assert: env environmentName equals: 'segment'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSegmentBlockTest >> testSegmentWithArgument [
 	"'<!segment|start=10h
 !>

@@ -1,13 +1,14 @@
 Class {
-	#name : #MicExportCanvasTest,
-	#superclass : #TestCase,
+	#name : 'MicExportCanvasTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'canvas'
 	],
-	#category : #'Microdown-LaTeXExporter-Tests'
+	#category : 'Microdown-LaTeXExporter-Tests',
+	#package : 'Microdown-LaTeXExporter-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicExportCanvasTest >> setUp [
 	| stream |
 	super setUp.
@@ -15,28 +16,28 @@ MicExportCanvasTest >> setUp [
 	canvas := MicExportCanvas on: stream.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testCrAsNewLine [ 
 
 	canvas crAsNewLine.
 	self assert: canvas stream configuration newLine equals: Character cr
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testCrlfAsNewLine [ 
 
 	canvas crlfAsNewLine.
 	self assert: canvas stream configuration newLine equals: String crlf
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testLfAsNewLine [ 
 
 	canvas lfAsNewLine.
 	self assert: canvas stream configuration newLine equals: Character lf
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCr [
 	canvas crAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -47,7 +48,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCrButNewLineIsCrlf [
 	canvas crlfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -58,7 +59,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCrButNewLineIsLf [
 	canvas lfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -69,7 +70,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCrlf [
 	canvas crlfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -80,7 +81,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCrlfButNewLineIsCr [
 	canvas crAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -91,7 +92,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithCrlfButNewLineIsLf [
 	canvas lfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -102,7 +103,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithLf [
 	canvas lfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -113,7 +114,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithLfButNewLineIsCr [
 	canvas crAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi
@@ -124,7 +125,7 @@ car il a etait fait pour cela'.
 'car il a etait fait pour cela'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicExportCanvasTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
 	canvas crlfAsNewLine.
 	canvas nextPutAllLines: 'Je ne vois pas pourquoi

@@ -1,16 +1,18 @@
 Class {
-	#name : #MicHTMLExporterTest,
-	#superclass : #ParametrizedTestCase,
+	#name : 'MicHTMLExporterTest',
+	#superclass : 'ParametrizedTestCase',
 	#instVars : [
 		'parser',
 		'writer',
 		'factory',
 		'newLine'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
@@ -21,12 +23,12 @@ MicHTMLExporterTest class >> testParameters [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLExporterTest >> factory: aFactory [
 	factory := aFactory new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLExporterTest >> newLine: aNewLine [
 	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
 	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
@@ -34,7 +36,7 @@ MicHTMLExporterTest >> newLine: aNewLine [
 	newLine := aNewLine
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
@@ -44,31 +46,31 @@ MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	self assert: writer contents equals: aResultingString
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicHTMLExporterTest >> parser [
 	^ parser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLExporterTest >> parser: aParser [
 	parser := aParser new
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testAccents [
 
 	self parse: 'éà' andCheckWeGet: newLine,
 '<p>éà</p>'
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicHTMLExporterTest >> testAnchor [
 
 	self parse: factory anchorSample andCheckWeGet:  '<a id="test"></a>'
 	
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicHTMLExporterTest >> testCodeCreatesInnerText [
 
 	| code |
@@ -77,7 +79,7 @@ MicHTMLExporterTest >> testCodeCreatesInnerText [
 	self assert: code language equals: 'a b```'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testCodeWithoutParam [
 
 	| doc |
@@ -91,7 +93,7 @@ foo bar
 'foo bar</code></pre>', newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigure [
 
 	self 
@@ -100,7 +102,7 @@ MicHTMLExporterTest >> testFigure [
 '<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testFigureBold [
 
 	self 
@@ -109,7 +111,7 @@ MicHTMLExporterTest >> testFigureBold [
 '<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureItalic [
 
 	self 
@@ -118,7 +120,7 @@ MicHTMLExporterTest >> testFigureItalic [
 '<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureNested [
 
 	self 
@@ -127,7 +129,7 @@ MicHTMLExporterTest >> testFigureNested [
 '<p><figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureReal [
 
 	self 
@@ -136,7 +138,7 @@ MicHTMLExporterTest >> testFigureReal [
 '<p><figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureStrike [
 
 	self 
@@ -145,7 +147,7 @@ MicHTMLExporterTest >> testFigureStrike [
 '<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 
 	self 
@@ -154,7 +156,7 @@ MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 '<p><figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithoutCaption [
 
 	self 
@@ -163,7 +165,7 @@ MicHTMLExporterTest >> testFigureWithoutCaption [
 '<p><figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 
 	self 
@@ -172,7 +174,7 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 '<p><figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testGoutDeFraise [
 
 	self 
@@ -181,7 +183,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 '<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testHeaderLevel1 [
 
 	self 
@@ -190,7 +192,7 @@ MicHTMLExporterTest >> testHeaderLevel1 [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testHeaderLevel2 [
 
 	self
@@ -198,27 +200,27 @@ MicHTMLExporterTest >> testHeaderLevel2 [
 		andCheckWeGet: newLine , '<h2>Foo</h2>'
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
 	self parse: factory paragraphSample andCheckWeGet: newLine ,'<p>Foo</p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testParagraphLongWithAccents [
 
 	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: newLine ,
 '<p>Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.</p>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphNestedSample [
 
 	self parse: factory paragraphNestedSample andCheckWeGet:  newLine ,
 '<p>this is a <strong><i>paragraph</i></strong></p>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithBold [
 
 	self 
@@ -227,35 +229,35 @@ MicHTMLExporterTest >> testParagraphWithBold [
 '<p>this is a <strong>paragraph</strong></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testParagraphWithItalic [
 
 	self parse: factory paragraphItalicSample andCheckWeGet: newLine ,
 '<p>this is a <i>paragraph</i></p>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithMonospace [
 
 	self parse: factory paragraphMonospaceSample andCheckWeGet:  newLine ,
 '<p>this is a <code>paragraph</code></p>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testQuote [
 
 	self parse: factory quoteSample andCheckWeGet: 
 	'<q>Foo</q>'
 ]
 
-{ #category : #'tests - formats' }
+{ #category : 'tests - formats' }
 MicHTMLExporterTest >> testStrike [
 
 	self parse: factory strikethroughFormatSample andCheckWeGet: newLine ,
 '<p><strike>Foo</strike></p>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testTable [
 
 	| micTable |
@@ -268,7 +270,7 @@ MicHTMLExporterTest >> testTable [
 '</table>'
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicHTMLExporterTest >> testUnorderedList [
 
 	self parse: factory unorderedListWithTwoItemsSample andCheckWeGet: newLine ,
@@ -278,7 +280,7 @@ MicHTMLExporterTest >> testUnorderedList [
 '</ul>'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLExporterTest >> writer: aWriter [
 	writer := aWriter new
 ]

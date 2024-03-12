@@ -1,13 +1,14 @@
 Class {
-	#name : #MicSlideConverter,
-	#superclass : #PRVisitor,
+	#name : 'MicSlideConverter',
+	#superclass : 'PRVisitor',
 	#instVars : [
 		'mic'
 	],
-	#category : #'Microdown-Slide-Utils'
+	#category : 'Microdown-Slide-Utils',
+	#package : 'Microdown-Slide-Utils'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSlideConverter >> start: aPRDocument [
 	mic := MicRootBlock new.
 	super start: aPRDocument.
@@ -16,7 +17,7 @@ MicSlideConverter >> start: aPRDocument [
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicSlideConverter >> visitSlide: aSlide [
 
 	

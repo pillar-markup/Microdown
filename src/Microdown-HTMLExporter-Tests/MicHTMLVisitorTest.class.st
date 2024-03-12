@@ -2,17 +2,19 @@
 A MicHTMLWriterTest is a test class for testing the behavior of MicHTMLWriter
 "
 Class {
-	#name : #MicHTMLVisitorTest,
-	#superclass : #ParametrizedTestCase,
+	#name : 'MicHTMLVisitorTest',
+	#superclass : 'ParametrizedTestCase',
 	#instVars : [
 		'writer',
 		'newLine',
 		'fileSystem'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
@@ -22,12 +24,12 @@ MicHTMLVisitorTest class >> testParameters [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitorTest >> fileSystem: aFileSystem [
 	fileSystem := aFileSystem memory.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLVisitorTest >> generateFilesystemExample [
 
 	| file |
@@ -52,7 +54,7 @@ this is a code 2
 ' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitorTest >> newLine: aNewLine [
 	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
 	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
@@ -60,25 +62,25 @@ MicHTMLVisitorTest >> newLine: aNewLine [
 	newLine := aNewLine
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLVisitorTest >> setUp [
 	super setUp.
 	self generateFilesystemExample.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCanvasClass [
 
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 MicHTMLVisitorTest >> testConfiguration [
 
 	self assert: (writer configuration isKindOf: MicHTMLConfiguration). 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testContents [
 
 	self assert: writer contents equals: String empty.
@@ -87,7 +89,7 @@ MicHTMLVisitorTest >> testContents [
 	self assert: writer contents equals: '<i>test</i>'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testConvertMicFile [
 
 	writer convertMicFile: (fileSystem / 'anExample1.md') asFileReference.
@@ -100,7 +102,7 @@ MicHTMLVisitorTest >> testConvertMicFile [
 			, '<pre><code>this is a code blu blu</code></pre>' , newLine
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testConvertMicString [
 
 	| result |
@@ -112,7 +114,7 @@ MicHTMLVisitorTest >> testConvertMicString [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testConvertMicStringToDoc [
 
 	| expectedHtmlDoc |
@@ -132,7 +134,7 @@ MicHTMLVisitorTest >> testConvertMicStringToDoc [
 			description: 'It test that result contains the expected document tag' ]"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCreateAnchorWithLink [
 
 	| result |
@@ -141,7 +143,7 @@ MicHTMLVisitorTest >> testCreateAnchorWithLink [
 	self assert: result trimBoth equals: '<p><a target="_blank" href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCreateAnnotationCompound [
 
 	| result |
@@ -155,7 +157,7 @@ this is another string'.
 '<p>this is another string</p>'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCreateAnnotationSimple [
 
 	| result |
@@ -166,7 +168,7 @@ MicHTMLVisitorTest >> testCreateAnnotationSimple [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCreateCitation [
 
 	| result |
@@ -177,7 +179,7 @@ MicHTMLVisitorTest >> testCreateCitation [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testCreateItalic [
 
 	| result |
@@ -188,7 +190,7 @@ MicHTMLVisitorTest >> testCreateItalic [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testVisitAnchor [
 
 	self assert: writer contents equals: String empty.
@@ -197,7 +199,7 @@ MicHTMLVisitorTest >> testVisitAnchor [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLVisitorTest >> writer: aWriter [
 	writer := aWriter new
 ]

@@ -1,34 +1,35 @@
 Class {
-	#name : #MicOutputStreamTest,
-	#superclass : #TestCase,
+	#name : 'MicOutputStreamTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'stream'
 	],
-	#category : #'Microdown-LaTeXExporter-Tests'
+	#category : 'Microdown-LaTeXExporter-Tests',
+	#package : 'Microdown-LaTeXExporter-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicOutputStreamTest >> setUp [
 	
 	super setUp.
 	stream := MicOutputStream new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOutputStreamTest >> testCrAsNewLine [ 
 
 	stream crAsNewLine.
 	self assert: stream configuration newLine equals: Character cr
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOutputStreamTest >> testCrlfAsNewLine [ 
 
 	stream crlfAsNewLine.
 	self assert: stream configuration newLine equals: String crlf
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicOutputStreamTest >> testLfAsNewLine [ 
 
 	stream lfAsNewLine.

@@ -3,12 +3,14 @@ This visitor is about to disappeared. It was created just to make sure that we c
 Now this visitor is working on non expanded code blocks.
 "
 Class {
-	#name : #MicMicrodownObjectToPillarObjectConverter,
-	#superclass : #MicrodownVisitor,
-	#category : #'Microdown-Pillar-Visitor'
+	#name : 'MicMicrodownObjectToPillarObjectConverter',
+	#superclass : 'MicrodownVisitor',
+	#category : 'Microdown-Pillar-Visitor',
+	#package : 'Microdown-Pillar',
+	#tag : 'Visitor'
 }
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicMicrodownObjectToPillarObjectConverter >> formatBlock: aMicFormatBlock [
 	| childrenAsPillar |
 	childrenAsPillar := aMicFormatBlock isOnlyChild 
@@ -19,7 +21,7 @@ MicMicrodownObjectToPillarObjectConverter >> formatBlock: aMicFormatBlock [
 				yourself
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MicMicrodownObjectToPillarObjectConverter >> urlBlock: aMicUrlBlock [
 	
 	| queries urlString |
@@ -39,17 +41,17 @@ MicMicrodownObjectToPillarObjectConverter >> urlBlock: aMicUrlBlock [
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnchor: aMicAnchorBlock [
  	^ PRAnchor new name: aMicAnchorBlock label; yourself
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnchorReference: aMicAnchorReference [
 	^ PRInternalLink new anchor: aMicAnchorReference substring; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnnotated: aMicAnnotatedBlock [
  	^ PRAnnotatedParagraph new 
 			annotation: aMicAnnotatedBlock label; 
@@ -57,17 +59,17 @@ MicMicrodownObjectToPillarObjectConverter >> visitAnnotated: aMicAnnotatedBlock 
 			yourself
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnnotation: aMicAnnotation [
 	^ aMicAnnotation associatedPillarClass new parameters: aMicAnnotation arguments
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitBold: aMicBold [
  	^ self formatBlock: aMicBold
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitCell: aCell [
 	| cell |
 	cell := PRTableCell new.
@@ -75,7 +77,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitCell: aCell [
 	^ cell
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitCode: aMicCodeBlock [
 
 	| prBlock par pillars |
@@ -103,14 +105,14 @@ MicMicrodownObjectToPillarObjectConverter >> visitCode: aMicCodeBlock [
 	^ prBlock
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitComment: aMicCommentBlock [
  	^ PRCommentedLine new
  			text: aMicCommentBlock text ;
  			yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitEnvironment: aMicEnvironmentBlock [
 	
 	| env |
@@ -121,7 +123,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitEnvironment: aMicEnvironmentBl
 	^ env
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitFigure: aMicFigureBlock [
 
 	| aPRFigure |
@@ -132,7 +134,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitFigure: aMicFigureBlock [
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitFormatBlock: aMicFormatBlock [
  	| childrenAsPillar |
  	childrenAsPillar := aMicFormatBlock isOnlyChild 
@@ -143,7 +145,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitFormatBlock: aMicFormatBlock [
  				yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitHeader: aMicHeaderBlock [
 
  	^ PRHeader new
@@ -152,17 +154,17 @@ MicMicrodownObjectToPillarObjectConverter >> visitHeader: aMicHeaderBlock [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitHorizontalLine: anHorizontalLineBlock [
  	^ PRHorizontalRule new 
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitItalic: aMicItalic [
  	^ self formatBlock: aMicItalic
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitLink: aMicLink [
 
 	^ aMicLink associatedPillarClass new
@@ -173,7 +175,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitLink: aMicLink [
 		  yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitListItem: aMicListItemBlock [
 	
  	^ PRListItem new
@@ -183,7 +185,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitListItem: aMicListItemBlock [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitMath: aMicMathBlock [
  	| captionElements |
 	captionElements := aMicMathBlock arguments at: 'caption' ifAbsent: [ nil ]. 
@@ -195,23 +197,23 @@ MicMicrodownObjectToPillarObjectConverter >> visitMath: aMicMathBlock [
 		yourself
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitMathInline: aMicMathInline [
  	^ self formatBlock: aMicMathInline
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitMetaData: aMicMetaData [
  	^ PRMetadata new 
 			metadata: aMicMetaData body; yourself
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitMonospace: aMicMonospace [
  	^ self formatBlock: aMicMonospace
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitOrderedList: aMicOrderedListBlock [
  	^ PROrderedList new
 		setChildren: (aMicOrderedListBlock children collect: [ :child | child accept: self ]);
@@ -219,27 +221,27 @@ MicMicrodownObjectToPillarObjectConverter >> visitOrderedList: aMicOrderedListBl
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitParagraph: aMicParagraphBlock [
  	^ PRParagraph  new
 		setChildren: (aMicParagraphBlock pillarFromString: aMicParagraphBlock text);
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitQuote: aMicQuoteBlock [
  	^ PRPreformatted new
  		setChildren: (aMicQuoteBlock pillarFromString: aMicQuoteBlock text);
  		yourself
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitRaw: aMicRaw [
 	^ PRRaw new text: aMicRaw substring ; yourself 
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitRoot: aMicRootBlock [
  	^ PRDocument new
  		setChildren: (aMicRootBlock children collect: [ :child | child accept: self ]);
@@ -247,7 +249,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitRoot: aMicRootBlock [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitRow: aRow in: aTable at: i [
 
 	| row |
@@ -258,12 +260,12 @@ MicMicrodownObjectToPillarObjectConverter >> visitRow: aRow in: aTable at: i [
 	^ row
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitStrike: aMicStrike [
  	^ self formatBlock: aMicStrike
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitTable: aTable [
 	| table |
 	table := PRTable new.
@@ -272,13 +274,13 @@ MicMicrodownObjectToPillarObjectConverter >> visitTable: aTable [
 	^ table
 ]
 
-{ #category : #'visiting inline' }
+{ #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitText: aMicTextBlock [
 	
  	^ PRText new text: aMicTextBlock substring ; yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMicrodownObjectToPillarObjectConverter >> visitUnorderedList: aMicUnorderedListBlock [
  	^ PRUnorderedList new
  		setChildren: (aMicUnorderedListBlock children collect:[:child| child accept: self]);

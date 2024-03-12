@@ -1,6 +1,6 @@
-Extension { #name : #MicInlineElement }
+Extension { #name : 'MicInlineElement' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicInlineElement >> associatedPillarClass [
 	^ self subclassResponsibility
 ]
