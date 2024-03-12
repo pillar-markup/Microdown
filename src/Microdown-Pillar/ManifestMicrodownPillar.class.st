@@ -4,7 +4,9 @@ I'm extending the microdown object model to support the generation of Pillar ele
 My main method is `asPillar`.
 "
 Class {
-	#name : #ManifestMicrodownPillar,
-	#superclass : #PackageManifest,
-	#category : #'Microdown-Pillar-Manifest'
+	#name : 'ManifestMicrodownPillar',
+	#superclass : 'PackageManifest',
+	#category : 'Microdown-Pillar-Manifest',
+	#package : 'Microdown-Pillar',
+	#tag : 'Manifest'
 }

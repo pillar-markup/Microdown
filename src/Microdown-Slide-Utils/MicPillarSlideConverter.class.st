@@ -1,10 +1,11 @@
 Class {
-	#name : #MicPillarSlideConverter,
-	#superclass : #Object,
-	#category : #'Microdown-Slide-Utils'
+	#name : 'MicPillarSlideConverter',
+	#superclass : 'Object',
+	#category : 'Microdown-Slide-Utils',
+	#package : 'Microdown-Slide-Utils'
 }
 
-{ #category : #operations }
+{ #category : 'operations' }
 MicPillarSlideConverter >> convert: aString [ 
 	
 	| pillar mic |
@@ -15,7 +16,7 @@ MicPillarSlideConverter >> convert: aString [
 	^ mic
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicPillarSlideConverter >> parse: aString [
 
 	^ PRPillarParser parse: aString

@@ -1,6 +1,6 @@
-Extension { #name : #MicQuoteBlockTest }
+Extension { #name : 'MicQuoteBlockTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicQuoteBlockTest >> testQuoteBlockAsPilar [
 	| source root pillarNode |
 	source := '> text1

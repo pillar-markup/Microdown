@@ -1,6 +1,6 @@
-Extension { #name : #MicHeaderBlockTest }
+Extension { #name : 'MicHeaderBlockTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicHeaderBlockTest >> testHeaderLevel4AsPillar [
 	| source root pillar |
 	source := '####    Level four'.

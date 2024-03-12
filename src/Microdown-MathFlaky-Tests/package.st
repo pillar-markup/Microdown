@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-MathFlaky-Tests' }
+Package { #name : 'Microdown-MathFlaky-Tests' }

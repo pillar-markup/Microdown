@@ -1,6 +1,6 @@
 Class {
-	#name : #MicTextualMicrodownExporter,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicTextualMicrodownExporter',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'stream',
 		'builder',
@@ -9,10 +9,11 @@ Class {
 	#pools : [
 		'MicroSharedPool'
 	],
-	#category : #'Microdown-PrettyPrinter'
+	#category : 'Microdown-PrettyPrinter',
+	#package : 'Microdown-PrettyPrinter'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MicTextualMicrodownExporter >> backSlashString: aString [
 
 	^ String streamContents: [ :st | 
@@ -24,7 +25,7 @@ MicTextualMicrodownExporter >> backSlashString: aString [
 		st nextPutAll: each asString ]]
 ]
 
-{ #category : #build }
+{ #category : 'build' }
 MicTextualMicrodownExporter >> blockPrint: aMicText [
 
 	| text |
@@ -33,7 +34,7 @@ MicTextualMicrodownExporter >> blockPrint: aMicText [
 	^ text
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 MicTextualMicrodownExporter >> buildRowHeader: row [
 
 	builder newLine.
@@ -41,29 +42,29 @@ MicTextualMicrodownExporter >> buildRowHeader: row [
 	^ builder raw: '|'
 ]
 
-{ #category : #build }
+{ #category : 'build' }
 MicTextualMicrodownExporter >> classPrint: aMicFigure [
 
 	^ aMicFigure class asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporter >> contents [ 
 	^ stream contents
 ]
 
-{ #category : #io }
+{ #category : 'io' }
 MicTextualMicrodownExporter >> folderName [
 	^ 'mic'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporter >> inList [
 	^ inList
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTextualMicrodownExporter >> initialize [ 
 	super initialize.
 	stream := (String new: 10000) writeStream.
@@ -73,7 +74,7 @@ MicTextualMicrodownExporter >> initialize [
 	inList := false
 ]
 
-{ #category : #build }
+{ #category : 'build' }
 MicTextualMicrodownExporter >> parametersPrint: aDictionnary [
 
 	| text lastKey |
@@ -87,38 +88,38 @@ MicTextualMicrodownExporter >> parametersPrint: aDictionnary [
 	^ text
 ]
 
-{ #category : #setting }
+{ #category : 'setting' }
 MicTextualMicrodownExporter >> setFalseInList [
 	inList := false
 
 ]
 
-{ #category : #setting }
+{ #category : 'setting' }
 MicTextualMicrodownExporter >> setTrueInList [
 	inList := true
 
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 MicTextualMicrodownExporter >> visit: aMicElement [
 
 	aMicElement accept: self.
 	^ stream contents
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 	
 	builder anchor: anAnchor label
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 
 	builder anchorReference: anAnchorReference substring
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
 	builder 
@@ -126,7 +127,7 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 		paragraph:  [ super visitAnnotated: anAnnotated  ] 
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
 	builder raw: anAnnotation openingDelimiter.
@@ -134,18 +135,18 @@ MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 	builder raw: anAnnotation closingDelimiter 
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 
 	builder bold: [ super visitBold: aBoldFormat ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
 	aChildren do: [ :each | self visitTextWithoutBackslash: each ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
 
 	builder newLine.
@@ -156,13 +157,13 @@ MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [
 
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitComment: aComment [
 
 	builder comment: aComment text
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 	builder newLine.
 	builder
@@ -172,7 +173,7 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 	
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
 	builder newLine.
@@ -182,7 +183,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 		
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
 	builder newLine.
@@ -191,25 +192,25 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 		withLevel: aHeader level
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 
 	builder horizontalLine
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitInputFile: anInputfile [
 
 	 builder inputFile: anInputfile path originalString
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitItalic: anItalicFormatBlock [
 
 	builder italic: [ super visitItalic: anItalicFormatBlock ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitLink: aLink [
 
 	builder 
@@ -217,13 +218,13 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 
 	builder item: [ super visitListItem: anItem ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitMath: aMicMath [
 
 	 builder
@@ -233,19 +234,19 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 
 	builder mathInline: aMicMathInline substring
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 
 	builder metaDataFromAssociations: aMetaData body
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 	builder 
@@ -254,7 +255,7 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
 	| block |
@@ -267,13 +268,13 @@ MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 	block value
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
 
 	builder orderedItem: [ super visitListItem: anItem ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 
 	builder newLine.
@@ -281,26 +282,26 @@ MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 		paragraph: [ super visitParagraph: aParagraph ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitQuote: aQuote [
 
 	builder quoteBlock: aQuote text
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 
 	builder rawFormat: aRawFormat substring
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitRoot: aRoot [
 
 	builder 
 		root: [ super visitRoot: aRoot ] 
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
 
 	row do: [ :cell | 
@@ -309,13 +310,13 @@ MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
 	^ (aTable hasHeader and: i = 1) ifTrue: [ self buildRowHeader: row ]
 ]
 
-{ #category : #'visit - format' }
+{ #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
 	builder strike: [ super visitStrike: aStrikeFormat ]
 ]
 
-{ #category : #API }
+{ #category : 'API' }
 MicTextualMicrodownExporter >> visitTable: aTable [
 
 	aTable rows doWithIndex: [ :row :i | 
@@ -323,19 +324,19 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 		self visitRow: row in: aTable at: i ]
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
 
 	builder text: (self backSlashString: aMicTextBlock bodystring)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 
 	builder text: aMicTextBlock bodystring
 ]
 
-{ #category : #'visit - block' }
+{ #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 	
 	| block |

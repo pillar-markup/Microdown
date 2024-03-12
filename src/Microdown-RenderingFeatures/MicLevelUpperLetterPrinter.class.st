@@ -1,10 +1,11 @@
 Class {
-	#name : #MicLevelUpperLetterPrinter,
-	#superclass : #MicTitlePrinterSpecification,
-	#category : #'Microdown-RenderingFeatures'
+	#name : 'MicLevelUpperLetterPrinter',
+	#superclass : 'MicTitlePrinterSpecification',
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #'rendering-element' }
+{ #category : 'rendering-element' }
 MicLevelUpperLetterPrinter >> renderElement: aNumber on: stream [
 	| alphabet position |
 	aNumber = 0

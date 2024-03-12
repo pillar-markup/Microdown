@@ -1,15 +1,16 @@
 Class {
-	#name : #MicFileIncluderTest,
-	#superclass : #TestCase,
+	#name : 'MicFileIncluderTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'filesystem',
 		'includer',
 		'builder'
 	],
-	#category : #'Microdown-Transformer-Tests'
+	#category : 'Microdown-Transformer-Tests',
+	#package : 'Microdown-Transformer-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicFileIncluderTest >> generateFilesystemExample [
 
 	| file |
@@ -31,7 +32,7 @@ Pharo is **cool**
 ' ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicFileIncluderTest >> setUp [
 	super setUp.
 	filesystem := FileSystem memory.
@@ -43,7 +44,7 @@ MicFileIncluderTest >> setUp [
 
 ]
 
-{ #category : #'tests - simple' }
+{ #category : 'tests - simple' }
 MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 	| root file reference |	
@@ -61,7 +62,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 
 ]
 
-{ #category : #'tests - simple' }
+{ #category : 'tests - simple' }
 MicFileIncluderTest >> testGenerateFilesystemIsGood [
 	
 	self assert: (filesystem workingDirectory / 'anExample1.md') contents equals: '# Foo
@@ -81,7 +82,7 @@ Pharo is **cool**
 ' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testHandleNestedFileResolution [
 
 	| root file reference |
@@ -122,7 +123,7 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 
 	| root file reference |
@@ -164,7 +165,7 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 
 	| root file reference |
@@ -202,7 +203,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	"As a general remark I do not like that the input can produce document that are not correct from a parser point of view. For example we should have a paragraph containing an header and this is what the transformation of the includer is doing."
 	| root file reference |
@@ -230,7 +231,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 	self assert: root children sixth class equals: MicCodeBlock
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesNotExist [
 
 	| root file reference |
@@ -249,7 +250,7 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 	self assert: root children first class equals: MicInputfileBlock.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 
 	| root file reference |

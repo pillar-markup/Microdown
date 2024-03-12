@@ -3,41 +3,42 @@ I'm the superclass of writers in various formats.
 I managed end of line conventions, canvas responsible for the encodings of specific commands to output a given format and I support raw ouputting.
 "
 Class {
-	#name : #MicDocumentWriter,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicDocumentWriter',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'canvas',
 		'nbListTab',
 		'writingRaw'
 	],
-	#category : #'Microdown-LaTeXExporter'
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentWriter >> canvasClass [ 
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicDocumentWriter >> contents [
 
 	^ canvas contents
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentWriter >> crAsNewLine [
 
 	canvas crAsNewLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentWriter >> crlfAsNewLine [
 
 	canvas crlfAsNewLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentWriter >> initialize [
 	| stream |
 	super initialize.
@@ -47,34 +48,34 @@ MicDocumentWriter >> initialize [
 	nbListTab := -1
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentWriter >> lfAsNewLine [
 
 	canvas lfAsNewLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDocumentWriter >> usedNewLine [
 	"Return the encoded new line. Useful for tests."
 	
 	^ canvas stream usedNewLine
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicDocumentWriter >> visit: aMicElement [
 
 	aMicElement accept: self.
 	^ self contents
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicDocumentWriter >> write: aMicElement [
 	"for now for integration with Pillar."
 	self visit: aMicElement.
 	^ self contents
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicDocumentWriter >> writeRawDuring: aBlock [
 
 	[ 

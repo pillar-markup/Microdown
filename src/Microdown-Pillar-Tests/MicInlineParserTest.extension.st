@@ -1,6 +1,6 @@
-Extension { #name : #MicInlineParserTest }
+Extension { #name : 'MicInlineParserTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testBasicTextAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc'.
@@ -8,7 +8,7 @@ MicInlineParserTest >> testBasicTextAsPillar [
 	self assert: res first class equals: PRText.
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testBoldAndNestedItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**x_y_z**cba'.
@@ -19,7 +19,7 @@ MicInlineParserTest >> testBoldAndNestedItalicAsPillar [
 	self assert: res second children third text equals: 'z'
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testBoldAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc**xyz**cba'.
@@ -27,7 +27,7 @@ MicInlineParserTest >> testBoldAsPillar [
 	self assert: res second class equals: PRBoldFormat.
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testExternalLinkAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc[alias](link)cba'.
@@ -36,7 +36,7 @@ MicInlineParserTest >> testExternalLinkAsPillar [
 
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testFigureAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc![alias](http://www.pharo.org)cba'.
@@ -45,7 +45,7 @@ MicInlineParserTest >> testFigureAsPillar [
 
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicInlineParserTest >> testItalicAsPillar [
 	| res |
 	res := self splitter pillarFrom: 'abc_xyz_cba'.

@@ -1,6 +1,6 @@
-Extension { #name : #RelativePath }
+Extension { #name : 'RelativePath' }
 
-{ #category : #'*Microdown-Transformer' }
+{ #category : '*Microdown-Transformer' }
 RelativePath >> microdownPrintString [
 	self isEmpty ifTrue: [ ^ '' ].
 	^ String streamContents: [ :str |

@@ -16,8 +16,8 @@ Such `figures/setUpTearDown.png` file should get its path being: `Books/Book1/SU
 Note that if the path does not exist the transformer does nothing.
 "
 Class {
-	#name : #MicFileIncluder,
-	#superclass : #MicNodeTransformer,
+	#name : 'MicFileIncluder',
+	#superclass : 'MicNodeTransformer',
 	#instVars : [
 		'shouldTransform',
 		'input',
@@ -25,26 +25,27 @@ Class {
 		'inProcessFiles',
 		'isStrict'
 	],
-	#category : #'Microdown-Transformer'
+	#category : 'Microdown-Transformer',
+	#package : 'Microdown-Transformer'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicFileIncluder >> beRelaxed [
 
 	isStrict := false
 ]
 
-{ #category : #configuration }
+{ #category : 'configuration' }
 MicFileIncluder >> doNotTransform [
 	shouldTransform := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileIncluder >> inProcessFiles: aCollection [ 
 	inProcessFiles := aCollection
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicFileIncluder >> initialize [
 
 	super initialize.
@@ -52,24 +53,24 @@ MicFileIncluder >> initialize [
 	inProcessFiles := #()
 ]
 
-{ #category : #'visiting-document' }
+{ #category : 'visiting-document' }
 MicFileIncluder >> input: anInputDocument [
 
 	input := anInputDocument
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicFileIncluder >> shouldTransform [
 	^ shouldTransform ifNil: [ shouldTransform := true ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicFileIncluder >> topFile: aFileReference [
 
 	topFile := aFileReference
 ]
 
-{ #category : #validation }
+{ #category : 'validation' }
 MicFileIncluder >> validateInclusionOfFile: aFileReference [ 
 	
 	aFileReference = topFile ifTrue: [ 
@@ -84,7 +85,7 @@ MicFileIncluder >> validateInclusionOfFile: aFileReference [
 			signal  ]
 ]
 
-{ #category : #'visiting-document' }
+{ #category : 'visiting-document' }
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	

@@ -1,16 +1,17 @@
 Class {
-	#name : #MacInlineParserTest,
-	#superclass : #MicInlineParserTest,
-	#category : #'Microdown-Macrodown-Tests'
+	#name : 'MacInlineParserTest',
+	#superclass : 'MicInlineParserTest',
+	#category : 'Microdown-Macrodown-Tests',
+	#package : 'Microdown-Macrodown-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacInlineParserTest >> splitter [
 
 	^ MacInlineParser new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MacInlineParserTest >> testParseLineBreak [
 	| blocks |
 
@@ -22,7 +23,7 @@ x2
 	self assert: blocks second class equals: MacLineBreakBlock
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MacInlineParserTest >> testParseLineBreakManySpaces [
 	| blocks |
 

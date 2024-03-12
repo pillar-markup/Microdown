@@ -3,12 +3,13 @@ MicJPEGH5PTemplateWriter new
 	writeContentJSONOnDisk: (Microdown parse: MicH5PTemplateWriterTest new mainSlideInMicrodown, MicH5PTemplateWriterTest new oneSlideWithCodeInMicrodown )
 "
 Class {
-	#name : #MicJPEGH5PTemplateWriter,
-	#superclass : #MicH5PTemplateWriter,
-	#category : #'Microdown-H5P'
+	#name : 'MicJPEGH5PTemplateWriter',
+	#superclass : 'MicH5PTemplateWriter',
+	#category : 'Microdown-H5P',
+	#package : 'Microdown-H5P'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MicJPEGH5PTemplateWriter >> presentationString [
 
 	^ '{
@@ -140,7 +141,7 @@ MicJPEGH5PTemplateWriter >> presentationString [
 '
 ]
 
-{ #category : #'working templates with parameters' }
+{ #category : 'working templates with parameters' }
 MicJPEGH5PTemplateWriter >> slideTemplate [
 	"in this version we only embed jpeg"
 	

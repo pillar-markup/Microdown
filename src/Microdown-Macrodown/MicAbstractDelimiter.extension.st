@@ -1,13 +1,13 @@
-Extension { #name : #MicAbstractDelimiter }
+Extension { #name : 'MicAbstractDelimiter' }
 
-{ #category : #'*Microdown-Macrodown' }
-MicAbstractDelimiter class >> applyOn: inlineParser [
+{ #category : '*Microdown-Macrodown' }
+MicAbstractDelimiter classSide >> applyOn: inlineParser [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'*Microdown-Macrodown' }
-MicAbstractDelimiter class >> matches: aString [
+{ #category : '*Microdown-Macrodown' }
+MicAbstractDelimiter classSide >> matches: aString [
 
 	^ false
 ]

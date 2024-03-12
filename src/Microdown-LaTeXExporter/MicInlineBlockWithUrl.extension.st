@@ -1,6 +1,6 @@
-Extension { #name : #MicInlineBlockWithUrl }
+Extension { #name : 'MicInlineBlockWithUrl' }
 
-{ #category : #'*Microdown-LaTeXExporter' }
+{ #category : '*Microdown-LaTeXExporter' }
 MicInlineBlockWithUrl >> fileStringWithoutHostFile [
 	| urlString localFileIndicator |
 	urlString := url asString.
@@ -10,13 +10,13 @@ MicInlineBlockWithUrl >> fileStringWithoutHostFile [
 			ifFalse: [ urlString ]
 ]
 
-{ #category : #'*Microdown-LaTeXExporter' }
+{ #category : '*Microdown-LaTeXExporter' }
 MicInlineBlockWithUrl >> fullName [
 
 	^ reference fullName
 ]
 
-{ #category : #'*Microdown-LaTeXExporter' }
+{ #category : '*Microdown-LaTeXExporter' }
 MicInlineBlockWithUrl >> hasCaption [
 
 	^ children notEmpty

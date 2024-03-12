@@ -1,6 +1,6 @@
-Extension { #name : #MicCodeBlock }
+Extension { #name : 'MicCodeBlock' }
 
-{ #category : #'*Microdown-Evaluator' }
+{ #category : '*Microdown-Evaluator' }
 MicCodeBlock >> eval: aBoolean [
 	
 	"the string conversion is due to the fact that the arguments are not converted so normally the parser returns strings and not boolean. 
@@ -11,7 +11,7 @@ MicCodeBlock >> eval: aBoolean [
 
 ]
 
-{ #category : #'*Microdown-Evaluator' }
+{ #category : '*Microdown-Evaluator' }
 MicCodeBlock >> evaluate [
 
 	| content |
@@ -23,7 +23,7 @@ MicCodeBlock >> evaluate [
 				  { (MicTextBlock new bodystring: e messageText) } ]
 ]
 
-{ #category : #'*Microdown-Evaluator' }
+{ #category : '*Microdown-Evaluator' }
 MicCodeBlock >> evaluationString [
 	^ String
 		streamContents: [ :stream | 
@@ -42,7 +42,7 @@ MicCodeBlock >> evaluationString [
 						nextPutAll: e description ] ]
 ]
 
-{ #category : #'*Microdown-Evaluator' }
+{ #category : '*Microdown-Evaluator' }
 MicCodeBlock >> isEvaluated [ 
 	arguments at: #eval ifAbsent: [ ^ false ].
 	^ (arguments at: #eval) = 'true'

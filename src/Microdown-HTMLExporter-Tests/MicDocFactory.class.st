@@ -1,10 +1,12 @@
 Class {
-	#name : #MicDocFactory,
-	#superclass : #Object,
-	#category : #'Microdown-HTMLExporter-Tests-Resources'
+	#name : 'MicDocFactory',
+	#superclass : 'Object',
+	#category : 'Microdown-HTMLExporter-Tests-Resources',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'Resources'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMic [
 
 	^ '#Lorem Ipsum
@@ -81,14 +83,14 @@ Here is an internal link: [heading-1](#heading-1)
 '
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsHTMLBodyString [
 	"Note this answer the HTML <String> matching the body part of a document, it does NOT build a HTML document"
 
 	^ Microdown asHTMLString: self exampleMic
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsHTMLDocument [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
@@ -100,7 +102,7 @@ MicDocFactory class >> exampleMicAsHTMLDocument [
 		writeToFileNamed: 'Chapter1.html'.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsHTMLDocumentInBrowser [
 
 	| htmlDoc |
@@ -111,7 +113,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentInBrowser [
 	WebBrowser openOn: htmlDoc fullName.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 	"This example is a Minimum Working Example to write a HTML document from Microdown content."
 	<example>
@@ -122,7 +124,7 @@ MicDocFactory class >> exampleMicAsHTMLDocumentMWE [
 		writeToFile.
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsHTMLString [
 	"This example shows specifically how to set up an output directory and file name, as well as a CSS template to decorate the generated document."
 	<example>
@@ -135,7 +137,7 @@ MicDocFactory class >> exampleMicAsHTMLString [
 		yourself
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicDocFactory class >> exampleMicAsRichText [
 
 	^ (Microdown asRichText: self exampleMic) inspect

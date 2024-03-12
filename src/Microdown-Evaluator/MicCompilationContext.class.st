@@ -1,31 +1,32 @@
 Class {
-	#name : #MicCompilationContext,
-	#superclass : #MicElement,
+	#name : 'MicCompilationContext',
+	#superclass : 'MicElement',
 	#instVars : [
 		'configuration',
 		'input'
 	],
-	#category : #'Microdown-Evaluator'
+	#category : 'Microdown-Evaluator',
+	#package : 'Microdown-Evaluator'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCompilationContext class >> configuration: aConfiguration [
 	^ self new configuration: aConfiguration
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCompilationContext class >> isAbstract [
 	^ false
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCompilationContext class >> withDocument: aDocument [
 	^ self new
 		input: aDocument;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicCompilationContext class >> withDocument: aDocument withConfiguration: aConfiguration [
 	^ self new
 		input: aDocument;
@@ -33,22 +34,22 @@ MicCompilationContext class >> withDocument: aDocument withConfiguration: aConfi
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCompilationContext >> configuration [
 	^ configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCompilationContext >> configuration: aConfiguration [
 	configuration := aConfiguration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCompilationContext >> input [
 	^ input
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCompilationContext >> input: anObject [
 	input := anObject
 ]

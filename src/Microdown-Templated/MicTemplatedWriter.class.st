@@ -6,367 +6,368 @@ Otherwise I simply delegate the writing to the wrapped one.
 I am carefully designed so if an element X is delegated to the wrapped writer, it should delegate the writing of X's children back to myself.
 "
 Class {
-	#name : #MicTemplatedWriter,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicTemplatedWriter',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'outputDocument',
 		'defaultWriter',
 		'environmentStack'
 	],
-	#category : #'Microdown-Templated'
+	#category : 'Microdown-Templated',
+	#package : 'Microdown-Templated'
 }
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> anchorTemplateFileName [
 	
 	^ 'anchor.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> boldTemplateFileName [
 	
 	^ 'bold.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> codeBlockTemplateFileName [
 	
 	^ 'codeBlock.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> commentedLineTemplateFileName [
 	
 	^ 'commentedLine.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> dataItemTemplateFileName [
 	
 	^ 'dataItem.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> defaultAnnotatedParagraphTemplateFileName [
 	
 	^ 'defaultAnnotatedParagraph.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> definitionListTemplateFileName [
 	
 	^ 'definitionList.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> emptyParagraphTemplateFileName [
 
 	^ 'emptyParagraph.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> externalLinkTemplateFileName [
 	
 	^ 'externalLink.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> figureTemplateFileName [
 
 	^ 'figure.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> headerTemplateFileName [
 	
 	^ 'header.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> horizontalRuleTemplateFileName [
 	
 	^ 'horizontalRule.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> internalLinkTemplateFileName [
 	
 	^ 'internalLink.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> italicTemplateFileName [
 	
 	^ 'italic.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> lineBreakTemplateFileName [
 	
 	^ 'lineBreak.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> listItemTemplateFileName [
 
 	^ 'listItem.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> mailLinkTemplateFileName [
 	
 	^ 'mailLink.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> monospaceTemplateFileName [
 
 	^ 'monospace.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> orderedListTemplateFileName [
 	
 	^ 'orderedList.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> paragraphTemplateFileName [
 	
 	^ 'paragraph.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> preformattedTemplateFileName [
 	
 	^ 'preformatted.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> sectionTemplateFileName [
 	
 	^ 'section.mustache'
 ]
 
-{ #category : #templates }
+{ #category : 'templates' }
 MicTemplatedWriter class >> unorderedListTemplateFileName [
 
 	^ 'unorderedList.mustache'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter class >> writerName [
 
 	^ #templatedWriter
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> anchorTemplateFileName [
 
 	^ self class anchorTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> boldTemplateFileName [
 
 	^ self class boldTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> codeBlockTemplateFileName [
 
 	^ self class codeBlockTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> commentedLineTemplateFileName [
 
 	^ self class commentedLineTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> contents [
 	
 	^ defaultWriter contents
 ]
 
-{ #category : #environment }
+{ #category : 'environment' }
 MicTemplatedWriter >> currentEnvironmentPath [
 	
 	^ RelativePath withAll: (environmentStack collect: [:each | each name]) reversed
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> dataItemTemplateFileName [
 
 	^ self class dataItemTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> defaultAnnotatedParagraphTemplateFileName [
 
 	^ self class defaultAnnotatedParagraphTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> defaultWriter [
 	^ defaultWriter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> defaultWriter: anObject [
 	defaultWriter := anObject
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> definitionListTemplateFileName [
 
 	^ self class definitionListTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> emptyParagraphTemplateFileName [
 
 	^ self class emptyParagraphTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> environmentStack: aCollection [ 
 	environmentStack := aCollection
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> externalLinkTemplateFileName [
 
 	^ self class externalLinkTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> figureTemplateFileName [
 
 	^ self class figureTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> folderName [
 
 	^ defaultWriter folderName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> headerTemplateFileName [
 
 	^ self class headerTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> horizontalRuleTemplateFileName [
 
 	^ self class horizontalRuleTemplateFileName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicTemplatedWriter >> initialize [
 
 	super initialize.
 	environmentStack := OrderedCollection new.
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> internalLinkTemplateFileName [
 
 	^ self class internalLinkTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> italicTemplateFileName [
 		
 	^ self class italicTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> lineBreakTemplateFileName [
 
 	^ self class lineBreakTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> listItemTemplateFileName [
 
 	^ self class listItemTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> mailLinkTemplateFileName [
 
 	^ self class mailLinkTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> monospaceTemplateFileName [
 
 	^ self class monospaceTemplateFileName
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> orderedListTemplateFileName [
 
 	^ self class orderedListTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> outputDocument [
 	^ outputDocument
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> outputDocument: anObject [
 	outputDocument := anObject
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> paragraphTemplateFileName [
 
 	^ self class paragraphTemplateFileName
 ]
 
-{ #category : #environment }
+{ #category : 'environment' }
 MicTemplatedWriter >> popEnvironment [
 	
 	environmentStack removeFirst
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> preformattedTemplateFileName [
 
 	^ self class preformattedTemplateFileName
 ]
 
-{ #category : #environment }
+{ #category : 'environment' }
 MicTemplatedWriter >> pushEnvironment: aPREnvironment [ 
 	
 	environmentStack addFirst: aPREnvironment
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> sectionTemplateFileName [
 
 	^ self class sectionTemplateFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
 
 	^ defaultWriter templateForConfiguration: aConfiguration
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> unorderedListTemplateFileName [
 
 	^ self class unorderedListTemplateFileName
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitAnchor: aPRAnchor [
 
 	self
@@ -376,7 +377,7 @@ MicTemplatedWriter >> visitAnchor: aPRAnchor [
 		ifAbsent: [ defaultWriter visitAnchor: aPRAnchor ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 
 	| arguments |
@@ -393,7 +394,7 @@ MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
 				ifAbsent: [ defaultWriter visitAnnotatedParagraph: anAnnotatedParagraph ] ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitBoldFormat: aPRBoldFormat [
 
 	self
@@ -402,7 +403,7 @@ MicTemplatedWriter >> visitBoldFormat: aPRBoldFormat [
 		ifAbsent: [ defaultWriter visitBoldFormat: aPRBoldFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitCodeblock: aPRCodeblock [ 
 
 	self
@@ -412,7 +413,7 @@ MicTemplatedWriter >> visitCodeblock: aPRCodeblock [
 		ifAbsent: [ defaultWriter visitCodeblock: aPRCodeblock ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitCommentedLine: aPRText [ 
 
 	self
@@ -421,7 +422,7 @@ MicTemplatedWriter >> visitCommentedLine: aPRText [
 		ifAbsent: [ defaultWriter visitCommentedLine: aPRText  ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitDataItem: aPRListItem [
 
 	self
@@ -430,7 +431,7 @@ MicTemplatedWriter >> visitDataItem: aPRListItem [
 		ifAbsent: [ defaultWriter visitDataItem: aPRListItem ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitDefinitionList: aPRList [
 
 	self
@@ -439,7 +440,7 @@ MicTemplatedWriter >> visitDefinitionList: aPRList [
 		ifAbsent: [ defaultWriter visitDefinitionList: aPRList ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitEmptyParagraph: anEmptyParagraph [
 	
 	self
@@ -448,7 +449,7 @@ MicTemplatedWriter >> visitEmptyParagraph: anEmptyParagraph [
 		ifAbsent: [ defaultWriter visitEmptyParagraph: anEmptyParagraph ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 	self pushEnvironment: anEnvironment.
@@ -460,7 +461,7 @@ MicTemplatedWriter >> visitEnvironment: anEnvironment [
 	self popEnvironment.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitExternalLink: aPRExternalLink [
 
 	self
@@ -470,7 +471,7 @@ MicTemplatedWriter >> visitExternalLink: aPRExternalLink [
 		ifAbsent: [ defaultWriter visitExternalLink: aPRExternalLink ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitFigure: aFigure [
 
 	self
@@ -482,7 +483,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitHeader: aHeader [
 
 	self
@@ -492,7 +493,7 @@ MicTemplatedWriter >> visitHeader: aHeader [
 		ifAbsent: [ defaultWriter visitHeader: aHeader ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 
 	self
@@ -501,7 +502,7 @@ MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
 
 	self
@@ -511,7 +512,7 @@ MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
 		ifAbsent: [ defaultWriter visitInternalLink: aPRInternalLink ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitItalicFormat: aPRItalicFormat [ 
 	
 	self
@@ -520,7 +521,7 @@ MicTemplatedWriter >> visitItalicFormat: aPRItalicFormat [
 		ifAbsent: [ defaultWriter visitItalicFormat: aPRItalicFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 
 	self
@@ -529,7 +530,7 @@ MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 		ifAbsent: [ defaultWriter visitLineBreak: aPRLineBreak ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitListItem: aPRListItem [
 
 	self
@@ -538,7 +539,7 @@ MicTemplatedWriter >> visitListItem: aPRListItem [
 		ifAbsent: [ defaultWriter visitListItem: aPRListItem ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitMailLink: aPRMailLink [
 
 	self
@@ -548,7 +549,7 @@ MicTemplatedWriter >> visitMailLink: aPRMailLink [
 		ifAbsent: [ defaultWriter visitExternalLink: aPRMailLink ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitMonospaceFormat: aPRMonospaceFormat [ 
 	
 	self
@@ -557,7 +558,7 @@ MicTemplatedWriter >> visitMonospaceFormat: aPRMonospaceFormat [
 		ifAbsent: [ defaultWriter visitMonospaceFormat: aPRMonospaceFormat ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitOrderedList: aPROrderedList [
 
 	self
@@ -566,7 +567,7 @@ MicTemplatedWriter >> visitOrderedList: aPROrderedList [
 		ifAbsent: [ defaultWriter visitOrderedList: aPROrderedList ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitParagraph: aParagraph [
 
 	self
@@ -575,7 +576,7 @@ MicTemplatedWriter >> visitParagraph: aParagraph [
 		ifAbsent: [ defaultWriter visitParagraph: aParagraph ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 
 	self
@@ -584,13 +585,13 @@ MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 		ifAbsent: [ defaultWriter visitPreformatted: aPRPreformatted ]
 ]
 
-{ #category : #delegating }
+{ #category : 'delegating' }
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
 	defaultWriter visitRaw: aPRRaw
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitSection: aPRSection [
 
 	self
@@ -599,13 +600,13 @@ MicTemplatedWriter >> visitSection: aPRSection [
 		ifAbsent: [ defaultWriter visitSection: aPRSection ]
 ]
 
-{ #category : #delegating }
+{ #category : 'delegating' }
 MicTemplatedWriter >> visitText: aPRText [ 
 	
 	defaultWriter visitText: aPRText
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitUnorderedList: aPRUnorderedList [ 
 
 	self
@@ -614,14 +615,14 @@ MicTemplatedWriter >> visitUnorderedList: aPRUnorderedList [
 		ifAbsent: [ defaultWriter visitUnorderedList: aPRUnorderedList ]
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicTemplatedWriter >> write: aMicElement [ 
 	
 	aMicElement accept: self.
 	^ defaultWriter contents
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicTemplatedWriter >> write: aMicElement 
 	withTemplateFileName: templateFileName 
 	extraArguments: arguments 
@@ -638,7 +639,7 @@ MicTemplatedWriter >> write: aMicElement
 		ifAbsent: aBlock
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileName ifAbsent: aBlock [
 
 	self
@@ -648,7 +649,7 @@ MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileNam
 		ifAbsent: aBlock
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName extraArguments: arguments ifAbsent: aBlock [
 
 	| templateFile result environmentPath foundPath |
@@ -664,7 +665,7 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 	self visitRaw: (PRRaw content: result type: defaultWriter writerName)
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName ifAbsent: aBlock [
 
 	^ self
