@@ -346,12 +346,12 @@ MicHTMLDocument >> setCharSetUTF8 [
 MicHTMLDocument >> tempFileName [
 	"Answer a <String> representing a random file in a temporary location in the receiver's file system"
 
-	^ String streamContents: [ : str | 
-		str 
-			<< FileLocator temp fullName;
-			<< DiskStore delimiter asString;
-			<< UUIDGenerator new next asString36;
-			<< '.html' ]
+	^ String streamContents: [ :str |
+		  str
+			  << FileLocator temp fullName;
+			  << DiskStore delimiter asString;
+			  << UUID new asString36;
+			  << '.html' ]
 ]
 
 { #category : 'accessing' }

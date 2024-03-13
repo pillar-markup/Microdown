@@ -134,7 +134,6 @@ MicRichTextComposerTest >> setUp [
 	parser := Microdown new.
 	offlineStatus := Microdown offline.
 	Microdown offline: false.
-	MicRichTextComposer initialize.
 ]
 
 { #category : 'skipped tests' }
@@ -649,7 +648,7 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-	self composerClass initialize.
+
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
