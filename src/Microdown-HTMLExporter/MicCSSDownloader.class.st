@@ -54,9 +54,11 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.
 	ZnFileSystemUtils deleteIfExists: dest / url pathSegments last.
-	(client := self httpClient) 
+	[ (client := self httpClient) 
 		url: url ;
-		downloadTo: (dest / url pathSegments last)
+		downloadTo: (dest / url pathSegments last) ]
+	on: Error
+	do: [ : ex | ex messageText traceCr ]
 
 ]
 
