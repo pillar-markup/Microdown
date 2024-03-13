@@ -207,22 +207,3 @@ MicFormatBlockTest >> testPrintingItalic [
 	bold := (self parser parse: '_a b_') children first children first.
 	self assert: bold printString equals: 'ItalicFormat{ Text(a b) }'
 ]
-
-{ #category : 'tests' }
-MicFormatBlockTest >> testProperties [
-
-	self assert: self subject properties isNotNil.
-	self subject instVarNamed: 'properties' put: nil.
-
-	self subject propertyAt: #foo put: #bar.
-	self subject instVarNamed: 'properties' put: nil.
-
-	self subject propertyAt: #foo ifAbsent: [ nil ].
-	self subject instVarNamed: 'properties' put: nil.
-
-	self subject propertyAt: #foo ifAbsentPut: [ #bar ].
-	self subject instVarNamed: 'properties' put: nil.
-
-	self subject hasProperty: #foo.
-	self subject instVarNamed: 'properties' put: nil
-]

@@ -3,12 +3,13 @@ Microdown is a minimal but extensible markup language. It is kind of compatible 
 Read comment of MicroDownParser. 
 "
 Class {
-	#name : #BaselineOfMicrodown,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodown
+	#name : 'BaselineOfMicrodown',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodown',
+	#package : 'BaselineOfMicrodown'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
@@ -99,18 +100,7 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
-{ #category : #'external projects' }
-BaselineOfMicrodown >> pillar: spec [
-		
-	spec
-		baseline: 'PillarCore'
-		with: [
-			spec  
-				loads: #('Pillar-Core');
-				repository: 'github://pillar-markup/pillar:dev-8' ]
-]
-
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfMicrodown >> xmlParserHtml: spec [
 
 	spec
