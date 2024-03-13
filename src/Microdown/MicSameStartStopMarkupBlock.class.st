@@ -35,7 +35,7 @@ MicSameStartStopMarkupBlock >> caption [
 	^ self testCaptionString.
 ]
 
-{ #category : 'accessing-delegated' }
+{ #category : 'accessing - delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
 	arguments at: #caption put: (self inlineParse: aString)
 ]
