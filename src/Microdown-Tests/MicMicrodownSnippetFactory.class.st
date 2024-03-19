@@ -38,7 +38,7 @@ MicMicrodownSnippetFactory class >> buildDocument [
 	^ String streamContents: [ :stream |
 		  | factory |
 		  factory := self new.
-		  (self protocols difference: { #initialization. #utilities })
+		  self protocolsToCheck
 			  collect: [ :protoName | self selectorsInProtocol: protoName ]
 			  thenDo: [ :protoCollection |
 				  protoCollection
@@ -47,6 +47,17 @@ MicMicrodownSnippetFactory class >> buildDocument [
 						  stream
 							  cr;
 							  << (factory perform: elementTypeSelector) ] ] ]
+]
+
+{ #category : #utilities }
+MicMicrodownSnippetFactory class >> protocolsToCheck [
+	"Access to protocols changed in P12"
+	| protocolNames |
+	
+	(protocolNames := self protocols) anyOne isSymbol
+		ifFalse: [ protocolNames := protocolNames collect: [ :protocol | protocol name ] ].
+	^ protocolNames difference: { #initialization. #utilities }
+
 ]
 
 { #category : #anchor }

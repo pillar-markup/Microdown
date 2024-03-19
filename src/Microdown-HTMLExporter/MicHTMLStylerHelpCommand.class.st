@@ -4,7 +4,7 @@ A command to open a Help window explaining Microdown HTML styler topics.
 Class {
 	#name : #MicHTMLStylerHelpCommand,
 	#superclass : #MicHTMLStylerCommand,
-	#category : 'Microdown-HTMLExporter-Spec-Commands'
+	#category : #'Microdown-HTMLExporter-Spec-Commands'
 }
 
 { #category : #default }
@@ -41,6 +41,6 @@ MicHTMLStylerHelpCommand class >> order [
 MicHTMLStylerHelpCommand >> execute [
 	"Open a Help"
 
-	MicHTMLStylerHelp open.
+	self shouldBeImplemented
 
 ]

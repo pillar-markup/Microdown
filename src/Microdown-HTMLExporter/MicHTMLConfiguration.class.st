@@ -30,7 +30,7 @@ Class {
 		'date',
 		'embeedCss'
 	],
-	#category : 'Microdown-HTMLExporter-Core'
+	#category : #'Microdown-HTMLExporter-Core'
 }
 
 { #category : #accessing }
@@ -211,13 +211,6 @@ MicHTMLConfiguration >> defaultDocumentType [
 MicHTMLConfiguration >> defaultLanguageId [
 
 	^ 'en'
-]
-
-{ #category : #defaults }
-MicHTMLConfiguration >> defaultScriptLanguage [
-	"Answer a <PRAbstractScriptLanguage>"
-
-	^ PRRealScriptLanguage for: 'pharo'
 ]
 
 { #category : #defaults }
