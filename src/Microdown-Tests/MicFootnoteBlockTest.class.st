@@ -1,12 +1,10 @@
 Class {
-	#name : 'MicFootnoteBlockTest',
-	#superclass : 'MicAnnotationSubclassTest',
-	#category : 'Microdown-Tests-Extensions',
-	#package : 'Microdown-Tests',
-	#tag : 'Extensions'
+	#name : #MicFootnoteBlockTest,
+	#superclass : #MicAnnotationSubclassTest,
+	#category : 'Microdown-Tests-Extensions'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFootnoteBlockTest >> testCreateTheRightFootnoteObject [
 
 	| doc |

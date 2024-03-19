@@ -2,14 +2,12 @@
 A MicZincPathResolverTest is a test class for testing the behavior of MicZincPathResolver
 "
 Class {
-	#name : 'MicZincPathResolverTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-Resolution',
-	#package : 'Microdown-Tests',
-	#tag : 'Resolution'
+	#name : #MicZincPathResolverTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-Resolution'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicZincPathResolverTest >> testVisitFileImage [
 	| doc imageNode absoluteFile |
 	doc := Microdown parse: '![alttext](images/pharo.png)'.
@@ -26,7 +24,7 @@ MicZincPathResolverTest >> testVisitFileImage [
 	self assert: imageNode reference filesystem equals: #Bogus
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicZincPathResolverTest >> testVisitHttpImage [
 	| doc imageNode |
 	doc := Microdown parse: '![alttext](images/pharo.png)'.
@@ -39,7 +37,7 @@ MicZincPathResolverTest >> testVisitHttpImage [
 	self assert:  imageNode reference uriString equals: 'http://nowhere/my/deep/directory/images/pharo.png'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicZincPathResolverTest >> testVisitHttpInput [
 	| doc inputNode |
 	doc := Microdown parse: '<!inputFile|path=otherFile.md!>'.
@@ -52,7 +50,7 @@ MicZincPathResolverTest >> testVisitHttpInput [
 	self assert:  inputNode reference uriString equals: 'http://nowhere/my/deep/directory/otherFile.md'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicZincPathResolverTest >> testVisitHttpInput_WithReference [
 	| doc inputNode |
 	doc := Microdown parse: '<!inputFile|path=otherFile.md!>'.
@@ -65,7 +63,7 @@ MicZincPathResolverTest >> testVisitHttpInput_WithReference [
 	self assert:  inputNode reference uriString equals: 'http://nowhere/my/deep/directory/otherFile.md'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicZincPathResolverTest >> testVisitHttpLink [
 	| doc linkNode |
 	doc := Microdown parse: '[follow me](otherFile.md)'.

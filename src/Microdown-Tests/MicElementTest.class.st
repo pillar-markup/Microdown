@@ -1,29 +1,27 @@
 Class {
-	#name : 'MicElementTest',
-	#superclass : 'TestCase',
+	#name : #MicElementTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'parser'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MicElementTest class >> isAbstract [ 
 
 	^ self = MicElementTest
 ]
 
-{ #category : 'factory' }
+{ #category : #factory }
 MicElementTest >> parser [
 	^ self parserClass new
 ]
 
-{ #category : 'factory' }
+{ #category : #factory }
 MicElementTest >> parserClass [
 	"This references to MicrodownParser is needed for the test.
 	Replacing it by Microdown does not work."
@@ -31,7 +29,7 @@ MicElementTest >> parserClass [
 	^ MicrodownParser
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MicElementTest >> setUp [
 
 	super setUp.

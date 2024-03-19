@@ -1,17 +1,15 @@
 Class {
-	#name : 'MicMathBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicMathBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> subjectClass [ 
 	^ MicMathBlock 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
@@ -23,7 +21,7 @@ V_i = C_0 - C_3
 	self assert: root children first class equals: MicMathBlock 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithBackslashCommands [
 	"check that backslash are not expanded for math blocks"
 	| root math |
@@ -37,7 +35,7 @@ f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
 	self assert: math body equals: 'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithBadClosure [
 
 	| root |
@@ -51,7 +49,7 @@ $'.
 $'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParameters [
 
 	| root math |
@@ -67,7 +65,7 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'label') equals: '42'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
 
 	| root math |
@@ -83,7 +81,7 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'label') equals: '42'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParametersCaption [
 
 	| root math |
@@ -106,7 +104,7 @@ V_i = C_0 - C_3
 	self assert: math testCaptionString equals: 'an Array(Text(Ze great formula))'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 
 	| root math |
@@ -135,7 +133,7 @@ V_i = C_0 - C_3
 		equals: 'boldformat'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMathBlockTest >> testMathBlockWithParametersWithBlank [
 
 	| root math |

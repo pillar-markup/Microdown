@@ -1,12 +1,10 @@
 Class {
-	#name : 'MicInlineDelimiterTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-InlineParser',
-	#package : 'Microdown-Tests',
-	#tag : 'InlineParser'
+	#name : #MicInlineDelimiterTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-InlineParser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicInlineDelimiterTest >> testAddMe [
 	"The delimiter dictionary should not be empty"
 	self assert: MicInlineDelimiter all notEmpty.
@@ -21,7 +19,7 @@ MicInlineDelimiterTest >> testAddMe [
 		 ].
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicInlineDelimiterTest >> testMarkupAsRegex [
 	"this test is only for evaluated delimiters"
 	(MicInlineDelimiter all select: #isEvaluated) do: [ :del | |regex|
@@ -32,7 +30,7 @@ MicInlineDelimiterTest >> testMarkupAsRegex [
 		 ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicInlineDelimiterTest >> testRawEvaluatedConsistency [
 	"this test is only for evaluated delimiters"
 	(MicInlineDelimiter all select: #isOpener) do: [ :del |
@@ -40,7 +38,7 @@ MicInlineDelimiterTest >> testRawEvaluatedConsistency [
 		 ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicInlineDelimiterTest >> testRegexNot [
 	|not|
 	not := (MicInlineDelimiter regexNot: 'ab').

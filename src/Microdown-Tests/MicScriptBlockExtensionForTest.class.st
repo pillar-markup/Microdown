@@ -2,14 +2,12 @@
 I am used in the MathBlockExtensionTest
 "
 Class {
-	#name : 'MicScriptBlockExtensionForTest',
-	#superclass : 'MicScriptBlock',
-	#category : 'Microdown-Tests-Extensions',
-	#package : 'Microdown-Tests',
-	#tag : 'Extensions'
+	#name : #MicScriptBlockExtensionForTest,
+	#superclass : #MicScriptBlock,
+	#category : 'Microdown-Tests-Extensions'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicScriptBlockExtensionForTest class >> tag [
 	^#scriptBlockExtentionTest
 ]
