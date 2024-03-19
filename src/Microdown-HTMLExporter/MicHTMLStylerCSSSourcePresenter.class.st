@@ -3,42 +3,40 @@ Holds a text presenter to display CSS source, and a status bar indicating the si
 
 "
 Class {
-	#name : 'MicHTMLStylerCSSSourcePresenter',
-	#superclass : 'MicHTMLStylerAbstractPresenter',
+	#name : #MicHTMLStylerCSSSourcePresenter,
+	#superclass : #MicHTMLStylerAbstractPresenter,
 	#instVars : [
 		'cssSourceCodePresenter',
 		'cssStatusbarPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporter-Spec'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerCSSSourcePresenter >> cssSourceCodePresenter [
 
 	^ cssSourceCodePresenter
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerCSSSourcePresenter >> cssSourceCodePresenter: anObject [
 
 	cssSourceCodePresenter := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerCSSSourcePresenter >> cssStatusbarPresenter [
 
 	^ cssStatusbarPresenter
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerCSSSourcePresenter >> cssStatusbarPresenter: anObject [
 
 	cssStatusbarPresenter := anObject
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MicHTMLStylerCSSSourcePresenter >> defaultLayout [ 
 
 	^ self layout: (SpBoxLayout newTopToBottom 
@@ -48,7 +46,7 @@ MicHTMLStylerCSSSourcePresenter >> defaultLayout [
 		yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MicHTMLStylerCSSSourcePresenter >> initializePresenters [
 
 	cssSourceCodePresenter := self newText
@@ -60,19 +58,19 @@ MicHTMLStylerCSSSourcePresenter >> initializePresenters [
 	cssStatusbarPresenter := self newStatusBar
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicHTMLStylerCSSSourcePresenter >> selectedCssFrameworkSourceCode [
 
 	^ styler selectedCssFrameworkSourceCode
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerCSSSourcePresenter >> text: aString [
 
 	self cssSourceCodePresenter text: aString
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MicHTMLStylerCSSSourcePresenter >> updateSizeMessage: anInteger [
 
 	self cssStatusbarPresenter 

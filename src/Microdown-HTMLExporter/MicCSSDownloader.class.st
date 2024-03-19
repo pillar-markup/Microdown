@@ -2,37 +2,35 @@
 Helper class to download CSS resources.
 "
 Class {
-	#name : 'MicCSSDownloader',
-	#superclass : 'Object',
+	#name : #MicCSSDownloader,
+	#superclass : #Object,
 	#instVars : [
 		'cssProvider'
 	],
-	#category : 'Microdown-HTMLExporter-CSS',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'CSS'
+	#category : #'Microdown-HTMLExporter-CSS'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSDownloader >> cssProvider [
 	"Answer the receiver's <MicCSSProvider>"
 	
 	^ cssProvider
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSDownloader >> cssProvider: anObject [
 
 	cssProvider := anObject
 ]
 
-{ #category : 'accessing - downloading' }
+{ #category : #'accessing - downloading' }
 MicCSSDownloader >> destinationPath [
 	"Answer a <String> with the location to download the CSS resources"
 
 	^ self cssProvider destinationPath
 ]
 
-{ #category : 'accessing - downloading' }
+{ #category : #'accessing - downloading' }
 MicCSSDownloader >> downloadCSSFramework: cssFramework [
 	"Download a CSS library using information provided in cssFramework method"
 
@@ -44,7 +42,7 @@ MicCSSDownloader >> downloadCSSFramework: cssFramework [
 		self downloadCSSFrameworkFrom: cssFrwThemeUrl minCssUrl ].
 ]
 
-{ #category : 'accessing - downloading' }
+{ #category : #'accessing - downloading' }
 MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [ 
 
 	| client url dest |
@@ -60,7 +58,7 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 
 ]
 
-{ #category : 'accessing - downloading' }
+{ #category : #'accessing - downloading' }
 MicCSSDownloader >> downloadCSSFrameworks [
 	"Download CSS frameworks specified in the receiver's CSS provider"
 
@@ -70,19 +68,21 @@ MicCSSDownloader >> downloadCSSFrameworks [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSDownloader >> frameworks [
 
 	^ self cssProvider frameworks
 ]
 
-{ #category : 'accessing - downloading' }
+{ #category : #'accessing - downloading' }
 MicCSSDownloader >> httpClient [
 	"Answer a new <ZnClient> configured HTTP client for internal use"
 
 	^ ZnClient new
 		systemPolicy;
 		signalProgress: true;
-		ifFail: [ :exception | self error: 'Could not load : ', exception printString ];
+		ifFail: [ :exception | 
+			exception messageText traceCr.
+			exception pass ];
 		yourself
 ]
