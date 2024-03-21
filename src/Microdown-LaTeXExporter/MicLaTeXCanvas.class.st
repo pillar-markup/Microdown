@@ -2,15 +2,16 @@
 I'm a specialized canvas to emit commands and latex environments.
 "
 Class {
-	#name : #MicLaTeXCanvas,
-	#superclass : #MicExportCanvas,
+	#name : 'MicLaTeXCanvas',
+	#superclass : 'MicExportCanvas',
 	#classVars : [
 		'LatexCharacters'
 	],
-	#category : #'Microdown-LaTeXExporter'
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicLaTeXCanvas class >> initialize [
 	" self initialize "
 	LatexCharacters := Dictionary new.
@@ -86,17 +87,17 @@ MicLaTeXCanvas class >> initialize [
 		at: $Ñ put: '\~{N}'
 ]
 
-{ #category : #tags }
+{ #category : 'tags' }
 MicLaTeXCanvas >> command [
 	^ self brush: MicLaTeXCommand new
 ]
 
-{ #category : #tags }
+{ #category : 'tags' }
 MicLaTeXCanvas >> environment [
 	^ self brush: MicLaTeXEnvironment new
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicLaTeXCanvas >> interpretedNextPut: aCharacter [
 
 	(LatexCharacters at: aCharacter ifAbsent: nil)
@@ -104,7 +105,7 @@ MicLaTeXCanvas >> interpretedNextPut: aCharacter [
 		ifNotNil: [ :string | self raw: string ]
 ]
 
-{ #category : #'writing text' }
+{ #category : 'writing text' }
 MicLaTeXCanvas >> nextPut: aCharacter [
 
 	writingRaw 
