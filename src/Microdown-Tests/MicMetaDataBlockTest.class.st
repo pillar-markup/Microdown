@@ -1,17 +1,15 @@
 Class {
-	#name : 'MicMetaDataBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicMetaDataBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> subjectClass [ 
 	^ MicMetaDataBlock 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testCorrectJSONMetaDataProducesDictionary [
 
 	| source root metadata |
@@ -25,7 +23,7 @@ MicMetaDataBlockTest >> testCorrectJSONMetaDataProducesDictionary [
 	self assert: (metadata body at: 'title') equals: 'Pharo by Example'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testCorrectMetaDataWithEmptyLinesProduceJSON [
 
 	| source root metadata |
@@ -44,7 +42,7 @@ MicMetaDataBlockTest >> testCorrectMetaDataWithEmptyLinesProduceJSON [
 	self assert: (metadata body at: 'title') equals: 'Pharo by Example'.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testMetaDataEatsOtherBlocks [
 	"this is normal since 
 {
@@ -67,7 +65,7 @@ then it eats.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testParse [
 
 	| source root metadata |
@@ -84,7 +82,7 @@ MicMetaDataBlockTest >> testParse [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents [
 
 	| source root metadata |
@@ -100,7 +98,7 @@ MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents 
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents2 [
 
 	| source root metadata |
@@ -116,7 +114,7 @@ title" : "Pharo by Example"'.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents3 [
 
 	| source root metadata |

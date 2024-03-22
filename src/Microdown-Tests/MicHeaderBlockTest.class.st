@@ -2,19 +2,17 @@
 I'm a test class for testing the behavior of MicHeaderBlock
 "
 Class {
-	#name : 'MicHeaderBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicHeaderBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MicHeaderBlockTest >> subjectClass [ 
 	^ MicHeaderBlock  
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testCanConsumeLine [
 
 	| root headerString |
@@ -23,7 +21,7 @@ MicHeaderBlockTest >> testCanConsumeLine [
 	self deny: (root children first canConsumeLine: headerString) 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderAPIToAccessText [
 
 	| header |
@@ -33,7 +31,7 @@ MicHeaderBlockTest >> testHeaderAPIToAccessText [
 	self assert: header children first bodystring equals: 'titre1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderAPIToSetText [
 
 	| header |
@@ -44,7 +42,7 @@ MicHeaderBlockTest >> testHeaderAPIToSetText [
 	self assert: header headerElements first bodystring equals: 'Blblbl'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderCreatesInnerText [
 
 	| header |
@@ -54,7 +52,7 @@ MicHeaderBlockTest >> testHeaderCreatesInnerText [
 	self assert: header children first bodystring equals: 'titre1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1 [
 	| root |
 	root := parser parse: HeaderMarkup, ' Level1'.
@@ -63,7 +61,7 @@ MicHeaderBlockTest >> testHeaderLevel1 [
 	self assert: root children first level equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 
 	| source root |
@@ -74,7 +72,7 @@ MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 	self assert: root children first level equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel4 [
 
 	| source root |
@@ -85,7 +83,7 @@ MicHeaderBlockTest >> testHeaderLevel4 [
 	self assert: root children first level equals: 4
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevel6 [
 	| source root |
 	source := (HeaderMarkup repeat: 6), '    Level six'.
@@ -95,7 +93,7 @@ MicHeaderBlockTest >> testHeaderLevel6 [
 	self assert: root children first level equals: 6
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLevelOutOfRange [
 	| source header |
 	source := (HeaderMarkup repeat: 1), '    Level one'.
@@ -107,7 +105,7 @@ MicHeaderBlockTest >> testHeaderLevelOutOfRange [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHeaderBlockTest >> testHeaderLongElements [
 
 	| header |

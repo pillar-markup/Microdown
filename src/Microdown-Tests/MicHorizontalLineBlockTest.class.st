@@ -1,12 +1,10 @@
 Class {
-	#name : 'MicHorizontalLineBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicHorizontalLineBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicHorizontalLineBlockTest >> subjectClass [ 
 	^ MicHorizontalLineBlock
 ]

@@ -1,18 +1,16 @@
 Class {
-	#name : 'MicPharoEvaluatortBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Extensions',
-	#package : 'Microdown-Tests',
-	#tag : 'Extensions'
+	#name : #MicPharoEvaluatortBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Extensions'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicPharoEvaluatortBlockTest >> subjectClass [
 
 	^ MicPharoEvaluatorBlock
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicPharoEvaluatortBlockTest >> testScriptBloc [
 
 	| doc |

@@ -2,19 +2,17 @@
 I'm a test class for testing the behavior of MicRootBlock
 "
 Class {
-	#name : 'MicRootBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicRootBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRootBlockTest >> subjectClass [ 
 	^ MicRootBlock 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRootBlockTest >> testRootCanConsumeLine [
 	"a root block can consume anything"
 	

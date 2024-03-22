@@ -1,17 +1,15 @@
 Class {
-	#name : 'MicPharoImageResourceReferenceTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-Resolution',
-	#package : 'Microdown-Tests',
-	#tag : 'Resolution'
+	#name : #MicPharoImageResourceReferenceTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-Resolution'
 }
 
-{ #category : 'test support' }
+{ #category : #'test support' }
 MicPharoImageResourceReferenceTest class >> microdownProducingMethod [
 	^ Microdown parse: 'I am **bold**'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicPharoImageResourceReferenceTest >> testIcon [
 
 	| uri image |
@@ -21,7 +19,7 @@ MicPharoImageResourceReferenceTest >> testIcon [
 	self assert: image equals: (Object iconNamed: #info)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicPharoImageResourceReferenceTest >> testMicrodownImport [
 
 	| ref doc |
@@ -32,7 +30,7 @@ MicPharoImageResourceReferenceTest >> testMicrodownImport [
 	self assert: doc children notEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicPharoImageResourceReferenceTest >> testSingleSlash [
 
 	| uri |

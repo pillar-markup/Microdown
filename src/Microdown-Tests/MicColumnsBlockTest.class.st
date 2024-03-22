@@ -1,12 +1,10 @@
 Class {
-	#name : 'MicColumnsBlockTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-Extensions',
-	#package : 'Microdown-Tests',
-	#tag : 'Extensions'
+	#name : #MicColumnsBlockTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-Extensions'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicColumnsBlockTest >> testSimpleColumn [
 	
 	| doc |
@@ -34,7 +32,7 @@ MicColumnsBlockTest >> testSimpleColumn [
 	self assert: doc children first children second children first class equals: MicUnorderedListBlock.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicColumnsBlockTest >> testSimpleColumnWithWidth [
 	
 	| doc |

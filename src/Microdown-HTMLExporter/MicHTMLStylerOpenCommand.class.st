@@ -2,44 +2,42 @@
 A simple command to request for open .mic files.
 "
 Class {
-	#name : 'MicHTMLStylerOpenCommand',
-	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#name : #MicHTMLStylerOpenCommand,
+	#superclass : #MicHTMLStylerCommand,
+	#category : 'Microdown-HTMLExporter-Spec-Commands'
 }
 
-{ #category : 'default' }
+{ #category : #default }
 MicHTMLStylerOpenCommand class >> defaultDescription [ 
 
 	^ 'Open a Microdown document'
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MicHTMLStylerOpenCommand class >> defaultIconName [ 
 
 	^ #smallOpen
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MicHTMLStylerOpenCommand class >> defaultName [
 
 	^ 'Open'
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MicHTMLStylerOpenCommand class >> defaultShortcutKey [ 
 
 	^ $o command mac | $o ctrl win | $o ctrl unix
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicHTMLStylerOpenCommand class >> order [
 
 	^ 2
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MicHTMLStylerOpenCommand >> execute [
 
 	(self requestFileNameForOpen: '*.md')
@@ -50,7 +48,7 @@ MicHTMLStylerOpenCommand >> execute [
 
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MicHTMLStylerOpenCommand >> isValidMic: aString [ 
 	"Answer <true> if aString is a valid Microdown file (determined by its extension)"
 	
@@ -60,7 +58,7 @@ MicHTMLStylerOpenCommand >> isValidMic: aString [
 	^ fileRef exists and: [ fileRef extension asLowercase = 'md'  ]
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 MicHTMLStylerOpenCommand >> requestFileNameForOpen: extensionString [
 	" Open request dialog to select a file "
 	

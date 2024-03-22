@@ -2,14 +2,12 @@
 A MicRelativeResourceReferenceTest is a test class for testing the behavior of MicRelativeResourceReference
 "
 Class {
-	#name : 'MicRelativeResourceReferenceTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-Resolution',
-	#package : 'Microdown-Tests',
-	#tag : 'Resolution'
+	#name : #MicRelativeResourceReferenceTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-Resolution'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRelativeResourceReferenceTest >> testIsRelative [
 	| mic ref |
 	mic := Microdown parse: '[look here](../images/rudolf.png)'.
@@ -17,7 +15,7 @@ MicRelativeResourceReferenceTest >> testIsRelative [
 	self assert: ref reference isRelative
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRelativeResourceReferenceTest >> testPath [
 
 	self assert: 'figures/foo.png' asMicResourceReference path equals: 'figures/foo.png'.
@@ -27,7 +25,7 @@ MicRelativeResourceReferenceTest >> testPath [
 		self assert: '../figures/foo.png' asMicResourceReference path equals: '../figures/foo.png'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRelativeResourceReferenceTest >> testPrintOn [
 	| mic ref print |
 	mic := Microdown parse: '[look here](../images/rudolf.png)'.
@@ -36,7 +34,7 @@ MicRelativeResourceReferenceTest >> testPrintOn [
 	self assert: print equals: 'a MicRelativeResourceReference(../images/rudolf.png)'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicRelativeResourceReferenceTest >> testRelativePath [
 	| mic ref|
 	mic := Microdown parse: '[look here](../images/rudolf.png)'.

@@ -71,26 +71,24 @@ To add a new framework, see the class method #frameworks. At least one of the tw
 
 "
 Class {
-	#name : 'MicCSSProvider',
-	#superclass : 'Object',
+	#name : #MicCSSProvider,
+	#superclass : #Object,
 	#instVars : [
 		'cssDownloader',
 		'frameworks',
 		'destinationPath'
 	],
-	#category : 'Microdown-HTMLExporter-CSS',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'CSS'
+	#category : 'Microdown-HTMLExporter-CSS'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider class >> defaultFramework [
 	"Answer a <String> with the name of the CSS library used as default"
 
 	^ 'AwsmCSS'
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MicCSSProvider class >> forCSSNamed: aString [
 	"Answer the receiver's <MicCSSFramework> matching aString"
 
@@ -100,14 +98,14 @@ MicCSSProvider class >> forCSSNamed: aString [
 
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MicCSSProvider class >> installFrameworks [ 
 	<script>
 
 	^ self new installFrameworks inspect.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> cssDownloader [
 	"Answer a <MicCSSDownloader>, a helper to download CSS resources"
 
@@ -115,13 +113,13 @@ MicCSSProvider >> cssDownloader [
 		ifNil: [ cssDownloader := self newCssDownloader ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> cssDownloader: anObject [
 
 	cssDownloader := anObject
 ]
 
-{ #category : 'frameworks' }
+{ #category : #frameworks }
 MicCSSProvider >> defaultFrameworks [
 	"Answer a <Collection> of available <MicCSSFramework> taken from the receiver's specifications"
 
@@ -129,7 +127,7 @@ MicCSSProvider >> defaultFrameworks [
 		self newCssFrameworkFrom: frwSpec ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> destinationPath [
 	"Answer a <String> used as location to store the receiver's CSS frameworks"
 
@@ -137,13 +135,13 @@ MicCSSProvider >> destinationPath [
 		ifNil: [ destinationPath := 'support' ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> destinationPath: aPathname [
 
 	destinationPath := aPathname
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MicCSSProvider >> findCssNamed: aString [
 	"Answer a <MicCSSFramework> matching aString"
 	
@@ -151,7 +149,7 @@ MicCSSProvider >> findCssNamed: aString [
 		detect: [ : framework | framework name = aString ]
 ]
 
-{ #category : 'frameworks' }
+{ #category : #frameworks }
 MicCSSProvider >> frameworks [
 	"Answer a <Collection> of available <MicCSSFramework> taken from the receiver's specifications"
 
@@ -159,7 +157,7 @@ MicCSSProvider >> frameworks [
 		ifNil: [ frameworks := self defaultFrameworks ]
 ]
 
-{ #category : 'frameworks' }
+{ #category : #frameworks }
 MicCSSProvider >> frameworksSpecs [
 	"Answer a <Collection> of <Array> representing specifications for building CSS framework objects.
 	Re-execute #installFrameworks after modifying this method."
@@ -390,7 +388,7 @@ MicCSSProvider >> frameworksSpecs [
 	} collect: #asDictionary
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MicCSSProvider >> hasFrameworksInstalled [
 	"Answer <true> if frameworks has been installed in the receiver's destination path"
 	
@@ -400,7 +398,7 @@ MicCSSProvider >> hasFrameworksInstalled [
 	^ destFileRef exists and: [ destFileRef entries anySatisfy: [ : entry | entry reference extension = 'css' ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> installFrameworks [
 	"Download CSS libraries to local system"
 
@@ -409,7 +407,7 @@ MicCSSProvider >> installFrameworks [
 	self cssDownloader downloadCSSFrameworks
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MicCSSProvider >> newCssDownloader [
 	"Answer a new <MicCSSDownloader> configured to download resources in the receiver's destination directory"
 
@@ -418,7 +416,7 @@ MicCSSProvider >> newCssDownloader [
 		yourself
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicCSSProvider >> newCssFrameworkFrom: frwSpec [
 
 	^ MicCSSFramework new

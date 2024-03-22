@@ -13,19 +13,17 @@ If you want to embed codeblock inside codeblock you must use an extra space.
 ```
 "
 Class {
-	#name : 'MicCodeBlockTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicCodeBlockTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> subjectClass [ 
 	^ MicCodeBlock 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testBody [
 	| source root textBody |
 	textBody := 'my fancy code
@@ -36,7 +34,7 @@ is really cool'.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testCanConsumeLine [ 
 	"This test verfies that when a code block is closed it does not consume anymore."
 	"It also show that consume is not just blindly do a line starts with the markup 
@@ -56,7 +54,7 @@ is really cool'.
 	self deny: (root children first canConsumeLine: 'plain text')
 ]
 
-{ #category : 'tests - code' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testCaption [
 
 	| codeBlock |
@@ -67,7 +65,7 @@ MicCodeBlockTest >> testCaption [
 	self assert: codeBlock captionElements size equals: 2.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	"This test shows that we can write a code block inside a code block but that the later is not interpreter."
 	
@@ -90,7 +88,7 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	
 ]
 
-{ #category : 'tests - code' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testCodeCreatesInnerText [
 
 	| code |
@@ -99,7 +97,7 @@ MicCodeBlockTest >> testCodeCreatesInnerText [
 	self assert: (code arguments at: #language) equals: 'a b```'
 ]
 
-{ #category : 'tests - first tag' }
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagNoValue [
 
 	"
@@ -119,7 +117,7 @@ Color >> asMorph
 	self assert: (code arguments at:#language) equals: 'Method'
 ]
 
-{ #category : 'tests - first tag' }
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagValue [
 
 	| source codeBlock |
@@ -129,7 +127,7 @@ MicCodeBlockTest >> testFirstTagValue [
 	self assert:  (codeBlock language)  equals: '12'.
 ]
 
-{ #category : 'tests - first tag' }
+{ #category : #'tests - first tag' }
 MicCodeBlockTest >> testFirstTagWithValue [
 
 	"
@@ -149,7 +147,7 @@ Color >> asMorph
 	self assert: (code arguments at:#language) equals: 'PharoMethod'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testFourBackQuotes [
 
 	| codeBlock |
@@ -160,7 +158,7 @@ something in the way
 	self assert: codeBlock children first body equals: 'something in the way'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testFourBackQuotesClosedByThreeQuotes [
 
 	| codeBlock |
@@ -171,7 +169,7 @@ something in the way
 	self assert: codeBlock children first body equals: 'something in the way'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testFourBackQuotesOnMultipleLines [
 
 	| codeBlock |
@@ -186,7 +184,7 @@ pif
 glop or pas glop'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testFourBackQuotesOnMultipleLinesWithText [
 
 	| codeBlock |
@@ -207,7 +205,7 @@ pif
 glop or pas glop'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testFourBackQuotesWithTextAround [
 
 	| codeBlock |
@@ -223,7 +221,7 @@ Ending text'.
 	self assert: codeBlock children second body equals: 'something in the way'
 ]
 
-{ #category : 'tests - code' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testHasBody [
 
 	| source root textBody |
@@ -233,7 +231,7 @@ MicCodeBlockTest >> testHasBody [
 	self assert: root children first hasBody
 ]
 
-{ #category : 'tests - code' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testHasBody_not [
 
 	| source root textBody |
@@ -243,7 +241,7 @@ MicCodeBlockTest >> testHasBody_not [
 	self assert: root children first hasBody not
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testHasCaption [
 
 	"
@@ -263,7 +261,7 @@ Color >> asMorph
 	self assert: code hasCaption
 ]
 
-{ #category : 'tests - arguments' }
+{ #category : #'tests - arguments' }
 MicCodeBlockTest >> testHasLabelFalse [
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -279,7 +277,7 @@ Color >> asMorph
 	self deny: code hasLabel
 ]
 
-{ #category : 'tests - arguments' }
+{ #category : #'tests - arguments' }
 MicCodeBlockTest >> testHasLabelTrue [
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -295,7 +293,7 @@ Color >> asMorph
 	self assert: code hasLabel
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testHasNOCaption [
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -314,7 +312,7 @@ Color >> asMorph
 	self deny: code hasCaption
 ]
 
-{ #category : 'tests - arguments' }
+{ #category : #'tests - arguments' }
 MicCodeBlockTest >> testLanguage [
 
 	"
@@ -331,7 +329,7 @@ Color >> asMorph
 	self assert: code language equals: 'pharo'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testOpenCanConsumeLine [
 	| source root textBody argument line code |
 	
@@ -366,7 +364,7 @@ is really cool'.
 	
 ]
 
-{ #category : 'tests - code' }
+{ #category : #'tests - code' }
 MicCodeBlockTest >> testSetLabel [
 
 	| codeBlock |
@@ -377,7 +375,7 @@ MicCodeBlockTest >> testSetLabel [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testSingleBlockWithArguments [
 
 	"
@@ -404,7 +402,7 @@ Color >> asMorph
 	self assert: (code arguments at: #label) equals: 'scr:asMorphInColor'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCodeBlockTest >> testSingleBlockWithArgumentsWithFormat [
 
 	"
@@ -446,7 +444,7 @@ Color >> asMorph
 	self assert: code label equals: 'scr:asMorphInColor'
 ]
 
-{ #category : 'tests - deviation' }
+{ #category : #'tests - deviation' }
 MicCodeBlockTest >> testThreeBackQuotesClosedByFourQuotes [
 
 	| codeBlock |

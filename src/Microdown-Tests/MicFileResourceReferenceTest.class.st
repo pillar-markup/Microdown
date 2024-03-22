@@ -3,18 +3,16 @@ These tests will fail if MicHTTPResourceTest fails. I read the files from the gi
 
 "
 Class {
-	#name : 'MicFileResourceReferenceTest',
-	#superclass : 'TestCase',
+	#name : #MicFileResourceReferenceTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'filesystem',
 		'emptyFilesystem'
 	],
-	#category : 'Microdown-Tests-Resolution',
-	#package : 'Microdown-Tests',
-	#tag : 'Resolution'
+	#category : 'Microdown-Tests-Resolution'
 }
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> exampleMicFileResourceReference [
 
 	| file |
@@ -22,7 +20,7 @@ MicFileResourceReferenceTest >> exampleMicFileResourceReference [
 	^ MicFileResourceReference fromFileRef: file
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> exampleMicFileResourceReferenceInsideSubFolder [
 
 	| file |
@@ -30,7 +28,7 @@ MicFileResourceReferenceTest >> exampleMicFileResourceReferenceInsideSubFolder [
 	^ MicFileResourceReference fromFileRef: file
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> examplePNGByteArray [
 
 	^ #[137 80 78 71 13 10 26 10 0 0 0 13 73 72 68 82 0 0 0 200 0 0 0 90 4 3 0 0 0 15
@@ -55,7 +53,7 @@ MicFileResourceReferenceTest >> examplePNGByteArray [
 78 68 174 66 96 130]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> examplePNGFile [
 	" Answer a <Form> for testing purposes "
 
@@ -63,13 +61,13 @@ MicFileResourceReferenceTest >> examplePNGFile [
 
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> examplePNGFileContents [
 
 	^ self examplePNGByteArray readStream
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> exampleReadmeFile [
 	" Answer a <FileReference> on a memory file system for testing purposes "
 
@@ -78,7 +76,7 @@ MicFileResourceReferenceTest >> exampleReadmeFile [
 		yourself
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> exampleReadmeFileContents [
 	" Answer a <String> for file resource testing purposes "
 
@@ -103,7 +101,7 @@ Link to a document in subfolder:
 '
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MicFileResourceReferenceTest >> exampleReadmeFileInsideSubFolder [
 	" Answer a <FileReference> on a memory file system for testing purposes "
 	filesystem ensureCreateDirectory: 'figures'.
@@ -112,7 +110,7 @@ MicFileResourceReferenceTest >> exampleReadmeFileInsideSubFolder [
 		yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MicFileResourceReferenceTest >> setUp [
 	| readme image file |
 	super setUp.
@@ -132,7 +130,7 @@ MicFileResourceReferenceTest >> setUp [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testContents [
 
 	| micFileResource |	
@@ -140,7 +138,7 @@ MicFileResourceReferenceTest >> testContents [
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testContentsInsideSubFolder [
 
 	| micFileResource |	
@@ -149,14 +147,14 @@ MicFileResourceReferenceTest >> testContentsInsideSubFolder [
 	self assert: micFileResource contents equals: self exampleReadmeFileContents
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testContentsOfDirectory [
 	| ref |
 	ref := filesystem workingDirectory asMicResourceReference.
 	self assert: ref contents equals: '' 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testContentsSet [ 
 	|ref header |
 	ref := (MicResourceReference fromUri: 'file:/example.md')
@@ -167,7 +165,7 @@ MicFileResourceReferenceTest >> testContentsSet [
 	self assert: header children first text equals: 'Super cool header'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	| fileRef micRef |
 	fileRef := '/path/to/nowhere.md' asFileReference.
@@ -176,7 +174,7 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod [
 	self assert: micRef fullName equals: (fileRef fullName copyReplaceAll: WindowsStore delimiter asString with: UnixStore delimiter asString)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
 	| fileRef micRef |
 	fileRef := (filesystem workingDirectory / '/subdir') asFileReference.
@@ -186,7 +184,7 @@ MicFileResourceReferenceTest >> testFileReferenceExtensionMethod_dir [
 	self assert: (micRef uri printString endsWith: '/')
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testFullName [
 
 	self assert: 'figures/foo.png' asMicResourceReference fullName equals: 'figures/foo.png'.
@@ -195,14 +193,14 @@ MicFileResourceReferenceTest >> testFullName [
 	self assert: 'file:///figures/foo.png' asMicResourceReference fullName equals: '/figures/foo.png'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testIsDirectory [ 
 	| ref |
 	ref := filesystem workingDirectory asMicResourceReference.
 	self assert: ref isDirectory 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadChildren [
 	| ref files |
 	ref := filesystem workingDirectory asMicResourceReference.
@@ -211,7 +209,7 @@ MicFileResourceReferenceTest >> testLoadChildren [
 	self assert: files first class equals: MicFileResourceReference
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadImage [
 
 	| ref image |
@@ -223,7 +221,7 @@ MicFileResourceReferenceTest >> testLoadImage [
 	self assert: image width equals: 200
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
@@ -234,7 +232,7 @@ MicFileResourceReferenceTest >> testLoadMicrodown [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadNotCorrectImage [
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
@@ -244,7 +242,7 @@ MicFileResourceReferenceTest >> testLoadNotCorrectImage [
 		raise: UnrecognizedImageFormatError
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
@@ -255,7 +253,7 @@ MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 		raise: ZnInvalidUTF8
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadNotFoundImage [
 
 	| ref  |
@@ -267,7 +265,7 @@ MicFileResourceReferenceTest >> testLoadNotFoundImage [
 		self assert: e messageText equals: 'Microdown file not found' ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 	| uri ref |
 	uri := 'file:///readme.md'.
@@ -280,7 +278,7 @@ MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 		self assert: e messageText equals: 'Microdown file not found' ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicFileResourceReferenceTest >> testPath [
 
 	self assert: 'figures/foo.png' asMicResourceReference path equals: 'figures/foo.png'.

@@ -2,14 +2,12 @@
 I test the string extensions made by Microdown
 "
 Class {
-	#name : 'MicStringExtensionTest',
-	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicStringExtensionTest,
+	#superclass : #TestCase,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicStringExtensionTest >> testStripNTabs [
 	| one five |
 	one := String tab.
@@ -27,7 +25,7 @@ MicStringExtensionTest >> testStripNTabs [
 		assert: (five,'a' stripNtabs: 8) equals: 'a'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicStringExtensionTest >> testWithoutPreTabs [
 	| one five |
 	one := String tab.

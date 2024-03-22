@@ -1,18 +1,16 @@
 Class {
-	#name : 'MicCommentTest',
-	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
-	#tag : 'Parser'
+	#name : #MicCommentTest,
+	#superclass : #MicBlockTest,
+	#category : 'Microdown-Tests-Parser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCommentTest >> subjectClass [
 
 	^ MicCommentBlock
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MicCommentTest >> testCommentAPI [
 
 	| comment |
