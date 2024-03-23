@@ -34,7 +34,10 @@ MicInlineToken >> delimiter: anObject [
 
 { #category : 'printing' }
 MicInlineToken >> printOn: aStream [
-	aStream << delimiter printString << $( << string << $)
+
+	aStream nextPutAll: 'Token: '.
+	delimiter printOn: aStream.
+	aStream << $( << string << $)
 ]
 
 { #category : 'accessing' }
