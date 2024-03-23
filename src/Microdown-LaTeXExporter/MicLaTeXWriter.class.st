@@ -230,13 +230,11 @@ MicLaTeXWriter >> visitItalic: anItalic [
 MicLaTeXWriter >> visitLink: aLink [
 	| reference |
 	reference := aLink fileStringWithoutHostFile.
-	"canvas command
+	canvas command
 		name: 'href';
 		parameter: reference;
-		parameter: [ self visitAll: aLink children ]."
-	canvas command
-		name: 'footnotesize';
-		parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ]
+		parameter: [ self visitAll: aLink children ].
+	
 ]
 
 { #category : 'blocks - list' }
