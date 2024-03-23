@@ -272,18 +272,16 @@ MicRichTextComposer >> doVisitCode: aCodeBlock [
 { #category : 'private' }
 MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
 
-	canvas indentIn: [ 
+	canvas indentIn: [
 		canvas
-			<< ((self codeStylerClass stylerFor: aCodeBlock language)
-					style: aStringOrText );
+			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
+						 aStringOrText);
 			newLine.
-		aCodeBlock hasCaption ifTrue: [ 
-			canvas 
-				includeAttribute: TextEmphasis bold 
-				in: [ 
-					canvas
-						<< aCodeBlock caption asText;
-					newLine ]]].
+		aCodeBlock hasCaption ifTrue: [
+			canvas includeAttribute: TextEmphasis bold in: [
+				canvas
+					<< aCodeBlock testCaptionString asText;
+					newLine ] ] ].
 	canvas << textStyler interBlockSpacing
 ]
 
@@ -407,18 +405,7 @@ MicRichTextComposer >> visitCenter: aMicCenterBlock [
 MicRichTextComposer >> visitCode: aCodeBlock [
 
 	canvas newLineIfNotAlready.
-
-	canvas indentIn: [ 
-		canvas
-			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
-						 aCodeBlock body);
-			newLine.
-		aCodeBlock hasCaption ifTrue: [ 
-			canvas includeAttribute: TextEmphasis bold in: [ 
-				canvas
-					<< aCodeBlock testCaptionString asText;
-					newLine ] ] ].
-	canvas << textStyler interBlockSpacing
+	self doVisitCode: aCodeBlock
 ]
 
 { #category : 'visiting -  format' }
@@ -465,8 +452,8 @@ MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 MicRichTextComposer >> visitFigure: aFigure [
 
 	| image anchor |
-	[ 
-	[ 
+	[
+	[
 	image := aFigure reference loadImage.
 	anchor := self anchorFor: image of: aFigure.
 	canvas << (self textWithImage: image usingAnchor: anchor) ]
@@ -536,6 +523,17 @@ MicRichTextComposer >> visitLink: aLink [
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
 
+{ #category : 'visiting - document' }
+MicRichTextComposer >> visitLink_old: aLink [
+
+	| attribute |
+	attribute := TextAction new
+		             actOnClickBlock: [ 
+			             WebBrowser openOn: aLink url ];
+		             yourself.
+	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
+]
+
 { #category : 'visiting - list' }
 MicRichTextComposer >> visitListItem: anItem [
 	| bullet |
@@ -560,11 +558,13 @@ MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 ]
 
 { #category : 'visiting - document' }
-MicRichTextComposer >> visitMathInline: aMicMathInline [ 
-	| aString  |
-	aString := aMicMathInline substring .
-   aString ifEmpty: [^ self].
-	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
+MicRichTextComposer >> visitMathInline: aMicMathInline [
+
+	| aString |
+	aString := aMicMathInline bodyString.
+	aString ifEmpty: [ ^ self ].
+	canvas
+	<< (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
 { #category : 'visiting - inline elements' }
@@ -665,7 +665,7 @@ MicRichTextComposer >> visitQuote: aQuote [
 { #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitRaw: aRawFormat [
 
-	canvas << aRawFormat substring asText.
+	canvas << aRawFormat bodyString asText
 ]
 
 { #category : 'visiting' }
@@ -752,11 +752,10 @@ MicRichTextComposer >> visitTable: tableBlock [
 
 { #category : 'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
-
 	"we should set attribute because it would override link and others."
 
 	| text |
-	text := anInlineBlock bodystring asText.
+	text := anInlineBlock bodyString asText.
 	canvas << (textStyler postTextTreatment: text)
 ]
 

@@ -36,19 +36,20 @@ MicAnnotationBlock class >> openingDelimiter [
 
 { #category : 'parsing' }
 MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
 	| bodystring arguments tag extensionClass |
 	bodystring := delimiter undelimitedSubstring.
 	arguments := MicArgumentList
-		            split: bodystring
-		            defaultArg: #annotationKind
-		            defaultValue: 'Me'.
+		             split: bodystring
+		             defaultArg: #annotationKind
+		             defaultValue: 'Me'.
 	tag := arguments defaultValue trimBoth.
 
 	extensionClass := self extensionClassFor: tag.
-	
+
 	^ extensionClass new
-		bodystring: bodystring;
-		arguments: arguments
+		  bodyString: bodystring;
+		  arguments: arguments
 ]
 
 { #category : 'visiting' }

@@ -18,6 +18,7 @@ Class {
 
 { #category : 'initialization' }
 MicInlineAlternativesDelimiter class >> initializeDelimiters [
+	
 	"formating"
 	self new markup: '__'; blockClass: MicBoldFormatBlock; closer: '__'; addMe.
 	self new markup: '*'; blockClass: MicItalicFormatBlock; closer: '*'; addMe.

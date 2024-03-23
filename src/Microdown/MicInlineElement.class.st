@@ -50,6 +50,8 @@ MicInlineElement >> blockName [
 { #category : 'visiting' }
 MicInlineElement >> closeMe [
 	"use for post parsing initialization"
+	
+	
 ]
 
 { #category : 'accessing' }

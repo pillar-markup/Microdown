@@ -271,7 +271,7 @@ MicLaTeXWriterTest >> testLfAsNewLine [
 MicLaTeXWriterTest >> testLink [
 	self writeFor: factory linkSample.		
 	self assert: writer contents equals: newLine,
-'\href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}', newLine
+'\href{/anUrl}{Foo}', newLine
 ]
 
 { #category : 'tests - figure/link' }

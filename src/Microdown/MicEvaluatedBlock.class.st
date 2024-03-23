@@ -1,5 +1,5 @@
 "
-I represent blocks with sub structure. Typically italics inside bold
+I represent in paragraph element with substructures. Typically text formatting such as italics inside bold.
 "
 Class {
 	#name : 'MicEvaluatedBlock',

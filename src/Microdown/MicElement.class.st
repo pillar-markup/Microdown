@@ -56,12 +56,11 @@ MicElement >> hasProperty: aKey [
 
 { #category : 'public' }
 MicElement >> inlineParse: aString [
-	| inlineParser inlinedChildren |
-	
+
+	| inlineParser inlinedChildren |	
 	inlineParser := self newInlineParser.
 	inlinedChildren := inlineParser parse: aString.
 	inlinedChildren do: [ :each | each parent: self ].
-	
 	^ inlinedChildren
 
 ]

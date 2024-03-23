@@ -21,7 +21,7 @@ MicInlineParser class >> parse: string [
 
 { #category : 'block creation' }
 MicInlineParser >> createInlineBlock: token inStream: aReadStream [ 
-	| blockClass newBlock|
+	| blockClass newBlock |
 	blockClass := token delimiter blockClass.
 	newBlock := blockClass parse: token stream: aReadStream for: self.
 	^ newBlock 
@@ -31,30 +31,33 @@ MicInlineParser >> createInlineBlock: token inStream: aReadStream [
 
 { #category : 'block creation' }
 MicInlineParser >> createTextBlock: token [
-	^ MicTextBlock new bodystring: token
+
+	^ MicTextBlock new bodyString: token
 ]
 
 { #category : 'private parsing' }
 MicInlineParser >> joinTextNodesOf: children [
 	"children might have several text blocks following each other - join them and remove empty Text blocks"
-	| outStream bufferText  |
+
+	| outStream bufferText |
 	outStream := WriteStream on: OrderedCollection new.
 	bufferText := nil.
 	children do: [ :child |
 		child class = MicTextBlock
-			ifTrue: [ bufferText 
-				ifNil: [ bufferText := child ]
-				ifNotNil: [ bufferText bodystring: (bufferText bodystring , child bodystring) ] ]
-			ifFalse: [ bufferText
-				ifNil: [ outStream nextPut: child ]
-				ifNotNil: [ 
-					bufferText bodystring ifNotEmpty: [outStream nextPut: bufferText].
-					outStream nextPut: child. bufferText := nil ]
-				 ]
-		 ].
-	(bufferText isNotNil and: [ bufferText bodystring isNotEmpty  ]) 
+			ifTrue: [
+				bufferText
+					ifNil: [ bufferText := child ]
+					ifNotNil: [
+					bufferText bodyString: bufferText bodyString , child bodyString ] ]
+			ifFalse: [
+				bufferText ifNil: [ outStream nextPut: child ] ifNotNil: [
+					bufferText bodyString ifNotEmpty: [
+						outStream nextPut: bufferText ].
+					outStream nextPut: child.
+					bufferText := nil ] ] ].
+	(bufferText isNotNil and: [ bufferText bodyString isNotEmpty ])
 		ifTrue: [ outStream nextPut: bufferText ].
-	 ^ outStream contents asArray
+	^ outStream contents asArray
 ]
 
 { #category : 'parsing' }
@@ -94,6 +97,7 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 
 { #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
+
 	| skipRes children urlToken|
 	skipRes := (self skipToUrlStartInStream: aTokenStream).
 	skipRes ifNil: [ ^ self createTextBlock: token string].
@@ -110,9 +114,10 @@ MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token 
 
 { #category : 'private parsing' }
 MicInlineParser >> parseNonEvaluatedBlock: blockClass token: token stream: aTokenStream [
+
 	^ blockClass new
-		bodystring: token undelimitedSubstring;
-		closeMe
+		  bodyString: token undelimitedSubstring;
+		  closeMe
 ]
 
 { #category : 'private parsing' }

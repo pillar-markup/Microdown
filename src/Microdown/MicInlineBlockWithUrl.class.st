@@ -34,6 +34,24 @@ MicInlineBlockWithUrl >> anchor [
 ]
 
 { #category : 'accessing' }
+MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
+	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
+
+	self arguments 
+		at: aKey
+		ifPresent: aBlock
+]
+
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> argumentAt: aKey put: value [
+	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
+
+	self arguments 
+		at: aKey
+		put: value
+]
+
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments [
 
 	^ arguments
@@ -82,6 +100,22 @@ MicInlineBlockWithUrl >> closeMe [
 	self arguments: (MicArgumentList withString: title)
 ]
 
+{ #category : 'utilities' }
+MicInlineBlockWithUrl >> fileStringWithoutHostFile [
+	| urlString localFileIndicator |
+	urlString := url asString.
+	localFileIndicator := 'file://'.
+	^ (urlString beginsWith: localFileIndicator)
+			ifTrue: [ urlString allButFirst: localFileIndicator size ]
+			ifFalse: [ urlString ]
+]
+
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> fullName [
+
+	^ reference fullName
+]
+
 { #category : 'testing' }
 MicInlineBlockWithUrl >> hasAnchor [
 
@@ -91,6 +125,17 @@ MicInlineBlockWithUrl >> hasAnchor [
 { #category : 'testing' }
 MicInlineBlockWithUrl >> hasArguments [
 	^ arguments size > 0
+]
+
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasCaption [
+
+	^ children notEmpty
+]
+
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasChildren [
+	^ self children notEmpty
 ]
 
 { #category : 'initialization' }

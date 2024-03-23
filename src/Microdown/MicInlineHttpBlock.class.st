@@ -25,10 +25,11 @@ MicInlineHttpBlock class >> openingDelimiter [
 { #category : 'parsing' }
 MicInlineHttpBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	"I transform myself into a MicLinkBlock"
+
 	^ MicLinkBlock new
-		children: { MicTextBlock new bodystring: delimiter string};
-		url: delimiter string;
-		closeMe
+		  children: { (MicTextBlock new bodyString: delimiter string) };
+		  url: delimiter string;
+		  closeMe
 ]
 
 { #category : 'visiting' }
