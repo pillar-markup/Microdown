@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-Evaluator' }
+Package { #name : 'Microdown-Evaluator' }

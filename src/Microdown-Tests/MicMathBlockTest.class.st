@@ -101,9 +101,11 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: (math arguments at: 'label') equals: '42'.
 	self
-		assert: (math arguments at: 'caption') first bodystring
+		assert: (math arguments at: 'caption') first bodyString
 		equals: 'Ze great formula'.
-	self assert: math testCaptionString equals: 'an Array(Text(Ze great formula))'
+	self
+		assert: math testCaptionString
+		equals: 'an Array(Text(Ze great formula))'
 ]
 
 { #category : 'tests' }

@@ -87,11 +87,11 @@ MicLinkBlockTest >> testFullName [
 
 { #category : 'tests' }
 MicLinkBlockTest >> testHasArguments [
-	| figure |
-	figure := (splitterClass new parse: '[caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
+	| lk |
+	lk := (splitterClass new parse: '[caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
 	
-	"Indeed url arguments are not microdown arguments"
-	self assert: figure hasArguments.
+	self assert: lk hasArguments.
+	self assert: lk bodyString equals: 'caption with space and dot...'
 	
 	
 ]
@@ -147,5 +147,7 @@ MicLinkBlockTest >> testPrintOn [
 MicLinkBlockTest >> testUrl [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.
-	self assert: link url equals: 'http://www.pharo.org:8080'
+	self assert: link url equals: 'http://www.pharo.org:8080'.
+	
+	self assert: link children first bodyString equals: 'caption'
 ]

@@ -34,11 +34,13 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 { #category : 'accessing' }
 MicMonospaceFormatBlock >> children [
 	"should be deprecated"
-	^ Array with: (MicTextBlock new bodystring: self bodystring)
+
+	^ Array with: (MicTextBlock new bodyString: self bodyString)
 ]
 
 { #category : 'accessing' }
 MicMonospaceFormatBlock >> text [
 	"should be deprecated "
-	^ self bodystring 
+
+	^ self bodyString
 ]

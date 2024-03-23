@@ -328,11 +328,14 @@ MicrodownParserTest >> testHandlePrefixTabs [
 
 { #category : 'tests - header' }
 MicrodownParserTest >> testHeaderLevel4 [
+
 	| source root |
-	source := (HeaderMarkup repeat: 4), '    Level four'.
+	source := (HeaderMarkup repeat: 4) , '    Level four'.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first children first bodystring equals: 'Level four'.
+	self
+		assert: root children first children first bodyString
+		equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 
@@ -344,11 +347,12 @@ MicrodownParserTest >> testHeaderLevel4WithBold [
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	self
-		assert: root children first children first bodystring
+		assert: root children first children first bodyString
 		equals: 'Level '.
 	self
 		assert: root children first children asString
-		equals: 'an Array(Text(Level ) BoldFormat{ Text(four) } Text( ) Monospace(mono) Text( end))'.
+		equals:
+		'an Array(Text(Level ) BoldFormat{ Text(four) } Text( ) Monospace(mono) Text( end))'
 ]
 
 { #category : 'tests - horizontal' }
@@ -440,7 +444,7 @@ MicrodownParserTest >> testMathBlockWithArguments [
 	math := root children first.
 	self assert: (math arguments at: 'label') equals: 'equation'.
 	self
-		assert: (math arguments at: 'caption') first bodystring
+		assert: (math arguments at: 'caption') first bodyString
 		equals: 'doNiceMath'
 ]
 
@@ -517,7 +521,7 @@ MicrodownParserTest >> testPipeEscape [
 	firstElementOfSecondRowAsString := tableBlock rows second first.
 	"now get to the actual string stored there"
 	firstElementOfSecondRowAsString := firstElementOfSecondRowAsString
-		                                   first bodystring.
+		                                   first bodyString.
 	self assert: firstElementOfSecondRowAsString equals: '12|3'
 ]
 

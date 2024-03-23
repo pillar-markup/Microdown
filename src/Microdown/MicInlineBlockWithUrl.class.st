@@ -63,6 +63,12 @@ MicInlineBlockWithUrl >> arguments: anObject [
 	arguments := anObject
 ]
 
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> bodyString [
+	^ String streamContents: [ :s |
+			self children do: [ :each | s nextPutAll: each bodyString ] ]
+]
+
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements [
 	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.

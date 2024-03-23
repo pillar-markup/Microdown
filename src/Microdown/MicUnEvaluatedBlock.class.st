@@ -5,7 +5,7 @@ Class {
 	#name : 'MicUnEvaluatedBlock',
 	#superclass : 'MicInlineElement',
 	#instVars : [
-		'bodystring'
+		'bodyString'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',
@@ -23,15 +23,29 @@ MicUnEvaluatedBlock class >> parse: delimiter stream: aTokenStream for: aParser 
 ]
 
 { #category : 'accessing' }
-MicUnEvaluatedBlock >> bodystring [
+MicUnEvaluatedBlock >> bodyString [
 
-	^ bodystring
+	^ bodyString
 ]
 
 { #category : 'accessing' }
-MicUnEvaluatedBlock >> bodystring: anObject [
+MicUnEvaluatedBlock >> bodyString: aString [
 
-	bodystring := anObject
+	bodyString := aString 
+]
+
+{ #category : 'accessing' }
+MicUnEvaluatedBlock >> bodystring [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodyString' transformWith: '`@rec bodystring' -> '`@rec bodyString'.
+	^ bodyString 
+]
+
+{ #category : 'accessing' }
+MicUnEvaluatedBlock >> bodystring: aString [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodyString' transformWith: '`@rec bodystring: `@arg' -> '`@rec bodyString: `@arg'.
+	bodyString := aString 
 ]
 
 { #category : 'accessing' }
@@ -47,17 +61,18 @@ MicUnEvaluatedBlock >> children: newChildren [
 
 { #category : 'printing' }
 MicUnEvaluatedBlock >> plainText [
-	^ bodystring 
+	^ bodyString 
 ]
 
 { #category : 'printing' }
 MicUnEvaluatedBlock >> printOn: stream [
-	stream << self blockName << '(' << bodystring << ')'
+	stream << self blockName << '(' << bodyString << ')'
 	
 ]
 
 { #category : 'obsolete' }
 MicUnEvaluatedBlock >> substring [
-	self flag: 'to be obsoleted, use bodystring'.
-	^ bodystring
+	"Should only be used for tests"
+	self deprecated: 'Just use bodystring' transformWith: '`@rec substring' -> '`@rec bodystring'.
+	^ bodyString 
 ]

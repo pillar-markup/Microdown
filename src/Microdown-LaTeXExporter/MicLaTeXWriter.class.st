@@ -71,7 +71,7 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 
 	canvas command
 		name: 'ref';
-		parameter: [ canvas raw: anInternalLink substring ]
+		parameter: [ canvas raw: anInternalLink bodyString ]
 ]
 
 { #category : 'helpers' }
@@ -350,7 +350,7 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 { #category : 'blocks' }
 MicLaTeXWriter >> visitText: aText [
 
-	canvas nextPutAllLines: aText bodystring
+	canvas nextPutAllLines: aText bodyString
 ]
 
 { #category : 'blocks - list' }

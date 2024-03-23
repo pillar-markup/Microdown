@@ -64,11 +64,14 @@ MicFigureBlockTest >> testArgumentAtIfPresent [
 
 { #category : 'tests' }
 MicFigureBlockTest >> testCaption [
+
 	| figure |
-	figure := (splitterClass new parse: '![caption with space and dot...](http://www.Pharo.ORG)') first.
-	self assert: figure children first bodystring equals: 'caption with space and dot...'
-	
-	
+	figure := (splitterClass new parse:
+		           '![caption with space and dot...](http://www.Pharo.ORG)')
+		          first.
+	self
+		assert: figure children first bodyString
+		equals: 'caption with space and dot...'
 ]
 
 { #category : 'tests' }

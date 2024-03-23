@@ -10,12 +10,13 @@ stream nextPutAll: ''Hello world''
 ```
 "
 Class {
-	#name : #MicCodeblockEvaluator,
-	#superclass : #MicNodeTransformer,
-	#category : #'Microdown-Evaluator'
+	#name : 'MicCodeblockEvaluator',
+	#superclass : 'MicNodeTransformer',
+	#category : 'Microdown-Evaluator',
+	#package : 'Microdown-Evaluator'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicCodeblockEvaluator >> visitCode: aCodeBlock [
 	
 	aCodeBlock isEvaluated

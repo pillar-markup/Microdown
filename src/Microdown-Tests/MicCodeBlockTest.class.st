@@ -379,7 +379,6 @@ MicCodeBlockTest >> testSetLabel [
 
 { #category : 'tests' }
 MicCodeBlockTest >> testSingleBlockWithArguments [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -399,14 +398,13 @@ Color >> asMorph
 	self assert: code code equals: textBody.
 	self assert: (code arguments at: #language) equals: 'pharo'.
 	self
-		assert: code captionElements first bodystring
+		assert: code captionElements first bodyString
 		equals: 'Getting a morph for an instance of ==Color=='.
 	self assert: (code arguments at: #label) equals: 'scr:asMorphInColor'
 ]
 
 { #category : 'tests' }
 MicCodeBlockTest >> testSingleBlockWithArgumentsWithFormat [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
@@ -434,13 +432,13 @@ Color >> asMorph
 	self
 		assert: code captionElements first blockName asLowercase
 		equals: 'monospace'.
-	self assert: code captionElements first substring equals: 'Color'.
+	self assert: code captionElements first bodyString equals: 'Color'.
 
 	self
 		assert: code captionElements second blockName asLowercase
 		equals: 'text'.
 	self
-		assert: code captionElements second bodystring
+		assert: code captionElements second bodyString
 		equals: ' is a class.'.
 
 	self assert: code label equals: 'scr:asMorphInColor'

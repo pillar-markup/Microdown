@@ -53,14 +53,14 @@ MicUnorderedListBlockTest >> testEmbeddedOrderedWithFormatting [
 		assert: item4 children first blockName asLowercase
 		equals: 'boldformat'.
 	self
-		assert: item4 children first children first bodystring
+		assert: item4 children first children first bodyString
 		equals: 'sublevel4'.
 
 	self
 		assert: item4 children third blockName asLowercase
 		equals: 'strikeformat'.
 	self
-		assert: item4 children third children first bodystring
+		assert: item4 children third children first bodyString
 		equals: 'item 24'
 ]
 
@@ -127,7 +127,7 @@ MicUnorderedListBlockTest >> testNestedLevel [
 	self assert: list children size equals: 2.
 
 	item1 := list children first.
-	self assert: item1 children first bodystring equals: 'item 1'.
+	self assert: item1 children first bodyString equals: 'item 1'.
 	self assert: item1 class equals: MicListItemBlock.
 	self assert: item1 nestedLevel equals: 1.
 
@@ -137,7 +137,8 @@ MicUnorderedListBlockTest >> testNestedLevel [
 
 	"this is the inner list first item"
 	self
-		assert: item1 children second children first children first bodystring
+		assert:
+		item1 children second children first children first bodyString
 		equals: 'sublevel'.
 	self
 		assert: item1 children second children first class
@@ -168,7 +169,7 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 
 	"this is the inner list first item"
 	self
-		assert: sublevelItem children first bodystring
+		assert: sublevelItem children first bodyString
 		equals: 'sublevel'.
 	self assert: sublevelItem class equals: MicListItemBlock.
 
@@ -176,7 +177,9 @@ MicUnorderedListBlockTest >> testNestedLevel2 [
 		assert: sublevelItem children second children first nestedLevel
 		equals: 3.
 	self
-		assert: sublevelItem children second children first children first bodystring
+		assert:
+		sublevelItem children second children first children first
+			bodyString
 		equals: 'subsublevel'
 ]
 
@@ -236,13 +239,13 @@ MicUnorderedListBlockTest >> testSingleLevelList2WithFormatting [
 		assert: list children first children first blockName asLowercase
 		equals: 'boldformat'.
 	self
-		assert: list children first children first children first bodystring
+		assert: list children first children first children first bodyString
 		equals: 'item 1'.
 	self
 		assert: list children first children third blockName asLowercase
 		equals: 'monospace'.
 	self
-		assert: list children first children third substring
+		assert: list children first children third bodyString
 		equals: 'expanded'
 ]
 

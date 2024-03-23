@@ -212,9 +212,8 @@ MicHTMLVisitor >> visitAnchorReference: anAnchor [
 
 	canvas tag
 		name: 'a';
-		parameterAt: 'href' put: '#' , anAnchor substring;
-		with: anAnchor substring
-
+		parameterAt: 'href' put: '#' , anAnchor bodyString;
+		with: anAnchor bodyString
 ]
 
 { #category : 'visiting' }
