@@ -28,5 +28,5 @@ MicLinkBlock >> accept: aVisitor [
 
 { #category : 'printing' }
 MicLinkBlock >> plainText [
-	^ '[', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
+	^ '[', ((self children collect: [:each | each plainText]) joinUsing: ' '), '](', url ,')'
 ]

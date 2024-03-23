@@ -24,11 +24,13 @@ MicInlineDelimiterTest >> testAddMe [
 { #category : 'tests' }
 MicInlineDelimiterTest >> testMarkupAsRegex [
 	"this test is only for evaluated delimiters"
-	(MicInlineDelimiter all select: #isEvaluated) do: [ :del | |regex|
-		regex := del markupAsRegex asRegex.
-		self assert: (regex matches: del markup  ).
-		self assert: (regex search: ('aaa', del markup) ).
-		self assert: (regex search: (del markup, 'aaa') ).
+	(MicInlineDelimiter all select: [:each | each isEvaluated]) 
+		do: [ :del |  
+			| regex |
+			regex := del markupAsRegex asRegex.
+			self assert: (regex matches: del markup  ).
+			self assert: (regex search: ('aaa', del markup) ).
+			self assert: (regex search: (del markup, 'aaa') ).
 		 ]
 ]
 

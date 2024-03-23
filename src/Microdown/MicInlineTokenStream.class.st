@@ -115,7 +115,7 @@ MicInlineTokenStream >> initialize [
 
 { #category : 'parsing' }
 MicInlineTokenStream >> tokenize: rawString [
-	| inlineString splits from|
+	| inlineString splits from |
 	inlineString := self class backslashEncode: rawString.
 	splits := MicInlineDelimiter allRegex matchingRangesIn: inlineString.
 	tokens := OrderedCollection new.

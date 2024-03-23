@@ -1,6 +1,6 @@
 "
 I am a superclass for the inline delimiters.
-I am an administrer class which gathers delimiters from my subclasses.
+I am an administrer class which gathers delimiters from my subclasses. See the method `MicInlineDelimiter>>#all` and `initializeDelimiters`.
 
 I store the actual delimiters in the class variable `DelimiterDictionary`.
 My class side method `initializeDelimiters` gathers delimiters from my subclasses.
@@ -28,7 +28,7 @@ MicInlineDelimiter class >> all [
 
 { #category : 'private utilities' }
 MicInlineDelimiter class >> allRegex [
-	^ ((MicInlineDelimiter all collect: #markupAsRegex) joinUsing: '|') asRegex
+	^ ((MicInlineDelimiter all collect: [ :each | each markupAsRegex]) joinUsing: '|') asRegex
 	
 ]
 
@@ -46,7 +46,7 @@ MicInlineDelimiter class >> initialize [
 
 { #category : 'initialization' }
 MicInlineDelimiter class >> initializeDelimiters [
-	self = MicInlineDelimiter ifFalse: [ ^self ].
+	self = MicInlineDelimiter ifFalse: [ ^ self ].
 	DelimiterDictionary := Dictionary new.
 	self allSubclasses do: [ :class | class initializeDelimiters ]
 ]

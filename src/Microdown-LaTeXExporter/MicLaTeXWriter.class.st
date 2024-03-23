@@ -77,10 +77,11 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 { #category : 'helpers' }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
-		| visitor |
-		visitor := self class new.
-		aCollection do: [ :object | visitor visit: object ].
-		^ visitor contents
+
+	| visitor |
+	visitor := self class new.
+	aCollection do: [ :object | visitor visit: object ].
+	^ visitor contents
 ]
 
 { #category : 'visiting-document' }

@@ -23,6 +23,7 @@ Class {
 
 { #category : 'parsing' }
 MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
+	
 	^ aParser parseNameUrlBlock: self from: aTokenStream token: token
 ]
 
