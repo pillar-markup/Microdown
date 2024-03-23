@@ -144,6 +144,30 @@ MicLinkBlockTest >> testPrintOn [
 ]
 
 { #category : 'tests' }
+MicLinkBlockTest >> testTwoUrls [
+	| lk |
+	self skip.
+	lk := (MicInlineParser new parse: '[https://advanced-design-mooc.pharo.org](https://advanced-design-mooc.pharo.org)') first.
+	
+	self assert: lk bodyString equals: 'https://advanced-design-mooc.pharo.org'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
+	
+	
+]
+
+{ #category : 'tests' }
+MicLinkBlockTest >> testTwoUrlsWithMicrodownParser [
+	| lk |
+	self skip.
+	lk := (parser parse: '[https://advanced-design-mooc.pharo.org](https://advanced-design-mooc.pharo.org)') children first children first.
+	
+	self assert: lk bodyString equals: 'https://advanced-design-mooc.pharo.org'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
+	
+	
+]
+
+{ #category : 'tests' }
 MicLinkBlockTest >> testUrl [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.

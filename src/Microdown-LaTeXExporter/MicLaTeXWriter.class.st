@@ -229,13 +229,15 @@ MicLaTeXWriter >> visitItalic: anItalic [
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
+
 	| reference |
+	self halt.
 	reference := aLink fileStringWithoutHostFile.
+
 	canvas command
 		name: 'href';
-		parameter: reference;
-		parameter: [ self visitAll: aLink children ].
-	
+		parameter: aLink url;
+		parameter: [ self visitAll: aLink children ]
 ]
 
 { #category : 'blocks - list' }
