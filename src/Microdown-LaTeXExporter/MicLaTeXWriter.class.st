@@ -229,9 +229,6 @@ MicLaTeXWriter >> visitItalic: anItalic [
 MicLaTeXWriter >> visitLink: aLink [
 	| text reference |
 	reference := aLink fileStringWithoutHostFile.
-	self flag: #todo.
-	"I do not get this logic if the string does not have file:// it can still be
-	something else than a url... all this logic is bogus."
 	text := aLink text.
 	(text isEmptyOrNil or: [ reference = text ])
 		ifTrue: [ canvas command
@@ -241,10 +238,7 @@ MicLaTeXWriter >> visitLink: aLink [
 			canvas command
 				name: 'href';
 				parameter: reference;
-				parameter: [ canvas nextPutAll: text ].
-			canvas command
-				name: 'footnotesize';
-				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
+				parameter: [ canvas nextPutAll: text ] ]
 ]
 
 { #category : #'blocks - list' }
