@@ -137,6 +137,16 @@ MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 ]
 
 { #category : 'tests' }
+MicLinkBlockTest >> testOneUrl [
+
+	| lk |
+	lk := (MicInlineParser new parse: '[Mooc](https://advanced-design-mooc.pharo.org)') first.
+
+	self assert: lk bodyString equals: 'Mooc'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
+]
+
+{ #category : 'tests' }
 MicLinkBlockTest >> testPrintOn [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
