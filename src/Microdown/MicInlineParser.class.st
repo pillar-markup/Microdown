@@ -98,18 +98,15 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 { #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 
-	| skipRes children urlToken|
-	skipRes := (self skipToUrlStartInStream: aTokenStream).
-	skipRes ifNil: [ ^ self createTextBlock: token string].
+	| skipRes children urlToken |
+	skipRes := self skipToUrlStartInStream: aTokenStream.
+	skipRes ifNil: [ ^ self createTextBlock: token string ].
 	children := self parseChildrenIn: skipRes second.
 	urlToken := aTokenStream next.
 	^ blockType new
-		children: children;
-		url: urlToken undelimitedSubstring;
-		closeMe.
-		
-	
-
+		  children: children;
+		  url: urlToken undelimitedSubstring;
+		  closeMe
 ]
 
 { #category : 'private parsing' }

@@ -44,5 +44,7 @@ MicInlineHttpDelimiter >> markup [
 
 { #category : 'accessing' }
 MicInlineHttpDelimiter >> markupAsRegex [
-	^ 'http(s)?\://[\S]+' 
+	"We end the link if we find a character that is a whitespace OR a $]. $] should be valid in links but it causes conflicts with the closing bracket of the body of link syntax with the way microdown is coded. Thus, this is a hack to limit the impact of this conflict. We prefer to be able to parse things such as: `[http://mylink.fr](http://mylink.fr)` than matching links containing a $]. "
+
+	^ 'http(s)?\://[^]\s]+'
 ]
