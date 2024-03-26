@@ -231,7 +231,6 @@ MicLaTeXWriter >> visitItalic: anItalic [
 MicLaTeXWriter >> visitLink: aLink [
 
 	| reference |
-	self halt.
 	reference := aLink fileStringWithoutHostFile.
 
 	canvas command
