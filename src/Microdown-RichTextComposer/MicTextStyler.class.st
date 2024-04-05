@@ -80,7 +80,8 @@ MicTextStyler >> interBlockSpacing [
 
 { #category : 'composer styles' }
 MicTextStyler >> monospaceBackgroundColor [
-	^ Smalltalk ui theme settings windowColor
+
+	^ Color transparent alpha: 0.01
 ]
 
 { #category : 'canvas styles' }
