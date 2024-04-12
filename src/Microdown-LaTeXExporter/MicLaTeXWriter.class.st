@@ -258,8 +258,8 @@ MicLaTeXWriter >> visitMath:  aMicMathEnvironment [
 		with: [ 
 			| args |
 			args := aMicMathEnvironment arguments.
-			(args includesKey: '% label')
-			 	ifTrue: [ canvas raw: '\label{', (args at: '% label'), '}'.
+			(args includesKey: 'label')
+			 	ifTrue: [ canvas raw: '\label{', (args at: 'label'), '}'.
 				canvas newLine.].
 			
 			canvas raw: aMicMathEnvironment body. canvas newLine ] 
