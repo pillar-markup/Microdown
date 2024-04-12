@@ -282,6 +282,37 @@ MicLaTeXWriterTest >> testLinkBold [
 		'\href{/anUrl}{\textbf{Foo}}', newLine
 ]
 
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathBloc [
+
+	self
+	parseInlined:'$$
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+\end{equation}' 
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathBlocWithLabel [
+
+	self
+	parseInlined:'$$ % label=eq1
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}
+\label{eq1}
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+\end{equation}' 
+]
+
 { #category : 'tests - formats' }
 MicLaTeXWriterTest >> testMonospace [
 
@@ -415,6 +446,28 @@ MicLaTeXWriterTest >> testRealLinkSample [
 	self writeFor: factory realLinkSample.	
 	self assert: writer contents equals: newLine ,
 '\href{http://www.pharo.org}{The Pharo Project}', newLine 
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testSimpleMathBloc [
+	
+	| root math |
+	root := parser parse: '
+
+$$
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'.
+	math := root children first.
+	self
+	parseInlined:'$$ 
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+\end{equation}' 
 ]
 
 { #category : 'tests - formats' }

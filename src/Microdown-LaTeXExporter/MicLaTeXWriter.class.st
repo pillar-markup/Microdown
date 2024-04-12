@@ -248,6 +248,23 @@ MicLaTeXWriter >> visitListItem: anItem [
 	canvas newLine
 ]
 
+{ #category : 'visiting' }
+MicLaTeXWriter >> visitMath:  aMicMathEnvironment [
+	"here we should add a label if there is one"
+	
+	canvas newLine.
+	canvas environment
+		name: 'equation';
+		with: [ 
+			| args |
+			args := aMicMathEnvironment arguments.
+			(args includesKey: '% label')
+			 	ifTrue: [ canvas raw: '\label{', (args at: '% label'), '}'.
+				canvas newLine.].
+			
+			canvas raw: aMicMathEnvironment body. canvas newLine ] 
+]
+
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitMonospace: aMonospace [
 	canvas command
