@@ -71,6 +71,14 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
 
 	| root math |
+	
+	"note that in the following  
+	$$%label=eq11
+	
+	The % is needed else it does not work on github and the label is part of the equation."
+	
+	
+	 
 	root := self parserClass new parse: '
 
 ',MathOpeningBlockMarkup,'%key=cite&label=42

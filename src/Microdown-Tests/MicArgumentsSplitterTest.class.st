@@ -27,6 +27,19 @@ MicArgumentsSplitterTest >> testArguments [
 ]
 
 { #category : 'tests' }
+MicArgumentsSplitterTest >> testArgumentsForMath [
+	| subject |
+	subject := self subjectUnderTestWith: '%foo=bar'.
+	self assert: (subject at: #foo) equals: 'bar'.
+	
+	subject := self subjectUnderTestWith: ' %foo=bar'.
+	self assert: (subject at: #foo) equals: 'bar'.
+	
+	subject := self subjectUnderTestWith: ' % foo=bar'.
+	self assert: (subject at: #foo) equals: 'bar'.
+]
+
+{ #category : 'tests' }
 MicArgumentsSplitterTest >> testCanInstantiate [
 	| subject |
 	subject := self subjectUnderTestWith: 'bla'.

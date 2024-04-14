@@ -17,6 +17,18 @@ $$
 V_i = C_0 - C_3
 $$
 
+Now if you want to have label and references to an equation as in LaTeX you should prefix the parameter with % (else it will break on github).
+
+
+
+```
+$$ % label=theEq
+V_i = C_0 - C_3
+$$
+
+See *@theEq@*
+```
+
 
 "
 Class {

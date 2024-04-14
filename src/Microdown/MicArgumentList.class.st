@@ -75,14 +75,24 @@ MicArgumentList >> defaultValue [
 { #category : 'initialization' }
 MicArgumentList >> from: fullString [
 	"I am the 'parser' of the argument splitter"
-	| barSplit |
-	fullString isEmpty ifTrue: [ ^ self ].
-	(fullString intersection: '|=&') isEmpty 
-		ifTrue: [ ^self setDefaultNoArguments: fullString  ].
-	barSplit := fullString splitOn: $|.
+	| barSplit string |
+	string := fullString.
+	string isEmpty ifTrue: [ ^ self ].
+	
+	"for math equation we can have 
+		$$ % label=eqq1 or 
+		$$ %label=eqq2"
+	(string intersection: '%') isNotEmpty 
+		ifTrue: [ string := string trim.
+				string first = $%
+					ifTrue: [ string := string allButFirst trim ] ].
+	
+	(string intersection: '|=&') isEmpty 
+		ifTrue: [ ^self setDefaultNoArguments: string  ].
+	barSplit := string splitOn: $|.
 	barSplit size > 1
 		ifTrue: [ ^ self setDefaultAndArguments: barSplit  ].
-	self setNoDefaultButArguments: fullString
+	self setNoDefaultButArguments: string
 	
 ]
 
