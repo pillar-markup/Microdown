@@ -292,9 +292,9 @@ $$'
 
 	andCheckWeGet: 
 
-'\begin{equation}
-f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
-\end{equation}' 
+'\begin{equation}', newLine,
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
 ]
 
 { #category : 'tests - math' }
@@ -307,10 +307,10 @@ $$'
 
 	andCheckWeGet: 
 
-'\begin{equation}
-\label{eq1}
-f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
-\end{equation}' 
+'\begin{equation}', newLine,
+'\label{eq1}', newLine,
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
 ]
 
 { #category : 'tests - formats' }
@@ -453,7 +453,6 @@ MicLaTeXWriterTest >> testSimpleMathBloc [
 	
 	| root math |
 	root := parser parse: '
-
 $$
 f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
 $$'.
@@ -465,9 +464,9 @@ $$'
 
 	andCheckWeGet: 
 
-'\begin{equation}
-f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
-\end{equation}' 
+'\begin{equation}', newLine, 
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
 ]
 
 { #category : 'tests - formats' }
