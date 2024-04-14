@@ -1,13 +1,18 @@
 # Microdown Parser and Elements
 
-I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. Microdown is a smaller markdown but it is more extensible. I contain a nice builder and some visitors. 
+I'm a parser and object model for Microdown originally implemented by S. Ducasse, L. Dargaud and G. Polito. 
+The implementation is based on the work on markdown of K. Osterbye. 
+Further developments by S. Ducasse and K. Osterbye. 
+
+Microdown is a smaller markdown but it is more extensible. It contains a nice builder and some visitors. 
+Microdown is now the default markup for the Pillar document compilation chain. 
 
 
-## Why should you use Microdown
+## Why should you use Microdown?
 
 Microdown is a smaller markdown but it is more extensible.
 It is used to produce books, slides, websites, doc.
-It can be read on github but also on pharo itself using the documentationBrowser
+It can be read on github but also on pharo itself using the DocumentationBrowser
 
 It supports
 - Header
@@ -87,10 +92,10 @@ There are three ways to create anchors
 ```
 ### Math support
 
-- `$$` mathematical environment
+- `$$` mathematical environment with label for easy referencing.
 
 ```
-$$%key=cite&label=refToTheGreatEquation
+$$ %label=refToTheGreatEquation
 V_i = C_0 - C_3 
 $$
 ```
@@ -99,7 +104,7 @@ $$
 ```
 'abc$	V_i = C_0 - C_3	$def'.
 ```
-will generate LaTeX equivalent.
+will generate LaTeX equivalent and can be referenced using `*@refToTheGreatEquation@`*
 
 ### Codeblock
 
@@ -154,16 +159,13 @@ The markup is not interpreted.
 Codeblock do not support more than four backticks.
 
 
-## Development is in Pharo 11 and not in Pharo12!
+## Development is in Pharo12!
 
-Pay attention the development of Microdown __must not__ be in P12 else we cannot continue to develop Pillar and Microdown. 
-So for now we just ignore Pharo12 and Pharo12 can just load a tag version for example v2.4.2 (that we will produce with the removal of 
-buildMicroDownUsing moved to BeautifulComments).
 
 ### Loading specific version
 
 To load the latest stable version load the master. If you have trouble loading in latest Pharo just execute the preloading.st script in the .github folder.
-This script will remove exiting Microdown package and clear the system.
+This script will remove the existing Microdown package and clear the system.
 
 ```Smalltalk
 Metacello new
@@ -176,7 +178,7 @@ The process is the following:
 - Development in dev
 - When stable dev -> in master
 - When we can build books master is tagged.
-- Then there is the Pharo integration but this is not the concerns of the Microdown team.
+- Then there is the Pharo integration in dedicated branches.
 
 
 ### Loading latest development version
@@ -191,7 +193,7 @@ Metacello new
  ```
 
 ## Implementation
-I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
+The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
 In short, the strategy is that at any point in time, we might have a number of children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of current are open. 
 
@@ -205,5 +207,3 @@ When a new line is read we do the following:
 
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
-
-
