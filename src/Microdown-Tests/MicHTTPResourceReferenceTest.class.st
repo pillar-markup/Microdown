@@ -2,21 +2,23 @@
 A MicHTTPResourceTest is a test class for testing the behavior of MicHTTPResource
 "
 Class {
-	#name : #MicHTTPResourceReferenceTest,
-	#superclass : #TestCase,
+	#name : 'MicHTTPResourceReferenceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'baseUrl',
 		'offlineSetting'
 	],
-	#category : #'Microdown-Tests-Resolution'
+	#category : 'Microdown-Tests-Resolution',
+	#package : 'Microdown-Tests',
+	#tag : 'Resolution'
 }
 
-{ #category : #'test data' }
+{ #category : 'test data' }
 MicHTTPResourceReferenceTest class >> githubTestData [
 	^ MicResourceReference fromUri: 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTTPResourceReferenceTest >> setUp [
 	super setUp.
 	"All tests assume to be online"
@@ -25,7 +27,7 @@ MicHTTPResourceReferenceTest >> setUp [
 	baseUrl := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTTPResourceReferenceTest >> tearDown [
 	
 	Microdown offline: offlineSetting.
@@ -33,7 +35,7 @@ MicHTTPResourceReferenceTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testContentsSet [
 	self should: [('https://someplace.irk/mydocument.md' asMicResourceReference ) 
 						contents: '### Impossible']
@@ -42,7 +44,7 @@ MicHTTPResourceReferenceTest >> testContentsSet [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testErrorNonCorrectImage [
 
 	| ref |
@@ -53,7 +55,7 @@ MicHTTPResourceReferenceTest >> testErrorNonCorrectImage [
 		raise: UnrecognizedImageFormatError
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testErrorNonExistingImage [
 
 	| ref |
@@ -63,14 +65,14 @@ MicHTTPResourceReferenceTest >> testErrorNonExistingImage [
 		raise: MicResourceReferenceError 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testFullName [
 
 	self assert: 'http://pharo.org/figures/foo.png' asMicResourceReference fullName equals: 'http://pharo.org/figures/foo.png'.
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testLoadErrorMicrodown [
 	| ref |
 	ref := MicResourceReference fromUri:  baseUrl ,'toplevel.png'.
@@ -80,7 +82,7 @@ MicHTTPResourceReferenceTest >> testLoadErrorMicrodown [
 		raise: ZnInvalidUTF8
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testLoadImage [
 
 	| ref image |
@@ -91,7 +93,7 @@ MicHTTPResourceReferenceTest >> testLoadImage [
 	self assert: image width equals: 200
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := MicResourceReference fromUri:  baseUrl , 'readme.md'.
@@ -101,7 +103,7 @@ MicHTTPResourceReferenceTest >> testLoadMicrodown [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent [
 
 	| ref doc topLevelImageRef |
@@ -115,7 +117,7 @@ MicHTTPResourceReferenceTest >> testLoadMicrodownResolvesUrlsRelativeToTheParent
 		equals: 90
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTTPResourceReferenceTest >> testLoadNonExistingMicrodown [
 	| ref errorMessage|
 	ref := MicResourceReference fromUri:  baseUrl , 'readmeNOT.md'.

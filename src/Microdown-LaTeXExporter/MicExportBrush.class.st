@@ -4,15 +4,16 @@ I'm the superclass of all brushes. A brush is something you can add on a canvas.
 Copied from Pillar
 "
 Class {
-	#name : #MicExportBrush,
-	#superclass : #Object,
+	#name : 'MicExportBrush',
+	#superclass : 'Object',
 	#instVars : [
 		'stream'
 	],
-	#category : #'Microdown-LaTeXExporter'
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicExportBrush >> setStream: aStream [
 	stream := aStream
 ]

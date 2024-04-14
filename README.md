@@ -1,40 +1,13 @@
 # Microdown Parser and Elements
 
-I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. 
-Microdown is a smaller markdown but it is more extensible.  
+I'm a parser for microdown implemented by S. Ducasse, L. Dargaud and G. Polito. The implementation is based on the work on markdown of K. Osterbye. Microdown is a smaller markdown but it is more extensible. I contain a nice builder and some visitors. 
 
-[![Microdown-Pharo-Integration](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentAll.yml)  
-[![currentDev](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml/badge.svg)](https://github.com/pillar-markup/Microdown/actions/workflows/currentDev.yml)  
-
-## Quick start
-### Loading specific version
-
-To load the latest stable version load the master. If you have trouble loading in latest Pharo just execute the preloading.st script in the .github folder.
-This script will remove exiting Microdown package and clear the system.
-
-```Smalltalk
-Metacello new
-  baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:master/src';
-  load.
-```
-
-### Loading latest development version
-We are about to release a version 2.0.0 of Microdown with enhanced model, visitor.... no dependency with Pillar anymore.
-It is used for example by the BeautifulComments project.
-
-```Smalltalk
-Metacello new
-	baseline: 'Microdown';
-	repository: 'github://pillar-markup/Microdown:dev/src';
-	onConflict: [ :ex | ex useIncoming ];
-	onUpgrade: [ :ex | ex useIncoming ];
-	load.
- ```
 
 ## Why should you use Microdown
 
 Microdown is a smaller markdown but it is more extensible.
+It is used to produce books, slides, websites, doc.
+It can be read on github but also on pharo itself using the documentationBrowser
 
 It supports
 - Header
@@ -58,16 +31,15 @@ But also
 ## Core Syntax in 2 seconds
 
 ```
-   	#Header
+   	# Header
+        @anchor
+	% This is line comment
 
 	```language=Pharo&caption=Beautiful&label=Fig1
    	code
 	```
    
-   	> Boring quote block 
-   	> Don't use me!
-
-   	![Pharo is cool](http://pharo.org)
+   	![Pharo is cool](http://pharo.org width=80&label=fig:pharo)
 	
    	- list
    	1. ordered list 
@@ -75,11 +47,11 @@ But also
   	`in text` and for Pharo hyperlinks to class, method and package: 
   	`Point`, `Point class`, `Point>>#setX:setY:`, `#’Microdown-Tests’ (for packages)
 
-  	References: *@ref*
+  	References: *@ref@*
+	
 ```
 
 ## Full Syntax
-Under writing...
 
 ### Headers
 Similar to markdown headers are composed of `#` space text on one line.
@@ -98,35 +70,125 @@ There are three ways to create anchors
 - Figures, mathematical environments, environment can specify label as arguments (`label`)
 - Code block can specify label as argument (argument named `label`)
 
+### Various
+
+- % comments
+- *** horizontal line
+- File meta data is plain JSON
+
+```
+{
+"date" : "12 december 2025"
+}
+```
+- Raw text
+```
+{{ raw text }}
+```
+### Math support
+
+- `$$` mathematical environment
+
+```
+$$%key=cite&label=refToTheGreatEquation
+V_i = C_0 - C_3 
+$$
+```
+- Math in text
+
+```
+'abc$	V_i = C_0 - C_3	$def'.
+```
+will generate LaTeX equivalent.
+
 ### Codeblock
 
-Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo|label=code1|caption=this is my great piece of code`
+Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo&label=code1&caption=this is my great piece of code`
 
 The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
 
 ``` 
-   ```language=pharo|label=code1|caption=this is my great piece of code
+   ```language=pharo&label=code1&caption=this is my great piece of code
     codeBlockMarkupString
     ^ '```'
     ```
 ```
 ````
-```language=pharo|label=code1|caption=this is my great piece of code
+```language=pharo&label=code1&caption=this is my great piece of code
 codeBlockMarkupString
    ^ '\`\`\`'
 ```
 ````
 
-More to come...
+
+### Extensions
+
+- `{! aTag | parameters!}` is the way to use an extension with parameters
+- Environments are defined using `<!tag | parameters !>`
+
+```
+<!agenda|title=International Workshop on Smalltalk Technologies
+
+<!day|start=2023 August 29th&title=Monday
+
+<!segment|start=10:30
+
+<!talk|subject=Pharo DataFrame: Past, Present, and Future&length=30&author=Safina, Zaitsev, Ferlicot-Delbecque and Sow&room=Room B!>
+<!talk|subject=Improving Performance Through Object Lifetime Profiling: the DataFrame Case&length=30&author=Jordan-Montaño, Palumbo, Polito, Ducasse and Tesone&room=Room B!> <!talk|subject=Garbage Collector Tuning in Pathological Allocation Pattern Applications&length=30&author=Palumbo, Jordan-Montaño, Polito, Tesone and Ducasse&room=Room B!>
+!>
+!>
+!>
+```  
+- Citations `{!citation|ref=Blac09a!}` -- note that the bib file should be defined in the pillar.conf file
+
 
 ## Known limits
 
+#### Math should be tested
+
 #### Quote block
 When a line starts with '> ' it delimits a quoteblock.
-However the markup is not interpreted. 
+The markup is not interpreted. 
 
 #### Codeblock 
-Codeblock do not support more than for backticks.
+Codeblock do not support more than four backticks.
+
+
+## Development is in Pharo 11 and not in Pharo12!
+
+Pay attention the development of Microdown __must not__ be in P12 else we cannot continue to develop Pillar and Microdown. 
+So for now we just ignore Pharo12 and Pharo12 can just load a tag version for example v2.4.2 (that we will produce with the removal of 
+buildMicroDownUsing moved to BeautifulComments).
+
+### Loading specific version
+
+To load the latest stable version load the master. If you have trouble loading in latest Pharo just execute the preloading.st script in the .github folder.
+This script will remove exiting Microdown package and clear the system.
+
+```Smalltalk
+Metacello new
+  baseline: 'Microdown';
+  repository: 'github://pillar-markup/Microdown:master/src';
+  load.
+```
+
+The process is the following:
+- Development in dev
+- When stable dev -> in master
+- When we can build books master is tagged.
+- Then there is the Pharo integration but this is not the concerns of the Microdown team.
+
+
+### Loading latest development version
+
+```Smalltalk
+Metacello new
+	baseline: 'Microdown';
+	repository: 'github://pillar-markup/Microdown:dev/src';
+	onConflict: [ :ex | ex useIncoming ];
+	onUpgrade: [ :ex | ex useIncoming ];
+	load.
+ ```
 
 ## Implementation
 I follow the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
@@ -143,6 +205,5 @@ When a new line is read we do the following:
 
 The other packages in this repository are the extensions made to produce Pillar model. 
 Such packages should be moved in the future to other location (probably pillar itself).
-
 
 

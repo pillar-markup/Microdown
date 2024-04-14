@@ -3,27 +3,28 @@ I'm version producing LaTeX for the SBA template.
 In the future (once the templatedWriter is working) I should get removed.
 "
 Class {
-	#name : #MicSBALaTeXWriter,
-	#superclass : #MicLaTeXWriter,
-	#category : #'Microdown-LaTeXExporter'
+	#name : 'MicSBALaTeXWriter',
+	#superclass : 'MicLaTeXWriter',
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter class >> writerName [
 	^ #miclatex:sbabook
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter >> folderName [
 	^ #latex
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> monospaceMacro [
 	^ 'textcode'
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 
 	| parameters |
@@ -33,17 +34,17 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	^ parameters asCommaString
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
 	^ 'main.mustache'
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
 	
 	aCodeBlock hasCaption | aCodeBlock hasLabel
@@ -51,29 +52,28 @@ MicSBALaTeXWriter >> visitCode: aCodeBlock [
 		ifFalse: [ self writeInFlowCodeSnippet: aCodeBlock ]
 ]
 
-{ #category : #protected }
-MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [ 
+{ #category : 'protected' }
+MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
+
 	canvas environment
 		name: 'listing';
 		optParameter: (self optionalParametersForFloatingScript: aCodeBlock);
-		"parameter: (self languageForScript: aScript) sbaString;"
-		flag: #todo;"should come back here"
 		parameter: 'smalltalk';
-		parameter: [ aCodeBlock captionElements collect: [ :each | each accept: self ] ];
+		parameter: [
+			aCodeBlock captionElements collect: [ :each | each accept: self ] ];
 		with: [
 			self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 MicSBALaTeXWriter >> writeInFlowCodeSnippet: aCodeBlock [
+
 	canvas environment
 		name: 'displaycode';
-		"parameter: (self languageForScript: aScript) sbaString;"
-		flag: #todo;"should come back here"
 		parameter: 'smalltalk';
 		with: [
-			self writeRawDuring: [ "there is no need of the writeRaw if I do not call high level " 
-				canvas nextPutAllLines: aCodeBlock body ].
+			self writeRawDuring: [ 
+					canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]

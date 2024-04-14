@@ -1,13 +1,15 @@
 Class {
-	#name : #MicFigureBlockTest,
-	#superclass : #MicBlockTest,
+	#name : 'MicFigureBlockTest',
+	#superclass : 'MicBlockTest',
 	#instVars : [
 		'splitterClass'
 	],
-	#category : #'Microdown-Tests-Parser'
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicFigureBlockTest >> setUp [
 
 	super setUp.
@@ -15,12 +17,12 @@ MicFigureBlockTest >> setUp [
 	splitterClass := MicInlineParser 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> subjectClass [ 
 	^ MicFigureBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testAlt [
 
 	| figure |
@@ -28,11 +30,11 @@ MicFigureBlockTest >> testAlt [
 		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&alt=je suis le alt texte)')
 		          first.
 
-	self assert: figure hasArguments.
-	self assert: figure alt equals: 'je suis le alt texte'
+	self assert: figure arguments notEmpty.
+	self assert: (figure arguments at: #alt) equals: 'je suis le alt texte'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testAnchor [
 
 	| figure |
@@ -45,7 +47,7 @@ MicFigureBlockTest >> testAnchor [
 	self assert: figure anchor equals: '233'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicFigureBlockTest >> testArgumentAtIfPresent [
 
 	| expected tested |
@@ -60,16 +62,19 @@ MicFigureBlockTest >> testArgumentAtIfPresent [
 	self assert: (tested arguments at: 'testKey') equals: 'object'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testCaption [
+
 	| figure |
-	figure := (splitterClass new parse: '![caption with space and dot...](http://www.Pharo.ORG)') first.
-	self assert: figure caption equals: 'caption with space and dot...'
-	
-	
+	figure := (splitterClass new parse:
+		           '![caption with space and dot...](http://www.Pharo.ORG)')
+		          first.
+	self
+		assert: figure children first bodyString
+		equals: 'caption with space and dot...'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testHasArguments [
 	| figure |
 	figure := (splitterClass new parse: '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
@@ -82,7 +87,7 @@ MicFigureBlockTest >> testHasArguments [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testHasNoArguments [
 	| figure |
 	figure := (splitterClass new parse: '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true)') first.
@@ -93,30 +98,30 @@ MicFigureBlockTest >> testHasNoArguments [
 	
 ]
 
-{ #category : #'tests - testing' }
+{ #category : 'tests - testing' }
 MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.pharo.org)') first.
 	self assert: figure reference fullName asString equals: 'http://www.pharo.org/'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testPrintOn [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
-	self assert: figure asString equals: '![caption](http://www.Pharo.ORG)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://www.Pharo.ORG)'
 	
 	"not really good but let us make it work"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testPrintOnWithParameters [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://anURL.org?label=1&title=testFigure)') first.
-	self assert: figure printString equals: '![caption](http://anURL.org?label=1&title=testFigure)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://anURL.org?label=1&title=testFigure)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testUrlWitMicrodownParameterAndUrlParameters [
 
 	| figure |
@@ -128,7 +133,7 @@ MicFigureBlockTest >> testUrlWitMicrodownParameterAndUrlParameters [
 	self assert: (figure arguments at: 'delog') equals: '1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testUrlWithMicrodownParameters [
 
 	| figure |
@@ -138,7 +143,7 @@ MicFigureBlockTest >> testUrlWithMicrodownParameters [
 	self assert: (figure arguments at: 'anchor') equals: 'fig:pharo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicFigureBlockTest >> testUrlWithoutMicrodownParameters2 [
 
 	| figure |

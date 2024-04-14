@@ -1,15 +1,17 @@
 Class {
-	#name : #MicSlideBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Extensions'
+	#name : 'MicSlideBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSlideBlockTest >> subjectClass [ 
 	^ MicSlideBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSlideBlockTest >> testSlideBloc [
 
 	| doc |
@@ -24,7 +26,7 @@ MicSlideBlockTest >> testSlideBloc [
 	self assert: doc children first title equals: 'This is a cool title'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicSlideBlockTest >> testSlideBlocIsParsed [
 
 	| doc |

@@ -1,15 +1,17 @@
 Class {
-	#name : #MicMathBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicMathBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> subjectClass [ 
 	^ MicMathBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
@@ -21,7 +23,7 @@ V_i = C_0 - C_3
 	self assert: root children first class equals: MicMathBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithBackslashCommands [
 	"check that backslash are not expanded for math blocks"
 	| root math |
@@ -35,7 +37,7 @@ f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
 	self assert: math body equals: 'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithBadClosure [
 
 	| root |
@@ -49,7 +51,7 @@ $'.
 $'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithParameters [
 
 	| root math |
@@ -65,10 +67,18 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'label') equals: '42'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
 
 	| root math |
+	
+	"note that in the following  
+	$$%label=eq11
+	
+	The % is needed else it does not work on github and the label is part of the equation."
+	
+	
+	 
 	root := self parserClass new parse: '
 
 ',MathOpeningBlockMarkup,'%key=cite&label=42
@@ -81,15 +91,16 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'label') equals: '42'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithParametersCaption [
 
 	| root math |
 	root := self parserClass new parse: '
 
-', MathOpeningBlockMarkup, 'key=cite&label=42&caption=Ze great formula
+' , MathOpeningBlockMarkup
+		        , 'key=cite&label=42&caption=Ze great formula
 V_i = C_0 - C_3 
-', MathClosingBlockMarkup.
+' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -98,20 +109,23 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: (math arguments at: 'label') equals: '42'.
 	self
-		assert: (math arguments at: 'caption') first substring
+		assert: (math arguments at: 'caption') first bodyString
 		equals: 'Ze great formula'.
-	self assert: math caption equals: 'Ze great formula'
+	self
+		assert: math testCaptionString
+		equals: 'an Array(Text(Ze great formula))'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 
 	| root math |
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'key=cite&label=42&caption=Ze **great** formula
+' , MathOpeningBlockMarkup
+		        , 'key=cite&label=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
-',MathClosingBlockMarkup.
+' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
@@ -120,13 +134,18 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: (math arguments at: 'label') equals: '42'.
 	self
-		assert: (math arguments at: 'caption') first kind
-		equals: 'basic'.
-	self assert: math caption equals: 'Ze great formula'.
-	self assert: math captionElements second kind equals: 'bold'
+		assert: (math arguments at: 'caption') first blockName asLowercase
+		equals: 'text'.
+	self
+		assert: math testCaptionString asString
+		equals:
+		'an Array(Text(Ze ) BoldFormat{ Text(great) } Text( formula))'.
+	self
+		assert: math captionElements second blockName asLowercase
+		equals: 'boldformat'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockWithParametersWithBlank [
 
 	| root math |

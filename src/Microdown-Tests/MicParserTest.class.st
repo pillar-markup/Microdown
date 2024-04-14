@@ -1,23 +1,25 @@
 Class {
-	#name : #MicParserTest,
-	#superclass : #TestCase,
+	#name : 'MicParserTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'parser'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Tests-Parser'
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicParserTest >> setUp [
 
 	super setUp.
 	parser := MicrodownParser new. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testEmpty [
 	| source root |
 	source := ''.
@@ -26,7 +28,7 @@ MicParserTest >> testEmpty [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testEmptyOnMultipleLines [
 	| source root |
 	source := '
@@ -38,42 +40,42 @@ MicParserTest >> testEmptyOnMultipleLines [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testIsAListDash [
 
 	self assert: (parser isAList: '- one')
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testIsAListNumbered [
 
 	self assert: (parser isAList: '11. one')
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testIsAListPlus [
 
 	self assert: (parser isAList: '+ one')
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testIsAListStar [
 
 	self assert: (parser isAList: '* one')
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testIsAListStar2 [
 
 	self assert: (parser isAList: '  * one' trim)
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testOnceParsedCurrentShouldBeTheRootblock [
 
 	| source root |
@@ -83,7 +85,7 @@ a paragraph on two lines'.
 	self assert: parser current == root
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParserTest >> testParsingLogic [
 	| source root textBody argument line code |
 	

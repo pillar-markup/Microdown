@@ -6,26 +6,28 @@ I control heading sizes and bullets.
 I am defining all these in methods, so to override and do something different, make a subclass of me and set `MicRichTextComposer` to use your new subclass (using `MicRichTextComposer>>textStyler:`). 
 "
 Class {
-	#name : #MicTextStyler,
-	#superclass : #Object,
+	#name : 'MicTextStyler',
+	#superclass : 'Object',
 	#instVars : [
 		'headerFonts'
 	],
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #'presenter styles' }
+{ #category : 'presenter styles' }
 MicTextStyler >> bodyFont [
 	^ nil
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> bulletForLevel: level [
 	"first level is 1, then 2, then 3..."
 	^ ('•-' at: (level-1 % 2)+1) asText
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicTextStyler >> computeHeaderFonts [
 	
 	headerFonts := Array new:  self headerFontSizes size.
@@ -39,7 +41,7 @@ MicTextStyler >> computeHeaderFonts [
 			  ]
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> counterFor: counter atLevel: level [
 	| kind |
 	"first level is 1"
@@ -52,49 +54,50 @@ MicTextStyler >> counterFor: counter atLevel: level [
 		ifTrue: [ ^ ($a asInteger + (counter - 1)) asCharacter asText , ')' ]
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> crAfterHeaderLevel: level [
 	"I return Text to make space after a header"
 	^ String cr asText
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicTextStyler >> headerFontSizes [
 	^ #(28 24 18 14 12 10)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicTextStyler >> headerLevelFont: level [
 	"I return a font annotation to be used with Attributes"
 	headerFonts ifNil: [ self computeHeaderFonts  ].
 	^ headerFonts at: (level min: 6)
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> interBlockSpacing [
 	"I return the space to be put between blocks, first cr to end block, second to make empty line"
 	^ (String cr, String cr) asText
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> monospaceBackgroundColor [
-	^ Smalltalk ui theme settings windowColor
+
+	^ Color transparent alpha: 0.01
 ]
 
-{ #category : #'canvas styles' }
+{ #category : 'canvas styles' }
 MicTextStyler >> newLineBody [ 
 	"return a newline"
 	^ String cr asText
 ]
 
-{ #category : #'canvas styles' }
+{ #category : 'canvas styles' }
 MicTextStyler >> newLineIfNotAlready [ 
 	"return a newline if there is not already one"
 	"Intended to be overridden to add extra newline or tab indentation of the following line"
 	^ String cr asText
 ]
 
-{ #category : #'composer styles' }
+{ #category : 'composer styles' }
 MicTextStyler >> postTextTreatment: aText [
 	"my primary purpose is to replace newLines with space in some styles"
 	"((1 to: aText size) 

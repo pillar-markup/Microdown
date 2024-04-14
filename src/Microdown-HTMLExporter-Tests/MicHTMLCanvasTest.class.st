@@ -2,15 +2,17 @@
 A MicHTMLCanvasTest is a test class for testing the behavior of MicHTMLCanvas
 "
 Class {
-	#name : #MicHTMLCanvasTest,
-	#superclass : #TestCase,
+	#name : 'MicHTMLCanvasTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'canvas'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLCanvasTest >> setUp [
 
 	super setUp.
@@ -18,7 +20,7 @@ MicHTMLCanvasTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLCanvasTest >> testTag [
 	
 	self assert: (canvas tag isKindOf: MicHTMLTag)

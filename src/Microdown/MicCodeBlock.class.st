@@ -36,27 +36,37 @@ The current implementation stores lines in a single text and this is a bad idea 
 Second if we want to treat lines separatedly we have to reparse it. Now we do not need it so this is good but this is just by chance!
 "
 Class {
-	#name : #MicCodeBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicCodeBlock',
+	#superclass : 'MicAbstractCodeBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
-MicCodeBlock class >> defaultLanguage [
-	^ 'Pharo'
-]
-
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicCodeBlock >> accept: aVisitor [
  	^ aVisitor visitCode: self
 ]
 
-{ #category : #accessing }
+{ #category : 'public' }
+MicCodeBlock >> closeMe [
+	"adjust prefix tabs based on first line
+	I am allowing the codeblock itself to be indented in the input, see motivation in Microdown issue: 543"
+	| codeLines tabs |
+	super closeMe.
+	codeLines := self code lines.
+	codeLines ifEmpty: [ ^ self ].
+	tabs := codeLines first size - codeLines first withoutPreTabs size.
+	self body: ((codeLines collect: [:line | line stripNtabs: tabs]) joinUsing: String cr)
+	
+]
+
+{ #category : 'accessing' }
 MicCodeBlock >> code [
 	^ self body
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicCodeBlock >> extractFirstLineFrom: aLine [
 	"language=Pharo&label=fig1&caption=La vie est belle"
 	"The first tag is language.
@@ -71,62 +81,50 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	^ lineWithoutMarkup
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCodeBlock >> hasBody [
 
 	^ body isNotEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeBlock >> hasLabel [
 	^ arguments includesKey: #label
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCodeBlock >> hasNonDefaultArguments [
 
 	^ 	arguments hasNonDefaultArguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeBlock >> hasNonDefaultLanguage [
 	"is the language defined explicitly"
 	^ arguments hasNonDefaultValue 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicCodeBlock >> initialize [
 	super initialize.
 	arguments := OrderedDictionary new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeBlock >> label [
 	"precondition: receiver hasLabel"
 	
 	^ arguments at: #label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeBlock >> label: aString [
 
 	self arguments at: #label put: aString
 ]
 
-{ #category : #accessing }
-MicCodeBlock >> language [
-	^ arguments at: #language
-]
-
-{ #category : #utilities }
-MicCodeBlock >> lineStartMarkup [
-	"a code block is delimited by ``` "
-	
-	^ CodeblockMarkup 
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeBlock >> size [
 
 	"precondition: receiver hasLabel"

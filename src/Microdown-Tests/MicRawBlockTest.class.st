@@ -1,15 +1,17 @@
 Class {
-	#name : #MicRawBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicRawBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRawBlockTest >> subjectClass [
 	^ MicRawBlock  
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRawBlockTest >> testRaw [
 
 	| root |

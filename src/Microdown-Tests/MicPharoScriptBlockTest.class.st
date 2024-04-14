@@ -1,24 +1,25 @@
 Class {
-	#name : #MicPharoScriptBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Extensions'
+	#name : 'MicPharoScriptBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoScriptBlockTest >> subjectClass [
 
 	^ MicPharoScriptBlock
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicPharoScriptBlockTest >> testScriptBloc [
 
 	| doc |
 	doc := Microdown parse: 
-
-'$$script|title=A cool roassal script
+'```pharoscript|title=A cool roassal script
 1 < 3
-$$'.
+```'.
 	self assert: doc children first class equals: MicPharoScriptBlock.
 	self assert: doc children first body equals: '1 < 3'
 ]

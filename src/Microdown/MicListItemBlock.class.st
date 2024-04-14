@@ -40,21 +40,22 @@ Pay attention my instance variable text is only used during the parsing time.
 
 "
 Class {
-	#name : #MicListItemBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicListItemBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
-		'text',
-		'textElements'
+		'text'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicListItemBlock >> accept: aVisitor [
  	^ aVisitor visitListItem: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -69,76 +70,62 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 	"SD: I thought that a list item was holding a paragraph but it holds directly text."
 		
 	(self isAList: normalized)
-		ifTrue: [ ^ self newBlockFor: normalized parent: self ]
+		ifTrue: [ 
+			self inlineParse: text.
+			text := ''.
+			^ self newBlockFor: normalized parent: self ]
 		ifFalse: [ 
 			"here we manage multiple lines list item."
 			text := text , String cr , normalized ]
 ]
 
-{ #category : #accessing }
-MicListItemBlock >> basicText [
-
-	^ text
-]
-
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> canConsumeLine: line [
 	"return if this block can consume line"
 
 	^ line beginsWith: (' ' repeat: parent indent)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicListItemBlock >> closeMe [
 
-"1. item 1 **foo**
-   on the same line
-  - sublevel item 1 **bold**
-  - sublevel item 2
-2. item 2
-In this example textElements of the first item will be the elements for 
-	item 1 **foo**
-   on the same line
-"
 	super closeMe.
-	textElements :=  self inlineParse: text.	
-	textElements reverseDo: [ :each | 
-		children addFirst: each ].
+	self inlineParse: text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> computeNestedLevel [
 	"An item has the same nested level than its parent."
 	^ self parent computeNestedLevel
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicListItemBlock >> isAList: normalized [
 
 	^ parser isAList: normalized
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> nestedLevel [
 	"Return the nesting level of main blocks. Basically only list increases this."
 	
 	^ self parent nestedLevel 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+MicListItemBlock >> testText [
+	"I am used to make it easier to write tests"
+	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each printString ] ]
+]
+
+{ #category : 'accessing' }
 MicListItemBlock >> text [
-
-	^ String streamContents: [ :str | textElements do: [ :each | str nextPutAll: each substring ] ]
+	self deprecated: 'Use testText instead' transformWith: '`@rec text' -> '`@rec testText'.
+	^ self testText 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicListItemBlock >> textElements [ 
-	
-	^ textElements 
-]
-
-{ #category : #accessing }
-MicListItemBlock >> textElements: aCollection [ 
-	
-	textElements := aCollection
+	self deprecated: 'I should not be used, use children' transformWith: '`@rec textElements' -> '`@rec children'.
+	^ children  
 ]

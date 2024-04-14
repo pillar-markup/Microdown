@@ -71,24 +71,26 @@ Monospaced text (e.g., `Point`, `Point class`,  `Point>>#setX:setY:`, or `#'Pill
 
 "
 Class {
-	#name : #MicRichTextComposer,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicRichTextComposer',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'canvas',
 		'textStyler',
 		'codeStylerClass'
 	],
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextComposer class >> asRichText: aStringOrDoc [
 	
 	^ self new asRichText: aStringOrDoc
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown1 [
 	<sampleInstance>
 	^ self asRichText:  '### Emphasis and lists
@@ -108,7 +110,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 1. For the moment numbered lists always start with 1, and count upwards'
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown2 [
 	<sampleInstance>
 	^ self asRichText:
@@ -140,7 +142,7 @@ textStyler: aString
 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown3 [
 	<sampleInstance>
 	^ self asRichText:
@@ -156,7 +158,7 @@ Here are direct links to classes and method
 And this is another line'
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown4 [
 	<sampleInstance>
 	^ self asRichText:
@@ -173,7 +175,7 @@ Images can be used as anchors:
 '
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown5 [
 	<sampleInstance>
 	^ self asRichText:
@@ -187,22 +189,22 @@ MicRichTextComposer class >> exampleMicrodown5 [
 ' 
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown6 [
 	<sampleInstance>
 	^ self asRichText:
 '### Latex mathematics 
 It is possible to render latex math via a web services. We allow inline math $x ^ 2$, or math blocks
 
-&
+$$
  \frac{C_1\cos(\theta_i+C_3)}{C_4+C_1\cos(\theta_i+C_2)}
-&
+$$
 
 Cool eh?
 '
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown7 [
 	<sampleInstance>
 	
@@ -211,7 +213,7 @@ MicRichTextComposer class >> exampleMicrodown7 [
 It is possible to use the icons in the image: ![Object class](pharo:///Object/iconNamed:/info)'
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 MicRichTextComposer class >> exampleMicrodown8 [
 	<sampleInstance>
 	^ self asRichText:
@@ -222,13 +224,7 @@ this is just _first_ line
 and this is the second line'
 ]
 
-{ #category : #'class initialization' }
-MicRichTextComposer class >> initialize [ 
-	"self initialize"
-	MicCodeStylerSpec initializeCache.
-]
-
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 
 	aNode arguments at: #width ifPresent: [ :width |
@@ -250,7 +246,7 @@ MicRichTextComposer >> anchorFor: anImageOrMorph of: aNode [
 	^ TextAnchor new anchoredMorph: anImageOrMorph
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicRichTextComposer >> asRichText: aStringOrDoc [
 	
 	
@@ -259,20 +255,44 @@ MicRichTextComposer >> asRichText: aStringOrDoc [
 		ifFalse: [ aStringOrDoc ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextComposer >> codeStylerClass [
 
 	^ codeStylerClass
 ]
 
-{ #category : #initialization }
+{ #category : 'private' }
+MicRichTextComposer >> doVisitCode: aCodeBlock [
+
+	self 
+		doVisitCode: aCodeBlock 
+		code: aCodeBlock body
+]
+
+{ #category : 'private' }
+MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
+
+	canvas indentIn: [
+		canvas
+			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
+						 aStringOrText);
+			newLine.
+		aCodeBlock hasCaption ifTrue: [
+			canvas includeAttribute: TextEmphasis bold in: [
+				canvas
+					<< aCodeBlock testCaptionString asText;
+					newLine ] ] ].
+	canvas << textStyler interBlockSpacing
+]
+
+{ #category : 'initialization' }
 MicRichTextComposer >> initialize [
 	super initialize.
-	codeStylerClass := MicCodeStylerSpec.
+	codeStylerClass := MicRichTextCodeBlockStyler.
 	self textStyler:  MicTextStyler new.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextComposer >> latexFor: aString onError: aBlock [
 
 	"Return a Text containing an image with the latex formula.
@@ -290,13 +310,13 @@ MicRichTextComposer >> latexFor: aString onError: aBlock [
 	do: [^ aBlock value]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextComposer >> level [
 	"level is the logical indention level of lists. Outer list is indented 1, next is indented 3, etc."
 	^(canvas nesting // 2) +1
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextComposer >> renderTableCell: aCell [
 	"a cell is an array of nodes. Each element should be rendered and concatenated"
 	^ aCell inject: Text new into: [ :txt :part | 
@@ -304,20 +324,20 @@ MicRichTextComposer >> renderTableCell: aCell [
 		 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextComposer >> textStyler [
 
 	^ textStyler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextComposer >> textStyler: aTextStyler [
 
 	textStyler := aTextStyler.
 	canvas ifNotNil: [ canvas textStyler: aTextStyler  ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
 	"return a text with an image embedded"
 	| text |
@@ -326,22 +346,23 @@ MicRichTextComposer >> textWithImage: anImage usingAnchor: anchor [
 		using images as links. Adding it even if the image is not a link causes no
 		harm (it is invisible), and this is the easiest place to add it."
 	"See https://en.wikipedia.org/wiki/Zero-width_space"
-	^ text, "16rFEFF asCharacter asString" ' ' asText
+	"16rFEFF asCharacter asString asText"
+	^ ' ' asText , text, ' ' asText
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicRichTextComposer >> theme [
 
 	^  Smalltalk ui theme
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextComposer >> todo [ 
 	^ 'there is too much hspace after a section when it is followed by a paragraph. 
 This also because people will not want to to not let a newline between the header and paragraph when writing the text.'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visit: aDocument [
 
 	canvas := MicRichTextCanvas new
@@ -351,21 +372,21 @@ MicRichTextComposer >> visit: aDocument [
 	^ canvas contents trim
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitAnnotatedParagraph: anAnnotatedParagraph [
 	"Do nothing - You are supposed to use specialized annotations"
 	self error: 'You are not supposed to be here - did you misspell an annotation type?'
 	
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitAnnotation: aMicAnnotationBlock [
 	"Environment is an abstract class, and if we end here it is because of error"
 	canvas << ('>>> Annotation ''' , aMicAnnotationBlock name , 
 						''' is not defined <<<') asText
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitBold: anObject [
 	canvas 
 		includeAttribute: TextEmphasis bold 
@@ -373,41 +394,28 @@ MicRichTextComposer >> visitBold: anObject [
 	
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicRichTextComposer >> visitCenter: aMicCenterBlock [ 
 	canvas 
 		includeAttribute: TextAlignment centered 
 		in: [ super visitChildrenOf: aMicCenterBlock  ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitCode: aCodeBlock [
+
 	canvas newLineIfNotAlready.
-	canvas indentIn: [ 
-		canvas
-			<< (self codeStylerClass 
-				style: aCodeBlock body 
-				asLanguage: aCodeBlock language);
-			newLine.
-		aCodeBlock hasCaption ifTrue: [ 
-			canvas 
-				includeAttribute: TextEmphasis bold 
-				in: [ 
-					canvas
-						<< aCodeBlock caption asText;
-					newLine ]]].
-	canvas << textStyler interBlockSpacing
-		
+	self doVisitCode: aCodeBlock
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitColumn: columnBlock [
 	"I do nothing - handled by columns"
 	
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitColumns: columnsBlock [
 	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
 	| columns columnsBlocks totalWidth|
@@ -433,29 +441,29 @@ MicRichTextComposer >> visitColumns: columnsBlock [
 		<< textStyler interBlockSpacing
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 	"Environment is an abstract class, and if we end here it is because of error"
 	canvas << ('>>> Environment ''' , aMicEnvironmentBlock environmentName , 
 						''' is not defined <<<') asText
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image anchor|
-	[[ image := aFigure reference loadImage.
-		anchor := self anchorFor: image of: aFigure.
-		canvas << (self textWithImage: image usingAnchor: anchor)
-	 ]
-		on: MicResourceReferenceError, UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure captionElements  ]
-	]
+	| image anchor |
+	[
+	[
+	image := aFigure reference loadImage.
+	anchor := self anchorFor: image of: aFigure.
+	canvas << (self textWithImage: image usingAnchor: anchor) ]
+		on: MicResourceReferenceError , UnrecognizedImageFormatError
+		do: [ self visitAll: aFigure children ] ]
 		on: Error
-		do: [ :error | canvas << ('>>> ', error printString, ' <<<') ]
+		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitFootnote: aFootnote [
 	"Adds support for footnotes by use of BalloonMorph (because it is silly and retro)"
 	| popAction popText |
@@ -468,7 +476,7 @@ MicRichTextComposer >> visitFootnote: aFootnote [
 	canvas << popText
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitHeader: aHeader [
 	| level |
 	canvas newLineIfNotAlready.
@@ -479,7 +487,7 @@ MicRichTextComposer >> visitHeader: aHeader [
 	canvas << (textStyler crAfterHeaderLevel: level)
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	
 	canvas newLineIfNotAlready.
@@ -487,7 +495,7 @@ MicRichTextComposer >> visitHorizontalLine: anHorizontalLine [
 	canvas newLine.	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitInputFile: inputFileBloc [
 	| inputRef includedText |
 	inputRef := inputFileBloc reference.
@@ -497,14 +505,14 @@ MicRichTextComposer >> visitInputFile: inputFileBloc [
 	canvas << (textStyler postTextTreatment: includedText )
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitItalic: anObject [
 	canvas 
 		includeAttribute: TextEmphasis italic 
 		in: [ super visitItalic: anObject ]
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitLink: aLink [
 
 	| attribute |
@@ -515,7 +523,7 @@ MicRichTextComposer >> visitLink: aLink [
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitLink_old: aLink [
 
 	| attribute |
@@ -526,7 +534,7 @@ MicRichTextComposer >> visitLink_old: aLink [
 	canvas includeAttribute: attribute in: [ super visitLink: aLink ]
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicRichTextComposer >> visitListItem: anItem [
 	| bullet |
 	"The depth counter and bullet type in `visitOrderedList` and `visitUnorderedList`"
@@ -540,7 +548,7 @@ MicRichTextComposer >> visitListItem: anItem [
 
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 
 	| aString |
@@ -549,15 +557,17 @@ MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 	canvas << (self latexFor: aString onError: ['$$ - LATEX ERROR - $$' asText] )
 ]
 
-{ #category : #'visiting - document' }
-MicRichTextComposer >> visitMathInline: aMicMathInline [ 
-	| aString  |
-	aString := aMicMathInline substring .
-   aString ifEmpty: [^ self].
-	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
+{ #category : 'visiting - document' }
+MicRichTextComposer >> visitMathInline: aMicMathInline [
+
+	| aString |
+	aString := aMicMathInline bodyString.
+	aString ifEmpty: [ ^ self ].
+	canvas
+	<< (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitMonospace: anObject [
 	"Notice - I add a highlight to the backgorund rather than mono-spaced."
 	| backgroundColor sem |
@@ -575,7 +585,7 @@ MicRichTextComposer >> visitMonospace: anObject [
 				ifFalse: [ super visitMonospace: anObject]].  
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicRichTextComposer >> visitOrderedList: aList [
 	"here we annotate items with their kind and the depth"
 	| counter |
@@ -593,7 +603,7 @@ MicRichTextComposer >> visitOrderedList: aList [
 	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing]
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitParagraph: anObject [
 	
 	canvas newLineIfNotAlready.
@@ -601,14 +611,49 @@ MicRichTextComposer >> visitParagraph: anObject [
 	canvas << textStyler interBlockSpacing 
 ]
 
-{ #category : #'visiting - document' }
+{ #category : 'visiting - document' }
 MicRichTextComposer >> visitParameters: anObject [
 	"do nothing for now"
 	
 	^ self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting - extensions' }
+MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
+	"I execute the body. I handle four types of results:
+	Text - inserted verbatim
+	Microdown tree - rendered to text then inserted verbatim
+	String - Parsed, then rendered, then inserted.
+	Other results - printString asText - then inserted verbatim"
+	| label script doitForm codeText oldCanvas |
+	
+	script := aScriptBlock body.
+	label := aScriptBlock label ifNil: [ String value: 1 ].
+
+	oldCanvas := canvas.
+	canvas := MicRichTextCanvas new
+		textStyler: self textStyler;
+		yourself.
+	self doVisitCode: aScriptBlock.
+	codeText := canvas contents trim. 
+	canvas := oldCanvas.	
+
+	codeText addAttribute: (MicRichTextDoIt new 
+		actOnClickBlock: [ self class evaluate: script ];
+		yourself).
+
+	"this is a hack, because the align of the icon is attached to some top-left of the 
+	 letters that I do not understand, and I want it aligned with the actual text"	
+	doitForm := ((Form 
+		extent: 16@22 depth: 32) 
+		mergeWith:(self iconNamed: #smallDoIt) at: 0@8)
+		asText.
+		
+	canvas << doitForm << codeText.
+	canvas newLineIfNotAlready
+]
+
+{ #category : 'visiting' }
 MicRichTextComposer >> visitQuote: aQuote [
 	"I should have a fancier implementation, but for now this should work and be recognized as a quote"
 	canvas newLineIfNotAlready.
@@ -617,13 +662,13 @@ MicRichTextComposer >> visitQuote: aQuote [
 	canvas newLine
 ]
 
-{ #category : #'visiting - inline elements' }
+{ #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitRaw: aRawFormat [
 
-	canvas << aRawFormat substring asText.
+	canvas << aRawFormat bodyString asText
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 	self textStyler class = MicDynamicTextStyler 
 		ifFalse: [ self textStyler: MicDynamicTextStyler new ].
@@ -633,14 +678,14 @@ MicRichTextComposer >> visitRichTextFormatConfiguration: config [
 			canvas << (errors joinUsing: String cr) ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicRichTextComposer >> visitRightAlignment: aMicRightAlignmentBlock [ 
 	canvas
 		includeAttribute: TextAlignment rightFlush 
 		in: [ self visitChildrenOf: aMicRightAlignmentBlock  ]
 ]
 
-{ #category : #'visiting - extensions' }
+{ #category : 'visiting - extensions' }
 MicRichTextComposer >> visitScript: aScriptBlock [
 	" I execute the body. I handle four types of results:
 	Text - inserted verbatim
@@ -660,6 +705,8 @@ MicRichTextComposer >> visitScript: aScriptBlock [
 	( result isKindOf:  MicElement )
 		ifTrue: [ resText := Microdown asRichText: result ].
 	resText ifNil: [ resText  := result printString asText ].
+	(aScriptBlock arguments at: #show ifAbsent: [ #result ]) = #both
+		ifTrue: [ self visitCode: aScriptBlock ].
 	canvas 
 		newLineIfNotAlready;
 		<< resText;
@@ -668,7 +715,7 @@ MicRichTextComposer >> visitScript: aScriptBlock [
 	
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitStrike: anObject [
 
 	canvas 
@@ -676,7 +723,7 @@ MicRichTextComposer >> visitStrike: anObject [
 		in: [ super visitStrike: anObject ]
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitTable: tableBlock [
 	"I render the using MicRichTable which is dedicated to this. I insert the table as an image (form)"
 	| headers rows table anchoredTable renderedRows |
@@ -703,15 +750,16 @@ MicRichTextComposer >> visitTable: tableBlock [
 	
 ]
 
-{ #category : #'visiting -  format' }
+{ #category : 'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	|text|
-	text := anInlineBlock substring asText.
-	canvas << (textStyler postTextTreatment: text )
+
+	| text |
+	text := anInlineBlock bodyString asText.
+	canvas << (textStyler postTextTreatment: text)
 ]
 
-{ #category : #'visiting - list' }
+{ #category : 'visiting - list' }
 MicRichTextComposer >> visitUnorderedList: aList [
 	canvas newLineIfNotAlready.
 	canvas

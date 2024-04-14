@@ -3,12 +3,13 @@ Microdown is a minimal but extensible markup language. It is kind of compatible 
 Read comment of MicroDownParser. 
 "
 Class {
-	#name : #BaselineOfMicrodown,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodown
+	#name : 'BaselineOfMicrodown',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodown',
+	#package : 'BaselineOfMicrodown'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
@@ -32,7 +33,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-MathFlaky-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
 
-			package: #'Microdown-RichTextPresenter'
+			"package: #'Microdown-RichTextPresenter'
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-RichTextPresenter-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
@@ -40,7 +41,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-DocumentBrowser'
 				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
 			package: #'Microdown-DocumentBrowser-Tests'
-				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];
+				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];"
 
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
@@ -80,10 +81,12 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions' with: #(
+				"
 				#'Microdown-RichTextPresenter'
 				#'Microdown-RichTextPresenter-Tests'
 				#'Microdown-DocumentBrowser'
-				#'Microdown-DocumentBrowser-Tests' 
+				#'Microdown-DocumentBrowser-Tests'
+				"
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
@@ -97,18 +100,7 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
-{ #category : #'external projects' }
-BaselineOfMicrodown >> pillar: spec [
-		
-	spec
-		baseline: 'PillarCore'
-		with: [
-			spec  
-				loads: #('Pillar-Core');
-				repository: 'github://pillar-markup/pillar:dev-8' ]
-]
-
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfMicrodown >> xmlParserHtml: spec [
 
 	spec

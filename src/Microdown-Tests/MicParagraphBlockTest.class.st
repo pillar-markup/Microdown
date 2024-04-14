@@ -2,17 +2,19 @@
 I'm is a test class for testing the behavior of paragraph block.
 "
 Class {
-	#name : #MicParagraphBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicParagraphBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> subjectClass [ 
 	^ MicParagraphBlock 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testANewLineCreatesANewParagraph [
 	"**Hello 
 	
@@ -28,7 +30,7 @@ a paragraph on two lines**'.
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testBoldMultipleLinesWithNewLine [
 
 	| root |
@@ -47,15 +49,17 @@ another line** and more'.
 
 	self
 		assert:
-		(MicInlineParser new parse: root children first text) first kind
-		equals: #bold.
+			(MicInlineParser new parse: root children first text) first
+				blockName asLowercase
+		equals: #boldformat.
 	self
 		assert:
-		(MicInlineParser new parse: root children second text) first kind
-		equals: #basic
+			(MicInlineParser new parse: root children second text) first
+				blockName asLowercase
+		equals: #text
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testCanConsumeLine [
 	"A list item does not force the creation of a new paragraph when the line is correctly indented.
 	currently the implementation does not create a paragraph as a child of list item."
@@ -77,7 +81,7 @@ a paragraph in a list item'.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testCanConsumeLineBasic [
 
 	| root paragraph |
@@ -95,7 +99,7 @@ MicParagraphBlockTest >> testCanConsumeLineBasic [
 Another line'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testCanConsumeLineOtherBlocks [
 
 	| root paragraph |
@@ -113,7 +117,7 @@ MicParagraphBlockTest >> testCanConsumeLineOtherBlocks [
 	self deny: (paragraph canConsumeLine: '1.  ').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testHandlingSequenceOfBasicLinesProducesAParagraph [
 
 	| root paragraph |
@@ -127,7 +131,7 @@ And that other line'.
 	self assert: root children size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testSingleParagraph [
 	| root |
 	root := parser parse: 'This is
@@ -140,7 +144,7 @@ a paragraph on two lines'.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testSingleParagraphWithIndentedText [
 	| source root expected |
 	source := 'This is
@@ -153,7 +157,7 @@ and one with tabs'.
 	self assert: root children first text equals: expected
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicParagraphBlockTest >> testTwoSingleParagraphs [
 	| root |
 	root := parser parse: 'This is

@@ -11,12 +11,14 @@ I'm usually invoked in a post parsing phase, so transparent to the user.
 
 "
 Class {
-	#name : #MicAnchorLinker,
-	#superclass : #MicrodownVisitor,
-	#category : #'Microdown-Visitor'
+	#name : 'MicAnchorLinker',
+	#superclass : 'MicrodownVisitor',
+	#category : 'Microdown-Visitor',
+	#package : 'Microdown',
+	#tag : 'Visitor'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnchorLinker >> visitHeader: aHeader [
 
 	| siblings position potentialAnchor | 

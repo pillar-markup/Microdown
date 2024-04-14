@@ -9,23 +9,25 @@ My syntax is of the following form:
 - `value|key=arg[&key=arg]*` defaultArg->value, and arguments.
 "
 Class {
-	#name : #MicArgumentList,
-	#superclass : #OrderedDictionary,
+	#name : 'MicArgumentList',
+	#superclass : 'OrderedDictionary',
 	#instVars : [
 		'defaultArg',
 		'initialValue'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicArgumentList class >> split: aString [
 	^ self new 
 		from: aString; 
 		yourself 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicArgumentList class >> split: aString defaultArg: defArg [
 	^ self new
 		defaultArg: defArg;
@@ -33,7 +35,7 @@ MicArgumentList class >> split: aString defaultArg: defArg [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicArgumentList class >> split: aString defaultArg: defArg defaultValue: defValue [
 	^ self new
 		defaultArg: defArg;
@@ -43,74 +45,84 @@ MicArgumentList class >> split: aString defaultArg: defArg defaultValue: defValu
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicArgumentList class >> withStream: aStream [
 	^ self split: aStream contents.
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicArgumentList class >> withString: aString [
 	^ self split: aString 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicArgumentList >> defaultArg [
 
 	^ defaultArg ifNil: [ defaultArg := #defaultArg ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicArgumentList >> defaultArg: anObject [
 
 	defaultArg := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicArgumentList >> defaultValue [
 	^ self at: defaultArg ifAbsent: [ initialValue  ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicArgumentList >> from: fullString [
 	"I am the 'parser' of the argument splitter"
-	| barSplit |
-	fullString isEmpty ifTrue: [ ^ self ].
-	(fullString intersection: '|=&') isEmpty 
-		ifTrue: [ ^self setDefaultNoArguments: fullString  ].
-	barSplit := fullString splitOn: $|.
+	| barSplit string |
+	string := fullString.
+	string isEmpty ifTrue: [ ^ self ].
+	
+	"for math equation we can have 
+		$$ % label=eqq1 or 
+		$$ %label=eqq2"
+	(string intersection: '%') isNotEmpty 
+		ifTrue: [ string := string trim.
+				string first = $%
+					ifTrue: [ string := string allButFirst trim ] ].
+	
+	(string intersection: '|=&') isEmpty 
+		ifTrue: [ ^self setDefaultNoArguments: string  ].
+	barSplit := string splitOn: $|.
 	barSplit size > 1
 		ifTrue: [ ^ self setDefaultAndArguments: barSplit  ].
-	self setNoDefaultButArguments: fullString
+	self setNoDefaultButArguments: string
 	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicArgumentList >> hasNonDefaultArguments [
 	"has changed #defaultArg or has other keys"
 	^ self hasNonDefaultValue or: [ (self keys copyWithout: self defaultArg ) notEmpty  ]
 		
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicArgumentList >> hasNonDefaultValue [
 	"return true if the default arg was given a value"
 	^ self defaultValue notNil and: [ self defaultValue ~= initialValue  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicArgumentList >> initialValue: anObject [
 
 	initialValue := anObject
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 MicArgumentList >> justTheArguments [
 	^ self copy 
 		removeKey: defaultArg ifAbsent: [ ]; 
 		yourself 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicArgumentList >> printOn: aStream [
 	|argKeys|
 	self hasNonDefaultValue 
@@ -122,12 +134,12 @@ MicArgumentList >> printOn: aStream [
 	aStream nextPutAll: ((argKeys collect: [:k| k,'=',(self at:k)]) joinUsing: '&')
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MicArgumentList >> printString [
 	^ String streamContents: [ :stream | self printOn: stream ]
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicArgumentList >> setDefaultAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a value, second to be arguments"
 	|value|
@@ -136,7 +148,7 @@ MicArgumentList >> setDefaultAndArguments: barSplit [
 	self setNoDefaultButArguments: barSplit second
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicArgumentList >> setDefaultNoArguments: fullString [
 	"fullstring is just a name (containing no arguments)
 	It is interpreted as both a name, and as an argument with no value"
@@ -145,7 +157,7 @@ MicArgumentList >> setDefaultNoArguments: fullString [
 	self at: self defaultArg put: value
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicArgumentList >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
 	| pairs |
@@ -156,7 +168,7 @@ MicArgumentList >> setNoDefaultButArguments: string [
 	
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 MicArgumentList >> withoutDefaultValue [
 	"remove the defaultArg if no new value was assigned to it"
 	^ self hasNonDefaultValue 

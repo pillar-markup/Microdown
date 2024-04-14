@@ -12,35 +12,38 @@ See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pi
 
 "
 Class {
-	#name : #MicAnnotatedBlock,
-	#superclass : #MicAbstractAnnotatedBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicAnnotatedBlock',
+	#superclass : 'MicAbstractAnnotatedBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAnnotatedBlock >> accept: aVisitor [
  	^ aVisitor visitAnnotated: self
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicAnnotatedBlock >> closeMe [
 	super closeMe.
 	body := self inlineParse: body
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicAnnotatedBlock >> lineMarkup [
 	
 	^ AnnotatedParagraphMarkup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotatedBlock >> text [
 
-	^ String streamContents: [ :s | self textElements do: [ :each | s nextPutAll: each substring ] ]
+	^ String streamContents: [ :s |
+		  self textElements do: [ :each | s nextPutAll: each bodyString ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAnnotatedBlock >> textElements [
 
 	^ self body

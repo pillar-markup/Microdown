@@ -10,21 +10,22 @@ kjlkjkl
 ```
 "
 Class {
-	#name : #MicLaTeXEnvironment,
-	#superclass : #MicLaTeXBrush,
+	#name : 'MicLaTeXEnvironment',
+	#superclass : 'MicLaTeXBrush',
 	#instVars : [
 		'name'
 	],
-	#category : #'Microdown-LaTeXExporter'
+	#category : 'Microdown-LaTeXExporter',
+	#package : 'Microdown-LaTeXExporter'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLaTeXEnvironment >> name: aString [
 	name := aString.
 	stream << '\begin{' << aString << '}'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLaTeXEnvironment >> with: aBlock [
 
 	stream newLine.

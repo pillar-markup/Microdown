@@ -1,6 +1,6 @@
-Extension { #name : #MicLinkBlock }
+Extension { #name : 'MicLinkBlock' }
 
-{ #category : #'*Microdown-HTMLExporter' }
+{ #category : '*Microdown-HTMLExporter' }
 MicLinkBlock >> referencePath [
 
 	^ self reference fullName

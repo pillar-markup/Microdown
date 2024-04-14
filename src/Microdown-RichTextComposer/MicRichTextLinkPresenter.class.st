@@ -18,12 +18,14 @@ A link to the microdown
 Relative references must be resolved before invoking this presenter.
 "
 Class {
-	#name : #MicRichTextLinkPresenter,
-	#superclass : #Object,
-	#category : #'Microdown-RichTextComposer-Composer'
+	#name : 'MicRichTextLinkPresenter',
+	#superclass : 'Object',
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [ 
 	|kind|
 	kind := aMicAbsoluteResourceReference path copyAfterLast: $. .
@@ -35,7 +37,7 @@ MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [
 	
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [ 
 	|image window |
 	image := aMicResourceReference loadImage.
@@ -48,7 +50,7 @@ MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [
 		open.
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
 	| kind |
 	anAbsoluteResourceReference isRelative 
@@ -65,12 +67,12 @@ MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
 	
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
 	WebBrowser openOn: aHtmlResource uri
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> pragmaForKind: kind [
 		| implementation |
 	implementation := (Pragma allNamed: #richtextlinkpresenter:)
@@ -78,7 +80,7 @@ MicRichTextLinkPresenter >> pragmaForKind: kind [
 	^ implementation
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"

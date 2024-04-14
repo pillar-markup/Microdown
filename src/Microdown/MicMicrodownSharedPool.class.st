@@ -2,8 +2,8 @@
 I define all the constants for parsing Microdown blocks.
 "
 Class {
-	#name : #MicMicrodownSharedPool,
-	#superclass : #SharedPool,
+	#name : 'MicMicrodownSharedPool',
+	#superclass : 'SharedPool',
 	#classVars : [
 		'AnchorMarkup',
 		'AnchorReferenceCloserMarkup',
@@ -22,6 +22,7 @@ Class {
 		'EnvironmentClosingBlockMarkup',
 		'EnvironmentOpeningBlockMarkup',
 		'FigureNameOpenerMarkup',
+		'FixiousTextDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
 		'ItalicMarkup',
@@ -33,6 +34,7 @@ Class {
 		'MetaDataClosingBlockMarkup',
 		'MetaDataOpeningBlockMarkup',
 		'MonospaceMarkup',
+		'NameCloserUrlOpener',
 		'OrderedListSemiMarkup',
 		'PreformattedMarkup',
 		'RawCloserMarkup',
@@ -45,10 +47,12 @@ Class {
 		'UnorderedListPlusMarkup',
 		'UnorderedListStarMarkup'
 	],
-	#category : #'Microdown-Parser'
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
+	#tag : 'Parser'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 MicMicrodownSharedPool class >> initialize [
 	"self initialize"
 	
@@ -94,7 +98,9 @@ MicMicrodownSharedPool class >> initialize [
 	RawOpenerMarkup := '{{'. 
 	StrikeMarkup := '~'. 
 	URLCloserMarkup := ')'. 
-	URLOpenerMarkup := '('. 
+	URLOpenerMarkup := '('.
+	NameCloserUrlOpener := ']('.
+	FixiousTextDelimiter := 0 asCharacter asString.
 
 	Delimiters := { AnchorReferenceCloserMarkup . 
 	AnchorReferenceOpenerMarkup .
@@ -106,6 +112,7 @@ MicMicrodownSharedPool class >> initialize [
 	LinkNameCloserMarkup .  
 	LinkNameOpenerMarkup .  
 	MathMarkup .
+	NameCloserUrlOpener.
 	MonospaceMarkup .  
 	RawCloserMarkup . 
 	RawOpenerMarkup .

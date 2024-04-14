@@ -3,8 +3,8 @@ Presents details about the selected CSS library.
 
 "
 Class {
-	#name : #MicHTMLStylerCSSInfoPresenter,
-	#superclass : #MicHTMLStylerAbstractPresenter,
+	#name : 'MicHTMLStylerCSSInfoPresenter',
+	#superclass : 'MicHTMLStylerAbstractPresenter',
 	#instVars : [
 		'projectUrlPresenter',
 		'cssLinkPresenter',
@@ -16,29 +16,31 @@ Class {
 		'useMinifiedButton',
 		'versionButtons'
 	],
-	#category : #'Microdown-HTMLExporter-Spec'
+	#category : 'Microdown-HTMLExporter-Spec',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Spec'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerCSSInfoPresenter >> cssFramework [
 
 	^ self styler cssFramework
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> cssLinkPresenter [
 
 	^ cssLinkPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> cssTheme [
 	"Answer the currently selected <MicCSSTheme>"
 
 	^ themesListPresenter selectedItem 
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight 
@@ -69,13 +71,13 @@ MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLStylerCSSInfoPresenter >> hasThemeSelection [
 
 	^ self themesListPresenter selection isEmpty not
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCSSInfoPresenter >> initializePresenters [ 
 
 	projectUrlPresenter := self newLink label: String empty; yourself.
@@ -87,7 +89,7 @@ MicHTMLStylerCSSInfoPresenter >> initializePresenters [
 	self initializeVersionOptions.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCSSInfoPresenter >> initializeThemesPresenter [
 
 	themesListPresenter := self newList
@@ -106,7 +108,7 @@ MicHTMLStylerCSSInfoPresenter >> initializeThemesPresenter [
 		yourself.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCSSInfoPresenter >> initializeVersionOptions [
 
 	useNormalButton := self newRadioButton 
@@ -127,38 +129,38 @@ MicHTMLStylerCSSInfoPresenter >> initializeVersionOptions [
 		#minified -> useMinifiedButton }.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicHTMLStylerCSSInfoPresenter >> isMinifiedSelection [
 	"Answer <true> if the minified version option is selected"
 
 	^ self useMinifiedButton state
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> minCssLinkPresenter [
 
 	^ minCssLinkPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> normalizeCssLinkPresenter [
 
 	^ normalizeCssLinkPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> projectUrlPresenter [
 
 	^ projectUrlPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> resetCssLinkPresenter [
 
 	^ resetCssLinkPresenter
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicHTMLStylerCSSInfoPresenter >> setLink: aLinkPresenter url: anEmptyStringOrUrl help: helpString [
 
 	anEmptyStringOrUrl isEmpty
@@ -173,19 +175,19 @@ MicHTMLStylerCSSInfoPresenter >> setLink: aLinkPresenter url: anEmptyStringOrUrl
 				help: helpString ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCSSInfoPresenter >> themeSelection [
 
 	^ themesListPresenter selectedItem
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> themesListPresenter [
 
 	^ themesListPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLStylerCSSInfoPresenter >> updatePresenter [
 
 	super updatePresenter.
@@ -199,7 +201,7 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenter [
 	self stylerDetailsPresenter updateSourceCodePresenter.
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MicHTMLStylerCSSInfoPresenter >> updatePresenterLinks [
 
 	{ 
@@ -214,7 +216,7 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenterLinks [
 			help: linkArray third ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MicHTMLStylerCSSInfoPresenter >> updatePresenterRadioOptions [
 
 	self useNormalButton enable.
@@ -243,25 +245,25 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenterRadioOptions [
 					self useNormalButton state: true ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> useMinifiedButton [
 
 	^ useMinifiedButton
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> useMinifiedButton: anObject [
 
 	useMinifiedButton := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> useNormalButton [
 
 	^ useNormalButton
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLStylerCSSInfoPresenter >> useNormalButton: anObject [
 
 	useNormalButton := anObject

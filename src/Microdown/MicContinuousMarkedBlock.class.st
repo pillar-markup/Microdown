@@ -30,15 +30,17 @@ produces
 
 "
 Class {
-	#name : #MicContinuousMarkedBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicContinuousMarkedBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'text'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicContinuousMarkedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form 'chararacters some text' e.g., '> some text'
 	the prefix spaces after $> are removed"
@@ -50,14 +52,14 @@ MicContinuousMarkedBlock >> addLineAndReturnNextNode: line [
 		ifNotNil: [ text , String cr , treatedLine ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicContinuousMarkedBlock >> canConsumeLine: line [
 	"return if this block can consume line i.e., it starts with sensible characters, e.g., > "
 
 	^ self doesLineStartWithMarkup: line
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"
 
@@ -65,23 +67,23 @@ MicContinuousMarkedBlock >> doesLineStartWithMarkup: line [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MicContinuousMarkedBlock >> extractLine: line [
 	^ (line copyFrom: self lineMarkup size + 1 to: line size) trim
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicContinuousMarkedBlock >> lineMarkup [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicContinuousMarkedBlock >> text [
 	^ text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicContinuousMarkedBlock >> text: aString [
 	text := aString
 ]

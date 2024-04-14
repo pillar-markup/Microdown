@@ -2,23 +2,25 @@
 May be in the future we will be able to say that SameMarkup is the same as a StartStop with the same delimiter but for now we do not know. 
 "
 Class {
-	#name : #MicStartStopMarkupBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicStartStopMarkupBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'isClosed',
 		'body',
 		'firstLine'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicStartStopMarkupBlock class >> isAbstract [
 
 	^ self == MicStartStopMarkupBlock
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -33,17 +35,17 @@ MicStartStopMarkupBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStartStopMarkupBlock >> body [
 	^ body
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStartStopMarkupBlock >> body: anObject [
 	body := anObject
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicStartStopMarkupBlock >> bodyFromLine: line [
 	self flag: #todo. 
 	"I do not think that this is a good idea to use a string to represent lines.
@@ -52,7 +54,7 @@ MicStartStopMarkupBlock >> bodyFromLine: line [
 	body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicStartStopMarkupBlock >> canConsumeLine: line [
 	"As soon as a line closes a code block, it does not accept anymore any line.
 	Indeed imagine 
@@ -71,7 +73,7 @@ MicStartStopMarkupBlock >> canConsumeLine: line [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicStartStopMarkupBlock >> doesLineStartWithMarkup: line [
 	"return if the line starts with a markup"
 
@@ -79,46 +81,46 @@ MicStartStopMarkupBlock >> doesLineStartWithMarkup: line [
 	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
 
 	"return if the line starts with a stop markup"
 	^ line beginsWith: self lineStopMarkup
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicStartStopMarkupBlock >> extractFirstLineFrom: line [
 	^ line copyFrom: self lineStartMarkup size + 1 to: line size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStartStopMarkupBlock >> firstLine [
 	^ firstLine
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicStartStopMarkupBlock >> firstLine: anObject [
 	firstLine := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicStartStopMarkupBlock >> initialize [
 	super initialize. 
 	isClosed := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicStartStopMarkupBlock >> isClosed [
 	^ isClosed		
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicStartStopMarkupBlock >> lineStartMarkup [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self subclassResponsibility 

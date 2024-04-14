@@ -20,28 +20,31 @@ The following entities can be referenced.
 
 "
 Class {
-	#name : #MicSemanticAction,
-	#superclass : #Object,
+	#name : 'MicSemanticAction',
+	#superclass : 'Object',
 	#instVars : [
 		'entity',
 		'tokens'
 	],
-	#category : #'Microdown-RichTextComposer-Composer'
+	#category : 'Microdown-RichTextComposer-Composer',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Composer'
 }
 
-{ #category : #'instance creation' }
-MicSemanticAction class >> from: aString [ 
+{ #category : 'instance creation' }
+MicSemanticAction class >> from: aString [
+
 	| contents |
-	contents := ((RBScanner on: (ReadStream on: aString) errorBlock: [#()]) contents).
-	^ self fromTokens: (contents collect: [:e | e value])
+	contents := (RBScanner on: (ReadStream on: aString)) contents.
+	^ self fromTokens: (contents collect: [ :e | e value ])
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction class >> fromTokens: anArray [ 
 	^ self new fromTokens: anArray; yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> computeEntity [
 	"Try to guess what the text is:
 		Point
@@ -74,12 +77,12 @@ MicSemanticAction >> computeEntity [
 							ifFalse: [ ^ self  ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSemanticAction >> entity [
 	^ entity
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> fromTokens: anArray [
 	
 	anArray ifEmpty: [ ^ self].
@@ -87,7 +90,7 @@ MicSemanticAction >> fromTokens: anArray [
 	self computeEntity.
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> getClassOrNil [
 
 	self class environment 
@@ -98,7 +101,7 @@ MicSemanticAction >> getClassOrNil [
 				
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> getCompiledMethodFrom: start [
 
 	"
@@ -115,7 +118,7 @@ MicSemanticAction >> getCompiledMethodFrom: start [
 			ifAbsent: [ entity := nil ] ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> getMetaClassOrNil [
 
 	self class environment 
@@ -129,19 +132,19 @@ MicSemanticAction >> getMetaClassOrNil [
 				
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSemanticAction >> getPackageOrNil [
 	entity := RPackageOrganizer default packageNamed: tokens first asString ifAbsent: [ nil ].
 	^ entity
 				
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicSemanticAction >> hasEntity [
 	^ entity isNotNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSemanticAction >> tokens: aCol [
 
 	tokens := aCol

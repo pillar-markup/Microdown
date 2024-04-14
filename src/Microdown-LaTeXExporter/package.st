@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-LaTeXExporter' }
+Package { #name : 'Microdown-LaTeXExporter' }

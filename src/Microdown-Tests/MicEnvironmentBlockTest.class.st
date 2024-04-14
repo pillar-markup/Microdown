@@ -1,15 +1,17 @@
 Class {
-	#name : #MicEnvironmentBlockTest,
-	#superclass : #MicBlockTest,
-	#category : #'Microdown-Tests-Parser'
+	#name : 'MicEnvironmentBlockTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> subjectClass [ 
 	^ MicEnvironmentBlock  
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironment [
 	"'<?card
 blbababbab bababba
@@ -28,7 +30,7 @@ blbababbab bababba
 	
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentClosingNotEatingClosingCharacter [
 
 	
@@ -42,7 +44,7 @@ to
 	self assert: env children first text equals: 'to'.
 ]
 
-{ #category : #'tests - extensions' }
+{ #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 
 	| source root env environmentName |
@@ -59,7 +61,7 @@ MicEnvironmentBlockTest >> testEnvironmentIsCreatedWhenTagDoesNotMatch [
 	
 ]
 
-{ #category : #'tests - extensions' }
+{ #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testEnvironmentWiathArgsWithCorrespondingClassIsCreated [
 
 		| source root environment environmentName contents |
@@ -81,7 +83,7 @@ toto'.
 	
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithAnyNestedElement [
 	"'<?slide
 - item 1 
@@ -111,7 +113,7 @@ blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
 	
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithArguments [
 	 "'<?card|a=1&b=17&c
 blbababbab
@@ -139,7 +141,7 @@ toto'.
 	self assert: (environment arguments at: 'c') equals: nil.
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithBrokenMotherNested [
  
 	| root |
@@ -158,22 +160,22 @@ The mother environment is not closed so it will eat everything.
 
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithBrokenNestedScript [
  
 	| root |
 	root :=  parser parse: '<!slideenvironment
 
-$$script
+```pharoscript
 
-$$script 
+```pharoscript 
 
 !>
 '.
 	self assert: root children first children first class equals: MicPharoScriptBlock.
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithCodeBlock [
  
 	| root env |
@@ -197,7 +199,7 @@ isn''t it
 	
 ]
 
-{ #category : #'tests - extensions' }
+{ #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 
 	| source root env environmentName |
@@ -215,31 +217,37 @@ MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 	
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithFormat [
+
 	"'<?slide
 - item 1 
 - item 2
 ?>
-'" 
+'"
+
 	| source root env environmentName |
 	environmentName := 'slide'.
-	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
-	 '- item1 **bold**
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr
+	          , '- item1 **bold**
 - item 2
 
-blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
-	root :=  parser parse: source.
-	
-	self assert: root children size equals: 1.
-	env := root children first. 
+blbababbab bababba' , String cr , EnvironmentClosingBlockMarkup
+	          , String cr.
+	root := parser parse: source.
 
-	self assert: env children first children first class equals: MicListItemBlock.
-	self assert: env children first children first textElements second class equals: MicBoldFormatBlock 
-	
+	self assert: root children size equals: 1.
+	env := root children first.
+
+	self
+		assert: env children first children first class
+		equals: MicListItemBlock.
+	self
+		assert: env children first children first children second class
+		equals: MicBoldFormatBlock
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithMultipleLines [
 	"'<?card
 blbababbab
@@ -269,7 +277,7 @@ toto'.
 	self assert: env children second text equals: 'toto'.
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithNoEmptyBeforeTheEndMarker [
 
 	
@@ -286,7 +294,7 @@ environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
 ]
 
-{ #category : #'tests - extensions' }
+{ #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 
 		| source root environment environmentName contents |
@@ -310,7 +318,7 @@ toto'.
 	
 ]
 
-{ #category : #'tests - better parsing' }
+{ #category : 'tests - better parsing' }
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkAfter [
 
 	| mic infileReference |
@@ -319,7 +327,7 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkAfter [
 	self assert: infileReference path equals: 'chapters/withStyle.md' 
 ]
 
-{ #category : #'tests - better parsing' }
+{ #category : 'tests - better parsing' }
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkSpaceBeforeEnd [
 
 	| mic infileReference |
@@ -328,7 +336,7 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithJunkSpaceBeforeEnd [
 	self assert: infileReference path equals: 'chapters/withStyle.md'
 ]
 
-{ #category : #'tests - better parsing' }
+{ #category : 'tests - better parsing' }
 MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 
 	| mic infileReference |
@@ -337,11 +345,11 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 	self assert: infileReference path equals: 'chapters/withStyle.md' 
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
 	root := parser parse: 'What a super day for a ride.
-	
+
 <!card
 Sunn Special S3
 
@@ -356,7 +364,7 @@ Yes this is a good idea.'.
 
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph2 [
 	"This test has a space after ?> '?> ' - was strangely broken at one point in time"
 	| root |
@@ -374,7 +382,7 @@ Yes this is a good idea.'.
 
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph3 [
 	"Text after ?> should be ignored - was strangely broken at one point in time"
 	| root |
@@ -392,7 +400,7 @@ Yes this is a good idea.'.
 
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirst [
  
 	| root |
@@ -414,7 +422,7 @@ MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirst [
 		children size equals: 2
 ]
 
-{ #category : #'tests - default environment' }
+{ #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testSecondScriptShouldNotBeChildOfFirstWhenClosingOnTheSameLine [
  
 	| root |

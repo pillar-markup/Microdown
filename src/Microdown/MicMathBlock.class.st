@@ -17,40 +17,34 @@ $$
 V_i = C_0 - C_3
 $$
 
+Now if you want to have label and references to an equation as in LaTeX you should prefix the parameter with % (else it will break on github).
+
+
+
+```
+$$ % label=theEq
+V_i = C_0 - C_3
+$$
+
+See *@theEq@*
+```
+
 
 "
 Class {
-	#name : #MicMathBlock,
-	#superclass : #MicSameStartStopMarkupBlock,
-	#category : #'Microdown-Model'
+	#name : 'MicMathBlock',
+	#superclass : 'MicSameStartStopMarkupBlock',
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #public }
-MicMathBlock class >> alternateBlockClassFor: line [
-
-	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
-	"line is of the form <!slide|title=Schedule"
-	"We know that the two first characters are <? else we would be invoked"
-
-	| tag |
-	tag := ((line allButFirst: MathOpeningBlockMarkup size) 
-		        copyUpTo: $|) trimBoth.
-	tag := tag withoutPrefix: '%'.
-	^ self extensionClassFor: tag
-]
-
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicMathBlock >> accept: aVisitor [ 
  	^ aVisitor visitMath: self
 ]
 
-{ #category : #accessing }
-MicMathBlock >> arguments [
-
-	^ arguments
-]
-
-{ #category : #handle }
+{ #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
@@ -61,7 +55,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 	^ lineWithoutMarkup
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicMathBlock >> lineStartMarkup [
 	
 	^ MathOpeningBlockMarkup

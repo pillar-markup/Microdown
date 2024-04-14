@@ -3,21 +3,23 @@ I am a morphic table datasource for rendering tables inside rich text.
 I serve only that one purpose.
 "
 Class {
-	#name : #MicRichTextTableDataSource,
-	#superclass : #FTSimpleDataSource,
+	#name : 'MicRichTextTableDataSource',
+	#superclass : 'FTSimpleDataSource',
 	#instVars : [
 		'colNames',
 		'rows'
 	],
-	#category : #'Microdown-RichTextComposer-Table-Support'
+	#category : 'Microdown-RichTextComposer-Table-Support',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Table-Support'
 }
 
-{ #category : #'tests - instance creation' }
+{ #category : 'instance creation' }
 MicRichTextTableDataSource class >> headers: headers rows: theRows [
 	^ self new headers: headers rows: theRows
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextTableDataSource >> basicHeaderCellFor: column [
 	| cell |
 	column id ifNil: [ ^ nil ].
@@ -30,7 +32,7 @@ MicRichTextTableDataSource >> basicHeaderCellFor: column [
 	^ cell
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextTableDataSource >> cellColumn: column row: rowIndex [
 	"Answer a morph with the cell view. I will probably return a FTCellMorph."
 	| cell |
@@ -40,47 +42,47 @@ MicRichTextTableDataSource >> cellColumn: column row: rowIndex [
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextTableDataSource >> elementAt: rowIndex [
 	"I am a really important method for a DataSource. I take an index and I return an object 
 	 that should be displayed in the table for the index."
 	rows at: rowIndex 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicRichTextTableDataSource >> headers: headers rows: theRows [
 	rows := theRows.
 	colNames := Dictionary new.
 	1 to: headers size do: [ :index | colNames at: (headers at: index) put: index ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextTableDataSource >> numberOfRows [
 	"I return the number of elements I can display in the table when I am call."
 
 	^ rows size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicRichTextTableDataSource >> rowHeight: rowIndex [
 	^ (rows at: rowIndex ) max: [ :cell | cell asTextMorph height ]
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 MicRichTextTableDataSource >> sortElements: aSortFunction [
 	"This method should sort the elements of the datasource using the sort function as parameter."
 
 	^ self
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 MicRichTextTableDataSource >> unsortElements [
 	"This method should return the elements in their initial state."
 
 	^ self
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicRichTextTableDataSource >> widthOfText: txt [
 	|width|
 	width := ((txt fontAt: 1) widthOfStringOrText: txt).

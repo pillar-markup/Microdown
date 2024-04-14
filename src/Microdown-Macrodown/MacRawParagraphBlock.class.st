@@ -16,18 +16,23 @@ MacRawParagraphBlock class >> htmlTags [
 { #category : #testing }
 MacRawParagraphBlock class >> matches: aString [
 
-	^ self startsWithHtmlTag: aString trimLeft
+	^ self matches: aString trimLeft withAnyOf: self htmlTags
 ]
 
 { #category : #private }
-MacRawParagraphBlock class >> startsWithHtmlTag: aString [
-	| htmlTags |
-	
+MacRawParagraphBlock class >> matches: aString withAnyOf: htmlTags [
+
 	aString ifEmpty: [ ^ false ].
-	
-	htmlTags := self htmlTags.
 	^ (aString first = $<)
 		and: [ htmlTags includes: (aString readStream upToAnyOf: '> ') allButFirst ]
+]
+
+{ #category : #testing }
+MacRawParagraphBlock class >> matchesComment: aString [
+
+	^ self 
+		matches: aString trimLeft
+		withAnyOf: { self htmlTags first }
 ]
 
 { #category : #visiting }

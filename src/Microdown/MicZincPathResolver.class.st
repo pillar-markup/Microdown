@@ -16,15 +16,17 @@ If the base is a file based reference with an explicit filesystem (see comment i
 When parsing a resource reference (image, link or inputfile) which is relative, instances of `MicRelativeResourceReferences` are created in the parse nodes for `MicFigureBlock`, `MicLinkBlock` or `MicInputfileBlock`. I will replace all relative references in those blocks with absolute references based on the rfc3986 algorithm mentioned above.
 "
 Class {
-	#name : #MicZincPathResolver,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicZincPathResolver',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'absoluteReference'
 	],
-	#category : #'Microdown-Core'
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicZincPathResolver class >> resolve: document withBase: aRef [
 	"Assumes aRef to be a MicAbsoluteRessourceReference. 
 	Converts all relative references to absolute references in document"
@@ -34,41 +36,41 @@ MicZincPathResolver class >> resolve: document withBase: aRef [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicZincPathResolver >> absoluteReference: aReferenceOrString [
 	absoluteReference := aReferenceOrString isString
 		ifTrue: [ MicResourceReference fromUri: aReferenceOrString ]
 		ifFalse: [ aReferenceOrString ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicZincPathResolver >> resolveDocument: document [
 	self visit: document
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicZincPathResolver >> resolveReferenceIn: aNode [
 	"currently links, figures and input nodes need to be resolved"
 	| resolvedUri resolvedReference |
 	aNode reference isRelative ifFalse: [ ^ self ].
 	resolvedUri := absoluteReference uri withRelativeReference: aNode reference relativePath.
 	resolvedReference := MicResourceReference fromUri: resolvedUri printString.
-	resolvedReference isFileReference ifTrue: [ resolvedReference filesystem: absoluteReference filesystem ].
+	resolvedReference isMicrodownResourceFileReference ifTrue: [ resolvedReference filesystem: absoluteReference filesystem ].
 	aNode reference: resolvedReference
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicZincPathResolver >> visitFigure: aFigure [
 
 	self resolveReferenceIn: aFigure
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicZincPathResolver >> visitInputFile: anInputFile [
 	self resolveReferenceIn: anInputFile 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicZincPathResolver >> visitLink: aLink [
 	self resolveReferenceIn: aLink
 ]

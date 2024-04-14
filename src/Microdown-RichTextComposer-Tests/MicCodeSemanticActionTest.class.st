@@ -1,23 +1,25 @@
 Class {
-	#name : #MicCodeSemanticActionTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-Composer'
+	#name : 'MicCodeSemanticActionTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-Composer',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'Composer'
 }
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> semanticActionClass [
 
 	^ MicSemanticAction
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testArrayShouldNotBreak [
 
 	self deny: (self semanticActionClass fromTokens: #( 1 #+ 2 #* 3 )) hasEntity.
 	self deny: (self semanticActionClass fromTokens: #( 1 #+ 2 #* )) hasEntity
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testChevronWithBrokenArguments [
 
 	self assert: (self semanticActionClass fromTokens: #( Point #>> 2 )) entity isNil.
@@ -27,7 +29,7 @@ MicCodeSemanticActionTest >> testChevronWithBrokenArguments [
 	self assert: (self semanticActionClass fromTokens: #( Point #>> Point )) entity isNil
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testChevronWithBrokenReceiver [
 
 	self assert: (self semanticActionClass fromTokens: #( 1 #>> 2 )) entity isNil.
@@ -40,19 +42,19 @@ MicCodeSemanticActionTest >> testChevronWithBrokenReceiver [
 	self assert: (self semanticActionClass fromTokens: #( ClassThatDoesNotExist class #>> 2 )) entity isNil
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testDoubleDollars [
 
 	self deny: (self semanticActionClass from: '$$') hasEntity
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testEmptyString [
 
 	self deny: (self semanticActionClass from: '') hasEntity
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testGlobalAccess [
 
 	self assert: (self semanticActionClass fromTokens: #( Transcript )) hasEntity
@@ -60,31 +62,31 @@ MicCodeSemanticActionTest >> testGlobalAccess [
 	used by the browse invocation when clicking on it. "
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testMoreSpaces [
 
 	self deny: (self semanticActionClass from: '    ') hasEntity
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testOneSpace [
 
 	self deny: (self semanticActionClass from: ' ') hasEntity
 ]
 
-{ #category : #'tests - metaclass' }
+{ #category : 'tests - metaclass' }
 MicCodeSemanticActionTest >> testReferenceToABrokenMetaClass [
 
 	self assert: (self semanticActionClass from: 'Point2 class') entity isNil
 ]
 
-{ #category : #'tests - metaclass' }
+{ #category : 'tests - metaclass' }
 MicCodeSemanticActionTest >> testReferenceToABrokenMetaClass2 [
 
 	self assert: (self semanticActionClass from: 'Point grgrgr') entity isNil
 ]
 
-{ #category : #'tests - class' }
+{ #category : 'tests - class' }
 MicCodeSemanticActionTest >> testReferenceToAClass [
 
 	self
@@ -92,7 +94,7 @@ MicCodeSemanticActionTest >> testReferenceToAClass [
 		equals: Point
 ]
 
-{ #category : #'tests - metaclass' }
+{ #category : 'tests - metaclass' }
 MicCodeSemanticActionTest >> testReferenceToAMetaClass [
 
 	self
@@ -100,7 +102,7 @@ MicCodeSemanticActionTest >> testReferenceToAMetaClass [
 		equals: Point class
 ]
 
-{ #category : #'tests - methods' }
+{ #category : 'tests - methods' }
 MicCodeSemanticActionTest >> testReferenceToAMethod [
 
 	self
@@ -108,31 +110,31 @@ MicCodeSemanticActionTest >> testReferenceToAMethod [
 		equals: 'Point>>#setX:setY:'
 ]
 
-{ #category : #'tests - methods' }
+{ #category : 'tests - methods' }
 MicCodeSemanticActionTest >> testReferenceToANonExistingMethod [
 
 	self assert: (self semanticActionClass from: 'Point >> 12+3 ') entity isNil
 ]
 
-{ #category : #'tests - methods' }
+{ #category : 'tests - methods' }
 MicCodeSemanticActionTest >> testReferenceToANonExistingMethodBecauseOfBogusClass [
 
 	self assert: (self semanticActionClass from: 'Point222 >> #setX:setY:') entity isNil
 ]
 
-{ #category : #'tests - methods' }
+{ #category : 'tests - methods' }
 MicCodeSemanticActionTest >> testReferenceToANonExistingMethodBecauseOfNoSymbol [
 
 	self assert: (self semanticActionClass from: 'Point >> setX:setY2:') entity isNil
 ]
 
-{ #category : #'tests - package' }
+{ #category : 'tests - package' }
 MicCodeSemanticActionTest >> testReferenceToANonExistingPackage [
 
 	self assert: (self semanticActionClass from: #Pillar) entity isNil
 ]
 
-{ #category : #'tests - package' }
+{ #category : 'tests - package' }
 MicCodeSemanticActionTest >> testReferenceToAPackage [
 
 	self
@@ -140,13 +142,13 @@ MicCodeSemanticActionTest >> testReferenceToAPackage [
 		equals: 'Microdown'
 ]
 
-{ #category : #'tests - class' }
+{ #category : 'tests - class' }
 MicCodeSemanticActionTest >> testReferenceToNonExistingClass [
 
 	self deny: (self semanticActionClass from: 'Point22') hasEntity
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testScannerShouldNotFail [
 
 	self deny: (self semanticActionClass from: 'half"baked') hasEntity.
@@ -155,7 +157,7 @@ MicCodeSemanticActionTest >> testScannerShouldNotFail [
 	self deny: (self semanticActionClass from: 16rFFFD asCharacter asString) hasEntity.
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testTwoBogusElements [
 
 	self assert:
@@ -166,7 +168,7 @@ MicCodeSemanticActionTest >> testTwoBogusElements [
 		(self semanticActionClass fromTokens: #( Point #foo )) entity isNil
 ]
 
-{ #category : #'test - bogus entry' }
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testTwoSpaces [
 
 	self deny: (self semanticActionClass from: '  ') hasEntity

@@ -26,12 +26,14 @@ It is possible to add new kinds of ResourceReferences. The idea is each ressourc
 
 "
 Class {
-	#name : #MicResourceReference,
-	#superclass : #Object,
-	#category : #'Microdown-Core'
+	#name : 'MicResourceReference',
+	#superclass : 'Object',
+	#category : 'Microdown-Core',
+	#package : 'Microdown',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicResourceReference class >> fromUri: aString [
 	| uri refClass |
 	(aString beginsWith: '/')
@@ -46,32 +48,32 @@ MicResourceReference class >> fromUri: aString [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicResourceReference class >> handlesUriScheme: scheme [
 	"Return true if this class can handle the scheme name. 
 	Part of the extension mechanism for new ressource reference types"
 	^ false
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicResourceReference class >> newFromUri: uri [
 	"Default implementation"
 	^ self new uri: uri; yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicResourceReference >> fullName [
 	"Returns the full name of the resources (without microdown arguments) i.e, http://pharo.org/community/foo.png"
 	
 	^ self uriString 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicResourceReference >> isDirectory [ 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicResourceReference >> isRelative [
 	^ false
 ]

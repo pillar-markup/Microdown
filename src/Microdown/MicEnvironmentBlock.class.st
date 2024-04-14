@@ -43,15 +43,17 @@ This is important to support better column in the future:
 
 "
 Class {
-	#name : #MicEnvironmentBlock,
-	#superclass : #MicStartStopMarkupBlock,
+	#name : 'MicEnvironmentBlock',
+	#superclass : 'MicStartStopMarkupBlock',
 	#instVars : [
 		'arguments'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
 	| currentDefinedTags |
 	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
@@ -68,7 +70,7 @@ MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
 		 ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicEnvironmentBlock class >> alternateBlockClassFor: line [
 
 	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
@@ -81,54 +83,55 @@ MicEnvironmentBlock class >> alternateBlockClassFor: line [
 	^ self extensionClassFor: tag
 ]
 
-{ #category : #documentation }
+{ #category : 'documentation' }
 MicEnvironmentBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	super buildMicroDownUsing: aBuilder withComment: aString.
 	self addDocumentDefinedEnvironments: aBuilder
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicEnvironmentBlock >> accept: aVisitor [
  	^ aVisitor visitEnvironment: self
 ]
 
-{ #category : #handle }
+{ #category : 'handle' }
 MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-	
+	| withoutPreTabs |
 	isClosed
 		ifTrue: [ ^ self ].
-	(self doesLineStartWithStopMarkup: line)
+	withoutPreTabs := line withoutPreTabs.
+	(self doesLineStartWithStopMarkup: withoutPreTabs)
 		ifTrue: [ ^ self ].
 	firstLine
 		ifNil:
-			[ firstLine := self extractFirstLineFrom: line ]
-		ifNotNil: [ ^ self bodyFromLine: line ].
+			[ firstLine := self extractFirstLineFrom: withoutPreTabs ]
+		ifNotNil: [ ^ self bodyFromLine: withoutPreTabs ].
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> arguments [
 	
 	^ arguments
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicEnvironmentBlock >> body [
 
 	^ String streamContents: [:s |  self bodyElements do: [ :each | s nextPutAll: each substring ] ]
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicEnvironmentBlock >> bodyElements [
 
 	^ children
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicEnvironmentBlock >> bodyFromLine: line [
 	
 	| newBlock |
@@ -137,7 +140,7 @@ MicEnvironmentBlock >> bodyFromLine: line [
 	^ newBlock
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicEnvironmentBlock >> closeMe [
 
 	"this is a temporary solution because normally the parser should populate body with MicBlocks.
@@ -152,12 +155,12 @@ MicEnvironmentBlock >> closeMe [
 		defaultValue: ''.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> environmentName [
 	^ arguments at: #environmentName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 	"we got <! env ...x !> foo bar or <! env ...x and we return env ...x "
 	
@@ -173,13 +176,13 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 		ifFalse: [ firstLine ]
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicEnvironmentBlock >> lineStartMarkup [
 
 	^ EnvironmentOpeningBlockMarkup 
 ]
 
-{ #category : #markups }
+{ #category : 'markups' }
 MicEnvironmentBlock >> lineStopMarkup [
 	
 	^ EnvironmentClosingBlockMarkup 

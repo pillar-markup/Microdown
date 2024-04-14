@@ -2,12 +2,14 @@
 A MicRightAllignmentBlockTest is a test class for testing the behavior of MicRightAllignmentBlock
 "
 Class {
-	#name : #MicRightAlignmentBlockTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-RichTextComposer-Tests-BlockExtensions'
+	#name : 'MicRightAlignmentBlockTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-RichTextComposer-Tests-BlockExtensions',
+	#package : 'Microdown-RichTextComposer-Tests',
+	#tag : 'BlockExtensions'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicRightAlignmentBlockTest >> testRightAlignment [
 	| src doc center |
 	src := '

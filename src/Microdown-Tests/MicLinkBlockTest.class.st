@@ -1,14 +1,16 @@
 Class {
-	#name : #MicLinkBlockTest,
-	#superclass : #MicBlockTest,
+	#name : 'MicLinkBlockTest',
+	#superclass : 'MicBlockTest',
 	#instVars : [
 		'splitterClass',
 		'link'
 	],
-	#category : #'Microdown-Tests-Parser'
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
 }
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkBoldSample [
 
 	^ '
@@ -16,7 +18,7 @@ MicLinkBlockTest >> linkBoldSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkItalicSample [
 
 	^ '
@@ -24,7 +26,7 @@ MicLinkBlockTest >> linkItalicSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkMonospaceSample [
 
 	^ '
@@ -32,7 +34,7 @@ MicLinkBlockTest >> linkMonospaceSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkNestedSample [
 
 	^ '
@@ -40,14 +42,14 @@ MicLinkBlockTest >> linkNestedSample [
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkSample [
 	^ '
 [Foo](/anUrl)
 '
 ]
 
-{ #category : #functions }
+{ #category : 'functions' }
 MicLinkBlockTest >> linkStrikeSample [
 
 	^ '
@@ -55,14 +57,14 @@ MicLinkBlockTest >> linkStrikeSample [
 '
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> parseLink: aString [
 	"Parse aString containing Microdown link to a MicLinkBlock"
 
 	^ (self parser parse: aString) children first children first.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicLinkBlockTest >> setUp [
 
 	super setUp.
@@ -70,31 +72,31 @@ MicLinkBlockTest >> setUp [
 	splitterClass := MicInlineParser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> subjectClass [ 
 	^ MicHorizontalLineBlock
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testFullName [
 
 	link := self parseLink: self linkSample.
-	self assert: link fullName equals: '/anUrl'
+	self assert: link reference fullName equals: '/anUrl'
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testHasArguments [
-	| figure |
-	figure := (splitterClass new parse: '[caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
+	| lk |
+	lk := (splitterClass new parse: '[caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.
 	
-	"Indeed url arguments are not microdown arguments"
-	self assert: figure hasArguments.
+	self assert: lk hasArguments.
+	self assert: lk bodyString equals: 'caption with space and dot...'
 	
 	
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkAPIToAccessText [
 
 	link := self parseLink: self linkSample.
@@ -102,17 +104,7 @@ MicLinkBlockTest >> testLinkAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
-MicLinkBlockTest >> testLinkAPIToSetText [
-
-	link := self parseLink: self linkSample.
-	self assert: link class equals: MicLinkBlock.
-
-	link captionElements: { (MicTextBlock new substring: 'Blblbl') }.
-	self assert: link caption equals: 'Blblbl'
-]
-
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 
 	link := self parseLink: self linkBoldSample.
@@ -123,7 +115,7 @@ MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkCreatesInnerText [
 
 	link := self parseLink: '[ab](https://ab.com)'.
@@ -131,7 +123,7 @@ MicLinkBlockTest >> testLinkCreatesInnerText [
 	self assert: link url equals: 'https://ab.com'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 
 	link := self parseLink: self linkItalicSample.
@@ -144,25 +136,48 @@ MicLinkBlockTest >> testLinkItalicAPIToAccessText [
 	self assert: link url equals: '/anUrl'
 ]
 
-{ #category : #'tests - link' }
-MicLinkBlockTest >> testOpeningDelimiter [
+{ #category : 'tests' }
+MicLinkBlockTest >> testOneUrl [
 
-	link := self parseLink: self linkSample.
-	self assert: (link openingDelimiter isKindOf: String).
-	self deny: link openingDelimiter isEmpty.
-	self assert: link openingDelimiter equals: '['
+	| lk |
+	lk := (MicInlineParser new parse: '[Mooc](https://advanced-design-mooc.pharo.org)') first.
+
+	self assert: lk bodyString equals: 'Mooc'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicLinkBlockTest >> testPrintOn [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
-	self assert: link asString equals: '[caption](http://www.pharo.org)'
+	self assert: link asString equals: 'Link{ Text(caption) }(http://www.pharo.org)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+MicLinkBlockTest >> testTwoUrls [
+
+	| lk |
+	lk := (MicInlineParser new parse: '[https://advanced-design-mooc.pharo.org](https://advanced-design-mooc.pharo.org)') first.
+
+	self assert: lk bodyString equals: 'https://advanced-design-mooc.pharo.org'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
+]
+
+{ #category : 'tests' }
+MicLinkBlockTest >> testTwoUrlsWithMicrodownParser [
+
+	| lk |
+	lk := (parser parse: '[https://advanced-design-mooc.pharo.org](https://advanced-design-mooc.pharo.org)') children first children first.
+
+	self assert: lk bodyString equals: 'https://advanced-design-mooc.pharo.org'.
+	self assert: lk url equals: 'https://advanced-design-mooc.pharo.org'
+]
+
+{ #category : 'tests' }
 MicLinkBlockTest >> testUrl [
 
 	link := (splitterClass new parse: '[caption](http://www.pharo.org:8080)') first.
-	self assert: link url equals: 'http://www.pharo.org:8080'
+	self assert: link url equals: 'http://www.pharo.org:8080'.
+	
+	self assert: link children first bodyString equals: 'caption'
 ]

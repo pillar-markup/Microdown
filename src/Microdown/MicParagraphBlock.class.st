@@ -4,25 +4,27 @@ I am a plain text paragraph.
 If am divided from other paragraphs by either a blank line, or one of the other markups.
 "
 Class {
-	#name : #MicParagraphBlock,
-	#superclass : #MicAbstractBlock,
+	#name : 'MicParagraphBlock',
+	#superclass : 'MicAbstractBlock',
 	#instVars : [
 		'text'
 	],
-	#category : #'Microdown-Model'
+	#category : 'Microdown-Model',
+	#package : 'Microdown',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicParagraphBlock class >> opensBy: aLine [
 	^ aLine notEmpty 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicParagraphBlock >> accept: aVisitor [
  	^ aVisitor visitParagraph: self
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicParagraphBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
@@ -31,7 +33,7 @@ MicParagraphBlock >> addLineAndReturnNextNode: line [
 	text := self appendLine: line to: text
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicParagraphBlock >> appendLine: line to: aString [
 
 	^ aString
@@ -39,14 +41,14 @@ MicParagraphBlock >> appendLine: line to: aString [
 		ifNotNil: [ aString, String cr, line trim ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicParagraphBlock >> asUnindented: line [
 	"return a line where the indentation to my indentation level has been removed"
 
 	^ line copyFrom: self indent + 1 to: line size
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MicParagraphBlock >> canConsumeLine: line [
 	"A paragraph is closed by an empty line, "
 	| unIndented |
@@ -61,14 +63,14 @@ MicParagraphBlock >> canConsumeLine: line [
 	^ (self blockStarterClassFrom: unIndented) = self class
 ]
 
-{ #category : #'parse support' }
+{ #category : 'parse support' }
 MicParagraphBlock >> closeMe [
 
 	super closeMe.
 	self children: (self inlineParse: text)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicParagraphBlock >> isRightlyIndented: line [
 	"test if line has the appropriate number of spaces at first"
 
@@ -77,13 +79,19 @@ MicParagraphBlock >> isRightlyIndented: line [
 	^ line beginsWith: (' ' repeat: self indent)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicParagraphBlock >> text [
 	^ text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicParagraphBlock >> textElements [
  
 	^ children
+]
+
+{ #category : 'accessing' }
+MicParagraphBlock >> textElements: aCollection [
+ 
+	children := aCollection
 ]

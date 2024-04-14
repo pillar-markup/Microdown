@@ -2,26 +2,40 @@
 I'm a special inline block representing the fact that there is not markup. 
 "
 Class {
-	#name : #MicTextBlock,
-	#superclass : #MicInlineElement,
-	#category : #'Microdown-ModelInline'
+	#name : 'MicTextBlock',
+	#superclass : 'MicUnEvaluatedBlock',
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTextBlock >> accept: aVisitor [
 	^ aVisitor visitText: self
 ]
 
-{ #category : #accessing }
-MicTextBlock >> kind [
-
-	^ #basic
+{ #category : 'obsolete' }
+MicTextBlock >> bodystring [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodyString' transformWith: '`@rec bodystring' -> '`@rec bodyString'.
+	^ bodyString 
 ]
 
-{ #category : #accessing }
-MicTextBlock >> printOn: aStream [
+{ #category : 'obsolete' }
+MicTextBlock >> substring [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodystring' transformWith: '`@rec substring' -> '`@rec bodystring'.
+	^ bodyString 
+]
 
-	self printWithoutConventions: aStream.
-	self print: self substring surroundedOn: aStream.
+{ #category : 'obsolete' }
+MicTextBlock >> substring: aBody [
+	"Should only be used for tests"
+	self deprecated: 'Just use bodystring:' transformWith: '`@rec substring: `@arg' -> '`@rec bodystring: `@arg'.
+	^ bodyString 
+]
 
+{ #category : 'accessing' }
+MicTextBlock >> text [
+	^ bodyString 
 ]

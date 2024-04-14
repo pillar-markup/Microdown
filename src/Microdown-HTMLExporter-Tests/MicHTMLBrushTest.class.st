@@ -2,15 +2,17 @@
 A MicHTMLBrushTest is a test class for testing the behavior of MicHTMLBrush
 "
 Class {
-	#name : #MicHTMLBrushTest,
-	#superclass : #TestCase,
+	#name : 'MicHTMLBrushTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'tag'
 	],
-	#category : #'Microdown-HTMLExporter-Tests-HTML'
+	#category : 'Microdown-HTMLExporter-Tests-HTML',
+	#package : 'Microdown-HTMLExporter-Tests',
+	#tag : 'HTML'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLBrushTest >> setUp [
 
 	super setUp.
@@ -19,13 +21,13 @@ MicHTMLBrushTest >> setUp [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLBrushTest >> tag [
 
 	^ tag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLBrushTest >> testName [
 
 	tag name: 'prueba'.

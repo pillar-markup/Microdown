@@ -1,16 +1,18 @@
 Class {
-	#name : #MicResourceReferenceTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Tests-Resolution'
+	#name : 'MicResourceReferenceTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Tests-Resolution',
+	#package : 'Microdown-Tests',
+	#tag : 'Resolution'
 }
 
-{ #category : #helper }
+{ #category : 'helper' }
 MicResourceReferenceTest >> resourceClass [
 
 	^ MicResourceReference
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testHttpRecognized [
 	|uri ref|
 	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
@@ -19,7 +21,7 @@ MicResourceReferenceTest >> testHttpRecognized [
 	self assert: ref class equals: MicHTTPResourceReference.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testIsDirectory [
 	| ref |
 	
@@ -27,7 +29,7 @@ MicResourceReferenceTest >> testIsDirectory [
 	self deny: ref isDirectory 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testParseFullUrl [
 
 	| mf |
@@ -36,16 +38,16 @@ MicResourceReferenceTest >> testParseFullUrl [
 
 ]
 
-{ #category : #'tests - file reference conversion' }
+{ #category : 'tests - file reference conversion' }
 MicResourceReferenceTest >> testPurePathInterpretedAsFile [
 	| mf |
 	mf := self resourceClass fromUri: '/chapter1/figures/m.md'.
-	self assert: mf isFileReference.
+	self assert: mf isMicrodownResourceFileReference.
 	self assert: mf fullName equals: '/chapter1/figures/m.md'.
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testPurePathIsRelativeFile [
 	
 	| mf |
@@ -55,7 +57,7 @@ MicResourceReferenceTest >> testPurePathIsRelativeFile [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testRelativeFileRecognized [
 	
 	| mf |
@@ -65,7 +67,7 @@ MicResourceReferenceTest >> testRelativeFileRecognized [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceReferenceTest >> testStringExtensionMethod [
 	| ref |
 	ref := 'http://somewhere.org/path/to/image.png' asMicResourceReference.

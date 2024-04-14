@@ -1,34 +1,35 @@
 Class {
-	#name : #MicMinimalConfigurationTest,
-	#superclass : #TestCase,
+	#name : 'MicMinimalConfigurationTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'config'
 	],
-	#category : #'Microdown-LaTeXExporter-Tests'
+	#category : 'Microdown-LaTeXExporter-Tests',
+	#package : 'Microdown-LaTeXExporter-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicMinimalConfigurationTest >> setUp [
 	
 	super setUp.
 	config := MicMinimalConfiguration new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMinimalConfigurationTest >> testCrAsNewLine [ 
 
 	config crAsNewLine.
 	self assert: config newLine equals: Character cr
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMinimalConfigurationTest >> testCrlfAsNewLine [  
 
 	config crlfAsNewLine.
 	self assert: config newLine equals: String crlf
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicMinimalConfigurationTest >> testLfAsNewLine [  
 
 	config lfAsNewLine.

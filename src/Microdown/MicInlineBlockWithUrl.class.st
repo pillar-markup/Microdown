@@ -8,66 +8,33 @@ My subclasses manage figures and links.
 ![Pharologo](https://files.pharo.org/media/logo/logo.png)
 "
 Class {
-	#name : #MicInlineBlockWithUrl,
-	#superclass : #MicInlineElement,
+	#name : 'MicInlineBlockWithUrl',
+	#superclass : 'MicInlineElement',
 	#instVars : [
+		'children',
 		'url',
-		'parser',
-		'captionElements',
-		'arguments',
-		'reference'
+		'reference',
+		'arguments'
 	],
-	#category : #'Microdown-ModelInline'
+	#category : 'Microdown-InlineParser',
+	#package : 'Microdown',
+	#tag : 'InlineParser'
 }
 
-{ #category : #private }
-MicInlineBlockWithUrl class >> fileStringWithoutHostFile: aString [
-	| localFileIndicator |
-	localFileIndicator := 'file://'.
-	^ (aString beginsWith: localFileIndicator)
-			ifTrue: [ aString allButFirst: localFileIndicator size ]
-			ifFalse: [ aString ]
+{ #category : 'parsing' }
+MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
+	
+	^ aParser parseNameUrlBlock: self from: aTokenStream token: token
 ]
 
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL [
-	^ self new 
-		start: aStartInteger; 
-		end: anEndInteger; 
-		substring: aString; 
-		children: aChildren;
-		url: aURL;
-		closeMe; 
-		cleanSubstring; 
-		yourself
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> anchor [
+	^ self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ] 
 ]
 
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: aChildren withURL: aURL withParser: aParser [
-	^ self new 
-		start: aStartInteger; 
-		end: anEndInteger; 
-		substring: aString; 
-		children: aChildren; 
-		url: aURL;
-		parser: aParser;
-		closeMe; 
-		cleanSubstring; 
-		yourself
-]
-
-{ #category : #'instance creation' }
-MicInlineBlockWithUrl class >> from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withURL: aURL [
-	^ (self from: aStartInteger to: anEndInteger withKind: aKind withSubstring: aString withChildren: Array empty withURL: aURL)
-]
-
-{ #category : #accessing }
-MicInlineBlockWithUrl >> argumentAt: aKey [
-
-	^ self arguments at: aKey
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
 
@@ -76,106 +43,142 @@ MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 		ifPresent: aBlock
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> argumentAt: aKey put: anObject [
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> argumentAt: aKey put: value [
+	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
 
-	self arguments at: aKey put: anObject
+	self arguments 
+		at: aKey
+		put: value
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> arguments [
+
 	^ arguments
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> arguments: aDictionary [
-	arguments := aDictionary
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> arguments: anObject [
+
+	arguments := anObject
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> caption [
-	^ String streamContents: [:st | self captionElements do: [ :each | st nextPutAll: each text ] ] 
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> bodyString [
+	^ String streamContents: [ :s |
+			self children do: [ :each | s nextPutAll: each bodyString ] ]
 ]
 
-{ #category : #visiting }
-MicInlineBlockWithUrl >> captionElements [ 
-	^ captionElements ifNil: [ OrderedCollection new ]
+{ #category : 'visiting' }
+MicInlineBlockWithUrl >> captionElements [
+	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
+	^ children
 ]
 
-{ #category : #visiting }
-MicInlineBlockWithUrl >> captionElements: aCollection [ 
-	captionElements := aCollection
+{ #category : 'visiting' }
+MicInlineBlockWithUrl >> captionElements: someChildren [
+	self deprecated: 'Use children: instead' transformWith: '`@rec captionElements: `@arg' -> '`@rec children: `@arg'.
+	children := someChildren 
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> closingDelimiter [
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> children [
 
- 	^ URLCloserMarkup
+	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> children: anObject [
+
+	children := anObject
+]
+
+{ #category : 'visiting' }
+MicInlineBlockWithUrl >> closeMe [
+	"the link url - ![alt text](url) - url is allowed to have title in quotes
+	(url ""title"") "
+
+	| split title|
+	split := url splitOnFirst: Character space.
+	self reference: (MicResourceReference fromUri: split first).
+	title := (split second ifNil: [ '' ]) 
+		trimBoth: [:char | {$". Character space} includes: char].
+	self arguments: (MicArgumentList withString: title)
+]
+
+{ #category : 'utilities' }
 MicInlineBlockWithUrl >> fileStringWithoutHostFile [
-	^ self class fileStringWithoutHostFile: url asString
+	| urlString localFileIndicator |
+	urlString := url asString.
+	localFileIndicator := 'file://'.
+	^ (urlString beginsWith: localFileIndicator)
+			ifTrue: [ urlString allButFirst: localFileIndicator size ]
+			ifFalse: [ urlString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> fullName [
+
+	^ reference fullName
+]
+
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasAnchor [
+
+	^ self anchor isNotNil
+]
+
+{ #category : 'testing' }
 MicInlineBlockWithUrl >> hasArguments [
-	"Answer <true> if the receiver contain at least 1 argument"
-	
-	^ arguments notEmpty
+	^ arguments size > 0
 ]
 
-{ #category : #accessing }
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasCaption [
+
+	^ children notEmpty
+]
+
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasChildren [
+	^ self children notEmpty
+]
+
+{ #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
-
-	super initialize.
-	arguments := OrderedDictionary new
+	arguments := OrderedDictionary new.
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> parser [ 
-	^ parser
+{ #category : 'printing' }
+MicInlineBlockWithUrl >> printOn: stream [
+	stream << self blockName << '{ '.
+	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
+	stream << $}.
+	stream << $( << url << $)
+	
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> parser: aParser [
-	parser := aParser
-]
-
-{ #category : #printing }
-MicInlineBlockWithUrl >> printOn: aStream [
-	| contents |
-	contents := children
-		            ifEmpty: [ self substring ]
-		            ifNotEmpty: [ self childrenPrintOn ].
-	aStream
-		nextPut: $[;
-		nextPutAll: contents;
-		nextPut: $];
-		nextPut: $(.
-		aStream nextPutAll: url. 
-	aStream nextPut: $)
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference [
 
 	^ reference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> reference: anObject [
 
 	reference := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicInlineBlockWithUrl >> url [
+
 	^ url
 ]
 
-{ #category : #accessing }
-MicInlineBlockWithUrl >> url: anURL [
+{ #category : 'accessing' }
+MicInlineBlockWithUrl >> url: anObject [
 
-	url := anURL
+	url := anObject
 ]

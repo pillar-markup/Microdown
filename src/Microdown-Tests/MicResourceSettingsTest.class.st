@@ -2,17 +2,19 @@
 My tests leave the Microdown settings intact
 "
 Class {
-	#name : #MicResourceSettingsTest,
-	#superclass : #TestCase,
+	#name : 'MicResourceSettingsTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'subject',
 		'offlineSetting',
 		'isCachingRessourcesSetting'
 	],
-	#category : #'Microdown-Tests-Resolution'
+	#category : 'Microdown-Tests-Resolution',
+	#package : 'Microdown-Tests',
+	#tag : 'Resolution'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicResourceSettingsTest >> cacheAt: aUrl [
 	| cache |
 	cache := MicHTTPResourceReference resourcesCache.
@@ -22,12 +24,12 @@ MicResourceSettingsTest >> cacheAt: aUrl [
 		ifFalse: [ nil ]
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicResourceSettingsTest >> imageUrl [
 	^ 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/toplevel.png'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicResourceSettingsTest >> setUp [
 	super setUp.
 	
@@ -36,7 +38,7 @@ MicResourceSettingsTest >> setUp [
 	isCachingRessourcesSetting := subject isCachingResources.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicResourceSettingsTest >> tearDown [ 
 	subject offline: offlineSetting.
 	subject isCachingResources: isCachingRessourcesSetting.
@@ -44,7 +46,7 @@ MicResourceSettingsTest >> tearDown [
 	super tearDown.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsCashingResourcesFalse [
 	"Check that resources are cached when they should not be"
 	|  sample |
@@ -55,7 +57,7 @@ MicResourceSettingsTest >> testIsCashingResourcesFalse [
 	self assert: (self cacheAt: self imageUrl asZnUrl ) isNil.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsCashingResourcesTrue [
 	"Check that resources are cached when they should be"
 	|  sample |
@@ -68,7 +70,7 @@ MicResourceSettingsTest >> testIsCashingResourcesTrue [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsOfflineAndResourceFound [
 	"Check that resources are found in the cache when offline"
 	|  sample |
@@ -86,7 +88,7 @@ MicResourceSettingsTest >> testIsOfflineAndResourceFound [
 	self assert: (sample beginsWith: 'FooBarRules') not
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsOfflineFalse [
 	"Check that resources are not cached when they should not be"
 	|  sample |
@@ -97,7 +99,7 @@ MicResourceSettingsTest >> testIsOfflineFalse [
 	self assert: (self cacheAt: self imageUrl asZnUrl ) isNil.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsOfflineTrueAndResourceFound [
 	"Check that resources are found in the cache when offline"
 	|  sample |
@@ -115,7 +117,7 @@ MicResourceSettingsTest >> testIsOfflineTrueAndResourceFound [
 	self assert: (sample beginsWith: 'FooBarRules') not
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsOfflineTrueAndResourceNotFound [
 	"Check that resources are found in the cache when offline"
 	|  sample |
@@ -126,7 +128,7 @@ MicResourceSettingsTest >> testIsOfflineTrueAndResourceNotFound [
 	self assert: (sample asString beginsWith: 'FooBarRules')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testIsOfflineTrueNotFound [
 	"Check that resources are cached when they should not be"
 	| sample |
@@ -137,7 +139,7 @@ MicResourceSettingsTest >> testIsOfflineTrueNotFound [
 	self assert: (self cacheAt: self imageUrl asZnUrl ) isNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testOnlyOneMethodInMicrodownDefinesSettings [
 	| all |
 	all :=(Pragma allNamed: #systemsettings) 
@@ -146,7 +148,7 @@ MicResourceSettingsTest >> testOnlyOneMethodInMicrodownDefinesSettings [
 	self assert: all size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicResourceSettingsTest >> testThereAreTwoSettings [
 	"I am an approximation, just making sure the two class variables exist"
 	self assert: subject classVarNames equals: #(IsCachingResources Offline)
