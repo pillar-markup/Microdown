@@ -46,5 +46,6 @@ MicMathInlineBlock class >> openingDelimiter [
 
 { #category : 'visiting' }
 MicMathInlineBlock >> accept: aVisitor [
+
 	^ aVisitor visitMathInline: self
 ]
