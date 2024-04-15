@@ -313,6 +313,18 @@ $$'
 '\end{equation}' 
 ]
 
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathInLine [
+
+	self
+	parseInlined: 'Similarly, let $f_{w,C}$ be the number of documents in corpus $C$ that contain word $w$:'
+
+
+	andCheckWeGet: 
+
+'Similarly, let $f_{w,C}$ be the number of documents in corpus $C$ that contain word $w$:'
+]
+
 { #category : 'tests - formats' }
 MicLaTeXWriterTest >> testMonospace [
 

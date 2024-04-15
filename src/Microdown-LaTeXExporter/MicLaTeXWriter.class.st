@@ -265,6 +265,13 @@ MicLaTeXWriter >> visitMath:  aMicMathEnvironment [
 			canvas raw: aMicMathEnvironment body. canvas newLine ] 
 ]
 
+{ #category : 'blocks - table' }
+MicLaTeXWriter >> visitMathInline: aMicMathInline [
+
+	canvas raw: '$', aMicMathInline bodyString, '$'
+	
+]
+
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitMonospace: aMonospace [
 	canvas command
