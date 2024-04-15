@@ -192,6 +192,27 @@ Metacello new
 	load.
  ```
 
+## History
+
+We have two sources: Pharo in one hand and Pillar and both are not totally synchronised. 
+
+Using Pharo 12: v2.5.x
+- v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
+
+- v2.4.2 for Pillar 9.0.1
+
+### Pillar History
+For Pharo 12
+- v10.0.0 but with some links problems due to new inline parser using MD v2.5.0
+
+For Pharo 11
+- v9.0.1 Fixing link problems.
+- v9.0.0 loading in Pharo 11. The development will now happen in P11.
+
+For Pharo 10
+-v8.3.2 fixed baseline and updated readme
+
+
 ## Implementation
 The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
 
