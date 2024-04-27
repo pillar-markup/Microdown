@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'bodyString'
 	],
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'testing' }

@@ -4,9 +4,9 @@ I represent a bold text section. I'm delimited using `**` as in `**bold**` to ob
 Class {
 	#name : 'MicBoldFormatBlock',
 	#superclass : 'MicEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

@@ -17,9 +17,9 @@ Class {
 	#instVars : [
 		'arguments'
 	],
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

@@ -27,9 +27,9 @@ $f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz$
 Class {
 	#name : 'MicMathInlineBlock',
 	#superclass : 'MicUnEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

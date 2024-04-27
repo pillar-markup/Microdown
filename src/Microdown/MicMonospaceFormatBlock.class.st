@@ -4,9 +4,9 @@ I represent a monospaced text section. I'm delimited using `\`` as in `\`monospa
 Class {
 	#name : 'MicMonospaceFormatBlock',
 	#superclass : 'MicUnEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

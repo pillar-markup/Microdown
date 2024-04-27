@@ -4,9 +4,9 @@ I represent a strike text section. I'm delimited using `~` as in `~strike~` to o
 Class {
 	#name : 'MicStrikeFormatBlock',
 	#superclass : 'MicEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

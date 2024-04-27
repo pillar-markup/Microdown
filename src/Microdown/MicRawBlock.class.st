@@ -8,9 +8,9 @@ Raw lets the user place anything (so don't use it).
 Class {
 	#name : 'MicRawBlock',
 	#superclass : 'MicUnEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }
