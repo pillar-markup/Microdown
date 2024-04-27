@@ -12,9 +12,9 @@ I am characterized by:
 Class {
 	#name : 'MicInlineElement',
 	#superclass : 'MicElement',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }
@@ -35,11 +35,6 @@ MicInlineElement class >> isEvaluated [
 { #category : 'accessing' }
 MicInlineElement class >> openingDelimiter [
 	^ self subclassResponsibility
-]
-
-{ #category : 'visiting' }
-MicInlineElement >> accept: dummy [
-	"implemented in subclasses"
 ]
 
 { #category : 'accessing' }
