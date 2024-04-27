@@ -4,9 +4,9 @@ I represent a reference in a text. For example `[http://pharo.org](http://pharo.
 Class {
 	#name : 'MicLinkBlock',
 	#superclass : 'MicInlineBlockWithUrl',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }
@@ -29,4 +29,10 @@ MicLinkBlock >> accept: aVisitor [
 { #category : 'printing' }
 MicLinkBlock >> plainText [
 	^ '[', ((self children collect: [:each | each plainText]) joinUsing: ' '), '](', url ,')'
+]
+
+{ #category : 'accessing' }
+MicLinkBlock >> referencePath [
+
+	^ self reference fullName
 ]
