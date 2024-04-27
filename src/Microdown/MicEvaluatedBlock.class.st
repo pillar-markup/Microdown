@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'children'
 	],
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'parsing' }
@@ -36,7 +36,7 @@ MicEvaluatedBlock >> children: anObject [
 
 { #category : 'printing' }
 MicEvaluatedBlock >> plainText [
-	^ (self children collect: #plainText) joinUsing: ' '
+	^ ( self children collect: [:each | each plainText ] ) joinUsing: ' '
 ]
 
 { #category : 'printing' }
