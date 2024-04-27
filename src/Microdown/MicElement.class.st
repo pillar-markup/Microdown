@@ -41,6 +41,12 @@ MicElement class >> extensionClassFor: tag [
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 ]
 
+{ #category : 'private' }
+MicElement >> basicParent: aMicBlock [
+
+	parent := aMicBlock
+]
+
 { #category : 'properties' }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."
@@ -78,9 +84,12 @@ MicElement >> parent [
 ]
 
 { #category : 'accessing' }
-MicElement >> parent: aBlock [
-	parent := aBlock.
-	aBlock addChild: self
+MicElement >> parent: aBlockChild [
+	"Add the receiver as child of aBlockChild. 
+	Make sure that aBlockChild is the parent of the receiver."
+	
+	parent := aBlockChild.
+	aBlockChild addChild: self
 ]
 
 { #category : 'properties' }

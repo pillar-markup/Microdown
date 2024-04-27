@@ -27,6 +27,10 @@ MicAbstractBlock class >> alternateBlockClassFor: line [
 
 { #category : 'adding' }
 MicAbstractBlock >> addChild: childBlock [
+	"Add the argument childBlock as child of the receiver. 
+	Set the parent backpointer so that childBlock parent is the receiver."
+	
+	childBlock basicParent: self.
 	children add: childBlock
 ]
 
@@ -63,7 +67,7 @@ MicAbstractBlock >> canConsumeLine: line [
 
 { #category : 'adding' }
 MicAbstractBlock >> children [
-	^children 
+	^ children 
 ]
 
 { #category : 'adding' }
