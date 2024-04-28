@@ -59,11 +59,12 @@ MicLaTeXWriter >> chapterTemplateName [
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
 		name: 'hyperref';
-		optParameter: [ canvas nextPutAll: anInternalLink anchor ];
-		parameter: [ 
+		optParameter: [ canvas nextPutAll: anInternalLink anchor ]
+		"parameter: [ 
 					anInternalLink counter isValidCounter
 						ifTrue: [ self writeCounter: anInternalLink counter ].
 					canvas nextPutAll: anInternalLink alias ]
+				"
 ]
 
 { #category : 'helpers' }
@@ -180,9 +181,10 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
 
-	(aFigure hasCaption not and: [ aFigure hasLabel not ]) ifTrue: [ 
-		self includeGraphicsFor: aFigure.
-		^ self ].
+	(aFigure hasCaption not and: [ aFigure hasLabel not ]) 
+		ifTrue: [ 
+				self includeGraphicsFor: aFigure.
+				^ self ].
 	canvas environment
 		name: 'figure';
 		optParameter: [ canvas raw: 'htpb' ];
@@ -414,13 +416,11 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 
 { #category : 'helpers' }
 MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
-	"we decided not to create an arbitrary label when there is none specified.
+	"We decided not to create an arbitrary label when there is none specified.
 	This decision should be changed but we need to find a way to uniquely identify a figure, math, ..."
 	
 	| label |
-	label := anExternalLink arguments
-		         at: 'label'
-		         ifAbsent: [ nil ].
+	label := anExternalLink anchor.
 	label ifNotNil: [ 
 		canvas command
 			name: 'label';

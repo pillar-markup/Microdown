@@ -29,9 +29,12 @@ MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
 
 { #category : 'testing' }
 MicInlineBlockWithUrl >> anchor [
-	^ self arguments 
+	| anchor |
+	anchor := self arguments 
 		at: #anchor 
-		ifAbsent: [ nil ] 
+		ifAbsent: [ nil ].
+	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
+	^ anchor 
 ]
 
 { #category : 'accessing' }
@@ -147,6 +150,7 @@ MicInlineBlockWithUrl >> hasChildren [
 
 { #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
+	super initialize.
 	arguments := OrderedDictionary new.
 ]
 
