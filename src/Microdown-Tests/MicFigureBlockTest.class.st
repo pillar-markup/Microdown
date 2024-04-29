@@ -89,6 +89,19 @@ MicFigureBlockTest >> testCaption [
 ]
 
 { #category : 'tests' }
+MicFigureBlockTest >> testFigureCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png)'.
+	fig := root children first children first.
+	self
+		assert: fig children second class equals: MicBoldFormatBlock.
+	self assert: fig children second parent equals: fig
+]
+
+{ #category : 'tests' }
 MicFigureBlockTest >> testHasArguments [
 	| figure |
 	figure := (splitterClass new parse: '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.

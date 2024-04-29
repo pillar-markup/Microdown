@@ -182,3 +182,18 @@ V_i = C_0 - C_3
 	self assert: (math arguments at: 'key') equals: ''.
 	self assert: (math arguments at: 'label') equals: '42'
 ]
+
+{ #category : 'tests' }
+MicMathBlockTest >> testMathCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root math |
+	root := Microdown parse: '
+$$ % key=cite&label=42&caption=Ze **great** formula
+V_i = C_0 - C_3 
+$$'.
+	math := root children first.
+	self
+		assert: math captionElements second class equals: MicBoldFormatBlock.
+	self assert: math captionElements first parent equals: math
+]

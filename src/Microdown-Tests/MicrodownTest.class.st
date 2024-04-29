@@ -45,6 +45,21 @@ MicrodownTest >> testFigureLabelAreNotReified [
 
 ]
 
+{ #category : 'tests - parent/children' }
+MicrodownTest >> testMathCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root math |
+	root := Microdown parse: '
+$$ % key=cite&label=42&caption=Ze **great** formula
+V_i = C_0 - C_3 
+$$'.
+	math := root children first.
+	self
+		assert: math captionElements second class equals: MicBoldFormatBlock.
+	self assert: math captionElements first parent equals: math
+]
+
 { #category : 'tests' }
 MicrodownTest >> testMicrodownSpelledCorrect [
 	self assert: (Object allSubclasses select: [ :c | c name beginsWith: 'MicroDown' ]) isEmpty

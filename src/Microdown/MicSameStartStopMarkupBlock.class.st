@@ -54,7 +54,7 @@ MicSameStartStopMarkupBlock >> closeMe [
 	self arguments
 		at: #caption
 		ifPresent: [ :cp | 
-		arguments at: #caption put: (self inlineParse: cp) ]
+		 self caption: cp ]
 ]
 
 { #category : 'accessing' }
