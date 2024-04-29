@@ -3,18 +3,18 @@ I am a code block. I look like this, starting and ending with three $`
 my 'arguments' is just the text from the fourth character up to the end of line.
 
 ```
- ```arguments
+ \`\`\`arguments
  line 1
  line 2
  line 3
- ``` 
+ \`\`\` 
 ```
 
 A codeblock does not interpreter its contents. 
-You can however specify different tag and multiple argument. 
+You can however specify different tags such as an anchor and a caption. 
 
 ```
-	```language=pharo|caption=A method&label=method 
+	```language=pharo|caption=A method&anchor=method 
 	pharoMotto 
 		^ 'Doing something every is the best way to make progress'
 	```
@@ -97,6 +97,12 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	^ lineWithoutMarkup
 ]
 
+{ #category : 'accessing' }
+MicCodeBlock >> hasAnchor [
+	^ arguments includesKey: #anchor
+
+]
+
 { #category : 'testing' }
 MicCodeBlock >> hasBody [
 
@@ -105,8 +111,9 @@ MicCodeBlock >> hasBody [
 
 { #category : 'accessing' }
 MicCodeBlock >> hasLabel [
-	^ arguments includesKey: #label
-
+	self deprecated: 'Use hasAnchor' transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
+	
+	^ self anchor
 ]
 
 { #category : 'testing' }
