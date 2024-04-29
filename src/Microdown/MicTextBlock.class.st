@@ -4,9 +4,9 @@ I'm a special inline block representing the fact that there is not markup.
 Class {
 	#name : 'MicTextBlock',
 	#superclass : 'MicUnEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'visiting' }

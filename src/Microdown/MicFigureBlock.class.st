@@ -13,9 +13,9 @@ What is important to see is that there is a space between the url arguments and 
 Class {
 	#name : 'MicFigureBlock',
 	#superclass : 'MicInlineBlockWithUrl',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }
@@ -33,6 +33,18 @@ MicFigureBlock class >> openingDelimiter [
 { #category : 'visiting' }
 MicFigureBlock >> accept: aVisitor [
  	^ aVisitor visitFigure: self
+]
+
+{ #category : 'accessing' }
+MicFigureBlock >> altText [
+	^ (self children collect: #plainText) joinUsing: ' '
+]
+
+{ #category : 'visiting' }
+MicFigureBlock >> closeMe [
+
+	super closeMe.
+	self children do: [ :each | each basicParent: self ] 
 ]
 
 { #category : 'printing' }

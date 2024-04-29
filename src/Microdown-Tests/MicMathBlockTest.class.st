@@ -12,6 +12,26 @@ MicMathBlockTest >> subjectClass [
 ]
 
 { #category : 'tests' }
+MicMathBlockTest >> testAnchor [
+
+	| root math |
+	"note that in the following  
+	$$%label=eq11
+	...
+	The % is needed else it does not work on github and the label is part of the equation."
+	
+	root := self parserClass new parse: '
+
+',MathOpeningBlockMarkup,'%key=cite&label=42
+V_i = C_0 - C_3 
+', MathClosingBlockMarkup.
+	math := root children first.
+	self assert: math class equals: MicMathBlock.
+	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: math anchor equals: '42'
+]
+
+{ #category : 'tests' }
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
 	| root |
@@ -41,7 +61,12 @@ f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
 MicMathBlockTest >> testMathBlockWithBadClosure [
 
 	| root |
-	"a MicMathBlock can use the MicMathInlineBlock delimiter"
+	"a MicMathBlock can contain a MicMathInlineBlock delimiter.
+	Here we have 
+	$$ 
+	not terminated by $$
+	"
+	
 	root := self parserClass new parse: '
 
 ',MathOpeningBlockMarkup,'key=cite&label=42
@@ -71,14 +96,11 @@ V_i = C_0 - C_3
 MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
 
 	| root math |
-	
 	"note that in the following  
 	$$%label=eq11
-	
+	...
 	The % is needed else it does not work on github and the label is part of the equation."
 	
-	
-	 
 	root := self parserClass new parse: '
 
 ',MathOpeningBlockMarkup,'%key=cite&label=42
@@ -132,7 +154,7 @@ V_i = C_0 - C_3
 		assert: math firstLine
 		equals: 'key=cite&label=42&caption=Ze **great** formula'.
 	self assert: (math arguments at: 'key') equals: 'cite'.
-	self assert: (math arguments at: 'label') equals: '42'.
+	self assert: math anchor equals: '42'.
 	self
 		assert: (math arguments at: 'caption') first blockName asLowercase
 		equals: 'text'.
@@ -159,4 +181,19 @@ V_i = C_0 - C_3
 	self assert: math firstLine equals: 'key=&label=42'.
 	self assert: (math arguments at: 'key') equals: ''.
 	self assert: (math arguments at: 'label') equals: '42'
+]
+
+{ #category : 'tests' }
+MicMathBlockTest >> testMathCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root math |
+	root := Microdown parse: '
+$$ % key=cite&label=42&caption=Ze **great** formula
+V_i = C_0 - C_3 
+$$'.
+	math := root children first.
+	self
+		assert: math captionElements second class equals: MicBoldFormatBlock.
+	self assert: math captionElements first parent equals: math
 ]

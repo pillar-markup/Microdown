@@ -38,10 +38,24 @@ MicFigureBlockTest >> testAlt [
 MicFigureBlockTest >> testAnchor [
 
 	| figure |
+	
 	figure := (splitterClass new parse:
 		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=233)')
 		          first.
+		
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'
+]
 
+{ #category : 'tests' }
+MicFigureBlockTest >> testAnchorExpressedUsingLabel [
+
+	| figure |
+	
+	figure := (splitterClass new parse:
+		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&label=233)')
+		          first.
 	self assert: figure hasArguments.
 	self assert: figure hasAnchor.
 	self assert: figure anchor equals: '233'
@@ -72,6 +86,19 @@ MicFigureBlockTest >> testCaption [
 	self
 		assert: figure children first bodyString
 		equals: 'caption with space and dot...'
+]
+
+{ #category : 'tests' }
+MicFigureBlockTest >> testFigureCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png)'.
+	fig := root children first children first.
+	self
+		assert: fig children second class equals: MicBoldFormatBlock.
+	self assert: fig children second parent equals: fig
 ]
 
 { #category : 'tests' }

@@ -5,9 +5,9 @@ My parse method on the class side transform me directly into a MicLinkBlock, and
 Class {
 	#name : 'MicInlineHttpBlock',
 	#superclass : 'MicUnEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

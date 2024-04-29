@@ -45,6 +45,16 @@ MicMathBlock >> accept: aVisitor [
 ]
 
 { #category : 'handle' }
+MicMathBlock >> anchor [
+	| anchor |
+	anchor := self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ].
+	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
+	^ anchor 
+]
+
+{ #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |

@@ -4,9 +4,9 @@ I represent an italic text section. I'm delimited using `_` as in `_italic_` to 
 Class {
 	#name : 'MicItalicFormatBlock',
 	#superclass : 'MicEvaluatedBlock',
-	#category : 'Microdown-InlineParser',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'InlineParser'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

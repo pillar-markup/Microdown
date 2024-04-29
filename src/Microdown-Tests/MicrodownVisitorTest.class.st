@@ -15,13 +15,16 @@ MicrodownVisitorTest >> testAllVisitMethodsExists [
 	See Issue https://github.com/pillar-markup/Microdown/issues/533"
 	|allVisitSelectors topVisitSeletors missing |
 	"We use a heuristic here, we look for message sends in the accept methods of the blocks"
-	allVisitSelectors := (MicElement allSubclasses 
-		collect: [ :cl | (cl lookupSelector: #accept:) allLiterals 
-			select: [ :l | l isString and: [(l beginsWith: 'visit')] ] ]
-			) flattened asSet.
+	allVisitSelectors := Set new. 
+	MicElement allSubclasses 
+		do: [ :cl | 
+			(cl lookupSelector: #accept:) 
+				ifNotNil: [ :m | m allLiterals 
+					do: [ :l | l isString and: [(l beginsWith: 'visit') 
+											ifTrue: [ allVisitSelectors add: l ] ] ] ] ].
 	topVisitSeletors := (MicrodownVisitor methods 
 		collect: [ :m | m selector ] 
-		thenSelect: [ :m |m beginsWith: 'visit' ]) asSet.
+		thenSelect: [ :m | m beginsWith: 'visit' ]) asSet.
 	missing := allVisitSelectors \ topVisitSeletors.
 	self assert: missing isEmpty.
 ]
