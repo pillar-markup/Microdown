@@ -48,6 +48,22 @@ MicCodeBlock >> accept: aVisitor [
  	^ aVisitor visitCode: self
 ]
 
+{ #category : 'accessing' }
+MicCodeBlock >> anchor [
+	| anchor |
+	anchor := self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ].
+	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
+	^ anchor 
+]
+
+{ #category : 'accessing' }
+MicCodeBlock >> anchor: aString [
+
+	self arguments at: #anchor put: aString
+]
+
 { #category : 'public' }
 MicCodeBlock >> closeMe [
 	"adjust prefix tabs based on first line
@@ -113,20 +129,20 @@ MicCodeBlock >> initialize [
 
 { #category : 'accessing' }
 MicCodeBlock >> label [
-	"precondition: receiver hasLabel"
+	self deprecated: 'Use anchor' transformWith: '`@rec label' -> '`@rec anchor'.
 	
-	^ arguments at: #label
+	^ self anchor
 ]
 
 { #category : 'accessing' }
 MicCodeBlock >> label: aString [
 
-	self arguments at: #label put: aString
+	self deprecated: 'Use anchor:' transformWith: '`@rec label: `@args' -> '`@rec anchor: `@args'.
+	self anchor: aString
 ]
 
 { #category : 'accessing' }
 MicCodeBlock >> size [
-
 	"precondition: receiver hasLabel"
 
 	^ arguments at: #size
