@@ -133,9 +133,7 @@ V_i = C_0 - C_3
 	self
 		assert: (math arguments at: 'caption') first bodyString
 		equals: 'Ze great formula'.
-	self
-		assert: math testCaptionString
-		equals: 'an Array(Text(Ze great formula))'
+	self assert: math caption equals: 'an Array(Text(Ze great formula))'
 ]
 
 { #category : 'tests' }
@@ -159,7 +157,7 @@ V_i = C_0 - C_3
 		assert: (math arguments at: 'caption') first blockName asLowercase
 		equals: 'text'.
 	self
-		assert: math testCaptionString asString
+		assert: math caption asString
 		equals:
 		'an Array(Text(Ze ) BoldFormat{ Text(great) } Text( formula))'.
 	self

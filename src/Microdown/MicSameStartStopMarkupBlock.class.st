@@ -31,8 +31,7 @@ MicSameStartStopMarkupBlock >> arguments [
 
 { #category : 'visiting' }
 MicSameStartStopMarkupBlock >> caption [
-	self deprecated: 'Should only be used for test' transformWith: '`@rec caption' -> '`@rec testCaptionString'.
-	^ self testCaptionString.
+	^ (self arguments at: #caption ifAbsent: [ ^'No Caption' ]) printString
 ]
 
 { #category : 'accessing - delegated' }
@@ -70,6 +69,6 @@ MicSameStartStopMarkupBlock >> lineStopMarkup [
 
 { #category : 'visiting' }
 MicSameStartStopMarkupBlock >> testCaptionString [
-
-	^ (self arguments at: #caption ifAbsent: [ ^'No Caption' ]) printString
+	self deprecated: 'Use caption' transformWith: '`@rec testCaptionString' -> '`@rec caption'.
+	^ self caption
 ]

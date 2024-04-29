@@ -99,7 +99,7 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 
 { #category : 'accessing' }
 MicCodeBlock >> hasAnchor [
-	^ arguments includesKey: #anchor
+	^ (arguments includesKey: #label) or: [ arguments includesKey: #anchor ]
 
 ]
 

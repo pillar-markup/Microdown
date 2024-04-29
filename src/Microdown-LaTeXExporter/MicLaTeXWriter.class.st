@@ -160,22 +160,24 @@ MicLaTeXWriter >> visitCitation: aCitation [
 
 { #category : 'blocks - code' }
 MicLaTeXWriter >> visitCode: aCodeBlock [
+
 	| env parameters |
 	parameters := OrderedCollection new.
-	aCodeBlock hasCaption
-		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock hasNonDefaultLanguage 
-		ifTrue: [parameters add: 'language=' , aCodeBlock language asString].
-	aCodeBlock hasLabel
-		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
+	aCodeBlock hasCaption ifTrue: [
+		parameters add:
+			'caption={' , (self getStringForAll: aCodeBlock captionElements)
+			, '}' ].
+	aCodeBlock hasNonDefaultLanguage ifTrue: [
+		parameters add: 'language=' , aCodeBlock language asString ].
+	aCodeBlock hasAnchor ifTrue: [
+		parameters add: 'label=' , aCodeBlock anchor ].
 	env := canvas environment
-		name: 'listing';
-		yourself.
+		       name: 'listing';
+		       yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
-	env
-		with: [ 
-			canvas nextPutAllLines: aCodeBlock body.
-			canvas newLine ]
+	env with: [
+		canvas nextPutAllLines: aCodeBlock body.
+		canvas newLine ]
 ]
 
 { #category : 'blocks - inline' }
