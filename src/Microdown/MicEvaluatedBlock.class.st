@@ -47,6 +47,12 @@ MicEvaluatedBlock >> printOn: stream [
 	
 ]
 
+{ #category : 'replacement' }
+MicEvaluatedBlock >> replace: aBlock by: anotherBlock [ 
+	
+	self children replaceAll: aBlock with: anotherBlock 
+]
+
 { #category : 'accessing' }
 MicEvaluatedBlock >> textElement [
 	"Should only be used for tests"

@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-BeamerExporter' }
+Package { #name : 'Microdown-BeamerExporter' }
