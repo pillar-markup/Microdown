@@ -40,6 +40,13 @@ MicFigureBlock >> altText [
 	^ (self children collect: #plainText) joinUsing: ' '
 ]
 
+{ #category : 'visiting' }
+MicFigureBlock >> closeMe [
+
+	super closeMe.
+	self children do: [ :each | each basicParent: self ] 
+]
+
 { #category : 'printing' }
 MicFigureBlock >> plainText [
 	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
