@@ -44,7 +44,16 @@ MicFigureBlock >> altText [
 MicFigureBlock >> closeMe [
 
 	super closeMe.
-	self children do: [ :each | each basicParent: self ] 
+	"the children so far are the caption."
+	self children do: [ :each | each basicParent: self ].
+	self hasAnchor 
+		ifTrue: [ 
+			| anchor | 
+			anchor := MicAnchorReferenceBlock new.
+			anchor bodyString: self anchor.
+			self anchorElement: anchor.
+			anchor basicParent: self.]
+	
 ]
 
 { #category : 'printing' }

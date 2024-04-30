@@ -89,6 +89,19 @@ MicFigureBlockTest >> testCaption [
 ]
 
 { #category : 'tests' }
+MicFigureBlockTest >> testFigureAnchorIsReified [
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png anchor=figf)'.
+	fig := root children first children first.
+	self assert: fig hasAnchor.
+	self assert: fig anchor class equals: MicAnchorReferenceBlock.
+	self assert: fig anchor parent equals: fig
+	
+]
+
+{ #category : 'tests' }
 MicFigureBlockTest >> testFigureCaptionIsReified [
 	"And as such their parent is the math block"
 	

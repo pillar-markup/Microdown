@@ -69,7 +69,7 @@ MicMathBlockTest >> testMathBlockWithBadClosure [
 	
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'key=cite&label=42
+',MathOpeningBlockMarkup,'key=cite&anchor=42
 V_i = C_0 - C_3 
 $'.
 	self assert: root children first body equals: 'V_i = C_0 - C_3 
@@ -82,14 +82,13 @@ MicMathBlockTest >> testMathBlockWithParameters [
 	| root math |
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'key=cite&label=42
+',MathOpeningBlockMarkup,'anchor=42
 V_i = C_0 - C_3 
 ', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
-	self assert: math firstLine equals: 'key=cite&label=42'.
-	self assert: (math arguments at: 'key') equals: 'cite'.
-	self assert: (math arguments at: 'label') equals: '42'
+	self assert: math firstLine equals: 'anchor=42'.
+	self assert: math anchor equals: '42'
 ]
 
 { #category : 'tests' }
@@ -103,14 +102,14 @@ MicMathBlockTest >> testMathBlockWithParametersAndLatexComment [
 	
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'%key=cite&label=42
+',MathOpeningBlockMarkup,'%key=cite&anchor=42
 V_i = C_0 - C_3 
 ', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
-	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: math firstLine equals: 'key=cite&anchor=42'.
 	self assert: (math arguments at: 'key') equals: 'cite'.
-	self assert: (math arguments at: 'label') equals: '42'
+	self assert: math anchor equals: '42'
 ]
 
 { #category : 'tests' }
@@ -120,16 +119,16 @@ MicMathBlockTest >> testMathBlockWithParametersCaption [
 	root := self parserClass new parse: '
 
 ' , MathOpeningBlockMarkup
-		        , 'key=cite&label=42&caption=Ze great formula
+		        , 'key=cite&anchor=42&caption=Ze great formula
 V_i = C_0 - C_3 
 ' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
 		assert: math firstLine
-		equals: 'key=cite&label=42&caption=Ze great formula'.
+		equals: 'key=cite&anchor=42&caption=Ze great formula'.
 	self assert: (math arguments at: 'key') equals: 'cite'.
-	self assert: (math arguments at: 'label') equals: '42'.
+	self assert: math anchor equals: '42'.
 	self
 		assert: (math arguments at: 'caption') first bodyString
 		equals: 'Ze great formula'.
@@ -143,21 +142,21 @@ MicMathBlockTest >> testMathBlockWithParametersCaptionAndFormatting [
 	root := self parserClass new parse: '
 
 ' , MathOpeningBlockMarkup
-		        , 'key=cite&label=42&caption=Ze **great** formula
+		        , 'key=cite&anchor=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
 ' , MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
 	self
 		assert: math firstLine
-		equals: 'key=cite&label=42&caption=Ze **great** formula'.
+		equals: 'key=cite&anchor=42&caption=Ze **great** formula'.
 	self assert: (math arguments at: 'key') equals: 'cite'.
 	self assert: math anchor equals: '42'.
 	self
 		assert: (math arguments at: 'caption') first blockName asLowercase
 		equals: 'text'.
 	self
-		assert: math caption asString
+		assert: math caption
 		equals:
 		'an Array(Text(Ze ) BoldFormat{ Text(great) } Text( formula))'.
 	self
@@ -171,14 +170,14 @@ MicMathBlockTest >> testMathBlockWithParametersWithBlank [
 	| root math |
 	root := self parserClass new parse: '
 
-', MathOpeningBlockMarkup,'key=&label=42
+', MathOpeningBlockMarkup,'key=&anchor=42
 V_i = C_0 - C_3 
 ', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
-	self assert: math firstLine equals: 'key=&label=42'.
+	self assert: math firstLine equals: 'key=&anchor=42'.
 	self assert: (math arguments at: 'key') equals: ''.
-	self assert: (math arguments at: 'label') equals: '42'
+	self assert: math anchor equals: '42'
 ]
 
 { #category : 'tests' }
@@ -187,11 +186,14 @@ MicMathBlockTest >> testMathCaptionIsReified [
 	
 	| root math |
 	root := Microdown parse: '
-$$ % key=cite&label=42&caption=Ze **great** formula
+$$ % key=cite&anchor=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
 $$'.
 	math := root children first.
 	self
-		assert: math captionElements second class equals: MicBoldFormatBlock.
-	self assert: math captionElements first parent equals: math
+		assert: math captionElements second class 
+		equals: MicBoldFormatBlock.
+	self 
+		assert: math captionElements first parent 
+		equals: math
 ]
