@@ -58,7 +58,7 @@ MicSameStartStopMarkupBlock >> closeMe [
 
 { #category : 'accessing' }
 MicSameStartStopMarkupBlock >> hasCaption [
-	^ arguments includesKey:  #caption
+	^ arguments includesKey: #caption
 ]
 
 { #category : 'markups' }

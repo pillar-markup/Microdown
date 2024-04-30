@@ -31,6 +31,19 @@ V_i = C_0 - C_3
 	self assert: math anchor equals: '42'
 ]
 
+{ #category : 'tests - reification' }
+MicMathBlockTest >> testMathAnchorIsReified [
+
+	| root math |
+	root := Microdown parse: '
+$$ % anchor=42&caption=Ze **great** formula
+V_i = C_0 - C_3 
+$$'.
+	math := root children first.
+	self assert: math anchor class equals: MicAnchorReferenceBlock.
+	self assert: math anchor bodyString  equals: '42'
+]
+
 { #category : 'tests' }
 MicMathBlockTest >> testMathBlockIsMathBlock [
 
@@ -180,7 +193,7 @@ V_i = C_0 - C_3
 	self assert: math anchor equals: '42'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - reification' }
 MicMathBlockTest >> testMathCaptionIsReified [
 	"And as such their parent is the math block"
 	

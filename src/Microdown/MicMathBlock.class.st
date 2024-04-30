@@ -50,8 +50,30 @@ MicMathBlock >> anchor [
 	anchor := self arguments 
 		at: #anchor 
 		ifAbsent: [ nil ].
+	"for backward compatibility"
 	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
 	^ anchor 
+]
+
+{ #category : 'handle' }
+MicMathBlock >> anchorElement: anAnchorReferenceBlock [
+
+	arguments at: #anchor put: anAnchorReferenceBlock.
+	arguments removeKey: #label ifAbsent: [].
+]
+
+{ #category : 'handle' }
+MicMathBlock >> closeMe [ 
+
+	super closeMe.
+	self hasAnchor 
+		ifTrue: [ 
+			| anchor |
+			anchor := MicAnchorReferenceBlock new.
+			anchor bodyString: self anchor.
+			self anchorElement: anchor.
+			anchor basicParent: self. ]
+	
 ]
 
 { #category : 'handle' }
@@ -63,6 +85,11 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 	arguments := MicArgumentList 
 		split: lineWithoutMarkup.
 	^ lineWithoutMarkup
+]
+
+{ #category : 'testing' }
+MicMathBlock >> hasAnchor [
+	^ arguments includesKey: #anchor
 ]
 
 { #category : 'markups' }
