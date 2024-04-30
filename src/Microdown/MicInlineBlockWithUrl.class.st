@@ -165,14 +165,16 @@ MicInlineBlockWithUrl >> printOn: stream [
 
 { #category : 'accessing' }
 MicInlineBlockWithUrl >> reference [
-
+	"Returns the figures/f.png in ![caption](figures/f.png) "
+	
 	^ reference
 ]
 
 { #category : 'accessing' }
-MicInlineBlockWithUrl >> reference: anObject [
-
-	reference := anObject
+MicInlineBlockWithUrl >> reference: aString [
+	"Set the figures/f.png in ![caption](figures/f.png)"
+	
+	reference := aString
 ]
 
 { #category : 'accessing' }
