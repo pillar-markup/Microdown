@@ -11,7 +11,7 @@ Class {
 
 { #category : 'tests' }
 MicQuoteBlockTest >> subjectClass [ 
-	^ MicQuoteBlock 
+	^ MicBlockQuoteBlock 
 ]
 
 { #category : 'tests' }
@@ -21,7 +21,7 @@ MicQuoteBlockTest >> testBasicQuoteBlock [
 > test 2'.
 	root := parser parse: source.
 
-	self assert: root children first class equals: MicQuoteBlock.
+	self assert: root children first class equals: MicBlockQuoteBlock.
 	self assert: root children first text  equals: 'test1
 test 2'.
 	self flag: #tofix.
