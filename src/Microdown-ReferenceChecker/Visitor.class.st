@@ -1,3 +1,25 @@
+"
+***
+***
+A horizontal line
+# Microdown Parser and Elements
+```language=Pharo&caption=Beautiful&label=code1
+Some code
+```
+[Pharo web site](http://www.pharo.org?alt=Pharo&key2=value2)
+\![The famous Pharo Logo](https://files.pharo.org/media/logo/logo.
+png?size=80&label=logo1)
+\![This diagram shows...](file:///figures/diagram1.png?width=80&
+label=fig1)
+- item1
+- item2
+on two lines
+- item 3
+1. item one
+3. item two
+> This is
+> a quote
+"
 Class {
 	#name : 'Visitor',
 	#superclass : 'MicrodownVisitor',
