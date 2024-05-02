@@ -170,6 +170,20 @@ Visitor >> someError: anObject [ " true indicates that there is an error but the
 ]
 
 { #category : 'initialization' }
+Visitor >> visit: anElement [
+	"Check if the parent of the element correctly includes this element as a child"
+
+	anElement parent ifNotNil: [
+		(anElement parent children includes: anElement) ifFalse: [
+			self addError: 'Parent does not include this element as a child' ] ] .
+	anElement children do: [ :child |
+				child parent = anElement ifFalse: [
+					self addError: 'Child does not point back to the correct parent' 
+				].
+		 		self visit: child  ].
+]
+
+{ #category : 'initialization' }
 Visitor >> visitAnchor: anAnchor [
     "Process an anchor node and optionally handle its children."
     self addAnchor: anAnchor label.
@@ -202,11 +216,14 @@ Visitor >> visitRoot: anElement [
         (anElement parent children includes: anElement) ifFalse: [
             self addError: 'Parent does not include this element as a child'.
         ].
+		
     ].
+	Transcript show: 'hello'.
     anElement children do: [ :child |
         child parent = anElement ifFalse: [
             self addError: 'Child does not point back to the correct parent'.
         ].
         child accept: self  "Continue the visit recursively"
     ].
+	Transcript show: 'hello 2'.
 ]
