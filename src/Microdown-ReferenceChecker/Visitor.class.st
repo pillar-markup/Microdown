@@ -88,6 +88,12 @@ Visitor >> does: anAnchors containAll: aReferences [
 
 ]
 
+{ #category : 'initialization' }
+Visitor >> error: aString [
+    Transcript show: aString; cr.
+
+]
+
 { #category : 'accessing' }
 Visitor >> errorsList [
 
@@ -177,9 +183,30 @@ Visitor >> visitAnchorReference: anAnchorReferenceBlock [
 ]
 
 { #category : 'initialization' }
+Visitor >> visitDocumentRoot: aRoot [
+    aRoot accept: self.
+]
+
+{ #category : 'initialization' }
 Visitor >> visitParentDocument: aDocument [
     "Visit each child of the document root and process it."
     aDocument children do: [:child | 
         child accept: self
+    ].
+]
+
+{ #category : 'initialization' }
+Visitor >> visitRoot: anElement [
+    "Check if the parent of the element correctly includes this element as a child"
+    anElement parent ifNotNil: [ 
+        (anElement parent children includes: anElement) ifFalse: [
+            self addError: 'Parent does not include this element as a child'.
+        ].
+    ].
+    anElement children do: [ :child |
+        child parent = anElement ifFalse: [
+            self addError: 'Child does not point back to the correct parent'.
+        ].
+        child accept: self  "Continue the visit recursively"
     ].
 ]
