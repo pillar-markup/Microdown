@@ -21,7 +21,7 @@ on two lines
 > a quote
 "
 Class {
-	#name : 'Visitor',
+	#name : 'ReferenceChecker',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'references',
@@ -34,7 +34,7 @@ Class {
 }
 
 { #category : 'initialization' }
-Visitor >> addAnchor: anObject [
+ReferenceChecker >> addAnchor: anObject [
     "Add an object to the anchors collection only if it is not already present and is not empty or whitespace."
         (anchors includes: anObject) ifTrue:[ self someError:true. self addError: ( anObject asString, '   is a duplicated anchor  ') ] ifFalse: [
             anchors add: anObject     
@@ -43,12 +43,12 @@ Visitor >> addAnchor: anObject [
 ]
 
 { #category : 'initialization' }
-Visitor >> addError: anError [ 
+ReferenceChecker >> addError: anError [ 
 	errorsList add: anError .
 ]
 
 { #category : 'initialization' }
-Visitor >> addReference: anObject [
+ReferenceChecker >> addReference: anObject [
     | referenceString |
     "Check if the object is an instance of AnchorReferenceBlock"
    (anObject isKindOf: MicAnchorReferenceBlock )
@@ -79,18 +79,18 @@ Visitor >> addReference: anObject [
 ]
 
 { #category : 'initialization' }
-Visitor >> anchors [
+ReferenceChecker >> anchors [
     ^ anchors
 
 ]
 
 { #category : 'initialization' }
-Visitor >> anchors: anObject [
+ReferenceChecker >> anchors: anObject [
     anchors := anObject 
 ]
 
 { #category : 'initialization' }
-Visitor >> does: anAnchors containAll: aReferences [
+ReferenceChecker >> does: anAnchors containAll: aReferences [
     | allContained |
     allContained := aReferences allSatisfy: [:eachReference | anAnchors includes: eachReference].
     
@@ -111,35 +111,35 @@ Visitor >> does: anAnchors containAll: aReferences [
 ]
 
 { #category : 'initialization' }
-Visitor >> error: aString [
+ReferenceChecker >> error: aString [
     Transcript show: aString; cr.
 
 ]
 
 { #category : 'accessing' }
-Visitor >> errorsList [
+ReferenceChecker >> errorsList [
 
 	^ errorsList
 ]
 
 { #category : 'accessing' }
-Visitor >> errorsList: anObject [
+ReferenceChecker >> errorsList: anObject [
 
 	errorsList := anObject
 ]
 
 { #category : 'initialization' }
-Visitor >> getAnchorAt: index [
+ReferenceChecker >> getAnchorAt: index [
     ^ anchors at: index ifAbsent: [ nil ].
 ]
 
 { #category : 'initialization' }
-Visitor >> getReferenceAt: index [
+ReferenceChecker >> getReferenceAt: index [
     ^ references at: index ifAbsent: [ nil ].
 ]
 
 { #category : 'initialization' }
-Visitor >> initialize [
+ReferenceChecker >> initialize [
     super initialize.
     references := OrderedCollection new.
     anchors := OrderedCollection new.
@@ -148,7 +148,7 @@ Visitor >> initialize [
 ]
 
 { #category : 'initialization' }
-Visitor >> referenceCheck: aString [ 
+ReferenceChecker >> referenceCheck: aString [ 
 	|source errorString |
 	source := MicrodownParser parse: aString .
 	self visitParentDocument: source . 
@@ -169,62 +169,48 @@ Visitor >> referenceCheck: aString [
 ]
 
 { #category : 'initialization' }
-Visitor >> references [
+ReferenceChecker >> references [
     ^ references
 ]
 
 { #category : 'initialization' }
-Visitor >> references: anObject [
+ReferenceChecker >> references: anObject [
     references := anObject
 
 ]
 
 { #category : 'accessing' }
-Visitor >> someError [
+ReferenceChecker >> someError [
 
 	^ someError
 ]
 
 { #category : 'accessing' }
-Visitor >> someError: anObject [ " true indicates that there is an error but the value par default is false ( there is no error found while checking ) "
+ReferenceChecker >> someError: anObject [ " true indicates that there is an error but the value par default is false ( there is no error found while checking ) "
 
 	someError := anObject
 ]
 
 { #category : 'initialization' }
-Visitor >> visit: anElement [
-	"Check if the parent of the element correctly includes this element as a child"
-
-	anElement parent ifNotNil: [
-		(anElement parent children includes: anElement) ifFalse: [
-			self addError: 'Parent does not include this element as a child' ] ] .
-	anElement children do: [ :child |
-				child parent = anElement ifFalse: [
-					self addError: 'Child does not point back to the correct parent' 
-				].
-		 		self visit: child  ].
-]
-
-{ #category : 'initialization' }
-Visitor >> visitAnchor: anAnchor [
+ReferenceChecker >> visitAnchor: anAnchor [
     "Process an anchor node and optionally handle its children."
     self addAnchor: anAnchor label.
     
 ]
 
 { #category : 'initialization' }
-Visitor >> visitAnchorReference: anAnchorReferenceBlock [
+ReferenceChecker >> visitAnchorReference: anAnchorReferenceBlock [
     self addReference: anAnchorReferenceBlock.
     "super visitAnchorReference: anAnchorReferenceBlock."
 ]
 
 { #category : 'initialization' }
-Visitor >> visitDocumentRoot: aRoot [
+ReferenceChecker >> visitDocumentRoot: aRoot [
     aRoot accept: self.
 ]
 
 { #category : 'initialization' }
-Visitor >> visitParentDocument: aDocument [
+ReferenceChecker >> visitParentDocument: aDocument [
     "Visit each child of the document root and process it."
     aDocument children do: [:child | 
         child accept: self
@@ -232,7 +218,7 @@ Visitor >> visitParentDocument: aDocument [
 ]
 
 { #category : 'initialization' }
-Visitor >> visitRoot: anElement [
+ReferenceChecker >> visitRoot: anElement [
     "Check if the parent of the element correctly includes this element as a child"
     anElement parent ifNotNil: [ 
         (anElement parent children includes: anElement) ifFalse: [

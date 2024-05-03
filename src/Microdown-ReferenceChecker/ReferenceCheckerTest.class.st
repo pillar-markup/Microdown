@@ -1,5 +1,5 @@
 Class {
-	#name : 'VisitorTest',
+	#name : 'ReferenceCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'visitor'
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : 'running' }
-VisitorTest >> setUp [
-    visitor := Visitor new.
+ReferenceCheckerTest >> setUp [
+    visitor := ReferenceChecker new.
     
 ]
 
 { #category : 'running' }
-VisitorTest >> testAllReferencesAreContained [
+ReferenceCheckerTest >> testAllReferencesAreContained [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'; addAnchor: 'Ref3'.
     visitor references add: 'Ref1';  add: 'Ref2'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -23,7 +23,7 @@ VisitorTest >> testAllReferencesAreContained [
 ]
 
 { #category : 'running' }
-VisitorTest >> testAnchors [ 
+ReferenceCheckerTest >> testAnchors [ 
 	| source root parser   source2|
 	parser := MicrodownParser new.
 	source := '@anchorSection',String cr,'@anchorSection2','@anchorSection',String  cr,'@anchorSection2'.
@@ -40,7 +40,7 @@ VisitorTest >> testAnchors [
 ]
 
 { #category : 'running' }
-VisitorTest >> testAnchorsInTextBlocks [
+ReferenceCheckerTest >> testAnchorsInTextBlocks [
     | source root parser  |
     parser := MicrodownParser new.
     source := 'Text before @anchorSection and text after', String cr, 'Another line here @anchorSection2'.
@@ -50,18 +50,18 @@ VisitorTest >> testAnchorsInTextBlocks [
 ]
 
 { #category : 'running' }
-VisitorTest >> testAnchorsWithDifferentNewLines [
+ReferenceCheckerTest >> testAnchorsWithDifferentNewLines [
     | source root parser  |
     parser := MicrodownParser new.
     source := '@anchorSection', String cr, '@anchorSection2', String lf, '@anchorSection3', String crlf.
     root := parser parse: source.
-    visitor := Visitor new.
+    visitor := ReferenceChecker new.
     root children do: [:child | child accept: visitor].
     self assert: visitor anchors size equals: 3.
 ]
 
 { #category : 'running' }
-VisitorTest >> testAnchorsWithSpecialCharacters [
+ReferenceCheckerTest >> testAnchorsWithSpecialCharacters [
     visitor addAnchor: 'Ref1 special'; addAnchor: 'Ref@#3'.
     visitor references add: 'Ref1 special';  add: 'Ref@#3'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -69,7 +69,7 @@ VisitorTest >> testAnchorsWithSpecialCharacters [
 ]
 
 { #category : 'running' }
-VisitorTest >> testAnchorss [  "no need to iterate the children in client side  "
+ReferenceCheckerTest >> testAnchorss [  "no need to iterate the children in client side  "
     | source root parser  |
     parser := MicrodownParser new.
     source := '@anchorSection', String cr, '@anchorSection2', '@anchorSection', String cr, '@anchorSection2'.
@@ -88,7 +88,7 @@ VisitorTest >> testAnchorss [  "no need to iterate the children in client side  
 ]
 
 { #category : 'running' }
-VisitorTest >> testBasicAnchorCollection [
+ReferenceCheckerTest >> testBasicAnchorCollection [
     | source root parser  |
     parser := MicrodownParser new.
     source := '@anchorSection'.
@@ -99,25 +99,25 @@ VisitorTest >> testBasicAnchorCollection [
 ]
 
 { #category : 'running' }
-VisitorTest >> testBothCollectionsEmpty [
+ReferenceCheckerTest >> testBothCollectionsEmpty [
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWhenAllReferencesAreContained [
+ReferenceCheckerTest >> testContainmentWhenAllReferencesAreContained [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'; addAnchor: 'Ref3'.
     visitor references add: 'Ref1'; add: 'Ref2'; add: 'Ref3'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWhenBothAreEmpty [
+ReferenceCheckerTest >> testContainmentWhenBothAreEmpty [
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWhenNotAllReferencesAreContained [
+ReferenceCheckerTest >> testContainmentWhenNotAllReferencesAreContained [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref3'.
     visitor references add: 'Ref1'; add: 'Ref2'; add: 'Ref3'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -125,7 +125,7 @@ VisitorTest >> testContainmentWhenNotAllReferencesAreContained [
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWithDuplicateReferences [
+ReferenceCheckerTest >> testContainmentWithDuplicateReferences [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'.
     visitor references add: 'Ref1'; add: 'Ref1'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -133,20 +133,20 @@ VisitorTest >> testContainmentWithDuplicateReferences [
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWithEmptyAnchors [
+ReferenceCheckerTest >> testContainmentWithEmptyAnchors [
     visitor addReference: 'Ref1'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 
 ]
 
 { #category : 'running' }
-VisitorTest >> testContainmentWithEmptyReferences [
+ReferenceCheckerTest >> testContainmentWithEmptyReferences [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'; addAnchor: 'Ref3'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testDuplicateAnchors [
+ReferenceCheckerTest >> testDuplicateAnchors [
     | source root parser  |
     parser := MicrodownParser new.
     source := '@anchorSection', String cr, '@anchorSection'.
@@ -156,7 +156,7 @@ VisitorTest >> testDuplicateAnchors [
 ]
 
 { #category : 'running' }
-VisitorTest >> testDuplicateReferences [
+ReferenceCheckerTest >> testDuplicateReferences [
 
     visitor addAnchor: 'Ref1' ;addAnchor: 'Ref2'.
  	 visitor addReference: 'Ref1' ;addReference: 'Ref1'.
@@ -165,7 +165,7 @@ VisitorTest >> testDuplicateReferences [
 ]
 
 { #category : 'running' }
-VisitorTest >> testDuplicateReferencesWithAnchors [
+ReferenceCheckerTest >> testDuplicateReferencesWithAnchors [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'.
     visitor addReference: 'Ref1'; addReference: 'Ref1'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -173,35 +173,35 @@ VisitorTest >> testDuplicateReferencesWithAnchors [
 ]
 
 { #category : 'running' }
-VisitorTest >> testEmptyAnchors [
+ReferenceCheckerTest >> testEmptyAnchors [
     visitor addReference: 'Ref1'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 
 ]
 
 { #category : 'running' }
-VisitorTest >> testEmptyReferences [
+ReferenceCheckerTest >> testEmptyReferences [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'; addAnchor: 'Ref3'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 
 ]
 
 { #category : 'running' }
-VisitorTest >> testInvalidReferenceTypes [
+ReferenceCheckerTest >> testInvalidReferenceTypes [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref3'.
     visitor addReference: 123; addReference: true.  "// Non-string references"
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testMismatchedReferences [
+ReferenceCheckerTest >> testMismatchedReferences [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref3'.
     visitor addReference: 'Ref2'; addReference: 'Ref4' ."  // Intentionally mismatched"
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testNestedSectionsMultipleReferences [
+ReferenceCheckerTest >> testNestedSectionsMultipleReferences [
     | source |
     source := MicrodownParser parse: '## Introduction
 @intro
@@ -229,7 +229,7 @@ For final thoughts, see *@discussion@*. Remember the start in *@intro@*.
 ]
 
 { #category : 'running' }
-VisitorTest >> testNonStringElements [
+ReferenceCheckerTest >> testNonStringElements [
     visitor addAnchor: 1; addAnchor: 2; addAnchor: 3.
     visitor addReference: 1; addReference: 2.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -237,14 +237,14 @@ VisitorTest >> testNonStringElements [
 ]
 
 { #category : 'running' }
-VisitorTest >> testNullReferences [
+ReferenceCheckerTest >> testNullReferences [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref2'.
     visitor addReference: nil. "// Adding a nil reference"
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
 ]
 
 { #category : 'running' }
-VisitorTest >> testReferenceNotContained [
+ReferenceCheckerTest >> testReferenceNotContained [
     visitor addAnchor: 'Ref1'; addAnchor: 'Ref3'.
     visitor addReference: 'Ref1'; addReference: 'Ref2'.
     self assert: (visitor does: visitor anchors containAll: visitor references) equals: false.
@@ -252,7 +252,7 @@ VisitorTest >> testReferenceNotContained [
 ]
 
 { #category : 'running' }
-VisitorTest >> testReferences [
+ReferenceCheckerTest >> testReferences [
     | source|
     "Initialize source with multiple references"
     source := Microdown parse: '## Section1 
@@ -270,7 +270,7 @@ See *@section2@*
 ]
 
 { #category : 'running' }
-VisitorTest >> testReferencesWithoutAnchors [
+ReferenceCheckerTest >> testReferencesWithoutAnchors [
     | source  |
 
     source := MicrodownParser parse: '## Introduction
@@ -291,19 +291,19 @@ Results are discussed, with further insights in *@furtherInsights@* that do not 
 ]
 
 { #category : 'running' }
-VisitorTest >> testRejectingEmptyAndWhitespaceAnchors [
+ReferenceCheckerTest >> testRejectingEmptyAndWhitespaceAnchors [
     | emptyAnchor whitespaceAnchor |
     emptyAnchor := ''.
     whitespaceAnchor := '   '.
 
-    Visitor new addAnchor: emptyAnchor.
-    Visitor new addAnchor: whitespaceAnchor.
+    ReferenceChecker new addAnchor: emptyAnchor.
+    ReferenceChecker new addAnchor: whitespaceAnchor.
 
-    self assert: Visitor new anchors isEmpty.
+    self assert: ReferenceChecker new anchors isEmpty.
 ]
 
 { #category : 'running' }
-VisitorTest >> testRepeatedAnchors [
+ReferenceCheckerTest >> testRepeatedAnchors [
     | source  |
 
     source := MicrodownParser parse: '## Introduction
