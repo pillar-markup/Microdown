@@ -44,11 +44,11 @@ MicrodownParserTest >> stestMathBlockWithArguments [
 { #category : 'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
-	source := AnchorMarkup, 'label1'.
+	source := AnchorMarkup, 'label1' , String cr , AnchorMarkup , 'label2'.
 	root := parser parse: source.
-	self assert: root children size equals: 1.
-	annotated := root children first. 
-	self assert: annotated label equals: 'label1'.
+	self assert: root children size equals: 2.
+	annotated := root children at: 2. 
+	self assert: annotated label equals: 'label2'.
 	
 
 ]
