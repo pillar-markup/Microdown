@@ -42,15 +42,10 @@ You can edit this file clicking on `ClySyntaxHelpMorph>>#rawMicrodownSyntax`.'.
 { #category : 'tests' }
 MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormed [
 
-	|  visitor |
-	visitor := MicParentChildrenChecker new.
-	self document accept: visitor. 
-	self assert: visitor isOk.
-	
-
-	
-
-
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: self document.
+	self assert: checker isOk
 ]
 
 { #category : 'tests' }
@@ -63,7 +58,7 @@ MicParentChildrenCheckerTest >> testSimpleDocumentWithOrphans [
 	orphan basicParent: nil.
 	self assert: orphan parent isNil.
 
-	visitor visit: brokenDocument.
+	visitor check: brokenDocument.
 
 	self deny: visitor isOk
 ]
