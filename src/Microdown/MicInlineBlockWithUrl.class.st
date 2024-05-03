@@ -29,18 +29,13 @@ MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
 
 { #category : 'testing' }
 MicInlineBlockWithUrl >> anchor [
-	| anchor |
-	anchor := self arguments 
-		at: #anchor 
-		ifAbsent: [ nil ].
-	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
-	^ anchor 
+	^ (arguments at: #anchor ifAbsent: [ nil ]) ifNil: [  arguments at: #label ifAbsent: [ nil ] ] 
 ]
 
 { #category : 'testing' }
-MicInlineBlockWithUrl >> anchorElement: anElement [
+MicInlineBlockWithUrl >> anchor: aString [
 
-	arguments at: #anchor put: anElement.
+	arguments at: #anchor put: aString.
 	arguments removeKey: #label ifAbsent: [].
 ]
 
@@ -80,15 +75,21 @@ MicInlineBlockWithUrl >> bodyString [
 			self children do: [ :each | s nextPutAll: each bodyString ] ]
 ]
 
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> caption [
+
+	^ String streamContents: [ :s | children do: [ :each | s nextPutAll: each plainText ] ]
+]
+
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements [
-	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
+
 	^ children
 ]
 
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements: someChildren [
-	self deprecated: 'Use children: instead' transformWith: '`@rec captionElements: `@arg' -> '`@rec children: `@arg'.
+
 	children := someChildren 
 ]
 

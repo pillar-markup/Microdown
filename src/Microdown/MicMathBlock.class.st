@@ -56,24 +56,10 @@ MicMathBlock >> anchor [
 ]
 
 { #category : 'handle' }
-MicMathBlock >> anchorElement: anAnchorReferenceBlock [
+MicMathBlock >> anchor: aString [
 
-	arguments at: #anchor put: anAnchorReferenceBlock.
+	arguments at: #anchor put: aString.
 	arguments removeKey: #label ifAbsent: [].
-]
-
-{ #category : 'handle' }
-MicMathBlock >> closeMe [ 
-
-	super closeMe.
-	self hasAnchor 
-		ifTrue: [ 
-			| anchor |
-			anchor := MicAnchorReferenceBlock new.
-			anchor bodyString: self anchor.
-			self anchorElement: anchor.
-			anchor basicParent: self. ]
-	
 ]
 
 { #category : 'handle' }
@@ -89,7 +75,7 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 
 { #category : 'testing' }
 MicMathBlock >> hasAnchor [
-	^ arguments includesKey: #anchor
+	^ self anchor isNotNil
 ]
 
 { #category : 'markups' }

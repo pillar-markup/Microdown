@@ -22,12 +22,12 @@ MicMathBlockTest >> testAnchor [
 	
 	root := self parserClass new parse: '
 
-',MathOpeningBlockMarkup,'%key=cite&label=42
+',MathOpeningBlockMarkup,'%key=cite&anchor=42
 V_i = C_0 - C_3 
 ', MathClosingBlockMarkup.
 	math := root children first.
 	self assert: math class equals: MicMathBlock.
-	self assert: math firstLine equals: 'key=cite&label=42'.
+	self assert: math firstLine equals: 'key=cite&anchor=42'.
 	self assert: math anchor equals: '42'
 ]
 
@@ -40,8 +40,8 @@ $$ % anchor=42&caption=Ze **great** formula
 V_i = C_0 - C_3 
 $$'.
 	math := root children first.
-	self assert: math anchor class equals: MicAnchorReferenceBlock.
-	self assert: math anchor bodyString  equals: '42'
+	self assert: math anchor equals: '42'.
+
 ]
 
 { #category : 'tests' }
