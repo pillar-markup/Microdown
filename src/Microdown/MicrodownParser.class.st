@@ -259,7 +259,7 @@ MicrodownParser >> initialize [
 	dispatchTable at: UnorderedListPlusMarkup put: MicUnorderedListBlock.
 	dispatchTable at: UnorderedListMarkup put: MicUnorderedListBlock.
 	dispatchTable at: UnorderedListStarMarkup put: MicUnorderedListBlock.
-	dispatchTable at: PreformattedMarkup put: MicQuoteBlock.
+	dispatchTable at: PreformattedMarkup put: MicBlockQuoteBlock.
 	dispatchTable at: TableCellMarkup put: MicTableBlock.
 ]
 

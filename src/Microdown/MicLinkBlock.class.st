@@ -1,5 +1,7 @@
 "
-I represent a reference in a text. For example `[http://pharo.org](http://pharo.org)` creates [http://pharo.org](http://pharo.org).
+I represent a reference in a text. For example `[The pharo web site](http://pharo.org)` creates [The Pharo web site](http://pharo.org).
+
+- The reference message returns the `http://pharo.org` part
 "
 Class {
 	#name : 'MicLinkBlock',

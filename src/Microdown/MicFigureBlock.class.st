@@ -44,7 +44,7 @@ MicFigureBlock >> altText [
 MicFigureBlock >> closeMe [
 
 	super closeMe.
-	self children do: [ :each | each basicParent: self ] 
+	self children do: [ :each | each basicParent: self ].
 ]
 
 { #category : 'printing' }

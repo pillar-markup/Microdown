@@ -58,7 +58,7 @@ MicEvaluatedBlock >> textElement [
 MicEvaluatedBlock >> textElement: elem [
 	"Should only be used for tests"
 	self deprecated: 'Just use children' transformWith: '`@rec textElement: `@arg' -> '`@rec children: {`@arg}'.
-	^ children := { elem }
+	children := { elem }
 ]
 
 { #category : 'accessing' }

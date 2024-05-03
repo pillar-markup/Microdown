@@ -160,22 +160,24 @@ MicLaTeXWriter >> visitCitation: aCitation [
 
 { #category : 'blocks - code' }
 MicLaTeXWriter >> visitCode: aCodeBlock [
+
 	| env parameters |
 	parameters := OrderedCollection new.
-	aCodeBlock hasCaption
-		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock hasNonDefaultLanguage 
-		ifTrue: [parameters add: 'language=' , aCodeBlock language asString].
-	aCodeBlock hasLabel
-		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
+	aCodeBlock hasCaption ifTrue: [
+		parameters add:
+			'caption={' , (self getStringForAll: aCodeBlock captionElements)
+			, '}' ].
+	aCodeBlock hasNonDefaultLanguage ifTrue: [
+		parameters add: 'language=' , aCodeBlock language asString ].
+	aCodeBlock hasAnchor ifTrue: [
+		parameters add: 'label=' , aCodeBlock anchor ].
 	env := canvas environment
-		name: 'listing';
-		yourself.
+		       name: 'listing';
+		       yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
-	env
-		with: [ 
-			canvas nextPutAllLines: aCodeBlock body.
-			canvas newLine ]
+	env with: [
+		canvas nextPutAllLines: aCodeBlock body.
+		canvas newLine ]
 ]
 
 { #category : 'blocks - inline' }
@@ -258,10 +260,8 @@ MicLaTeXWriter >> visitMath:  aMicMathEnvironment [
 	canvas environment
 		name: 'equation';
 		with: [ 
-			| args |
-			args := aMicMathEnvironment arguments.
-			(args includesKey: 'label')
-			 	ifTrue: [ canvas raw: '\label{', (args at: 'label'), '}'.
+			aMicMathEnvironment hasAnchor
+			 	ifTrue: [ canvas raw: '\label{', aMicMathEnvironment anchor, '}'.
 				canvas newLine.].
 			
 			canvas raw: aMicMathEnvironment body. canvas newLine ] 
@@ -419,12 +419,12 @@ MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
 	"We decided not to create an arbitrary label when there is none specified.
 	This decision should be changed but we need to find a way to uniquely identify a figure, math, ..."
 	
-	| label |
-	label := anExternalLink anchor.
-	label ifNotNil: [ 
+	| anchor |
+	anchor := anExternalLink anchor.
+	anchor ifNotNil: [ 
 		canvas command
 			name: 'label';
-			parameter: [ canvas raw: label ] ]
+			parameter: [ canvas raw: anchor ] ]
 ]
 
 { #category : 'helpers' }
