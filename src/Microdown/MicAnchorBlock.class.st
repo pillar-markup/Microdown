@@ -44,8 +44,9 @@ MicAnchorBlock >> label [
 ]
 
 { #category : 'accessing' }
-MicAnchorBlock >> label: anObject [
-	label := anObject
+MicAnchorBlock >> label: aLabel [
+    label := aLabel.
+    
 ]
 
 { #category : 'accessing' }
