@@ -1,5 +1,11 @@
 "
-A MicArgumentsSplitterTest is a test class for testing the behavior of MicArgumentsSplitter
+A MicArgumentsSplitterTest is a test class for testing the behavior of MicArgumentList.
+This list is used in figures, code, and math equation for now
+
+In the following anchor=fig1&width=70 is an argument list.
+```
+![this is a caption](figures/f.png anchor=fig1&width=70)
+```
 "
 Class {
 	#name : 'MicArgumentListTest',
