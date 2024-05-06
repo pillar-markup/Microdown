@@ -30,7 +30,8 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	| parameters |
 	parameters := OrderedCollection new.
 	parameters add: 'float'.
-	aCodeBlock hasLabel ifTrue: [ parameters add: 'label=', aCodeBlock label ].
+	aCodeBlock hasAnchor ifTrue: [
+		parameters add: 'label=' , aCodeBlock anchor ].
 	^ parameters asCommaString
 ]
 
@@ -46,8 +47,8 @@ MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
 
 { #category : 'protected' }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
-	
-	aCodeBlock hasCaption | aCodeBlock hasLabel
+
+	aCodeBlock hasCaption | aCodeBlock hasAnchor
 		ifTrue: [ self writeFloatingCodeSnippet: aCodeBlock ]
 		ifFalse: [ self writeInFlowCodeSnippet: aCodeBlock ]
 ]

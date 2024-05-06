@@ -44,11 +44,11 @@ MicrodownParserTest >> stestMathBlockWithArguments [
 { #category : 'tests - anchor' }
 MicrodownParserTest >> testAnchorBlock [
 	| source root annotated |
-	source := AnchorMarkup, 'label1'.
+	source := AnchorMarkup, 'label1' , String cr , AnchorMarkup , 'label2'.
 	root := parser parse: source.
-	self assert: root children size equals: 1.
-	annotated := root children first. 
-	self assert: annotated label equals: 'label1'.
+	self assert: root children size equals: 2.
+	annotated := root children at: 2. 
+	self assert: annotated label equals: 'label2'.
 	
 
 ]
@@ -434,7 +434,7 @@ MicrodownParserTest >> testMathBlockWithArguments [
 
 	| source root math |
 	source := MathOpeningBlockMarkup
-	          , 'label=equation&caption=doNiceMath' , String cr
+	          , 'anchor=equation&caption=doNiceMath' , String cr
 	          ,
 	          '\mathcal{F} = \{ I \subseteq B | support(I) \geq minsup \}'
 	          , String cr , MathClosingBlockMarkup , String cr.
@@ -442,7 +442,7 @@ MicrodownParserTest >> testMathBlockWithArguments [
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	math := root children first.
-	self assert: (math arguments at: 'label') equals: 'equation'.
+	self assert: math anchor equals: 'equation'.
 	self
 		assert: (math arguments at: 'caption') first bodyString
 		equals: 'doNiceMath'

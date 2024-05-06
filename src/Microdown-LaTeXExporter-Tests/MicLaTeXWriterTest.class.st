@@ -164,7 +164,7 @@ MicLaTeXWriterTest >> testCrlfAsNewLine [
 
 { #category : 'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
-
+	
 	self writeFor: factory figureSample.
 	self assert: writer contents equals: newLine ,
 					'\begin{figure}[htpb]', newLine ,
@@ -301,7 +301,7 @@ $$'
 MicLaTeXWriterTest >> testMathBlocWithLabel [
 
 	self
-	parseInlined:'$$ % label=eq1
+	parseInlined:'$$ % anchor=eq1
 f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
 $$'
 

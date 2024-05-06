@@ -89,6 +89,18 @@ MicFigureBlockTest >> testCaption [
 ]
 
 { #category : 'tests' }
+MicFigureBlockTest >> testFigureAnchorIsNotReified [
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png anchor=figf)'.
+	fig := root children first children first.
+	self assert: fig hasAnchor.
+	self assert: fig anchor equals: 'figf'
+	
+]
+
+{ #category : 'tests' }
 MicFigureBlockTest >> testFigureCaptionIsReified [
 	"And as such their parent is the math block"
 	
@@ -109,7 +121,7 @@ MicFigureBlockTest >> testHasArguments [
 	"Indeed url arguments are not microdown arguments"
 	self assert: figure hasArguments.
 	self assert: (figure arguments at: 'width') equals: '80'.
-	self assert: (figure arguments at: 'anchor') equals: 'bla'
+	self assert: figure anchor equals: 'bla'
 	
 	
 ]

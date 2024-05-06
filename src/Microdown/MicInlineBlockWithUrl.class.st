@@ -29,12 +29,14 @@ MicInlineBlockWithUrl class >> parse: token stream: aTokenStream for: aParser [
 
 { #category : 'testing' }
 MicInlineBlockWithUrl >> anchor [
-	| anchor |
-	anchor := self arguments 
-		at: #anchor 
-		ifAbsent: [ nil ].
-	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
-	^ anchor 
+	^ (arguments at: #anchor ifAbsent: [ nil ]) ifNil: [  arguments at: #label ifAbsent: [ nil ] ] 
+]
+
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> anchor: aString [
+
+	arguments at: #anchor put: aString.
+	arguments removeKey: #label ifAbsent: [].
 ]
 
 { #category : 'accessing' }
@@ -73,15 +75,21 @@ MicInlineBlockWithUrl >> bodyString [
 			self children do: [ :each | s nextPutAll: each bodyString ] ]
 ]
 
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> caption [
+
+	^ String streamContents: [ :s | children do: [ :each | s nextPutAll: each plainText ] ]
+]
+
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements [
-	self deprecated: 'Use children instead' transformWith: '`@rec captionElements' -> '`@rec children'.
+
 	^ children
 ]
 
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> captionElements: someChildren [
-	self deprecated: 'Use children: instead' transformWith: '`@rec captionElements: `@arg' -> '`@rec children: `@arg'.
+
 	children := someChildren 
 ]
 
@@ -165,14 +173,16 @@ MicInlineBlockWithUrl >> printOn: stream [
 
 { #category : 'accessing' }
 MicInlineBlockWithUrl >> reference [
-
+	"Returns the figures/f.png in ![caption](figures/f.png) "
+	
 	^ reference
 ]
 
 { #category : 'accessing' }
-MicInlineBlockWithUrl >> reference: anObject [
-
-	reference := anObject
+MicInlineBlockWithUrl >> reference: aString [
+	"Set the figures/f.png in ![caption](figures/f.png)"
+	
+	reference := aString
 ]
 
 { #category : 'accessing' }

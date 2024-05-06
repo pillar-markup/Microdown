@@ -1,6 +1,6 @@
 Class {
-	#name : #MicTextualMicrodownExporterTest,
-	#superclass : #ParametrizedTestCase,
+	#name : 'MicTextualMicrodownExporterTest',
+	#superclass : 'ParametrizedTestCase',
 	#instVars : [
 		'factory',
 		'visitor',
@@ -10,27 +10,28 @@ Class {
 	#pools : [
 		'MicroSharedPool'
 	],
-	#category : #'Microdown-PrettyPrinter-Tests'
+	#category : 'Microdown-PrettyPrinter-Tests',
+	#package : 'Microdown-PrettyPrinter-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextualMicrodownExporterTest class >> testParameters [ 
 	^ super testParameters
 			addCase: { #visitorClass -> MicTextualMicrodownExporter };
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> factory [ 
 	^ factory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> factory: aFactory [
 	factory := aFactory
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicTextualMicrodownExporterTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
@@ -38,7 +39,7 @@ MicTextualMicrodownExporterTest >> setUp [
 	parser := Microdown new
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchor [
 
 	| micAnchor |
@@ -46,13 +47,13 @@ MicTextualMicrodownExporterTest >> testAnchor [
 	self assert: (visitor visit: micAnchor) first asString equals: AnchorMarkup
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchorAutomatic [
 
 	self verifyObtain: factory anchorSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnchorReference [
 	"Pay attention an anchor reference is inside a paragraph and a paragraph emits 
 	a newline "
@@ -65,25 +66,25 @@ MicTextualMicrodownExporterTest >> testAnchorReference [
 	
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnnotated [
 
 	self verifyObtain: factory annotatedSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testAnnotation [
 
 	self verifyObtain: factory annotationSample
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : 'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlock [
 
 	self verifyObtain: factory blockWithParametersSample, String cr
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : 'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlockNewLine [
 
 	| mic |
@@ -97,25 +98,25 @@ this is a codeblock
 '
 ]
 
-{ #category : #'tests-codeblock' }
+{ #category : 'tests-codeblock' }
 MicTextualMicrodownExporterTest >> testCodeBlockWithCaption [
 
 	self verifyObtain: factory blockWithParametersWithCaptionSample, String cr
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testComment [
 
 	self verifyObtain: factory commentSample
 ]
 
-{ #category : #'tests - environment' }
+{ #category : 'tests - environment' }
 MicTextualMicrodownExporterTest >> testEnvironment [
 
 	self verifyObtain: factory environmentSample
 ]
 
-{ #category : #'tests - environment' }
+{ #category : 'tests - environment' }
 MicTextualMicrodownExporterTest >> testEnvironmentWithInnerBlock [
 
 	self skip.
@@ -124,13 +125,13 @@ MicTextualMicrodownExporterTest >> testEnvironmentWithInnerBlock [
 	self verifyObtain: factory environmentWithInnerBlockSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigure [
 
 	self verifyObtain: factory figureSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureNewLine [
 	
 	| mic |
@@ -142,19 +143,19 @@ MicTextualMicrodownExporterTest >> testFigureNewLine [
 '
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithBold [
 
 	self verifyObtain: factory figureBoldSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithItalic [
 
 	self verifyObtain: factory figureItalicSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithMicroDownMarkup [
 
 	| mic |
@@ -166,31 +167,31 @@ MicTextualMicrodownExporterTest >> testFigureWithMicroDownMarkup [
 '
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithMonospace [
 
 	self verifyObtain: factory figureMonospaceSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithNested [
 
 	self verifyObtain: factory figureNestedSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFigureWithStrike [
 
 	self verifyObtain: factory figureStrikeSample
 ]
 
-{ #category : #'tests - figure' }
+{ #category : 'tests - figure' }
 MicTextualMicrodownExporterTest >> testFileFigure [
 
 	self verifyObtain: factory fileFigureSample
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderNewLine [
 
 	| mic |
@@ -203,13 +204,13 @@ MicTextualMicrodownExporterTest >> testHeaderNewLine [
 '
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithBold [
 	
 	self verifyObtain: factory headerWithFormatSampleWithNewLine
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithMicroDownMarkup [
 
 	| mic |
@@ -220,20 +221,20 @@ MicTextualMicrodownExporterTest >> testHeaderWithMicroDownMarkup [
 '
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 	
 	self verifyObtain: factory headerWithNestedFormatSampleWithNewLine.
 
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testHorizontalLine [
 
 	self verifyObtain: factory horizontalLineSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testInputfile [
 
 	| inputFile |
@@ -241,25 +242,25 @@ MicTextualMicrodownExporterTest >> testInputfile [
 	self assert: inputFile children first path path equals: 'Chapters/text.md'
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLink [
 
 	self verifyObtain: factory linkSample
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithBold [
 
 	self verifyObtain: factory linkBoldSample
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithItalic [
 
 	self verifyObtain: factory linkItalicSample
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithMicroDownMarkup [
 
 	| mic |
@@ -270,43 +271,43 @@ MicTextualMicrodownExporterTest >> testLinkWithMicroDownMarkup [
 '
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithMonospace [
 
 	self verifyObtain: factory linkMonospaceSample
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithNested [
 	
 	self verifyObtain: factory linkNestedSample
 ]
 
-{ #category : #'tests - link' }
+{ #category : 'tests - link' }
 MicTextualMicrodownExporterTest >> testLinkWithStrike [
 
 	self verifyObtain: factory linkStrikeSample
 ]
 
-{ #category : #'tests - math' }
+{ #category : 'tests - math' }
 MicTextualMicrodownExporterTest >> testMathBlock [
 
 	self verifyObtain: factory mathParametersSample, String cr
 ]
 
-{ #category : #'tests - math' }
+{ #category : 'tests - math' }
 MicTextualMicrodownExporterTest >> testMathBlockWithCaption [
 
 	self verifyObtain: factory mathParametersWithCaptionSample, String cr
 ]
 
-{ #category : #'tests - math' }
+{ #category : 'tests - math' }
 MicTextualMicrodownExporterTest >> testMathInline [
 
 	self verifyObtain: factory mathInlineSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testMetaData [
 	self skip.
 	self flag: #fixme.
@@ -315,7 +316,7 @@ MicTextualMicrodownExporterTest >> testMetaData [
 	self verifyObtain: factory metaDataSample
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
 	| header res |
@@ -325,13 +326,13 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 	self assert: (res copyFrom: res size -3 to: res size - 2) equals: BoldMarkup
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedList [
 
 	self verifyObtain: factory orderedListWithTwoItemsSample 
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListNewLine [
 
 	| mic |
@@ -343,43 +344,43 @@ MicTextualMicrodownExporterTest >> testOrderedListNewLine [
 '
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithBold [
 
 	self verifyObtain: factory orderedListWithTwoItemsBoldSample  
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithItalic [
 
 	self verifyObtain: factory orderedListWithTwoItemsItalicSample  
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithMonospace [
 
 	self verifyObtain: factory orderedListWithTwoItemsMonospaceSample  
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithNested [
 
 	self verifyObtain: factory orderedListWithTwoItemsBoldFirstSample  
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedListWithStrike [
 
 	self verifyObtain: factory orderedListWithTwoItemsStrikeSample  
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraph [
 
 	self verifyObtain: factory paragraphSample
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphNewLine [
 	
 	| mic |
@@ -389,19 +390,19 @@ blabla1
 '
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithBold [
 
 	self verifyObtain: factory paragraphBoldSample
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithItalic [
 
 	self verifyObtain: factory paragraphItalicSample
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithMicroDownMarkup [
 
 	| mic |
@@ -411,79 +412,79 @@ blab\~l\**a*1
 '
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithMonospace [
 
 	self verifyObtain: factory paragraphMonospaceSample
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithNested [
 
 	self verifyObtain: factory paragraphNestedSample
 ]
 
-{ #category : #'tests - paragraph' }
+{ #category : 'tests - paragraph' }
 MicTextualMicrodownExporterTest >> testParagraphWithStrike [
 
 	self verifyObtain: factory paragraphStrikeSample
 ]
 
-{ #category : #'tests-header' }
+{ #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testPlainHeader [
 
 	self verifyObtain: factory headerLevel3SampleWithNewLine 
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testQuote [
 
 	self verifyObtain: factory quoteSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testRawFormat [
 
 	self verifyObtain: factory rawFormatSample
 ]
 
-{ #category : #'tests-anchor' }
+{ #category : 'tests-anchor' }
 MicTextualMicrodownExporterTest >> testRoot [
 
 	self verifyObtain: factory rootSample
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextualMicrodownExporterTest >> testSimpleTable [
 
 	self verifyObtain: factory simpleTable
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextualMicrodownExporterTest >> testSimpleTableWithFormatting [
 
 	self verifyObtain: factory simpleTableFormat
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithShortRow [
 
 	self verifyObtain: factory simpleTableShortRow
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithSomeElements [
 
 	self verifyObtain: factory simpleTableMoreFormat
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedList [
 
 	self verifyObtain: factory unorderedListWithTwoItemsSample
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListNestedNewLine [
 
 	| mic |
@@ -499,7 +500,7 @@ MicTextualMicrodownExporterTest >> testUnorderedListNestedNewLine [
 '
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrderedNewLine [
 
 	| mic |
@@ -515,7 +516,7 @@ MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrderedNewLine [
 '
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListNewLine [
 
 	| mic |
@@ -527,37 +528,37 @@ MicTextualMicrodownExporterTest >> testUnorderedListNewLine [
 '
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListWithBold [
 
 	self verifyObtain: factory unorderedListWithTwoItemsBoldSample
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListWithItalic [
 
 	self verifyObtain: factory unorderedListWithTwoItemsItalicSample
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListWithMonospace [
 
 	self verifyObtain: factory unorderedListWithTwoItemsMonospaceSample
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListWithNested [
 
 	self verifyObtain: factory unorderedListWithTwoItemsNestedSample
 ]
 
-{ #category : #'tests - list' }
+{ #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testUnorderedListWithStrike [
 
 	self verifyObtain: factory unorderedListWithTwoItemsStrikeSample
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MicTextualMicrodownExporterTest >> verifyObtain: aString [
 
 	| micElement |
@@ -565,25 +566,25 @@ MicTextualMicrodownExporterTest >> verifyObtain: aString [
 	self assert: (visitor visit: micElement) equals: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> visitor [
 
 	^ visitor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> visitor: anObject [
 
 	visitor := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> visitorClass [
 
 	^ visitorClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTextualMicrodownExporterTest >> visitorClass: anObject [
 
 	visitorClass := anObject

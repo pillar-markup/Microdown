@@ -1,8 +1,14 @@
 "
-A MicArgumentsSplitterTest is a test class for testing the behavior of MicArgumentsSplitter
+A MicArgumentsSplitterTest is a test class for testing the behavior of MicArgumentList.
+This list is used in figures, code, and math equation for now
+
+In the following anchor=fig1&width=70 is an argument list.
+```
+![this is a caption](figures/f.png anchor=fig1&width=70)
+```
 "
 Class {
-	#name : 'MicArgumentsSplitterTest',
+	#name : 'MicArgumentListTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-Tests-Parser',
 	#package : 'Microdown-Tests',
@@ -10,24 +16,24 @@ Class {
 }
 
 { #category : 'helpers' }
-MicArgumentsSplitterTest >> splitter [
+MicArgumentListTest >> splitter [
 	^ MicArgumentList
 ]
 
 { #category : 'helpers' }
-MicArgumentsSplitterTest >> subjectUnderTestWith: aString [
+MicArgumentListTest >> subjectUnderTestWith: aString [
 	^ MicArgumentList withString: aString 
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testArguments [
+MicArgumentListTest >> testArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'foo=bar'.
 	self assert: (subject at: #foo) equals: 'bar'
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testArgumentsForMath [
+MicArgumentListTest >> testArgumentsForMath [
 	| subject |
 	subject := self subjectUnderTestWith: '%foo=bar'.
 	self assert: (subject at: #foo) equals: 'bar'.
@@ -40,14 +46,14 @@ MicArgumentsSplitterTest >> testArgumentsForMath [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testCanInstantiate [
+MicArgumentListTest >> testCanInstantiate [
 	| subject |
 	subject := self subjectUnderTestWith: 'bla'.
 	self assert: (subject isNotNil)
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testDefaultWithEmptyInput [
+MicArgumentListTest >> testDefaultWithEmptyInput [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language defaultValue: 'smalltalk'.
 	self assert: subject size equals: 1.
@@ -57,7 +63,7 @@ MicArgumentsSplitterTest >> testDefaultWithEmptyInput [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testDefaultWithNoValue [
+MicArgumentListTest >> testDefaultWithNoValue [
 	| subject |
 	subject := self splitter split: 'pharo' defaultArg: #language.
 	self assert: subject size equals: 1.
@@ -66,7 +72,7 @@ MicArgumentsSplitterTest >> testDefaultWithNoValue [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testDefaultWithValue [
+MicArgumentListTest >> testDefaultWithValue [
 	| subject |
 	subject := self splitter split: 'pharo' defaultArg: #language defaultValue: #smalltalk.
 	self assert: subject size equals: 1.
@@ -75,28 +81,28 @@ MicArgumentsSplitterTest >> testDefaultWithValue [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testEmpty [
+MicArgumentListTest >> testEmpty [
 	| subject |
 	subject := self subjectUnderTestWith: ''.
 	self assert: subject size equals: 0.
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testFirstTag [
+MicArgumentListTest >> testFirstTag [
 	| subject |
 	subject := self subjectUnderTestWith: 'bla'.
 	self assert: (subject defaultValue) equals: 'bla'
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testFirstTagWithDelimiter [
+MicArgumentListTest >> testFirstTagWithDelimiter [
 	| subject |
 	subject := self subjectUnderTestWith: 'foo|bar=99'.
 	self assert: (subject defaultValue) equals: 'foo'
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultArguments [
+MicArgumentListTest >> testHasNonDefaultArguments [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language.
 	subject at: #foo put: 'bar'.
@@ -104,14 +110,14 @@ MicArgumentsSplitterTest >> testHasNonDefaultArguments [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultArguments_no [
+MicArgumentListTest >> testHasNonDefaultArguments_no [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language.
 	self deny: subject hasNonDefaultArguments 
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultArguments_nonDefault [
+MicArgumentListTest >> testHasNonDefaultArguments_nonDefault [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language defaultValue: 'Pharo'.
 	subject at: #language put: 'Fortran'.
@@ -119,42 +125,42 @@ MicArgumentsSplitterTest >> testHasNonDefaultArguments_nonDefault [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultValue [
+MicArgumentListTest >> testHasNonDefaultValue [
 	| subject |
 	subject := self splitter split: 'fortran' defaultArg: #language.
 	self assert: subject hasNonDefaultValue
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultValue_AndSomeArgs [
+MicArgumentListTest >> testHasNonDefaultValue_AndSomeArgs [
 	| subject |
 	subject := self splitter split: 'fortran|wasOnce=cool' defaultArg: #language.
 	self assert: subject hasNonDefaultValue
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultValue_Default [
+MicArgumentListTest >> testHasNonDefaultValue_Default [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language defaultValue: 'pharo'.
 	self deny: subject hasNonDefaultValue
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultValue_DefaultOverridden [
+MicArgumentListTest >> testHasNonDefaultValue_DefaultOverridden [
 	| subject |
 	subject := self splitter split: 'fortran' defaultArg: #language defaultValue: 'pharo'.
 	self assert: subject hasNonDefaultValue
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testHasNonDefaultValue_NoDefault [
+MicArgumentListTest >> testHasNonDefaultValue_NoDefault [
 	| subject |
 	subject := self splitter split: '' defaultArg: #language.
 	self deny: subject hasNonDefaultValue
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testJustTheArguments [
+MicArgumentListTest >> testJustTheArguments [
 	| subject input |
 	input := 'joe|foo=bar&aaa=bbb ccc&pip='.
 	subject := self splitter split: input defaultArg: #personName.
@@ -162,7 +168,7 @@ MicArgumentsSplitterTest >> testJustTheArguments [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testJustTheArguments_NoDefault [
+MicArgumentListTest >> testJustTheArguments_NoDefault [
 	| subject input |
 	input := 'foo=bar&aaa=bbb ccc&pip='.
 	subject := self splitter split: input defaultArg: #personName.
@@ -170,7 +176,7 @@ MicArgumentsSplitterTest >> testJustTheArguments_NoDefault [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testNameAndArguments [
+MicArgumentListTest >> testNameAndArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'aName|foo=bar'.
 	self assert: (subject includesKey: #foo).
@@ -178,14 +184,14 @@ MicArgumentsSplitterTest >> testNameAndArguments [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testNameWithDelimiter [
+MicArgumentListTest >> testNameWithDelimiter [
 	| subject |
 	subject := self subjectUnderTestWith: 'fooName|bar=foe'.
 	self assert: (subject defaultValue) equals: 'fooName'
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString [
+MicArgumentListTest >> testPrintString [
 	| subject input |
 	input := 'joe|foo=bar&aaa=bbb ccc&pip='.
 	subject := self splitter split: input defaultArg: #personName.
@@ -193,7 +199,7 @@ MicArgumentsSplitterTest >> testPrintString [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString_AssignDefaultUsingEquals [
+MicArgumentListTest >> testPrintString_AssignDefaultUsingEquals [
 	| subject input |
 	input := 'language=fortran'.
 	subject := self splitter split: input defaultArg: 'language'.
@@ -201,7 +207,7 @@ MicArgumentsSplitterTest >> testPrintString_AssignDefaultUsingEquals [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString_Empty [
+MicArgumentListTest >> testPrintString_Empty [
 	| subject input |
 	input := ''.
 	subject := self splitter split: input.
@@ -209,7 +215,7 @@ MicArgumentsSplitterTest >> testPrintString_Empty [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString_defaultValue [
+MicArgumentListTest >> testPrintString_defaultValue [
 	| subject input |
 	input := 'foo'.
 	subject := self splitter split: input.
@@ -217,7 +223,7 @@ MicArgumentsSplitterTest >> testPrintString_defaultValue [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString_oneParam [
+MicArgumentListTest >> testPrintString_oneParam [
 	| subject input |
 	input := 'foo=bar'.
 	subject := self splitter split: input.
@@ -225,7 +231,7 @@ MicArgumentsSplitterTest >> testPrintString_oneParam [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testPrintString_onlyParams [
+MicArgumentListTest >> testPrintString_onlyParams [
 	| subject input |
 	input := 'foo=bar&a=b'.
 	subject := self splitter split: input.
@@ -233,7 +239,7 @@ MicArgumentsSplitterTest >> testPrintString_onlyParams [
 ]
 
 { #category : 'tests' }
-MicArgumentsSplitterTest >> testSeveralArguments [
+MicArgumentListTest >> testSeveralArguments [
 	| subject |
 	subject := self subjectUnderTestWith: 'foo=bar&caption=this is lovely&aaa=99'.
 	self assert: subject size equals: 3.

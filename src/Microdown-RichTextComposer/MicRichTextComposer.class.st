@@ -280,7 +280,7 @@ MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
 		aCodeBlock hasCaption ifTrue: [
 			canvas includeAttribute: TextEmphasis bold in: [
 				canvas
-					<< aCodeBlock testCaptionString asText;
+					<< aCodeBlock caption asText;
 					newLine ] ] ].
 	canvas << textStyler interBlockSpacing
 ]

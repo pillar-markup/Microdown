@@ -164,33 +164,43 @@ MicBeamerWriter >> templateForConfiguration: aConfiguration [
 
 { #category : 'blocks - code' }
 MicBeamerWriter >> visitCode: aCodeBlock [
+
 	| env |
-	env := (aCodeBlock hasCaption and: [ aCodeBlock hasLabel ])
-		ifTrue: [
-			canvas environment 
-				name: 'listing';
-				optParameter: 'label=', aCodeBlock label;
-				optParameter: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}';
-				yourself ]
-		ifFalse: [
-			env := aCodeBlock hasCaption 
-				ifTrue: [ 
-					canvas environment 
-						name: 'listing';
-						optParameter: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}';
-						yourself ]
-				ifFalse: [ 
-					env := aCodeBlock hasLabel 
-						ifTrue: [
-							canvas environment 
-								name: 'listing';
-								optParameter: 'label=', aCodeBlock label;
-								yourself ]
-						ifFalse: [
-							canvas environment 
-								name: 'listing';
-								yourself ]]].
-	env with: [ canvas nextPutAllLines: aCodeBlock body. canvas newLine ]
+	env := (aCodeBlock hasCaption and: [ aCodeBlock hasAnchor ])
+		       ifTrue: [
+			       canvas environment
+				       name: 'listing';
+				       optParameter: 'label=' , aCodeBlock label;
+				       optParameter:
+					       'caption={'
+					       , (self getStringForAll: aCodeBlock captionElements) , '}';
+				       yourself ]
+		       ifFalse: [
+			       env := aCodeBlock hasCaption
+				              ifTrue: [
+					              canvas environment
+						              name: 'listing';
+						              optParameter:
+							              'caption={'
+							              ,
+								              (self getStringForAll:
+										               aCodeBlock captionElements) , '}';
+						              yourself ]
+				              ifFalse: [
+					              env := aCodeBlock hasAnchor
+						                     ifTrue: [
+							                     canvas environment
+								                     name: 'listing';
+								                     optParameter:
+									                     'label=' , aCodeBlock anchor;
+								                     yourself ]
+						                     ifFalse: [
+							                     canvas environment
+								                     name: 'listing';
+								                     yourself ] ] ].
+	env with: [
+		canvas nextPutAllLines: aCodeBlock body.
+		canvas newLine ]
 ]
 
 { #category : 'visiting' }

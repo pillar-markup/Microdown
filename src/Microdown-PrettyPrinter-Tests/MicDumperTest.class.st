@@ -1,15 +1,16 @@
 Class {
-	#name : #MicDumperTest,
-	#superclass : #ParametrizedTestCase,
+	#name : 'MicDumperTest',
+	#superclass : 'ParametrizedTestCase',
 	#instVars : [
 		'factory',
 		'visitor',
 		'parser'
 	],
-	#category : #'Microdown-PrettyPrinter-Tests'
+	#category : 'Microdown-PrettyPrinter-Tests',
+	#package : 'Microdown-PrettyPrinter-Tests'
 }
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 
 	| mic |
@@ -18,7 +19,7 @@ MicDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 	self assert: visitor contents equals: anExpectedString
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicDumperTest >> setUp [ 
 	super setUp.
 	parser := Microdown new.
@@ -26,7 +27,7 @@ MicDumperTest >> setUp [
 	visitor := MicRealDumper new.
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testAnchorFormat [
 
 	| micAnchor result |
@@ -37,7 +38,7 @@ MicDumperTest >> testAnchorFormat [
 		equals: '(MicAnchorBlock new textElement: " test ")'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testBold [
 
 	self 
@@ -48,7 +49,7 @@ MicDumperTest >> testBold [
 						
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testBoldFormat [
 
 	| micBold |
@@ -62,7 +63,7 @@ MicDumperTest >> testBoldFormat [
 		'(MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockNewLine [
 
 	| micCodeBlock result |
@@ -74,7 +75,7 @@ MicDumperTest >> testCodeBlockNewLine [
 		equals: '(MicCodeBlock new body: ''foo'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockOnMultipleLines [
 
 	| micCodeBlock result |
@@ -88,7 +89,7 @@ second line
 third line **b**'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithCaption [
 
 	| micCodeBlock result |
@@ -102,7 +103,7 @@ MicDumperTest >> testCodeBlockWithCaption [
 		'(MicCodeBlock new arguments: { #caption ->''Color is beautifull'' . #bar ->2 } asDictionary ; body: ''bla'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithFloatParam [
 
 	| micCodeBlock result |
@@ -115,7 +116,7 @@ MicDumperTest >> testCodeBlockWithFloatParam [
 		equals: '(MicCodeBlock new arguments: { #ratio ->0.8 } asDictionary ; body: ''bar'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithLanguage [
 
 	| micCodeBlock result |
@@ -128,7 +129,7 @@ MicDumperTest >> testCodeBlockWithLanguage [
 		'(MicCodeBlock new arguments: { #language ->smalltalk } asDictionary ; body: ''foo'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithLiteralArray [
 
 	| micCodeBlock result |
@@ -142,7 +143,7 @@ MicDumperTest >> testCodeBlockWithLiteralArray [
 		'(MicCodeBlock new arguments: { #foo ->#(1 2 true) } asDictionary ; )'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithNoValues [
 
 	| micCodeBlock result |
@@ -156,7 +157,7 @@ MicDumperTest >> testCodeBlockWithNoValues [
 		'(MicCodeBlock new arguments: { #foo -> } asDictionary ; body: ''bar'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithParameterTrueByDefault [
 
 	| micCodeBlock result |
@@ -169,7 +170,7 @@ MicDumperTest >> testCodeBlockWithParameterTrueByDefault [
 		equals: '(MicCodeBlock new arguments: { #language ->foo } asDictionary ; body: ''bar'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithParameters [
 
 	| micCodeBlock result |
@@ -182,7 +183,7 @@ MicDumperTest >> testCodeBlockWithParameters [
 		'(MicCodeBlock new arguments: { #foo ->true . #bar ->2 } asDictionary ; body: ''bla'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 
 	| micCodeBlock result |
@@ -195,7 +196,7 @@ MicDumperTest >> testCodeBlockWithSpaceAtTheEnd [
 		'(MicCodeBlock new body: ''foo'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithSpacedParameters [
 
 	| micCodeBlock result |
@@ -209,7 +210,7 @@ MicDumperTest >> testCodeBlockWithSpacedParameters [
 		'(MicCodeBlock new arguments: { #foo -> true  . #bar -> 2 } asDictionary ; body: ''bla'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testCodeBlockWithoutParam [
 
 	| micCodeBlock result |
@@ -223,7 +224,7 @@ second line
 third line **b**'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testComment [
 
 	| micComment |  
@@ -236,7 +237,7 @@ MicDumperTest >> testComment [
 		equals: '(MicCommentBlock new textElement: ''Foo'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureBoldFormat [
 
 	| micFigure result |
@@ -250,7 +251,7 @@ MicDumperTest >> testFigureBoldFormat [
 		
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureBoldFormat2 [
 
 	| micFigure result |
@@ -264,7 +265,7 @@ MicDumperTest >> testFigureBoldFormat2 [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #size ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Bold'')}) . (MicTextBlock new substring: '' and not bold and '') . (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''bold'')})}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureFormat [
 
 	| micFigure result |
@@ -278,7 +279,7 @@ MicDumperTest >> testFigureFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureItalicFormat [
 
 	| micFigure result |
@@ -292,7 +293,7 @@ MicDumperTest >> testFigureItalicFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureMonospaceFormat [
 
 	| micFigure result |
@@ -306,7 +307,7 @@ MicDumperTest >> testFigureMonospaceFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureNestedFormat [
 
 	| micFigure result |
@@ -320,7 +321,7 @@ MicDumperTest >> testFigureNestedFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo_'')})}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFigureStrikeFormat [
 
 	| micFigure result |
@@ -334,7 +335,7 @@ MicDumperTest >> testFigureStrikeFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''/anUrl'' ; caption: { (MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})}; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testFileFigureFormat [
 
 	| micFigure result |
@@ -348,7 +349,7 @@ MicDumperTest >> testFileFigureFormat [
 		'(MicFigureBlock new arguments: { #label ->figureTest . #width ->80 } asDictionary ; url: ''image.png/'' ; caption: { (MicTextBlock new substring: ''Foo'')}; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testHeader [
 
 	| micHeader |
@@ -363,7 +364,7 @@ MicDumperTest >> testHeader [
 		'(MicHeaderBlock new level: 3; headerElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testItalicFormat [
 
 	| micItalic result |
@@ -375,7 +376,7 @@ MicDumperTest >> testItalicFormat [
 		equals: '(MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testMonospaceFormat [
 
 	| mic result |
@@ -386,7 +387,7 @@ MicDumperTest >> testMonospaceFormat [
 		equals: '(MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedList [
 
 	| micList |
@@ -400,7 +401,7 @@ MicDumperTest >> testOrderedList [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedListWithTwoItems [
 
 	| micList |
@@ -414,7 +415,7 @@ MicDumperTest >> testOrderedListWithTwoItems [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''first'')) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedListWithTwoItemsBold [
 
 	| micList |
@@ -428,7 +429,7 @@ MicDumperTest >> testOrderedListWithTwoItemsBold [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedListWithTwoItemsItalic [
 
 	| micList |
@@ -443,7 +444,7 @@ MicDumperTest >> testOrderedListWithTwoItemsItalic [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedListWithTwoItemsMonospace [
 
 	| micList |
@@ -457,7 +458,7 @@ MicDumperTest >> testOrderedListWithTwoItemsMonospace [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''first''))) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testOrderedListWithTwoItemsStrike [
 
 	| micList |
@@ -471,7 +472,7 @@ MicDumperTest >> testOrderedListWithTwoItemsStrike [
 		'(MicOrderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElements: {(MicTextBlock new substring: ''first'')})) . (MicListItemBlock new (MicTextBlock new substring: ''second'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testParagraph [
 
 	| resString |
@@ -479,7 +480,7 @@ MicDumperTest >> testParagraph [
 	self parse: factory paragraphSample andCheckWeGet: resString
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testPrintHeader [
 	
 	| resString |
@@ -492,7 +493,7 @@ MicDumperTest >> testPrintHeader [
 
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testPrintOrderedList [
 
 	| resString |
@@ -502,7 +503,7 @@ MicDumperTest >> testPrintOrderedList [
 		andCheckWeGet: resString
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testPrintParagraph [
 
 	| resString |
@@ -510,7 +511,7 @@ MicDumperTest >> testPrintParagraph [
 	self parse: factory paragraphSample andCheckWeGet: resString
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testPrintUnorderedList [
 
 	| resString |
@@ -518,7 +519,7 @@ MicDumperTest >> testPrintUnorderedList [
 	self parse: factory unorderedListSample andCheckWeGet: resString
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testQuote [
 
 	| micQuote |
@@ -528,10 +529,10 @@ MicDumperTest >> testQuote [
 	self
 		assert: visitor contents
 		equals:
-		'(MicQuoteBlock new textElement: (MicTextBlock new substring: ''Foo''))'
+		'(MicBlockQuoteBlock new textElement: (MicTextBlock new substring: ''Foo''))'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testRawBlock [
 
 	| micRaw |
@@ -544,7 +545,7 @@ MicDumperTest >> testRawBlock [
 		'(MicRawBlock new substring: ''Foo'')'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testSimpleLinkFormat [
 
 	| micLink result |
@@ -556,7 +557,7 @@ MicDumperTest >> testSimpleLinkFormat [
 		equals: '(MicLinkBlock new captionElements: {(MicTextBlock new substring: ''Pharo url'')} ; url: ''http://www.pharo.org'' ; yourself)'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testStrike [
 
 
@@ -567,7 +568,7 @@ MicDumperTest >> testStrike [
 
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testTable [
 
 	| micTable |
@@ -576,7 +577,7 @@ MicDumperTest >> testTable [
 	self assert: (micTable accept: visitor) equals: 'MicTableBlock'
 ]
 
-{ #category : #'test - inline - blocks' }
+{ #category : 'test - inline - blocks' }
 MicDumperTest >> testTextBlock [
 
 	| micText |
@@ -589,7 +590,7 @@ MicDumperTest >> testTextBlock [
 		'(MicTextBlock new substring: ''Je ne connaitrais pas la peur'')'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedEmptyList [
 
 	| micList |
@@ -603,7 +604,7 @@ MicDumperTest >> testUnOrderedEmptyList [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''-'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedList [
 
 	| micList |
@@ -616,7 +617,7 @@ MicDumperTest >> testUnOrderedList [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedListWithTwoItems [
 
 	| micList |
@@ -630,7 +631,7 @@ MicDumperTest >> testUnOrderedListWithTwoItems [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicTextBlock new substring: ''Foo'')) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedListWithTwoItemsBold [
 
 	| micList |
@@ -644,7 +645,7 @@ MicDumperTest >> testUnOrderedListWithTwoItemsBold [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicBoldFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 
 	| micList |
@@ -660,7 +661,7 @@ MicDumperTest >> testUnOrderedListWithTwoItemsMonospace [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicMonospaceFormatBlock new textElement: (MicTextBlock new substring: ''Foo''))) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedListWithTwoItemsNested [
 
 	| micList |
@@ -676,7 +677,7 @@ MicDumperTest >> testUnOrderedListWithTwoItemsNested [
 		'(MicUnorderedListBlock new children: { (MicListItemBlock new (MicStrikeFormatBlock new textElements: {(MicItalicFormatBlock new textElements: {(MicTextBlock new substring: ''Foo'')})})) . (MicListItemBlock new (MicTextBlock new substring: ''Bar'')) }; yourself)'
 ]
 
-{ #category : #'tests - section' }
+{ #category : 'tests - section' }
 MicDumperTest >> testUnOrderedListWithTwoItemsStrike [
 
 	| micList |

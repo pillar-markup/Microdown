@@ -66,12 +66,13 @@ MicSBALaTeXWriterTest >> testCodeblockWithLabel [
 
 { #category : 'tests' }
 MicSBALaTeXWriterTest >> testFloatingWithBothLabelAndCaption [
+
 	| codeBlock |
 	codeBlock := (MicCodeBlock new body: 'foo')
-					label: 'myScript';
-					caption: 'a caption';
-					yourself.
-	self assertWriting: codeBlock includesTexts: #('label=myScript')
+		             anchor: 'myScript';
+		             caption: 'a caption';
+		             yourself.
+	self assertWriting: codeBlock includesTexts: #( 'label=myScript' )
 ]
 
 { #category : 'tests' }

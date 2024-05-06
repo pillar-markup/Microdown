@@ -1,5 +1,25 @@
 "
 I am intended to provide arguments to annotations, codeblocks and environments. 
+I'm used in figures, code, and math equation for now
+
+In the following anchor=fig1&width=70 is an argument list.
+```
+![this is a caption](figures/f.png anchor=fig1&width=70)
+```
+
+```
+    ```pharo
+	...
+	```
+```
+
+is equivalent to the set pharo as value to the default tag which is for blocks language
+
+```
+    ```language=pharo
+	...
+	```
+```
 
 My syntax is of the following form:
 

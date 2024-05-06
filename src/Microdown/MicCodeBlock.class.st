@@ -3,18 +3,18 @@ I am a code block. I look like this, starting and ending with three $`
 my 'arguments' is just the text from the fourth character up to the end of line.
 
 ```
- ```arguments
+ \`\`\`arguments
  line 1
  line 2
  line 3
- ``` 
+ \`\`\` 
 ```
 
 A codeblock does not interpreter its contents. 
-You can however specify different tag and multiple argument. 
+You can however specify different tags such as an anchor and a caption. 
 
 ```
-	```language=pharo|caption=A method&label=method 
+	```language=pharo|caption=A method&anchor=method 
 	pharoMotto 
 		^ 'Doing something every is the best way to make progress'
 	```
@@ -46,6 +46,22 @@ Class {
 { #category : 'visiting' }
 MicCodeBlock >> accept: aVisitor [
  	^ aVisitor visitCode: self
+]
+
+{ #category : 'accessing' }
+MicCodeBlock >> anchor [
+	| anchor |
+	anchor := self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ].
+	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
+	^ anchor 
+]
+
+{ #category : 'accessing' }
+MicCodeBlock >> anchor: aString [
+
+	self arguments at: #anchor put: aString
 ]
 
 { #category : 'public' }
@@ -81,6 +97,12 @@ MicCodeBlock >> extractFirstLineFrom: aLine [
 	^ lineWithoutMarkup
 ]
 
+{ #category : 'accessing' }
+MicCodeBlock >> hasAnchor [
+	^ (arguments includesKey: #label) or: [ arguments includesKey: #anchor ]
+
+]
+
 { #category : 'testing' }
 MicCodeBlock >> hasBody [
 
@@ -89,8 +111,9 @@ MicCodeBlock >> hasBody [
 
 { #category : 'accessing' }
 MicCodeBlock >> hasLabel [
-	^ arguments includesKey: #label
-
+	self deprecated: 'Use hasAnchor' transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
+	
+	^ self anchor
 ]
 
 { #category : 'testing' }
@@ -113,20 +136,20 @@ MicCodeBlock >> initialize [
 
 { #category : 'accessing' }
 MicCodeBlock >> label [
-	"precondition: receiver hasLabel"
+	self deprecated: 'Use anchor' transformWith: '`@rec label' -> '`@rec anchor'.
 	
-	^ arguments at: #label
+	^ self anchor
 ]
 
 { #category : 'accessing' }
 MicCodeBlock >> label: aString [
 
-	self arguments at: #label put: aString
+	self deprecated: 'Use anchor:' transformWith: '`@rec label: `@args' -> '`@rec anchor: `@args'.
+	self anchor: aString
 ]
 
 { #category : 'accessing' }
 MicCodeBlock >> size [
-
 	"precondition: receiver hasLabel"
 
 	^ arguments at: #size
