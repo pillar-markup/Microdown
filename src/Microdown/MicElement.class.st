@@ -151,6 +151,18 @@ MicElement >> removeProperty: aKey ifAbsent: aBlock [
 	^ answer
 ]
 
+{ #category : 'replacement' }
+MicElement >> replaceBy: aMicElement [
+	"Replace the receiver by the argument. 
+	Make sure that the new element parent is the parent of the receiver."
+	
+	parent replace: self by: aMicElement.
+	"We use basicParent and not parent, 
+	because parent is doing an addChild:"
+	aMicElement basicParent: parent.
+	parent := nil.
+]
+
 { #category : 'public' }
 MicElement >> resolveFrom: aBase [
 	Microdown resolveDocument: self withBase: aBase
