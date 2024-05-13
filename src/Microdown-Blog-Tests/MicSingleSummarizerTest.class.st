@@ -15,7 +15,7 @@ MicSingleSummarizerTest >> createMicRootBlock [
 MicSingleSummarizerTest >> generateFilesystemExample [
 
 	| file |
-	file := FileSystem disk workingDirectory / 'anExample1.md'.
+	file := FileSystem memory workingDirectory / 'anExample1.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '# A Cool Story
 @sec1
 
@@ -36,7 +36,7 @@ this is a code blu blu
 ]
 
 { #category : 'tests' }
-MicSingleSummarizerTest >> testFirstHeaderBlock [
+MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 
 	| header |
 	
@@ -49,7 +49,7 @@ MicSingleSummarizerTest >> testFirstHeaderBlock [
 ]
 
 { #category : 'tests' }
-MicSingleSummarizerTest >> testFirstParagraphBlock [
+MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 
 	| paragraph |
 	
@@ -61,6 +61,15 @@ MicSingleSummarizerTest >> testFirstParagraphBlock [
 	self assert: paragraph textElements size equals: 3.
 	self assert: (paragraph textElements collect: [:each | each plainText ]) asArray equals: #('Pharo is cool but ' 'this is' ' a superlong ').
 	paragraph textElements do: [ :each | self assert: each parent equals: paragraph ]
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testSummarize [
+
+	| root |
+	root := MicSingleSummarizer new summarize: self createMicRootBlock.
+	self assert: (root isKindOf: MicRootBlock);
+	assert: (root children size) equals: 3.
 ]
 
 { #category : 'tests' }

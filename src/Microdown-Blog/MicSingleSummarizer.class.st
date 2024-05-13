@@ -13,6 +13,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 
 
 	| header newHeader |
+	
 	header := aMicRootBlock children 
 		detect: [ :each | each isKindOf: MicHeaderBlock ]
 		ifNone: [
@@ -24,6 +25,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 				^ h ].
 	newHeader := MicHeaderBlock new.
 	header headerElements do: [ :t | t copy  parent: newHeader ].
+	newHeader level: header level.
 	^ newHeader
 ]
 
@@ -66,6 +68,7 @@ MicSingleSummarizer >> summarize: aMicRootBlock [
 	| element |
 	element := MicRootBlock new.
 	element 
+		addChild: (aMicRootBlock children first);
 		addChild: (self firstHeaderBlockOf: aMicRootBlock);
 		addChild: (self firstParagraphBlockOf: aMicRootBlock).
 	
