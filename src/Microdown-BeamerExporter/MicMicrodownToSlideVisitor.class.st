@@ -8,6 +8,6 @@ Class {
 { #category : 'visiting' }
 MicMicrodownToSlideVisitor >> visitHeader: aHeader [
 
-	aHeader level = 1 
-		ifTrue: [ aHeader parent  ]
+	aHeader parent replace: aHeader by: (MicSlideBlock new title: aHeader header)
+	
 ]

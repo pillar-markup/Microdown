@@ -133,15 +133,17 @@ MicAbstractBlock >> parserClass [
 ]
 
 { #category : 'replacement' }
-MicAbstractBlock >> replace: aBlock by: anotherBlock [ 
+MicAbstractBlock >> replace: aMicElement by: anotherMicElement [ 
 	
-	self children replaceAll: aBlock with: anotherBlock 
+	self children replaceAll: aMicElement with: anotherMicElement.
+	aMicElement basicParent: nil.
+	anotherMicElement basicParent: self.
 ]
 
 { #category : 'replacement' }
-MicAbstractBlock >> replace: aBlock byCollection: aCollection [ 
+MicAbstractBlock >> replace: aMicElement byCollection: aCollection [ 
 	
-	children := children copyReplaceAll: {aBlock} with: aCollection 
+	children := children copyReplaceAll: {aMicElement} with: aCollection 
 ]
 
 { #category : 'replacement' }

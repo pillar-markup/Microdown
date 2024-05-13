@@ -152,14 +152,14 @@ MicElement >> removeProperty: aKey ifAbsent: aBlock [
 ]
 
 { #category : 'replacement' }
-MicElement >> replaceBy: anotherBlock [
+MicElement >> replaceBy: aMicElement [
 	"Replace the receiver by the argument. 
 	Make sure that the new element parent is the parent of the receiver."
 	
-	parent replace: self by: anotherBlock.
+	parent replace: self by: aMicElement.
 	"We use basicParent and not parent, 
 	because parent is doing an addChild:"
-	anotherBlock basicParent: parent.
+	aMicElement basicParent: parent.
 	parent := nil.
 ]
 
