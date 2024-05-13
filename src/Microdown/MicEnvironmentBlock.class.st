@@ -176,6 +176,14 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 		ifFalse: [ firstLine ]
 ]
 
+{ #category : 'parse support' }
+MicEnvironmentBlock >> initialize [
+
+	super initialize.
+	arguments := MicArgumentList new 
+		
+]
+
 { #category : 'markups' }
 MicEnvironmentBlock >> lineStartMarkup [
 
