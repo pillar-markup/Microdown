@@ -91,6 +91,7 @@ MicrodownTest >> testParentLinkIsKeptOnReplaceBy [
 	new := MicTextBlock new.
 	new bodyString: 'New'.
 	
+	self halt.
 	original replaceBy: new.
 	self assert: h children size equals: 1.
 	self assert: h children first equals: new.
