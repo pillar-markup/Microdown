@@ -157,10 +157,7 @@ MicElement >> replaceBy: aMicElement [
 	Make sure that the new element parent is the parent of the receiver."
 	
 	parent replace: self by: aMicElement.
-	"We use basicParent and not parent, 
-	because parent is doing an addChild:"
-	aMicElement basicParent: parent.
-	parent := nil.
+	
 ]
 
 { #category : 'public' }
