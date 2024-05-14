@@ -35,6 +35,17 @@ this is a code blu blu
 	^ file.
 ]
 
+{ #category : 'enumerating' }
+MicSingleSummarizerTest >> generateFilesystemExampleEmpty [
+
+	| file |
+	file := FileSystem memory workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '' ].
+
+	^ file
+]
+
 { #category : 'tests' }
 MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 
@@ -52,15 +63,38 @@ MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 
 	| paragraph |
-	
 	paragraph := MicSingleSummarizer new
-		maximumWords: 3;
-		firstParagraphBlockOf: self createMicRootBlock.
-	self assert: ( paragraph isKindOf: MicParagraphBlock ).
-	
-	self assert: paragraph textElements size equals: 3.
-	self assert: (paragraph textElements collect: [:each | each plainText ]) asArray equals: #('Pharo is cool but ' 'this is' ' a superlong ').
-	paragraph textElements do: [ :each | self assert: each parent equals: paragraph ]
+		             maximumWords: 3;
+		             firstParagraphBlockOf: self createMicRootBlock.
+	self assert: (paragraph isKindOf: MicParagraphBlock).
+
+	self assert: paragraph textElements size equals: 1.
+	self
+		assert:
+		(paragraph textElements collect: [ :each | each plainText ]) asArray
+		equals: #( 'Pharo is cool' ).
+	paragraph textElements do: [ :each |
+		self assert: each parent equals: paragraph ]
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testFirstParagraphBlockOfWithNoParagraph [
+
+	| paragraph |
+	paragraph := MicSingleSummarizer new
+		             maximumWords: 3;
+		             firstParagraphBlockOf: (Microdown parse:
+					              self generateFilesystemExampleEmpty asFileReference
+						              contents).
+	self assert: (paragraph isKindOf: MicParagraphBlock).
+
+	self assert: paragraph textElements size equals: 1.
+	self
+		assert:
+		(paragraph textElements collect: [ :each | each plainText ]) asArray
+		equals: #( 'Please add a paragraph' ).
+	paragraph textElements do: [ :each |
+		self assert: each parent equals: paragraph ]
 ]
 
 { #category : 'tests' }

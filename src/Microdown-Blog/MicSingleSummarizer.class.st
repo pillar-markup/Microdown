@@ -31,21 +31,31 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
-	
-	| p textElements newParagraph selectionSize t |
-	p := aMicRootBlock children 
-		detect: [ :each | each isKindOf: MicParagraphBlock ]
-		ifNone: [ 
-			p := MicParagraphBlock new.
-			t := MicTextBlock new bodyString: 'Please add a paragraph'.
-			p textElements: { t }.
-			t parent: p.
-			^ p ].
-	selectionSize := maximumWords min: p textElements size.
-	textElements := (p textElements first: selectionSize).
+	"Il faut réussir a le faire mot par mot, avec substring
+Récuperer ancien truc sur github pour repartir de 0"
+
+	| p textElements newParagraph selectionSize t sub |
+	p := aMicRootBlock children
+		     detect: [ :each | each isKindOf: MicParagraphBlock ]
+		     ifNone: [
+			     p := MicParagraphBlock new.
+			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
+			     t parent: p.
+			     ^ p ].
+	sub := p text substrings: ' '.
+	selectionSize := maximumWords min: sub size.
+	sub := sub first: selectionSize.
+
+	textElements := '' writeStream.
+	sub do: [ :each |
+		textElements
+			nextPutAll: each;
+			nextPut: Character space ].
+
 	newParagraph := MicParagraphBlock new.
-	textElements do: [ :t | 
-		newParagraph addChild: t copy ].
+	t := MicTextBlock new bodyString: textElements ensureNoSpace contents.
+	t parent: newParagraph.
+	"textElements do: [ :t | newParagraph addChild: t copy ]."
 	^ newParagraph
 ]
 
