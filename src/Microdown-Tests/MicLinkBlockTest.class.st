@@ -82,7 +82,6 @@ MicLinkBlockTest >> testFullName [
 
 	link := self parseLink: self linkSample.
 	self assert: link reference fullName equals: '/anUrl'
-
 ]
 
 { #category : 'tests' }
@@ -110,7 +109,9 @@ MicLinkBlockTest >> testLinkBoldAPIToAccessText [
 	link := self parseLink: self linkBoldSample.
 	self assert: link class equals: MicLinkBlock.
 	self assert: link children first class equals: MicBoldFormatBlock.
-	self assert: link children first children first class equals: MicTextBlock.
+	self
+		assert: link children first children first class
+		equals: MicTextBlock.
 
 	self assert: link url equals: '/anUrl'
 ]

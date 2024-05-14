@@ -11,39 +11,47 @@ Class {
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 
-
 	| header newHeader |
-	header := aMicRootBlock children 
-		detect: [ :each | each isKindOf: MicHeaderBlock ]
-		ifNone: [
-				| h t |
-				 h := MicHeaderBlock new.
-				t := MicTextBlock new bodyString: 'Please define a header'.
-				h headerElements: { t }. 
-				t parent: h.
-				^ h ].
+	header := aMicRootBlock children
+		          detect: [ :each | each isKindOf: MicHeaderBlock ]
+		          ifNone: [
+			          | h t |
+			          h := MicHeaderBlock new.
+			          t := MicTextBlock new bodyString:
+				               'Please define a header'.
+			          t parent: h.
+			          ^ h ].
 	newHeader := MicHeaderBlock new.
-	header headerElements do: [ :t | t copy  parent: newHeader ].
+	header headerElements do: [ :t | t copy parent: newHeader ].
+	newHeader level: header level.
 	^ newHeader
 ]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
-	
-	| p textElements newParagraph selectionSize t |
-	p := aMicRootBlock children 
-		detect: [ :each | each isKindOf: MicParagraphBlock ]
-		ifNone: [ 
-			p := MicParagraphBlock new.
-			t := MicTextBlock new bodyString: 'Please add a paragraph'.
-			p textElements: { t }.
-			t parent: p.
-			^ p ].
-	selectionSize := maximumWords min: p textElements size.
-	textElements := (p textElements first: selectionSize).
+
+	| p textElements newParagraph selectionSize t sub |
+	p := aMicRootBlock children
+		     detect: [ :each | each isKindOf: MicParagraphBlock ]
+		     ifNone: [
+			     p := MicParagraphBlock new.
+			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
+			     t parent: p.
+			     ^ p ].
+		
+	sub := p text substrings: ' '.
+	selectionSize := maximumWords min: sub size.
+	sub := sub first: selectionSize.
+
+	textElements := '' writeStream.
+	sub do: [ :each |
+		textElements
+			nextPutAll: each;
+			nextPut: Character space ].
+
 	newParagraph := MicParagraphBlock new.
-	textElements do: [ :t | 
-		newParagraph addChild: t copy ].
+	t := MicTextBlock new bodyString: textElements ensureNoSpace contents.
+	t parent: newParagraph.
 	^ newParagraph
 ]
 
@@ -66,6 +74,7 @@ MicSingleSummarizer >> summarize: aMicRootBlock [
 	| element |
 	element := MicRootBlock new.
 	element 
+		addChild: (aMicRootBlock children first);
 		addChild: (self firstHeaderBlockOf: aMicRootBlock);
 		addChild: (self firstParagraphBlockOf: aMicRootBlock).
 	
