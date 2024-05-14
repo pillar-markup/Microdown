@@ -63,6 +63,12 @@ BaselineOfMicrodown >> baseline: spec [
 			with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-ReferenceChecker' with: [
 				spec requires: #( #'Microdown' ) ];
+			
+			package: #'Microdown-Blog' with: [
+				spec requires: #( #'Microdown' ) ];
+			package: #'Microdown-Blog-Tests' with: [
+				spec requires: #( #'Microdown-Blog' ) ];
+			
 			package: #'Microdown-PrettyPrinter-Tests' with: [
 				spec requires: #( #'Microdown-PrettyPrinter'
 					   #'Microdown-Tests' ) ].
