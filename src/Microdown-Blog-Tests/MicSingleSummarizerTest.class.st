@@ -60,6 +60,22 @@ MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 ]
 
 { #category : 'tests' }
+MicSingleSummarizerTest >> testFirstHeaderBlockOfWithNoHeader [
+
+	| header |
+	header := MicSingleSummarizer new firstHeaderBlockOf:(Microdown parse: self generateFilesystemExampleEmpty asFileReference contents).
+	self assert: (header isKindOf: MicHeaderBlock).
+	self assert: header text equals: 'Please define a header'.
+
+	self
+		assert:
+		(header headerElements collect: [ :each | each plainText ]) asArray
+		equals: #( 'Please define a header' ).
+	header headerElements do: [ :each |
+		self assert: each parent equals: header ]
+]
+
+{ #category : 'tests' }
 MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 
 	| paragraph |

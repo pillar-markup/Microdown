@@ -11,28 +11,24 @@ Class {
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 
-
 	| header newHeader |
-	
-	header := aMicRootBlock children 
-		detect: [ :each | each isKindOf: MicHeaderBlock ]
-		ifNone: [
-				| h t |
-				 h := MicHeaderBlock new.
-				t := MicTextBlock new bodyString: 'Please define a header'.
-				h headerElements: { t }. 
-				t parent: h.
-				^ h ].
+	header := aMicRootBlock children
+		          detect: [ :each | each isKindOf: MicHeaderBlock ]
+		          ifNone: [
+			          | h t |
+			          h := MicHeaderBlock new.
+			          t := MicTextBlock new bodyString:
+				               'Please define a header'.
+			          t parent: h.
+			          ^ h ].
 	newHeader := MicHeaderBlock new.
-	header headerElements do: [ :t | t copy  parent: newHeader ].
+	header headerElements do: [ :t | t copy parent: newHeader ].
 	newHeader level: header level.
 	^ newHeader
 ]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
-	"Il faut réussir a le faire mot par mot, avec substring
-Récuperer ancien truc sur github pour repartir de 0"
 
 	| p textElements newParagraph selectionSize t sub |
 	p := aMicRootBlock children
@@ -42,6 +38,7 @@ Récuperer ancien truc sur github pour repartir de 0"
 			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
 			     t parent: p.
 			     ^ p ].
+		
 	sub := p text substrings: ' '.
 	selectionSize := maximumWords min: sub size.
 	sub := sub first: selectionSize.
@@ -55,7 +52,6 @@ Récuperer ancien truc sur github pour repartir de 0"
 	newParagraph := MicParagraphBlock new.
 	t := MicTextBlock new bodyString: textElements ensureNoSpace contents.
 	t parent: newParagraph.
-	"textElements do: [ :t | newParagraph addChild: t copy ]."
 	^ newParagraph
 ]
 

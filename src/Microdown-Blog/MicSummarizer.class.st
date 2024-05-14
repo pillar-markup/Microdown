@@ -59,14 +59,14 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 	summarize := MicRootBlock new.
 
 	singleSummarizer := MicSingleSummarizer new.
-	
+
 	selectionSize := maximumFile min: aListOfSingleSummarizer size.
 
 	1 to: selectionSize do: [ :each |
 		root := aListOfSingleSummarizer at: each.
 		summarize
-			addChild: (singleSummarizer firstHeaderBlockOf: root);
-			addChild: (singleSummarizer firstParagraphBlockOf: root) ].
+			addChild: (root children at:2);
+			addChild: (root children at:3) ].
 
 	^ summarize
 ]

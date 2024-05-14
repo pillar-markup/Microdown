@@ -19,15 +19,16 @@ MicSummarizerTest >> createListOfFile [
 { #category : 'tests' }
 MicSummarizerTest >> createListOfMicRootBlock [
 
-	| q |
+	| q singleSummarizer |
 	q := Array new: 3.
+	singleSummarizer := MicSingleSummarizer new.
 	q
-		at: 1 put: (MicSingleSummarizer new summarize:
-					 (Microdown parse: self generateFilesystemExample1 asFileReference contents));
-		at: 2 put: (MicSingleSummarizer new summarize:
-					 (Microdown parse: self generateFilesystemExample2 asFileReference contents));
-		at: 3 put: (MicSingleSummarizer new summarize:
-					 (Microdown parse: self generateFilesystemExample3 asFileReference contents)).
+		at: 1 put: (singleSummarizer summarize: (Microdown parse:
+							  self generateFilesystemExample1 asFileReference contents));
+		at: 2 put: (singleSummarizer summarize: (Microdown parse:
+							  self generateFilesystemExample2 asFileReference contents));
+		at: 3 put: (singleSummarizer summarize: (Microdown parse:
+							  self generateFilesystemExample3 asFileReference contents)).
 	^ q
 ]
 
@@ -40,7 +41,6 @@ MicSummarizerTest >> generateFilesystemExample1 [
 		stream nextPutAll: '{
     "date" : "8 January 2019"
 }
-		
 # A Cool Story
 
 Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
@@ -61,7 +61,6 @@ MicSummarizerTest >> generateFilesystemExample2 [
 		stream nextPutAll: '{
     "date" : "22 January 2019"
 }
-
 # Pharo is cool
 
 If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will change the way you program with objects: come and learn or rediscover _object-oriented programming_ with Pharo!
@@ -81,7 +80,6 @@ MicSummarizerTest >> generateFilesystemExample3 [
 		stream nextPutAll: '{
     "date" : "29 January 2018"
 }
-
 # Mooc Pharo
 
 Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
@@ -120,7 +118,7 @@ MicSummarizerTest >> testSummarize [
 MicSummarizerTest >> testSummarizeFile [
 
 	| summary |
-	summary := MicSummarizer new summarize: self createListOfMicRootBlock.
+	summary := MicSummarizer new summarizeFile: self createListOfFile.
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 6
