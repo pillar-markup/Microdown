@@ -9,6 +9,35 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+MicSummarizer >> generateDateListSince2014 [
+
+	| date t |
+
+	date := Date newDay: 1 month: 1  year: 2014.
+
+	t := Timespan starting: date duration: (Duration years: [ Date today year - date year + 1] value ).
+	^ t months
+ 
+]
+
+{ #category : 'as yet unclassified' }
+MicSummarizer >> generateMicListBlockOfDate [
+
+	| root link text |
+	
+	root := MicUnorderedListBlock new.
+
+	MicSummarizer new generateDateListSince2014 do: [ :each |
+		link := MicLinkBlock new.
+		text := MicTextBlock new bodyString: each asString.
+		link
+			children: (Array new: 1 withAll: text);
+			url: '/TRUC'.
+		link parent: root ].
+	^ root
+]
+
+{ #category : 'as yet unclassified' }
 MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
 
 	| metadataDate |
@@ -37,19 +66,25 @@ MicSummarizer >> maximumFile: aNumber [
 ]
 
 { #category : 'rendering' }
-MicSummarizer >> render: aMicSummerizeBlock [
+MicSummarizer >> render: aMicSummerize [
 
 	| a q |
-	
-	a := (MicHTMLVisitor new visit: aMicSummerizeBlock ) at: 1.
+	a := (MicHTMLVisitor new visit: aMicSummerize) at: 1.
 
 	q := MicHTMLDocument new.
 	q configuration: a configuration.
 	q configuration document: q.
 	q setCharSetUTF8.
-	^ q writeDocument: a contents;
-	writeToFile;
-	contents.
+	^ q
+		  writeDocumentBody: a contents;
+		  writeToFile;
+		  contents
+]
+
+{ #category : 'rendering' }
+MicSummarizer >> renderFiles: aListOfFiles [
+
+	^ self render: ( self summarizeFile: aListOfFiles )
 ]
 
 { #category : 'as yet unclassified' }
