@@ -70,15 +70,19 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	
-	| element |
+	| element headerLink header |
 	element := MicRootBlock new.
-	element 
-		addChild: (aMicRootBlock children first);
-		addChild: (self firstHeaderBlockOf: aMicRootBlock);
-		addChild: (self firstParagraphBlockOf: aMicRootBlock).
-	
-	^ element.
+	header := self firstHeaderBlockOf: aMicRootBlock.
+	headerLink := MicHeaderBlock new.
+	headerLink addChild: ((MicInlineParser parse: '[',header text,'](''/'')') at:1);
+	level: header level.
+	element
+		addChild: aMicRootBlock children first;
+		addChild: headerLink;
+		"addChild: (self firstHeaderBlockOf: aMicRootBlock);"addChild:
+			(self firstParagraphBlockOf: aMicRootBlock).
+
+	^ element
 ]
 
 { #category : 'parsing' }

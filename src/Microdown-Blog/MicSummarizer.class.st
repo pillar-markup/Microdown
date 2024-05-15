@@ -23,17 +23,16 @@ MicSummarizer >> generateDateListSince2014 [
 { #category : 'as yet unclassified' }
 MicSummarizer >> generateMicListBlockOfDate [
 
-	| root link text |
-	
+	| root link text inlineParser listElement |
 	root := MicUnorderedListBlock new.
+	inlineParser := MicInlineParser new.
 
-	MicSummarizer new generateDateListSince2014 do: [ :each |
-		link := MicLinkBlock new.
-		text := MicTextBlock new bodyString: each asString.
-		link
-			children: (Array new: 1 withAll: text);
-			url: '/TRUC'.
-		link parent: root ].
+	self generateDateListSince2014 do: [ :each |
+		listElement := MicListItemBlock new.
+		text := '[' , each asString , '](' , 'http://pharo.org' , ')'.
+		link := inlineParser parse: text.
+		(link at: 1) parent: listElement.
+		listElement parent: root ].
 	^ root
 ]
 
@@ -100,8 +99,10 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 	1 to: selectionSize do: [ :each |
 		root := aListOfSingleSummarizer at: each.
 		summarize
-			addChild: (root children at:2);
-			addChild: (root children at:3) ].
+			addChild: (root children at: 2);
+			addChild: (root children at: 3) ].
+
+	summarize addChild: self generateMicListBlockOfDate.
 
 	^ summarize
 ]
