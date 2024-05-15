@@ -8,7 +8,7 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generate' }
 MicSummarizer >> generateDateListSince2014 [
 
 	| date t |
@@ -20,7 +20,7 @@ MicSummarizer >> generateDateListSince2014 [
  
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generate' }
 MicSummarizer >> generateMicListBlockOfDate [
 
 	| root link text inlineParser listElement |
@@ -36,7 +36,7 @@ MicSummarizer >> generateMicListBlockOfDate [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'grouping' }
 MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
 
 	| metadataDate |
@@ -68,6 +68,9 @@ MicSummarizer >> maximumFile: aNumber [
 MicSummarizer >> render: aMicSummerize [
 
 	| a q |
+	
+	aMicSummerize addChild: self generateMicListBlockOfDate.
+	
 	a := (MicHTMLVisitor new visit: aMicSummerize) at: 1.
 
 	q := MicHTMLDocument new.
@@ -101,8 +104,6 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 		summarize
 			addChild: (root children at: 2);
 			addChild: (root children at: 3) ].
-
-	summarize addChild: self generateMicListBlockOfDate.
 
 	^ summarize
 ]
