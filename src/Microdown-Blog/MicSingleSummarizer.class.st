@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'maximumWords',
-		'destinationDirectory'
+		'destinationDirectory',
+		'filePath'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -17,7 +18,7 @@ MicSingleSummarizer >> createHtmlFile: aMicRoot [
 
 	date := (aMicRoot children at: 1) body at: #date.
 	date := date asDate.
-	header := MicSingleSummarizer new firstHeaderBlockOf: aMicRoot.
+	header := self firstHeaderBlockOf: aMicRoot.
 
 	q := MicHTMLDocument new.
 	q configuration: a configuration.
@@ -25,13 +26,13 @@ MicSingleSummarizer >> createHtmlFile: aMicRoot [
 	q
 		setCharSetUTF8;
 		destinationPath:
-			'\Users\qmout\Documents\Pharo\images\Microdown\output\html' , '\'
-			, date year asString , '\' , date monthName , '\'
-			, date day asString , '\'.
+			destinationDirectory , '\' , date year asString , '\'
+			, date monthName , '\' , date day asString , '\'.
+	filePath := q destinationPath , header text , '.html'.
 	^ q
 		  fileName: header text , '.html';
 		  writeDocument: a contents;
-		  "writeToFileNamed: q destinationPath, header text;"contents
+		  contents
 ]
 
 { #category : 'accessing' }
@@ -44,6 +45,18 @@ MicSingleSummarizer >> destinationDirectory [
 MicSingleSummarizer >> destinationDirectory: aDestination [
 
 	destinationDirectory := aDestination
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> filePath [ 
+
+	^ filePath
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> filePath: aFilePath [
+
+	filePath := aFilePath.
 ]
 
 { #category : 'accessing' }
@@ -143,8 +156,9 @@ MicSingleSummarizer >> transformHeaderToLinkHeader: aHeader [
 	headerLink := MicHeaderBlock new.
 	headerLink
 		addChild:
-			((MicInlineParser parse: '[' , aHeader text , '](''/'')') at: 1);
+			((MicInlineParser parse: '[' , aHeader text , '](' , filePath , ')')
+				 at: 1);
 		level: aHeader level.
-		
+
 	^ headerLink
 ]
