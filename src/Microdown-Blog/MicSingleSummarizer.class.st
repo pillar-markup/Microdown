@@ -2,11 +2,62 @@ Class {
 	#name : 'MicSingleSummarizer',
 	#superclass : 'Object',
 	#instVars : [
-		'maximumWords'
+		'maximumWords',
+		'destinationDirectory',
+		'filePath'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
+
+{ #category : 'rendering' }
+MicSingleSummarizer >> createHtmlFile: aMicRoot [
+
+	| a q date header |
+	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+
+	date := (aMicRoot children at: 1) body at: #date.
+	date := date asDate.
+	header := self firstHeaderBlockOf: aMicRoot.
+
+	q := MicHTMLDocument new.
+	q configuration: a configuration.
+	q configuration document: q.
+	q
+		setCharSetUTF8;
+		destinationPath:
+			destinationDirectory , '\' , date year asString , '\'
+			, date monthName , '\' , date day asString , '\'.
+	filePath := q destinationPath , header text , '.html'.
+	^ q
+		  fileName: header text , '.html';
+		  writeDocument: a contents;
+		  contents
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> destinationDirectory [
+
+	^ destinationDirectory
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> destinationDirectory: aDestination [
+
+	destinationDirectory := aDestination
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> filePath [ 
+
+	^ filePath
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> filePath: aFilePath [
+
+	filePath := aFilePath.
+]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
@@ -30,7 +81,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 
-	| p textElements newParagraph selectionSize t sub |
+	| p textElements newParagraph selectionSize t sub newSub |
 	p := aMicRootBlock children
 		     detect: [ :each | each isKindOf: MicParagraphBlock ]
 		     ifNone: [
@@ -38,16 +89,22 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
 			     t parent: p.
 			     ^ p ].
-		
+
 	sub := p text substrings: ' '.
 	selectionSize := maximumWords min: sub size.
-	sub := sub first: selectionSize.
+	newSub := sub first: selectionSize.
 
 	textElements := '' writeStream.
-	sub do: [ :each |
+	newSub do: [ :each |
 		textElements
 			nextPutAll: each;
 			nextPut: Character space ].
+		
+	sub size >= maximumWords ifTrue: [ textElements
+			nextPutAll: '...' ].
+		
+		textElements close.
+
 
 	newParagraph := MicParagraphBlock new.
 	t := MicTextBlock new bodyString: textElements ensureNoSpace contents.
@@ -59,7 +116,9 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 MicSingleSummarizer >> initialize [
 
 	super initialize.
-	maximumWords := 15
+	maximumWords := 15.
+	"Directory for testing, we should change this for the final directory"
+	destinationDirectory := '\Users\qmout\Documents\Pharo\images\Microdown\output\html'
 ]
 
 { #category : 'accessing' }
@@ -70,15 +129,16 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	
-	| element |
+	| element headerLink |
+	self createHtmlFile: aMicRootBlock .
 	element := MicRootBlock new.
-	element 
-		addChild: (aMicRootBlock children first);
-		addChild: (self firstHeaderBlockOf: aMicRootBlock);
+	headerLink := self transformHeaderToLinkHeader: (self firstHeaderBlockOf: aMicRootBlock).
+	element
+		addChild: aMicRootBlock children first;
+		addChild: headerLink;
 		addChild: (self firstParagraphBlockOf: aMicRootBlock).
-	
-	^ element.
+
+	^ element
 ]
 
 { #category : 'parsing' }
@@ -87,4 +147,18 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	| p |
 	p := Microdown parse: aFileReference asFileReference contents.
 	^ self summarize: p
+]
+
+{ #category : 'parsing' }
+MicSingleSummarizer >> transformHeaderToLinkHeader: aHeader [
+
+	| headerLink |
+	headerLink := MicHeaderBlock new.
+	headerLink
+		addChild:
+			((MicInlineParser parse: '[' , aHeader text , '](' , filePath , ')')
+				 at: 1);
+		level: aHeader level.
+
+	^ headerLink
 ]

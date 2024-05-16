@@ -88,7 +88,25 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 	self
 		assert:
 		(paragraph textElements collect: [ :each | each plainText ]) asArray
-		equals: #( 'Pharo is cool' ).
+		equals: #( 'Pharo is cool ...' ).
+	paragraph textElements do: [ :each |
+		self assert: each parent equals: paragraph ]
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testFirstParagraphBlockOfWithEllipsis [
+
+	| paragraph |
+	paragraph := MicSingleSummarizer new
+		             maximumWords: 3;
+		             firstParagraphBlockOf: self createMicRootBlock.
+	self assert: (paragraph isKindOf: MicParagraphBlock).
+
+	self assert: paragraph textElements size equals: 1.
+	self
+		assert:
+		(paragraph textElements collect: [ :each | each plainText ]) asArray
+		equals: #( 'Pharo is cool ...' ).
 	paragraph textElements do: [ :each |
 		self assert: each parent equals: paragraph ]
 ]
@@ -109,6 +127,25 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithNoParagraph [
 		assert:
 		(paragraph textElements collect: [ :each | each plainText ]) asArray
 		equals: #( 'Please add a paragraph' ).
+	paragraph textElements do: [ :each |
+		self assert: each parent equals: paragraph ]
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testFirstParagraphBlockOfWithoutEllipsis [
+
+	| paragraph |
+	paragraph := MicSingleSummarizer new
+		             maximumWords: 5;
+		             firstParagraphBlockOf:
+			             (Microdown parse: 'Pharo is cool').
+	self assert: (paragraph isKindOf: MicParagraphBlock).
+
+	self assert: paragraph textElements size equals: 1.
+	self
+		assert:
+		(paragraph textElements collect: [ :each | each plainText ]) asArray
+		equals: #( 'Pharo is cool' ).
 	paragraph textElements do: [ :each |
 		self assert: each parent equals: paragraph ]
 ]
