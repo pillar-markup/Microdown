@@ -2,11 +2,49 @@ Class {
 	#name : 'MicSingleSummarizer',
 	#superclass : 'Object',
 	#instVars : [
-		'maximumWords'
+		'maximumWords',
+		'destinationDirectory'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
+
+{ #category : 'rendering' }
+MicSingleSummarizer >> createHtmlFile: aMicRoot [
+
+	| a q date header |
+	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+
+	date := (aMicRoot children at: 1) body at: #date.
+	date := date asDate.
+	header := MicSingleSummarizer new firstHeaderBlockOf: aMicRoot.
+
+	q := MicHTMLDocument new.
+	q configuration: a configuration.
+	q configuration document: q.
+	q
+		setCharSetUTF8;
+		destinationPath:
+			'\Users\qmout\Documents\Pharo\images\Microdown\output\html' , '\'
+			, date year asString , '\' , date monthName , '\'
+			, date day asString , '\'.
+	^ q
+		  fileName: header text , '.html';
+		  writeDocument: a contents;
+		  "writeToFileNamed: q destinationPath, header text;"contents
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> destinationDirectory [
+
+	^ destinationDirectory
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> destinationDirectory: aDestination [
+
+	destinationDirectory := aDestination
+]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
@@ -65,7 +103,9 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 MicSingleSummarizer >> initialize [
 
 	super initialize.
-	maximumWords := 15
+	maximumWords := 15.
+	"Directory for testing, we should change this for the final directory"
+	destinationDirectory := '\Users\qmout\Documents\Pharo\images\Microdown\output\html'
 ]
 
 { #category : 'accessing' }
@@ -77,6 +117,7 @@ MicSingleSummarizer >> maximumWords: anInteger [
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
 	| element headerLink |
+	self createHtmlFile: aMicRootBlock .
 	element := MicRootBlock new.
 	headerLink := self transformHeaderToLinkHeader: (self firstHeaderBlockOf: aMicRootBlock).
 	element

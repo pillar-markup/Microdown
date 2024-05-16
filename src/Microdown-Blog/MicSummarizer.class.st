@@ -49,7 +49,7 @@ MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
 MicSummarizer >> initialize [
 
 	super initialize.
-	maximumFile := 10
+	maximumFile := 10.
 ]
 
 { #category : 'accessing' }
