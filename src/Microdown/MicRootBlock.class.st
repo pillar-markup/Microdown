@@ -33,12 +33,12 @@ MicRootBlock >> canConsumeLine: line [
 ]
 
 { #category : 'visiting' }
-MicRootBlock >> fromFile [ 
+MicRootBlock >> fromFile [ " retieve "
 	^ self propertyAt: #file .  
 ]
 
 { #category : 'visiting' }
-MicRootBlock >> fromFile: aFile [ 
+MicRootBlock >> fromFile: aFile [ " put file object in the root"
 	self propertyAt: #file put: aFile .  
 ]
 
