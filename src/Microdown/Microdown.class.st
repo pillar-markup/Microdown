@@ -147,6 +147,16 @@ Microdown >> parse: aStreamOrString [
 ]
 
 { #category : 'facade' }
+Microdown >> parseFile: aFile [
+		
+		|root|
+		root := MicrodownParser parse:((FileSystem workingDirectory / aFile ) readStream contents) . 
+		root fromFile: aFile .
+		^ root .
+		
+]
+
+{ #category : 'facade' }
 Microdown >> render: aStringOrDoc [
 	"Facade method to render a microdown string to Text"
 	^ self class render: aStringOrDoc 
