@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicSingleSummarizerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'micSingleSummarizer'
+	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
@@ -16,7 +19,11 @@ MicSingleSummarizerTest >> generateFilesystemExample [
 
 	| file |
 	file := FileSystem memory workingDirectory / 'anExample1.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# A Cool Story
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "date" : "8 January 2019"
+}
+# A Cool Story
 @sec1
 
 Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
@@ -32,7 +39,7 @@ this is a code blu blu
 ```
 ' ].
 
-	^ file.
+	^ file
 ]
 
 { #category : 'enumerating' }
@@ -44,6 +51,69 @@ MicSingleSummarizerTest >> generateFilesystemExampleEmpty [
 		stream nextPutAll: '' ].
 
 	^ file
+]
+
+{ #category : 'enumerating' }
+MicSingleSummarizerTest >> generateFilesystemExampleWithoutDateInMetadata [
+
+	| file |
+	file := FileSystem memory workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "title" : "Cool"
+}
+# A Cool Story
+@sec1
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+
+Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
+
+
+```
+this is a code blu blu
+```
+' ].
+
+	^ file
+]
+
+{ #category : 'enumerating' }
+MicSingleSummarizerTest >> generateFilesystemExampleWithoutMetadata [
+
+	| file |
+	file := FileSystem memory workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# A Cool Story
+@sec1
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+
+Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
+
+
+```
+this is a code blu blu
+```
+' ].
+
+	^ file
+]
+
+{ #category : 'running' }
+MicSingleSummarizerTest >> setUp [
+
+	super setUp.
+
+	"Put here a common initialization logic for tests"
+	micSingleSummarizer := MicSingleSummarizer new.
+	micSingleSummarizer targetDirectory: '/html/'
 ]
 
 { #category : 'tests' }
@@ -63,7 +133,10 @@ MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 MicSingleSummarizerTest >> testFirstHeaderBlockOfWithNoHeader [
 
 	| header |
-	header := MicSingleSummarizer new firstHeaderBlockOf:(Microdown parse: self generateFilesystemExampleEmpty asFileReference contents).
+	header := micSingleSummarizer firstHeaderBlockOf:
+		          (Microdown parse:
+			           self generateFilesystemExampleEmpty asFileReference
+				           contents).
 	self assert: (header isKindOf: MicHeaderBlock).
 	self assert: header text equals: 'Please define a header'.
 
@@ -79,7 +152,7 @@ MicSingleSummarizerTest >> testFirstHeaderBlockOfWithNoHeader [
 MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 
 	| paragraph |
-	paragraph := MicSingleSummarizer new
+	paragraph := micSingleSummarizer
 		             maximumWords: 3;
 		             firstParagraphBlockOf: self createMicRootBlock.
 	self assert: (paragraph isKindOf: MicParagraphBlock).
@@ -97,7 +170,7 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 MicSingleSummarizerTest >> testFirstParagraphBlockOfWithEllipsis [
 
 	| paragraph |
-	paragraph := MicSingleSummarizer new
+	paragraph := micSingleSummarizer
 		             maximumWords: 3;
 		             firstParagraphBlockOf: self createMicRootBlock.
 	self assert: (paragraph isKindOf: MicParagraphBlock).
@@ -115,7 +188,7 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithEllipsis [
 MicSingleSummarizerTest >> testFirstParagraphBlockOfWithNoParagraph [
 
 	| paragraph |
-	paragraph := MicSingleSummarizer new
+	paragraph := micSingleSummarizer
 		             maximumWords: 3;
 		             firstParagraphBlockOf: (Microdown parse:
 					              self generateFilesystemExampleEmpty asFileReference
@@ -135,7 +208,7 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithNoParagraph [
 MicSingleSummarizerTest >> testFirstParagraphBlockOfWithoutEllipsis [
 
 	| paragraph |
-	paragraph := MicSingleSummarizer new
+	paragraph := micSingleSummarizer
 		             maximumWords: 5;
 		             firstParagraphBlockOf:
 			             (Microdown parse: 'Pharo is cool').
@@ -154,17 +227,55 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithoutEllipsis [
 MicSingleSummarizerTest >> testSummarize [
 
 	| root |
-	root := MicSingleSummarizer new summarize: self createMicRootBlock.
-	self assert: (root isKindOf: MicRootBlock);
-	assert: (root children size) equals: 3.
+	root := micSingleSummarizer summarize: self createMicRootBlock.
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 3
 ]
 
 { #category : 'tests' }
 MicSingleSummarizerTest >> testSummarizeFile [
 
 	| root |
-	root := MicSingleSummarizer new summarizeFile: self generateFilesystemExample.
+	root := micSingleSummarizer summarizeFile:
+		        self generateFilesystemExample.
 	self assert: (root isKindOf: MicRootBlock)
-	
-	
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testWithMetaDataAndWithDate [
+
+	| root |
+	root := micSingleSummarizer summarize: self createMicRootBlock.
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 3;
+		assert: ((root children at:1) body at: #date ) equals: '8 January 2019'.
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testWithMetaDataAndWithoutDate [
+
+	| root |
+	root := micSingleSummarizer summarize:
+		        (Microdown parse:
+			         self generateFilesystemExampleWithoutDateInMetadata).
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 3;
+		assert: ((root children at: 1) body at: #date)
+		equals: '25 December 1970'
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testWithoutMetaData [
+
+	| root |
+	root := micSingleSummarizer summarize: (Microdown parse:
+			         self generateFilesystemExampleWithoutMetadata ).
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 3;
+		assert: ((root children at: 1) body at: #date)
+		equals: '25 December 1970'
 ]

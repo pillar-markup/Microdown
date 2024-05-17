@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicSummarizerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'micSummarizer'
+	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
@@ -22,6 +25,7 @@ MicSummarizerTest >> createListOfMicRootBlock [
 	| q singleSummarizer |
 	q := Array new: 3.
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/html/'.
 	q
 		at: 1 put: (singleSummarizer summarize: (Microdown parse:
 							  self generateFilesystemExample1 asFileReference contents));
@@ -94,21 +98,33 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
+{ #category : 'running' }
+MicSummarizerTest >> setUp [
+
+	super setUp.
+
+	"Put here a common initialization logic for tests"
+	micSummarizer := MicSummarizer new.
+	micSummarizer targetDirectory: '/html/'
+]
+
 { #category : 'tests' }
 MicSummarizerTest >> testGroupByDate [
 
 	| summary group |
 	summary := self createListOfMicRootBlock.
-	group := MicSummarizer new group: summary byDate: (Date newDay: 1 month: 'January'  year: 2019).
-	
-	self assert: group size equals: 2.
+	group := micSummarizer
+		         group: summary
+		         byDate: (Date newDay: 1 month: 'January' year: 2019).
+
+	self assert: group size equals: 2
 ]
 
 { #category : 'tests' }
 MicSummarizerTest >> testSummarize [
 
 	| summary |
-	summary := MicSummarizer new summarize: self createListOfMicRootBlock.
+	summary := micSummarizer summarize: self createListOfMicRootBlock.
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 6
@@ -118,7 +134,7 @@ MicSummarizerTest >> testSummarize [
 MicSummarizerTest >> testSummarizeFile [
 
 	| summary |
-	summary := MicSummarizer new summarizeFile: self createListOfFile.
+	summary := micSummarizer summarizeFile: self createListOfFile.
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 6

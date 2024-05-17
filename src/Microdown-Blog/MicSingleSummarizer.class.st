@@ -19,6 +19,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 			          h := MicHeaderBlock new.
 			          t := MicTextBlock new bodyString:
 				               'Please define a header'.
+				h level: 1.
 			          t parent: h.
 			          ^ h ].
 	newHeader := MicHeaderBlock new.
@@ -95,14 +96,15 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	| element headerLink |
+	| element headerLink root|
+	root := self verifyDateMetadata: aMicRootBlock.
 	element := MicRootBlock new.
-	headerLink := self headerLink: aMicRootBlock .
-	
+	headerLink := self headerLink: root.
+
 	element
-		addChild: aMicRootBlock children first;
+		addChild: root children first;
 		addChild: headerLink;
-		addChild: (self firstParagraphBlockOf: aMicRootBlock).
+		addChild: (self firstParagraphBlockOf: root).
 
 	^ element
 ]
@@ -113,4 +115,29 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	| p |
 	p := Microdown parse: aFileReference asFileReference contents.
 	^ self summarize: p
+]
+
+{ #category : 'as yet unclassified' }
+MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
+
+	| newMicRootBlock metadata |
+	newMicRootBlock := MicRootBlock new.
+
+	((aMicRootBlock children at: 1) isKindOf: MicMetaDataBlock)
+		ifFalse: [
+			metadata := MicMetaDataBlock new.
+			metadata body:
+				(Dictionary
+					 newFromKeys: #( #date )
+					 andValues: #( '25 December 1970' ))]
+		ifTrue: [
+			metadata := aMicRootBlock children at: 1.
+			(metadata body at: #date) ifNil: [
+				metadata body at: #date put: '25 December 1970' ] ].
+		metadata parent: newMicRootBlock.
+
+	aMicRootBlock children
+		do: [ :each | newMicRootBlock addChild: each ]
+		without: metadata.
+	^ newMicRootBlock
 ]
