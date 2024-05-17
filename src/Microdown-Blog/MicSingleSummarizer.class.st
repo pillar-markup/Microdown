@@ -61,6 +61,25 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 	^ newParagraph
 ]
 
+{ #category : 'parsing' }
+MicSingleSummarizer >> headerLink: aMicRootBlock [
+
+	| headerLink header date |
+	headerLink := MicHeaderBlock new.
+	header := self firstHeaderBlockOf: aMicRootBlock.
+	date := (aMicRootBlock children at: 1) body at: #date.
+	date := date asDate.
+	headerLink
+		addChild: ((self class
+				  makeALink: header text
+				  to:
+					  targetDirectory , date year asString , '/' , date monthName
+					  , '/' , date day asString , '/', header text) at: 1);
+		level: header level.
+
+	^ headerLink
+]
+
 { #category : 'initialization' }
 MicSingleSummarizer >> initialize [
 
@@ -78,7 +97,8 @@ MicSingleSummarizer >> summarize: aMicRootBlock [
 
 	| element headerLink |
 	element := MicRootBlock new.
-	headerLink := self transformHeaderToLinkHeader: (self firstHeaderBlockOf: aMicRootBlock).
+	headerLink := self headerLink: aMicRootBlock .
+	
 	element
 		addChild: aMicRootBlock children first;
 		addChild: headerLink;
@@ -93,17 +113,4 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	| p |
 	p := Microdown parse: aFileReference asFileReference contents.
 	^ self summarize: p
-]
-
-{ #category : 'parsing' }
-MicSingleSummarizer >> transformHeaderToLinkHeader: aHeader [
-
-	| headerLink |
-	headerLink := MicHeaderBlock new.
-
-	headerLink
-		addChild: ((self class makeALink: aHeader text to: '\') at: 1);
-		level: aHeader level.
-
-	^ headerLink
 ]

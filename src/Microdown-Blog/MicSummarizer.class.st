@@ -14,7 +14,7 @@ MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
 	| metadataDate |
 
 	^ aListOfSingleSummarizer select: [ :each | metadataDate := ( each children at:1 ) body at: #date.
-		( metadataDate asDate isOnOrAfter:aDate ) and: [ metadataDate asDate isBefore: (aDate addMonths: 1) ] ]
+		 (metadataDate asDate month) = aDate ]
 ]
 
 { #category : 'initialization' }
@@ -43,6 +43,7 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 	summarize := MicRootBlock new.
 
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: targetDirectory.
 
 	selectionSize := maximumFile min: aListOfSingleSummarizer size.
 
@@ -60,9 +61,10 @@ MicSummarizer >> summarizeFile: aListOfFile [
 
 	| list singleSummarizer selectionSize |
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: targetDirectory.
 
 	list := Array new: aListOfFile size.
-	
+
 	selectionSize := maximumFile min: aListOfFile size.
 
 	1 to: selectionSize do: [ :each |

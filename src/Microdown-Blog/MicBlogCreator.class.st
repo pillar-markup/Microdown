@@ -29,15 +29,32 @@ MicBlogCreator >> collectAllFile [
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
-	self collectAllFile do: [ :each | self createHtmlFile: (Microdown parse: each asFileReference contents) ]
+	| allFile allFileParse sum summar |
+	allFile := self collectAllFile.
+	allFileParse := allFile collect: [ :each |
+		                Microdown parse: each asFileReference contents ].
 
-	
+	allFileParse do: [ :each | self createHtmlFile: each ].
+
+	sum := MicSummarizer new.
+	sum targetDirectory: targetDirectory .
+
+	self createHtmlSummarize: (sum summarizeFile: allFile).
+
+	MicCreateMonth generateDateListSince2014 do: [ :each |
+		summar := sum group: allFileParse byDate: each.
+		summar isNotEmpty ifTrue: [
+			summar := sum summarize: summar.
+			self createHtmlGroupFile: summar at: each ] ]
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlFile: aMicRoot [
 
-	| a q date header filePath |
+	| a q date header |
+	
+	self rootAssembly: aMicRoot.
+	
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
 	date := (aMicRoot children at: 1) body at: #date.
@@ -52,11 +69,61 @@ MicBlogCreator >> createHtmlFile: aMicRoot [
 		destinationPath:
 			targetDirectory , '\' , date year asString , '\' , date monthName
 			, '\' , date day asString , '\'.
-	filePath := q destinationPath , header text , '.html'.
 	^ q
 		  fileName: header text , '.html';
 		  writeDocument: a contents;
 		  contents
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
+
+	| a q |
+	self rootAssembly: aMicRoot.
+	
+	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+
+	q := MicHTMLDocument new.
+	q configuration: a configuration.
+	q configuration document: q.
+	q
+		setCharSetUTF8;
+		destinationPath:
+			targetDirectory , '\' , aDate year asString , '\' , aDate monthName
+			, '\'.
+	^ q
+		  writeDocument: a contents;
+		  contents
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> createHtmlSummarize: aMicRoot [
+
+	| a q |
+	
+	self rootAssembly: aMicRoot.
+	
+	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+
+	q := MicHTMLDocument new.
+	q configuration: a configuration.
+	q configuration document: q.
+	q
+		setCharSetUTF8;
+		destinationPath: targetDirectory.
+	^ q
+		  writeDocument: a contents;
+		  contents
+]
+
+{ #category : 'as yet unclassified' }
+MicBlogCreator >> rootAssembly: aMicRoot [
+
+	aMicRoot addChild: (MicCreateMonth generateMicListBlockOfLinkDateTo: targetDirectory).
+	^ aMicRoot
+
+	
+	
 ]
 
 { #category : 'accessing' }
