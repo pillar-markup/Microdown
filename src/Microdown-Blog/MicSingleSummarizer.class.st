@@ -1,63 +1,12 @@
 Class {
 	#name : 'MicSingleSummarizer',
-	#superclass : 'Object',
+	#superclass : 'MicDocumentTransformer',
 	#instVars : [
-		'maximumWords',
-		'destinationDirectory',
-		'filePath'
+		'maximumWords'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
-
-{ #category : 'rendering' }
-MicSingleSummarizer >> createHtmlFile: aMicRoot [
-
-	| a q date header |
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-
-	date := (aMicRoot children at: 1) body at: #date.
-	date := date asDate.
-	header := self firstHeaderBlockOf: aMicRoot.
-
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q
-		setCharSetUTF8;
-		destinationPath:
-			destinationDirectory , '\' , date year asString , '\'
-			, date monthName , '\' , date day asString , '\'.
-	filePath := q destinationPath , header text , '.html'.
-	^ q
-		  fileName: header text , '.html';
-		  writeDocument: a contents;
-		  contents
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> destinationDirectory [
-
-	^ destinationDirectory
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> destinationDirectory: aDestination [
-
-	destinationDirectory := aDestination
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> filePath [ 
-
-	^ filePath
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> filePath: aFilePath [
-
-	filePath := aFilePath.
-]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
@@ -70,6 +19,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 			          h := MicHeaderBlock new.
 			          t := MicTextBlock new bodyString:
 				               'Please define a header'.
+				h level: 1.
 			          t parent: h.
 			          ^ h ].
 	newHeader := MicHeaderBlock new.
@@ -112,13 +62,30 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 	^ newParagraph
 ]
 
+{ #category : 'parsing' }
+MicSingleSummarizer >> headerLink: aMicRootBlock [
+
+	| headerLink header date |
+	headerLink := MicHeaderBlock new.
+	header := self firstHeaderBlockOf: aMicRootBlock.
+	date := (aMicRootBlock children at: 1) body at: #date.
+	date := date asDate.
+	headerLink
+		addChild: ((self class
+				  makeALink: header text
+				  to:
+					  targetDirectory , date year asString , '/' , date monthName
+					  , '/' , date day asString , '/', header text) at: 1);
+		level: header level.
+
+	^ headerLink
+]
+
 { #category : 'initialization' }
 MicSingleSummarizer >> initialize [
 
 	super initialize.
 	maximumWords := 15.
-	"Directory for testing, we should change this for the final directory"
-	destinationDirectory := '\Users\qmout\Documents\Pharo\images\Microdown\output\html'
 ]
 
 { #category : 'accessing' }
@@ -129,14 +96,15 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	| element headerLink |
-	self createHtmlFile: aMicRootBlock .
+	| element headerLink root|
+	root := self verifyDateMetadata: aMicRootBlock.
 	element := MicRootBlock new.
-	headerLink := self transformHeaderToLinkHeader: (self firstHeaderBlockOf: aMicRootBlock).
+	headerLink := self headerLink: root.
+
 	element
-		addChild: aMicRootBlock children first;
+		addChild: root children first;
 		addChild: headerLink;
-		addChild: (self firstParagraphBlockOf: aMicRootBlock).
+		addChild: (self firstParagraphBlockOf: root).
 
 	^ element
 ]
@@ -149,16 +117,27 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	^ self summarize: p
 ]
 
-{ #category : 'parsing' }
-MicSingleSummarizer >> transformHeaderToLinkHeader: aHeader [
+{ #category : 'as yet unclassified' }
+MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 
-	| headerLink |
-	headerLink := MicHeaderBlock new.
-	headerLink
-		addChild:
-			((MicInlineParser parse: '[' , aHeader text , '](' , filePath , ')')
-				 at: 1);
-		level: aHeader level.
+	| newMicRootBlock metadata |
+	newMicRootBlock := MicRootBlock new.
 
-	^ headerLink
+	((aMicRootBlock children at: 1) isKindOf: MicMetaDataBlock)
+		ifFalse: [
+			metadata := MicMetaDataBlock new.
+			metadata body:
+				(Dictionary
+					 newFromKeys: #( #date )
+					 andValues: #( '25 December 1970' ))]
+		ifTrue: [
+			metadata := aMicRootBlock children at: 1.
+			(metadata body at: #date) ifNil: [
+				metadata body at: #date put: '25 December 1970' ] ].
+		metadata parent: newMicRootBlock.
+
+	aMicRootBlock children
+		do: [ :each | newMicRootBlock addChild: each ]
+		without: metadata.
+	^ newMicRootBlock
 ]

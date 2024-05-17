@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicSummarizerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'micSummarizer'
+	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
@@ -22,6 +25,7 @@ MicSummarizerTest >> createListOfMicRootBlock [
 	| q singleSummarizer |
 	q := Array new: 3.
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/html/'.
 	q
 		at: 1 put: (singleSummarizer summarize: (Microdown parse:
 							  self generateFilesystemExample1 asFileReference contents));
@@ -94,151 +98,14 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'as yet unclassified' }
-MicSummarizerTest >> htmlBodyTest [
+{ #category : 'running' }
+MicSummarizerTest >> setUp [
 
-	^ '<body><main role="main">
-<h1><a target="_blank" href="''''/''''">A Cool Story</a></h1>
-<p>Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no ...</p>
-<h1><a target="_blank" href="''''/''''">Pharo is cool</a></h1>
-<p>If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will ...</p>
-<h1><a target="_blank" href="''''/''''">Mooc Pharo</a></h1>
-<p>Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).</p>
-<ul>
-<li><a target="_blank" href="http://pharo.org/">January 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2014</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2015</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2016</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2017</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2018</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2019</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2020</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2021</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2022</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2023</a></li>
-<li><a target="_blank" href="http://pharo.org/">January 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">February 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">March 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">April 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">May 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">June 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">July 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">August 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">September 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">October 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">November 2024</a></li>
-<li><a target="_blank" href="http://pharo.org/">December 2024</a></li>
-</ul></main></body>'
+	super setUp.
 
+	"Put here a common initialization logic for tests"
+	micSummarizer := MicSummarizer new.
+	micSummarizer targetDirectory: '/html/'
 ]
 
 { #category : 'tests' }
@@ -246,16 +113,18 @@ MicSummarizerTest >> testGroupByDate [
 
 	| summary group |
 	summary := self createListOfMicRootBlock.
-	group := MicSummarizer new group: summary byDate: (Date newDay: 1 month: 'January'  year: 2019).
-	
-	self assert: group size equals: 2.
+	group := micSummarizer
+		         group: summary
+		         byDate: (Date newDay: 1 month: 'January' year: 2019).
+
+	self assert: group size equals: 2
 ]
 
 { #category : 'tests' }
 MicSummarizerTest >> testSummarize [
 
 	| summary |
-	summary := MicSummarizer new summarize: self createListOfMicRootBlock.
+	summary := micSummarizer summarize: self createListOfMicRootBlock.
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 6
@@ -265,7 +134,7 @@ MicSummarizerTest >> testSummarize [
 MicSummarizerTest >> testSummarizeFile [
 
 	| summary |
-	summary := MicSummarizer new summarizeFile: self createListOfFile.
+	summary := micSummarizer summarizeFile: self createListOfFile.
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 6
