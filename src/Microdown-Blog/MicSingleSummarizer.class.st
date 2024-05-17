@@ -1,63 +1,12 @@
 Class {
 	#name : 'MicSingleSummarizer',
-	#superclass : 'Object',
+	#superclass : 'MicDocumentTransformer',
 	#instVars : [
-		'maximumWords',
-		'destinationDirectory',
-		'filePath'
+		'maximumWords'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
-
-{ #category : 'rendering' }
-MicSingleSummarizer >> createHtmlFile: aMicRoot [
-
-	| a q date header |
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-
-	date := (aMicRoot children at: 1) body at: #date.
-	date := date asDate.
-	header := self firstHeaderBlockOf: aMicRoot.
-
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q
-		setCharSetUTF8;
-		destinationPath:
-			destinationDirectory , '\' , date year asString , '\'
-			, date monthName , '\' , date day asString , '\'.
-	filePath := q destinationPath , header text , '.html'.
-	^ q
-		  fileName: header text , '.html';
-		  writeDocument: a contents;
-		  contents
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> destinationDirectory [
-
-	^ destinationDirectory
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> destinationDirectory: aDestination [
-
-	destinationDirectory := aDestination
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> filePath [ 
-
-	^ filePath
-]
-
-{ #category : 'accessing' }
-MicSingleSummarizer >> filePath: aFilePath [
-
-	filePath := aFilePath.
-]
 
 { #category : 'accessing' }
 MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
@@ -117,8 +66,6 @@ MicSingleSummarizer >> initialize [
 
 	super initialize.
 	maximumWords := 15.
-	"Directory for testing, we should change this for the final directory"
-	destinationDirectory := '\Users\qmout\Documents\Pharo\images\Microdown\output\html'
 ]
 
 { #category : 'accessing' }
@@ -130,7 +77,6 @@ MicSingleSummarizer >> maximumWords: anInteger [
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
 	| element headerLink |
-	self createHtmlFile: aMicRootBlock .
 	element := MicRootBlock new.
 	headerLink := self transformHeaderToLinkHeader: (self firstHeaderBlockOf: aMicRootBlock).
 	element
@@ -154,10 +100,9 @@ MicSingleSummarizer >> transformHeaderToLinkHeader: aHeader [
 
 	| headerLink |
 	headerLink := MicHeaderBlock new.
+
 	headerLink
-		addChild:
-			((MicInlineParser parse: '[' , aHeader text , '](' , filePath , ')')
-				 at: 1);
+		addChild: ((self class makeALink: aHeader text to: '\') at: 1);
 		level: aHeader level.
 
 	^ headerLink

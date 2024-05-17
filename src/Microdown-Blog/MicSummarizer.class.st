@@ -1,40 +1,12 @@
 Class {
 	#name : 'MicSummarizer',
-	#superclass : 'Object',
+	#superclass : 'MicDocumentTransformer',
 	#instVars : [
 		'maximumFile'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
-
-{ #category : 'generate' }
-MicSummarizer >> generateDateListSince2014 [
-
-	| date t |
-
-	date := Date newDay: 1 month: 1  year: 2014.
-
-	t := Timespan starting: date duration: (Duration years: [ Date today year - date year + 1] value ).
-	^ t months
- 
-]
-
-{ #category : 'generate' }
-MicSummarizer >> generateMicListBlockOfDate [
-
-	| root link text inlineParser listElement |
-	root := MicUnorderedListBlock new.
-	inlineParser := MicInlineParser new.
-
-	self generateDateListSince2014 do: [ :each |
-		listElement := MicListItemBlock new.
-		text := '[' , each asString , '](' , 'http://pharo.org' , ')'.
-		link := inlineParser parse: text.
-		(link at: 1) parent: listElement.
-		listElement parent: root ].
-	^ root
-]
 
 { #category : 'grouping' }
 MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
@@ -62,31 +34,6 @@ MicSummarizer >> maximumFile [
 MicSummarizer >> maximumFile: aNumber [
 
 	maximumFile := aNumber
-]
-
-{ #category : 'rendering' }
-MicSummarizer >> render: aMicSummerize [
-
-	| a q |
-	
-	aMicSummerize addChild: self generateMicListBlockOfDate.
-	
-	a := (MicHTMLVisitor new visit: aMicSummerize) at: 1.
-
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q setCharSetUTF8.
-	^ q
-		  writeDocumentBody: a contents;
-		  writeToFile;
-		  contents
-]
-
-{ #category : 'rendering' }
-MicSummarizer >> renderFiles: aListOfFiles [
-
-	^ self render: ( self summarizeFile: aListOfFiles )
 ]
 
 { #category : 'as yet unclassified' }
