@@ -77,3 +77,23 @@ MicrodownTest >> testParentBackLinkIsSet [
 	self assert: h children first equals: t.
 	self assert: t parent equals: h
 ]
+
+{ #category : 'tests - replace' }
+MicrodownTest >> testParentLinkIsKeptOnReplaceBy [
+
+	| h original new |
+	h := MicHeaderBlock new.
+	original := MicTextBlock new.
+	original bodyString: 'Original'.
+	original parent: h.
+	self assert: original parent equals: h.
+	self assert: h children first equals: original.
+	new := MicTextBlock new.
+	new bodyString: 'New'.
+	
+	original replaceBy: new.
+	self assert: h children size equals: 1.
+	self assert: h children first equals: new.
+	self assert: new parent equals: h.
+	
+]

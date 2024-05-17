@@ -58,10 +58,7 @@ MicArgumentList class >> split: aString defaultArg: defArg [
 { #category : 'instance creation' }
 MicArgumentList class >> split: aString defaultArg: defArg defaultValue: defValue [
 	^ self new
-		defaultArg: defArg;
-		at: defArg put: defValue;
-		initialValue: defValue;
-		from: aString; 
+		split: aString defaultArg: defArg defaultValue: defValue;
 		yourself
 ]
 
@@ -186,6 +183,16 @@ MicArgumentList >> setNoDefaultButArguments: string [
 		keyValue := p splitOnFirst: $=.
 		self at: keyValue first trim asSymbol put: keyValue second ]
 	
+]
+
+{ #category : 'initialization' }
+MicArgumentList >> split: aString defaultArg: defArg defaultValue: defValue [
+
+		self 
+			defaultArg: defArg;
+			at: defArg put: defValue;
+			initialValue: defValue;
+			from: aString
 ]
 
 { #category : 'copying' }
