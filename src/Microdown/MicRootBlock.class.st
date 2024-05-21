@@ -32,6 +32,16 @@ MicRootBlock >> canConsumeLine: line [
 	^ true
 ]
 
+{ #category : 'visiting' }
+MicRootBlock >> fromFile [ 
+	^ self propertyAt: #file .  
+]
+
+{ #category : 'visiting' }
+MicRootBlock >> fromFile: aFile [ 
+	self propertyAt: #file put: aFile .  
+]
+
 { #category : 'accessing' }
 MicRootBlock >> indent [
 	^0
