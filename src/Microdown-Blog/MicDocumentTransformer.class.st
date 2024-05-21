@@ -11,7 +11,9 @@ Class {
 { #category : 'as yet unclassified' }
 MicDocumentTransformer class >> makeALink: aText to: aLink [
 
-	^ MicInlineParser parse: '[' , aText, '](' , aLink , ')'
+	^ MicInlineParser parse:
+		  '[' , aText printString asString , ']('
+		  , aLink printString asString , ')'
 ]
 
 { #category : 'accessing' }
