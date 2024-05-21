@@ -156,7 +156,7 @@ Microdown >> parse: aStreamOrString [
 Microdown >> parseFile: aFile [
 		
 		|root|
-		root := MicrodownParser parse:((FileSystem workingDirectory / aFile ) readStream contents) . 
+		root := MicrodownParser parse:(aFile  contents) . 
 		root fromFile: aFile .
 		^ root .
 		
