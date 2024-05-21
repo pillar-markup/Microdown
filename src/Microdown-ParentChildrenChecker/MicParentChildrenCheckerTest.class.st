@@ -143,10 +143,60 @@ MicParentChildrenCheckerTest >> testDocumentWithConfusedKids [
 MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormed [ 
 
 	| checker |
-	self skip.
 	checker := MicParentChildrenChecker new.
 	checker check: self document.
 	self assert: checker isOk
+
+]
+
+{ #category : 'accessing' }
+MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormedAnnotation [
+
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: (Microdown parse: '{!citation|name=Duca99a!}').
+	self assert: checker isOk
+
+]
+
+{ #category : 'accessing' }
+MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormedFormat [
+
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: (Microdown parse: '**Bold**').
+	self assert: checker isOk
+
+]
+
+{ #category : 'accessing' }
+MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormedInlineCode [
+
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: (Microdown parse: '`hello`').
+	self assert: checker isOk
+
+]
+
+{ #category : 'accessing' }
+MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormedInput [
+
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: (Microdown parse: '<!inputFile|path=Chapters/bloc/element.md!>').
+	self assert: checker isOk
+
+]
+
+{ #category : 'accessing' }
+MicParentChildrenCheckerTest >> testSimpleDocumentIsWellFormedLink [ 
+
+	| checker |
+	checker := MicParentChildrenChecker new.
+	checker check: (Microdown parse: 'a link: [http://pharo.org](http://pharo.org)').
+	self assert: checker isOk.
+	self assert: checker orphanList isEmpty
 
 ]
 

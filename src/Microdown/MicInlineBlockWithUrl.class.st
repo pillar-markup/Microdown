@@ -110,7 +110,7 @@ MicInlineBlockWithUrl >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
 
-	| split title|
+	| split title |
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 

@@ -4,6 +4,9 @@ I represent a monospaced text section. I'm delimited using `\`` as in `\`monospa
 Class {
 	#name : 'MicMonospaceFormatBlock',
 	#superclass : 'MicUnEvaluatedBlock',
+	#instVars : [
+		'children'
+	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
 	#tag : 'Model'
@@ -33,14 +36,29 @@ MicMonospaceFormatBlock >> accept: aVisitor [
 
 { #category : 'accessing' }
 MicMonospaceFormatBlock >> children [
-	"should be deprecated"
 
-	^ Array with: (MicTextBlock new bodyString: self bodyString)
+	^ children
+]
+
+{ #category : 'accessing' }
+MicMonospaceFormatBlock >> children: aCollection [
+
+	children := aCollection
+]
+
+{ #category : 'accessing' }
+MicMonospaceFormatBlock >> closeMe [
+	"Please note that in the children we will only store text. So this could be all removed
+	but at the cost of updating all the visitor that expect that the treatment on MicTextBlock will be done. 
+	so for now to make sure that the tree is well formed we just store a text bloc and set correctly its parent.  Just returning the text via children was not super nice and recipe to disaster since different nodes where returned at each invocation. "
+	
+	super closeMe.
+	self children: (Array with: (MicTextBlock new bodyString: self bodyString)).
+	self children do: [ :each | each basicParent: self ].
 ]
 
 { #category : 'accessing' }
 MicMonospaceFormatBlock >> text [
-	"should be deprecated "
 
 	^ self bodyString
 ]
