@@ -23,7 +23,7 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -36,15 +36,54 @@ See *@anchorSection1@*
 
 ' ] .
 	
-	doc := Microdown parseFile: file contents .
 
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
 
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self assert: visitor isOk.
+	self assert: (visitor checkFile: file ).
+	file ensureDelete .
+]
+
+{ #category : 'tests' }
+MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
+
+	| dir file1 file2    |
+	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+   dir ensureCreateDirectory .
+	
+	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
+	file1 := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 1 '] .
+	
+	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
+	file2 := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+	file2 writeStreamDo: [ :stream | stream nextPutAll: 'See *@anchorSection1@*'] .
+	
+	self checkDir: dir .
+	file1 ensureDelete .
+	file2 ensureDelete .
+	 
+	self assert: self isOk.
+]
+
+{ #category : 'tests' }
+MicReferenceCheckerTest >> testFile [ 
+
+	| file  visitor |
+	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
+   file ensureCreateFile.
+
+
+	
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
+![alittle caption.](figures/f.png anchor=anchorSection1)
+
+See *@anchorSection0@*
+
+' ] .
+	
+
+	visitor := MicReferenceChecker new. 
+	self deny: (visitor checkFile: file )
 ]
 
 { #category : 'tests' }
@@ -65,8 +104,8 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReferToAFigureInFile [ 
 
-	| file doc visitor |
-	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
+	| file  visitor |
+	file := (FileSystem workingDirectory / 'myFile2.txt') asFileReference.
    file ensureCreateFile.
 
 
@@ -77,16 +116,9 @@ MicReferenceCheckerTest >> testReferToAFigureInFile [
 See *@anchorSection1@*
 
 ' ] .
-	
-	doc := Microdown parseFile: file contents .
-
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
-
-	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self assert: visitor isOk.
+   visitor := MicReferenceChecker new. 
+	self assert: (visitor checkFile: file ).
+	file ensureDelete.
 ]
 
 { #category : 'tests' }
@@ -109,7 +141,7 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReferToAMathEquationInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -124,15 +156,11 @@ See *@anchorSection1@*
 
 ' ] .
 	
-	doc := Microdown parseFile: file contents .
 
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
 
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self assert: visitor isOk.
+	self assert: (visitor checkFile: file).
+	file ensureDelete .
 ]
 
 { #category : 'tests' }
@@ -152,7 +180,7 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -164,14 +192,10 @@ See *@anchorSection1@*
 
 ' ] .
 	
-	doc := Microdown parseFile: file contents .
 	
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self deny: visitor isOk.
+	self deny: (visitor checkFile: file) .
+	file ensureDelete .
 ]
 
 { #category : 'tests - duplicated anchors' }
@@ -202,7 +226,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReportingDuplicatedAnchorsInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -224,15 +248,11 @@ See *@anchorSection1@* and *@anchorSection0@*
 
 '] .
 	
-	doc := Microdown parseFile: file contents .
-	
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
+
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self deny: visitor isOk.
-	self assert: visitor duplicatedAnchors equals: OrderedCollection <- #('anchorSection1' 'anchorSection1')
+	self deny: (visitor checkFile: file).
+	self assert: visitor duplicatedAnchors equals: OrderedCollection <- #('anchorSection1' 'anchorSection1') .
+		file ensureDelete .
 ]
 
 { #category : 'tests - duplicated anchors' }
@@ -262,7 +282,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -280,18 +300,14 @@ MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [
 See *@anchorSection1@* and *@anchorSection3@*
 
 '] .
-	
-	doc := Microdown parseFile: file contents .
-	
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
+	.
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-self deny: visitor isOk.
+	self deny: (visitor checkFile: file) .
 	self
 		assert: visitor duplicatedAnchors
-		equals: OrderedCollection <- #( 'anchorSection1' )
+		equals: OrderedCollection <- #( 'anchorSection1' ) .
+		
+	file ensureDelete 
 ]
 
 { #category : 'tests - duplicated anchors' }
@@ -331,7 +347,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReportingDuplicatedMathsInFile [ 
 
-	| file doc visitor |
+	| file  visitor |
 	file := (FileSystem workingDirectory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
 
@@ -359,18 +375,13 @@ $$
 See *@anchorSection1@* and *@anchorSection3@*
 
 '] .
-	
-	doc := Microdown parseFile: file contents .
-	
-	self assert: (doc isKindOf: MicRootBlock ) .
-   self assert: doc fromFile equals: file contents .
-	file ensureDelete .
+
 	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-   self deny: visitor isOk.
+   self deny: (visitor checkFile: file) .
 	self
 		assert: visitor duplicatedAnchors
-		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
+		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' ).
+		file ensureDelete .
 ]
 
 { #category : 'tests' }

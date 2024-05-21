@@ -44,6 +44,7 @@ MicReferenceChecker >> checkFile: aFile [
 	|parsedFile|
 	parsedFile := Microdown parseFile: aFile contents . 
 	parsedFile accept: self.
+	^ self isOk .
 	
 	
 
