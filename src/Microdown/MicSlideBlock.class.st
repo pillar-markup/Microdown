@@ -10,6 +10,8 @@ to have the same slide but on two different layouts and not emit both.
 - bullet 3
 !>
 ```
+
+It should be noted that the title is not reified as a Microdown object because so far the extensions does not support a way to describe the argument that should be reified. 
 "
 Class {
 	#name : 'MicSlideBlock',
@@ -45,4 +47,10 @@ MicSlideBlock >> tag [
 { #category : 'accessing' }
 MicSlideBlock >> title [
 	^ arguments at: 'title' ifAbsent: [ '' ]
+]
+
+{ #category : 'accessing' }
+MicSlideBlock >> title: aString [
+
+	arguments at: #title put: aString
 ]
