@@ -16,6 +16,39 @@ Class {
 	#package : 'Microdown-ReferenceChecker'
 }
 
+{ #category : 'visiting' }
+MicReferenceChecker >> attachFile: anElement [ 
+ "get the file from the root of the parsed tree to add it along the anchors later "
+	|fakeElement|
+	fakeElement := anElement  .
+ (anElement isKindOf: MicRootBlock ) 
+	ifTrue: [
+		 ^ (fakeElement propertyAt: #file ifAbsent: [ ])  ] 
+	ifFalse: [ 
+					fakeElement := fakeElement parent .
+					self attachFile: fakeElement 
+				]
+
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> checkDir: aDir [
+	aDir allFiles children do: [ :each | self checkFile: each ] .
+
+
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> checkFile: aFile [ 
+
+	|parsedFile|
+	parsedFile := Microdown parseFile: aFile contents . 
+	parsedFile accept: self.
+	
+	
+
+]
+
 { #category : 'reporting' }
 MicReferenceChecker >> duplicatedAnchors [
 
@@ -25,11 +58,11 @@ MicReferenceChecker >> duplicatedAnchors [
 { #category : 'visiting' }
 MicReferenceChecker >> handleAnchorOf: anElement [
 
-	anElement hasAnchor ifTrue: [
-		(anchors includes: anElement anchor)
-			ifTrue: [ duplicatedAnchors add: anElement anchor ]
-			ifFalse: [ anchors add: anElement anchor ] ]
-		
+	anElement hasAnchor ifFalse: [ ^ self ].
+	self markAnchorSource: anElement.
+	(anchors includes: anElement anchor)
+		ifTrue: [ duplicatedAnchors add: anElement anchor ]
+		ifFalse: [ anchors add: anElement anchor ]
 	"Pay attention if we want to report all the occurrences of the 
 				anchor definition we would have to count the one already included
 				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
@@ -52,6 +85,13 @@ MicReferenceChecker >> isOk [
 		references allSatisfy: [ :each | anchors includes: each ] ]
 ]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> markAnchorSource: anAnchor [ 
+ "get the file from the root of the parsed tree to add it along the anchors later "
+	 	anAnchor propertyAt: #file put: (self attachFile: anAnchor ) .  
+
+]
+
 { #category : 'reporting' }
 MicReferenceChecker >> unknownAnchors [
 	
@@ -65,14 +105,17 @@ MicReferenceChecker >> unknownAnchors [
 { #category : 'visiting' }
 MicReferenceChecker >> visitAnchor: anAnchor [
 
+	self markAnchorSource: anAnchor  .
 	(anchors includes: anAnchor label) 
 		ifTrue: [
-			duplicatedAnchors add: anAnchor label
+			duplicatedAnchors add:  anAnchor label
 			"Pay attention if we want to report all the occurrences of the 
 				anchor definition we would have to count the one already included
 				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
 				the reporting should be anc1 is File1, File2 and File3" ]
-		ifFalse: [ anchors add: anAnchor label ]
+		ifFalse: [ 
+						anchors add:  anAnchor label  
+					]
 ]
 
 { #category : 'visiting' }
