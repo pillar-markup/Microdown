@@ -44,6 +44,11 @@ MicRootBlock >> fromFile: aFile [
 	self propertyAt: #file put: aFile
 ]
 
+{ #category : 'testing' }
+MicRootBlock >> hasFile [
+	^ self hasProperty: #file
+]
+
 { #category : 'accessing' }
 MicRootBlock >> indent [
 	^0
