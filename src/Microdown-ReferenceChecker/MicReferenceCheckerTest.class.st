@@ -51,21 +51,57 @@ MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
    dir ensureCreateDirectory .
 	
 	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
-	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 1 
-		@anAnchor
-		# Section 2
-		@anAnchor
-		 '] .
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+
+' ] .
 	file1 ensureCreateFile .
 	
 	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
-	file2 writeStreamDo: [ :stream | stream nextPutAll: ' # Section 1 
-		@anAnchor'] .
+	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection1@*'] .
    file2 ensureCreateFile . 
 
 	visitor := MicReferenceChecker new.
-	visitor checkDir: dir.
-	self assert:( visitor isOk ) .
+	self assert:( visitor checkDir: dir ) .
+	
+]
+
+{ #category : 'tests' }
+MicReferenceCheckerTest >> testDuplicatedAnchorDir [
+
+	| dir file1 file2 visitor   |
+	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+   dir ensureCreateDirectory .
+	
+	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+
+' ] .
+	file1 ensureCreateFile .
+	
+	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
+	file2 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection3
+
+# Section 4
+@anchorSection1
+
+
+'] .
+   file2 ensureCreateFile . 
+
+	visitor := MicReferenceChecker new.
+
+	self deny: ( visitor checkDir: dir ) .
 	
 ]
 
@@ -405,4 +441,32 @@ See *@anchorSection1@* and *@anchorSection2@*
 	doc accept: visitor.
 	self deny: visitor isOk.
 	self assert: visitor unknownAnchors equals: (OrderedCollection <- #('anchorSection2'))  
+]
+
+{ #category : 'tests' }
+MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
+
+	| dir file1 file2 visitor   |
+	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+   dir ensureCreateDirectory .
+	
+	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+
+' ] .
+	file1 ensureCreateFile .
+	
+	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
+	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection2@*'] .
+   file2 ensureCreateFile . 
+
+	visitor := MicReferenceChecker new.
+
+	self deny: ( visitor checkDir: dir ) .
+	
 ]
