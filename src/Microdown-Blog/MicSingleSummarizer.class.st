@@ -74,7 +74,7 @@ MicSingleSummarizer >> headerLink: aMicRootBlock [
 		addChild: ((self class
 				  makeALink: header text
 				  to:
-					  targetDirectory , date year asString , '/' , date monthName
+					  targetDirectory printString, date year asString , '/' , date monthName
 					  , '/' , date day asString , '/', header text) at: 1);
 		level: header level.
 

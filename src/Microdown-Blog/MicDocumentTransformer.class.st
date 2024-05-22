@@ -11,9 +11,12 @@ Class {
 { #category : 'as yet unclassified' }
 MicDocumentTransformer class >> makeALink: aText to: aLink [
 
-	^ MicInlineParser parse:
-		  '[' , aText printString asString , ']('
-		  , aLink printString asString , ')'
+	| text link |
+
+	(aText isNil or: aText isEmpty ) ifTrue: [ text := 'Undefined' ] ifFalse: [ text := aText ].
+	(aLink isNil or: aLink isEmpty ) ifTrue: [ link := 'Undefined' ] ifFalse: [ link := aLink ].
+
+	 ^ MicInlineParser parse: '[' , text , '](' , link , ')'
 ]
 
 { #category : 'accessing' }

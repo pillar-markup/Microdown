@@ -27,8 +27,12 @@ MicCreateMonth class >> generateMicListBlockOfLinkDateTo: aDestination [
 
 	self generateDateListSince2014 do: [ :each |
 		listElement := MicListItemBlock new.
-		link := MicDocumentTransformer makeALink: each asString to: aDestination, '/', each year asString,'/',each name,'/'.
-		(link at:1) parent: listElement.
+		link := MicDocumentTransformer
+			        makeALink: each asString
+			        to:
+				        aDestination printString , '/' , each year asString
+				        , '/' , each name , '/'.
+		(link at: 1) parent: listElement.
 		listElement parent: root ].
 	^ root
 ]
