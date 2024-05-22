@@ -115,7 +115,7 @@ MicSummarizerTest >> testGroupByDate [
 	summary := self createListOfMicRootBlock.
 	group := micSummarizer
 		         group: summary
-		         byDate: (Date newDay: 1 month: 'January' year: 2019).
+		         byDate: (Date newDay: 1 month: 'January' year: 2019) month.
 
 	self assert: group size equals: 2
 ]

@@ -9,12 +9,12 @@ Class {
 }
 
 { #category : 'grouping' }
-MicSummarizer >> group: aListOfSingleSummarizer byDate: aDate [
+MicSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
 
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
 		  metadataDate := (each children at: 1) body at: #date.
-		  metadataDate asDate month = aDate month]
+		  metadataDate asDate month = aMonth ]
 ]
 
 { #category : 'initialization' }
