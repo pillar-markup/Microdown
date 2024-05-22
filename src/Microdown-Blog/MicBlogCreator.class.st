@@ -38,7 +38,7 @@ MicBlogCreator >> createAllHtmlFile [
 	allFileParse do: [ :each | self createHtmlFile: each ].
 
 	sum := MicSummarizer new.
-	sum targetDirectory: targetDirectory .
+	sum targetDirectory: targetDirectory.
 
 	self createHtmlSummarize: (sum summarizeFile: allFile).
 

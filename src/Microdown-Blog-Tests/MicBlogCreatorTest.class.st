@@ -93,6 +93,17 @@ MicBlogCreatorTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testCollectAllFile [
+
+	| blog fileList |
+	blog := MicBlogCreator new.
+	blog sourceDirectory: fileSystem workingDirectory / 'source'.
+	fileList := blog collectAllFile.
+
+	self assert: fileList size equals: 3
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	| blog allFile |
