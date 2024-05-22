@@ -46,23 +46,27 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
-	| dir file1 file2    |
+	| dir file1 file2 visitor   |
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
    dir ensureCreateDirectory .
 	
 	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
-	file1 := (FileSystem workingDirectory / 'myDirectory') asFileReference.
-	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 1 '] .
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 1 
+		@anAnchor
+		# Section 2
+		@anAnchor
+		 '] .
+	file1 ensureCreateFile .
 	
 	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
-	file2 := (FileSystem workingDirectory / 'myDirectory') asFileReference.
-	file2 writeStreamDo: [ :stream | stream nextPutAll: 'See *@anchorSection1@*'] .
+	file2 writeStreamDo: [ :stream | stream nextPutAll: ' # Section 1 
+		@anAnchor'] .
+   file2 ensureCreateFile . 
+
+	visitor := MicReferenceChecker new.
+	visitor checkDir: dir.
+	self assert:( visitor isOk ) .
 	
-	self checkDir: dir .
-	file1 ensureDelete .
-	file2 ensureDelete .
-	 
-	self assert: self isOk.
 ]
 
 { #category : 'tests' }

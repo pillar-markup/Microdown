@@ -33,8 +33,11 @@ MicReferenceChecker >> attachFile: anElement [
 
 { #category : 'visiting' }
 MicReferenceChecker >> checkDir: aDir [
-	aDir allFiles children do: [ :each | self checkFile: each ] .
-
+    | parsedFile |
+    (aDir allFiles) do: [ :each |
+        (parsedFile := Microdown parseFile: (each  contents)) accept: self .
+    ].
+	^ self isOk 
 
 ]
 
@@ -44,7 +47,7 @@ MicReferenceChecker >> checkFile: aFile [
 	|parsedFile|
 	parsedFile := Microdown parseFile: aFile contents . 
 	parsedFile accept: self.
-	^ self isOk .
+	^ self isOk 
 	
 	
 
