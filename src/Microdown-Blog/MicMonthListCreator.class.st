@@ -11,10 +11,8 @@ MicMonthListCreator >> generateDateListSince2014 [
 	| date t |
 	date := Date newDay: 1 month: 1 year: 2014.
 
-	t := Timespan
-		     starting: date
-		     duration:
-		     (Duration years: [ Date today year - date year + 1 ] value).
+	t := Timespan starting: date month ending: (Date today addMonths: 1) month.
+
 	^ t months
 ]
 

@@ -1,3 +1,12 @@
+"
+```
+MicBlogCreator 
+	createFrom: FileSystem workingDirectory / 'source'
+	to:  FileSystem workingDirectory / 'html'
+```
+
+
+"
 Class {
 	#name : 'MicBlogCreator',
 	#superclass : 'Object',
@@ -15,8 +24,8 @@ MicBlogCreator class >> createFrom: source to: target [
 	| tmp1 |
 	tmp1 := self new.
 	tmp1
-		sourceDirectory: FileReference / source;
-		targetDirectory: FileReference / target.
+		sourceDirectory:  source;
+		targetDirectory: target.
 	tmp1 createAllHtmlFile
 ]
 

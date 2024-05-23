@@ -61,7 +61,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 { #category : 'as yet unclassified' }
 MicBlogCreatorTest >> generateArchitecture [
 
-	| fileSystem ref1 ref2 ref3 |
+	| ref1 ref2 ref3 |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 	fileSystem createDirectory: '/source'.
@@ -74,8 +74,7 @@ MicBlogCreatorTest >> generateArchitecture [
 
 	ref3 := fileSystem workingDirectory / 'source/anExample3.md'.
 	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ].
-	
-	^ fileSystem
+
 ]
 
 { #category : 'as yet unclassified' }
@@ -86,10 +85,11 @@ MicBlogCreatorTest >> listOfFile [
 
 { #category : 'running' }
 MicBlogCreatorTest >> setUp [
+
 	super setUp.
 
 	"Put here a common initialization logic for tests"
-	fileSystem := self generateArchitecture 
+	self generateArchitecture
 ]
 
 { #category : 'tests' }
@@ -112,8 +112,9 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
 		createAllHtmlFile.
-		
-	allFile := (fileSystem / 'html') allChildren select: [ :each | each isFile ].
+
+	allFile := (fileSystem / 'html') allChildren select: [ :each |
+		           each isFile ].
 
 	self assert: allFile size equals: 6
 ]
