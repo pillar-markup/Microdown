@@ -73,7 +73,7 @@ MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - duplicated anchors' }
 MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	| dir file1 file2 visitor   |
@@ -104,7 +104,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	visitor := MicReferenceChecker new.
 
-	self deny: ( visitor checkDir: dir ) .
+	self deny: ( visitor checkDir: dir ) 
 	
 ]
 
@@ -266,7 +266,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 	self assert: visitor duplicatedAnchors equals: OrderedCollection <- #('anchorSection1' 'anchorSection1')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - duplicated anchors' }
 MicReferenceCheckerTest >> testReportingDuplicatedAnchorsInFile [ 
 
 	| file  visitor |
@@ -322,7 +322,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 		equals: OrderedCollection <- #( 'anchorSection1' )
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - duplicated anchors' }
 MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [ 
 
 	| file  visitor |
@@ -387,7 +387,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - duplicated anchors' }
 MicReferenceCheckerTest >> testReportingDuplicatedMathsInFile [ 
 
 	| file  visitor |
