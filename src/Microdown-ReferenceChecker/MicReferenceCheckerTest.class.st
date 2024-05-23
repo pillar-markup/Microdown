@@ -17,7 +17,7 @@ See *@anchorSection1@*
 '.
 	visitor := MicReferenceChecker new. 
 	doc accept: visitor. 
-	self assert: visitor isOk.
+	self assert: visitor isOk
 ]
 
 { #category : 'tests' }
@@ -40,7 +40,7 @@ See *@anchorSection1@*
 
 	visitor := MicReferenceChecker new. 
 	self assert: (visitor checkFile: file ).
-	file ensureDelete .
+	file ensureDelete 
 ]
 
 { #category : 'tests' }
@@ -67,6 +67,9 @@ MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
 	visitor := MicReferenceChecker new.
 	self assert:( visitor checkDir: dir ) .
+		file1 ensureDelete.
+      file2 ensureDelete.
+      dir ensureDelete 
 	
 ]
 
@@ -158,7 +161,7 @@ See *@anchorSection1@*
 ' ] .
    visitor := MicReferenceChecker new. 
 	self assert: (visitor checkFile: file ).
-	file ensureDelete.
+	file ensureDelete
 ]
 
 { #category : 'tests' }
@@ -200,7 +203,7 @@ See *@anchorSection1@*
 
 	visitor := MicReferenceChecker new. 
 	self assert: (visitor checkFile: file).
-	file ensureDelete .
+	file ensureDelete 
 ]
 
 { #category : 'tests' }
@@ -235,7 +238,7 @@ See *@anchorSection1@*
 	
 	visitor := MicReferenceChecker new. 
 	self deny: (visitor checkFile: file) .
-	file ensureDelete .
+	file ensureDelete 
 ]
 
 { #category : 'tests - duplicated anchors' }
@@ -292,7 +295,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 	visitor := MicReferenceChecker new. 
 	self deny: (visitor checkFile: file).
 	self assert: visitor duplicatedAnchors equals: OrderedCollection <- #('anchorSection1' 'anchorSection1') .
-		file ensureDelete .
+		file ensureDelete 
 ]
 
 { #category : 'tests - duplicated anchors' }
@@ -421,7 +424,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 	self
 		assert: visitor duplicatedAnchors
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' ).
-		file ensureDelete .
+		file ensureDelete 
 ]
 
 { #category : 'tests' }
@@ -468,5 +471,9 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 	visitor := MicReferenceChecker new.
 
 	self deny: ( visitor checkDir: dir ) .
+	
+	file1 ensureDelete.
+   file2 ensureDelete.
+   dir ensureDelete 
 	
 ]
