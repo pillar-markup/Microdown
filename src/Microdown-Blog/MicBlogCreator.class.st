@@ -1,3 +1,12 @@
+"
+```
+MicBlogCreator 
+	createFrom: FileSystem workingDirectory / 'source'
+	to:  FileSystem workingDirectory / 'html'
+```
+
+
+"
 Class {
 	#name : 'MicBlogCreator',
 	#superclass : 'Object',
@@ -15,23 +24,29 @@ MicBlogCreator class >> createFrom: source to: target [
 	| tmp1 |
 	tmp1 := self new.
 	tmp1
-		sourceDirectory: FileReference / source;
-		targetDirectory: FileReference / target.
+		sourceDirectory:  source;
+		targetDirectory: target.
 	tmp1 createAllHtmlFile
 ]
 
 { #category : 'as yet unclassified' }
-MicBlogCreator >> collectAllFile [
+MicBlogCreator >> collectAllMarkDownFile [
 
-	^ sourceDirectory allChildren select: [ :each |
-		  each isFile ]
+	^ sourceDirectory allFiles select: [ :each |
+		  each fullName endsWith: '.md' ]
+]
+
+{ #category : 'copying' }
+MicBlogCreator >> copySourceDirectoryInTarget [
+
+	sourceDirectory copyAllTo: targetDirectory
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
 	| allFile allFileParse sum summar |
-	allFile := self collectAllFile.
+	allFile := self collectAllMarkDownFile.
 	allFileParse := allFile collect: [ :each |
 		                Microdown parse: each asFileReference contents ].
 
@@ -42,7 +57,7 @@ MicBlogCreator >> createAllHtmlFile [
 
 	self createHtmlSummarize: (sum summarizeFile: allFile).
 
-	MicCreateMonth generateDateListSince2014 do: [ :each |
+	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: allFileParse byDate: each.
 		summar isNotEmpty ifTrue: [
 			summar := sum summarize: summar.
@@ -52,7 +67,7 @@ MicBlogCreator >> createAllHtmlFile [
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlFile: aMicRoot [
 
-	| a q date header fileRef|
+	| a q date header fileRef |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
@@ -60,20 +75,13 @@ MicBlogCreator >> createHtmlFile: aMicRoot [
 	date := (aMicRoot children at: 1) body at: #date.
 	date := date asDate.
 	header := MicSingleSummarizer new firstHeaderBlockOf: aMicRoot.
-	
-	fileRef := targetDirectory copyWithPath: (targetDirectory fullPath asUrl path , '/' , date year asString
-			, '/' , date monthName , '/' , date day asString , '/').
 
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q
-		setCharSetUTF8;
-		destinationPath: fileRef .
-	^ q
-		  fileName: header text , '.html';
-		  writeDocument: a contents;
-		  contents
+	fileRef := targetDirectory copyWithPath:
+		           targetDirectory fullPath asUrl path , '/'
+		           , date year asString , '/' , date monthName , '/'
+		           , date day asString , '/'.
+
+	self write: a to: fileRef named: header text .
 ]
 
 { #category : 'rendering' }
@@ -88,15 +96,7 @@ MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
 		           targetDirectory fullPath asUrl path , '/'
 		           , aDate year asString , '/' , aDate monthName , '/'.
 
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q
-		setCharSetUTF8;
-		destinationPath: fileRef.
-	^ q
-		  writeDocument: a contents;
-		  contents
+	self write: a to: fileRef named: 'index' .
 ]
 
 { #category : 'rendering' }
@@ -106,25 +106,17 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-	
+
 	fileRef := targetDirectory copyWithPath:
 		           targetDirectory fullPath asUrl path.
 
-	q := MicHTMLDocument new.
-	q configuration: a configuration.
-	q configuration document: q.
-	q
-		setCharSetUTF8;
-		destinationPath: fileRef.
-	^ q
-		  writeDocument: a contents;
-		  contents
+	self write: a to: fileRef named: 'index' .
 ]
 
 { #category : 'as yet unclassified' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
-	aMicRoot addChild: (MicCreateMonth generateMicListBlockOfLinkDateTo: targetDirectory).
+	aMicRoot addChild: (MicMonthListCreator new generateMicListBlockOfLinkDateTo: targetDirectory).
 	^ aMicRoot
 
 	
@@ -153,4 +145,20 @@ MicBlogCreator >> targetDirectory [
 MicBlogCreator >> targetDirectory: target [
 
 	targetDirectory := target
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
+
+	| htmlDocument |
+	htmlDocument := MicHTMLDocument new.
+	htmlDocument configuration: aMicHTMLVisitor configuration.
+	htmlDocument configuration document: htmlDocument.
+	htmlDocument
+		setCharSetUTF8;
+		destinationPath: aPath.
+	^ htmlDocument
+		  fileName: aName , '.html';
+		  writeDocument: aMicHTMLVisitor contents;
+		  contents
 ]
