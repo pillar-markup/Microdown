@@ -66,7 +66,7 @@ MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
    file2 ensureCreateFile . 
 
 	visitor := MicReferenceChecker new.
-	self assert:( visitor checkDir: dir ) .
+	self assert:( visitor checkDirectory: dir ) .
 		file1 ensureDelete.
       file2 ensureDelete.
       dir ensureDelete 
@@ -78,7 +78,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	| dir file1 file2 visitor   |
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
-   dir ensureCreateDirectory .
+   dir ensureCreateDirectory.
 	
 	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
 	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
@@ -104,7 +104,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	visitor := MicReferenceChecker new.
 
-	self deny: ( visitor checkDir: dir ) 
+	self deny: ( visitor checkDirectory: dir ) 
 	
 ]
 
@@ -470,7 +470,7 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 
 	visitor := MicReferenceChecker new.
 
-	self deny: ( visitor checkDir: dir ) .
+	self deny: ( visitor checkDirectory: dir ) .
 	
 	file1 ensureDelete.
    file2 ensureDelete.

@@ -32,6 +32,12 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : 'accessing' }
+MicAnchorBlock >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self label
+]
+
 { #category : 'testing' }
 MicAnchorBlock >> hasLabel [ 
 	label ifNil: [ ^ false ].

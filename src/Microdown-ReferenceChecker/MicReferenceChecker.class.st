@@ -34,14 +34,12 @@ MicReferenceChecker >> attachFile: anElement [
 ]
 
 { #category : 'visiting' }
-MicReferenceChecker >> checkDir: aDir [
-
-	"take the directory , parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay , the visitor turned out to treat the many documents that it visits as one , so if anchor is duplicated in another file it will detect that . "
+MicReferenceChecker >> checkDirectory: aDir [
+	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
-    | parsedFile |
-
-    (aDir allFiles) do: [ :each |
-        (parsedFile := Microdown parseFile: (each  contents)) accept: self .
+	| parsedFile |
+	aDir allFiles do: [ :each |
+        (parsedFile := Microdown parseFile: each) accept: self.
     ].
 
 	^ self isOk 
@@ -50,11 +48,10 @@ MicReferenceChecker >> checkDir: aDir [
 
 { #category : 'visiting' }
 MicReferenceChecker >> checkFile: aFile [ 
+	"Will parse the given file and invite the visitor and return visitor isOk value"
 
-	" will parse the given file and invite the visitor and return visitor isOk value "
-
-	|parsedFile|
-	parsedFile := Microdown parseFile: aFile contents . 
+	| parsedFile |
+	parsedFile := Microdown parseFile: aFile. 
 	parsedFile accept: self.
 	^ self isOk 
 	
@@ -72,14 +69,19 @@ MicReferenceChecker >> duplicatedAnchors [
 MicReferenceChecker >> handleAnchorOf: anElement [
 
 	anElement hasAnchor ifFalse: [ ^ self ].
-	self markAnchorSource: anElement.
-	(anchors includes: anElement anchor)
-		ifTrue: [ duplicatedAnchors add: anElement anchor ]
-		ifFalse: [ anchors add: anElement anchor ]
-	"Pay attention if we want to report all the occurrences of the 
-				anchor definition we would have to count the one already included
-				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
-				the reporting should be anc1 is File1, File2 and File3" 
+
+	(self hasAlreadyDefinedAs: anElement)
+		ifTrue: [ duplicatedAnchors add: anElement ].
+	 anchors add: anElement
+	
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
+
+	^ (anchors
+		  detect: [ :each | each label = anAnchor anchorLabel ]
+		  ifNone: [ #(  ) ]) isNotEmpty
 ]
 
 { #category : 'initialization' }
@@ -98,13 +100,6 @@ MicReferenceChecker >> isOk [
 		references allSatisfy: [ :each | anchors includes: each ] ]
 ]
 
-{ #category : 'visiting' }
-MicReferenceChecker >> markAnchorSource: anAnchor [ 
- "get the file from the root of the parsed tree to add it along the anchors later "
-	 	anAnchor propertyAt: #file put: (self attachFile: anAnchor ) .  
-
-]
-
 { #category : 'reporting' }
 MicReferenceChecker >> unknownAnchors [
 	
@@ -118,17 +113,10 @@ MicReferenceChecker >> unknownAnchors [
 { #category : 'visiting' }
 MicReferenceChecker >> visitAnchor: anAnchor [
 
-	self markAnchorSource: anAnchor  .
-	(anchors includes: anAnchor label) 
-		ifTrue: [
-			duplicatedAnchors add:  anAnchor label
-			"Pay attention if we want to report all the occurrences of the 
-				anchor definition we would have to count the one already included
-				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
-				the reporting should be anc1 is File1, File2 and File3" ]
-		ifFalse: [ 
-						anchors add:  anAnchor label  
-					]
+	| isAlready |
+	isAlready := self hasAlreadyDefinedAs: anAnchor.
+	isAlready ifTrue: [ duplicatedAnchors add: anAnchor ].
+	anchors add: anAnchor
 ]
 
 { #category : 'visiting' }
