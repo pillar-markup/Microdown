@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicSummarizer',
-	#superclass : 'MicDocumentTransformer',
+	#superclass : 'MicAbstractBlogCreator',
 	#instVars : [
 		'maximumFile'
 	],

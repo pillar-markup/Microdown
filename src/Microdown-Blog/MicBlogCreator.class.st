@@ -42,7 +42,7 @@ MicBlogCreator >> createAllHtmlFile [
 
 	self createHtmlSummarize: (sum summarizeFile: allFile).
 
-	MicCreateMonth generateDateListSince2014 do: [ :each |
+	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: allFileParse byDate: each.
 		summar isNotEmpty ifTrue: [
 			summar := sum summarize: summar.
@@ -124,7 +124,7 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 { #category : 'as yet unclassified' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
-	aMicRoot addChild: (MicCreateMonth generateMicListBlockOfLinkDateTo: targetDirectory).
+	aMicRoot addChild: (MicMonthListCreator new generateMicListBlockOfLinkDateTo: targetDirectory).
 	^ aMicRoot
 
 	

@@ -9,19 +9,20 @@ Class {
 MicDocumentTransformerTest class >> testMakeALinkTo [
 
 	| link |
-	
 	link := MicInlineParser parse: '[Pharo is cool](Test)'.
-	self assert: (MicDocumentTransformer makeALink: 'Pharo is cool' to: 'Test' ) equals: link.
+	self
+		assert:
+		(MicAbstractBlogCreator new makeALink: 'Pharo is cool' to: 'Test')
+		equals: link
 ]
 
 { #category : 'tests' }
 MicDocumentTransformerTest >> testMakeALinkTo [
 
-	| array link |
-	array := MicDocumentTransformer makeALink: 'Pharo is cool' to: 'Test'.
-	link := array at: 1.
+	|  link |
+	link := MicAbstractBlogCreator new makeALink: 'Pharo is cool' to: 'Test'.
+	
 	self
-		assert: array size equals: 1;
 		assert: (link isKindOf: MicLinkBlock) equals: true;
 		assert: link plainText equals: '[Pharo is cool](Test)'
 ]
@@ -29,11 +30,10 @@ MicDocumentTransformerTest >> testMakeALinkTo [
 { #category : 'tests' }
 MicDocumentTransformerTest >> testMakeALinkToWithEmptyArguments [
 
-	| array link |
-	array := MicDocumentTransformer makeALink: '' to: ''.
-	link := array at: 1.
+	| link |
+	link := MicAbstractBlogCreator new makeALink: '' to: ''.
+	
 	self
-		assert: array size equals: 1;
 		assert: (link isKindOf: MicLinkBlock) equals: true;
 		assert: link plainText equals: '[Undefined](Undefined)'
 ]

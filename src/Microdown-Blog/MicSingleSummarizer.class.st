@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicSingleSummarizer',
-	#superclass : 'MicDocumentTransformer',
+	#superclass : 'MicAbstractBlogCreator',
 	#instVars : [
 		'maximumWords'
 	],
@@ -71,11 +71,11 @@ MicSingleSummarizer >> headerLink: aMicRootBlock [
 	date := (aMicRootBlock children at: 1) body at: #date.
 	date := date asDate.
 	headerLink
-		addChild: ((self class
+		addChild: (self 
 				  makeALink: header text
 				  to:
 					  targetDirectory printString, date year asString , '/' , date monthName
-					  , '/' , date day asString , '/', header text) at: 1);
+					  , '/' , date day asString , '/', header text);
 		level: header level.
 
 	^ headerLink

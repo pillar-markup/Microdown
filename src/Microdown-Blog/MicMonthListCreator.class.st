@@ -1,12 +1,12 @@
 Class {
-	#name : 'MicCreateMonth',
-	#superclass : 'Object',
+	#name : 'MicMonthListCreator',
+	#superclass : 'MicAbstractBlogCreator',
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
 
 { #category : 'generate' }
-MicCreateMonth class >> generateDateListSince2014 [
+MicMonthListCreator >> generateDateListSince2014 [
 
 	| date t |
 	date := Date newDay: 1 month: 1 year: 2014.
@@ -19,20 +19,19 @@ MicCreateMonth class >> generateDateListSince2014 [
 ]
 
 { #category : 'generate' }
-MicCreateMonth class >> generateMicListBlockOfLinkDateTo: aDestination [
+MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aDestination [
 
-	| root link inlineParser listElement |
+	| root link listElement |
 	root := MicUnorderedListBlock new.
-	inlineParser := MicInlineParser new.
 
 	self generateDateListSince2014 do: [ :each |
 		listElement := MicListItemBlock new.
-		link := MicDocumentTransformer
+		link := self
 			        makeALink: each asString
 			        to:
-				        aDestination printString , '/' , each year asString
-				        , '/' , each name , '/'.
-		(link at: 1) parent: listElement.
+				        aDestination printString , '/' , each year asString , '/'
+				        , each name , '/'.
+		link parent: listElement.
 		listElement parent: root ].
 	^ root
 ]
