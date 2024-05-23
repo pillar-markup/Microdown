@@ -16,6 +16,31 @@ Class {
 	#package : 'Microdown-ReferenceChecker'
 }
 
+{ #category : 'visiting' }
+MicReferenceChecker >> checkDirectory: aDir [
+	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
+	
+	| parsedFile |
+	aDir allFiles do: [ :each |
+        (parsedFile := Microdown parseFile: each) accept: self.
+    ].
+	^ self isOk 
+
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> checkFile: aFile [ 
+	"Will parse the given file and invite the visitor and return visitor isOk value"
+
+	| parsedFile |
+	parsedFile := Microdown parseFile: aFile. 
+	parsedFile accept: self.
+	^ self isOk 
+	
+	
+
+]
+
 { #category : 'reporting' }
 MicReferenceChecker >> duplicatedAnchors [
 
@@ -25,15 +50,22 @@ MicReferenceChecker >> duplicatedAnchors [
 { #category : 'visiting' }
 MicReferenceChecker >> handleAnchorOf: anElement [
 
-	anElement hasAnchor ifTrue: [
-		(anchors includes: anElement anchor)
-			ifTrue: [ duplicatedAnchors add: anElement anchor ]
-			ifFalse: [ anchors add: anElement anchor ] ]
-		
-	"Pay attention if we want to report all the occurrences of the 
-				anchor definition we would have to count the one already included
-				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
-				the reporting should be anc1 is File1, File2 and File3" 
+	anElement hasAnchor ifFalse: [ ^ self ].
+	(self hasAlreadyDefinedAs: anElement)
+		ifTrue: [ duplicatedAnchors add: anElement ].
+	 anchors add: anElement
+	
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
+
+	| alreadyDefined |
+	alreadyDefined := false. 
+	anchors do: 
+		 [ :each | each anchorLabel = anAnchor anchorLabel
+				ifTrue: [ alreadyDefined := true ] ].
+	^ alreadyDefined
 ]
 
 { #category : 'initialization' }
@@ -49,36 +81,35 @@ MicReferenceChecker >> initialize [
 MicReferenceChecker >> isOk [
 
 	^ duplicatedAnchors isEmpty and: [
-		references allSatisfy: [ :each | anchors includes: each ] ]
+		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
 { #category : 'reporting' }
 MicReferenceChecker >> unknownAnchors [
 	
-	| unk |
-	unk := references copy.
-	anchors do: [ :each | 
-		unk remove: each ifAbsent: [  ] ].
-	^ unk
+	| unknown ref |
+	unknown := OrderedCollection new. 
+	ref := references copy.
+	ref do: [ :ref |
+		(anchors noneSatisfy: [ :each | 
+			ref anchorLabel = each anchorLabel ])
+				ifTrue: [ unknown add: ref ]  ].
+	^ unknown 
 ]
 
 { #category : 'visiting' }
 MicReferenceChecker >> visitAnchor: anAnchor [
 
-	(anchors includes: anAnchor label) 
-		ifTrue: [
-			duplicatedAnchors add: anAnchor label
-			"Pay attention if we want to report all the occurrences of the 
-				anchor definition we would have to count the one already included
-				in anchors - Imagine that you have File1/anc1 File2/anc1 and File3/anc1
-				the reporting should be anc1 is File1, File2 and File3" ]
-		ifFalse: [ anchors add: anAnchor label ]
+	| isAlready |
+	isAlready := self hasAlreadyDefinedAs: anAnchor.
+	isAlready ifTrue: [ duplicatedAnchors add: anAnchor ].
+	anchors add: anAnchor
 ]
 
 { #category : 'visiting' }
 MicReferenceChecker >> visitAnchorReference: anAnchorReference [
 	
-	references add: anAnchorReference bodyString
+	references add: anAnchorReference
 ]
 
 { #category : 'visiting' }
