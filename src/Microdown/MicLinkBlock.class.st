@@ -28,6 +28,13 @@ MicLinkBlock >> accept: aVisitor [
 	^ aVisitor visitLink: self
 ]
 
+{ #category : 'visiting' }
+MicLinkBlock >> closeMe [
+
+	super closeMe.
+	self children do: [ :each | each basicParent: self ].
+]
+
 { #category : 'printing' }
 MicLinkBlock >> plainText [
 	^ '[', ((self children collect: [:each | each plainText]) joinUsing: ' '), '](', url ,')'

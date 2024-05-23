@@ -39,6 +39,12 @@ MicInlineBlockWithUrl >> anchor: aString [
 	arguments removeKey: #label ifAbsent: [].
 ]
 
+{ #category : 'handle' }
+MicInlineBlockWithUrl >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self anchor
+]
+
 { #category : 'accessing' }
 MicInlineBlockWithUrl >> argumentAt: aKey ifPresent: aBlock [
 	"Lookup the given key in the receiver. If it is present, answer the value of evaluating the given block with the value associated with the key. Otherwise, answer self."
@@ -110,7 +116,7 @@ MicInlineBlockWithUrl >> closeMe [
 	"the link url - ![alt text](url) - url is allowed to have title in quotes
 	(url ""title"") "
 
-	| split title|
+	| split title |
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
 	title := (split second ifNil: [ '' ]) 

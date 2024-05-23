@@ -47,6 +47,12 @@ MicElement >> basicParent: aMicBlock [
 	parent := aMicBlock
 ]
 
+{ #category : 'accessing' }
+MicElement >> fromFile [
+	"Let us bubble up to the root to get the file"
+	^ self parent fromFile
+]
+
 { #category : 'properties' }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."

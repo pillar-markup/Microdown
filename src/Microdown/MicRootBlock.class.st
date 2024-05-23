@@ -33,6 +33,23 @@ MicRootBlock >> canConsumeLine: line [
 ]
 
 { #category : 'accessing' }
+MicRootBlock >> fromFile [
+	^ self propertyAt: #file 
+]
+
+{ #category : 'accessing' }
+MicRootBlock >> fromFile: aFile [ 
+	"Store the file from which the document was built"
+	
+	self propertyAt: #file put: aFile
+]
+
+{ #category : 'testing' }
+MicRootBlock >> hasFile [
+	^ self hasProperty: #file
+]
+
+{ #category : 'accessing' }
 MicRootBlock >> indent [
 	^0
 ]
