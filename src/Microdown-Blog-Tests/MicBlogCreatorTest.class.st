@@ -104,6 +104,19 @@ MicBlogCreatorTest >> testCollectAllFile [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
+
+	| blog |
+	blog := MicBlogCreator new.
+	blog
+		targetDirectory: fileSystem / 'html';
+		sourceDirectory: fileSystem / 'source';
+		copySourceDirectoryInTarget.
+		
+	self assert: (fileSystem / 'html') children size equals: 3.
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	| blog allFile |

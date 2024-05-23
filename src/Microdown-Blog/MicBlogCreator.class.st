@@ -32,8 +32,13 @@ MicBlogCreator class >> createFrom: source to: target [
 { #category : 'as yet unclassified' }
 MicBlogCreator >> collectAllFile [
 
-	^ sourceDirectory allChildren select: [ :each |
-		  each isFile ]
+	^ sourceDirectory allFiles select: [ :each | each fullName endsWith: '.md' ]
+]
+
+{ #category : 'copying' }
+MicBlogCreator >> copySourceDirectoryInTarget [
+
+	sourceDirectory copyAllTo: targetDirectory
 ]
 
 { #category : 'rendering' }
