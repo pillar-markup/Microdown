@@ -2,7 +2,8 @@ Class {
 	#name : 'MicBlogCreatorTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'fileSystem'
+		'fileSystem',
+		'blog'
 	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
@@ -89,16 +90,19 @@ MicBlogCreatorTest >> setUp [
 	super setUp.
 
 	"Put here a common initialization logic for tests"
-	self generateArchitecture
+	self generateArchitecture.
+	blog := MicBlogCreator new.
+	blog
+		targetDirectory: fileSystem / 'html';
+		sourceDirectory: fileSystem / 'source'.
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testCollectAllFile [
+MicBlogCreatorTest >> testCollectAllMarkDownFile [
 
-	| blog fileList |
-	blog := MicBlogCreator new.
-	blog sourceDirectory: fileSystem workingDirectory / 'source'.
-	fileList := blog collectAllFile.
+	| fileList |
+	
+	fileList := blog collectAllMarkDownFile.
 
 	self assert: fileList size equals: 3
 ]
@@ -106,25 +110,17 @@ MicBlogCreatorTest >> testCollectAllFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 
-	| blog |
-	blog := MicBlogCreator new.
-	blog
-		targetDirectory: fileSystem / 'html';
-		sourceDirectory: fileSystem / 'source';
-		copySourceDirectoryInTarget.
-		
-	self assert: (fileSystem / 'html') children size equals: 3.
+	blog copySourceDirectoryInTarget.
+
+	self assert: (fileSystem / 'html') children size equals: 3
 ]
 
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateAllHtmlFile [
 
-	| blog allFile |
-	blog := MicBlogCreator new.
-	blog
-		targetDirectory: fileSystem / 'html';
-		sourceDirectory: fileSystem / 'source';
-		createAllHtmlFile.
+	| allFile |
+	
+	blog createAllHtmlFile.
 
 	allFile := (fileSystem / 'html') allChildren select: [ :each |
 		           each isFile ].
@@ -135,21 +131,20 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlFile [
 
-	| root blog |
+	| root |
 	root := Microdown parse:
 		        (fileSystem / 'source/anExample1.md') readStream.
-	blog := MicBlogCreator new.
 	blog
-		targetDirectory: fileSystem / 'html';
 		createHtmlFile: root.
 
-	self assert: (fileSystem / 'html/2019/January/8/A Cool Story.html') exists
+	self assert:
+		(fileSystem / 'html/2019/January/8/A Cool Story.html') exists
 ]
 
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 
-	| root blog summarizer allFileParse |
+	| root summarizer allFileParse |
 	summarizer := MicSummarizer new.
 	summarizer targetDirectory: 'html'.
 
@@ -161,9 +156,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		        byDate: (Month year: 2019 month: 'January').
 	root := summarizer summarize: root.
 
-	blog := MicBlogCreator new.
-	blog
-		targetDirectory: fileSystem / 'html';
+	blog 
 		createHtmlGroupFile: root at: (Month year: 2019 month: 'January').
 
 	self assert: (fileSystem / 'html/2019/January/index.html') exists
@@ -172,14 +165,11 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlSummarize [
 
-	| root blog summarizer |
+	| root summarizer |
 	summarizer := MicSummarizer new.
-	summarizer targetDirectory: 'html'. 
+	summarizer targetDirectory: 'html'.
 	root := summarizer summarizeFile: self listOfFile.
-	blog := MicBlogCreator new.
-	blog
-		targetDirectory: fileSystem / 'html';
-		createHtmlSummarize: root.
+	blog createHtmlSummarize: root.
 
 	self assert: (fileSystem / 'html/index.html') exists
 ]
