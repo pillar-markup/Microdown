@@ -55,6 +55,14 @@ MicAnchorBlock >> label: aLabel [
     
 ]
 
+{ #category : 'printing' }
+MicAnchorBlock >> printOn: aStream [
+
+	super printOn: aStream.
+	self hasLabel 
+		ifTrue: [ aStream nextPutAll: ' (', self label, ')' ]
+]
+
 { #category : 'accessing' }
 MicAnchorBlock >> target [
 	^ target

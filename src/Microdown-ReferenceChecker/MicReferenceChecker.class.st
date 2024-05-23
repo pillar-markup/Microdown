@@ -17,23 +17,6 @@ Class {
 }
 
 { #category : 'visiting' }
-MicReferenceChecker >> attachFile: anElement [ 
-
- "get the file from the root of the parsed tree to add it along the anchors later so we know in what file are the anchors or elements that caused the problem , what worth noting here is in the cases where anchor is not an object that will not work  "
-
-	|fakeElement|
-	fakeElement := anElement  .
- (anElement isKindOf: MicRootBlock ) 
-	ifTrue: [
-		 ^ (fakeElement propertyAt: #file ifAbsent: [ ])  ] 
-	ifFalse: [ 
-					fakeElement := fakeElement parent .
-					self attachFile: fakeElement 
-				]
-
-]
-
-{ #category : 'visiting' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
@@ -41,7 +24,6 @@ MicReferenceChecker >> checkDirectory: aDir [
 	aDir allFiles do: [ :each |
         (parsedFile := Microdown parseFile: each) accept: self.
     ].
-
 	^ self isOk 
 
 ]
@@ -69,7 +51,6 @@ MicReferenceChecker >> duplicatedAnchors [
 MicReferenceChecker >> handleAnchorOf: anElement [
 
 	anElement hasAnchor ifFalse: [ ^ self ].
-
 	(self hasAlreadyDefinedAs: anElement)
 		ifTrue: [ duplicatedAnchors add: anElement ].
 	 anchors add: anElement
@@ -79,9 +60,12 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 { #category : 'visiting' }
 MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 
-	^ (anchors
-		  detect: [ :each | each label = anAnchor anchorLabel ]
-		  ifNone: [ #(  ) ]) isNotEmpty
+	| alreadyDefined |
+	alreadyDefined := false. 
+	anchors do: 
+		 [ :each | each anchorLabel = anAnchor anchorLabel
+				ifTrue: [ alreadyDefined := true ] ].
+	^ alreadyDefined
 ]
 
 { #category : 'initialization' }
@@ -97,17 +81,20 @@ MicReferenceChecker >> initialize [
 MicReferenceChecker >> isOk [
 
 	^ duplicatedAnchors isEmpty and: [
-		references allSatisfy: [ :each | anchors includes: each ] ]
+		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
 { #category : 'reporting' }
 MicReferenceChecker >> unknownAnchors [
 	
-	| unk |
-	unk := references copy.
-	anchors do: [ :each | 
-		unk remove: each ifAbsent: [  ] ].
-	^ unk
+	| unknown ref |
+	unknown := OrderedCollection new. 
+	ref := references copy.
+	ref do: [ :ref |
+		(anchors noneSatisfy: [ :each | 
+			ref anchorLabel = each anchorLabel ])
+				ifTrue: [ unknown add: ref ]  ].
+	^ unknown 
 ]
 
 { #category : 'visiting' }
@@ -122,7 +109,7 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 { #category : 'visiting' }
 MicReferenceChecker >> visitAnchorReference: anAnchorReference [
 	
-	references add: anAnchorReference bodyString
+	references add: anAnchorReference
 ]
 
 { #category : 'visiting' }
