@@ -58,6 +58,7 @@ MicMicrodownToSlideTest >> testSlideMetaData [
 '.
    self assert: doc children size equals: 3.
 	MicMicrodownToSlideVisitor new visit: doc. 
-	self assert: doc children first class equals: MicMetaDataBlock
+	self assert: doc children first class equals: MicMetaDataBlock.
+	self assert: doc children second class equals: MicSlideBlock 
 	
 ]
