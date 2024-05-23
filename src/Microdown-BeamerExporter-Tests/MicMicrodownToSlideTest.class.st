@@ -39,3 +39,25 @@ MicMicrodownToSlideTest >> testSlideGotCorrectParent [
 	self assert: doc children size equals: 2
 	
 ]
+
+{ #category : 'tests' }
+MicMicrodownToSlideTest >> testSlideMetaData [
+
+	| doc |
+	doc := MicrodownParser new parse: '
+{
+	"title":"Essence of Dispatch",
+	"subtitle":"Taking Pharo Booleans as example",
+	"slidesid" : "M1S1"
+}
+
+# Slide title
+
+- item 1
+- item 2
+'.
+   self assert: doc children size equals: 3.
+	MicMicrodownToSlideVisitor new visit: doc. 
+	self assert: doc children first class equals: MicMetaDataBlock
+	
+]
