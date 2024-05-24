@@ -30,9 +30,9 @@ MicBlogCreator class >> createFrom: source to: target [
 ]
 
 { #category : 'as yet unclassified' }
-MicBlogCreator >> collectAllMarkDownFile [
+MicBlogCreator >> collectAllMarkDownFile: aFileReference [
 
-	^ sourceDirectory allFiles select: [ :each |
+	^ aFileReference allFiles select: [ :each |
 		  each fullName endsWith: '.md' ]
 ]
 
@@ -46,16 +46,25 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 MicBlogCreator >> createAllHtmlFile [
 
 	| allFile allFileParse sum summar |
-	allFile := self collectAllMarkDownFile.
+	self copySourceDirectoryInTarget.
+	allFile := self collectAllMarkDownFile: targetDirectory.
 	allFileParse := allFile collect: [ :each |
 		                Microdown parse: each asFileReference contents ].
 
-	allFileParse do: [ :each | self createHtmlFile: each ].
+	1 to: allFile size do: [ :index |
+		self
+			createHtmlFile: (allFileParse at: index)
+			toReplace: (allFile at: index) ].
+
+
 
 	sum := MicSummarizer new.
 	sum targetDirectory: targetDirectory.
 
 	self createHtmlSummarize: (sum summarizeFile: allFile).
+
+	"JUSQUE LA CA MARCHE"
+	targetDirectory fileSystem createDirectory: '/html/_monthBlog'.
 
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: allFileParse byDate: each.
@@ -65,44 +74,39 @@ MicBlogCreator >> createAllHtmlFile [
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> createHtmlFile: aMicRoot [
+MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
-	| a q date header fileRef |
+	| html |
 	self rootAssembly: aMicRoot.
+	html := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+	
+	self renameMarkdownIntoHtmlFile: aFileReference.
 
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+	aFileReference delete.
 
-	date := (aMicRoot children at: 1) body at: #date.
-	date := date asDate.
-	header := MicSingleSummarizer new firstHeaderBlockOf: aMicRoot.
-
-	fileRef := targetDirectory copyWithPath:
-		           targetDirectory fullPath asUrl path , '/'
-		           , date year asString , '/' , date monthName , '/'
-		           , date day asString , '/'.
-
-	self write: a to: fileRef named: header text .
+	self
+		write: html
+		to: aFileReference parent
+		named: (aFileReference fullName substrings: '/') last
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
 
-	| a q fileRef |
+	| a fileRef |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
-	fileRef := targetDirectory copyWithPath:
-		           targetDirectory fullPath asUrl path , '/'
-		           , aDate year asString , '/' , aDate monthName , '/'.
+	fileRef := targetDirectory / '_monthBlog'.
 
-	self write: a to: fileRef named: 'index' .
+	self write: a to: fileRef named: aDate asString,'.html'
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
-	| a q fileRef |
+	| a fileRef |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
@@ -110,7 +114,17 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 	fileRef := targetDirectory copyWithPath:
 		           targetDirectory fullPath asUrl path.
 
-	self write: a to: fileRef named: 'index' .
+	self write: a to: fileRef named: 'index.html'
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
+
+	| newPath |
+
+	newPath := aFileReference fullName copyReplaceAll: '.md' with: '.html'.
+	
+	aFileReference renameTo: newPath
 ]
 
 { #category : 'as yet unclassified' }
@@ -158,7 +172,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 		setCharSetUTF8;
 		destinationPath: aPath.
 	^ htmlDocument
-		  fileName: aName , '.html';
+		  fileName: aName;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]

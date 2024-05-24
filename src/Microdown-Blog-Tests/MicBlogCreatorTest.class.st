@@ -74,14 +74,13 @@ MicBlogCreatorTest >> generateArchitecture [
 	ref2 writeStreamDo: [ :stream | stream nextPutAll: self fileContent2 ].
 
 	ref3 := fileSystem workingDirectory / 'source/anExample3.md'.
-	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ].
-
+	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ]
 ]
 
 { #category : 'as yet unclassified' }
-MicBlogCreatorTest >> listOfFile [ 
+MicBlogCreatorTest >> listOfFile [
 
-	^ (fileSystem / 'source') allChildren select: [ :each | each isFile ]
+	^ (fileSystem / 'source') allFiles
 ]
 
 { #category : 'running' }
@@ -102,7 +101,7 @@ MicBlogCreatorTest >> testCollectAllMarkDownFile [
 
 	| fileList |
 	
-	fileList := blog collectAllMarkDownFile.
+	fileList := blog collectAllMarkDownFile: blog sourceDirectory.
 
 	self assert: fileList size equals: 3
 ]
@@ -119,26 +118,25 @@ MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	| allFile |
-	
 	blog createAllHtmlFile.
 
-	allFile := (fileSystem / 'html') allChildren select: [ :each |
-		           each isFile ].
+	allFile := (fileSystem / 'html') allFiles.
 
 	self assert: allFile size equals: 6
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testCreateHtmlFile [
+MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 
-	| root |
-	root := Microdown parse:
-		        (fileSystem / 'source/anExample1.md') readStream.
-	blog
-		createHtmlFile: root.
-
-	self assert:
-		(fileSystem / 'html/2019/January/8/A Cool Story.html') exists
+	| root file |
+	
+	file := self listOfFile at: 1 .
+	
+	root := Microdown parse: file contents.
+	
+	MicBlogCreator new createHtmlFile: root toReplace: file.
+	
+	self assert: file basename  equals: 'anExample1.html'
 ]
 
 { #category : 'tests' }
@@ -159,7 +157,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 	blog 
 		createHtmlGroupFile: root at: (Month year: 2019 month: 'January').
 
-	self assert: (fileSystem / 'html/2019/January/index.html') exists
+	self assert: (fileSystem / 'html/_monthBlog/January 2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -172,4 +170,42 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 	blog createHtmlSummarize: root.
 
 	self assert: (fileSystem / 'html/index.html') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
+
+	| fileRef |
+	fileRef := MicBlogCreator new renameMarkdownIntoHtmlFile:
+		           fileSystem / 'source/anExample1.md'.
+
+	self assert: (fileSystem / 'source/anExample1.html') exists.
+	self assert: (fileSystem / 'source/anExample1.md') exists not
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testRootAssembly [
+
+	| root file |
+	
+	file := self listOfFile at: 1.
+	root := Microdown parse: file contents.
+	
+	MicBlogCreator new rootAssembly: root.
+	
+	self assert: root children size equals: 5
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testWriteToNamed [
+
+	| root file html| 
+	
+	file := self listOfFile at: 1.
+	root := Microdown parse: file contents.
+	html := (MicHTMLVisitor new visit: root) at: 1.
+	
+	MicBlogCreator new write: html to: fileSystem / 'html'  named: 'test.html'.
+	
+	self assert: (fileSystem / 'html/test.html') exists
 ]
