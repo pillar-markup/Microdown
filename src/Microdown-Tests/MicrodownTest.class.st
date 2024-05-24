@@ -4,10 +4,28 @@ A MicrodownTest is a test class for testing the behavior of Microdown
 Class {
 	#name : 'MicrodownTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'file',
+		'filesystem'
+	],
 	#category : 'Microdown-Tests-Core',
 	#package : 'Microdown-Tests',
 	#tag : 'Core'
 }
+
+{ #category : 'running' }
+MicrodownTest >> setUp [
+	super setUp.
+	filesystem := FileSystem memory.
+	file := filesystem workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
+Pharo is cool
+
+```
+	this is a code snippet
+```
+' ].
+]
 
 { #category : 'tests - parent/children' }
 MicrodownTest >> testAddedAsChildWhenUsingParent [
@@ -43,6 +61,34 @@ MicrodownTest >> testFigureLabelAreNotReified [
 	self assert: fig class  equals: MicFigureBlock.
 	self assert: fig anchor equals: 'fig'.
 
+]
+
+{ #category : 'tests' }
+MicrodownTest >> testFromFileIfAbsent [
+
+	| root |
+	root := Microdown parse: (filesystem workingDirectory / 'anExample1.md') contents.
+	self deny: root hasFile
+]
+
+{ #category : 'tests' }
+MicrodownTest >> testFromFileInAnyElement [
+
+	| root |
+	root := Microdown parseFile: filesystem workingDirectory / 'anExample1.md'.
+	self assert: root children first children first fromFile equals: (filesystem workingDirectory / 'anExample1.md') fullName
+
+	
+]
+
+{ #category : 'tests' }
+MicrodownTest >> testFromFileInRootDocument [
+
+	| root |
+	root := Microdown parseFile: filesystem workingDirectory / 'anExample1.md'.
+	self assert: root fromFile equals: (filesystem workingDirectory / 'anExample1.md') fullName
+
+	
 ]
 
 { #category : 'tests - parent/children' }

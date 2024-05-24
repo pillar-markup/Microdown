@@ -63,6 +63,12 @@ MicMathBlock >> anchor: aString [
 ]
 
 { #category : 'handle' }
+MicMathBlock >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self anchor
+]
+
+{ #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |

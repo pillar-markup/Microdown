@@ -1,5 +1,9 @@
 # Microdown Parser and Elements
 
+<a href="https://www.pharo.org">
+    <img alt="Pharo" src="https://img.shields.io/static/v1?style=for-the-badge&message=Pharo&color=3297d4&logo=Harbor&logoColor=FFFFFF&label=" />
+</a>
+
 I'm a parser and object model for Microdown originally implemented by S. Ducasse, L. Dargaud and G. Polito. 
 The implementation is based on the work on markdown of K. Osterbye. 
 Further developments by S. Ducasse and K. Osterbye. 

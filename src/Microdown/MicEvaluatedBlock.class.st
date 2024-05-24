@@ -34,6 +34,13 @@ MicEvaluatedBlock >> children: anObject [
 	children := anObject
 ]
 
+{ #category : 'visiting' }
+MicEvaluatedBlock >> closeMe [
+
+	super closeMe.
+	self children do: [ :each | each basicParent: self ].
+]
+
 { #category : 'printing' }
 MicEvaluatedBlock >> plainText [
 	^ ( self children collect: [:each | each plainText ] ) joinUsing: ' '

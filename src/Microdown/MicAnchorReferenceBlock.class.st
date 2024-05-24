@@ -35,6 +35,12 @@ MicAnchorReferenceBlock >> accept: aVisitor [
 ]
 
 { #category : 'accessing' }
+MicAnchorReferenceBlock >> anchorLabel [ 
+	
+	^ bodyString 
+]
+
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference [
 
 	^ reference
