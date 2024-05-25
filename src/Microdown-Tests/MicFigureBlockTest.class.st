@@ -61,6 +61,19 @@ MicFigureBlockTest >> testAnchorExpressedUsingLabel [
 	self assert: figure anchor equals: '233'
 ]
 
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testAnchorInCaption [
+
+	| figure |
+	figure := (splitterClass new parse:
+		           '![ caption with space and dot... % width=80&anchor=233]( https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  )') first.
+		
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'.
+	self assert: (figure arguments at: #width) equals: '80'
+]
+
 { #category : 'running' }
 MicFigureBlockTest >> testArgumentAtIfPresent [
 
@@ -113,6 +126,24 @@ MicFigureBlockTest >> testFigureCaptionIsReified [
 	self assert: fig children second parent equals: fig
 ]
 
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testFigureCaptionIsReifiedWithNewFormat [
+	"And as such their parent is the math block"
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption % width=666&anchor=myAnchor](figures/f.png)'.
+	fig := root children first children first.
+	self
+		assert: fig children second class equals: MicBoldFormatBlock.
+	self assert: fig children second parent equals: fig.
+	
+	self assert: fig hasArguments.
+	self assert: fig hasAnchor.
+	self assert: fig anchor equals: 'myAnchor'.
+	self assert: (fig arguments at: #width) equals: '666'
+]
+
 { #category : 'tests' }
 MicFigureBlockTest >> testHasArguments [
 	| figure |
@@ -135,6 +166,20 @@ MicFigureBlockTest >> testHasNoArguments [
 	self deny: figure hasArguments
 	
 	
+]
+
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testIfArgumentInCaptionIgnoresInURL [
+	"Since we will move to the first solution"
+
+	| figure |
+	figure := (splitterClass new parse:
+		           '![ caption with space and dot... % width=80&anchor=233]( https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=100&anchor=NotThatOne)') first.
+		
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'.
+	self assert: (figure arguments at: #width) equals: '80'
 ]
 
 { #category : 'tests - testing' }

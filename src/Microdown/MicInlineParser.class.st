@@ -98,15 +98,29 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 { #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 
-	| skipRes children urlToken |
+	| skipRes children urlToken captionAndArgs caption rest toCaption newBlock |
+	
 	skipRes := self skipToUrlStartInStream: aTokenStream.
 	skipRes ifNil: [ ^ self createTextBlock: token string ].
-	children := self parseChildrenIn: skipRes second.
+
+	"We look if we have a % in the caption to remove the rest from the caption
+	and place them as arguments"
+	caption := OrderedCollection new. 
+	rest := OrderedCollection new. 
+	toCaption := true. 
+	skipRes second contents do: [:each | 		
+			each delimiter markup = '%'
+				ifTrue: [toCaption := false].
+			toCaption ifTrue: [ caption add: each ]
+				ifFalse: [ rest add: each ] ].
+	children := self parseChildrenIn: caption readStream.
 	urlToken := aTokenStream next.
-	^ blockType new
+	newBlock := blockType new
 		  children: children;
-		  url: urlToken undelimitedSubstring;
-		  closeMe
+		  url: urlToken undelimitedSubstring.
+	rest ifNotEmpty: [ newBlock	arguments: (MicArgumentList withString: rest second string )].
+	newBlock closeMe.
+	^ newBlock
 ]
 
 { #category : 'private parsing' }
