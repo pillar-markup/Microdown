@@ -71,7 +71,8 @@ MicFigureBlockTest >> testAnchorInCaption [
 	self assert: figure hasArguments.
 	self assert: figure hasAnchor.
 	self assert: figure anchor equals: '233'.
-	self assert: (figure arguments at: #width) equals: '80'
+	self assert: (figure arguments at: #width) equals: '80'.
+	self assert: figure children first bodyString equals: 'caption with space and dot...' 
 ]
 
 { #category : 'running' }

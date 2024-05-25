@@ -98,8 +98,8 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 { #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 
-	| skipRes children urlToken captionAndArgs caption rest toCaption newBlock |
-	
+	| skipRes children urlToken caption rest toCaption newBlock |
+	self halt.
 	skipRes := self skipToUrlStartInStream: aTokenStream.
 	skipRes ifNil: [ ^ self createTextBlock: token string ].
 
@@ -113,12 +113,18 @@ MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token 
 				ifTrue: [toCaption := false].
 			toCaption ifTrue: [ caption add: each ]
 				ifFalse: [ rest add: each ] ].
+	self halt.
 	children := self parseChildrenIn: caption readStream.
+	self halt.
 	urlToken := aTokenStream next.
 	newBlock := blockType new
 		  children: children;
 		  url: urlToken undelimitedSubstring.
-	rest ifNotEmpty: [ newBlock	arguments: (MicArgumentList withString: rest second string )].
+	rest 
+		ifNotEmpty: [ newBlock	arguments: (MicArgumentList withString: rest second string )]
+		ifEmpty: [ 
+			"We mark it to nil to indicate to the closeMe that there were no arguments in the caption. In the future when all the books and more will not use arguments in the url then we will remove this hack. For now it enables backward compatibility while giving precedence to caption arguments."
+			newBlock arguments: nil ].
 	newBlock closeMe.
 	^ newBlock
 ]
