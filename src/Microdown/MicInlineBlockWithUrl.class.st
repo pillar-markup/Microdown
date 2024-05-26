@@ -119,9 +119,10 @@ MicInlineBlockWithUrl >> closeMe [
 	| split title |
 	split := url splitOnFirst: Character space.
 	self reference: (MicResourceReference fromUri: split first).
-	title := (split second ifNil: [ '' ]) 
-		trimBoth: [:char | {$". Character space} includes: char].
-	self arguments: (MicArgumentList withString: title)
+	self arguments ifNil: [ 
+		title := (split second ifNil: [ '' ]) 
+			trimBoth: [:char | {$". Character space} includes: char].
+		self arguments: (MicArgumentList withString: title)]
 ]
 
 { #category : 'utilities' }
