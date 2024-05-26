@@ -179,8 +179,9 @@ MicArgumentList >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
 	| pairs |
 	pairs := string splitOn: $&.
-	pairs do: [ :p | |keyValue|
-		keyValue := p splitOnFirst: $=.
+	pairs do: [ :p | 
+		| keyValue |
+		keyValue := p splitOnFirst: $= noneValue: nil.
 		self at: keyValue first trim asSymbol put: keyValue second ]
 	
 ]
