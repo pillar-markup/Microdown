@@ -113,16 +113,14 @@ MicInlineBlockWithUrl >> children: anObject [
 
 { #category : 'visiting' }
 MicInlineBlockWithUrl >> closeMe [
-	"the link url - ![alt text](url) - url is allowed to have title in quotes
-	(url ""title"") "
 
-	| split title |
-	split := url splitOnFirst: Character space.
+	| split |
+	split := url splitOnFirst: Character space noneValue: nil.
 	self reference: (MicResourceReference fromUri: split first).
-	self arguments ifNil: [ 
-		title := (split second ifNil: [ '' ]) 
-			trimBoth: [:char | {$". Character space} includes: char].
-		self arguments: (MicArgumentList withString: title)]
+	self arguments 
+		ifNil: [ | title |
+				title := split second ifNotNil: [ :s | s] ifNil: [ '' ]. 
+				self arguments: (MicArgumentList withString: title) ]
 ]
 
 { #category : 'utilities' }
