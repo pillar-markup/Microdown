@@ -1,16 +1,17 @@
 Class {
-	#name : #MicLaTeXMaker,
-	#superclass : #MicAbstractOutputDocumentMaker,
-	#category : #'Microdown-Templated'
+	#name : 'MicLaTeXMaker',
+	#superclass : 'MicAbstractOutputDocumentMaker',
+	#category : 'Microdown-Templated',
+	#package : 'Microdown-Templated'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLaTeXMaker >> basicWriter [ 
 	
 	^ MicLaTeXWriter new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicLaTeXMaker >> extension [
 	
 	^ 'tex'

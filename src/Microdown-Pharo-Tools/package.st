@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-Pharo-Tools' }
+Package { #name : 'Microdown-Pharo-Tools' }

@@ -2,12 +2,13 @@
 This is a variation of the MicrodownParser that tries to be as close as possible to the ""markdown strict"" definition, that can be seen here: https://www.markdownguide.org/basic-syntax.
 "
 Class {
-	#name : #MacrodownParser,
-	#superclass : #MicrodownParser,
-	#category : #'Microdown-Macrodown'
+	#name : 'MacrodownParser',
+	#superclass : 'MicrodownParser',
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MacrodownParser >> blockStarterClassFrom: line [
 
 	self flag: #HACK. "This is a special case because it collides with environment"
@@ -17,7 +18,7 @@ MacrodownParser >> blockStarterClassFrom: line [
 	^ super blockStarterClassFrom: line
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MacrodownParser >> elementBlockClasses [
 		
 	^ { 
@@ -25,7 +26,7 @@ MacrodownParser >> elementBlockClasses [
 	 }
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MacrodownParser >> nonMatchedBlockClassFor: line [
 
 	^ self elementBlockClasses 
@@ -34,7 +35,7 @@ MacrodownParser >> nonMatchedBlockClassFor: line [
 		ifNone: [ self paragraphBlockClass ]
 ]
 
-{ #category : #'node creation' }
+{ #category : 'node creation' }
 MacrodownParser >> paragraphBlockClass [
 
 	^ MacParagraphBlock

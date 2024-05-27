@@ -1,6 +1,6 @@
-Extension { #name : #MicItalicFormatBlock }
+Extension { #name : 'MicItalicFormatBlock' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicItalicFormatBlock >> associatedPillarClass [
 	^ PRItalicFormat
 ]

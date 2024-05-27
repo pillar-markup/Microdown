@@ -1,24 +1,25 @@
 Class {
-	#name : #MicCodeblockLineNumbererTest,
-	#superclass : #TestCase,
+	#name : 'MicCodeblockLineNumbererTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'visitor',
 		'instance'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 MicCodeblockLineNumbererTest >> actualClass [
 	^ MicCodeblockLineNumberer 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockLineNumbererTest >> configuration [
 	^ MicMinimalConfiguration new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicCodeblockLineNumbererTest >> setUp [
 	super setUp.
 	instance := self actualClass new.
@@ -26,7 +27,7 @@ MicCodeblockLineNumbererTest >> setUp [
 	visitor configuration: self configuration
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockLineNumbererTest >> testScriptWithLineNumber [
 	| input |
 	input := MicRootBlock new
@@ -41,7 +42,7 @@ MicCodeblockLineNumbererTest >> testScriptWithLineNumber [
 	self assert: input children first body equals: '1	stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockLineNumbererTest >> testScriptWithLineNumberFalse [
 	| input |
 	input := MicRootBlock new
@@ -56,7 +57,7 @@ MicCodeblockLineNumbererTest >> testScriptWithLineNumberFalse [
 	self assert: input children first body equals: 'stream nextPut: $h; nextPut: $e; nextPut: $l; nextPutAll: ''lo'''
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockLineNumbererTest >> testScriptWithSeveralLineNumbers [
 	
 	| input  |
@@ -76,7 +77,7 @@ MicCodeblockLineNumbererTest >> testScriptWithSeveralLineNumbers [
 3	 !'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicCodeblockLineNumbererTest >> testScriptWithoutParameter [
 	| input |
 	input := MicRootBlock new

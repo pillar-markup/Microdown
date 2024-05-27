@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-Slide-Utils' }
+Package { #name : 'Microdown-Slide-Utils' }

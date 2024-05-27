@@ -1,6 +1,6 @@
-Extension { #name : #MicMathBlockTest }
+Extension { #name : 'MicMathBlockTest' }
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicMathBlockTest >> testMathBlockAsPillar [
 	| source root pillar |
 	source := '
@@ -14,7 +14,7 @@ root := parser parse: source.
 	
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicMathBlockTest >> testMathBlockAsPillarWithArgument [
 	| source root pillar |
 	source := '
@@ -30,7 +30,7 @@ V_i = C_0 - C_3
 	
 ]
 
-{ #category : #'*Microdown-Pillar-Tests' }
+{ #category : '*Microdown-Pillar-Tests' }
 MicMathBlockTest >> testMathBlockAsPillarWithArgumentWithFormatting [
 	| source root pillar |
 	source := '

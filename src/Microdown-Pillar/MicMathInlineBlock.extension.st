@@ -1,6 +1,6 @@
-Extension { #name : #MicMathInlineBlock }
+Extension { #name : 'MicMathInlineBlock' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicMathInlineBlock >> associatedPillarClass [
 	^ PRMathInTextAnnotation 
 ]
