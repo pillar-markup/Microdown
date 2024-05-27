@@ -45,26 +45,32 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
-	| allFile allFileParse sum summar |
+	| allFile allFileParse sum summar listOfSingleSummarize |
+	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
+
+	"Collect and parse all Markdown file of targetDirectory"
 	allFile := self collectAllMarkDownFile: targetDirectory.
 	allFileParse := allFile collect: [ :each |
-		                Microdown parse: each asFileReference contents ].
+		                (Microdown parse: each asFileReference contents)
+			                fromFile: each ].
 
-	1 to: allFile size do: [ :index |
-		self
-			createHtmlFile: (allFileParse at: index)
-			toReplace: (allFile at: index) ].
+	"transform all markdown file into html file"
+	allFileParse do: [ :each |
+		self createHtmlFile: each toReplace: each fromFile ].
 
-
-
+	"create summarizer html file"
 	sum := MicSummarizer new.
 	sum targetDirectory: targetDirectory.
+	
+	listOfSingleSummarize := allFileParse collect: [ :each | MicSingleSummarizer new summarize: each ].
 
-	self createHtmlSummarize: (sum summarizeFile: allFile).
+	self createHtmlSummarize: (sum summarize: listOfSingleSummarize).
 
-	"JUSQUE LA CA MARCHE"
-	targetDirectory fileSystem createDirectory: '/html/_monthBlog'.
+	"Create the directory with all month summarizer in html"
+
+	targetDirectory fileSystem createDirectory:
+		targetDirectory fullName , '/_monthBlog'.
 
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: allFileParse byDate: each.
@@ -78,8 +84,8 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	| html |
 	self rootAssembly: aMicRoot.
-	html := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-	
+	html := (MicHTMLVisitor new visit: aMicRoot) first.
+
 	self renameMarkdownIntoHtmlFile: aFileReference.
 
 	aFileReference delete.
@@ -111,10 +117,7 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
-	fileRef := targetDirectory copyWithPath:
-		           targetDirectory fullPath asUrl path.
-
-	self write: a to: fileRef named: 'index.html'
+	self write: a to: targetDirectory named: 'index.html'
 ]
 
 { #category : 'rendering' }

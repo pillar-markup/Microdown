@@ -51,7 +51,9 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 		root := aListOfSingleSummarizer at: each.
 		summarize
 			addChild: (root children at: 2);
-			addChild: (root children at: 3) ].
+			addChild: (root children at: 3)].
+		
+ 
 
 	^ summarize
 ]

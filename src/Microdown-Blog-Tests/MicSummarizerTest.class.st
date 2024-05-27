@@ -27,12 +27,15 @@ MicSummarizerTest >> createListOfMicRootBlock [
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/html/'.
 	q
-		at: 1 put: (singleSummarizer summarize: (Microdown parse:
-							  self generateFilesystemExample1 asFileReference contents));
-		at: 2 put: (singleSummarizer summarize: (Microdown parse:
-							  self generateFilesystemExample2 asFileReference contents));
-		at: 3 put: (singleSummarizer summarize: (Microdown parse:
-							  self generateFilesystemExample3 asFileReference contents)).
+		at: 1 put: (singleSummarizer summarize:
+					 ((Microdown parse: self generateFilesystemExample1 contents)
+						  fromFile: self generateFilesystemExample1));
+		at: 2 put: (singleSummarizer summarize:
+					 ((Microdown parse: self generateFilesystemExample2 contents)
+						  fromFile: self generateFilesystemExample2));
+		at: 3 put: (singleSummarizer summarize:
+					 ((Microdown parse: self generateFilesystemExample3 contents)
+						  fromFile: self generateFilesystemExample3)).
 	^ q
 ]
 
@@ -53,7 +56,7 @@ Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No
 Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
 ' ].
 
-	^ file
+	^ file asFileReference
 ]
 
 { #category : 'tests' }

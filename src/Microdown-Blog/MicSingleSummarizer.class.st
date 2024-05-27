@@ -65,19 +65,23 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> headerLink: aMicRootBlock [
 
-	| headerLink header date |
+	| headerLink header "date" |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
-	date := (aMicRootBlock children at: 1) body at: #date.
+	"date := (aMicRootBlock children at: 1) body at: #date.
 	date := date asDate.
 	headerLink
-		addChild: (self 
-				  makeALink: header text
-				  to:
-					  targetDirectory printString, date year asString , '/' , date monthName
-					  , '/' , date day asString , '/', header text);
-		level: header level.
+		addChild: (self
+				 makeALink: header text
+				 to: targetDirectory printString , date year asString , '/'
+					 , date monthName , '/' , date day asString , '/' , header text);
+		level: header level."
 
+	headerLink
+		addChild:
+			(self makeALink: header text to: aMicRootBlock fromFile fullName);
+		level: header level.
+		
 	^ headerLink
 ]
 
@@ -96,10 +100,10 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	| element headerLink root|
+	| element headerLink root |
 	root := self verifyDateMetadata: aMicRootBlock.
 	element := MicRootBlock new.
-	headerLink := self headerLink: root.
+	headerLink := self headerLink: aMicRootBlock.
 
 	element
 		addChild: root children first;
@@ -114,6 +118,7 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 
 	| p |
 	p := Microdown parse: aFileReference asFileReference contents.
+	p fromFile: aFileReference.
 	^ self summarize: p
 ]
 
@@ -129,12 +134,12 @@ MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 			metadata body:
 				(Dictionary
 					 newFromKeys: #( #date )
-					 andValues: #( '25 December 1970' ))]
+					 andValues: #( '25 December 1970' )) ]
 		ifTrue: [
 			metadata := aMicRootBlock children at: 1.
-			(metadata body at: #date) ifNil: [
+			(metadata body includesKey: #date) ifFalse: [
 				metadata body at: #date put: '25 December 1970' ] ].
-		metadata parent: newMicRootBlock.
+	metadata parent: newMicRootBlock.
 
 	aMicRootBlock children
 		do: [ :each | newMicRootBlock addChild: each ]
