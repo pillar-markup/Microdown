@@ -64,8 +64,9 @@ MicBlogCreator >> createAllHtmlFile [
 	"create summarizer html file"
 	sum := MicSummarizer new.
 	sum targetDirectory: targetDirectory.
-	
-	listOfSingleSummarize := allFileParse collect: [ :each | MicSingleSummarizer new summarize: each ].
+
+	listOfSingleSummarize := allFileParse collect: [ :each |
+		                         MicSingleSummarizer new summarize: each ].
 
 	self createHtmlSummarize: (sum summarize: listOfSingleSummarize).
 
@@ -78,7 +79,22 @@ MicBlogCreator >> createAllHtmlFile [
 		summar := sum group: allFileParse byDate: each.
 		summar isNotEmpty ifTrue: [
 			summar := sum summarize: summar.
-			self createHtmlGroupFile: summar at: each ] ]
+			self createHtmlGroupFile: summar at: each ] ifFalse: [ self createHtmlEmptyGroupFileAt: each]]
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> createHtmlEmptyGroupFileAt: aDate [
+
+	| a fileRef root|
+	
+	root := Microdown parse: 'No files found'.
+	self rootAssembly: root.
+
+	a := (MicHTMLVisitor new visit: root) at: 1.
+
+	fileRef := targetDirectory / '_monthBlog'.
+
+	self write: a to: fileRef named: aDate asString , '.html'
 ]
 
 { #category : 'rendering' }
