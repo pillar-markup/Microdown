@@ -1,12 +1,12 @@
 Class {
-	#name : 'MicDocumentTransformerTest',
+	#name : 'MicAbstractBlogCreatorTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
 
 { #category : 'tests' }
-MicDocumentTransformerTest class >> testMakeALinkTo [
+MicAbstractBlogCreatorTest class >> testMakeALinkTo [
 
 	| link |
 	link := MicInlineParser parse: '[Pharo is cool](Test)'.
@@ -17,7 +17,7 @@ MicDocumentTransformerTest class >> testMakeALinkTo [
 ]
 
 { #category : 'tests' }
-MicDocumentTransformerTest >> testMakeALinkTo [
+MicAbstractBlogCreatorTest >> testMakeALinkTo [
 
 	|  link |
 	link := MicAbstractBlogCreator new makeALink: 'Pharo is cool' to: 'Test'.
@@ -28,7 +28,7 @@ MicDocumentTransformerTest >> testMakeALinkTo [
 ]
 
 { #category : 'tests' }
-MicDocumentTransformerTest >> testMakeALinkToWithEmptyArguments [
+MicAbstractBlogCreatorTest >> testMakeALinkToWithEmptyArguments [
 
 	| link |
 	link := MicAbstractBlogCreator new makeALink: '' to: ''.

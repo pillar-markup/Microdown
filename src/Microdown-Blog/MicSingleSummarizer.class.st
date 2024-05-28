@@ -65,23 +65,15 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> headerLink: aMicRootBlock [
 
-	| headerLink header "date" |
+	| headerLink header |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
-	"date := (aMicRootBlock children at: 1) body at: #date.
-	date := date asDate.
-	headerLink
-		addChild: (self
-				 makeALink: header text
-				 to: targetDirectory printString , date year asString , '/'
-					 , date monthName , '/' , date day asString , '/' , header text);
-		level: header level."
 
 	headerLink
 		addChild:
 			(self makeALink: header text to: aMicRootBlock fromFile fullName);
 		level: header level.
-		
+
 	^ headerLink
 ]
 
