@@ -26,7 +26,9 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aDestination [
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
-			        to: aDestination asString , '/_monthBlog/' , each asString.
+			        to:
+			        aDestination asString , '/_monthBlog/'
+			        , each asString.
 		link parent: listElement.
 		listElement parent: root ].
 	^ root

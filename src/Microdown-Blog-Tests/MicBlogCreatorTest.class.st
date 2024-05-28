@@ -140,17 +140,27 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testCreateFromTo [
+
+	| allFile |
+	MicBlogCreator createFrom: fileSystem / 'source' to: fileSystem / 'html'.
+
+	allFile := (fileSystem / 'html') allFiles.
+
+	self assert: allFile size equals: 7
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 
 	| root file |
-	
-	file := self listOfFile at: 1 .
-	
+	file := self listOfFile at: 1.
+
 	root := Microdown parse: file contents.
-	
-	MicBlogCreator new createHtmlFile: root toReplace: file.
-	
-	self assert: file basename  equals: 'anExample1.html'
+
+	blog createHtmlFile: root toReplace: file.
+
+	self assert: file basename equals: 'anExample1.html'
 ]
 
 { #category : 'tests' }
@@ -204,12 +214,11 @@ MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 MicBlogCreatorTest >> testRootAssembly [
 
 	| root file |
-	
 	file := self listOfFile at: 1.
 	root := Microdown parse: file contents.
-	
-	MicBlogCreator new rootAssembly: root.
-	
+
+	blog rootAssembly: root.
+
 	self assert: root children size equals: 5
 ]
 

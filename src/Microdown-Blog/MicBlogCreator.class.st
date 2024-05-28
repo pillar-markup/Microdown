@@ -39,6 +39,8 @@ MicBlogCreator >> collectAllMarkDownFile: aFileReference [
 { #category : 'copying' }
 MicBlogCreator >> copySourceDirectoryInTarget [
 
+	targetDirectory deleteAllChildren.
+
 	sourceDirectory copyAllTo: targetDirectory
 ]
 
@@ -106,13 +108,13 @@ MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
 
 	fileRef := targetDirectory / '_monthBlog'.
 
-	self write: a to: fileRef named: aDate asString,'.html'
+	self write: a to: fileRef named: aDate asString , '.html'
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
-	| a fileRef |
+	| a |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
@@ -133,11 +135,10 @@ MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 { #category : 'as yet unclassified' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
-	aMicRoot addChild: (MicMonthListCreator new generateMicListBlockOfLinkDateTo: targetDirectory).
+	aMicRoot addChild:
+		(MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+			 targetDirectory fullName). 
 	^ aMicRoot
-
-	
-	
 ]
 
 { #category : 'accessing' }
