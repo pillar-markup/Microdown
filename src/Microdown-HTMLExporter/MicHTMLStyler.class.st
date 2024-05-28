@@ -129,28 +129,28 @@ MicHTMLStyler >> frameworks [
 { #category : 'testing' }
 MicHTMLStyler >> hasCssSelection [
 
-	^ self cssListPresenter notNil and: [ self cssListPresenter selection isEmpty not ]
+	^ self cssListPresenter isNotNil and: [ self cssListPresenter selection isNotEmpty ]
 ]
 
 { #category : 'testing' }
 MicHTMLStyler >> hasMicDocument [
 	"Answer <true> if the receiver has a Microdown HTML document opened"
 
-	^ micHtmlDocument notNil
+	^ micHtmlDocument isNotNil
 ]
 
 { #category : 'testing' }
 MicHTMLStyler >> hasMicDocumentFileRef [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
-	^ micDocumentFileRef notNil
+	^ micDocumentFileRef isNotNil
 ]
 
 { #category : 'testing' }
 MicHTMLStyler >> hasMicDocumentString [
 	"Answer <true> if the receiver has a Microdown documennt supplied by the user"
 
-	^ micDocumentString notNil
+	^ micDocumentString isNotNil
 ]
 
 { #category : 'testing' }

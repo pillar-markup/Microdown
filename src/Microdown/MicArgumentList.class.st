@@ -96,7 +96,7 @@ MicArgumentList >> hasNonDefaultArguments [
 { #category : 'testing' }
 MicArgumentList >> hasNonDefaultValue [
 	"return true if the default arg was given a value"
-	^ self defaultValue notNil and: [ self defaultValue ~= initialValue  ]
+	^ self defaultValue isNotNil and: [ self defaultValue ~= initialValue  ]
 ]
 
 { #category : 'accessing' }
