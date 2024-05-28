@@ -1,6 +1,6 @@
-Extension { #name : #Trait }
+Extension { #name : 'Trait' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 Trait >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	aBuilder 

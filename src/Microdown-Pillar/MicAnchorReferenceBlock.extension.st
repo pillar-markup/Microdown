@@ -1,6 +1,6 @@
-Extension { #name : #MicAnchorReferenceBlock }
+Extension { #name : 'MicAnchorReferenceBlock' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicAnchorReferenceBlock >> associatedPillarClass [
 	^ PRInternalLink
 ]

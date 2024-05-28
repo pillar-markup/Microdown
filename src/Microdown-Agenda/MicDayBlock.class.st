@@ -2,28 +2,29 @@
 I represent a Day in a Agenda with all my differents segment which are my children.
 "
 Class {
-	#name : #MicDayBlock,
-	#superclass : #MicEnvironmentBlock,
-	#category : #'Microdown-Agenda'
+	#name : 'MicDayBlock',
+	#superclass : 'MicEnvironmentBlock',
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDayBlock class >> tag [
 	^ #day
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDayBlock >> accept: aVisitor [
 	^ aVisitor visitDay: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDayBlock >> start [
 	
 	^ self arguments at: #start ifAbsent: [ 'There is no start' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDayBlock >> start: aStart [
 	
 	arguments at: #start put: aStart

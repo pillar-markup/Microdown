@@ -23,6 +23,9 @@ MicInlineStandardDelimiter class >> initializeDelimiters [
 	"The fixious text delimiter"
 	self new markup: FixiousTextDelimiter; blockClass: MicTextBlock; closer: nil; addMe.
 
+	"The comment text delimiter"
+	self new markup: CommentedLineMarkup ; blockClass: MicInlineCommentBlock; closer: nil; addMe.
+
 	"formating"
 	self new markup: BoldMarkup; blockClass: MicBoldFormatBlock; closer: BoldMarkup; addMe.
 	self new markup: ItalicMarkup; blockClass: MicItalicFormatBlock; closer: ItalicMarkup; addMe.

@@ -1,18 +1,19 @@
 Class {
-	#name : #MicToPillarBasicTest,
-	#superclass : #TestCase,
+	#name : 'MicToPillarBasicTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'pillarDocument'
 	],
-	#category : #'Microdown-Pillar-Tests'
+	#category : 'Microdown-Pillar-Tests',
+	#package : 'Microdown-Pillar-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicToPillarBasicTest >> parserClass [
 	^ Microdown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicToPillarBasicTest >> testCodeBlock [
 
 	| document |
@@ -23,7 +24,7 @@ MicToPillarBasicTest >> testCodeBlock [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicToPillarBasicTest >> testCodeInText [
 
 	| document |
@@ -35,7 +36,7 @@ MicToPillarBasicTest >> testCodeInText [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicToPillarBasicTest >> testHeader [ 
 
 	| document |
@@ -52,7 +53,7 @@ MicToPillarBasicTest >> testHeader [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicToPillarBasicTest >> testNumberedList [
 	| document |
 	document := (self parserClass new 

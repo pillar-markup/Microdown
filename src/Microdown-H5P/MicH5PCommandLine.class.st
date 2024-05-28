@@ -4,12 +4,13 @@
 ```
 "
 Class {
-	#name : #MicH5PCommandLine,
-	#superclass : #ClapApplication,
-	#category : #'Microdown-H5P'
+	#name : 'MicH5PCommandLine',
+	#superclass : 'ClapApplication',
+	#category : 'Microdown-H5P',
+	#package : 'Microdown-H5P'
 }
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 MicH5PCommandLine class >> h5p [
 	<commandline>
 	
@@ -23,12 +24,12 @@ MicH5PCommandLine class >> h5p [
 			(self with: args) execute ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicH5PCommandLine >> argumentAt: identifier [
 	^ (arguments at: identifier) value: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicH5PCommandLine >> execute [
 	
 	MicPictureBasedWriter new

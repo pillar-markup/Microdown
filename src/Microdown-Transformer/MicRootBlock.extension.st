@@ -1,6 +1,6 @@
-Extension { #name : #MicRootBlock }
+Extension { #name : 'MicRootBlock' }
 
-{ #category : #'*Microdown-Transformer' }
+{ #category : '*Microdown-Transformer' }
 MicRootBlock >> includeFor: aFile [
 
 	| inclusionVisitor |

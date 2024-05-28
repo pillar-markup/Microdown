@@ -2,22 +2,23 @@
 I represent a Break in a Segment like a break for lunch or a coffee time for a certain amount of time at a certain place.
 "
 Class {
-	#name : #MicBreakBlock,
-	#superclass : #MicAbstractComponentBlock,
-	#category : #'Microdown-Agenda'
+	#name : 'MicBreakBlock',
+	#superclass : 'MicAbstractComponentBlock',
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBreakBlock class >> tag [
 	^ #break
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicBreakBlock >> accept: aVisitor [
 	^ aVisitor visitBreak: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBreakBlock >> author [
 	
 	^ self arguments at: #author ifAbsent: [ '' ]
