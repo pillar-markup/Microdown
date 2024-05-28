@@ -88,7 +88,7 @@ MicAbstractBlock >> computeNestedLevel [
 MicAbstractBlock >> hasProperty: aKey [
 	"Test if the property aKey is present."
 	
-	^ self properties notNil and: [ self properties includesKey: aKey ]
+	^ self properties isNotNil and: [ self properties includesKey: aKey ]
 ]
 
 { #category : 'accessing' }

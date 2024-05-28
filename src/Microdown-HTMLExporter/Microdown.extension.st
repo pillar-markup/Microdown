@@ -1,7 +1,7 @@
 Extension { #name : 'Microdown' }
 
 { #category : '*Microdown-HTMLExporter' }
-Microdown classSide >> asHTMLDocument: aStringOrDoc [
+Microdown class >> asHTMLDocument: aStringOrDoc [
 	"Facade method to serialize a Microdown document or string to HTML"
 	
 	^ MicHTMLVisitor serializeToHTMLDoc: aStringOrDoc.
@@ -10,7 +10,7 @@ Microdown classSide >> asHTMLDocument: aStringOrDoc [
 ]
 
 { #category : '*Microdown-HTMLExporter' }
-Microdown classSide >> asHTMLString: aStringOrDoc [
+Microdown class >> asHTMLString: aStringOrDoc [
 	"Facade method to render a microdown document or string to HTML"
 	
 	^ MicHTMLVisitor asHTMLString: aStringOrDoc.
@@ -19,7 +19,7 @@ Microdown classSide >> asHTMLString: aStringOrDoc [
 ]
 
 { #category : '*Microdown-HTMLExporter' }
-Microdown classSide >> asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration [
+Microdown class >> asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration [
 	"Facade method to render a microdown document or string to HTML"
 	
 	^ MicHTMLVisitor asHTMLString: aStringOrDoc configuration: aMicHTMLConfiguration
