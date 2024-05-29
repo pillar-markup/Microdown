@@ -11,7 +11,10 @@ Class {
 { #category : 'enumerating' }
 MicSingleSummarizerTest >> createMicRootBlock [
 
-	^ Microdown parse: self generateFilesystemExample asFileReference contents
+	| micRootBlock |
+
+	micRootBlock := Microdown parse: self generateFilesystemExample contents.
+	^ micRootBlock fromFile: self generateFilesystemExample.
 ]
 
 { #category : 'enumerating' }
@@ -39,7 +42,7 @@ this is a code blu blu
 ```
 ' ].
 
-	^ file
+	^ file asFileReference 
 ]
 
 { #category : 'enumerating' }
@@ -47,10 +50,9 @@ MicSingleSummarizerTest >> generateFilesystemExampleEmpty [
 
 	| file |
 	file := FileSystem memory workingDirectory / 'anExample1.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '' ].
+	file writeStreamDo: [ :stream | stream nextPutAll: '' ].
 
-	^ file
+	^ file asFileReference
 ]
 
 { #category : 'enumerating' }
@@ -78,7 +80,7 @@ this is a code blu blu
 ```
 ' ].
 
-	^ file
+	^ file asFileReference
 ]
 
 { #category : 'enumerating' }
@@ -103,7 +105,7 @@ this is a code blu blu
 ```
 ' ].
 
-	^ file
+	^ file asFileReference
 ]
 
 { #category : 'running' }
@@ -257,9 +259,9 @@ MicSingleSummarizerTest >> testWithMetaDataAndWithDate [
 MicSingleSummarizerTest >> testWithMetaDataAndWithoutDate [
 
 	| root |
-	root := micSingleSummarizer summarize:
-		        (Microdown parse:
-			         self generateFilesystemExampleWithoutDateInMetadata).
+	
+	root := micSingleSummarizer summarizeFile:
+		        self generateFilesystemExampleWithoutDateInMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
 		assert: root children size equals: 3;
@@ -271,8 +273,8 @@ MicSingleSummarizerTest >> testWithMetaDataAndWithoutDate [
 MicSingleSummarizerTest >> testWithoutMetaData [
 
 	| root |
-	root := micSingleSummarizer summarize: (Microdown parse:
-			         self generateFilesystemExampleWithoutMetadata ).
+	root := micSingleSummarizer summarizeFile:
+			         self generateFilesystemExampleWithoutMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
 		assert: root children size equals: 3;

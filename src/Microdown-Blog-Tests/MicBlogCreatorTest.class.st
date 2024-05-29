@@ -62,10 +62,11 @@ When you participate to the mooc you get access to the quizz and the credit vali
 { #category : 'as yet unclassified' }
 MicBlogCreatorTest >> generateArchitecture [
 
-	| ref1 ref2 ref3 |
+	| ref1 ref2 ref3 ref4 |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 	fileSystem createDirectory: '/source'.
+	fileSystem createDirectory: '/source/test'.
 
 	ref1 := fileSystem workingDirectory / 'source/anExample1.md'.
 	ref1 writeStreamDo: [ :stream | stream nextPutAll: self fileContent1 ].
@@ -73,8 +74,11 @@ MicBlogCreatorTest >> generateArchitecture [
 	ref2 := fileSystem workingDirectory / 'source/anExample2.md'.
 	ref2 writeStreamDo: [ :stream | stream nextPutAll: self fileContent2 ].
 
-	ref3 := fileSystem workingDirectory / 'source/anExample3.md'.
-	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ]
+	ref3 := fileSystem workingDirectory / 'source/test/anExample3.md'.
+	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ].
+	
+	ref4 := fileSystem workingDirectory / 'source/anExample4.java'.
+	ref4 writeStreamDo: [ :stream | stream nextPutAll: 'Du java' ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -111,7 +115,12 @@ MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 
 	blog copySourceDirectoryInTarget.
 
-	self assert: (fileSystem / 'html') children size equals: 3
+	self
+		assert: (fileSystem / 'html') children size equals: 4;
+		assert: (fileSystem / 'html/anExample1.md') exists;
+		assert: (fileSystem / 'html/anExample2.md') exists;
+		assert: (fileSystem / 'html/test/anExample3.md') exists;
+		assert: (fileSystem / 'html/anExample4.java') exists
 ]
 
 { #category : 'tests' }
@@ -122,42 +131,75 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	allFile := (fileSystem / 'html') allFiles.
 
-	self assert: allFile size equals: 6
+	self assert: allFile size equals: 7;
+		assert: (fileSystem / 'html/index.html') exists;
+		assert: (fileSystem / 'html/anExample1.html') exists;
+		assert: (fileSystem / 'html/anExample2.html') exists;
+		assert: (fileSystem / 'html/test/anExample3.html') exists;
+		assert: (fileSystem / 'html/anExample4.java') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testCreateFromTo [
+
+	| allFile |
+	MicBlogCreator createFrom: fileSystem / 'source' to: fileSystem / 'html'.
+
+	allFile := (fileSystem / 'html') allFiles.
+
+	self assert: allFile size equals: 7
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testCreateHtmlEmptyGroupFileAt [
+
+| file |
+
+	blog
+		createHtmlEmptyGroupFileAt: (Month year: 2019 month: 'January').
+		
+		file := fileSystem / 'html/_monthBlog/January 2019.html'.
+
+	self assert:
+		file exists;
+		assert: (file contents findString: 'No files found') = 0 equals: false.
 ]
 
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 
 	| root file |
-	
-	file := self listOfFile at: 1 .
-	
+	file := self listOfFile at: 1.
+
 	root := Microdown parse: file contents.
-	
-	MicBlogCreator new createHtmlFile: root toReplace: file.
-	
-	self assert: file basename  equals: 'anExample1.html'
+
+	blog createHtmlFile: root toReplace: file.
+
+	self assert: file basename equals: 'anExample1.html'
 ]
 
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 
-	| root summarizer allFileParse |
+	| root summarizer singleSummarizer allFileParse |
 	summarizer := MicSummarizer new.
 	summarizer targetDirectory: 'html'.
-
-	allFileParse := self listOfFile collect: [ :each |
-		                Microdown parse: each asFileReference contents ].
+	
+	singleSummarizer := MicSingleSummarizer new.
+	
+	allFileParse := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each ].
 
 	root := summarizer
 		        group: allFileParse
 		        byDate: (Month year: 2019 month: 'January').
 	root := summarizer summarize: root.
 
-	blog 
-		createHtmlGroupFile: root at: (Month year: 2019 month: 'January').
+	blog
+		createHtmlGroupFile: root
+		at: (Month year: 2019 month: 'January').
 
-	self assert: (fileSystem / 'html/_monthBlog/January 2019.html') exists
+	self assert:
+		(fileSystem / 'html/_monthBlog/January 2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -187,12 +229,11 @@ MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 MicBlogCreatorTest >> testRootAssembly [
 
 	| root file |
-	
 	file := self listOfFile at: 1.
 	root := Microdown parse: file contents.
-	
-	MicBlogCreator new rootAssembly: root.
-	
+
+	blog rootAssembly: root.
+
 	self assert: root children size equals: 5
 ]
 
