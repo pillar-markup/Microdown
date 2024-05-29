@@ -2,42 +2,43 @@
 Delimiter definition for line break.
 "
 Class {
-	#name : #MacLineBreakDelimiter,
-	#superclass : #MicAbstractDelimiter,
-	#category : #'Microdown-Macrodown'
+	#name : 'MacLineBreakDelimiter',
+	#superclass : 'MicAbstractDelimiter',
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
-{ #category : #applying }
+{ #category : 'applying' }
 MacLineBreakDelimiter class >> applyOn: inlineParser [
 
 	^ inlineParser processLineBreak
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> associatedInlineBlock [
 
 	^ MacLineBreakBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> isCloser [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> isOpener [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> markup [
 
 	^ #lineBreak
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MacLineBreakDelimiter class >> matches: aString [
 	| indexOfCr |
 
@@ -49,26 +50,26 @@ MacLineBreakDelimiter class >> matches: aString [
 	^ (aString first: indexOfCr) allSatisfy: [ :each | each = Character space ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> size [
 
 	^ 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter class >> type [
 
 	^ #lineBreak
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MacLineBreakDelimiter >> addInlineBlock: anIndex to: inlineParser [
 
 	inlineParser addLineBreakInlineBlock: anIndex
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MacLineBreakDelimiter >> endIndex [
 
 	^ self index + self size

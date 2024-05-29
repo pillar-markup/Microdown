@@ -1,6 +1,6 @@
 Class {
-	#name : #MicDayBlockTest,
-	#superclass : #TestCase,
+	#name : 'MicDayBlockTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'builder',
 		'parser'
@@ -8,10 +8,11 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicDayBlockTest >> setUp [
 
 	super setUp.
@@ -19,7 +20,7 @@ MicDayBlockTest >> setUp [
 	parser := Microdown new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDayBlockTest >> testDay [
 	"'<!day
 !>
@@ -33,7 +34,7 @@ MicDayBlockTest >> testDay [
 	self assert: env environmentName equals: 'day'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicDayBlockTest >> testDayWithArgument [
 	"'<!day|start=05/12/2022
 !>

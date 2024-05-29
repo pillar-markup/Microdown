@@ -1,13 +1,14 @@
 Class {
-	#name : #MicHeaderRenumberer,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicHeaderRenumberer',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'configuration'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #execution }
+{ #category : 'execution' }
 MicHeaderRenumberer class >> executeOn: aContext [
 
 	self new
@@ -16,26 +17,26 @@ MicHeaderRenumberer class >> executeOn: aContext [
 	^ aContext
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderRenumberer >> configuration [
 
 	configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHeaderRenumberer >> configuration: anObject [
 
 	configuration := anObject.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHeaderRenumberer >> initialize [ 
 
 	configuration := MicMinimalConfiguration new.
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicHeaderRenumberer >> visitHeader: aHeader [
 
 	aHeader level: aHeader level + configuration headingLevelOffset

@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-H5P' }
+Package { #name : 'Microdown-H5P' }

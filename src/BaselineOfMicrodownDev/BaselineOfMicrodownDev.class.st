@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfMicrodownDev,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodownDev
+	#name : 'BaselineOfMicrodownDev',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodownDev',
+	#package : 'BaselineOfMicrodownDev'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicrodownDev >> baseline: spec [
 
 	<baseline>

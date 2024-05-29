@@ -1,6 +1,6 @@
 Class {
-	#name : #MicAgendaBlockTest,
-	#superclass : #TestCase,
+	#name : 'MicAgendaBlockTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'builder',
 		'parser'
@@ -8,10 +8,11 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicAgendaBlockTest >> setUp [
 
 	super setUp.
@@ -19,7 +20,7 @@ MicAgendaBlockTest >> setUp [
 	parser := Microdown new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaBlockTest >> testAgenda [
 	"'<!agenda
 !>
@@ -33,7 +34,7 @@ MicAgendaBlockTest >> testAgenda [
 	self assert: env environmentName equals: 'agenda'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaBlockTest >> testAgendaWithArgument [
 	"'<!agenda|title='A cool agenda'
 !>

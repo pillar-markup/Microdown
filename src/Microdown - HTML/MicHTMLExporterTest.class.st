@@ -1,15 +1,16 @@
 Class {
-	#name : #MicHTMLExporterTest,
-	#superclass : #TestCase,
+	#name : 'MicHTMLExporterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'parser',
 		'writer',
 		'factory'
 	],
-	#category : #'Microdown - HTML'
+	#category : 'Microdown - HTML',
+	#package : 'Microdown - HTML'
 }
 
-{ #category : #utils }
+{ #category : 'utils' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
 	| mic |
@@ -17,7 +18,7 @@ MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	self assert: (writer visit: mic) contents equals: aResultingString
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicHTMLExporterTest >> setUp [
 	super setUp.
 	parser := MicroDownParser new.
@@ -25,14 +26,14 @@ MicHTMLExporterTest >> setUp [
 	factory := MicMicrodownSnippetFactory new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testHeaderLevel1 [
 
 	self parse: factory headerLevel1Sample andCheckWeGet: writer usedNewLine , '<h1>Foo</h1>'
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testUnorderedList [
 	| mic |
 	mic := parser parse: factory unorderedListWithTwoItemsSample.
