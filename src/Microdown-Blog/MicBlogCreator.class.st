@@ -12,7 +12,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'sourceDirectory',
-		'targetDirectory'
+		'targetDirectory',
+		'dateList'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -48,6 +49,9 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 MicBlogCreator >> createAllHtmlFile [
 
 	| allFile allFileParse sum summar listOfSingleSummarize |
+	
+	dateList := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+			 targetDirectory fullName.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
 
@@ -77,9 +81,11 @@ MicBlogCreator >> createAllHtmlFile [
 
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: allFileParse byDate: each.
-		summar isNotEmpty ifTrue: [
-			summar := sum summarize: summar.
-			self createHtmlGroupFile: summar at: each ] ifFalse: [ self createHtmlEmptyGroupFileAt: each]]
+		summar isNotEmpty
+			ifTrue: [
+				summar := sum summarize: summar.
+				self createHtmlGroupFile: summar at: each ]
+			ifFalse: [ self createHtmlEmptyGroupFileAt: each ] ]
 ]
 
 { #category : 'rendering' }
@@ -138,6 +144,12 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 	self write: a to: targetDirectory named: 'index.html'
 ]
 
+{ #category : 'accessing' }
+MicBlogCreator >> dateList: aDateList [
+
+	dateList := aDateList.
+]
+
 { #category : 'rendering' }
 MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 
@@ -151,9 +163,7 @@ MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 { #category : 'as yet unclassified' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
-	aMicRoot addChild:
-		(MicMonthListCreator new generateMicListBlockOfLinkDateTo:
-			 targetDirectory fullName). 
+	aMicRoot addChild: dateList copy.
 	^ aMicRoot
 ]
 
@@ -164,9 +174,9 @@ MicBlogCreator >> sourceDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> sourceDirectory: source [
+MicBlogCreator >> sourceDirectory: arg1 [
 
-	sourceDirectory := source.
+	sourceDirectory := arg1
 ]
 
 { #category : 'accessing' }
@@ -176,9 +186,9 @@ MicBlogCreator >> targetDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> targetDirectory: target [
+MicBlogCreator >> targetDirectory: arg1 [
 
-	targetDirectory := target
+	targetDirectory := arg1
 ]
 
 { #category : 'rendering' }

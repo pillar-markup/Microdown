@@ -97,7 +97,10 @@ MicBlogCreatorTest >> setUp [
 	blog := MicBlogCreator new.
 	blog
 		targetDirectory: fileSystem / 'html';
-		sourceDirectory: fileSystem / 'source'.
+		sourceDirectory: fileSystem / 'source';
+		dateList: (MicMonthListCreator new
+		            generateMicListBlockOfLinkDateTo:
+		            fileSystem / 'html').
 ]
 
 { #category : 'tests' }
@@ -148,9 +151,9 @@ MicBlogCreatorTest >> testCreateFromTo [
 
 	allFile := (fileSystem / 'html') allFiles.
 	
-	nbMonthFile := Date today year - 2014 * 12 + Date today month index.
+	nbMonthFile := (Date today year - 2014) * 12 + Date today month index.
 
-	self assert: allFile size equals: 5 + nbMonthFile 
+	self assert: allFile size equals: 5 + nbMonthFile
 ]
 
 { #category : 'tests' }
