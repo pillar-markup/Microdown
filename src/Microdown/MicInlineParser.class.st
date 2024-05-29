@@ -98,15 +98,35 @@ MicInlineParser >> parseEvaluatedBlock: blockType token: token stream: tokenStre
 { #category : 'private parsing' }
 MicInlineParser >> parseNameUrlBlock: blockType from: aTokenStream token: token [
 
-	| skipRes children urlToken |
+	| skipRes children urlToken caption rest toCaption newBlock |
+	
 	skipRes := self skipToUrlStartInStream: aTokenStream.
 	skipRes ifNil: [ ^ self createTextBlock: token string ].
-	children := self parseChildrenIn: skipRes second.
+	"We look if we have a % in the caption to remove the rest from the caption
+	and place them as arguments"
+	caption := OrderedCollection new. 
+	rest := OrderedCollection new. 
+	toCaption := true. 
+	"Pay attention skipRes second do: is not equal to skip second contents do: the latter returns the complete stream ignoring previous positions."
+	skipRes second do: [:each |
+			each delimiter markup = '%'
+				ifTrue: [toCaption := false].
+			toCaption 
+				ifTrue: [ caption add: each ]
+				ifFalse: [ rest add: each ] ].
+	caption := caption readStream.
+	children := self parseChildrenIn: caption.
 	urlToken := aTokenStream next.
-	^ blockType new
+	newBlock := blockType new
 		  children: children;
-		  url: urlToken undelimitedSubstring;
-		  closeMe
+		  url: urlToken undelimitedSubstring.
+	rest 
+		ifNotEmpty: [ newBlock arguments: (MicArgumentList withString: rest second string )]
+		ifEmpty: [ 
+			"We mark it to nil to indicate to the closeMe that there were no arguments in the caption. In the future when all the books and more will not use arguments in the url then we will remove this hack. For now it enables backward compatibility while giving precedence to caption arguments."
+			newBlock arguments: nil ].
+	newBlock closeMe.
+	^ newBlock
 ]
 
 { #category : 'private parsing' }
