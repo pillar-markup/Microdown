@@ -131,8 +131,7 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	allFile := (fileSystem / 'html') allFiles.
 
-	self assert: allFile size equals: 7;
-		assert: (fileSystem / 'html/index.html') exists;
+	self assert: (fileSystem / 'html/index.html') exists;
 		assert: (fileSystem / 'html/anExample1.html') exists;
 		assert: (fileSystem / 'html/anExample2.html') exists;
 		assert: (fileSystem / 'html/test/anExample3.html') exists;
@@ -142,12 +141,16 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateFromTo [
 
-	| allFile |
-	MicBlogCreator createFrom: fileSystem / 'source' to: fileSystem / 'html'.
+	| allFile nbMonthFile |
+	MicBlogCreator
+		createFrom: fileSystem / 'source'
+		to: fileSystem / 'html'.
 
 	allFile := (fileSystem / 'html') allFiles.
+	
+	nbMonthFile := Date today year - 2014 * 12 + Date today month index.
 
-	self assert: allFile size equals: 7
+	self assert: allFile size equals: 5 + nbMonthFile 
 ]
 
 { #category : 'tests' }
