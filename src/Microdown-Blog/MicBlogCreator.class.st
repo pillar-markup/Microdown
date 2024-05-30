@@ -54,8 +54,7 @@ MicBlogCreator >> createAllHtmlFile [
 
 	| allFile allFileParse sum summar listOfSingleSummarize |
 	dateList := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo:
-		            targetDirectory.
+		            generateMicListBlockOfLinkDateTo: targetDirectory.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
 
@@ -84,7 +83,7 @@ MicBlogCreator >> createAllHtmlFile [
 		targetDirectory fullName , '/_monthBlog'.
 
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
-		summar := sum group: allFileParse byDate: each.
+		summar := sum group: listOfSingleSummarize byDate: each.
 		summar isNotEmpty
 			ifTrue: [
 				summar := sum summarize: summar.

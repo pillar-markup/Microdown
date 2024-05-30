@@ -39,13 +39,10 @@ MicSummarizer >> maximumFile: aNumber [
 { #category : 'as yet unclassified' }
 MicSummarizer >> summarize: aListOfSingleSummarizer [
 
-	| summarize root singleSummarizer selectionSize |
+	| summarize root selectionSize |
 	summarize := MicRootBlock new.
 
-	singleSummarizer := MicSingleSummarizer new.
-	singleSummarizer targetDirectory: targetDirectory.
-
-	selectionSize := maximumFile min: aListOfSingleSummarizer size.
+	selectionSize := maximumFile min: aListOfSingleSummarizer size. 
 
 	1 to: selectionSize do: [ :each |
 		root := aListOfSingleSummarizer at: each.
