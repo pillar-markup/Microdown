@@ -1,3 +1,6 @@
+"
+Create a list of date since january 2014
+"
 Class {
 	#name : 'MicMonthListCreator',
 	#superclass : 'MicAbstractBlogCreator',
