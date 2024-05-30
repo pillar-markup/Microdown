@@ -1,13 +1,14 @@
 Class {
-	#name : #MicCyclicFileInclusionError,
-	#superclass : #Error,
+	#name : 'MicCyclicFileInclusionError',
+	#superclass : 'Error',
 	#instVars : [
 		'files'
 	],
-	#category : #'Microdown-Transformer'
+	#category : 'Microdown-Transformer',
+	#package : 'Microdown-Transformer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCyclicFileInclusionError >> files: aCollection [ 
 	files := aCollection
 ]

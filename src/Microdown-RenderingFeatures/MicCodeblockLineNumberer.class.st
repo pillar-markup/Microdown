@@ -1,14 +1,15 @@
 Class {
-	#name : #MicCodeblockLineNumberer,
-	#superclass : #MicrodownVisitor,
+	#name : 'MicCodeblockLineNumberer',
+	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'stream',
 		'configuration'
 	],
-	#category : #'Microdown-RenderingFeatures'
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicCodeblockLineNumberer >> add: aString untilNewLineAt: firstOccurence withNumber: number [
 
 	| length |
@@ -17,7 +18,7 @@ MicCodeblockLineNumberer >> add: aString untilNewLineAt: firstOccurence withNumb
 	^ aString allButFirst: length
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicCodeblockLineNumberer >> add: aString withNumber: number [
 
 	stream
@@ -26,7 +27,7 @@ MicCodeblockLineNumberer >> add: aString withNumber: number [
 		<< aString
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicCodeblockLineNumberer >> addLineNumberTo: aCodeblock [
 	"I add a numerotation at each line of a script."
 
@@ -44,30 +45,30 @@ MicCodeblockLineNumberer >> addLineNumberTo: aCodeblock [
 	^ aCodeblock body: stream contents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeblockLineNumberer >> configuration [
 	^ configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicCodeblockLineNumberer >> configuration: aConfiguration [
 	configuration := aConfiguration
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicCodeblockLineNumberer >> hasLineNumber: aCodeblock [
 	^ aCodeblock arguments 
 			at: 'lineNumber' 
 			ifPresent: [ :lN | lN = 'true' or: [ lN ] ] ifAbsent: [ false ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicCodeblockLineNumberer >> initialize [
 	super initialize.
 	stream := MicOutputStream on: (String new writeStream). 
 ]
 
-{ #category : #'visiting-document' }
+{ #category : 'visiting-document' }
 MicCodeblockLineNumberer >> visitCode: aCodeblock [
 	(self hasLineNumber: aCodeblock)
 		ifTrue: [ self addLineNumberTo: aCodeblock ]

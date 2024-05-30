@@ -1,11 +1,11 @@
-Extension { #name : #MicrodownVisitor }
+Extension { #name : 'MicrodownVisitor' }
 
-{ #category : #'*Microdown-Macrodown' }
+{ #category : '*Microdown-Macrodown' }
 MicrodownVisitor >> visitLineBreak: aBreak [ 
 
 ]
 
-{ #category : #'*Microdown-Macrodown' }
+{ #category : '*Microdown-Macrodown' }
 MicrodownVisitor >> visitRawParagraph: aRawParagraph [ 
 
 	^ self visitChildrenOf: aRawParagraph

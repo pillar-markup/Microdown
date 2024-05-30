@@ -1,1 +1,1 @@
-Package { #name : #'Microdown-RenderingFeatures' }
+Package { #name : 'Microdown-RenderingFeatures' }

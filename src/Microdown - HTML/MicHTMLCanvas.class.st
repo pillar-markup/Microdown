@@ -1,16 +1,17 @@
 Class {
-	#name : #MicHTMLCanvas,
-	#superclass : #MicExportCanvas,
+	#name : 'MicHTMLCanvas',
+	#superclass : 'MicExportCanvas',
 	#instVars : [
 		'name'
 	],
 	#classVars : [
 		'HTMLCharacters'
 	],
-	#category : #'Microdown - HTML'
+	#category : 'Microdown - HTML',
+	#package : 'Microdown - HTML'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicHTMLCanvas class >> initialize [
 	HTMLCharacters := Dictionary new.
 	HTMLCharacters
@@ -20,14 +21,14 @@ MicHTMLCanvas class >> initialize [
 		at: $> put: '&gt;'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLCanvas >> nextPut: aCharacter [
 	(HTMLCharacters at: aCharacter ifAbsent: nil)
 		ifNil: [ super nextPut: aCharacter ]
 		ifNotNil: [ :string | self raw: string ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicHTMLCanvas >> tag [
 	^ self brush: MicHTMLTag new
 ]

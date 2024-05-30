@@ -1,6 +1,6 @@
-Extension { #name : #MicStrikeFormatBlock }
+Extension { #name : 'MicStrikeFormatBlock' }
 
-{ #category : #'*Microdown-Pillar' }
+{ #category : '*Microdown-Pillar' }
 MicStrikeFormatBlock >> associatedPillarClass [
 	^ PRStrikethroughFormat
 ]

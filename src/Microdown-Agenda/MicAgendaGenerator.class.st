@@ -2,8 +2,8 @@
 I generate HTML specificly for a calendar in HTML from a template and a microdown AST.
 "
 Class {
-	#name : #MicAgendaGenerator,
-	#superclass : #MicHTMLVisitor,
+	#name : 'MicAgendaGenerator',
+	#superclass : 'MicHTMLVisitor',
 	#instVars : [
 		'parentFile',
 		'time',
@@ -16,10 +16,11 @@ Class {
 		'daysNumber',
 		'dayHeaderBlockTemplate'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #template }
+{ #category : 'template' }
 MicAgendaGenerator class >> agendaTemplate: aNewLine [
 	| newLine |
 	newLine := aNewLine asString.
@@ -105,7 +106,7 @@ MicAgendaGenerator class >> agendaTemplate: aNewLine [
 '</html>'
 ]
 
-{ #category : #template }
+{ #category : 'template' }
 MicAgendaGenerator class >> dayHeaderBlockTemplate: aNewLine [
 
 	| newLine |
@@ -119,7 +120,7 @@ MicAgendaGenerator class >> dayHeaderBlockTemplate: aNewLine [
 '					  </li>', newLine
 ]
 
-{ #category : #template }
+{ #category : 'template' }
 MicAgendaGenerator class >> dayTalksTemplate: aNewLine [
 
 	| newLine |
@@ -141,7 +142,7 @@ MicAgendaGenerator class >> dayTalksTemplate: aNewLine [
 '					  </div>', newLine
 ]
 
-{ #category : #template }
+{ #category : 'template' }
 MicAgendaGenerator class >> talkTemplate: aNewLine [
 	| newLine |
 	newLine := aNewLine asString.
@@ -167,7 +168,7 @@ MicAgendaGenerator class >> talkTemplate: aNewLine [
 '								</li>'
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> build: aScheduleFile [
 	
 	| file fileReference|
@@ -179,7 +180,7 @@ MicAgendaGenerator >> build: aScheduleFile [
 	fileReference writeStreamDo: [ :stream | stream nextPutAll: self contents ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAgendaGenerator >> initialize [
 
 	super initialize.
@@ -190,7 +191,7 @@ MicAgendaGenerator >> initialize [
 	daysNumber := 0.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> templateInitialization [
 
 	agendaTemplate := parentFile / 'Template/agendaTemplate.mustache' .
@@ -199,19 +200,19 @@ MicAgendaGenerator >> templateInitialization [
 	talkTemplate := parentFile / 'Template/talkTemplate.mustache'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaGenerator >> time [
 
 	^ time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaGenerator >> time: aTime [
 
 	time := aTime
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> timePlus: aLength [
 
 	| currentHours currentMins addedTime nbHours |
@@ -230,7 +231,7 @@ MicAgendaGenerator >> timePlus: aLength [
 	
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> visitAgenda: anAgenda [
 	
 	| agenda |
@@ -243,7 +244,7 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 	canvas nextPutAll: agenda
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> visitBreak: aBreak [
 
 	| length talk |
@@ -259,7 +260,7 @@ MicAgendaGenerator >> visitBreak: aBreak [
 	talks := talks, talk.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> visitDay: aDay [
 
 	| day dayBlock number numberDay active|
@@ -285,7 +286,7 @@ MicAgendaGenerator >> visitDay: aDay [
 	talks := ''.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> visitSegment: aSegment [
 
 	self time: aSegment start.
@@ -293,7 +294,7 @@ MicAgendaGenerator >> visitSegment: aSegment [
 	self visitChildrenOf: aSegment.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaGenerator >> visitTalk: aTalk [
 
 	| length talk |

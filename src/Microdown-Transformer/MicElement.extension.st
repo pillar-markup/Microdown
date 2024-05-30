@@ -1,6 +1,6 @@
-Extension { #name : #MicElement }
+Extension { #name : 'MicElement' }
 
-{ #category : #'*Microdown-Transformer' }
+{ #category : '*Microdown-Transformer' }
 MicElement >> inlineInputFiles [
 	"Assume all input has been resolved."
 	MicFileIncluder new visit: self

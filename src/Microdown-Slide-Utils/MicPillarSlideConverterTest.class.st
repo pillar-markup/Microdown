@@ -1,16 +1,17 @@
 Class {
-	#name : #MicPillarSlideConverterTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Slide-Utils'
+	#name : 'MicPillarSlideConverterTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Slide-Utils',
+	#package : 'Microdown-Slide-Utils'
 }
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicPillarSlideConverterTest >> parse: aString [
 
 	^ PRPillarParser parse: aString
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicPillarSlideConverterTest >> testConvertParagraphSlide [
 
 	| converter res |
@@ -22,7 +23,7 @@ This is a paragraph.
 	self assert: res children first class equals: MicSlideBlock 
 ]
 
-{ #category : #parsing }
+{ #category : 'parsing' }
 MicPillarSlideConverterTest >> testConvertSlide [
 
 	| converter res |

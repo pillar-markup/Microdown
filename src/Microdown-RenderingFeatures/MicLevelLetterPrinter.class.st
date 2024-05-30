@@ -1,10 +1,11 @@
 Class {
-	#name : #MicLevelLetterPrinter,
-	#superclass : #MicTitlePrinterSpecification,
-	#category : #'Microdown-RenderingFeatures'
+	#name : 'MicLevelLetterPrinter',
+	#superclass : 'MicTitlePrinterSpecification',
+	#category : 'Microdown-RenderingFeatures',
+	#package : 'Microdown-RenderingFeatures'
 }
 
-{ #category : #'rendering-element' }
+{ #category : 'rendering-element' }
 MicLevelLetterPrinter >> renderElement: aNumber on: stream [
 	| alphabet position |
 	aNumber = 0 ifTrue: [ stream nextPutAll: 'NaN'. ^self  ].

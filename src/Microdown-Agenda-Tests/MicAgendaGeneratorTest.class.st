@@ -2,8 +2,8 @@
 This class contains tests but all the test are not correct beacaus we need to have a file in a repertory with the templates because if we don't have them we can't generate the calendar.
 "
 Class {
-	#name : #MicAgendaGeneratorTest,
-	#superclass : #ParametrizedTestCase,
+	#name : 'MicAgendaGeneratorTest',
+	#superclass : 'ParametrizedTestCase',
 	#instVars : [
 		'builder',
 		'parser',
@@ -14,10 +14,11 @@ Class {
 	#pools : [
 		'MicMicrodownSharedPool'
 	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #'building suites' }
+{ #category : 'building suites' }
 MicAgendaGeneratorTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
@@ -27,7 +28,7 @@ MicAgendaGeneratorTest class >> testParameters [
 		  yourself
 ]
 
-{ #category : #exemple }
+{ #category : 'exemple' }
 MicAgendaGeneratorTest >> agendaExempleMultiplesTalks [
 
  ^ '<!agenda|title=A cool agenda
@@ -66,7 +67,7 @@ MicAgendaGeneratorTest >> agendaExempleMultiplesTalks [
 	
 ]
 
-{ #category : #exemple }
+{ #category : 'exemple' }
 MicAgendaGeneratorTest >> agendaExempleOneTalk [
 
  ^ '<!agenda|title=A cool agenda
@@ -85,7 +86,7 @@ MicAgendaGeneratorTest >> agendaExempleOneTalk [
 	
 ]
 
-{ #category : #exemple }
+{ #category : 'exemple' }
 MicAgendaGeneratorTest >> agendaExempleWithRealInfo [
 
  ^ '<!agenda|title=A cool agenda
@@ -135,12 +136,12 @@ MicAgendaGeneratorTest >> agendaExempleWithRealInfo [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaGeneratorTest >> fileSystem: aFileSystem [
 	fileSystem := aFileSystem memory.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaGeneratorTest >> newLine: aNewLine [
 	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
 	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
@@ -148,7 +149,7 @@ MicAgendaGeneratorTest >> newLine: aNewLine [
 	newLine := aNewLine
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicAgendaGeneratorTest >> setUp [
 
 	super setUp.
@@ -156,7 +157,7 @@ MicAgendaGeneratorTest >> setUp [
 	parser := Microdown new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testAgendaAstIsCorrect [
 
 	| fs file ast agenda day segment|
@@ -177,7 +178,7 @@ MicAgendaGeneratorTest >> testAgendaAstIsCorrect [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectly [
 
 	"Look at the class comment for more information about this test"
@@ -254,7 +255,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectly [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 
 	"Look at the class comment for more information about this test"
@@ -332,7 +333,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithOneTalk [
 
 	"Look at the class comment for more information about this test"
@@ -371,7 +372,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithOneTalk [
 '								</li>', newLine, newLine"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithRealInfo [
 
 	"Look at the class comment for more information about this test"
@@ -449,7 +450,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithRealInfo [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaGeneratorTest >> writer: aWriter [
 	writer := aWriter new
 ]
