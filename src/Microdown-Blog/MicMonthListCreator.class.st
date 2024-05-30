@@ -17,18 +17,22 @@ MicMonthListCreator >> generateDateListSince2014 [
 ]
 
 { #category : 'generate' }
-MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aDestination [
+MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aFileReference [
 
-	| root link listElement |
+	| root link listElement disk |
 	root := MicUnorderedListBlock new.
+
+	(aFileReference fileSystem store isKindOf: WindowsStore) ifTrue: [
+		disk := 'File:///', aFileReference fileSystem store currentDisk ].
+	disk ifNil: [ disk := '' ].
 
 	self generateDateListSince2014 do: [ :each |
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
 			        to:
-			        aDestination asString , '/_monthBlog/'
-			        , each asString.
+				        disk , aFileReference fullPath pathString , '/_monthBlog/'
+				        , each name , '_' , each year asString , '.html'.
 		link parent: listElement.
 		listElement parent: root ].
 	^ root

@@ -164,7 +164,7 @@ MicBlogCreatorTest >> testCreateHtmlEmptyGroupFileAt [
 	blog
 		createHtmlEmptyGroupFileAt: (Month year: 2019 month: 'January').
 		
-		file := fileSystem / 'html/_monthBlog/January 2019.html'.
+		file := fileSystem / 'html/_monthBlog/January_2019.html'.
 
 	self assert:
 		file exists;
@@ -205,7 +205,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		at: (Month year: 2019 month: 'January').
 
 	self assert:
-		(fileSystem / 'html/_monthBlog/January 2019.html') exists
+		(fileSystem / 'html/_monthBlog/January_2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -246,13 +246,15 @@ MicBlogCreatorTest >> testRootAssembly [
 { #category : 'tests' }
 MicBlogCreatorTest >> testWriteToNamed [
 
-	| root file html| 
-	
+	| root file html |
 	file := self listOfFile at: 1.
 	root := Microdown parse: file contents.
 	html := (MicHTMLVisitor new visit: root) at: 1.
-	
-	MicBlogCreator new write: html to: fileSystem / 'html'  named: 'test.html'.
-	
+
+	MicBlogCreator new
+		write: html
+		to: fileSystem / 'html'
+		named: 'test.html'.
+
 	self assert: (fileSystem / 'html/test.html') exists
 ]
