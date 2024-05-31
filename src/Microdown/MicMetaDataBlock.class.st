@@ -46,7 +46,7 @@ MicMetaDataBlock >> bogusParsing [
 { #category : 'markups' }
 MicMetaDataBlock >> closeMe [ 
 	super closeMe.
-	body := [ STONJSON fromString: '{', body, '}' ] on: STONReaderError do: [ :ex |
+	body := [ STONJSON fromString: '{', body, '}' ] on: Error do: [ :ex |
 		| dict |
 		bogusParsing := true.
 		dict := Dictionary new at: self keyForUnparsableContents put: body; yourself ]
