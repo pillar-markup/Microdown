@@ -272,18 +272,16 @@ MicRichTextComposer >> doVisitCode: aCodeBlock [
 { #category : 'private' }
 MicRichTextComposer >> doVisitCode: aCodeBlock code: aStringOrText [
 
-	canvas indentIn: [ 
+	canvas indentIn: [
 		canvas
-			<< ((self codeStylerClass stylerFor: aCodeBlock language)
-					style: aStringOrText );
+			<< ((self codeStylerClass stylerFor: aCodeBlock language) style:
+						 aStringOrText);
 			newLine.
-		aCodeBlock hasCaption ifTrue: [ 
-			canvas 
-				includeAttribute: TextEmphasis bold 
-				in: [ 
-					canvas
-						<< aCodeBlock caption asText;
-					newLine ]]].
+		aCodeBlock hasCaption ifTrue: [
+			canvas includeAttribute: TextEmphasis bold in: [
+				canvas
+					<< aCodeBlock caption asText;
+					newLine ] ] ].
 	canvas << textStyler interBlockSpacing
 ]
 
@@ -453,16 +451,16 @@ MicRichTextComposer >> visitEnvironment: aMicEnvironmentBlock [
 { #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitFigure: aFigure [
 
-	| image anchor|
-	[[ image := aFigure reference loadImage.
-		anchor := self anchorFor: image of: aFigure.
-		canvas << (self textWithImage: image usingAnchor: anchor)
-	 ]
-		on: MicResourceReferenceError, UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure captionElements  ]
-	]
+	| image anchor |
+	[
+	[
+	image := aFigure reference loadImage.
+	anchor := self anchorFor: image of: aFigure.
+	canvas << (self textWithImage: image usingAnchor: anchor) ]
+		on: MicResourceReferenceError , UnrecognizedImageFormatError
+		do: [ self visitAll: aFigure children ] ]
 		on: Error
-		do: [ :error | canvas << ('>>> ', error printString, ' <<<') ]
+		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
 { #category : 'visiting' }
@@ -560,11 +558,13 @@ MicRichTextComposer >> visitMath:  aMicMathEnvironment [
 ]
 
 { #category : 'visiting - document' }
-MicRichTextComposer >> visitMathInline: aMicMathInline [ 
-	| aString  |
-	aString := aMicMathInline substring .
-   aString ifEmpty: [^ self].
-	canvas << (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
+MicRichTextComposer >> visitMathInline: aMicMathInline [
+
+	| aString |
+	aString := aMicMathInline bodyString.
+	aString ifEmpty: [ ^ self ].
+	canvas
+	<< (self latexFor: aString onError: [ '$ - LATEX ERROR - $' asText ])
 ]
 
 { #category : 'visiting - inline elements' }
@@ -665,7 +665,7 @@ MicRichTextComposer >> visitQuote: aQuote [
 { #category : 'visiting - inline elements' }
 MicRichTextComposer >> visitRaw: aRawFormat [
 
-	canvas << aRawFormat substring asText.
+	canvas << aRawFormat bodyString asText
 ]
 
 { #category : 'visiting' }
@@ -753,9 +753,10 @@ MicRichTextComposer >> visitTable: tableBlock [
 { #category : 'visiting -  format' }
 MicRichTextComposer >> visitText: anInlineBlock [
 	"we should set attribute because it would override link and others."
-	|text|
-	text := anInlineBlock substring asText.
-	canvas << (textStyler postTextTreatment: text )
+
+	| text |
+	text := anInlineBlock bodyString asText.
+	canvas << (textStyler postTextTreatment: text)
 ]
 
 { #category : 'visiting - list' }

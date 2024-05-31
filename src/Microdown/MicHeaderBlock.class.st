@@ -44,15 +44,8 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	self level: ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
-	children := (line copyFrom: level + 1 to: line size) trim.
+	children := self inlineParse: (line copyFrom: level + 1 to: line size) trim.
 	^ self
-]
-
-{ #category : 'parse support' }
-MicHeaderBlock >> closeMe [
-	super closeMe.
-	children :=  self inlineParse: children
-
 ]
 
 { #category : 'accessing' }
@@ -62,10 +55,10 @@ MicHeaderBlock >> formattedCode [
 
 { #category : 'accessing' }
 MicHeaderBlock >> header [
-	
-	^ String streamContents: [ :s | children do: [ :e | s nextPutAll: e substring ] ]
-	
-	
+	"I am used to get an adhoc string for the header"
+
+	^ String streamContents: [ :s |
+		  children do: [ :e | s nextPutAll: e bodyString ] ]
 ]
 
 { #category : 'accessing' }

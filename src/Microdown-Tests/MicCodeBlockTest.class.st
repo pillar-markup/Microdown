@@ -271,12 +271,15 @@ Color >> asMorph
     ^ Morph new color: self
 	```
 	"
+
 	| source code |
-	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, CodeblockMarkup. 
+	source := CodeblockMarkup
+	          , 'language=pharo&caption=`Color` is a class.' , String cr
+	          , 'Color >> asMorph
+    ^ Morph new color: self' , String cr , CodeblockMarkup.
 
 	code := (self parser parse: source) children first.
-	self deny: code hasLabel
+	self deny: code hasAnchor
 ]
 
 { #category : 'tests - arguments' }
@@ -287,12 +290,16 @@ Color >> asMorph
     ^ Morph new color: self
 	```
 	"
+
 	| source code |
-	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
-    ^ Morph new color: self', String cr, CodeblockMarkup. 
+	source := CodeblockMarkup
+	          ,
+	          'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor'
+	          , String cr , 'Color >> asMorph
+    ^ Morph new color: self' , String cr , CodeblockMarkup.
 
 	code := (self parser parse: source) children first.
-	self assert: code hasLabel
+	self assert: code hasAnchor
 ]
 
 { #category : 'tests' }
@@ -371,10 +378,9 @@ MicCodeBlockTest >> testSetLabel [
 
 	| codeBlock |
 	codeBlock := self subjectClass new.
-	codeBlock label: 'sec123'.
-	self assert: codeBlock hasLabel. 
-	self assert: codeBlock label equals: 'sec123'
-
+	codeBlock anchor: 'sec123'.
+	self assert: codeBlock hasAnchor.
+	self assert: codeBlock anchor equals: 'sec123'
 ]
 
 { #category : 'tests' }
@@ -385,50 +391,63 @@ Color >> asMorph
     ^ Morph new color: self
 	```
 	"
-	| source root code  textBody argument |
+
+	| source root code textBody argument |
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor'.
-	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
+	source := CodeblockMarkup , argument , String cr , textBody
+	          , String cr , CodeblockMarkup.
 	root := self parser parse: source.
 	self assert: root children size equals: 1.
 	code := root children first.
 	self assert: code code equals: textBody.
-	self assert: (code arguments at:#language) equals: 'pharo'.
-	self assert: code captionElements first substring equals: 'Getting a morph for an instance of ==Color=='.
-	self assert: (code arguments at:#label) equals: 'scr:asMorphInColor'.
+	self assert: (code arguments at: #language) equals: 'pharo'.
+	self
+		assert: code captionElements first bodyString
+		equals: 'Getting a morph for an instance of ==Color=='.
+	self assert: (code arguments at: #label) equals: 'scr:asMorphInColor'
 ]
 
 { #category : 'tests' }
 MicCodeBlockTest >> testSingleBlockWithArgumentsWithFormat [
-
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
 Color >> asMorph
     ^ Morph new color: self
 	```
 	"
-	| source root code  textBody argument |
+
+	| source root code textBody argument |
 	textBody := 'Color >> asMorph
     ^ Morph new color: self'.
 	argument := 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor'.
-	source := CodeblockMarkup, argument, String cr, textBody, String cr, CodeblockMarkup. 
+	source := CodeblockMarkup , argument , String cr , textBody
+	          , String cr , CodeblockMarkup.
 	root := self parser parse: source.
 
-	
+
 	code := root children first.
 	self assert: code code equals: textBody.
 	self assert: code language equals: #pharo.
 	self assert: (code arguments at: #language) equals: 'pharo'.
-	
-	self assert: code caption equals: 'Color is a class.'.
-	self assert: code captionElements first kind equals: 'monospace'.
-	self assert: code captionElements first substring equals: 'Color'.
-	
-	self assert: code captionElements second kind equals: 'basic'.
-	self assert: code captionElements second substring equals: ' is a class.'.
-	
-	self assert: code label equals: 'scr:asMorphInColor'.
+
+	self
+		assert: code caption
+		equals: 'an Array(Monospace(Color) Text( is a class.))'.
+	self
+		assert: code captionElements first blockName asLowercase
+		equals: 'monospace'.
+	self assert: code captionElements first bodyString equals: 'Color'.
+
+	self
+		assert: code captionElements second blockName asLowercase
+		equals: 'text'.
+	self
+		assert: code captionElements second bodyString
+		equals: ' is a class.'.
+
+	self assert: code anchor equals: 'scr:asMorphInColor'
 ]
 
 { #category : 'tests - deviation' }

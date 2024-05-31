@@ -212,9 +212,8 @@ MicHTMLVisitor >> visitAnchorReference: anAnchor [
 
 	canvas tag
 		name: 'a';
-		parameterAt: 'href' put: '#' , anAnchor substring;
-		with: anAnchor substring
-
+		parameterAt: 'href' put: '#' , anAnchor bodyString;
+		with: anAnchor bodyString
 ]
 
 { #category : 'visiting' }
@@ -316,9 +315,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
 		name: 'figcaption';
-		with: [ 
-			aFigCaptionBlock hasCaption ifTrue: [ 
-				aFigCaptionBlock captionElements do: [:each | each accept: self ] ] ]
+		with: [ self visitAll: aFigCaptionBlock children ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -337,7 +334,7 @@ MicHTMLVisitor >> visitHeader: aHeader [
 	canvas newLine.	
 	canvas tag 
 		name: 'h',  aHeader level asString;
-		with: aHeader header
+		with: [ self visitAll: aHeader children]
 	
 ]
 
@@ -359,7 +356,7 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	canvas tag
 		name: 'img';
 		parameterAt: 'src' put: aMicFigureBlock reference path;
-		parameterAt: 'alt' put: (aMicFigureBlock hasChildren ifTrue: [ aMicFigureBlock text ] ifFalse: [ '' ]);
+		parameterAt: 'alt' put: aMicFigureBlock altText;
 		addArguments: aMicFigureBlock;
 		with: [ self visitFigCaption: aMicFigureBlock ]
 ]
@@ -381,7 +378,7 @@ MicHTMLVisitor >> visitLink: aLink [
 		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
-		with: aLink caption
+		with: [self visitAll: aLink children]
 
 ]
 

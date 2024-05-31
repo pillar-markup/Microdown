@@ -51,6 +51,13 @@ MicMicrodownSnippetFactory class >> buildDocument [
 							  << (factory perform: elementTypeSelector) ] ] ]
 ]
 
+{ #category : 'utilities' }
+MicMicrodownSnippetFactory class >> protocolNames [
+	"Return the list of all the protocol names included in this class."
+
+	^ self protocols collect: [ :protocol | protocol name ]
+]
+
 { #category : 'anchor' }
 MicMicrodownSnippetFactory >> anchorAreTrimedSample [
 	^ AnchorMarkup, '  test  '

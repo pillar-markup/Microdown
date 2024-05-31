@@ -2,10 +2,8 @@ Extension { #name : 'MicCodeBlock' }
 
 { #category : '*Microdown-Evaluator' }
 MicCodeBlock >> eval: aBoolean [
-	
-	"the string conversion is due to the fact that the arguments are not converted so normally the parser returns strings and not boolean. 
-	This could be changed but it means that the parser (closeMe method), the isEvaluated method and this one should be in sync.
-	"
+	"The string conversion is due to the fact that the arguments are not converted so normally the parser returns strings and not boolean. 
+	This could be changed but it means that the parser (closeMe method), the isEvaluated method and this one should be in sync."
 	
 	arguments at: #eval put: aBoolean asString
 
@@ -17,8 +15,10 @@ MicCodeBlock >> evaluate [
 	| content |
 	content := self evaluationString.
 	^ [ (self parserClass parse: content) children ]
-		on: Error
-		do: [ :e | MicBoldFormatBlock new children: { (MicTextBlock new substring: e messageText) } ]
+		  on: Error
+		  do: [ :e |
+			  MicBoldFormatBlock new children:
+				  { (MicTextBlock new bodyString: e messageText) } ]
 ]
 
 { #category : '*Microdown-Evaluator' }

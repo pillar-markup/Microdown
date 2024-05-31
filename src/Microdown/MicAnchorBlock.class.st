@@ -32,6 +32,12 @@ MicAnchorBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : 'accessing' }
+MicAnchorBlock >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self label
+]
+
 { #category : 'testing' }
 MicAnchorBlock >> hasLabel [ 
 	label ifNil: [ ^ false ].
@@ -44,8 +50,17 @@ MicAnchorBlock >> label [
 ]
 
 { #category : 'accessing' }
-MicAnchorBlock >> label: anObject [
-	label := anObject
+MicAnchorBlock >> label: aLabel [
+    label := aLabel.
+    
+]
+
+{ #category : 'printing' }
+MicAnchorBlock >> printOn: aStream [
+
+	super printOn: aStream.
+	self hasLabel 
+		ifTrue: [ aStream nextPutAll: ' (', self label, ')' ]
 ]
 
 { #category : 'accessing' }

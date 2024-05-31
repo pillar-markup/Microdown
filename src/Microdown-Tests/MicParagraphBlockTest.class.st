@@ -49,12 +49,14 @@ another line** and more'.
 
 	self
 		assert:
-		(MicInlineParser new parse: root children first text) first kind
-		equals: #bold.
+			(MicInlineParser new parse: root children first text) first
+				blockName asLowercase
+		equals: #boldformat.
 	self
 		assert:
-		(MicInlineParser new parse: root children second text) first kind
-		equals: #basic
+			(MicInlineParser new parse: root children second text) first
+				blockName asLowercase
+		equals: #text
 ]
 
 { #category : 'tests' }

@@ -30,21 +30,49 @@ MicFigureBlockTest >> testAlt [
 		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&alt=je suis le alt texte)')
 		          first.
 
-	self assert: figure hasArguments.
-	self assert: figure alt equals: 'je suis le alt texte'
+	self assert: figure arguments notEmpty.
+	self assert: (figure arguments at: #alt) equals: 'je suis le alt texte'
 ]
 
 { #category : 'tests' }
 MicFigureBlockTest >> testAnchor [
 
 	| figure |
+	
 	figure := (splitterClass new parse:
 		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=233)')
 		          first.
-
+		
 	self assert: figure hasArguments.
 	self assert: figure hasAnchor.
 	self assert: figure anchor equals: '233'
+]
+
+{ #category : 'tests' }
+MicFigureBlockTest >> testAnchorExpressedUsingLabel [
+
+	| figure |
+	
+	figure := (splitterClass new parse:
+		           '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&label=233)')
+		          first.
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'
+]
+
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testAnchorInCaption [
+
+	| figure |
+	figure := (splitterClass new parse:
+		           '![ caption with space and dot... % width=80&anchor=233]( https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  )') first.
+		
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'.
+	self assert: (figure arguments at: #width) equals: '80'.
+	self assert: figure children first bodyString equals: ' caption with space and dot... ' 
 ]
 
 { #category : 'running' }
@@ -64,11 +92,57 @@ MicFigureBlockTest >> testArgumentAtIfPresent [
 
 { #category : 'tests' }
 MicFigureBlockTest >> testCaption [
+
 	| figure |
-	figure := (splitterClass new parse: '![caption with space and dot...](http://www.Pharo.ORG)') first.
-	self assert: figure caption equals: 'caption with space and dot...'
+	figure := (splitterClass new parse:
+		           '![caption with space and dot...](http://www.Pharo.ORG)')
+		          first.
+	self
+		assert: figure children first bodyString
+		equals: 'caption with space and dot...'
+]
+
+{ #category : 'tests' }
+MicFigureBlockTest >> testFigureAnchorIsNotReified [
 	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png anchor=figf)'.
+	fig := root children first children first.
+	self assert: fig hasAnchor.
+	self assert: fig anchor equals: 'figf'
 	
+]
+
+{ #category : 'tests' }
+MicFigureBlockTest >> testFigureCaptionIsReified [
+	"And as such their parent is the math block"
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption](figures/f.png)'.
+	fig := root children first children first.
+	self
+		assert: fig children second class equals: MicBoldFormatBlock.
+	self assert: fig children second parent equals: fig
+]
+
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testFigureCaptionIsReifiedWithNewFormat [
+	"And as such their parent is the math block"
+	
+	| root fig |
+	root := Microdown parse: '
+![This **great** caption % width=666&anchor=myAnchor](figures/f.png)'.
+	fig := root children first children first.
+	self
+		assert: fig children second class equals: MicBoldFormatBlock.
+	self assert: fig children second parent equals: fig.
+	
+	self assert: fig hasArguments.
+	self assert: fig hasAnchor.
+	self assert: fig anchor equals: 'myAnchor'.
+	self assert: (fig arguments at: #width) equals: '666'
 ]
 
 { #category : 'tests' }
@@ -79,7 +153,7 @@ MicFigureBlockTest >> testHasArguments [
 	"Indeed url arguments are not microdown arguments"
 	self assert: figure hasArguments.
 	self assert: (figure arguments at: 'width') equals: '80'.
-	self assert: (figure arguments at: 'anchor') equals: 'bla'
+	self assert: figure anchor equals: 'bla'
 	
 	
 ]
@@ -95,6 +169,20 @@ MicFigureBlockTest >> testHasNoArguments [
 	
 ]
 
+{ #category : 'tests - new position' }
+MicFigureBlockTest >> testIfArgumentInCaptionIgnoresInURL [
+	"Since we will move to the first solution"
+
+	| figure |
+	figure := (splitterClass new parse:
+		           '![ caption with space and dot... % width=80&anchor=233]( https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=100&anchor=NotThatOne)') first.
+		
+	self assert: figure hasArguments.
+	self assert: figure hasAnchor.
+	self assert: figure anchor equals: '233'.
+	self assert: (figure arguments at: #width) equals: '80'
+]
+
 { #category : 'tests - testing' }
 MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 	| figure |
@@ -106,7 +194,7 @@ MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 MicFigureBlockTest >> testPrintOn [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
-	self assert: figure asString equals: '![caption](http://www.Pharo.ORG)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://www.Pharo.ORG)'
 	
 	"not really good but let us make it work"
 ]
@@ -115,7 +203,7 @@ MicFigureBlockTest >> testPrintOn [
 MicFigureBlockTest >> testPrintOnWithParameters [
 	| figure |
 	figure := (splitterClass new parse: '![caption](http://anURL.org?label=1&title=testFigure)') first.
-	self assert: figure printString equals: '![caption](http://anURL.org?label=1&title=testFigure)'
+	self assert: figure asString equals: 'Figure{ Text(caption) }(http://anURL.org?label=1&title=testFigure)'
 ]
 
 { #category : 'tests' }

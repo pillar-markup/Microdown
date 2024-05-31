@@ -116,7 +116,7 @@ MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 
-	builder anchorReference: anAnchorReference substring
+	builder anchorReference: anAnchorReference bodyString
 ]
 
 { #category : 'visit - block' }
@@ -130,7 +130,9 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
-	builder raw: anAnnotation printString
+	builder raw: anAnnotation openingDelimiter.
+	builder raw: anAnnotation bodyString.
+	builder raw: anAnnotation closingDelimiter
 ]
 
 { #category : 'visit - format' }
@@ -176,7 +178,7 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
 	builder newLine.
 	builder
-		figureURL: aFigure originUrl
+		figureURL: aFigure url
 		withCaption: [ super visitFigure: aFigure ]
 		
 ]
@@ -235,7 +237,7 @@ MicTextualMicrodownExporter >> visitMath: aMicMath [
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 
-	builder mathInline: aMicMathInline substring
+	builder mathInline: aMicMathInline bodyString
 ]
 
 { #category : 'visit - block' }
@@ -289,7 +291,7 @@ MicTextualMicrodownExporter >> visitQuote: aQuote [
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 
-	builder rawFormat: aRawFormat substring
+	builder rawFormat: aRawFormat bodyString
 ]
 
 { #category : 'visit - block' }
@@ -324,13 +326,14 @@ MicTextualMicrodownExporter >> visitTable: aTable [
 
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitText: aMicTextBlock [
-	
-	builder text:  (self backSlashString: aMicTextBlock substring)
+
+	builder text: (self backSlashString: aMicTextBlock bodyString)
 ]
 
 { #category : 'visiting' }
 MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
-	builder text: aMicTextBlock substring
+
+	builder text: aMicTextBlock bodyString
 ]
 
 { #category : 'visit - block' }

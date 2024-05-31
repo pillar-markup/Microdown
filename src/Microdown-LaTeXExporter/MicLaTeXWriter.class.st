@@ -59,11 +59,12 @@ MicLaTeXWriter >> chapterTemplateName [
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
 		name: 'hyperref';
-		optParameter: [ canvas nextPutAll: anInternalLink anchor ];
-		parameter: [ 
+		optParameter: [ canvas nextPutAll: anInternalLink anchor ]
+		"parameter: [ 
 					anInternalLink counter isValidCounter
 						ifTrue: [ self writeCounter: anInternalLink counter ].
 					canvas nextPutAll: anInternalLink alias ]
+				"
 ]
 
 { #category : 'helpers' }
@@ -71,16 +72,17 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 
 	canvas command
 		name: 'ref';
-		parameter: [ canvas raw: anInternalLink substring ]
+		parameter: [ canvas raw: anInternalLink bodyString ]
 ]
 
 { #category : 'helpers' }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
-		| visitor |
-		visitor := self class new.
-		aCollection do: [ :object | visitor visit: object ].
-		^ visitor contents
+
+	| visitor |
+	visitor := self class new.
+	aCollection do: [ :object | visitor visit: object ].
+	^ visitor contents
 ]
 
 { #category : 'visiting-document' }
@@ -158,30 +160,33 @@ MicLaTeXWriter >> visitCitation: aCitation [
 
 { #category : 'blocks - code' }
 MicLaTeXWriter >> visitCode: aCodeBlock [
+
 	| env parameters |
 	parameters := OrderedCollection new.
-	aCodeBlock hasCaption
-		ifTrue: [ parameters add: 'caption={' , (self getStringForAll: aCodeBlock captionElements), '}' ].
-	aCodeBlock hasNonDefaultLanguage 
-		ifTrue: [parameters add: 'language=' , aCodeBlock language asString].
-	aCodeBlock hasLabel
-		ifTrue: [ parameters add: 'label=' , aCodeBlock label ].
+	aCodeBlock hasCaption ifTrue: [
+		parameters add:
+			'caption={' , (self getStringForAll: aCodeBlock captionElements)
+			, '}' ].
+	aCodeBlock hasNonDefaultLanguage ifTrue: [
+		parameters add: 'language=' , aCodeBlock language asString ].
+	aCodeBlock hasAnchor ifTrue: [
+		parameters add: 'label=' , aCodeBlock anchor ].
 	env := canvas environment
-		name: 'listing';
-		yourself.
+		       name: 'listing';
+		       yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
-	env
-		with: [ 
-			canvas nextPutAllLines: aCodeBlock body.
-			canvas newLine ]
+	env with: [
+		canvas nextPutAllLines: aCodeBlock body.
+		canvas newLine ]
 ]
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
 
-	(aFigure hasCaption not and: [ aFigure hasLabel not ]) ifTrue: [ 
-		self includeGraphicsFor: aFigure.
-		^ self ].
+	(aFigure hasCaption not and: [ aFigure hasLabel not ]) 
+		ifTrue: [ 
+				self includeGraphicsFor: aFigure.
+				^ self ].
 	canvas environment
 		name: 'figure';
 		optParameter: [ canvas raw: 'htpb' ];
@@ -228,24 +233,14 @@ MicLaTeXWriter >> visitItalic: anItalic [
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitLink: aLink [
-	| text reference |
+
+	| reference |
 	reference := aLink fileStringWithoutHostFile.
-	self flag: #todo.
-	"I do not get this logic if the string does not have file:// it can still be
-	something else than a url... all this logic is bogus."
-	text := aLink text.
-	(text isEmptyOrNil or: [ reference = text ])
-		ifTrue: [ canvas command
-				name: 'url';
-				parameter: reference ]
-		ifFalse: [
-			canvas command
-				name: 'href';
-				parameter: reference;
-				parameter: [ canvas nextPutAll: text ].
-			canvas command
-				name: 'footnotesize';
-				parameter: [ canvas command name: 'url'; parameter: (self protectUrl: reference) ] ]
+
+	canvas command
+		name: 'href';
+		parameter: aLink url;
+		parameter: [ self visitAll: aLink children ]
 ]
 
 { #category : 'blocks - list' }
@@ -255,6 +250,28 @@ MicLaTeXWriter >> visitListItem: anItem [
 	canvas space.
 	canvas raw: [ super visitListItem: anItem ].
 	canvas newLine
+]
+
+{ #category : 'visiting' }
+MicLaTeXWriter >> visitMath:  aMicMathEnvironment [
+	"here we should add a label if there is one"
+	
+	canvas newLine.
+	canvas environment
+		name: 'equation';
+		with: [ 
+			aMicMathEnvironment hasAnchor
+			 	ifTrue: [ canvas raw: '\label{', aMicMathEnvironment anchor, '}'.
+				canvas newLine.].
+			
+			canvas raw: aMicMathEnvironment body. canvas newLine ] 
+]
+
+{ #category : 'blocks - table' }
+MicLaTeXWriter >> visitMathInline: aMicMathInline [
+
+	canvas raw: '$', aMicMathInline bodyString, '$'
+	
 ]
 
 { #category : 'blocks - inline' }
@@ -361,7 +378,7 @@ MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
 { #category : 'blocks' }
 MicLaTeXWriter >> visitText: aText [
 
-	canvas nextPutAllLines: aText substring
+	canvas nextPutAllLines: aText bodyString
 ]
 
 { #category : 'blocks - list' }
@@ -382,7 +399,8 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 
 { #category : 'helpers' }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
-	self visitAll: anExternalLink captionElements
+
+	self visitAll: anExternalLink children
 ]
 
 { #category : 'helpers' }
@@ -398,17 +416,15 @@ MicLaTeXWriter >> writeGraphicsParametersOfExternalLink: anExternalLink [
 
 { #category : 'helpers' }
 MicLaTeXWriter >> writeLabelOfExternalLink: anExternalLink [
-	"we decided not to create an arbitrary label when there is none specified.
+	"We decided not to create an arbitrary label when there is none specified.
 	This decision should be changed but we need to find a way to uniquely identify a figure, math, ..."
 	
-	| label |
-	label := anExternalLink arguments
-		         at: 'label'
-		         ifAbsent: [ nil ].
-	label ifNotNil: [ 
+	| anchor |
+	anchor := anExternalLink anchor.
+	anchor ifNotNil: [ 
 		canvas command
 			name: 'label';
-			parameter: [ canvas raw: label ] ]
+			parameter: [ canvas raw: anchor ] ]
 ]
 
 { #category : 'helpers' }

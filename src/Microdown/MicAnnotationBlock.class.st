@@ -13,66 +13,43 @@ MicroDownParser parse: '{!citation|name=Duca99a!}'
 "
 Class {
 	#name : 'MicAnnotationBlock',
-	#superclass : 'MicInlineElement',
+	#superclass : 'MicUnEvaluatedBlock',
 	#instVars : [
 		'arguments'
 	],
-	#category : 'Microdown-ModelInline',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'ModelInline'
+	#tag : 'Model'
 }
 
-{ #category : 'documentation' }
-MicAnnotationBlock class >> addDocumentDefinedAnnotations: aBuilder [
-	| currentDefinedTags |
-	currentDefinedTags := self allSubclasses collect: [ :subclass | subclass tag -> subclass name].
-	aBuilder newLine.
-	aBuilder header: [ aBuilder text: 'Defined annotations' ] withLevel: 2.
-	aBuilder unorderedListDuring: [ 
-		currentDefinedTags do: [:tagAndClass | 
-	
-			aBuilder item: [ 
-				aBuilder 
-					bold: [aBuilder text: tagAndClass key];
-					text: ' defined by ';
-					monospace: tagAndClass value
-					]]
-		 ]
+{ #category : 'accessing' }
+MicAnnotationBlock class >> closingDelimiter [
+
+ 	^ AnnotationCloserMarkup
 ]
 
-{ #category : 'documentation' }
-MicAnnotationBlock class >> buildMicroDownUsing: aBuilder withComment: aString [
-	
-	super buildMicroDownUsing: aBuilder withComment: aString.
-	self addDocumentDefinedAnnotations: aBuilder
+{ #category : 'accessing' }
+MicAnnotationBlock class >> openingDelimiter [
+
+ 	^ AnnotationOpenerMarkup
 ]
 
-{ #category : 'constructor' }
-MicAnnotationBlock class >> from: aStartInteger to: anEndInteger withSubstring: aString withChildren: aChildren [
+{ #category : 'parsing' }
+MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 
-	| splitter tag extensionClass |
-	splitter := MicArgumentList
-		            split: aString
-		            defaultArg: #annotationKind
-		            defaultValue: 'Me'.
-	tag := splitter defaultValue trimBoth.
+	| bodystring arguments tag extensionClass |
+	bodystring := delimiter undelimitedSubstring.
+	arguments := MicArgumentList
+		             split: bodystring
+		             defaultArg: #annotationKind
+		             defaultValue: 'Me'.
+	tag := arguments defaultValue trimBoth.
 
 	extensionClass := self extensionClassFor: tag.
 
 	^ extensionClass new
-		  start: aStartInteger;
-		  end: anEndInteger;
-		  substring: aString;
-		  children: aChildren;
-		  arguments: splitter;
-		  closeMe;
-		  cleanSubstring;
-		  yourself
-]
-
-{ #category : 'accessing' }
-MicAnnotationBlock class >> tag [
-	^ #empty
+		  bodyString: bodystring;
+		  arguments: arguments
 ]
 
 { #category : 'visiting' }
@@ -82,41 +59,17 @@ MicAnnotationBlock >> accept: aVisitor [
 
 { #category : 'accessing' }
 MicAnnotationBlock >> arguments [
+
 	^ arguments
 ]
 
 { #category : 'accessing' }
-MicAnnotationBlock >> arguments: anArguments [
-	arguments := anArguments
-]
+MicAnnotationBlock >> arguments: argumentList [
 
-{ #category : 'accessing' }
-MicAnnotationBlock >> closingDelimiter [
-
- 	^ AnnotationCloserMarkup
-]
-
-{ #category : 'accessing' }
-MicAnnotationBlock >> kind [
-
-	^ #annotation
+	arguments := argumentList
 ]
 
 { #category : 'accessing' }
 MicAnnotationBlock >> name [
 	^ arguments defaultValue
-]
-
-{ #category : 'accessing' }
-MicAnnotationBlock >> openingDelimiter [
-
- 	^ AnnotationOpenerMarkup
-]
-
-{ #category : 'accessing' }
-MicAnnotationBlock >> printOn: aStream [
-
-	aStream nextPutAll: self openingDelimiter.
-	aStream nextPutAll: self substring.
-	aStream nextPutAll: self closingDelimiter.
 ]

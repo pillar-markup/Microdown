@@ -3,30 +3,25 @@ I represent a bold text section. I'm delimited using `**` as in `**bold**` to ob
 "
 Class {
 	#name : 'MicBoldFormatBlock',
-	#superclass : 'MicFormatBlock',
-	#category : 'Microdown-ModelInline',
+	#superclass : 'MicEvaluatedBlock',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'ModelInline'
+	#tag : 'Model'
 }
 
-{ #category : 'utilities' }
+{ #category : 'accessing' }
+MicBoldFormatBlock class >> closingDelimiter [
+
+ 	^ BoldMarkup
+]
+
+{ #category : 'accessing' }
+MicBoldFormatBlock class >> openingDelimiter [
+
+ 	^ BoldMarkup
+]
+
+{ #category : 'visiting' }
 MicBoldFormatBlock >> accept: aVisitor [
 	^ aVisitor visitBold: self
-]
-
-{ #category : 'utilities' }
-MicBoldFormatBlock >> closingDelimiter [
-
- 	^ BoldMarkup
-]
-
-{ #category : 'utilities' }
-MicBoldFormatBlock >> kind [
-	^ #bold
-]
-
-{ #category : 'utilities' }
-MicBoldFormatBlock >> openingDelimiter [
-
- 	^ BoldMarkup
 ]

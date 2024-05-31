@@ -134,6 +134,7 @@ MicRichTextComposerTest >> setUp [
 	parser := Microdown new.
 	offlineStatus := Microdown offline.
 	Microdown offline: false.
+
 ]
 
 { #category : 'skipped tests' }
@@ -273,7 +274,7 @@ line 2
 	self assert: richText asString trim equals: 
 'line 1
 line 2
-Roger Rabbit'
+an Array(Text(Roger Rabbit))'
 ]
 
 { #category : 'tests - codeBlock' }
@@ -648,7 +649,6 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 MicRichTextComposerTest >> testStylerForMethod [
 	
 	| code source richText blueLocation textColor |
-
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>

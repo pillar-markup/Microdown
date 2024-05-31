@@ -30,7 +30,8 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	| parameters |
 	parameters := OrderedCollection new.
 	parameters add: 'float'.
-	aCodeBlock hasLabel ifTrue: [ parameters add: 'label=', aCodeBlock label ].
+	aCodeBlock hasAnchor ifTrue: [
+		parameters add: 'label=' , aCodeBlock anchor ].
 	^ parameters asCommaString
 ]
 
@@ -46,21 +47,21 @@ MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
 
 { #category : 'protected' }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
-	
-	aCodeBlock hasCaption | aCodeBlock hasLabel
+
+	aCodeBlock hasCaption | aCodeBlock hasAnchor
 		ifTrue: [ self writeFloatingCodeSnippet: aCodeBlock ]
 		ifFalse: [ self writeInFlowCodeSnippet: aCodeBlock ]
 ]
 
 { #category : 'protected' }
-MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [ 
+MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
+
 	canvas environment
 		name: 'listing';
 		optParameter: (self optionalParametersForFloatingScript: aCodeBlock);
-		"parameter: (self languageForScript: aScript) sbaString;"
-		flag: #todo;"should come back here"
 		parameter: 'smalltalk';
-		parameter: [ aCodeBlock captionElements collect: [ :each | each accept: self ] ];
+		parameter: [
+			aCodeBlock captionElements collect: [ :each | each accept: self ] ];
 		with: [
 			self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
@@ -68,13 +69,12 @@ MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
 
 { #category : 'protected' }
 MicSBALaTeXWriter >> writeInFlowCodeSnippet: aCodeBlock [
+
 	canvas environment
 		name: 'displaycode';
-		"parameter: (self languageForScript: aScript) sbaString;"
-		flag: #todo;"should come back here"
 		parameter: 'smalltalk';
 		with: [
-			self writeRawDuring: [ "there is no need of the writeRaw if I do not call high level " 
-				canvas nextPutAllLines: aCodeBlock body ].
+			self writeRawDuring: [ 
+					canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]
 ]

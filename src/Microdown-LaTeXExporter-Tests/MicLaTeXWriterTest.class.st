@@ -164,7 +164,7 @@ MicLaTeXWriterTest >> testCrlfAsNewLine [
 
 { #category : 'tests - figure/link' }
 MicLaTeXWriterTest >> testFigure [
-
+	
 	self writeFor: factory figureSample.
 	self assert: writer contents equals: newLine ,
 					'\begin{figure}[htpb]', newLine ,
@@ -271,18 +271,58 @@ MicLaTeXWriterTest >> testLfAsNewLine [
 MicLaTeXWriterTest >> testLink [
 	self writeFor: factory linkSample.		
 	self assert: writer contents equals: newLine,
-'\href{/anUrl}{Foo}\footnotesize{\url{/anUrl}}', newLine
+'\href{/anUrl}{Foo}', newLine
 ]
 
 { #category : 'tests - figure/link' }
 MicLaTeXWriterTest >> testLinkBold [
 
-	self flag: 'caption do not use bold in the caption'.
 	self writeFor: factory linkBoldSample.
-	self flag: #toFix.
-	"\textbf{Foo}" 
 	self assert: writer contents equals: newLine ,
-'\href{/anUrl}{**Foo**}\footnotesize{\url{/anUrl}}', newLine
+		'\href{/anUrl}{\textbf{Foo}}', newLine
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathBloc [
+
+	self
+	parseInlined:'$$
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}', newLine,
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathBlocWithLabel [
+
+	self
+	parseInlined:'$$ % anchor=eq1
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}', newLine,
+'\label{eq1}', newLine,
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testMathInLine [
+
+	self
+	parseInlined: 'Similarly, let $f_{w,C}$ be the number of documents in corpus $C$ that contain word $w$:'
+
+
+	andCheckWeGet: 
+
+'Similarly, let $f_{w,C}$ be the number of documents in corpus $C$ that contain word $w$:'
 ]
 
 { #category : 'tests - formats' }
@@ -417,7 +457,28 @@ MicLaTeXWriterTest >> testQuote [
 MicLaTeXWriterTest >> testRealLinkSample [
 	self writeFor: factory realLinkSample.	
 	self assert: writer contents equals: newLine ,
-'\href{http://www.pharo.org}{The Pharo Project}\footnotesize{\url{http://www.pharo.org}}', newLine 
+'\href{http://www.pharo.org}{The Pharo Project}', newLine 
+]
+
+{ #category : 'tests - math' }
+MicLaTeXWriterTest >> testSimpleMathBloc [
+	
+	| root math |
+	root := parser parse: '
+$$
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'.
+	math := root children first.
+	self
+	parseInlined:'$$ 
+f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz
+$$'
+
+	andCheckWeGet: 
+
+'\begin{equation}', newLine, 
+'f(a) = \frac{1}{2\pi i} \oint_{\gamma} \frac{f(z)}{z - a} dz', newLine,
+'\end{equation}' 
 ]
 
 { #category : 'tests - formats' }

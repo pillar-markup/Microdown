@@ -104,9 +104,8 @@ MicrodownVisitor >> visitEnvironment: anEnvironment [
 
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitFigure: aFigure [
-	
-	^ aFigure captionElements do: [:each | each accept: self ]
-		
+
+	^ aFigure children do: [ :each | each accept: self ]
 ]
 
 { #category : 'visiting' }
@@ -139,8 +138,7 @@ MicrodownVisitor >> visitItalic: aFormat [
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
-	^ aLink captionElements do: [:each | each accept: self ].
-
+	^ aLink children do: [ :each | each accept: self ]
 ]
 
 { #category : 'visiting - list' }

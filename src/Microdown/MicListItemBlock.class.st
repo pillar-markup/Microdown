@@ -43,8 +43,7 @@ Class {
 	#name : 'MicListItemBlock',
 	#superclass : 'MicAbstractBlock',
 	#instVars : [
-		'text',
-		'textElements'
+		'text'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -71,16 +70,13 @@ MicListItemBlock >> addLineAndReturnNextNode: line [
 	"SD: I thought that a list item was holding a paragraph but it holds directly text."
 		
 	(self isAList: normalized)
-		ifTrue: [ ^ self newBlockFor: normalized parent: self ]
+		ifTrue: [ 
+			self inlineParse: text.
+			text := ''.
+			^ self newBlockFor: normalized parent: self ]
 		ifFalse: [ 
 			"here we manage multiple lines list item."
 			text := text , String cr , normalized ]
-]
-
-{ #category : 'accessing' }
-MicListItemBlock >> basicText [
-
-	^ text
 ]
 
 { #category : 'testing' }
@@ -93,19 +89,8 @@ MicListItemBlock >> canConsumeLine: line [
 { #category : 'visiting' }
 MicListItemBlock >> closeMe [
 
-"1. item 1 **foo**
-   on the same line
-  - sublevel item 1 **bold**
-  - sublevel item 2
-2. item 2
-In this example textElements of the first item will be the elements for 
-	item 1 **foo**
-   on the same line
-"
 	super closeMe.
-	textElements :=  self inlineParse: text.	
-	textElements reverseDo: [ :each | 
-		children addFirst: each ].
+	self inlineParse: text
 ]
 
 { #category : 'accessing' }
@@ -128,19 +113,19 @@ MicListItemBlock >> nestedLevel [
 ]
 
 { #category : 'accessing' }
-MicListItemBlock >> text [
+MicListItemBlock >> testText [
+	"I am used to make it easier to write tests"
+	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each printString ] ]
+]
 
-	^ String streamContents: [ :str | textElements do: [ :each | str nextPutAll: each substring ] ]
+{ #category : 'accessing' }
+MicListItemBlock >> text [
+	self deprecated: 'Use testText instead' transformWith: '`@rec text' -> '`@rec testText'.
+	^ self testText 
 ]
 
 { #category : 'accessing' }
 MicListItemBlock >> textElements [ 
-	
-	^ textElements 
-]
-
-{ #category : 'accessing' }
-MicListItemBlock >> textElements: aCollection [ 
-	
-	textElements := aCollection
+	self deprecated: 'I should not be used, use children' transformWith: '`@rec textElements' -> '`@rec children'.
+	^ children  
 ]

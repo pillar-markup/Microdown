@@ -30,7 +30,7 @@ MicHeaderBlockTest >> testHeaderAPIToAccessText [
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
 	self assert: header children first class equals: MicTextBlock.
-	self assert: header children first substring equals: 'titre1'
+	self assert: header children first bodyString equals: 'titre1'
 ]
 
 { #category : 'tests' }
@@ -40,8 +40,8 @@ MicHeaderBlockTest >> testHeaderAPIToSetText [
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
 	self assert: header headerElements first text equals: 'titre1'.
-	header headerElements: { (MicTextBlock new substring: 'Blblbl') }.
-	self assert: header headerElements first substring equals: 'Blblbl'
+	header headerElements: { (MicTextBlock new bodyString: 'Blblbl') }.
+	self assert: header headerElements first bodyString equals: 'Blblbl'
 ]
 
 { #category : 'tests' }
@@ -51,15 +51,18 @@ MicHeaderBlockTest >> testHeaderCreatesInnerText [
 	header := (self parser parse: '# titre1') children first.
 	self assert: header class equals: MicHeaderBlock.
 	self assert: header children first class equals: MicTextBlock.
-	self assert: header children first substring equals: 'titre1'
+	self assert: header children first bodyString equals: 'titre1'
 ]
 
 { #category : 'tests' }
 MicHeaderBlockTest >> testHeaderLevel1 [
+
 	| root |
-	root := parser parse: HeaderMarkup, ' Level1'.
+	root := parser parse: HeaderMarkup , ' Level1'.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level1'.
+	self
+		assert: root children first children first bodyString
+		equals: 'Level1'.
 	self assert: root children first level equals: 1
 ]
 
@@ -67,10 +70,12 @@ MicHeaderBlockTest >> testHeaderLevel1 [
 MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 
 	| source root |
-	source := HeaderMarkup, 'Level1'.
+	source := HeaderMarkup , 'Level1'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level1'.
+	self
+		assert: root children first children first bodyString
+		equals: 'Level1'.
 	self assert: root children first level equals: 1
 ]
 
@@ -78,20 +83,25 @@ MicHeaderBlockTest >> testHeaderLevel1NoSpace [
 MicHeaderBlockTest >> testHeaderLevel4 [
 
 	| source root |
-	source := (HeaderMarkup repeat: 4), '    Level four'.
+	source := (HeaderMarkup repeat: 4) , '    Level four'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level four'.
+	self
+		assert: root children first children first bodyString
+		equals: 'Level four'.
 	self assert: root children first level equals: 4
 ]
 
 { #category : 'tests' }
 MicHeaderBlockTest >> testHeaderLevel6 [
+
 	| source root |
-	source := (HeaderMarkup repeat: 6), '    Level six'.
+	source := (HeaderMarkup repeat: 6) , '    Level six'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
-	self assert: root children first header equals: 'Level six'.
+	self
+		assert: root children first children first bodyString
+		equals: 'Level six'.
 	self assert: root children first level equals: 6
 ]
 

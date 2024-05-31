@@ -31,13 +31,12 @@ MicSameStartStopMarkupBlock >> arguments [
 
 { #category : 'visiting' }
 MicSameStartStopMarkupBlock >> caption [
-	^ String streamContents: [:s |  self captionElements do: [ :each | s nextPutAll: each substring ] ]
+	^ (self arguments at: #caption ifAbsent: [ ^'No Caption' ]) printString
 ]
 
 { #category : 'accessing - delegated' }
 MicSameStartStopMarkupBlock >> caption: aString [
-	
-	arguments at: #caption put: (MicInlineParser new parse: aString)
+	arguments at: #caption put: (self inlineParse: aString)
 ]
 
 { #category : 'visiting' }
@@ -54,16 +53,22 @@ MicSameStartStopMarkupBlock >> closeMe [
 	self arguments
 		at: #caption
 		ifPresent: [ :cp | 
-		arguments at: #caption put: (self inlineParse: cp) ]
+		 self caption: cp ]
 ]
 
 { #category : 'accessing' }
 MicSameStartStopMarkupBlock >> hasCaption [
-	^ arguments includesKey:  #caption
+	^ arguments includesKey: #caption
 ]
 
 { #category : 'markups' }
 MicSameStartStopMarkupBlock >> lineStopMarkup [
 
 	^ self lineStartMarkup
+]
+
+{ #category : 'visiting' }
+MicSameStartStopMarkupBlock >> testCaptionString [
+	self deprecated: 'Use caption' transformWith: '`@rec testCaptionString' -> '`@rec caption'.
+	^ self caption
 ]

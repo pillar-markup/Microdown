@@ -17,6 +17,18 @@ $$
 V_i = C_0 - C_3
 $$
 
+Now if you want to have label and references to an equation as in LaTeX you should prefix the parameter with % (else it will break on github).
+
+
+
+```
+$$ % label=theEq
+V_i = C_0 - C_3
+$$
+
+See *@theEq@*
+```
+
 
 "
 Class {
@@ -33,6 +45,30 @@ MicMathBlock >> accept: aVisitor [
 ]
 
 { #category : 'handle' }
+MicMathBlock >> anchor [
+	| anchor |
+	anchor := self arguments 
+		at: #anchor 
+		ifAbsent: [ nil ].
+	"for backward compatibility"
+	anchor ifNil: [ anchor := self arguments at: #label ifAbsent: [ nil ] ].
+	^ anchor 
+]
+
+{ #category : 'handle' }
+MicMathBlock >> anchor: aString [
+
+	arguments at: #anchor put: aString.
+	arguments removeKey: #label ifAbsent: [].
+]
+
+{ #category : 'handle' }
+MicMathBlock >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self anchor
+]
+
+{ #category : 'handle' }
 MicMathBlock >> extractFirstLineFrom: aLine [
 
 	| lineWithoutMarkup |
@@ -41,6 +77,11 @@ MicMathBlock >> extractFirstLineFrom: aLine [
 	arguments := MicArgumentList 
 		split: lineWithoutMarkup.
 	^ lineWithoutMarkup
+]
+
+{ #category : 'testing' }
+MicMathBlock >> hasAnchor [
+	^ self anchor isNotNil
 ]
 
 { #category : 'markups' }

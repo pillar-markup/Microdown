@@ -33,8 +33,8 @@ MicHTMLTag >> addArguments: aMicInlineBlockWithUrl [
 
 	aMicInlineBlockWithUrl hasArguments ifFalse: [ ^ self ].
 	self htmlArgumentsMapDo: [ :argAssoc | 
-		aMicInlineBlockWithUrl
-			argumentAt: argAssoc key
+		aMicInlineBlockWithUrl arguments 
+			at: argAssoc key
 			ifPresent: [ :labelString | self parameterAt: argAssoc value put: labelString ] ]
 ]
 

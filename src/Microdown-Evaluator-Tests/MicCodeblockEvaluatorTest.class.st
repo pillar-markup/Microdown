@@ -12,20 +12,25 @@ MicCodeblockEvaluatorTest >> actualClass [
 
 { #category : 'private' }
 MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
+
 	| input |
-	input := MicRootBlock new
-		addChild:
-			(MicParagraphBlock new
-				addChild:
-						((MicCodeBlock new body: 'stream nextPutAll: ''- test''')
-								eval: true; 
-								yourself);
-				yourself) yourself.
+	input := MicRootBlock new addChild: (MicParagraphBlock new
+			          addChild:
+				          ((MicCodeBlock new body: 'stream nextPutAll: ''- test''')
+					           eval: true;
+					           yourself);
+			          yourself) yourself.
 	self actualClass new visit: input.
 	self assert: input children first class equals: MicParagraphBlock.
-	self assert: input children first children first class equals: MicUnorderedListBlock.
-	self assert: input children first children first children first class equals: MicListItemBlock.
-	self assert: input children first children first children first text equals: 'test'
+	self
+		assert: input children first children first class
+		equals: MicUnorderedListBlock.
+	self
+		assert: input children first children first children first class
+		equals: MicListItemBlock.
+	self
+		assert: input children first children first children first testText
+		equals: 'Text(test)'
 ]
 
 { #category : 'tests' }

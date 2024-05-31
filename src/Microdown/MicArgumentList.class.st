@@ -1,5 +1,25 @@
 "
 I am intended to provide arguments to annotations, codeblocks and environments. 
+I'm used in figures, code, and math equation for now
+
+In the following anchor=fig1&width=70 is an argument list.
+```
+![this is a caption](figures/f.png anchor=fig1&width=70)
+```
+
+```
+    ```pharo
+	...
+	```
+```
+
+is equivalent to the set pharo as value to the default tag which is for blocks language
+
+```
+    ```language=pharo
+	...
+	```
+```
 
 My syntax is of the following form:
 
@@ -38,10 +58,7 @@ MicArgumentList class >> split: aString defaultArg: defArg [
 { #category : 'instance creation' }
 MicArgumentList class >> split: aString defaultArg: defArg defaultValue: defValue [
 	^ self new
-		defaultArg: defArg;
-		at: defArg put: defValue;
-		initialValue: defValue;
-		from: aString; 
+		split: aString defaultArg: defArg defaultValue: defValue;
 		yourself
 ]
 
@@ -75,14 +92,24 @@ MicArgumentList >> defaultValue [
 { #category : 'initialization' }
 MicArgumentList >> from: fullString [
 	"I am the 'parser' of the argument splitter"
-	| barSplit |
-	fullString isEmpty ifTrue: [ ^ self ].
-	(fullString intersection: '|=&') isEmpty 
-		ifTrue: [ ^self setDefaultNoArguments: fullString  ].
-	barSplit := fullString splitOn: $|.
+	| barSplit string |
+	string := fullString.
+	string isEmpty ifTrue: [ ^ self ].
+	
+	"for math equation we can have 
+		$$ % label=eqq1 or 
+		$$ %label=eqq2"
+	(string intersection: '%') isNotEmpty 
+		ifTrue: [ string := string trim.
+				string first = $%
+					ifTrue: [ string := string allButFirst trim ] ].
+	
+	(string intersection: '|=&') isEmpty 
+		ifTrue: [ ^self setDefaultNoArguments: string  ].
+	barSplit := string splitOn: $|.
 	barSplit size > 1
 		ifTrue: [ ^ self setDefaultAndArguments: barSplit  ].
-	self setNoDefaultButArguments: fullString
+	self setNoDefaultButArguments: string
 	
 ]
 
@@ -152,10 +179,21 @@ MicArgumentList >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
 	| pairs |
 	pairs := string splitOn: $&.
-	pairs do: [ :p | |keyValue|
-		keyValue := p splitOnFirst: $=.
+	pairs do: [ :p | 
+		| keyValue |
+		keyValue := p splitOnFirst: $= noneValue: nil.
 		self at: keyValue first trim asSymbol put: keyValue second ]
 	
+]
+
+{ #category : 'initialization' }
+MicArgumentList >> split: aString defaultArg: defArg defaultValue: defValue [
+
+		self 
+			defaultArg: defArg;
+			at: defArg put: defValue;
+			initialValue: defValue;
+			from: aString
 ]
 
 { #category : 'copying' }

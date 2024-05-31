@@ -219,26 +219,32 @@ MicEnvironmentBlockTest >> testEnvironmentWithCorrespondingClassIsCreated [
 
 { #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testEnvironmentWithFormat [
+
 	"'<?slide
 - item 1 
 - item 2
 ?>
-'" 
+'"
+
 	| source root env environmentName |
 	environmentName := 'slide'.
-	source := EnvironmentOpeningBlockMarkup , environmentName, String cr, 
-	 '- item1 **bold**
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr
+	          , '- item1 **bold**
 - item 2
 
-blbababbab bababba', String cr, EnvironmentClosingBlockMarkup, String cr.
-	root :=  parser parse: source.
-	
-	self assert: root children size equals: 1.
-	env := root children first. 
+blbababbab bababba' , String cr , EnvironmentClosingBlockMarkup
+	          , String cr.
+	root := parser parse: source.
 
-	self assert: env children first children first class equals: MicListItemBlock.
-	self assert: env children first children first textElements second class equals: MicBoldFormatBlock 
-	
+	self assert: root children size equals: 1.
+	env := root children first.
+
+	self
+		assert: env children first children first class
+		equals: MicListItemBlock.
+	self
+		assert: env children first children first children second class
+		equals: MicBoldFormatBlock
 ]
 
 { #category : 'tests - default environment' }

@@ -8,18 +8,25 @@ See *@fig1@*
 "
 Class {
 	#name : 'MicAnchorReferenceBlock',
-	#superclass : 'MicInlineElement',
+	#superclass : 'MicUnEvaluatedBlock',
 	#instVars : [
 		'reference'
 	],
-	#category : 'Microdown-ModelInline',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'ModelInline'
+	#tag : 'Model'
 }
 
-{ #category : 'testing' }
-MicAnchorReferenceBlock class >> isEvaluated [
-	^ false
+{ #category : 'accessing' }
+MicAnchorReferenceBlock class >> closingDelimiter [
+
+ 	^ AnchorReferenceCloserMarkup
+]
+
+{ #category : 'accessing' }
+MicAnchorReferenceBlock class >> openingDelimiter [
+
+ 	^ AnchorReferenceOpenerMarkup
 ]
 
 { #category : 'visiting' }
@@ -27,41 +34,20 @@ MicAnchorReferenceBlock >> accept: aVisitor [
  	^ aVisitor visitAnchorReference: self
 ]
 
-{ #category : 'visiting' }
-MicAnchorReferenceBlock >> closingDelimiter [
-
- 	^ AnchorReferenceCloserMarkup
-]
-
-{ #category : 'initialization' }
-MicAnchorReferenceBlock >> kind [
-
-	^ #anchorReference
-]
-
-{ #category : 'visiting' }
-MicAnchorReferenceBlock >> openingDelimiter [
-
- 	^ AnchorReferenceOpenerMarkup
+{ #category : 'accessing' }
+MicAnchorReferenceBlock >> anchorLabel [ 
+	
+	^ bodyString 
 ]
 
 { #category : 'accessing' }
 MicAnchorReferenceBlock >> reference [
+
 	^ reference
 ]
 
 { #category : 'accessing' }
-MicAnchorReferenceBlock >> reference: aReference [
-	reference := aReference
-]
+MicAnchorReferenceBlock >> reference: anObject [
 
-{ #category : 'visiting' }
-MicAnchorReferenceBlock >> referenceAsHTML [	
-	| ref |
-	self flag: #todo.
-	ref := self reference.
-	(ref endsWith: '.md')
-		ifTrue: [ ref := (ref copyUpToLast: $.) , '.html' ]
-		ifFalse: [ Error signal: 'Reference : ' , ref , ' should end with .pillar or .pier' ].
-	^ ref
+	reference := anObject
 ]

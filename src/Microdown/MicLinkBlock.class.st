@@ -1,13 +1,27 @@
 "
-I represent a reference in a text. For example `[http://pharo.org](http://pharo.org)` creates [http://pharo.org](http://pharo.org).
+I represent a reference in a text. For example `[The pharo web site](http://pharo.org)` creates [The Pharo web site](http://pharo.org).
+
+- The reference message returns the `http://pharo.org` part
 "
 Class {
 	#name : 'MicLinkBlock',
 	#superclass : 'MicInlineBlockWithUrl',
-	#category : 'Microdown-ModelInline',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'ModelInline'
+	#tag : 'Model'
 }
+
+{ #category : 'accessing' }
+MicLinkBlock class >> closingDelimiter [
+
+ 	^ NameCloserUrlOpener
+]
+
+{ #category : 'accessing' }
+MicLinkBlock class >> openingDelimiter [
+
+ 	^ LinkNameOpenerMarkup
+]
 
 { #category : 'visiting' }
 MicLinkBlock >> accept: aVisitor [
@@ -16,37 +30,18 @@ MicLinkBlock >> accept: aVisitor [
 
 { #category : 'visiting' }
 MicLinkBlock >> closeMe [
-	
-	| split args |
 
-	split := url splitOnFirst: Character space.
-	self reference: (MicResourceReference fromUri: split first).
-	args := (split second ifNil: [ '' ]) trimBoth: [:char | {$". Character space} includes: char].
-	self arguments: (MicArgumentList withString: args).
-	self captionElements: (self inlineParse: substring).
-"	self children: captionElements"
+	super closeMe.
+	self children do: [ :each | each basicParent: self ].
+]
+
+{ #category : 'printing' }
+MicLinkBlock >> plainText [
+	^ '[', ((self children collect: [:each | each plainText]) joinUsing: ' '), '](', url ,')'
 ]
 
 { #category : 'accessing' }
-MicLinkBlock >> fullName [
+MicLinkBlock >> referencePath [
+
 	^ self reference fullName
-]
-
-{ #category : 'testing' }
-MicLinkBlock >> hasArguments [
-	"Answer <true> if the receiver contain at least 1 argument"
-	
-	^ (self url trimBoth findTokens: ' ') size > 1
-]
-
-{ #category : 'accessing' }
-MicLinkBlock >> kind [
-
- 	^ #linkName
-]
-
-{ #category : 'accessing' }
-MicLinkBlock >> openingDelimiter [
-
- 	^ LinkNameOpenerMarkup
 ]

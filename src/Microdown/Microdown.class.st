@@ -118,6 +118,12 @@ Microdown class >> parse: aStreamOrString [
 ]
 
 { #category : 'facade' }
+Microdown class >> parseFile: aFile [
+
+	^ self new parseFile: aFile
+]
+
+{ #category : 'facade' }
 Microdown class >> resolveDocument: document withBase: base [
 	"resolve all relative urls in document with respect to the absolute uri 
 	base can be a aString | aZnUrl | absoluteResourceReference"
@@ -144,6 +150,16 @@ Microdown >> builder [
 Microdown >> parse: aStreamOrString [
 
 	^ MicrodownParser parse: aStreamOrString
+]
+
+{ #category : 'facade' }
+Microdown >> parseFile: aFile [
+		
+		|root|
+		root := MicrodownParser parse: aFile  contents. 
+		root fromFile: aFile fullName.
+		^ root
+		
 ]
 
 { #category : 'facade' }

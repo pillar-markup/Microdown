@@ -41,9 +41,16 @@ MicElement class >> extensionClassFor: tag [
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 ]
 
-{ #category : 'visiting' }
-MicElement >> accept: aVisitor [
-	self subclassResponsibility 
+{ #category : 'private' }
+MicElement >> basicParent: aMicBlock [
+
+	parent := aMicBlock
+]
+
+{ #category : 'accessing' }
+MicElement >> fromFile [
+	"Let us bubble up to the root to get the file"
+	^ self parent fromFile
 ]
 
 { #category : 'properties' }
@@ -56,12 +63,11 @@ MicElement >> hasProperty: aKey [
 
 { #category : 'public' }
 MicElement >> inlineParse: aString [
-	| inlineParser inlinedChildren |
-	
+
+	| inlineParser inlinedChildren |	
 	inlineParser := self newInlineParser.
 	inlinedChildren := inlineParser parse: aString.
 	inlinedChildren do: [ :each | each parent: self ].
-	
 	^ inlinedChildren
 
 ]
@@ -84,9 +90,12 @@ MicElement >> parent [
 ]
 
 { #category : 'accessing' }
-MicElement >> parent: aBlock [
-	parent := aBlock.
-	aBlock addChild: self
+MicElement >> parent: aBlockChild [
+	"Add the receiver as child of aBlockChild. 
+	Make sure that aBlockChild is the parent of the receiver."
+	
+	parent := aBlockChild.
+	aBlockChild addChild: self
 ]
 
 { #category : 'properties' }
@@ -146,6 +155,15 @@ MicElement >> removeProperty: aKey ifAbsent: aBlock [
 	answer := self properties removeKey: aKey ifAbsent: aBlock.
 	self properties isEmpty ifTrue: [ properties := nil ].
 	^ answer
+]
+
+{ #category : 'replacement' }
+MicElement >> replaceBy: aMicElement [
+	"Replace the receiver by the argument. 
+	Make sure that the new element parent is the parent of the receiver."
+	
+	parent replace: self by: aMicElement.
+	
 ]
 
 { #category : 'public' }
