@@ -23,9 +23,13 @@ Class {
 MicBlogCreator class >> createFrom: source to: target [
 
 	| tmp1 |
+	(source fileSystem store isKindOf: WindowsStore) ifTrue: [
+		source fileSystem store currentDisk ].
+	(target fileSystem store isKindOf: WindowsStore) ifTrue: [
+		target fileSystem store currentDisk ].
 	tmp1 := self new.
 	tmp1
-		sourceDirectory:  source;
+		sourceDirectory: source;
 		targetDirectory: target.
 	tmp1 createAllHtmlFile
 ]
@@ -49,9 +53,8 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 MicBlogCreator >> createAllHtmlFile [
 
 	| allFile allFileParse sum summar listOfSingleSummarize |
-	
-	dateList := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
-			 targetDirectory fullName.
+	dateList := MicMonthListCreator new
+		            generateMicListBlockOfLinkDateTo: targetDirectory.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
 
@@ -80,7 +83,7 @@ MicBlogCreator >> createAllHtmlFile [
 		targetDirectory fullName , '/_monthBlog'.
 
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
-		summar := sum group: allFileParse byDate: each.
+		summar := sum group: listOfSingleSummarize byDate: each.
 		summar isNotEmpty
 			ifTrue: [
 				summar := sum summarize: summar.
@@ -89,10 +92,9 @@ MicBlogCreator >> createAllHtmlFile [
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> createHtmlEmptyGroupFileAt: aDate [
+MicBlogCreator >> createHtmlEmptyGroupFileAt: aMonth [
 
-	| a fileRef root|
-	
+	| a fileRef root |
 	root := Microdown parse: 'No files found'.
 	self rootAssembly: root.
 
@@ -100,7 +102,7 @@ MicBlogCreator >> createHtmlEmptyGroupFileAt: aDate [
 
 	fileRef := targetDirectory / '_monthBlog'.
 
-	self write: a to: fileRef named: aDate asString , '.html'
+	self write: a to: fileRef named: aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
@@ -121,7 +123,7 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
+MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
 	| a fileRef |
 	self rootAssembly: aMicRoot.
@@ -130,7 +132,10 @@ MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aDate [
 
 	fileRef := targetDirectory / '_monthBlog'.
 
-	self write: a to: fileRef named: aDate asString , '.html'
+	self
+		write: a
+		to: fileRef
+		named: aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
