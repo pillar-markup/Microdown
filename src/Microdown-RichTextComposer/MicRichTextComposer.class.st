@@ -599,7 +599,7 @@ MicRichTextComposer >> visitOrderedList: aList [
 					put: (self textStyler counterFor: counter atLevel: self level).
 				counter := counter + 1 ].
 		super visitOrderedList: aList ].
-	canvas newLine.
+	canvas newLineIfNotAlready.
 	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing]
 ]
 
@@ -771,6 +771,6 @@ MicRichTextComposer >> visitUnorderedList: aList [
 						propertyAt: #bullet
 						put: (self textStyler bulletForLevel: self level) ].
 			super visitUnorderedList: aList ].
-	canvas newLine.
-	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing] 
+	canvas newLineIfNotAlready.
+	aList nestedLevel = 1 ifTrue: [ canvas << textStyler interBlockSpacing ]
 ]
