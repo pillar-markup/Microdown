@@ -134,7 +134,7 @@ MicSemanticAction >> getMetaClassOrNil [
 
 { #category : 'instance creation' }
 MicSemanticAction >> getPackageOrNil [
-	entity := RPackageOrganizer default packageNamed: tokens first asString ifAbsent: [ nil ].
+	entity := self class packageOrganizer packageNamed: tokens first asString ifAbsent: [ nil ].
 	^ entity
 				
 ]

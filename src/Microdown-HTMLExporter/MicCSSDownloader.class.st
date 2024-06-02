@@ -83,6 +83,8 @@ MicCSSDownloader >> httpClient [
 	^ ZnClient new
 		systemPolicy;
 		signalProgress: true;
-		ifFail: [ :exception | self error: 'Could not load : ', exception printString ];
+		ifFail: [ :exception | 
+			exception messageText traceCr.
+			exception pass ];
 		yourself
 ]
