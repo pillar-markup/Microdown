@@ -194,49 +194,49 @@ MicCSSProvider >> frameworksSpecs [
 		
 		{ 
 		#name -> 'AwsmCSS' .
-		#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm.css' .
-		#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm.min.css' .
+		#css -> 'https://unpkg.com/awsm.css/dist/awsm.css' .
+		#minCss -> 'https://unpkg.com/awsm.css/dist/awsm.min.css' .
 		#repository -> 'https://github.com/igoradamenko/awsm.css' .
 		#themes -> ({
 			{ 
 			#name -> 'White' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_white.min.css'
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_white.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_white.min.css'
 			} .
 			{ 
 			#name -> 	'Gondola' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_gondola.min.css' 
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_gondola.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_gondola.min.css' 
 			} .
 			{ 
 			#name -> 'Mischnka' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_mischka.min.css' 
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_mischka.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_mischka.min.css' 
 			} .
 			{ 
 			#name -> 'Big Stone' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_big-stone.min.css'
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_big-stone.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_big-stone.min.css'
 			} .
 			{ 
 			#name -> 'Black' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_black.min.css'
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_black.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_black.min.css'
 			} .
 			{ 
 			#name -> 'Tasman' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_tasman.min.css'
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_tasman.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_tasman.min.css'
 			} .
 			{ 
 			#name -> 'Pastel Pink' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pastel-pink.min.css' 
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pastel-pink.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pastel-pink.min.css' 
 			} .
 			{ 
 			#name -> 'Pearl Lusta' .
-			#css -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.css' .
-			#minCss -> 'https://igoradamenko.github.io/awsm.css/css/awsm_theme_pearl-lusta.min.css'
+			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pearl-lusta.css' .
+			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pearl-lusta.min.css'
 			 } } collect: #asDictionary)
 		} .
 
