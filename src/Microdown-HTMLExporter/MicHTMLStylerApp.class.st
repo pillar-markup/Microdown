@@ -28,7 +28,7 @@ MicHTMLStylerApp class >> open [
 	self new run
 ]
 
-{ #category : 'accessing' }
+{ #category : 'running' }
 MicHTMLStylerApp >> start [
 	" Private - See superimplementor's comment "
 
