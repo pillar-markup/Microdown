@@ -87,12 +87,16 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 	textForTestcase
 	executeAndReportExample:
 	Note that there is no fragmentedText here, no need for it b/ecause the codeblock text contains the whole text and is the equivalent of  Playground execution"
-			| result |
-		result := MicBookTestResult new.
-		result text: aCodeBlock code.
-		allTestResults add: result   .
-		self excuteAndReportExample: result.
-	   aCodeBlock isExpectedFailure
-		ifTrue: [ result status: result status not] 
+	aCodeBlock isExample  
+	ifFalse: [  ]
+	ifTrue: [  
+				| result |
+			result := MicBookTestResult new.
+			result text: aCodeBlock code.
+			allTestResults add: result   .
+			self excuteAndReportExample: result.
+	      aCodeBlock isExpectedFailure
+			ifTrue: [ result status: result status not] 
+			]
 
 ]
