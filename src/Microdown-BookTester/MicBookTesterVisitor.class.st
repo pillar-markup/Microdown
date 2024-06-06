@@ -2,7 +2,7 @@
 i visit code blocks and make sure that evaluation is correct 
 "
 Class {
-	#name : 'MicrodownBookTesterVisitor',
+	#name : 'MicBookTesterVisitor',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'allTestResults'
@@ -12,31 +12,31 @@ Class {
 }
 
 { #category : 'testing' }
-MicrodownBookTesterVisitor class >> isAbstract [
+MicBookTesterVisitor class >> isAbstract [
 	<ignoreForCoverage "This method is ignored for test coverage because it is overriden in all subclasses and these subclasses don't need to do a super-send.">
 	^ false
 ]
 
 { #category : 'accessing' }
-MicrodownBookTesterVisitor >> allTestResults [
+MicBookTesterVisitor >> allTestResults [
 
 	^ allTestResults
 ]
 
 { #category : 'accessing' }
-MicrodownBookTesterVisitor >> allTestResults: anObject [
+MicBookTesterVisitor >> allTestResults: anObject [
 
 	allTestResults := anObject
 ]
 
 { #category : 'visiting' }
-MicrodownBookTesterVisitor >> checkAssociation: aCodeBlockObject [
+MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
 	^ (self class  compiler evaluate: aCodeBlockObject text ) isPaired .
 ]
 
 { #category : 'visiting' }
-MicrodownBookTesterVisitor >> excuteAndReportExample: aCodeBlockObject [
+MicBookTesterVisitor >> excuteAndReportExample: aCodeBlockObject [
 "aCodeBlockObject is an instance of The MicrodownTestResult"
 	| isCorrect |
 	isCorrect := false . 
@@ -49,19 +49,19 @@ MicrodownBookTesterVisitor >> excuteAndReportExample: aCodeBlockObject [
 ]
 
 { #category : 'visiting' }
-MicrodownBookTesterVisitor >> failedTests [
+MicBookTesterVisitor >> failedTests [
 	"Returns the failed tests within the test results"
 	^ allTestResults select: [ :each | each isFailed ]
 ]
 
 { #category : 'initialization' }
-MicrodownBookTesterVisitor >> initialize [
+MicBookTesterVisitor >> initialize [
 	super initialize.
 	allTestResults := OrderedCollection new.
 ]
 
 { #category : 'visiting' }
-MicrodownBookTesterVisitor >> isOk [ 
+MicBookTesterVisitor >> isOk [ 
 	| checkingVariable |
 	checkingVariable := true.
 	allTestResults do: [ :each | checkingVariable := checkingVariable and: [ each isPaired ] ].
@@ -69,26 +69,26 @@ MicrodownBookTesterVisitor >> isOk [
 ]
 
 { #category : 'accessing' }
-MicrodownBookTesterVisitor >> start: anObject [ 
+MicBookTesterVisitor >> start: anObject [ 
 	anObject accept: self . 
 	
 ]
 
 { #category : 'testing' }
-MicrodownBookTesterVisitor >> validTests [
+MicBookTesterVisitor >> validTests [
 	"Returns all passed tests"
 	^ allTestResults select: [ :each | each isValid ]
 ]
 
 { #category : 'visiting' }
-MicrodownBookTesterVisitor >> visitCode: aCodeBlock [	
+MicBookTesterVisitor >> visitCode: aCodeBlock [	
 		"Creates an instance of PRBookTestResult with parameters depending of the type of the codeblock. 
 	Here it is for an example and therefore uses the specialized exmple methods
 	textForTestcase
 	executeAndReportExample:
 	Note that there is no fragmentedText here, no need for it b/ecause the codeblock text contains the whole text and is the equivalent of  Playground execution"
 			| result |
-		result := MicrodownBookTestResult new.
+		result := MicBookTestResult new.
 		result text: aCodeBlock code.
 		allTestResults add: result   .
 		self excuteAndReportExample: result.

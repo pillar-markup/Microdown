@@ -29,7 +29,7 @@ fragmentedText: #('Plop' 'plop1' '^ ''1''')
 
 "
 Class {
-	#name : 'MicrodownBookTestResult',
+	#name : 'MicBookTestResult',
 	#superclass : 'Object',
 	#instVars : [
 		'text',
@@ -42,25 +42,25 @@ Class {
 }
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> explanation [
+MicBookTestResult >> explanation [
 
 	^ explanation
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> explanation: anException [
+MicBookTestResult >> explanation: anException [
 
 	explanation := anException
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> fragmentedText [
+MicBookTestResult >> fragmentedText [
 
 	^ fragmentedText
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> fragmentedText: aText [
+MicBookTestResult >> fragmentedText: aText [
 	"The Array contains: 
 		-Class Name
 		-Method Name
@@ -69,7 +69,7 @@ MicrodownBookTestResult >> fragmentedText: aText [
 ]
 
 { #category : 'initialization' }
-MicrodownBookTestResult >> initialize [
+MicBookTestResult >> initialize [
 
 	super initialize.
 	status := true.
@@ -77,39 +77,39 @@ MicrodownBookTestResult >> initialize [
 ]
 
 { #category : 'testing' }
-MicrodownBookTestResult >> isFailed [
+MicBookTestResult >> isFailed [
 
 	^ status not
 ]
 
 { #category : 'testing' }
-MicrodownBookTestResult >> isValid [
+MicBookTestResult >> isValid [
 
 	^ status 
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> status [ 
+MicBookTestResult >> status [ 
 	"true means that the test is valid, false means that the test got a problem or failed"
 	
 	^ status
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> status: aBoolean [
+MicBookTestResult >> status: aBoolean [
 	"true means that the test is valid, false means that the test got a problem or failed"
 	
 	status := aBoolean
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> text [
+MicBookTestResult >> text [
 
 	^ text 
 ]
 
 { #category : 'accessing' }
-MicrodownBookTestResult >> text: aText [
+MicBookTestResult >> text: aText [
 
 	text := aText
 ]
