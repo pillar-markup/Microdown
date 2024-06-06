@@ -81,7 +81,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithTwoBrackets [
 { #category : 'tests' }
 MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
 	| docText bTester |
-	docText := '```example=true|expectedFailure=true
+	docText := '```example=true&expectedFailure=true
 3 + 4 
 >>> 12		
 ```
@@ -94,7 +94,7 @@ MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
 { #category : 'tests' }
 MicBookTesterVisitorTest >> testExpectedFailureForARaisedException [
 	| docText bTester |
-	docText := '```example=true|expectedFailure=true
+	docText := '```example=true&expectedFailure=true
 3 + ''a'' 
 >>> 12		
 ```
