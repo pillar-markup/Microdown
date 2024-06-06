@@ -1,5 +1,5 @@
 "
-I am common class for two extension blocks which at the moment shares the same syntax.
+I am the common class for two extension blocks that currently share the same syntax.
 "
 Class {
 	#name : 'MicAbstractCodeBlock',

@@ -1,6 +1,6 @@
 "
-I handle input file. 
-Note that I should start a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
+I handle an input file. 
+Note that I should start on a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
 
 ```text
 <!inputFile|path=Chapters/withStyle.md!>
@@ -14,6 +14,7 @@ Example:
 Gives:
 <!inputFile|path=https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/readme.md!>
 
+***
 "
 Class {
 	#name : 'MicInputfileBlock',

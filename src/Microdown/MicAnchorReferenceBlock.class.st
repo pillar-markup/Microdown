@@ -1,10 +1,10 @@
 "
-I represent a reference to a section, figure, environment. I follow the pattern `*@`, label, `@*`
+I represent a reference to a section, figure, or environment. I follow the pattern `*@`, label, `@*`.
 
-```
+For example:
+```text
 See *@fig1@*
 ```
-
 "
 Class {
 	#name : 'MicAnchorReferenceBlock',

@@ -1,14 +1,12 @@
 "
-I represent preformatted paragraph indicated by '> ' at the beginning of each my lines. 
+I represent a preformatted paragraph indicated by '> ' at the beginning of each of my lines. 
 I'm like a preformatted in HTML or Pillar '= '.
-Every single line should starts with '> '.
+Every single line should start with '> '.
 
-The semantics of microdown quote block is that blocks (code block, header, lists) are not interpreted inside only formatting.
+The semantics of Microdown quote block is that blocks (code blocks, headers, lists) are not interpreted inside only formatting.
 
-In githubmarkdown the definitions are just super complex and we do not follow them. 
+In GitHub Markdown, the definitions are really complex and we do not follow them. 
 	""A block quote marker consists of 0-3 spaces of initial indent, plus (a) the character > together with a following space, or (b) a single character > not followed by a space.""
-
-
 "
 Class {
 	#name : 'MicBlockQuoteBlock',

@@ -4,7 +4,7 @@ We will have to learn from doing the migration.
 
 In Microdown, metadata is a block level expressed as follows:  
 
-```
+```language=text
 {
     ""title"": ""Selecting Expressions"",
     ""author"": ""S. Ducasse and L. Fabresse with Q. Ducasse"",

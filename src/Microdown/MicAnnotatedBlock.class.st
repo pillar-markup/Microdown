@@ -1,15 +1,14 @@
 "
-I represent a paragraph with the title. My title can only contain a string while my body can contain formatted text.
+I represent a paragraph with the title. My title can only contain a string and my body can contain formatted text.
 
 I'm created with `!!paragraph` (such as `@@note` `@@important` in Pillar).
 
-!!note This is important so I used exclamatation mark.
-
-### Known limits. 
+!!note This is important so I used exclamation marks.
+ 
+### Known Limitations 
 We should revisit the implementation because there is something unclear. 
-Currently we cannot add list for example inside a annotatedBlock.
+For example, we cannot currently add lists inside an annotatedBlock.
 See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pillar-markup/MicroDown/issues/54)
-
 "
 Class {
 	#name : 'MicAnnotatedBlock',

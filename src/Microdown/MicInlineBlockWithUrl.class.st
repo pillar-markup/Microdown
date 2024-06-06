@@ -1,7 +1,7 @@
 "
 My subclasses manage figures and links.
 
-```
+```text
 ![Pharologo](https://files.pharo.org/media/logo/logo.png
 ```
 

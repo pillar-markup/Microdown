@@ -2,7 +2,7 @@
 I'm a block element defining a slide. I expect a title and optionally a tag (to be able for example 
 to have the same slide but on two different layouts and not emit both. 
 
-```
+```language=text
 <!slide|title=This is a cool title&tag=nh5p
 
 - a list of bullet
@@ -10,8 +10,6 @@ to have the same slide but on two different layouts and not emit both.
 - bullet 3
 !>
 ```
-
-It should be noted that the title is not reified as a Microdown object because so far the extensions does not support a way to describe the argument that should be reified. 
 "
 Class {
 	#name : 'MicSlideBlock',

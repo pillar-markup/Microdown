@@ -4,25 +4,24 @@ I represent an ordered list of list items.
 #### Example
 
 Typing 
-```
+```language=text
 1. first
 2. second
-   on multiple line 
+   on multiple lines
 1. third
 Not in third
 1. first item of a new list
 ```
 
-produces
+Produces:
 1. first
 1. second
-   on multiple line 
+   on multiple lines
 1. third
 Not in third
 1. first item of a new list
 
-Notice how the following line of the second item is indented with the previous one.
-
+Notice how the second line of the second item is indented like the first line.
 "
 Class {
 	#name : 'MicOrderedListBlock',

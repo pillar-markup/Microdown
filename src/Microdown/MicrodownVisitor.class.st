@@ -1,9 +1,6 @@
 "
-I'm an abstract visitor for Microdown document three. 
-By default I visit only the nodes of the domain: it means that I will not visit the label of an annotated paragraph 
-or the parameters of an annotation or the URL of a figure because such elements are not represented by subclasses 
-of MicElement.
-
+I'm an abstract visitor for Microdown document trees.
+By default, I only visit the nodes of the domain: it means that I will not visit the label of an annotated paragraph, or the parameters of an annotation, or the URL of an image, because such elements are not represented by subclasses of `MicElement`.
 "
 Class {
 	#name : 'MicrodownVisitor',
