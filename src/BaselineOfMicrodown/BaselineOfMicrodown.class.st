@@ -68,7 +68,7 @@ BaselineOfMicrodown >> baseline: spec [
 				spec requires: #( #'Microdown' ) ];
 			package: #'Microdown-BookTester' with: [
 				spec requires: #( #'Microdown' ) ];
-			package: #'Microdown-BookTester-Tests' with: [
+			package: #'Microdown-Tests-BookTester' with: [
 				spec requires: #( #'Microdown-BookTester' ) ];
 			
 			package: #'Microdown-Blog' with: [
