@@ -32,7 +32,10 @@ MicBookTesterVisitor >> allTestResults: anObject [
 { #category : 'visiting' }
 MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
-	^ (self class  compiler evaluate: aCodeBlockObject text ) isPaired .
+	|association|
+	 
+	association := (self class  compiler evaluate: aCodeBlockObject text)  .
+	^ (association key = association value )
 ]
 
 { #category : 'visiting' }
