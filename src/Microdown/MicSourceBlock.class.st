@@ -6,7 +6,7 @@ I am an extension for including source code into markdown document. I am to be u
 Yielding:
 <!source|class=MicSourceBlock&method=accept:&side=instance!>
 
-The `side` argument can be `instance` or `class`. If can be omitted, and is then assumed to be `instance`
+The `side` argument can be `instance` or `class`. It can be omitted, and is then assumed to be `instance`.
 "
 Class {
 	#name : 'MicSourceBlock',

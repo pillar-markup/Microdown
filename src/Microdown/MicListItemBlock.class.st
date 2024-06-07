@@ -1,30 +1,30 @@
 "
-I represent one item in a list (ordered or non-ordered).
+I represent an item in a list (ordered or unordered).
 
-```
+```language=text
 1. item 1
 2. item 2
 ```
-or 
-```
+or
+```language=text
 - item 1
 - item 2
 ```
-are two lists containing 2 item list elements. 
+are two lists containing 2 list items.
 
-An item list can be on multiple lines 
+A list item can be on multiple lines:
 
-```
+```language=text
 1. item 1 **foo**
    on the same item element
 2. is another element
-3. and a third one on 
-   another line 
+3. and a third one on
+   another line
 ```
 
-Please note that I can contain nested subelements and 
+Please note that I can contain nested sub-elements:
 
-```
+```language=text
 1. item 1 **foo**
    on the same item
   - sublevel item 1 **bold**
@@ -35,9 +35,8 @@ Please note that I can contain nested subelements and
 Therefore I expose two APIs:
 - `children` which returns all the mic elements (for example the text and the nested lists)
 - `textElements` which returns only the text elements (for example `item 1 **foo** on the same item`)
-	
-Pay attention my instance variable text is only used during the parsing time. 
 
+Pay attention that my instance variable `text` is only used during parsing.
 "
 Class {
 	#name : 'MicListItemBlock',

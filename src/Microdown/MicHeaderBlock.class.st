@@ -1,9 +1,9 @@
 "
-I am a header. I'm composed of a number of sharp sign (1 to 6) followed by a space (obligatory) and a text on one line. 
+I am a header. I'm composed of a number of sharp characters (1 to 6) followed by a space (mandatory) and a text on one line.
 
 For example 
 
-```
+```language=text
 # level 1
 ## level 2
 ### level 3
@@ -12,7 +12,7 @@ For example
 ###### level 6
 ```
 
-produces
+Produces:
 
 # level 1
 ## level 2
@@ -20,7 +20,7 @@ produces
 #### level 4
 ##### level 5
 ###### level 6
-
+ 
 "
 Class {
 	#name : 'MicHeaderBlock',

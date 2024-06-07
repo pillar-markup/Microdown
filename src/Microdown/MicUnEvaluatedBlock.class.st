@@ -1,5 +1,5 @@
 "
-I represent blocks whose contents is not microdown markup as such.
+I represent blocks whose content is not microdown markup as such.
 "
 Class {
 	#name : 'MicUnEvaluatedBlock',

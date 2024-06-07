@@ -1,7 +1,7 @@
 "
 I am a relative reference.
 
-I specify a ressource relative to an other reference. One example is the path `../images/logo.png` which says the logo is in the image direcctory of my parent directory. However, I am unresolved, and need to be resolved with respect to an absolute reference (file or http). 
+I specify a resource relative to another reference. One example is the path `../images/logo.png`, which says the logo is in the images directory of my parent directory. However, I am unresolved and need to be resolved with respect to an absolute reference (file or http).
 "
 Class {
 	#name : 'MicRelativeResourceReference',

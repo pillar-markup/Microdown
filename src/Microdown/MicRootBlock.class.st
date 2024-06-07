@@ -1,5 +1,5 @@
 "
-I am the root of the github markup tree
+I am the root of the markup tree.
 "
 Class {
 	#name : 'MicRootBlock',

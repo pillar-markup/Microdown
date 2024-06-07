@@ -1,5 +1,5 @@
 "
-I am used for representing unknow uri rferences, for example `foo://bar.baz/path`
+I am used for representing unknown URI references, for example `foo://bar.baz/path`.
 "
 Class {
 	#name : 'MicUnknownResourceUri',

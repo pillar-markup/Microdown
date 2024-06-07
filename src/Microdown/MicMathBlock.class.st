@@ -1,35 +1,33 @@
 "
-I'm a math environment. I'm a block it means that I start by a newline with character `$$` and optional parameters, and I finish by a line with the same characters. 
-My body can be on multiple line and may contain LaTeX expressions.
-In particular it means that my body does not contain nested elements.
+I'm a math environment. I'm a block, which means that I start on a new line with the `$$` markup, take optional parameters, and end on a new line with the same markup. 
+My body can be on multiple lines and can contain LaTeX expressions.
+In particular, this means that my body does not contain nested elements.
 
 Here is an example 
 
-```
+```text
 $$
 V_i = C_0 - C_3
 $$
 ```
 
-produces 
+Produces: 
 
 $$
 V_i = C_0 - C_3
 $$
+ 
+If you want to have a label and references to an equation as in LaTeX, you should prefix the parameter with `%` (otherwise it breaks on GitHub).
 
-Now if you want to have label and references to an equation as in LaTeX you should prefix the parameter with % (else it will break on github).
 
 
-
-```
+```text
 $$ % label=theEq
 V_i = C_0 - C_3
 $$
 
 See *@theEq@*
 ```
-
-
 "
 Class {
 	#name : 'MicMathBlock',

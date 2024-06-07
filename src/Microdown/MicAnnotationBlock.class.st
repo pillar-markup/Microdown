@@ -1,14 +1,14 @@
 "
-I represent an annotation delimted by `{!` and `!}`: a tag with parameters.
+I represent an annotation, a tag with parameters, delimited by `{!` and `!}`.
 
-The following is a citation annotation with as parameters the name variable bound to the string 'Duca99a'.
+The following example is a citation annotation with the name variable bound to the string 'Duca99a' as a parameter.
 
 ```text
 {!citation|name=Duca99a!}
 ```
 
 ```
-MicroDownParser parse: '{!citation|name=Duca99a!}'
+MicrodownParser parse: '{!citation|name=Duca99a!}'
 ```
 "
 Class {

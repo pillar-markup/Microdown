@@ -1,7 +1,7 @@
 "
 I am a plain text paragraph.
 
-If am divided from other paragraphs by either a blank line, or one of the other markups.
+I am divided from other paragraphs by either a blank line, or one of the other markups.
 "
 Class {
 	#name : 'MicParagraphBlock',

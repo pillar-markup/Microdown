@@ -1,6 +1,6 @@
 "
 I am an abstract class for the two kind of lists, ordered and unordered.
-When I created I automatically add a listitem as my child.
+When I am created, I automatically add a listitem as my child.
 Unordered list line starts with `-`,  ordered list starts with number.
 An empty or a wrong indent closes me.
 
@@ -13,7 +13,7 @@ Here is an example:
 
 Indentation (two spaces) matters and is crucial. 
 Here is an example
-```
+```language=text
 - item 1
 xx- subitem 1.1
 xx- subitem 2.1
@@ -22,7 +22,7 @@ xx- subitem 2.1
 xxxx- subsubitem 2.1.1
 xx- subitem 2.2
 ```
-produces:
+Produces:
 - item 1
   - subitem 1.1
   - subitem 2.1
@@ -37,7 +37,6 @@ Now an ordered list can also contain an unordered list.
    - subitem 2.1
    - subitem 2.2
 3. third
-
 
 
 "

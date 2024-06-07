@@ -1,6 +1,6 @@
 "
-I implement the inline use of `https://somewhere.com` as a link directly in microdown.
-My parse method on the class side transform me directly into a MicLinkBlock, and as such, I am never instantiated
+I implement the inline use of `https://somewhere.com` as a link directly in Microdown.
+My parse method on the class side turns me directly into a `MicLinkBlock`, and as such, I am never instantiated.
 "
 Class {
 	#name : 'MicInlineHttpBlock',

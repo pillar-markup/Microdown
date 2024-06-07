@@ -1,5 +1,5 @@
 "
-I represent a monospaced text section. I'm delimited using `\`` as in `\`monospace\`` to obtain `monospace`.
+I represent a monospaced text section. I'm delimited using `\`` (backtick) as in `\`monospace\`` to obtain `monospace`.
 "
 Class {
 	#name : 'MicMonospaceFormatBlock',

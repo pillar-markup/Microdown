@@ -1,5 +1,5 @@
 "
-I'm a special inline block representing the fact that there is not markup. 
+I'm a special inline block with no markup.
 "
 Class {
 	#name : 'MicTextBlock',
