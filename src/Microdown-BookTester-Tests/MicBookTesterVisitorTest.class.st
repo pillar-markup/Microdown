@@ -1,8 +1,8 @@
 Class {
 	#name : 'MicBookTesterVisitorTest',
 	#superclass : 'TestCase',
-	#category : 'Microdown-Tests-BookTester',
-	#package : 'Microdown-Tests-BookTester'
+	#category : 'Microdown-BookTester-Tests',
+	#package : 'Microdown-BookTester-Tests'
 }
 
 { #category : 'tests' }
