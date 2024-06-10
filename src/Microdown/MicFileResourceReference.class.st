@@ -114,7 +114,7 @@ MicFileResourceReference >> isMicrodownResourceFileReference [
 
 { #category : 'accessing' }
 MicFileResourceReference >> loadChildren [
-	"return a collection of MifResourceReferences if I am a directory, empty if I am not a directory"
+	"return a collection of MicResourceReferences if I am a directory, empty if I am not a directory"
 	self isDirectory ifFalse: [ ^ #() ].
 	^ self fileReference children
 		select: [ :child | child isDirectory or: [ #(md mic) includes: child extension  ] ] 

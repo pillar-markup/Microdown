@@ -67,6 +67,8 @@ MicZincPathResolver >> visitFigure: aFigure [
 
 { #category : 'visiting' }
 MicZincPathResolver >> visitInputFile: anInputFile [
+
+
 	self resolveReferenceIn: anInputFile 
 ]
 

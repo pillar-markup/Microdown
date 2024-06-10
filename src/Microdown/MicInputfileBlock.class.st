@@ -1,6 +1,7 @@
 "
-I handle an input file. 
-Note that I should start on a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
+I handle an input file e.g. `<!inputFile|path=Chapters/withStyle.md!>`. I should start on a new line but I can end on the same line. So I may look like an inline element but I'm a block one.
+
+Note that my path can be resolved (See asMicResourceReference and MicFileResourceReference for more information how to resolve my path), when resolved the message `reference` return the resolved path (i.e.  to go from a relative to an absolute paths). 
 
 ```text
 <!inputFile|path=Chapters/withStyle.md!>
