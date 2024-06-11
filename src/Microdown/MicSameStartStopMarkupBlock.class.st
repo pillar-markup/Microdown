@@ -1,11 +1,16 @@
 "
-I'm abstract block for the logic of elements which are managed by a 
+I'm an abstract block for the logic of elements which are managed by an identical start and stop markup. It can take a list of arguments.
 
-startMarkup
-body 
-endMarkup 
+For example:
+```text
+ ```language=text
+ carpe   diem
+ % verbatim
+ ```
+```
+defines a block that uses the same start and end markup, with the 'text' language argument.
 
-My subclass should define lineMarkup
+My subclasses should define `lineStartMarkup`, which is also used as the `lineStopMarkup`.
 "
 Class {
 	#name : 'MicSameStartStopMarkupBlock',

@@ -1,30 +1,30 @@
 "
 I am intended to provide arguments to annotations, codeblocks and environments. 
-I'm used in figures, code, and math equation for now
+Currently, I'm used in figures, code, and math equation.
 
-In the following anchor=fig1&width=70 is an argument list.
-```
+In the following, `anchor=fig1&width=70` is an argument list.
+```text
 ![this is a caption](figures/f.png anchor=fig1&width=70)
 ```
 
-```
-    ```pharo
-	...
-	```
+```text
+ ```pharo
+ ...
+ ```
 ```
 
-is equivalent to the set pharo as value to the default tag which is for blocks language
+is equivalent to setting `pharo` as the value of the default tag, which for blocks is the language tag.
 
-```
-    ```language=pharo
-	...
-	```
+```text
+ ```language=pharo
+ ...
+ ```
 ```
 
 My syntax is of the following form:
 
 - ` ` defaultArg->initialValue, no other arguments. 
-- `value` defaultArg->value, no otherarguments. 
+- `value` defaultArg->value, no other arguments. 
 - `key=arg[&key=arg]*`, defaultArg->initialValue, but arguments.
 - `value|key=arg[&key=arg]*` defaultArg->value, and arguments.
 "

@@ -1,7 +1,5 @@
 "
-I am a http reference encapsulating a http uri (`http//host/path/to/some/file.md`).
-
-
+I am a HTTP reference encapsulating a HTTP URI (`http://host/path/to/some/file.md`).
 "
 Class {
 	#name : 'MicHTTPResourceReference',

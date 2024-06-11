@@ -6,9 +6,9 @@ My syntax is: `![Here is a nice caption.](https://files.pharo.org/media/logo/log
 You should get the following picture: 
 ![Here is a nice caption.](https://files.pharo.org/media/logo/logo.png ""anchor=figanchor&width=80"")
 
-I have a resources, i.e. an object referencing either a file (in relative or absolute manner) or an Url, that refers to a given image object.
+I have a resource, i.e. an object referencing either a file (in relative or absolute manner), or an URL that refers to a given image object.
 
-What is important to see is that there is a space between the url arguments and microdown arguments. 
+What is important to see is that there is a space between the URL argument and microdown arguments. 
 "
 Class {
 	#name : 'MicFigureBlock',

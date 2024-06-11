@@ -10,12 +10,12 @@ A script showing my visitors:
 		do:  [:class |  aBuilder  item:  [ aBuilder monospace:  (class name, '>>#visitScript:') 
 ]]]]) contents
 ```
-
-or generating a morph
-
+ 
+Or generating a morph:
 ```pharoscript|width=100&show=both
 Morph new
 ```
+ 
 "
 Class {
 	#name : 'MicPharoScriptBlock',

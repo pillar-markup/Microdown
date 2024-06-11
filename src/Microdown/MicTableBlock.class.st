@@ -1,37 +1,35 @@
 "
-Support table with a simple and more relax setup than github.
+Support for tables with a simpler and more relaxed setup than GitHub.
 A table is not forced to have a header definition.
 
-```
+```text
 | aaab | jkhjh |
 | --- |
 | bar |
 ```
 
 or 
-```
+```text
 |aaab|jkhjh|
 |---|
 |bar|
 ```
 or
-```
+```text
 | aaa | bbb |
 |ccc |ddd |
 ```
 or 
-```
+```text
 | aaa | bbb
 | cc | ddd
 ```
 Block-level elements cannot be inserted in a table.
 
-When a table contains a header it is the first row and all rows should have that size else they are cut. 
+When a table contains a header, it is the first row, and all rows should have that size, otherwise they are truncated.
 
-
-Known limits: how to put a pipe in a table? 
-No support for \|
-
+### Known limitations
+How to put a pipe in a table? No support for `\|`.
 "
 Class {
 	#name : 'MicTableBlock',

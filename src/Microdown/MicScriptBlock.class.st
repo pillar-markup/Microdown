@@ -1,10 +1,10 @@
 "
 I am a common superclass for script extensions.
-A script extension is intened to have its body text interpreted.
+A script extension is intended to have its body text interpreted.
 
-A script extension should 
-- either be handled by the visitor, overriding the accept: method
-- or building a microdown tree at parse time using closeMe
+A script extension should **either**:
+- be handled by the visitor by overriding the `accept:` method
+- build a Microdown tree at parse time using `closeMe`
 "
 Class {
 	#name : 'MicScriptBlock',

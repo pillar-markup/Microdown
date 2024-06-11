@@ -17,24 +17,44 @@ Class {
 }
 
 { #category : 'visiting' }
+MicReferenceChecker >> check: aDocument [ 
+	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
+	can have references between them and the checker should be shared amongst the documents 
+	since it collects the references."
+
+	aDocument accept: self.
+	^ self isOk 
+	
+	
+
+]
+
+{ #category : 'visiting' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
-	| parsedFile |
-	aDir allFiles do: [ :each |
-        (parsedFile := Microdown parseFile: each) accept: self.
-    ].
-	^ self isOk 
-
+	^ self checkList: aDir allFiles
 ]
 
 { #category : 'visiting' }
 MicReferenceChecker >> checkFile: aFile [ 
 	"Will parse the given file and invite the visitor and return visitor isOk value"
 
-	| parsedFile |
-	parsedFile := Microdown parseFile: aFile. 
-	parsedFile accept: self.
+	| document |
+	document := Microdown parseFile: aFile. 
+	^ self check: document
+	
+	
+
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> checkList: aCollection [  
+	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
+	can have references between them and the checker should be shared amongst the documents 
+	since it collects the references."
+
+	aCollection do: [ :each | self check: each ].
 	^ self isOk 
 	
 	

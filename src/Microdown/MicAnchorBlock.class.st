@@ -1,10 +1,10 @@
 "
-I'm block that represents an anchor to a section. This way text can refer to the anchor to refer to the section. 
+I'm block that represents an anchor to a section. This way, text can refer to the anchor to refer to the section. 
 
-```
+```language=text
 # A section
 @mylovelySection
-``` 
+```
 "
 Class {
 	#name : 'MicAnchorBlock',

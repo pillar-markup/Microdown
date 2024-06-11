@@ -1,15 +1,15 @@
 "
-I am a reference to a image or microdown ressource in the image.
+I am a reference to an image or microdown resource in the Pharo image.
 
-I follow the url scheme `pharo:/class/selector/arg1/arg2`. My intended usage is to give access to the many icons in pharo using: `pharo:///Object/iconNamed:/nameOfIcon`. 
+I follow the URI scheme `pharo:///class/selector/arg1/arg2`. My intended use is to give access to the many icons in pharo using: `pharo:///Object/iconNamed:/nameOfIcon`. 
 
 Examples:
 - abstract: ![](pharo:///Object/iconNamed:/abstract)
 - bitbucket: ![](pharo:///Object/iconNamed:/bitbucket)
 - thumbsUp: ![](pharo:///Object/iconNamed:/thumbsUp)
 
-## Restictions
-- Only class side methods can be invoked
+## Restrictions
+- Only class methods can be invoked
 - Only string arguments can be passed
 "
 Class {

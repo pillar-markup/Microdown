@@ -1,5 +1,5 @@
 "
-I'm a little wrapper on stream to provide a nicer API. In particular I help not hardcoding line ending everywhere.
+I'm a little wrapper on stream to provide a nicer API. In particular, I help avoid hardcoding line endings everywhere.
 "
 Class {
 	#name : 'MicOutputStream',

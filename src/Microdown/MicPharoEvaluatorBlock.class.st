@@ -2,9 +2,16 @@
 I am a block containing a Pharo expression.
 
 A script showing my visitors:
+```language=text
+ ```pharoeval
+ Transcript show: 'Test'; cr.
+ ```
+```
+Gives:
 ```pharoeval
 Transcript show: 'Test'; cr.
 ```
+ 
 "
 Class {
 	#name : 'MicPharoEvaluatorBlock',

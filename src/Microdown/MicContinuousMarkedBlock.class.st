@@ -1,33 +1,29 @@
 "
-I'm an abstract block for blocks requiring a systematic simple character or character sequences at the beginning of each line. The text of the lines are accumulated for now as line without the markup separated by a newline. 
+I'm an abstract block for blocks that require a systematic single character or character sequences at the beginning of each line. The text of the lines is initially collected without markup, separated by a newline.
 
 For example 
-```
+```language=text
 % comment 1
 % comment 2
 ```
 produces a single comment object with text as follows:
 
-```
+```language=text
 comment 1
 comment 2
 ```
 
 
 For example 
-```
+```language=text
 > this is an example
 > and another one
 ```
-
-produces 
+produces:
 
 > this is an example
 > and another one
-
-
-
-
+ 
 "
 Class {
 	#name : 'MicContinuousMarkedBlock',

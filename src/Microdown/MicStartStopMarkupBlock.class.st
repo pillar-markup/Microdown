@@ -1,5 +1,5 @@
 "
-May be in the future we will be able to say that SameMarkup is the same as a StartStop with the same delimiter but for now we do not know. 
+Maybe in the future we will be able to say that SameMarkup is the same as a StartStop with the same delimiter, but for now we do not know.
 "
 Class {
 	#name : 'MicStartStopMarkupBlock',

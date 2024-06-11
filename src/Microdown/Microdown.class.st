@@ -1,8 +1,7 @@
 "
-I'm the favored entry point to use microdown. I'm a kind of facade to steer Microdown services.
+I'm the favored entry point to use Microdown. I'm a kind of facade to steer Microdown services.
 
-
-In particular I invoke a resolver for paths after parsing documents .
+In particular, I invoke a resolver for paths after parsing documents.
 
 <!inputFile|path=pharo:///Microdown/facadeMethods!>
 "
@@ -156,7 +155,7 @@ Microdown >> parse: aStreamOrString [
 Microdown >> parseFile: aFile [
 		
 		|root|
-		root := MicrodownParser parse: aFile  contents. 
+		root := MicrodownParser parse: aFile contents. 
 		root fromFile: aFile fullName.
 		^ root
 		

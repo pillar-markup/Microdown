@@ -45,3 +45,15 @@ MicCodeBlock >> isEvaluated [
 	arguments at: #eval ifAbsent: [ ^ false ].
 	^ (arguments at: #eval) = 'true'
 ]
+
+{ #category : '*Microdown-Evaluator' }
+MicCodeBlock >> isExample [
+	arguments at: #example ifAbsent: [ ^ false ].
+	^ (arguments at: #example) = 'true'
+]
+
+{ #category : '*Microdown-Evaluator' }
+MicCodeBlock >> isExpectedFailure [
+	arguments at: #expectedFailure ifAbsent: [ ^ false ].
+	^ (arguments at: #expectedFailure) = 'true'
+]

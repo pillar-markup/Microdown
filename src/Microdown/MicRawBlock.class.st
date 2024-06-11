@@ -1,8 +1,9 @@
 "
 Raw lets the user place anything (so don't use it).
 
-```
-{{ raw contents}}
+Example:
+```text
+{{ raw contents }}
 ```
 "
 Class {

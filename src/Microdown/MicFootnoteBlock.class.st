@@ -1,7 +1,7 @@
 "
 I'm an inline element that represents a footnote as in LaTeX for example. The bibliography will be able to extract its entries from the reference in the citation.
 
-this is a text with a `{!footnote|note=Here is a nice footenote.!}`
+this is a text with a `{!footnote|note=Here is a nice footenote.!}`. {!footnote|note=Here is a nice footenote.!}
 "
 Class {
 	#name : 'MicFootnoteBlock',
