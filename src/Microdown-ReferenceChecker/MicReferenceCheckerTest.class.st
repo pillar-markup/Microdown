@@ -448,7 +448,7 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 
 	visitor := MicReferenceChecker new.
 
-	self deny: ( visitor checkDirectory: dir ) .
+	self deny: ( visitor checkDirectory: dir  ) .
 	
 	file1 ensureDelete.
    file2 ensureDelete.

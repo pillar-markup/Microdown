@@ -54,7 +54,7 @@ MicReferenceChecker >> checkList: aCollection [
 	can have references between them and the checker should be shared amongst the documents 
 	since it collects the references."
 
-	aCollection do: [ :each | self check: each ].
+	aCollection do: [ :each | self checkFile: each ].
 	^ self isOk 
 	
 	
