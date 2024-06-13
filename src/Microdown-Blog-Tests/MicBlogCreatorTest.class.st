@@ -144,16 +144,14 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateFromTo [
 
-	| allFile nbMonthFile |
+	| allFile |
 	MicBlogCreator
 		createFrom: fileSystem / 'source'
 		to: fileSystem / 'html'.
 
 	allFile := (fileSystem / 'html') allFiles.
-	
-	nbMonthFile := (Date today year - 2014) * 12 + Date today month index.
 
-	self assert: allFile size equals: 5 + nbMonthFile
+	self assert: allFile size equals: 7
 ]
 
 { #category : 'tests' }
@@ -218,6 +216,22 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 	blog createHtmlSummarize: root.
 
 	self assert: (fileSystem / 'html/index.html') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testInitializeMonthList [
+
+	| listSingleSummarizer |
+	
+	listSingleSummarizer := Array new: 3.
+	
+listSingleSummarizer at:1 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample1.md').
+listSingleSummarizer at:2 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample2.md').
+listSingleSummarizer at:3 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/test/anExample3.md').
+
+	blog initializeMonthList: listSingleSummarizer.
+	
+self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2.
 ]
 
 { #category : 'tests' }

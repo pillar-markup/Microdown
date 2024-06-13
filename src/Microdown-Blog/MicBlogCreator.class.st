@@ -151,8 +151,9 @@ MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
 	sum targetDirectory: targetDirectory.
 
 	dateList := MicMonthListCreator new generateDateListSince2014.
+	date := dateList copy.
 
-	dateList do: [ :each |
+	date do: [ :each |
 		summar := sum group: listOfSingleSummarize byDate: each.
 		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
 	
