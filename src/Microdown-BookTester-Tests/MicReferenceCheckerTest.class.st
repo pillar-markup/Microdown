@@ -239,6 +239,7 @@ MicReferenceCheckerTest >> testReportingDuplicatedAnchors [
 # Section 3
 @anchorSection1
 
+
 See *@anchorSection1@* and *@anchorSection0@*
 
 '.
@@ -413,15 +414,15 @@ MicReferenceCheckerTest >> testReportingUnknownAnchor [
 # Section 1
 @anchorSection1
 
-See *@anchorSection1@* and *@anchorSection2@*
+See *@anchorSection1@* and *@anchorSection2@* and *@anchorSection2@* and *@anchorSection3@*
 
 '.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self deny: visitor isOk.
 	self 
-		assert: (visitor unknownAnchors collect: [ :each | each anchorLabel ]) 
-		equals: (OrderedCollection <- #('anchorSection2'))  
+		assert: (visitor allTestsResults collect: [ :each | each specification  ]) 
+		equals: (OrderedCollection <- #(#'anchorSection2'  #'anchorSection3'))  
 ]
 
 { #category : 'tests' }
