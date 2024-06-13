@@ -172,18 +172,17 @@ MicBlogCreator >> dateList: aDateList [
 	dateList := aDateList.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'css' }
 MicBlogCreator >> downloadCSS [
 
 	| a |
-	targetDirectory fileSystem / 'css'.
+	(targetDirectory / 'css') ensureCreateDirectory.
 	a := MicCSSProvider new.
 	a
 		findCssNamed: cssFrameworkName;
-		destinationPath:
-			'/Users/qmout/Documents/Pharo/images/Microdown/output/html/css'.
+		destinationPath: targetDirectory / 'css'.
 	a cssDownloader downloadCSSFramework:
-		(MicCSSProvider forCSSNamed: 'Axist')
+		(MicCSSProvider forCSSNamed: cssFrameworkName)
 ]
 
 { #category : 'initialization' }
@@ -191,6 +190,20 @@ MicBlogCreator >> initialize [
 
 	super initialize.
 	self cssFrameworkName: 'Axist'.
+]
+
+{ #category : 'as yet unclassified' }
+MicBlogCreator >> levelPathDifferenceForCSS: aStringPath [
+
+	| result string |
+	string := aStringPath copyReplaceAll: '\' with: '/'.
+
+	result := ''.
+
+	2 to: (string substrings: '/') size do: [ :each |
+	result := result , '../' ].
+
+	^ result
 ]
 
 { #category : 'rendering' }
@@ -237,15 +250,20 @@ MicBlogCreator >> targetDirectory: arg1 [
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 
-	| htmlDocument fileName|
+	| htmlDocument fileName cssFramework |
 	fileName := aName withoutPrefix: '/'.
 	fileName := fileName withoutPrefix: '\'.
+
+	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
+	cssFramework basePath:
+		(self levelPathDifferenceForCSS: fileName) , 'css/'.
+
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
 	htmlDocument configuration document: htmlDocument.
 	htmlDocument
 		setCharSetUTF8;
-		addCSSNamed: cssFrameworkName;
+		addCSS: cssFramework;
 		destinationPath: aPath.
 	^ htmlDocument
 		  fileName: fileName;
