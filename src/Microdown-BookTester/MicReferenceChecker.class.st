@@ -108,7 +108,10 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 
 	anElement hasAnchor ifFalse: [ ^ self ].
 	(self hasAlreadyDefinedAs: anElement)
-		ifTrue: [ duplicatedAnchors add: anElement ].
+		ifTrue: [
+				 duplicatedAnchors add: anElement .
+		    	 allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anElement anchorLabel )
+		 ].
 	 anchors add: anElement
 	
 ]
@@ -173,7 +176,10 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 
 	| isAlready |
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
-	isAlready ifTrue: [ duplicatedAnchors add: anAnchor ].
+	isAlready ifTrue: [
+		 duplicatedAnchors add: anAnchor .
+		 allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anAnchor anchorLabel )
+		 ].
 	anchors add: anAnchor
 ]
 
