@@ -10,11 +10,19 @@ Class {
 	#instVars : [
 		'references',
 		'anchors',
-		'duplicatedAnchors'
+		'duplicatedAnchors',
+		'finalStatus',
+		'allTestsResults'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
+
+{ #category : 'accessing' }
+MicReferenceChecker >> allTestsResults [
+
+	^ allTestsResults
+]
 
 { #category : 'visiting' }
 MicReferenceChecker >> check: aDocument [ 
@@ -61,10 +69,38 @@ MicReferenceChecker >> checkList: aCollection [
 
 ]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> collectBadReferences [
+
+
+ | newList |
+ newList :=( references reject: [:e | anchors anySatisfy: [ :ee | ee anchorLabel  = e anchorLabel  ]  ]) groupedBy: [:e | e anchorLabel ].
+ newList keysDo: [ :label |
+			allTestsResults add: (self result explanation: #anchorIsMissing withSpecification: label ) 
+		 ]
+	
+	"references  do: 
+		 [ :each |
+			 anchors do: 
+			[ :each2 |
+			 (each anchorLabel ~= each2 anchorLabel )
+			  ifTrue: [ 
+								allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: each anchorLabel ) 
+				       ] 
+			  ifFalse: [  ]
+			 ]]"
+]
+
 { #category : 'reporting' }
 MicReferenceChecker >> duplicatedAnchors [
 
 	^ duplicatedAnchors
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> finalStatus [
+	
+	^ allTestsResults isEmpty
 ]
 
 { #category : 'visiting' }
@@ -92,16 +128,31 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
+	
+	allTestsResults := OrderedCollection new.
+	finalStatus := true.
+	
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new
 ]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> isFailure [
+	^  self isOk not 
+]
+
 { #category : 'testing' }
 MicReferenceChecker >> isOk [
-
+	  
+	 self collectBadReferences.
 	^ duplicatedAnchors isEmpty and: [
 		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> result [ 
+	^ MicResult 
 ]
 
 { #category : 'reporting' }
