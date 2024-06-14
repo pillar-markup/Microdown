@@ -13,8 +13,7 @@ Class {
 	#instVars : [
 		'sourceDirectory',
 		'targetDirectory',
-		'dateList',
-		'cssFrameworkName'
+		'dateList'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -58,9 +57,6 @@ MicBlogCreator >> createAllHtmlFile [
 		            generateMicListBlockOfLinkDateTo: targetDirectory.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
-	
-	"Download the CSS"
-	self downloadCSS.
 
 	"Collect and parse all Markdown file of targetDirectory"
 	allFile := self collectAllMarkDownFile: targetDirectory.
@@ -120,27 +116,26 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	aFileReference delete.
 
-	self 
+	self
 		write: html
-		to: targetDirectory 
-		named:
-		(aFileReference fullName withoutPrefix:
-			 self targetDirectory fullName)
+		to: aFileReference parent
+		named: (aFileReference fullName substrings: '/') last
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| a "fileRef" fileName |
+	| a fileRef |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
-	"fileRef := targetDirectory / '_monthBlog'."
+	fileRef := targetDirectory / '_monthBlog'.
 
-	fileName := aMonth name , '_' , aMonth year asString , '.html'.
-
-	self write: a to: targetDirectory named: '_monthBlog/' , fileName
+	self
+		write: a
+		to: fileRef
+		named: aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
@@ -152,18 +147,6 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
 	self write: a to: targetDirectory named: 'index.html'
-]
-
-{ #category : 'accessing' }
-MicBlogCreator >> cssFrameworkName [ 
-
-	^ cssFrameworkName
-]
-
-{ #category : 'accessing' }
-MicBlogCreator >> cssFrameworkName: aCss [
-
-	cssFrameworkName := aCss
 ]
 
 { #category : 'accessing' }
@@ -266,7 +249,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 		addCSS: cssFramework;
 		destinationPath: aPath.
 	^ htmlDocument
-		  fileName: fileName;
+		  fileName: aName;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]
