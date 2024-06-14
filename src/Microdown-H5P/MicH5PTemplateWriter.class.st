@@ -5222,9 +5222,8 @@ MicH5PTemplateWriter >> visitUnorderedList: anOrderedList [
 MicH5PTemplateWriter >> visitUnorderedListItem: anUnorderedListItem [
 
 	canvas nextPutAll: '<li><span style=\"font-size:1.125em\">'.
-	canvas nextPutAll: anUnorderedListItem text.
-	canvas nextPutAll: '</span></li>\n\t'.
-	
+	canvas nextPutAll: anUnorderedListItem testText.
+	canvas nextPutAll: '</span></li>\n\t'
 ]
 
 { #category : 'to debug generation' }

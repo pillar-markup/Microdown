@@ -76,7 +76,8 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 	self
 		assertTemplate: MicTemplatedWriter boldTemplateFileName
 		writesValue: 'boldTemplate'
-		forNode: (MicBoldFormatBlock new children: { MicTextBlock new substring: 'Bar'}) 
+		forNode: (MicBoldFormatBlock new children:
+				 { (MicTextBlock new bodyString: 'Bar') })
 ]
 
 { #category : 'tests-templatefiles' }
