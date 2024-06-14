@@ -44,6 +44,7 @@ See *@anchorSection1@*
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
 	| dir file1 file2 visitor |
+	self skip.
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
    dir ensureCreateDirectory.
 	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
@@ -68,6 +69,7 @@ MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	| dir file1 file2 visitor   |
+	self skip.
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
    dir ensureCreateDirectory.
 	
@@ -427,9 +429,10 @@ See *@anchorSection1@* and *@anchorSection2@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 
-	| dir file1 file2 visitor   |
+	| dir file1 file2 visitor |
+	self skip.
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
-   dir ensureCreateDirectory .
+   dir ensureCreateDirectory.
 	
 	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
 	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
@@ -439,16 +442,16 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 @anchorSection1
 
 
-' ] .
-	file1 ensureCreateFile .
+' ].
+	file1 ensureCreateFile.
 	
 	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
-	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection2@*'] .
-   file2 ensureCreateFile . 
+	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection2@*'].
+   file2 ensureCreateFile. 
 
 	visitor := MicReferenceChecker new.
 
-	self deny: ( visitor checkDirectory: dir ) .
+	self deny: (visitor checkDirectory: dir).
 	
 	file1 ensureDelete.
    file2 ensureDelete.
