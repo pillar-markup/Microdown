@@ -13,7 +13,8 @@ Class {
 	#instVars : [
 		'sourceDirectory',
 		'targetDirectory',
-		'dateList'
+		'dateList',
+		'cssFrameworkName'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -57,6 +58,9 @@ MicBlogCreator >> createAllHtmlFile [
 		            generateMicListBlockOfLinkDateTo: targetDirectory.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
+	
+	"Download the CSS"
+	self downloadCSS.
 
 	"Collect and parse all Markdown file of targetDirectory"
 	allFile := self collectAllMarkDownFile: targetDirectory.
@@ -116,26 +120,27 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	aFileReference delete.
 
-	self
+	self 
 		write: html
-		to: aFileReference parent
-		named: (aFileReference fullName substrings: '/') last
+		to: targetDirectory 
+		named:
+		(aFileReference fullName withoutPrefix:
+			 self targetDirectory fullName)
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| a fileRef |
+	| a "fileRef" fileName |
 	self rootAssembly: aMicRoot.
 
 	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
 
-	fileRef := targetDirectory / '_monthBlog'.
+	"fileRef := targetDirectory / '_monthBlog'."
 
-	self
-		write: a
-		to: fileRef
-		named: aMonth name , '_' , aMonth year asString , '.html'
+	fileName := aMonth name , '_' , aMonth year asString , '.html'.
+
+	self write: a to: targetDirectory named: '_monthBlog/' , fileName
 ]
 
 { #category : 'rendering' }
@@ -150,9 +155,55 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 ]
 
 { #category : 'accessing' }
+MicBlogCreator >> cssFrameworkName [ 
+
+	^ cssFrameworkName
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> cssFrameworkName: aCss [
+
+	cssFrameworkName := aCss
+]
+
+{ #category : 'accessing' }
 MicBlogCreator >> dateList: aDateList [
 
 	dateList := aDateList.
+]
+
+{ #category : 'css' }
+MicBlogCreator >> downloadCSS [
+
+	| a |
+	(targetDirectory / 'css') ensureCreateDirectory.
+	a := MicCSSProvider new.
+	a
+		findCssNamed: cssFrameworkName;
+		destinationPath: targetDirectory / 'css'.
+	a cssDownloader downloadCSSFramework:
+		(MicCSSProvider forCSSNamed: cssFrameworkName)
+]
+
+{ #category : 'initialization' }
+MicBlogCreator >> initialize [
+
+	super initialize.
+	self cssFrameworkName: 'Axist'.
+]
+
+{ #category : 'as yet unclassified' }
+MicBlogCreator >> levelPathDifferenceForCSS: aStringPath [
+
+	| result string |
+	string := aStringPath copyReplaceAll: '\' with: '/'.
+
+	result := ''.
+
+	2 to: (string substrings: '/') size do: [ :each |
+	result := result , '../' ].
+
+	^ result
 ]
 
 { #category : 'rendering' }
@@ -199,15 +250,23 @@ MicBlogCreator >> targetDirectory: arg1 [
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 
-	| htmlDocument |
+	| htmlDocument fileName cssFramework |
+	fileName := aName withoutPrefix: '/'.
+	fileName := fileName withoutPrefix: '\'.
+
+	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
+	cssFramework basePath:
+		(self levelPathDifferenceForCSS: fileName) , 'css/'.
+
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
 	htmlDocument configuration document: htmlDocument.
 	htmlDocument
 		setCharSetUTF8;
+		addCSS: cssFramework;
 		destinationPath: aPath.
 	^ htmlDocument
-		  fileName: aName;
+		  fileName: fileName;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]

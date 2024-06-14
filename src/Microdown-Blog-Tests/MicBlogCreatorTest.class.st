@@ -9,10 +9,10 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> fileContent1 [
 
-^ '{
+	^ '{
     "date" : "8 January 2019"
 }
 # A Cool Story
@@ -21,11 +21,10 @@ Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No
     
 
 Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
-' 
-	
+'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> fileContent2 [
 
 ^ '{
@@ -41,7 +40,7 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> fileContent3 [
 
 	^ '{
@@ -59,7 +58,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 '
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> generateArchitecture [
 
 	| ref1 ref2 ref3 ref4 |
@@ -81,7 +80,7 @@ MicBlogCreatorTest >> generateArchitecture [
 	ref4 writeStreamDo: [ :stream | stream nextPutAll: 'Du java' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> listOfFile [
 
 	^ (fileSystem / 'source') allFiles
@@ -144,7 +143,7 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateFromTo [
 
-	| allFile nbMonthFile |
+	| allFile nbMonthFile nbCSSFile|
 	MicBlogCreator
 		createFrom: fileSystem / 'source'
 		to: fileSystem / 'html'.
@@ -152,8 +151,9 @@ MicBlogCreatorTest >> testCreateFromTo [
 	allFile := (fileSystem / 'html') allFiles.
 	
 	nbMonthFile := (Date today year - 2014) * 12 + Date today month index.
+	nbCSSFile := 1.
 
-	self assert: allFile size equals: 5 + nbMonthFile
+	self assert: allFile size equals: 5 + nbMonthFile + nbCSSFile
 ]
 
 { #category : 'tests' }
@@ -251,7 +251,7 @@ MicBlogCreatorTest >> testWriteToNamed [
 	root := Microdown parse: file contents.
 	html := (MicHTMLVisitor new visit: root) at: 1.
 
-	MicBlogCreator new
+	blog
 		write: html
 		to: fileSystem / 'html'
 		named: 'test.html'.
