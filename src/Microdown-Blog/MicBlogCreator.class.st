@@ -58,34 +58,31 @@ MicBlogCreator >> createAllHtmlFile [
 		            generateMicListBlockOfLinkDateTo: targetDirectory.
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
-	
+
 	"Download the CSS"
 	self downloadCSS.
-
+	
 	"Collect and parse all Markdown file of targetDirectory"
 	allFile := self collectAllMarkDownFile: targetDirectory.
 	allFileParse := allFile collect: [ :each |
 		                (Microdown parse: each asFileReference contents)
 			                fromFile: each ].
-
+		
 	"transform all markdown file into html file"
 	allFileParse do: [ :each |
 		self createHtmlFile: each toReplace: each fromFile ].
-
+	
 	"create summarizer html file"
 	sum := MicSummarizer new.
 	sum targetDirectory: targetDirectory.
-
 	listOfSingleSummarize := allFileParse collect: [ :each |
 		                         MicSingleSummarizer new summarize: each ].
-
 	self createHtmlSummarize: (sum summarize: listOfSingleSummarize).
-
+	
 	"Create the directory with all month summarizer in html"
-
 	targetDirectory fileSystem createDirectory:
 		targetDirectory fullName , '/_monthBlog'.
-
+		
 	MicMonthListCreator new generateDateListSince2014 do: [ :each |
 		summar := sum group: listOfSingleSummarize byDate: each.
 		summar isNotEmpty
@@ -115,32 +112,27 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 	| html |
 	self rootAssembly: aMicRoot.
 	html := (MicHTMLVisitor new visit: aMicRoot) first.
-
 	self renameMarkdownIntoHtmlFile: aFileReference.
-
 	aFileReference delete.
-
 	self 
 		write: html
 		to: targetDirectory 
 		named:
 		(aFileReference fullName withoutPrefix:
-			 self targetDirectory fullName)
+self targetDirectory fullName)
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
+MicBlogCreator >> createHtmlGroupFile: arg1 at: arg2 [
 
-	| a "fileRef" fileName |
-	self rootAssembly: aMicRoot.
-
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-
-	"fileRef := targetDirectory / '_monthBlog'."
-
-	fileName := aMonth name , '_' , aMonth year asString , '.html'.
-
-	self write: a to: targetDirectory named: '_monthBlog/' , fileName
+	| tmp1 tmp2 |
+	self rootAssembly: arg1.
+	tmp1 := (MicHTMLVisitor new visit: arg1) at: 1.
+	tmp2 := targetDirectory / '_monthBlog'.
+	self
+		write: tmp1
+		to: tmp2
+		named: arg2 name , '_' , arg2 year asString , '.html'
 ]
 
 { #category : 'rendering' }
@@ -154,16 +146,10 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 	self write: a to: targetDirectory named: 'index.html'
 ]
 
-{ #category : 'accessing' }
-MicBlogCreator >> cssFrameworkName [ 
-
-	^ cssFrameworkName
-]
-
-{ #category : 'accessing' }
-MicBlogCreator >> cssFrameworkName: aCss [
-
-	cssFrameworkName := aCss
+{ #category : 'as yet unclassified' }
+MicBlogCreator >> cssFrameworkName: aString [ 
+	
+	cssFrameworkName := aString 
 ]
 
 { #category : 'accessing' }
