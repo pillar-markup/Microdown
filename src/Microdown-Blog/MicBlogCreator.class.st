@@ -252,7 +252,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 		addCSS: cssFramework;
 		destinationPath: aPath.
 	^ htmlDocument
-		  fileName: aName;
+		  fileName: fileName;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]
