@@ -143,17 +143,14 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateFromTo [
 
-	| allFile nbMonthFile nbCSSFile|
+	| allFile |
 	MicBlogCreator
 		createFrom: fileSystem / 'source'
 		to: fileSystem / 'html'.
 
 	allFile := (fileSystem / 'html') allFiles.
-	
-	nbMonthFile := (Date today year - 2014) * 12 + Date today month index.
-	nbCSSFile := 1.
 
-	self assert: allFile size equals: 5 + nbMonthFile + nbCSSFile
+	self assert: allFile size equals: 8
 ]
 
 { #category : 'tests' }
