@@ -178,6 +178,32 @@ MicBlogCreator >> initialize [
 	self cssFrameworkName: 'Axist'.
 ]
 
+{ #category : 'rendering' }
+MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
+
+	| summar sum date |
+	sum := MicSummarizer new.
+	sum targetDirectory: targetDirectory.
+
+	dateList := MicMonthListCreator new generateDateListSince2014.
+	date := dateList copy.
+
+	date do: [ :each |
+		summar := sum group: listOfSingleSummarize byDate: each.
+		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
+	
+	date := dateList copy.
+	
+	dateList := MicMonthListCreator new
+		            generateMicListBlockOfLinkDateWith: dateList
+		            To: targetDirectory.
+
+	date do: [ :each |
+		summar := sum group: listOfSingleSummarize byDate: each.
+		summar := sum summarize: summar.
+		self createHtmlGroupFile: summar at: each ]
+]
+
 { #category : 'as yet unclassified' }
 MicBlogCreator >> levelPathDifferenceForCSS: aStringPath [
 

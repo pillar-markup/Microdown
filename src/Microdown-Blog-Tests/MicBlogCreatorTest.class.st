@@ -221,6 +221,22 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testInitializeMonthList [
+
+	| listSingleSummarizer |
+	
+	listSingleSummarizer := Array new: 3.
+	
+listSingleSummarizer at:1 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample1.md').
+listSingleSummarizer at:2 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample2.md').
+listSingleSummarizer at:3 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/test/anExample3.md').
+
+	blog initializeMonthList: listSingleSummarizer.
+	
+self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2.
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 
 	| fileRef |
