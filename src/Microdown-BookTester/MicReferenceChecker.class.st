@@ -19,6 +19,21 @@ Class {
 }
 
 { #category : 'accessing' }
+MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
+	|micResultInstance|
+		
+		micResultInstance := MicResult new.
+		micResultInstance
+						      message:( MicResult allMessages at: #twoAnchorsSameName ) ; 	
+		                  anchorLable: anAnchor anchorLabel ;
+								status: false .
+	  (anAnchor hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchor fromFile ]	.				
+	  allTestsResults add: micResultInstance .							
+							
+		
+]
+
+{ #category : 'accessing' }
 MicReferenceChecker >> allTestsResults [
 
 	^ allTestsResults
@@ -127,6 +142,7 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 	(self hasAlreadyDefinedAs: anElement)
 		ifTrue: [
 				 duplicatedAnchors add: anElement .
+				 self addDuplicatedAnchor: anElement .
 	"	    	 allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anElement anchorLabel )"
 		 ].
 	 anchors add: anElement
@@ -150,6 +166,7 @@ MicReferenceChecker >> initialize [
 	super initialize.
 	
 	allTestsResults := OrderedCollection new.
+	finalStatus := false.
 	
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
@@ -202,6 +219,7 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
 	isAlready ifTrue: [
 		 duplicatedAnchors add: anAnchor.
+		 self addDuplicatedAnchor: anAnchor .
 		 "allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anAnchor anchorLabel )"
 		 ].
 	anchors add: anAnchor

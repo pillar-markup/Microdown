@@ -74,7 +74,7 @@ MicResult >> message: anObject [
 
 { #category : 'accessing' }
 MicResult >> printOn: aStream [
-	aStream nextPutAll: 'Error explanation: "', self explanation asString, '", with specification: "', self specification asString, '"'
+	aStream nextPutAll: 'Error explanation: "', self message asString, '", with specification: "', self anchorLable asString, '"'
 	
 ]
 
