@@ -112,6 +112,33 @@ MicSummarizerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicSummarizerTest >> testContents [
+
+	| root dumper dumper1 dumper2 dumper3|
+	
+	root :=  MicRealDumper new visit: (micSummarizer summarize: self createListOfMicRootBlock).
+	
+	dumper1 := Microdown parse: '# [A Cool Story](','','/anExample1.md','',')
+	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no ...'.
+	
+	
+	dumper2 := Microdown parse:  '# [Pharo is cool](','','/anExample2.md','',')
+	If you are either a beginner or an expert in object-oriented programming, this MOOC will ...'.
+	
+	
+	dumper3 := Microdown parse: '# [Mooc Pharo](','','/anExample3.md','',')
+	Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).'.
+	
+	dumper1 := MicRealDumper new visit: dumper1.
+	dumper2 := MicRealDumper new visit: dumper2 .
+	dumper3 := MicRealDumper new visit: dumper3.
+	
+	dumper := dumper1 contents , dumper2 contents , dumper3 contents.
+	
+	self assert: root contents equals: dumper contents
+]
+
+{ #category : 'tests' }
 MicSummarizerTest >> testGroupByDate [
 
 	| summary group |
