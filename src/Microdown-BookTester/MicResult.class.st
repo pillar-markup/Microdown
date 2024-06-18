@@ -15,7 +15,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'message',
-		'anchorLable',
+		'anchorLabel',
 		'status',
 		'source'
 	],
@@ -49,15 +49,15 @@ MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
 ]
 
 { #category : 'accessing' }
-MicResult >> anchorLable [
+MicResult >> anchorLabel [
 
-	^ anchorLable
+	^ anchorLabel
 ]
 
 { #category : 'accessing' }
-MicResult >> anchorLable: anObject [
+MicResult >> anchorLabel: anObject [
 
-	anchorLable := anObject
+	anchorLabel := anObject
 ]
 
 { #category : 'accessing' }

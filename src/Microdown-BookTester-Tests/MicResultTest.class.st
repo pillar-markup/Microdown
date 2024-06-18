@@ -6,83 +6,198 @@ Class {
 }
 
 { #category : 'tests' }
-MicResultTest >> testAllReferencesAreCorrect [
+MicResultTest >> testReportingDuplicatedAnchors [
 
 	| doc visitor |
-	doc := Microdown parse:	'# Section 1
-@anchorSection1
-
-See *@anchorSection1@*
-
-'.
-	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self assert: visitor isOk
-]
-
-{ #category : 'tests' }
-MicResultTest >> testAllReferencesAreCorrectInFile [ 
-
-	| file  visitor |
-	file := (FileSystem memory / 'myFile.txt') asFileReference.
-   file ensureCreateFile.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
-@anchorSection1
-
-See *@anchorSection1@*
-
-' ] .
-	
-
-
-	visitor := MicReferenceChecker new. 
-	visitor checkFile: file .
-	self assert: (visitor checkFile: file ).
-	file ensureDelete 
-]
-
-{ #category : 'tests' }
-MicResultTest >> testAllReferencesAreCorrectinDir [
-
-	| dir file1 file2 visitor |
-	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
-   dir ensureCreateDirectory.
-	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
-	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
-@anchorSection0
-
-# Section 1
-@anchorSection1
-
-' ] .
-	
-	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
-	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@*   '] .
-   file2 ensureCreateFile. 
-
-	visitor := MicReferenceChecker new.
-	visitor checkDirectory: dir .
-	self assert: (visitor checkDirectory: dir).
-	
-]
-
-{ #category : 'tests' }
-MicResultTest >> testErrorAnchorIsMissing [
-
-	| doc validator |
 	doc := Microdown parse: '# Section 
 @anchorSection0
 
 # Section 1
 @anchorSection1
 
-See *@anchorSection1@* and *@anchorSection2@* and *@anchorSection2@* and *@anchorSection3@*
+# Section 2
+@anchorSection1
+
+
+See *@anchorSection1@* and *@anchorSection0@*
 
 '.
-	validator := MicReferenceChecker new.
-	doc accept: validator .
-	self assert: validator isFailure .
-	self assert: validator allTestsResults first explanation equals: ( MicResult allMessages at: #anchorIsMissing).
-	self assert: validator allTestsResults first specification equals: 'anchorSection2'
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self deny: visitor isOkay.
+	self assert: (visitor allTestsResults collect: [:each | each anchorLabel ]) equals: OrderedCollection <- #('anchorSection1')
+]
+
+{ #category : 'tests' }
+MicResultTest >> testReportingDuplicatedAnchorsInFile [ 
+
+	| fs dir  file  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference .
+	dir ensureCreateDirectory . 
+	file := (dir / 'file.txt') asFileReference . 
+
+ 
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+# Section 2
+@anchorSection1
+
+# Section 3
+@anchorSection1
+
+See *@anchorSection1@* and *@anchorSection0@*
+
+'] .
+	file ensureCreateFile .
 	
+
+	visitor := MicReferenceChecker new. 
+	visitor checkFile: file .
+	self deny: (visitor isOkay).
+	self 
+		assert: (visitor allTestsResults collect: [:each | each anchorLabel]) 
+		equals: OrderedCollection <- #('anchorSection1' 'anchorSection1'). 
+]
+
+{ #category : 'tests' }
+MicResultTest >> testReportingDuplicatedFigures [
+
+	| doc visitor |
+	doc := Microdown parse: '# Section 
+@anchorSection0
+
+![a caption 1](figures/f.png anchor=anchorSection1)
+
+![a caption 2](figures/f.png anchor=anchorSection1)
+
+![a caption 3](figures/f.png anchor=anchorSection2)
+
+See *@anchorSection1@* and *@anchorSection3@*
+
+'.
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self deny: visitor isOkay.
+	self
+		assert: (visitor allTestsResults collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'anchorSection1' )
+]
+
+{ #category : 'tests' }
+MicResultTest >> testReportingDuplicatedFiguresInFile [ 
+
+	| fs dir  file  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference .
+	dir ensureCreateDirectory . 
+	file := (dir / 'file.txt') asFileReference . 
+
+	
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+![a caption 1](figures/f.png anchor=anchorSection1)
+
+![a caption 2](figures/f.png anchor=anchorSection1)
+
+![a caption 2](figures/f.png anchor=anchorSection1)
+
+![a caption 2](figures/f.png anchor=anchorSection1)
+
+![a caption 3](figures/f.png anchor=anchorSection2)
+
+See *@anchorSection1@* and *@anchorSection3@*
+
+'].
+	file ensureCreateFile .
+	
+
+	visitor := MicReferenceChecker new. 
+	visitor checkFile: file .
+	self deny: (visitor isOkay).
+	self 
+		assert: (visitor allTestsResults collect: [:each | each anchorLabel]) 
+		equals: OrderedCollection <- #('anchorSection1' 'anchorSection1' 'anchorSection1'). 
+]
+
+{ #category : 'tests' }
+MicResultTest >> testReportingDuplicatedMaths [
+
+	| doc visitor |
+	doc := Microdown parse: '# Section 
+@anchorSection0
+
+$$ %anchor=anchorSection1
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection1
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection3
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection3
+balbalbalb! 
+$$
+
+See *@anchorSection1@* and *@anchorSection3@*
+
+'.
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self deny: visitor isOkay .
+	self
+		assert: (visitor allTestsResults collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection3' )
+]
+
+{ #category : 'tests' }
+MicResultTest >> testReportingDuplicatedMathsInFile [ 
+
+	| fs dir  file  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference  .
+	dir ensureCreateDirectory . 
+	file := (dir / 'file.txt') asFileReference . 
+
+	
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+$$ %anchor=anchorSection1
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection2
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection2
+balbalbalb! 
+$$
+
+$$ %anchor=anchorSection1
+balbalbalb! 
+$$
+
+See *@anchorSection1@* and *@anchorSection3@*
+
+'] .
+	file ensureCreateFile .
+
+	visitor := MicReferenceChecker new. 
+	visitor checkFile: file .
+	self deny: (visitor isOkay).
+	self assert: visitor allTestsResults first source equals: file fullName .
+	self 
+		assert: (visitor allTestsResults collect: [:each | each anchorLabel]) 
+		equals: OrderedCollection <- #('anchorSection2' 'anchorSection1' ). 
 ]

@@ -21,13 +21,12 @@ Class {
 { #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	|micResultInstance|
-		
 		micResultInstance := MicResult new.
 		micResultInstance
 						      message:( MicResult allMessages at: #twoAnchorsSameName ) ; 	
-		                  anchorLable: anAnchor anchorLabel ;
+		                  anchorLabel: anAnchor anchorLabel ;
 								status: false .
-	  (anAnchor hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchor fromFile ]	.				
+	  (anAnchor fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchor fromFile ]	.				
 	  allTestsResults add: micResultInstance .							
 							
 		
@@ -192,6 +191,13 @@ MicReferenceChecker >> isOk [
 	  self collectBadAnchors .
 	^ allTestsResults isEmpty and: [
 		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ] "
+]
+
+{ #category : 'testing' }
+MicReferenceChecker >> isOkay [
+
+	 
+	 ^ finalStatus .
 ]
 
 { #category : 'visiting' }
