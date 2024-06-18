@@ -31,7 +31,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 
-	| p textElements newParagraph selectionSize t sub newSub |
+	| p textElements newParagraph selectionSize t sub newSub text |
 	p := aMicRootBlock children
 		     detect: [ :each | each isKindOf: MicParagraphBlock ]
 		     ifNone: [
@@ -39,8 +39,12 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
 			     t parent: p.
 			     ^ p ].
+		
+	text := ''.
+	
+	p children do: [ :each |  text := text,each plainText ].
 
-	sub := p text substrings: ' '.
+	sub := text substrings: ' '.
 	selectionSize := maximumWords min: sub size.
 	newSub := sub first: selectionSize.
 
