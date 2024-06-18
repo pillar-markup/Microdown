@@ -39,13 +39,8 @@ MicResult class >> allMessages [
 ]
 
 { #category : 'accessing' }
-MicResult class >> explanation: aMethodSymbol withSpecification: aSpecification [
-	^ self new explanation: (self allMessages at: aMethodSymbol); specification: aSpecification asString; yourself.
-]
-
-{ #category : 'accessing' }
 MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
-	^ self new message: (self allMessages at: aMethodSymbol); anchorLable: aAnchorLabel asString; yourself.
+	^ self new message: (self allMessages at: aMethodSymbol); anchorLabel: aAnchorLabel asString; yourself.
 ]
 
 { #category : 'accessing' }

@@ -98,30 +98,12 @@ MicReferenceChecker >> checkList: aCollection [
 { #category : 'visiting' }
 MicReferenceChecker >> collectBadReferences [
 
+	" should be called just after all the docs are visited other wise the result can be wrong"
+
 	| existingAnchorNames badReference |
 	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
 	badReference := references reject: [ :anchorReference | existingAnchorNames includes: anchorReference anchorLabel   ] .
-	badReference do: [ :each | self addBadReferenceAnchor: each ]
-
-"
- | newList |
- newList :=( references reject: [:e | anchors anySatisfy: [ :ee | ee anchorLabel  = e anchorLabel  ]  ]) groupedBy: [:e | e anchorLabel ].
-self halt.
- newList valuesDo: [ :anchoReference | 
-		 self addBadReferenceAnchor: anchoReference first 
-			
-		 ] "
-	
-	"references  do: 
-		 [ :each |
-			 anchors do: 
-			[ :each2 |
-			 (each anchorLabel ~= each2 anchorLabel )
-			  ifTrue: [ 
-								allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: each anchorLabel ) 
-				       ] 
-			  ifFalse: [  ]
-			 ]]"
+	badReference do: [ :each | self addBadReferenceAnchor: each ] .
 ]
 
 { #category : 'reporting' }
@@ -143,7 +125,6 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 		ifTrue: [
 				 duplicatedAnchors add: anElement .
 				 self addDuplicatedAnchor: anElement .
-	"	    	 allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anElement anchorLabel )"
 		 ].
 	 anchors add: anElement
 	
@@ -173,27 +154,6 @@ MicReferenceChecker >> initialize [
 	duplicatedAnchors := OrderedCollection new
 ]
 
-{ #category : 'visiting' }
-MicReferenceChecker >> isFailure [
-	^  self isOk not 
-]
-
-{ #category : 'testing' }
-MicReferenceChecker >> isOk [
-
-	 
-	 "self collectBadReferences."
-	| existingAnchorNames |
-	^ duplicatedAnchors isEmpty and: [
-		existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
-		references allSatisfy: [ :each | existingAnchorNames includes: each anchorLabel  ] ]
-	  
-	 " self collectBadReferences.
-	  self collectBadAnchors .
-	^ allTestsResults isEmpty and: [
-		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ] "
-]
-
 { #category : 'testing' }
 MicReferenceChecker >> isOkay [
 	
@@ -201,24 +161,6 @@ MicReferenceChecker >> isOkay [
 	 ^ self finalStatus .
 	 
 
-]
-
-{ #category : 'visiting' }
-MicReferenceChecker >> result [ 
-	^ MicResult 
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> unknownAnchors [
-	
-	| unknown ref |
-	unknown := OrderedCollection new. 
-	ref := references copy.
-	ref do: [ :ref |
-		(anchors noneSatisfy: [ :each | 
-			ref anchorLabel = each anchorLabel ])
-				ifTrue: [ unknown add: ref ]  ].
-	^ unknown 
 ]
 
 { #category : 'visiting' }
