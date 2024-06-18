@@ -19,6 +19,20 @@ Class {
 }
 
 { #category : 'accessing' }
+MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
+	|micResultInstance|
+		micResultInstance := MicResult new.
+		micResultInstance
+						      message:( MicResult allMessages at: #anchorIsMissing ) ; 	
+		                  anchorLabel: anAnchorReference anchorLabel ;
+								status: false .
+	  (anAnchorReference fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchorReference fromFile ]	.				
+	  allTestsResults add: micResultInstance .							
+							
+		
+]
+
+{ #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	|micResultInstance|
 		micResultInstance := MicResult new.
@@ -45,7 +59,7 @@ MicReferenceChecker >> check: aDocument [
 	since it collects the references."
 
 	aDocument accept: self.
-	^ self isOk 
+	^ self isOkay 
 	
 	
 
@@ -78,38 +92,25 @@ MicReferenceChecker >> checkList: aCollection [
 
 	 aCollection do: [ :each | 
 		self checkFile: each ]. 
-	^ self isOk
-]
-
-{ #category : 'visiting' }
-MicReferenceChecker >> collectBadAnchors [
-
-
- duplicatedAnchors do: [ :duplicatedAnchor |
-			allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: duplicatedAnchor anchorLabel  ) 
-		 ]
-	
-	"references  do: 
-		 [ :each |
-			 anchors do: 
-			[ :each2 |
-			 (each anchorLabel ~= each2 anchorLabel )
-			  ifTrue: [ 
-								allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: each anchorLabel ) 
-				       ] 
-			  ifFalse: [  ]
-			 ]]"
+	^ self isOkay.
 ]
 
 { #category : 'visiting' }
 MicReferenceChecker >> collectBadReferences [
 
+	| existingAnchorNames badReference |
+	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
+	badReference := references reject: [ :anchorReference | existingAnchorNames includes: anchorReference anchorLabel   ] .
+	badReference do: [ :each | self addBadReferenceAnchor: each ]
 
+"
  | newList |
  newList :=( references reject: [:e | anchors anySatisfy: [ :ee | ee anchorLabel  = e anchorLabel  ]  ]) groupedBy: [:e | e anchorLabel ].
- newList keysDo: [ :label |
-			allTestsResults add: (self result explanation: #anchorIsMissing withSpecification: label ) 
-		 ]
+self halt.
+ newList valuesDo: [ :anchoReference | 
+		 self addBadReferenceAnchor: anchoReference first 
+			
+		 ] "
 	
 	"references  do: 
 		 [ :each |
@@ -196,6 +197,7 @@ MicReferenceChecker >> isOk [
 { #category : 'testing' }
 MicReferenceChecker >> isOkay [
 	
+	   self collectBadReferences .
 	 ^ self finalStatus .
 	 
 
