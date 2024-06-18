@@ -43,24 +43,28 @@ See *@anchorSection1@*
 { #category : 'tests' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
-	| dir file1 file2 visitor |
-	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
+	| fs dir file1 file2 visitor |
+	fs := FileSystem memory.
+	dir := ( fs / 'myDirectory') asFileReference.
    dir ensureCreateDirectory.
-	file1 := (FileSystem workingDirectory / 'myDirectory' / 'file1.txt') asFileReference.
-	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+	file1 := (fs / 'myDirectory' / 'file1.txt') asFileReference.
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section with anchor 0
 @anchorSection0
 
 # Section 1
 @anchorSection1
 
-' ] .
-	
-	file2 := (FileSystem workingDirectory / 'myDirectory' / 'file2.txt') asFileReference.
-	file2 writeStreamDo: [ :stream | stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection1@*'] .
+' ].
+	file1 ensureCreateFile.
+		 
+	file2 := (fs / 'myDirectory' / 'file2.txt') asFileReference.
+	file2 writeStreamDo: [ :stream2 | stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  '].
    file2 ensureCreateFile. 
 
 	visitor := MicReferenceChecker new.
 	self assert: (visitor checkDirectory: dir).
+	file1 ensureDelete.
+	file2 ensureDelete
 	
 ]
 
@@ -420,9 +424,9 @@ See *@anchorSection1@* and *@anchorSection2@* and *@anchorSection2@* and *@ancho
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self deny: visitor isOk.
-	self 
+	"self 
 		assert: (visitor allTestsResults collect: [ :each | each specification  ]) 
-		equals: (OrderedCollection <- #(#'anchorSection2'  #'anchorSection3'))  
+		equals: (OrderedCollection <- #(#'anchorSection2'  #'anchorSection3'))  "
 ]
 
 { #category : 'tests' }

@@ -14,8 +14,10 @@ Class {
 	#name : 'MicResult',
 	#superclass : 'Object',
 	#instVars : [
-		'explanation',
-		'specification'
+		'message',
+		'anchorLable',
+		'status',
+		'source'
 	],
 	#classInstVars : [
 		'allMessages'
@@ -29,6 +31,8 @@ MicResult class >> allMessages [
 	^ allMessages ifNil: [ 
 		allMessages := Dictionary new.
 		allMessages
+	     	at: #referenceIsFine put: 'the reference defined correctly and point to a defined anchor';
+			at: #anchorIsFine put: 'the anchor is defined correctly and not duplicated elsewhere ';
 			at: #anchorIsMissing put: 'A reference refers to a missing anchor';
 			at: #twoAnchorsSameName put: '2 anchors are declared with the same name'.
 		^ allMessages ]
@@ -40,15 +44,32 @@ MicResult class >> explanation: aMethodSymbol withSpecification: aSpecification 
 ]
 
 { #category : 'accessing' }
-MicResult >> explanation [
-
-	^ explanation
+MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
+	^ self new message: (self allMessages at: aMethodSymbol); anchorLable: aAnchorLabel asString; yourself.
 ]
 
 { #category : 'accessing' }
-MicResult >> explanation: anObject [
+MicResult >> anchorLable [
 
-	explanation := anObject
+	^ anchorLable
+]
+
+{ #category : 'accessing' }
+MicResult >> anchorLable: anObject [
+
+	anchorLable := anObject
+]
+
+{ #category : 'accessing' }
+MicResult >> message [
+
+	^ message
+]
+
+{ #category : 'accessing' }
+MicResult >> message: anObject [
+
+	message := anObject
 ]
 
 { #category : 'accessing' }
@@ -58,13 +79,25 @@ MicResult >> printOn: aStream [
 ]
 
 { #category : 'accessing' }
-MicResult >> specification [
+MicResult >> source [
 
-	^ specification
+	^ source
 ]
 
 { #category : 'accessing' }
-MicResult >> specification: anObject [
+MicResult >> source: anObject [
 
-	specification := anObject
+	source := anObject
+]
+
+{ #category : 'accessing' }
+MicResult >> status [
+
+	^ status
+]
+
+{ #category : 'accessing' }
+MicResult >> status: anObject [
+
+	status := anObject
 ]
