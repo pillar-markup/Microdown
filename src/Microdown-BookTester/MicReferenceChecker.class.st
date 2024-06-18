@@ -77,7 +77,7 @@ MicReferenceChecker >> checkList: aCollection [
 	since it collects the references."
 
 	 aCollection do: [ :each | 
-		self checkFile: each ].
+		self checkFile: each ]. 
 	^ self isOk
 ]
 
@@ -195,9 +195,10 @@ MicReferenceChecker >> isOk [
 
 { #category : 'testing' }
 MicReferenceChecker >> isOkay [
-
+	
+	 ^ self finalStatus .
 	 
-	 ^ finalStatus .
+
 ]
 
 { #category : 'visiting' }

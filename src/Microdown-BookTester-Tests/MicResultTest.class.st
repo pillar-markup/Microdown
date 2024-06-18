@@ -6,6 +6,111 @@ Class {
 }
 
 { #category : 'tests' }
+MicResultTest >> testAllReferencesAreCorrect [
+
+	| doc visitor |
+	doc := Microdown parse:	'# Section 1
+@anchorSection1
+
+See *@anchorSection1@*
+
+'.
+	visitor := MicReferenceChecker new. 
+	doc accept: visitor. 
+	self assert: visitor isOkay 
+]
+
+{ #category : 'tests' }
+MicResultTest >> testAllReferencesAreCorrectInFile [ 
+
+	| fs dir  file  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference .
+	dir ensureCreateDirectory . 
+	file := (dir / 'file.txt') asFileReference . 
+
+ 
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
+@anchorSection1
+
+See *@anchorSection1@*
+
+' ] .
+
+	file ensureCreateFile .
+	
+
+	visitor := MicReferenceChecker new. 
+	visitor checkFile: file .
+	self assert: (visitor isOkay).
+]
+
+{ #category : 'tests' }
+MicResultTest >> testAllReferencesAreCorrectinDir [ 
+
+	| fs dir  file1 file2  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference .
+	dir ensureCreateDirectory . 
+	
+	
+	file1 := (dir / 'file1.txt') asFileReference . 
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
+@anchorSection1
+
+See *@anchorSection1@*
+
+' ] .
+	file1 ensureCreateFile .
+	
+	file2 := (dir / 'file1.txt') asFileReference . 
+   file2 writeStreamDo: [ :stream2 | stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  '].
+	file2 ensureCreateFile .
+	
+
+	visitor := MicReferenceChecker new. 
+	visitor checkDirectory: dir .
+	self assert: (visitor isOkay).
+]
+
+{ #category : 'tests' }
+MicResultTest >> testDuplicatedAnchorDir [ 
+
+	| fs dir  file1 file2  visitor |
+	fs := FileSystem memory .
+	dir := (fs / 'myDirectory ') asFileReference .
+	dir ensureCreateDirectory . 
+	
+	
+	file1 := (dir / 'file1.txt') asFileReference . 
+	file1 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+
+' ] .
+	file1 ensureCreateFile .
+	
+	file2 := (dir / 'file2.txt') asFileReference .
+	file2 writeStreamDo: [ :stream | stream nextPutAll: '# Section 
+@anchorSection3
+
+# Section 4
+@anchorSection1
+
+
+'] .
+	file2 ensureCreateFile .
+	
+
+	visitor := MicReferenceChecker new. 
+	visitor checkDirectory: dir .
+	self deny: (visitor isOkay).
+]
+
+{ #category : 'tests' }
 MicResultTest >> testReportingDuplicatedAnchors [
 
 	| doc visitor |
