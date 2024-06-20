@@ -13,6 +13,24 @@ MicResourceReferenceTest >> resourceClass [
 ]
 
 { #category : 'tests' }
+MicResourceReferenceTest >> testAsMicResourceReference [
+	
+	| mf |
+	mf := self resourceClass fromUri: 'chapter1/figures/m.md'.
+	self assert: mf asMicResourceReference equals: mf.
+	
+]
+
+{ #category : 'tests' }
+MicResourceReferenceTest >> testAsMicResourceReferenceFromString [
+	
+	| mf |
+	mf := 'chapter1/figures/m.md' asMicResourceReference.
+	self assert: mf  relativePath equals: 'chapter1/figures/m.md'.
+	
+]
+
+{ #category : 'tests' }
 MicResourceReferenceTest >> testHttpRecognized [
 	|uri ref|
 	uri := 'https://raw.githubusercontent.com/pillar-markup/Microdown/dev/doc/testMicrodown/readme.md'.
