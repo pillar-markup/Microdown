@@ -43,3 +43,24 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
 		equals: '[' , Date today month asString , '](/html/_monthBlog/'
 			, Date today month name , '_' , Date today year asString, '.html)'
 ]
+
+{ #category : 'tests' }
+MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithTo [
+
+	| dateList fileSystem |
+	fileSystem := FileSystem memory.
+	fileSystem createDirectory: '/html'.
+
+	dateList := MicMonthListCreator new
+		            generateMicListBlockOfLinkDateTo:
+		            fileSystem workingDirectory / '/html'.
+
+	self assert: (dateList isKindOf: MicUnorderedListBlock).
+	self
+		assert: dateList children size equals: self numberOfMonthSince2014;
+		assert: dateList children first children first plainText
+		equals: '[January 2014](/html/_monthBlog/January_2014.html)';
+		assert: dateList children last children first plainText
+		equals: '[' , Date today month asString , '](/html/_monthBlog/'
+			, Date today month name , '_' , Date today year asString , '.html)'
+]
