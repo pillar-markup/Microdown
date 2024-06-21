@@ -58,6 +58,12 @@ MicResourceReference class >> newFromUri: uri [
 	^ self new uri: uri; yourself
 ]
 
+{ #category : 'converting' }
+MicResourceReference >> asMicResourceReference [
+
+	^ self 
+]
+
 { #category : 'accessing' }
 MicResourceReference >> fullName [
 	"Returns the full name of the resources (without microdown arguments) i.e, http://pharo.org/community/foo.png"
@@ -73,4 +79,9 @@ MicResourceReference >> isDirectory [
 { #category : 'testing' }
 MicResourceReference >> isRelative [
 	^ false
+]
+
+{ #category : 'copying' }
+MicResourceReference >> trimBoth [
+	^ self 
 ]
