@@ -53,43 +53,33 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
-	| allFile allFileParse sum summar listOfSingleSummarize |
-	dateList := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo: targetDirectory.
+	| allFile allFileParse sum listOfSingleSummarize |
 	"Copy the source directory in the target directory"
 	self copySourceDirectoryInTarget.
-
-	"Download the CSS"
-	self downloadCSS.
 	
+	self downloadCSS.
+
 	"Collect and parse all Markdown file of targetDirectory"
 	allFile := self collectAllMarkDownFile: targetDirectory.
 	allFileParse := allFile collect: [ :each |
 		                (Microdown parse: each asFileReference contents)
 			                fromFile: each ].
-		
+
+	"Create _monthListBlog"
+	self initializeMonthList: allFileParse.
+
 	"transform all markdown file into html file"
 	allFileParse do: [ :each |
 		self createHtmlFile: each toReplace: each fromFile ].
-	
+
 	"create summarizer html file"
 	sum := MicSummarizer new.
 	sum targetDirectory: targetDirectory.
+
 	listOfSingleSummarize := allFileParse collect: [ :each |
 		                         MicSingleSummarizer new summarize: each ].
-	self createHtmlSummarize: (sum summarize: listOfSingleSummarize).
-	
-	"Create the directory with all month summarizer in html"
-	targetDirectory fileSystem createDirectory:
-		targetDirectory fullName , '/_monthBlog'.
-		
-	MicMonthListCreator new generateDateListSince2014 do: [ :each |
-		summar := sum group: listOfSingleSummarize byDate: each.
-		summar isNotEmpty
-			ifTrue: [
-				summar := sum summarize: summar.
-				self createHtmlGroupFile: summar at: each ]
-			ifFalse: [ self createHtmlEmptyGroupFileAt: each ] ]
+
+	self createHtmlSummarize: (sum summarize: listOfSingleSummarize)
 ]
 
 { #category : 'rendering' }
@@ -176,6 +166,32 @@ MicBlogCreator >> initialize [
 
 	super initialize.
 	self cssFrameworkName: 'Axist'.
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
+
+	| summar sum date |
+	sum := MicSummarizer new.
+	sum targetDirectory: targetDirectory.
+
+	dateList := MicMonthListCreator new generateDateListSince2014.
+	date := dateList copy.
+
+	date do: [ :each |
+		summar := sum group: listOfSingleSummarize byDate: each.
+		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
+	
+	date := dateList copy.
+	
+	dateList := MicMonthListCreator new
+		            generateMicListBlockOfLinkDateWith: dateList
+		            To: targetDirectory.
+
+	date do: [ :each |
+		summar := sum group: listOfSingleSummarize byDate: each.
+		summar := sum summarize: summar.
+		self createHtmlGroupFile: summar at: each ]
 ]
 
 { #category : 'as yet unclassified' }
