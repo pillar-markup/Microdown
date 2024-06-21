@@ -37,7 +37,8 @@ MicHTTPResourceReference class >> getBytesByHttp: uri [
 		get.
 		^ client entity bytes ] 
 	on: ZnHttpUnsuccessful, NetworkError, MessageNotUnderstood
-	do: [ WebBrowser openOn: uri ].
+	do: [ :error | 
+			error resignalAs: (MicResourceReferenceError new messageText: 'Could not access ', uri printString)  ].
 ]
 
 { #category : 'instance creation' }
