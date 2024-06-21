@@ -116,19 +116,19 @@ MicSingleSummarizer >> summarize: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarizeFile: aFileReference [
 
-	| p |
-	p := Microdown parse: aFileReference asFileReference contents.
-	p fromFile: aFileReference.
-	^ self summarize: p
+	| root |
+	root := Microdown parse: aFileReference asFileReference contents.
+	root fromFile: aFileReference.
+	^ self summarize: root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verifying' }
 MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 
 	| newMicRootBlock metadata |
 	newMicRootBlock := MicRootBlock new.
 
-	((aMicRootBlock children at: 1) isKindOf: MicMetaDataBlock)
+	(aMicRootBlock children first isKindOf: MicMetaDataBlock)
 		ifFalse: [
 			metadata := MicMetaDataBlock new.
 			metadata body:
