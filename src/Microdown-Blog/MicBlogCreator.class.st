@@ -171,28 +171,28 @@ MicBlogCreator >> initialize [
 
 	super initialize.
 	self cssFrameworkName: 'Axist'.
-	sum := MicSummarizer new.
+	sum := MicListSummarizer new.
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
 
-	| summar date |
+	| summar dateListCopy |
 
 	dateList := MicMonthListCreator new generateDateListSince2014.
-	date := dateList copy.
+	dateListCopy := dateList copy.
 
-	date do: [ :each |
+	dateListCopy do: [ :each |
 		summar := sum group: listOfSingleSummarize byDate: each.
 		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
 	
-	date := dateList copy.
+	dateListCopy := dateList copy.
 	
 	dateList := MicMonthListCreator new
 		            generateMicListBlockOfLinkDateWith: dateList
 		            To: targetDirectory.
 
-	date do: [ :each |
+	dateListCopy do: [ :each |
 		summar := sum group: listOfSingleSummarize byDate: each.
 		summar := sum summarize: summar.
 		self createHtmlGroupFile: summar at: each ]

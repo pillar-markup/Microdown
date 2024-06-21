@@ -170,7 +170,7 @@ MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 
 	| root summarizer singleSummarizer allFileParse |
-	summarizer := MicSummarizer new.
+	summarizer := MicListSummarizer new.
 	summarizer targetDirectory: 'html'.
 	
 	singleSummarizer := MicSingleSummarizer new.
@@ -194,7 +194,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 MicBlogCreatorTest >> testCreateHtmlSummarize [
 
 	| root summarizer |
-	summarizer := MicSummarizer new.
+	summarizer := MicListSummarizer new.
 	summarizer targetDirectory: 'html'.
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.

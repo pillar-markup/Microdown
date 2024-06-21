@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicSummarizer',
+	#name : 'MicListSummarizer',
 	#superclass : 'MicAbstractBlogCreator',
 	#instVars : [
 		'maximumFile'
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'grouping' }
-MicSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
+MicListSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
 
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
@@ -18,26 +18,26 @@ MicSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
 ]
 
 { #category : 'initialization' }
-MicSummarizer >> initialize [
+MicListSummarizer >> initialize [
 
 	super initialize.
 	maximumFile := 10.
 ]
 
 { #category : 'accessing' }
-MicSummarizer >> maximumFile [
+MicListSummarizer >> maximumFile [
 
 	^ maximumFile
 ]
 
 { #category : 'accessing' }
-MicSummarizer >> maximumFile: aNumber [
+MicListSummarizer >> maximumFile: aNumber [
 
 	maximumFile := aNumber
 ]
 
 { #category : 'summarize' }
-MicSummarizer >> summarize: aListOfSingleSummarizer [
+MicListSummarizer >> summarize: aListOfSingleSummarizer [
 
 	| summarize root selectionSize |
 	summarize := MicRootBlock new.
@@ -54,7 +54,7 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 ]
 
 { #category : 'summarize' }
-MicSummarizer >> summarizeFile: aListOfFile [
+MicListSummarizer >> summarizeFile: aListOfFile [
 
 	| list singleSummarizer selectionSize |
 	singleSummarizer := MicSingleSummarizer new.

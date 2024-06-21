@@ -107,7 +107,7 @@ MicSummarizerTest >> setUp [
 	super setUp.
 
 	"Put here a common initialization logic for tests"
-	micSummarizer := MicSummarizer new.
+	micSummarizer := MicListSummarizer new.
 	micSummarizer targetDirectory: '/html/'
 ]
 
