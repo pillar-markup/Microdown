@@ -36,7 +36,7 @@ MicSummarizer >> maximumFile: aNumber [
 	maximumFile := aNumber
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'summarize' }
 MicSummarizer >> summarize: aListOfSingleSummarizer [
 
 	| summarize root selectionSize |
@@ -53,7 +53,7 @@ MicSummarizer >> summarize: aListOfSingleSummarizer [
 	^ summarize
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'summarize' }
 MicSummarizer >> summarizeFile: aListOfFile [
 
 	| list singleSummarizer selectionSize |

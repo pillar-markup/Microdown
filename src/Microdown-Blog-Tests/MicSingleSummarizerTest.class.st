@@ -119,6 +119,20 @@ MicSingleSummarizerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicSingleSummarizerTest >> testContents [
+
+	| root  dumper |
+	
+	root := MicRealDumper new visit: (micSingleSummarizer summarize: self createMicRootBlock).
+	dumper := Microdown parse: '# [A Cool Story](','','/anExample1.md','',')
+	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no ...'.
+	
+	dumper := MicRealDumper new visit: dumper.
+	
+	self assert: root contents equals: dumper contents
+]
+
+{ #category : 'tests' }
 MicSingleSummarizerTest >> testFirstHeaderBlockOf [
 
 	| header |

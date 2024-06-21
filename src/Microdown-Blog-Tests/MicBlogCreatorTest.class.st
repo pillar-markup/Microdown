@@ -154,21 +154,6 @@ MicBlogCreatorTest >> testCreateFromTo [
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testCreateHtmlEmptyGroupFileAt [
-
-| file |
-
-	blog
-		createHtmlEmptyGroupFileAt: (Month year: 2019 month: 'January').
-		
-		file := fileSystem / 'html/_monthBlog/January_2019.html'.
-
-	self assert:
-		file exists;
-		assert: (file contents findString: 'No files found') = 0 equals: false.
-]
-
-{ #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 
 	| root file |

@@ -8,13 +8,15 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'make' }
 MicAbstractBlogCreator >> makeALink: aText to: aLink [
 
 	| text link |
+	
 	(aText isNil or: aText isEmpty)
 		ifTrue: [ text := 'Undefined' ]
 		ifFalse: [ text := aText ].
+		
 	(aLink isNil or: aLink isEmpty)
 		ifTrue: [ link := 'Undefined' ]
 		ifFalse: [ link := aLink ].
