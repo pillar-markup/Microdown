@@ -80,3 +80,8 @@ MicResourceReference >> isDirectory [
 MicResourceReference >> isRelative [
 	^ false
 ]
+
+{ #category : 'copying' }
+MicResourceReference >> trimBoth [
+	^ self 
+]

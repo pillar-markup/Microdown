@@ -33,6 +33,22 @@ MicArgumentListTest >> testArguments [
 ]
 
 { #category : 'tests' }
+MicArgumentListTest >> testArgumentsAnchorAreTrimmed [
+	| subject |
+	subject := self subjectUnderTestWith: 'anchor=bar &width = 120'.
+	self assert: (subject at: #anchor) equals: 'bar'.
+	self assert: (subject at: #width) equals: '120'
+]
+
+{ #category : 'tests' }
+MicArgumentListTest >> testArgumentsAnchorAreTrimmed2 [
+	| subject |
+	subject := self subjectUnderTestWith: 'anchor = bar & width = 120 '.
+	self assert: (subject at: #anchor) equals: 'bar'.
+	self assert: (subject at: #width) equals: '120'
+]
+
+{ #category : 'tests' }
 MicArgumentListTest >> testArgumentsForMath [
 	| subject |
 	subject := self subjectUnderTestWith: '%foo=bar'.

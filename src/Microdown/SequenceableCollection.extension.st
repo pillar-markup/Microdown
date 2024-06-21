@@ -23,3 +23,9 @@ SequenceableCollection >> splitOnFirst: anObject noneValue: aValue [
 	^ { self copyFrom: 1 to: element -1 . self copyFrom: element + 1 to: self size }  
 	
 ]
+
+{ #category : '*Microdown' }
+SequenceableCollection >> trimBoth [
+
+	^ self
+]
