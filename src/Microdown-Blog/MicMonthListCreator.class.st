@@ -30,10 +30,9 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileRe
 
 	| root link listElement disk |
 	root := MicUnorderedListBlock new.
-
+	disk := ''.
 	(aFileReference fileSystem store isKindOf: WindowsStore) ifTrue: [
 		disk := 'File:///' , aFileReference fileSystem store currentDisk ].
-	disk ifNil: [ disk := '' ].
 
 	aDateList do: [ :each |
 		listElement := MicListItemBlock new.

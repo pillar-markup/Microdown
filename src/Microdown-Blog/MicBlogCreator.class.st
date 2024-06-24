@@ -66,24 +66,23 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
-	| allFileParse |
-	
+	| allFileParse listOfSingleSummary |
 	self copySourceDirectoryInTarget.
-	
+
 	self downloadCSS.
 
 	allFileParse := self collectAndParseAllMarkdownFile.
 
 	"Create _monthListBlog"
-	self initializeMonthList: allFileParse.
+	listOfSingleSummary := allFileParse collect: [ :each |
+		                       MicSingleSummarizer new summarize: each ].
+	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
 	allFileParse do: [ :each |
 		self createHtmlFile: each toReplace: each fromFile ].
-	
-	self generateMainSummary: allFileParse.
 
-	
+	self createHtmlSummarize: (sum summarize: listOfSingleSummary)
 ]
 
 { #category : 'rendering' }
@@ -109,14 +108,13 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| visitor fileRef |
+	| visitor  |
 	self rootAssembly: aMicRoot.
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
-	fileRef := targetDirectory / '_monthBlog'.
 	self
 		write: visitor
-		to: fileRef
-		named: aMonth name , '_' , aMonth year asString , '.html'
+		to: targetDirectory
+		named: '_monthBlog/' ,aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
@@ -145,25 +143,14 @@ MicBlogCreator >> dateList: aDateList [
 { #category : 'css' }
 MicBlogCreator >> downloadCSS [
 
-	| a |
+	| cssProvider |
 	(targetDirectory / 'css') ensureCreateDirectory.
-	a := MicCSSProvider new.
-	a
+	cssProvider := MicCSSProvider new.
+	cssProvider
 		findCssNamed: cssFrameworkName;
 		destinationPath: targetDirectory / 'css'.
-	a cssDownloader downloadCSSFramework:
-		(MicCSSProvider forCSSNamed: cssFrameworkName)
-]
-
-{ #category : 'rendering' }
-MicBlogCreator >> generateMainSummary: allFileParse [
-
-	| listOfSingleSummary |
-
-	listOfSingleSummary := allFileParse collect: [ :each |
-		                       MicSingleSummarizer new summarize: each ].
-
-	self createHtmlSummarize: (sum summarize: listOfSingleSummary)
+	cssProvider cssDownloader downloadCSSFramework:
+		(cssProvider findCssNamed: cssFrameworkName)
 ]
 
 { #category : 'initialization' }

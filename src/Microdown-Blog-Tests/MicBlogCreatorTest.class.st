@@ -113,6 +113,18 @@ MicBlogCreatorTest >> testCollectAllMarkDownFile [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testCollectAndParseAllMarkdownFile [
+
+	| allFileParse |
+
+	blog copySourceDirectoryInTarget.
+	allFileParse := blog collectAndParseAllMarkdownFile.
+
+	self assert: allFileParse size equals: 3.
+	self assert: (allFileParse first isKindOf: MicRootBlock)
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 
 	blog copySourceDirectoryInTarget.
@@ -200,6 +212,16 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 	blog createHtmlSummarize: root.
 
 	self assert: (fileSystem / 'html/index.html') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testDownloadCSS [
+
+	blog cssFrameworkName: 'Axist'.
+	blog downloadCSS.
+
+	self assert: (fileSystem / 'html' / 'css') isDirectory.
+	self assert: (fileSystem / 'html' / 'css' / 'axist.min.css') exists
 ]
 
 { #category : 'tests' }
