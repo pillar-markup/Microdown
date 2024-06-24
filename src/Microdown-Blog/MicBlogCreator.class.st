@@ -1,4 +1,17 @@
 "
+To debug it on a local machine
+
+```
+(ZnServer defaultOn: 9090) start.
+ZnServer default
+	delegate:
+		(ZnStaticFileServerDelegate new
+			directory: '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/output/html' asFileReference;
+			yourself).
+```	
+
+
+
 ```
 MicBlogCreator 
 	createFrom: FileSystem workingDirectory / 'source'
