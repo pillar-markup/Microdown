@@ -24,3 +24,32 @@ MicDummyBlogDeployer >> deploy [
 	writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent3 ]
 ]
+
+{ #category : 'as yet unclassified' }
+MicDummyBlogDeployer >> go [
+	"self new go"
+
+	self deploy.
+	MicBlogCreator
+		createFrom: FileSystem workingDirectory / 'sourceDummy'
+		to: FileSystem workingDirectory / 'outputDummy'.
+	self launchHTTPServer.
+	self launchBrowser.
+
+]
+
+{ #category : 'odit' }
+MicDummyBlogDeployer >> launchBrowser [
+	WebBrowser openOn:  'http://localhost:9090/file1.html'
+]
+
+{ #category : 'doit' }
+MicDummyBlogDeployer >> launchHTTPServer [
+	(ZnServer defaultOn: 9090) start.
+ZnServer default
+	delegate:
+		(ZnStaticFileServerDelegate new
+			directory: '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/outputDummy/html' asFileReference;
+			yourself).
+
+]
