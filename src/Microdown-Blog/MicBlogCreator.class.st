@@ -34,14 +34,10 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'API' }
 MicBlogCreator class >> createFrom: source to: target [
 
 	| tmp1 |
-	(source fileSystem store isKindOf: WindowsStore) ifTrue: [
-		source fileSystem store currentDisk ].
-	(target fileSystem store isKindOf: WindowsStore) ifTrue: [
-		target fileSystem store currentDisk ].
 	tmp1 := self new.
 	tmp1
 		sourceDirectory: source;

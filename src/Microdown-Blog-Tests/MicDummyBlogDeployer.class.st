@@ -11,17 +11,14 @@ MicDummyBlogDeployer >> deploy [
 
 	(FileSystem workingDirectory / 'sourceDummy') ensureDeleteAll.
 	(FileSystem workingDirectory / 'sourceDummy') ensureCreateDirectory.
-	FileSystem workingDirectory / 'sourceDummy' /
-	 'file1.md'
-	writeStreamDo: [ :st |
+	FileSystem workingDirectory / 'sourceDummy' / 'file1.md'
+		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent1 ].
-	FileSystem workingDirectory / 'sourceDummy' /
-	 'file2.md'
-	writeStreamDo: [ :st |
+	FileSystem workingDirectory / 'sourceDummy' / 'file2.md'
+		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent2 ].
-	FileSystem workingDirectory / 'sourceDummy' /
-	 'file2.md'
-	writeStreamDo: [ :st |
+	FileSystem workingDirectory / 'sourceDummy' / 'file3.md'
+		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent3 ]
 ]
 
