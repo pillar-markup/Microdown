@@ -69,17 +69,15 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> headerLink: aMicRootBlock [
 
-	| headerLink header disk |
+	| headerLink header path |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
-	
-	(aMicRootBlock fromFile fileSystem store isKindOf: WindowsStore) ifTrue: [
-		disk := 'File:///' , aMicRootBlock fromFile fileSystem store currentDisk ].
-	disk ifNil: [ disk := '' ].
+
+	path := (aMicRootBlock fromFile withoutExtension fullName
+		         withoutPrefix: targetDirectory fullName) , '.html'.
 
 	headerLink
-		addChild:
-			(self makeALink: header text to: disk, aMicRootBlock fromFile fullName);
+		addChild: (self makeALink: header text to: path);
 		level: header level.
 
 	^ headerLink

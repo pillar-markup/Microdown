@@ -88,7 +88,9 @@ MicBlogCreator >> createAllHtmlFile [
 
 	"Create _monthListBlog"
 	listOfSingleSummary := allFileParse collect: [ :each |
-		                       MicSingleSummarizer new summarize: each ].
+		                       MicSingleSummarizer new
+										 targetDirectory: targetDirectory;
+		  summarize: each ].
 	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
