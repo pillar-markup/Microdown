@@ -34,22 +34,24 @@ MicDummyBlogDeployer >> go [
 		createFrom: FileSystem workingDirectory / 'sourceDummy'
 		to: FileSystem workingDirectory / 'outputDummy'.
 	self launchHTTPServer.
-	self launchBrowser.
-
+	1 seconds  wait.
+	self launchBrowser
 ]
 
 { #category : 'odit' }
 MicDummyBlogDeployer >> launchBrowser [
-	WebBrowser openOn:  'http://localhost:9090/file1.html'
+
+	WebBrowser openOn: 'http://localhost:9090/index.html'
 ]
 
 { #category : 'doit' }
 MicDummyBlogDeployer >> launchHTTPServer [
+	
+	(ZnServer defaultOn: 9090) stop.
 	(ZnServer defaultOn: 9090) start.
-ZnServer default
-	delegate:
-		(ZnStaticFileServerDelegate new
-			directory: '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/outputDummy/html' asFileReference;
-			yourself).
-
+	ZnServer default delegate: (ZnStaticFileServerDelegate new
+			 directory:
+				 '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/outputDummy/'
+					 asFileReference;
+			 yourself)
 ]
