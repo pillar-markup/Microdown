@@ -28,19 +28,16 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aFileReference [
 { #category : 'generate' }
 MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileReference [
 
-	| root link listElement disk |
+	| root link listElement |
+	
+	
 	root := MicUnorderedListBlock new.
-	disk := ''.
-	(aFileReference fileSystem store isKindOf: WindowsStore) ifTrue: [
-		disk := 'File:///' , aFileReference fileSystem store currentDisk ].
-
 	aDateList do: [ :each |
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
 			        to:
-				        disk , aFileReference fullPath pathString , '/_monthBlog/'
-				        , each name , '_' , each year asString , '.html'.
+				        '/_monthBlog/' , each name , '_' , each year asString , '.html'.
 		link parent: listElement.
 		listElement parent: root ].
 	^ root

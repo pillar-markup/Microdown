@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'doit' }
 MicDummyBlogDeployer >> deploy [
 	"A super dummy md generator to be able to test"
 
@@ -25,7 +25,7 @@ MicDummyBlogDeployer >> deploy [
 		st nextPutAll: MicBlogCreatorTest new fileContent3 ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'doit' }
 MicDummyBlogDeployer >> go [
 	"self new go"
 
@@ -38,7 +38,7 @@ MicDummyBlogDeployer >> go [
 	self launchBrowser
 ]
 
-{ #category : 'odit' }
+{ #category : 'doit' }
 MicDummyBlogDeployer >> launchBrowser [
 
 	WebBrowser openOn: 'http://localhost:9090/index.html'
