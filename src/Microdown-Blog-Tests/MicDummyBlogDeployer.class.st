@@ -28,10 +28,10 @@ MicDummyBlogDeployer >> go [
 
 	self deploy.
 	MicBlogCreator
-		createFrom: FileSystem workingDirectory / 'sourceDummy'
-		to: FileSystem workingDirectory / 'outputDummy'.
+		createFrom: FileSystem workingDirectory / 'sourceDummy2'
+		to: self outputDirectory.
 	self launchHTTPServer.
-	1 seconds  wait.
+	1 seconds wait.
 	self launchBrowser
 ]
 
@@ -43,12 +43,16 @@ MicDummyBlogDeployer >> launchBrowser [
 
 { #category : 'doit' }
 MicDummyBlogDeployer >> launchHTTPServer [
-	
+
 	(ZnServer defaultOn: 9090) stop.
 	(ZnServer defaultOn: 9090) start.
 	ZnServer default delegate: (ZnStaticFileServerDelegate new
-			 directory:
-				 '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/outputDummy/'
-					 asFileReference;
+			 directory: self outputDirectory;
 			 yourself)
+]
+
+{ #category : 'doit' }
+MicDummyBlogDeployer >> outputDirectory [
+
+	^ FileSystem workingDirectory / 'outputDummy'
 ]

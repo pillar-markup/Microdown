@@ -186,6 +186,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 	summarizer targetDirectory: 'html'.
 	
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: blog targetDirectory.
 	
 	allFileParse := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each ].
 
@@ -207,7 +208,7 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 
 	| root summarizer |
 	summarizer := MicListSummarizer new.
-	summarizer targetDirectory: 'html'.
+	summarizer targetDirectory: blog targetDirectory.
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.
 
@@ -227,17 +228,26 @@ MicBlogCreatorTest >> testDownloadCSS [
 { #category : 'tests' }
 MicBlogCreatorTest >> testInitializeMonthList [
 
-	| listSingleSummarizer |
-	
+	| listSingleSummarizer singleSum1 singleSum2 singleSum3 |
 	listSingleSummarizer := Array new: 3.
-	
-listSingleSummarizer at:1 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample1.md').
-listSingleSummarizer at:2 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/anExample2.md').
-listSingleSummarizer at:3 put: (MicSingleSummarizer new summarizeFile: fileSystem / 'source/test/anExample3.md').
+
+	singleSum1 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum1 := singleSum1 summarizeFile: fileSystem / 'source/anExample1.md'.
+	singleSum2 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum2 := singleSum2 summarizeFile: fileSystem / 'source/anExample2.md'.
+	singleSum3 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum3 := singleSum3 summarizeFile: fileSystem / 'source/test/anExample3.md'.
+
+	listSingleSummarizer at: 1 put: singleSum1.
+	listSingleSummarizer at: 2 put: singleSum2.
+	listSingleSummarizer at: 3 put: singleSum3.
 
 	blog initializeMonthList: listSingleSummarizer.
-	
-self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2.
+
+	self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2
 ]
 
 { #category : 'tests' }

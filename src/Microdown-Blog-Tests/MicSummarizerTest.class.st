@@ -25,7 +25,7 @@ MicSummarizerTest >> createListOfMicRootBlock [
 	| q singleSummarizer |
 	q := Array new: 3.
 	singleSummarizer := MicSingleSummarizer new.
-	singleSummarizer targetDirectory: '/html/'.
+	singleSummarizer targetDirectory: '/html/' asFileReference.
 	q
 		at: 1 put: (singleSummarizer summarize:
 					 ((Microdown parse: self generateFilesystemExample1 contents)
@@ -37,6 +37,42 @@ MicSummarizerTest >> createListOfMicRootBlock [
 					 ((Microdown parse: self generateFilesystemExample3 contents)
 						  fromFile: self generateFilesystemExample3)).
 	^ q
+]
+
+{ #category : 'tests' }
+MicSummarizerTest >> dumper1 [
+
+	| root |
+	
+	root := Microdown parse: '# [A Cool Story](' , '' , '/anExample1.html' , '' , ')'.
+	root children add: (Microdown parse: '8 January 2019') children first.
+	root children add: (Microdown parse: 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no ...') children first.
+
+	^ root 
+]
+
+{ #category : 'tests' }
+MicSummarizerTest >> dumper2 [
+	
+	| root |
+	
+	root := Microdown parse: '# [Pharo is cool](' , '' , '/anExample2.html' , '' , ')'.
+	root children add: (Microdown parse: '22 January 2019') children first.
+	root children add: (Microdown parse: 'If you are either a beginner or an expert in object-oriented programming, this MOOC will ...') children first.
+
+	^ root 
+]
+
+{ #category : 'tests' }
+MicSummarizerTest >> dumper3 [
+	
+	| root |
+	
+	root := Microdown parse: '# [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
+	root children add: (Microdown parse: '29 January 2018') children first.
+	root children add: (Microdown parse: 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).') children first.
+
+	^ root 
 ]
 
 { #category : 'tests' }
@@ -108,33 +144,22 @@ MicSummarizerTest >> setUp [
 
 	"Put here a common initialization logic for tests"
 	micSummarizer := MicListSummarizer new.
-	micSummarizer targetDirectory: '/html/'
+	micSummarizer targetDirectory: '/html/' asFileReference
 ]
 
 { #category : 'tests' }
 MicSummarizerTest >> testContents [
 
-	| root dumper dumper1 dumper2 dumper3|
-	
-	root :=  MicRealDumper new visit: (micSummarizer summarize: self createListOfMicRootBlock).
-	
-	dumper1 := Microdown parse: '# [A Cool Story](','','/anExample1.md','',')
-	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no ...'.
-	
-	
-	dumper2 := Microdown parse:  '# [Pharo is cool](','','/anExample2.md','',')
-	If you are either a beginner or an expert in object-oriented programming, this MOOC will ...'.
-	
-	
-	dumper3 := Microdown parse: '# [Mooc Pharo](','','/anExample3.md','',')
-	Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).'.
-	
-	dumper1 := MicRealDumper new visit: dumper1.
-	dumper2 := MicRealDumper new visit: dumper2 .
-	dumper3 := MicRealDumper new visit: dumper3.
-	
+	| root dumper dumper1 dumper2 dumper3 |
+	root := MicRealDumper new visit:
+		        (micSummarizer summarize: self createListOfMicRootBlock).
+
+	dumper1 := MicRealDumper new visit: self dumper1.
+	dumper2 := MicRealDumper new visit: self dumper2.
+	dumper3 := MicRealDumper new visit: self dumper3.
+
 	dumper := dumper1 contents , dumper2 contents , dumper3 contents.
-	
+
 	self assert: root contents equals: dumper contents
 ]
 
@@ -157,7 +182,7 @@ MicSummarizerTest >> testSummarize [
 	summary := micSummarizer summarize: self createListOfMicRootBlock.
 	self
 		assert: (summary isKindOf: MicRootBlock);
-		assert: summary children size equals: 6
+		assert: summary children size equals: 9
 ]
 
 { #category : 'tests' }
@@ -167,5 +192,5 @@ MicSummarizerTest >> testSummarizeFile [
 	summary := micSummarizer summarizeFile: self createListOfFile.
 	self
 		assert: (summary isKindOf: MicRootBlock);
-		assert: summary children size equals: 6
+		assert: summary children size equals: 9
 ]
