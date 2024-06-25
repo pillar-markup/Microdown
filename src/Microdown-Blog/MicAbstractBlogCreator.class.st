@@ -13,12 +13,15 @@ MicAbstractBlogCreator >> makeALink: aText to: aLink [
 
 	| text link |
 	text := aText.
-	(text isNil or: text isEmpty)
-		ifTrue: [ text := 'Undefined' ].
+	text isNil
+		ifTrue: [ text := 'Undefined' ]
+		ifFalse: [ text isEmpty ifTrue: [ text := 'Undefined' ]].
 
 	link := aLink.
-	(link isNil or: link isEmpty)
-		ifTrue: [ link := 'Undefined' ].
+	link isNil
+		ifTrue: [ link := 'Undefined' ]
+		ifFalse: [ link isEmpty ifTrue: [ link := 'Undefined' ]].
+		
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
 ]
 
