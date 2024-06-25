@@ -10,6 +10,13 @@ Class {
 }
 
 { #category : 'tests' }
+MicParsesAndRendersAllCommentsTest >> testAsRichTextDoesNotBreakOnEmptyCodeBlock [
+	"Test that we do not break on empty code blocks"
+	Microdown asRichText: '```
+```'
+]
+
+{ #category : 'tests' }
 MicParsesAndRendersAllCommentsTest >> testCommentFromChunkReadStream [
 	"Test that we do not break on empty annotated blocks"
 	Microdown asRichText: ChunkReadStream comment.
@@ -18,7 +25,7 @@ MicParsesAndRendersAllCommentsTest >> testCommentFromChunkReadStream [
 
 { #category : 'tests' }
 MicParsesAndRendersAllCommentsTest >> testCommentFromConfigurationCommandLineHandler [
-	Microdown asRichText: ConfigurationCommandLineHandler comment.
+	Microdown asRichText: MicRichTextComposer comment.
 	"Command line handler for dealing with Metacello configurations from the command line
 
 Usage: config [--help] <repository url> [<configuration>] [--install[=<version>]] [--group=<group>] [--username=<username>] [--password=<password>][--no-quit][--no-save]
@@ -51,13 +58,6 @@ Examples:
 	#install a specific version '1.5' and only a specific group 'Tests'
 	pharo Pharo.image config $MC_REPOS_URL ConfigurationOfFoo --install=1.5 --group=Tests
 "
-]
-
-{ #category : 'tests' }
-MicParsesAndRendersAllCommentsTest >> testCommentFromFluidBuilder [
-	"Test that we do not break on empty code blocks"
-	Microdown asRichText: '```
-```'
 ]
 
 { #category : 'tests' }
