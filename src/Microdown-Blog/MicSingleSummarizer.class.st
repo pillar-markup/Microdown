@@ -86,10 +86,12 @@ MicSingleSummarizer >> limitParagraphWord: aMicParagraph [
 	newSub := sub first: selectionSize.
 
 	textElements := '' writeStream.
-	newSub do: [ :each |
+	textElements nextPutAll: newSub first.
+	2 to: newSub size do: [ :each |
 		textElements
-			nextPutAll: each;
-			nextPut: Character space ].
+			nextPut: Character space;
+			nextPutAll: (newSub at: each)
+			 ].
 
 	sub size >= maximumWords ifTrue: [ textElements nextPutAll: '...' ].
 
@@ -99,6 +101,12 @@ MicSingleSummarizer >> limitParagraphWord: aMicParagraph [
 { #category : 'accessing' }
 MicSingleSummarizer >> maximumWords: anInteger [ 
 	maximumWords := anInteger
+]
+
+{ #category : 'as yet unclassified' }
+MicSingleSummarizer >> replacementDate [
+
+	^ '25 December 1970'
 ]
 
 { #category : 'parsing' }
@@ -135,14 +143,12 @@ MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 	(aMicRootBlock children first isKindOf: MicMetaDataBlock)
 		ifFalse: [
 			metadata := MicMetaDataBlock new.
-			metadata body:
-				(Dictionary
-					 newFromKeys: #( #date )
-					 andValues: #( '25 December 1970' )) ]
+			metadata body: Dictionary new.
+			metadata body at: #date put: self replacementDate ]
 		ifTrue: [
 			metadata := aMicRootBlock children at: 1.
 			(metadata body includesKey: #date) ifFalse: [
-				metadata body at: #date put: '25 December 1970' ] ].
+				metadata body at: #date put: self replacementDate ] ].
 	metadata parent: newMicRootBlock.
 
 	aMicRootBlock children

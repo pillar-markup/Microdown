@@ -13,7 +13,7 @@ MicListSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
 
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
-		  metadataDate := (each children at: 1) body at: #date.
+		  metadataDate := each children first body at: #date.
 		  metadataDate asDate month = aMonth ]
 ]
 
