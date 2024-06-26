@@ -1,3 +1,8 @@
+"
+Given a list of documents (often documents coming from another summarizer such the SingleDocumentSummarizer) I produce a new document consisting in a list of such summarizer.
+
+I take the first header and paragraph of the documents I work on to produce the new documents. 
+"
 Class {
 	#name : 'MicListSummarizer',
 	#superclass : 'MicAbstractBlogCreator',
@@ -8,13 +13,36 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
+{ #category : 'summarize' }
+MicListSummarizer >> assembleSummarizedDocuments: aListOfSingleSummarizer [
+
+	| summarized  selectionSize |
+	selectionSize := maximumFile min: aListOfSingleSummarizer size.
+
+	summarized := MicRootBlock new.
+
+	1 to: selectionSize do: [ :each |
+		| e rootOfSourceDocument |
+		rootOfSourceDocument := aListOfSingleSummarizer at: each.
+		e := MicParagraphBlock new.
+		e addChild:
+			(MicTextBlock new bodyString: (rootOfSourceDocument children first body at: 'date')).
+		summarized
+			addChild: rootOfSourceDocument children second;
+			addChild: e;
+			addChild: rootOfSourceDocument children third ].
+
+	^ summarized
+]
+
 { #category : 'grouping' }
 MicListSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
-
+	"precondition: date is set"
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
-		  metadataDate := each children first body at: #date.
-		  metadataDate asDate month = aMonth ]
+		 metadataDate := each children first body at: #date.
+		 metadataDate := (Date readFrom: metadataDate pattern: 'y/m/d').
+		 metadataDate month = aMonth ]
 ]
 
 { #category : 'initialization' }
@@ -39,23 +67,7 @@ MicListSummarizer >> maximumFile: aNumber [
 { #category : 'summarize' }
 MicListSummarizer >> summarize: aListOfSingleSummarizer [
 
-	| summarize root selectionSize |
-	summarize := MicRootBlock new.
-
-	selectionSize := maximumFile min: aListOfSingleSummarizer size. 
-
-	1 to: selectionSize do: [ :each | |e|
-		root := aListOfSingleSummarizer at: each.
-		e := MicParagraphBlock new.
-		e addChild:
-			(MicTextBlock new bodyString:
-				 ((root children at: 1) body at: 'date')).
-		summarize
-			addChild: (root children at: 2);
-			addChild: e;
-			addChild: (root children at: 3)].
-
-	^ summarize
+	^ self assembleSummarizedDocuments: aListOfSingleSummarizer
 ]
 
 { #category : 'summarize' }

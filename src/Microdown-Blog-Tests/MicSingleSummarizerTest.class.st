@@ -267,21 +267,21 @@ MicSingleSummarizerTest >> testWithMetaDataAndWithDate [
 	self
 		assert: (root isKindOf: MicRootBlock);
 		assert: root children size equals: 3;
-		assert: ((root children at:1) body at: #date ) equals: '8 January 2019'.
+		assert: (root children first body at: #date)
+		equals: '8 January 2019'
 ]
 
 { #category : 'tests' }
 MicSingleSummarizerTest >> testWithMetaDataAndWithoutDate [
 
 	| root |
-	
 	root := micSingleSummarizer summarizeFile:
 		        self generateFilesystemExampleWithoutDateInMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
 		assert: root children size equals: 3;
-		assert: ((root children at: 1) body at: #date)
-		equals: '25 December 1970'
+		assert: (root children first body at: #date)
+		equals: micSingleSummarizer replacementDate
 ]
 
 { #category : 'tests' }
@@ -289,10 +289,9 @@ MicSingleSummarizerTest >> testWithoutMetaData [
 
 	| root |
 	root := micSingleSummarizer summarizeFile:
-			         self generateFilesystemExampleWithoutMetadata.
+		        self generateFilesystemExampleWithoutMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
 		assert: root children size equals: 3;
-		assert: ((root children at: 1) body at: #date)
-		equals: '25 December 1970'
+		assert: (root children first body at: #date) equals: micSingleSummarizer replacementDate
 ]

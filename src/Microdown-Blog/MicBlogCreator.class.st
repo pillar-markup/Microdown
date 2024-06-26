@@ -173,7 +173,7 @@ MicBlogCreator >> initialize [
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
+MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 
 	| summar dateListCopy |
 
@@ -181,7 +181,7 @@ MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
 	dateListCopy := dateList copy.
 
 	dateListCopy do: [ :each |
-		summar := sum group: listOfSingleSummarize byDate: each.
+		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
 	
 	dateListCopy := dateList copy.
@@ -191,7 +191,7 @@ MicBlogCreator >> initializeMonthList: listOfSingleSummarize [
 		            To: targetDirectory.
 
 	dateListCopy do: [ :each |
-		summar := sum group: listOfSingleSummarize byDate: each.
+		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar := sum summarize: summar.
 		self createHtmlGroupFile: summar at: each ]
 ]

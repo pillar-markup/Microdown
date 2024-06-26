@@ -8,64 +8,58 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> createListOfFile [
 
-	| q |
-	q := Array new: 3.
-	q at: 1 put: self generateFilesystemExample1;
-	at: 2 put: self generateFilesystemExample2;
-	at: 3 put: self generateFilesystemExample3.
-	^ q
+	^ { self generateFilesystemExample1 .
+	 self generateFilesystemExample2 .
+	self generateFilesystemExample3}
+
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> createListOfMicRootBlock [
 
-	| q singleSummarizer |
-	q := Array new: 3.
+	| singleSummarizer |
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/html/' asFileReference.
-	q
-		at: 1 put: (singleSummarizer summarize:
+	^ { (singleSummarizer summarize:
 					 ((Microdown parse: self generateFilesystemExample1 contents)
-						  fromFile: self generateFilesystemExample1));
-		at: 2 put: (singleSummarizer summarize:
+						  fromFile: self generateFilesystemExample1)) .
+		(singleSummarizer summarize:
 					 ((Microdown parse: self generateFilesystemExample2 contents)
-						  fromFile: self generateFilesystemExample2));
-		at: 3 put: (singleSummarizer summarize:
+						  fromFile: self generateFilesystemExample2)) .
+		 (singleSummarizer summarize:
 					 ((Microdown parse: self generateFilesystemExample3 contents)
-						  fromFile: self generateFilesystemExample3)).
-	^ q
+						  fromFile: self generateFilesystemExample3)) }
+	
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> createListOfMicRootBlockWithoutMetadata [
 
-	| q singleSummarizer |
-	q := Array new: 3.
+	| singleSummarizer |
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/html/' asFileReference.
-	q
-		at: 1 put: (singleSummarizer summarize:
-					 ((Microdown parse: self generateFilesystemExampleWithoutMetadata1 contents)
-						  fromFile: self generateFilesystemExampleWithoutMetadata1));
-		at: 2 put: (singleSummarizer summarize:
-					 ((Microdown parse: self generateFilesystemExampleWithoutMetadata2 contents)
-						  fromFile: self generateFilesystemExampleWithoutMetadata2));
-		at: 3 put: (singleSummarizer summarize:
-					 ((Microdown parse: self generateFilesystemExampleWithoutMetadata3 contents)
-						  fromFile: self generateFilesystemExampleWithoutMetadata3)).
-	^ q
+	^ {
+		  (singleSummarizer summarize: ((Microdown parse:
+				     self generateFilesystemExampleWithoutMetadata1 contents)
+				    fromFile: self generateFilesystemExampleWithoutMetadata1)).
+		  (singleSummarizer summarize: ((Microdown parse:
+				     self generateFilesystemExampleWithoutMetadata2 contents)
+				    fromFile: self generateFilesystemExampleWithoutMetadata2)).
+		  (singleSummarizer summarize: ((Microdown parse:
+				     self generateFilesystemExampleWithoutMetadata3 contents)
+				    fromFile: self generateFilesystemExampleWithoutMetadata3)) }
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> dumper1 [
 
 	| root |
 	root := Microdown parse:
 		        '# [A Cool Story](' , '' , '/anExample1.html' , '' , ')'.
-	root children add: (Microdown parse: '8 January 2019') children first.
+	root children add: (Microdown parse: '2019/01/09') children first.
 	root children add: (Microdown parse:
 			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
 			children first.
@@ -73,14 +67,14 @@ MicListSummarizerTest >> dumper1 [
 	^ root
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> dumper2 [
 
 	| root |
 	root := Microdown parse:
 		        '# [Pharo is cool](' , '' , '/anExample2.html' , '' , ')'.
 	root children add:
-		(Microdown parse: '22 January 2019') children first.
+		(Microdown parse: '2019/01/22') children first.
 	root children add: (Microdown parse:
 			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
 			children first.
@@ -88,14 +82,14 @@ MicListSummarizerTest >> dumper2 [
 	^ root
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> dumper3 [
 
 	| root |
 	root := Microdown parse:
 		        '# [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
 	root children add:
-		(Microdown parse: '29 January 2018') children first.
+		(Microdown parse: '2018/01/29') children first.
 	root children add: (Microdown parse:
 			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
 			children first.
@@ -103,14 +97,14 @@ MicListSummarizerTest >> dumper3 [
 	^ root
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExample1 [
 
 	| file |
 	file := FileSystem memory workingDirectory / 'anExample1.md'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '{
-    "date" : "8 January 2019"
+    "date" : "2019/01/09"
 }
 # A Cool Story
 
@@ -123,14 +117,14 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 	^ file asFileReference
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExample2 [
 
 	| file |
 	file := FileSystem memory workingDirectory / 'anExample2.md'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '{
-    "date" : "22 January 2019"
+    "date" : "2019/01/22"
 }
 # Pharo is cool
 
@@ -142,14 +136,14 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	^ file
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExample3 [
 
 	| file |
 	file := FileSystem memory workingDirectory / 'anExample3.md'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '{
-    "date" : "29 January 2018"
+    "date" : "2018/01/29"
 }
 # Mooc Pharo
 
@@ -165,7 +159,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExampleWithoutMetadata1 [
 
 	| file |
@@ -182,7 +176,7 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 	^ file asFileReference
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExampleWithoutMetadata2 [
 
 	| file |
@@ -198,7 +192,7 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	^ file
 ]
 
-{ #category : 'tests' }
+{ #category : 'fixture' }
 MicListSummarizerTest >> generateFilesystemExampleWithoutMetadata3 [
 
 	| file |
@@ -222,18 +216,28 @@ When you participate to the mooc you get access to the quizz and the credit vali
 MicListSummarizerTest >> setUp [
 
 	super setUp.
-
-	"Put here a common initialization logic for tests"
 	micSummarizer := MicListSummarizer new.
 	micSummarizer targetDirectory: '/html/' asFileReference
 ]
 
 { #category : 'tests' }
-MicListSummarizerTest >> testContents [
+MicListSummarizerTest >> testAssembleSummarizedDocuments [
+
+	| summary |
+	summary := micSummarizer assembleSummarizedDocuments:
+		           self createListOfMicRootBlock.
+	self
+		assert: (summary isKindOf: MicRootBlock);
+		assert: summary children size equals: 9
+]
+
+{ #category : 'tests' }
+MicListSummarizerTest >> testContentsOfAssembledListsIsCorrect [
 
 	| root dumper dumper1 dumper2 dumper3 |
 	root := MicRealDumper new visit:
-		        (micSummarizer summarize: self createListOfMicRootBlock).
+		        (micSummarizer assembleSummarizedDocuments:
+			         self createListOfMicRootBlock).
 
 	dumper1 := MicRealDumper new visit: self dumper1.
 	dumper2 := MicRealDumper new visit: self dumper2.
@@ -247,10 +251,10 @@ MicListSummarizerTest >> testContents [
 { #category : 'tests' }
 MicListSummarizerTest >> testGroupByDate [
 
-	| summary group |
-	summary := self createListOfMicRootBlock.
+	| summarizedDocuments group |
+	summarizedDocuments := self createListOfMicRootBlock.
 	group := micSummarizer
-		         group: summary
+		         group: summarizedDocuments
 		         byDate: (Date newDay: 1 month: 'January' year: 2019) month.
 
 	self assert: group size equals: 2
@@ -259,30 +263,20 @@ MicListSummarizerTest >> testGroupByDate [
 { #category : 'tests' }
 MicListSummarizerTest >> testGroupByDateWithoutAnyMetadata [
 
-	| summary group |
-	summary := self createListOfMicRootBlockWithoutMetadata.
+	| summarizedDocuments group |
+	summarizedDocuments := self createListOfMicRootBlockWithoutMetadata.
 	group := micSummarizer
-		         group: summary
+		         group: summarizedDocuments
 		         byDate: (Date newDay: 1 month: 'January' year: 2019) month.
 
 	self assert: group size equals: 0
 ]
 
 { #category : 'tests' }
-MicListSummarizerTest >> testSummarize [
-
-	| summary |
-	summary := micSummarizer summarize: self createListOfMicRootBlock.
-	self
-		assert: (summary isKindOf: MicRootBlock);
-		assert: summary children size equals: 9
-]
-
-{ #category : 'tests' }
 MicListSummarizerTest >> testSummarizeEmptyListOfFile [
 
 	| summary |
-	summary := micSummarizer summarizeFile: Array new.
+	summary := micSummarizer summarizeFile: #().
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 0
@@ -292,7 +286,7 @@ MicListSummarizerTest >> testSummarizeEmptyListOfFile [
 MicListSummarizerTest >> testSummarizeEmptyListOfSingleSummarizer [
 
 	| summary |
-	summary := micSummarizer summarize: Array new.
+	summary := micSummarizer assembleSummarizedDocuments: #(  ).
 	self
 		assert: (summary isKindOf: MicRootBlock);
 		assert: summary children size equals: 0

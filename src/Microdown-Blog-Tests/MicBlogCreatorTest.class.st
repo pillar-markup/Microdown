@@ -13,7 +13,7 @@ Class {
 MicBlogCreatorTest >> fileContent1 [
 
 	^ '{
-    "date" : "8 January 2019"
+    "date" : "2019/01/08"
 }
 # A Cool Story
 
@@ -27,8 +27,8 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 { #category : 'initialization' }
 MicBlogCreatorTest >> fileContent2 [
 
-^ '{
-    "date" : "22 January 2019"
+	^ '{
+    "date" : "2019/01/22"
 }
 # Pharo is cool
 
@@ -36,17 +36,17 @@ If you are either a beginner or an expert in object-oriented programming, _this 
 
 Pharo is a pure _object-oriented programming language_ in the tradition of Smalltalk. It offers a unique developing experience in constant interaction with live objects. Pharo is elegant, fun to use and very powerful. It is very easy to learn and enables to understand advanced concept in a natural way. When programming in Pharo, you are immersed in a world of live objects. You have immediate feedback at any moment of your development on objects representing web applications, code itself, graphics, network. More…
 '
-
-	
 ]
 
 { #category : 'initialization' }
 MicBlogCreatorTest >> fileContent3 [
 
 	^ '{
-    "date" : "29 January 2018"
+    "date" : "2018/01/29"
 }
 # Mooc Pharo
+
+<!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
 
 Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
 

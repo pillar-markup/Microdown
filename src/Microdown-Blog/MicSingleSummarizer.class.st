@@ -106,7 +106,7 @@ MicSingleSummarizer >> maximumWords: anInteger [
 { #category : 'as yet unclassified' }
 MicSingleSummarizer >> replacementDate [
 
-	^ '25 December 1970'
+	^ '1970/12/25'
 ]
 
 { #category : 'parsing' }
