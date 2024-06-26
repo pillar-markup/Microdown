@@ -115,20 +115,21 @@ MicSingleSummarizerTest >> setUp [
 
 	"Put here a common initialization logic for tests"
 	micSingleSummarizer := MicSingleSummarizer new.
-	micSingleSummarizer targetDirectory: '/html/'
+	micSingleSummarizer targetDirectory: '/html/' asFileReference
 ]
 
 { #category : 'tests' }
 MicSingleSummarizerTest >> testContents [
 
-	| root  dumper |
-	
-	root := MicRealDumper new visit: (micSingleSummarizer summarize: self createMicRootBlock).
-	dumper := Microdown parse: '# [A Cool Story](','','/anExample1.md','',')
-	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no ...'.
-	
+	| root dumper |
+	root := MicRealDumper new visit:
+		        (micSingleSummarizer summarize: self createMicRootBlock).
+	dumper := Microdown parse:
+		          '# [A Cool Story](' , '' , '/anExample1.html' , '' , ')
+	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...'.
+
 	dumper := MicRealDumper new visit: dumper.
-	
+
 	self assert: root contents equals: dumper contents
 ]
 
@@ -177,7 +178,7 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOf [
 	self
 		assert:
 		(paragraph textElements collect: [ :each | each plainText ]) asArray
-		equals: #( 'Pharo is cool ...' ).
+		equals: #( 'Pharo is cool...' ).
 	paragraph textElements do: [ :each |
 		self assert: each parent equals: paragraph ]
 ]
@@ -195,7 +196,7 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithEllipsis [
 	self
 		assert:
 		(paragraph textElements collect: [ :each | each plainText ]) asArray
-		equals: #( 'Pharo is cool ...' ).
+		equals: #( 'Pharo is cool...' ).
 	paragraph textElements do: [ :each |
 		self assert: each parent equals: paragraph ]
 ]

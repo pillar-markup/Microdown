@@ -13,7 +13,7 @@ MicListSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
 
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
-		  metadataDate := (each children at: 1) body at: #date.
+		  metadataDate := each children first body at: #date.
 		  metadataDate asDate month = aMonth ]
 ]
 
@@ -44,11 +44,16 @@ MicListSummarizer >> summarize: aListOfSingleSummarizer [
 
 	selectionSize := maximumFile min: aListOfSingleSummarizer size. 
 
-	1 to: selectionSize do: [ :each |
+	1 to: selectionSize do: [ :each | |e|
 		root := aListOfSingleSummarizer at: each.
+		e := MicParagraphBlock new.
+		e addChild:
+			(MicTextBlock new bodyString:
+				 ((root children at: 1) body at: 'date')).
 		summarize
 			addChild: (root children at: 2);
-			addChild: (root children at: 3) ].
+			addChild: e;
+			addChild: (root children at: 3)].
 
 	^ summarize
 ]

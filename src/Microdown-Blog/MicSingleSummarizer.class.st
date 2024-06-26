@@ -31,7 +31,7 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 { #category : 'accessing' }
 MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 
-	| p textElements newParagraph selectionSize t sub newSub text |
+	| p textElements newParagraph t |
 	p := aMicRootBlock children
 		     detect: [ :each | each isKindOf: MicParagraphBlock ]
 		     ifNone: [
@@ -39,29 +39,12 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 			     t := MicTextBlock new bodyString: 'Please add a paragraph'.
 			     t parent: p.
 			     ^ p ].
-		
-	text := ''.
-	
-	p children do: [ :each |  text := text,each plainText ].
 
-	sub := text substrings: ' '.
-	selectionSize := maximumWords min: sub size.
-	newSub := sub first: selectionSize.
-
-	textElements := '' writeStream.
-	newSub do: [ :each |
-		textElements
-			nextPutAll: each;
-			nextPut: Character space ].
-		
-	sub size >= maximumWords ifTrue: [ textElements
-			nextPutAll: '...' ].
-		
-		textElements close.
-
+	textElements := self limitParagraphWord: p. 
 
 	newParagraph := MicParagraphBlock new.
-	t := MicTextBlock new bodyString: textElements ensureNoSpace contents.
+	"t := MicTextBlock new bodyString: textElements ensureNoSpace contents."
+	t := (MicInlineParser parse: textElements) first.
 	t parent: newParagraph.
 	^ newParagraph
 ]
@@ -90,9 +73,40 @@ MicSingleSummarizer >> initialize [
 	maximumWords := 15.
 ]
 
+{ #category : 'string-manipulation' }
+MicSingleSummarizer >> limitParagraphWord: aMicParagraph [
+
+	| text sub selectionSize newSub textElements |
+	text := '' writeStream.
+	aMicParagraph children do: [ :each | text nextPutAll: each plainText ].
+	text close.
+
+	sub := text contents substrings: ' '.
+	selectionSize := maximumWords min: sub size.
+	newSub := sub first: selectionSize.
+
+	textElements := '' writeStream.
+	textElements nextPutAll: newSub first.
+	2 to: newSub size do: [ :each |
+		textElements
+			nextPut: Character space;
+			nextPutAll: (newSub at: each)
+			 ].
+
+	sub size >= maximumWords ifTrue: [ textElements nextPutAll: '...' ].
+
+	^ textElements close contents
+]
+
 { #category : 'accessing' }
 MicSingleSummarizer >> maximumWords: anInteger [ 
 	maximumWords := anInteger
+]
+
+{ #category : 'as yet unclassified' }
+MicSingleSummarizer >> replacementDate [
+
+	^ '25 December 1970'
 ]
 
 { #category : 'parsing' }
@@ -129,14 +143,12 @@ MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 	(aMicRootBlock children first isKindOf: MicMetaDataBlock)
 		ifFalse: [
 			metadata := MicMetaDataBlock new.
-			metadata body:
-				(Dictionary
-					 newFromKeys: #( #date )
-					 andValues: #( '25 December 1970' )) ]
+			metadata body: Dictionary new.
+			metadata body at: #date put: self replacementDate ]
 		ifTrue: [
 			metadata := aMicRootBlock children at: 1.
 			(metadata body includesKey: #date) ifFalse: [
-				metadata body at: #date put: '25 December 1970' ] ].
+				metadata body at: #date put: self replacementDate ] ].
 	metadata parent: newMicRootBlock.
 
 	aMicRootBlock children
