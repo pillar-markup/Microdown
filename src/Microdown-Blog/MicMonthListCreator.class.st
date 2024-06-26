@@ -40,5 +40,20 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileRe
 				        '/_monthBlog/' , each name , '_' , each year asString , '.html'.
 		link parent: listElement.
 		listElement parent: root ].
+	
+	^ self generateSectionOfMicListBlock: root.
+]
+
+{ #category : 'generate' }
+MicMonthListCreator >> generateSectionOfMicListBlock: aMicUnorderedListBlock [
+
+	| root header |
+	header := MicHeaderBlock new.
+	header level: 3.
+	(MicTextBlock new bodyString: 'Archives') parent: header.
+
+	root := MicSectionBlock new.
 	^ root
+		  header: header;
+		  body: aMicUnorderedListBlock
 ]
