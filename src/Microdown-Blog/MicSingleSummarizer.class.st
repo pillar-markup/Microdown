@@ -144,11 +144,15 @@ MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
 		ifFalse: [
 			metadata := MicMetaDataBlock new.
 			metadata body: Dictionary new.
-			metadata body at: #date put: self replacementDate ]
+			self setValidDateTo: metadata ]
 		ifTrue: [
-			metadata := aMicRootBlock children at: 1.
-			(metadata body includesKey: #date) ifFalse: [
-				metadata body at: #date put: self replacementDate ] ].
+			metadata := aMicRootBlock children first.
+			(metadata includesKey: #date)
+				ifFalse: [ self setValidDateTo: metadata ]
+				ifTrue: [
+					[ Date readFrom: (metadata atKey: #date) pattern: 'y/m/d' ]
+						on: DateError
+						do: [ :ex | self setValidDateTo: metadata ] ] ].
 	metadata parent: newMicRootBlock.
 
 	aMicRootBlock children

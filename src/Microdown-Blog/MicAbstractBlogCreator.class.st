@@ -25,6 +25,12 @@ MicAbstractBlogCreator >> makeALink: aText to: aLink [
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
 ]
 
+{ #category : 'verifying' }
+MicAbstractBlogCreator >> setValidDateTo: metadata [
+
+	metadata atKey: #date put: self replacementDate
+]
+
 { #category : 'accessing' }
 MicAbstractBlogCreator >> targetDirectory [ 
 	
