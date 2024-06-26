@@ -10,7 +10,7 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixtures' }
 MicListSummarizerTest >> createListOfFile [
 
 
@@ -20,7 +20,7 @@ MicListSummarizerTest >> createListOfFile [
 		  resources generateFilesystemExample3 }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixtures' }
 MicListSummarizerTest >> createListOfMicRootBlock [
 	
 	^ {
@@ -35,7 +35,7 @@ MicListSummarizerTest >> createListOfMicRootBlock [
 				    fromFile: resources generateFilesystemExample3)) }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixtures' }
 MicListSummarizerTest >> createListOfMicRootBlockWithoutMetadata [
 
 	^ {
@@ -50,7 +50,7 @@ MicListSummarizerTest >> createListOfMicRootBlockWithoutMetadata [
 				    fromFile: resources generateFilesystemExampleWithoutMetadata3)) }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixtures' }
 MicListSummarizerTest >> generateFilesystemExample3WithBrokenDate [
 
 	| file |
@@ -73,7 +73,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'running' }
 MicListSummarizerTest >> setUp [
 
 	super setUp.
@@ -84,7 +84,7 @@ MicListSummarizerTest >> setUp [
 	singleSummarizer targetDirectory: '/html/' asFileReference.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testAssembleSummarizedDocuments [
 
 	| summary |
@@ -92,10 +92,13 @@ MicListSummarizerTest >> testAssembleSummarizedDocuments [
 		           self createListOfMicRootBlock.
 	self
 		assert: (summary isKindOf: MicRootBlock);
-		assert: summary children size equals: 9
+		assert: summary children size equals: 9;
+		assert:( summary children first isKindOf: MicHeaderBlock);
+		assert:( summary children fourth isKindOf: MicHeaderBlock);
+		assert:( summary children last isKindOf: MicParagraphBlock)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testContentsOfAssembledListsIsCorrect [
 
 	| root dumper dumper1 dumper2 dumper3 |
@@ -112,7 +115,7 @@ MicListSummarizerTest >> testContentsOfAssembledListsIsCorrect [
 	self assert: root contents equals: dumper contents
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testGroupByDate [
 
 	| summarizedDocuments group |
@@ -121,22 +124,24 @@ MicListSummarizerTest >> testGroupByDate [
 		         group: summarizedDocuments
 		         byDate: (Date newDay: 1 month: 'January' year: 2019) month.
 
-	self assert: group size equals: 2
+	self assert: group size equals: 2;
+	assert: (group first isKindOf: MicRootBlock)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testGroupByDateWithoutAnyMetadata [
 
 	| summarizedDocuments group |
 	summarizedDocuments := self createListOfMicRootBlockWithoutMetadata.
 	group := micSummarizer
 		         group: summarizedDocuments
-		         byDate: (Date newDay: 1 month: 'January' year: 2019) month.
-
-	self assert: group size equals: 0
+		         byDate: (Date readFrom: MicSingleSummarizer new replacementDate pattern: 'y/m/d') month.
+		
+	self assert: group size equals: 3;
+	assert: (group first isKindOf: MicRootBlock)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testSummarizeEmptyListOfFile [
 
 	| summary |
@@ -146,7 +151,7 @@ MicListSummarizerTest >> testSummarizeEmptyListOfFile [
 		assert: summary children size equals: 0
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testSummarizeEmptyListOfSingleSummarizer [
 
 	| summary |
@@ -156,12 +161,15 @@ MicListSummarizerTest >> testSummarizeEmptyListOfSingleSummarizer [
 		assert: summary children size equals: 0
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicListSummarizerTest >> testSummarizeFile [
 
 	| summary |
 	summary := micSummarizer summarizeFile: self createListOfFile.
 	self
 		assert: (summary isKindOf: MicRootBlock);
-		assert: summary children size equals: 9
+		assert: summary children size equals: 9;
+		assert:( summary children first isKindOf: MicHeaderBlock);
+		assert:( summary children fourth isKindOf: MicHeaderBlock);
+		assert:( summary children last isKindOf: MicParagraphBlock)
 ]

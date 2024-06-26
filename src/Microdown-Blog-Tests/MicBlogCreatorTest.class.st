@@ -3,60 +3,12 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
-		'blog'
+		'blog',
+		'resources'
 	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
-
-{ #category : 'initialization' }
-MicBlogCreatorTest >> fileContent1 [
-
-	^ '{
-    "date" : "2019/01/08"
-}
-# A Cool Story
-
-Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
-    
-
-Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
-'
-]
-
-{ #category : 'initialization' }
-MicBlogCreatorTest >> fileContent2 [
-
-	^ '{
-    "date" : "2019/01/22"
-}
-# Pharo is cool
-
-If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will change the way you program with objects: come and learn or rediscover _object-oriented programming_ with Pharo!
-
-Pharo is a pure _object-oriented programming language_ in the tradition of Smalltalk. It offers a unique developing experience in constant interaction with live objects. Pharo is elegant, fun to use and very powerful. It is very easy to learn and enables to understand advanced concept in a natural way. When programming in Pharo, you are immersed in a world of live objects. You have immediate feedback at any moment of your development on objects representing web applications, code itself, graphics, network. More…
-'
-]
-
-{ #category : 'initialization' }
-MicBlogCreatorTest >> fileContent3 [
-
-	^ '{
-    "date" : "2018/01/29"
-}
-# Mooc Pharo
-
-<!inputFile|path=Chapters/CaseStudyOne/CaseStudyOne.md!>
-
-Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
-
-The Pharo Mooc is fully dubbed in french and english. It comes with subtitles in Japanese, english, french and spanish. This web site contains all the material of this Mooc in free access.
-
-In addition, in average every 18 months the Mooc is proposed and run on the France Université Numérique platform (Even if the platform is french the mooc is run in both languages). 
-
-When you participate to the mooc you get access to the quizz and the credit validation. 
-'
-]
 
 { #category : 'initialization' }
 MicBlogCreatorTest >> generateArchitecture [
@@ -68,13 +20,13 @@ MicBlogCreatorTest >> generateArchitecture [
 	fileSystem createDirectory: '/source/test'.
 
 	ref1 := fileSystem workingDirectory / 'source/anExample1.md'.
-	ref1 writeStreamDo: [ :stream | stream nextPutAll: self fileContent1 ].
+	ref1 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample1 contents].
 
 	ref2 := fileSystem workingDirectory / 'source/anExample2.md'.
-	ref2 writeStreamDo: [ :stream | stream nextPutAll: self fileContent2 ].
+	ref2 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample2 contents].
 
 	ref3 := fileSystem workingDirectory / 'source/test/anExample3.md'.
-	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ].
+	ref3 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample3 contents].
 	
 	ref4 := fileSystem workingDirectory / 'source/anExample4.java'.
 	ref4 writeStreamDo: [ :stream | stream nextPutAll: 'Du java' ]
@@ -92,6 +44,7 @@ MicBlogCreatorTest >> setUp [
 	super setUp.
 
 	"Put here a common initialization logic for tests"
+	resources := MicFileTestResources new.
 	self generateArchitecture.
 	blog := MicBlogCreator new.
 	blog
@@ -248,6 +201,26 @@ MicBlogCreatorTest >> testInitializeMonthList [
 	blog initializeMonthList: listSingleSummarizer.
 
 	self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testLevelPathDifferenceForCSS [
+
+	| result |
+
+	result := blog levelPathDifferenceForCSS: '/a/b/c.md'.
+
+	self assert: result equals: '../../'
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testLevelPathDifferenceForCSSWithEmptyString [
+
+	| result |
+
+	result := blog levelPathDifferenceForCSS: ''.
+
+	self assert: result equals: ''
 ]
 
 { #category : 'tests' }
