@@ -120,30 +120,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'fixture' }
-MicFileTestResources >> generateFilesystemExample3WithBrokenDate [
-
-	| file |
-	file := self workingDirectory / 'anExample3.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '{
-    "date" : "20219190199191817161"
-}
-# Mooc Pharo
-
-Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
-
-The Pharo Mooc is fully dubbed in french and english. It comes with subtitles in Japanese, english, french and spanish. This web site contains all the material of this Mooc in free access.
-
-In addition, in average every 18 months the Mooc is proposed and run on the France Université Numérique platform (Even if the platform is french the mooc is run in both languages). 
-
-When you participate to the mooc you get access to the quizz and the credit validation. 
-' ].
-
-	^ file
-]
-
-{ #category : 'fixture' }
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata1 [
 
 	| file |
@@ -160,7 +137,7 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 	^ file asFileReference
 ]
 
-{ #category : 'fixture' }
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata2 [
 
 	| file |
@@ -176,7 +153,7 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	^ file
 ]
 
-{ #category : 'fixture' }
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata3 [
 
 	| file |
