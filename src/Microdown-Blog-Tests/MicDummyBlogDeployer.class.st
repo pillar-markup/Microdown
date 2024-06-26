@@ -5,19 +5,26 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
+{ #category : 'navigating' }
+MicDummyBlogDeployer class >> go [
+	<script>
+	self new go
+]
+
 { #category : 'doit' }
 MicDummyBlogDeployer >> deploy [
 	"A super dummy md generator to be able to test"
 
-	(FileSystem workingDirectory / 'sourceDummy') ensureDeleteAll.
-	(FileSystem workingDirectory / 'sourceDummy') ensureCreateDirectory.
-	FileSystem workingDirectory / 'sourceDummy' / 'file1.md'
+	(FileSystem workingDirectory / self sourceFolder) ensureDeleteAll.
+	(FileSystem workingDirectory / self sourceFolder)
+		ensureCreateDirectory.
+	FileSystem workingDirectory / self sourceFolder / 'file1.md'
 		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent1 ].
-	FileSystem workingDirectory / 'sourceDummy' / 'file2.md'
+	FileSystem workingDirectory / self sourceFolder / 'file2.md'
 		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent2 ].
-	FileSystem workingDirectory / 'sourceDummy' / 'file3.md'
+	FileSystem workingDirectory / self sourceFolder / 'file3.md'
 		writeStreamDo: [ :st |
 		st nextPutAll: MicBlogCreatorTest new fileContent3 ]
 ]
@@ -28,7 +35,7 @@ MicDummyBlogDeployer >> go [
 
 	self deploy.
 	MicBlogCreator
-		createFrom: FileSystem workingDirectory / 'sourceDummy2'
+		createFrom: FileSystem workingDirectory / self sourceFolder
 		to: self outputDirectory.
 	self launchHTTPServer.
 	1 seconds wait.
@@ -55,4 +62,10 @@ MicDummyBlogDeployer >> launchHTTPServer [
 MicDummyBlogDeployer >> outputDirectory [
 
 	^ FileSystem workingDirectory / 'outputDummy'
+]
+
+{ #category : 'doit' }
+MicDummyBlogDeployer >> sourceFolder [
+
+	^ 'sourceDummy3'
 ]
