@@ -11,6 +11,35 @@ MicMetaDataBlockTest >> subjectClass [
 	^ MicMetaDataBlock 
 ]
 
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testAtKey [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: (metadata atKey: 'authors') equals: 'S. Ducasse'.
+	self assert: (metadata atKey: 'title') equals: 'Pharo by Example'
+]
+
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testAtKeyPut [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+	root := parser parse: source.
+	metadata := root children first.
+	metadata atKey: 'title' put: 'Pilote'.
+	self assert: (metadata includesKey: 'title').
+	self assert: (metadata atKey: 'title') equals: 'Pilote'.
+]
+
 { #category : 'tests' }
 MicMetaDataBlockTest >> testCorrectJSONMetaDataProducesDictionary [
 
@@ -44,7 +73,44 @@ MicMetaDataBlockTest >> testCorrectMetaDataWithEmptyLinesProduceJSON [
 	self assert: (metadata body at: 'title') equals: 'Pharo by Example'.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testCreatingAnInstanceInitializeTheMetadatDictionary [
+
+	| metadata |
+	self skip.
+	metadata := MicMetaDataBlock new.
+	self assert: metadata body isNotNil
+]
+
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testIncludesKey [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: (metadata includesKey: 'authors').
+	self assert: (metadata includesKey: 'title').
+	self deny: (metadata includesKey: 'title222')
+]
+
+{ #category : 'tests - parsing' }
+MicMetaDataBlockTest >> testMetaDataDictionaryIsInitializedDuringParseTime [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: metadata body isNotNil 
+]
+
+{ #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testMetaDataEatsOtherBlocks [
 	"this is normal since 
 {
@@ -67,7 +133,7 @@ then it eats.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testParse [
 
 	| source root metadata |
@@ -84,7 +150,7 @@ MicMetaDataBlockTest >> testParse [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents [
 
 	| source root metadata |
@@ -100,7 +166,7 @@ MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents 
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents2 [
 
 	| source root metadata |
@@ -116,7 +182,7 @@ title" : "Pharo by Example"'.
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testUncorrectJSONMetaDataProducesDictionaryWithContents3 [
 
 	| source root metadata |
