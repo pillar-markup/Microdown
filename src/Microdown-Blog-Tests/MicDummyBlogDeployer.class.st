@@ -15,20 +15,20 @@ MicDummyBlogDeployer class >> go [
 MicDummyBlogDeployer >> deploy [
 	"A super dummy md generator to be able to test"
 
-	| creator |
-	creator := MicBlogCreatorTest new.
+	| ressources |
+	ressources := MicFileTestResources new.
 	(FileSystem workingDirectory / self sourceFolder) ensureDeleteAll.
 	(FileSystem workingDirectory / self sourceFolder)
 		ensureCreateDirectory.
 	FileSystem workingDirectory / self sourceFolder / 'file1.md'
 		writeStreamDo: [ :st |
-		st nextPutAll: creator fileContent1 ].
+		st nextPutAll: ressources generateFilesystemExample1 contents ].
 	FileSystem workingDirectory / self sourceFolder / 'file2.md'
 		writeStreamDo: [ :st |
-		st nextPutAll: creator fileContent2 ].
+		st nextPutAll: ressources generateFilesystemExample2 contents ].
 	FileSystem workingDirectory / self sourceFolder / 'file3.md'
 		writeStreamDo: [ :st |
-		st nextPutAll: creator fileContent3 ]
+		st nextPutAll: ressources generateFilesystemExample3 contents ]
 ]
 
 { #category : 'doit' }

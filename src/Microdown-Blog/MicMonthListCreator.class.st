@@ -29,16 +29,30 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aFileReference [
 MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileReference [
 
 	| root link listElement |
-	
-	
 	root := MicUnorderedListBlock new.
 	aDateList do: [ :each |
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
 			        to:
-				        '/_monthBlog/' , each name , '_' , each year asString , '.html'.
+			        '/_monthBlog/' , each name , '_' , each year asString
+			        , '.html'.
 		link parent: listElement.
 		listElement parent: root ].
+
+	^ self generateRootOfMicListBlock: root
+]
+
+{ #category : 'generate' }
+MicMonthListCreator >> generateRootOfMicListBlock: aMicUnorderedListBlock [
+
+	| root header |
+	header := MicHeaderBlock new.
+	header level: 3.
+	(MicTextBlock new bodyString: 'Archives') parent: header.
+
+	root := MicRootBlock new.
 	^ root
+		  addChild: header;
+		  addChild: aMicUnorderedListBlock
 ]
