@@ -1,5 +1,8 @@
+"
+I'm a simple visitor that collects file input nodes from a document. 
+"
 Class {
-	#name : 'MicInputFileFinder',
+	#name : 'MicInputFileExpressionCollector',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'allFiles'
@@ -9,19 +12,19 @@ Class {
 }
 
 { #category : 'accessing' }
-MicInputFileFinder >> allFiles [
+MicInputFileExpressionCollector >> allFiles [
 	^ allFiles
 ]
 
 { #category : 'initialization' }
-MicInputFileFinder >> initialize [
+MicInputFileExpressionCollector >> initialize [
 
 	super initialize. 
 	allFiles := OrderedCollection new.
 ]
 
 { #category : 'initialization' }
-MicInputFileFinder >> visitInputFile: anInputFile [
+MicInputFileExpressionCollector >> visitInputFile: anInputFile [
 
 	allFiles add: anInputFile
 ]

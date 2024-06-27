@@ -32,23 +32,23 @@ MicBookTesterVisitor >> allTestResults: anObject [
 { #category : 'visiting' }
 MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
-	|association|
-	 
-	association := (self class  compiler evaluate: aCodeBlockObject text)  .
-	^ (association key = association value )
+
+	| association |
+	association := self class compiler evaluate: aCodeBlockObject text.
+	^ association key = association value
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> excuteAndReportExample: aCodeBlockObject [
-"aCodeBlockObject is an instance of The MicrodownTestResult"
+MicBookTesterVisitor >> executeAndReportIn: aCodeBlockObject [
+	"aCodeBlockObject is an instance of The MicrodownTestResult"
+
 	| isCorrect |
-	isCorrect := false . 
-	 [ isCorrect := self checkAssociation: aCodeBlockObject ]
-	on: Exception 
-	do: [ :exception | aCodeBlockObject explanation: exception asString ] .
-	aCodeBlockObject status: isCorrect .
-	isCorrect 
-		ifTrue: [ aCodeBlockObject explanation: 'Test passed' ]
+	isCorrect := false.
+	[ isCorrect := self checkAssociation: aCodeBlockObject ]
+		on: Exception
+		do: [ :exception | aCodeBlockObject explanation: exception asString ].
+	aCodeBlockObject status: isCorrect.
+	isCorrect ifTrue: [ aCodeBlockObject explanation: 'Test passed' ]
 ]
 
 { #category : 'visiting' }
@@ -84,22 +84,20 @@ MicBookTesterVisitor >> validTests [
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> visitCode: aCodeBlock [	
-		"Creates an instance of PRBookTestResult with parameters depending of the type of the codeblock. 
+MicBookTesterVisitor >> visitCode: aCodeBlock [
+	"Creates an instance of PRBookTestResult with parameters depending of the type of the codeblock. 
 	Here it is for an example and therefore uses the specialized exmple methods
 	textForTestcase
 	executeAndReportExample:
 	Note that there is no fragmentedText here, no need for it b/ecause the codeblock text contains the whole text and is the equivalent of  Playground execution"
-	aCodeBlock isExample  
-	ifFalse: [  ]
-	ifTrue: [  
-				| result |
+
+	aCodeBlock isExample
+		ifTrue: [
+			| result |
 			result := MicBookTestResult new.
 			result text: aCodeBlock code.
-			allTestResults add: result   .
-			self excuteAndReportExample: result.
-	      aCodeBlock isExpectedFailure
-			ifTrue: [ result status: result status not] 
-			]
-
+			allTestResults add: result.
+			self executeAndReportIn: result.
+			aCodeBlock isExpectedFailure ifTrue: [
+				result status: result status not ] ]
 ]

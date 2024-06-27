@@ -1,17 +1,25 @@
 "
-I replace the inputFileBlock by the nodes of the file.
+I replace the inputFileBlock (e.g., <!inputFile|path=Chapters/InANutshell/InANutshell.md!>) by the nodes of the file.
 In particular I resolve paths to the correct places.
-For example imagine that we have the file 
+For example imagine that we have the file `Books/Book1/index.md` containing 
 
-`Books/Book1/index.mic`
-containing 
-	`${inputfile&path=SUnit/SUnit.mic$`
-	
-and that `SUnit/SUnit.mic` contains a figure
+```
+...
+	<!inputfile|path=SUnit/SUnit.md!>
+...
+
+```
+
+and that SUnit/SUnit.md contains a figure
 such as 
-	`![](figures/setUpTearDown.png)`
-	
-Such `figures/setUpTearDown.png` file should get its path being: `Books/Book1/SUnit/figures/setUpTearDown.png`
+
+```
+![](figures/setUpTearDown.png)
+
+```
+
+The figure should be inlined inside the index.md document. 
+In addition such figures/setUpTearDown.png file should get its path being: `Books/Book1/SUnit/figures/setUpTearDown.png`
 	
 Note that if the path does not exist the transformer does nothing.
 "
