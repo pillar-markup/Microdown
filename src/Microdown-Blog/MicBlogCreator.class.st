@@ -110,7 +110,6 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	self
 		write: visitor
-		to: targetDirectory
 		named:
 		(aFileReference fullName withoutPrefix:
 			 self targetDirectory fullName)
@@ -119,13 +118,13 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| visitor  |
+	| visitor |
 	self rootAssembly: aMicRoot.
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
 		write: visitor
-		to: targetDirectory
-		named: '_monthBlog/' ,aMonth name , '_' , aMonth year asString , '.html'
+		named:
+		'_monthBlog/' , aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
@@ -136,7 +135,7 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
-	self write: visitor to: targetDirectory named: 'index.html'
+	self write: visitor named: 'index.html'
 ]
 
 { #category : 'accessing' }
@@ -257,7 +256,7 @@ MicBlogCreator >> targetDirectory: aFileReference [
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
+MicBlogCreator >> write: aMicHTMLVisitor named: aName [
 
 	| htmlDocument fileName cssFramework |
 	fileName := aName withoutPrefix: '/'.
@@ -273,7 +272,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 	htmlDocument
 		setCharSetUTF8;
 		addCSS: cssFramework;
-		destinationPath: aPath.
+		destinationPath: targetDirectory.
 	^ htmlDocument
 		  fileName: fileName;
 		  writeDocument: aMicHTMLVisitor contents;

@@ -254,10 +254,7 @@ MicBlogCreatorTest >> testWriteToNamed [
 	root := Microdown parse: file contents.
 	html := (MicHTMLVisitor new visit: root) at: 1.
 
-	blog
-		write: html
-		to: fileSystem / 'html'
-		named: 'test.html'.
+	blog write: html named: 'test.html'.
 
 	self assert: (fileSystem / 'html/test.html') exists
 ]
