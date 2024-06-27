@@ -50,9 +50,9 @@ MicBlogCreatorTest >> setUp [
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		dateList: (MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo:
-		            fileSystem / 'html').
+		dateList:
+			(MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+					 fileSystem / 'html')
 ]
 
 { #category : 'tests' }

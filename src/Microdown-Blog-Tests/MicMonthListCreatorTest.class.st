@@ -26,21 +26,21 @@ MicMonthListCreatorTest >> testGenerateDateListSince2014 [
 { #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
 
-	| section fileSystem dateList |
+	| root fileSystem dateList |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	section := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo:
-		            fileSystem workingDirectory / '/html'.
+	root := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+		           fileSystem workingDirectory / '/html'.
 
-	self assert: (section isKindOf: MicSectionBlock).
-	self assert: section children size equals: 3;
-	assert: (section children first isKindOf: MicHeaderBlock);
-	assert: (section children second isKindOf: MicUnorderedListBlock).
-	
-	dateList := section children second.
-	
+	self assert: (root isKindOf: MicRootBlock ).
+	self
+		assert: root children size equals: 2;
+		assert: (root children first isKindOf: MicHeaderBlock);
+		assert: (root children second isKindOf: MicUnorderedListBlock).
+
+	dateList := root children second.
+
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
@@ -53,20 +53,20 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
 { #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithTo [
 
-	| dateList fileSystem section |
+	| dateList fileSystem root |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	section := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo:
-		            fileSystem workingDirectory / '/html'.
+	root := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+		           fileSystem workingDirectory / '/html'.
 
-	self assert: (section isKindOf: MicSectionBlock);
-	assert: section children size equals: 3;
-	assert: (section children first isKindOf: MicHeaderBlock);
-	assert: (section children second isKindOf: MicUnorderedListBlock).
-	
-	dateList := section children second.
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 2;
+		assert: (root children first isKindOf: MicHeaderBlock);
+		assert: (root children second isKindOf: MicUnorderedListBlock).
+
+	dateList := root children second.
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
