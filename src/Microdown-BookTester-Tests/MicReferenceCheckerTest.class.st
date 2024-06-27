@@ -15,7 +15,7 @@ MicReferenceCheckerTest >> fileSystem [
 	^ FileSystem memory
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicReferenceCheckerTest >> setUp [
 
 	super setUp.
@@ -39,46 +39,49 @@ See *@anchorSection1@*
 	self assert: visitor isOkay 
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - references' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectInFile [
 
-	|  file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
+	| fileWithWrongSectionReference visitor |
+	fileWithWrongSectionReference := (dir / 'fileWithWrongSectionReference.txt')
+		                            asFileReference.
+	fileWithWrongSectionReference writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 
 See *@anchorSection1@*
 
 ' ].
-	file ensureCreateFile.
+	fileWithWrongSectionReference ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file)
+	self deny: (visitor checkFile: fileWithWrongSectionReference)
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - references' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
-	| file1 file2 visitor |
-
-	file1 := (dir / 'file1.txt') asFileReference.
-	file1 writeStreamDo: [ :stream |
+	| aSectionWithAnchorAndRef file2 visitor|
+	
+	aSectionWithAnchorAndRef := (dir / 'aSectionWithAnchorAndRef.txt') asFileReference.
+	aSectionWithAnchorAndRef writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 @anchorSection1
 
 See *@anchorSection1@*
 
 ' ].
-	file1 ensureCreateFile.
-	file2 := (dir / 'file2.txt') asFileReference.
+	aSectionWithAnchorAndRef ensureCreateFile.
+	
+	file2 := (dir / 'justReferenceToSection.txt') asFileReference.
 	file2 writeStreamDo: [ :stream2 |
 		stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  ' ].
 	file2 ensureCreateFile.
+	
 	visitor := MicReferenceChecker new.
 	self assert: (visitor checkDirectory: dir)
 ]
 
-{ #category : 'tests' }
-MicReferenceCheckerTest >> testDuplicatedAnchorDir [
+{ #category : 'tests - references' }
+MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 	| file1 file2 visitor |
 	file1 := (dir / 'file1.txt') asFileReference.
@@ -103,25 +106,27 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 ' ].
 	file2 ensureCreateFile.
+	
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkDirectory: dir)
 ]
 
-{ #category : 'tests' }
-MicReferenceCheckerTest >> testFile [
+{ #category : 'tests - references' }
+MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
 
-	| file visitor |
-	file := (fs/ 'myFile.txt') asFileReference.
-	file ensureCreateFile.
-	file writeStreamDo: [ :stream |
+	| referenceToUnexistingAnchor visitor |
+	referenceToUnexistingAnchor := (fs/ 'referenceToUnexistingAnchor.txt') asFileReference.
+	referenceToUnexistingAnchor ensureCreateFile.
+	referenceToUnexistingAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
+		
 ![alittle caption.](figures/f.png anchor=anchorSection1)
 
 See *@anchorSection0@*
 
 ' ].
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file)
+	self deny: (visitor checkFile: referenceToUnexistingAnchor)
 ]
 
 { #category : 'tests - parse only' }
@@ -139,21 +144,22 @@ See *@anchorSection1@*
 	self assert: visitor isOkay
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - references' }
 MicReferenceCheckerTest >> testReferToAFigureInFile [
 
-	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
+	| referenceToFigure visitor |
+	referenceToFigure := (dir / 'referenceToFigure.txt') asFileReference.
+	referenceToFigure writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
-![alittle caption.](figures/f.png anchor=anchorSection1)
+		
+![alittle caption.](figures/f.png anchor=anchorFigure1)
 
-See *@anchorSection1@*
+See *@anchorFigure1@*
 
 ' ].
-	file ensureCreateFile.
+	referenceToFigure ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: file)
+	self assert: (visitor checkFile: referenceToFigure)
 ]
 
 { #category : 'tests - parse only' }
@@ -173,23 +179,23 @@ See *@anchorSection1@*
 	self assert: visitor isOkay
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - references' }
 MicReferenceCheckerTest >> testReferToAMathEquationInFile [
 
-	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
+	| referToAMathEquation visitor |
+	referToAMathEquation := (dir / 'referToAMathEquation.txt') asFileReference.
+	referToAMathEquation writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 	
-$$ %anchor=anchorSection1
+$$ %anchor=Equation1
 balbalbalb! 
 $$
-See *@anchorSection1@*
+See *@Equation1@*
 
 ' ].
-	file ensureCreateFile.
+	referToAMathEquation ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: file)
+	self assert: (visitor checkFile: referToAMathEquation)
 ]
 
 { #category : 'tests - parse only' }
@@ -204,6 +210,81 @@ See *@anchorSection1@*
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self deny: visitor isOkay 
+]
+
+{ #category : 'tests - references' }
+MicReferenceCheckerTest >> testReferenceToFigureAnchor [
+
+	| referenceToFigureAnchor visitor |
+	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md') asFileReference.
+	referenceToFigureAnchor ensureCreateFile.
+	referenceToFigureAnchor writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+![alittle caption.](figures/f.png anchor=anchorSection1)
+
+See *@anchorSection0@*
+
+' ].
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: referenceToFigureAnchor)
+]
+
+{ #category : 'tests - references' }
+MicReferenceCheckerTest >> testReferenceToNonExistingAnchor [
+
+	| referenceToFigureAnchor visitor |
+	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md') asFileReference.
+	referenceToFigureAnchor ensureCreateFile.
+	referenceToFigureAnchor writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+![alittle caption.](figures/f.png anchor=anchorSection1)
+
+See *@anchorSection0@*
+
+' ].
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: referenceToFigureAnchor)
+]
+
+{ #category : 'tests - reporting' }
+MicReferenceCheckerTest >> testReportingDuplicatedAnchorBetweenSectionAndFigure [
+
+	| file visitor |
+	file := (dir / 'file.txt') asFileReference.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@anchorSection0
+
+![a caption 1](figures/f.png anchor=anchorSection1)
+
+
+# Section 1
+@anchorSection1
+
+We have a conflict between the section and the figure.
+
+# Section 2
+@anchorSection2
+
+# Section 3
+@anchorSection3
+
+$$ %anchor=anchorSection0
+balbalbalb! 
+$$
+
+See *@anchorSection1@* and *@anchorSection0@*
+
+' ].
+	file ensureCreateFile.
+	
+	
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: file).
+	self
+		assert:
+		(visitor allTestsResults collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection0')
 ]
 
 { #category : 'tests - parse only' }
@@ -229,7 +310,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 	self assert: (visitor allTestsResults collect: [:each | each anchorLabel ]) equals: OrderedCollection <- #('anchorSection1')
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedAnchorsInFile [
 
 	| file visitor |
@@ -251,6 +332,8 @@ See *@anchorSection1@* and *@anchorSection0@*
 
 ' ].
 	file ensureCreateFile.
+	
+	
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkFile: file).
 	self
@@ -283,7 +366,7 @@ See *@anchorSection1@*
 		equals: OrderedCollection <- #( 'anchorSection1' )
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [
 
 	| file visitor |
@@ -349,7 +432,7 @@ See *@anchorSection1@* and *@anchorSection3@*
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection3' )
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedMathsInFile [
 
 	| file visitor |
@@ -387,4 +470,36 @@ See *@anchorSection1@*
 		assert:
 		(visitor allTestsResults collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection2' 'anchorSection1' )
+]
+
+{ #category : 'tests - reporting' }
+MicReferenceCheckerTest >> testReportingDuplicatedSectionAnchorsInFile [
+
+	| file visitor |
+	file := (dir / 'file.txt') asFileReference.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@anchorSection0
+
+# Section 1
+@anchorSection1
+
+# Section 2
+@anchorSection1
+
+# Section 3
+@anchorSection1
+
+See *@anchorSection1@* and *@anchorSection0@*
+
+' ].
+	file ensureCreateFile.
+	
+	
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: file).
+	self
+		assert:
+		(visitor allTestsResults collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
