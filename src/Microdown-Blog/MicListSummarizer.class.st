@@ -16,21 +16,18 @@ Class {
 { #category : 'summarize' }
 MicListSummarizer >> assembleSummarizedDocuments: aListOfSingleSummarizer [
 
-	| summarized  selectionSize |
+	| summarized selectionSize |
 	selectionSize := maximumFile min: aListOfSingleSummarizer size.
 
 	summarized := MicRootBlock new.
 
 	1 to: selectionSize do: [ :each |
-		| e rootOfSourceDocument |
+		| rootOfSourceDocument |
+		
 		rootOfSourceDocument := aListOfSingleSummarizer at: each.
-		e := MicParagraphBlock new.
-		e addChild:
-			(MicTextBlock new bodyString: (rootOfSourceDocument children first body at: 'date')).
-		summarized
-			addChild: rootOfSourceDocument children second;
-			addChild: e;
-			addChild: rootOfSourceDocument children third ].
+		
+		2 to: rootOfSourceDocument children size do: [ :eachChild |
+			summarized addChild: (rootOfSourceDocument children at: eachChild) ] ].
 
 	^ summarized
 ]

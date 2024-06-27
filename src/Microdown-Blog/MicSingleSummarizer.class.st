@@ -112,14 +112,18 @@ MicSingleSummarizer >> replacementDate [
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	| element headerLink root |
+	| element root dateparagraph |
 	root := self verifyDateMetadata: aMicRootBlock.
 	element := MicRootBlock new.
-	headerLink := self headerLink: aMicRootBlock.
+
+	dateparagraph := MicParagraphBlock new.
+	dateparagraph addChild:
+		(MicTextBlock new bodyString: (root children first body at: 'date')).
 
 	element
 		addChild: root children first;
-		addChild: headerLink;
+		addChild: (self headerLink: aMicRootBlock);
+		addChild: dateparagraph;
 		addChild: (self firstParagraphBlockOf: root).
 
 	^ element

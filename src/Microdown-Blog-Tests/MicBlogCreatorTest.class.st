@@ -247,7 +247,7 @@ MicBlogCreatorTest >> testRootAssembly [
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testWriteToNamed [
+MicBlogCreatorTest >> testWriteNamed [
 
 	| root file html |
 	file := self listOfFile at: 1.
