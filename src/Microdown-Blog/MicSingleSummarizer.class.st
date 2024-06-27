@@ -103,12 +103,6 @@ MicSingleSummarizer >> maximumWords: anInteger [
 	maximumWords := anInteger
 ]
 
-{ #category : 'as yet unclassified' }
-MicSingleSummarizer >> replacementDate [
-
-	^ '1970/12/25'
-]
-
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
@@ -136,31 +130,4 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	root := Microdown parse: aFileReference asFileReference contents.
 	root fromFile: aFileReference.
 	^ self summarize: root
-]
-
-{ #category : 'verifying' }
-MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
-
-	| newMicRootBlock metadata |
-	newMicRootBlock := MicRootBlock new.
-
-	(aMicRootBlock children first isKindOf: MicMetaDataBlock)
-		ifFalse: [
-			metadata := MicMetaDataBlock new.
-			metadata body: Dictionary new.
-			self setValidDateTo: metadata ]
-		ifTrue: [
-			metadata := aMicRootBlock children first.
-			(metadata includesKey: #date)
-				ifFalse: [ self setValidDateTo: metadata ]
-				ifTrue: [
-					[ Date readFrom: (metadata atKey: #date) pattern: 'y/m/d' ]
-						on: DateError
-						do: [ :ex | self setValidDateTo: metadata ] ] ].
-	metadata parent: newMicRootBlock.
-
-	aMicRootBlock children
-		do: [ :each | newMicRootBlock addChild: each ]
-		without: metadata.
-	^ newMicRootBlock
 ]
