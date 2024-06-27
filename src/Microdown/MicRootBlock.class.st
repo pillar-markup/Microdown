@@ -44,6 +44,11 @@ MicRootBlock >> fromFile: aFile [
 	self propertyAt: #file put: aFile
 ]
 
+{ #category : 'accessing' }
+MicRootBlock >> fromSource [
+	^ self   
+]
+
 { #category : 'testing' }
 MicRootBlock >> hasFile [
 	^ self hasProperty: #file

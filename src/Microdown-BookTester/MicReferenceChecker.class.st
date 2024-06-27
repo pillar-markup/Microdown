@@ -10,11 +10,47 @@ Class {
 	#instVars : [
 		'references',
 		'anchors',
-		'duplicatedAnchors'
+		'duplicatedAnchors',
+		'allTestsResults',
+		'finalStatus'
 	],
-	#category : 'Microdown-ReferenceChecker',
-	#package : 'Microdown-ReferenceChecker'
+	#category : 'Microdown-BookTester',
+	#package : 'Microdown-BookTester'
 }
+
+{ #category : 'accessing' }
+MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
+	|micResultInstance|
+		micResultInstance := MicResult new.
+		micResultInstance
+						      message:( MicResult allMessages at: #anchorIsMissing ) ; 	
+		                  anchorLabel: anAnchorReference anchorLabel ;
+								status: false .
+	  (anAnchorReference fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchorReference fromFile ]	.				
+	  allTestsResults add: micResultInstance .							
+							
+		
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
+	|micResultInstance|
+		micResultInstance := MicResult new.
+		micResultInstance
+						      message:( MicResult allMessages at: #twoAnchorsSameName ) ; 	
+		                  anchorLabel: anAnchor anchorLabel ;
+								status: false .
+	  (anAnchor fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchor fromFile ]	.				
+	  allTestsResults add: micResultInstance .							
+							
+		
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> allTestsResults [
+
+	^ allTestsResults
+]
 
 { #category : 'visiting' }
 MicReferenceChecker >> check: aDocument [ 
@@ -23,7 +59,7 @@ MicReferenceChecker >> check: aDocument [
 	since it collects the references."
 
 	aDocument accept: self.
-	^ self isOk 
+	^ self isOkay 
 	
 	
 
@@ -54,11 +90,20 @@ MicReferenceChecker >> checkList: aCollection [
 	can have references between them and the checker should be shared amongst the documents 
 	since it collects the references."
 
-	aCollection do: [ :each | self checkFile: each ].
-	^ self isOk 
-	
-	
+	 aCollection do: [ :each | 
+		self checkFile: each ]. 
+	^ self isOkay.
+]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> collectBadReferences [
+
+	" should be called just after all the docs are visited other wise the result can be wrong"
+
+	| existingAnchorNames badReference |
+	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
+	badReference := references reject: [ :anchorReference | existingAnchorNames includes: anchorReference anchorLabel   ] .
+	badReference do: [ :each | self addBadReferenceAnchor: each ] .
 ]
 
 { #category : 'reporting' }
@@ -68,11 +113,19 @@ MicReferenceChecker >> duplicatedAnchors [
 ]
 
 { #category : 'visiting' }
+MicReferenceChecker >> finalStatus [ 
+	^ allTestsResults isEmpty .
+]
+
+{ #category : 'visiting' }
 MicReferenceChecker >> handleAnchorOf: anElement [
 
 	anElement hasAnchor ifFalse: [ ^ self ].
 	(self hasAlreadyDefinedAs: anElement)
-		ifTrue: [ duplicatedAnchors add: anElement ].
+		ifTrue: [
+				 duplicatedAnchors add: anElement .
+				 self addDuplicatedAnchor: anElement .
+		 ].
 	 anchors add: anElement
 	
 ]
@@ -92,29 +145,22 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
+	
+	allTestsResults := OrderedCollection new.
+	finalStatus := false.
+	
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new
 ]
 
 { #category : 'testing' }
-MicReferenceChecker >> isOk [
-
-	^ duplicatedAnchors isEmpty and: [
-		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> unknownAnchors [
+MicReferenceChecker >> isOkay [
 	
-	| unknown ref |
-	unknown := OrderedCollection new. 
-	ref := references copy.
-	ref do: [ :ref |
-		(anchors noneSatisfy: [ :each | 
-			ref anchorLabel = each anchorLabel ])
-				ifTrue: [ unknown add: ref ]  ].
-	^ unknown 
+	   self collectBadReferences .
+	 ^ self finalStatus .
+	 
+
 ]
 
 { #category : 'visiting' }
@@ -122,7 +168,11 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 
 	| isAlready |
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
-	isAlready ifTrue: [ duplicatedAnchors add: anAnchor ].
+	isAlready ifTrue: [
+		 duplicatedAnchors add: anAnchor.
+		 self addDuplicatedAnchor: anAnchor .
+		 "allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anAnchor anchorLabel )"
+		 ].
 	anchors add: anAnchor
 ]
 

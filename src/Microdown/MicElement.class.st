@@ -53,6 +53,12 @@ MicElement >> fromFile [
 	^ self parent fromFile
 ]
 
+{ #category : 'accessing' }
+MicElement >> fromSource [
+	"Let us bubble up to the root to get the file"
+	^ self parent 
+]
+
 { #category : 'properties' }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."
