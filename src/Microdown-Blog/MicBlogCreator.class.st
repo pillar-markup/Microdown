@@ -1,4 +1,17 @@
 "
+To debug it on a local machine
+
+```
+(ZnServer defaultOn: 9090) start.
+ZnServer default
+	delegate:
+		(ZnStaticFileServerDelegate new
+			directory: '/Users/ducasse/Documents/Pharo/images/P12PillarSlide/output/html' asFileReference;
+			yourself).
+```	
+
+
+
 ```
 MicBlogCreator 
 	createFrom: FileSystem workingDirectory / 'source'
@@ -13,20 +26,18 @@ Class {
 	#instVars : [
 		'sourceDirectory',
 		'targetDirectory',
-		'dateList'
+		'dateList',
+		'cssFrameworkName',
+		'sum'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'API' }
 MicBlogCreator class >> createFrom: source to: target [
 
 	| tmp1 |
-	(source fileSystem store isKindOf: WindowsStore) ifTrue: [
-		source fileSystem store currentDisk ].
-	(target fileSystem store isKindOf: WindowsStore) ifTrue: [
-		target fileSystem store currentDisk ].
 	tmp1 := self new.
 	tmp1
 		sourceDirectory: source;
@@ -34,11 +45,23 @@ MicBlogCreator class >> createFrom: source to: target [
 	tmp1 createAllHtmlFile
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'collect' }
 MicBlogCreator >> collectAllMarkDownFile: aFileReference [
 
 	^ aFileReference allFiles select: [ :each |
 		  each fullName endsWith: '.md' ]
+]
+
+{ #category : 'collect' }
+MicBlogCreator >> collectAndParseAllMarkdownFile [
+
+	| allFile allFileParse |
+	
+	allFile := self collectAllMarkDownFile: targetDirectory.
+	allFileParse := allFile collect: [ :each |
+		                (Microdown parse: each asFileReference contents)
+			                fromFile: each ].
+	^ allFileParse
 ]
 
 { #category : 'copying' }
@@ -52,107 +75,141 @@ MicBlogCreator >> copySourceDirectoryInTarget [
 { #category : 'rendering' }
 MicBlogCreator >> createAllHtmlFile [
 
-	| allFile allFileParse sum summar listOfSingleSummarize |
-	dateList := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo: targetDirectory.
-	"Copy the source directory in the target directory"
+	| allFileParse listOfSingleSummary |
 	self copySourceDirectoryInTarget.
 
-	"Collect and parse all Markdown file of targetDirectory"
-	allFile := self collectAllMarkDownFile: targetDirectory.
-	allFileParse := allFile collect: [ :each |
-		                (Microdown parse: each asFileReference contents)
-			                fromFile: each ].
+	self downloadCSS.
+
+	allFileParse := self collectAndParseAllMarkdownFile.
+
+	"Create _monthListBlog"
+	listOfSingleSummary := allFileParse collect: [ :each |
+		                       MicSingleSummarizer new
+										 targetDirectory: targetDirectory;
+		  summarize: each ].
+	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
 	allFileParse do: [ :each |
 		self createHtmlFile: each toReplace: each fromFile ].
 
-	"create summarizer html file"
-	sum := MicSummarizer new.
-	sum targetDirectory: targetDirectory.
-
-	listOfSingleSummarize := allFileParse collect: [ :each |
-		                         MicSingleSummarizer new summarize: each ].
-
-	self createHtmlSummarize: (sum summarize: listOfSingleSummarize).
-
-	"Create the directory with all month summarizer in html"
-
-	targetDirectory fileSystem createDirectory:
-		targetDirectory fullName , '/_monthBlog'.
-
-	MicMonthListCreator new generateDateListSince2014 do: [ :each |
-		summar := sum group: listOfSingleSummarize byDate: each.
-		summar isNotEmpty
-			ifTrue: [
-				summar := sum summarize: summar.
-				self createHtmlGroupFile: summar at: each ]
-			ifFalse: [ self createHtmlEmptyGroupFileAt: each ] ]
-]
-
-{ #category : 'rendering' }
-MicBlogCreator >> createHtmlEmptyGroupFileAt: aMonth [
-
-	| a fileRef root |
-	root := Microdown parse: 'No files found'.
-	self rootAssembly: root.
-
-	a := (MicHTMLVisitor new visit: root) at: 1.
-
-	fileRef := targetDirectory / '_monthBlog'.
-
-	self write: a to: fileRef named: aMonth name , '_' , aMonth year asString , '.html'
+	self createHtmlSummarize: (sum summarize: listOfSingleSummary)
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
-	| html |
+	| visitor |
 	self rootAssembly: aMicRoot.
-	html := (MicHTMLVisitor new visit: aMicRoot) first.
+
+	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
 	self renameMarkdownIntoHtmlFile: aFileReference.
 
 	aFileReference delete.
 
 	self
-		write: html
-		to: aFileReference parent
-		named: (aFileReference fullName substrings: '/') last
+		write: visitor
+		to: targetDirectory
+		named:
+		(aFileReference fullName withoutPrefix:
+			 self targetDirectory fullName)
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| a fileRef |
+	| visitor  |
 	self rootAssembly: aMicRoot.
-
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
-
-	fileRef := targetDirectory / '_monthBlog'.
-
+	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
-		write: a
-		to: fileRef
-		named: aMonth name , '_' , aMonth year asString , '.html'
+		write: visitor
+		to: targetDirectory
+		named: '_monthBlog/' ,aMonth name , '_' , aMonth year asString , '.html'
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
-	| a |
+	| visitor |
 	self rootAssembly: aMicRoot.
 
-	a := (MicHTMLVisitor new visit: aMicRoot) at: 1.
+	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
-	self write: a to: targetDirectory named: 'index.html'
+	self write: visitor to: targetDirectory named: 'index.html'
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> cssFrameworkName: aString [ 
+	
+	cssFrameworkName := aString 
 ]
 
 { #category : 'accessing' }
 MicBlogCreator >> dateList: aDateList [
 
 	dateList := aDateList.
+]
+
+{ #category : 'css' }
+MicBlogCreator >> downloadCSS [
+
+	| cssProvider |
+	(targetDirectory / 'css') ensureCreateDirectory.
+	cssProvider := MicCSSProvider new.
+	cssProvider
+		findCssNamed: cssFrameworkName;
+		destinationPath: targetDirectory / 'css'.
+	cssProvider cssDownloader downloadCSSFramework:
+		(cssProvider findCssNamed: cssFrameworkName)
+]
+
+{ #category : 'initialization' }
+MicBlogCreator >> initialize [
+
+	super initialize.
+	self cssFrameworkName: 'Axist'.
+	sum := MicListSummarizer new.
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
+
+	| summar dateListCopy |
+
+	dateList := MicMonthListCreator new generateDateListSince2014.
+	dateListCopy := dateList copy.
+
+	dateListCopy do: [ :each |
+		summar := sum group: singleSummarizedDocuments byDate: each.
+		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
+	
+	dateListCopy := dateList copy.
+	
+	dateList := MicMonthListCreator new
+		            generateMicListBlockOfLinkDateWith: dateList
+		            To: targetDirectory.
+
+	dateListCopy do: [ :each |
+		summar := sum group: singleSummarizedDocuments byDate: each.
+		summar := sum summarize: summar.
+		self createHtmlGroupFile: summar at: each ]
+]
+
+{ #category : 'css' }
+MicBlogCreator >> levelPathDifferenceForCSS: aStringPath [
+
+	| result string |
+	string := aStringPath copyReplaceAll: '\' with: '/'.
+
+	result := '' writeStream.
+
+	2 to: (string substrings: '/') size do: [ :each |
+	result nextPutAll: '../' ].
+
+	result close.
+
+	^ result contents
 ]
 
 { #category : 'rendering' }
@@ -165,7 +222,7 @@ MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 	aFileReference renameTo: newPath
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'rendering' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
 	aMicRoot addChild: dateList copy.
@@ -179,9 +236,9 @@ MicBlogCreator >> sourceDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> sourceDirectory: arg1 [
+MicBlogCreator >> sourceDirectory: aFileReference [
 
-	sourceDirectory := arg1
+	sourceDirectory := aFileReference
 ]
 
 { #category : 'accessing' }
@@ -191,23 +248,34 @@ MicBlogCreator >> targetDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> targetDirectory: arg1 [
+MicBlogCreator >> targetDirectory: aFileReference [
 
-	targetDirectory := arg1
+	targetDirectory := aFileReference.
+	aFileReference ensureDeleteAll.
+	aFileReference ensureCreateDirectory.
+	sum targetDirectory: targetDirectory
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 
-	| htmlDocument |
+	| htmlDocument fileName cssFramework |
+	fileName := aName withoutPrefix: '/'.
+	fileName := fileName withoutPrefix: '\'.
+
+	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
+	cssFramework basePath:
+		(self levelPathDifferenceForCSS: fileName) , 'css/'.
+
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
 	htmlDocument configuration document: htmlDocument.
 	htmlDocument
 		setCharSetUTF8;
+		addCSS: cssFramework;
 		destinationPath: aPath.
 	^ htmlDocument
-		  fileName: aName;
+		  fileName: fileName;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]

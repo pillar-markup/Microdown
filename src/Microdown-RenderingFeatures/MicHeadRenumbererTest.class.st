@@ -19,7 +19,7 @@ MicHeadRenumbererTest >> checkWithOffset: offset [
 	configuration headingLevelOffset: offset.
 	input := MicHeaderBlock new
 		         level: 3;
-		         addChild: (MicTextBlock new substring: 'a title');
+		         addChild: (MicTextBlock new bodyString: 'a title');
 		         yourself.
 	result := self executePhase: input with: configuration.
 	self assert: result level equals: offset + 3

@@ -3,63 +3,14 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
-		'blog'
+		'blog',
+		'resources'
 	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'as yet unclassified' }
-MicBlogCreatorTest >> fileContent1 [
-
-^ '{
-    "date" : "8 January 2019"
-}
-# A Cool Story
-
-Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
-    
-
-Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
-' 
-	
-]
-
-{ #category : 'as yet unclassified' }
-MicBlogCreatorTest >> fileContent2 [
-
-^ '{
-    "date" : "22 January 2019"
-}
-# Pharo is cool
-
-If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will change the way you program with objects: come and learn or rediscover _object-oriented programming_ with Pharo!
-
-Pharo is a pure _object-oriented programming language_ in the tradition of Smalltalk. It offers a unique developing experience in constant interaction with live objects. Pharo is elegant, fun to use and very powerful. It is very easy to learn and enables to understand advanced concept in a natural way. When programming in Pharo, you are immersed in a world of live objects. You have immediate feedback at any moment of your development on objects representing web applications, code itself, graphics, network. More…
-'
-
-	
-]
-
-{ #category : 'as yet unclassified' }
-MicBlogCreatorTest >> fileContent3 [
-
-	^ '{
-    "date" : "29 January 2018"
-}
-# Mooc Pharo
-
-Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
-
-The Pharo Mooc is fully dubbed in french and english. It comes with subtitles in Japanese, english, french and spanish. This web site contains all the material of this Mooc in free access.
-
-In addition, in average every 18 months the Mooc is proposed and run on the France Université Numérique platform (Even if the platform is french the mooc is run in both languages). 
-
-When you participate to the mooc you get access to the quizz and the credit validation. 
-'
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> generateArchitecture [
 
 	| ref1 ref2 ref3 ref4 |
@@ -69,19 +20,19 @@ MicBlogCreatorTest >> generateArchitecture [
 	fileSystem createDirectory: '/source/test'.
 
 	ref1 := fileSystem workingDirectory / 'source/anExample1.md'.
-	ref1 writeStreamDo: [ :stream | stream nextPutAll: self fileContent1 ].
+	ref1 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample1 contents].
 
 	ref2 := fileSystem workingDirectory / 'source/anExample2.md'.
-	ref2 writeStreamDo: [ :stream | stream nextPutAll: self fileContent2 ].
+	ref2 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample2 contents].
 
 	ref3 := fileSystem workingDirectory / 'source/test/anExample3.md'.
-	ref3 writeStreamDo: [ :stream | stream nextPutAll: self fileContent3 ].
+	ref3 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample3 contents].
 	
 	ref4 := fileSystem workingDirectory / 'source/anExample4.java'.
 	ref4 writeStreamDo: [ :stream | stream nextPutAll: 'Du java' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MicBlogCreatorTest >> listOfFile [
 
 	^ (fileSystem / 'source') allFiles
@@ -93,14 +44,15 @@ MicBlogCreatorTest >> setUp [
 	super setUp.
 
 	"Put here a common initialization logic for tests"
+	resources := MicFileTestResources new.
 	self generateArchitecture.
 	blog := MicBlogCreator new.
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		dateList: (MicMonthListCreator new
-		            generateMicListBlockOfLinkDateTo:
-		            fileSystem / 'html').
+		dateList:
+			(MicMonthListCreator new generateMicListBlockOfLinkDateTo:
+					 fileSystem / 'html')
 ]
 
 { #category : 'tests' }
@@ -111,6 +63,18 @@ MicBlogCreatorTest >> testCollectAllMarkDownFile [
 	fileList := blog collectAllMarkDownFile: blog sourceDirectory.
 
 	self assert: fileList size equals: 3
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testCollectAndParseAllMarkdownFile [
+
+	| allFileParse |
+
+	blog copySourceDirectoryInTarget.
+	allFileParse := blog collectAndParseAllMarkdownFile.
+
+	self assert: allFileParse size equals: 3.
+	self assert: (allFileParse first isKindOf: MicRootBlock)
 ]
 
 { #category : 'tests' }
@@ -144,31 +108,14 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateFromTo [
 
-	| allFile nbMonthFile |
+	| allFile |
 	MicBlogCreator
 		createFrom: fileSystem / 'source'
 		to: fileSystem / 'html'.
 
 	allFile := (fileSystem / 'html') allFiles.
-	
-	nbMonthFile := (Date today year - 2014) * 12 + Date today month index.
 
-	self assert: allFile size equals: 5 + nbMonthFile
-]
-
-{ #category : 'tests' }
-MicBlogCreatorTest >> testCreateHtmlEmptyGroupFileAt [
-
-| file |
-
-	blog
-		createHtmlEmptyGroupFileAt: (Month year: 2019 month: 'January').
-		
-		file := fileSystem / 'html/_monthBlog/January_2019.html'.
-
-	self assert:
-		file exists;
-		assert: (file contents findString: 'No files found') = 0 equals: false.
+	self assert: allFile size equals: 8
 ]
 
 { #category : 'tests' }
@@ -188,10 +135,11 @@ MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 
 	| root summarizer singleSummarizer allFileParse |
-	summarizer := MicSummarizer new.
+	summarizer := MicListSummarizer new.
 	summarizer targetDirectory: 'html'.
 	
 	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: blog targetDirectory.
 	
 	allFileParse := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each ].
 
@@ -212,12 +160,67 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 MicBlogCreatorTest >> testCreateHtmlSummarize [
 
 	| root summarizer |
-	summarizer := MicSummarizer new.
-	summarizer targetDirectory: 'html'.
+	summarizer := MicListSummarizer new.
+	summarizer targetDirectory: blog targetDirectory.
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.
 
 	self assert: (fileSystem / 'html/index.html') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testDownloadCSS [
+
+	blog cssFrameworkName: 'Axist'.
+	blog downloadCSS.
+
+	self assert: (fileSystem / 'html' / 'css') isDirectory.
+	self assert: (fileSystem / 'html' / 'css' / 'axist.min.css') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testInitializeMonthList [
+
+	| listSingleSummarizer singleSum1 singleSum2 singleSum3 |
+	listSingleSummarizer := Array new: 3.
+
+	singleSum1 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum1 := singleSum1 summarizeFile: fileSystem / 'source/anExample1.md'.
+	singleSum2 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum2 := singleSum2 summarizeFile: fileSystem / 'source/anExample2.md'.
+	singleSum3 := MicSingleSummarizer new targetDirectory:
+		              blog targetDirectory.
+	singleSum3 := singleSum3 summarizeFile: fileSystem / 'source/test/anExample3.md'.
+
+	listSingleSummarizer at: 1 put: singleSum1.
+	listSingleSummarizer at: 2 put: singleSum2.
+	listSingleSummarizer at: 3 put: singleSum3.
+
+	blog initializeMonthList: listSingleSummarizer.
+
+	self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testLevelPathDifferenceForCSS [
+
+	| result |
+
+	result := blog levelPathDifferenceForCSS: '/a/b/c.md'.
+
+	self assert: result equals: '../../'
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testLevelPathDifferenceForCSSWithEmptyString [
+
+	| result |
+
+	result := blog levelPathDifferenceForCSS: ''.
+
+	self assert: result equals: ''
 ]
 
 { #category : 'tests' }
@@ -251,7 +254,7 @@ MicBlogCreatorTest >> testWriteToNamed [
 	root := Microdown parse: file contents.
 	html := (MicHTMLVisitor new visit: root) at: 1.
 
-	MicBlogCreator new
+	blog
 		write: html
 		to: fileSystem / 'html'
 		named: 'test.html'.

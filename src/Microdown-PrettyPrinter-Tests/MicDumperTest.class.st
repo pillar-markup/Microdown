@@ -207,7 +207,7 @@ MicDumperTest >> testCodeBlockWithSpacedParameters [
 	self
 		assert: result contents
 		equals:
-		'(MicCodeBlock new arguments: { #foo -> true  . #bar -> 2 } asDictionary ; body: ''bla'')'
+		'(MicCodeBlock new arguments: { #foo ->true . #bar ->2 } asDictionary ; body: ''bla'')'
 ]
 
 { #category : 'test - inline - blocks' }

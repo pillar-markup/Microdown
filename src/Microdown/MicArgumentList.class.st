@@ -151,15 +151,11 @@ MicArgumentList >> printOn: aStream [
 	aStream nextPutAll: ((argKeys collect: [:k| k,'=',(self at:k)]) joinUsing: '&')
 ]
 
-{ #category : 'printing' }
-MicArgumentList >> printString [
-	^ String streamContents: [ :stream | self printOn: stream ]
-]
-
 { #category : 'parsing' }
 MicArgumentList >> setDefaultAndArguments: barSplit [
 	"barSplit is two strings, first assumed to be just a value, second to be arguments"
-	|value|
+	
+	| value |
 	value := barSplit first trim.
 	self at: self defaultArg put: value.
 	self setNoDefaultButArguments: barSplit second
@@ -177,13 +173,14 @@ MicArgumentList >> setDefaultNoArguments: fullString [
 { #category : 'parsing' }
 MicArgumentList >> setNoDefaultButArguments: string [
 	"string is assumed to be on the form key=value&key=value"
+	
 	| pairs |
 	pairs := string splitOn: $&.
 	pairs do: [ :p | 
 		| keyValue |
 		keyValue := p splitOnFirst: $= noneValue: nil.
-		self at: keyValue first trim asSymbol put: keyValue second ]
-	
+		keyValue second ifNil: [ self at: keyValue first trim asSymbol put: keyValue second ] ifNotNil: [  
+		self at: keyValue first trim asSymbol put: keyValue second trim ] ]
 ]
 
 { #category : 'initialization' }
@@ -191,7 +188,7 @@ MicArgumentList >> split: aString defaultArg: defArg defaultValue: defValue [
 
 		self 
 			defaultArg: defArg;
-			at: defArg put: defValue;
+			at: defArg trim asSymbol put: defValue trim;
 			initialValue: defValue;
 			from: aString
 ]

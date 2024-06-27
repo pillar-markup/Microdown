@@ -48,7 +48,7 @@ But also
    	code
 	```
    
-   	![Pharo is cool](http://pharo.org width=80&label=fig:pharo)
+   	![Pharo is cool .%anchor=fig:pharo&width=80](http://pharo.org)
 	
    	- list
    	1. ordered list 
@@ -64,7 +64,7 @@ But also
 
 ### Headers
 Similar to markdown headers are composed of `#` space text on one line.
-The headers can be from 1 to 6
+The headers can be from 1 to 6.
 
 ```
 ### Header Level3
@@ -73,11 +73,11 @@ There is not support for other forms of declaration.
 
 ### Anchors
 In microdown we can define anchors and reference to them (see References).
-There are three ways to create anchors
+There are three ways to create anchors:
 
 - `@anchorlabel` will create an anchor to the preceeding element. 
-- Figures, mathematical environments, environment can specify label as arguments (`label`)
-- Code block can specify label as argument (argument named `label`)
+- Figures, mathematical environments, environment can specify label as arguments (`anchor`)
+- Code block can specify label as argument (argument named `anchor`)
 
 ### Various
 
@@ -117,13 +117,13 @@ Microdown offer the same code block that markdown but arguments can be specified
 The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
 
 ``` 
-   ```language=pharo&label=code1&caption=this is my great piece of code
+   ```language=pharo&anchor=code1&caption=this is my great piece of code
     codeBlockMarkupString
     ^ '```'
     ```
 ```
 ````
-```language=pharo&label=code1&caption=this is my great piece of code
+```language=pharo&anchor=code1&caption=this is my great piece of code
 codeBlockMarkupString
    ^ '\`\`\`'
 ```
@@ -160,11 +160,10 @@ When a line starts with '> ' it delimits a quoteblock.
 The markup is not interpreted. 
 
 #### Codeblock 
-Codeblock do not support more than four backticks.
+Codeblock does not support more than four backticks.
 
 
-## Development is in Pharo12!
-
+## Development in Pharo12!
 
 ### Loading specific version
 
@@ -201,9 +200,12 @@ Metacello new
 We have two sources: Pharo in one hand and Pillar and both are not totally synchronised. 
 
 Using Pharo 12: v2.5.x
+- v2.5.4 - add backward compatible anchor in caption + tonel V3 format
 - v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
 
 - v2.4.2 for Pillar 9.0.1
+
+Watch out v2.6.0 is older than v.2.5.4
 
 ### Pillar History
 For Pharo 12
