@@ -88,7 +88,6 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'RichText' with: #( 'Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions'
 				with: #( #'Microdown-Evaluator' #'Microdown-Evaluator-Tests'
-				   #'Microdown-ReferenceChecker'
 				   #'Microdown-PrettyPrinter' #'Microdown-PrettyPrinter-Tests'
 				   #'Microdown-HTMLExporter' #'Microdown-HTMLExporter-Tests'
 				   #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests'

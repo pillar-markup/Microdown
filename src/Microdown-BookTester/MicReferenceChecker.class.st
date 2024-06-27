@@ -155,12 +155,32 @@ MicReferenceChecker >> initialize [
 ]
 
 { #category : 'testing' }
+MicReferenceChecker >> isOk [
+
+	^ duplicatedAnchors isEmpty and: [
+		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
+]
+
+{ #category : 'testing' }
 MicReferenceChecker >> isOkay [
 	
 	   self collectBadReferences .
 	 ^ self finalStatus .
 	 
 
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> unknownAnchors [
+	
+	| unknown ref |
+	unknown := OrderedCollection new. 
+	ref := references copy.
+	ref do: [ :ref |
+		(anchors noneSatisfy: [ :each | 
+			ref anchorLabel = each anchorLabel ])
+				ifTrue: [ unknown add: ref ]  ].
+	^ unknown 
 ]
 
 { #category : 'visiting' }
