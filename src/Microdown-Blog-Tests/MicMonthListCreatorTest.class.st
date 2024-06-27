@@ -26,36 +26,47 @@ MicMonthListCreatorTest >> testGenerateDateListSince2014 [
 { #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
 
-	| dateList fileSystem |
+	| section fileSystem dateList |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
-	
-	dateList := MicMonthListCreator new
+
+	section := MicMonthListCreator new
 		            generateMicListBlockOfLinkDateTo:
 		            fileSystem workingDirectory / '/html'.
 
-	self assert: (dateList isKindOf: MicUnorderedListBlock).
+	self assert: (section isKindOf: MicSectionBlock).
+	self assert: section children size equals: 3;
+	assert: (section children first isKindOf: MicHeaderBlock);
+	assert: (section children second isKindOf: MicUnorderedListBlock).
+	
+	dateList := section children second.
+	
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
 		equals: '[January 2014](/_monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
 		equals: '[' , Date today month asString , '](/_monthBlog/'
-			, Date today month name , '_' , Date today year asString, '.html)'
+			, Date today month name , '_' , Date today year asString , '.html)'
 ]
 
 { #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithTo [
 
-	| dateList fileSystem |
+	| dateList fileSystem section |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	dateList := MicMonthListCreator new
+	section := MicMonthListCreator new
 		            generateMicListBlockOfLinkDateTo:
 		            fileSystem workingDirectory / '/html'.
 
-	self assert: (dateList isKindOf: MicUnorderedListBlock).
+	self assert: (section isKindOf: MicSectionBlock);
+	assert: section children size equals: 3;
+	assert: (section children first isKindOf: MicHeaderBlock);
+	assert: (section children second isKindOf: MicUnorderedListBlock).
+	
+	dateList := section children second.
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
