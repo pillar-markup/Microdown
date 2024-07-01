@@ -32,9 +32,7 @@ MicAbstractBlogCreatorTest >> setUp [
 MicAbstractBlogCreatorTest >> testMakeALinkTo [
 
 	| link |
-	link := abstractBlog
-		        makeALink: 'Pharo is cool'
-		        to: 'Test'.
+	link := abstractBlog makeALink: 'Pharo is cool' to: 'Test' asFileReference.
 
 	self
 		assert: (link isKindOf: MicLinkBlock);

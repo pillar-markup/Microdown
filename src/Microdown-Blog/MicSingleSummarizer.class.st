@@ -52,15 +52,16 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> headerLink: aMicRootBlock [
 
-	| headerLink header path |
+	| headerLink header fileReference |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
 
-	path := (aMicRootBlock fromFile withoutExtension fullName
+	fileReference := (aMicRootBlock fromFile withoutExtension fullName
 		         withoutPrefix: targetDirectory fullName) , '.html'.
+	fileReference  := fileReference asFileReference.
 
 	headerLink
-		addChild: (self makeALink: header text to: path);
+		addChild: (self makeALink: header text to: fileReference);
 		level: header level.
 
 	^ headerLink

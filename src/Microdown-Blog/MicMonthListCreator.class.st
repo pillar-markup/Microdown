@@ -35,8 +35,8 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileRe
 		link := self
 			        makeALink: each asString
 			        to:
-			        '/_monthBlog/' , each name , '_' , each year asString
-			        , '.html'.
+			        FileReference / '_monthBlog' /( each name , '_' , each year asString
+			        , '.html').
 		link parent: listElement.
 		listElement parent: root ].
 

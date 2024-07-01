@@ -21,19 +21,15 @@ MicAbstractBlogCreator >> createGenericMetadata [
 ]
 
 { #category : 'make' }
-MicAbstractBlogCreator >> makeALink: aText to: aLink [
+MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 
 	| text link |
-	text := aText.
-	text isNil
-		ifTrue: [ text := 'Undefined' ]
-		ifFalse: [ text isEmpty ifTrue: [ text := 'Undefined' ]].
+	text := 'Undefined'.
+	aText ifNotNil: [ aText isEmpty ifFalse: [ text := aText ] ].
 
-	link := aLink.
-	link isNil
-		ifTrue: [ link := 'Undefined' ]
-		ifFalse: [ link isEmpty ifTrue: [ link := 'Undefined' ]].
-		
+	link := 'Undefined'.
+	aFileReference ifNotNil: [ aFileReference path isEmpty ifFalse: [ link := aFileReference path fullName ] ].
+
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
 ]
 
@@ -56,9 +52,9 @@ MicAbstractBlogCreator >> targetDirectory [
 ]
 
 { #category : 'accessing' }
-MicAbstractBlogCreator >> targetDirectory: target [
+MicAbstractBlogCreator >> targetDirectory: aFileReference [
 
-	targetDirectory := target
+	targetDirectory := aFileReference asFileReference
 ]
 
 { #category : 'as yet unclassified' }
