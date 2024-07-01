@@ -24,16 +24,15 @@ MicMonthListCreatorTest >> testGenerateDateListSince2014 [
 ]
 
 { #category : 'tests' }
-MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
+MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDate [
 
 	| root fileSystem dateList |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	root := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
-		           fileSystem workingDirectory / '/html'.
+	root := MicMonthListCreator new generateMicListBlockOfLinkDate.
 
-	self assert: (root isKindOf: MicRootBlock ).
+	self assert: (root isKindOf: MicRootBlock).
 	self
 		assert: root children size equals: 2;
 		assert: (root children first isKindOf: MicHeaderBlock);
@@ -51,14 +50,13 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateTo [
 ]
 
 { #category : 'tests' }
-MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithTo [
+MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWith [
 
 	| dateList fileSystem root |
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	root := MicMonthListCreator new generateMicListBlockOfLinkDateTo:
-		           fileSystem workingDirectory / '/html'.
+	root := MicMonthListCreator new generateMicListBlockOfLinkDate.
 
 	self
 		assert: (root isKindOf: MicRootBlock);

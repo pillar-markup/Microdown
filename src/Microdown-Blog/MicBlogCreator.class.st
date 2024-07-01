@@ -85,8 +85,9 @@ MicBlogCreator >> createAllHtmlFile [
 	"Create _monthListBlog"
 	listOfSingleSummary := allFileParse collect: [ :each |
 		                       MicSingleSummarizer new
-										 targetDirectory: targetDirectory;
-		  summarize: each ].
+			                       targetDirectory: targetDirectory;
+			                       summarize: each ].
+	self sortSingleSummarizedDocuments: listOfSingleSummary.
 	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
@@ -171,21 +172,16 @@ MicBlogCreator >> initialize [
 { #category : 'rendering' }
 MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 
-	| summar dateListCopy |
-	dateList := MicMonthListCreator new generateDateListSince2014.
-	dateListCopy := dateList copy.
+	| summar monthList monthListCreator |
+	monthListCreator := MicMonthListCreator new.
+	
+	monthList := monthListCreator createListOfMonthListFromSummarized:
+		             singleSummarizedDocuments.
 
-	dateListCopy do: [ :each |
-		summar := sum group: singleSummarizedDocuments byDate: each.
-		summar ifEmpty: [ dateList := dateList copyWithout: each ] ].
-
-	dateListCopy := dateList copy.
-
-	dateList := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateWith: dateList
-		            To: targetDirectory.
-
-	dateListCopy do: [ :each |
+	dateList := monthListCreator
+		            generateMicListBlockOfLinkDateWith: monthList.
+		
+	monthList do: [ :each |
 		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar := sum summarize: summar.
 		self createHtmlGroupFile: summar at: each ]

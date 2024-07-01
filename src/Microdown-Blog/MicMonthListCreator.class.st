@@ -8,6 +8,18 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
+{ #category : 'as yet unclassified' }
+MicMonthListCreator >> createListOfMonthListFromSummarized: singleSummarizedDocuments [
+
+	| dateList |
+	dateList := singleSummarizedDocuments collect: [ :each |
+		            | date |
+		            date := each children first atKey: #date.
+		            date := Date readFrom: date pattern: 'y/m/d'.
+		            date month ].
+	^ dateList asSet
+]
+
 { #category : 'generate' }
 MicMonthListCreator >> generateDateListSince2014 [
 
@@ -20,23 +32,23 @@ MicMonthListCreator >> generateDateListSince2014 [
 ]
 
 { #category : 'generate' }
-MicMonthListCreator >> generateMicListBlockOfLinkDateTo: aFileReference [
+MicMonthListCreator >> generateMicListBlockOfLinkDate [
 
-	^ self generateMicListBlockOfLinkDateWith: self generateDateListSince2014 To: aFileReference 
+	^ self
+		  generateMicListBlockOfLinkDateWith: self generateDateListSince2014
 ]
 
 { #category : 'generate' }
-MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aDateList To: aFileReference [
+MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
 
 	| root link listElement |
 	root := MicUnorderedListBlock new.
-	aDateList do: [ :each |
+	aMonthList do: [ :each |
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
-			        to:
-			        FileReference / '_monthBlog' /( each name , '_' , each year asString
-			        , '.html').
+			        to: FileReference / '_monthBlog'
+				        / (each name , '_' , each year asString , '.html').
 		link parent: listElement.
 		listElement parent: root ].
 
