@@ -208,6 +208,18 @@ MicBlogCreator >> rootAssembly: aMicRoot [
 	^ aMicRoot
 ]
 
+{ #category : 'sorting' }
+MicBlogCreator >> sortSingleSummarizedDocuments: singleSummarizedDocuments [
+
+	singleSummarizedDocuments sort: [ :each1 :each2 |
+		| date1 date2 |
+		date1 := each1 children first atKey: #date.
+		date1 := Date readFrom: date1 pattern: 'y/m/d'.
+		date2 := each2 children first atKey: #date.
+		date2 := Date readFrom: date2 pattern: 'y/m/d'.
+		date1 < date2 ]
+]
+
 { #category : 'accessing' }
 MicBlogCreator >> sourceDirectory [
 

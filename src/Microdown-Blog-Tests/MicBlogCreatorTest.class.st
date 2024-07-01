@@ -237,6 +237,39 @@ MicBlogCreatorTest >> testRootAssembly [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
+
+	| listOfSummarizedDocuments summarized1 summarized2 summarized3 singleSummarizer |
+	listOfSummarizedDocuments := Array new: 3.
+	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/'.
+
+	summarized1 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample1 contents)
+			                fromFile: resources generateFilesystemExample1).
+	summarized2 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample2 contents)
+			                fromFile: resources generateFilesystemExample2).
+	summarized3 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample3 contents)
+			                fromFile: resources generateFilesystemExample3).
+
+	listOfSummarizedDocuments at: 1 put: summarized2.
+	listOfSummarizedDocuments at: 2 put: summarized3.
+	listOfSummarizedDocuments at: 3 put: summarized1.
+
+	blog sortSingleSummarizedDocuments: listOfSummarizedDocuments.
+
+	self
+		assert: (listOfSummarizedDocuments at: 1) equals: summarized3;
+		assert: (listOfSummarizedDocuments at: 2) equals: summarized1;
+		assert: (listOfSummarizedDocuments at: 3) equals: summarized2
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testWriteTo [
 
 	| root file html |
