@@ -44,7 +44,13 @@ MicBlogCreatorTest >> listOfFile [
 { #category : 'running' }
 MicBlogCreatorTest >> setUp [
 
+	| monthList |
+	
 	super setUp.
+	
+	monthList := {
+		             (Month year: 2018 month: 1).
+		             (Month year: 2019 month: 1) }.
 
 	"Put here a common initialization logic for tests"
 	resources := MicFileTestResources new.
@@ -53,8 +59,7 @@ MicBlogCreatorTest >> setUp [
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		dateList:
-			(MicMonthListCreator new generateMicListBlockOfLinkDate)
+		dateList: (MicMonthListCreator new generateMicListBlockOfLinkDateWith: monthList).
 ]
 
 { #category : 'tests' }
