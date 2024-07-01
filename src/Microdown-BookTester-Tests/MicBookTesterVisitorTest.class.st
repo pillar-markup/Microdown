@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'utilities' }
 MicBookTesterVisitorTest >> parseAndTest: docText [
 	| doc bTester |
 	doc := Microdown parse: docText.
@@ -14,7 +14,7 @@ MicBookTesterVisitorTest >> parseAndTest: docText [
 	^ bTester
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExampleCodeblock [
 	| docText bTester |
 	docText := '```example=true
@@ -26,7 +26,7 @@ MicBookTesterVisitorTest >> testExampleCodeblock [
 	self assert: bTester validTests size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - failing book tests' }
 MicBookTesterVisitorTest >> testExampleCodeblockWithFailingTest [
 	| docText bTester |
 	docText := '```example=true
@@ -39,8 +39,9 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithFailingTest [
 	self assert: bTester failedTests size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - failing book tests' }
 MicBookTesterVisitorTest >> testExampleCodeblockWithFalseTest [
+
 	| docText bTester |
 	docText := '```example=true
 3 + 4 
@@ -52,8 +53,9 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithFalseTest [
 	self assert: bTester failedTests size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - failing book tests' }
 MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
+
 	| docText bTester |
 	docText := '```example=true
 3 + 12	
@@ -61,12 +63,15 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
 '.
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
-	self assert: bTester failedTests size equals: 1
+	self assert: bTester failedTests size equals: 1.
+	self flag: #todo.
+	self assert: bTester failedTests first explanation equals: 'Instance of SmallInteger did not understand #key'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - strange codeblock' }
 MicBookTesterVisitorTest >> testExampleCodeblockWithTwoBrackets [
-">> instead of > > > should not work so there is one failed test"
+	">> instead of > > > should not work so there is one failed test"
+	
 	| docText bTester |
 	docText := '```example=true
 3 + 12
@@ -75,10 +80,26 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithTwoBrackets [
 '.
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
-	self assert: bTester failedTests size equals: 1
+	self assert: bTester failedTests size equals: 1.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - strange codeblock' }
+MicBookTesterVisitorTest >> testExampleEmptyCodeblockWithTwoBrackets [
+	
+	| docText bTester |
+	docText := '```example=true
+```
+'.
+	bTester := self parseAndTest: docText.
+	self assertEmpty: bTester validTests.
+	self assert: bTester failedTests size equals: 1.
+	self flag: #todo.
+	"the explanation should be better"
+	
+	self assert: bTester failedTests first explanation equals: '#key was sent to nil'
+]
+
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
 	| docText bTester |
 	docText := '```example=true&expectedFailure=true
@@ -91,7 +112,7 @@ MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
 	self assert: bTester validTests size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExpectedFailureForARaisedException [
 	| docText bTester |
 	docText := '```example=true&expectedFailure=true
@@ -104,55 +125,52 @@ MicBookTesterVisitorTest >> testExpectedFailureForARaisedException [
 	self assert: bTester validTests size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExplanationIsExceptionCatchedInFailingTest [
-	| docText doc bTester |
+	| docText bTester |
 	docText := '```example=true
 3 + ''12''
 >>> 8		
 ```
 '.
-	doc := Microdown parse: docText.
-	bTester := MicBookTesterVisitor new.
-	bTester start: doc.
+
+	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
 	self assert: bTester failedTests first explanation equals: 'Instance of Character did not understand #adaptToNumber:andSend:'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExplanationIsTestFailedWithoutException [
-	| docText doc bTester |
+	
+	| docText bTester |
 	docText := '```example=true
 3 + 13
 >>> 15		
 ```
 '.
-	doc := Microdown parse: docText.
-	bTester := MicBookTesterVisitor new.
-	bTester start: doc.
+	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
 	self assert: bTester failedTests first explanation equals: 'Test failed without raising an exception'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - valid book tests' }
 MicBookTesterVisitorTest >> testExplanationIsTestPassed [
-	| docText doc bTester |
+
+	| docText bTester |
 	docText := '```example=true
 3 + 12
 >>> 15		
 ```
 '.
-		doc := Microdown parse: docText.
-	bTester := MicBookTesterVisitor new.
-	bTester start: doc.
+	bTester := self parseAndTest: docText.
 	self assert: bTester validTests size equals: 1.
 	self assertEmpty: bTester failedTests.
 	self assert: bTester validTests first explanation equals: 'Test passed'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - no example' }
 MicBookTesterVisitorTest >> testNoExampleCodeblock [
 	| docText bTester |
 	docText := '```
@@ -165,7 +183,7 @@ MicBookTesterVisitorTest >> testNoExampleCodeblock [
 	self assertEmpty: bTester validTests
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - no example' }
 MicBookTesterVisitorTest >> testThreeCodeBlocksWithTwoExamples [
 
 	| docText bTester |
