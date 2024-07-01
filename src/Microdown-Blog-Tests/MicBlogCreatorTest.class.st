@@ -214,24 +214,6 @@ MicBlogCreatorTest >> testInitializeMonthList [
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testLevelPathDifferenceForCSS [
-
-	| result |
-	result := blog levelPathDifferenceForCSS: FileReference / 'a' / 'b' / 'c.md'.
-
-	self assert: result equals: '../../'
-]
-
-{ #category : 'tests' }
-MicBlogCreatorTest >> testLevelPathDifferenceForCSSWithEmptyString [
-
-	| result |
-	result := blog levelPathDifferenceForCSS: '' asFileReference.
-
-	self assert: result equals: ''
-]
-
-{ #category : 'tests' }
 MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 
 	| fileRef |

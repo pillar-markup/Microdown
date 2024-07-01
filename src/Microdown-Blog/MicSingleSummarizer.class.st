@@ -40,10 +40,9 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 			     t parent: p.
 			     ^ p ].
 
-	textElements := self limitParagraphWord: p. 
+	textElements := self limitParagraphWord: p.
 
 	newParagraph := MicParagraphBlock new.
-	"t := MicTextBlock new bodyString: textElements ensureNoSpace contents."
 	t := (MicInlineParser parse: textElements) first.
 	t parent: newParagraph.
 	^ newParagraph

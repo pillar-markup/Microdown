@@ -172,16 +172,15 @@ MicBlogCreator >> initialize [
 MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 
 	| summar dateListCopy |
-
 	dateList := MicMonthListCreator new generateDateListSince2014.
 	dateListCopy := dateList copy.
 
 	dateListCopy do: [ :each |
 		summar := sum group: singleSummarizedDocuments byDate: each.
-		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
-	
+		summar ifEmpty: [ dateList := dateList copyWithout: each ] ].
+
 	dateListCopy := dateList copy.
-	
+
 	dateList := MicMonthListCreator new
 		            generateMicListBlockOfLinkDateWith: dateList
 		            To: targetDirectory.
@@ -190,20 +189,6 @@ MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar := sum summarize: summar.
 		self createHtmlGroupFile: summar at: each ]
-]
-
-{ #category : 'css' }
-MicBlogCreator >> levelPathDifferenceForCSS: aFileReference [
-
-	| result |
-	result := '' writeStream.
-
-	2 to: aFileReference path size do: [ :each |
-	result nextPutAll: '../' ].
-
-	result close.
-
-	^ result contents
 ]
 
 { #category : 'rendering' }
@@ -255,8 +240,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
 	| htmlDocument cssFramework |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework basePath:
-		(self levelPathDifferenceForCSS: aFileReference) , 'css/'.
+	cssFramework basePath: '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.

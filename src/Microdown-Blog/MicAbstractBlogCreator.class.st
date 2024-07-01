@@ -23,12 +23,14 @@ MicAbstractBlogCreator >> createGenericMetadata [
 { #category : 'make' }
 MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 
-	| text link |
+	| text link ref |
 	text := 'Undefined'.
-	aText ifNotNil: [ aText isEmpty ifFalse: [ text := aText ] ].
+	aText ifNotNil: [ aText ifNotEmpty: [ text := aText ] ].
 
 	link := 'Undefined'.
-	aFileReference ifNotNil: [ aFileReference path isEmpty ifFalse: [ link := aFileReference path fullName ] ].
+	aFileReference ifNotNil: [
+		ref := aFileReference asFileReference.
+		ref path isEmpty ifFalse: [ link := ref path fullName ] ].
 
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
 ]
@@ -63,13 +65,10 @@ MicAbstractBlogCreator >> verifyDateMetadata: aMicRootBlock [
 	| newMicRootBlock metadata |
 	newMicRootBlock := MicRootBlock new.
 
-	aMicRootBlock children isEmpty
-		ifTrue: [
-			metadata := self createGenericMetadata ]
-		ifFalse: [
+	aMicRootBlock children ifEmpty: [ metadata := self createGenericMetadata ]
+		ifNotEmpty: [
 			(aMicRootBlock children first isKindOf: MicMetaDataBlock)
-				ifFalse: [
-					metadata := self createGenericMetadata  ]
+				ifFalse: [ metadata := self createGenericMetadata ]
 				ifTrue: [
 					metadata := aMicRootBlock children first.
 					(metadata includesKey: #date)
