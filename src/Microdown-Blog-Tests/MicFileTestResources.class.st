@@ -58,34 +58,6 @@ MicFileTestResources >> fileSystem [
 	^ FileSystem memory
 ]
 
-{ #category : 'running' }
-MicFileTestResources >> generateFilesystemExample [
-
-	| file |
-	file := self workingDirectory / 'anExample1.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '{
-    "date" : "2019/01/08"
-}
-# A Cool Story
-@sec1
-
-Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
-    
-
-Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
-
-Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
-
-
-```
-this is a code blu blu
-```
-' ].
-
-	^ file asFileReference
-]
-
 { #category : 'as yet unclassified' }
 MicFileTestResources >> generateFilesystemExample1 [
 

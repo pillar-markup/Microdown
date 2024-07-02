@@ -19,16 +19,19 @@ MicBlogCreatorTest >> generateArchitecture [
 	fileSystem createDirectory: '/source'.
 	fileSystem createDirectory: '/source/test'.
 
-	ref1 := fileSystem workingDirectory / 'source/anExample1.md'.
-	ref1 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample1 contents].
+	ref1 := fileSystem workingDirectory / 'source' / 'anExample1.md'.
+	ref1 writeStreamDo: [ :stream |
+		stream nextPutAll: resources generateFilesystemExample1 contents ].
 
-	ref2 := fileSystem workingDirectory / 'source/anExample2.md'.
-	ref2 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample2 contents].
+	ref2 := fileSystem workingDirectory / 'source' / 'anExample2.md'.
+	ref2 writeStreamDo: [ :stream |
+		stream nextPutAll: resources generateFilesystemExample2 contents ].
 
-	ref3 := fileSystem workingDirectory / 'source/test/anExample3.md'.
-	ref3 writeStreamDo: [ :stream | stream nextPutAll: resources generateFilesystemExample3 contents].
-	
-	ref4 := fileSystem workingDirectory / 'source/anExample4.java'.
+	ref3 := fileSystem workingDirectory / 'source' / 'test' / 'anExample3.md'.
+	ref3 writeStreamDo: [ :stream |
+		stream nextPutAll: resources generateFilesystemExample3 contents ].
+
+	ref4 := fileSystem workingDirectory / 'source' / 'anExample4.java'.
 	ref4 writeStreamDo: [ :stream | stream nextPutAll: 'Du java' ]
 ]
 
@@ -41,7 +44,13 @@ MicBlogCreatorTest >> listOfFile [
 { #category : 'running' }
 MicBlogCreatorTest >> setUp [
 
+	| monthList |
+	
 	super setUp.
+	
+	monthList := {
+		             (Month year: 2018 month: 1).
+		             (Month year: 2019 month: 1) }.
 
 	"Put here a common initialization logic for tests"
 	resources := MicFileTestResources new.
@@ -50,9 +59,7 @@ MicBlogCreatorTest >> setUp [
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		dateList:
-			(MicMonthListCreator new generateMicListBlockOfLinkDateTo:
-					 fileSystem / 'html')
+		dateList: (MicMonthListCreator new generateMicListBlockOfLinkDateWith: monthList).
 ]
 
 { #category : 'tests' }
@@ -84,10 +91,10 @@ MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 
 	self
 		assert: (fileSystem / 'html') children size equals: 4;
-		assert: (fileSystem / 'html/anExample1.md') exists;
-		assert: (fileSystem / 'html/anExample2.md') exists;
-		assert: (fileSystem / 'html/test/anExample3.md') exists;
-		assert: (fileSystem / 'html/anExample4.java') exists
+		assert: (fileSystem / 'html' / 'anExample1.md') exists;
+		assert: (fileSystem / 'html' / 'anExample2.md') exists;
+		assert: (fileSystem / 'html' / 'test' / 'anExample3.md') exists;
+		assert: (fileSystem / 'html' / 'anExample4.java') exists
 ]
 
 { #category : 'tests' }
@@ -98,11 +105,12 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	allFile := (fileSystem / 'html') allFiles.
 
-	self assert: (fileSystem / 'html/index.html') exists;
-		assert: (fileSystem / 'html/anExample1.html') exists;
-		assert: (fileSystem / 'html/anExample2.html') exists;
-		assert: (fileSystem / 'html/test/anExample3.html') exists;
-		assert: (fileSystem / 'html/anExample4.java') exists
+	self
+		assert: (fileSystem / 'html' / 'index.html') exists;
+		assert: (fileSystem / 'html' / 'anExample1.html') exists;
+		assert: (fileSystem / 'html' / 'anExample2.html') exists;
+		assert: (fileSystem / 'html' / 'test' / 'anExample3.html') exists;
+		assert: (fileSystem / 'html' / 'anExample4.java') exists
 ]
 
 { #category : 'tests' }
@@ -122,13 +130,15 @@ MicBlogCreatorTest >> testCreateFromTo [
 MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 
 	| root file |
-	file := self listOfFile at: 1.
+	file := fileSystem / 'html' / 'anExample1.md'.
+
+	blog copySourceDirectoryInTarget.
 
 	root := Microdown parse: file contents.
 
 	blog createHtmlFile: root toReplace: file.
 
-	self assert: file basename equals: 'anExample1.html'
+	self assert: file fullName equals: '/html/anExample1.html'
 ]
 
 { #category : 'tests' }
@@ -137,11 +147,12 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 	| root summarizer singleSummarizer allFileParse |
 	summarizer := MicListSummarizer new.
 	summarizer targetDirectory: 'html'.
-	
+
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: blog targetDirectory.
-	
-	allFileParse := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each ].
+
+	allFileParse := self listOfFile collect: [ :each |
+		                singleSummarizer summarizeFile: each ].
 
 	root := summarizer
 		        group: allFileParse
@@ -153,7 +164,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		at: (Month year: 2019 month: 'January').
 
 	self assert:
-		(fileSystem / 'html/_monthBlog/January_2019.html') exists
+		(fileSystem / 'html' / '_monthBlog' / 'January_2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -165,7 +176,7 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.
 
-	self assert: (fileSystem / 'html/index.html') exists
+	self assert: (fileSystem / 'html' / 'index.html') exists
 ]
 
 { #category : 'tests' }
@@ -186,13 +197,16 @@ MicBlogCreatorTest >> testInitializeMonthList [
 
 	singleSum1 := MicSingleSummarizer new targetDirectory:
 		              blog targetDirectory.
-	singleSum1 := singleSum1 summarizeFile: fileSystem / 'source/anExample1.md'.
+	singleSum1 := singleSum1 summarizeFile:
+		              fileSystem / 'source' / 'anExample1.md'.
 	singleSum2 := MicSingleSummarizer new targetDirectory:
 		              blog targetDirectory.
-	singleSum2 := singleSum2 summarizeFile: fileSystem / 'source/anExample2.md'.
+	singleSum2 := singleSum2 summarizeFile:
+		              fileSystem / 'source' / 'anExample2.md'.
 	singleSum3 := MicSingleSummarizer new targetDirectory:
 		              blog targetDirectory.
-	singleSum3 := singleSum3 summarizeFile: fileSystem / 'source/test/anExample3.md'.
+	singleSum3 := singleSum3 summarizeFile:
+		              fileSystem / 'source' / 'test' / 'anExample3.md'.
 
 	listSingleSummarizer at: 1 put: singleSum1.
 	listSingleSummarizer at: 2 put: singleSum2.
@@ -200,27 +214,7 @@ MicBlogCreatorTest >> testInitializeMonthList [
 
 	blog initializeMonthList: listSingleSummarizer.
 
-	self assert: (fileSystem / 'html/_monthBlog') allFiles size equals: 2
-]
-
-{ #category : 'tests' }
-MicBlogCreatorTest >> testLevelPathDifferenceForCSS [
-
-	| result |
-
-	result := blog levelPathDifferenceForCSS: '/a/b/c.md'.
-
-	self assert: result equals: '../../'
-]
-
-{ #category : 'tests' }
-MicBlogCreatorTest >> testLevelPathDifferenceForCSSWithEmptyString [
-
-	| result |
-
-	result := blog levelPathDifferenceForCSS: ''.
-
-	self assert: result equals: ''
+	self assert: (fileSystem / 'html' / '_monthBlog') allFiles size equals: 2
 ]
 
 { #category : 'tests' }
@@ -228,10 +222,10 @@ MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 
 	| fileRef |
 	fileRef := MicBlogCreator new renameMarkdownIntoHtmlFile:
-		           fileSystem / 'source/anExample1.md'.
+		           fileSystem / 'source' / 'anExample1.md'.
 
-	self assert: (fileSystem / 'source/anExample1.html') exists.
-	self assert: (fileSystem / 'source/anExample1.md') exists not
+	self assert: (fileSystem / 'source' / 'anExample1.html') exists.
+	self assert: (fileSystem / 'source' / 'anExample1.md') exists not
 ]
 
 { #category : 'tests' }
@@ -247,17 +241,47 @@ MicBlogCreatorTest >> testRootAssembly [
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testWriteToNamed [
+MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
+
+	| listOfSummarizedDocuments summarized1 summarized2 summarized3 singleSummarizer |
+	listOfSummarizedDocuments := Array new: 3.
+	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/'.
+
+	summarized1 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample1 contents)
+			                fromFile: resources generateFilesystemExample1).
+	summarized2 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample2 contents)
+			                fromFile: resources generateFilesystemExample2).
+	summarized3 := singleSummarizer summarize:
+		               ((Microdown parse:
+			                 resources generateFilesystemExample3 contents)
+			                fromFile: resources generateFilesystemExample3).
+
+	listOfSummarizedDocuments at: 1 put: summarized2.
+	listOfSummarizedDocuments at: 2 put: summarized3.
+	listOfSummarizedDocuments at: 3 put: summarized1.
+
+	blog sortSingleSummarizedDocuments: listOfSummarizedDocuments.
+
+	self
+		assert: (listOfSummarizedDocuments at: 1) equals: summarized3;
+		assert: (listOfSummarizedDocuments at: 2) equals: summarized1;
+		assert: (listOfSummarizedDocuments at: 3) equals: summarized2
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testWriteTo [
 
 	| root file html |
 	file := self listOfFile at: 1.
 	root := Microdown parse: file contents.
 	html := (MicHTMLVisitor new visit: root) at: 1.
 
-	blog
-		write: html
-		to: fileSystem / 'html'
-		named: 'test.html'.
+	blog write: html to: 'test.html' asFileReference.
 
-	self assert: (fileSystem / 'html/test.html') exists
+	self assert: (fileSystem / 'html' / 'test.html') exists
 ]

@@ -14,8 +14,8 @@ MicSingleSummarizerTest >> createMicRootBlock [
 
 	| micRootBlock |
 	micRootBlock := Microdown parse:
-		                resources generateFilesystemExample contents.
-	^ micRootBlock fromFile: resources generateFilesystemExample
+		                resources generateFilesystemExample1 contents.
+	^ micRootBlock fromFile: resources generateFilesystemExample1
 ]
 
 { #category : 'running' }
@@ -34,11 +34,8 @@ MicSingleSummarizerTest >> testContents [
 	| root dumper |
 	root := MicRealDumper new visit:
 		        (micSingleSummarizer summarize: self createMicRootBlock).
-	dumper := Microdown parse:
-		          '# [A Cool Story](' , '' , '/anExample1.html' , '' , ')
-	Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...'.
 
-	dumper := MicRealDumper new visit: dumper.
+	dumper := MicRealDumper new visit: MicFileTestResources new dumperInput1.
 
 	self assert: root contents equals: dumper contents
 ]
@@ -156,7 +153,11 @@ MicSingleSummarizerTest >> testSummarize [
 	root := micSingleSummarizer summarize: self createMicRootBlock.
 	self
 		assert: (root isKindOf: MicRootBlock);
-		assert: root children size equals: 3
+		assert: root children size equals: 4;
+		assert: (root children first isKindOf: MicMetaDataBlock);
+		assert: (root children second isKindOf: MicHeaderBlock);
+		assert: (root children third isKindOf: MicParagraphBlock);
+		assert: (root children fourth isKindOf: MicParagraphBlock).
 ]
 
 { #category : 'tests' }
@@ -164,7 +165,7 @@ MicSingleSummarizerTest >> testSummarizeFile [
 
 	| root |
 	root := micSingleSummarizer summarizeFile:
-		        resources generateFilesystemExample.
+		        resources generateFilesystemExample1.
 	self assert: (root isKindOf: MicRootBlock)
 ]
 
@@ -175,9 +176,8 @@ MicSingleSummarizerTest >> testWithMetaDataAndWithDate [
 	root := micSingleSummarizer summarize: self createMicRootBlock.
 	self
 		assert: (root isKindOf: MicRootBlock);
-		assert: root children size equals: 3;
-		assert: (root children first body at: #date)
-		equals: '2019/01/08'
+		assert: root children size equals: 4;
+		assert: (root children first body at: #date) equals: '2019/01/09'
 ]
 
 { #category : 'tests' }
@@ -188,7 +188,7 @@ MicSingleSummarizerTest >> testWithMetaDataAndWithoutDate [
 		        resources generateFilesystemExampleWithoutDateInMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
-		assert: root children size equals: 3;
+		assert: root children size equals: 4;
 		assert: (root children first body at: #date)
 		equals: micSingleSummarizer replacementDate
 ]
@@ -201,7 +201,7 @@ MicSingleSummarizerTest >> testWithMetaDataButInvalidDate [
 		        resources generateFilesystemExampleWithBrokenDateInMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
-		assert: root children size equals: 3;
+		assert: root children size equals: 4;
 		assert: (root children first atKey: #date)
 		equals: micSingleSummarizer replacementDate
 ]
@@ -214,7 +214,7 @@ MicSingleSummarizerTest >> testWithoutMetaData [
 		        resources generateFilesystemExampleWithoutMetadata.
 	self
 		assert: (root isKindOf: MicRootBlock);
-		assert: root children size equals: 3;
+		assert: root children size equals: 4;
 		assert: (root children first body at: #date)
 		equals: micSingleSummarizer replacementDate
 ]

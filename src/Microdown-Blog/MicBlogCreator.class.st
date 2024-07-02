@@ -35,14 +35,14 @@ Class {
 }
 
 { #category : 'API' }
-MicBlogCreator class >> createFrom: source to: target [
+MicBlogCreator class >> createFrom: sourceReference to: targetReference [
 
-	| tmp1 |
-	tmp1 := self new.
-	tmp1
-		sourceDirectory: source;
-		targetDirectory: target.
-	tmp1 createAllHtmlFile
+	| blogCreator |
+	blogCreator := self new.
+	blogCreator
+		sourceDirectory: sourceReference;
+		targetDirectory: targetReference.
+	blogCreator createAllHtmlFile
 ]
 
 { #category : 'collect' }
@@ -85,8 +85,9 @@ MicBlogCreator >> createAllHtmlFile [
 	"Create _monthListBlog"
 	listOfSingleSummary := allFileParse collect: [ :each |
 		                       MicSingleSummarizer new
-										 targetDirectory: targetDirectory;
-		  summarize: each ].
+			                       targetDirectory: targetDirectory;
+			                       summarize: each ].
+	self sortSingleSummarizedDocuments: listOfSingleSummary.
 	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
@@ -108,24 +109,20 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	aFileReference delete.
 
-	self
-		write: visitor
-		to: targetDirectory
-		named:
-		(aFileReference fullName withoutPrefix:
-			 self targetDirectory fullName)
+	self write: visitor to: (aFileReference fullName withoutPrefix:
+			 self targetDirectory fullName , '/') asFileReference
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
-	| visitor  |
+	| visitor |
 	self rootAssembly: aMicRoot.
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
 		write: visitor
-		to: targetDirectory
-		named: '_monthBlog/' ,aMonth name , '_' , aMonth year asString , '.html'
+		to: '_monthBlog' asFileReference / (aMonth name , '_'
+			, aMonth year asString , '.html')
 ]
 
 { #category : 'rendering' }
@@ -136,7 +133,7 @@ MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
-	self write: visitor to: targetDirectory named: 'index.html'
+	self write: visitor to: 'index.html' asFileReference
 ]
 
 { #category : 'accessing' }
@@ -175,41 +172,19 @@ MicBlogCreator >> initialize [
 { #category : 'rendering' }
 MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 
-	| summar dateListCopy |
-
-	dateList := MicMonthListCreator new generateDateListSince2014.
-	dateListCopy := dateList copy.
-
-	dateListCopy do: [ :each |
-		summar := sum group: singleSummarizedDocuments byDate: each.
-		summar isEmpty ifTrue: [ dateList := dateList copyWithout: each ] ].
+	| summar monthList monthListCreator |
+	monthListCreator := MicMonthListCreator new.
 	
-	dateListCopy := dateList copy.
-	
-	dateList := MicMonthListCreator new
-		            generateMicListBlockOfLinkDateWith: dateList
-		            To: targetDirectory.
+	monthList := monthListCreator createListOfMonthListFromSummarized:
+		             singleSummarizedDocuments.
 
-	dateListCopy do: [ :each |
+	dateList := monthListCreator
+		            generateMicListBlockOfLinkDateWith: monthList.
+		
+	monthList do: [ :each |
 		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar := sum summarize: summar.
 		self createHtmlGroupFile: summar at: each ]
-]
-
-{ #category : 'css' }
-MicBlogCreator >> levelPathDifferenceForCSS: aStringPath [
-
-	| result string |
-	string := aStringPath copyReplaceAll: '\' with: '/'.
-
-	result := '' writeStream.
-
-	2 to: (string substrings: '/') size do: [ :each |
-	result nextPutAll: '../' ].
-
-	result close.
-
-	^ result contents
 ]
 
 { #category : 'rendering' }
@@ -229,6 +204,18 @@ MicBlogCreator >> rootAssembly: aMicRoot [
 	^ aMicRoot
 ]
 
+{ #category : 'sorting' }
+MicBlogCreator >> sortSingleSummarizedDocuments: singleSummarizedDocuments [
+
+	singleSummarizedDocuments sort: [ :each1 :each2 |
+		| date1 date2 |
+		date1 := each1 children first atKey: #date.
+		date1 := Date readFrom: date1 pattern: 'y/m/d'.
+		date2 := each2 children first atKey: #date.
+		date2 := Date readFrom: date2 pattern: 'y/m/d'.
+		date1 < date2 ]
+]
+
 { #category : 'accessing' }
 MicBlogCreator >> sourceDirectory [
 
@@ -236,9 +223,9 @@ MicBlogCreator >> sourceDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> sourceDirectory: aFileReference [
+MicBlogCreator >> sourceDirectory: aFileReferenceOrAString [
 
-	sourceDirectory := aFileReference
+	sourceDirectory := aFileReferenceOrAString asFileReference
 ]
 
 { #category : 'accessing' }
@@ -248,24 +235,20 @@ MicBlogCreator >> targetDirectory [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> targetDirectory: aFileReference [
+MicBlogCreator >> targetDirectory: aFileReferenceOrAString [
 
-	targetDirectory := aFileReference.
-	aFileReference ensureDeleteAll.
-	aFileReference ensureCreateDirectory.
+	targetDirectory := aFileReferenceOrAString asFileReference.
+	aFileReferenceOrAString ensureDeleteAll.
+	aFileReferenceOrAString ensureCreateDirectory.
 	sum targetDirectory: targetDirectory
 ]
 
 { #category : 'rendering' }
-MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
+MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
-	| htmlDocument fileName cssFramework |
-	fileName := aName withoutPrefix: '/'.
-	fileName := fileName withoutPrefix: '\'.
-
+	| htmlDocument cssFramework |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework basePath:
-		(self levelPathDifferenceForCSS: fileName) , 'css/'.
+	cssFramework basePath: '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
@@ -273,9 +256,9 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aPath named: aName [
 	htmlDocument
 		setCharSetUTF8;
 		addCSS: cssFramework;
-		destinationPath: aPath.
+		destinationPath: targetDirectory.
 	^ htmlDocument
-		  fileName: fileName;
+		  fileName: aFileReference path pathString;
 		  writeDocument: aMicHTMLVisitor contents;
 		  contents
 ]

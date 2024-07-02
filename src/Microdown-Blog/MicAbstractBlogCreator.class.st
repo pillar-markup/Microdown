@@ -8,21 +8,37 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
+{ #category : 'as yet unclassified' }
+MicAbstractBlogCreator >> createGenericMetadata [
+
+	| metadata |
+
+	metadata := MicMetaDataBlock new.
+	metadata body: Dictionary new.
+	self setValidDateTo: metadata.
+	
+	^ metadata
+]
+
 { #category : 'make' }
-MicAbstractBlogCreator >> makeALink: aText to: aLink [
+MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 
-	| text link |
-	text := aText.
-	text isNil
-		ifTrue: [ text := 'Undefined' ]
-		ifFalse: [ text isEmpty ifTrue: [ text := 'Undefined' ]].
+	| text link ref |
+	text := 'Undefined'.
+	aText ifNotNil: [ aText ifNotEmpty: [ text := aText ] ].
 
-	link := aLink.
-	link isNil
-		ifTrue: [ link := 'Undefined' ]
-		ifFalse: [ link isEmpty ifTrue: [ link := 'Undefined' ]].
-		
+	link := 'Undefined'.
+	aFileReference ifNotNil: [
+		ref := aFileReference asFileReference.
+		ref path isEmpty ifFalse: [ link := ref path fullName ] ].
+
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
+]
+
+{ #category : 'as yet unclassified' }
+MicAbstractBlogCreator >> replacementDate [
+
+	^ '1970/12/25'
 ]
 
 { #category : 'verifying' }
@@ -38,7 +54,33 @@ MicAbstractBlogCreator >> targetDirectory [
 ]
 
 { #category : 'accessing' }
-MicAbstractBlogCreator >> targetDirectory: target [
+MicAbstractBlogCreator >> targetDirectory: aFileReference [
 
-	targetDirectory := target
+	targetDirectory := aFileReference asFileReference
+]
+
+{ #category : 'as yet unclassified' }
+MicAbstractBlogCreator >> verifyDateMetadata: aMicRootBlock [
+
+	| newMicRootBlock metadata |
+	newMicRootBlock := MicRootBlock new.
+
+	aMicRootBlock children ifEmpty: [ metadata := self createGenericMetadata ]
+		ifNotEmpty: [
+			(aMicRootBlock children first isKindOf: MicMetaDataBlock)
+				ifFalse: [ metadata := self createGenericMetadata ]
+				ifTrue: [
+					metadata := aMicRootBlock children first.
+					(metadata includesKey: #date)
+						ifFalse: [ self setValidDateTo: metadata ]
+						ifTrue: [
+							[ Date readFrom: (metadata atKey: #date) pattern: 'y/m/d' ]
+								on: DateError
+								do: [ :ex | self setValidDateTo: metadata ] ] ] ].
+	metadata parent: newMicRootBlock.
+
+	aMicRootBlock children
+		do: [ :each | newMicRootBlock addChild: each ]
+		without: metadata.
+	^ newMicRootBlock
 ]

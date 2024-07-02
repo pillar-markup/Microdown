@@ -40,10 +40,9 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 			     t parent: p.
 			     ^ p ].
 
-	textElements := self limitParagraphWord: p. 
+	textElements := self limitParagraphWord: p.
 
 	newParagraph := MicParagraphBlock new.
-	"t := MicTextBlock new bodyString: textElements ensureNoSpace contents."
 	t := (MicInlineParser parse: textElements) first.
 	t parent: newParagraph.
 	^ newParagraph
@@ -52,15 +51,16 @@ MicSingleSummarizer >> firstParagraphBlockOf: aMicRootBlock [
 { #category : 'parsing' }
 MicSingleSummarizer >> headerLink: aMicRootBlock [
 
-	| headerLink header path |
+	| headerLink header fileReference |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
 
-	path := (aMicRootBlock fromFile withoutExtension fullName
+	fileReference := (aMicRootBlock fromFile withoutExtension fullName
 		         withoutPrefix: targetDirectory fullName) , '.html'.
+	fileReference  := fileReference asFileReference.
 
 	headerLink
-		addChild: (self makeALink: header text to: path);
+		addChild: (self makeALink: header text to: fileReference);
 		level: header level.
 
 	^ headerLink
@@ -103,23 +103,21 @@ MicSingleSummarizer >> maximumWords: anInteger [
 	maximumWords := anInteger
 ]
 
-{ #category : 'as yet unclassified' }
-MicSingleSummarizer >> replacementDate [
-
-	^ '1970/12/25'
-]
-
 { #category : 'parsing' }
 MicSingleSummarizer >> summarize: aMicRootBlock [
 
-	| element headerLink root |
+	| element root dateparagraph |
 	root := self verifyDateMetadata: aMicRootBlock.
 	element := MicRootBlock new.
-	headerLink := self headerLink: aMicRootBlock.
+
+	dateparagraph := MicParagraphBlock new.
+	dateparagraph addChild:
+		(MicTextBlock new bodyString: (root children first body at: 'date')).
 
 	element
 		addChild: root children first;
-		addChild: headerLink;
+		addChild: (self headerLink: aMicRootBlock);
+		addChild: dateparagraph;
 		addChild: (self firstParagraphBlockOf: root).
 
 	^ element
@@ -132,31 +130,4 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	root := Microdown parse: aFileReference asFileReference contents.
 	root fromFile: aFileReference.
 	^ self summarize: root
-]
-
-{ #category : 'verifying' }
-MicSingleSummarizer >> verifyDateMetadata: aMicRootBlock [
-
-	| newMicRootBlock metadata |
-	newMicRootBlock := MicRootBlock new.
-
-	(aMicRootBlock children first isKindOf: MicMetaDataBlock)
-		ifFalse: [
-			metadata := MicMetaDataBlock new.
-			metadata body: Dictionary new.
-			self setValidDateTo: metadata ]
-		ifTrue: [
-			metadata := aMicRootBlock children first.
-			(metadata includesKey: #date)
-				ifFalse: [ self setValidDateTo: metadata ]
-				ifTrue: [
-					[ Date readFrom: (metadata atKey: #date) pattern: 'y/m/d' ]
-						on: DateError
-						do: [ :ex | self setValidDateTo: metadata ] ] ].
-	metadata parent: newMicRootBlock.
-
-	aMicRootBlock children
-		do: [ :each | newMicRootBlock addChild: each ]
-		without: metadata.
-	^ newMicRootBlock
 ]
