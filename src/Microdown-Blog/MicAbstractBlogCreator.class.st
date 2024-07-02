@@ -8,7 +8,7 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creating' }
 MicAbstractBlogCreator >> createGenericMetadata [
 
 	| metadata |
@@ -23,6 +23,8 @@ MicAbstractBlogCreator >> createGenericMetadata [
 { #category : 'make' }
 MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 
+"Create a MicLinkBlock with a Text and a FileReference"
+
 	| text link ref |
 	text := 'Undefined'.
 	aText ifNotNil: [ aText ifNotEmpty: [ text := aText ] ].
@@ -35,7 +37,7 @@ MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicAbstractBlogCreator >> replacementDate [
 
 	^ '1970/12/25'
@@ -59,13 +61,16 @@ MicAbstractBlogCreator >> targetDirectory: aFileReference [
 	targetDirectory := aFileReference asFileReference
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verifying' }
 MicAbstractBlogCreator >> verifyDateMetadata: aMicRootBlock [
+
+"Verify if Metadata exist, the date in metadata exist and if the date are correct. Otherwise, we create a MicMetadataBlock with a date having the value in replacementDate method "
 
 	| newMicRootBlock metadata |
 	newMicRootBlock := MicRootBlock new.
 
-	aMicRootBlock children ifEmpty: [ metadata := self createGenericMetadata ]
+	aMicRootBlock children
+		ifEmpty: [ metadata := self createGenericMetadata ]
 		ifNotEmpty: [
 			(aMicRootBlock children first isKindOf: MicMetaDataBlock)
 				ifFalse: [ metadata := self createGenericMetadata ]

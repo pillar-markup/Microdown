@@ -8,8 +8,10 @@ Class {
 	#package : 'Microdown-Blog'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'create MonthList' }
 MicMonthListCreator >> createListOfMonthListFromSummarized: singleSummarizedDocuments [
+
+"take a list of single summarized documents and create a month list with only the month present in the metadata of each single summarized documents"
 
 	| dateList |
 	dateList := singleSummarizedDocuments collect: [ :each |
@@ -20,7 +22,7 @@ MicMonthListCreator >> createListOfMonthListFromSummarized: singleSummarizedDocu
 	^ dateList asSet
 ]
 
-{ #category : 'generate' }
+{ #category : 'create MonthList' }
 MicMonthListCreator >> generateDateListSince2014 [
 
 	| date t |
@@ -34,12 +36,16 @@ MicMonthListCreator >> generateDateListSince2014 [
 { #category : 'generate' }
 MicMonthListCreator >> generateMicListBlockOfLinkDate [
 
-	^ self
-		  generateMicListBlockOfLinkDateWith: self generateDateListSince2014
+"Generate a MicListBlock of MicLinkBlock with each month from January 2014"
+
+	^ self generateMicListBlockOfLinkDateWith:
+		  self generateDateListSince2014
 ]
 
 { #category : 'generate' }
 MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
+
+"Generate a MicListBlock of MicLinkBlock from each month in the month list parameter"
 
 	| root link listElement |
 	root := MicUnorderedListBlock new.
@@ -57,6 +63,7 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
 
 { #category : 'generate' }
 MicMonthListCreator >> generateRootOfMicListBlock: aMicUnorderedListBlock [
+"Generate a MicRootBlock from a MicUnorderedListBlock for add a header with 'Archives' for text"
 
 	| root header |
 	header := MicHeaderBlock new.

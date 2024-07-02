@@ -22,7 +22,7 @@ MicDummyBlogDeployer >> deploy [
 		ensureCreateDirectory.
 	FileSystem workingDirectory / self sourceFolder / 'file1.md'
 		writeStreamDo: [ :st |
-		st nextPutAll: ressources generateFilesystemExample1 contents ].
+		st nextPutAll: ressources generateFilesystemExampleWithoutDateInMetadata contents ].
 	FileSystem workingDirectory / self sourceFolder / 'file2.md'
 		writeStreamDo: [ :st |
 		st nextPutAll: ressources generateFilesystemExample2 contents ].

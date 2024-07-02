@@ -16,6 +16,8 @@ Class {
 { #category : 'summarize' }
 MicListSummarizer >> assembleSummarizedDocuments: aListOfSingleSummarizer [
 
+"Assemble all the single summarized documents into one summary"
+
 	| summarized selectionSize |
 	selectionSize := maximumFile min: aListOfSingleSummarizer size.
 
@@ -23,9 +25,8 @@ MicListSummarizer >> assembleSummarizedDocuments: aListOfSingleSummarizer [
 
 	1 to: selectionSize do: [ :each |
 		| rootOfSourceDocument |
-		
 		rootOfSourceDocument := aListOfSingleSummarizer at: each.
-		
+
 		2 to: rootOfSourceDocument children size do: [ :eachChild |
 			summarized addChild: (rootOfSourceDocument children at: eachChild) ] ].
 
@@ -34,12 +35,13 @@ MicListSummarizer >> assembleSummarizedDocuments: aListOfSingleSummarizer [
 
 { #category : 'grouping' }
 MicListSummarizer >> group: aListOfSingleSummarizer byDate: aMonth [
-	"precondition: date is set"
+	"Create a summary with only single summarized documents corresponding to the month in their metadata"
+
 	| metadataDate |
 	^ aListOfSingleSummarizer select: [ :each |
-		 metadataDate := each children first body at: #date.
-		 metadataDate := (Date readFrom: metadataDate pattern: 'y/m/d').
-		 metadataDate month = aMonth ]
+		  metadataDate := each children first body at: #date.
+		  metadataDate := Date readFrom: metadataDate pattern: 'y/m/d'.
+		  metadataDate month = aMonth ]
 ]
 
 { #category : 'initialization' }
@@ -69,6 +71,8 @@ MicListSummarizer >> summarize: aListOfSingleSummarizer [
 
 { #category : 'summarize' }
 MicListSummarizer >> summarizeFile: aListOfFile [
+
+"Create the summary from a list of FileReference"
 
 	| list singleSummarizer selectionSize |
 	singleSummarizer := MicSingleSummarizer new.

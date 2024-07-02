@@ -268,9 +268,9 @@ MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
 	blog sortSingleSummarizedDocuments: listOfSummarizedDocuments.
 
 	self
-		assert: (listOfSummarizedDocuments at: 1) equals: summarized3;
+		assert: (listOfSummarizedDocuments at: 1) equals: summarized2;
 		assert: (listOfSummarizedDocuments at: 2) equals: summarized1;
-		assert: (listOfSummarizedDocuments at: 3) equals: summarized2
+		assert: (listOfSummarizedDocuments at: 3) equals: summarized3
 ]
 
 { #category : 'tests' }

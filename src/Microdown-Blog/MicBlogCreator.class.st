@@ -36,6 +36,7 @@ Class {
 
 { #category : 'API' }
 MicBlogCreator class >> createFrom: sourceReference to: targetReference [
+"Create a HTML blog to targetReference directory with the markdown file in sourceDirectory "
 
 	| blogCreator |
 	blogCreator := self new.
@@ -55,8 +56,9 @@ MicBlogCreator >> collectAllMarkDownFile: aFileReference [
 { #category : 'collect' }
 MicBlogCreator >> collectAndParseAllMarkdownFile [
 
+"Collect all markdown file from targetDirectory and parse them with Microdown parser"
+
 	| allFile allFileParse |
-	
 	allFile := self collectAllMarkDownFile: targetDirectory.
 	allFileParse := allFile collect: [ :each |
 		                (Microdown parse: each asFileReference contents)
@@ -66,6 +68,8 @@ MicBlogCreator >> collectAndParseAllMarkdownFile [
 
 { #category : 'copying' }
 MicBlogCreator >> copySourceDirectoryInTarget [
+
+"delete all files in target Directory and copi all file of source directory into th target directory"
 
 	targetDirectory deleteAllChildren.
 
@@ -151,6 +155,7 @@ MicBlogCreator >> dateList: aDateList [
 { #category : 'css' }
 MicBlogCreator >> downloadCSS [
 
+"Download the css in cssFrameworkName instance variable in the folder css at root of the blog"
 	| cssProvider |
 	(targetDirectory / 'css') ensureCreateDirectory.
 	cssProvider := MicCSSProvider new.
@@ -171,16 +176,17 @@ MicBlogCreator >> initialize [
 
 { #category : 'rendering' }
 MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
+"initialize month list from a list of single summarized documents and create all of month summarize"
 
 	| summar monthList monthListCreator |
 	monthListCreator := MicMonthListCreator new.
-	
+
 	monthList := monthListCreator createListOfMonthListFromSummarized:
 		             singleSummarizedDocuments.
 
-	dateList := monthListCreator
-		            generateMicListBlockOfLinkDateWith: monthList.
-		
+	dateList := monthListCreator generateMicListBlockOfLinkDateWith:
+		            monthList.
+
 	monthList do: [ :each |
 		summar := sum group: singleSummarizedDocuments byDate: each.
 		summar := sum summarize: summar.
@@ -200,6 +206,8 @@ MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 { #category : 'rendering' }
 MicBlogCreator >> rootAssembly: aMicRoot [
 
+"Add to a mic root the list of month list generate by MicMonthListCreator"
+
 	aMicRoot addChild: dateList copy.
 	^ aMicRoot
 ]
@@ -207,13 +215,15 @@ MicBlogCreator >> rootAssembly: aMicRoot [
 { #category : 'sorting' }
 MicBlogCreator >> sortSingleSummarizedDocuments: singleSummarizedDocuments [
 
+"sort a list of single summarized documents from newest to oldest"
+
 	singleSummarizedDocuments sort: [ :each1 :each2 |
 		| date1 date2 |
 		date1 := each1 children first atKey: #date.
 		date1 := Date readFrom: date1 pattern: 'y/m/d'.
 		date2 := each2 children first atKey: #date.
 		date2 := Date readFrom: date2 pattern: 'y/m/d'.
-		date1 < date2 ]
+		date1 > date2 ]
 ]
 
 { #category : 'accessing' }
@@ -245,6 +255,8 @@ MicBlogCreator >> targetDirectory: aFileReferenceOrAString [
 
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
+
+"Create a HTML file with the MicHTMLVisitor for contents and a FileReference for the path of the file from the root of the blog"
 
 	| htmlDocument cssFramework |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
