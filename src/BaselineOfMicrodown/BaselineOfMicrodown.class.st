@@ -63,22 +63,23 @@ BaselineOfMicrodown >> baseline: spec [
 			with: [ spec requires: #( #Microdown ) ];
 			"package: #'Microdown-ReferenceChecker' with: [
 				spec requires: #( #'Microdown' ) ];"
-			
-			package: #'Microdown-ParentChildrenChecker' with: [
-				spec requires: #( #'Microdown' ) ];
-			package: #'Microdown-BookTester' with: [
-				spec requires: #( #'Microdown' ) ];
-			package: #'Microdown-BookTester-Tests' with: [
-				spec requires: #( #'Microdown-BookTester' ) ];
-			
-			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' ) ];
-			package: #'Microdown-Blog-Tests' with: [
-				spec requires: #( #'Microdown-Blog' ) ];
-			
+			package: #'Microdown-ParentChildrenChecker'
+			with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-BookTester'
+			with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-BookTester-Tests'
+			with: [ spec requires: #( #'Microdown-BookTester' ) ];
+			package: #'Microdown-Blog'
+			with: [ spec requires: #( #Microdown ) ];
+			package: #'Microdown-Blog-Tests'
+			with: [ spec requires: #( #'Microdown-Blog' ) ];
 			package: #'Microdown-PrettyPrinter-Tests' with: [
 				spec requires: #( #'Microdown-PrettyPrinter'
-					   #'Microdown-Tests' ) ].
+					   #'Microdown-Tests' ) ];
+			package: #'Microdown-Blog'
+			with: [ spec requires: #( #'Microdown-HTMLExporter' ) ];
+			package: #'Microdown-Blog-Tests'
+			with: [ spec requires: #( #'Microdown-Blog' ) ].
 
 
 		"I do not want group without tests for now"
@@ -87,13 +88,14 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'Tests' with: #( 'Core' 'Microdown-Tests' );
 			group: 'RichText' with: #( 'Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions'
-				with: #( #'Microdown-Evaluator' #'Microdown-Evaluator-Tests'
+			with: #( #'Microdown-Evaluator' #'Microdown-Evaluator-Tests'
 				   #'Microdown-PrettyPrinter' #'Microdown-PrettyPrinter-Tests'
 				   #'Microdown-HTMLExporter' #'Microdown-HTMLExporter-Tests'
 				   #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests'
-				   #'Microdown-Transformer' #'Microdown-Transformer-Tests' );
+				   #'Microdown-Transformer' #'Microdown-Transformer-Tests'
+					#'Microdown-Blog' #'Microdown-Blog-Test' );
 			group: 'All'
-				with: #( 'Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools'
+			with: #( 'Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools'
 				   'RichText' )
 		"
 				#'Microdown-RichTextPresenter'
