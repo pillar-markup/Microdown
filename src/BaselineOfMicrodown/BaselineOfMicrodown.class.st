@@ -93,7 +93,7 @@ BaselineOfMicrodown >> baseline: spec [
 				   #'Microdown-HTMLExporter' #'Microdown-HTMLExporter-Tests'
 				   #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests'
 				   #'Microdown-Transformer' #'Microdown-Transformer-Tests'
-					#'Microdown-Blog' #'Microdown-Blog-Test' );
+					#'Microdown-Blog' #'Microdown-Blog-Tests' );
 			group: 'All'
 			with: #( 'Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools'
 				   'RichText' )
