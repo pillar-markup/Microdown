@@ -238,8 +238,8 @@ MicBlogCreator >> targetDirectory [
 MicBlogCreator >> targetDirectory: aFileReferenceOrAString [
 
 	targetDirectory := aFileReferenceOrAString asFileReference.
-	aFileReferenceOrAString ensureDeleteAll.
-	aFileReferenceOrAString ensureCreateDirectory.
+	targetDirectory ensureDeleteAll.
+	targetDirectory ensureCreateDirectory.
 	sum targetDirectory: targetDirectory
 ]
 
