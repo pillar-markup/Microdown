@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicMonthListCreatorTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'monthListCreator'
+	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
@@ -11,12 +14,22 @@ MicMonthListCreatorTest >> numberOfMonthSince2014 [
 	^ Date today year - 2014 * 12 + Date today month index
 ]
 
+{ #category : 'running' }
+MicMonthListCreatorTest >> setUp [
+	super setUp.
+
+	"Put here a common initialization logic for tests"
+	
+	monthListCreator := MicMonthListCreator new.
+	monthListCreator root: MicFileTestResources new genericRootReference
+]
+
 { #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateDateListSince2014 [
 
 	| dateList |
 
-	dateList := MicMonthListCreator new generateDateListSince2014.
+	dateList := monthListCreator generateDateListSince2014.
 	
 	self assert: dateList size equals: (Date today year - 2014)*12 + Date today month index .
 	self assert:  dateList first equals: (Date newDay: 1 month: 1 year: 2014) month .
@@ -30,7 +43,7 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDate [
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	root := MicMonthListCreator new generateMicListBlockOfLinkDate.
+	root := monthListCreator generateMicListBlockOfLinkDate.
 
 	self assert: (root isKindOf: MicRootBlock).
 	self
@@ -56,7 +69,7 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWith [
 	fileSystem := FileSystem memory.
 	fileSystem createDirectory: '/html'.
 
-	root := MicMonthListCreator new generateMicListBlockOfLinkDate.
+	root := monthListCreator generateMicListBlockOfLinkDate.
 
 	self
 		assert: (root isKindOf: MicRootBlock);

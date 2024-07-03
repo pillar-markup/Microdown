@@ -26,6 +26,7 @@ Class {
 	#instVars : [
 		'sourceDirectory',
 		'targetDirectory',
+		'root',
 		'dateList',
 		'cssFrameworkName',
 		'sum'
@@ -41,7 +42,20 @@ MicBlogCreator class >> createFrom: sourceReference to: targetReference [
 	blogCreator := self new.
 	blogCreator
 		sourceDirectory: sourceReference;
-		targetDirectory: targetReference.
+		targetDirectory: targetReference;
+		root: FileReference / ''.
+	blogCreator createAllHtmlFile
+]
+
+{ #category : 'API' }
+MicBlogCreator class >> createFrom: sourceReference to: targetReference withRoot: rootReference [
+
+	| blogCreator |
+	blogCreator := self new.
+	blogCreator
+		sourceDirectory: sourceReference;
+		targetDirectory: targetReference;
+		root: rootReference.
 	blogCreator createAllHtmlFile
 ]
 
@@ -86,6 +100,7 @@ MicBlogCreator >> createAllHtmlFile [
 	listOfSingleSummary := allFileParse collect: [ :each |
 		                       MicSingleSummarizer new
 			                       targetDirectory: targetDirectory;
+			root: root;
 			                       summarize: each ].
 	self sortSingleSummarizedDocuments: listOfSingleSummary.
 	self initializeMonthList: listOfSingleSummary.
@@ -174,6 +189,7 @@ MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 
 	| summar monthList monthListCreator |
 	monthListCreator := MicMonthListCreator new.
+	monthListCreator root: root.
 	
 	monthList := monthListCreator createListOfMonthListFromSummarized:
 		             singleSummarizedDocuments.
@@ -195,6 +211,19 @@ MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 	newPath := aFileReference fullName copyReplaceAll: '.md' with: '.html'.
 	
 	aFileReference renameTo: newPath
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> root [
+
+	^ root
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> root: aFileReferenceOrAString [
+
+	root := aFileReferenceOrAString asFileReference.
+	sum root: root
 ]
 
 { #category : 'rendering' }
@@ -248,7 +277,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
 	| htmlDocument cssFramework |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework basePath: '/css/'.
+	cssFramework basePath: root fullName, '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.

@@ -266,6 +266,12 @@ When you participate to the mooc you get access to the quizz and the credit vali
 ]
 
 { #category : 'as yet unclassified' }
+MicFileTestResources >> genericRootReference [
+
+	^ FileReference / ''
+]
+
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> workingDirectory [
 
 	^ self fileSystem workingDirectory

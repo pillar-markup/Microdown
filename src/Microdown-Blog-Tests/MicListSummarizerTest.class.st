@@ -79,9 +79,11 @@ MicListSummarizerTest >> setUp [
 	super setUp.
 	resources := MicFileTestResources new.
 	micSummarizer := MicListSummarizer new.
-	micSummarizer targetDirectory: '/html/' asFileReference.
+	micSummarizer targetDirectory: '/html/' asFileReference;
+	root: MicFileTestResources new genericRootReference.
 	singleSummarizer := MicSingleSummarizer new.
-	singleSummarizer targetDirectory: '/html/' asFileReference.
+	singleSummarizer targetDirectory: '/html/' asFileReference;
+	root: MicFileTestResources new genericRootReference.
 ]
 
 { #category : 'tests' }

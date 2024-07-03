@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'fileSystem',
 		'blog',
-		'resources'
+		'resources',
+		'singleSummarizer'
 	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
@@ -44,22 +45,30 @@ MicBlogCreatorTest >> listOfFile [
 { #category : 'running' }
 MicBlogCreatorTest >> setUp [
 
-	| monthList |
+	| monthList monthListCreator|
 	
 	super setUp.
+
+	"Put here a common initialization logic for tests"
+	resources := MicFileTestResources new.
 	
 	monthList := {
 		             (Month year: 2018 month: 1).
 		             (Month year: 2019 month: 1) }.
-
-	"Put here a common initialization logic for tests"
-	resources := MicFileTestResources new.
+	monthListCreator := MicMonthListCreator new.
+	monthListCreator root: resources genericRootReference.
+	
+	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/';
+	root: resources genericRootReference.
+	
 	self generateArchitecture.
 	blog := MicBlogCreator new.
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		dateList: (MicMonthListCreator new generateMicListBlockOfLinkDateWith: monthList).
+		root: resources genericRootReference;
+		dateList: (monthListCreator generateMicListBlockOfLinkDateWith: monthList).
 ]
 
 { #category : 'tests' }
@@ -144,12 +153,9 @@ MicBlogCreatorTest >> testCreateHtmlFileToReplace [
 { #category : 'tests' }
 MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 
-	| root summarizer singleSummarizer allFileParse |
+	| root summarizer allFileParse |
 	summarizer := MicListSummarizer new.
 	summarizer targetDirectory: 'html'.
-
-	singleSummarizer := MicSingleSummarizer new.
-	singleSummarizer targetDirectory: blog targetDirectory.
 
 	allFileParse := self listOfFile collect: [ :each |
 		                singleSummarizer summarizeFile: each ].
@@ -172,6 +178,7 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 
 	| root summarizer |
 	summarizer := MicListSummarizer new.
+	summarizer root: resources genericRootReference.
 	summarizer targetDirectory: blog targetDirectory.
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.
@@ -195,17 +202,11 @@ MicBlogCreatorTest >> testInitializeMonthList [
 	| listSingleSummarizer singleSum1 singleSum2 singleSum3 |
 	listSingleSummarizer := Array new: 3.
 
-	singleSum1 := MicSingleSummarizer new targetDirectory:
-		              blog targetDirectory.
-	singleSum1 := singleSum1 summarizeFile:
+	singleSum1 := singleSummarizer summarizeFile:
 		              fileSystem / 'source' / 'anExample1.md'.
-	singleSum2 := MicSingleSummarizer new targetDirectory:
-		              blog targetDirectory.
-	singleSum2 := singleSum2 summarizeFile:
+	singleSum2 := singleSummarizer summarizeFile:
 		              fileSystem / 'source' / 'anExample2.md'.
-	singleSum3 := MicSingleSummarizer new targetDirectory:
-		              blog targetDirectory.
-	singleSum3 := singleSum3 summarizeFile:
+	singleSum3 := singleSummarizer summarizeFile:
 		              fileSystem / 'source' / 'test' / 'anExample3.md'.
 
 	listSingleSummarizer at: 1 put: singleSum1.
@@ -243,10 +244,8 @@ MicBlogCreatorTest >> testRootAssembly [
 { #category : 'tests' }
 MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
 
-	| listOfSummarizedDocuments summarized1 summarized2 summarized3 singleSummarizer |
+	| listOfSummarizedDocuments summarized1 summarized2 summarized3 |
 	listOfSummarizedDocuments := Array new: 3.
-	singleSummarizer := MicSingleSummarizer new.
-	singleSummarizer targetDirectory: '/'.
 
 	summarized1 := singleSummarizer summarize:
 		               ((Microdown parse:

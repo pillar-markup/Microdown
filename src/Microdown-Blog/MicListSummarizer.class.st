@@ -73,6 +73,7 @@ MicListSummarizer >> summarizeFile: aListOfFile [
 	| list singleSummarizer selectionSize |
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: targetDirectory.
+	singleSummarizer root: root.
 
 	list := Array new: aListOfFile size.
 

@@ -24,7 +24,8 @@ MicSingleSummarizerTest >> setUp [
 	super setUp.
 	resources := MicFileTestResources new.
 	micSingleSummarizer := MicSingleSummarizer new.
-	micSingleSummarizer targetDirectory: '/html/' asFileReference.
+	micSingleSummarizer targetDirectory: '/html/' asFileReference;
+	root: resources genericRootReference.
 	
 ]
 

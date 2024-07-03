@@ -41,8 +41,8 @@ MicMonthListCreator >> generateMicListBlockOfLinkDate [
 { #category : 'generate' }
 MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
 
-	| root link listElement |
-	root := MicUnorderedListBlock new.
+	| unorderedList link listElement |
+	unorderedList := MicUnorderedListBlock new.
 	aMonthList do: [ :each |
 		listElement := MicListItemBlock new.
 		link := self
@@ -50,9 +50,9 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
 			        to: FileReference / '_monthBlog'
 				        / (each name , '_' , each year asString , '.html').
 		link parent: listElement.
-		listElement parent: root ].
+		listElement parent: unorderedList ].
 
-	^ self generateRootOfMicListBlock: root
+	^ self generateRootOfMicListBlock: unorderedList
 ]
 
 { #category : 'generate' }
