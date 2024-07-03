@@ -103,7 +103,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests'
 				#'Microdown-Blog'
-				#'Microdown-Blog-Test');
+				#'Microdown-Blog-Tests');
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
