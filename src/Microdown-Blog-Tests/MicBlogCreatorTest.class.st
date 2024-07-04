@@ -56,18 +56,18 @@ MicBlogCreatorTest >> setUp [
 		             (Month year: 2018 month: 1).
 		             (Month year: 2019 month: 1) }.
 	monthListCreator := MicMonthListCreator new.
-	monthListCreator root: resources genericRootReference.
+	monthListCreator root: resources genericRootPath.
 	
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/';
-	root: resources genericRootReference.
+	root: resources genericRootPath.
 	
 	self generateArchitecture.
 	blog := MicBlogCreator new.
 	blog
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
-		root: resources genericRootReference;
+		root: resources genericRootPath;
 		dateList: (monthListCreator generateMicListBlockOfLinkDateWith: monthList).
 ]
 
@@ -178,7 +178,7 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 
 	| root summarizer |
 	summarizer := MicListSummarizer new.
-	summarizer root: resources genericRootReference.
+	summarizer root: resources genericRootPath.
 	summarizer targetDirectory: blog targetDirectory.
 	root := summarizer summarizeFile: self listOfFile.
 	blog createHtmlSummarize: root.

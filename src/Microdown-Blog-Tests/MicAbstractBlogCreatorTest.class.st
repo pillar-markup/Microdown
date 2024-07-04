@@ -26,7 +26,7 @@ MicAbstractBlogCreatorTest >> setUp [
 	"Put here a common initialization logic for tests"
 	
    abstractBlog := MicAbstractBlogCreator new.
-	abstractBlog root: MicFileTestResources new genericRootReference
+	abstractBlog root: MicFileTestResources new genericRootPath
 ]
 
 { #category : 'tests' }

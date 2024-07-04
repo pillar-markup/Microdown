@@ -33,7 +33,7 @@ MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 		ref := aFileReference asFileReference.
 		ref path isEmpty ifFalse: [ link := ref path fullName ] ].
 
-	^ (MicInlineParser parse: '[' , text , '](' , root fullName, link , ')') first
+	^ (MicInlineParser parse: '[' , text , '](' , root, link , ')') first
 ]
 
 { #category : 'as yet unclassified' }
@@ -49,9 +49,9 @@ MicAbstractBlogCreator >> root [
 ]
 
 { #category : 'accessing' }
-MicAbstractBlogCreator >> root: aFileReferenceOrAString [
+MicAbstractBlogCreator >> root: aString [
 
-	root := aFileReferenceOrAString asFileReference
+	root := aString
 ]
 
 { #category : 'verifying' }

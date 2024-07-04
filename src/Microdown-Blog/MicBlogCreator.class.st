@@ -43,19 +43,19 @@ MicBlogCreator class >> createFrom: sourceReference to: targetReference [
 	blogCreator
 		sourceDirectory: sourceReference;
 		targetDirectory: targetReference;
-		root: FileReference / ''.
+		root: ''.
 	blogCreator createAllHtmlFile
 ]
 
 { #category : 'API' }
-MicBlogCreator class >> createFrom: sourceReference to: targetReference withRoot: rootReference [
+MicBlogCreator class >> createFrom: sourceReference to: targetReference withRoot: rootPathString [
 
 	| blogCreator |
 	blogCreator := self new.
 	blogCreator
 		sourceDirectory: sourceReference;
 		targetDirectory: targetReference;
-		root: rootReference.
+		root: rootPathString.
 	blogCreator createAllHtmlFile
 ]
 
@@ -220,9 +220,9 @@ MicBlogCreator >> root [
 ]
 
 { #category : 'accessing' }
-MicBlogCreator >> root: aFileReferenceOrAString [
+MicBlogCreator >> root: aString [
 
-	root := aFileReferenceOrAString asFileReference.
+	root := aString.
 	sum root: root
 ]
 
@@ -277,7 +277,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
 	| htmlDocument cssFramework |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework basePath: root fullName, '/css/'.
+	cssFramework basePath: root, '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.

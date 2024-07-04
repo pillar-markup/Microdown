@@ -80,10 +80,10 @@ MicListSummarizerTest >> setUp [
 	resources := MicFileTestResources new.
 	micSummarizer := MicListSummarizer new.
 	micSummarizer targetDirectory: '/html/' asFileReference;
-	root: MicFileTestResources new genericRootReference.
+	root: MicFileTestResources new genericRootPath.
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/html/' asFileReference;
-	root: MicFileTestResources new genericRootReference.
+	root: MicFileTestResources new genericRootPath.
 ]
 
 { #category : 'tests' }

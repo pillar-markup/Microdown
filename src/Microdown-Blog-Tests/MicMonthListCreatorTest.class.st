@@ -21,7 +21,7 @@ MicMonthListCreatorTest >> setUp [
 	"Put here a common initialization logic for tests"
 	
 	monthListCreator := MicMonthListCreator new.
-	monthListCreator root: MicFileTestResources new genericRootReference
+	monthListCreator root: MicFileTestResources new genericRootPath
 ]
 
 { #category : 'tests' }

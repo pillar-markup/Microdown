@@ -1,9 +1,6 @@
 Class {
 	#name : 'MicFileTestResources',
 	#superclass : 'Object',
-	#instVars : [
-		'micSummarizer'
-	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
 }
@@ -266,9 +263,9 @@ When you participate to the mooc you get access to the quizz and the credit vali
 ]
 
 { #category : 'as yet unclassified' }
-MicFileTestResources >> genericRootReference [
+MicFileTestResources >> genericRootPath [
 
-	^ FileReference / ''
+	^ ''
 ]
 
 { #category : 'as yet unclassified' }
