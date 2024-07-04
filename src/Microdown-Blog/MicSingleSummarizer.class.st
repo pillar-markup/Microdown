@@ -54,6 +54,8 @@ MicSingleSummarizer >> headerLink: aMicRootBlock [
 	| headerLink header fileReference |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
+	
+	self verifyFromFile: aMicRootBlock.
 
 	fileReference := (aMicRootBlock fromFile withoutExtension fullName
 		         withoutPrefix: targetDirectory fullName) , '.html'.
@@ -130,4 +132,19 @@ MicSingleSummarizer >> summarizeFile: aFileReference [
 	root := Microdown parse: aFileReference asFileReference contents.
 	root fromFile: aFileReference.
 	^ self summarize: root
+]
+
+{ #category : 'accessing' }
+MicSingleSummarizer >> verifyFromFile: aMicRootBlock [
+
+	| newFromFile |
+	
+	newFromFile := ''.
+
+	aMicRootBlock properties ifNotNil: [
+		aMicRootBlock properties ifNotEmpty: [
+			aMicRootBlock fromFile ifNotNil: [
+				newFromFile := aMicRootBlock fromFile ] ] ].
+
+	aMicRootBlock fromFile: newFromFile
 ]
