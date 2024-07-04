@@ -25,7 +25,7 @@ MicSingleSummarizerTest >> setUp [
 	resources := MicFileTestResources new.
 	micSingleSummarizer := MicSingleSummarizer new.
 	micSingleSummarizer targetDirectory: '/html/' asFileReference;
-	root: resources genericRootPath.
+	root: resources genericEmptyRootPath.
 	
 ]
 
@@ -37,6 +37,20 @@ MicSingleSummarizerTest >> testContents [
 		        (micSingleSummarizer summarize: self createMicRootBlock).
 
 	dumper := MicRealDumper new visit: MicFileTestResources new dumperInput1.
+
+	self assert: root contents equals: dumper contents
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testContentsWithRootPath [
+
+	| root dumper |
+	
+	micSingleSummarizer root: resources genericNonEmptyRootPath.
+	root := MicRealDumper new visit:
+		        (micSingleSummarizer summarize: self createMicRootBlock).
+
+	dumper := MicRealDumper new visit: MicFileTestResources new dumperInput1WithRootPath.
 
 	self assert: root contents equals: dumper contents
 ]
@@ -145,6 +159,22 @@ MicSingleSummarizerTest >> testFirstParagraphBlockOfWithoutEllipsis [
 		equals: #( 'Pharo is cool' ).
 	paragraph textElements do: [ :each |
 		self assert: each parent equals: paragraph ]
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testHeaderLinkWithRootPath [
+
+	| header linkBlock |
+
+	micSingleSummarizer root: resources genericNonEmptyRootPath.
+	header := micSingleSummarizer headerLink: self createMicRootBlock.
+	
+	self assert: (header isKindOf: MicHeaderBlock).
+	linkBlock := header children first.
+	self assert: (linkBlock isKindOf: MicLinkBlock);
+	assert: linkBlock plainText equals: '[A Cool Story](', resources genericNonEmptyRootPath ,'/anExample1.html)'
+	
+	
 ]
 
 { #category : 'tests' }

@@ -2,7 +2,8 @@ Class {
 	#name : 'MicMonthListCreatorTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'monthListCreator'
+		'monthListCreator',
+		'ressources'
 	],
 	#category : 'Microdown-Blog-Tests',
 	#package : 'Microdown-Blog-Tests'
@@ -20,8 +21,10 @@ MicMonthListCreatorTest >> setUp [
 
 	"Put here a common initialization logic for tests"
 	
+	ressources := MicFileTestResources new.
+	
 	monthListCreator := MicMonthListCreator new.
-	monthListCreator root: MicFileTestResources new genericRootPath
+	monthListCreator root: MicFileTestResources new genericEmptyRootPath
 ]
 
 { #category : 'tests' }
@@ -84,5 +87,32 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWith [
 		equals: '[January 2014](/_monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
 		equals: '[' , Date today month asString , '](/_monthBlog/'
+			, Date today month name , '_' , Date today year asString , '.html)'
+]
+
+{ #category : 'tests' }
+MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithRootPath [
+
+	| dateList fileSystem root |
+	fileSystem := FileSystem memory.
+	fileSystem createDirectory: '/html'.
+	
+	monthListCreator root: ressources genericNonEmptyRootPath.
+
+	root := monthListCreator generateMicListBlockOfLinkDate.
+
+	self
+		assert: (root isKindOf: MicRootBlock);
+		assert: root children size equals: 2;
+		assert: (root children first isKindOf: MicHeaderBlock);
+		assert: (root children second isKindOf: MicUnorderedListBlock).
+
+	dateList := root children second.
+	self
+		assert: dateList children size equals: self numberOfMonthSince2014;
+		assert: dateList children first children first plainText
+		equals: '[January 2014](', ressources genericNonEmptyRootPath ,'/_monthBlog/January_2014.html)';
+		assert: dateList children last children first plainText
+		equals: '[' , Date today month asString , '](', ressources genericNonEmptyRootPath ,'/_monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]

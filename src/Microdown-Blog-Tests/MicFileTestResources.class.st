@@ -20,6 +20,20 @@ MicFileTestResources >> dumperInput1 [
 ]
 
 { #category : 'as yet unclassified' }
+MicFileTestResources >> dumperInput1WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '# [A Cool Story](' , '' , self genericNonEmptyRootPath, '/anExample1.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/09') children first.
+	root children add: (Microdown parse:
+			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> dumperInput2 [
 
 	| root |
@@ -35,11 +49,41 @@ MicFileTestResources >> dumperInput2 [
 ]
 
 { #category : 'as yet unclassified' }
+MicFileTestResources >> dumperInput2WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '# [Pharo is cool](' , '' , self genericNonEmptyRootPath, '/anExample2.html' , '' , ')'.
+	root children add:
+		(Microdown parse: '2019/01/22') children first.
+	root children add: (Microdown parse:
+			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'as yet unclassified' }
 MicFileTestResources >> dumperInput3 [
 
 	| root |
 	root := Microdown parse:
 		        '# [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
+	root children add:
+		(Microdown parse: '2018/01/29') children first.
+	root children add: (Microdown parse:
+			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
+			children first.
+
+	^ root
+]
+
+{ #category : 'as yet unclassified' }
+MicFileTestResources >> dumperInput3WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '# [Mooc Pharo](' , '' , self genericNonEmptyRootPath, '/anExample3.html' , '' , ')'.
 	root children add:
 		(Microdown parse: '2018/01/29') children first.
 	root children add: (Microdown parse:
@@ -263,9 +307,15 @@ When you participate to the mooc you get access to the quizz and the credit vali
 ]
 
 { #category : 'as yet unclassified' }
-MicFileTestResources >> genericRootPath [
+MicFileTestResources >> genericEmptyRootPath [
 
 	^ ''
+]
+
+{ #category : 'as yet unclassified' }
+MicFileTestResources >> genericNonEmptyRootPath [
+
+	^ 'https://test/'
 ]
 
 { #category : 'as yet unclassified' }

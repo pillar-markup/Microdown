@@ -80,10 +80,10 @@ MicListSummarizerTest >> setUp [
 	resources := MicFileTestResources new.
 	micSummarizer := MicListSummarizer new.
 	micSummarizer targetDirectory: '/html/' asFileReference;
-	root: MicFileTestResources new genericRootPath.
+	root: MicFileTestResources new genericEmptyRootPath.
 	singleSummarizer := MicSingleSummarizer new.
 	singleSummarizer targetDirectory: '/html/' asFileReference;
-	root: MicFileTestResources new genericRootPath.
+	root: MicFileTestResources new genericEmptyRootPath.
 ]
 
 { #category : 'tests' }
@@ -111,6 +111,24 @@ MicListSummarizerTest >> testContentsOfAssembledListsIsCorrect [
 	dumper1 := MicRealDumper new visit: resources dumperInput1.
 	dumper2 := MicRealDumper new visit: resources dumperInput2.
 	dumper3 := MicRealDumper new visit: resources dumperInput3.
+
+	dumper := dumper1 contents , dumper2 contents , dumper3 contents.
+
+	self assert: root contents equals: dumper contents
+]
+
+{ #category : 'tests' }
+MicListSummarizerTest >> testContentsWithRootPath [
+
+	| root dumper dumper1 dumper2 dumper3 |
+	singleSummarizer root: resources genericNonEmptyRootPath.
+	root := MicRealDumper new visit:
+		        (micSummarizer assembleSummarizedDocuments:
+			         self createListOfMicRootBlock).
+
+	dumper1 := MicRealDumper new visit: resources dumperInput1WithRootPath.
+	dumper2 := MicRealDumper new visit: resources dumperInput2WithRootPath.
+	dumper3 := MicRealDumper new visit: resources dumperInput3WithRootPath.
 
 	dumper := dumper1 contents , dumper2 contents , dumper3 contents.
 
