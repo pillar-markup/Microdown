@@ -2,7 +2,8 @@ Class {
 	#name : 'MicAbstractBlogCreator',
 	#superclass : 'Object',
 	#instVars : [
-		'targetDirectory'
+		'targetDirectory',
+		'root'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -32,13 +33,25 @@ MicAbstractBlogCreator >> makeALink: aText to: aFileReference [
 		ref := aFileReference asFileReference.
 		ref path isEmpty ifFalse: [ link := ref path fullName ] ].
 
-	^ (MicInlineParser parse: '[' , text , '](' , link , ')') first
+	^ (MicInlineParser parse: '[' , text , '](' , root, link , ')') first
 ]
 
 { #category : 'as yet unclassified' }
 MicAbstractBlogCreator >> replacementDate [
 
 	^ '1970/12/25'
+]
+
+{ #category : 'accessing' }
+MicAbstractBlogCreator >> root [
+
+	^ root
+]
+
+{ #category : 'accessing' }
+MicAbstractBlogCreator >> root: aString [
+
+	root := aString
 ]
 
 { #category : 'verifying' }

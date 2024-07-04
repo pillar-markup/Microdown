@@ -25,7 +25,8 @@ MicAbstractBlogCreatorTest >> setUp [
 
 	"Put here a common initialization logic for tests"
 	
-   abstractBlog := MicAbstractBlogCreator new
+   abstractBlog := MicAbstractBlogCreator new.
+	abstractBlog root: MicFileTestResources new genericEmptyRootPath
 ]
 
 { #category : 'tests' }
@@ -59,6 +60,19 @@ MicAbstractBlogCreatorTest >> testMakeALinkToWithNilArguments [
 	self
 		assert: (link isKindOf: MicLinkBlock);
 		assert: link plainText equals: '[Undefined](Undefined)'
+]
+
+{ #category : 'tests' }
+MicAbstractBlogCreatorTest >> testMakeALinkToWithRootPath [
+
+	| link ressources |
+	ressources := MicFileTestResources new.
+	abstractBlog root: ressources genericNonEmptyRootPath.
+	link := abstractBlog makeALink: 'Pharo is cool' to: 'Test' asFileReference.
+
+	self
+		assert: (link isKindOf: MicLinkBlock);
+		assert: link plainText equals: '[Pharo is cool](', ressources genericNonEmptyRootPath ,'Test)'
 ]
 
 { #category : 'tests' }
