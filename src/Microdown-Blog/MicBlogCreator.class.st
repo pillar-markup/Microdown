@@ -136,8 +136,7 @@ MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
 		write: visitor
-		to: '_monthBlog' asFileReference / (aMonth name , '_'
-			, aMonth year asString , '.html')
+		to: 'monthBlog' asFileReference / (aMonth name, '_', aMonth year asString , '.html')
 ]
 
 { #category : 'rendering' }

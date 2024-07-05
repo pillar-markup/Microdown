@@ -170,7 +170,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		at: (Month year: 2019 month: 'January').
 
 	self assert:
-		(fileSystem / 'html' / '_monthBlog' / 'January_2019.html') exists
+		(fileSystem / 'html' / 'monthBlog' / 'January_2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -215,7 +215,7 @@ MicBlogCreatorTest >> testInitializeMonthList [
 
 	blog initializeMonthList: listSingleSummarizer.
 
-	self assert: (fileSystem / 'html' / '_monthBlog') allFiles size equals: 2
+	self assert: (fileSystem / 'html' / 'monthBlog') allFiles size equals: 2
 ]
 
 { #category : 'tests' }
