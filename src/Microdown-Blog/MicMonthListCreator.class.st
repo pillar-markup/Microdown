@@ -47,7 +47,7 @@ MicMonthListCreator >> generateMicListBlockOfLinkDateWith: aMonthList [
 		listElement := MicListItemBlock new.
 		link := self
 			        makeALink: each asString
-			        to: FileReference / '_monthBlog'
+			        to: FileReference / 'monthBlog'
 				        / (each name , '_' , each year asString , '.html').
 		link parent: listElement.
 		listElement parent: unorderedList ].

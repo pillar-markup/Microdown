@@ -170,7 +170,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		at: (Month year: 2019 month: 'January').
 
 	self assert:
-		(fileSystem / 'html' / '_monthBlog' / 'January_2019.html') exists
+		(fileSystem / 'html' / 'monthBlog' / 'January_2019.html') exists
 ]
 
 { #category : 'tests' }

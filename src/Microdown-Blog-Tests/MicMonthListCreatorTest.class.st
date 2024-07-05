@@ -59,9 +59,9 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDate [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](/_monthBlog/January_2014.html)';
+		equals: '[January 2014](/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](/_monthBlog/'
+		equals: '[' , Date today month asString , '](/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]
 
@@ -84,9 +84,9 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWith [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](/_monthBlog/January_2014.html)';
+		equals: '[January 2014](/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](/_monthBlog/'
+		equals: '[' , Date today month asString , '](/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]
 
@@ -111,8 +111,8 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithRootPath [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](', ressources genericNonEmptyRootPath ,'/_monthBlog/January_2014.html)';
+		equals: '[January 2014](', ressources genericNonEmptyRootPath ,'/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](', ressources genericNonEmptyRootPath ,'/_monthBlog/'
+		equals: '[' , Date today month asString , '](', ressources genericNonEmptyRootPath ,'/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]
