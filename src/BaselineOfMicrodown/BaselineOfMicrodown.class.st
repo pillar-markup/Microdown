@@ -15,8 +15,17 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 		self xmlParserHtml: spec.
+		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
+		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict.
+			
 		spec preLoadDoIt: #'preload:package:'.
+		
+		I disable this because in a postload 
+		
+			(IceRepository repositoryNamed: 'microdown') is nil and I do not get why
 		spec postLoadDoIt: #'postload:package:'.
+		"
+		
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
