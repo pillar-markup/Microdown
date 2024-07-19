@@ -16,6 +16,7 @@ BaselineOfMicrodown >> baseline: spec [
 	spec for: #common do: [
 		self xmlParserHtml: spec.
 		spec preLoadDoIt: #'preload:package:'.
+		spec postLoadDoIt: #'postload:package:'.
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
