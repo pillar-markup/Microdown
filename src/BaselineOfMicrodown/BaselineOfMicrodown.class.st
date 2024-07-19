@@ -92,9 +92,9 @@ BaselineOfMicrodown >> baseline: spec [
 
 { #category : 'baselines' }
 BaselineOfMicrodown >> postload: loader package: packageSpec [
-
+	self class name, ' postload ' traceCr. 
 	[((IceRepository repositoryNamed: 'microdown')
-	     packageNamed: 'BaselineOfMicrodown') reload ] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
+	     packageNamed: 'BaselineOfMicrodown') ifNotNil:[ :b | b reload ]] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
 
 
 
@@ -115,6 +115,7 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 			
 	| packagesToUnload |
+	self class name, ' preload ' traceCr. 
 packagesToUnload := ((PackageOrganizer default packages 
     select: [ :each | each name beginsWith: 'Microdown' ])  collect: [ :each | each name ]) reject: 
 	[ :each |  
