@@ -104,7 +104,7 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 			
 	(PackageOrganizer default packages select: [ :each | each name beginsWith: 'Microdown' ])
-		do: [ :each | each unload; removeFromSystem ]
+		do: [ :each | each removeFromSystem ]
 ]
 
 { #category : 'external projects' }
