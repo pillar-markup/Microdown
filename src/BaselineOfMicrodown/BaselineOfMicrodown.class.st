@@ -16,15 +16,16 @@ BaselineOfMicrodown >> baseline: spec [
 	spec for: #common do: [
 		self xmlParserHtml: spec.
 		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
-		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict.
+		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
 			
 		spec preLoadDoIt: #'preload:package:'.
 		
-		I disable this because in a postload 
 		
-			(IceRepository repositoryNamed: 'microdown') is nil and I do not get why
+		"I disable this because in a postload 
+			(IceRepository repositoryNamed: 'microdown') is nil and I do not get why"
+	
 		spec postLoadDoIt: #'postload:package:'.
-		"
+		
 		
 		spec
 			package: #Microdown;
@@ -101,9 +102,17 @@ BaselineOfMicrodown >> baseline: spec [
 
 { #category : 'baselines' }
 BaselineOfMicrodown >> postload: loader package: packageSpec [
+
+	| p |
 	self class name, ' postload ' traceCr. 
-	[((IceRepository repositoryNamed: 'microdown')
-	     packageNamed: 'BaselineOfMicrodown') ifNotNil:[ :b | b reload ]] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
+
+	p := (IceRepository repositoryNamed: 'microdown').
+	p ifNil: [ p :=  (IceRepository repositoryNamed: 'Microdown') ].
+	[ 
+	(p ifNotNil: [ :p2 | (p2 packageNamed: 'BaselineOfMicrodown') reload ]) 
+	] 
+		on: MCMergeOrLoadWarning 
+		do: [ :ex | ex load ]
 
 
 
@@ -125,16 +134,16 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 			
 	| packagesToUnload |
 	self class name, ' preload ' traceCr. 
-packagesToUnload := ((PackageOrganizer default packages 
-    select: [ :each | each name beginsWith: 'Microdown' ])  collect: [ :each | each name ]) reject: 
-	[ :each |  
+	packagesToUnload := ((PackageOrganizer default packages 
+		select: [ :each | each name beginsWith: 'Microdown' ])  collect: [ :each | each name ]) 
+		reject: [ :each |  
  #('Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests') includes: each ].
 	"these two are not managed by the microdown repo but the documentation.
 	I should rename them in the future to avoid confusion"
 
-packagesToUnload do: 
-	[ :each | ((IceRepository repositoryNamed: 'microdown') 
-	     packageNamed: each) unload ].
+	packagesToUnload do: 
+		[ :each | 
+			((IceRepository repositoryNamed: 'Microdown') packageNamed: each) unload ].
 
 
 ]
