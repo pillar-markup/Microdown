@@ -112,8 +112,14 @@ packagesToUnload := ((PackageOrganizer default packages
 	I should rename them in the future to avoid confusion"
 
 packagesToUnload do: 
-	[ :each | ((IceRepository repositoryNamed: 'Microdown') 
-	     packageNamed: each) unload ]
+	[ :each | ((IceRepository repositoryNamed: 'microdown') 
+	     packageNamed: each) unload ].
+
+"Now forcing the reload of the baseline - no idea why the loaded one was reverted."
+
+[((IceRepository repositoryNamed: 'microdown') 
+	     packageNamed: 'BaselineOfMicrodown') reload ] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
+
 
 
 ]
