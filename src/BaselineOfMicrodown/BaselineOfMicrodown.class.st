@@ -15,7 +15,7 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 		self xmlParserHtml: spec.
-
+		spec preLoadDoIt: #'preload:package:'.
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
@@ -87,6 +87,24 @@ BaselineOfMicrodown >> baseline: spec [
 				with: #( 'Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools'
 				   'RichText' )
 	 ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> preload: loader package: packageSpec [
+	"Ignore pre and post loads if already executed"
+
+	" the prelosing GH script cannot work because 
+	it will remove the baseline and repository itself :)
+	#( 'Microdown' ) do: [ :name |
+		(IceRepository repositoryNamed: name)
+			ifNil: [ self inform: 'Project not found: ' , name ]
+			ifNotNil: [ :found |
+				found
+					unload;
+					forget ] ]"
+			
+	(PackageOrganizer default packages select: [ :each | each name beginsWith: 'Microdown' ])
+		do: [ :each | each  removeFromSystem ]
 ]
 
 { #category : 'external projects' }
