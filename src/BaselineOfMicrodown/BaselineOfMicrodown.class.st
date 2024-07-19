@@ -90,6 +90,16 @@ BaselineOfMicrodown >> baseline: spec [
 ]
 
 { #category : 'baselines' }
+BaselineOfMicrodown >> postload: loader package: packageSpec [
+
+	[((IceRepository repositoryNamed: 'microdown')
+	     packageNamed: 'BaselineOfMicrodown') reload ] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
+
+
+
+]
+
+{ #category : 'baselines' }
 BaselineOfMicrodown >> preload: loader package: packageSpec [
 	"Ignore pre and post loads if already executed"
 
@@ -114,12 +124,6 @@ packagesToUnload := ((PackageOrganizer default packages
 packagesToUnload do: 
 	[ :each | ((IceRepository repositoryNamed: 'microdown') 
 	     packageNamed: each) unload ].
-
-"Now forcing the reload of the baseline - no idea why the loaded one was reverted."
-
-[((IceRepository repositoryNamed: 'microdown') 
-	     packageNamed: 'BaselineOfMicrodown') reload ] on: MCMergeOrLoadWarning do: [ :ex | ex load ]
-
 
 
 ]
