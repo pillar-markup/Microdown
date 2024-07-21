@@ -203,6 +203,25 @@ MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 ]
 
 { #category : 'rendering' }
+MicBlogCreator >> mustacheAssembly: htmlString [
+
+	| context |
+	
+	context := Dictionary new
+    at: 'content' put: htmlString;
+    yourself.
+	
+	^  (MustacheTemplate on: self mustacheTemplate) value: context
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> mustacheTemplate [
+
+	^ '<h1>Weekly news about Pharo</h1>
+	{{{content}}}'
+]
+
+{ #category : 'rendering' }
 MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 
 	| newPath |
@@ -274,19 +293,20 @@ MicBlogCreator >> targetDirectory: aFileReferenceOrAString [
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
-	| htmlDocument cssFramework |
+	| htmlDocument cssFramework htmlContent |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
 	cssFramework basePath: root, '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
 	htmlDocument configuration document: htmlDocument.
+	htmlContent := self mustacheAssembly: aMicHTMLVisitor contents.
 	htmlDocument
 		setCharSetUTF8;
 		addCSS: cssFramework;
-		destinationPath: targetDirectory.
+		destinationPath: targetDirectory. 
 	^ htmlDocument
 		  fileName: aFileReference path pathString;
-		  writeDocument: aMicHTMLVisitor contents;
+		  writeDocument: htmlContent;
 		  contents
 ]
