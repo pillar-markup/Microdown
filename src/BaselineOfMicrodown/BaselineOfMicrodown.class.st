@@ -15,6 +15,7 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 		self xmlParserHtml: spec.
+		self mustache: spec.
 		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
 		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
 			
