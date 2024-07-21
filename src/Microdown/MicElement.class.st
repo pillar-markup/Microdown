@@ -125,10 +125,10 @@ MicElement >> propertyAt: aKey [
 { #category : 'properties' }
 MicElement >> propertyAt: aKey ifAbsent: aBlock [
 	"Answer the property value associated with aKey or, if aKey isn't found, answer the result of evaluating aBlock."
-	
-	^ self properties isNil
-		ifTrue: [ aBlock value ]
-		ifFalse: [ self properties at: aKey ifAbsent: aBlock ]
+
+	^ self properties
+		  ifNil: [ aBlock value ]
+		  ifNotNil: [ self properties at: aKey ifAbsent: aBlock ]
 ]
 
 { #category : 'properties' }
