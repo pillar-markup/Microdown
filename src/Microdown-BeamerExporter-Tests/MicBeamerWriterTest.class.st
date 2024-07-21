@@ -51,7 +51,7 @@ MicBeamerWriterTest >> testCodeWithLabel [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumn [
 
-	self writeFor: (factory columnSample).
+	self writeFor: factory columnSample.
 	self assert: writer contents equals:'\begin{column}{0.42\textwidth}', newLine , newLine, 
 'this is a \textbf{text}', newLine ,
 '\end{column}', newLine, newLine
@@ -60,7 +60,7 @@ MicBeamerWriterTest >> testColumn [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumns [
 
-	self writeFor: (factory columnsSample).
+	self writeFor: factory columnsSample.
 	self assert: writer contents equals:'\begin{columns}', newLine ,
 '\end{columns}', newLine , newLine
 ]
@@ -119,4 +119,32 @@ newLine ,
 newLine ,
 'Presentation text', newLine ,
 '\end{frame}', newLine, newLine
+]
+
+{ #category : 'tests - full' }
+MicBeamerWriterTest >> testOneSlideInExtensionSyntaxParseWell [
+
+
+	| doc | 
+	doc := Microdown parse: 
+'{
+	"title":"Pharo Features (part)"
+}
+
+<!slide|title=This is a cool title&tag=nh5p
+
+Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
+
+
+- a list of bullet
+- bullet 2
+- bullet 3
+!>'.
+	self assert: doc children first class equals: MicMetaDataBlock.
+	self assert: doc children second class equals: MicSlideBlock.
+	self assert: doc children second children second class equals: MicUnorderedListBlock 
+	
+	
+
+
 ]
