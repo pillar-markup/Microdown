@@ -21,6 +21,26 @@ MicBeamerWriterTest >> actualClass [
 	^ MicBeamerWriter 
 ]
 
+{ #category : 'tests - full' }
+MicBeamerWriterTest >> doc [
+
+	^ Microdown parse: 
+'{
+	"title":"Pharo Features (part)"
+}
+
+<!slide|title=This is a cool title&tag=nh5p
+
+Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
+
+
+- a list of bullet
+- bullet 2
+- bullet 3
+!>'
+
+]
+
 { #category : 'tests' }
 MicBeamerWriterTest >> testCode [
 
@@ -122,24 +142,40 @@ newLine ,
 ]
 
 { #category : 'tests - full' }
+MicBeamerWriterTest >> testOneSlideInExtensionProducesNiceBeamer [
+
+	| beamer |
+	"this is not realy good since the meta data are ignored so far. 
+	But let us see if we can get pillar produces any first version."
+	beamer := MicBeamerWriter new.
+	beamer visit: self doc.
+	self 
+		assert: beamer contents  
+		equals:
+'
+\begin{frame}[fragile]
+
+\frametitle{This is a cool title}
+
+Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques.
+
+\begin{itemize}
+    \item a list of bullet
+    \item bullet 2
+    \item bullet 3
+\end{itemize}
+\end{frame}
+
+'
+
+]
+
+{ #category : 'tests - full' }
 MicBeamerWriterTest >> testOneSlideInExtensionSyntaxParseWell [
 
 
 	| doc | 
-	doc := Microdown parse: 
-'{
-	"title":"Pharo Features (part)"
-}
-
-<!slide|title=This is a cool title&tag=nh5p
-
-Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
-
-
-- a list of bullet
-- bullet 2
-- bullet 3
-!>'.
+	doc := self doc.
 	self assert: doc children first class equals: MicMetaDataBlock.
 	self assert: doc children second class equals: MicSlideBlock.
 	self assert: doc children second children second class equals: MicUnorderedListBlock 
