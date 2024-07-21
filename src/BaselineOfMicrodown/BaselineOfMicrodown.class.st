@@ -73,7 +73,7 @@ BaselineOfMicrodown >> baseline: spec [
 				spec requires: #( #'Microdown-BookTester' ) ];
 			
 			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' ) ];
+				spec requires: #( #'Microdown' #'Mustache') ];
 			package: #'Microdown-Blog-Tests' with: [
 				spec requires: #( #'Microdown-Blog' ) ];
 			
@@ -98,6 +98,15 @@ BaselineOfMicrodown >> baseline: spec [
 				with: #( 'Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools'
 				   'RichText' )
 	 ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> mustache: spec [
+
+	spec baseline: 'Mustache' with: [
+		spec
+			repository: 'github://noha/mustache:v1.0/repository';
+			loads: #( 'Core' 'Tests' ) ]
 ]
 
 { #category : 'baselines' }
