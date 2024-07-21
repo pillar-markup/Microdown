@@ -201,7 +201,7 @@ MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitInputFile: anInputfile [
 
-	 builder inputFile: anInputfile path originalString
+	builder inputFile: anInputfile path fullName
 ]
 
 { #category : 'visit - format' }
