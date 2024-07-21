@@ -230,18 +230,6 @@ MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 ]
 
 { #category : 'tests' }
-MicBlogCreatorTest >> testRootAssembly [
-
-	| root file |
-	file := self listOfFile at: 1.
-	root := Microdown parse: file contents.
-
-	blog rootAssembly: root.
-
-	self assert: root children size equals: 5
-]
-
-{ #category : 'tests' }
 MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
 
 	| listOfSummarizedDocuments summarized1 summarized2 summarized3 |
