@@ -273,6 +273,32 @@ MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryCleanDirectory [
+
+	self assert: (fileSystem / 'source') hasChildren.
+	blog targetDirectory: fileSystem / 'source'.
+	self assert: (fileSystem / 'source') hasChildren not.
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryWithFileReference [
+
+	blog targetDirectory: fileSystem / 'html'.
+	
+	self assert: blog targetDirectory equals: fileSystem / 'html'
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryWithString [
+
+"we use basename cause we can't pass the memory with a String"
+
+	blog targetDirectory: 'html'.
+	
+	self assert: blog targetDirectory basename equals: (fileSystem / 'html') basename
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testWriteTo [
 
 	| root file html |
