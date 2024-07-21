@@ -66,7 +66,7 @@ MicResourceSettingsTest >> testIsCashingResourcesTrue [
 	subject isCachingResources: true.
 	self assert: (self cacheAt: self imageUrl) equals: nil.
 	sample := Microdown asRichText: ('![](', self imageUrl,')' ).
-	self assert: (self cacheAt: self imageUrl asZnUrl ) notNil.
+	self assert: (self cacheAt: self imageUrl asZnUrl ) isNotNil.
 	
 ]
 

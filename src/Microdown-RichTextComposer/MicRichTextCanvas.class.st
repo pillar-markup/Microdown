@@ -25,7 +25,7 @@ MicRichTextCanvas >> << aText [
 	text := aText asText.
 	brushes do: [ :brush | brush paint: text ].
 	"If no font is already put, and a body font is defined, apply it"
-	((self hasFontDefinitions: text) not and: [ self textStyler bodyFont notNil])
+	((self hasFontDefinitions: text) not and: [ self textStyler bodyFont isNotNil])
 		ifTrue: [
 			text addAttribute: (TextFontReference toFont: self textStyler bodyFont)].
 	out << text.

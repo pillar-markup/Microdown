@@ -218,7 +218,7 @@ MicFileResourceReferenceTest >> testLoadImage [
 	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
 		filesystem: filesystem.
 	image := ref loadImage.
-	self assert: image notNil.
+	self assert: image isNotNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
 ]
