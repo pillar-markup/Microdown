@@ -60,6 +60,11 @@ MicElement >> fromSource [
 ]
 
 { #category : 'properties' }
+MicElement >> hasProperties [
+	^ properties isNotNil
+]
+
+{ #category : 'properties' }
 MicElement >> hasProperty: aKey [
 	"Answer whether there is a property named aKey."
 	
@@ -82,6 +87,11 @@ MicElement >> inlineParse: aString [
 MicElement >> inlineParserClass [
 
 	^ MicInlineParser
+]
+
+{ #category : 'testing' }
+MicElement >> isMetaData [
+	^ false
 ]
 
 { #category : 'private' }

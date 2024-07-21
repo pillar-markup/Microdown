@@ -41,6 +41,28 @@ Pharo benefits from an elegant design that enables a relatively simple implement
 
 ]
 
+{ #category : 'tests - full' }
+MicBeamerWriterTest >> docWithRealMetaData [
+
+	^ Microdown parse: 
+'{
+	"title":"Parametrized Tests",
+	"subtitle":"Getting more tests out of test cases",
+	"slidesid":"M2-5"
+}
+
+<!slide|title=This is a cool title&tag=nh5p
+
+Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
+
+
+- a list of bullet
+- bullet 2
+- bullet 3
+!>'
+
+]
+
 { #category : 'tests' }
 MicBeamerWriterTest >> testCode [
 
@@ -183,4 +205,13 @@ MicBeamerWriterTest >> testOneSlideInExtensionSyntaxParseWell [
 	
 
 
+]
+
+{ #category : 'tests - full' }
+MicBeamerWriterTest >> testParserSetTheDocumentProperties [
+
+	| doc |
+	doc := self docWithRealMetaData.
+	self assert: doc hasProperties. 
+	
 ]

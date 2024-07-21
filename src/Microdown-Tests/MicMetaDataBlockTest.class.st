@@ -97,6 +97,14 @@ MicMetaDataBlockTest >> testIncludesKey [
 	self deny: (metadata includesKey: 'title222')
 ]
 
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testIsMetaData [
+
+	| root |
+	root := parser parse: 'blah blah'.
+	self deny: root children first isMetaData
+]
+
 { #category : 'tests - parsing' }
 MicMetaDataBlockTest >> testMetaDataDictionaryIsInitializedDuringParseTime [
 
@@ -131,6 +139,20 @@ then it eats.
 	self assert: (metadata body at: metadata keyForUnparsableContents) equals: source.
 	self assert: metadata bogusParsing
 	
+]
+
+{ #category : 'tests - metadata properties' }
+MicMetaDataBlockTest >> testOnlyMetaDataIsMetaData [
+
+	| source root metadata |
+	source := '{
+"authors" : "S. Ducasse" ,
+"title" : "Pharo by Example"
+}'.
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: metadata isMetaData.
+	self deny: root isMetaData
 ]
 
 { #category : 'tests - parsing' }

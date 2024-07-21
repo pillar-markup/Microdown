@@ -337,6 +337,10 @@ MicrodownParser >> parse: aStreamOrString [
 		whileFalse: [ 
 			current closeMe.
 			current := current parent ].
+	root hasMetaDataElement 
+		ifTrue: [ root properties: root metaDataElement body ].
+			
+		
 	^ root
 ]
 
