@@ -96,7 +96,7 @@ MicInlineDelimiter >> isEvaluated [
 
 { #category : 'testing' }
 MicInlineDelimiter >> isOpener [
-	^ self closer notNil or: [ self markup = self closer ]
+	^ self closer isNotNil or: [ self markup = self closer ]
 ]
 
 { #category : 'testing' }
