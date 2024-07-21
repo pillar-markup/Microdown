@@ -116,7 +116,6 @@ MicBlogCreator >> createAllHtmlFile [
 MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
@@ -132,7 +131,6 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
 		write: visitor
@@ -143,7 +141,6 @@ MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
@@ -209,6 +206,7 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 	
 	context := Dictionary new
     at: 'content' put: htmlString;
+	 at: 'archive' put: (MicHTMLVisitor new visit: dateList copy) first contents;
     yourself.
 	
 	^  (MustacheTemplate on: self mustacheTemplate) value: context
@@ -217,8 +215,9 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 { #category : 'rendering' }
 MicBlogCreator >> mustacheTemplate [
 
-	^ '<h1>Weekly news about Pharo</h1>
-	{{{content}}}'
+	^ '<section><h1>Weekly news about Pharo</h1></section>
+	<section>{{{content}}}</section>
+	<section>{{{archive}}}</section>'
 ]
 
 { #category : 'rendering' }
@@ -242,13 +241,6 @@ MicBlogCreator >> root: aString [
 
 	root := aString.
 	sum root: root
-]
-
-{ #category : 'rendering' }
-MicBlogCreator >> rootAssembly: aMicRoot [
-
-	aMicRoot addChild: dateList copy.
-	^ aMicRoot
 ]
 
 { #category : 'sorting' }
