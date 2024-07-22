@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicBeamerWriter2Test',
-	#superclass : 'MicLaTeXWriterTest',
+	#superclass : 'TestCase',
 	#category : 'Microdown-BeamerExporter-Tests',
 	#package : 'Microdown-BeamerExporter-Tests'
 }
