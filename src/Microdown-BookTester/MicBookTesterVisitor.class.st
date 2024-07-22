@@ -101,5 +101,6 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 		allTestResults add: result.
 		self executeAndReportIn: result.
 		aCodeBlock isExpectedFailure ifTrue: [
-			result status: result status not ] ]
+			result status: result status not .
+			result isExpectedFailure: true  ] ]
 ]

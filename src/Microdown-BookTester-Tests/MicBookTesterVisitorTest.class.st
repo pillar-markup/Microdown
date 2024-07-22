@@ -64,7 +64,6 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
-	self flag: #todo.
 	self assert: bTester failedTests first message equals: 'Instance of SmallInteger did not understand #key'
 ]
 

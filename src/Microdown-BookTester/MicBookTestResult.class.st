@@ -37,7 +37,8 @@ Class {
 		'status',
 		'explanation',
 		'message',
-		'source'
+		'source',
+		'isExpectedFailure'
 	],
 	#classInstVars : [
 		'allMessages'
@@ -75,6 +76,9 @@ MicBookTestResult >> explanation [
 	^ 'test status: ',
 	  (self class allMessages at: self status asString) asString ,
      String cr , 
+	  'isExpectedFailure?  ',
+	  self isExpectedFailure asString ,
+	  String cr ,
      'Description of the test result : ' ,
 	 self message asString ,
 	 String cr ,
@@ -113,7 +117,20 @@ MicBookTestResult >> initialize [
 
 	super initialize.
 	status := true.
+	isExpectedFailure := false .
 	message := 'Test failed without raising an exception'
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> isExpectedFailure [
+
+	^ isExpectedFailure
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> isExpectedFailure: anObject [
+
+	isExpectedFailure := anObject
 ]
 
 { #category : 'testing' }
