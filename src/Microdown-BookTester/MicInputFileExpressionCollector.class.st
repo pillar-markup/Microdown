@@ -5,7 +5,11 @@ Class {
 	#name : 'MicInputFileExpressionCollector',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'allFiles'
+		'allFiles',
+		'baseDirectory',
+		'currentDirectory',
+		'previousDirecotry',
+		'dirs'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -16,15 +20,43 @@ MicInputFileExpressionCollector >> allFiles [
 	^ allFiles
 ]
 
+{ #category : 'accessing' }
+MicInputFileExpressionCollector >> baseDirectory [
+
+	^ baseDirectory
+]
+
+{ #category : 'accessing' }
+MicInputFileExpressionCollector >> baseDirectory: anObject [
+
+	baseDirectory := anObject.
+	currentDirectory := baseDirectory 
+]
+
 { #category : 'initialization' }
 MicInputFileExpressionCollector >> initialize [
 
 	super initialize. 
-	allFiles := OrderedCollection new.
+	allFiles := Set new.
+	dirs := OrderedCollection new
 ]
 
 { #category : 'initialization' }
 MicInputFileExpressionCollector >> visitInputFile: anInputFile [
 
-	allFiles add: anInputFile
+	
+	| fileReference |
+	MicZincPathResolver
+		resolve: anInputFile  
+		withBase: currentDirectory asMicResourceReference.
+	
+	fileReference := currentDirectory fileSystem referenceTo:
+			 (anInputFile arguments at: 'path') uri asFileReference pathString.
+			
+	(allFiles includes: fileReference) ifTrue: [ ^ self ].
+	allFiles add: fileReference.
+	dirs addLast: currentDirectory.
+	currentDirectory := fileReference parent.
+	self visit: (Microdown parseFile: fileReference).
+	currentDirectory := dirs removeLast
 ]
