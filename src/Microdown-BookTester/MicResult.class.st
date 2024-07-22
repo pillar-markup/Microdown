@@ -17,7 +17,8 @@ Class {
 		'message',
 		'anchorLabel',
 		'status',
-		'source'
+		'source',
+		'explanation'
 	],
 	#classInstVars : [
 		'allMessages'
@@ -28,12 +29,12 @@ Class {
 
 { #category : 'accessing' }
 MicResult class >> allMessages [
-	^ allMessages ifNil: [ 
+   	^ allMessages ifNil: [ 
 		allMessages := Dictionary new.
 		allMessages
 	     	at: #referenceIsFine put: 'the reference defined correctly and point to a defined anchor';
 			at: #anchorIsFine put: 'the anchor is defined correctly and not duplicated elsewhere ';
-			at: #anchorIsMissing put: 'A reference refers to a missing anchor';
+			at: #anchorIsMissing put: 'i represent A reference that refers to a missing anchor';
 			at: #twoAnchorsSameName put: '2 anchors are declared with the same name'.
 		^ allMessages ]
 ]
@@ -56,6 +57,25 @@ MicResult >> anchorLabel: anObject [
 ]
 
 { #category : 'accessing' }
+MicResult >> explanation [
+	
+	^ self message asString ,
+	 String cr ,
+	 'the concerned element :  ',
+	 self anchorLabel asString , 
+	 String cr , 
+	'from the source file:  ' ,
+   	self source asString 
+	
+]
+
+{ #category : 'accessing' }
+MicResult >> explanation: anObject [
+
+	explanation := anObject
+]
+
+{ #category : 'accessing' }
 MicResult >> message [
 
 	^ message
@@ -65,12 +85,6 @@ MicResult >> message [
 MicResult >> message: anObject [
 
 	message := anObject
-]
-
-{ #category : 'accessing' }
-MicResult >> printOn: aStream [
-	aStream nextPutAll: self message asString, '", with specification: "', self anchorLabel asString, '"'
-	
 ]
 
 { #category : 'accessing' }

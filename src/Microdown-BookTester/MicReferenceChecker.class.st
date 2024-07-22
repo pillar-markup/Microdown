@@ -23,10 +23,10 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 	|micResultInstance|
 		micResultInstance := MicResult new.
 		micResultInstance
-						      message:( MicResult allMessages at: #anchorIsMissing ) ; 	
+						      message:( MicResult allMessages at: #anchorIsMissing ) ; 
 		                  anchorLabel: anAnchorReference anchorLabel ;
-								status: false .
-	  (anAnchorReference fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchorReference fromFile ]	.				
+								status: false ;
+                         source: anAnchorReference fromFile 	.				
 	  allTestsResults add: micResultInstance .							
 							
 		
@@ -39,8 +39,8 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 		micResultInstance
 						      message:( MicResult allMessages at: #twoAnchorsSameName ) ; 	
 		                  anchorLabel: anAnchor anchorLabel ;
-								status: false .
-	  (anAnchor fromSource hasProperty: #file)	ifTrue: [ micResultInstance source: anAnchor fromFile ]	.				
+								status: false ;
+	                     source: anAnchor fromFile 	.				
 	  allTestsResults add: micResultInstance .							
 							
 		

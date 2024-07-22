@@ -261,7 +261,7 @@ See *@anchorSection1@*
 '.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
-	self deny: visitor isOkay 
+	self deny: visitor isOkay . 
 ]
 
 { #category : 'tests' }
