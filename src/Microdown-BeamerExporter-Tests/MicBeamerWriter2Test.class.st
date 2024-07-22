@@ -17,10 +17,6 @@ MicBeamerWriter2Test >> doc [
 
 Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
 
-
-- a list of bullet
-- bullet 2
-- bullet 3
 !>'
 
 ]
@@ -39,10 +35,6 @@ MicBeamerWriter2Test >> docWithRealMetaData [
 
 Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques. 
 
-
-- a list of bullet
-- bullet 2
-- bullet 3
 !>'
 
 ]
@@ -59,22 +51,13 @@ MicBeamerWriter2Test >> testOneSlideInExtensionProducesNiceBeamer [
 	self 
 		assert: beamer contents  
 		equals:
-'
-\begin{frame}[fragile]
+'', beamer usedNewLine,
+'\begin{frame}[fragile]', beamer usedNewLine, beamer usedNewLine, 
 
-\frametitle{This is a cool title}
+'\frametitle{This is a cool title}', beamer usedNewLine, beamer usedNewLine,
 
-Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques.
-
-\begin{itemize}
-    \item a list of bullet
-    \item bullet 2
-    \item bullet 3
-\end{itemize}
-\end{frame}
-
-'
-
+'Pharo benefits from an elegant design that enables a relatively simple implementation of many advanced programming techniques.', beamer usedNewLine,
+'\end{frame}', beamer usedNewLine, beamer usedNewLine
 ]
 
 { #category : 'tests - full' }
@@ -85,7 +68,7 @@ MicBeamerWriter2Test >> testOneSlideInExtensionSyntaxParseWell [
 	doc := self doc.
 	self assert: doc children first class equals: MicMetaDataBlock.
 	self assert: doc children second class equals: MicSlideBlock.
-	self assert: doc children second children second class equals: MicUnorderedListBlock 
+	self assert: doc children second children first class equals: MicParagraphBlock 
 	
 	
 
