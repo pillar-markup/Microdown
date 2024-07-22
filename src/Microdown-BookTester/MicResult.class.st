@@ -66,6 +66,13 @@ MicResult >> anchorLabel: anObject [
 ]
 
 { #category : 'accessing' }
+MicResult >> concernedElement [
+"just to have a Global API between this and MicBookTestResult Object but we still have the spesific api for the same case " 
+
+	^ anchorLabel
+]
+
+{ #category : 'accessing' }
 MicResult >> explanation [
 
 	^ 'test status: ',

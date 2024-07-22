@@ -46,9 +46,9 @@ MicBookTesterVisitor >> executeAndReportIn: aCodeBlockObject [
 	isCorrect := false.
 	[ isCorrect := self checkAssociation: aCodeBlockObject ]
 		on: Exception
-		do: [ :exception | aCodeBlockObject explanation: exception asString ].
+		do: [ :exception | aCodeBlockObject message: exception asString ].
 	aCodeBlockObject status: isCorrect.
-	isCorrect ifTrue: [ aCodeBlockObject explanation: 'Test passed' ]
+	isCorrect ifTrue: [ aCodeBlockObject message: 'Test passed' ]
 ]
 
 { #category : 'visiting' }
@@ -91,13 +91,15 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 	executeAndReportExample:
 	Note that there is no fragmentedText here, no need for it b/ecause the codeblock text contains the whole text and is the equivalent of  Playground execution"
 
-	aCodeBlock isExample
-		ifTrue: [
-			| result |
-			result := MicBookTestResult new.
-			result text: aCodeBlock code.
-			allTestResults add: result.
-			self executeAndReportIn: result.
-			aCodeBlock isExpectedFailure ifTrue: [
-				result status: result status not ] ]
+	aCodeBlock isExample ifTrue: [
+		| result |
+		result := MicBookTestResult new.
+		result text: aCodeBlock code.
+		[ result source: aCodeBlock fromFile ]
+			on: Error
+			do: [ result source: nil ].
+		allTestResults add: result.
+		self executeAndReportIn: result.
+		aCodeBlock isExpectedFailure ifTrue: [
+			result status: result status not ] ]
 ]
