@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BeamerExporter-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'as yet unclassified' }
 MicMicrodownToSlideTest >> testSectionLevelOneIsMapToSlide [
 
 	| doc slide |
@@ -23,7 +23,7 @@ MicMicrodownToSlideTest >> testSectionLevelOneIsMapToSlide [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'as yet unclassified' }
 MicMicrodownToSlideTest >> testSlideGotCorrectParent [
 
 	| doc slide |
@@ -40,7 +40,7 @@ MicMicrodownToSlideTest >> testSlideGotCorrectParent [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'as yet unclassified' }
 MicMicrodownToSlideTest >> testSlideMetaData [
 
 	| doc |
@@ -60,5 +60,31 @@ MicMicrodownToSlideTest >> testSlideMetaData [
 	MicMicrodownToSlideVisitor new visit: doc. 
 	self assert: doc children first class equals: MicMetaDataBlock.
 	self assert: doc children second class equals: MicSlideBlock 
+	
+]
+
+{ #category : 'as yet unclassified' }
+MicMicrodownToSlideTest >> testSlideShouldContainFollowingElement [
+
+	| doc |
+	doc := MicrodownParser new parse: '# Title 1
+
+Textouille 2 ici 
+
+- item 1
+- item 2
+
+# Title 2
+
+textouille ici 
+- item 3
+- item 4
+
+'.
+ 
+	MicMicrodownToSlideVisitor new visit: doc. 
+	
+	self assert: doc children equals: 2.
+	self assert: doc children first size equals: 2
 	
 ]
