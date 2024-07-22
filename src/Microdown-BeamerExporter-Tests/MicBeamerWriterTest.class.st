@@ -51,7 +51,7 @@ MicBeamerWriterTest >> testCodeWithLabel [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumn [
 
-	self writeFor: (factory columnSample).
+	self writeFor: factory columnSample.
 	self assert: writer contents equals:'\begin{column}{0.42\textwidth}', newLine , newLine, 
 'this is a \textbf{text}', newLine ,
 '\end{column}', newLine, newLine
@@ -60,7 +60,7 @@ MicBeamerWriterTest >> testColumn [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumns [
 
-	self writeFor: (factory columnsSample).
+	self writeFor: factory columnsSample.
 	self assert: writer contents equals:'\begin{columns}', newLine ,
 '\end{columns}', newLine , newLine
 ]

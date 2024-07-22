@@ -75,6 +75,11 @@ MicMetaDataBlock >> initialize [
 	"body := SmallDictionary new"
 ]
 
+{ #category : 'testing' }
+MicMetaDataBlock >> isMetaData [
+	^ true
+]
+
 { #category : 'markups' }
 MicMetaDataBlock >> keyForUnparsableContents [
 
