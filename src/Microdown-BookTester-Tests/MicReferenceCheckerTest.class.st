@@ -211,7 +211,8 @@ See *@anchorFigure1@*
 ' ].
 	referenceToFigure ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: referenceToFigure)
+	self assert: (visitor checkFile: referenceToFigure) .
+	
 ]
 
 { #category : 'tests - parse only' }
@@ -282,6 +283,7 @@ See *@anchorSection1@*
 	
 	visitor := MicReferenceChecker new. 
 	self deny: (visitor checkFile: file) .
+	self halt .
 	file ensureDelete 
 ]
 

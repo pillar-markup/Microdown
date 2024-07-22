@@ -32,7 +32,10 @@ MicResult class >> allMessages [
    	^ allMessages ifNil: [ 
 		allMessages := Dictionary new.
 		allMessages
+		  
 	     	at: #referenceIsFine put: 'the reference defined correctly and point to a defined anchor';
+		   at: #false put: 'Failed' ;
+		   at: #true put: 'Passed' ;
 			at: #anchorIsFine put: 'the anchor is defined correctly and not duplicated elsewhere ';
 			at: #anchorIsMissing put: 'i represent A reference that refers to a missing anchor';
 			at: #twoAnchorsSameName put: '2 anchors are declared with the same name'.
@@ -42,6 +45,12 @@ MicResult class >> allMessages [
 { #category : 'accessing' }
 MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
 	^ self new message: (self allMessages at: aMethodSymbol); anchorLabel: aAnchorLabel asString; yourself.
+]
+
+{ #category : 'initialization' }
+MicResult class >> reset [
+	<script>
+	allMessages := nil
 ]
 
 { #category : 'accessing' }
@@ -58,8 +67,12 @@ MicResult >> anchorLabel: anObject [
 
 { #category : 'accessing' }
 MicResult >> explanation [
-	
-	^ self message asString ,
+
+	^ 'test status: ',
+	  (self class allMessages at: self status asString) asString ,
+     String cr , 
+     'Description of the test result : ' ,
+	 self message asString ,
 	 String cr ,
 	 'the concerned element :  ',
 	 self anchorLabel asString , 
