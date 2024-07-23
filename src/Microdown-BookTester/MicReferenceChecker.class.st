@@ -101,12 +101,10 @@ MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 	| mainMic visitor  listOfFiles |
 	mainMic := Microdown parseFile: aDocument .
 	visitor := MicFilesCollector new.
-	self halt .
 	visitor
 		fileSystem: fileSystem ;
 		visit: mainMic.
 	listOfFiles := visitor visited collect: [ :file | fileSystem referenceTo: file  ] . 
-	
 	^ self checkList: listOfFiles  .
 	
 	
