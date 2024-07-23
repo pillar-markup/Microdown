@@ -52,11 +52,12 @@ MicInputFileExpressionCollector >> visitInputFile: anInputFile [
 	
 	fileReference := currentDirectory fileSystem referenceTo:
 			 (anInputFile arguments at: 'path') uri asFileReference pathString.
-			
+			self halt .
 	(allFiles includes: fileReference) ifTrue: [ ^ self ].
 	allFiles add: fileReference.
 	dirs addLast: currentDirectory.
-	currentDirectory := fileReference parent.
+	currentDirectory := fileReference.
+	self halt .
 	self visit: (Microdown parseFile: fileReference).
 	currentDirectory := dirs removeLast
 ]
