@@ -1,3 +1,6 @@
+"
+I'm a simple visitor that collects file input nodes from a document. 
+"
 Class {
 	#name : 'MicFilesCollector',
 	#superclass : 'MicrodownVisitor',
@@ -35,7 +38,6 @@ MicFilesCollector >> visitRoot: micDocument [
 	| worklist |
 	unexistingFiles := Set new.
 	worklist := OrderedCollection new.
-	self halt .
 	worklist add: micDocument.
 	visited := Set new.
 
