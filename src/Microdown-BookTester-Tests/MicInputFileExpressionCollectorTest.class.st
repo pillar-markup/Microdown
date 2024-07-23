@@ -18,7 +18,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProject [
 
 	section1 := dir / 'section1.md'.
@@ -61,13 +61,13 @@ just some text  here this file does not have another reference to another file
 		stream nextPutAll: '# section 5
 <!inputFile|path=../section6.md!>
 
-' ].
+' ]
 
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectEveryCaseIncluded [ 
 
 	section1 := dir / 'section1.md'.
@@ -113,13 +113,13 @@ MicInputFileExpressionCollectorTest >> createTestProjectEveryCaseIncluded [
 <!inputFile|path=../section6.md!>
 <!inputFile|path=../../section3.md!>
 
-' ].
+' ]
 
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectMultipleReferencesToTheSameFile [
 
 	section1 := dir / 'section1.md'.
@@ -147,14 +147,14 @@ MicInputFileExpressionCollectorTest >> createTestProjectMultipleReferencesToTheS
 		stream nextPutAll: '# section 4 
 <!inputFile|path=../section1.md!> 
 
-' ].
+' ]
 
 	
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectOnlyGoDownInFolders [
 
 	section1 := dir / 'section1.md'.
@@ -191,14 +191,14 @@ MicInputFileExpressionCollectorTest >> createTestProjectOnlyGoDownInFolders [
 		stream nextPutAll: '# section 4 
  
 
-' ].
+' ]
 
 
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectOnlyGoUpInFolders [
 
 	section1 := dir / 'section1.md'.
@@ -236,14 +236,14 @@ just text here
 <!inputFile|path=../section3.md!>
  
 
-' ].
+' ]
 
 
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectReferencesOfFileThatDoesNotExist [
 
 	section1 := dir / 'section1.md'.
@@ -271,12 +271,12 @@ MicInputFileExpressionCollectorTest >> createTestProjectReferencesOfFileThatDoes
 		stream nextPutAll: '# section 4 
 <!inputFile|path=./subsections/section5.md!>
 
-' ].
+' ]
 
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectSmallLoop [
 
 	section1 := dir / 'section1.md'.
@@ -295,18 +295,18 @@ MicInputFileExpressionCollectorTest >> createTestProjectSmallLoop [
 
 
 
-' ].
+' ]
 	
 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'utils' }
 MicInputFileExpressionCollectorTest >> fileSystem [
 
 	^ FileSystem memory
 ]
 
-{ #category : 'running' }
+{ #category : 'utils' }
 MicInputFileExpressionCollectorTest >> setUp [
 
 	super setUp.
@@ -316,49 +316,67 @@ MicInputFileExpressionCollectorTest >> setUp [
 	visitor := MicInputFileExpressionCollector new .
 ]
 
-{ #category : 'tests' }
-MicInputFileExpressionCollectorTest >> testAllFilesReferences [
+{ #category : 'utils' }
+MicInputFileExpressionCollectorTest >> startVisitingFromTheRoot: root [
 
-	| mainMic  |
-	self createTestProject.
-	"dir resolveDocument: section1 ."
-	mainMic := Microdown parse: section1 contents.
-	visitor := MicInputFileExpressionCollector new .
-	visitor 
-		baseDirectory: dir;
-		visit: mainMic .	
-		
-	self assert: visitor allFiles size equals: 4 .
+	"just parsing the file here and and passing it to the visitor with the fs used "
+	"Note : its quite important to use parseFile: because assigning fromFile is implemented inside the parseFile: method 
+	For Example using 'Microdown Parse: File Content' directly then passing it to the visitor  can cause problems  "
+	
+	mainMic := Microdown parseFile: root.
+	visitor := MicFilesCollector new.
+	visitor
+		fileSystem: fs;
+		visit: mainMic.
 ]
 
-{ #category : 'tests' }
-MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromASdubBranch [
+{ #category : 'implenation 2 Tests' }
+MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromTheButtomV2Implementation [
 
-	| mainMic  |
-	self createTestProject.
-	"dir resolveDocument: section1 ."
-	mainMic := Microdown parse: section2 contents.
-	dir := (fs / 'myDirectory'/'sections/section2.md') asFileReference.
+"this is for testing the other implementation ( 3 only because the root file is not added automatically but that can be easily managed because wee need to have the file reference anyway )
+and in this test we start in a file in the buttom of the folders and go up  "
+
+
+	self createTestProjectOnlyGoUpInFolders .
+	mainMic := Microdown parseFile: section4 . 
+	dir := (fs / 'myDirectory'/'sections/subsections/subsubsections/section4.md') asFileReference.
 	visitor := MicInputFileExpressionCollector new .
+	
 	visitor 
 		baseDirectory: dir;
 		visit: mainMic .	
 		
-	self assert: visitor allFiles size equals: 2 .
+	self assert: visitor allFiles size equals: 3 
+]
+
+{ #category : 'implenation 2 Tests' }
+MicInputFileExpressionCollectorTest >> testAllFilesV2Implementation [
+
+"this is for testing the other implementation ( 3 only because the root file is not added automatically but that can be easily managed because wee need to have the file reference anyway ) "
+
+
+	self createTestProjectOnlyGoDownInFolders .
+	mainMic := Microdown parseFile: section1 .
+	dir := (fs / 'myDirectory'/'section1.md') asFileReference.
+	visitor := MicInputFileExpressionCollector new .
+	
+	
+	visitor 
+		baseDirectory: dir;
+		visit: mainMic .	
+		
+	self assert: visitor allFiles size equals: 3 
 ]
 
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testCollectReference [
 
+	
+	"preparation of project and passing the parsed root to the visitor "
 	self createTestProject.
-	"dir resolveDocument: section1 ."
-	mainMic := Microdown parseFile: section1.
-	visitor := MicFilesCollector new.
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
-1halt.
+	self startVisitingFromTheRoot: section1 .
+	
+	"assertion"
 	self assert: visitor visited
 		=
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md'.
@@ -371,17 +389,10 @@ MicInputFileExpressionCollectorTest >> testCollectReference [
 MicInputFileExpressionCollectorTest >> testEveryCaseIncluded [ 
 	
 
-	"preparation"
+   "preparation of project and passing the parsed root to the visitor "
 	self createTestProjectEveryCaseIncluded .
-	mainMic := Microdown parseFile: section2 .
-	visitor := MicFilesCollector new.
-	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
-	self halt .
+	self startVisitingFromTheRoot: section2 .
+
 	"assertion"
 	self assert: visitor visited
 		=
@@ -393,16 +404,10 @@ MicInputFileExpressionCollectorTest >> testEveryCaseIncluded [
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testLoopOfFilesReferencingEachOther [
 
-	"preparation"
+   "preparation of project and passing the parsed root to the visitor "
 	self createTestProjectSmallLoop .
-	mainMic := Microdown parseFile: section1.
-	visitor := MicFilesCollector new.
-	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
+	self startVisitingFromTheRoot: section1 .
+
 	
 	"assertion"
 	self assert: visitor visited
@@ -414,16 +419,10 @@ MicInputFileExpressionCollectorTest >> testLoopOfFilesReferencingEachOther [
 MicInputFileExpressionCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	
 	
-	"preparation"
+   "preparation of project and passing the parsed root to the visitor "
 	self createTestProjectReferencesOfFileThatDoesNotExist .
-	mainMic := Microdown parseFile: section1.
-	visitor := MicFilesCollector new.
+	self startVisitingFromTheRoot: section1 .
 	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
 	
 	"assertion"
 	self assert: visitor visited
@@ -436,16 +435,10 @@ MicInputFileExpressionCollectorTest >> testMultipleReferencesOfFileThatDoesNotEx
 MicInputFileExpressionCollectorTest >> testMultipleReferencesToTheSameFile [
 	
 	
-	"preparation"
-	self createTestProjectMultipleReferencesToTheSameFile .
-	mainMic := Microdown parseFile: section1.
-	visitor := MicFilesCollector new.
 	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
+   "preparation of project and passing the parsed root to the visitor "
+	self createTestProjectMultipleReferencesToTheSameFile .
+	self startVisitingFromTheRoot: section1 .
 	
 	"assertion"
 	self assert: visitor visited
@@ -457,16 +450,11 @@ MicInputFileExpressionCollectorTest >> testMultipleReferencesToTheSameFile [
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testOnlyGoDownInFolders [
 
-	"preparation"
+
+   "preparation of project and passing the parsed root to the visitor "
 	self createTestProjectOnlyGoDownInFolders .
-	mainMic := Microdown parseFile: section1.
-	visitor := MicFilesCollector new.
-	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
+	self startVisitingFromTheRoot: section1 .
+
 	"assertion"
 	self assert: visitor visited
 		=
@@ -477,17 +465,11 @@ MicInputFileExpressionCollectorTest >> testOnlyGoDownInFolders [
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testOnlyGoUpInFolders [
 	
-		"preparation"
+   "preparation of project and passing the parsed root to the visitor "
 	self createTestProjectOnlyGoUpInFolders .
-	mainMic := Microdown parseFile: section4.
-	visitor := MicFilesCollector new.
+	self startVisitingFromTheRoot: section4 .
 	
-	"visiting "
-	visitor
-		fileSystem: fs;
-		visit: mainMic.
-	visitor visited.
-	"assertion"
+   "assertion"
 	self assert: visitor visited
 		=
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section3.md' . '/myDirectory/sections/subsections/subsubsections/section4.md'  } asSet
