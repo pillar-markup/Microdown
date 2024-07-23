@@ -8,7 +8,10 @@ Class {
 		'section1',
 		'visitor',
 		'collector',
-		'section2'
+		'section2',
+		'section3',
+		'section4',
+		'section5'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -17,7 +20,6 @@ Class {
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> createTestProject [
 
-	|  subSection1 section4 section5 |
 	section1 := dir / 'section1.md'.
 	section1 ensureCreateFile.
 	section1 writeStreamDo: [ :stream |
@@ -31,7 +33,9 @@ MicInputFileExpressionCollectorTest >> createTestProject [
 	section2 ensureCreateFile.
 	section2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 2
-<!inputFile|path=subsections/subsection1.md!>
+<!inputFile|path=./subsections/section3.md!>
+
+
 
 ' ].
 	section4 := dir / 'sections/section4.md'.
@@ -42,20 +46,24 @@ just some text  here this file does not have another reference to another file
 
 ' ].
 
-	section5 := dir / 'sections/subsections/subsubsections/section5.md'.
+	section3 := dir / 'sections/subsections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+<!inputFile|path=../../section1.md!>
+<!inputFile|path=../section5.md!>
+
+' ].
+	section5 := dir / 'sections/section5.md'.
 	section5 ensureCreateFile.
 	section5 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 5
-just some text  here this file does not have another reference to another file
+<!inputFile|path=../section6.md!>
 
 ' ].
-	subSection1 := dir / 'sections/subsections/subsection1.md'.
-	subSection1 ensureCreateFile.
-	subSection1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# SubSection 1
-<!inputFile|path=subsubsections/section5.md!>
 
-' ]
+
+
 ]
 
 { #category : 'accessing' }
@@ -108,13 +116,20 @@ MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromASdubBr
 { #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testCollectReference [
 
-	| mainMic  |
+	| mainMic |
 	self createTestProject.
 	"dir resolveDocument: section1 ."
-	mainMic := Microdown parse: section1 contents.
-	visitor := MicInputFileExpressionCollector new .
-	visitor 
-		baseDirectory: dir;
-		visit: mainMic .	
-		
+	mainMic := Microdown parseFile: section1.
+	visitor := MicFilesCollector new.
+	visitor
+		fileSystem: fs;
+		visit: mainMic.
+	visitor visited.
+1halt.
+	self assert: visitor visited
+		=
+			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md'.
+			'/myDirectory/sections/section4.md'.
+			'/myDirectory/sections/subsections/section3.md' .
+			'/myDirectory/sections/section5.md'} asSet
 ]
