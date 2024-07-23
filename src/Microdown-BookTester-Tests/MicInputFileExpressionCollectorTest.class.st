@@ -68,6 +68,56 @@ just some text  here this file does not have another reference to another file
 ]
 
 { #category : 'project creation' }
+MicInputFileExpressionCollectorTest >> createTestProjectBadAndCorrectReferences [
+
+		section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+@anchorSection1		
+
+See *@anchorSection0@* 
+		
+
+<!inputFile|path=sections/section2.md!>
+' ].
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 2
+@anchorSection2		
+<!inputFile|path=subsections/section3.md!>
+
+
+
+' ].
+
+	section3 := dir / 'sections/subsections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+@anchorSection3		
+<!inputFile|path=subsubsections/section4.md!>
+
+' ].
+
+
+
+	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+@anchorSection4
+See *@anchorSection5@* 
+ 
+
+' ]
+
+
+]
+
+{ #category : 'project creation' }
 MicInputFileExpressionCollectorTest >> createTestProjectEveryCaseIncluded [ 
 
 	section1 := dir / 'section1.md'.
@@ -330,6 +380,19 @@ MicInputFileExpressionCollectorTest >> startVisitingFromTheRoot: root [
 		visit: mainMic.
 ]
 
+{ #category : 'tests' }
+MicInputFileExpressionCollectorTest >> test [
+   
+
+	| checker |
+	self createTestProjectBadAndCorrectReferences .
+	checker := MicReferenceChecker new . 
+	
+	self halt .
+	self deny: ( checker checkProject: section1 fileSystem: fs) .
+	
+]
+
 { #category : 'implenation 2 Tests' }
 MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromTheButtomV2Implementation [
 
@@ -340,7 +403,6 @@ and in this test we start in a file in the buttom of the folders and go up  "
 	self createTestProjectOnlyGoUpInFolders .
 	mainMic := Microdown parseFile: section4 . 
 	dir := (fs / 'myDirectory'/'sections/subsections/subsubsections/section4.md') asFileReference.
-	visitor := MicInputFileExpressionCollector new .
 	
 	visitor 
 		baseDirectory: dir;
@@ -358,7 +420,6 @@ MicInputFileExpressionCollectorTest >> testAllFilesV2Implementation [
 	self createTestProjectOnlyGoDownInFolders .
 	mainMic := Microdown parseFile: section1 .
 	dir := (fs / 'myDirectory'/'section1.md') asFileReference.
-	visitor := MicInputFileExpressionCollector new .
 	
 	
 	visitor 

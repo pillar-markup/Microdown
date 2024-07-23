@@ -96,6 +96,24 @@ MicReferenceChecker >> checkList: aCollection [
 ]
 
 { #category : 'visiting' }
+MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
+	
+	| mainMic visitor  listOfFiles |
+	mainMic := Microdown parseFile: aDocument .
+	visitor := MicFilesCollector new.
+	self halt .
+	visitor
+		fileSystem: fileSystem ;
+		visit: mainMic.
+	listOfFiles := visitor visited collect: [ :file | fileSystem referenceTo: file  ] . 
+	
+	^ self checkList: listOfFiles  .
+	
+	
+
+]
+
+{ #category : 'visiting' }
 MicReferenceChecker >> collectBadReferences [
 
 	" should be called just after all the docs are visited other wise the result can be wrong"
