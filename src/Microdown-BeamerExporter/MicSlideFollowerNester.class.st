@@ -37,7 +37,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'currentFollowers',
-		'store',
 		'currentSlide'
 	],
 	#category : 'Microdown-BeamerExporter-Slide as header',
@@ -49,14 +48,8 @@ Class {
 MicSlideFollowerNester >> initialize [
 
 	super initialize.
-	store := IdentityDictionary new. 
 	currentFollowers := OrderedCollection new. 
 	
-]
-
-{ #category : 'as yet unclassified' }
-MicSlideFollowerNester >> store [
-	^ store
 ]
 
 { #category : 'acting' }
@@ -64,7 +57,11 @@ MicSlideFollowerNester >> storePastElements [
 	"the past elements are now children of the current slide."
 	
 	currentSlide ifNotNil: [ 
-		currentSlide addChildren: currentFollowers.
+		currentSlide children: currentFollowers.
+		
+		currentFollowers do: [ :each | currentSlide parent removeChild: each ].
+		
+		
 		currentFollowers := OrderedCollection new ]
 ]
 
@@ -73,11 +70,16 @@ MicSlideFollowerNester >> treatElement: each [
 	"When we face a new slide, we store the past seen elements as children of the current slide,
 	else we just sotre the element as a past element."
 	
+	self halt.
+	"each ifNil: [ self halt. ]."
 	each class = MicSlideBlock 
 		ifTrue: [ 
 					self storePastElements. 
 					currentSlide := each ]
-		ifFalse: [ currentFollowers addLast: each  ]
+		ifFalse: [ 
+				currentFollowers addLast: each.
+				"remove it from here"
+				"each parent removeChild: each"  ]
 ]
 
 { #category : 'acting' }

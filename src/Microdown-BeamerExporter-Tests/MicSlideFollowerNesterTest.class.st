@@ -9,39 +9,38 @@ Class {
 { #category : 'tests' }
 MicSlideFollowerNesterTest >> testShouldContainFollowingElement [
 
-	| doc pre nDoc |
+	| doc nester |
 	"I use faked slide ie without containting elements so that I can then test that the following items 
-are placed in slide after the pass of the slide nester."
+	are placed in slide after the pass of the slide nester."
 
 	doc := MicrodownParser new parse: 
-'# Level 1 - A
+'<!slide|title=Level 1 - A!>
 
 ## Level 2 - A
 
-## Level 2 - B
-
 ### Level 3 - A
 
-## Level 2 - C
+## Level 2 - B
 
-# Level 1 - B
+<!slide|title=Level 1 - B!>
 
 ## Level 2 - A
 
 '.
   
-	pre := MicSlideFollowerNester new. 
+self halt.
+	nester := MicSlideFollowerNester new. 
 	
-	pre treatChildrenOf: doc.
-	nDoc := pre newDocument.
+	nester treatElements: doc children.
+
 	"note that the doc have header with extra children and this does not make 
 	much sense even if this is correct from the algo. 
 	This should only be applied on new nodes as planned.
 	
 	"
-	self assert: nDoc children size equals: 2.
-	self assert: nDoc children first children size equals: 4. 
-	"one for the header text and three H2"
+	self assert: doc children size equals: 2.
+	self assert: doc children first children size equals: 3. 
+	"three H2"
 	
 	
 ]
