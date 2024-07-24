@@ -44,7 +44,7 @@ MicHeaderBlock >> addLineAndReturnNextNode: line [
 	self level: ('(#+)' asRegex
 		matchesPrefix: line;
 		subexpression: 1) size.
-	children := self inlineParse: (line copyFrom: level + 1 to: line size) trim.
+	children := OrderedCollection withAll: (self inlineParse: (line copyFrom: level + 1 to: line size) trim).
 	^ self
 ]
 

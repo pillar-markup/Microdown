@@ -19,12 +19,12 @@ MicNestingPreparer >> initialize [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer >> store [
 	^ store
 ]
 
-{ #category : 'visiting' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer >> storePastElements [
 
 	currentHeader ifNotNil: [ 
@@ -42,7 +42,7 @@ MicNestingPreparer >> treatElement: each [
 		ifFalse: [ currentFollowers addLast: each  ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer >> treatElements: aCol [
 
 	aCol do: [ :each | self treatElement: each ].
