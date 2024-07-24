@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicBeamerWriterTest',
 	#superclass : 'MicLaTeXWriterTest',
-	#category : 'Microdown-BeamerExporter-Tests',
-	#package : 'Microdown-BeamerExporter-Tests'
+	#category : 'Microdown-BeamerExporter-Tests-Slide',
+	#package : 'Microdown-BeamerExporter-Tests',
+	#tag : 'Slide'
 }
 
 { #category : 'tests' }

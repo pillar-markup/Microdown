@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicMicrodownToSlideVisitor2',
 	#superclass : 'MicrodownVisitor',
-	#category : 'Microdown-BeamerExporter',
-	#package : 'Microdown-BeamerExporter'
+	#category : 'Microdown-BeamerExporter-Slide as header',
+	#package : 'Microdown-BeamerExporter',
+	#tag : 'Slide as header'
 }
 
 { #category : 'instance-creation' }

@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicMicrodownToSlide2Test',
 	#superclass : 'TestCase',
-	#category : 'Microdown-BeamerExporter-Tests',
-	#package : 'Microdown-BeamerExporter-Tests'
+	#category : 'Microdown-BeamerExporter-Tests-Slide as header',
+	#package : 'Microdown-BeamerExporter-Tests',
+	#tag : 'Slide as header'
 }
 
 { #category : 'tests' }

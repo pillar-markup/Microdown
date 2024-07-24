@@ -33,19 +33,20 @@ where indentation means children of
 
 "
 Class {
-	#name : 'MicNestingPreparer',
+	#name : 'MicSlideFollowerNester',
 	#superclass : 'Object',
 	#instVars : [
 		'currentFollowers',
 		'store',
 		'currentSlide'
 	],
-	#category : 'Microdown-BeamerExporter',
-	#package : 'Microdown-BeamerExporter'
+	#category : 'Microdown-BeamerExporter-Slide as header',
+	#package : 'Microdown-BeamerExporter',
+	#tag : 'Slide as header'
 }
 
 { #category : 'initialization' }
-MicNestingPreparer >> initialize [
+MicSlideFollowerNester >> initialize [
 
 	super initialize.
 	store := IdentityDictionary new. 
@@ -54,20 +55,23 @@ MicNestingPreparer >> initialize [
 ]
 
 { #category : 'as yet unclassified' }
-MicNestingPreparer >> store [
+MicSlideFollowerNester >> store [
 	^ store
 ]
 
 { #category : 'acting' }
-MicNestingPreparer >> storePastElements [
-
+MicSlideFollowerNester >> storePastElements [
+	"the past elements are now children of the current slide."
+	
 	currentSlide ifNotNil: [ 
-		store at: currentSlide put: currentFollowers.
+		currentSlide addChildren: currentFollowers.
 		currentFollowers := OrderedCollection new ]
 ]
 
 { #category : 'acting' }
-MicNestingPreparer >> treatElement: each [
+MicSlideFollowerNester >> treatElement: each [
+	"When we face a new slide, we store the past seen elements as children of the current slide,
+	else we just sotre the element as a past element."
 	
 	each class = MicSlideBlock 
 		ifTrue: [ 
@@ -76,8 +80,8 @@ MicNestingPreparer >> treatElement: each [
 		ifFalse: [ currentFollowers addLast: each  ]
 ]
 
-{ #category : 'as yet unclassified' }
-MicNestingPreparer >> treatElements: aCol [
+{ #category : 'acting' }
+MicSlideFollowerNester >> treatElements: aCol [
 
 	aCol do: [ :each | self treatElement: each ].
 	"we should not forget to handle the last elements are not followed by a slide"

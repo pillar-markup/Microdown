@@ -51,17 +51,18 @@ Day two
 
 "
 Class {
-	#name : 'MicNestingPreparer2',
+	#name : 'MicFullNester2',
 	#superclass : 'Object',
 	#instVars : [
 		'currentRoots'
 	],
-	#category : 'Microdown-BeamerExporter',
-	#package : 'Microdown-BeamerExporter'
+	#category : 'Microdown-BeamerExporter-Experience',
+	#package : 'Microdown-BeamerExporter',
+	#tag : 'Experience'
 }
 
 { #category : 'initialization' }
-MicNestingPreparer2 >> initialize [
+MicFullNester2 >> initialize [
 
 	super initialize.
 	currentRoots := Array new: 10. 
@@ -69,13 +70,13 @@ MicNestingPreparer2 >> initialize [
 ]
 
 { #category : 'as yet unclassified' }
-MicNestingPreparer2 >> newDocument [ 
+MicFullNester2 >> newDocument [ 
 
 	^ currentRoots first
 ]
 
 { #category : 'as yet unclassified' }
-MicNestingPreparer2 >> treatChildrenOf: aRoot [
+MicFullNester2 >> treatChildrenOf: aRoot [
 	
 	| root |
 	root := MicRootBlock new.
@@ -86,7 +87,7 @@ MicNestingPreparer2 >> treatChildrenOf: aRoot [
 ]
 
 { #category : 'as yet unclassified' }
-MicNestingPreparer2 >> treatElement: each [
+MicFullNester2 >> treatElement: each [
 	"for now we only consider that all element do have a level"
 
 	(currentRoots at: each level) addChild: each. 

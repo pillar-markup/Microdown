@@ -1,5 +1,8 @@
 "
-I export mainly slides in Beamer LaTeX. Note that I do not generate the full beamer but the body of the slides. The beamer template can be for example the one of Pillar/presentation. 
+I export mainly slides in Beamer LaTeX. 
+Slides are expressed as MicSlideBlock nodes whose surface syntax use the Pharo extension facilities (`<!slide|title   body !>`).
+
+Note that I do not generate the full beamer but the body of the slides. The beamer template can be for example the one of Pillar/presentation. 
 
 
 ```
@@ -49,8 +52,9 @@ Metacello new
 Class {
 	#name : 'MicBeamerWriter',
 	#superclass : 'MicLaTeXWriter',
-	#category : 'Microdown-BeamerExporter',
-	#package : 'Microdown-BeamerExporter'
+	#category : 'Microdown-BeamerExporter-Slide',
+	#package : 'Microdown-BeamerExporter',
+	#tag : 'Slide'
 }
 
 { #category : 'basic ressources' }

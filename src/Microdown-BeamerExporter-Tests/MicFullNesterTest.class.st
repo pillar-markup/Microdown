@@ -1,16 +1,21 @@
 Class {
-	#name : 'MicNestingPreparer2Test',
+	#name : 'MicFullNesterTest',
 	#superclass : 'TestCase',
-	#category : 'Microdown-BeamerExporter-Tests',
-	#package : 'Microdown-BeamerExporter-Tests'
+	#category : 'Microdown-BeamerExporter-Tests-Experience',
+	#package : 'Microdown-BeamerExporter-Tests',
+	#tag : 'Experience'
 }
 
 { #category : 'tests' }
-MicNestingPreparer2Test >> testShouldContainFollowingElement [
+MicFullNesterTest >> testShouldContainFollowingElement [
 
 	| doc pre nDoc |
+	"I use faked slide ie without containting elements so that I can then test that the following items 
+are placed in slide after the pass of the slide nester."
+
 	doc := MicrodownParser new parse: 
-'# Level 1 - A
+'
+# Level 1 - A!>
 
 ## Level 2 - A
 
@@ -20,13 +25,13 @@ MicNestingPreparer2Test >> testShouldContainFollowingElement [
 
 ## Level 2 - C
 
-# Level 1 - B
+# Level 1 - B!>
 
 ## Level 2 - A
 
 '.
- 
-	pre := MicNestingPreparer2 new. 
+  
+	pre := MicFullNester2 new. 
 	
 	pre treatChildrenOf: doc.
 	nDoc := pre newDocument.
