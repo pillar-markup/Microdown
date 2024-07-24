@@ -68,13 +68,13 @@ MicNestingPreparer2 >> initialize [
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer2 >> newDocument [ 
 
 	^ currentRoots first
 ]
 
-{ #category : 'visiting' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer2 >> treatChildrenOf: aRoot [
 	
 	| root |
@@ -85,7 +85,7 @@ MicNestingPreparer2 >> treatChildrenOf: aRoot [
 	
 ]
 
-{ #category : 'visiting' }
+{ #category : 'as yet unclassified' }
 MicNestingPreparer2 >> treatElement: each [
 	"for now we only consider that all element do have a level"
 

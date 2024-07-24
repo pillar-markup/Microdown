@@ -1,10 +1,44 @@
+"
+I nest all the followers of a slide block into a slide block.
+The idea is the following
+
+```
+slide 1
+paragraph
+header 2
+....
+
+slide 2
+list
+whatever
+....
+```
+
+are turned into 
+
+```
+slide 1
+	paragraph
+	header 2
+	....
+
+slide 2
+	list
+	whatever
+	....
+```
+
+where indentation means children of
+
+
+"
 Class {
 	#name : 'MicNestingPreparer',
 	#superclass : 'Object',
 	#instVars : [
-		'currentHeader',
 		'currentFollowers',
-		'store'
+		'store',
+		'currentSlide'
 	],
 	#category : 'Microdown-BeamerExporter',
 	#package : 'Microdown-BeamerExporter'
@@ -24,21 +58,21 @@ MicNestingPreparer >> store [
 	^ store
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'acting' }
 MicNestingPreparer >> storePastElements [
 
-	currentHeader ifNotNil: [ 
-		store at: currentHeader put: currentFollowers.
+	currentSlide ifNotNil: [ 
+		store at: currentSlide put: currentFollowers.
 		currentFollowers := OrderedCollection new ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'acting' }
 MicNestingPreparer >> treatElement: each [
 	
-	each class = MicHeaderBlock
+	each class = MicSlideBlock 
 		ifTrue: [ 
 					self storePastElements. 
-					currentHeader := each ]
+					currentSlide := each ]
 		ifFalse: [ currentFollowers addLast: each  ]
 ]
 
@@ -46,5 +80,6 @@ MicNestingPreparer >> treatElement: each [
 MicNestingPreparer >> treatElements: aCol [
 
 	aCol do: [ :each | self treatElement: each ].
+	"we should not forget to handle the last elements are not followed by a slide"
 	self storePastElements. 
 ]
