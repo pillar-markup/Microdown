@@ -10,7 +10,8 @@ Class {
 	#name : 'MicInlineDelimiter',
 	#superclass : 'Object',
 	#classVars : [
-		'DelimiterDictionary'
+		'DelimiterDictionary',
+		'RegexDictionary'
 	],
 	#pools : [
 		'MicMicrodownSharedPool'
@@ -28,8 +29,9 @@ MicInlineDelimiter class >> all [
 
 { #category : 'private utilities' }
 MicInlineDelimiter class >> allRegex [
-	^ ((MicInlineDelimiter all collect: [ :each | each markupAsRegex]) joinUsing: '|') asRegex
-	
+
+	RegexDictionary ifNil: [ self initializeRegex ].
+	^ (RegexDictionary values joinUsing: '|') asRegex
 ]
 
 { #category : 'accessing' }
@@ -40,15 +42,25 @@ MicInlineDelimiter class >> at: markup [
 
 { #category : 'initialization' }
 MicInlineDelimiter class >> initialize [
+
 	<script>
-	DelimiterDictionary := nil
+	DelimiterDictionary := nil.
+	RegexDictionary := nil
 ]
 
 { #category : 'initialization' }
 MicInlineDelimiter class >> initializeDelimiters [
+
 	self = MicInlineDelimiter ifFalse: [ ^ self ].
 	DelimiterDictionary := Dictionary new.
+	RegexDictionary := Dictionary new.
 	self allSubclasses do: [ :class | class initializeDelimiters ]
+]
+
+{ #category : 'initialization' }
+MicInlineDelimiter class >> initializeRegex [
+
+	self all
 ]
 
 { #category : 'compiling' }
@@ -75,6 +87,8 @@ MicInlineDelimiter class >> regexNot: markup [
 { #category : 'adding' }
 MicInlineDelimiter >> addMe [
 	"add me to the dictionary in my class"
+	self storeRegex.
+
 	DelimiterDictionary at: self markup put: self
 ]
 
@@ -113,4 +127,11 @@ MicInlineDelimiter >> markup [
 { #category : 'accessing' }
 MicInlineDelimiter >> markupAsRegex [
 	self subclassResponsibility
+]
+
+{ #category : 'adding' }
+MicInlineDelimiter >> storeRegex [
+
+	RegexDictionary at: self markup put: self markupAsRegex
+	
 ]
