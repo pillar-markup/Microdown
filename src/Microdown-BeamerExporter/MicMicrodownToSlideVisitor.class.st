@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicMicrodownToSlideVisitor',
 	#superclass : 'MicrodownVisitor',
+	#instVars : [
+		'newDoc'
+	],
 	#category : 'Microdown-BeamerExporter',
 	#package : 'Microdown-BeamerExporter'
 }
@@ -25,15 +28,19 @@ MicMicrodownToSlideVisitor >> prepareForExecutionOn: aPRProject [
 
 { #category : 'accessing' }
 MicMicrodownToSlideVisitor >> start: aMicRootBlock [ 
-
+	
+	newDoc := MicRootBlock new.
+	newDoc properties: aMicRootBlock properties. 
 	aMicRootBlock accept: self.
-	^ aMicRootBlock
+	"headers 1 are now slideblock"
+	
+	^ newDoc
 ]
 
 { #category : 'visiting' }
 MicMicrodownToSlideVisitor >> visitHeader: aHeader [
 	
-	aHeader parent replace: aHeader by: (MicSlideBlock new title: aHeader header)
-	"now this is wrong because I would get all the following until the next header as children."
-	
+	aHeader level = 1 
+		ifTrue: [ 
+			aHeader parent replace: aHeader by: (MicSlideBlock new title: aHeader header) ]
 ]

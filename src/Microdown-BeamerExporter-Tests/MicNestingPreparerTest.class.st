@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BeamerExporter-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicNestingPreparerTest >> testShouldContainFollowingElement [
 
 	| doc pre |

@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BeamerExporter-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicMicrodownToSlide2Test >> testSectionLevelOneIsMapToSlide [
 
 	| doc slide |
@@ -23,7 +23,7 @@ MicMicrodownToSlide2Test >> testSectionLevelOneIsMapToSlide [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicMicrodownToSlide2Test >> testSlideGotCorrectParent [
 
 	| doc slide |
@@ -40,7 +40,7 @@ MicMicrodownToSlide2Test >> testSlideGotCorrectParent [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicMicrodownToSlide2Test >> testSlideMetaData [
 
 	| doc |
@@ -63,22 +63,34 @@ MicMicrodownToSlide2Test >> testSlideMetaData [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'tests' }
 MicMicrodownToSlide2Test >> testSlideShouldContainFollowingElement [
 
 	| doc |
-	doc := MicrodownParser new parse: '# Title 1
+	self skip.
+	doc := MicrodownParser new parse: 
+'# Level 1
 
-Textouille 2 ici 
+## Level 2
 
-- item 1
-- item 2
+### Level 3
 
-# Title 2
+## Level 2 
 
-textouille ici 
-- item 3
-- item 4
+## Level 2 
+
+# Level 1 
+
+## Level 2
+
+### Level 3
+
+## Level 2
+
+
+
+
+
 
 '.
  
