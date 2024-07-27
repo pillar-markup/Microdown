@@ -27,8 +27,7 @@ MicSlideFollowerNesterTest >> testShouldContainFollowingElement [
 ## Level 2 - A
 
 '.
-  
-self halt.
+	  
 	nester := MicSlideFollowerNester new. 
 	
 	nester treatElements: doc children.
@@ -38,9 +37,10 @@ self halt.
 	This should only be applied on new nodes as planned.
 	
 	"
+
 	self assert: doc children size equals: 2.
 	self assert: doc children first children size equals: 3. 
 	"three H2"
-	
+	self assert: doc children second children size equals: 1. 
 	
 ]

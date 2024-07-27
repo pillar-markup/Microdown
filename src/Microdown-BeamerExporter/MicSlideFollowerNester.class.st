@@ -58,10 +58,7 @@ MicSlideFollowerNester >> storePastElements [
 	
 	currentSlide ifNotNil: [ 
 		currentSlide children: currentFollowers.
-		
 		currentFollowers do: [ :each | currentSlide parent removeChild: each ].
-		
-		
 		currentFollowers := OrderedCollection new ]
 ]
 
@@ -70,8 +67,6 @@ MicSlideFollowerNester >> treatElement: each [
 	"When we face a new slide, we store the past seen elements as children of the current slide,
 	else we just sotre the element as a past element."
 	
-	self halt.
-	"each ifNil: [ self halt. ]."
 	each class = MicSlideBlock 
 		ifTrue: [ 
 					self storePastElements. 
@@ -85,7 +80,8 @@ MicSlideFollowerNester >> treatElement: each [
 { #category : 'acting' }
 MicSlideFollowerNester >> treatElements: aCol [
 
-	aCol do: [ :each | self treatElement: each ].
+	"We copy the collection because we modify it somehow."
+	aCol copy do: [ :each | self treatElement: each ].
 	"we should not forget to handle the last elements are not followed by a slide"
 	self storePastElements. 
 ]
