@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicMicrodownToSlideTest',
+	#name : 'MicMicMicrodownTopLevelHeaderToSlideTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-BeamerExporter-Tests-Slide as header',
 	#package : 'Microdown-BeamerExporter-Tests',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'tests' }
-MicMicrodownToSlideTest >> testSectionLevelOneIsMapToSlide [
+MicMicMicrodownTopLevelHeaderToSlideTest >> testSectionLevelOneIsMapToSlide [
 
 	| doc slide |
 	doc := MicrodownParser new parse: '# Slide title
@@ -15,7 +15,7 @@ MicMicrodownToSlideTest >> testSectionLevelOneIsMapToSlide [
 - item 1
 - item 2
 '.
-	MicMicrodownToSlideVisitor new visit: doc. 
+	MicMicrodownTopLevelHeaderToSlide new visit: doc. 
 	slide := doc children first.
 	self assert: slide class equals: MicSlideBlock.
 	self assert:  slide title equals: 'Slide title'.
@@ -25,7 +25,7 @@ MicMicrodownToSlideTest >> testSectionLevelOneIsMapToSlide [
 ]
 
 { #category : 'tests' }
-MicMicrodownToSlideTest >> testSlideGotCorrectParent [
+MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideGotCorrectParent [
 
 	| doc slide |
 	doc := MicrodownParser new parse: '# Slide title
@@ -34,7 +34,7 @@ MicMicrodownToSlideTest >> testSlideGotCorrectParent [
 - item 2
 '.
    self assert: doc children size equals: 2.
-	MicMicrodownToSlideVisitor new visit: doc. 
+	MicMicrodownTopLevelHeaderToSlide new visit: doc. 
 	slide := doc children first.
 	self assert: slide parent equals: doc.
 	self assert: doc children size equals: 2
@@ -42,7 +42,7 @@ MicMicrodownToSlideTest >> testSlideGotCorrectParent [
 ]
 
 { #category : 'tests' }
-MicMicrodownToSlideTest >> testSlideMetaData [
+MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideMetaData [
 
 	| doc |
 	doc := MicrodownParser new parse: '
@@ -58,34 +58,43 @@ MicMicrodownToSlideTest >> testSlideMetaData [
 - item 2
 '.
    self assert: doc children size equals: 3.
-	MicMicrodownToSlideVisitor new visit: doc. 
+	MicMicrodownTopLevelHeaderToSlide new visit: doc. 
 	self assert: doc children first class equals: MicMetaDataBlock.
 	self assert: doc children second class equals: MicSlideBlock 
 	
 ]
 
 { #category : 'tests' }
-MicMicrodownToSlideTest >> testSlideShouldContainFollowingElement [
+MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideShouldContainFollowingElement [
 
 	| doc |
-	doc := MicrodownParser new parse: '# Title 1
+	doc := MicrodownParser new parse: 
+'# Level 1 - 1
 
-Textouille 2 ici 
+## Level 2 - 1 
 
-- item 1
-- item 2
+### Level 3
 
-# Title 2
+## Level 2 - 2
 
-textouille ici 
-- item 3
-- item 4
+## Level 2 - 3 
+
+# Level 1 - 2
+
+## Level 2 - 1 
+
+### Level 3
+
+## Level 2 - 2
 
 '.
  
-	MicMicrodownToSlideVisitor new visit: doc. 
+	MicMicrodownTopLevelHeaderToSlide new start: doc. 
 	
-	self assert: doc children size equals: 6.
-	self assert: doc children first class equals: MicSlideBlock 
+	self assert: doc children size equals: 2.
+	self assert: doc children first children size equals: 4.
+		"The followers are not nesting in each others so H3 is not a child of H2 but 
+		a child of SlideBlock"
+	self assert: doc children second children size equals: 3.
 	
 ]

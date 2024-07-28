@@ -73,8 +73,7 @@ MicSlideFollowerNester >> treatElement: each [
 					currentSlide := each ]
 		ifFalse: [ 
 				currentFollowers addLast: each.
-				"remove it from here"
-				"each parent removeChild: each"  ]
+				"we will remove the children in one shot when the followers are stored in the parent" ]
 ]
 
 { #category : 'acting' }
