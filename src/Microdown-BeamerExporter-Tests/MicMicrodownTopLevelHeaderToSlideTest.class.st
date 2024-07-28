@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicMicMicrodownTopLevelHeaderToSlideTest',
+	#name : 'MicMicrodownTopLevelHeaderToSlideTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-BeamerExporter-Tests-Slide as header',
 	#package : 'Microdown-BeamerExporter-Tests',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'tests' }
-MicMicMicrodownTopLevelHeaderToSlideTest >> testSectionLevelOneIsMapToSlide [
+MicMicrodownTopLevelHeaderToSlideTest >> testSectionLevelOneIsMapToSlide [
 
 	| doc slide |
 	doc := MicrodownParser new parse: '# Slide title
@@ -25,7 +25,7 @@ MicMicMicrodownTopLevelHeaderToSlideTest >> testSectionLevelOneIsMapToSlide [
 ]
 
 { #category : 'tests' }
-MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideGotCorrectParent [
+MicMicrodownTopLevelHeaderToSlideTest >> testSlideGotCorrectParent [
 
 	| doc slide |
 	doc := MicrodownParser new parse: '# Slide title
@@ -42,7 +42,7 @@ MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideGotCorrectParent [
 ]
 
 { #category : 'tests' }
-MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideMetaData [
+MicMicrodownTopLevelHeaderToSlideTest >> testSlideMetaData [
 
 	| doc |
 	doc := MicrodownParser new parse: '
@@ -65,7 +65,7 @@ MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideMetaData [
 ]
 
 { #category : 'tests' }
-MicMicMicrodownTopLevelHeaderToSlideTest >> testSlideShouldContainFollowingElement [
+MicMicrodownTopLevelHeaderToSlideTest >> testSlideShouldContainFollowingElement [
 
 	| doc |
 	doc := MicrodownParser new parse: 
