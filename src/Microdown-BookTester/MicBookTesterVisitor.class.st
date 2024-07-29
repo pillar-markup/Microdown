@@ -33,21 +33,20 @@ MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> executeAndReportIn: aCodeBlockObject [
-	"aCodeBlockObject is an instance of The MicrodownTestResult"
+MicBookTesterVisitor >> executeAndReportIn: aResult [
 
 	| isCorrect |
 	isCorrect := false.
-	[ isCorrect := self checkAssociation: aCodeBlockObject ]
+	[ isCorrect := self checkAssociation: aResult ]
 		on: Exception
-		do: [ :exception | aCodeBlockObject message: exception asString ].
-	aCodeBlockObject status: isCorrect.
-	isCorrect ifTrue: [ aCodeBlockObject message: 'Test passed' ]
+		do: [ :exception | aResult message: exception asString ].
+	aResult status: isCorrect.
+	isCorrect ifTrue: [ aResult message: 'Test passed' ]
 ]
 
 { #category : 'visiting' }
 MicBookTesterVisitor >> failedTests [
-	"Returns the failed tests within the test results"
+
 	^ allTestResults select: [ :each | each isFailed ]
 ]
 
@@ -67,13 +66,13 @@ MicBookTesterVisitor >> isOk [
 
 { #category : 'accessing' }
 MicBookTesterVisitor >> start: anObject [ 
-	anObject accept: self . 
+	anObject accept: self
 	
 ]
 
 { #category : 'testing' }
 MicBookTesterVisitor >> validTests [
-	"Returns all passed tests"
+
 	^ allTestResults select: [ :each | each isValid ]
 ]
 
@@ -83,7 +82,8 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 	Here it is for an example and therefore uses the specialized exmple methods
 	textForTestcase
 	executeAndReportExample:
-	Note that there is no fragmentedText here, no need for it b/ecause the codeblock text contains the whole text and is the equivalent of  Playground execution"
+	Note that there is no fragmentedText here, no need for it because the codeblock text contains 
+	the whole text and is the equivalent of Playground execution"
 
 	aCodeBlock isExample ifTrue: [
 		| result |
