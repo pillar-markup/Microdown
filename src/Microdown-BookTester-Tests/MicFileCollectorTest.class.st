@@ -9,7 +9,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'utils' }
+{ #category : 'running' }
 MicFileCollectorTest >> startVisitingFromTheRoot: root [
 
 	"just parsing the file here and and passing it to the visitor with the fs used "
@@ -22,7 +22,7 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 		visit: mainMic.
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testCollectReference [
 
 	self createTestProject.
@@ -37,7 +37,7 @@ MicFileCollectorTest >> testCollectReference [
 			'/myDirectory/sections/section5.md'} asSet
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testEveryCaseIncluded [ 
 	
 
@@ -53,7 +53,7 @@ MicFileCollectorTest >> testEveryCaseIncluded [
 	
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 
 	self createTestProjectSmallLoop.
@@ -64,7 +64,7 @@ MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' } asSet
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	
 	self createTestProjectReferencesOfFileThatDoesNotExist.
@@ -76,7 +76,7 @@ MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	
 	self createTestProjectMultipleReferencesToTheSameFile.
@@ -88,7 +88,7 @@ MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testOnlyGoDownInFolders [
 
 	self createTestProjectOnlyGoDownInFolders.
@@ -100,7 +100,7 @@ MicFileCollectorTest >> testOnlyGoDownInFolders [
 	
 ]
 
-{ #category : 'utils' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testOnlyGoUpInFolders [
 	
 	self createTestProjectOnlyGoUpInFolders .
