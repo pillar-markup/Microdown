@@ -1,10 +1,6 @@
 Class {
 	#name : 'MicReferenceCheckerTest',
-	#superclass : 'TestCase',
-	#instVars : [
-		'fs',
-		'dir'
-	],
+	#superclass : 'MicFileTest',
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
 }
@@ -22,6 +18,16 @@ MicReferenceCheckerTest >> setUp [
 	fs := self fileSystem.
 	dir := (fs / 'myDirectory') asFileReference.
 	dir ensureCreateDirectory
+]
+
+{ #category : 'tests' }
+MicReferenceCheckerTest >> test [
+   
+
+	| checker |
+	self createTestProjectBadAndCorrectReferences.
+	checker := MicReferenceChecker new. 
+	self deny: (checker checkProject: section1 fileSystem: fs)
 ]
 
 { #category : 'tests - parse only' }
