@@ -35,16 +35,60 @@ Class {
 		'text',
 		'fragmentedText',
 		'status',
-		'explanation'
+		'explanation',
+		'message',
+		'source',
+		'isExpectedFailure'
+	],
+	#classInstVars : [
+		'allMessages'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'initialization' }
+MicBookTestResult class >> allMessages [
+   	^ allMessages ifNil: [ 
+		allMessages := Dictionary new.
+		allMessages
+		   at: #false put: 'Failed' ;
+		   at: #true put: 'Passed' .
+		^ allMessages ]
+]
+
+{ #category : 'initialization' }
+MicBookTestResult class >> reset [
+	<script>
+	allMessages := nil
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> concernedElement [
+"just to have a Global API between this and MicResult Object but we still have the spesific api for the same case " 
+
+	^ text 
+]
+
 { #category : 'accessing' }
 MicBookTestResult >> explanation [
+	
+	^ 'test status: ',
+	  (self class allMessages at: self status asString) asString ,
+     String cr , 
+	  'isExpectedFailure?  ',
+	  self isExpectedFailure asString ,
+	  String cr ,
+     'Description of the test result : ' ,
+	 self message asString ,
+	 String cr ,
+	 'the concerned code Block  :  ',
+	 self text  , 
+	 String cr ,
+	'from the source file:  ' ,
+   	 self source asString 
 
-	^ explanation
+	
 ]
 
 { #category : 'accessing' }
@@ -73,7 +117,20 @@ MicBookTestResult >> initialize [
 
 	super initialize.
 	status := true.
-	explanation := 'Test failed without raising an exception'
+	isExpectedFailure := false .
+	message := 'Test failed without raising an exception'
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> isExpectedFailure [
+
+	^ isExpectedFailure
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> isExpectedFailure: anObject [
+
+	isExpectedFailure := anObject
 ]
 
 { #category : 'testing' }
@@ -86,6 +143,30 @@ MicBookTestResult >> isFailed [
 MicBookTestResult >> isValid [
 
 	^ status 
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> message [
+
+	^ message
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> message: anObject [
+
+	message := anObject
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> source [
+
+	^ source
+]
+
+{ #category : 'accessing' }
+MicBookTestResult >> source: anObject [
+
+	source := anObject
 ]
 
 { #category : 'accessing' }

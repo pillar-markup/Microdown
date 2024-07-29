@@ -17,7 +17,8 @@ Class {
 		'message',
 		'anchorLabel',
 		'status',
-		'source'
+		'source',
+		'explanation'
 	],
 	#classInstVars : [
 		'allMessages'
@@ -28,12 +29,15 @@ Class {
 
 { #category : 'accessing' }
 MicResult class >> allMessages [
-	^ allMessages ifNil: [ 
+   	^ allMessages ifNil: [ 
 		allMessages := Dictionary new.
 		allMessages
+		  
 	     	at: #referenceIsFine put: 'the reference defined correctly and point to a defined anchor';
+		   at: #false put: 'Failed' ;
+		   at: #true put: 'Passed' ;
 			at: #anchorIsFine put: 'the anchor is defined correctly and not duplicated elsewhere ';
-			at: #anchorIsMissing put: 'A reference refers to a missing anchor';
+			at: #anchorIsMissing put: 'i represent A reference that refers to a missing anchor';
 			at: #twoAnchorsSameName put: '2 anchors are declared with the same name'.
 		^ allMessages ]
 ]
@@ -41,6 +45,12 @@ MicResult class >> allMessages [
 { #category : 'accessing' }
 MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
 	^ self new message: (self allMessages at: aMethodSymbol); anchorLabel: aAnchorLabel asString; yourself.
+]
+
+{ #category : 'initialization' }
+MicResult class >> reset [
+	<script>
+	allMessages := nil
 ]
 
 { #category : 'accessing' }
@@ -56,6 +66,36 @@ MicResult >> anchorLabel: anObject [
 ]
 
 { #category : 'accessing' }
+MicResult >> concernedElement [
+"just to have a Global API between this and MicBookTestResult Object but we still have the spesific api for the same case " 
+
+	^ anchorLabel
+]
+
+{ #category : 'accessing' }
+MicResult >> explanation [
+
+	^ 'test status: ',
+	  (self class allMessages at: self status asString) asString ,
+     String cr , 
+     'Description of the test result : ' ,
+	 self message asString ,
+	 String cr ,
+	 'the concerned element :  ',
+	 self anchorLabel asString , 
+	 String cr , 
+	'from the source file:  ' ,
+   	self source asString 
+	
+]
+
+{ #category : 'accessing' }
+MicResult >> explanation: anObject [
+
+	explanation := anObject
+]
+
+{ #category : 'accessing' }
 MicResult >> message [
 
 	^ message
@@ -65,12 +105,6 @@ MicResult >> message [
 MicResult >> message: anObject [
 
 	message := anObject
-]
-
-{ #category : 'accessing' }
-MicResult >> printOn: aStream [
-	aStream nextPutAll: self message asString, '", with specification: "', self anchorLabel asString, '"'
-	
 ]
 
 { #category : 'accessing' }

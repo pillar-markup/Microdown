@@ -64,8 +64,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
-	self flag: #todo.
-	self assert: bTester failedTests first explanation equals: 'Instance of SmallInteger did not understand #key'
+	self assert: bTester failedTests first message equals: 'Instance of SmallInteger did not understand #key'
 ]
 
 { #category : 'tests - strange codeblock' }
@@ -96,7 +95,7 @@ MicBookTesterVisitorTest >> testExampleEmptyCodeblockWithTwoBrackets [
 	self flag: #todo.
 	"the explanation should be better"
 	
-	self assert: bTester failedTests first explanation equals: '#key was sent to nil'
+	self assert: bTester failedTests first message equals: '#key was sent to nil'
 ]
 
 { #category : 'tests - valid book tests' }
@@ -137,7 +136,7 @@ MicBookTesterVisitorTest >> testExplanationIsExceptionCatchedInFailingTest [
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
-	self assert: bTester failedTests first explanation equals: 'Instance of Character did not understand #adaptToNumber:andSend:'
+	self assert: bTester failedTests first message equals: 'Instance of Character did not understand #adaptToNumber:andSend:'
 ]
 
 { #category : 'tests - valid book tests' }
@@ -152,7 +151,7 @@ MicBookTesterVisitorTest >> testExplanationIsTestFailedWithoutException [
 	bTester := self parseAndTest: docText.
 	self assertEmpty: bTester validTests.
 	self assert: bTester failedTests size equals: 1.
-	self assert: bTester failedTests first explanation equals: 'Test failed without raising an exception'
+	self assert: bTester failedTests first message equals: 'Test failed without raising an exception'
 ]
 
 { #category : 'tests - valid book tests' }
@@ -167,7 +166,7 @@ MicBookTesterVisitorTest >> testExplanationIsTestPassed [
 	bTester := self parseAndTest: docText.
 	self assert: bTester validTests size equals: 1.
 	self assertEmpty: bTester failedTests.
-	self assert: bTester validTests first explanation equals: 'Test passed'
+	self assert: bTester validTests first message equals: 'Test passed'
 ]
 
 { #category : 'tests - no example' }
