@@ -42,6 +42,12 @@ MicFileCollector >> initialize [
 	unexistingFiles := Set new.
 ]
 
+{ #category : 'accessing' }
+MicFileCollector >> unexistingFiles [
+
+	^ unexistingFiles
+]
+
 { #category : 'visiting' }
 MicFileCollector >> visitInputFile: anInputFile [
 

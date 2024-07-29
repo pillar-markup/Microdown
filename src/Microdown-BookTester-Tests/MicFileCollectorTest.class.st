@@ -43,7 +43,8 @@ MicFileCollectorTest >> testEveryCaseIncluded [
 
 { #category : 'tests - assessed' }
 MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
-
+	"and unknown references."
+	
 	self createProjectWithLoopFromSection3ToSection1.
 	self startVisitingFromTheRoot: section1.
 	
@@ -64,7 +65,10 @@ MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 				'/myDirectory/sections/section4.md' .
 				'/myDirectory/sections/subsections/section3.md' .
 				'/myDirectory/sections/section5.md'
-			} asSet
+			} asSet.
+	self 
+		assert: (visitor unexistingFiles collect: [:each | each path path ])
+		equals: Set <- { '/myDirectory/section6.md' } 
 ]
 
 { #category : 'tests' }

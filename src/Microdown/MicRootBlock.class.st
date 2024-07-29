@@ -99,6 +99,6 @@ MicRootBlock >> properties: aConfigurationForPillar [
 MicRootBlock >> resolveYourself [
 
 	MicZincPathResolver
-			resolve: self
-			withBase: self fromFile.
+		resolve: self
+		withBase: self fromFile.
 ]

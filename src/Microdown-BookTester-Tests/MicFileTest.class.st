@@ -49,43 +49,13 @@ MicFileTest >> createTestProjectBadAndCorrectReferences [
 ]
 
 { #category : 'project creation' }
-MicFileTest >> createTestProjectEveryCaseIncluded [ 
+MicFileTest >> createTestProjectEveryCaseIncluded [
 
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-<!inputFile|path=sections/section3.md!>
-' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=subsections/section4.md!>
-' ].
-
-	section3 := dir / 'sections/section3.md'.
-	section3 ensureCreateFile.
-	section3 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 3
-<!inputFile|path=../section1.md!>
-' ].
-	section4 := dir / 'sections/subsections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-<!inputFile|path=subsubsections/section5.md!>
-' ].
-
-	section5 := dir / 'sections/subsections/subsubsections/section5.md'.
-	section5 ensureCreateFile.
-	section5 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 5
-<!inputFile|path=../section6.md!>
-<!inputFile|path=../../section3.md!>
-' ]
+	self section1InputsSection2And3.
+	self section2InputsSection4.
+	self section3InputsSection1Loop.
+	self section4InputsSection5.
+	self section5InpsutsUnknowSection6AndLoopOverSection3
 ]
 
 { #category : 'project creation' }
@@ -220,6 +190,18 @@ MicFileTest >> fileSystem [
 ]
 
 { #category : 'helpers' }
+MicFileTest >> section1InputsSection2And3 [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+<!inputFile|path=sections/section2.md!>
+<!inputFile|path=sections/section3.md!>
+' ]
+]
+
+{ #category : 'helpers' }
 MicFileTest >> section1InputsSection2And4 [
 
 	section1 := dir / 'section1.md'.
@@ -243,6 +225,17 @@ MicFileTest >> section2InputsSection3 [
 ]
 
 { #category : 'helpers' }
+MicFileTest >> section2InputsSection4 [
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 2
+<!inputFile|path=subsections/section4.md!>
+' ]
+]
+
+{ #category : 'helpers' }
 MicFileTest >> section3InputsSection1And5 [
 
 	section3 := dir / 'sections/subsections/section3.md'.
@@ -255,6 +248,17 @@ MicFileTest >> section3InputsSection1And5 [
 ]
 
 { #category : 'helpers' }
+MicFileTest >> section3InputsSection1Loop [
+
+	section3 := dir / 'sections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+<!inputFile|path=../section1.md!>
+' ]
+]
+
+{ #category : 'helpers' }
 MicFileTest >> section4DoesNotInputFile [
 
 	section4 := dir / 'sections/section4.md'.
@@ -262,6 +266,29 @@ MicFileTest >> section4DoesNotInputFile [
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
 just some text  here this file does not have another reference to another file
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section4InputsSection5 [
+
+	section4 := dir / 'sections/subsections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+<!inputFile|path=subsubsections/section5.md!>
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section5InpsutsUnknowSection6AndLoopOverSection3 [
+
+	section5 := dir / 'sections/subsections/subsubsections/section5.md'.
+	section5 ensureCreateFile.
+	section5 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 5
+<!inputFile|path=../section6.md!>
+<!inputFile|path=../../section3.md!>
 ' ]
 ]
 
