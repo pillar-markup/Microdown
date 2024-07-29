@@ -89,7 +89,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Blog' with: [
 				spec requires: #( #'Microdown' #'Mustache') ];
 			package: #'Microdown-Blog-Tests' with: [
-				spec requires: #( #'Microdown-Blog' ) ];
+				spec requires: #( #'Microdown-Blog' ) ].
 		
 		"I do not want group without tests for now"
 		spec
