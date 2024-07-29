@@ -350,7 +350,7 @@ MicrodownParserTest >> testHeaderLevel4WithBold [
 		assert: root children first children first bodyString
 		equals: 'Level '.
 	self
-		assert: root children first children asString
+		assert: root children first children asArray asString
 		equals:
 		'an Array(Text(Level ) BoldFormat{ Text(four) } Text( ) Monospace(mono) Text( end))'
 ]
