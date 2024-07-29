@@ -9,10 +9,10 @@ Class {
 	#name : 'MicFileCollector',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'inputs',
 		'fileSystem',
 		'visited',
-		'unexistingFiles'
+		'unexistingFiles',
+		'inputFiles'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -31,43 +31,50 @@ MicFileCollector >> fileSystem: aFileSystem [
 ]
 
 { #category : 'visiting' }
+MicFileCollector >> initialize [ 
+
+	super initialize.
+	visited := Set new.
+	unexistingFiles := Set new.
+]
+
+{ #category : 'visiting' }
 MicFileCollector >> visitInputFile: anInputFile [
 
-	inputs add: anInputFile
+	inputFiles add: anInputFile
 ]
 
 { #category : 'visiting' }
 MicFileCollector >> visitRoot: micDocument [
 
 	| worklist |
-	unexistingFiles := Set new.
 	worklist := OrderedCollection new.
 	worklist add: micDocument.
-	visited := Set new.
-
+	
 	[ worklist isEmpty ] whileFalse: [
 		| currentDocument |
 		currentDocument := worklist removeFirst.
 		visited add: currentDocument fromFile.
+		currentDocument resolveYourself.
 
-		MicZincPathResolver
-			resolve: currentDocument
-			withBase: currentDocument fromFile.
-
-		inputs := OrderedCollection new.
+		inputFiles := OrderedCollection new.
+		"treat all the inputFile from the current document"
 		self visitChildrenOf: currentDocument.
 
-		inputs do: [ :inputFile |
+		inputFiles do: [ :inputFile |
 			| fr doc |
+			"later we will have to fix this ugly expression"
 			fr := self fileSystem referenceTo:
-				      (inputFile arguments at: 'path') uri asFileReference
-					      pathString.
+				      (inputFile arguments at: 'path') uri asFileReference pathString.
 
 			(visited includes: fr path pathString) ifFalse: [
-				[ doc := Microdown parseFile: fr ]
+				[ doc := Microdown parseFile: fr.
+				worklist addFirst: doc ]
 					on: FileDoesNotExistException
 					do: [ unexistingFiles add: inputFile ].
-				doc ifNotNil: [ worklist addFirst: doc ]] ] ]
+				] 
+			] 
+		]
 ]
 
 { #category : 'accessing' }
