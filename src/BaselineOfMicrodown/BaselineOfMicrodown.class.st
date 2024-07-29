@@ -84,7 +84,7 @@ BaselineOfMicrodown >> baseline: spec [
 			
 
 			package: #'Microdown-PrettyPrinter-Tests'
-				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
+				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
 				
 			package: #'Microdown-Blog' with: [
 				spec requires: #( #'Microdown' #'Mustache') ];
