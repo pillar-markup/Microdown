@@ -3,7 +3,11 @@ I'm a simple visitor that collects files from a document taking into account inp
 
 ## Todo
 
-- We should collect also figures files!
+### Open question: should we collect also figure files?
+Since figures are leaves in the sense that they do not include another list of expressions but just a reference to a file. We could in addition check for the figures and report the unexisting ones. 
+I do not think that adding blindly the figures to the visited set is good because the visited (which should be renamed into visitedDocumentFiles ) is about document and not figures.
+
+
 "
 Class {
 	#name : 'MicFileCollector',
@@ -78,7 +82,7 @@ MicFileCollector >> visitRoot: micDocument [
 ]
 
 { #category : 'accessing' }
-MicFileCollector >> visited [
+MicFileCollector >> visitedDocumentFiles [
 
 	^ visited
 ]

@@ -97,14 +97,14 @@ MicReferenceChecker >> checkList: aCollection [
 { #category : 'visiting' }
 MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 	
-	| mainMic visitor  listOfFiles |
-	mainMic := Microdown parseFile: aDocument .
+	| mainMic visitor listOfFiles |
+	mainMic := Microdown parseFile: aDocument.
 	visitor := MicFileCollector new.
 	visitor
 		fileSystem: fileSystem ;
 		visit: mainMic.
-	listOfFiles := visitor visited collect: [ :file | fileSystem referenceTo: file  ] . 
-	^ self checkList: listOfFiles  .
+	listOfFiles := visitor visitedDocumentFiles collect: [ :file | fileSystem referenceTo: file  ] . 
+	^ self checkList: listOfFiles .
 	
 	
 

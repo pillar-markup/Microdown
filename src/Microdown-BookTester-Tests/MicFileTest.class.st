@@ -15,45 +15,13 @@ Class {
 }
 
 { #category : 'project creation' }
-MicFileTest >> createTestProject [
+MicFileTest >> createProjectWithLoopFromSection3ToSection1 [
 
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-<!inputFile|path=sections/section4.md!>
-' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=./subsections/section3.md!>
-' ].
-	section4 := dir / 'sections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-just some text  here this file does not have another reference to another file
-' ].
-
-	section3 := dir / 'sections/subsections/section3.md'.
-	section3 ensureCreateFile.
-	section3 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 3
-<!inputFile|path=../../section1.md!>
-<!inputFile|path=../section5.md!>
-' ].
-	section5 := dir / 'sections/section5.md'.
-	section5 ensureCreateFile.
-	section5 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 5
-<!inputFile|path=../section6.md!>
-' ]
-
-
-
+	self section1InputsSection2And4.
+	self section2InputsSection3.
+	self section4DoesNotInputFile.
+	self section3InputsSection1And5.
+	self section5InputFileUndefinedSection6
 ]
 
 { #category : 'project creation' }
@@ -123,14 +91,7 @@ MicFileTest >> createTestProjectEveryCaseIncluded [
 { #category : 'project creation' }
 MicFileTest >> createTestProjectMultipleReferencesToTheSameFile [
 
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-<!inputFile|path=sections/section4.md!>
-' ].
-
+	self section1InputsSection2And4.
 	section2 := dir / 'sections/section2.md'.
 	section2 ensureCreateFile.
 	section2 writeStreamDo: [ :stream |
@@ -223,13 +184,7 @@ MicFileTest >> createTestProjectReferencesOfFileThatDoesNotExist [
 <!inputFile|path=sections/section3.md!>
 <!inputFile|path=sections/section4.md!>
 ' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=./subsections/section3.md!>
-' ].
+	self section2InputsSection3.
 	section4 := dir / 'sections/section4.md'.
 	section4 ensureCreateFile.
 	section4 writeStreamDo: [ :stream |
@@ -262,6 +217,63 @@ MicFileTest >> createTestProjectSmallLoop [
 MicFileTest >> fileSystem [
 
 	^ FileSystem memory
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section1InputsSection2And4 [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+<!inputFile|path=sections/section2.md!>
+<!inputFile|path=sections/section4.md!>
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section2InputsSection3 [
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 2
+<!inputFile|path=./subsections/section3.md!>
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section3InputsSection1And5 [
+
+	section3 := dir / 'sections/subsections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+<!inputFile|path=../../section1.md!>
+<!inputFile|path=../section5.md!>
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section4DoesNotInputFile [
+
+	section4 := dir / 'sections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+just some text  here this file does not have another reference to another file
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section5InputFileUndefinedSection6 [
+
+	section5 := dir / 'sections/section5.md'.
+	section5 ensureCreateFile.
+	section5 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 5
+<!inputFile|path=../section6.md!>
+' ]
 ]
 
 { #category : 'running' }

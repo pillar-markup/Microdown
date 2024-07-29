@@ -23,13 +23,40 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 ]
 
 { #category : 'tests' }
-MicFileCollectorTest >> testCollectReference [
+MicFileCollectorTest >> testEveryCaseIncluded [ 
+	
+	self createTestProjectEveryCaseIncluded.
+	self startVisitingFromTheRoot: section2.
 
-	self createTestProject.
+	self 
+		assert: visitor visitedDocumentFiles
+		equals: 
+			{ 
+				'/myDirectory/section1.md' . 
+				'/myDirectory/sections/section2.md' . 
+				'/myDirectory/sections/subsections/section4.md' .
+				'/myDirectory/sections/subsections/subsubsections/section5.md' .
+			   '/myDirectory/sections/section3.md'  
+			} asSet
+	
+]
+
+{ #category : 'tests - assessed' }
+MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
+
+	self createProjectWithLoopFromSection3ToSection1.
 	self startVisitingFromTheRoot: section1.
 	
+	"we expect
+		section 1
+			section2
+				section3
+					section1 
+					section5
+			section4"
+	
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals: 
 			{ 
 				'/myDirectory/section1.md' . 
@@ -41,27 +68,13 @@ MicFileCollectorTest >> testCollectReference [
 ]
 
 { #category : 'tests' }
-MicFileCollectorTest >> testEveryCaseIncluded [ 
-	
-	self createTestProjectEveryCaseIncluded.
-	self startVisitingFromTheRoot: section2.
-
-	self 
-		assert: visitor visited
-		equals: 
-			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section4.md' . '/myDirectory/sections/subsections/subsubsections/section5.md' .
-			'/myDirectory/sections/section3.md'  } asSet
-	
-]
-
-{ #category : 'tests' }
 MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 
 	self createTestProjectSmallLoop.
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals: 
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' } asSet
 ]
@@ -73,7 +86,7 @@ MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals:
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/section4.md' } asSet
 	
@@ -86,7 +99,7 @@ MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	self startVisitingFromTheRoot: section1.
 	
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals:
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/section4.md' } asSet
 	
@@ -99,7 +112,7 @@ MicFileCollectorTest >> testOnlyGoDownInFolders [
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals:
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section3.md' . '/myDirectory/sections/subsections/subsubsections/section4.md'  } asSet
 	
@@ -112,7 +125,7 @@ MicFileCollectorTest >> testOnlyGoUpInFolders [
 	self startVisitingFromTheRoot: section4.
 	
 	self 
-		assert: visitor visited
+		assert: visitor visitedDocumentFiles
 		equals:
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section3.md' . '/myDirectory/sections/subsections/subsubsections/section4.md'  } asSet
 	
