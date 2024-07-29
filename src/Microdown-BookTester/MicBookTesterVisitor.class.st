@@ -23,12 +23,6 @@ MicBookTesterVisitor >> allTestResults [
 	^ allTestResults
 ]
 
-{ #category : 'accessing' }
-MicBookTesterVisitor >> allTestResults: anObject [
-
-	allTestResults := anObject
-]
-
 { #category : 'visiting' }
 MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
