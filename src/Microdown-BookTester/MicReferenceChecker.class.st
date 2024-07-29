@@ -34,16 +34,15 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 
 { #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
-	|micResultInstance|
-		micResultInstance := MicResult new.
-		micResultInstance
-						      message:( MicResult allMessages at: #twoAnchorsSameName ) ; 	
-		                  anchorLabel: anAnchor anchorLabel ;
-								status: false ;
-	                     source: anAnchor fromFile 	.				
-	  allTestsResults add: micResultInstance .							
-							
-		
+
+	| micResultInstance |
+	micResultInstance := MicResult new.
+	micResultInstance
+		message: (MicResult allMessages at: #twoAnchorsSameName);
+		anchorLabel: anAnchor anchorLabel;
+		status: false;
+		source: anAnchor fromFile.
+	allTestsResults add: micResultInstance
 ]
 
 { #category : 'accessing' }
