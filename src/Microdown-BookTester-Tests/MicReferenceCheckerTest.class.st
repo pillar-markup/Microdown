@@ -271,8 +271,6 @@ MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [
 	| file  visitor |
 	file := (FileSystem memory / 'myFile.txt') asFileReference.
    file ensureCreateFile.
-
-
 	
 	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
 
@@ -282,8 +280,7 @@ See *@anchorSection1@*
 	
 	
 	visitor := MicReferenceChecker new. 
-	self deny: (visitor checkFile: file) .
-	self halt .
+	self deny: (visitor checkFile: file).
 	file ensureDelete 
 ]
 
