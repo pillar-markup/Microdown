@@ -22,7 +22,7 @@ MicFilesCollector >> fileSystem [
 
 { #category : 'accessing' }
 MicFilesCollector >> fileSystem: aFileSystem [
-	"Can specify a file system for tests"
+	
 	fileSystem := aFileSystem
 ]
 
@@ -70,10 +70,4 @@ MicFilesCollector >> visitRoot: micDocument [
 MicFilesCollector >> visited [
 
 	^ visited
-]
-
-{ #category : 'accessing' }
-MicFilesCollector >> visited: anObject [
-
-	visited := anObject
 ]
