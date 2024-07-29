@@ -99,7 +99,7 @@ MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 	
 	| mainMic visitor  listOfFiles |
 	mainMic := Microdown parseFile: aDocument .
-	visitor := MicFilesCollector new.
+	visitor := MicFileCollector new.
 	visitor
 		fileSystem: fileSystem ;
 		visit: mainMic.

@@ -1,8 +1,12 @@
 "
-I'm a simple visitor that collects file input nodes from a document. 
+I'm a simple visitor that collects files from a document taking into account inputFile:.
+
+## Todo
+
+- We should collect also figures files!
 "
 Class {
-	#name : 'MicFilesCollector',
+	#name : 'MicFileCollector',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'inputs',
@@ -15,25 +19,25 @@ Class {
 }
 
 { #category : 'accessing' }
-MicFilesCollector >> fileSystem [
+MicFileCollector >> fileSystem [
 
 	^ fileSystem ifNil: [ FileSystem disk ]
 ]
 
 { #category : 'accessing' }
-MicFilesCollector >> fileSystem: aFileSystem [
+MicFileCollector >> fileSystem: aFileSystem [
 	
 	fileSystem := aFileSystem
 ]
 
 { #category : 'visiting' }
-MicFilesCollector >> visitInputFile: anInputFile [
+MicFileCollector >> visitInputFile: anInputFile [
 
 	inputs add: anInputFile
 ]
 
 { #category : 'visiting' }
-MicFilesCollector >> visitRoot: micDocument [
+MicFileCollector >> visitRoot: micDocument [
 
 	| worklist |
 	unexistingFiles := Set new.
@@ -63,11 +67,11 @@ MicFilesCollector >> visitRoot: micDocument [
 				[ doc := Microdown parseFile: fr ]
 					on: FileDoesNotExistException
 					do: [ unexistingFiles add: inputFile ].
-				doc ifNotNil: [worklist addFirst: doc]] ] ]
+				doc ifNotNil: [ worklist addFirst: doc ]] ] ]
 ]
 
 { #category : 'accessing' }
-MicFilesCollector >> visited [
+MicFileCollector >> visited [
 
 	^ visited
 ]

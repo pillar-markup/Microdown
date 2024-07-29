@@ -42,16 +42,22 @@ MicInputFileExpressionCollector >> initialize [
 ]
 
 { #category : 'initialization' }
+MicInputFileExpressionCollector >> resolveInputFile: anInputFile [
+
+	MicZincPathResolver
+		resolve: anInputFile
+		withBase: currentDirectory asMicResourceReference
+]
+
+{ #category : 'initialization' }
 MicInputFileExpressionCollector >> visitInputFile: anInputFile [
 
-	
 	| fileReference |
-	MicZincPathResolver
-		resolve: anInputFile  
-		withBase: currentDirectory asMicResourceReference.
-	
+	self resolveInputFile: anInputFile.
+
 	fileReference := currentDirectory fileSystem referenceTo:
-			 (anInputFile arguments at: 'path') uri asFileReference pathString.
+		                 (anInputFile arguments at: 'path') uri
+			                 asFileReference pathString.
 	(allFiles includes: fileReference) ifTrue: [ ^ self ].
 	allFiles add: fileReference.
 	dirs addLast: currentDirectory.

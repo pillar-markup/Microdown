@@ -16,7 +16,7 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 	"Note : its quite important to use parseFile: because assigning fromFile is implemented inside the parseFile: method"
 	
 	mainMic := Microdown parseFile: root.
-	visitor := MicFilesCollector new.
+	visitor := MicFileCollector new.
 	visitor
 		fileSystem: fs;
 		visit: mainMic.
