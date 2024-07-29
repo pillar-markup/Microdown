@@ -260,9 +260,10 @@ MicReferenceCheckerTest >> testReferToAnUknownAnchor [
 See *@anchorSection1@*
 
 '.
+	doc fromFile: 'fakedFile'.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
-	self deny: visitor isOkay . 
+	self deny: visitor isOkay
 ]
 
 { #category : 'tests' }
@@ -376,10 +377,14 @@ MicReferenceCheckerTest >> testReportingDuplicatedAnchors [
 See *@anchorSection1@* and *@anchorSection0@*
 
 '.
+	doc fromFile: 'fakedFile'.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self deny: visitor isOkay.
-	self assert: (visitor allTestsResults collect: [:each | each anchorLabel ]) equals: OrderedCollection <- #('anchorSection1')
+	self
+		assert:
+		(visitor allTestsResults collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'anchorSection1' )
 ]
 
 { #category : 'tests - reporting' }
@@ -430,11 +435,13 @@ MicReferenceCheckerTest >> testReportingDuplicatedFigures [
 See *@anchorSection1@*
 
 '.
+	doc fromFile: 'fakedFile'.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self deny: visitor isOkay.
 	self
-		assert: (visitor allTestsResults collect: [ :each | each anchorLabel ])
+		assert:
+		(visitor allTestsResults collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection1' )
 ]
 
@@ -496,11 +503,13 @@ $$
 See *@anchorSection1@* and *@anchorSection3@*
 
 '.
+	doc fromFile: 'fakedFile'.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
-	self deny: visitor isOkay .
+	self deny: visitor isOkay.
 	self
-		assert: (visitor allTestsResults collect: [ :each | each anchorLabel ])
+		assert:
+		(visitor allTestsResults collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection3' )
 ]
 

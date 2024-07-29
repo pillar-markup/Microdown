@@ -34,7 +34,7 @@ MicRootBlock >> canConsumeLine: line [
 
 { #category : 'accessing' }
 MicRootBlock >> fromFile [
-	^ self propertyAt: #file 
+	^ self propertyAt: #file ifAbsent: [ 'fakedFile' ]
 ]
 
 { #category : 'accessing' }
