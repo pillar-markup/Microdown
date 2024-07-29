@@ -200,6 +200,8 @@ Metacello new
 We have two sources: Pharo in one hand and Pillar and both are not totally synchronised. 
 
 Using Pharo 12: v2.5.x
+
+- v2.5.5 - add support for top level header as slide definition
 - v2.5.4 - add backward compatible anchor in caption + tonel V3 format
 - v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
 

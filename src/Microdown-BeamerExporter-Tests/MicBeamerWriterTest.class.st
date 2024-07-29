@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicBeamerWriterTest',
 	#superclass : 'MicLaTeXWriterTest',
-	#category : 'Microdown-BeamerExporter-Tests',
-	#package : 'Microdown-BeamerExporter-Tests'
+	#category : 'Microdown-BeamerExporter-Tests-Slide',
+	#package : 'Microdown-BeamerExporter-Tests',
+	#tag : 'Slide'
 }
 
 { #category : 'tests' }
@@ -51,7 +52,7 @@ MicBeamerWriterTest >> testCodeWithLabel [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumn [
 
-	self writeFor: (factory columnSample).
+	self writeFor: factory columnSample.
 	self assert: writer contents equals:'\begin{column}{0.42\textwidth}', newLine , newLine, 
 'this is a \textbf{text}', newLine ,
 '\end{column}', newLine, newLine
@@ -60,7 +61,7 @@ MicBeamerWriterTest >> testColumn [
 { #category : 'tests' }
 MicBeamerWriterTest >> testColumns [
 
-	self writeFor: (factory columnsSample).
+	self writeFor: factory columnsSample.
 	self assert: writer contents equals:'\begin{columns}', newLine ,
 '\end{columns}', newLine , newLine
 ]

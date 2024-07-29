@@ -54,9 +54,24 @@ MicRootBlock >> hasFile [
 	^ self hasProperty: #file
 ]
 
+{ #category : 'testing' }
+MicRootBlock >> hasMetaDataElement [
+	
+	^ children 
+		ifEmpty: [false]
+		ifNotEmpty: [ children first isMetaData ]
+]
+
 { #category : 'accessing' }
 MicRootBlock >> indent [
 	^0
+]
+
+{ #category : 'testing' }
+MicRootBlock >> metaDataElement [
+	"if self hasMetaDataElement then metaDataElement returns it.
+	else it returns the first element."
+	^ children first
 ]
 
 { #category : 'accessing' }
@@ -76,6 +91,6 @@ MicRootBlock >> properties: aConfigurationForPillar [
 	store the dictionary values in it.
 	"
 	
-	properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
+	self properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
 	properties := aConfigurationForPillar
 ]

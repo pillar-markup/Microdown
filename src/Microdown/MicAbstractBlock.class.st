@@ -132,6 +132,14 @@ MicAbstractBlock >> parserClass [
 	^ MicrodownParser
 ]
 
+{ #category : 'adding' }
+MicAbstractBlock >> removeChild: childBlock [
+	"Remove the childBlock as child of the receiver. 
+	Set the parent backpointer so that childBlock parent is the receiver."
+
+	children remove: childBlock
+]
+
 { #category : 'replacement' }
 MicAbstractBlock >> replace: aMicElement by: anotherMicElement [ 
 	

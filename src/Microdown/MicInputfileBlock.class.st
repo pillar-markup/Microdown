@@ -51,6 +51,12 @@ MicInputfileBlock >> fileWithConfiguration: aConfiguration [
 	^ aConfiguration baseDirectory resolve: self path
 ]
 
+{ #category : 'accessing' }
+MicInputfileBlock >> fullNameString [
+
+	^ self path fullName
+]
+
 { #category : 'testing' }
 MicInputfileBlock >> isRelativeFilePath [
 	^ (self path beginsWith: '/') not

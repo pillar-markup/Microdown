@@ -88,7 +88,7 @@ MicHTTPResourceReferenceTest >> testLoadImage [
 	| ref image |
 	ref := MicResourceReference fromUri:  baseUrl , 'toplevel.png'.
 	image := ref loadImage.
-	self assert: image notNil.
+	self assert: image isNotNil.
 	self assert: image height equals: 90.
 	self assert: image width equals: 200
 ]

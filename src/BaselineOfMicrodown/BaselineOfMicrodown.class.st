@@ -14,9 +14,20 @@ BaselineOfMicrodown >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		
-		self xmlParserHtml: spec.				
 
+		self xmlParserHtml: spec.
+		self mustache: spec.
+		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
+		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
+			
+		spec preLoadDoIt: #'preload:package:'.
+		
+		
+		"I disable this because in a postload 
+			(IceRepository repositoryNamed: 'microdown') is nil and I do not get why"
+	
+		spec postLoadDoIt: #'postload:package:'.
+		
 		spec
 			package: #Microdown;
 			package: #'Microdown-Tests'
@@ -71,10 +82,15 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
 			
+
 			package: #'Microdown-PrettyPrinter-Tests'
 				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ].
 				
-	
+			package: #'Microdown-Blog' with: [
+				spec requires: #( #'Microdown' #'Mustache') ];
+			package: #'Microdown-Blog-Tests' with: [
+				spec requires: #( #'Microdown-Blog' ) ];
+		
 		"I do not want group without tests for now"
 		spec
 			group: 'Core' with: #('Microdown');
@@ -98,6 +114,63 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-Transformer'
 				#'Microdown-Transformer-Tests');
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> mustache: spec [
+
+	spec baseline: 'Mustache' with: [
+		spec
+			repository: 'github://noha/mustache:v1.0/repository';
+			loads: #( 'Core' 'Tests' ) ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> postload: loader package: packageSpec [
+
+	| p |
+	self class name, ' postload ' traceCr. 
+
+	p := (IceRepository repositoryNamed: 'microdown').
+	p ifNil: [ p :=  (IceRepository repositoryNamed: 'Microdown') ].
+	[ 
+	(p ifNotNil: [ :p2 | (p2 packageNamed: 'BaselineOfMicrodown') reload ]) 
+	] 
+		on: MCMergeOrLoadWarning 
+		do: [ :ex | ex load ]
+
+
+
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> preload: loader package: packageSpec [
+	"Ignore pre and post loads if already executed"
+
+	" the prelosing GH script cannot work because 
+	it will remove the baseline and repository itself :)
+	#( 'Microdown' ) do: [ :name |
+		(IceRepository repositoryNamed: name)
+			ifNil: [ self inform: 'Project not found: ' , name ]
+			ifNotNil: [ :found |
+				found
+					unload;
+					forget ] ]"
+			
+	| packagesToUnload |
+	self class name, ' preload ' traceCr. 
+	packagesToUnload := ((PackageOrganizer default packages 
+		select: [ :each | each name beginsWith: 'Microdown' ])  collect: [ :each | each name ]) 
+		reject: [ :each |  
+ #('Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests') includes: each ].
+	"these two are not managed by the microdown repo but the documentation.
+	I should rename them in the future to avoid confusion"
+
+	packagesToUnload do: 
+		[ :each | 
+			((IceRepository repositoryNamed: 'Microdown') packageNamed: each) unload ].
+
+
 ]
 
 { #category : 'external projects' }

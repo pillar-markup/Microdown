@@ -116,7 +116,6 @@ MicBlogCreator >> createAllHtmlFile [
 MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
@@ -132,19 +131,16 @@ MicBlogCreator >> createHtmlFile: aMicRoot toReplace: aFileReference [
 MicBlogCreator >> createHtmlGroupFile: aMicRoot at: aMonth [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 	self
 		write: visitor
-		to: '_monthBlog' asFileReference / (aMonth name , '_'
-			, aMonth year asString , '.html')
+		to: 'monthBlog' asFileReference / (aMonth name, '_', aMonth year asString , '.html')
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> createHtmlSummarize: aMicRoot [
 
 	| visitor |
-	self rootAssembly: aMicRoot.
 
 	visitor := (MicHTMLVisitor new visit: aMicRoot) first.
 
@@ -204,6 +200,27 @@ MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 ]
 
 { #category : 'rendering' }
+MicBlogCreator >> mustacheAssembly: htmlString [
+
+	| context |
+	
+	context := Dictionary new
+    at: 'content' put: htmlString;
+	 at: 'archive' put: (MicHTMLVisitor new visit: dateList copy) first contents;
+    yourself.
+	
+	^  (MustacheTemplate on: self mustacheTemplate) value: context
+]
+
+{ #category : 'rendering' }
+MicBlogCreator >> mustacheTemplate [
+
+	^ '<section><h1>Weekly news about Pharo</h1></section>
+	<section>{{{content}}}</section>
+	<section>{{{archive}}}</section>'
+]
+
+{ #category : 'rendering' }
 MicBlogCreator >> renameMarkdownIntoHtmlFile: aFileReference [
 
 	| newPath |
@@ -224,13 +241,6 @@ MicBlogCreator >> root: aString [
 
 	root := aString.
 	sum root: root
-]
-
-{ #category : 'rendering' }
-MicBlogCreator >> rootAssembly: aMicRoot [
-
-	aMicRoot addChild: dateList copy.
-	^ aMicRoot
 ]
 
 { #category : 'sorting' }
@@ -275,19 +285,20 @@ MicBlogCreator >> targetDirectory: aFileReferenceOrAString [
 { #category : 'rendering' }
 MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
-	| htmlDocument cssFramework |
+	| htmlDocument cssFramework htmlContent |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
 	cssFramework basePath: root, '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
 	htmlDocument configuration document: htmlDocument.
+	htmlContent := self mustacheAssembly: aMicHTMLVisitor contents.
 	htmlDocument
 		setCharSetUTF8;
 		addCSS: cssFramework;
-		destinationPath: targetDirectory.
+		destinationPath: targetDirectory. 
 	^ htmlDocument
 		  fileName: aFileReference path pathString;
-		  writeDocument: aMicHTMLVisitor contents;
+		  writeDocument: htmlContent;
 		  contents
 ]

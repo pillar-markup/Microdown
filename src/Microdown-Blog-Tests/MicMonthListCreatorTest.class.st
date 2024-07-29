@@ -28,6 +28,44 @@ MicMonthListCreatorTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicMonthListCreatorTest >> testCreateListOfMonthListFromSummarized [
+
+	| dateList january2019 january2018 listSummarizerTest|
+	listSummarizerTest := MicListSummarizerTest new.
+	listSummarizerTest setUp.
+	dateList := monthListCreator createListOfMonthListFromSummarized: listSummarizerTest createListOfMicRootBlock.
+	
+	january2019 := Month year: 2019 month: 1.
+	january2018 := Month year: 2018 month: 1.
+
+	self assert: (dateList isKindOf: Set);
+	assert: dateList size equals: 2;
+	assert: (dateList includes: january2018);
+	assert: (dateList includes: january2019)
+]
+
+{ #category : 'tests' }
+MicMonthListCreatorTest >> testCreateListOfMonthListFromSummarizedAreSet [
+
+	| singleSummarizer summarizedDocument dateList january2019 |
+	
+	singleSummarizer := MicSingleSummarizer new.
+	singleSummarizer targetDirectory: '/html/' asFileReference;
+	root: MicFileTestResources new genericEmptyRootPath.
+	
+	summarizedDocument := (singleSummarizer summarize:
+			   ((Microdown parse: ressources generateFilesystemExample1 contents)
+				    fromFile: ressources generateFilesystemExample1)).
+	dateList := monthListCreator createListOfMonthListFromSummarized: { summarizedDocument copy. summarizedDocument copy. summarizedDocument copy }.
+
+	january2019 := Month year: 2019 month: 1.
+
+	self assert: (dateList isKindOf: Set);
+	assert: dateList size equals: 1;
+	assert: (dateList includes: january2019)
+]
+
+{ #category : 'tests' }
 MicMonthListCreatorTest >> testGenerateDateListSince2014 [
 
 	| dateList |
@@ -59,9 +97,9 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDate [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](/_monthBlog/January_2014.html)';
+		equals: '[January 2014](/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](/_monthBlog/'
+		equals: '[' , Date today month asString , '](/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]
 
@@ -84,9 +122,9 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWith [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](/_monthBlog/January_2014.html)';
+		equals: '[January 2014](/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](/_monthBlog/'
+		equals: '[' , Date today month asString , '](/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]
 
@@ -111,8 +149,8 @@ MicMonthListCreatorTest >> testGenerateMicListBlockOfLinkDateWithRootPath [
 	self
 		assert: dateList children size equals: self numberOfMonthSince2014;
 		assert: dateList children first children first plainText
-		equals: '[January 2014](', ressources genericNonEmptyRootPath ,'/_monthBlog/January_2014.html)';
+		equals: '[January 2014](', ressources genericNonEmptyRootPath ,'/monthBlog/January_2014.html)';
 		assert: dateList children last children first plainText
-		equals: '[' , Date today month asString , '](', ressources genericNonEmptyRootPath ,'/_monthBlog/'
+		equals: '[' , Date today month asString , '](', ressources genericNonEmptyRootPath ,'/monthBlog/'
 			, Date today month name , '_' , Date today year asString , '.html)'
 ]

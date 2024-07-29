@@ -201,6 +201,30 @@ MicSingleSummarizerTest >> testSummarizeFile [
 ]
 
 { #category : 'tests' }
+MicSingleSummarizerTest >> testWithFromFile [
+
+	| root fromFile |
+	root := self createMicRootBlock.
+	fromFile := root fromFile.
+
+	micSingleSummarizer verifyFromFile: root.
+
+	self assert: root fromFile equals: fromFile
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testWithFromFileNil [
+
+	| root |
+	root := self createMicRootBlock.
+	root fromFile: nil.
+
+	micSingleSummarizer verifyFromFile: root.
+
+	self assert: root fromFile equals: ''
+]
+
+{ #category : 'tests' }
 MicSingleSummarizerTest >> testWithMetaDataAndWithDate [
 
 	| root |
@@ -235,6 +259,20 @@ MicSingleSummarizerTest >> testWithMetaDataButInvalidDate [
 		assert: root children size equals: 4;
 		assert: (root children first atKey: #date)
 		equals: micSingleSummarizer replacementDate
+]
+
+{ #category : 'tests' }
+MicSingleSummarizerTest >> testWithoutFromFile [
+
+	| root |
+	self skip. 
+	"should ask Quentin for help here."
+	root := Microdown parse:
+		        resources generateFilesystemExample1 contents.
+
+	micSingleSummarizer verifyFromFile: root.
+
+	self assert: root fromFile equals: ''
 ]
 
 { #category : 'tests' }

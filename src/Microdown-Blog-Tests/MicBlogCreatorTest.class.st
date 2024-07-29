@@ -170,7 +170,7 @@ MicBlogCreatorTest >> testCreateHtmlGroupFileAt [
 		at: (Month year: 2019 month: 'January').
 
 	self assert:
-		(fileSystem / 'html' / '_monthBlog' / 'January_2019.html') exists
+		(fileSystem / 'html' / 'monthBlog' / 'January_2019.html') exists
 ]
 
 { #category : 'tests' }
@@ -215,7 +215,7 @@ MicBlogCreatorTest >> testInitializeMonthList [
 
 	blog initializeMonthList: listSingleSummarizer.
 
-	self assert: (fileSystem / 'html' / '_monthBlog') allFiles size equals: 2
+	self assert: (fileSystem / 'html' / 'monthBlog') allFiles size equals: 2
 ]
 
 { #category : 'tests' }
@@ -227,18 +227,6 @@ MicBlogCreatorTest >> testRenameMarkdownIntoHtmlFile [
 
 	self assert: (fileSystem / 'source' / 'anExample1.html') exists.
 	self assert: (fileSystem / 'source' / 'anExample1.md') exists not
-]
-
-{ #category : 'tests' }
-MicBlogCreatorTest >> testRootAssembly [
-
-	| root file |
-	file := self listOfFile at: 1.
-	root := Microdown parse: file contents.
-
-	blog rootAssembly: root.
-
-	self assert: root children size equals: 5
 ]
 
 { #category : 'tests' }
@@ -270,6 +258,32 @@ MicBlogCreatorTest >> testSortSingleSummarizedDocuments [
 		assert: (listOfSummarizedDocuments at: 1) equals: summarized3;
 		assert: (listOfSummarizedDocuments at: 2) equals: summarized1;
 		assert: (listOfSummarizedDocuments at: 3) equals: summarized2
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryCleanDirectory [
+
+	self assert: (fileSystem / 'source') hasChildren.
+	blog targetDirectory: fileSystem / 'source'.
+	self assert: (fileSystem / 'source') hasChildren not.
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryWithFileReference [
+
+	blog targetDirectory: fileSystem / 'html'.
+	
+	self assert: blog targetDirectory equals: fileSystem / 'html'
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testTargetDirectoryWithString [
+
+"we use basename cause we can't pass the memory with a String"
+
+	blog targetDirectory: 'html'.
+	
+	self assert: blog targetDirectory basename equals: (fileSystem / 'html') basename
 ]
 
 { #category : 'tests' }
