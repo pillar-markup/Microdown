@@ -86,6 +86,13 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-PrettyPrinter-Tests'
 				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
 				
+			package: #'Microdown-ParentChildrenChecker' with: [
+				spec requires: #( #'Microdown' ) ];
+			package: #'Microdown-BookTester' with: [
+				spec requires: #( #'Microdown' ) ];
+			package: #'Microdown-BookTester-Tests' with: [
+				spec requires: #( #'Microdown-BookTester' ) ];	
+				
 			package: #'Microdown-Blog' with: [
 				spec requires: #( #'Microdown' #'Mustache') ];
 			package: #'Microdown-Blog-Tests' with: [
@@ -103,6 +110,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-DocumentBrowser'
 				#'Microdown-DocumentBrowser-Tests'
 				"
+				
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
@@ -112,7 +120,12 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-LaTeXExporter'
 				#'Microdown-LaTeXExporter-Tests'
 				#'Microdown-Transformer'
-				#'Microdown-Transformer-Tests');
+				#'Microdown-Transformer-Tests'
+				#'Microdown-ParentChildrenChecker'
+				#'Microdown-BookTester'
+				#'Microdown-BookTester-Tests'
+				
+				);
 			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
