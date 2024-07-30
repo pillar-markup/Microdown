@@ -25,6 +25,14 @@ MicFileTest >> createProjectWithLoopFromSection3ToSection1 [
 ]
 
 { #category : 'project creation' }
+MicFileTest >> createProjectWithUnexistingSection3And5 [
+
+	self section1InputSection2And4AndUnexisting3.
+	self section2InputsSection3.
+	self section4InputsUnexistingSection5
+]
+
+{ #category : 'project creation' }
 MicFileTest >> createTestDoubleLoop3To1And5To3 [
 
 	self section1InputsSection2And3.
@@ -56,19 +64,6 @@ MicFileTest >> createTestProjectBadAndCorrectReferences [
 
 
 
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectMultipleReferencesToTheSameFile [
-
-	self section1InputsSection2And4.
-	self section2InputsSection1.
-	section4 := dir / 'sections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-<!inputFile|path=../section1.md!> 
-' ]
 ]
 
 { #category : 'project creation' }
@@ -119,30 +114,18 @@ just text here
 ]
 
 { #category : 'project creation' }
-MicFileTest >> createTestProjectReferencesOfFileThatDoesNotExist [
-
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-<!inputFile|path=sections/section3.md!>
-<!inputFile|path=sections/section4.md!>
-' ].
-	self section2InputsSection3.
-	section4 := dir / 'sections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-<!inputFile|path=./subsections/section5.md!>
-' ]
-]
-
-{ #category : 'project creation' }
 MicFileTest >> createTestProjectSmallLoop [
 
 	self section1InputsSection2.
 	self section2InputsSection1
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createUndirectCyclesToTheSameFile [
+
+	self section1InputsSection2And4.
+	self section2InputsSection1.
+	self section4InputsSection1
 ]
 
 { #category : 'accessing' }
@@ -151,7 +134,20 @@ MicFileTest >> fileSystem [
 	^ FileSystem memory
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers' }
+MicFileTest >> section1InputSection2And4AndUnexisting3 [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+<!inputFile|path=sections/section2.md!>
+<!inputFile|path=sections/section3.md!>
+<!inputFile|path=sections/section4.md!>
+' ]
+]
+
+{ #category : 'helpers' }
 MicFileTest >> section1InputsSection2 [
 
 	section1 := dir / 'section1.md'.
@@ -186,7 +182,7 @@ MicFileTest >> section1InputsSection2And4 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers' }
 MicFileTest >> section2InputsSection1 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -253,6 +249,17 @@ just some text  here this file does not have another reference to another file
 ' ]
 ]
 
+{ #category : 'project creation' }
+MicFileTest >> section4InputsSection1 [
+
+	section4 := dir / 'sections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+<!inputFile|path=../section1.md!> 
+' ]
+]
+
 { #category : 'helpers' }
 MicFileTest >> section4InputsSection5 [
 
@@ -261,6 +268,17 @@ MicFileTest >> section4InputsSection5 [
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
 <!inputFile|path=subsubsections/section5.md!>
+' ]
+]
+
+{ #category : 'helpers' }
+MicFileTest >> section4InputsUnexistingSection5 [
+
+	section4 := dir / 'sections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+<!inputFile|path=./subsections/section5.md!>
 ' ]
 ]
 

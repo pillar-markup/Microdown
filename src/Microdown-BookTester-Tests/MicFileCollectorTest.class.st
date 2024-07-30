@@ -90,23 +90,32 @@ MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 				}
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - assessed' }
 MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	
-	self createTestProjectReferencesOfFileThatDoesNotExist.
+	self createProjectWithUnexistingSection3And5.
 	self startVisitingFromTheRoot: section1.
 
 	self 
 		assert: visitor visitedDocumentFiles
 		equals:
-			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/section4.md' } asSet
-	
+			Set <- { 
+				'/myDirectory/section1.md' . 
+				'/myDirectory/sections/section2.md' . 
+				'/myDirectory/sections/section4.md' 
+				}.
+	self 
+		assert: (visitor unexistingFiles collect: [:each | each path path ]) 
+		equals:  Set <- {
+		'/myDirectory/sections/subsections/section5.md' . 
+		'/myDirectory/sections/section3.md' .
+		'/myDirectory/sections/subsections/section3.md' }
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - assessed' }
 MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	
-	self createTestProjectMultipleReferencesToTheSameFile.
+	self createUndirectCyclesToTheSameFile.
 	self startVisitingFromTheRoot: section1.
 	
 	self 
