@@ -11,8 +11,8 @@ Class {
 		'references',
 		'anchors',
 		'duplicatedAnchors',
-		'allTestsResults',
-		'finalStatus'
+		'finalStatus',
+		'results'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -20,16 +20,15 @@ Class {
 
 { #category : 'accessing' }
 MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
-	|micResultInstance|
-		micResultInstance := MicResult new.
-		micResultInstance
-						      message:( MicResult allMessages at: #anchorIsMissing ) ; 
-		                  anchorLabel: anAnchorReference anchorLabel ;
-								status: false ;
-                         source: anAnchorReference fromFile 	.				
-	  allTestsResults add: micResultInstance .							
-							
-		
+
+	| micResultInstance |
+	micResultInstance := MicResult new.
+	micResultInstance
+		message: (MicResult allMessages at: #anchorIsMissing);
+		anchorLabel: anAnchorReference anchorLabel;
+		status: false;
+		source: anAnchorReference fromFile.
+	results add: micResultInstance
 ]
 
 { #category : 'accessing' }
@@ -42,13 +41,13 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 		anchorLabel: anAnchor anchorLabel;
 		status: false;
 		source: anAnchor fromFile.
-	allTestsResults add: micResultInstance
+	results add: micResultInstance
 ]
 
 { #category : 'accessing' }
 MicReferenceChecker >> allTestsResults [
 
-	^ allTestsResults
+	^ results
 ]
 
 { #category : 'visiting' }
@@ -104,7 +103,7 @@ MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 		fileSystem: fileSystem ;
 		visit: mainMic.
 	listOfFiles := visitor visitedDocumentFiles collect: [ :file | fileSystem referenceTo: file  ] . 
-	^ self checkList: listOfFiles .
+	^ self checkList: listOfFiles.
 	
 	
 
@@ -129,7 +128,7 @@ MicReferenceChecker >> duplicatedAnchors [
 
 { #category : 'visiting' }
 MicReferenceChecker >> finalStatus [ 
-	^ allTestsResults isEmpty .
+	^ results isEmpty .
 ]
 
 { #category : 'visiting' }
@@ -161,7 +160,7 @@ MicReferenceChecker >> initialize [
 
 	super initialize.
 	
-	allTestsResults := OrderedCollection new.
+	results := OrderedCollection new.
 	finalStatus := false.
 	
 	references := OrderedCollection new.

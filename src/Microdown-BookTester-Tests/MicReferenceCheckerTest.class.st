@@ -217,7 +217,7 @@ See *@anchorFigure1@*
 ' ].
 	referenceToFigure ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: referenceToFigure) .
+	self assert: (visitor checkFile: referenceToFigure)
 	
 ]
 
