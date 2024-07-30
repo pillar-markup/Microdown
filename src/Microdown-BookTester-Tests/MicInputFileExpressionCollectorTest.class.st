@@ -11,13 +11,13 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'utils' }
+{ #category : 'running' }
 MicInputFileExpressionCollectorTest >> setUp [
 	super setUp.
 	visitor := MicInputFileExpressionCollector new.
 ]
 
-{ #category : 'implenation 2 Tests' }
+{ #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromTheButtomV2Implementation [
 
 "this is for testing the other implementation ( 3 only because the root file is not added automatically but that can be easily managed because wee need to have the file reference anyway )
@@ -35,7 +35,7 @@ and in this test we start in a file in the buttom of the folders and go up  "
 	self assert: visitor allFiles size equals: 3 
 ]
 
-{ #category : 'implenation 2 Tests' }
+{ #category : 'tests' }
 MicInputFileExpressionCollectorTest >> testAllFilesV2Implementation [
 
 "this is for testing the other implementation ( 3 only because the root file is not added automatically but that can be easily managed because wee need to have the file reference anyway ) "
