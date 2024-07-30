@@ -393,7 +393,8 @@ MicCSSProvider >> localCSSNamed: aString [
 { #category : 'frameworks' }
 MicCSSProvider >> localRepositoryPath [ 
 
-	^ FileSystem workingDirectory / 'pharo-local' / 'iceberg' / 'pillar-markup' / 'Microdown' / 'ressource'
+	^ FileLocator imageDirectory / 'pharo-local' / 'iceberg' / 'pillar-markup' / 'Microdown' / 'ressource'
+	
 ]
 
 { #category : 'accessing' }
