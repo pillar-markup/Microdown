@@ -158,3 +158,19 @@ MicFileCollectorTest >> testOnlyGoUpInFoldersStartingFromAnotherRoot [
 			}
 	
 ]
+
+{ #category : 'tests' }
+MicFileCollectorTest >> testUnreferencedFileAreNotHandled [
+	
+	self createProjectWithUnreferencedFiles3And5.
+	self startVisitingFromTheRoot: section1.
+
+	self 
+		assert: visitor visitedDocumentFiles
+		equals: 
+			Set <- { 
+				'/myDirectory/section1.md' . 
+				'/myDirectory/sections/section2.md' . 
+				'/myDirectory/sections/section4.md' .
+			}
+]

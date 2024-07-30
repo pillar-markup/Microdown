@@ -51,6 +51,24 @@ MicFileTest >> createProjectWithUnexistingSection3And5 [
 ]
 
 { #category : 'project creation' }
+MicFileTest >> createProjectWithUnreferencedFile [
+
+	self section1InputsSection2And4.
+	
+	self section4IsLeaf
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createProjectWithUnreferencedFiles3And5 [
+	
+	self section1InputsSection2And4.
+	self section2InputsSection4.
+	self section3IsLeaf.
+	self section4IsLeaf.
+	self section5IsLeaf.
+]
+
+{ #category : 'project creation' }
 MicFileTest >> createTestDoubleLoop3To1And5To3 [
 
 	self section1InputsSection2And3.
@@ -204,7 +222,7 @@ MicFileTest >> section2InputsSection4 [
 	section2 ensureCreateFile.
 	section2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 2
-<!inputFile|path=subsections/section4.md!>
+<!inputFile|path=sections/section4.md!>
 ' ]
 ]
 
@@ -250,6 +268,16 @@ MicFileTest >> section3InputsSection1Loop [
 	section3 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 3
 <!inputFile|path=../section1.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section3IsLeaf [
+
+	section3 := dir / 'sections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3 
 ' ]
 ]
 
@@ -311,7 +339,7 @@ MicFileTest >> section4InputsUnexistingSection5 [
 { #category : 'project creation' }
 MicFileTest >> section4IsLeaf [
 
-	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
+	section4 := dir / 'sections/section4.md'.
 	section4 ensureCreateFile.
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
@@ -338,6 +366,16 @@ MicFileTest >> section5InputFileUndefinedSection6 [
 	section5 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 5
 <!inputFile|path=../section6.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section5IsLeaf [
+
+	section5 := dir / 'sections/section5.md'.
+	section5 ensureCreateFile.
+	section5 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 5 
 ' ]
 ]
 
