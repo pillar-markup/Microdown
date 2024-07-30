@@ -22,22 +22,26 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 		visit: mainMic.
 ]
 
-{ #category : 'tests' }
-MicFileCollectorTest >> testEveryCaseIncluded [ 
+{ #category : 'tests - assessed' }
+MicFileCollectorTest >> testDoubleLoopsAndThatUnexistingInputIsCorrectlyResolved [
 	
-	self createTestProjectEveryCaseIncluded.
+	self createTestDoubleLoop3To1And5To3.
 	self startVisitingFromTheRoot: section2.
 
 	self 
 		assert: visitor visitedDocumentFiles
 		equals: 
-			{ 
+			Set <- { 
 				'/myDirectory/section1.md' . 
 				'/myDirectory/sections/section2.md' . 
 				'/myDirectory/sections/subsections/section4.md' .
 				'/myDirectory/sections/subsections/subsubsections/section5.md' .
 			   '/myDirectory/sections/section3.md'  
-			} asSet
+			}.
+
+	self 
+		assert: (visitor unexistingFiles collect: [:each | each path path ])
+		equals: Set <- { '/myDirectory/sections/subsections/section6.md' } 
 	
 ]
 

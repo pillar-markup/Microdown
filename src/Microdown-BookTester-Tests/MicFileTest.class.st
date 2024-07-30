@@ -25,6 +25,16 @@ MicFileTest >> createProjectWithLoopFromSection3ToSection1 [
 ]
 
 { #category : 'project creation' }
+MicFileTest >> createTestDoubleLoop3To1And5To3 [
+
+	self section1InputsSection2And3.
+	self section2InputsSection4.
+	self section3InputsSection1Loop.
+	self section4InputsSection5.
+	self section5InpsutsUnknowSection6AndLoopOverSection3
+]
+
+{ #category : 'project creation' }
 MicFileTest >> createTestProjectBadAndCorrectReferences [
 
 		section1 := dir / 'section1.md'.
@@ -46,16 +56,6 @@ MicFileTest >> createTestProjectBadAndCorrectReferences [
 
 
 
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectEveryCaseIncluded [
-
-	self section1InputsSection2And3.
-	self section2InputsSection4.
-	self section3InputsSection1Loop.
-	self section4InputsSection5.
-	self section5InpsutsUnknowSection6AndLoopOverSection3
 ]
 
 { #category : 'project creation' }
