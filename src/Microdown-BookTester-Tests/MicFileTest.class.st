@@ -62,12 +62,7 @@ MicFileTest >> createTestProjectBadAndCorrectReferences [
 MicFileTest >> createTestProjectMultipleReferencesToTheSameFile [
 
 	self section1InputsSection2And4.
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=../section1.md!>
-' ].
+	self section2InputsSection1.
 	section4 := dir / 'sections/section4.md'.
 	section4 ensureCreateFile.
 	section4 writeStreamDo: [ :stream |
@@ -79,36 +74,24 @@ MicFileTest >> createTestProjectMultipleReferencesToTheSameFile [
 { #category : 'project creation' }
 MicFileTest >> createTestProjectOnlyGoDownInFolders [
 
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-' ].
-
+	self section1InputsSection2.
 	section2 := dir / 'sections/section2.md'.
 	section2 ensureCreateFile.
 	section2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 2
 <!inputFile|path=subsections/section3.md!>
 ' ].
-
 	section3 := dir / 'sections/subsections/section3.md'.
 	section3 ensureCreateFile.
 	section3 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 3
 <!inputFile|path=subsubsections/section4.md!>
 ' ].
-
 	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
 	section4 ensureCreateFile.
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
 ' ]
-
-
-
-
 ]
 
 { #category : 'project creation' }
@@ -120,21 +103,13 @@ MicFileTest >> createTestProjectOnlyGoUpInFolders [
 		stream nextPutAll: '# Section1
 just text here
 ' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=../section1.md!>
-' ].
-
+	self section2InputsSection1.
 	section3 := dir / 'sections/subsections/section3.md'.
 	section3 ensureCreateFile.
 	section3 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 3
 <!inputFile|path=../section2.md!>
 ' ].
-
 	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
 	section4 ensureCreateFile.
 	section4 writeStreamDo: [ :stream |
@@ -166,27 +141,25 @@ MicFileTest >> createTestProjectReferencesOfFileThatDoesNotExist [
 { #category : 'project creation' }
 MicFileTest >> createTestProjectSmallLoop [
 
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-<!inputFile|path=sections/section2.md!>
-' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=../section1.md!>
-' ]
-	
-
+	self section1InputsSection2.
+	self section2InputsSection1
 ]
 
 { #category : 'accessing' }
 MicFileTest >> fileSystem [
 
 	^ FileSystem memory
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section1InputsSection2 [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+<!inputFile|path=sections/section2.md!>
+' ]
 ]
 
 { #category : 'helpers' }
@@ -210,6 +183,17 @@ MicFileTest >> section1InputsSection2And4 [
 		stream nextPutAll: '# Section1
 <!inputFile|path=sections/section2.md!>
 <!inputFile|path=sections/section4.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section2InputsSection1 [
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 2
+<!inputFile|path=../section1.md!>
 ' ]
 ]
 

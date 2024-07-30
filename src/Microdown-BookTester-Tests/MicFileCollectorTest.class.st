@@ -75,7 +75,7 @@ MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 		equals: Set <- { '/myDirectory/section6.md' } 
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - assessed' }
 MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 
 	self createTestProjectSmallLoop.
@@ -84,7 +84,10 @@ MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 	self 
 		assert: visitor visitedDocumentFiles
 		equals: 
-			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' } asSet
+			Set <- { 
+				'/myDirectory/section1.md'. 
+				'/myDirectory/sections/section2.md' 
+				}
 ]
 
 { #category : 'tests' }
