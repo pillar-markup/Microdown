@@ -24,7 +24,7 @@ MicInputFileExpressionCollectorTest >> testAllFilesReferencesStartingFromTheButt
 and in this test we start in a file in the buttom of the folders and go up  "
 
 
-	self createTestProjectOnlyGoUpInFolders .
+	self createProjectOnlyGoUpInFolders .
 	mainMic := Microdown parseFile: section4 . 
 	dir := (fs / 'myDirectory'/'sections/subsections/subsubsections/section4.md') asFileReference.
 	
@@ -41,7 +41,7 @@ MicInputFileExpressionCollectorTest >> testAllFilesV2Implementation [
 "this is for testing the other implementation ( 3 only because the root file is not added automatically but that can be easily managed because wee need to have the file reference anyway ) "
 
 
-	self createTestProjectOnlyGoDownInFolders .
+	self createProjectOnlyGoDownInFolders .
 	mainMic := Microdown parseFile: section1 .
 	dir := (fs / 'myDirectory'/'section1.md') asFileReference.
 	

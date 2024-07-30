@@ -22,7 +22,7 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 		visit: mainMic.
 ]
 
-{ #category : 'tests - assessed' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testDoubleLoopsAndThatUnexistingInputIsCorrectlyResolved [
 	
 	self createTestDoubleLoop3To1And5To3.
@@ -45,7 +45,7 @@ MicFileCollectorTest >> testDoubleLoopsAndThatUnexistingInputIsCorrectlyResolved
 	
 ]
 
-{ #category : 'tests - assessed' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 	"and unknown references."
 	
@@ -75,7 +75,7 @@ MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 		equals: Set <- { '/myDirectory/section6.md' } 
 ]
 
-{ #category : 'tests - assessed' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 
 	self createTestProjectSmallLoop.
@@ -90,7 +90,7 @@ MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 				}
 ]
 
-{ #category : 'tests - assessed' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	
 	self createProjectWithUnexistingSection3And5.
@@ -112,7 +112,7 @@ MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 		'/myDirectory/sections/subsections/section3.md' }
 ]
 
-{ #category : 'tests - assessed' }
+{ #category : 'tests' }
 MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	
 	self createUndirectCyclesToTheSameFile.
@@ -128,25 +128,33 @@ MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 { #category : 'tests' }
 MicFileCollectorTest >> testOnlyGoDownInFolders [
 
-	self createTestProjectOnlyGoDownInFolders.
+	self createProjectOnlyGoDownInFolders.
 	self startVisitingFromTheRoot: section1.
 
 	self 
 		assert: visitor visitedDocumentFiles
 		equals:
-			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section3.md' . '/myDirectory/sections/subsections/subsubsections/section4.md'  } asSet
+			Set <- { 
+			'/myDirectory/section1.md' . 
+			'/myDirectory/sections/section2.md' . 
+			'/myDirectory/sections/subsections/section3.md' .           			'/myDirectory/sections/subsections/subsubsections/section4.md'
+			}.
 	
 ]
 
 { #category : 'tests' }
-MicFileCollectorTest >> testOnlyGoUpInFolders [
+MicFileCollectorTest >> testOnlyGoUpInFoldersStartingFromAnotherRoot [
 	
-	self createTestProjectOnlyGoUpInFolders.
+	self createProjectOnlyGoUpInFolders.
 	self startVisitingFromTheRoot: section4.
 	
 	self 
 		assert: visitor visitedDocumentFiles
 		equals:
-			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/subsections/section3.md' . '/myDirectory/sections/subsections/subsubsections/section4.md'  } asSet
+			Set <- { 
+			'/myDirectory/section1.md'. 
+			'/myDirectory/sections/section2.md' . 
+			'/myDirectory/sections/subsections/section3.md' . 			'/myDirectory/sections/subsections/subsubsections/section4.md'
+			}
 	
 ]

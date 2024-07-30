@@ -15,6 +15,24 @@ Class {
 }
 
 { #category : 'project creation' }
+MicFileTest >> createProjectOnlyGoDownInFolders [
+
+	self section1InputsSection2.
+	self section2InputsNestedSection3.
+	self section3InputsNestedSection4.
+	self section4IsLeaf
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createProjectOnlyGoUpInFolders [
+
+	self section1IsLeaf.
+	self section2InputsSection1.
+	self section3InputsParentSection2.
+	self section4InputsParentSection3
+]
+
+{ #category : 'project creation' }
 MicFileTest >> createProjectWithLoopFromSection3ToSection1 [
 
 	self section1InputsSection2And4.
@@ -64,53 +82,6 @@ MicFileTest >> createTestProjectBadAndCorrectReferences [
 
 
 
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectOnlyGoDownInFolders [
-
-	self section1InputsSection2.
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 2
-<!inputFile|path=subsections/section3.md!>
-' ].
-	section3 := dir / 'sections/subsections/section3.md'.
-	section3 ensureCreateFile.
-	section3 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 3
-<!inputFile|path=subsubsections/section4.md!>
-' ].
-	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-' ]
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectOnlyGoUpInFolders [
-
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section1
-just text here
-' ].
-	self section2InputsSection1.
-	section3 := dir / 'sections/subsections/section3.md'.
-	section3 ensureCreateFile.
-	section3 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 3
-<!inputFile|path=../section2.md!>
-' ].
-	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
-	section4 ensureCreateFile.
-	section4 writeStreamDo: [ :stream |
-		stream nextPutAll: '# section 4 
-<!inputFile|path=../section3.md!>
-' ]
 ]
 
 { #category : 'project creation' }
@@ -182,6 +153,28 @@ MicFileTest >> section1InputsSection2And4 [
 ' ]
 ]
 
+{ #category : 'project creation' }
+MicFileTest >> section1IsLeaf [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+just text here
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section2InputsNestedSection3 [
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 2
+<!inputFile|path=subsections/section3.md!>
+' ]
+]
+
 { #category : 'helpers' }
 MicFileTest >> section2InputsSection1 [
 
@@ -212,6 +205,28 @@ MicFileTest >> section2InputsSection4 [
 	section2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 2
 <!inputFile|path=subsections/section4.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section3InputsNestedSection4 [
+
+	section3 := dir / 'sections/subsections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+<!inputFile|path=subsubsections/section4.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section3InputsParentSection2 [
+
+	section3 := dir / 'sections/subsections/section3.md'.
+	section3 ensureCreateFile.
+	section3 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 3
+<!inputFile|path=../section2.md!>
 ' ]
 ]
 
@@ -250,6 +265,17 @@ just some text  here this file does not have another reference to another file
 ]
 
 { #category : 'project creation' }
+MicFileTest >> section4InputsParentSection3 [
+
+	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+<!inputFile|path=../section3.md!>
+' ]
+]
+
+{ #category : 'project creation' }
 MicFileTest >> section4InputsSection1 [
 
 	section4 := dir / 'sections/section4.md'.
@@ -279,6 +305,16 @@ MicFileTest >> section4InputsUnexistingSection5 [
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
 <!inputFile|path=./subsections/section5.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> section4IsLeaf [
+
+	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
 ' ]
 ]
 
