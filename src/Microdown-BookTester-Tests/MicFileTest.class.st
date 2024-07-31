@@ -15,6 +15,68 @@ Class {
 }
 
 { #category : 'project creation' }
+MicFileTest >> createDoubleLoop3To1And5To3 [
+
+	self section1InputsSection2And3.
+	self section2InputsSection4.
+	self section3InputsSection1Loop.
+	self section4InputsSection5.
+	self section5InpsutsUnknowSection6AndLoopOverSection3
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createProjectBadAndCorrectReferences [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+# Section 1
+@ancS1
+
+<!inputFile|path=sections/section2.md!>
+' ].
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: ' See *@ancS1@* and *@ancUnkS2@*	
+<!inputFile|path=subsections/section3.md!>
+' ]
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createProjectCorrectReferencesOnTwoFiles [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 0
+@ancS0
+
+# Section 1
+@ancS1
+
+See *@ancS2@*.
+<!inputFile|path=sections/section2.md!>
+' ].
+
+	section2 := dir / 'sections/section2.md'.
+	section2 ensureCreateFile.
+	section2 writeStreamDo: [ :stream |
+		stream nextPutAll: '
+		
+# Section 2
+@ancS2 
+
+See *@ancS1@* and *@ancS2@*	
+
+' ]
+]
+
+{ #category : 'project creation' }
 MicFileTest >> createProjectOnlyGoDownInFolders [
 
 	self section1InputsSection2.
@@ -30,6 +92,13 @@ MicFileTest >> createProjectOnlyGoUpInFolders [
 	self section2InputsSection1.
 	self section3InputsParentSection2.
 	self section4InputsParentSection3
+]
+
+{ #category : 'project creation' }
+MicFileTest >> createProjectSmallLoop [
+
+	self section1InputsSection2.
+	self section2InputsSection1
 ]
 
 { #category : 'project creation' }
@@ -66,48 +135,6 @@ MicFileTest >> createProjectWithUnreferencedFiles3And5 [
 	self section3IsLeaf.
 	self section4IsLeafInAnotherPosition.
 	self section5IsLeaf
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestDoubleLoop3To1And5To3 [
-
-	self section1InputsSection2And3.
-	self section2InputsSection4.
-	self section3InputsSection1Loop.
-	self section4InputsSection5.
-	self section5InpsutsUnknowSection6AndLoopOverSection3
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectBadAndCorrectReferences [
-
-	section1 := dir / 'section1.md'.
-	section1 ensureCreateFile.
-	section1 writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@anchorSection0
-
-# Section 1
-@anchorSection1
-<!inputFile|path=sections/section2.md!>
-' ].
-
-	section2 := dir / 'sections/section2.md'.
-	section2 ensureCreateFile.
-	section2 writeStreamDo: [ :stream |
-		stream nextPutAll: ' See *@anchorSection1@* and *@anchorSection2@*	
-<!inputFile|path=subsections/section3.md!>
-' ].
-
-
-
-]
-
-{ #category : 'project creation' }
-MicFileTest >> createTestProjectSmallLoop [
-
-	self section1InputsSection2.
-	self section2InputsSection1
 ]
 
 { #category : 'project creation' }

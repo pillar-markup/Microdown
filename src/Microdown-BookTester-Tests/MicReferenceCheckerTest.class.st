@@ -44,7 +44,7 @@ See *@Fig1@*
 	^ defAndRefFig1
 ]
 
-{ #category : 'tests - references in a single file' }
+{ #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defFig1AndRefToAncS0 [
 
 	defFig1AndRefToAnsC0 := self fileSystem / 'defFig1AndRefToAncS0.md'.
@@ -115,7 +115,7 @@ See *@anchorSection1@*
 	self assert: visitor isOkay 
 ]
 
-{ #category : 'tests - references in a single file' }
+{ #category : 'tests - directory api' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
 	| aSectionWithAnchorAndRef file2 visitor |
@@ -138,38 +138,50 @@ See *@anchorSection1@*
 	self assert: (visitor checkDirectory: dir)
 ]
 
-{ #category : 'tests - single file' }
+{ #category : 'tests - single file ok references' }
 MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
 
 	| visitor |
 	self defEq1AndReferToEq1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: defEq1AndReferToEq1).
+	self assert: (visitor checkList: {defEq1AndReferToEq1}).
 	self assert: visitor results size equals: 0.
-	
+	self assert: visitor isOkay
 ]
 
 { #category : 'tests - single file' }
-MicReferenceCheckerTest >> testDefFig1AndRefToAncS0 [
+MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 
 	| visitor |
 	self defFig1AndRefToAncS0.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: defFig1AndRefToAnsC0).
+	self deny: (visitor checkList: {defFig1AndRefToAnsC0}).
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
 		assert: visitor results first source
 		equals: '/defFig1AndRefToAncS0.md'
 ]
 
-{ #category : 'tests - single file' }
+{ #category : 'tests - single file ok references' }
 MicReferenceCheckerTest >> testDefFig1AndReferToFig1 [
 
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: defAndRefFig1).
-	self assert: visitor results size equals: 0
+	self assert: (visitor checkList: { defAndRefFig1 }).
+	self assert: visitor results size equals: 0.
+	self assert: visitor isOkay
+]
+
+{ #category : 'tests - single file ok references' }
+MicReferenceCheckerTest >> testDefFig1ReferToAFigureInFile [
+
+	| visitor |
+	self defFig1AndRefFig1.
+	visitor := MicReferenceChecker new.
+	self assert: (visitor checkList: { defAndRefFig1}).
+	self assert: visitor results size equals: 0.
+	self assert: visitor isOkay
 ]
 
 { #category : 'tests - single file' }
@@ -178,10 +190,12 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	| visitor |
 	self fileDefAncS1UndAncS0.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: fileDefAncS1UndAncS0).
+	self deny: (visitor checkList: {fileDefAncS1UndAncS0}).
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
-	self assert: visitor results first source equals: '/fileDefAncS1UndAncS0.md'.
+	self
+		assert: visitor results first source
+		equals: '/fileDefAncS1UndAncS0.md'
 ]
 
 { #category : 'skipped for now' }
@@ -256,7 +270,7 @@ MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
 
 	| referenceToUnexistingAnchor visitor |
 	referenceToUnexistingAnchor := self fileSystem
-	                                / 'referenceToUnexistingAnchor.txt'.
+	                               / 'referenceToUnexistingAnchor.txt'.
 	referenceToUnexistingAnchor ensureCreateFile.
 	referenceToUnexistingAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -267,19 +281,29 @@ See *@anchorSection0@*
 
 ' ].
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: referenceToUnexistingAnchor)
+	self deny: (visitor checkList: {referenceToUnexistingAnchor})
 ]
 
 { #category : 'tests - full project' }
 MicReferenceCheckerTest >> testFullProject [
 
 	| checker |
-	self createTestProjectBadAndCorrectReferences.
+	self createProjectBadAndCorrectReferences.
 	checker := MicReferenceChecker new.
 	self deny: (checker checkProject: section1 fileSystem: fs).
 	self flag: #shouldImproveTestAssertions.
 	self flag: #shouldDefineAWorkingProjectToo.
-	self assert: checker results size equals: 4
+	self assert: checker results size equals: 2
+]
+
+{ #category : 'tests - full project' }
+MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFiles [
+
+	| checker |
+	self createProjectCorrectReferencesOnTwoFiles.
+	checker := MicReferenceChecker new.
+	self assert: (checker checkProject: section1 fileSystem: fs).
+	self assert: checker isOkay
 ]
 
 { #category : 'tests - single file' }
@@ -288,7 +312,7 @@ MicReferenceCheckerTest >> testNoDefButRefersToUnknownAnchor [
 	| visitor |
 	self fileRefAncS1.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: refAncS1).
+	self deny: (visitor checkList: {refAncS1}).
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
 	self
@@ -359,7 +383,7 @@ See *@anchorSection1@*
 
 
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
 	file ensureDelete
 ]
 
@@ -377,7 +401,7 @@ See *@anchorSection0@*
 
 ' ].
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: referenceToFigureAnchor)
+	self deny: (visitor checkList: {referenceToFigureAnchor})
 ]
 
 { #category : 'tests - reporting' }
@@ -414,7 +438,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 	
 	
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
 	self
 		assert:
 		(visitor results collect: [ :each | each anchorLabel ])
@@ -470,13 +494,12 @@ See *@anchorSection1@* and *@anchorSection0@*
 
 ' ].
 	file ensureCreateFile.
-	
-	
+
+
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
+		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
 
@@ -530,10 +553,9 @@ See *@anchorSection1@*
 ' ].
 	file ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
+		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection
 			<- #( 'anchorSection1' 'anchorSection1' 'anchorSection1' )
 ]
@@ -604,13 +626,10 @@ See *@anchorSection1@*
 ' ].
 	file ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
+	self assert: visitor results first source equals: file fullName.
 	self
-		assert: visitor results first source
-		equals: file fullName.
-	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
+		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection2' 'anchorSection1' )
 ]
 
@@ -636,13 +655,12 @@ See *@anchorSection1@* and *@anchorSection0@*
 
 ' ].
 	file ensureCreateFile.
-	
-	
+
+
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: file).
+	self deny: (visitor checkList: {file}).
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
+		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
 

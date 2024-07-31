@@ -25,7 +25,7 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 { #category : 'tests' }
 MicFileCollectorTest >> testDoubleLoopsAndThatUnexistingInputIsCorrectlyResolved [
 	
-	self createTestDoubleLoop3To1And5To3.
+	self createDoubleLoop3To1And5To3.
 	self startVisitingFromTheRoot: section2.
 
 	self 
@@ -78,7 +78,7 @@ MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 { #category : 'tests' }
 MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 
-	self createTestProjectSmallLoop.
+	self createProjectSmallLoop.
 	self startVisitingFromTheRoot: section1.
 
 	self 

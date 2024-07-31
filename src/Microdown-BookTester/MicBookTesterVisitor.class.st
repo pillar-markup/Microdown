@@ -17,12 +17,6 @@ MicBookTesterVisitor class >> isAbstract [
 	^ false
 ]
 
-{ #category : 'accessing' }
-MicBookTesterVisitor >> allTestResults [
-
-	^ allTestResults
-]
-
 { #category : 'visiting' }
 MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
