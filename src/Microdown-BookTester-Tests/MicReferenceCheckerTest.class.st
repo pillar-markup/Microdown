@@ -6,7 +6,8 @@ Class {
 		'refAncS1',
 		'defEq1AndReferToEq1',
 		'defAndRefFig1',
-		'defFig1AndRefToAnsC0'
+		'defFig1AndRefToAnsC0',
+		'defFig1AndRefToAncUnkS0'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -54,6 +55,20 @@ MicReferenceCheckerTest >> defFig1AndRefToAncS0 [
 ![alittle caption.](figures/f.png anchor=Fig1)
 
 See *@ancS0@*
+
+' ]
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> defFig1AndRefToAncUnkS0 [
+
+	defFig1AndRefToAncUnkS0 := fs / 'defFig1AndRefToAncUnkS0.md'.
+	defFig1AndRefToAncUnkS0 ensureCreateFile.
+	defFig1AndRefToAncUnkS0 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+![alittle caption.](figures/f.png anchor=Fig1)
+
+See *@ancUnkS0@*
 
 ' ]
 ]
@@ -145,6 +160,18 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	self
 		assert: visitor results first source
 		equals: '/defFig1AndRefToAncS0.md'
+]
+
+{ #category : 'tests - single file ok references' }
+MicReferenceCheckerTest >> testDefFig1AndRefToAncUnkS0 [
+
+	| visitor |
+	self defFig1AndRefToAncUnkS0.
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkList: { defFig1AndRefToAncUnkS0 }).
+	self assert: visitor results size equals: 1.
+	self assert: visitor results first anchorLabel equals: 'ancUnkS0'.
+	self assert: visitor results first source equals: '/defFig1AndRefToAncUnkS0.md'
 ]
 
 { #category : 'tests - single file ok references' }
@@ -392,24 +419,6 @@ See *@anchorSection1@*
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkList: { file }).
 	file ensureDelete
-]
-
-{ #category : 'tests - references in a single file' }
-MicReferenceCheckerTest >> testReferenceToNonExistingAnchor [
-
-	| referenceToFigureAnchor visitor |
-	referenceToFigureAnchor := fs
-	                           / 'referenceToFigureAnchor.md'.
-	referenceToFigureAnchor ensureCreateFile.
-	referenceToFigureAnchor writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-![alittle caption.](figures/f.png anchor=anchorSection1)
-
-See *@anchorSection0@*
-
-' ].
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { referenceToFigureAnchor })
 ]
 
 { #category : 'tests - reporting' }
