@@ -1,8 +1,12 @@
 "
-I'm a little tool that checks whether a document has (1) references to undeclared anchors or (2) duplicated anchors. 
+I'm a nice little tool that checks whether a document has 
+- references to undeclared anchors
+- duplicated anchors 
+- unknow figures
 
-For now Microdown is file agnostic so this is impossible to report in which file such duplication or reference occurs. 
-Once file support is introduced I should be revised to report better information to the user. 
+I use the FileCollector to support all the file input relations.
+This lets the user have for example unused, broken or underway files on the side.
+As soon as they are not used I do not analyse them. 
 "
 Class {
 	#name : 'MicReferenceChecker',
@@ -24,7 +28,7 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 	| micResultInstance |
 	micResultInstance := MicResult new.
 	micResultInstance
-		message: (MicResult allMessages at: #anchorIsMissing);
+		message: (MicUndefinedAnchorResult allMessages at: #anchorIsMissing);
 		anchorLabel: anAnchorReference anchorLabel;
 		status: false;
 		source: anAnchorReference fromFile.
@@ -37,7 +41,7 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	| micResultInstance |
 	micResultInstance := MicResult new.
 	micResultInstance
-		message: (MicResult allMessages at: #twoAnchorsSameName);
+		message: (MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
 		anchorLabel: anAnchor anchorLabel;
 		status: false;
 		source: anAnchor fromFile.
