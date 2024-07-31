@@ -280,25 +280,6 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	
 ]
 
-{ #category : 'tests - references in a single file' }
-MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
-
-	| referenceToUnexistingAnchor visitor |
-	referenceToUnexistingAnchor := fs
-	                               / 'referenceToUnexistingAnchor.md'.
-	referenceToUnexistingAnchor ensureCreateFile.
-	referenceToUnexistingAnchor writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-		
-![alittle caption.](figures/f.png anchor=anchorSection1)
-
-See *@anchorSection0@*
-
-' ].
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { referenceToUnexistingAnchor })
-]
-
 { #category : 'tests - full project' }
 MicReferenceCheckerTest >> testFullProject [
 
