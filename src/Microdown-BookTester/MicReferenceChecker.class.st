@@ -85,8 +85,8 @@ MicReferenceChecker >> checkProject: aDocument [
 		visit: mainMic.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
 		               fileSystem referenceTo: file ].
-	self checkList: listOfFiles.
-	^ self isOkay
+	^ self checkList: listOfFiles.
+	
 ]
 
 { #category : 'visiting' }

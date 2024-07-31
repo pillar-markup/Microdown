@@ -15,7 +15,7 @@ Class {
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defEq1AndReferToEq1 [
 
-	defEq1AndReferToEq1 := self fileSystem / 'defEq1AndReferToEq1.md'.
+	defEq1AndReferToEq1 := fs / 'defEq1AndReferToEq1.md'.
 	defEq1AndReferToEq1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 	
@@ -47,7 +47,7 @@ See *@Fig1@*
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defFig1AndRefToAncS0 [
 
-	defFig1AndRefToAnsC0 := self fileSystem / 'defFig1AndRefToAncS0.md'.
+	defFig1AndRefToAnsC0 := fs / 'defFig1AndRefToAncS0.md'.
 	defFig1AndRefToAnsC0 ensureCreateFile.
 	defFig1AndRefToAnsC0 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -61,7 +61,7 @@ See *@ancS0@*
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> fileDefAncS1UndAncS0 [
 
-	fileDefAncS1UndAncS0 := self fileSystem / 'fileDefAncS1UndAncS0.md'.
+	fileDefAncS1UndAncS0 := fs / 'fileDefAncS1UndAncS0.md'.
 	fileDefAncS1UndAncS0 ensureCreateFile.
 	fileDefAncS1UndAncS0 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -76,7 +76,7 @@ See *@ancS0@*
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> fileRefAncS1 [
 
-	refAncS1 := self fileSystem / 'fileRefAncS1.md'.
+	refAncS1 := fs/ 'fileRefAncS1.md'.
 	refAncS1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 
@@ -96,23 +96,8 @@ MicReferenceCheckerTest >> setUp [
 
 	super setUp.
 	fs := self fileSystem.
-	dir := (fs / 'myDirectory') asFileReference.
+	dir := fs / 'myDirectory'.
 	dir ensureCreateDirectory
-]
-
-{ #category : 'tests - parse only' }
-MicReferenceCheckerTest >> testAllReferencesAreCorrect [
-
-	| doc visitor |
-	doc := Microdown parse:	'# Section 1
-@anchorSection1
-
-See *@anchorSection1@*
-
-'.
-	visitor := MicReferenceChecker new. 
-	doc accept: visitor. 
-	self assert: visitor isOkay 
 ]
 
 { #category : 'tests - directory api' }
@@ -129,7 +114,7 @@ See *@anchorSection1@*
 ' ].
 	aSectionWithAnchorAndRef ensureCreateFile.
 
-	file2 := (dir / 'justReferenceToSection.txt') asFileReference.
+	file2 := dir / 'justReferenceToSection.md'.
 	file2 writeStreamDo: [ :stream2 |
 		stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  ' ].
 	file2 ensureCreateFile.
@@ -144,9 +129,9 @@ MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
 	| visitor |
 	self defEq1AndReferToEq1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkList: {defEq1AndReferToEq1}).
-	self assert: visitor results size equals: 0.
-	self assert: visitor isOkay
+	visitor fileSystem: fs.
+	self assert: (visitor checkProject: defEq1AndReferToEq1).
+	self assert: visitor results isEmpty
 ]
 
 { #category : 'tests - single file' }
@@ -169,8 +154,7 @@ MicReferenceCheckerTest >> testDefFig1AndReferToFig1 [
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
 	self assert: (visitor checkList: { defAndRefFig1 }).
-	self assert: visitor results size equals: 0.
-	self assert: visitor isOkay
+	self assert: visitor results isEmpty
 ]
 
 { #category : 'tests - single file ok references' }
@@ -179,9 +163,9 @@ MicReferenceCheckerTest >> testDefFig1ReferToAFigureInFile [
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkList: { defAndRefFig1}).
-	self assert: visitor results size equals: 0.
-	self assert: visitor isOkay
+	self assert: (visitor checkList: { defAndRefFig1 }).
+	self assert: visitor results isEmpty
+	
 ]
 
 { #category : 'tests - single file' }
@@ -238,39 +222,43 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 	| file1 file2 visitor |
-	file1 := dir / 'file1.txt'.
+	file1 := dir / 'file1.md'.
 	file1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
-@anchorSection0
+@ancS0
 
 # Section 1
-@anchorSection1
+@ancS1
 
 
 ' ].
 	file1 ensureCreateFile.
-	file2 := dir  / 'file2.txt'.
+	file2 := dir / 'file2.md'.
 	file2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
-@anchorSection3
+@ancS3
 
 # Section 4
-@anchorSection1
+@ancS1
 
 
 ' ].
 	file2 ensureCreateFile.
 
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkDirectory: dir)
+	self deny: (visitor checkDirectory: dir).
+
+	self assert: visitor duplicatedAnchors size equals: 1.
+	self assert: visitor duplicatedAnchors first anchorLabel equals: 'ancS1'
+	
 ]
 
 { #category : 'tests - references in a single file' }
 MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
 
 	| referenceToUnexistingAnchor visitor |
-	referenceToUnexistingAnchor := self fileSystem
-	                               / 'referenceToUnexistingAnchor.txt'.
+	referenceToUnexistingAnchor := fs
+	                               / 'referenceToUnexistingAnchor.md'.
 	referenceToUnexistingAnchor ensureCreateFile.
 	referenceToUnexistingAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -281,7 +269,7 @@ See *@anchorSection0@*
 
 ' ].
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {referenceToUnexistingAnchor})
+	self deny: (visitor checkList: { referenceToUnexistingAnchor })
 ]
 
 { #category : 'tests - full project' }
@@ -292,9 +280,11 @@ MicReferenceCheckerTest >> testFullProject [
 	checker := MicReferenceChecker new.
 	checker fileSystem: fs.
 	self deny: (checker checkProject: section1).
-	self flag: #shouldImproveTestAssertions.
-	self flag: #shouldDefineAWorkingProjectToo.
-	self assert: checker results size equals: 2
+	self assert: checker results size equals: 1.
+	
+	self assert: checker results first source equals: '/myDirectory/sections/section2.md'.
+	self assert: checker results first anchorLabel equals: 'ancUnkS2'.
+	
 ]
 
 { #category : 'tests - full project' }
@@ -306,6 +296,68 @@ MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFile
 	checker fileSystem: fs.
 	self assert: (checker checkProject: section1).
 	self assert: checker isOkay
+]
+
+{ #category : 'tests - internal - parse only' }
+MicReferenceCheckerTest >> testLowLevelAllReferencesAreCorrect [
+
+	| doc visitor |
+	doc := Microdown parse:	'# Section 1
+@anchorSection1
+
+See *@anchorSection1@*
+
+'.
+	visitor := MicReferenceChecker new. 
+	doc accept: visitor. 
+	self assert: visitor isOkay 
+]
+
+{ #category : 'tests - internal - parse only' }
+MicReferenceCheckerTest >> testLowLevelReferToAFigure [
+
+	| doc visitor |
+	doc := Microdown parse: '# Section 1
+![alittle caption.](figures/f.png anchor=anchorSection1)
+
+See *@anchorSection1@*
+
+'.
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self assert: visitor isOkay
+]
+
+{ #category : 'tests - internal - parse only' }
+MicReferenceCheckerTest >> testLowLevelReferToAMathEquation [
+
+	| doc visitor |
+	doc := Microdown parse: '# Section 1
+	
+$$ %anchor=anchorSection1
+balbalbalb! 
+$$
+See *@anchorSection1@*
+
+'.
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self assert: visitor isOkay
+]
+
+{ #category : 'tests - internal - parse only' }
+MicReferenceCheckerTest >> testLowLevelReferToAnUknownAnchor [
+
+	| doc visitor |
+	doc := Microdown parse: '# Section 1
+
+See *@anchorSection1@*
+
+'.
+	doc fromFile: 'fakedFile'.
+	visitor := MicReferenceChecker new.
+	doc accept: visitor.
+	self deny: visitor isOkay
 ]
 
 { #category : 'tests - single file' }
@@ -322,58 +374,11 @@ MicReferenceCheckerTest >> testNoDefButRefersToUnknownAnchor [
 		equals: '/fileRefAncS1.md'
 ]
 
-{ #category : 'tests - parse only' }
-MicReferenceCheckerTest >> testReferToAFigure [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 1
-![alittle caption.](figures/f.png anchor=anchorSection1)
-
-See *@anchorSection1@*
-
-'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self assert: visitor isOkay
-]
-
-{ #category : 'tests - parse only' }
-MicReferenceCheckerTest >> testReferToAMathEquation [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 1
-	
-$$ %anchor=anchorSection1
-balbalbalb! 
-$$
-See *@anchorSection1@*
-
-'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self assert: visitor isOkay
-]
-
-{ #category : 'tests - parse only' }
-MicReferenceCheckerTest >> testReferToAnUknownAnchor [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 1
-
-See *@anchorSection1@*
-
-'.
-	doc fromFile: 'fakedFile'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self deny: visitor isOkay
-]
-
 { #category : 'tests - references in a single file' }
 MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [
 
 	| file visitor |
-	file := self fileSystem/ 'myFile.txt'.
+	file := fs / 'myFile.md'.
 	file ensureCreateFile.
 
 	file writeStreamDo: [ :stream |
@@ -385,7 +390,7 @@ See *@anchorSection1@*
 
 
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {file}).
+	self deny: (visitor checkList: { file }).
 	file ensureDelete
 ]
 
@@ -393,7 +398,8 @@ See *@anchorSection1@*
 MicReferenceCheckerTest >> testReferenceToNonExistingAnchor [
 
 	| referenceToFigureAnchor visitor |
-	referenceToFigureAnchor := self fileSystem / 'referenceToFigureAnchor.md'.
+	referenceToFigureAnchor := fs
+	                           / 'referenceToFigureAnchor.md'.
 	referenceToFigureAnchor ensureCreateFile.
 	referenceToFigureAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -403,7 +409,7 @@ See *@anchorSection0@*
 
 ' ].
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {referenceToFigureAnchor})
+	self deny: (visitor checkList: { referenceToFigureAnchor })
 ]
 
 { #category : 'tests - reporting' }
