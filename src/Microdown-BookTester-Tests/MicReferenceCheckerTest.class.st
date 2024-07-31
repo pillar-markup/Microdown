@@ -103,9 +103,8 @@ See *@anchorSection1@*
 { #category : 'tests - references in a single file' }
 MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
 
-	| aSectionWithAnchorAndRef file2 visitor|
-	
-	aSectionWithAnchorAndRef := (dir / 'aSectionWithAnchorAndRef.txt') asFileReference.
+	| aSectionWithAnchorAndRef file2 visitor |
+	aSectionWithAnchorAndRef := dir / 'aSectionWithAnchorAndRef.txt'.
 	aSectionWithAnchorAndRef writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
 @anchorSection1
@@ -114,12 +113,12 @@ See *@anchorSection1@*
 
 ' ].
 	aSectionWithAnchorAndRef ensureCreateFile.
-	
+
 	file2 := (dir / 'justReferenceToSection.txt') asFileReference.
 	file2 writeStreamDo: [ :stream2 |
 		stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  ' ].
 	file2 ensureCreateFile.
-	
+
 	visitor := MicReferenceChecker new.
 	self assert: (visitor checkDirectory: dir)
 ]
@@ -183,11 +182,11 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 	
 ]
 
-{ #category : 'tests - references in a single file' }
+{ #category : 'tests - directory api' }
 MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 	| file1 file2 visitor |
-	file1 := (dir / 'file1.txt') asFileReference.
+	file1 := dir / 'file1.txt'.
 	file1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
 @anchorSection0
@@ -198,7 +197,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 ' ].
 	file1 ensureCreateFile.
-	file2 := (dir / 'file2.txt') asFileReference.
+	file2 := dir  / 'file2.txt'.
 	file2 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
 @anchorSection3
@@ -209,7 +208,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 ' ].
 	file2 ensureCreateFile.
-	
+
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkDirectory: dir)
 ]
@@ -218,7 +217,8 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
 
 	| referenceToUnexistingAnchor visitor |
-	referenceToUnexistingAnchor := (fs/ 'referenceToUnexistingAnchor.txt') asFileReference.
+	referenceToUnexistingAnchor := self fileSystem
+	                                / 'referenceToUnexistingAnchor.txt'.
 	referenceToUnexistingAnchor ensureCreateFile.
 	referenceToUnexistingAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -279,7 +279,8 @@ MicReferenceCheckerTest >> testReferToAFigureInFile [
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: defAndRefFig1)
+	self assert: (visitor checkFile: defAndRefFig1).
+	self assert: visitor results size equals: 0
 ]
 
 { #category : 'tests - parse only' }
@@ -315,29 +316,30 @@ See *@anchorSection1@*
 ]
 
 { #category : 'tests - references in a single file' }
-MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [ 
+MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [
 
-	| file  visitor |
-	file := (FileSystem memory / 'myFile.txt') asFileReference.
-   file ensureCreateFile.
-	
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
+	| file visitor |
+	file := self fileSystem/ 'myFile.txt'.
+	file ensureCreateFile.
+
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
 
 See *@anchorSection1@*
 
-' ] .
-	
-	
-	visitor := MicReferenceChecker new. 
+' ].
+
+
+	visitor := MicReferenceChecker new.
 	self deny: (visitor checkFile: file).
-	file ensureDelete 
+	file ensureDelete
 ]
 
 { #category : 'tests - references in a single file' }
 MicReferenceCheckerTest >> testReferenceToFigureAnchor [
 
 	| referenceToFigureAnchor visitor |
-	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md')  asFileReference.
+	referenceToFigureAnchor := self fileSystem / 'referenceToFigureAnchor.md'.
 	referenceToFigureAnchor ensureCreateFile.
 	referenceToFigureAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -354,7 +356,7 @@ See *@anchorSection0@*
 MicReferenceCheckerTest >> testReferenceToNonExistingAnchor [
 
 	| referenceToFigureAnchor visitor |
-	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md') asFileReference.
+	referenceToFigureAnchor := self fileSystem / 'referenceToFigureAnchor.md'.
 	referenceToFigureAnchor ensureCreateFile.
 	referenceToFigureAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
