@@ -1,12 +1,16 @@
 "
 I'm a nice little tool that checks whether a document has 
 - references to undeclared anchors
-- duplicated anchors 
-- unknow figures
+- duplicated anchors
+
+I check
+- figures
+- math equations
+- or plain references.
 
 I use the FileCollector to support all the file input relations.
 This lets the user have for example unused, broken or underway files on the side.
-As soon as they are not used I do not analyse them. 
+As soon as they are not used I do not analyse them.
 "
 Class {
 	#name : 'MicReferenceChecker',
@@ -41,17 +45,11 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	| micResultInstance |
 	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
-		message: (MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
+		message:
+			(MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
 		anchorLabel: anAnchor anchorLabel;
-		status: false;
 		source: anAnchor fromFile.
 	results add: micResultInstance
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> allTestsResults [
-
-	^ results
 ]
 
 { #category : 'main API' }
@@ -112,13 +110,14 @@ MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 
 { #category : 'visiting' }
 MicReferenceChecker >> collectBadReferences [
-
-	" should be called just after all the docs are visited other wise the result can be wrong"
+	" should be called just after all the docs are visited otherwise the result can be wrong"
 
 	| existingAnchorNames badReference |
 	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
-	badReference := references reject: [ :anchorReference | existingAnchorNames includes: anchorReference anchorLabel   ] .
-	badReference do: [ :each | self addBadReferenceAnchor: each ] .
+	badReference := references reject: [ :anchorReference |
+		                existingAnchorNames includes:
+			                anchorReference anchorLabel ].
+	badReference do: [ :each | self addBadReferenceAnchor: each ]
 ]
 
 { #category : 'reporting' }
@@ -183,6 +182,12 @@ MicReferenceChecker >> isOkay [
 	 ^ self finalStatus .
 	 
 
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> results [
+
+	^ results
 ]
 
 { #category : 'reporting' }
