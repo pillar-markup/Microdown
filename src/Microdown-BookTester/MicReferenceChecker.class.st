@@ -24,7 +24,8 @@ Class {
 		'references',
 		'anchors',
 		'duplicatedAnchors',
-		'results'
+		'results',
+		'fileSystem'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -74,7 +75,7 @@ MicReferenceChecker >> checkList: aCollection [
 ]
 
 { #category : 'main API' }
-MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
+MicReferenceChecker >> checkProject: aDocument [
 
 	| mainMic collector listOfFiles |
 	mainMic := Microdown parseFile: aDocument.
@@ -104,6 +105,12 @@ MicReferenceChecker >> collectBadReferences [
 MicReferenceChecker >> duplicatedAnchors [
 
 	^ duplicatedAnchors
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> fileSystem: aFileSystem [
+
+	fileSystem := aFileSystem
 ]
 
 { #category : 'visiting' }

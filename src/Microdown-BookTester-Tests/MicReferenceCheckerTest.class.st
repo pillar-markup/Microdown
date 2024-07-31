@@ -290,7 +290,8 @@ MicReferenceCheckerTest >> testFullProject [
 	| checker |
 	self createProjectBadAndCorrectReferences.
 	checker := MicReferenceChecker new.
-	self deny: (checker checkProject: section1 fileSystem: fs).
+	checker fileSystem: fs.
+	self deny: (checker checkProject: section1).
 	self flag: #shouldImproveTestAssertions.
 	self flag: #shouldDefineAWorkingProjectToo.
 	self assert: checker results size equals: 2
@@ -302,7 +303,8 @@ MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFile
 	| checker |
 	self createProjectCorrectReferencesOnTwoFiles.
 	checker := MicReferenceChecker new.
-	self assert: (checker checkProject: section1 fileSystem: fs).
+	checker fileSystem: fs.
+	self assert: (checker checkProject: section1).
 	self assert: checker isOkay
 ]
 
