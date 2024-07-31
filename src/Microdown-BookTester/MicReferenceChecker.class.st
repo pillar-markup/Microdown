@@ -26,7 +26,7 @@ Class {
 MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 
 	| micResultInstance |
-	micResultInstance := MicResult new.
+	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
 		message: (MicUndefinedAnchorResult allMessages at: #anchorIsMissing);
 		anchorLabel: anAnchorReference anchorLabel;
@@ -39,7 +39,7 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 
 	| micResultInstance |
-	micResultInstance := MicResult new.
+	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
 		message: (MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
 		anchorLabel: anAnchor anchorLabel;
