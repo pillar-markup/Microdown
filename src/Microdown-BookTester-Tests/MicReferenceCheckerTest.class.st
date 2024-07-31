@@ -3,11 +3,28 @@ Class {
 	#superclass : 'MicFileTest',
 	#instVars : [
 		'fileDefAncS1UndAncS0',
-		'refAncS1'
+		'refAncS1',
+		'defEq1AndReferToEq1'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
 }
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> defEq1AndReferToEq1 [
+
+	defEq1AndReferToEq1 := self fileSystem / 'defEq1AndReferToEq1.md'.
+	defEq1AndReferToEq1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+	
+$$ %anchor=Eq1
+balbalbalb! 
+$$
+See *@Eq1@*
+
+' ].
+	defEq1AndReferToEq1 ensureCreateFile
+]
 
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> fileDefAncS1UndAncS0 [
@@ -252,23 +269,15 @@ See *@anchorSection1@*
 	self assert: visitor isOkay
 ]
 
-{ #category : 'tests - references in a single file' }
+{ #category : 'tests - single file' }
 MicReferenceCheckerTest >> testReferToAMathEquationInFile [
 
-	| referToAMathEquation visitor |
-	referToAMathEquation := (dir / 'referToAMathEquation.txt') asFileReference.
-	referToAMathEquation writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-	
-$$ %anchor=Equation1
-balbalbalb! 
-$$
-See *@Equation1@*
-
-' ].
-	referToAMathEquation ensureCreateFile.
+	| visitor |
+	self defEq1AndReferToEq1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: referToAMathEquation)
+	self assert: (visitor checkFile: defEq1AndReferToEq1).
+	self assert: visitor results size equals: 0.
+	
 ]
 
 { #category : 'tests - parse only' }
