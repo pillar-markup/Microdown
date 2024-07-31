@@ -83,10 +83,10 @@ MicReferenceChecker >> checkProject: aDocument [
 	collector
 		fileSystem: fileSystem;
 		visit: mainMic.
+	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
 		               fileSystem referenceTo: file ].
-	^ self checkList: listOfFiles.
-	
+	^ self checkList: listOfFiles
 ]
 
 { #category : 'visiting' }
@@ -124,6 +124,15 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 		 ].
 	 anchors add: anElement
 	
+]
+
+{ #category : 'main API' }
+MicReferenceChecker >> handleUndefinedFilesFrom: collector [
+
+	collector unexistingFiles do: [ :each |
+		results add: (MicUndefinedInputFileResult new inputFileBlock: each ; source: each fromFile ; yourself )
+		
+		]
 ]
 
 { #category : 'visiting' }

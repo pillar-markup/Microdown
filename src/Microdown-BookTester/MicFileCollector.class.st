@@ -60,7 +60,7 @@ MicFileCollector >> visitRoot: micDocument [
 	| worklist |
 	worklist := OrderedCollection new.
 	worklist add: micDocument.
-	
+
 	[ worklist isEmpty ] whileFalse: [
 		| currentDocument |
 		currentDocument := worklist removeFirst.
@@ -75,16 +75,18 @@ MicFileCollector >> visitRoot: micDocument [
 			| fr doc |
 			"later we will have to fix this ugly expression"
 			fr := self fileSystem referenceTo:
-				      (inputFile arguments at: 'path') uri asFileReference pathString.
-
+				      (inputFile arguments at: 'path') uri asFileReference
+					      pathString.
+			
+			"Since we are just checking that a file exist it does not matter when we check.
+			We do not have to wait until we walk through all the files."
+			
 			(visited includes: fr path pathString) ifFalse: [
-				[ doc := Microdown parseFile: fr.
+				[
+				doc := Microdown parseFile: fr.
 				worklist addFirst: doc ]
 					on: FileDoesNotExistException
-					do: [ unexistingFiles add: inputFile ].
-				] 
-			] 
-		]
+					do: [ unexistingFiles add: inputFile ] ] ] ]
 ]
 
 { #category : 'accessing' }

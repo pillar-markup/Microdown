@@ -15,7 +15,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'message',
-		'anchorLabel',
 		'status',
 		'source',
 		'explanation'
@@ -51,18 +50,6 @@ MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
 MicResult class >> reset [
 	<script>
 	allMessages := nil
-]
-
-{ #category : 'accessing' }
-MicResult >> anchorLabel [
-
-	^ anchorLabel
-]
-
-{ #category : 'accessing' }
-MicResult >> anchorLabel: anObject [
-
-	anchorLabel := anObject
 ]
 
 { #category : 'accessing' }

@@ -1,6 +1,6 @@
 Class {
-	#name : 'MicDuplicatedAnchorResult',
-	#superclass : 'MicAnchorResult',
+	#name : 'MicUndefinedFigureFileResult',
+	#superclass : 'MicFileResult',
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }

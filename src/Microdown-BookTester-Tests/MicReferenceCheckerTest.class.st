@@ -7,7 +7,8 @@ Class {
 		'defEq1AndReferToEq1',
 		'defAndRefFig1',
 		'defFig1AndRefToAnsC0',
-		'defFig1AndRefToAncUnkS0'
+		'defFig1AndRefToAncUnkS0',
+		'refToUnkS1'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -70,7 +71,8 @@ MicReferenceCheckerTest >> defFig1AndRefToAncUnkS0 [
 
 See *@ancUnkS0@*
 
-' ]
+' ].
+	defFig1AndRefToAncUnkS0 ensureCreateFile
 ]
 
 { #category : 'helpers - anchors & references' }
@@ -85,7 +87,8 @@ MicReferenceCheckerTest >> fileDefAncS1UndAncS0 [
 
 See *@ancS0@*
 
-' ]
+' ].
+	fileDefAncS1UndAncS0 ensureCreateFile 
 ]
 
 { #category : 'helpers - anchors & references' }
@@ -100,10 +103,18 @@ See *@ancS1@*
 	refAncS1 ensureCreateFile
 ]
 
-{ #category : 'running' }
-MicReferenceCheckerTest >> fileSystem [
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> refToUnkS1 [
 
-	^ FileSystem memory
+	refToUnkS1 := fs / 'refToUnkS1.md'.
+	refToUnkS1 ensureCreateFile.
+
+	refToUnkS1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+
+See *@ancS1@*
+
+' ]
 ]
 
 { #category : 'running' }
@@ -281,7 +292,18 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 ]
 
 { #category : 'tests - full project' }
-MicReferenceCheckerTest >> testFullProject [
+MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFiles [
+
+	| checker |
+	self createProjectCorrectReferencesOnTwoFiles.
+	checker := MicReferenceChecker new.
+	checker fileSystem: fs.
+	self assert: (checker checkProject: section1).
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - full project' }
+MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 
 	| checker |
 	self createProjectBadAndCorrectReferences.
@@ -293,17 +315,6 @@ MicReferenceCheckerTest >> testFullProject [
 	self assert: checker results first source equals: '/myDirectory/sections/section2.md'.
 	self assert: checker results first anchorLabel equals: 'ancUnkS2'.
 	
-]
-
-{ #category : 'tests - full project' }
-MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFiles [
-
-	| checker |
-	self createProjectCorrectReferencesOnTwoFiles.
-	checker := MicReferenceChecker new.
-	checker fileSystem: fs.
-	self assert: (checker checkProject: section1).
-	self assert: checker isOkay
 ]
 
 { #category : 'tests - internal - parse only' }
@@ -369,7 +380,17 @@ See *@anchorSection1@*
 ]
 
 { #category : 'tests - single file' }
-MicReferenceCheckerTest >> testNoDefButRefersToUnknownAnchor [
+MicReferenceCheckerTest >> testRefToUnkS1 [
+
+	| visitor |
+	self refToUnkS1.
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkList: { refToUnkS1 }).
+
+]
+
+{ #category : 'tests - single file' }
+MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 
 	| visitor |
 	self fileRefAncS1.
@@ -380,26 +401,6 @@ MicReferenceCheckerTest >> testNoDefButRefersToUnknownAnchor [
 	self
 		assert: visitor results first source
 		equals: '/fileRefAncS1.md'
-]
-
-{ #category : 'tests - references in a single file' }
-MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [
-
-	| file visitor |
-	file := fs / 'myFile.md'.
-	file ensureCreateFile.
-
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-
-See *@anchorSection1@*
-
-' ].
-
-
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { file }).
-	file ensureDelete
 ]
 
 { #category : 'tests - reporting' }
@@ -714,4 +715,30 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
    file2 ensureDelete.
    dir ensureDelete 
 	
+]
+
+{ #category : 'tests - undefined files' }
+MicReferenceCheckerTest >> testUndefinedInputFilesAreMentionedInResult [
+
+	| checker |
+	self createProjectWithUnexistingSection3And5.
+	checker := MicReferenceChecker new.
+	checker fileSystem: fs.
+	checker checkProject: section1.
+
+	self assert: checker results size equals: 3.
+	 checker results do: [ :each | 
+		self
+			assert: each class
+			equals: MicUndefinedInputFileResult].
+	
+	self 
+		assert: (checker results collect: [ :each | each inputFileBlock path path "Ugly API to improve later" ]) 
+		equals: OrderedCollection <- 
+			{ 
+			'/myDirectory/sections/section3.md' .
+			'/myDirectory/sections/subsections/section5.md' . 
+			'/myDirectory/sections/subsections/section3.md' 
+			}  
+
 ]
