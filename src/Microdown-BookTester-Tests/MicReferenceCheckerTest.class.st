@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'utils' }
+{ #category : 'running' }
 MicReferenceCheckerTest >> fileSystem [
 
 	^ FileSystem memory
@@ -18,16 +18,6 @@ MicReferenceCheckerTest >> setUp [
 	fs := self fileSystem.
 	dir := (fs / 'myDirectory') asFileReference.
 	dir ensureCreateDirectory
-]
-
-{ #category : 'tests' }
-MicReferenceCheckerTest >> test [
-   
-
-	| checker |
-	self createTestProjectBadAndCorrectReferences.
-	checker := MicReferenceChecker new. 
-	self deny: (checker checkProject: section1 fileSystem: fs)
 ]
 
 { #category : 'tests - parse only' }
@@ -86,7 +76,7 @@ See *@anchorSection1@*
 	self assert: (visitor checkDirectory: dir)
 ]
 
-{ #category : 'tests - duplicated anchors' }
+{ #category : 'skipped for now' }
 MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
 	| dir file1 file2 visitor   |
@@ -153,22 +143,6 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	self deny: (visitor checkDirectory: dir)
 ]
 
-{ #category : 'tests' }
-MicReferenceCheckerTest >> testFile [ 
-
-	| file  visitor |
-	file := (FileSystem memory / 'myFile.txt') asFileReference.
-   file ensureCreateFile.
-	file writeStreamDo: [ :stream | stream nextPutAll: '# Section 1
-![alittle caption.](figures/f.png anchor=anchorSection1)
-
-See *@anchorSection0@*
-
-' ].
-	visitor := MicReferenceChecker new. 
-	self deny: (visitor checkFile: file)
-]
-
 { #category : 'tests - references' }
 MicReferenceCheckerTest >> testFileWithReferenceToUnexistingAnchor [
 
@@ -185,6 +159,17 @@ See *@anchorSection0@*
 ' ].
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkFile: referenceToUnexistingAnchor)
+]
+
+{ #category : 'tests - full project' }
+MicReferenceCheckerTest >> testFullProject [
+
+	| checker |
+	self createTestProjectBadAndCorrectReferences.
+	checker := MicReferenceChecker new.
+	self deny: (checker checkProject: section1 fileSystem: fs).
+	self flag: #shouldImprove.
+	self assert: checker allTestsResults size equals: 4
 ]
 
 { #category : 'tests - parse only' }
@@ -272,7 +257,7 @@ See *@anchorSection1@*
 	self deny: visitor isOkay
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - references' }
 MicReferenceCheckerTest >> testReferToAnUknownAnchorInFile [ 
 
 	| file  visitor |
@@ -295,7 +280,7 @@ See *@anchorSection1@*
 MicReferenceCheckerTest >> testReferenceToFigureAnchor [
 
 	| referenceToFigureAnchor visitor |
-	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md') asFileReference.
+	referenceToFigureAnchor := (fs / 'referenceToFigureAnchor.md')  asFileReference.
 	referenceToFigureAnchor ensureCreateFile.
 	referenceToFigureAnchor writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 1
@@ -366,7 +351,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection0')
 ]
 
-{ #category : 'tests - parse only' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedAnchors [
 
 	| doc visitor |
@@ -425,7 +410,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
 
-{ #category : 'tests - parse only' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedFigures [
 
 	| doc visitor |
@@ -483,7 +468,7 @@ See *@anchorSection1@*
 			<- #( 'anchorSection1' 'anchorSection1' 'anchorSection1' )
 ]
 
-{ #category : 'tests - parse only' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingDuplicatedMaths [
 
 	| doc visitor |
@@ -591,7 +576,7 @@ See *@anchorSection1@* and *@anchorSection0@*
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - reporting' }
 MicReferenceCheckerTest >> testReportingUnknownAnchor [
 
 	| doc visitor |
@@ -612,7 +597,7 @@ See *@anchorSection1@* and *@anchorSection2@*
 		equals: (OrderedCollection <- #('anchorSection2'))  
 ]
 
-{ #category : 'tests' }
+{ #category : 'skipped for now' }
 MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 
 	| dir file1 file2 visitor |
@@ -643,4 +628,22 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
    file2 ensureDelete.
    dir ensureDelete 
 	
+]
+
+{ #category : 'tests - parse only' }
+MicReferenceCheckerTest >> testSingleRefersToUnknownAnchor [
+
+	| file visitor |
+	file := (FileSystem memory / 'myFile.txt') asFileReference.
+	file ensureCreateFile.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+		
+![alittle caption.](figures/f.png anchor=anchorSection1)
+
+See *@anchorSection0@*
+
+' ].
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: file)
 ]

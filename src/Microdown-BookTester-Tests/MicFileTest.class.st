@@ -124,7 +124,7 @@ MicFileTest >> fileSystem [
 	^ FileSystem memory
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section1InputSection2And4AndUnexisting3 [
 
 	section1 := dir / 'section1.md'.
@@ -137,7 +137,7 @@ MicFileTest >> section1InputSection2And4AndUnexisting3 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section1InputsSection2 [
 
 	section1 := dir / 'section1.md'.
@@ -148,7 +148,7 @@ MicFileTest >> section1InputsSection2 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section1InputsSection2And3 [
 
 	section1 := dir / 'section1.md'.
@@ -160,7 +160,7 @@ MicFileTest >> section1InputsSection2And3 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section1InputsSection2And4 [
 
 	section1 := dir / 'section1.md'.
@@ -172,7 +172,7 @@ MicFileTest >> section1InputsSection2And4 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section1IsLeaf [
 
 	section1 := dir / 'section1.md'.
@@ -183,7 +183,7 @@ just text here
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsNestedSection3 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -194,7 +194,7 @@ MicFileTest >> section2InputsNestedSection3 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsSection1 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -205,7 +205,7 @@ MicFileTest >> section2InputsSection1 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsSection3 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -216,7 +216,7 @@ MicFileTest >> section2InputsSection3 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsSection4 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -227,7 +227,7 @@ MicFileTest >> section2InputsSection4 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsSection4InAnotherPosition [
 
 	section2 := dir / 'sections/section2.md'.
@@ -238,7 +238,7 @@ MicFileTest >> section2InputsSection4InAnotherPosition [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section3InputsNestedSection4 [
 
 	section3 := dir / 'sections/subsections/section3.md'.
@@ -249,7 +249,7 @@ MicFileTest >> section3InputsNestedSection4 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section3InputsParentSection2 [
 
 	section3 := dir / 'sections/subsections/section3.md'.
@@ -260,7 +260,7 @@ MicFileTest >> section3InputsParentSection2 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section3InputsSection1And5 [
 
 	section3 := dir / 'sections/subsections/section3.md'.
@@ -272,7 +272,7 @@ MicFileTest >> section3InputsSection1And5 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section3InputsSection1Loop [
 
 	section3 := dir / 'sections/section3.md'.
@@ -283,7 +283,7 @@ MicFileTest >> section3InputsSection1Loop [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section3IsLeaf [
 
 	section3 := dir / 'sections/section3.md'.
@@ -293,7 +293,7 @@ MicFileTest >> section3IsLeaf [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4DoesNotInputFile [
 
 	section4 := dir / 'sections/section4.md'.
@@ -304,7 +304,7 @@ just some text  here this file does not have another reference to another file
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4InputsParentSection3 [
 
 	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
@@ -315,7 +315,7 @@ MicFileTest >> section4InputsParentSection3 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4InputsSection1 [
 
 	section4 := dir / 'sections/section4.md'.
@@ -326,7 +326,7 @@ MicFileTest >> section4InputsSection1 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4InputsSection5 [
 
 	section4 := dir / 'sections/subsections/section4.md'.
@@ -337,7 +337,7 @@ MicFileTest >> section4InputsSection5 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4InputsUnexistingSection5 [
 
 	section4 := dir / 'sections/section4.md'.
@@ -348,7 +348,7 @@ MicFileTest >> section4InputsUnexistingSection5 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4IsLeaf [
 
 	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
@@ -358,7 +358,7 @@ MicFileTest >> section4IsLeaf [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section4IsLeafInAnotherPosition [
 
 	section4 := dir / 'sections/section4.md'.
@@ -368,7 +368,7 @@ MicFileTest >> section4IsLeafInAnotherPosition [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section5InpsutsUnknowSection6AndLoopOverSection3 [
 
 	section5 := dir / 'sections/subsections/subsubsections/section5.md'.
@@ -380,7 +380,7 @@ MicFileTest >> section5InpsutsUnknowSection6AndLoopOverSection3 [
 ' ]
 ]
 
-{ #category : 'helpers' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section5InputFileUndefinedSection6 [
 
 	section5 := dir / 'sections/section5.md'.
@@ -391,7 +391,7 @@ MicFileTest >> section5InputFileUndefinedSection6 [
 ' ]
 ]
 
-{ #category : 'project creation' }
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section5IsLeaf [
 
 	section5 := dir / 'sections/section5.md'.

@@ -54,7 +54,7 @@ MicReferenceChecker >> allTestsResults [
 	^ results
 ]
 
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> check: aDocument [ 
 	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
 	can have references between them and the checker should be shared amongst the documents 
@@ -67,14 +67,14 @@ MicReferenceChecker >> check: aDocument [
 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
 	^ self checkList: aDir allFiles
 ]
 
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> checkFile: aFile [ 
 	"Will parse the given file and invite the visitor and return visitor isOk value"
 
@@ -86,7 +86,7 @@ MicReferenceChecker >> checkFile: aFile [
 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> checkList: aCollection [  
 	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
 	can have references between them and the checker should be shared amongst the documents 
@@ -97,20 +97,17 @@ MicReferenceChecker >> checkList: aCollection [
 	^ self isOkay.
 ]
 
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
 	
 	| mainMic visitor listOfFiles |
 	mainMic := Microdown parseFile: aDocument.
 	visitor := MicFileCollector new.
 	visitor
-		fileSystem: fileSystem ;
+		fileSystem: fileSystem;
 		visit: mainMic.
-	listOfFiles := visitor visitedDocumentFiles collect: [ :file | fileSystem referenceTo: file  ] . 
-	^ self checkList: listOfFiles.
-	
-	
-
+	listOfFiles := visitor visitedDocumentFiles collect: [ :file | fileSystem referenceTo: file ].
+	^ self checkList: listOfFiles
 ]
 
 { #category : 'visiting' }
@@ -130,7 +127,7 @@ MicReferenceChecker >> duplicatedAnchors [
 	^ duplicatedAnchors
 ]
 
-{ #category : 'visiting' }
+{ #category : 'accessing' }
 MicReferenceChecker >> finalStatus [ 
 	^ results isEmpty .
 ]
