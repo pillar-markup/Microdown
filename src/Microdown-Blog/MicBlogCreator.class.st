@@ -215,9 +215,24 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 { #category : 'rendering' }
 MicBlogCreator >> mustacheTemplate [
 
-	^ '<section><h1>Weekly news about Pharo</h1></section>
-	<section>{{{content}}}</section>
-	<section>{{{archive}}}</section>'
+	^ '	<h1	><a href="/index.html" title="Weekly news about Pharo" rel="home">Weekly news about Pharo</a></h1>
+		<p>Everything you wanted to know about http://www.pharo.org without being forced to read 1000 mails</p>
+		<table>
+		<tr>
+			<td><a href="http://www.mirandabanda.org">Cog Blog</a></td>
+			<td><a href="http://clementbera.wordpress.com">Smalltalk, Tips&#8217;n Tricks</a></td>
+			<td><a href="http://astares.blogspot.fr">Hitchhiker&#8217;s guide to &#8230;</a></td>
+			<td><a href="https://wordpress.com/view/masteringobjects.wordpress.com">Masteringobjects @ PharoDev</a></td>
+			<td><a href="https://pharoweekly.wordpress.com/about/">About</a></td>
+		</tr>
+	</table>
+	{{{content}}}
+	<table>
+		<tr>
+			<td>{{{recentPost}}}</td>
+			<td>{{{archive}}}</td>
+		</tr>
+	</table>'
 ]
 
 { #category : 'rendering' }
