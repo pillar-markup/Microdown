@@ -197,6 +197,23 @@ MicBlogCreatorTest >> testDownloadCSS [
 ]
 
 { #category : 'tests' }
+MicBlogCreatorTest >> testGenerateRecentpost [
+
+| aListOfSingleSummarized recentPost|
+
+aListOfSingleSummarized := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each asFileReference].
+blog generateRecentpost: aListOfSingleSummarized.
+
+recentPost := blog recentPost.
+
+self assert: (recentPost isKindOf: MicRootBlock);
+assert: recentPost children size equals: 2;
+assert: (recentPost children first isKindOf: MicHeaderBlock);
+assert: (recentPost children second isKindOf: MicUnorderedListBlock)
+
+]
+
+{ #category : 'tests' }
 MicBlogCreatorTest >> testInitializeMonthList [
 
 	| listSingleSummarizer singleSum1 singleSum2 singleSum3 |

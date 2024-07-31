@@ -29,7 +29,8 @@ Class {
 		'root',
 		'dateList',
 		'cssFrameworkName',
-		'sum'
+		'sum',
+		'recentPost'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -103,6 +104,7 @@ MicBlogCreator >> createAllHtmlFile [
 			root: root;
 			                       summarize: each ].
 	self sortSingleSummarizedDocuments: listOfSingleSummary.
+	self generateRecentpost: listOfSingleSummary.
 	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
@@ -172,6 +174,33 @@ MicBlogCreator >> downloadCSS [
 		(cssProvider findCssNamed: cssFrameworkName)
 ]
 
+{ #category : 'rendering' }
+MicBlogCreator >> generateRecentpost: listOfMicSingleSummarized [
+
+	| rootBlock selectionSize unorderedList listElement link header |
+	
+	rootBlock := MicRootBlock new.
+	
+	selectionSize := 5 min: listOfMicSingleSummarized size.
+	
+	unorderedList := MicUnorderedListBlock new.
+	1 to: selectionSize do: [ :each |
+		listElement := MicListItemBlock new.
+		link := (((listOfMicSingleSummarized at: each) children at: 2) children at: 1) copy.
+		link parent: listElement.
+		listElement parent: unorderedList ].
+	
+	header := MicHeaderBlock new.
+	header level: 3.
+	(MicTextBlock new bodyString: 'Recent Post') parent: header.
+	
+	recentPost := rootBlock
+		  addChild: header;
+		  addChild: unorderedList
+
+	 
+]
+
 { #category : 'initialization' }
 MicBlogCreator >> initialize [
 
@@ -206,6 +235,7 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 	
 	context := Dictionary new
     at: 'content' put: htmlString;
+	 at: 'recentPost' put: (MicHTMLVisitor new visit: recentPost copy) first contents;
 	 at: 'archive' put: (MicHTMLVisitor new visit: dateList copy) first contents;
     yourself.
 	
@@ -233,6 +263,12 @@ MicBlogCreator >> mustacheTemplate [
 			<td>{{{archive}}}</td>
 		</tr>
 	</table>'
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> recentPost [
+
+	^ recentPost
 ]
 
 { #category : 'rendering' }
