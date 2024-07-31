@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'fileDefAncS1UndAncS0',
 		'refAncS1',
-		'defEq1AndReferToEq1'
+		'defEq1AndReferToEq1',
+		'defAndRefFig1'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -24,6 +25,22 @@ See *@Eq1@*
 
 ' ].
 	defEq1AndReferToEq1 ensureCreateFile
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> defFig1AndRefFig1 [
+
+	defAndRefFig1 := dir / 'defAndRefFig1.md'.
+	defAndRefFig1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+		
+![alittle caption.](figures/f.png anchor=Fig1)
+
+See *@Fig1@*
+
+' ].
+	defAndRefFig1 ensureCreateFile.
+	^ defAndRefFig1
 ]
 
 { #category : 'helpers - anchors & references' }
@@ -105,6 +122,29 @@ See *@anchorSection1@*
 	
 	visitor := MicReferenceChecker new.
 	self assert: (visitor checkDirectory: dir)
+]
+
+{ #category : 'tests - single file' }
+MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
+
+	| visitor |
+	self defEq1AndReferToEq1.
+	visitor := MicReferenceChecker new.
+	self assert: (visitor checkFile: defEq1AndReferToEq1).
+	self assert: visitor results size equals: 0.
+	
+]
+
+{ #category : 'tests - single file' }
+MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
+
+	| visitor |
+	self fileDefAncS1UndAncS0.
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkFile: fileDefAncS1UndAncS0).
+	self assert: visitor results size equals: 1.
+	self assert: visitor results first anchorLabel equals: 'ancS0'.
+	self assert: visitor results first source equals: '/fileDefAncS1UndAncS0.md'.
 ]
 
 { #category : 'skipped for now' }
@@ -233,23 +273,13 @@ See *@anchorSection1@*
 	self assert: visitor isOkay
 ]
 
-{ #category : 'tests - references in a single file' }
+{ #category : 'tests - single file' }
 MicReferenceCheckerTest >> testReferToAFigureInFile [
 
-	| referenceToFigure visitor |
-	referenceToFigure := (dir / 'referenceToFigure.txt') asFileReference.
-	referenceToFigure writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-		
-![alittle caption.](figures/f.png anchor=anchorFigure1)
-
-See *@anchorFigure1@*
-
-' ].
-	referenceToFigure ensureCreateFile.
+	| visitor |
+	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: referenceToFigure)
-	
+	self assert: (visitor checkFile: defAndRefFig1)
 ]
 
 { #category : 'tests - parse only' }
@@ -267,17 +297,6 @@ See *@anchorSection1@*
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
 	self assert: visitor isOkay
-]
-
-{ #category : 'tests - single file' }
-MicReferenceCheckerTest >> testReferToAMathEquationInFile [
-
-	| visitor |
-	self defEq1AndReferToEq1.
-	visitor := MicReferenceChecker new.
-	self assert: (visitor checkFile: defEq1AndReferToEq1).
-	self assert: visitor results size equals: 0.
-	
 ]
 
 { #category : 'tests - parse only' }
@@ -346,18 +365,6 @@ See *@anchorSection0@*
 ' ].
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkFile: referenceToFigureAnchor)
-]
-
-{ #category : 'tests - single file' }
-MicReferenceCheckerTest >> testRefersToUnknownAnchor [
-
-	| visitor |
-	self fileDefAncS1UndAncS0.
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkFile: fileDefAncS1UndAncS0).
-	self assert: visitor results size equals: 1.
-	self assert: visitor results first anchorLabel equals: 'ancS0'.
-	self assert: visitor results first source equals: '/fileDefAncS1UndAncS0.md'.
 ]
 
 { #category : 'tests - reporting' }
