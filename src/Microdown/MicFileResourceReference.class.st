@@ -63,7 +63,7 @@ MicFileResourceReference >> contents [
 	[^ self fileReference isDirectory ifTrue: [''] ifFalse: [self fileReference contents] ]
 	on: FileDoesNotExistException 
 	do: [ :error | 
-		error resignalAs: (MicResourceReferenceError new messageText: 'The Microdown file at  "', self fullName , '" are not found')  ]
+		error resignalAs: (MicResourceReferenceError new messageText: 'The Microdown file at "', self fullName , '" are not found')  ]
 ]
 
 { #category : 'accessing' }

@@ -277,7 +277,7 @@ MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 		ref loadMicrodown.
 		self fail
 	] on: Error do: [ :e |
-		self assert: e messageText equals: 'Microdown file not found' ]
+		self assert: e messageText equals: 'The Microdown file at "/readme.md" are not found' ]
 ]
 
 { #category : 'tests' }
