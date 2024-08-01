@@ -68,6 +68,7 @@ MicBlogCreatorTest >> setUp [
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
 		root: resources genericEmptyRootPath;
+		generateRecentpost: MicListSummarizerTest new setUp createListOfMicRootBlock;
 		dateList: (monthListCreator generateMicListBlockOfLinkDateWith: monthList).
 ]
 
@@ -199,10 +200,9 @@ MicBlogCreatorTest >> testDownloadCSS [
 { #category : 'tests' }
 MicBlogCreatorTest >> testGenerateRecentpost [
 
-| aListOfSingleSummarized recentPost|
+| recentPost|
 
-aListOfSingleSummarized := self listOfFile collect: [ :each | singleSummarizer summarizeFile: each asFileReference].
-blog generateRecentpost: aListOfSingleSummarized.
+blog generateRecentpost: MicListSummarizerTest new setUp createListOfMicRootBlock.
 
 recentPost := blog recentPost.
 
