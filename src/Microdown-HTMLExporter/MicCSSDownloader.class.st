@@ -45,19 +45,19 @@ MicCSSDownloader >> downloadCSSFramework: cssFramework [
 ]
 
 { #category : 'accessing - downloading' }
-MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [ 
+MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 
-	| client url dest |
-
+	| dest cssReference |
+	
 	anURLString ifEmpty: [ ^ self ].
-	url := anURLString asZnUrl.
+	cssReference := anURLString asFileReference.
+	
 	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.
-	ZnFileSystemUtils deleteIfExists: dest / url pathSegments last.
-	(client := self httpClient) 
-		url: url ;
-		downloadTo: (dest / url pathSegments last)
-
+	dest := dest / cssReference pathSegments last.
+	dest ifExists: [dest delete].
+	
+	FileSystem disk copy: cssReference toReference: dest
 ]
 
 { #category : 'accessing - downloading' }

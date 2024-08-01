@@ -164,230 +164,205 @@ MicCSSProvider >> frameworksSpecs [
 	"Answer a <Collection> of <Array> representing specifications for building CSS framework objects.
 	Re-execute #installFrameworks after modifying this method."
 
-	^ { 
-		{ 
-		#name -> 'AttriCSS' .
-		#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' .
-		#repository -> 'https://github.com/raj457036/attriCSS' .
-		#themes -> ({ 
-			{ 
-			#name -> 	'Brightlight Green' .
-			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/brightlight-green.css' 
-			} .
-			{ 
-			#name -> 'Dark Fairy Pink' .
-			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkfairy-pink.css' 
-			} .
-			{ 
-			#name -> 'Dark Forest Green' .
-			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/darkforest-green.css'
-			} .
-			{ 
-			#name -> 'Light Fairy Pink' .
-			#minCss ->  'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/lightfairy-pink.css' 
-			} .
-			{ 
-			#name -> 'Midnight Green' .
-			#minCss -> 'https://raw.githubusercontent.com/raj457036/attriCSS/master/themes/midnight-green.css' 
-			} } collect: #asDictionary)
-		} .
-		
-		{ 
-		#name -> 'AwsmCSS' .
-		#css -> 'https://unpkg.com/awsm.css/dist/awsm.css' .
-		#minCss -> 'https://unpkg.com/awsm.css/dist/awsm.min.css' .
-		#repository -> 'https://github.com/igoradamenko/awsm.css' .
-		#themes -> ({
-			{ 
-			#name -> 'White' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_white.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_white.min.css'
-			} .
-			{ 
-			#name -> 	'Gondola' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_gondola.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_gondola.min.css' 
-			} .
-			{ 
-			#name -> 'Mischnka' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_mischka.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_mischka.min.css' 
-			} .
-			{ 
-			#name -> 'Big Stone' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_big-stone.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_big-stone.min.css'
-			} .
-			{ 
-			#name -> 'Black' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_black.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_black.min.css'
-			} .
-			{ 
-			#name -> 'Tasman' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_tasman.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_tasman.min.css'
-			} .
-			{ 
-			#name -> 'Pastel Pink' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pastel-pink.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pastel-pink.min.css' 
-			} .
-			{ 
-			#name -> 'Pearl Lusta' .
-			#css -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pearl-lusta.css' .
-			#minCss -> 'https://unpkg.com/awsm.css/dist/awsm_theme_pearl-lusta.min.css'
-			 } } collect: #asDictionary)
-		} .
+	| local |
+	local := self localRepositoryPath.
 
-		{ 
-		#name -> 'Axist' .
-		#minCss -> 'https://unpkg.com/axist@latest/dist/axist.min.css' .
-		#repository -> 'https://github.com/ruanmartinelli/axist'
-		} .
-		
-		{ 
-		#name -> 'Chota' .	
-		#minCss -> 'https://unpkg.com/chota@0.8.0/dist/chota.min.css' .
-		#repository -> 'https://github.com/jenil/chota'
-		} .
-		
-		{ 
-		#name -> 'ClasslessCSS' .	
-		#css -> 'https://classless.de/classless.css' .
-		#minCss -> 'https://classless.de/classless-tiny.css' .
-		#repository -> 'https://github.com/emareg/classlesscss' .
-		#themes -> ({ 
-			{ 
-			#name -> 'Theme' . 
-			#css -> 'https://classless.de/addons/themes.css'
-			} } collect: #asDictionary)
-		} .
-		
-		{ 
-		#name -> 'ConcreteCSS' .	
-		#css -> 'https://unpkg.com/concrete.css' .
-		#normalizeCss -> 'https://unpkg.com/normalize.css' .
-		#repository -> 'https://github.com/louismerlin/concrete.css'
-		} .
-		
-		{ 
-		#name -> 'MercuryCSS' .
-		#minCss -> 'https://raw.githubusercontent.com/wmeredith/MercuryCSS/master/css/min/mercury.min.css' .
-		#normalizeCss -> 'https://raw.githubusercontent.com/wmeredith/MercuryCSS/master/css/min/normalize.min.css' .
-		#repository -> 'https://github.com/wmeredith/MercuryCSS'
-		} .
-		
-		{ 
-		#name -> 'MVP' .	
-		#css -> 'https://raw.githubusercontent.com/andybrewer/mvp/master/mvp.css' .
-		#repository -> 'https://github.com/andybrewer/mvp'
-		} .
-		
-		{ 
-		#name -> 'NewCSS' .	
-		#minCss -> 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css' .
-		#repository -> 'https://github.com/xz/new.css' .
-		#themes -> ({ 
-			{ 
-			#name -> 'Night' .
-			#css -> 'https://newcss.net/theme/night.css'
-			} .
-			{ 
-			#name -> 'Terminal' .
-			#css ->  'https://newcss.net/theme/terminal.css'
-			}
-			} collect: #asDictionary)
-		} .
-		
-		{ 
-		#name -> 'PicnicCSS' .	
-		#css -> 'https://cdn.jsdelivr.net/npm/picnic@7.1.0/picnic.css' .
-		#repository -> 'https://github.com/franciscop/picnic'
-		} .
-		
-		{ 
-		#name -> 'Sakura' .	
-		#css -> 'https://raw.githubusercontent.com/oxalorg/sakura/master/css/sakura.css' .
-		#repository -> 'https://github.com/oxalorg/sakura'
-		} .
-		
-		{ 
-		#name -> 'SimpleCSS' .	
-		#minCss -> 'https://cdn.simplecss.org/simple.min.css' .
-		#css -> 'https://cdn.simplecss.org/simple.css' .
-		#repository -> 'https://github.com/kevquirk/simple.css'
-		} .
-		
-		{ 
-		#name -> 'SpCSS' .	
-		#minCss -> 'https://raw.githubusercontent.com/susam/spcss/main/sp.min.css' .
-		#css -> 'https://cdn.jsdelivr.net/npm/spcss' .
-		#repository -> 'https://github.com/susam/spcss'
-		} .
-		
-		{ 
-		#name -> 'Splendor' .	
-		#minCss -> 'https://raw.githubusercontent.com/markdowncss/splendor/master/css/splendor.min.css' .
-		#repository -> 'https://github.com/markdowncss/splendor'
-		} .
-		
-		{ 
-		#name -> 'StylizeCSS' .	
-		#minCss -> 'https://raw.githubusercontent.com/vasanthv/stylize.css/master/stylize.min.css' .
-		#css -> 'https://raw.githubusercontent.com/vasanthv/stylize.css/master/stylize.css' .
-		#repository -> 'https://github.com/vasanthv/stylize.css'
-		} .
-		
-		{ 
-		#name -> 'Tufte' .	
-		#minCss -> 'https://raw.githubusercontent.com/edwardtufte/tufte-css/gh-pages/tufte.min.css' .
-		#repository -> 'https://github.com/edwardtufte/tufte-css' .
-		#fontsDir -> 'https://github.com/edwardtufte/tufte-css/tree/gh-pages/et-book'
-		} .
-		
-		{ 
-		#name -> 'W3C' .	
-		#css -> 'https://www.w3.org/StyleSheets/Core/Modernist.css' .
-		#repository -> 'https://www.w3.org/StyleSheets/Core/Overview'
-		} .
-		
-		{ 
-		#name -> 'WaterCSS' .	
-		#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css' .
-		#repository -> 'https://github.com/kognise/water.css' .
-		#themes -> ({
-			{ 
-			#name -> 'Dark' . 
-			#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css' 
-			} .
-			{ 
-			#name -> 'Light' .
-			#minCss -> 'https://cdn.jsdelivr.net/npm/water.css@2/out/light.min.css' 
-			} } collect: #asDictionary)
-		} .
-		
-		{ 
-		#name -> 'Wing' .	
-		#minCss -> 'https://unpkg.com/wingcss@1.0.0-beta/dist/wing.min.css' .
-		#repository -> 'https://github.com/kbrsh/wing'
-		} .
-		
-		{ 
-		#name -> 'Yorha' .	
-		#minCss -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.min.css' .
-		#css -> 'https://raw.githubusercontent.com/metakirby5/yorha/master/dist/yorha.css' .
-		#repository -> 'https://github.com/metakirby5/yorha'
-		} .
-		
-		{ 
-		#name -> 'LaTeX' .
-		#css -> 'https://latex.vercel.app/style.css' .
-		#minCss -> 'https://unpkg.com/latex.css/style.min.css' .
-		#repository -> 'https://github.com/vincentdoerig/latex-css' 
-		}
-		
-	} collect: #asDictionary
+	^ {
+		  {
+			  (#name -> 'AttriCSS').
+			  (#minCss -> (self localCSSNamed: 'brightlight-green.css')).
+			  (#repository -> 'https://github.com/raj457036/attriCSS').
+			  (#themes -> ({
+				    {
+					    (#name -> 'Brightlight Green').
+					    (#minCss -> (self localCSSNamed: 'brightlight-green.css')) }.
+				    {
+					    (#name -> 'Dark Fairy Pink').
+					    (#minCss -> (self localCSSNamed: 'darkfairy-pink.css')) }.
+				    {
+					    (#name -> 'Dark Forest Green').
+					    (#minCss -> (self localCSSNamed: 'darkforest-green.css')) }.
+				    {
+					    (#name -> 'Light Fairy Pink').
+					    (#minCss -> (self localCSSNamed: 'lightfairy-pink.css')) }.
+				    {
+					    (#name -> 'Midnight Green').
+					    (#minCss -> (self localCSSNamed: 'midnight-green.css')) } }
+				    collect: #asDictionary)) }.
+
+		  {
+			  (#name -> 'AwsmCSS').
+			  (#css -> (self localCSSNamed: 'awsm.css')).
+			  (#minCss -> (self localCSSNamed: 'awsm.min.css')).
+			  (#repository -> (self localCSSNamed: 'awsm.css')).
+			  (#themes -> ({
+				    {
+					    (#name -> 'White').
+					    (#css -> (self localCSSNamed: 'awsm_theme_white.css')).
+					    (#minCss -> (self localCSSNamed: 'awsm_theme_white.min.css')) }.
+				    {
+					    (#name -> 'Gondola').
+					    (#css -> (self localCSSNamed: 'awsm_theme_gondola.css')).
+					    (#minCss
+					     -> (self localCSSNamed: 'awsm_theme_gondola.min.css')) }.
+				    {
+					    (#name -> 'Mischnka').
+					    (#css -> (self localCSSNamed: 'awsm_theme_mischka.css')).
+					    (#minCss
+					     -> (self localCSSNamed: 'awsm_theme_mischka.min.css')) }.
+				    {
+					    (#name -> 'Big Stone').
+					    (#css -> (self localCSSNamed: 'awsm_theme_big-stone.css')).
+					    (#minCss
+					     -> (self localCSSNamed: 'awsm_theme_big-stone.min.css')) }.
+				    {
+					    (#name -> 'Black').
+					    (#css -> (self localCSSNamed: 'awsm_theme_black.css')).
+					    (#minCss -> (self localCSSNamed: 'awsm_theme_black.min.css')) }.
+				    {
+					    (#name -> 'Tasman').
+					    (#css -> (self localCSSNamed: 'awsm_theme_tasman.css')).
+					    (#minCss -> (self localCSSNamed: 'awsm_theme_tasman.min.css')) }.
+				    {
+					    (#name -> 'Pastel Pink').
+					    (#css -> (self localCSSNamed: 'awsm_theme_pastel-pink.css')).
+					    (#minCss
+					     -> (self localCSSNamed: 'awsm_theme_pastel-pink.min.css')) }.
+				    {
+					    (#name -> 'Pearl Lusta').
+					    (#css -> (self localCSSNamed: 'awsm_theme_pearl-lusta.css')).
+					    (#minCss
+					     -> (self localCSSNamed: 'awsm_theme_pearl-lusta.min.css')) } }
+				    collect: #asDictionary)) }.
+
+		  {
+			  (#name -> 'Axist').
+			  (#minCss -> (self localCSSNamed: 'axist.min.css')).
+			  (#repository -> 'https://github.com/ruanmartinelli/axist') }.
+
+		  {
+			  (#name -> 'Chota').
+			  (#minCss -> (self localCSSNamed: 'chota.min.css')).
+			  (#repository -> 'https://github.com/jenil/chota') }.
+
+		  {
+			  (#name -> 'ClasslessCSS').
+			  (#css -> (self localCSSNamed: 'classless.css')).
+			  (#minCss -> (self localCSSNamed: 'classless-tiny.css')).
+			  (#repository -> 'https://github.com/emareg/classlesscss').
+			  (#themes -> ({ {
+				    (#name -> 'Theme').
+				    (#css -> (self localCSSNamed: 'themes.css')) } } collect:
+				    #asDictionary)) }.
+
+		  {
+			  (#name -> 'ConcreteCSS').
+			  (#css -> (self localCSSNamed: 'concrete.css')).
+			  (#normalizeCss -> (self localCSSNamed: 'normalize.css')).
+			  (#repository -> (self localCSSNamed: 'concrete.css')) }.
+
+		  {
+			  (#name -> 'MercuryCSS').
+			  (#minCss -> (self localCSSNamed: 'mercury.min.css')).
+			  (#normalizeCss -> (self localCSSNamed: 'normalize.min.css')).
+			  (#repository
+			   ->
+			   (self localCSSNamed: 'https://github.com/wmeredith/MercuryCSS')) }.
+
+		  {
+			  (#name -> 'MVP').
+			  (#css -> (self localCSSNamed: 'mvp.css')).
+			  (#repository -> 'https://github.com/andybrewer/mvp') }.
+
+		  {
+			  (#name -> 'NewCSS').
+			  (#minCss -> (self localCSSNamed: 'new.min.css')).
+			  (#repository -> (self localCSSNamed: 'new.css')).
+			  (#themes -> ({
+				    {
+					    (#name -> 'Night').
+					    (#css -> (self localCSSNamed: 'night.css')) }.
+				    {
+					    (#name -> 'Terminal').
+					    (#css -> (self localCSSNamed: 'terminal.css')) } } collect:
+				    #asDictionary)) }.
+
+		  {
+			  (#name -> 'PicnicCSS').
+			  (#css -> (self localCSSNamed: 'picnic.css')).
+			  (#repository -> 'https://github.com/franciscop/picnic') }.
+
+		  {
+			  (#name -> 'Sakura').
+			  (#css -> (self localCSSNamed: 'sakura.css')).
+			  (#repository -> 'https://github.com/oxalorg/sakura') }.
+
+		  {
+			  (#name -> 'SimpleCSS').
+			  (#minCss -> (self localCSSNamed: 'simple.min.css')).
+			  (#css -> (self localCSSNamed: 'simple.css')).
+			  (#repository -> (self localCSSNamed: 'simple.css')) }.
+
+		  {
+			  (#name -> 'SpCSS').
+			  (#minCss -> (self localCSSNamed: 'sp.min.css')).
+			  (#css -> (self localCSSNamed: 'spcss')).
+			  (#repository -> 'https://github.com/susam/spcss') }.
+
+		  {
+			  (#name -> 'Splendor').
+			  (#minCss -> (self localCSSNamed: 'splendor.min.css')).
+			  (#repository -> 'https://github.com/markdowncss/splendor') }.
+
+		  {
+			  (#name -> 'StylizeCSS').
+			  (#minCss -> (self localCSSNamed: 'stylize.min.css')).
+			  (#css -> (self localCSSNamed: 'stylize.css')).
+			  (#repository -> (self localCSSNamed: 'stylize.css')) }.
+
+		  {
+			  (#name -> 'Tufte').
+			  (#minCss -> (self localCSSNamed: 'tufte.min.css')).
+			  (#repository -> 'https://github.com/edwardtufte/tufte-css').
+			  (#fontsDir
+			   ->
+			   'https://github.com/edwardtufte/tufte-css/tree/gh-pages/et-book') }.
+
+		  {
+			  (#name -> 'W3C').
+			  (#css -> (self localCSSNamed: 'Modernist.css')).
+			  (#repository -> 'https://www.w3.org/StyleSheets/Core/Overview') }.
+
+		  {
+			  (#name -> 'WaterCSS').
+			  (#minCss -> (self localCSSNamed: 'water.min.css')).
+			  (#repository -> (self localCSSNamed: 'water.css')).
+			  (#themes -> ({
+				    {
+					    (#name -> 'Dark').
+					    (#minCss -> (self localCSSNamed: 'dark.min.css')) }.
+				    {
+					    (#name -> 'Light').
+					    (#minCss -> (self localCSSNamed: 'light.min.css')) } }
+				    collect: #asDictionary)) }.
+
+		  {
+			  (#name -> 'Wing').
+			  (#minCss -> (self localCSSNamed: 'wing.min.css')).
+			  (#repository -> 'https://github.com/kbrsh/wing') }.
+
+		  {
+			  (#name -> 'Yorha').
+			  (#minCss -> (self localCSSNamed: 'yorha.min.css')).
+			  (#css -> (self localCSSNamed: 'yorha.css')).
+			  (#repository -> 'https://github.com/metakirby5/yorha') }.
+
+		  {
+			  (#name -> 'LaTeX').
+			  (#css -> (self localCSSNamed: 'style.css')).
+			  (#minCss -> (self localCSSNamed: 'style.min.css')).
+			  (#repository -> 'https://github.com/vincentdoerig/latex-css') } }
+		  collect: #asDictionary
 ]
 
 { #category : 'testing' }
@@ -407,6 +382,18 @@ MicCSSProvider >> installFrameworks [
 	self destinationPath asFileReference exists
 		ifTrue: [ self destinationPath asFileReference ensureDeleteAll ].
 	self cssDownloader downloadCSSFrameworks
+]
+
+{ #category : 'frameworks' }
+MicCSSProvider >> localCSSNamed: aString [
+
+	^ (self localRepositoryPath / aString) fullName
+]
+
+{ #category : 'frameworks' }
+MicCSSProvider >> localRepositoryPath [ 
+
+	^ FileSystem workingDirectory / 'pharo-local' / 'iceberg' / 'pillar-markup' / 'Microdown' / 'ressource'
 ]
 
 { #category : 'accessing' }
