@@ -221,7 +221,7 @@ MicSingleSummarizerTest >> testWithFromFileNil [
 
 	micSingleSummarizer verifyFromFile: root.
 
-	self assert: root fromFile equals: ''
+	self assert: root fromFile equals: 'fakedFile'
 ]
 
 { #category : 'tests' }
@@ -265,14 +265,13 @@ MicSingleSummarizerTest >> testWithMetaDataButInvalidDate [
 MicSingleSummarizerTest >> testWithoutFromFile [
 
 	| root |
-	self skip. 
-	"should ask Quentin for help here."
+	
 	root := Microdown parse:
 		        resources generateFilesystemExample1 contents.
 
 	micSingleSummarizer verifyFromFile: root.
 
-	self assert: root fromFile equals: ''
+	self assert: root fromFile equals: 'fakedFile'
 ]
 
 { #category : 'tests' }
