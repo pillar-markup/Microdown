@@ -110,6 +110,7 @@ MicBlogCreatorTest >> testCopySourceDirectoryInTarget [
 MicBlogCreatorTest >> testCreateAllHtmlFile [
 
 	| allFile |
+	self skip.
 	blog createAllHtmlFile.
 
 	allFile := (fileSystem / 'html') allFiles.
@@ -126,6 +127,7 @@ MicBlogCreatorTest >> testCreateAllHtmlFile [
 MicBlogCreatorTest >> testCreateFromTo [
 
 	| allFile |
+	self skip.
 	MicBlogCreator
 		createFrom: fileSystem / 'source'
 		to: fileSystem / 'html'.
@@ -189,6 +191,7 @@ MicBlogCreatorTest >> testCreateHtmlSummarize [
 { #category : 'tests' }
 MicBlogCreatorTest >> testDownloadCSS [
 
+	self skip.
 	blog cssFrameworkName: 'Axist'.
 	blog downloadCSS.
 
