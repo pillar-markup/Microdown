@@ -427,41 +427,40 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 MicReferenceCheckerTest >> testReportingDuplicatedAnchorBetweenSectionAndFigure [
 
 	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
+	file := (dir / 'file.md').
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
-@anchorSection0
+@ancS0
 
-![a caption 1](figures/f.png anchor=anchorSection1)
+![a caption 1](figures/f.png anchor=ancS1)
 
 
 # Section 1
-@anchorSection1
+@ancS1
 
 We have a conflict between the section and the figure.
 
 # Section 2
-@anchorSection2
+@ancS2
 
 # Section 3
-@anchorSection3
+@ancS3
 
-$$ %anchor=anchorSection0
+$$ %anchor=ancS0
 balbalbalb! 
 $$
 
-See *@anchorSection1@* and *@anchorSection0@*
+See *@ancS1@* and *@ancS0@*
 
 ' ].
 	file ensureCreateFile.
-	
-	
+
+
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {file}).
+	self deny: (visitor checkList: { file }).
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection0')
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'ancS1' 'ancS0' )
 ]
 
 { #category : 'tests - reporting' }
@@ -469,16 +468,16 @@ MicReferenceCheckerTest >> testReportingDuplicatedAnchors [
 
 	| doc visitor |
 	doc := Microdown parse: '# Section 
-@anchorSection0
+@ancS0
 
 # Section 1
-@anchorSection1
+@ancS1
 
 # Section 2
-@anchorSection1
+@ancS1
 
 
-See *@anchorSection1@* and *@anchorSection0@*
+See *@ancS1@* and *@ancS0@*
 
 '.
 	doc fromFile: 'fakedFile'.
@@ -486,9 +485,8 @@ See *@anchorSection1@* and *@anchorSection0@*
 	doc accept: visitor.
 	self deny: visitor isOkay.
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection1' )
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'ancS1' )
 ]
 
 { #category : 'tests - reporting' }
@@ -527,15 +525,15 @@ MicReferenceCheckerTest >> testReportingDuplicatedFigures [
 
 	| doc visitor |
 	doc := Microdown parse: '# Section 
-@anchorSection0
+@ancS0
 
-![a caption 1](figures/f.png anchor=anchorSection1)
+![a caption 1](figures/f.png anchor=ancS1)
 
-![a caption 2](figures/f.png anchor=anchorSection1)
+![a caption 2](figures/f.png anchor=ancS1)
 
-![a caption 3](figures/f.png anchor=anchorSection2)
+![a caption 3](figures/f.png anchor=ancS2)
 
-See *@anchorSection1@*
+See *@ancS1@*
 
 '.
 	doc fromFile: 'fakedFile'.
@@ -543,9 +541,8 @@ See *@anchorSection1@*
 	doc accept: visitor.
 	self deny: visitor isOkay.
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection1' )
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'ancS1' )
 ]
 
 { #category : 'tests - reporting' }
@@ -555,28 +552,27 @@ MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [
 	file := (dir / 'file.txt') asFileReference.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
-@anchorSection0
+@ancS0
 
-![a caption 1](figures/f.png anchor=anchorSection1)
+![a caption 1](figures/f.png anchor=fig1)
 
-![a caption 2](figures/f.png anchor=anchorSection1)
+![a caption 2](figures/f.png anchor=fig1)
 
-![a caption 2](figures/f.png anchor=anchorSection1)
+![a caption 2](figures/f.png anchor=fig1)
 
-![a caption 2](figures/f.png anchor=anchorSection1)
+![a caption 2](figures/f.png anchor=fig1)
 
-![a caption 3](figures/f.png anchor=anchorSection2)
+![a caption 3](figures/f.png anchor=fig2)
 
-See *@anchorSection1@* 
+See *@ancS1@* 
 
 ' ].
 	file ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {file}).
+	self deny: (visitor checkList: { file }).
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection
-			<- #( 'anchorSection1' 'anchorSection1' 'anchorSection1' )
+		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1')
 ]
 
 { #category : 'tests - reporting' }
@@ -584,25 +580,25 @@ MicReferenceCheckerTest >> testReportingDuplicatedMaths [
 
 	| doc visitor |
 	doc := Microdown parse: '# Section 
-@anchorSection0
+@ancS0
 
-$$ %anchor=anchorSection1
+$$ %anchor=Eq1
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection1
+$$ %anchor=Eq1
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection3
+$$ %anchor=Eq3
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection3
+$$ %anchor=Eq3
 balbalbalb! 
 $$
 
-See *@anchorSection1@* and *@anchorSection3@*
+See *@Eq1@* and *@Eq3@*
 
 '.
 	doc fromFile: 'fakedFile'.
@@ -610,9 +606,8 @@ See *@anchorSection1@* and *@anchorSection3@*
 	doc accept: visitor.
 	self deny: visitor isOkay.
 	self
-		assert:
-		(visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection3' )
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'Eq1' 'Eq3' )
 ]
 
 { #category : 'tests - reporting' }
@@ -624,32 +619,32 @@ MicReferenceCheckerTest >> testReportingDuplicatedMathsInFile [
 		stream nextPutAll: '# Section 
 @anchorSection0
 
-$$ %anchor=anchorSection1
+$$ %anchor=ancS1
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection2
+$$ %anchor=ancS2
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection2
+$$ %anchor=ancS2
 balbalbalb! 
 $$
 
-$$ %anchor=anchorSection1
+$$ %anchor=ancS1
 balbalbalb! 
 $$
 
-See *@anchorSection1@* 
+See *@ancS1@* 
 
 ' ].
 	file ensureCreateFile.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {file}).
+	self deny: (visitor checkList: { file }).
 	self assert: visitor results first source equals: file fullName.
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection2' 'anchorSection1' )
+		equals: OrderedCollection <- #( 'ancS2' 'ancS1' )
 ]
 
 { #category : 'tests - reporting' }
