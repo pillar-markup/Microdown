@@ -126,29 +126,6 @@ MicReferenceCheckerTest >> setUp [
 	dir ensureCreateDirectory
 ]
 
-{ #category : 'tests - directory api' }
-MicReferenceCheckerTest >> testAllReferencesAreCorrectinDir [
-
-	| aSectionWithAnchorAndRef file2 visitor |
-	aSectionWithAnchorAndRef := dir / 'aSectionWithAnchorAndRef.txt'.
-	aSectionWithAnchorAndRef writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 1
-@anchorSection1
-
-See *@anchorSection1@*
-
-' ].
-	aSectionWithAnchorAndRef ensureCreateFile.
-
-	file2 := dir / 'justReferenceToSection.md'.
-	file2 writeStreamDo: [ :stream2 |
-		stream2 nextPutAll: ' Just a reference See *@anchorSection1@*  ' ].
-	file2 ensureCreateFile.
-
-	visitor := MicReferenceChecker new.
-	self assert: (visitor checkDirectory: dir)
-]
-
 { #category : 'tests - single file ok references' }
 MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
 
@@ -166,7 +143,8 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	| visitor |
 	self defFig1AndRefToAncS0.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {defFig1AndRefToAnsC0}).
+	visitor fileSystem: fs.
+	self deny: (visitor checkProject: defFig1AndRefToAnsC0 ).
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
 		assert: visitor results first source
@@ -191,7 +169,8 @@ MicReferenceCheckerTest >> testDefFig1AndReferToFig1 [
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkList: { defAndRefFig1 }).
+	visitor fileSystem: fs.
+	self assert: (visitor checkProject: defAndRefFig1).
 	self assert: visitor results isEmpty
 ]
 
@@ -212,12 +191,43 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	| visitor |
 	self fileDefAncS1UndAncS0.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {fileDefAncS1UndAncS0}).
+	visitor fileSystem: fs.
+	self deny: (visitor checkProject:  fileDefAncS1UndAncS0 ).
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
 		assert: visitor results first source
 		equals: '/fileDefAncS1UndAncS0.md'
+]
+
+{ #category : 'tests - directory api' }
+MicReferenceCheckerTest >> testDirWithReferenceInAnotherFile [
+
+	| aSectionWithAnchorAndRef file2 visitor |
+	aSectionWithAnchorAndRef := dir / 'aSectionWithAnchorAndRef.md'.
+	aSectionWithAnchorAndRef writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+@ancS1
+
+See *@ancS1@* and *@ancS2@*
+
+' ].
+	aSectionWithAnchorAndRef ensureCreateFile.
+
+	file2 := dir / 'justReferenceToSection.md'.
+	file2 writeStreamDo: [ :stream2 |
+		stream2 nextPutAll: ' 
+# Section 2
+@ancS2
+
+Just a reference See *@ancS1@*  ' ].
+	file2 ensureCreateFile.
+
+	visitor := MicReferenceChecker new.
+	self assert: (visitor checkDirectory: dir)
+	
+
+
 ]
 
 { #category : 'skipped for now' }
@@ -259,7 +269,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 { #category : 'tests - directory api' }
 MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
-	| file1 file2 visitor |
+	| file1 file2 visitor dict duplicated |
 	file1 := dir / 'file1.md'.
 	file1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
@@ -267,8 +277,6 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 # Section 1
 @ancS1
-
-
 ' ].
 	file1 ensureCreateFile.
 	file2 := dir / 'file2.md'.
@@ -278,8 +286,6 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 # Section 4
 @ancS1
-
-
 ' ].
 	file2 ensureCreateFile.
 
@@ -287,8 +293,16 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	self deny: (visitor checkDirectory: dir).
 
 	self assert: visitor duplicatedAnchors size equals: 1.
-	self assert: visitor duplicatedAnchors first anchorLabel equals: 'ancS1'
+	self
+		assert: visitor duplicatedAnchors first anchorLabel
+		equals: 'ancS1'.
+	dict := visitor results groupedBy: [ :each | each class ].
+	duplicated := (dict at: MicDuplicatedAnchorResult) first.
+	self assert: duplicated source equals: '/myDirectory/file2.md'.
+	self assert: duplicated anchorLabel equals: 'ancS1'
+		
 	
+
 ]
 
 { #category : 'tests - full project' }
@@ -305,16 +319,23 @@ MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFile
 { #category : 'tests - full project' }
 MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 
-	| checker |
+	| checker dict unk undefined |
 	self createProjectBadAndCorrectReferences.
 	checker := MicReferenceChecker new.
 	checker fileSystem: fs.
 	self deny: (checker checkProject: section1).
-	self assert: checker results size equals: 1.
+	self assert: checker results size equals: 2.
+
+	dict := checker results groupedBy: [ :each | each class ].
 	
-	self assert: checker results first source equals: '/myDirectory/sections/section2.md'.
-	self assert: checker results first anchorLabel equals: 'ancUnkS2'.
+	unk := (dict at: MicUndefinedAnchorResult) first.
+	self assert: unk source equals: '/myDirectory/sections/section2.md'.
+	self assert: unk anchorLabel equals: 'ancUnkS2'.
 	
+	undefined := (dict at: MicUndefinedInputFileResult) first.
+	self assert: unk source equals: '/myDirectory/sections/section2.md'.
+
+
 ]
 
 { #category : 'tests - internal - parse only' }
@@ -385,8 +406,8 @@ MicReferenceCheckerTest >> testRefToUnkS1 [
 	| visitor |
 	self refToUnkS1.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { refToUnkS1 }).
-
+	visitor fileSystem: fs. 
+	self deny: (visitor checkProject: refToUnkS1 )
 ]
 
 { #category : 'tests - single file' }
@@ -395,12 +416,11 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	| visitor |
 	self fileRefAncS1.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {refAncS1}).
+	visitor fileSystem: fs. 
+	self deny: (visitor checkProject: refAncS1).
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
-	self
-		assert: visitor results first source
-		equals: '/fileRefAncS1.md'
+	self assert: visitor results first source equals: '/fileRefAncS1.md'
 ]
 
 { #category : 'tests - reporting' }
