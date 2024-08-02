@@ -139,7 +139,7 @@ MicSingleSummarizer >> verifyFromFile: aMicRootBlock [
 
 	| newFromFile |
 	
-	newFromFile := ''.
+	newFromFile := 'fakedFile'.
 
 	aMicRootBlock properties ifNotNil: [
 		aMicRootBlock properties ifNotEmpty: [
