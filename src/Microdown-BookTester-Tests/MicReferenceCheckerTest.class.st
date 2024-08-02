@@ -48,6 +48,32 @@ See *@Eq1@*
 	^ defAnCS0DoubleEq2DoubleEq1RefEq1
 ]
 
+{ #category : 'tests - reporting' }
+MicReferenceCheckerTest >> defAncS0DoubleFig1Fig2RefAncS1 [
+
+	| doubleFig1 |
+	doubleFig1 := dir / 'defAncS0DoubleFig1Fig2RefAncS1.md'.
+	doubleFig1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+![a caption 1](figures/f.png anchor=fig1)
+
+![a caption 2](figures/f.png anchor=fig1)
+
+![a caption 2](figures/f.png anchor=fig1)
+
+![a caption 2](figures/f.png anchor=fig1)
+
+![a caption 3](figures/f.png anchor=fig2)
+
+See *@ancS1@* 
+
+' ].
+	doubleFig1 ensureCreateFile.
+	^ doubleFig1
+]
+
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defEq1AndReferToEq1 [
 
@@ -340,6 +366,26 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 ]
 
 { #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testDuplicatedFigures [
+
+	| doubleFig1 checker dict dup1 |
+	doubleFig1 := self defAncS0DoubleFig1Fig2RefAncS1.
+	checker := MicReferenceChecker new.
+	self deny: (checker checkList: { doubleFig1 }).
+	self
+		assert: (checker results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1' ).
+		
+	dict := checker results groupedBy: [ :each | each class ].
+	
+	dup1 := (dict at: MicDuplicatedAnchorResult) first.
+	self assert: dup1 source equals: '/myDirectory/defAncS0DoubleFig1Fig2RefAncS1.md'.
+	self assert: dup1 anchorLabel equals: 'fig1'.
+	
+	
+]
+
+{ #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testDuplicatedMaths [
 
 	| defAnCS0DoubleEq2DoubleEq1RefEq1 checker dict dup1 dup2 |
@@ -602,36 +648,6 @@ See *@ancS1@*
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'ancS1' )
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedFiguresInFile [
-
-	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@ancS0
-
-![a caption 1](figures/f.png anchor=fig1)
-
-![a caption 2](figures/f.png anchor=fig1)
-
-![a caption 2](figures/f.png anchor=fig1)
-
-![a caption 2](figures/f.png anchor=fig1)
-
-![a caption 3](figures/f.png anchor=fig2)
-
-See *@ancS1@* 
-
-' ].
-	file ensureCreateFile.
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { file }).
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1')
 ]
 
 { #category : 'tests - reporting' }
