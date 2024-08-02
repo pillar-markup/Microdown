@@ -48,7 +48,7 @@ See *@Eq1@*
 	^ defAnCS0DoubleEq2DoubleEq1RefEq1
 ]
 
-{ #category : 'tests - reporting' }
+{ #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> defAncS0DoubleFig1Fig2RefAncS1 [
 
 	| doubleFig1 |
@@ -623,31 +623,6 @@ See *@anchorSection1@* and *@anchorSection0@*
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedFigures [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 
-@ancS0
-
-![a caption 1](figures/f.png anchor=ancS1)
-
-![a caption 2](figures/f.png anchor=ancS1)
-
-![a caption 3](figures/f.png anchor=ancS2)
-
-See *@ancS1@*
-
-'.
-	doc fromFile: 'fakedFile'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self deny: visitor isOkay.
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS1' )
 ]
 
 { #category : 'tests - reporting' }
