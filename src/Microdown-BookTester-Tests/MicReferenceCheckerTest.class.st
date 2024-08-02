@@ -15,45 +15,6 @@ Class {
 }
 
 { #category : 'helpers - anchors & references' }
-MicReferenceCheckerTest >> conflictBetweenFigSecEq [
-
-	| conflictBetweenFigSecEq |
-	conflictBetweenFigSecEq := dir / 'conflictBetweenFigSecEq.md'.
-	conflictBetweenFigSecEq writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@ancS0
-
-![a caption 1](figures/f.png anchor=ancS1)
-
-# Section 1
-@ancS1
-
-We have a duplication between the section and the figure.
-
-# Section 3
-@ancS3
-
-We have a duplication between section and equation
-$$ %anchor=ancS0
-balbalbalb! 
-$$
-
-Here we have a duplication between the figure and the equation
-
-![a caption 1](figures/f.png anchor=fig2)
-
-$$ %anchor=fig2
-balbalbalb! 
-$$
-
-See *@ancS1@* and *@ancS0@*
-
-' ].
-	conflictBetweenFigSecEq ensureCreateFile.
-	^ conflictBetweenFigSecEq
-]
-
-{ #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defAnCS0DoubleEq2DoubleEq1RefEq1 [
 
 	| defAnCS0DoubleEq2DoubleEq1RefEq1 |
@@ -197,6 +158,98 @@ See *@ancUnkS0@*
 
 ' ].
 	defFig1AndRefToAncUnkS0 ensureCreateFile
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> duplicatedFigSecEq [
+
+	| conflictBetweenFigSecEq |
+	conflictBetweenFigSecEq := dir / 'duplicatedFigSecEq.md'.
+	conflictBetweenFigSecEq writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+![a caption 1](figures/f.png anchor=ancS1)
+
+# Section 1
+@ancS1
+
+We have a duplication between the section and the figure.
+
+# Section 3
+@ancS3
+
+We have a duplication between section and equation
+$$ %anchor=ancS0
+balbalbalb! 
+$$
+
+Here we have a duplication between the figure and the equation
+
+![a caption 1](figures/f.png anchor=fig2)
+
+$$ %anchor=fig2
+balbalbalb! 
+$$
+
+See *@ancS1@* and *@ancS0@*
+
+' ].
+	conflictBetweenFigSecEq ensureCreateFile.
+	^ conflictBetweenFigSecEq
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> duplicatedFigSecEqPart1 [
+
+	| duplicatedFigSecEqPart1 |
+	duplicatedFigSecEqPart1 := dir / 'duplicatedFigSecEqPart1.md'.
+	duplicatedFigSecEqPart1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+![a caption 1](figures/f.png anchor=ancS1)
+
+
+$$ %anchor=fig2
+balbalbalb! 
+$$
+
+
+# Section 3
+@ancS3
+
+'
+ ].
+	duplicatedFigSecEqPart1 ensureCreateFile.
+	^ duplicatedFigSecEqPart1
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> duplicatedFigSecEqPart2 [
+
+	| duplicatedFigSecEqPart2 |
+	duplicatedFigSecEqPart2 := dir / 'duplicatedFigSecEqPart2.md'.
+	duplicatedFigSecEqPart2 writeStreamDo: [ :stream |
+		stream nextPutAll: '
+# Duplication with Figure
+
+@ancS1
+
+We have a duplication between section and equation
+$$ %anchor=ancS0
+balbalbalb! 
+$$
+
+Here we have a duplication between the figure and the equation
+
+![a caption 1](figures/f.png anchor=fig2)
+
+See *@ancS1@* and *@ancS0@*
+
+' ].
+	duplicatedFigSecEqPart2 ensureCreateFile.
+	^ duplicatedFigSecEqPart2
 ]
 
 { #category : 'helpers - anchors & references' }
@@ -453,9 +506,22 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEq [
 
 	| conflictBetweenFigSecEq visitor |
-	conflictBetweenFigSecEq := self conflictBetweenFigSecEq.
+	conflictBetweenFigSecEq := self duplicatedFigSecEq.
 	visitor := MicReferenceChecker new.
 	self deny: (visitor checkList: { conflictBetweenFigSecEq }).
+	self
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
+]
+
+{ #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEqInDifferentFile [
+
+	| duplicatedFigSecEqPart1 duplicatedFigSecEqPart2 visitor |
+	duplicatedFigSecEqPart1 := self duplicatedFigSecEqPart1.
+	duplicatedFigSecEqPart2 := self duplicatedFigSecEqPart2.
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkList: { duplicatedFigSecEqPart1 . duplicatedFigSecEqPart2 }).
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
