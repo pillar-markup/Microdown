@@ -15,7 +15,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'message',
-		'anchorLabel',
 		'status',
 		'source',
 		'explanation'
@@ -54,32 +53,14 @@ MicResult class >> reset [
 ]
 
 { #category : 'accessing' }
-MicResult >> anchorLabel [
-
-	^ anchorLabel
-]
-
-{ #category : 'accessing' }
-MicResult >> anchorLabel: anObject [
-
-	anchorLabel := anObject
-]
-
-{ #category : 'accessing' }
 MicResult >> explanation [
 
-	^ 'test status: ',
-	  (self class allMessages at: self status asString) asString ,
-     String cr , 
-     'Description of the test result : ' ,
-	 self message asString ,
-	 String cr ,
-	 'the concerned element :  ',
-	 self anchorLabel asString , 
-	 String cr , 
-	'from the source file:  ' ,
-   	self source asString 
-	
+	^ 'Status: '
+	  , (self class allMessages at: self status asString) asString
+	  , String cr , 'Description of the test result : '
+	  , self message asString , String cr , 'the concerned element :  '
+	  , self anchorLabel asString , String cr , 'from the source file:  '
+	  , self source asString
 ]
 
 { #category : 'accessing' }

@@ -94,3 +94,11 @@ MicRootBlock >> properties: aConfigurationForPillar [
 	self properties keysAndValuesDo: [ :k :v | aConfigurationForPillar at: k put: v ].
 	properties := aConfigurationForPillar
 ]
+
+{ #category : 'accessing' }
+MicRootBlock >> resolveYourself [
+
+	MicZincPathResolver
+		resolve: self
+		withBase: self fromFile.
+]

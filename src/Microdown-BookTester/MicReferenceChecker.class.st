@@ -1,8 +1,21 @@
 "
-I'm a little tool that checks whether a document has (1) references to undeclared anchors or (2) duplicated anchors. 
+I'm a nice little tool that checks whether a document has 
+- references to undeclared anchors
+- duplicated anchors
 
-For now Microdown is file agnostic so this is impossible to report in which file such duplication or reference occurs. 
-Once file support is introduced I should be revised to report better information to the user. 
+I check
+- figures
+- math equations
+- or plain references.
+
+I use the FileCollector to support all the file input relations.
+This lets the user have for example unused, broken or underway files on the side.
+As soon as they are not used I do not analyse them.
+
+
+# todo
+
+when we use the checkDir or the checkFile: API, it should still do the full closure of used files (i.e. use the file collector). This is a lot simpler to understand for the user. Having a systematic approach is the way to go. 
 "
 Class {
 	#name : 'MicReferenceChecker',
@@ -11,8 +24,8 @@ Class {
 		'references',
 		'anchors',
 		'duplicatedAnchors',
-		'allTestsResults',
-		'finalStatus'
+		'results',
+		'fileSystem'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -20,105 +33,72 @@ Class {
 
 { #category : 'accessing' }
 MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
-	|micResultInstance|
-		micResultInstance := MicResult new.
-		micResultInstance
-						      message:( MicResult allMessages at: #anchorIsMissing ) ; 
-		                  anchorLabel: anAnchorReference anchorLabel ;
-								status: false ;
-                         source: anAnchorReference fromFile 	.				
-	  allTestsResults add: micResultInstance .							
-							
-		
+
+	| micResultInstance |
+	micResultInstance := MicUndefinedAnchorResult new.
+	micResultInstance
+		message: (MicUndefinedAnchorResult allMessages at: #anchorIsMissing);
+		anchorLabel: anAnchorReference anchorLabel;
+		source: anAnchorReference fromFile.
+	results add: micResultInstance
 ]
 
 { #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 
 	| micResultInstance |
-	micResultInstance := MicResult new.
+	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
-		message: (MicResult allMessages at: #twoAnchorsSameName);
+		message:
+			(MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
 		anchorLabel: anAnchor anchorLabel;
-		status: false;
 		source: anAnchor fromFile.
-	allTestsResults add: micResultInstance
+	results add: micResultInstance
 ]
 
-{ #category : 'accessing' }
-MicReferenceChecker >> allTestsResults [
-
-	^ allTestsResults
-]
-
-{ #category : 'visiting' }
-MicReferenceChecker >> check: aDocument [ 
-	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
-	can have references between them and the checker should be shared amongst the documents 
-	since it collects the references."
-
-	aDocument accept: self.
-	^ self isOkay 
-	
-	
-
-]
-
-{ #category : 'visiting' }
+{ #category : 'main API' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
 	^ self checkList: aDir allFiles
 ]
 
-{ #category : 'visiting' }
-MicReferenceChecker >> checkFile: aFile [ 
-	"Will parse the given file and invite the visitor and return visitor isOk value"
+{ #category : 'main API' }
+MicReferenceChecker >> checkList: aCollection [
+	"Pay attention checking a file in isolation is DIFFERENT from a list, because a document can have references between them and the checker should be shared amongst the documents since it collects the references."
 
-	| document |
-	document := Microdown parseFile: aFile. 
-	^ self check: document
-	
-	
-
+	aCollection do: [ :each | 
+			| document |
+			document := Microdown parseFile: each.
+			document accept: self ].
+	^ self isOkay
 ]
 
-{ #category : 'visiting' }
-MicReferenceChecker >> checkList: aCollection [  
-	"Pay attention checking a file in isolation is DIFFERENT from a list, because document 
-	can have references between them and the checker should be shared amongst the documents 
-	since it collects the references."
+{ #category : 'main API' }
+MicReferenceChecker >> checkProject: aDocument [
 
-	 aCollection do: [ :each | 
-		self checkFile: each ]. 
-	^ self isOkay.
-]
-
-{ #category : 'visiting' }
-MicReferenceChecker >> checkProject: aDocument fileSystem: fileSystem [
-	
-	| mainMic visitor  listOfFiles |
-	mainMic := Microdown parseFile: aDocument .
-	visitor := MicFilesCollector new.
-	visitor
-		fileSystem: fileSystem ;
+	| mainMic collector listOfFiles |
+	mainMic := Microdown parseFile: aDocument.
+	collector := MicFileCollector new.
+	collector
+		fileSystem: fileSystem;
 		visit: mainMic.
-	listOfFiles := visitor visited collect: [ :file | fileSystem referenceTo: file  ] . 
-	^ self checkList: listOfFiles  .
-	
-	
-
+	self handleUndefinedFilesFrom: collector.
+	listOfFiles := collector visitedDocumentFiles collect: [ :file |
+		               fileSystem referenceTo: file ].
+	^ self checkList: listOfFiles
 ]
 
 { #category : 'visiting' }
 MicReferenceChecker >> collectBadReferences [
+	" should be called just after all the docs are visited otherwise the result can be wrong"
 
-	" should be called just after all the docs are visited other wise the result can be wrong"
-
-	| existingAnchorNames badReference |
-	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
-	badReference := references reject: [ :anchorReference | existingAnchorNames includes: anchorReference anchorLabel   ] .
-	badReference do: [ :each | self addBadReferenceAnchor: each ] .
+	| badReference existingAnchorNames |
+	existingAnchorNames := (anchors collect: [ :each | each anchorLabel ]).
+	badReference := references reject: [ :anchorReference |
+		                existingAnchorNames includes:
+			                anchorReference anchorLabel ].
+	badReference do: [ :each | self addBadReferenceAnchor: each ]
 ]
 
 { #category : 'reporting' }
@@ -127,9 +107,10 @@ MicReferenceChecker >> duplicatedAnchors [
 	^ duplicatedAnchors
 ]
 
-{ #category : 'visiting' }
-MicReferenceChecker >> finalStatus [ 
-	^ allTestsResults isEmpty .
+{ #category : 'accessing' }
+MicReferenceChecker >> fileSystem: aFileSystem [
+
+	fileSystem := aFileSystem
 ]
 
 { #category : 'visiting' }
@@ -143,6 +124,15 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 		 ].
 	 anchors add: anElement
 	
+]
+
+{ #category : 'main API' }
+MicReferenceChecker >> handleUndefinedFilesFrom: collector [
+
+	collector unexistingFiles do: [ :each |
+		results add: (MicUndefinedInputFileResult new inputFileBlock: each ; source: each fromFile ; yourself )
+		
+		]
 ]
 
 { #category : 'visiting' }
@@ -160,10 +150,8 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
-	
-	allTestsResults := OrderedCollection new.
-	finalStatus := false.
-	
+
+	results := OrderedCollection new.
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new
@@ -171,18 +159,24 @@ MicReferenceChecker >> initialize [
 
 { #category : 'testing' }
 MicReferenceChecker >> isOk [
-
+	self flag: #fixThisLogic.
+	"isOkay vs. isOk ???"
+	
 	^ duplicatedAnchors isEmpty and: [
-		references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
+		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
 { #category : 'testing' }
 MicReferenceChecker >> isOkay [
-	
-	   self collectBadReferences .
-	 ^ self finalStatus .
-	 
 
+	self collectBadReferences.
+	^ results isEmpty
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> results [
+
+	^ results
 ]
 
 { #category : 'reporting' }
@@ -204,10 +198,9 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 	| isAlready |
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
 	isAlready ifTrue: [
-		 duplicatedAnchors add: anAnchor.
-		 self addDuplicatedAnchor: anAnchor .
-		 "allTestsResults add: (self result explanation: #twoAnchorsSameName withSpecification: anAnchor anchorLabel )"
-		 ].
+		duplicatedAnchors add: anAnchor.
+		self addDuplicatedAnchor: anAnchor
+		].
 	anchors add: anAnchor
 ]
 
