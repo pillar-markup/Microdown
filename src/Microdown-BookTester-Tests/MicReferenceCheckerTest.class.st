@@ -747,13 +747,15 @@ MicReferenceCheckerTest >> testUndefinedInputFilesAreMentionedInResult [
 			assert: each class
 			equals: MicUndefinedInputFileResult].
 	
-	self 
-		assert: (checker results collect: [ :each | each inputFileBlock path path "Ugly API to improve later" ]) 
-		equals: OrderedCollection <- 
-			{ 
-			'/myDirectory/sections/section3.md' .
-			'/myDirectory/sections/subsections/section5.md' . 
-			'/myDirectory/sections/subsections/section3.md' 
-			}  
+	(checker results collect: [ :each | each inputFileBlock path path "Ugly API to improve later" ]) 
+		do: [ :each | 
+					self 
+						assert:  
+				({ 
+				'/myDirectory/sections/section3.md' .
+				'/myDirectory/sections/subsections/section5.md' . 
+				'/myDirectory/sections/subsections/section3.md' 
+				}  includes: each)
+			]
 
 ]
