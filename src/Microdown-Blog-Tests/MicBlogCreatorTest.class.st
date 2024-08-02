@@ -68,6 +68,7 @@ MicBlogCreatorTest >> setUp [
 		targetDirectory: fileSystem / 'html';
 		sourceDirectory: fileSystem / 'source';
 		root: resources genericEmptyRootPath;
+		generateRecentpost: MicListSummarizerTest new setUp createListOfMicRootBlock;
 		dateList: (monthListCreator generateMicListBlockOfLinkDateWith: monthList).
 ]
 
@@ -197,6 +198,22 @@ MicBlogCreatorTest >> testDownloadCSS [
 
 	self assert: (fileSystem / 'html' / 'css') isDirectory.
 	self assert: (fileSystem / 'html' / 'css' / 'axist.min.css') exists
+]
+
+{ #category : 'tests' }
+MicBlogCreatorTest >> testGenerateRecentpost [
+
+| recentPost|
+
+blog generateRecentpost: MicListSummarizerTest new setUp createListOfMicRootBlock.
+
+recentPost := blog recentPost.
+
+self assert: (recentPost isKindOf: MicRootBlock);
+assert: recentPost children size equals: 2;
+assert: (recentPost children first isKindOf: MicHeaderBlock);
+assert: (recentPost children second isKindOf: MicUnorderedListBlock)
+
 ]
 
 { #category : 'tests' }

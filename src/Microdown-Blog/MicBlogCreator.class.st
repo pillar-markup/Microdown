@@ -29,7 +29,8 @@ Class {
 		'root',
 		'dateList',
 		'cssFrameworkName',
-		'sum'
+		'sum',
+		'recentPost'
 	],
 	#category : 'Microdown-Blog',
 	#package : 'Microdown-Blog'
@@ -103,6 +104,7 @@ MicBlogCreator >> createAllHtmlFile [
 			root: root;
 			                       summarize: each ].
 	self sortSingleSummarizedDocuments: listOfSingleSummary.
+	self generateRecentpost: listOfSingleSummary.
 	self initializeMonthList: listOfSingleSummary.
 
 	"transform all markdown file into html file"
@@ -172,6 +174,33 @@ MicBlogCreator >> downloadCSS [
 		(cssProvider findCssNamed: cssFrameworkName)
 ]
 
+{ #category : 'rendering' }
+MicBlogCreator >> generateRecentpost: listOfMicSingleSummarized [
+
+	| rootBlock selectionSize unorderedList listElement link header |
+	
+	rootBlock := MicRootBlock new.
+	
+	selectionSize := 5 min: listOfMicSingleSummarized size.
+	
+	unorderedList := MicUnorderedListBlock new.
+	1 to: selectionSize do: [ :each |
+		listElement := MicListItemBlock new.
+		link := (((listOfMicSingleSummarized at: each) children at: 2) children at: 1) copy.
+		link parent: listElement.
+		listElement parent: unorderedList ].
+	
+	header := MicHeaderBlock new.
+	header level: 3.
+	(MicTextBlock new bodyString: 'Recent Post') parent: header.
+	
+	recentPost := rootBlock
+		  addChild: header;
+		  addChild: unorderedList
+
+	 
+]
+
 { #category : 'initialization' }
 MicBlogCreator >> initialize [
 
@@ -206,6 +235,7 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 	
 	context := Dictionary new
     at: 'content' put: htmlString;
+	 at: 'recentPost' put: (MicHTMLVisitor new visit: recentPost copy) first contents;
 	 at: 'archive' put: (MicHTMLVisitor new visit: dateList copy) first contents;
     yourself.
 	
@@ -215,9 +245,30 @@ MicBlogCreator >> mustacheAssembly: htmlString [
 { #category : 'rendering' }
 MicBlogCreator >> mustacheTemplate [
 
-	^ '<section><h1>Weekly news about Pharo</h1></section>
-	<section>{{{content}}}</section>
-	<section>{{{archive}}}</section>'
+	^ '	<h1	><a href="/index.html" title="Weekly news about Pharo" rel="home">Weekly news about Pharo</a></h1>
+		<p>Everything you wanted to know about http://www.pharo.org without being forced to read 1000 mails</p>
+		<table>
+		<tr>
+			<td><a href="http://www.mirandabanda.org">Cog Blog</a></td>
+			<td><a href="http://clementbera.wordpress.com">Smalltalk, Tips&#8217;n Tricks</a></td>
+			<td><a href="http://astares.blogspot.fr">Hitchhiker&#8217;s guide to &#8230;</a></td>
+			<td><a href="https://wordpress.com/view/masteringobjects.wordpress.com">Masteringobjects @ PharoDev</a></td>
+			<td><a href="https://pharoweekly.wordpress.com/about/">About</a></td>
+		</tr>
+	</table>
+	{{{content}}}
+	<table>
+		<tr>
+			<td>{{{recentPost}}}</td>
+			<td>{{{archive}}}</td>
+		</tr>
+	</table>'
+]
+
+{ #category : 'accessing' }
+MicBlogCreator >> recentPost [
+
+	^ recentPost
 ]
 
 { #category : 'rendering' }
