@@ -14,6 +14,40 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
+{ #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> defAnCS0DoubleEq2DoubleEq1RefEq1 [
+
+	| defAnCS0DoubleEq2DoubleEq1RefEq1 |
+	defAnCS0DoubleEq2DoubleEq1RefEq1 := dir
+	                                    /
+	                                    'defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	defAnCS0DoubleEq2DoubleEq1RefEq1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+$$ %anchor=Eq1
+balbalbalb! 
+$$
+
+$$ %anchor=Eq2
+balbalbalb! 
+$$
+
+$$ %anchor=Eq2
+balbalbalb! 
+$$
+
+$$ %anchor=Eq1
+balbalbalb! 
+$$
+
+See *@Eq1@* 
+
+' ].
+	defAnCS0DoubleEq2DoubleEq1RefEq1 ensureCreateFile.
+	^ defAnCS0DoubleEq2DoubleEq1RefEq1
+]
+
 { #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defEq1AndReferToEq1 [
 
@@ -305,6 +339,31 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
 ]
 
+{ #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testDuplicatedMaths [
+
+	| defAnCS0DoubleEq2DoubleEq1RefEq1 checker dict dup1 dup2 |
+	defAnCS0DoubleEq2DoubleEq1RefEq1 := self defAnCS0DoubleEq2DoubleEq1RefEq1.
+	checker := MicReferenceChecker new.
+	self deny: (checker checkList: { defAnCS0DoubleEq2DoubleEq1RefEq1 }).
+	self
+		assert: checker results first source
+		equals: defAnCS0DoubleEq2DoubleEq1RefEq1 fullName.
+	self
+		assert: (checker results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'Eq2' 'Eq1' ).
+		
+	dict := checker results groupedBy: [ :each | each class ].
+	
+	dup1 := (dict at: MicDuplicatedAnchorResult) first.
+	self assert: dup1 source equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self assert: dup1 anchorLabel equals: 'Eq2'.
+	
+	dup2 := (dict at: MicDuplicatedAnchorResult) second.
+	self assert: dup2 source equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self assert: dup2 anchorLabel equals: 'Eq1'.
+]
+
 { #category : 'tests - full project' }
 MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFiles [
 
@@ -333,7 +392,7 @@ MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 	self assert: unk anchorLabel equals: 'ancUnkS2'.
 	
 	undefined := (dict at: MicUndefinedInputFileResult) first.
-	self assert: unk source equals: '/myDirectory/sections/section2.md'.
+	self assert: undefined source equals: '/myDirectory/sections/section2.md'.
 
 
 ]
@@ -573,78 +632,6 @@ See *@ancS1@*
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1')
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedMaths [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 
-@ancS0
-
-$$ %anchor=Eq1
-balbalbalb! 
-$$
-
-$$ %anchor=Eq1
-balbalbalb! 
-$$
-
-$$ %anchor=Eq3
-balbalbalb! 
-$$
-
-$$ %anchor=Eq3
-balbalbalb! 
-$$
-
-See *@Eq1@* and *@Eq3@*
-
-'.
-	doc fromFile: 'fakedFile'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self deny: visitor isOkay.
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'Eq1' 'Eq3' )
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedMathsInFile [
-
-	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@anchorSection0
-
-$$ %anchor=ancS1
-balbalbalb! 
-$$
-
-$$ %anchor=ancS2
-balbalbalb! 
-$$
-
-$$ %anchor=ancS2
-balbalbalb! 
-$$
-
-$$ %anchor=ancS1
-balbalbalb! 
-$$
-
-See *@ancS1@* 
-
-' ].
-	file ensureCreateFile.
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { file }).
-	self assert: visitor results first source equals: file fullName.
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS2' 'ancS1' )
 ]
 
 { #category : 'tests - reporting' }
