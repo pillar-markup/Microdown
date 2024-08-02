@@ -15,6 +15,45 @@ Class {
 }
 
 { #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> conflictBetweenFigSecEq [
+
+	| conflictBetweenFigSecEq |
+	conflictBetweenFigSecEq := dir / 'conflictBetweenFigSecEq.md'.
+	conflictBetweenFigSecEq writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 
+@ancS0
+
+![a caption 1](figures/f.png anchor=ancS1)
+
+# Section 1
+@ancS1
+
+We have a duplication between the section and the figure.
+
+# Section 3
+@ancS3
+
+We have a duplication between section and equation
+$$ %anchor=ancS0
+balbalbalb! 
+$$
+
+Here we have a duplication between the figure and the equation
+
+![a caption 1](figures/f.png anchor=fig2)
+
+$$ %anchor=fig2
+balbalbalb! 
+$$
+
+See *@ancS1@* and *@ancS0@*
+
+' ].
+	conflictBetweenFigSecEq ensureCreateFile.
+	^ conflictBetweenFigSecEq
+]
+
+{ #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> defAnCS0DoubleEq2DoubleEq1RefEq1 [
 
 	| defAnCS0DoubleEq2DoubleEq1RefEq1 |
@@ -411,6 +450,18 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 ]
 
 { #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEq [
+
+	| conflictBetweenFigSecEq visitor |
+	conflictBetweenFigSecEq := self conflictBetweenFigSecEq.
+	visitor := MicReferenceChecker new.
+	self deny: (visitor checkList: { conflictBetweenFigSecEq }).
+	self
+		assert: (visitor results collect: [ :each | each anchorLabel ])
+		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
+]
+
+{ #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testDuplicatedFigures [
 
 	| doubleFig1 checker dict dup1 |
@@ -571,98 +622,6 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
 	self assert: visitor results first source equals: '/fileRefAncS1.md'
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedAnchorBetweenSectionAndFigure [
-
-	| file visitor |
-	file := (dir / 'file.md').
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@ancS0
-
-![a caption 1](figures/f.png anchor=ancS1)
-
-
-# Section 1
-@ancS1
-
-We have a conflict between the section and the figure.
-
-# Section 2
-@ancS2
-
-# Section 3
-@ancS3
-
-$$ %anchor=ancS0
-balbalbalb! 
-$$
-
-See *@ancS1@* and *@ancS0@*
-
-' ].
-	file ensureCreateFile.
-
-
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { file }).
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS1' 'ancS0' )
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingDuplicatedSectionAnchorsInFile [
-
-	| file visitor |
-	file := (dir / 'file.txt') asFileReference.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '# Section 
-@anchorSection0
-
-# Section 1
-@anchorSection1
-
-# Section 2
-@anchorSection1
-
-# Section 3
-@anchorSection1
-
-See *@anchorSection1@* and *@anchorSection0@*
-
-' ].
-	file ensureCreateFile.
-
-
-	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: {file}).
-	self
-		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'anchorSection1' 'anchorSection1' )
-]
-
-{ #category : 'tests - reporting' }
-MicReferenceCheckerTest >> testReportingUnknownAnchor [
-
-	| doc visitor |
-	doc := Microdown parse: '# Section 
-@anchorSection0
-
-# Section 1
-@anchorSection1
-
-See *@anchorSection1@* and *@anchorSection2@*
-
-'.
-	visitor := MicReferenceChecker new.
-	doc accept: visitor.
-	self deny: visitor isOk.
-	self 
-		assert: (visitor unknownAnchors collect: [ :each | each anchorLabel ]) 
-		equals: (OrderedCollection <- #('anchorSection2'))  
 ]
 
 { #category : 'skipped for now' }
