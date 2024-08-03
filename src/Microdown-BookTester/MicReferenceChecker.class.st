@@ -57,7 +57,7 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
-	^ self checkList: aDir allFiles
+	self checkList: aDir allFiles
 ]
 
 { #category : 'main API' }
@@ -68,7 +68,7 @@ MicReferenceChecker >> checkList: aCollection [
 			| document |
 			document := Microdown parseFile: each.
 			document accept: self ].
-	^ self isOkay
+	self collectBadReferences.
 ]
 
 { #category : 'main API' }
@@ -83,7 +83,7 @@ MicReferenceChecker >> checkProject: aFileReference [
 	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
 		               fileSystem referenceTo: file ].
-	^ self checkList: listOfFiles
+	self checkList: listOfFiles
 ]
 
 { #category : 'visiting' }
@@ -166,7 +166,6 @@ MicReferenceChecker >> isOk [
 { #category : 'testing' }
 MicReferenceChecker >> isOkay [
 
-	self collectBadReferences.
 	^ results isEmpty
 ]
 
