@@ -37,7 +37,6 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 	| micResultInstance |
 	micResultInstance := MicUndefinedAnchorResult new.
 	micResultInstance
-		message: (MicUndefinedAnchorResult allMessages at: #anchorIsMissing);
 		anchorLabel: anAnchorReference anchorLabel;
 		source: anAnchorReference fromFile.
 	results add: micResultInstance
@@ -49,8 +48,6 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	| micResultInstance |
 	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
-		message:
-			(MicDuplicatedAnchorResult allMessages at: #twoAnchorsSameName);
 		anchorLabel: anAnchor anchorLabel;
 		source: anAnchor fromFile.
 	results add: micResultInstance

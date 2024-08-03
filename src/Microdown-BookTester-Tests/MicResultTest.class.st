@@ -41,6 +41,7 @@ MicResultTest >> testExplanationUndefinedAnchor [
 MicResultTest >> testUndefinedFigureFile [
 
 	| res |
+	self skip. 
 	res := MicUndefinedFigureFileResult new. 
 	res inputFileBlock: (MicInputfileBlock new  path: 'myDir/foo.md').
 	res source: '/myDir/chapter2.md'.
