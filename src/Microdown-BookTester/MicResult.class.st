@@ -23,6 +23,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicResult class >> headerString [
+
+	^ self subclassResponsibility 
+]
+
 { #category : 'accessing' }
 MicResult >> explanation [
 

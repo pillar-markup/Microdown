@@ -8,6 +8,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicUndefinedFigureFileResult class >> headerString [
+
+	^ 'Undefined figure files:'
+]
+
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> figureFileString: aString [
 	
