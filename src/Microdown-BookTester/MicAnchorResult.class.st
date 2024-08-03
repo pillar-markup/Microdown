@@ -19,3 +19,15 @@ MicAnchorResult >> anchorLabel: anObject [
 
 	anchorLabel := anObject
 ]
+
+{ #category : 'accessing' }
+MicAnchorResult >> explanation [
+
+	^ 'Anchor ', anchorLabel, ' is ', self isWhat, ' in file: ', source
+	
+]
+
+{ #category : 'accessing' }
+MicAnchorResult >> isWhat [
+	^  'undefined'
+]

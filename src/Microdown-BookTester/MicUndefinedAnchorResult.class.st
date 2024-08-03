@@ -8,6 +8,11 @@ Class {
 { #category : 'accessing' }
 MicUndefinedAnchorResult >> explanation [
 
-	^ 'In file: ', source, ' the anchor ', anchorLabel, 'is undefined.' 
+	^ 'Anchor ', anchorLabel, ' is ', self isWhat, ' in file: ', source
 	
+]
+
+{ #category : 'accessing' }
+MicUndefinedAnchorResult >> isWhat [
+	^  'undefined'
 ]

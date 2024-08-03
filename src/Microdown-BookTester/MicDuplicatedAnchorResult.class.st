@@ -4,3 +4,8 @@ Class {
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
+
+{ #category : 'accessing' }
+MicDuplicatedAnchorResult >> isWhat [
+	^  'duplicated'
+]
