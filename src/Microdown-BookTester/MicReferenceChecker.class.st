@@ -72,10 +72,10 @@ MicReferenceChecker >> checkList: aCollection [
 ]
 
 { #category : 'main API' }
-MicReferenceChecker >> checkProject: aDocument [
+MicReferenceChecker >> checkProject: aFileReference [
 
 	| mainMic collector listOfFiles |
-	mainMic := Microdown parseFile: aDocument.
+	mainMic := Microdown parseFile: aFileReference.
 	collector := MicFileCollector new.
 	collector
 		fileSystem: fileSystem;
