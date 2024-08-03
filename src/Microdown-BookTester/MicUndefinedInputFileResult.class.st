@@ -8,6 +8,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicUndefinedInputFileResult class >> headerString [
+
+	^ 'Undefined input files:'
+]
+
 { #category : 'inputFileBlock:' }
 MicUndefinedInputFileResult >> inputFile [ 
 	

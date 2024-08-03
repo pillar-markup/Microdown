@@ -25,7 +25,7 @@ Class {
 { #category : 'accessing' }
 MicFileCollector >> fileSystem [
 
-	^ fileSystem ifNil: [ FileSystem disk ]
+	^ fileSystem
 ]
 
 { #category : 'accessing' }
@@ -38,6 +38,7 @@ MicFileCollector >> fileSystem: aFileSystem [
 MicFileCollector >> initialize [ 
 
 	super initialize.
+	fileSystem := FileSystem disk.
 	visited := Set new.
 	unexistingFiles := Set new.
 ]

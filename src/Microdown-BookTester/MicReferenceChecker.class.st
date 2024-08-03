@@ -53,6 +53,18 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	results add: micResultInstance
 ]
 
+{ #category : 'reporting' }
+MicReferenceChecker >> buildReport: str [ 
+
+	| dict | 
+	dict := results groupedBy: [ :each | each class ].
+	dict keysAndValuesDo: [ :k :v | 
+		str nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
+		self reportElementsOn: str.
+		str cr; cr.
+		]
+]
+
 { #category : 'main API' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
@@ -60,7 +72,7 @@ MicReferenceChecker >> checkDirectory: aDir [
 	self checkList: aDir allFiles
 ]
 
-{ #category : 'main API' }
+{ #category : 'internal' }
 MicReferenceChecker >> checkList: aCollection [
 	"Pay attention checking a file in isolation is DIFFERENT from a list, because a document can have references between them and the checker should be shared amongst the documents since it collects the references."
 
@@ -98,7 +110,7 @@ MicReferenceChecker >> collectBadReferences [
 	badReference do: [ :each | self addBadReferenceAnchor: each ]
 ]
 
-{ #category : 'reporting' }
+{ #category : 'internal' }
 MicReferenceChecker >> duplicatedAnchors [
 
 	^ duplicatedAnchors
@@ -123,7 +135,7 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 	
 ]
 
-{ #category : 'main API' }
+{ #category : 'internal' }
 MicReferenceChecker >> handleUndefinedFilesFrom: collector [
 
 	collector unexistingFiles do: [ :each |
@@ -147,7 +159,8 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
-
+	
+	fileSystem := FileSystem disk.
 	results := OrderedCollection new.
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
@@ -169,13 +182,28 @@ MicReferenceChecker >> isOkay [
 	^ results isEmpty
 ]
 
+{ #category : 'reporting' }
+MicReferenceChecker >> report [
+
+	^ String streamContents: [ :str |
+		self buildReport: str
+		]
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> reportElementsOn: aStream [
+
+		results do: [ :each | aStream tab; nextPutAll: each explanation ] separatedBy: [ aStream cr ]
+	
+]
+
 { #category : 'accessing' }
 MicReferenceChecker >> results [
 
 	^ results
 ]
 
-{ #category : 'reporting' }
+{ #category : 'internal' }
 MicReferenceChecker >> unknownAnchors [
 	
 	| unknown ref |
