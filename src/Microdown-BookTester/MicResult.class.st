@@ -55,12 +55,7 @@ MicResult class >> reset [
 { #category : 'accessing' }
 MicResult >> explanation [
 
-	^ 'Status: '
-	  , (self class allMessages at: self status asString) asString
-	  , String cr , 'Description of the test result : '
-	  , self message asString , String cr , 'the concerned element :  '
-	  , self anchorLabel asString , String cr , 'from the source file:  '
-	  , self source asString
+	^ self subclassResponsibility
 ]
 
 { #category : 'accessing' }
