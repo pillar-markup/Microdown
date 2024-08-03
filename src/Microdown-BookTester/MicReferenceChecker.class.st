@@ -147,7 +147,8 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
-
+	
+	fileSystem := FileSystem disk.
 	results := OrderedCollection new.
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
