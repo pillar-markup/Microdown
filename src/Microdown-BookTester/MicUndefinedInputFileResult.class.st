@@ -8,6 +8,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'inputFileBlock:' }
+MicUndefinedInputFileResult >> inputFile [ 
+	
+	^ inputFileBlock path
+]
+
 { #category : 'accessing' }
 MicUndefinedInputFileResult >> inputFileBlock [
 
@@ -17,4 +23,10 @@ MicUndefinedInputFileResult >> inputFileBlock [
 { #category : 'inputFileBlock:' }
 MicUndefinedInputFileResult >> inputFileBlock: anInputFileBlock [
 	inputFileBlock := anInputFileBlock
+]
+
+{ #category : 'accessing' }
+MicUndefinedInputFileResult >> what [ 
+
+	^ self inputFile
 ]

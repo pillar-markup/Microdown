@@ -19,54 +19,14 @@ Class {
 		'source',
 		'explanation'
 	],
-	#classInstVars : [
-		'allMessages'
-	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
 
 { #category : 'accessing' }
-MicResult class >> allMessages [
-   	^ allMessages ifNil: [ 
-		allMessages := Dictionary new.
-		allMessages
-		  
-	     	at: #referenceIsFine put: 'the reference defined correctly and point to a defined anchor';
-		   at: #false put: 'Failed' ;
-		   at: #true put: 'Passed' ;
-			at: #anchorIsFine put: 'the anchor is defined correctly and not duplicated elsewhere ';
-			at: #anchorIsMissing put: 'i represent A reference that refers to a missing anchor';
-			at: #twoAnchorsSameName put: '2 anchors are declared with the same name'.
-		^ allMessages ]
-]
-
-{ #category : 'accessing' }
-MicResult class >> message: aMethodSymbol anchorLabel: aAnchorLabel [
-	^ self new message: (self allMessages at: aMethodSymbol); anchorLabel: aAnchorLabel asString; yourself.
-]
-
-{ #category : 'initialization' }
-MicResult class >> reset [
-	<script>
-	allMessages := nil
-]
-
-{ #category : 'accessing' }
 MicResult >> explanation [
 
-	^ 'Status: '
-	  , (self class allMessages at: self status asString) asString
-	  , String cr , 'Description of the test result : '
-	  , self message asString , String cr , 'the concerned element :  '
-	  , self anchorLabel asString , String cr , 'from the source file:  '
-	  , self source asString
-]
-
-{ #category : 'accessing' }
-MicResult >> explanation: anObject [
-
-	explanation := anObject
+	^ self subclassResponsibility
 ]
 
 { #category : 'accessing' }

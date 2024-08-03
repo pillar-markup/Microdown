@@ -310,7 +310,8 @@ MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
 	self defEq1AndReferToEq1.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs.
-	self assert: (visitor checkProject: defEq1AndReferToEq1).
+	visitor checkProject: defEq1AndReferToEq1.
+	self assert: visitor isOkay.
 	self assert: visitor results isEmpty
 ]
 
@@ -321,7 +322,8 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	self defFig1AndRefToAncS0.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs.
-	self deny: (visitor checkProject: defFig1AndRefToAnsC0 ).
+	visitor checkProject: defFig1AndRefToAnsC0.
+	self deny: visitor isOkay.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
 		assert: visitor results first source
@@ -334,7 +336,8 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncUnkS0 [
 	| visitor |
 	self defFig1AndRefToAncUnkS0.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { defFig1AndRefToAncUnkS0 }).
+	visitor checkList: { defFig1AndRefToAncUnkS0 }.
+	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancUnkS0'.
 	self assert: visitor results first source equals: '/defFig1AndRefToAncUnkS0.md'
@@ -347,7 +350,8 @@ MicReferenceCheckerTest >> testDefFig1AndReferToFig1 [
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs.
-	self assert: (visitor checkProject: defAndRefFig1).
+	visitor checkProject: defAndRefFig1.
+	self assert: visitor isOkay.
 	self assert: visitor results isEmpty
 ]
 
@@ -357,8 +361,8 @@ MicReferenceCheckerTest >> testDefFig1ReferToAFigureInFile [
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkList: { defAndRefFig1 }).
-	self assert: visitor results isEmpty
+	visitor checkList: { defAndRefFig1 }.
+	self assert: visitor isOkay.
 	
 ]
 
@@ -369,7 +373,8 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	self fileDefAncS1UndAncS0.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs.
-	self deny: (visitor checkProject:  fileDefAncS1UndAncS0 ).
+	visitor checkProject:  fileDefAncS1UndAncS0.
+	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
@@ -401,7 +406,8 @@ Just a reference See *@ancS1@*  ' ].
 	file2 ensureCreateFile.
 
 	visitor := MicReferenceChecker new.
-	self assert: (visitor checkDirectory: dir)
+	visitor checkDirectory: dir.
+	self assert: visitor isOkay
 	
 
 
@@ -467,7 +473,8 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	file2 ensureCreateFile.
 
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkDirectory: dir).
+	visitor checkDirectory: dir.
+	self deny: visitor isOkay.
 
 	self assert: visitor duplicatedAnchors size equals: 1.
 	self
@@ -488,7 +495,8 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 	| defAncS0TripleAncS1RefAncS1AncS0 checker dict dup1 |
 	defAncS0TripleAncS1RefAncS1AncS0 := self defAncS0TripleAncS1RefAncS1AncS0.
 	checker := MicReferenceChecker new.
-	self deny: (checker checkList: { defAncS0TripleAncS1RefAncS1AncS0 }).
+	checker checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
+	self deny: checker isOkay.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'ancS1' 'ancS1' ).
@@ -508,7 +516,8 @@ MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEq [
 	| conflictBetweenFigSecEq visitor |
 	conflictBetweenFigSecEq := self duplicatedFigSecEq.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { conflictBetweenFigSecEq }).
+	visitor checkList: { conflictBetweenFigSecEq }.
+	self deny: visitor isOkay.
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
@@ -521,7 +530,8 @@ MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEqInDifferentFile [
 	duplicatedFigSecEqPart1 := self duplicatedFigSecEqPart1.
 	duplicatedFigSecEqPart2 := self duplicatedFigSecEqPart2.
 	visitor := MicReferenceChecker new.
-	self deny: (visitor checkList: { duplicatedFigSecEqPart1 . duplicatedFigSecEqPart2 }).
+	visitor checkList: { duplicatedFigSecEqPart1 . duplicatedFigSecEqPart2 }.
+	self deny: visitor isOkay.
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
@@ -533,7 +543,8 @@ MicReferenceCheckerTest >> testDuplicatedFigures [
 	| doubleFig1 checker dict dup1 |
 	doubleFig1 := self defAncS0DoubleFig1Fig2RefAncS1.
 	checker := MicReferenceChecker new.
-	self deny: (checker checkList: { doubleFig1 }).
+	checker checkList: { doubleFig1 }.
+	self deny: checker isOkay.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
 		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1' ).
@@ -553,7 +564,8 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	| defAnCS0DoubleEq2DoubleEq1RefEq1 checker dict dup1 dup2 |
 	defAnCS0DoubleEq2DoubleEq1RefEq1 := self defAnCS0DoubleEq2DoubleEq1RefEq1.
 	checker := MicReferenceChecker new.
-	self deny: (checker checkList: { defAnCS0DoubleEq2DoubleEq1RefEq1 }).
+	checker checkList: { defAnCS0DoubleEq2DoubleEq1RefEq1 }.
+	self deny: checker isOkay.
 	self
 		assert: checker results first source
 		equals: defAnCS0DoubleEq2DoubleEq1RefEq1 fullName.
@@ -579,7 +591,7 @@ MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFile
 	self createProjectCorrectReferencesOnTwoFiles.
 	checker := MicReferenceChecker new.
 	checker fileSystem: fs.
-	self assert: (checker checkProject: section1).
+	checker checkProject: section1.
 	self assert: checker isOkay
 ]
 
@@ -590,7 +602,8 @@ MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 	self createProjectBadAndCorrectReferences.
 	checker := MicReferenceChecker new.
 	checker fileSystem: fs.
-	self deny: (checker checkProject: section1).
+	checker checkProject: section1.
+	self deny: checker isOkay.
 	self assert: checker results size equals: 2.
 
 	dict := checker results groupedBy: [ :each | each class ].
@@ -617,7 +630,8 @@ See *@anchorSection1@*
 '.
 	visitor := MicReferenceChecker new. 
 	doc accept: visitor. 
-	self assert: visitor isOkay 
+	visitor collectBadReferences. 
+	self assert: visitor isOkay
 ]
 
 { #category : 'tests - internal - parse only' }
@@ -632,6 +646,7 @@ See *@anchorSection1@*
 '.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
+	visitor collectBadReferences. 
 	self assert: visitor isOkay
 ]
 
@@ -649,6 +664,7 @@ See *@anchorSection1@*
 '.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
+	visitor collectBadReferences. 
 	self assert: visitor isOkay
 ]
 
@@ -664,6 +680,7 @@ See *@anchorSection1@*
 	doc fromFile: 'fakedFile'.
 	visitor := MicReferenceChecker new.
 	doc accept: visitor.
+	visitor collectBadReferences. 
 	self deny: visitor isOkay
 ]
 
@@ -674,7 +691,10 @@ MicReferenceCheckerTest >> testRefToUnkS1 [
 	self refToUnkS1.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs. 
-	self deny: (visitor checkProject: refToUnkS1 )
+	visitor checkProject: refToUnkS1.
+	self deny: visitor isOkay
+	
+
 ]
 
 { #category : 'tests - single file' }
@@ -684,7 +704,8 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	self fileRefAncS1.
 	visitor := MicReferenceChecker new.
 	visitor fileSystem: fs. 
-	self deny: (visitor checkProject: refAncS1).
+	visitor checkProject: refAncS1.
+	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
 	self assert: visitor results first source equals: '/fileRefAncS1.md'
