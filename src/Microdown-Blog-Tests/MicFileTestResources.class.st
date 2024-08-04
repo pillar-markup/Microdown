@@ -10,7 +10,7 @@ MicFileTestResources >> dumperInput1 [
 
 	| root |
 	root := Microdown parse:
-		        '# [A Cool Story](' , '' , '/anExample1.html' , '' , ')'.
+		        '### [A Cool Story](' , '' , '/anExample1.html' , '' , ')'.
 	root children add: (Microdown parse: '2019/01/09') children first.
 	root children add: (Microdown parse:
 			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
@@ -24,7 +24,8 @@ MicFileTestResources >> dumperInput1WithRootPath [
 
 	| root |
 	root := Microdown parse:
-		        '# [A Cool Story](' , '' , self genericNonEmptyRootPath, '/anExample1.html' , '' , ')'.
+		        '### [A Cool Story](' , '' , self genericNonEmptyRootPath
+		        , '/anExample1.html' , '' , ')'.
 	root children add: (Microdown parse: '2019/01/09') children first.
 	root children add: (Microdown parse:
 			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
@@ -38,9 +39,8 @@ MicFileTestResources >> dumperInput2 [
 
 	| root |
 	root := Microdown parse:
-		        '# [Pharo is cool](' , '' , '/anExample2.html' , '' , ')'.
-	root children add:
-		(Microdown parse: '2019/01/22') children first.
+		        '### [Pharo is cool](' , '' , '/anExample2.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/22') children first.
 	root children add: (Microdown parse:
 			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
 			children first.
@@ -53,9 +53,9 @@ MicFileTestResources >> dumperInput2WithRootPath [
 
 	| root |
 	root := Microdown parse:
-		        '# [Pharo is cool](' , '' , self genericNonEmptyRootPath, '/anExample2.html' , '' , ')'.
-	root children add:
-		(Microdown parse: '2019/01/22') children first.
+		        '### [Pharo is cool](' , '' , self genericNonEmptyRootPath
+		        , '/anExample2.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/22') children first.
 	root children add: (Microdown parse:
 			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
 			children first.
@@ -68,9 +68,8 @@ MicFileTestResources >> dumperInput3 [
 
 	| root |
 	root := Microdown parse:
-		        '# [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
-	root children add:
-		(Microdown parse: '2018/01/29') children first.
+		        '### [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
+	root children add: (Microdown parse: '2018/01/29') children first.
 	root children add: (Microdown parse:
 			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
 			children first.
@@ -83,9 +82,9 @@ MicFileTestResources >> dumperInput3WithRootPath [
 
 	| root |
 	root := Microdown parse:
-		        '# [Mooc Pharo](' , '' , self genericNonEmptyRootPath, '/anExample3.html' , '' , ')'.
-	root children add:
-		(Microdown parse: '2018/01/29') children first.
+		        '### [Mooc Pharo](' , '' , self genericNonEmptyRootPath
+		        , '/anExample3.html' , '' , ')'.
+	root children add: (Microdown parse: '2018/01/29') children first.
 	root children add: (Microdown parse:
 			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
 			children first.

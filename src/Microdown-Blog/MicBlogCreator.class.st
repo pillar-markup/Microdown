@@ -101,7 +101,7 @@ MicBlogCreator >> createAllHtmlFile [
 	listOfSingleSummary := allFileParse collect: [ :each |
 		                       MicSingleSummarizer new
 			                       targetDirectory: targetDirectory;
-			root: root;
+			                       root: root;
 			                       summarize: each ].
 	self sortSingleSummarizedDocuments: listOfSingleSummary.
 	self generateRecentpost: listOfSingleSummary.
@@ -205,8 +205,8 @@ MicBlogCreator >> generateRecentpost: listOfMicSingleSummarized [
 MicBlogCreator >> initialize [
 
 	super initialize.
-	self cssFrameworkName: 'Axist'.
-	sum := MicListSummarizer new.
+	self cssFrameworkName: 'ClasslessCSS'.
+	sum := MicListSummarizer new
 ]
 
 { #category : 'rendering' }
@@ -232,20 +232,25 @@ MicBlogCreator >> initializeMonthList: singleSummarizedDocuments [
 MicBlogCreator >> mustacheAssembly: htmlString [
 
 	| context |
-	
 	context := Dictionary new
-    at: 'content' put: htmlString;
-	 at: 'recentPost' put: (MicHTMLVisitor new visit: recentPost copy) first contents;
-	 at: 'archive' put: (MicHTMLVisitor new visit: dateList copy) first contents;
-    yourself.
-	
-	^  (MustacheTemplate on: self mustacheTemplate) value: context
+		           at: 'homeLink' put: self root , '/';
+		           at: 'content' put: htmlString;
+		           at: 'recentPost'
+		           put:
+			           (MicHTMLVisitor new visit: recentPost copy) first
+				           contents;
+		           at: 'archive'
+		           put:
+			           (MicHTMLVisitor new visit: dateList copy) first contents;
+		           yourself.
+
+	^ (MustacheTemplate on: self mustacheTemplate) value: context
 ]
 
 { #category : 'rendering' }
 MicBlogCreator >> mustacheTemplate [
 
-	^ '	<h1	><a href="/index.html" title="Weekly news about Pharo" rel="home">Weekly news about Pharo</a></h1>
+	^ '	<h1	><a href="{{{homeLink}}}" title="Weekly news about Pharo" rel="home">Weekly news about Pharo</a></h1>
 		<p>Everything you wanted to know about http://www.pharo.org without being forced to read 1000 mails</p>
 		<table>
 		<tr>

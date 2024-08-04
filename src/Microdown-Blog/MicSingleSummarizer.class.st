@@ -19,12 +19,12 @@ MicSingleSummarizer >> firstHeaderBlockOf: aMicRootBlock [
 			          h := MicHeaderBlock new.
 			          t := MicTextBlock new bodyString:
 				               'Please define a header'.
-				h level: 1.
+			          h level: 3.
 			          t parent: h.
 			          ^ h ].
 	newHeader := MicHeaderBlock new.
 	header headerElements do: [ :t | t copy parent: newHeader ].
-	newHeader level: header level.
+	newHeader level: 3.
 	^ newHeader
 ]
 
@@ -54,12 +54,12 @@ MicSingleSummarizer >> headerLink: aMicRootBlock [
 	| headerLink header fileReference |
 	headerLink := MicHeaderBlock new.
 	header := self firstHeaderBlockOf: aMicRootBlock.
-	
+
 	self verifyFromFile: aMicRootBlock.
 
 	fileReference := (aMicRootBlock fromFile withoutExtension fullName
-		         withoutPrefix: targetDirectory fullName) , '.html'.
-	fileReference  := fileReference asFileReference.
+		                  withoutPrefix: targetDirectory fullName) , '.html'.
+	fileReference := fileReference asFileReference.
 
 	headerLink
 		addChild: (self makeALink: header text to: fileReference);
