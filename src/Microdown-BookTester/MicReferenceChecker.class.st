@@ -54,12 +54,12 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 ]
 
 { #category : 'reporting' }
-MicReferenceChecker >> buildReport: str [ 
+MicReferenceChecker >> buildReportOn: str [ 
 
 	| dict | 
 	dict := results groupedBy: [ :each | each class ].
 	dict keysAndValuesDo: [ :k :v | 
-		str nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
+		str cr; nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
 		self reportElementsOn: str.
 		str cr; cr.
 		]
@@ -186,7 +186,7 @@ MicReferenceChecker >> isOkay [
 MicReferenceChecker >> report [
 
 	^ String streamContents: [ :str |
-		self buildReport: str
+		self buildReportOn: str
 		]
 ]
 
