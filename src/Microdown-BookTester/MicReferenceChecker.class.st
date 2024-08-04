@@ -94,7 +94,7 @@ MicReferenceChecker >> checkProject: aFileReference [
 		visit: mainMic.
 	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
-		               fileSystem resolve: file ].
+		               fileSystem referenceTo: file ].
 	self checkList: listOfFiles
 ]
 

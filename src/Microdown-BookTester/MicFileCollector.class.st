@@ -75,7 +75,7 @@ MicFileCollector >> visitRoot: micDocument [
 		inputFiles do: [ :inputFile |
 			| fr doc |
 			"later we will have to fix this ugly expression"
-			fr := self fileSystem resolve:
+			fr := self fileSystem referenceTo:
 				      (inputFile arguments at: 'path') uri asFileReference
 					      pathString.
 			
