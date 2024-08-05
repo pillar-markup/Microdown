@@ -38,7 +38,8 @@ MicDummyBlogDeployer >> go [
 	self deploy.
 	MicBlogCreator
 		createFrom: FileSystem workingDirectory / self sourceFolder
-		to: self outputDirectory.
+		to: self outputDirectory
+		withRoot: ''.
 	self launchHTTPServer.
 	1 seconds wait.
 	self launchBrowser
