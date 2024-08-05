@@ -205,7 +205,7 @@ MicBlogCreator >> generateRecentpost: listOfMicSingleSummarized [
 MicBlogCreator >> initialize [
 
 	super initialize.
-	self cssFrameworkName: 'ClasslessCSS'.
+	self cssFrameworkName: 'Axist'.
 	sum := MicListSummarizer new
 ]
 
@@ -343,7 +343,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
 	| htmlDocument cssFramework htmlContent |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework destinationPath: root , '/css/'.
+	cssFramework basePath: root , '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
