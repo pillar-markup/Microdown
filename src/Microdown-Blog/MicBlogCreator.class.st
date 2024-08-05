@@ -205,7 +205,7 @@ MicBlogCreator >> generateRecentpost: listOfMicSingleSummarized [
 MicBlogCreator >> initialize [
 
 	super initialize.
-	self cssFrameworkName: 'Axist'.
+	self cssFrameworkName: 'Sakura'.
 	sum := MicListSummarizer new
 ]
 
