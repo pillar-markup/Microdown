@@ -204,6 +204,17 @@ self flag: #todo.
 
 ]
 
+{ #category : 'tests - figure/link' }
+MicLaTeXWriterTest >> testFigureWithEmptyCaption [
+
+	self writeFor: '![](figures/f.png)'.
+	self
+		assert: writer contents
+		equals:
+			newLine , '\begin{center}', newLine, '\includegraphics[width=1.0\textwidth]{figures/f.png}'
+			, '\end{center}', newLine, newLine
+]
+
 { #category : 'tests' }
 MicLaTeXWriterTest >> testFootnote [
 

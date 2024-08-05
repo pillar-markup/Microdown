@@ -183,17 +183,18 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitFigure: aFigure [
 
-	(aFigure hasCaption not and: [ aFigure hasLabel not ]) 
-		ifTrue: [ 
-				self includeGraphicsFor: aFigure.
-				^ self ].
+	(aFigure hasCaption not and: [ aFigure hasAnchor not ]) ifTrue: [
+			canvas environment
+		name: 'center';
+		with: [ self includeGraphicsFor: aFigure ].
+		^ self ].
 	canvas environment
 		name: 'figure';
 		optParameter: [ canvas raw: 'htpb' ];
-		with: [ 
+		with: [
 			canvas environment
 				name: 'center';
-				with: [ 
+				with: [
 					self includeGraphicsFor: aFigure.
 					canvas newLine.
 					canvas command

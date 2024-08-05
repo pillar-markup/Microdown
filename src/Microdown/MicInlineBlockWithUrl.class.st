@@ -161,6 +161,15 @@ MicInlineBlockWithUrl >> hasChildren [
 	^ self children notEmpty
 ]
 
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasLabel [
+
+	self
+		deprecated: 'Use hasAnchor instead'
+		transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
+	^ self hasAnchor
+]
+
 { #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
 	super initialize.

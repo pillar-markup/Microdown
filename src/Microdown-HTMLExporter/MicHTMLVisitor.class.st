@@ -278,11 +278,11 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 
 	canvas tag
 		name: 'figure';
-		with: [ 
+		with: [
 			canvas tag
 				name: 'pre';
-				with: [ 
-					| code language |
+				with: [
+					| code |
 					code := canvas tag
 						        name: 'code';
 						        yourself.
@@ -291,11 +291,11 @@ MicHTMLVisitor >> visitCodeblock: aCodeBlock [
 					code with: [ canvas lines: aCodeBlock text ] ].
 			canvas tag
 				name: 'figcaption';
-				with: [ 
-					aCodeBlock hasLabel ifTrue: [ 
+				with: [
+					aCodeBlock hasAnchor ifTrue: [
 							self visitAnchor: aCodeBlock.
 							self writeCounterForScript: aCodeBlock ].
-					aCodeBlock hasCaption ifTrue: [ 
+					aCodeBlock hasCaption ifTrue: [
 							self visitAll: aCodeBlock caption children ] ] ].
 	canvas newLine
 ]
