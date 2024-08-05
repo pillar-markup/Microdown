@@ -343,7 +343,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 
 	| htmlDocument cssFramework htmlContent |
 	cssFramework := MicCSSProvider forCSSNamed: cssFrameworkName.
-	cssFramework basePath: root, '/css/'.
+	cssFramework destinationPath: root , '/css/'.
 
 	htmlDocument := MicHTMLDocument new.
 	htmlDocument configuration: aMicHTMLVisitor configuration.
@@ -352,7 +352,7 @@ MicBlogCreator >> write: aMicHTMLVisitor to: aFileReference [
 	htmlDocument
 		setCharSetUTF8;
 		addCSS: cssFramework;
-		destinationPath: targetDirectory. 
+		destinationPath: targetDirectory.
 	^ htmlDocument
 		  fileName: aFileReference path pathString;
 		  writeDocument: htmlContent;
