@@ -192,18 +192,28 @@ MicFigureBlockTest >> testIsNotRelativeFilePathWithUrl [
 
 { #category : 'tests' }
 MicFigureBlockTest >> testPrintOn [
+
 	| figure |
-	figure := (splitterClass new parse: '![caption](http://www.Pharo.ORG)') first.
-	self assert: figure asString equals: 'Figure{ Text(caption) }(http://www.Pharo.ORG)'
-	
+	figure := (splitterClass new parse:
+		           '![caption](http://www.Pharo.ORG)') first.
+	self
+		assert: figure asString
+		equals: 'Figure[ Text(caption) ](http://www.Pharo.ORG)'
+
 	"not really good but let us make it work"
 ]
 
 { #category : 'tests' }
 MicFigureBlockTest >> testPrintOnWithParameters [
+
 	| figure |
-	figure := (splitterClass new parse: '![caption](http://anURL.org?label=1&title=testFigure)') first.
-	self assert: figure asString equals: 'Figure{ Text(caption) }(http://anURL.org?label=1&title=testFigure)'
+	figure := (splitterClass new parse:
+		           '![caption](http://anURL.org?label=1&title=testFigure)')
+		          first.
+	self
+		assert: figure asString
+		equals:
+		'Figure[ Text(caption) ](http://anURL.org?label=1&title=testFigure)'
 ]
 
 { #category : 'tests' }

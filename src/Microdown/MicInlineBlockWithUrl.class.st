@@ -161,6 +161,15 @@ MicInlineBlockWithUrl >> hasChildren [
 	^ self children notEmpty
 ]
 
+{ #category : 'testing' }
+MicInlineBlockWithUrl >> hasLabel [
+
+	self
+		deprecated: 'Use hasAnchor instead'
+		transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
+	^ self hasAnchor
+]
+
 { #category : 'initialization' }
 MicInlineBlockWithUrl >> initialize [
 	super initialize.
@@ -169,11 +178,13 @@ MicInlineBlockWithUrl >> initialize [
 
 { #category : 'printing' }
 MicInlineBlockWithUrl >> printOn: stream [
-	stream << self blockName << '{ '.
-	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
-	stream << $}.
+
+	stream << self blockName << '[ '.
+	children do: [ :ch |
+		ch printOn: stream.
+		stream nextPut: Character space ].
+	stream << $].
 	stream << $( << url << $)
-	
 ]
 
 { #category : 'accessing' }

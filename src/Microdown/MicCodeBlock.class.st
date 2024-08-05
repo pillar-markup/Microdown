@@ -110,9 +110,12 @@ MicCodeBlock >> hasBody [
 
 { #category : 'accessing' }
 MicCodeBlock >> hasLabel [
-	self deprecated: 'Use hasAnchor' transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
-	
-	^ self anchor
+
+	self
+		deprecated: 'Use hasAnchor'
+		transformWith: '`@rec hasLabel' -> '`@rec hasAnchor'.
+
+	^ self hasAnchor
 ]
 
 { #category : 'testing' }
