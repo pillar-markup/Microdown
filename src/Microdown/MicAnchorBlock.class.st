@@ -59,7 +59,7 @@ MicAnchorBlock >> label: aLabel [
 MicAnchorBlock >> printOn: aStream [
 
 	super printOn: aStream.
-	self hasAnchor ifTrue: [ aStream nextPutAll: ' (' , self anchor , ')' ]
+	label ifNotNil: [ aStream nextPutAll: ' (' , label , ')' ]
 ]
 
 { #category : 'accessing' }
