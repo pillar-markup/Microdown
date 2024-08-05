@@ -169,11 +169,13 @@ MicInlineBlockWithUrl >> initialize [
 
 { #category : 'printing' }
 MicInlineBlockWithUrl >> printOn: stream [
-	stream << self blockName << '{ '.
-	children do: [ :ch | ch printOn: stream. stream nextPut: Character space  ].
-	stream << $}.
+
+	stream << self blockName << '[ '.
+	children do: [ :ch |
+		ch printOn: stream.
+		stream nextPut: Character space ].
+	stream << $].
 	stream << $( << url << $)
-	
 ]
 
 { #category : 'accessing' }

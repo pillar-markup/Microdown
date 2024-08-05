@@ -150,8 +150,11 @@ MicLinkBlockTest >> testOneUrl [
 { #category : 'tests' }
 MicLinkBlockTest >> testPrintOn [
 
-	link := (splitterClass new parse: '[caption](http://www.pharo.org)') first.
-	self assert: link asString equals: 'Link{ Text(caption) }(http://www.pharo.org)'
+	link := (splitterClass new parse: '[caption](http://www.pharo.org)')
+		        first.
+	self
+		assert: link asString
+		equals: 'Link[ Text(caption) ](http://www.pharo.org)'
 ]
 
 { #category : 'tests' }

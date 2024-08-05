@@ -296,7 +296,7 @@ MicInlineParserTest >> testBold_UnclompletedNested [
 MicInlineParserTest >> testBrokenNestedBlocksHandles [
 	| res |
 	res := (self inlineParse: '![[aaaa]bbb)](ccc)sss![[aaaa](bbb](ccc)').
-	self assert: res printString equals: 'an Array(Text(![) Link{ Text(aaaa]bbb)) }(ccc) Text(sss![) Link{ Text(aaaa) }(bbb](ccc))'
+	self assert: res printString equals: 'an Array(Text(![) Link[ Text(aaaa]bbb)) ](ccc) Text(sss![) Link[ Text(aaaa) ](bbb](ccc))'
 ]
 
 { #category : 'test generated' }
@@ -440,10 +440,15 @@ MicInlineParserTest >> testMonospace_unevaluated [
 
 { #category : 'tests' }
 MicInlineParserTest >> testNestedBlocksWithUrl [
+
 	| res |
-	res := (self inlineParse: '[![aaaa](bbb)](ccc)   ![[aaaa](bbb)](ccc)').
-	self assert: res first printString equals: 'Link{ Figure{ Text(aaaa) }(bbb) }(ccc)'.
-	self assert: res third printString equals: 'Figure{ Link{ Text(aaaa) }(bbb) }(ccc)'
+	res := self inlineParse: '[![aaaa](bbb)](ccc)   ![[aaaa](bbb)](ccc)'.
+	self
+		assert: res first printString
+		equals: 'Link[ Figure[ Text(aaaa) ](bbb) ](ccc)'.
+	self
+		assert: res third printString
+		equals: 'Figure[ Link[ Text(aaaa) ](bbb) ](ccc)'
 ]
 
 { #category : 'test generated' }
