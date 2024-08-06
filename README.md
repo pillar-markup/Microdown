@@ -163,7 +163,7 @@ The markup is not interpreted.
 Codeblock does not support more than four backticks.
 
 
-## Development in Pharo 13!
+## Development in Pharo 12!
 
 ### Loading specific version
 
