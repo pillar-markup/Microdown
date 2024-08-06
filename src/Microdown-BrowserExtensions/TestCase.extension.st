@@ -1,6 +1,6 @@
 Extension { #name : 'TestCase' }
 
-{ #category : '*Microdown' }
+{ #category : '*Microdown-BrowserExtensions' }
 TestCase class >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	| number |

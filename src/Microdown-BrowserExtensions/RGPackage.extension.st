@@ -1,6 +1,6 @@
 Extension { #name : 'RGPackage' }
 
-{ #category : '*Microdown' }
+{ #category : '*Microdown-BrowserExtensions' }
 RGPackage >> buildMicroDownUsing: aMicMicrodownTextualBuilder withComment: aString [
 
 	aMicMicrodownTextualBuilder

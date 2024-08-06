@@ -1,6 +1,6 @@
 Extension { #name : 'RGBehavior' }
 
-{ #category : '*Microdown' }
+{ #category : '*Microdown-BrowserExtensions' }
 RGBehavior >> buildMicroDownUsing: aMicMicrodownTextualBuilder withComment: aString [
 
 	aMicMicrodownTextualBuilder
