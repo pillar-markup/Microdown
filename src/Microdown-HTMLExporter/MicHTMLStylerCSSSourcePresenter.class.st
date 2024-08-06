@@ -80,5 +80,5 @@ MicHTMLStylerCSSSourcePresenter >> updateSizeMessage: anInteger [
 			(String streamContents: [ : stream |
 				stream
 					<< 'File size: ';
-					<< anInteger asFileSizeString ])
+					<< anInteger humanReadableByteSizeString ])
 ]
