@@ -5,7 +5,8 @@ Class {
 		'factory',
 		'visitor',
 		'visitorClass',
-		'parser'
+		'parser',
+		'file'
 	],
 	#pools : [
 		'MicroSharedPool'
@@ -36,7 +37,8 @@ MicTextualMicrodownExporterTest >> setUp [
 	super setUp.
 	factory := MicMicrodownSnippetFactory new.
 	visitor := self visitorClass new.
-	parser := Microdown new
+	parser := Microdown new.
+	file := FileSystem memory / 'test.md'.
 ]
 
 { #category : 'tests-anchor' }
@@ -322,17 +324,17 @@ MicTextualMicrodownExporterTest >> testMetaData [
 
 { #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testMetaDataIsWellExported [ 
-
-	| source newDocument | 
-	source := '
-	{ 
-	"author" : "Inria"
-	}
-	'.
-	newDocument := parser parse: source.
+	
+	| newDocument | 
+	
+	file ensureCreateFile.
+	newDocument := parser parse: factory metaDataSample.
 	visitor visit: newDocument.
 	
-	self assert: (visitor contents includesSubstring: '"author" : "Inria"').
+	self assert: (visitor contents includesSubstring: '"title" : "The title"') .
+	file writeStreamDo: [ :stream | stream nextPutAll: visitor contents ].
+	file delete. 
+	
 	
 	
 	
