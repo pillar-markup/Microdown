@@ -130,7 +130,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-BookTester-Tests'
 				
 				);
-			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'All' with: #('Core' #'Microdown-BrowserExtensions' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
 { #category : 'baselines' }
