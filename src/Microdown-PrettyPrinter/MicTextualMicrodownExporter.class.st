@@ -243,7 +243,7 @@ MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitMetaData: aMetaData [
 
-	builder metaDataFromAssociations: aMetaData body
+	builder metaDataFromAssociations: aMetaData body associations 
 ]
 
 { #category : 'visit - format' }

@@ -320,6 +320,24 @@ MicTextualMicrodownExporterTest >> testMetaData [
 	self verifyObtain: factory metaDataSample
 ]
 
+{ #category : 'tests - list' }
+MicTextualMicrodownExporterTest >> testMetaDataIsWellExported [ 
+
+	| source newDocument | 
+	source := '
+	{ 
+	"author" : "Inria"
+	}
+	'.
+	newDocument := parser parse: source.
+	visitor visit: newDocument.
+	
+	self assert: (visitor contents includesSubstring: '"author" : "Inria"').
+	
+	
+	
+]
+
 { #category : 'tests-header' }
 MicTextualMicrodownExporterTest >> testNestedHeader [
 
