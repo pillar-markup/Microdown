@@ -311,13 +311,22 @@ MicTextualMicrodownExporterTest >> testMathInline [
 	self verifyObtain: factory mathInlineSample
 ]
 
-{ #category : 'tests-anchor' }
+{ #category : 'tests - anchor' }
 MicTextualMicrodownExporterTest >> testMetaData [
-	self skip.
-	self flag: #fixme.
-	"the builder wait a collection of associotion or a dictionnary but a metaData has not that"
 
-	self verifyObtain: factory metaDataSample
+	| newDocument |
+	newDocument := parser parse: factory metaDataSample.
+	visitor visit: newDocument.
+
+	self assert: (visitor contents includesSubstring: '"title" : "The title"').
+
+	"should revisit newline"
+	self 
+		assert: visitor contents 
+		equals: '{
+"author" : "G. Foo",
+"title" : "The title"
+}'
 ]
 
 { #category : 'tests-header' }
