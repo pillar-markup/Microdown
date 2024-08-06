@@ -1,6 +1,6 @@
 Extension { #name : 'Package' }
 
-{ #category : '*Microdown' }
+{ #category : '*Microdown-BrowserExtensions' }
 Package >> buildMicroDownUsing: aBuilder withComment: aString [
 	
 	"I'm on a package and the package is a baseline package."
