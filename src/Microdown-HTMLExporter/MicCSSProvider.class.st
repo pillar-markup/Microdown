@@ -134,7 +134,7 @@ MicCSSProvider >> destinationPath [
 	"Answer a <String> used as location to store the receiver's CSS frameworks"
 
 	^ destinationPath
-		ifNil: [ destinationPath := 'support' ]
+		ifNil: [ destinationPath := 'pharo-local/iceberg/Pillar-markup/Microdown/ressource/' ]
 ]
 
 { #category : 'accessing' }
