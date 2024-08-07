@@ -128,6 +128,8 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-ParentChildrenChecker'
 				#'Microdown-BookTester'
 				#'Microdown-BookTester-Tests'
+				#'Microdown-Blog'
+				#'Microdown-Blog-Tests'
 				
 				);
 			group: 'All' with: #('Core' #'Microdown-BrowserExtensions' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
