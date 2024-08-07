@@ -11,7 +11,7 @@ For example, we cannot currently add lists inside an annotatedBlock.
 See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pillar-markup/MicroDown/issues/54)
 "
 Class {
-	#name : 'MicAnnotatedBlock',
+	#name : 'MicAnnotatedParagraph',
 	#superclass : 'MicAbstractAnnotatedBlock',
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -19,31 +19,31 @@ Class {
 }
 
 { #category : 'visiting' }
-MicAnnotatedBlock >> accept: aVisitor [
+MicAnnotatedParagraph >> accept: aVisitor [
  	^ aVisitor visitAnnotated: self
 ]
 
 { #category : 'parse support' }
-MicAnnotatedBlock >> closeMe [
+MicAnnotatedParagraph >> closeMe [
 	super closeMe.
 	body := self inlineParse: body
 ]
 
 { #category : 'testing' }
-MicAnnotatedBlock >> lineMarkup [
+MicAnnotatedParagraph >> lineMarkup [
 	
 	^ AnnotatedParagraphMarkup
 ]
 
 { #category : 'accessing' }
-MicAnnotatedBlock >> text [
+MicAnnotatedParagraph >> text [
 
 	^ String streamContents: [ :s |
 		  self textElements do: [ :each | s nextPutAll: each bodyString ] ]
 ]
 
 { #category : 'accessing' }
-MicAnnotatedBlock >> textElements [
+MicAnnotatedParagraph >> textElements [
 
 	^ self body
 ]

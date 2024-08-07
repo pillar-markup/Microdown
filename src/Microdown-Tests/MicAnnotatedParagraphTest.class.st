@@ -8,7 +8,7 @@ Class {
 
 { #category : 'tests' }
 MicAnnotatedParagraphTest >> subjectClass [ 
-	^ MicAnnotatedBlock 
+	^ MicAnnotatedParagraph 
 ]
 
 { #category : 'tests' }
@@ -19,7 +19,7 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraph [
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedBlock);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
 		assert: annotatedParagraph title equals: 'Important';
 		assert: annotatedParagraph text equals: 'This is an important information'
 ]
