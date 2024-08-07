@@ -1,0 +1,25 @@
+Class {
+	#name : 'MicAnnotatedParagraphTest',
+	#superclass : 'MicBlockTest',
+	#category : 'Microdown-Tests-Parser',
+	#package : 'Microdown-Tests',
+	#tag : 'Parser'
+}
+
+{ #category : 'tests' }
+MicAnnotatedParagraphTest >> subjectClass [ 
+	^ MicAnnotatedBlock 
+]
+
+{ #category : 'tests' }
+MicAnnotatedParagraphTest >> testBasicAnnotetedParagraph [
+
+	| root annotatedParagraph |
+	root := parser parse: '!! Important This is an important information'.
+	self assert: root children size equals: 1.
+	annotatedParagraph := root children first.
+	self
+		assert: (annotatedParagraph isKindOf: MicAnnotatedBlock);
+		assert: annotatedParagraph title equals: 'Important';
+		assert: annotatedParagraph text equals: 'This is an important information'
+]
