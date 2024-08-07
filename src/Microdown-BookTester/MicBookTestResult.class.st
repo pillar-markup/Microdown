@@ -30,14 +30,10 @@ fragmentedText: #('Plop' 'plop1' '^ ''1''')
 "
 Class {
 	#name : 'MicBookTestResult',
-	#superclass : 'Object',
+	#superclass : 'MicResult',
 	#instVars : [
 		'text',
 		'fragmentedText',
-		'status',
-		'explanation',
-		'message',
-		'source',
 		'isExpectedFailure'
 	],
 	#classInstVars : [
@@ -143,44 +139,6 @@ MicBookTestResult >> isFailed [
 MicBookTestResult >> isValid [
 
 	^ status 
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> message [
-
-	^ message
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> message: anObject [
-
-	message := anObject
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> source [
-
-	^ source
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> source: anObject [
-
-	source := anObject
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> status [ 
-	"true means that the test is valid, false means that the test got a problem or failed"
-	
-	^ status
-]
-
-{ #category : 'accessing' }
-MicBookTestResult >> status: aBoolean [
-	"true means that the test is valid, false means that the test got a problem or failed"
-	
-	status := aBoolean
 ]
 
 { #category : 'accessing' }
