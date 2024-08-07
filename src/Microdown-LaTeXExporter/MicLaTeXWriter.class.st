@@ -145,6 +145,20 @@ MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 	
 ]
 
+{ #category : 'blocks' }
+MicLaTeXWriter >> visitAnnotated: aAnnotatedParagraph [
+
+	canvas command
+		name: 'begin';
+		parameter: aAnnotatedParagraph label.
+	canvas newLine;
+	nextPutAll: aAnnotatedParagraph text;
+	newLine.
+	canvas command
+		name: 'end';
+		parameter: aAnnotatedParagraph label.
+]
+
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitBold: aBold [
 	canvas command name: 'textbf'; parameter: [ super visitBold: aBold ]
