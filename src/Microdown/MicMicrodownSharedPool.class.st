@@ -25,6 +25,7 @@ Class {
 		'FixiousTextDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
+		'InlineParagraphDelimiter',
 		'ItalicMarkup',
 		'LinkNameCloserMarkup',
 		'LinkNameOpenerMarkup',
@@ -64,6 +65,7 @@ MicMicrodownSharedPool class >> initialize [
 	EnvironmentOpeningBlockMarkup := '<!'.
 	HeaderMarkup := '#'.
 	HorizontalLineMarkup	:= '***'.
+	InlineParagraphDelimiter := '  '.
 	MathClosingBlockMarkup := '$$'.
 	MathOpeningBlockMarkup := '$$'.	
 	MetaDataClosingBlockMarkup := '}'.
