@@ -60,6 +60,16 @@ MicInlineTokenStreamTest >> testBackslash_InRaw [
 	self assert: tokens second string equals: '{{oo\xoo}oo`}}'
 ]
 
+{ #category : 'tests - linebreak' }
+MicInlineTokenStreamTest >> testLineBreak [ 
+
+	| src tokens |
+	src := 'aa  bb'.
+	tokens := (MicInlineTokenStream on: src) contents.
+	self assert: tokens size equals: 3.
+	self assert: tokens second string equals: '  '
+]
+
 { #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize [
 	| tokens | 

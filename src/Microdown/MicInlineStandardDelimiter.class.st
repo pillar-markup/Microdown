@@ -43,6 +43,10 @@ MicInlineStandardDelimiter class >> initializeDelimiters [
 	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; closer: RawCloserMarkup; addMe.
 	self new markup: RawCloserMarkup; blockClass: nil; closer: nil; addMe.
 
+	"Line breaks"
+	
+	self new markup: InlineParagraphDelimiter ; blockClass: MicLineBreakBlock ; closer: nil; addMe.
+
 	"Containing URLs"
 	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; closer: NameCloserUrlOpener; addMe.
 	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; closer: NameCloserUrlOpener; addMe.
