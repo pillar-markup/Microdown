@@ -32,6 +32,9 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #Microdown;
 			package: #'Microdown-Tests'
 				with: [ spec requires: #( #Microdown ) ];
+				
+			package: #'Microdown-BrowserExtensions'
+				with: [ spec requires: #( #Microdown ) ];	
 		
 			package: #'Microdown-Pharo-Tools'
 				with: [ spec requires: #( #Microdown ) ];
@@ -101,6 +104,7 @@ BaselineOfMicrodown >> baseline: spec [
 		"I do not want group without tests for now"
 		spec
 			group: 'Core' with: #('Microdown');
+			group: 'ForPharo' with: #('Microdown' #'Microdown-BrowserExtensions');
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions' with: #(
@@ -124,9 +128,11 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-ParentChildrenChecker'
 				#'Microdown-BookTester'
 				#'Microdown-BookTester-Tests'
+				#'Microdown-Blog'
+				#'Microdown-Blog-Tests'
 				
 				);
-			group: 'All' with: #('Core' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'All' with: #('Core' #'Microdown-BrowserExtensions' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
 ]
 
 { #category : 'baselines' }

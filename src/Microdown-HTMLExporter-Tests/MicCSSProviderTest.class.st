@@ -40,7 +40,7 @@ MicCSSProviderTest >> testCssDownloader [
 	downloader := cssProvider cssDownloader.
 	self assert: (downloader isKindOf: MicCSSDownloader).
 	self assert: downloader class equals: MicCSSDownloader.
-	self assert: downloader destinationPath equals: 'support'.
+	self assert: downloader destinationPath equals: 'pharo-local/iceberg/Pillar-markup/Microdown/ressource/'.
 	self assert: downloader httpClient class equals: ZnClient.
 	self deny: downloader httpClient isConnected.
 	self
