@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-Blog-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput1 [
 
 	| root |
@@ -19,7 +19,7 @@ MicFileTestResources >> dumperInput1 [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput1WithRootPath [
 
 	| root |
@@ -34,7 +34,7 @@ MicFileTestResources >> dumperInput1WithRootPath [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput2 [
 
 	| root |
@@ -48,7 +48,7 @@ MicFileTestResources >> dumperInput2 [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput2WithRootPath [
 
 	| root |
@@ -63,7 +63,7 @@ MicFileTestResources >> dumperInput2WithRootPath [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput3 [
 
 	| root |
@@ -77,7 +77,7 @@ MicFileTestResources >> dumperInput3 [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> dumperInput3WithRootPath [
 
 	| root |
@@ -92,13 +92,13 @@ MicFileTestResources >> dumperInput3WithRootPath [
 	^ root
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> fileSystem [
 
 	^ FileSystem memory
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExample1 [
 
 	| file |
@@ -118,7 +118,7 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 	^ file asFileReference
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExample2 [
 
 	| file |
@@ -137,7 +137,7 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	^ file
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExample3 [
 
 	| file |
@@ -160,7 +160,7 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'running' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExampleEmpty [
 
 	| file |
@@ -252,7 +252,7 @@ this is a code blu blu
 	^ file asFileReference
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata1 [
 
 	| file |
@@ -269,7 +269,7 @@ Amazing debugging experience: The Pharo environment includes a debugger unlike a
 	^ file asFileReference
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata2 [
 
 	| file |
@@ -285,7 +285,7 @@ Pharo is a pure _object-oriented programming language_ in the tradition of Small
 	^ file
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> generateFilesystemExampleWithoutMetadata3 [
 
 	| file |
@@ -305,19 +305,19 @@ When you participate to the mooc you get access to the quizz and the credit vali
 	^ file
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> genericEmptyRootPath [
 
 	^ ''
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> genericNonEmptyRootPath [
 
 	^ 'https://test/'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'fixture' }
 MicFileTestResources >> workingDirectory [
 
 	^ self fileSystem workingDirectory

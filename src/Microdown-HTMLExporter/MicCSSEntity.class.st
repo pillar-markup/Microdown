@@ -90,7 +90,7 @@ MicCSSEntity >> defaultBasePath [
 MicCSSEntity >> defaultDestinationPath [
 	"Answer a default <String> describing the location where receiver's CSS files are stored"
 	
-	^ 'support/'
+	^ 'pharo-local/iceberg/Pillar-markup/Microdown/ressource/'
 ]
 
 { #category : 'accessing' }

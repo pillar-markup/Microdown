@@ -16,7 +16,7 @@ Microdown is now the default markup for the Pillar document compilation chain.
 
 Microdown is a smaller markdown but it is more extensible.
 It is used to produce books, slides, websites, doc.
-It can be read on github but also on pharo itself using the DocumentationBrowser
+It can be read on GitHub but also on Pharo itself using the DocumentationBrowser
 
 It supports
 - Header
@@ -31,7 +31,7 @@ But also
 - Anchor
 - Annotated paragraph
 - Math with arguments
-- and more intra block elements such as extensible markups, raw, math, and references.
+- and more intra-block elements such as extensible markups, raw, math, and references.
 
 
 ![Microdown within the Pharo IDE.](screen.png)
@@ -42,7 +42,7 @@ But also
 ```
    	# Header
         @anchor
-	% This is line comment
+	% This is a line comment
 
 	```language=Pharo&caption=Beautiful&label=Fig1
    	code
@@ -69,21 +69,21 @@ The headers can be from 1 to 6.
 ```
 ### Header Level3
 ```
-There is not support for other forms of declaration. 
+There is no support for other forms of declaration. 
 
 ### Anchors
-In microdown we can define anchors and reference to them (see References).
+In Microdown we can define anchors and reference to them (see References).
 There are three ways to create anchors:
 
-- `@anchorlabel` will create an anchor to the preceeding element. 
-- Figures, mathematical environments, environment can specify label as arguments (`anchor`)
+- `@anchorlabel` will create an anchor to the preceding element. 
+- Figures, mathematical environments, and environment can specify labels as arguments (`anchor`)
 - Code block can specify label as argument (argument named `anchor`)
 
 ### Various
 
 - % comments
 - *** horizontal line
-- File meta data is plain JSON
+- File metadata is plain JSON
 
 ```
 {
@@ -96,7 +96,7 @@ There are three ways to create anchors:
 ```
 ### Math support
 
-- `$$` mathematical environment with label for easy referencing.
+- `$$` mathematical environment with a label for easy referencing.
 
 ```
 $$ %label=refToTheGreatEquation
@@ -108,13 +108,13 @@ $$
 ```
 'abc$	V_i = C_0 - C_3	$def'.
 ```
-will generate LaTeX equivalent and can be referenced using `*@refToTheGreatEquation@`*
+will generate a LaTeX equivalent and can be referenced using `*@refToTheGreatEquation@`*
 
 ### Codeblock
 
-Microdown offer the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo&label=code1&caption=this is my great piece of code`
+Microdown offers the same code block that markdown but arguments can be specified and the annotation should be named. The first line after the \`\`\` can be `language=pharo&label=code1&caption=this is my great piece of code`
 
-The following code is not able to display it because markdown quote block are strange and interpret nested block. So we cannot use quoteblock for quoting!
+The following code is not able to display it because markdown quote blocks are strange and interpret nested blocks. So we cannot use quoteblock for quoting!
 
 ``` 
    ```language=pharo&anchor=code1&caption=this is my great piece of code
@@ -163,11 +163,11 @@ The markup is not interpreted.
 Codeblock does not support more than four backticks.
 
 
-## Development in Pharo12!
+## Development in Pharo 12!
 
 ### Loading specific version
 
-To load the latest stable version load the master. If you have trouble loading in latest Pharo just execute the preloading.st script in the .github folder.
+To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder.
 This script will remove the existing Microdown package and clear the system.
 
 ```Smalltalk
@@ -184,24 +184,34 @@ The process is the following:
 - Then there is the Pharo integration in dedicated branches.
 
 
-### Loading latest development version
+### Loading the latest development version
+
+The following script loads all groups in the Baseline:
 
 ```Smalltalk
+#( 'Microdown' 'BeautifulComments' 'DocumentBrowser' ) do: [ :name |
+        (IceRepository repositoryNamed: name)
+            ifNil: [ self inform: 'Project not found: ' , name ]
+            ifNotNil: [ :found |
+                found
+                    unload;
+                    forget ] ].
+
 Metacello new
 	baseline: 'Microdown';
 	repository: 'github://pillar-markup/Microdown:dev/src';
 	onConflict: [ :ex | ex useIncoming ];
 	onUpgrade: [ :ex | ex useIncoming ];
-	load.
+	load: #('All').
  ```
 
 ## History
 
-We have two sources: Pharo in one hand and Pillar and both are not totally synchronised. 
+We have two sources: Pharo in one hand and Pillar and both are not totally synchronized. 
 
 Using Pharo 12: v2.5.x
 
-- v2.5.5 - add support for top level header as slide definition
+- v2.5.5 - add support for top-level header as slide definition
 - v2.5.4 - add backward compatible anchor in caption + tonel V3 format
 - v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
 
@@ -222,9 +232,9 @@ For Pharo 10
 
 
 ## Implementation
-The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in appendix A.
+The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in Appendix A.
 
-In short, the strategy is that at any point in time, we might have a number of children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of current are open. 
+In short, the strategy is that at any point in time, we might have several children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of the current are open. 
 
 When a new line is read we do the following:
 
@@ -235,4 +245,4 @@ When a new line is read we do the following:
 4. The root node is not closed until input is exhausted
 
 The other packages in this repository are the extensions made to produce Pillar model. 
-Such packages should be moved in the future to other location (probably pillar itself).
+Such packages should be moved in the future to other locations (probably pillar itself).
