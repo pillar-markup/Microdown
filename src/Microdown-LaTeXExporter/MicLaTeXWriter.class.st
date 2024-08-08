@@ -148,6 +148,7 @@ MicLaTeXWriter >> visitAnchorReference: anAchorReference [
 { #category : 'blocks' }
 MicLaTeXWriter >> visitAnnotated: aAnnotatedParagraph [
 
+	canvas newLine.
 	canvas command
 		name: 'begin';
 		parameter: aAnnotatedParagraph label.
