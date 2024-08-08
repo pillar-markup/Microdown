@@ -109,6 +109,16 @@ MicLaTeXWriterTest >> testAnchorReference [
 	
 ]
 
+{ #category : 'tests - figure/link' }
+MicLaTeXWriterTest >> testAnnotatedParagraph [
+	
+	self writeFor: factory annotatedSample.
+	self assert: writer contents equals: newLine ,
+					'\begin{label}', newLine ,
+					'Foo _bar_', newLine ,
+					'\end{label}', newLine
+]
+
 { #category : 'tests - formats' }
 MicLaTeXWriterTest >> testBold [
 
