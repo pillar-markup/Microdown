@@ -152,9 +152,9 @@ MicLaTeXWriter >> visitAnnotated: aAnnotatedParagraph [
 	canvas command
 		name: 'begin';
 		parameter: aAnnotatedParagraph label.
-	canvas newLine;
-	nextPutAll: aAnnotatedParagraph text;
-	newLine.
+	canvas newLine.
+	aAnnotatedParagraph textElements do: [ :each | each accept: self ].
+	canvas newLine.
 	canvas command
 		name: 'end';
 		parameter: aAnnotatedParagraph label.
