@@ -115,8 +115,8 @@ MicLaTeXWriterTest >> testAnnotatedParagraph [
 	self writeFor: factory annotatedSample.
 	self assert: writer contents equals: newLine ,
 					'\begin{label}', newLine ,
-					'Foo _bar_', newLine ,
-					'\end{label}', newLine
+					'Foo bar', newLine ,
+					'\end{label}'
 ]
 
 { #category : 'tests - formats' }
