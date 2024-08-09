@@ -263,7 +263,7 @@ MicrodownParser >> initialize [
 	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
 	dispatchTable at: HeaderMarkup put: MicHeaderBlock.
 	dispatchTable at: CodeblockMarkup put: MicAbstractCodeBlock.
-	dispatchTable at: AnnotatedParagraphMarkup put: MicAnnotatedBlock.
+	dispatchTable at: AnnotatedParagraphMarkup put: MicAnnotatedParagraph.
 	dispatchTable at: CommentedLineMarkup put: MicCommentBlock.
 	dispatchTable at: HorizontalLineMarkup put: MicHorizontalLineBlock.
 	dispatchTable at: MathOpeningBlockMarkup put: MicMathBlock.

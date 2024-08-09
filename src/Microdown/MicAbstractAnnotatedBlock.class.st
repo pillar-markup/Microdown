@@ -14,7 +14,6 @@ Class {
 { #category : 'public' }
 MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 	"line is assumed to be of the form '!!label some text'"
-
 	isClosed
 		ifTrue: [ ^ self ].
 	label 
@@ -24,8 +23,9 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 			label := indexOfFirstSpace = 0
 				ifTrue: [ '' ]
 				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstSpace - 1.].
-			body := (line copyFrom: indexOfFirstSpace + 1 to: line size) trim ]
-		ifNotNil: [ body := body , String cr , line ]
+			body := (line copyFrom: indexOfFirstSpace + 1 to: line size) trim.]
+		ifNotNil: [ body = '' ifTrue: [ body := body , line ]
+			ifFalse: [ body := body , String cr , line ]]
 ]
 
 { #category : 'accessing' }
