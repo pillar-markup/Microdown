@@ -50,6 +50,23 @@ MicBeamerWriterTest >> testCodeWithLabel [
 ]
 
 { #category : 'tests' }
+MicBeamerWriterTest >> testCodeWithPharoCode [
+
+	self writeFor: '
+```
+| a |
+a := 40 + 2.
+^ a
+```
+'.
+	self assert: writer contents equals: '\begin{listing}', newLine ,
+													'| a |', newLine ,
+													'a := 40 + 2.', newLine ,
+													'^ a', newLine ,
+													'\end{listing}', newLine
+]
+
+{ #category : 'tests' }
 MicBeamerWriterTest >> testColumn [
 
 	self writeFor: factory columnSample.
