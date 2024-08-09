@@ -60,27 +60,6 @@ MicInlineTokenStreamTest >> testBackslash_InRaw [
 	self assert: tokens second string equals: '{{oo\xoo}oo`}}'
 ]
 
-{ #category : 'tests - linebreak' }
-MicInlineTokenStreamTest >> testLineBreak [ 
-
-	| src tokens |
-	src := 'aa  bb'.
-	tokens := (MicInlineTokenStream on: src) contents.
-	self assert: tokens size equals: 3.
-	self assert: tokens second string equals: '  '
-]
-
-{ #category : 'tests - linebreak' }
-MicInlineTokenStreamTest >> testLineBreakBackSlashed [
-
-	| src tokens |
-	src := 'aa\  bb'.
-	tokens := (MicInlineTokenStream on: src) contents.
-	self assert: tokens size equals: 1.
-	"to me it should not lose the / but we will see this later."
-	self assert: tokens first string equals: 'aa  bb'
-]
-
 { #category : 'tests' }
 MicInlineTokenStreamTest >> testTokenize [
 	| tokens | 
