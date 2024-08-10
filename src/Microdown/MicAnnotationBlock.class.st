@@ -43,7 +43,7 @@ MicAnnotationBlock class >> openingDelimiter [
 { #category : 'parsing' }
 MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 
-	| bodystring arguments tag extensionClass key |
+	| bodystring arguments tag extensionClass |
 	bodystring := delimiter undelimitedSubstring.
 	arguments := MicArgumentList
 		             split: bodystring
@@ -53,8 +53,11 @@ MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 
 	extensionClass := self extensionClassFor: tag.
 	
-	key := arguments justTheArguments keyAtIndex: 1.
-	(arguments at: key) ifNil: [ arguments at: extensionClass key put: key ].
+	arguments justTheArguments ifNotEmpty: [ | key |
+		key := arguments justTheArguments keyAtIndex: 1.
+	(arguments at: key) ifNil: [ arguments at: extensionClass key put: key ]]. 
+	
+	
 	
 	^ extensionClass new
 		  bodyString: bodystring;
