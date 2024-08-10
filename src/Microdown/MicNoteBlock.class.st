@@ -7,7 +7,13 @@ Class {
 }
 
 { #category : 'accessing' }
+MicNoteBlock class >> key [
+	^ 'contents'
+]
+
+{ #category : 'accessing' }
 MicNoteBlock class >> tag [
+
 	^ #note
 ]
 

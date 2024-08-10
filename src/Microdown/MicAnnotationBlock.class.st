@@ -28,6 +28,12 @@ MicAnnotationBlock class >> closingDelimiter [
  	^ AnnotationCloserMarkup
 ]
 
+{ #category : 'parsing' }
+MicAnnotationBlock class >> key [
+
+	^ 'key'
+]
+
 { #category : 'accessing' }
 MicAnnotationBlock class >> openingDelimiter [
 
@@ -48,8 +54,8 @@ MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	extensionClass := self extensionClassFor: tag.
 	
 	key := arguments justTheArguments keyAtIndex: 1.
-	key = extensionClass key ifFalse: [ arguments at: extensionClass key put: key ].
-
+	(arguments at: key) ifNil: [ arguments at: extensionClass key put: key ].
+	
 	^ extensionClass new
 		  bodyString: bodystring;
 		  arguments: arguments
