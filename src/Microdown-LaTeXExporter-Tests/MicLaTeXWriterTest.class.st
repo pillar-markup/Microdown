@@ -352,6 +352,13 @@ MicLaTeXWriterTest >> testMonospace [
 	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\code{Foo}'
 ]
 
+{ #category : 'tests' }
+MicLaTeXWriterTest >> testNote [
+
+	self parseInlined: '{!note|contents=Duca99a!}' andCheckWeGet: '\comment{Duca99a}'
+	
+]
+
 { #category : 'tests - lists' }
 MicLaTeXWriterTest >> testOrderedList [
 	

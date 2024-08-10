@@ -166,6 +166,10 @@ MicrodownVisitor >> visitMonospace: aFormat [
 
 ]
 
+{ #category : 'visiting - inline elements' }
+MicrodownVisitor >> visitNote: aNote [
+]
+
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
 
