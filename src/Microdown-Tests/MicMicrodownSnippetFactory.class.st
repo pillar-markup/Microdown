@@ -87,8 +87,7 @@ MicMicrodownSnippetFactory >> anchorWithSpaceInsideSample [
 
 { #category : 'anchor' }
 MicMicrodownSnippetFactory >> annotatedSample [
-	^ '!!label 
-Foo _bar_
+	^ '!!label Foo _bar_
 '
 ]
 
