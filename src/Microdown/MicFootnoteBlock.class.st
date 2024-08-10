@@ -12,6 +12,11 @@ Class {
 }
 
 { #category : 'accessing' }
+MicFootnoteBlock class >> key [
+	^ 'note'
+]
+
+{ #category : 'accessing' }
 MicFootnoteBlock class >> tag [
 
 	^ #footnote
