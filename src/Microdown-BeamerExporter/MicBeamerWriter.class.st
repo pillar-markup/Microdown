@@ -168,7 +168,9 @@ MicBeamerWriter >> templateForConfiguration: aConfiguration [
 
 { #category : 'blocks - code' }
 MicBeamerWriter >> visitCode: aCodeBlock [
-
+	"Pay attention that we should generate 
+	\begin{listing}{} and not {listing}"
+	
 	| env |
 	env := (aCodeBlock hasCaption and: [ aCodeBlock hasAnchor ])
 		       ifTrue: [
@@ -201,6 +203,7 @@ MicBeamerWriter >> visitCode: aCodeBlock [
 						                     ifFalse: [
 							                     canvas environment
 								                     name: 'listing';
+								                     parameter: ''; "important else it will breaks"
 								                     yourself ] ] ].
 	env with: [
 		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
