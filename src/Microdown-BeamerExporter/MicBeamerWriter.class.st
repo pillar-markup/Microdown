@@ -203,8 +203,9 @@ MicBeamerWriter >> visitCode: aCodeBlock [
 								                     name: 'listing';
 								                     yourself ] ] ].
 	env with: [
-		canvas nextPutAllLines: aCodeBlock body.
-		canvas newLine ]
+		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
+			canvas newLine ].
+
 ]
 
 { #category : 'visiting' }
