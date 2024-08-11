@@ -191,8 +191,9 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 		       yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
 	env with: [
-		canvas nextPutAllLines: aCodeBlock body.
-		canvas newLine ]
+		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
+			canvas newLine ].
+
 ]
 
 { #category : 'blocks - inline' }
