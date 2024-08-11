@@ -17,6 +17,26 @@ MicCitationBlockTest >> testCreateTheRightCitationObject [
 ]
 
 { #category : 'tests' }
+MicCitationBlockTest >> testCreateTheRightCitationObjectWithNonDefaultKey [
+	
+	| doc |
+	doc := parser parse: '{!citation|key2=Duca99a!}'.
+	self assert: doc children first children first class equals: MicCitationBlock.
+	self assert: doc children first children first name equals: 'citation'.
+	self assert: (doc children first children first arguments at: #key2) equals: 'Duca99a'.
+]
+
+{ #category : 'tests' }
+MicCitationBlockTest >> testCreateTheRightCitationObjectWithoutKey [
+	
+	| doc |
+	doc := parser parse: '{!citation|Duca99a!}'.
+	self assert: doc children first children first class equals: MicCitationBlock.
+	self assert: doc children first children first name equals: 'citation'.
+	self assert: (doc children first children first arguments at: #ref) equals: 'Duca99a'.
+]
+
+{ #category : 'tests' }
 MicCitationBlockTest >> testDefaultingClassWhenNoTag [
 	
 	| doc |
@@ -24,4 +44,24 @@ MicCitationBlockTest >> testDefaultingClassWhenNoTag [
 	self assert: doc children first children first class equals: MicAnnotationBlock.
 	self assert: doc children first children first name equals: 'citation2'.
 	self assert: (doc children first children first arguments at: #key) equals: 'Duca99a'.
+]
+
+{ #category : 'tests' }
+MicCitationBlockTest >> testDefaultingClassWhenNoTagAndNoKey [
+	
+	| doc |
+	doc := parser parse: '{!citation2|Duca99a!}'.
+	self assert: doc children first children first class equals: MicAnnotationBlock.
+	self assert: doc children first children first name equals: 'citation2'.
+	self assert: (doc children first children first arguments at: #key) equals: 'Duca99a'.
+]
+
+{ #category : 'tests' }
+MicCitationBlockTest >> testDefaultingClassWhenNoTagWithNonDefaultKey [
+	
+	| doc |
+	doc := parser parse: '{!citation2|key2=Duca99a!}'.
+	self assert: doc children first children first class equals: MicAnnotationBlock.
+	self assert: doc children first children first name equals: 'citation2'.
+	self assert: (doc children first children first arguments at: #key2) equals: 'Duca99a'.
 ]
