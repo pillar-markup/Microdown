@@ -298,6 +298,14 @@ MicLaTeXWriter >> visitMonospace: aMonospace [
 		parameter: [ super visitMonospace: aMonospace ]
 ]
 
+{ #category : 'visiting' }
+MicLaTeXWriter >> visitNote: aMicNoteBlock [
+
+	canvas command
+		name: 'comment';
+		parameter: aMicNoteBlock contents.
+]
+
 { #category : 'blocks - list' }
 MicLaTeXWriter >> visitOrderedList: aList [
 	"tabulation for  \begin{itemize} it can do in the environment of the canvas"
