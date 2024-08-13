@@ -29,6 +29,38 @@ test 2'.
 ]
 
 { #category : 'tests' }
+MicBlockQuoteBlockTest >> testBlockquoteBlockInterpretInlineELements [
+    | source root text  |
+    source := '> text1 **Bold bold**
+>    text2'.
+    root := parser parse: source.
+    self assert: root children size equals: 1.
+    text := root children first.
+    self assert: text children first class equals: MicTextBlock. 
+    self assert: text children second class equals: MicBoldFormatBlock. 
+    self
+        assert: text text
+        equals:
+            'text1 **Bold bold**
+text2'
+]
+
+{ #category : 'tests' }
+MicBlockQuoteBlockTest >> testBlockquoteBlockInterpretInlineELementsOnMultipleLines [
+    | source root text  |
+    source := '> text1 **Bold 
+>   bold** text2'.
+    root := parser parse: source.
+    self assert: root children size equals: 1.
+    text := root children first.
+    self assert: text children first class equals: MicTextBlock. 
+    self assert: text children second class equals: MicBoldFormatBlock. 
+    self assert: text children second plainText equals: 'Bold
+bold'. 
+    self assert: text children third class equals: MicTextBlock.  
+]
+
+{ #category : 'tests' }
 MicBlockQuoteBlockTest >> testNotLazy [
 	"the spec says that the last > could be omitted but we do not support it."
 	| source root text  |
