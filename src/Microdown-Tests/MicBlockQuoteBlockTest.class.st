@@ -2,7 +2,7 @@
 I'm a test class for testing the behavior of MicBlockTextBlock
 "
 Class {
-	#name : 'MicQuoteBlockTest',
+	#name : 'MicBlockQuoteBlockTest',
 	#superclass : 'MicBlockTest',
 	#category : 'Microdown-Tests-Parser',
 	#package : 'Microdown-Tests',
@@ -10,12 +10,12 @@ Class {
 }
 
 { #category : 'tests' }
-MicQuoteBlockTest >> subjectClass [ 
+MicBlockQuoteBlockTest >> subjectClass [ 
 	^ MicBlockQuoteBlock 
 ]
 
 { #category : 'tests' }
-MicQuoteBlockTest >> testBasicQuoteBlock [
+MicBlockQuoteBlockTest >> testBasicQuoteBlock [
 	| source root |
 	source := '> test1
 > test 2'.
@@ -29,7 +29,7 @@ test 2'.
 ]
 
 { #category : 'tests' }
-MicQuoteBlockTest >> testNotLazy [
+MicBlockQuoteBlockTest >> testNotLazy [
 	"the spec says that the last > could be omitted but we do not support it."
 	| source root text  |
 	source := '> text1
@@ -46,7 +46,7 @@ text3'.
 ]
 
 { #category : 'tests' }
-MicQuoteBlockTest >> testQuoteBlockDoesNotInterpretOtherBlockMarkup [
+MicBlockQuoteBlockTest >> testQuoteBlockDoesNotInterpretOtherBlockMarkup [
 	| source root text  |
 	source := '> text1
 >   - text2
@@ -65,7 +65,7 @@ Yeah cool'
 ]
 
 { #category : 'tests' }
-MicQuoteBlockTest >> testSingleQuoteBlock [
+MicBlockQuoteBlockTest >> testSingleQuoteBlock [
 	| source root text  |
 	source := '> text1
 >    text2'.
@@ -80,7 +80,7 @@ text2'
 ]
 
 { #category : 'tests' }
-MicQuoteBlockTest >> testSingleQuoteBlockFollowedByList [
+MicBlockQuoteBlockTest >> testSingleQuoteBlockFollowedByList [
 	| source root text list |
 	source := '> text1
 >    text2
