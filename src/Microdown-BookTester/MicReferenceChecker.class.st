@@ -25,7 +25,7 @@ Class {
 		'anchors',
 		'duplicatedAnchors',
 		'results',
-		'fileSystem'
+		'rootDirectory'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -90,11 +90,11 @@ MicReferenceChecker >> checkProject: aFileReference [
 	mainMic := Microdown parseFile: aFileReference.
 	collector := MicFileCollector new.
 	collector
-		fileSystem: fileSystem;
+		rootDirectory: rootDirectory;
 		visit: mainMic.
 	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
-		               fileSystem referenceTo: file ].
+		               rootDirectory resolve: file ].
 	self checkList: listOfFiles
 ]
 
@@ -119,7 +119,7 @@ MicReferenceChecker >> duplicatedAnchors [
 { #category : 'accessing' }
 MicReferenceChecker >> fileSystem: aFileSystem [
 
-	fileSystem := aFileSystem
+	rootDirectory := aFileSystem
 ]
 
 { #category : 'visiting' }
@@ -160,7 +160,7 @@ MicReferenceChecker >> initialize [
 
 	super initialize.
 	
-	fileSystem := FileSystem disk.
+	rootDirectory := FileSystem workingDirectory.
 	results := OrderedCollection new.
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
@@ -201,6 +201,12 @@ MicReferenceChecker >> reportElementsOn: aStream [
 MicReferenceChecker >> results [
 
 	^ results
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> rootDirectory: aFileReferemce [
+
+	rootDirectory := aFileReferemce
 ]
 
 { #category : 'internal' }
