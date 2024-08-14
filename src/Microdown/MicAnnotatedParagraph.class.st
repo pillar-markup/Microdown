@@ -13,6 +13,9 @@ See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pi
 Class {
 	#name : 'MicAnnotatedParagraph',
 	#superclass : 'MicAbstractAnnotatedBlock',
+	#instVars : [
+		'validLabel'
+	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
 	#tag : 'Model'
@@ -26,7 +29,21 @@ MicAnnotatedParagraph >> accept: aVisitor [
 { #category : 'parse support' }
 MicAnnotatedParagraph >> closeMe [
 	super closeMe.
+	self verifyLabel.
 	body := self inlineParse: body
+]
+
+{ #category : 'testing' }
+MicAnnotatedParagraph >> defaultLabel [ 
+	
+	^ #note
+]
+
+{ #category : 'testing' }
+MicAnnotatedParagraph >> initialize [
+
+	super initialize.
+	validLabel := { #note . #important . #todo }
 ]
 
 { #category : 'testing' }
@@ -46,4 +63,16 @@ MicAnnotatedParagraph >> text [
 MicAnnotatedParagraph >> textElements [
 
 	^ self body
+]
+
+{ #category : 'parse support' }
+MicAnnotatedParagraph >> verifyLabel [
+
+	| isValid |
+	
+	isValid := validLabel includes: label asLowercase.
+	isValid ifTrue: [ 	label := label asLowercase ] ifFalse: [ 
+			body := label , String space , body.
+			label := self defaultLabel]
+	
 ]
