@@ -294,22 +294,13 @@ See *@ancS1@*
 ' ]
 ]
 
-{ #category : 'running' }
-MicReferenceCheckerTest >> setUp [
-
-	super setUp.
-	fs := self fileSystem.
-	dir := fs / 'myDirectory'.
-	dir ensureCreateDirectory
-]
-
 { #category : 'tests - single file ok references' }
 MicReferenceCheckerTest >> testDefAndReferToAMathEquationInFile [
 
 	| visitor |
 	self defEq1AndReferToEq1.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs.
+	visitor rootDirectory: dir.
 	visitor checkProject: defEq1AndReferToEq1.
 	self assert: visitor isOkay.
 	self assert: visitor results isEmpty
@@ -321,7 +312,7 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	| visitor |
 	self defFig1AndRefToAncS0.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs.
+	visitor rootDirectory: dir.
 	visitor checkProject: defFig1AndRefToAnsC0.
 	self deny: visitor isOkay.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
@@ -349,7 +340,7 @@ MicReferenceCheckerTest >> testDefFig1AndReferToFig1 [
 	| visitor |
 	self defFig1AndRefFig1.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs.
+	visitor rootDirectory: dir.
 	visitor checkProject: defAndRefFig1.
 	self assert: visitor isOkay.
 	self assert: visitor results isEmpty
@@ -372,7 +363,7 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	| visitor |
 	self fileDefAncS1UndAncS0.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs.
+	visitor rootDirectory: dir.
 	visitor checkProject:  fileDefAncS1UndAncS0.
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
@@ -590,7 +581,7 @@ MicReferenceCheckerTest >> testFullProjectWithFowardAndBackWardRefBetweenTwoFile
 	| checker |
 	self createProjectCorrectReferencesOnTwoFiles.
 	checker := MicReferenceChecker new.
-	checker fileSystem: fs.
+	checker rootDirectory: dir.
 	checker checkProject: section1.
 	self assert: checker isOkay
 ]
@@ -601,7 +592,7 @@ MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 	| checker dict unk undefined |
 	self createProjectBadAndCorrectReferences.
 	checker := MicReferenceChecker new.
-	checker fileSystem: fs.
+	checker rootDirectory: dir.
 	checker checkProject: section1.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 2.
@@ -690,7 +681,7 @@ MicReferenceCheckerTest >> testRefToUnkS1 [
 	| visitor |
 	self refToUnkS1.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs. 
+	visitor rootDirectory: dir. 
 	visitor checkProject: refToUnkS1.
 	self deny: visitor isOkay
 	
@@ -703,7 +694,7 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	| visitor |
 	self fileRefAncS1.
 	visitor := MicReferenceChecker new.
-	visitor fileSystem: fs. 
+	visitor rootDirectory: dir. 
 	visitor checkProject: refAncS1.
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
@@ -750,7 +741,7 @@ MicReferenceCheckerTest >> testUndefinedInputFilesAreMentionedInResult [
 	| checker |
 	self createProjectWithUnexistingSection3And5.
 	checker := MicReferenceChecker new.
-	checker fileSystem: fs.
+	checker rootDirectory: dir.
 	checker checkProject: section1.
 
 	self assert: checker results size equals: 3.

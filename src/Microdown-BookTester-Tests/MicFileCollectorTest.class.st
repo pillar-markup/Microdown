@@ -18,7 +18,7 @@ MicFileCollectorTest >> startVisitingFromTheRoot: root [
 	mainMic := Microdown parseFile: root.
 	visitor := MicFileCollector new.
 	visitor
-		fileSystem: fs;
+		rootDirectory: dir;
 		visit: mainMic.
 ]
 
