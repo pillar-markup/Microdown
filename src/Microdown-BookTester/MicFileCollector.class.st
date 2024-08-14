@@ -13,7 +13,7 @@ Class {
 	#name : 'MicFileCollector',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'fileSystem',
+		'rootDirectory',
 		'visited',
 		'unexistingFiles',
 		'inputFiles'
@@ -38,9 +38,21 @@ MicFileCollector >> fileSystem: aFileSystem [
 MicFileCollector >> initialize [ 
 
 	super initialize.
-	fileSystem := FileSystem disk.
+	rootDirectory := FileSystem workingDirectory.
 	visited := Set new.
 	unexistingFiles := Set new.
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> rootDirectory [
+
+	^ rootDirectory
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> rootDirectory: aFileReference [
+	
+	rootDirectory := aFileReference
 ]
 
 { #category : 'accessing' }
@@ -75,7 +87,7 @@ MicFileCollector >> visitRoot: micDocument [
 		inputFiles do: [ :inputFile |
 			| fr doc |
 			"later we will have to fix this ugly expression"
-			fr := self fileSystem referenceTo:
+			fr := self rootDirectory resolve:
 				      (inputFile arguments at: 'path') uri asFileReference
 					      pathString.
 			
