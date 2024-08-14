@@ -595,4 +595,3 @@ MicLaTeXWriterTest >> writeForElement: aNode [
 MicLaTeXWriterTest >> writer: aWriter [
 	writer := aWriter new
 ]
-
