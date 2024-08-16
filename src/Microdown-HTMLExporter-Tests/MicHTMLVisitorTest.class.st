@@ -147,14 +147,16 @@ MicHTMLVisitorTest >> testCreateAnchorWithLink [
 MicHTMLVisitorTest >> testCreateAnnotationCompound [
 
 	| result |
-	
 	result := writer convertMicString: '# This is a title
-!!LabelOfAnnotatedBlock Body of annotated block
+!!note Body of annotated block
 
 this is another string'.
-	self assert: result trimBoth equals: '<h1>This is a title</h1>', newLine ,
-'<section id="LabelOfAnnotatedBlock"><label for="LabelOfAnnotatedBlock">Body of annotated block</label></section>', newLine ,
-'<p>this is another string</p>'.
+	self
+		assert: result trimBoth
+		equals: '<h1>This is a title</h1>' , newLine
+			,
+			'<section id="note"><label for="note">Body of annotated block</label></section>'
+			, newLine , '<p>this is another string</p>'
 ]
 
 { #category : 'tests' }
@@ -162,10 +164,13 @@ MicHTMLVisitorTest >> testCreateAnnotationSimple [
 
 	| result |
 	self assert: writer contents equals: String empty.
-	
-	result := writer convertMicString: '!!LabelOfAnnotatedBlock Body of annotated block'.
-	self assert: result trimBoth equals: '<section id="LabelOfAnnotatedBlock"><label for="LabelOfAnnotatedBlock">Body of annotated block</label></section>'.	
 
+	result := writer convertMicString:
+		          '!!note Body of annotated block'.
+	self
+		assert: result trimBoth
+		equals:
+		'<section id="note"><label for="note">Body of annotated block</label></section>'
 ]
 
 { #category : 'tests' }
