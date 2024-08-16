@@ -15,6 +15,11 @@ Class {
 }
 
 { #category : 'accessing' }
+MicCitationBlock class >> key [
+	^ 'ref'
+]
+
+{ #category : 'accessing' }
 MicCitationBlock class >> tag [
 
 	^ #citation

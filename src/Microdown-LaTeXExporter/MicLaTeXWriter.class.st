@@ -191,8 +191,9 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 		       yourself.
 	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
 	env with: [
-		canvas nextPutAllLines: aCodeBlock body.
-		canvas newLine ]
+		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
+			canvas newLine ].
+
 ]
 
 { #category : 'blocks - inline' }
@@ -295,6 +296,14 @@ MicLaTeXWriter >> visitMonospace: aMonospace [
 	canvas command
 		name: self monospaceMacro;
 		parameter: [ super visitMonospace: aMonospace ]
+]
+
+{ #category : 'visiting' }
+MicLaTeXWriter >> visitNote: aMicNoteBlock [
+
+	canvas command
+		name: 'comment';
+		parameter: aMicNoteBlock contents.
 ]
 
 { #category : 'blocks - list' }

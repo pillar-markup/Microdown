@@ -1,53 +1,159 @@
 Class {
-	#name : 'MicLaTeXWriterTest',
-	#superclass : 'MicAbstractLaTexWriterTest',
+	#name : 'MicAbstractLaTexWriterTest',
+	#superclass : 'ParametrizedTestCase',
+	#instVars : [
+		'writer',
+		'factory',
+		'newLine',
+		'parser'
+	],
 	#category : 'Microdown-LaTeXExporter-Tests',
 	#package : 'Microdown-LaTeXExporter-Tests'
 }
 
-{ #category : 'as yet unclassified' }
-MicLaTeXWriterTest >> testCodeblock [
-
-	self writeFor: (factory codeblockNoParamBody: 'this is a code').
-	self assert: writer contents equals: '\begin{listing}', newLine ,
-													'this is a code', newLine ,
-													'\end{listing}', newLine
+{ #category : 'asserting' }
+MicAbstractLaTexWriterTest class >> shouldInheritSelectors [
+	^ true
 ]
 
-{ #category : 'as yet unclassified' }
-MicLaTeXWriterTest >> testCodeblockWithCaption [
+{ #category : 'asserting' }
+MicAbstractLaTexWriterTest class >> testParameters [
 
-	self writeFor: (factory codeblock: 'caption=Pharo is **cool**' body: 'this is a code').
-	self assert: writer contents equals: '\begin{listing}[caption={Pharo is \textbf{cool}}]', newLine,
-													'this is a code', newLine,
-													'\end{listing}', newLine
+	^ ParametrizedTestMatrix new
+		  forSelector: #writer addOptions: { MicLaTeXWriter };
+		  forSelector: #factory addOptions: { MicMicrodownSnippetFactory };
+		  forSelector: #parser addOptions: { Microdown };
+		  forSelector: #newLine addOptions: { String cr . String lf . String crlf};
+		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
-MicLaTeXWriterTest >> testCodeblockWithLabel [
+{ #category : 'running' }
+MicAbstractLaTexWriterTest >> actualClass [
 
-	self writeFor: (factory codeblock: 'label=Pharo' body: 'this is a code').
-	self assert: writer contents equals: '\begin{listing}[label=Pharo]', newLine ,
-													'this is a code', newLine ,
-													'\end{listing}', newLine 
+	^ MicLaTeXWriter
+]
+
+{ #category : 'helpers' }
+MicAbstractLaTexWriterTest >> assert: result includesSubstring: expected [
+
+	expected ifEmpty: [ ^ self ].
+	self 
+		assert: (result includesSubstring: expected) 
+		description: ('''{1}'' not in ''{2}''' format: {expected . result})
+]
+
+{ #category : 'helpers' }
+MicAbstractLaTexWriterTest >> assertWriting: aDocumentItem includesText: aString [
+	| result |
+	self writeForElement: aDocumentItem.
+	result := writer contents.
+	self assert: result includesSubstring: aString
+]
+
+{ #category : 'helpers' }
+MicAbstractLaTexWriterTest >> assertWriting: aDocumentItem includesTexts: aCollection [
+	| resultString |
+	self writeForElement: aDocumentItem.
+	resultString := writer contents.
+	aCollection do: [ :testString | self assert: resultString includesSubstring: testString ]
+]
+
+{ #category : 'accessing' }
+MicAbstractLaTexWriterTest >> factory: aFactory [
+	factory := aFactory new
+]
+
+{ #category : 'accessing' }
+MicAbstractLaTexWriterTest >> newLine: aNewLine [
+	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
+	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
+	(aNewLine = String crlf) ifTrue:[ writer crlfAsNewLine ].
+	newLine := aNewLine
+]
+
+{ #category : 'tests - formats' }
+MicAbstractLaTexWriterTest >> parse: aString andCheckWeGet: aResultingString [
+	
+	| mic |
+	mic := parser parse: 	aString.
+	writer visit: mic.
+	self assert: writer contents equals: aResultingString
+]
+
+{ #category : 'tests - formats' }
+MicAbstractLaTexWriterTest >> parseInlined: aString andCheckWeGet: aResultingString [
+	
+	| mic |
+	mic := parser parse: 	aString.
+	writer visit: mic.
+	self assert: writer contents equals: newLine , aResultingString, newLine
+]
+
+{ #category : 'accessing' }
+MicAbstractLaTexWriterTest >> parser: aParser [
+	parser := aParser new
+]
+
+{ #category : 'running' }
+MicAbstractLaTexWriterTest >> setUp [ 
+
+	super setUp.
+	self parser: Microdown
+]
+
+{ #category : 'tests' }
+MicAbstractLaTexWriterTest >> testAnchor [
+
+	self parse: factory anchorSample andCheckWeGet: '\label{test}'
+
+]
+
+{ #category : 'tests' }
+MicAbstractLaTexWriterTest >> testAnchorReference [
+	"Pay attention that an anchor reference only exists within a paragraph and as such a paragraph emit a newline to start."
+	
+	self parseInlined: factory anchorReferenceSample andCheckWeGet: '\ref{Foo}'
+	
+]
+
+{ #category : 'tests - figure/link' }
+MicAbstractLaTexWriterTest >> testAnnotatedParagraph [
+	
+	self writeFor: factory annotatedSample.
+	self assert: writer contents equals: newLine ,
+					'\begin{note}', newLine ,
+					'label Foo \textit{bar}', newLine ,
+					'\end{note}'
+]
+
+{ #category : 'tests - formats' }
+MicAbstractLaTexWriterTest >> testBold [
+
+	self parseInlined: factory boldFormatSample andCheckWeGet: '\textbf{Foo}'
+]
+
+{ #category : 'tests' }
+MicAbstractLaTexWriterTest >> testCitation [
+
+	self parseInlined: '{!citation|ref=Duca99a!}' andCheckWeGet: '\cite{Duca99a}'
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testCrAsNewLine [ 
+MicAbstractLaTexWriterTest >> testCrAsNewLine [ 
 
 	writer crAsNewLine.
 	self assert: writer canvas stream configuration newLine equals: Character cr
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testCrlfAsNewLine [ 
+MicAbstractLaTexWriterTest >> testCrlfAsNewLine [ 
 
 	writer crlfAsNewLine.
 	self assert: writer canvas stream configuration newLine equals: String crlf
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testFigure [
+MicAbstractLaTexWriterTest >> testFigure [
 	
 	self writeFor: factory figureSample.
 	self assert: writer contents equals: newLine ,
@@ -60,7 +166,7 @@ MicLaTeXWriterTest >> testFigure [
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testFigureBold [
+MicAbstractLaTexWriterTest >> testFigureBold [
 	self writeFor: factory figureBoldSample.
 	self assert: writer contents equals: newLine,
 					'\begin{figure}[htpb]', newLine ,
@@ -72,7 +178,7 @@ MicLaTeXWriterTest >> testFigureBold [
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testFigureRealSample [
+MicAbstractLaTexWriterTest >> testFigureRealSample [
 
 	self writeFor: factory figureRealSample.
 	self assert: writer contents equals: newLine ,
@@ -89,7 +195,7 @@ self flag: #todo.
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testFigureWithEmptyCaption [
+MicAbstractLaTexWriterTest >> testFigureWithEmptyCaption [
 
 	self writeFor: '![](figures/f.png)'.
 	self
@@ -100,77 +206,77 @@ MicLaTeXWriterTest >> testFigureWithEmptyCaption [
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testFootnote [
+MicAbstractLaTexWriterTest >> testFootnote [
 
 	self parseInlined: factory footnoteSample andCheckWeGet: '\footnote{Pharo is cool}'
 	
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel1 [
+MicAbstractLaTexWriterTest >> testHeaderLevel1 [
 
 	self parse: factory headerLevel1Sample andCheckWeGet: newLine , '\part{Foo}'
 	
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel2 [
+MicAbstractLaTexWriterTest >> testHeaderLevel2 [
 
 	self parse: factory headerLevel2Sample andCheckWeGet: newLine  , '\chapter{Foo}'
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel3 [
+MicAbstractLaTexWriterTest >> testHeaderLevel3 [
 
 	self parse: factory headerLevel3Sample andCheckWeGet: newLine , '\section{Foo}'
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel4 [
+MicAbstractLaTexWriterTest >> testHeaderLevel4 [
 
 	self parse: factory headerLevel4Sample andCheckWeGet: newLine , '\subsection{Foo}'
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel5 [
+MicAbstractLaTexWriterTest >> testHeaderLevel5 [
 
 	self parse: factory headerLevel5Sample andCheckWeGet: newLine , '\subsubsection{Foo}'
 ]
 
 { #category : 'tests - header' }
-MicLaTeXWriterTest >> testHeaderLevel6 [
+MicAbstractLaTexWriterTest >> testHeaderLevel6 [
 	
    self parse: factory headerLevel6Sample andCheckWeGet: newLine , '\paragraph{Foo}'
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testHorizontalLine [
+MicAbstractLaTexWriterTest >> testHorizontalLine [
 
 	self parseInlined: factory horizontalLineSample andCheckWeGet: '\rule{\textwidth}{0.1pt}'
 ]
 
 { #category : 'tests - formats' }
-MicLaTeXWriterTest >> testItalic [
+MicAbstractLaTexWriterTest >> testItalic [
 
 	self parseInlined: factory italicFormatSample andCheckWeGet: '\textit{Foo}'
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testLfAsNewLine [ 
+MicAbstractLaTexWriterTest >> testLfAsNewLine [ 
 
 	writer lfAsNewLine.
 	self assert: writer canvas stream configuration newLine equals: Character lf
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testLink [
+MicAbstractLaTexWriterTest >> testLink [
 	self writeFor: factory linkSample.		
 	self assert: writer contents equals: newLine,
 '\href{/anUrl}{Foo}', newLine
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testLinkBold [
+MicAbstractLaTexWriterTest >> testLinkBold [
 
 	self writeFor: factory linkBoldSample.
 	self assert: writer contents equals: newLine ,
@@ -178,7 +284,7 @@ MicLaTeXWriterTest >> testLinkBold [
 ]
 
 { #category : 'tests - math' }
-MicLaTeXWriterTest >> testMathBloc [
+MicAbstractLaTexWriterTest >> testMathBloc [
 
 	self
 	parseInlined:'$$
@@ -193,7 +299,7 @@ $$'
 ]
 
 { #category : 'tests - math' }
-MicLaTeXWriterTest >> testMathBlocWithLabel [
+MicAbstractLaTexWriterTest >> testMathBlocWithLabel [
 
 	self
 	parseInlined:'$$ % anchor=eq1
@@ -209,7 +315,7 @@ $$'
 ]
 
 { #category : 'tests - math' }
-MicLaTeXWriterTest >> testMathInLine [
+MicAbstractLaTexWriterTest >> testMathInLine [
 
 	self
 	parseInlined: 'Similarly, let $f_{w,C}$ be the number of documents in corpus $C$ that contain word $w$:'
@@ -221,20 +327,13 @@ MicLaTeXWriterTest >> testMathInLine [
 ]
 
 { #category : 'tests - formats' }
-MicLaTeXWriterTest >> testMonospace [
+MicAbstractLaTexWriterTest >> testMonospace [
 
 	self parseInlined: factory monospaceFormatSample andCheckWeGet: '\code{Foo}'
 ]
 
-{ #category : 'tests' }
-MicLaTeXWriterTest >> testNote [
-
-	self parseInlined: '{!note|contents=Duca99a!}' andCheckWeGet: '\comment{Duca99a}'
-	
-]
-
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testOrderedList [
+MicAbstractLaTexWriterTest >> testOrderedList [
 	
 	self writeFor: factory orderedListWithTwoItemsSample.
 	self assert: writer contents equals: newLine,
@@ -245,7 +344,7 @@ MicLaTeXWriterTest >> testOrderedList [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testOrderedListBold [
+MicAbstractLaTexWriterTest >> testOrderedListBold [
 
 	self writeFor: factory orderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: newLine ,
@@ -256,7 +355,7 @@ MicLaTeXWriterTest >> testOrderedListBold [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testOrderedListNested [
+MicAbstractLaTexWriterTest >> testOrderedListNested [
 
 	self writeFor:  factory orderedListWithTwoItemsBoldFirstSample.
 	self assert: writer contents equals: newLine, 
@@ -267,7 +366,7 @@ MicLaTeXWriterTest >> testOrderedListNested [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testOrderedNestedListNested [
+MicAbstractLaTexWriterTest >> testOrderedNestedListNested [
 
 	self writeFor: factory nestedOrderedListSample. 
 	self assert: writer contents equals: newLine ,
@@ -283,7 +382,7 @@ MicLaTeXWriterTest >> testOrderedNestedListNested [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testOrderedNestedListNested2 [
+MicAbstractLaTexWriterTest >> testOrderedNestedListNested2 [
 
 	self writeFor: factory nestedOrderedList2Sample. 
 	self assert: writer contents  equals: newLine ,
@@ -304,7 +403,7 @@ MicLaTeXWriterTest >> testOrderedNestedListNested2 [
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraph [
+MicAbstractLaTexWriterTest >> testParagraph [
 	
 	self parse: factory paragraphSample andCheckWeGet: newLine,
 															'Foo',newLine
@@ -312,28 +411,28 @@ MicLaTeXWriterTest >> testParagraph [
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphLongWithAccents [
+MicAbstractLaTexWriterTest >> testParagraphLongWithAccents [
 
 		self parse: factory paragraphOnMultipleLinesSample andCheckWeGet:  newLine,
 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit \`{a} l''oblit\''{e}ration totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera pass\''{e}e, je tournerai mon oeil interieur sur son chemin. Et l\`{a} o\`{u} elle sera pass\''{e}e, il n''y aura plus rien, rien que moi.', newLine
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphWithBold [
+MicAbstractLaTexWriterTest >> testParagraphWithBold [
 
 	self parse: factory paragraphBoldSample andCheckWeGet:  newLine ,
 									'this is a \textbf{paragraph}', newLine
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphWithItalic [
+MicAbstractLaTexWriterTest >> testParagraphWithItalic [
 
 	self parse: factory paragraphItalicSample andCheckWeGet:  newLine ,
 									'this is a \textit{paragraph}', newLine
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphWithMonospace [
+MicAbstractLaTexWriterTest >> testParagraphWithMonospace [
 	
 	self parse: factory paragraphMonospaceSample andCheckWeGet:  newLine ,
 'this is a \code{paragraph}', newLine 
@@ -341,14 +440,14 @@ MicLaTeXWriterTest >> testParagraphWithMonospace [
 ]
 
 { #category : 'tests - paragraph' }
-MicLaTeXWriterTest >> testParagraphWithNested [
+MicAbstractLaTexWriterTest >> testParagraphWithNested [
 
 	self parse: factory paragraphNestedSample andCheckWeGet:  newLine ,
 'this is a \textbf{\textit{paragraph}}', newLine
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testQuote [
+MicAbstractLaTexWriterTest >> testQuote [
 
 	self parse: factory quoteSample andCheckWeGet:  '\begin{verbatim}', newLine ,
 																	'Foo', newLine ,
@@ -356,14 +455,14 @@ MicLaTeXWriterTest >> testQuote [
 ]
 
 { #category : 'tests - figure/link' }
-MicLaTeXWriterTest >> testRealLinkSample [
+MicAbstractLaTexWriterTest >> testRealLinkSample [
 	self writeFor: factory realLinkSample.	
 	self assert: writer contents equals: newLine ,
 '\href{http://www.pharo.org}{The Pharo Project}', newLine 
 ]
 
 { #category : 'tests - math' }
-MicLaTeXWriterTest >> testSimpleMathBloc [
+MicAbstractLaTexWriterTest >> testSimpleMathBloc [
 	
 	| root math |
 	root := parser parse: '
@@ -384,14 +483,14 @@ $$'
 ]
 
 { #category : 'tests - formats' }
-MicLaTeXWriterTest >> testStrike [
+MicAbstractLaTexWriterTest >> testStrike [
 
 	self parseInlined: factory strikethroughFormatSample andCheckWeGet: '\sout{Foo}'
 		
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testTable [
+MicAbstractLaTexWriterTest >> testTable [
 	self writeFor: factory tableSample.
 	self assert: writer contents equals: newLine,
 													'\begin{tabular}{ll}', newLine ,
@@ -404,7 +503,7 @@ MicLaTeXWriterTest >> testTable [
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testTableWhithoutHeader [
+MicAbstractLaTexWriterTest >> testTableWhithoutHeader [
 	
 	self writeFor: (factory simpleTableWithoutHeaderTable).
 	self assert: writer contents equals: newLine,
@@ -417,7 +516,7 @@ MicLaTeXWriterTest >> testTableWhithoutHeader [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testUnorderedList [
+MicAbstractLaTexWriterTest >> testUnorderedList [
 
 	self writeFor: factory unorderedListWithTwoItemsSample.
 	self assert: writer contents equals: newLine, 
@@ -428,7 +527,7 @@ MicLaTeXWriterTest >> testUnorderedList [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testUnorderedListBold [
+MicAbstractLaTexWriterTest >> testUnorderedListBold [
 
 	self writeFor: factory unorderedListWithTwoItemsBoldSample.
 	self assert: writer contents equals: newLine ,
@@ -439,7 +538,7 @@ MicLaTeXWriterTest >> testUnorderedListBold [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testUnorderedListNested [
+MicAbstractLaTexWriterTest >> testUnorderedListNested [
 
 	self writeFor: factory unorderedListWithTwoItemsNestedSample.
 	self assert: writer contents equals: newLine ,
@@ -450,7 +549,7 @@ MicLaTeXWriterTest >> testUnorderedListNested [
 ]
 
 { #category : 'tests - lists' }
-MicLaTeXWriterTest >> testUnorderedNestedListNested [
+MicAbstractLaTexWriterTest >> testUnorderedNestedListNested [
 
 	self writeFor: factory nestedUnorderedListSample. 
 	self assert: writer contents equals: newLine ,
@@ -467,7 +566,7 @@ MicLaTeXWriterTest >> testUnorderedNestedListNested [
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> testUrlsAreProtected [
+MicAbstractLaTexWriterTest >> testUrlsAreProtected [
 
 	self assert: (writer protectUrl: '#') equals: '\#'.
 	self assert: (writer protectUrl: '~') equals: '~'.
@@ -478,7 +577,7 @@ MicLaTeXWriterTest >> testUrlsAreProtected [
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCr [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCr [
 	writer crAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -489,7 +588,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsCrlf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCrButNewLineIsCrlf [
 	writer crlfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -500,7 +599,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCrButNewLineIsLf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCrButNewLineIsLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -511,7 +610,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCrlf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCrlf [
 	writer crlfAsNewLine .
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -522,7 +621,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCrlfButNewLineIsCr [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCrlfButNewLineIsCr [
 	writer crAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -533,7 +632,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithCrlfButNewLineIsLf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithCrlfButNewLineIsLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -544,7 +643,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithLf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -555,7 +654,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
 	writer crAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -566,7 +665,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests - breaklining' }
-MicLaTeXWriterTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
+MicAbstractLaTexWriterTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
 	writer crlfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
 cela ne fonctionnerais pas
@@ -577,7 +676,7 @@ car il a etait fait pour cela'.
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> writeFor: aString [ 
+MicAbstractLaTexWriterTest >> writeFor: aString [ 
 	| mic |
 	mic := parser parse: aString.
 	writer visit: mic.
@@ -585,13 +684,13 @@ MicLaTeXWriterTest >> writeFor: aString [
 ]
 
 { #category : 'tests' }
-MicLaTeXWriterTest >> writeForElement: aNode [
+MicAbstractLaTexWriterTest >> writeForElement: aNode [
 
 	writer visit: aNode.
 
 ]
 
 { #category : 'accessing' }
-MicLaTeXWriterTest >> writer: aWriter [
+MicAbstractLaTexWriterTest >> writer: aWriter [
 	writer := aWriter new
 ]

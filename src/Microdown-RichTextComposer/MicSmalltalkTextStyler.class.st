@@ -17,6 +17,7 @@ MicSmalltalkTextStyler class >> initialize [
 	"do not super initialize, that whould interfer with settings"
 
 	styleTable := SHRBTextStyler styleTable. "Not super, as that would just refer to my class-side variables"
+	textAttributes := nil.
 	formatIncompleteIdentifiers := false
 ]
 

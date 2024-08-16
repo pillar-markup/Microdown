@@ -169,41 +169,18 @@ MicBeamerWriter >> templateForConfiguration: aConfiguration [
 { #category : 'blocks - code' }
 MicBeamerWriter >> visitCode: aCodeBlock [
 
+	"simplify dramatically the logic. 
+	In Beamer we only support \begin{listing}{}
+	caption and anchor do not seem to work at LaTeX level. "	
+
 	| env |
-	env := (aCodeBlock hasCaption and: [ aCodeBlock hasAnchor ])
-		       ifTrue: [
-			       canvas environment
-				       name: 'listing';
-				       optParameter: 'label=' , aCodeBlock label;
-				       optParameter:
-					       'caption={'
-					       , (self getStringForAll: aCodeBlock captionElements) , '}';
-				       yourself ]
-		       ifFalse: [
-			       env := aCodeBlock hasCaption
-				              ifTrue: [
-					              canvas environment
-						              name: 'listing';
-						              optParameter:
-							              'caption={'
-							              ,
-								              (self getStringForAll:
-										               aCodeBlock captionElements) , '}';
-						              yourself ]
-				              ifFalse: [
-					              env := aCodeBlock hasAnchor
-						                     ifTrue: [
-							                     canvas environment
-								                     name: 'listing';
-								                     optParameter:
-									                     'label=' , aCodeBlock anchor;
-								                     yourself ]
-						                     ifFalse: [
-							                     canvas environment
-								                     name: 'listing';
-								                     yourself ] ] ].
+	env := canvas environment
+					name: 'listing';
+					parameter: ''; "important else it will breaks"
+					yourself.
 	env with: [
-		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
+		self writeRawDuring: [ 
+			canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ].
 
 ]
