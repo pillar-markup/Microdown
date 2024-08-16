@@ -14,7 +14,7 @@ Class {
 	#name : 'MicAnnotatedParagraph',
 	#superclass : 'MicAbstractAnnotatedBlock',
 	#instVars : [
-		'validLabel'
+		'validLabels'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -43,7 +43,7 @@ MicAnnotatedParagraph >> defaultLabel [
 MicAnnotatedParagraph >> initialize [
 
 	super initialize.
-	validLabel := { #note . #important . #todo }
+	validLabels := { #note. #important. #todo }
 ]
 
 { #category : 'testing' }
@@ -69,10 +69,10 @@ MicAnnotatedParagraph >> textElements [
 MicAnnotatedParagraph >> verifyLabel [
 
 	| isValid |
-	
-	isValid := validLabel includes: label asLowercase.
-	isValid ifTrue: [ 	label := label asLowercase ] ifFalse: [ 
+	isValid := validLabels includes: label asLowercase.
+	isValid
+		ifTrue: [ label := label asLowercase ]
+		ifFalse: [
 			body := label , String space , body.
-			label := self defaultLabel]
-	
+			label := self defaultLabel ]
 ]
