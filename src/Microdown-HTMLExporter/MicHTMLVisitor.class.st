@@ -221,13 +221,9 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 
 	canvas newLine.
 	canvas tag
-		name: 'section';
+		name: 'q';
 		parameterAt: 'id' put: anAnnotatedParagraph label;
-		with: [ 
-			canvas tag
-				name: 'label';
-				parameterAt: 'for' put: anAnnotatedParagraph label;
-				with: [ super visitAnnotated: anAnnotatedParagraph ] ].
+		with: [ super visitAnnotated: anAnnotatedParagraph ].
 ]
 
 { #category : 'visiting - inline elements' }
