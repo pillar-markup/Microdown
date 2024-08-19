@@ -15,7 +15,8 @@ MicAnnotatedParagraphTest >> subjectClass [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraph [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!important This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -29,8 +30,8 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraph [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithALineBreak [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!important 
-This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -44,7 +45,8 @@ This is an important information'.
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!test This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -58,7 +60,8 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabelWithUpperCase [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!Test This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -73,7 +76,8 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithBlodText [
 
 	| root annotatedParagraph |
 	root := parser parse:
-		        '!!important This is an **important** information'.
+		        '>[! important ]
+> This is an **important** information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -91,7 +95,8 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithBlodText [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithLabelHavingUpperCase [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!ImporTanT This is an important information'.
+	root := parser parse: '>[! ImporTanT ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
