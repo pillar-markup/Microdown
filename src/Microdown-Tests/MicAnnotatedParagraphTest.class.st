@@ -45,7 +45,7 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithALineBreak [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 
 	| root annotatedParagraph |
-	root := parser parse: '>[! important ]
+	root := parser parse: '>[! test ]
 > This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
@@ -60,7 +60,7 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabelWithUpperCase [
 
 	| root annotatedParagraph |
-	root := parser parse: '>[! important ]
+	root := parser parse: '>[! Test ]
 > This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
