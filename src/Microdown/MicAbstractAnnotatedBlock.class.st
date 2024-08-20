@@ -21,9 +21,10 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 			| indexOfFirstClosingBracket |
 			indexOfFirstClosingBracket := line indexOf: $].
 			label := indexOfFirstClosingBracket = 0
-				ifTrue: [ '' ]
-				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstClosingBracket - 1.].
-			label := label trim]
+				ifTrue: [ parent children removeLast. ^ self createMicBlockQuoteBlock: line ]
+				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstClosingBracket - 1.
+					].
+				label := label trim]
 		ifNotNil: [ | treatedLine |
 	treatedLine := self extractLine: line.
 	body := body
@@ -42,6 +43,17 @@ MicAbstractAnnotatedBlock >> canConsumeLine: line [
 
 	"it can be dangerous but let us try"
 	^ line isNotEmpty 
+]
+
+{ #category : 'as yet unclassified' }
+MicAbstractAnnotatedBlock >> createMicBlockQuoteBlock: line [
+
+^ MicBlockQuoteBlock new
+		setParser: parser;
+		parent: parent;
+		addLineAndReturnNextNode: line 
+
+
 ]
 
 { #category : 'actions' }
