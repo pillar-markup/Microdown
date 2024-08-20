@@ -155,7 +155,7 @@ this is another string'.
 		assert: result trimBoth
 		equals: '<h1>This is a title</h1>' , newLine
 			,
-			'<section id="note"><label for="note">Body of annotated block</label></section>'
+			'<q id="note">Body of annotated block</q>'
 			, newLine , '<p>this is another string</p>'
 ]
 
@@ -170,7 +170,7 @@ MicHTMLVisitorTest >> testCreateAnnotationSimple [
 	self
 		assert: result trimBoth
 		equals:
-		'<section id="note"><label for="note">Body of annotated block</label></section>'
+		'<q id="note">Body of annotated block</q>'
 ]
 
 { #category : 'tests' }
