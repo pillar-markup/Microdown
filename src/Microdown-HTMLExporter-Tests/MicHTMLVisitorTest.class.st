@@ -148,7 +148,9 @@ MicHTMLVisitorTest >> testCreateAnnotationCompound [
 
 	| result |
 	result := writer convertMicString: '# This is a title
-!!note Body of annotated block
+>[!note]
+> Body of annotated block
+
 
 this is another string'.
 	self
@@ -166,7 +168,8 @@ MicHTMLVisitorTest >> testCreateAnnotationSimple [
 	self assert: writer contents equals: String empty.
 
 	result := writer convertMicString:
-		          '!!note Body of annotated block'.
+		          '>[!note]
+> Body of annotated block'.
 	self
 		assert: result trimBoth
 		equals:

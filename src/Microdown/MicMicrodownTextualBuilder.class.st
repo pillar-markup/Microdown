@@ -524,7 +524,10 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 	attention there is not space between the !! and the label (annotation in pillar) or we should improve the microdown parser"
 	self
 		raw: AnnotatedParagraphMarkup;
-		raw: annotation; 
+		raw: annotation;
+		raw: $];
+		raw: Character cr;
+		raw: $>;
 		raw: String space;
 		rawParagraph: aBlock
 	

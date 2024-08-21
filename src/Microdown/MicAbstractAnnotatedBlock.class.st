@@ -18,14 +18,18 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 		ifTrue: [ ^ self ].
 	label 
 		ifNil: [ 
-			| indexOfFirstSpace |
-			indexOfFirstSpace := line indexOf: Character space.
-			label := indexOfFirstSpace = 0
-				ifTrue: [ '' ]
-				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstSpace - 1.].
-			body := (line copyFrom: indexOfFirstSpace + 1 to: line size) trim.]
-		ifNotNil: [ body = '' ifTrue: [ body := body , line ]
-			ifFalse: [ body := body , String cr , line ]]
+			| indexOfFirstClosingBracket |
+			indexOfFirstClosingBracket := line indexOf: $].
+			label := indexOfFirstClosingBracket = 0
+				ifTrue: [ parent children removeLast. ^ self createMicBlockQuoteBlock: line ]
+				ifFalse: [line copyFrom: self lineMarkup size + 1 to: indexOfFirstClosingBracket - 1.
+					].
+				label := label trim]
+		ifNotNil: [ | treatedLine |
+	treatedLine := self extractLine: line.
+	body := body
+		ifNil: [ treatedLine ]
+		ifNotNil: [ body , String cr , treatedLine ]]
 ]
 
 { #category : 'accessing' }
@@ -39,6 +43,22 @@ MicAbstractAnnotatedBlock >> canConsumeLine: line [
 
 	"it can be dangerous but let us try"
 	^ line isNotEmpty 
+]
+
+{ #category : 'creating classes' }
+MicAbstractAnnotatedBlock >> createMicBlockQuoteBlock: line [
+
+^ MicBlockQuoteBlock new
+		setParser: parser;
+		parent: parent;
+		addLineAndReturnNextNode: line 
+
+
+]
+
+{ #category : 'actions' }
+MicAbstractAnnotatedBlock >> extractLine: line [
+	^ (line copyFrom: 2 to: line size) trim
 ]
 
 { #category : 'initialization' }
