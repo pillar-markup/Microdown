@@ -45,7 +45,7 @@ MicAbstractAnnotatedBlock >> canConsumeLine: line [
 	^ line isNotEmpty 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creating classes' }
 MicAbstractAnnotatedBlock >> createMicBlockQuoteBlock: line [
 
 ^ MicBlockQuoteBlock new
