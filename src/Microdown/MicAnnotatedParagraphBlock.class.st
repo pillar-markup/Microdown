@@ -11,7 +11,7 @@ For example, we cannot currently add lists inside an annotatedBlock.
 See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pillar-markup/MicroDown/issues/54)
 "
 Class {
-	#name : 'MicAnnotatedParagraph',
+	#name : 'MicAnnotatedParagraphBlock',
 	#superclass : 'MicAbstractAnnotatedBlock',
 	#instVars : [
 		'validLabels'
@@ -22,51 +22,51 @@ Class {
 }
 
 { #category : 'visiting' }
-MicAnnotatedParagraph >> accept: aVisitor [
+MicAnnotatedParagraphBlock >> accept: aVisitor [
  	^ aVisitor visitAnnotated: self
 ]
 
 { #category : 'parse support' }
-MicAnnotatedParagraph >> closeMe [
+MicAnnotatedParagraphBlock >> closeMe [
 	super closeMe.
 	self verifyLabel.
 	body := self inlineParse: body
 ]
 
 { #category : 'testing' }
-MicAnnotatedParagraph >> defaultLabel [ 
+MicAnnotatedParagraphBlock >> defaultLabel [ 
 	
 	^ #note
 ]
 
 { #category : 'testing' }
-MicAnnotatedParagraph >> initialize [
+MicAnnotatedParagraphBlock >> initialize [
 
 	super initialize.
 	validLabels := { #note. #important. #todo }
 ]
 
 { #category : 'testing' }
-MicAnnotatedParagraph >> lineMarkup [
+MicAnnotatedParagraphBlock >> lineMarkup [
 	
 	^ AnnotatedParagraphMarkup
 ]
 
 { #category : 'accessing' }
-MicAnnotatedParagraph >> text [
+MicAnnotatedParagraphBlock >> text [
 
 	^ String streamContents: [ :s |
 		  self textElements do: [ :each | s nextPutAll: each plainText ] ]
 ]
 
 { #category : 'accessing' }
-MicAnnotatedParagraph >> textElements [
+MicAnnotatedParagraphBlock >> textElements [
 
 	^ self body
 ]
 
 { #category : 'parse support' }
-MicAnnotatedParagraph >> verifyLabel [
+MicAnnotatedParagraphBlock >> verifyLabel [
 
 	| isValid |
 	isValid := validLabels includes: label asLowercase.

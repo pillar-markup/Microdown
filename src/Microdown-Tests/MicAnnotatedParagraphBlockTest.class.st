@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicAnnotatedParagraphTest',
+	#name : 'MicAnnotatedParagraphBlockTest',
 	#superclass : 'MicBlockTest',
 	#category : 'Microdown-Tests-Parser',
 	#package : 'Microdown-Tests',
@@ -7,26 +7,26 @@ Class {
 }
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> subjectClass [ 
-	^ MicAnnotatedParagraph 
+MicAnnotatedParagraphBlockTest >> subjectClass [ 
+	^ MicAnnotatedParagraphBlock 
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraph [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraph [
 
 	| root annotatedParagraph |
 	root := parser parse: '!!important This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'important';
 		assert: annotatedParagraph text
 		equals: 'This is an important information'
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithALineBreak [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithALineBreak [
 
 	| root annotatedParagraph |
 	root := parser parse: '!!important 
@@ -34,42 +34,42 @@ This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'important';
 		assert: annotatedParagraph text
 		equals: 'This is an important information'
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 
 	| root annotatedParagraph |
 	root := parser parse: '!!test This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'note';
 		assert: annotatedParagraph text
 		equals: 'test This is an important information'
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithANonSupportedLabelWithUpperCase [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithANonSupportedLabelWithUpperCase [
 
 	| root annotatedParagraph |
 	root := parser parse: '!!Test This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'note';
 		assert: annotatedParagraph text
 		equals: 'Test This is an important information'
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithBlodText [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithBlodText [
 
 	| root annotatedParagraph |
 	root := parser parse:
@@ -77,7 +77,7 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithBlodText [
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'important';
 		assert: annotatedParagraph textElements size equals: 3;
 		assert:
@@ -88,14 +88,14 @@ MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithBlodText [
 ]
 
 { #category : 'tests' }
-MicAnnotatedParagraphTest >> testBasicAnnotetedParagraphWithLabelHavingUpperCase [
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithLabelHavingUpperCase [
 
 	| root annotatedParagraph |
 	root := parser parse: '!!ImporTanT This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
-		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraph);
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
 		assert: annotatedParagraph label equals: 'important';
 		assert: annotatedParagraph text
 		equals: 'This is an important information'
