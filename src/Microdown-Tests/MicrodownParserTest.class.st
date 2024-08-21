@@ -88,7 +88,8 @@ MicrodownParserTest >> testAnchorMarkupInsideLine [
 MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important this is an important paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important]
+> this is an important paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -130,8 +131,9 @@ important point because...!'.
 { #category : 'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important this is an important 
-paragraph on two lines.'.
+	source := AnnotatedParagraphMarkup , 'important]
+> this is an important 
+> paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -144,8 +146,9 @@ paragraph on two lines.'
 { #category : 'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important **this** is an _important_ 
-paragraph on two lines.'.
+	source := AnnotatedParagraphMarkup , 'important]
+> **this** is an _important_ 
+> paragraph on two lines.'.
 	root := parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -160,7 +163,8 @@ paragraph on two lines.))'
 MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important this is an **important** paragraph on one line.'.
+	source := AnnotatedParagraphMarkup , 'important]
+> this is an **important** paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
@@ -176,8 +180,9 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
 	self flag: #fixme.
-	source := (AnnotatedParagraphMarkup , 'important this is a point
-- one
+	source := (AnnotatedParagraphMarkup , 'important]
+> this is a point
+> - one
 * two ' ) readStream.
 
  	parser := self parser. 
@@ -192,9 +197,16 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	self assert: annotated parent equals: root.  
 	
 	self assert: annotated label equals: 'important'.
-	self assert: (annotated instVarNamed: 'body') equals: 'this is a point'.
 	
 	"third the second line"
+	line := source nextLine.
+	
+	self assert: (annotated canConsumeLine: line).
+	annotated := parser handleLine: line.
+	self assert: parser current equals: annotated.
+	self assert: (annotated instVarNamed: 'body') equals: 'this is a point'.
+	
+	"fourth the third line"
 	line := source nextLine.
 	
 	self assert: (annotated canConsumeLine: line).
