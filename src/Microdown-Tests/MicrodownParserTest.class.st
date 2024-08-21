@@ -103,8 +103,9 @@ MicrodownParserTest >> testAnnotatedBlock [
 MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
-	source := (AnnotatedParagraphMarkup , 'important this is an 
-important point because...!') readStream.
+	source := (AnnotatedParagraphMarkup , 'important]
+> this is an 
+> important point because...!') readStream.
 	
 	"first the root block"
 	root := parser parse: ''.
@@ -116,9 +117,15 @@ important point because...!') readStream.
 	self assert: annotated parent equals: root.  
 	
 	self assert: annotated label equals: 'important'.
-	self assert: (annotated instVarNamed: 'body') equals: 'this is an'.
 	
 	"third the second line"
+	line := source nextLine.
+	self assert: (annotated canConsumeLine: line).
+	annotated := parser handleLine: line.
+	self assert: parser current equals: annotated.
+	self assert: (annotated instVarNamed: 'body') equals: 'this is an'.
+	
+"fourth the third line"
 	line := source nextLine.
 	self assert: (annotated canConsumeLine: line).
 	annotated := parser handleLine: line.
