@@ -24,9 +24,21 @@ Class {
 }
 
 { #category : 'kinds' }
+MicResult class >> errorType [
+
+	^ self subclassResponsibility 
+]
+
+{ #category : 'kinds' }
 MicResult class >> headerString [
 
 	^ self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+MicResult >> StonFormatExplanation [
+
+	^ self subclassResponsibility
 ]
 
 { #category : 'accessing' }

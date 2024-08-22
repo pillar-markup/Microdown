@@ -142,6 +142,29 @@ MicBookTestResult >> isValid [
 ]
 
 { #category : 'accessing' }
+MicBookTestResult >> stonFormatExplanation [
+	
+	^ '{', String cr , '"status" : "',
+	  (self class allMessages at: self status asString) asString ,'",',
+     String cr , 
+	  '"isExpectedFailure" : "',
+	  self isExpectedFailure asString ,'",',
+	  String cr ,
+     '"Description" : "' ,
+	 self message asString ,'",',
+	 String cr ,
+	 '"codeBlock" : "',
+	 self text  , '",',
+	 String cr ,
+	'"sourceFile" : "' ,
+	self source asString , '"',
+	String cr , '}'
+   	  
+
+	
+]
+
+{ #category : 'accessing' }
 MicBookTestResult >> text [
 
 	^ text 

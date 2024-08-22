@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'kinds' }
+MicUndefinedAnchorResult class >> errorType [
+
+	^ 'UndefinedAnchor'
+]
+
+{ #category : 'kinds' }
 MicUndefinedAnchorResult class >> headerString [
 
 	^ 'Undefined Anchors:'

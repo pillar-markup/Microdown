@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'kinds' }
+MicDuplicatedAnchorResult class >> errorType [
+
+	^ 'DuplicatedAnchor'
+]
+
+{ #category : 'kinds' }
 MicDuplicatedAnchorResult class >> headerString [
 
 	^ 'Duplicated Anchors:'

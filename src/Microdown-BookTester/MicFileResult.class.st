@@ -6,6 +6,13 @@ Class {
 }
 
 { #category : 'accessing' }
+MicFileResult >> StonFormatExplanation [
+
+	^ '"', self what,'" : "', source , '"'
+	
+]
+
+{ #category : 'accessing' }
 MicFileResult >> explanation [
 
 	^ 'File input ', self what,' (in file ', source , ') does not exist'

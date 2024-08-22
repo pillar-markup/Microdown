@@ -8,6 +8,19 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicAnchorResult class >> errorType [
+
+	^ 'UndefinedAnchor'
+]
+
+{ #category : 'accessing' }
+MicAnchorResult >> StonFormatExplanation [
+
+	^ '"', anchorLabel , '" : "', source,'"'
+	
+]
+
 { #category : 'accessing' }
 MicAnchorResult >> anchorLabel [
 

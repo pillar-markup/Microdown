@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : 'kinds' }
+MicUndefinedFigureFileResult class >> errorType [
+
+	^ 'UndefinedFigureFiles:'
+]
+
+{ #category : 'kinds' }
 MicUndefinedFigureFileResult class >> headerString [
 
 	^ 'Undefined figure files:'
