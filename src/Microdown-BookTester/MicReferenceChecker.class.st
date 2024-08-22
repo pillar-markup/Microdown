@@ -213,7 +213,7 @@ MicReferenceChecker >> reportElementsOn: aStream [
 { #category : 'reporting' }
 MicReferenceChecker >> reportElementsSTONFormatOn: aStream [
 
-		results do: [ :each | aStream tab; nextPutAll: each StonFormatExplanation ] separatedBy: [ aStream nextPut: $, ; cr ]
+		results do: [ :each | aStream tab; nextPutAll: each stonFormatExplanation ] separatedBy: [ aStream nextPut: $, ; cr ]
 	
 ]
 

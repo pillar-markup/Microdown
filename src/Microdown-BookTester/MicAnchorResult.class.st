@@ -15,13 +15,6 @@ MicAnchorResult class >> errorType [
 ]
 
 { #category : 'accessing' }
-MicAnchorResult >> StonFormatExplanation [
-
-	^ '"', anchorLabel , '" : "', source,'"'
-	
-]
-
-{ #category : 'accessing' }
 MicAnchorResult >> anchorLabel [
 
 	^ anchorLabel
@@ -43,4 +36,11 @@ MicAnchorResult >> explanation [
 { #category : 'accessing' }
 MicAnchorResult >> isWhat [
 	^  'undefined'
+]
+
+{ #category : 'accessing' }
+MicAnchorResult >> stonFormatExplanation [
+
+	^ '"', anchorLabel , '" : "', source,'"'
+	
 ]

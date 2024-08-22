@@ -36,12 +36,6 @@ MicResult class >> headerString [
 ]
 
 { #category : 'accessing' }
-MicResult >> StonFormatExplanation [
-
-	^ self subclassResponsibility
-]
-
-{ #category : 'accessing' }
 MicResult >> explanation [
 
 	^ self subclassResponsibility
@@ -81,4 +75,10 @@ MicResult >> status [
 MicResult >> status: anObject [
 
 	status := anObject
+]
+
+{ #category : 'accessing' }
+MicResult >> stonFormatExplanation [
+
+	^ self subclassResponsibility
 ]

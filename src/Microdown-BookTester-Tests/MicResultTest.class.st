@@ -48,7 +48,7 @@ MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 	res source: '/myDir/chapter1.md'.
 	
 	self 
-		assert: res StonFormatExplanation 
+		assert: res stonFormatExplanation 
 		equals: '"ancS0" : "/myDir/chapter1.md"'
 	
 ]
@@ -64,7 +64,7 @@ MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 	res source: '/myDir/chapter1.md'.
 	
 	self 
-		assert: res StonFormatExplanation 
+		assert: res stonFormatExplanation 
 		equals: '"ancS0" : "/myDir/chapter1.md"'
 	
 ]

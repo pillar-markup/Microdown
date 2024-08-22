@@ -722,6 +722,23 @@ MicReferenceCheckerTest >> testReportingSTONFormatDuplicatedAnchors [
 ]
 
 { #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testReportingSTONFormatDuplicatedFigure [
+
+	| checker |
+	self fileRefAncS1.
+	checker := MicReferenceChecker new.
+	checker rootDirectory: dir. 
+	checker checkProject: refAncS1.
+	
+	self assert: checker reportSTONFormat equals: '
+{ "type" : "UndefinedAnchor",
+[ 
+	"ancS1" : "/fileRefAncS1.md"]}
+
+'
+]
+
+{ #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testReportingSTONFormatUnknownAnchorDir [
 	
 	| checker |

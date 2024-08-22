@@ -6,16 +6,16 @@ Class {
 }
 
 { #category : 'accessing' }
-MicFileResult >> StonFormatExplanation [
+MicFileResult >> explanation [
 
-	^ '"', self what,'" : "', source , '"'
+	^ 'File input ', self what,' (in file ', source , ') does not exist'
 	
 ]
 
 { #category : 'accessing' }
-MicFileResult >> explanation [
+MicFileResult >> stonFormatExplanation [
 
-	^ 'File input ', self what,' (in file ', source , ') does not exist'
+	^ '"', self what,'" : "', source , '"'
 	
 ]
 
