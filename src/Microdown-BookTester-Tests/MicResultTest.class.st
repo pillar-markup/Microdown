@@ -38,6 +38,38 @@ MicResultTest >> testExplanationUndefinedAnchor [
 ]
 
 { #category : 'tests' }
+MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
+
+	| res |
+	res := MicDuplicatedAnchorResult new. 
+	res anchorLabel: 'ancS0'.
+	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
+	this later"
+	res source: '/myDir/chapter1.md'.
+	
+	self 
+		assert: res StonFormatExplanation 
+		equals: '"ancS0" : "/myDir/chapter1.md"'
+	
+]
+
+{ #category : 'tests' }
+MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
+
+	| res |
+	res := MicUndefinedAnchorResult new. 
+	res anchorLabel: 'ancS0'.
+	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
+	this later"
+	res source: '/myDir/chapter1.md'.
+	
+	self 
+		assert: res StonFormatExplanation 
+		equals: '"ancS0" : "/myDir/chapter1.md"'
+	
+]
+
+{ #category : 'tests' }
 MicResultTest >> testUndefinedFigureFile [
 
 	| res |
