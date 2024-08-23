@@ -57,7 +57,7 @@ MicMicrodownSharedPool class >> initialize [
 	"self initialize"
 	
 	AnchorMarkup := '@'.
-	AnnotatedParagraphMarkup := '!!'.
+	AnnotatedParagraphMarkup := '>[!'.
 	CodeblockMarkup := '```'.
 	CommentedLineMarkup := '%'.
 	EnvironmentClosingBlockMarkup := '!>'.
