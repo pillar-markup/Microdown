@@ -15,7 +15,8 @@ MicAnnotatedParagraphBlockTest >> subjectClass [
 MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraph [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!important This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -26,11 +27,38 @@ MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraph [
 ]
 
 { #category : 'tests' }
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphIgnoreExtraTextInFirstLine [
+
+	| root annotatedParagraph |
+	root := parser parse: '>[! important ] This is an important information
+> This is an other information'.
+	self assert: root children size equals: 1.
+	annotatedParagraph := root children first.
+	self
+		assert: (annotatedParagraph isKindOf: MicAnnotatedParagraphBlock);
+		assert: annotatedParagraph label equals: 'important';
+		assert: annotatedParagraph text
+		equals: 'This is an other information'
+]
+
+{ #category : 'tests' }
+MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWhitoutClosingBracket [
+
+	| root annotatedParagraph |
+	root := parser parse: '>[! important
+> This is an important information'.
+	self assert: root children size equals: 1.
+	annotatedParagraph := root children first.
+	self
+		assert: (annotatedParagraph isKindOf: MicBlockQuoteBlock)
+]
+
+{ #category : 'tests' }
 MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithALineBreak [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!important 
-This is an important information'.
+	root := parser parse: '>[! important ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -44,7 +72,8 @@ This is an important information'.
 MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithANonSupportedLabel [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!test This is an important information'.
+	root := parser parse: '>[! test ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -58,7 +87,8 @@ MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithANonSupportedLa
 MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithANonSupportedLabelWithUpperCase [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!Test This is an important information'.
+	root := parser parse: '>[! Test ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -73,7 +103,8 @@ MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithBlodText [
 
 	| root annotatedParagraph |
 	root := parser parse:
-		        '!!important This is an **important** information'.
+		        '>[! important ]
+> This is an **important** information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
@@ -91,7 +122,8 @@ MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithBlodText [
 MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithLabelHavingUpperCase [
 
 	| root annotatedParagraph |
-	root := parser parse: '!!ImporTanT This is an important information'.
+	root := parser parse: '>[! ImporTanT ]
+> This is an important information'.
 	self assert: root children size equals: 1.
 	annotatedParagraph := root children first.
 	self
