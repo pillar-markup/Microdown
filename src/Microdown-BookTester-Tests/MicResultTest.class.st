@@ -40,32 +40,38 @@ MicResultTest >> testExplanationUndefinedAnchor [
 { #category : 'tests' }
 MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 
-	| res |
+	| res association |
 	res := MicDuplicatedAnchorResult new. 
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
 	res source: '/myDir/chapter1.md'.
 	
+	association := res stonFormatExplanation.
+	
 	self 
-		assert: res stonFormatExplanation 
-		equals: '"ancS0" : "/myDir/chapter1.md"'
+		assert: (association isKindOf: Association );
+		assert:  association key equals: 'ancS0';
+		assert: association value equals: '/myDir/chapter1.md'
 	
 ]
 
 { #category : 'tests' }
 MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 
-	| res |
+	| res association |
 	res := MicUndefinedAnchorResult new. 
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
 	res source: '/myDir/chapter1.md'.
 	
+	association := res stonFormatExplanation.
+	
 	self 
-		assert: res stonFormatExplanation 
-		equals: '"ancS0" : "/myDir/chapter1.md"'
+		assert: (association isKindOf: Association );
+		assert:  association key equals: 'ancS0';
+		assert: association value equals: '/myDir/chapter1.md'
 	
 ]
 
