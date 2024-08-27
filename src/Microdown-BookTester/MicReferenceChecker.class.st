@@ -69,12 +69,16 @@ MicReferenceChecker >> buildReportOn: str [
 { #category : 'reporting' }
 MicReferenceChecker >> buildReportSTONFormatOn: str [ 
 
-	| dict | 
+	| dict list | 
 	dict := results groupedBy: [ :each | each class ].
-	dict keysAndValuesDo: [ :k :v |
-		str cr; nextPutAll: '{ "type" : "' ;nextPutAll: k errorType; nextPutAll: '",'; cr ;nextPutAll: '[ '; cr.
-		self reportElementsSTONFormatOn: str.
-		str nextPutAll:']}'; cr; cr.
+	dict keysAndValuesDo: [ :k :v | |array|
+		array := Array new: 2.
+		list := OrderedCollection new.
+		self reportElementsSTONFormatOn: list.
+		list := list asArray.
+		array at: 1 put: (Association new key: 'type' value: k errorType);
+		at: 2 put: list.
+		(String streamContents: [ :out | STON put: array onStream: str ])
 		]
 ]
 
@@ -211,9 +215,9 @@ MicReferenceChecker >> reportElementsOn: aStream [
 ]
 
 { #category : 'reporting' }
-MicReferenceChecker >> reportElementsSTONFormatOn: aStream [
+MicReferenceChecker >> reportElementsSTONFormatOn: aList [
 
-		results do: [ :each | aStream tab; nextPutAll: each stonFormatExplanation ] separatedBy: [ aStream nextPut: $, ; cr ]
+		results do: [ :each | aList add: each stonFormatExplanation ].
 	
 ]
 

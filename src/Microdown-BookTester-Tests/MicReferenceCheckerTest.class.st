@@ -710,13 +710,7 @@ MicReferenceCheckerTest >> testReportingSTONFormatDuplicatedAnchors [
 	checker := MicReferenceChecker new.
 	checker checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
 	
-	self assert: checker reportSTONFormat equals: '
-{ "type" : "DuplicatedAnchor",
-[ 
-	"ancS1" : "/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md",
-	"ancS1" : "/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md"]}
-
-'
+	self assert: checker reportSTONFormat equals: '[''type'':''DuplicatedAnchor'',[''ancS1'':''/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'',''ancS1'':''/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'']]'
 	
 	
 ]
@@ -730,12 +724,7 @@ MicReferenceCheckerTest >> testReportingSTONFormatDuplicatedFigure [
 	checker rootDirectory: dir. 
 	checker checkProject: refAncS1.
 	
-	self assert: checker reportSTONFormat equals: '
-{ "type" : "UndefinedAnchor",
-[ 
-	"ancS1" : "/fileRefAncS1.md"]}
-
-'
+	self assert: checker reportSTONFormat equals: '[''type'':''UndefinedAnchor'',[''ancS1'':''/fileRefAncS1.md'']]'
 ]
 
 { #category : 'tests - duplicated' }
@@ -747,12 +736,7 @@ MicReferenceCheckerTest >> testReportingSTONFormatUnknownAnchorDir [
 	checker rootDirectory: dir. 
 	checker checkProject: refAncS1.
 	
-	self assert: checker reportSTONFormat equals: '
-{ "type" : "UndefinedAnchor",
-[ 
-	"ancS1" : "/fileRefAncS1.md"]}
-
-'
+	self assert: checker reportSTONFormat equals: '[''type'':''UndefinedAnchor'',[''ancS1'':''/fileRefAncS1.md'']]'
 	
 ]
 

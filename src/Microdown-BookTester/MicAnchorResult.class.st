@@ -41,6 +41,6 @@ MicAnchorResult >> isWhat [
 { #category : 'accessing' }
 MicAnchorResult >> stonFormatExplanation [
 
-	^ '"', anchorLabel , '" : "', source,'"'
+	^ Association new key: anchorLabel value: source
 	
 ]
