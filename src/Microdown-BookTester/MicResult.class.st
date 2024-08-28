@@ -24,6 +24,12 @@ Class {
 }
 
 { #category : 'kinds' }
+MicResult class >> errorType [
+
+	^ self subclassResponsibility 
+]
+
+{ #category : 'kinds' }
 MicResult class >> headerString [
 
 	^ self subclassResponsibility 
@@ -69,4 +75,10 @@ MicResult >> status [
 MicResult >> status: anObject [
 
 	status := anObject
+]
+
+{ #category : 'accessing' }
+MicResult >> stonFormatExplanation [
+
+	^ self subclassResponsibility
 ]

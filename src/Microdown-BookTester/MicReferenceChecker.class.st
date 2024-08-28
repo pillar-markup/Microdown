@@ -57,11 +57,28 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 MicReferenceChecker >> buildReportOn: str [ 
 
 	| dict | 
+	
 	dict := results groupedBy: [ :each | each class ].
 	dict keysAndValuesDo: [ :k :v | 
 		str cr; nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
 		self reportElementsOn: str.
 		str cr; cr.
+		]
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> buildReportSTONFormatOn: str [ 
+
+	| dict list | 
+	dict := results groupedBy: [ :each | each class ].
+	dict keysAndValuesDo: [ :k :v | |array|
+		array := Array new: 2.
+		list := OrderedCollection new.
+		self reportElementsSTONFormatOn: list.
+		list := list asArray.
+		array at: 1 put: (Association new key: 'type' value: k errorType);
+		at: 2 put: list.
+		(String streamContents: [ :out | STON put: array onStream: str ])
 		]
 ]
 
@@ -195,6 +212,21 @@ MicReferenceChecker >> reportElementsOn: aStream [
 
 		results do: [ :each | aStream tab; nextPutAll: each explanation ] separatedBy: [ aStream cr ]
 	
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> reportElementsSTONFormatOn: aList [
+
+		results do: [ :each | aList add: each stonFormatExplanation ].
+	
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> reportSTONFormat [
+
+	^ String streamContents: [ :str |
+		self buildReportSTONFormatOn: str
+		]
 ]
 
 { #category : 'accessing' }

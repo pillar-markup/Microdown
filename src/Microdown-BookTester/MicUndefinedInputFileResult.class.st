@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : 'kinds' }
+MicUndefinedInputFileResult class >> errorType [
+
+	^ 'UndefinedInputFiles'
+]
+
+{ #category : 'kinds' }
 MicUndefinedInputFileResult class >> headerString [
 
 	^ 'Undefined input files:'

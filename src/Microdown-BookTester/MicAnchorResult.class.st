@@ -8,6 +8,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicAnchorResult class >> errorType [
+
+	^ 'UndefinedAnchor'
+]
+
 { #category : 'accessing' }
 MicAnchorResult >> anchorLabel [
 
@@ -30,4 +36,11 @@ MicAnchorResult >> explanation [
 { #category : 'accessing' }
 MicAnchorResult >> isWhat [
 	^  'undefined'
+]
+
+{ #category : 'accessing' }
+MicAnchorResult >> stonFormatExplanation [
+
+	^ Association new key: anchorLabel value: source
+	
 ]

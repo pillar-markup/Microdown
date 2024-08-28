@@ -13,6 +13,13 @@ MicFileResult >> explanation [
 ]
 
 { #category : 'accessing' }
+MicFileResult >> stonFormatExplanation [
+
+	^ '"', self what,'" : "', source , '"'
+	
+]
+
+{ #category : 'accessing' }
 MicFileResult >> what [
 
 	^ self subclassResponsibility 
