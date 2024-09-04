@@ -63,6 +63,12 @@ MicCodeBlock >> anchor: aString [
 	self arguments at: #anchor put: aString
 ]
 
+{ #category : 'accessing' }
+MicCodeBlock >> anchorLabel [
+	"This should only be invoked when checking references"
+	^ self anchor
+]
+
 { #category : 'public' }
 MicCodeBlock >> closeMe [
 	"adjust prefix tabs based on first line

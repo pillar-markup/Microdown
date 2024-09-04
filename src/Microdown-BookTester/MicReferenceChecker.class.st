@@ -273,6 +273,12 @@ MicReferenceChecker >> visitAnchorReference: anAnchorReference [
 ]
 
 { #category : 'visiting' }
+MicReferenceChecker >> visitCode: aCodeBlock [
+	
+	self handleAnchorOf: aCodeBlock
+]
+
+{ #category : 'visiting' }
 MicReferenceChecker >> visitFigure: aFigure [
 
 	self handleAnchorOf: aFigure

@@ -8,7 +8,8 @@ Class {
 		'defAndRefFig1',
 		'defFig1AndRefToAnsC0',
 		'defFig1AndRefToAncUnkS0',
-		'refToUnkS1'
+		'refToUnkS1',
+		'defCode1AndReferToCode1'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -97,6 +98,23 @@ See *@ancS1@* and *@ancS0@*
 ' ].
 	defAncS0TripleAncS1RefAncS1AncS0 ensureCreateFile.
 	^ defAncS0TripleAncS1RefAncS1AncS0
+]
+
+{ #category : 'helpers - anchors & references' }
+MicReferenceCheckerTest >> defCode1AndReferToCode1 [
+
+	defCode1AndReferToCode1 := fs / 'defCode1AndReferToCode1.md'.
+	defCode1AndReferToCode1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section 1
+	
+```language=pharo&anchor=Code1
+balbalbalb! 
+```
+
+See *@Code1@*
+
+' ].
+	defCode1AndReferToCode1 ensureCreateFile
 ]
 
 { #category : 'helpers - anchors & references' }
@@ -292,6 +310,18 @@ MicReferenceCheckerTest >> refToUnkS1 [
 See *@ancS1@*
 
 ' ]
+]
+
+{ #category : 'tests - single file ok references' }
+MicReferenceCheckerTest >> testDefAndReferToACodeAnchorInFile [
+
+	| visitor |
+	self defCode1AndReferToCode1.
+	visitor := MicReferenceChecker new.
+	visitor rootDirectory: dir.
+	visitor checkProject: defCode1AndReferToCode1.
+	self assert: visitor isOkay.
+	self assert: visitor results isEmpty
 ]
 
 { #category : 'tests - single file ok references' }
