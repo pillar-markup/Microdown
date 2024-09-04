@@ -22,18 +22,6 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'accessing' }
-MicFileCollector >> fileSystem [
-
-	^ fileSystem
-]
-
-{ #category : 'accessing' }
-MicFileCollector >> fileSystem: aFileSystem [
-	
-	fileSystem := aFileSystem
-]
-
 { #category : 'visiting' }
 MicFileCollector >> initialize [ 
 
