@@ -37,6 +37,7 @@ MicResult class >> headerString [
 
 { #category : 'accessing' }
 MicResult >> explanation [
+"just test "
 
 	^ self subclassResponsibility
 ]
