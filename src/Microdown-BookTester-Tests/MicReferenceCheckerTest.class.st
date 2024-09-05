@@ -434,11 +434,10 @@ Just a reference See *@ancS1@*  ' ].
 
 ]
 
-{ #category : 'skipped for now' }
+{ #category : 'tests - single file' }
 MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 
-	| dir file1 file2 visitor   |
-	self skip.
+	|  file1 file2 visitor   |
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
    dir ensureCreateDirectory.
 	
@@ -465,8 +464,8 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
    file2 ensureCreateFile . 
 
 	visitor := MicReferenceChecker new.
-
-	self deny: ( visitor checkDirectory: dir ) 
+   visitor checkDirectory: dir .
+	self deny: ( visitor isOkay ) 
 	
 ]
 
@@ -770,11 +769,10 @@ MicReferenceCheckerTest >> testReportingSTONFormatUnknownAnchorDir [
 	
 ]
 
-{ #category : 'skipped for now' }
+{ #category : 'tests - single file' }
 MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
 
-	| dir file1 file2 visitor |
-	self skip.
+	|  file1 file2 visitor |
 	dir := (FileSystem workingDirectory / 'myDirectory') asFileReference.
    dir ensureCreateDirectory.
 	
@@ -794,8 +792,8 @@ MicReferenceCheckerTest >> testReportingUnknownAnchorDir [
    file2 ensureCreateFile. 
 
 	visitor := MicReferenceChecker new.
-
-	self deny: (visitor checkDirectory: dir).
+	visitor checkDirectory: dir .
+	self deny: (visitor isOkay ).
 	
 	file1 ensureDelete.
    file2 ensureDelete.

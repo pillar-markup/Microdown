@@ -211,6 +211,17 @@ just text here
 ]
 
 { #category : 'helpers - only inputfiles' }
+MicFileTest >> section1IsLeafButContainsSomeUknownAnchors [
+
+	section1 := dir / 'section1.md'.
+	section1 ensureCreateFile.
+	section1 writeStreamDo: [ :stream |
+		stream nextPutAll: '# Section1
+here are some unknown anchors to prove that checkDirectory is working See *@anchorSection100@* and *@anchorSection200@* 
+' ]
+]
+
+{ #category : 'helpers - only inputfiles' }
 MicFileTest >> section2InputsNestedSection3 [
 
 	section2 := dir / 'sections/section2.md'.
@@ -339,6 +350,18 @@ MicFileTest >> section4InputsParentSection3 [
 	section4 writeStreamDo: [ :stream |
 		stream nextPutAll: '# section 4 
 <!inputFile|path=../section3.md!>
+' ]
+]
+
+{ #category : 'helpers - only inputfiles' }
+MicFileTest >> section4InputsParentSection3withUknownAnchors [
+
+	section4 := dir / 'sections/subsections/subsubsections/section4.md'.
+	section4 ensureCreateFile.
+	section4 writeStreamDo: [ :stream |
+		stream nextPutAll: '# section 4 
+<!inputFile|path=../section3.md!>
+here are some unknown anchors to prove that checkDirectory is working See *@anchorSection100@* and *@anchorSection200@* 
 ' ]
 ]
 

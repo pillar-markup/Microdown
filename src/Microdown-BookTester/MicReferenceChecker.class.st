@@ -92,7 +92,7 @@ MicReferenceChecker >> checkDirectory: aDir [
 	aDir allFiles do: [ :file | collector add: (Microdown parseFile: file ) ].
 	
 	collector
-		fileSystem: FileSystem memory ;
+		rootDirectory: FileSystem memory ;
 		visit: collector workList  first .
 	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedDocumentFiles collect: [ :file |
