@@ -86,7 +86,18 @@ MicReferenceChecker >> buildReportSTONFormatOn: str [
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
 	
-	self checkList: aDir allFiles
+	|  collector listOfFiles |
+	
+	collector := MicFileCollector new.
+	aDir allFiles do: [ :file | collector add: (Microdown parseFile: file ) ].
+	
+	collector
+		fileSystem: FileSystem memory ;
+		visit: collector workList  first .
+	self handleUndefinedFilesFrom: collector.
+	listOfFiles := collector visitedDocumentFiles collect: [ :file |
+		               (aDir fileSystem referenceTo: file)   ].	
+	self checkList: listOfFiles 
 ]
 
 { #category : 'internal' }
