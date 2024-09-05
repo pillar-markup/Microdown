@@ -16,19 +16,29 @@ Class {
 		'rootDirectory',
 		'visited',
 		'unexistingFiles',
-		'inputFiles'
+		'inputFiles',
+		'worklist'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
 
 { #category : 'visiting' }
+MicFileCollector >> add: aFile [
+	
+	worklist add: aFile .
+]
+
+{ #category : 'visiting' }
 MicFileCollector >> initialize [ 
 
 	super initialize.
 	rootDirectory := FileSystem workingDirectory.
+	worklist := OrderedCollection new.
 	visited := Set new.
 	unexistingFiles := Set new.
+
+
 ]
 
 { #category : 'accessing' }
@@ -58,8 +68,6 @@ MicFileCollector >> visitInputFile: anInputFile [
 { #category : 'visiting' }
 MicFileCollector >> visitRoot: micDocument [
 
-	| worklist |
-	worklist := OrderedCollection new.
 	worklist add: micDocument.
 
 	[ worklist isEmpty ] whileFalse: [
@@ -94,4 +102,10 @@ MicFileCollector >> visitRoot: micDocument [
 MicFileCollector >> visitedDocumentFiles [
 
 	^ visited
+]
+
+{ #category : 'visiting' }
+MicFileCollector >> workList [
+
+	^ worklist .
 ]
