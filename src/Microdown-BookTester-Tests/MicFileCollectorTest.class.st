@@ -161,7 +161,7 @@ MicFileCollectorTest >> testOnlyGoUpInFoldersStartingFromAnotherRoot [
 
 { #category : 'tests' }
 MicFileCollectorTest >> testUnreferencedFileAreNotHandled [
-	"This test verifies that the collector only collects files that are referenced from a root and not all the files in a folder."
+	"This test verifies that the collector only collects files that are referenced from a root and not all the files in a folder.    "
 
 	self createProjectWithUnreferencedFiles3And5.
 	self startVisitingFromTheRoot: section1.
