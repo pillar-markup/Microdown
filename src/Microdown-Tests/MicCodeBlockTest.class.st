@@ -266,7 +266,7 @@ Color >> asMorph
 { #category : 'tests - arguments' }
 MicCodeBlockTest >> testHasLabelFalse [
 	"
-	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&anchor=scr:asMorphInColor
 Color >> asMorph
     ^ Morph new color: self
 	```
@@ -285,7 +285,7 @@ Color >> asMorph
 { #category : 'tests - arguments' }
 MicCodeBlockTest >> testHasLabelTrue [
 	"
-	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&anchor=scr:asMorphInColor
 Color >> asMorph
     ^ Morph new color: self
 	```
@@ -294,7 +294,7 @@ Color >> asMorph
 	| source code |
 	source := CodeblockMarkup
 	          ,
-	          'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor'
+	          'language=pharo&caption=`Color` is a class.&anchor=scr:asMorphInColor'
 	          , String cr , 'Color >> asMorph
     ^ Morph new color: self' , String cr , CodeblockMarkup.
 
@@ -331,11 +331,109 @@ Color >> asMorph
 	```
 	"
 	| source code |
-	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&label=scr:asMorphInColor', String cr, 'Color >> asMorph
+	source := CodeblockMarkup, 'language=pharo&caption=`Color` is a class.&anchor=scr:asMorphInColor', String cr, 'Color >> asMorph
     ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
 	self assert: code language equals: 'pharo'
+]
+
+{ #category : 'tests - arguments' }
+MicCodeBlockTest >> testMainTag [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := CodeblockMarkup, 'caption=`Color` is a class.&anchor=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	self assert: code mainTag equals: #caption
+]
+
+{ #category : 'tests - arguments' }
+MicCodeBlockTest >> testMainTagForSync [
+
+	"
+	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := CodeblockMarkup, 'sync=true&origin=Point>>#degrees&anchor=scr:asMorphInColor', String cr, 'degrees
+	"Answer the angle the receiver makes with origin in degrees. right is 0; down is 90."
+	| tan theta |
+	^ x = 0
+		ifTrue:
+			[ y >= 0
+				ifTrue: [ 90.0 ]
+				ifFalse: [ 270.0 ] ]
+		ifFalse:
+			[ tan := y asFloat / x asFloat.
+			theta := tan arcTan.
+			x >= 0
+				ifTrue:
+					[ y >= 0
+						ifTrue: [ theta radiansToDegrees ]
+						ifFalse: [ 360.0 + theta radiansToDegrees ] ]
+				ifFalse: [ 180.0 + theta radiansToDegrees ] ]', String cr, CodeblockMarkup. 
+	
+	code := (self parser parse: source) children first.
+	self assert: code mainTag equals: #sync
+]
+
+{ #category : 'tests - arguments' }
+MicCodeBlockTest >> testMainTagForSyncWithoutLanguage [
+
+	"
+	```caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := CodeblockMarkup, 'sync=true&origin=Point>>#degrees&anchor=scr:asMorphInColor', String cr, 'degrees
+	"Answer the angle the receiver makes with origin in degrees. right is 0; down is 90."
+	| tan theta |
+	^ x = 0
+		ifTrue:
+			[ y >= 0
+				ifTrue: [ 90.0 ]
+				ifFalse: [ 270.0 ] ]
+		ifFalse:
+			[ tan := y asFloat / x asFloat.
+			theta := tan arcTan.
+			x >= 0
+				ifTrue:
+					[ y >= 0
+						ifTrue: [ theta radiansToDegrees ]
+						ifFalse: [ 360.0 + theta radiansToDegrees ] ]
+				ifFalse: [ 180.0 + theta radiansToDegrees ] ]', String cr, CodeblockMarkup. 
+	
+	code := (self parser parse: source) children first.
+	self assert: code mainTag equals: #sync
+]
+
+{ #category : 'tests - arguments' }
+MicCodeBlockTest >> testMainTagWithoutLanguage [
+
+	"
+	```caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
+Color >> asMorph
+    ^ Morph new color: self
+	```
+	"
+	| source code |
+	source := CodeblockMarkup, 'caption=`Color` is a class.&anchor=scr:asMorphInColor', String cr, 'Color >> asMorph
+    ^ Morph new color: self', String cr, CodeblockMarkup. 
+
+	code := (self parser parse: source) children first.
+	self assert: code mainTag equals: #caption
 ]
 
 { #category : 'tests' }

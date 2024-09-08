@@ -157,6 +157,13 @@ MicCodeBlock >> label: aString [
 ]
 
 { #category : 'accessing' }
+MicCodeBlock >> mainTag [
+	"return the main tag beside the language"
+	
+	^ arguments keys second
+]
+
+{ #category : 'accessing' }
 MicCodeBlock >> size [
 	"precondition: receiver hasLabel"
 

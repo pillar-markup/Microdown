@@ -57,3 +57,9 @@ MicCodeBlock >> isExpectedFailure [
 	arguments at: #expectedFailure ifAbsent: [ ^ false ].
 	^ (arguments at: #expectedFailure) = 'true'
 ]
+
+{ #category : '*Microdown-Evaluator' }
+MicCodeBlock >> isSync [
+	arguments at: #sync ifAbsent: [ ^ false ].
+	^ (arguments at: #sync) = 'true'
+]

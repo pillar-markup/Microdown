@@ -5,7 +5,8 @@ Class {
 	#name : 'MicBookTesterVisitor',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'allTestResults'
+		'allTestResults',
+		'strategies'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -24,6 +25,17 @@ MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 	| association |
 	association := self class compiler evaluate: aCodeBlockObject text.
 	^ association key = association value
+]
+
+{ #category : 'initialization' }
+MicBookTesterVisitor >> collectStrategies [
+
+
+	MicBookTesterStrategy allSubclasses do: [ :each |
+		| strat |
+		strat := each new.
+		strat results: allTestResults. 
+		strategies at: each handleKey put: strat  ]
 ]
 
 { #category : 'visiting' }
@@ -48,6 +60,8 @@ MicBookTesterVisitor >> failedTests [
 MicBookTesterVisitor >> initialize [
 	super initialize.
 	allTestResults := OrderedCollection new.
+	strategies := Dictionary new. 
+	self collectStrategies
 ]
 
 { #category : 'visiting' }
