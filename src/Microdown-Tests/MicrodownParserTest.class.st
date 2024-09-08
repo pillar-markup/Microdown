@@ -93,8 +93,52 @@ MicrodownParserTest >> testAnnotatedBlock [
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
 	annotated := root children first. 
+	self assert: annotated class equals: MicAnnotatedParagraphBlock.
 	self assert: annotated label equals: 'important'.
 	self assert: annotated text equals: 'this is an important paragraph on one line.'
+	
+
+]
+
+{ #category : 'tests - annotated-paragraph' }
+MicrodownParserTest >> testAnnotatedBlockBackwardCompatible [
+
+	| source root annotated |
+	source := '!!important This is an important paragraph on one line.'.
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	annotated := root children first. 
+	self assert: annotated class equals: MicAnnotatedParagraphBlock.
+	self assert: annotated label equals: 'important'.
+	self assert: annotated text equals: 'This is an important paragraph on one line.'
+	
+
+]
+
+{ #category : 'tests - annotated-paragraph' }
+MicrodownParserTest >> testAnnotatedBlockBackwardCompatibleOnLongLine [
+
+	| source root annotated |
+	source := '!!important This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. '.
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	annotated := root children first. 
+	self assert: annotated class equals: MicAnnotatedParagraphBlock.
+	self assert: annotated label equals: 'important'.
+	self assert: annotated text equals: 'This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line. This is an important paragraph on one line.'
+]
+
+{ #category : 'tests - annotated-paragraph' }
+MicrodownParserTest >> testAnnotatedBlockBackwardCompatibleWithDifferentLabel [
+
+	| source root annotated |
+	source := '!!remark This is an important paragraph on one line.'.
+	root :=  parser parse: source.
+	self assert: root children size equals: 1.
+	annotated := root children first. 
+	self assert: annotated class equals: MicAnnotatedParagraphBlock.
+	self assert: annotated label equals: 'remark'.
+	self assert: annotated text equals: 'This is an important paragraph on one line.'
 	
 
 ]

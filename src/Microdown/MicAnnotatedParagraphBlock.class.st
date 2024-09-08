@@ -1,14 +1,23 @@
 "
 I represent a paragraph with the title. My title can only contain a string and my body can contain formatted text.
 
-I'm created with `!!paragraph` (such as `@@note` `@@important` in Pillar).
+I was created with `!!label` with no space `!! label` (such as `@@note` `@@important` in Pillar).
 
+```
 !!note This is important so I used exclamation marks.
- 
+```
+
+Now since Pillar 10.3 we used `>![` since it is closer to what Github uses. 
+
+```
+>![ note ] 
+> This is important so I used exclamation marks.
+```
+
+
 ### Known Limitations 
 We should revisit the implementation because there is something unclear. 
-For example, we cannot currently add lists inside an annotatedBlock.
-See [https://github.com/pillar-markup/MicroDown/issues/54](https://github.com/pillar-markup/MicroDown/issues/54)
+The abstract class superclass does not look necessary.
 "
 Class {
 	#name : 'MicAnnotatedParagraphBlock',
