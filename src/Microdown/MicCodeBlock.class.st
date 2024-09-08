@@ -157,7 +157,7 @@ MicCodeBlock >> label: aString [
 ]
 
 { #category : 'accessing' }
-MicCodeBlock >> mainTag [
+MicCodeBlock >> mainExtensionTag [
 	"return the main tag beside the language"
 	
 	^ arguments keys second

@@ -339,7 +339,7 @@ Color >> asMorph
 ]
 
 { #category : 'tests - arguments' }
-MicCodeBlockTest >> testMainTag [
+MicCodeBlockTest >> testMainExtensionTag [
 
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -352,11 +352,11 @@ Color >> asMorph
     ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
-	self assert: code mainTag equals: #caption
+	self assert: code mainExtensionTag equals: #caption
 ]
 
 { #category : 'tests - arguments' }
-MicCodeBlockTest >> testMainTagForSync [
+MicCodeBlockTest >> testMainExtensionTagForSync [
 
 	"
 	```language=pharo&caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -384,11 +384,11 @@ Color >> asMorph
 				ifFalse: [ 180.0 + theta radiansToDegrees ] ]', String cr, CodeblockMarkup. 
 	
 	code := (self parser parse: source) children first.
-	self assert: code mainTag equals: #sync
+	self assert: code mainExtensionTag equals: #sync
 ]
 
 { #category : 'tests - arguments' }
-MicCodeBlockTest >> testMainTagForSyncWithoutLanguage [
+MicCodeBlockTest >> testMainExtensionTagForSyncWithoutLanguage [
 
 	"
 	```caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -416,11 +416,11 @@ Color >> asMorph
 				ifFalse: [ 180.0 + theta radiansToDegrees ] ]', String cr, CodeblockMarkup. 
 	
 	code := (self parser parse: source) children first.
-	self assert: code mainTag equals: #sync
+	self assert: code mainExtensionTag equals: #sync
 ]
 
 { #category : 'tests - arguments' }
-MicCodeBlockTest >> testMainTagWithoutLanguage [
+MicCodeBlockTest >> testMainExtensionTagWithoutLanguage [
 
 	"
 	```caption=Getting a morph for an instance of ==Color==&label=scr:asMorphInColor
@@ -433,7 +433,7 @@ Color >> asMorph
     ^ Morph new color: self', String cr, CodeblockMarkup. 
 
 	code := (self parser parse: source) children first.
-	self assert: code mainTag equals: #caption
+	self assert: code mainExtensionTag equals: #caption
 ]
 
 { #category : 'tests' }
