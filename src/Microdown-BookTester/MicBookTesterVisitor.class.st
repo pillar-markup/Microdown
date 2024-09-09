@@ -29,8 +29,7 @@ MicBookTesterVisitor >> checkAssociation: aCodeBlockObject [
 
 { #category : 'initialization' }
 MicBookTesterVisitor >> collectStrategies [
-
-
+	
 	MicBookTesterStrategy allSubclasses do: [ :each |
 		| strat |
 		strat := each new.
@@ -58,6 +57,7 @@ MicBookTesterVisitor >> failedTests [
 
 { #category : 'initialization' }
 MicBookTesterVisitor >> initialize [
+
 	super initialize.
 	allTestResults := OrderedCollection new.
 	strategies := Dictionary new. 
@@ -70,6 +70,12 @@ MicBookTesterVisitor >> isOk [
 	checkingVariable := true.
 	allTestResults do: [ :each | checkingVariable := checkingVariable and: [ each isPaired ] ].
 	^ checkingVariable
+]
+
+{ #category : 'visiting' }
+MicBookTesterVisitor >> results [
+
+	^ allTestResults
 ]
 
 { #category : 'accessing' }
@@ -93,9 +99,6 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 	Note that there is no fragmentedText here, no need for it because the codeblock text contains 
 	the whole text and is the equivalent of Playground execution"
 
-
-
-
 	aCodeBlock isExample ifTrue: [
 		| result |
 		result := MicBookTestResult new.
@@ -109,7 +112,9 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 			result status: result status not .
 			result isExpectedFailure: true  ] ].
 	
-	self halt.
-	aCodeBlock label
+	(strategies keys includes: aCodeBlock mainExtensionTag)
+		ifFalse: [ ^ self ].
 
+	(strategies at: aCodeBlock mainExtensionTag)
+		verify: aCodeBlock
 ]

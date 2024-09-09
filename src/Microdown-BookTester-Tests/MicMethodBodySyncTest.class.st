@@ -23,10 +23,54 @@ MicMethodBodySyncTest >> simpleCode [
 ]
 
 { #category : 'tests' }
+MicMethodBodySyncTest >> testCodeblockIsNotInSync [
+
+	| bTester brokenCodeResult headerString methodDef |
+	headerString := '```sync=true&origin=MicMethodBodySyncTest>>#simpleCode'.
+	methodDef := 
+'simpleCode
+	"This is not the definition of simpleCode"
+	
+	^ 100 slowFactorial + 100'.
+
+	bTester := self parseAndTest: headerString, Character cr asString , methodDef, Character cr asString, '```'.
+	brokenCodeResult := bTester results first.
+	
+	self 
+		assert: brokenCodeResult originString 
+		equals: 'MicMethodBodySyncTest>>#simpleCode'.
+]
+
+{ #category : 'tests' }
+MicMethodBodySyncTest >> testCodeblockIsNotInSyncCheckingResultAttributes [
+
+	| bTester brokenCodeResult headerString methodDef |
+	headerString := '```sync=true&origin=MicMethodBodySyncTest>>#simpleCode'.
+	methodDef := 
+'simpleCode
+	"This is not the definition of simpleCode"
+	
+	^ 100 slowFactorial + 100'.
+
+	bTester := self parseAndTest: headerString, Character cr asString , methodDef, Character cr asString, '```'.
+	brokenCodeResult := bTester results first.
+	
+	self 
+		assert: brokenCodeResult originString 
+		equals: 'MicMethodBodySyncTest>>#simpleCode'.
+	self 
+		assert: brokenCodeResult bookContents 
+		equals: methodDef. 
+	self 
+		assert: brokenCodeResult imageContents 
+		equals: (self class >> #simpleCode) sourceCode
+]
+
+{ #category : 'tests' }
 MicMethodBodySyncTest >> testCodeblockShouldBeInSync [
 
 	| docText bTester |
-	docText := '```sync=MicMethodBodySyncTest>>#simpleCode
+	docText := '```sync=true&origin=MicMethodBodySyncTest>>#simpleCode
 simpleCode
 	"The comment of simpleCode"
 	
@@ -34,6 +78,6 @@ simpleCode
 ``` '.
 
 	bTester := self parseAndTest: docText.
-	self halt.
+	self assert: bTester results isEmpty
 	
 ]
