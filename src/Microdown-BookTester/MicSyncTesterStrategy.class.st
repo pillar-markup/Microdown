@@ -12,16 +12,34 @@ MicSyncTesterStrategy class >> handleKey [
 
 ]
 
+{ #category : 'as yet unclassified' }
+MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [ 
+
+	results add: (MicBrokenSyncDefinition new
+							syncValue: aString;
+							codeBlock: aMicCodeBlock;
+							yourself)
+]
+
 { #category : 'main API' }
 MicSyncTesterStrategy >> verify: aCodeBlock [
 
-	| originString imageCode |
+	| originString imageCode syncValue |
 	
-	"we check to handle sync=false"
-	aCodeBlock isSync
-		ifFalse: [ ^ self ].
+	"we check to handle sync=false and sync=whatever"
+	syncValue := aCodeBlock arguments at: self class handleKey. 
+
+	"we do not check if declared to not check"	
+	syncValue = 'false'
+		ifTrue: [  ^ self ].
 	
-	
+	"for all the values other than 'true' we report a problem because
+	the user took the time to define it but he made a typo."
+		
+	syncValue = 'true'
+		ifFalse: [ self handleBrokenSyncValue: syncValue of: aCodeBlock ]
+		ifTrue: [
+		
 	originString := aCodeBlock arguments at: #origin.
 	
 	('*>>*' match: originString) ifTrue: [
@@ -37,4 +55,5 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 					 bookContents: aCodeBlock body;
 					 imageContent: imageCode;
 					 pharoVersion: Smalltalk image lastUpdateString) ] ]
+		]
 ]
