@@ -5,7 +5,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'data' }
 MicMethodBodySyncTest >> parseAndTest: docText [
 
 	| doc bTester |
@@ -20,6 +20,22 @@ MicMethodBodySyncTest >> simpleCode [
 	"The comment of simpleCode"
 	
 	^ 100 slowFactorial
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testBrokenOriginSpecification [
+
+	| docText bTester |
+	docText := '```sync=&origin=MicMethodBodySyncTest>>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	self assert: bTester results isEmpty
+	
 ]
 
 { #category : 'tests' }
@@ -39,6 +55,22 @@ MicMethodBodySyncTest >> testCodeblockIsNotInSync [
 	self 
 		assert: brokenCodeResult originString 
 		equals: 'MicMethodBodySyncTest>>#simpleCode'.
+]
+
+{ #category : 'tests' }
+MicMethodBodySyncTest >> testCodeblockIsNotInSyncButShouldNotBeReported [
+
+	| bTester headerString methodDef |
+	headerString := '```sync=false&origin=MicMethodBodySyncTest>>#simpleCode'.
+	methodDef := 
+'simpleCode
+	"This is not the definition of simpleCode"
+	
+	^ 100 slowFactorial + 100'.
+
+	bTester := self parseAndTest: headerString, Character cr asString , methodDef, Character cr asString, '```'.
+	self assert: bTester results isEmpty.
+	
 ]
 
 { #category : 'tests' }

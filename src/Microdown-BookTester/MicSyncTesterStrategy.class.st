@@ -12,10 +12,16 @@ MicSyncTesterStrategy class >> handleKey [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'main API' }
 MicSyncTesterStrategy >> verify: aCodeBlock [
 
 	| originString imageCode |
+	
+	"we check to handle sync=false"
+	aCodeBlock isSync
+		ifFalse: [ ^ self ].
+	
+	
 	originString := aCodeBlock arguments at: #origin.
 	
 	('*>>*' match: originString) ifTrue: [
