@@ -1,3 +1,6 @@
+"
+I report that a code block contains code that is not the same than the one in the current image. 
+"
 Class {
 	#name : 'MicDesynchronizedCodeResult',
 	#superclass : 'MicResult',
@@ -11,7 +14,7 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicDesynchronizedCodeResult >> bookContent [
 	^ bookContents
 ]
@@ -21,12 +24,18 @@ MicDesynchronizedCodeResult >> bookContents [
 	^ bookContents
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicDesynchronizedCodeResult >> bookContents: aString [ 
 	bookContents := aString
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> explanation [
+
+	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', source fromFile fullName
+]
+
+{ #category : 'accessing' }
 MicDesynchronizedCodeResult >> imageContent: aString [ 
 	imageContents := aString
 ]
@@ -41,12 +50,12 @@ MicDesynchronizedCodeResult >> originString [
 	^ originString
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicDesynchronizedCodeResult >> originString: aString [ 
 	originString := aString
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicDesynchronizedCodeResult >> pharoVersion: aString [ 
 	pharoVersion := aString
 ]

@@ -6,6 +6,13 @@ Class {
 }
 
 { #category : 'data' }
+MicMethodBodySyncTest class >> simpleCode [
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+]
+
+{ #category : 'data' }
 MicMethodBodySyncTest >> parseAndTest: docText [
 
 	| doc bTester |
@@ -20,22 +27,6 @@ MicMethodBodySyncTest >> simpleCode [
 	"The comment of simpleCode"
 	
 	^ 100 slowFactorial
-]
-
-{ #category : 'tests - broken input' }
-MicMethodBodySyncTest >> testBrokenOriginSpecification [
-
-	| docText bTester |
-	docText := '```sync=true&origin=MicMethodBodySyncTestDOESNNO>>#simpleCode
-simpleCode
-	"The comment of simpleCode"
-	
-	^ 100 slowFactorial
-``` '.
-
-	bTester := self parseAndTest: docText.
-	self assert: bTester results isEmpty
-	
 ]
 
 { #category : 'tests - not reported' }
@@ -79,6 +70,38 @@ MicMethodBodySyncTest >> testCodeblockIsNotInSyncCheckingResultAttributes [
 		equals: (self class >> #simpleCode) sourceCode
 ]
 
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testMetaclassInOriginSpecification [
+
+	| docText bTester result |
+	docText := '```sync=true&origin=MicMethodBodySyncTest class>>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	result := bTester results first.
+	self assert: result class equals: MicBrokenSyncOriginDefinition 
+	
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testReportCodeBlockInSyncWithMetaclassMethod [
+
+	| docText bTester |
+	docText := '```sync=true&origin=MicMethodBodySyncTest class>>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	self assert: bTester results isEmpty
+]
+
 { #category : 'tests' }
 MicMethodBodySyncTest >> testReportCodeblockIsInSync [
 
@@ -99,7 +122,7 @@ simpleCode
 MicMethodBodySyncTest >> testReportCodeblockWithBrokenSync [
 	"even if the code is in sync reports that the sync declaration is bogus"
 	
-	| bTester brokenHeaderString methodDef |
+	| bTester brokenHeaderString methodDef report |
 	brokenHeaderString := '```sync=FooBar&origin=MicMethodBodySyncTest>>#simpleCode'.
 	methodDef := 
 'simpleCode
@@ -110,7 +133,9 @@ MicMethodBodySyncTest >> testReportCodeblockWithBrokenSync [
 	bTester := self parseAndTest: brokenHeaderString, Character cr asString, methodDef, Character cr asString, '```'.
 	
 	self assert: (self class >> #simpleCode) sourceCode equals: methodDef.
-	self assert: bTester results first class equals: MicBrokenSyncDefinition.
+	report := bTester results first.
+	self assert: report class equals: MicBrokenSyncDefinition.
+	self assert: report syncValue equals: 'FooBar'
 	
 ]
 
@@ -147,4 +172,38 @@ MicMethodBodySyncTest >> testReportsCodeblockIsNotInSync [
 	self 
 		assert: brokenCodeResult originString 
 		equals: 'MicMethodBodySyncTest>>#simpleCode'.
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testUnexistingClassInOriginSpecification [
+
+	| docText bTester result |
+	docText := '```sync=true&origin=MicMethodBodySyncTestDOESNNO>>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	result := bTester results first.
+	self assert: result class equals: MicBrokenSyncOriginDefinition 
+	
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testUnexistingMethodInOriginSpecification [
+
+	| docText bTester result |
+	docText := '```sync=true&origin=MicMethodBodySyncTest>>#DoesNotExist
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	result := bTester results first.
+	self assert: result class equals: MicBrokenSyncOriginDefinition 
+	
 ]

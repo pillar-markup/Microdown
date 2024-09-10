@@ -13,18 +13,27 @@ MicSyncTesterStrategy class >> handleKey [
 ]
 
 { #category : 'as yet unclassified' }
+MicSyncTesterStrategy >> handleBrokenOrigin: aString of: aMicCodeBlock [ 
+	
+	results add: ( MicBrokenSyncOriginDefinition new 
+							originString: aString;
+							source: aMicCodeBlock;
+							yourself )
+]
+
+{ #category : 'as yet unclassified' }
 MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [ 
 
 	results add: (MicBrokenSyncDefinition new
 							syncValue: aString;
-							codeBlock: aMicCodeBlock;
+							source: aMicCodeBlock;
 							yourself)
 ]
 
 { #category : 'main API' }
 MicSyncTesterStrategy >> verify: aCodeBlock [
 
-	| originString imageCode syncValue |
+	| originString syncValue splits method |
 	
 	"we check to handle sync=false and sync=whatever"
 	syncValue := aCodeBlock arguments at: self class handleKey. 
@@ -41,19 +50,24 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 		ifTrue: [
 		
 	originString := aCodeBlock arguments at: #origin.
-	
-	('*>>*' match: originString) ifTrue: [
-		imageCode := (OpalCompiler new
-			              source: originString;
-			              evaluate) sourceCode.
-		"we should think about all the possible uglies that may arise here
-			- wrong class
-			- wrong method and even do not use evaluate:"
-		aCodeBlock body = imageCode ifFalse: [
+
+	splits := originString splitOn: '>>'.
+	( splits size = 2 ) 
+		ifFalse: [ self handleBrokenOrigin: originString of: aCodeBlock ]
+		ifTrue: [
+			| class |
+			class := Smalltalk globals at: splits first asSymbol	ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+			class 
+				compiledMethodAt: splits second allButFirst asSymbol
+				ifPresent: [ :m | method := m  ]
+				ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+		
+		aCodeBlock body = method sourceCode ifFalse: [
 			results add: (MicDesynchronizedCodeResult new
 					 originString: originString;
+					 source: aCodeBlock;
 					 bookContents: aCodeBlock body;
-					 imageContent: imageCode;
+					 imageContent: method sourceCode;
 					 pharoVersion: Smalltalk image lastUpdateString) ] ]
 		]
 ]
