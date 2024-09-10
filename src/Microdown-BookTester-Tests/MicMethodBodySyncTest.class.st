@@ -73,8 +73,38 @@ MicMethodBodySyncTest >> testCodeblockIsNotInSyncCheckingResultAttributes [
 { #category : 'tests - broken input' }
 MicMethodBodySyncTest >> testMetaclassInOriginSpecification [
 
-	| docText bTester result |
+	| docText bTester |
 	docText := '```sync=true&origin=MicMethodBodySyncTest class>>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	self assert: bTester results isEmpty
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testMetaclassWithSpacesInOriginSpecification [
+
+	| docText bTester |
+	docText := '```sync=true&origin=MicMethodBodySyncTest  class >>#simpleCode
+simpleCode
+	"The comment of simpleCode"
+	
+	^ 100 slowFactorial
+``` '.
+
+	bTester := self parseAndTest: docText.
+	self assert: bTester results isEmpty
+]
+
+{ #category : 'tests - broken input' }
+MicMethodBodySyncTest >> testMetaclassWithStartingSpacesInOriginSpecification [
+
+	| docText bTester |
+	docText := '```sync=true&origin= MicMethodBodySyncTest  class >>#simpleCode
 simpleCode
 	"The comment of simpleCode"
 	
