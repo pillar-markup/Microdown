@@ -33,7 +33,7 @@ MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [
 { #category : 'main API' }
 MicSyncTesterStrategy >> verify: aCodeBlock [
 
-	| originString syncValue splits method |
+	| originString syncValue splits method className isMeta |
 	
 	"we check to handle sync=false and sync=whatever"
 	syncValue := aCodeBlock arguments at: self class handleKey. 
@@ -56,7 +56,16 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 		ifFalse: [ self handleBrokenOrigin: originString of: aCodeBlock ]
 		ifTrue: [
 			| class |
-			class := Smalltalk globals at: splits first asSymbol	ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+			
+			className := splits first splitOn: Character space. 
+			isMeta := false.
+			className size = 2
+				ifTrue: [ isMeta := className second trimBoth.
+					isMeta := isMeta = 'class'  ].
+			class := Smalltalk globals at: className first asSymbol	ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+			isMeta 
+				ifTrue: [ class := class class ].	
+			
 			class 
 				compiledMethodAt: splits second allButFirst asSymbol
 				ifPresent: [ :m | method := m  ]

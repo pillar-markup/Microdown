@@ -82,9 +82,7 @@ simpleCode
 ``` '.
 
 	bTester := self parseAndTest: docText.
-	result := bTester results first.
-	self assert: result class equals: MicBrokenSyncOriginDefinition 
-	
+	self assert: bTester results isEmpty
 ]
 
 { #category : 'tests - broken input' }
