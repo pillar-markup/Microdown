@@ -47,7 +47,7 @@ MicBookTesterVisitor >> initialize [
 MicBookTesterVisitor >> isOk [ 
 	| checkingVariable |
 	checkingVariable := true.
-	results do: [ :each | checkingVariable := checkingVariable and: [ each isPaired ] ].
+	results do: [ :each | checkingVariable := checkingVariable and: [ each isMicPaired ] ].
 	^ checkingVariable
 ]
 
