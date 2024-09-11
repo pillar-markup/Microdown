@@ -12,6 +12,9 @@ I use the FileCollector to support all the file input relations.
 This lets the user have for example unused, broken or underway files on the side.
 As soon as they are not used I do not analyse them.
 
+I support the following API to be able to chained over a report writer:
+- result/results:
+- reportWriter:
 
 # todo
 
@@ -21,6 +24,7 @@ Class {
 	#name : 'MicReferenceChecker',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
+		'reportWriter',
 		'references',
 		'anchors',
 		'duplicatedAnchors',
@@ -51,35 +55,6 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 		anchorLabel: anAnchor anchorLabel;
 		source: anAnchor fromFile.
 	results add: micResultInstance
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> buildReportOn: str [ 
-
-	| dict | 
-	
-	dict := results groupedBy: [ :each | each class ].
-	dict keysAndValuesDo: [ :k :v | 
-		str cr; nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
-		self reportElementsOn: str.
-		str cr; cr.
-		]
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> buildReportSTONFormatOn: str [ 
-
-	| dict list | 
-	dict := results groupedBy: [ :each | each class ].
-	dict keysAndValuesDo: [ :k :v | |array|
-		array := Array new: 2.
-		list := OrderedCollection new.
-		self reportElementsSTONFormatOn: list.
-		list := list asArray.
-		array at: 1 put: (Association new key: 'type' value: k errorType);
-		at: 2 put: list.
-		(String streamContents: [ :out | STON put: array onStream: str ])
-		]
 ]
 
 { #category : 'main API' }
@@ -202,37 +177,31 @@ MicReferenceChecker >> isOkay [
 { #category : 'reporting' }
 MicReferenceChecker >> report [
 
-	^ String streamContents: [ :str |
-		self buildReportOn: str
-		]
+	^ reportWriter report
 ]
 
-{ #category : 'reporting' }
-MicReferenceChecker >> reportElementsOn: aStream [
+{ #category : 'accessing' }
+MicReferenceChecker >> reportWriter [
 
-		results do: [ :each | aStream tab; nextPutAll: each explanation ] separatedBy: [ aStream cr ]
-	
+	^ reportWriter
 ]
 
-{ #category : 'reporting' }
-MicReferenceChecker >> reportElementsSTONFormatOn: aList [
+{ #category : 'accessing' }
+MicReferenceChecker >> reportWriter: anObject [
 
-		results do: [ :each | aList add: each stonFormatExplanation ].
-	
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> reportSTONFormat [
-
-	^ String streamContents: [ :str |
-		self buildReportSTONFormatOn: str
-		]
+	reportWriter := anObject
 ]
 
 { #category : 'accessing' }
 MicReferenceChecker >> results [
 
 	^ results
+]
+
+{ #category : 'accessing' }
+MicReferenceChecker >> results: anObject [
+
+	results := anObject
 ]
 
 { #category : 'accessing' }
