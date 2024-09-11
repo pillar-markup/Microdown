@@ -5,9 +5,15 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'hook' }
 MicExampleTesterStrategy class >> handleKey [
 
-	^ 'example'
+	^ #example
 
+]
+
+{ #category : 'main API' }
+MicExampleTesterStrategy >> verify: aCodeBlock [
+
+	self halt.
 ]

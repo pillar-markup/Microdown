@@ -5,10 +5,10 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'hook' }
 MicSyncTesterStrategy class >> handleKey [
 
-	^ 'sync'
+	^ #sync
 
 ]
 

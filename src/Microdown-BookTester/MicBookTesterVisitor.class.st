@@ -110,7 +110,7 @@ MicBookTesterVisitor >> visitCode: aCodeBlock [
 		self executeAndReportIn: result.
 		aCodeBlock isExpectedFailure ifTrue: [
 			result status: result status not .
-			result isExpectedFailure: true  ] ].
+			result isExpectedFailure: true  ]. ^ self  ].
 	
 	(strategies keys includes: aCodeBlock mainExtensionTag)
 		ifFalse: [ ^ self ].

@@ -8,6 +8,13 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'hook' }
+MicBookTesterStrategy class >> handleKey [
+
+	^ self subclassResponsibility 
+
+]
+
 { #category : 'accessing' }
 MicBookTesterStrategy >> results: aCollection [ 
 	results := aCollection
