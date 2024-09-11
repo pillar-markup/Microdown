@@ -14,9 +14,10 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'accessing' }
-MicDesynchronizedCodeResult >> bookContent [
-	^ bookContents
+{ #category : 'kinds' }
+MicDesynchronizedCodeResult class >> headerString [
+
+	^ 'Desynchronized method body'
 ]
 
 { #category : 'accessing' }
@@ -43,6 +44,17 @@ MicDesynchronizedCodeResult >> imageContent: aString [
 { #category : 'accessing' }
 MicDesynchronizedCodeResult >> imageContents [
 	^ imageContents
+]
+
+{ #category : 'initialization' }
+MicDesynchronizedCodeResult >> initialize [
+
+	super initialize.
+	bookContents := 'book contents'.
+	imageContents := 'image contents'.
+	originString := 'C [class]>>#selector'.
+	pharoVersion := '>12'
+	
 ]
 
 { #category : 'accessing' }

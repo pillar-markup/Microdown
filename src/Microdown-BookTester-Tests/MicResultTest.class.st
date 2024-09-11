@@ -37,6 +37,42 @@ MicResultTest >> testExplanationUndefinedAnchor [
 	
 ]
 
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testMicBookTestResultExplanationWorksWithEmptyInstance [
+	
+	self flag: #improve. 
+	"I do not like these tests that test string."
+	self 
+		assert: MicBookTestResult new explanation 
+		equals: 'test status: Passed
+isExpectedFailure?  false
+Description of the test result : Test failed without raising an exception
+the concerned code Block  :  here we should get an expression
+from the source file:  nil'
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testMicBrokenSyncDefinitionResultExplanationWorksWithEmptyInstance [
+	
+	self flag: #improve. 
+	"I do not like these tests that test string."
+	self 
+		assert: MicBrokenSyncDefinition new explanation 
+		equals: 'The sync definition has the following broken value: empty .'
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testResultCreation [
+
+	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicUndefinedAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testResultCreationSmokeTest [
+
+	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicUndefinedAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+]
+
 { #category : 'tests' }
 MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 

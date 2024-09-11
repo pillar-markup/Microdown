@@ -18,6 +18,12 @@ Class {
 	#package : 'Microdown-BookTester'
 }
 
+{ #category : 'kinds' }
+MicBrokenSyncDefinition class >> headerString [
+
+	^ 'Broken sync definition [should be sync=''true|false'''
+]
+
 { #category : 'building' }
 MicBrokenSyncDefinition >> codeBlock: aMicCodeBlock [ 
 	codeBlock := aMicCodeBlock 
@@ -27,6 +33,13 @@ MicBrokenSyncDefinition >> codeBlock: aMicCodeBlock [
 MicBrokenSyncDefinition >> explanation [
 
 	^ 'The sync definition has the following broken value: ', syncValue, ' .'
+]
+
+{ #category : 'initialization' }
+MicBrokenSyncDefinition >> initialize [ 
+	
+	super initialize. 
+	syncValue := 'empty'
 ]
 
 { #category : 'accessing' }

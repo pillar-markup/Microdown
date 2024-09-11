@@ -39,10 +39,18 @@ MicAnalysisReportWriter >> buildReportSTONFormatOn: str [
 		list := OrderedCollection new.
 		self reportElementsSTONFormatOn: list.
 		list := list asArray.
-		array at: 1 put: (Association new key: 'type' value: k errorType);
-		at: 2 put: list.
+		array 
+			at: 1 put: (Association new key: 'type' value: k errorType);
+			at: 2 put: list.
 		(String streamContents: [ :out | STON put: array onStream: str ])
 		]
+]
+
+{ #category : 'initialization' }
+MicAnalysisReportWriter >> initialize [
+
+	super initialize. 
+	results := OrderedCollection new
 ]
 
 { #category : 'reporting' }
