@@ -157,6 +157,20 @@ MicCodeBlock >> label: aString [
 ]
 
 { #category : 'accessing' }
+MicCodeBlock >> mainExtensionTag [
+	"return the main tag beside the language"
+	
+	"The point by default we always have language -> pharo
+	so when the user did not add any other bindings, then the mainExtensionTag will be language
+	so that we do not have to check and use a NullStrategy"
+	| k |
+	k := arguments keys.
+	^ k size = 1
+		ifTrue: [ k first ]
+		ifFalse: [ k second ]
+]
+
+{ #category : 'accessing' }
 MicCodeBlock >> size [
 	"precondition: receiver hasLabel"
 

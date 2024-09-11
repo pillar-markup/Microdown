@@ -1,0 +1,61 @@
+"
+I report that a code block contains code that is not the same than the one in the current image. 
+"
+Class {
+	#name : 'MicDesynchronizedCodeResult',
+	#superclass : 'MicResult',
+	#instVars : [
+		'originString',
+		'bookContents',
+		'imageContents',
+		'pharoVersion'
+	],
+	#category : 'Microdown-BookTester',
+	#package : 'Microdown-BookTester'
+}
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> bookContent [
+	^ bookContents
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> bookContents [
+	^ bookContents
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> bookContents: aString [ 
+	bookContents := aString
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> explanation [
+
+	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', source fromFile fullName
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> imageContent: aString [ 
+	imageContents := aString
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> imageContents [
+	^ imageContents
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> originString [
+	^ originString
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> originString: aString [ 
+	originString := aString
+]
+
+{ #category : 'accessing' }
+MicDesynchronizedCodeResult >> pharoVersion: aString [ 
+	pharoVersion := aString
+]
