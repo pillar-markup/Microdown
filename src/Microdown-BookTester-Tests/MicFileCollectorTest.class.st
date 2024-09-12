@@ -29,7 +29,7 @@ MicFileCollectorTest >> testDoubleLoopsAndThatUnexistingInputIsCorrectlyResolved
 	self startVisitingFromTheRoot: section2.
 
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals: 
 			Set <- { 
 				'/myDirectory/section1.md' . 
@@ -61,7 +61,7 @@ MicFileCollectorTest >> testFileCollectorHandlesLoopFromSection3ToMain [
 			section4"
 	
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals: 
 			{ 
 				'/myDirectory/section1.md' . 
@@ -82,7 +82,7 @@ MicFileCollectorTest >> testLoopOfFilesReferencingEachOther [
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals: 
 			Set <- { 
 				'/myDirectory/section1.md'. 
@@ -97,7 +97,7 @@ MicFileCollectorTest >> testMultipleReferencesOfFileThatDoesNotExist [
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals:
 			Set <- { 
 				'/myDirectory/section1.md' . 
@@ -119,7 +119,7 @@ MicFileCollectorTest >> testMultipleReferencesToTheSameFile [
 	self startVisitingFromTheRoot: section1.
 	
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals:
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md' . '/myDirectory/sections/section4.md' } asSet
 	
@@ -132,7 +132,7 @@ MicFileCollectorTest >> testOnlyGoDownInFolders [
 	self startVisitingFromTheRoot: section1.
 
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals:
 			Set <- { 
 			'/myDirectory/section1.md' . 
@@ -149,7 +149,7 @@ MicFileCollectorTest >> testOnlyGoUpInFoldersStartingFromAnotherRoot [
 	self startVisitingFromTheRoot: section4.
 	
 	self 
-		assert: visitor visitedDocumentFiles
+		assert: visitor visitedFileStrings
 		equals:
 			Set <- { 
 			'/myDirectory/section1.md'. 
@@ -166,7 +166,7 @@ MicFileCollectorTest >> testUnreferencedFileAreNotHandled [
 	self createProjectWithUnreferencedFiles3And5.
 	self startVisitingFromTheRoot: section1.
 
-	self assert: visitor visitedDocumentFiles equals: Set
+	self assert: visitor visitedFileStrings equals: Set
 		<-
 			{ '/myDirectory/section1.md'. '/myDirectory/sections/section2.md'.
 			'/myDirectory/sections/section4.md' }

@@ -14,21 +14,23 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'rootDirectory',
-		'visited',
 		'unexistingFiles',
-		'inputFiles'
+		'inputFiles',
+		'visitedFileStrings',
+		'visitedFiles'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
 }
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicFileCollector >> initialize [ 
 
 	super initialize.
 	rootDirectory := FileSystem workingDirectory.
-	visited := Set new.
+	visitedFileStrings := Set new.
 	unexistingFiles := Set new.
+	visitedFiles := OrderedCollection new. 
 ]
 
 { #category : 'accessing' }
@@ -65,9 +67,10 @@ MicFileCollector >> visitRoot: micDocument [
 	[ worklist isEmpty ] whileFalse: [
 		| currentDocument |
 		currentDocument := worklist removeFirst.
-		visited add: currentDocument fromFile.
+		visitedFileStrings add: currentDocument fromFile.
 		currentDocument resolveYourself.
-
+		visitedFiles add: currentDocument.
+		
 		inputFiles := OrderedCollection new.
 		"treat all the inputFile from the current document"
 		self visitChildrenOf: currentDocument.
@@ -81,8 +84,7 @@ MicFileCollector >> visitRoot: micDocument [
 			
 			"Since we are just checking that a file exist it does not matter when we check.
 			We do not have to wait until we walk through all the files."
-			
-			(visited includes: fr path pathString) ifFalse: [
+			(visitedFileStrings includes: fr path pathString) ifFalse: [
 				[
 				doc := Microdown parseFile: fr.
 				worklist addFirst: doc ]
@@ -91,7 +93,13 @@ MicFileCollector >> visitRoot: micDocument [
 ]
 
 { #category : 'accessing' }
-MicFileCollector >> visitedDocumentFiles [
+MicFileCollector >> visitedFileStrings [
 
-	^ visited
+	^ visitedFileStrings
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> visitedFiles [ 
+
+	^ visitedFiles 
 ]

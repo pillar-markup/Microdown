@@ -53,6 +53,12 @@ MicAnalysisReportWriter >> initialize [
 	results := OrderedCollection new
 ]
 
+{ #category : 'testing' }
+MicAnalysisReportWriter >> isOkay [
+
+	^ results isEmpty
+]
+
 { #category : 'reporting' }
 MicAnalysisReportWriter >> report [
 

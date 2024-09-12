@@ -29,7 +29,8 @@ Class {
 		'anchors',
 		'duplicatedAnchors',
 		'results',
-		'rootDirectory'
+		'rootDirectory',
+		'listOfFiles'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -78,14 +79,14 @@ MicReferenceChecker >> checkList: aCollection [
 { #category : 'main API' }
 MicReferenceChecker >> checkProject: aFileReference [
 
-	| mainMic collector listOfFiles |
+	| mainMic collector  |
 	mainMic := Microdown parseFile: aFileReference.
 	collector := MicFileCollector new.
 	collector
 		rootDirectory: rootDirectory;
 		visit: mainMic.
 	self handleUndefinedFilesFrom: collector.
-	listOfFiles := collector visitedDocumentFiles collect: [ :file |
+	listOfFiles := collector visitedFileStrings collect: [ :file |
 		               rootDirectory resolve: file ].
 	self checkList: listOfFiles
 ]
