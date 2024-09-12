@@ -21,7 +21,7 @@ MicAbstractAnnotatedBlock >> addLineAndReturnNextNode: line [
 		ifNil: [ 
 			"this part is to be backward compatible and we will remove it in future releases"
 			(line beginsWith: AnnotatedParagraphBackwardCompatibleMarkup)
-				ifTrue: [ self handleDoubleBangStartingLine: line ] 
+				ifTrue: [ ^ self handleDoubleBangStartingLine: line ] 
 				ifFalse: [  
 					| indexOfFirstClosingBracket |
 					indexOfFirstClosingBracket := line indexOf: $].

@@ -113,8 +113,9 @@ MicBookTestResult >> initialize [
 
 	super initialize.
 	status := true.
-	isExpectedFailure := false .
-	message := 'Test failed without raising an exception'
+	isExpectedFailure := false.
+	message := 'Test failed without raising an exception'.
+	text := 'here we should get an expression'
 ]
 
 { #category : 'accessing' }

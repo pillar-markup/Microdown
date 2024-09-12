@@ -6,7 +6,8 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'strategies',
-		'results'
+		'results',
+		'reportWriter'
 	],
 	#category : 'Microdown-BookTester',
 	#package : 'Microdown-BookTester'
@@ -51,10 +52,28 @@ MicBookTesterVisitor >> isOk [
 	^ checkingVariable
 ]
 
+{ #category : 'accessing' }
+MicBookTesterVisitor >> reportWriter [
+
+	^ reportWriter
+]
+
+{ #category : 'accessing' }
+MicBookTesterVisitor >> reportWriter: anObject [
+
+	reportWriter := anObject
+]
+
 { #category : 'visiting' }
 MicBookTesterVisitor >> results [
 
 	^ results
+]
+
+{ #category : 'accessing' }
+MicBookTesterVisitor >> results: anObject [
+
+	results := anObject
 ]
 
 { #category : 'accessing' }
