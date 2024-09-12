@@ -156,7 +156,10 @@ MicReferenceChecker >> initialize [
 	results := OrderedCollection new.
 	references := OrderedCollection new.
 	anchors := OrderedCollection new.
-	duplicatedAnchors := OrderedCollection new
+	duplicatedAnchors := OrderedCollection new.
+	"by default if the reporter is not set from outside
+	then it shares the results of this current checker."
+	reportWriter := MicAnalysisReportWriter new results: results.
 ]
 
 { #category : 'testing' }
@@ -178,6 +181,11 @@ MicReferenceChecker >> isOkay [
 MicReferenceChecker >> report [
 
 	^ reportWriter report
+]
+
+{ #category : 'reporting' }
+MicReferenceChecker >> reportSTONFormat [
+	^ reportWriter reportSTONFormat
 ]
 
 { #category : 'accessing' }
