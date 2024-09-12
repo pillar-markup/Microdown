@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicSyncTesterStrategy',
 	#superclass : 'MicBookTesterStrategy',
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Analysis',
+	#package : 'Microdown-BookTester',
+	#tag : 'Analysis'
 }
 
 { #category : 'hook' }
@@ -49,27 +50,31 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 		ifFalse: [ self handleBrokenSyncValue: syncValue of: aCodeBlock ]
 		ifTrue: [
 		
-	originString := aCodeBlock arguments at: #origin.
+			originString := aCodeBlock arguments at: #origin.
 
-	splits := originString splitOn: '>>'.
-	( splits size = 2 ) 
-		ifFalse: [ self handleBrokenOrigin: originString of: aCodeBlock ]
-		ifTrue: [
-			| class |
+			splits := originString splitOn: '>>'.
+			( splits size = 2 ) 
+				ifFalse: [ self halt.self handleBrokenOrigin: originString of: aCodeBlock ]
+				ifTrue: [
+					| class |
 			
-			className := splits first splitOn: Character space. 
-			isMeta := false.
-			className size = 2
-				ifTrue: [ isMeta := className second trimBoth.
-					isMeta := isMeta = 'class'  ].
-			class := Smalltalk globals at: className first asSymbol	ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+					className := splits first splitOn: Character space. 
+					isMeta := false.
+					className size = 2
+						ifTrue: [ isMeta := className second trimBoth.
+							isMeta := isMeta = 'class'  ].
+					class := Smalltalk globals 
+							at: className first asSymbol	
+							ifAbsent: [ self halt. ^ self handleBrokenOrigin: originString of: aCodeBlock ].
 			isMeta 
 				ifTrue: [ class := class class ].	
 			
 			class 
-				compiledMethodAt: splits second allButFirst asSymbol
+				compiledMethodAt: splits second trimBoth allButFirst asSymbol
 				ifPresent: [ :m | method := m  ]
-				ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+				ifAbsent: [ self halt. ^ self 
+									handleBrokenOrigin: originString 
+									of: aCodeBlock ].
 		
 		aCodeBlock body = method sourceCode ifFalse: [
 			results add: (MicDesynchronizedCodeResult new

@@ -19,8 +19,9 @@ Class {
 		'visitedFileStrings',
 		'visitedFiles'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Analysis',
+	#package : 'Microdown-BookTester',
+	#tag : 'Analysis'
 }
 
 { #category : 'initialization' }

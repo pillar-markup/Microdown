@@ -2,25 +2,26 @@
 i visit code blocks and make sure that evaluation is correct 
 "
 Class {
-	#name : 'MicBookTesterVisitor',
+	#name : 'MicCodeBlockValidator',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'strategies',
 		'results',
 		'reportWriter'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Analysis',
+	#package : 'Microdown-BookTester',
+	#tag : 'Analysis'
 }
 
 { #category : 'testing' }
-MicBookTesterVisitor class >> isAbstract [
+MicCodeBlockValidator class >> isAbstract [
 	<ignoreForCoverage "This method is ignored for test coverage because it is overriden in all subclasses and these subclasses don't need to do a super-send.">
 	^ false
 ]
 
 { #category : 'initialization' }
-MicBookTesterVisitor >> collectStrategies [
+MicCodeBlockValidator >> collectStrategies [
 	
 	MicBookTesterStrategy allSubclasses do: [ :each |
 		| strat |
@@ -30,13 +31,13 @@ MicBookTesterVisitor >> collectStrategies [
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> failedTests [
+MicCodeBlockValidator >> failedTests [
 
 	^ results select: [ :each | each isFailed ]
 ]
 
 { #category : 'initialization' }
-MicBookTesterVisitor >> initialize [
+MicCodeBlockValidator >> initialize [
 
 	super initialize.
 	results := OrderedCollection new.
@@ -45,7 +46,7 @@ MicBookTesterVisitor >> initialize [
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> isOk [ 
+MicCodeBlockValidator >> isOk [ 
 	| checkingVariable |
 	checkingVariable := true.
 	results do: [ :each | checkingVariable := checkingVariable and: [ each isMicPaired ] ].
@@ -53,43 +54,43 @@ MicBookTesterVisitor >> isOk [
 ]
 
 { #category : 'accessing' }
-MicBookTesterVisitor >> reportWriter [
+MicCodeBlockValidator >> reportWriter [
 
 	^ reportWriter
 ]
 
 { #category : 'accessing' }
-MicBookTesterVisitor >> reportWriter: anObject [
+MicCodeBlockValidator >> reportWriter: anObject [
 
 	reportWriter := anObject
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> results [
+MicCodeBlockValidator >> results [
 
 	^ results
 ]
 
 { #category : 'accessing' }
-MicBookTesterVisitor >> results: anObject [
+MicCodeBlockValidator >> results: anObject [
 
 	results := anObject
 ]
 
 { #category : 'accessing' }
-MicBookTesterVisitor >> start: anObject [ 
+MicCodeBlockValidator >> start: anObject [ 
 	anObject accept: self
 	
 ]
 
 { #category : 'testing' }
-MicBookTesterVisitor >> validTests [
+MicCodeBlockValidator >> validTests [
 
 	^ results select: [ :each | each isValid ]
 ]
 
 { #category : 'visiting' }
-MicBookTesterVisitor >> visitCode: aCodeBlock [
+MicCodeBlockValidator >> visitCode: aCodeBlock [
 	"Creates an instance of PRBookTestResult with parameters depending of the type of the codeblock."
 
 	(strategies keys includes: aCodeBlock mainExtensionTag)

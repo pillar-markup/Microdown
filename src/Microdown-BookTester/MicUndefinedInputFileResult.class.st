@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'inputFileBlock'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Results',
+	#package : 'Microdown-BookTester',
+	#tag : 'Results'
 }
 
 { #category : 'kinds' }

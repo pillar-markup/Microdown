@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'results'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Analysis',
+	#package : 'Microdown-BookTester',
+	#tag : 'Analysis'
 }
 
 { #category : 'hook' }

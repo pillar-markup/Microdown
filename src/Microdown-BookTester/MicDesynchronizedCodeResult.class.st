@@ -10,8 +10,9 @@ Class {
 		'imageContents',
 		'pharoVersion'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Results',
+	#package : 'Microdown-BookTester',
+	#tag : 'Results'
 }
 
 { #category : 'kinds' }
@@ -33,7 +34,7 @@ MicDesynchronizedCodeResult >> bookContents: aString [
 { #category : 'accessing' }
 MicDesynchronizedCodeResult >> explanation [
 
-	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', source fromFile fullName
+	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', source fromFile
 ]
 
 { #category : 'accessing' }

@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicFileResult',
 	#superclass : 'MicResult',
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Results',
+	#package : 'Microdown-BookTester',
+	#tag : 'Results'
 }
 
 { #category : 'accessing' }

@@ -17,7 +17,7 @@ MicMethodBodySyncTest >> parseAndTest: docText [
 
 	| doc bTester |
 	doc := Microdown parse: docText.
-	bTester := MicBookTesterVisitor new.
+	bTester := MicCodeBlockValidator new.
 	bTester start: doc.
 	^ bTester
 ]
