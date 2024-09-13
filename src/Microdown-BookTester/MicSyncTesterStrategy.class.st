@@ -54,7 +54,7 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 
 			splits := originString splitOn: '>>'.
 			( splits size = 2 ) 
-				ifFalse: [ self halt.self handleBrokenOrigin: originString of: aCodeBlock ]
+				ifFalse: [ self handleBrokenOrigin: originString of: aCodeBlock ]
 				ifTrue: [
 					| class |
 			
@@ -65,14 +65,14 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 							isMeta := isMeta = 'class'  ].
 					class := Smalltalk globals 
 							at: className first asSymbol	
-							ifAbsent: [ self halt. ^ self handleBrokenOrigin: originString of: aCodeBlock ].
+							ifAbsent: [ ^ self handleBrokenOrigin: originString of: aCodeBlock ].
 			isMeta 
 				ifTrue: [ class := class class ].	
 			
 			class 
 				compiledMethodAt: splits second trimBoth allButFirst asSymbol
 				ifPresent: [ :m | method := m  ]
-				ifAbsent: [ self halt. ^ self 
+				ifAbsent: [ ^ self 
 									handleBrokenOrigin: originString 
 									of: aCodeBlock ].
 		
