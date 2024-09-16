@@ -58,7 +58,7 @@ MicAnnotatedParagraphBlock >> initialize [
 { #category : 'testing' }
 MicAnnotatedParagraphBlock >> lineMarkup [
 	
-	^ AnnotatedParagraphMarkup
+	^ AnnotatedParagraphOpeningMarkup
 ]
 
 { #category : 'accessing' }

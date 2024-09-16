@@ -458,8 +458,8 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 		ifTrue: [ 
 			canvas command
 				name: 'textbf';
-				parameter: [ super visitTableCell: aCell ] ]
-		ifFalse: [ super visitTableCell: aCell ]
+				parameter: [ self visitTableCell: aCell ] ]
+		ifFalse: [ self visitTableCell: aCell ]
 ]
 
 { #category : 'blocks - table' }

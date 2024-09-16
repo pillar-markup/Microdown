@@ -88,7 +88,7 @@ MicrodownParserTest >> testAnchorMarkupInsideLine [
 MicrodownParserTest >> testAnnotatedBlock [
 
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important]
+	source := AnnotatedParagraphOpeningMarkup , 'important]
 > this is an important paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -147,7 +147,7 @@ MicrodownParserTest >> testAnnotatedBlockBackwardCompatibleWithDifferentLabel [
 MicrodownParserTest >> testAnnotatedBlockOnMultipleLinesParserLogic [
 
 	| source root annotated  line |
-	source := (AnnotatedParagraphMarkup , 'important]
+	source := (AnnotatedParagraphOpeningMarkup , 'important]
 > this is an 
 > important point because...!') readStream.
 	
@@ -182,7 +182,7 @@ important point because...!'.
 { #category : 'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLines [
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important]
+	source := AnnotatedParagraphOpeningMarkup , 'important]
 > this is an important 
 > paragraph on two lines.'.
 	root := parser parse: source.
@@ -197,7 +197,7 @@ paragraph on two lines.'
 { #category : 'tests - annotated-paragraph' }
 MicrodownParserTest >> testAnnotatedBlockOnTwoLinesWithFormatting [
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important]
+	source := AnnotatedParagraphOpeningMarkup , 'important]
 > **this** is an _important_ 
 > paragraph on two lines.'.
 	root := parser parse: source.
@@ -214,7 +214,7 @@ paragraph on two lines.))'
 MicrodownParserTest >> testAnnotatedBlockTextElements [
 
 	| source root annotated |
-	source := AnnotatedParagraphMarkup , 'important]
+	source := AnnotatedParagraphOpeningMarkup , 'important]
 > this is an **important** paragraph on one line.'.
 	root :=  parser parse: source.
 	self assert: root children size equals: 1.
@@ -231,7 +231,7 @@ MicrodownParserTest >> testAnnotatedBlockWithListParserLogic [
 	"The test does not test what we want. We want a listblock inside the annotatedBlock"
 	|  source root annotated  line |
 	self flag: #fixme.
-	source := (AnnotatedParagraphMarkup , 'important]
+	source := (AnnotatedParagraphOpeningMarkup , 'important]
 > this is a point
 > - one
 * two ' ) readStream.

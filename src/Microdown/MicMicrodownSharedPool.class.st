@@ -9,7 +9,8 @@ Class {
 		'AnchorReferenceCloserMarkup',
 		'AnchorReferenceOpenerMarkup',
 		'AnnotatedParagraphBackwardCompatibleMarkup',
-		'AnnotatedParagraphMarkup',
+		'AnnotatedParagraphClosingMarkup',
+		'AnnotatedParagraphOpeningMarkup',
 		'AnnotationCloserMarkup',
 		'AnnotationOpenerMarkup',
 		'ArgumentListDelimiter',
@@ -60,7 +61,8 @@ MicMicrodownSharedPool class >> initialize [
 	AnchorMarkup := '@'.
 	AnnotatedParagraphBackwardCompatibleMarkup := '!!'.
 	"we keep it to avoid breaking existing text but we should favor one that is compatible with github eg the next one"
-	AnnotatedParagraphMarkup := '>[!'.
+	AnnotatedParagraphOpeningMarkup := '>[!'.
+	AnnotatedParagraphClosingMarkup := ']'.
 	CodeblockMarkup := '```'.
 	CommentedLineMarkup := '%'.
 	EnvironmentClosingBlockMarkup := '!>'.
