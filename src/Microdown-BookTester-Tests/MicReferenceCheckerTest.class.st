@@ -347,8 +347,8 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	self deny: visitor isOkay.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
-		assert: visitor results first source
-		equals: '/defFig1AndRefToAncS0.md'
+		assert: (visitor results first source isKindOf: FileReference);
+		assert: visitor results first source fullName equals: '/defFig1AndRefToAncS0.md'
 ]
 
 { #category : 'tests - single file ok references' }
@@ -361,7 +361,9 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncUnkS0 [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancUnkS0'.
-	self assert: visitor results first source equals: '/defFig1AndRefToAncUnkS0.md'
+	self
+		assert: (visitor results first source isKindOf: FileReference);
+		assert: visitor results first source fullName equals: '/defFig1AndRefToAncUnkS0.md'
 ]
 
 { #category : 'tests - single file ok references' }
@@ -399,8 +401,9 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
 	self
-		assert: visitor results first source
-		equals: '/fileDefAncS1UndAncS0.md'
+		assert: (visitor results first source isKindOf: FileReference);
+		assert: visitor results first source fullName equals: '/fileDefAncS1UndAncS0.md'
+	
 ]
 
 { #category : 'tests - directory api' }
@@ -503,7 +506,9 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 		equals: 'ancS1'.
 	dict := visitor results groupedBy: [ :each | each class ].
 	duplicated := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: duplicated source equals: '/myDirectory/file2.md'.
+	self
+		assert: (visitor results first source isKindOf: FileReference);
+		assert: visitor results first source fullName equals: '/myDirectory/file2.md'.
 	self assert: duplicated anchorLabel equals: 'ancS1'
 		
 	
@@ -525,7 +530,9 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: dup1 source equals: '/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'.
+	self
+		assert: (dup1 source isKindOf: FileReference);
+		assert: dup1 source fullName equals: '/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'.
 	self assert: dup1 anchorLabel equals: 'ancS1'.
 	
 	
@@ -573,7 +580,9 @@ MicReferenceCheckerTest >> testDuplicatedFigures [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: dup1 source equals: '/myDirectory/defAncS0DoubleFig1Fig2RefAncS1.md'.
+	self
+		assert: (dup1 source isKindOf: FileReference);
+		assert: dup1 source fullName equals: '/myDirectory/defAncS0DoubleFig1Fig2RefAncS1.md'.
 	self assert: dup1 anchorLabel equals: 'fig1'.
 	
 	
@@ -588,7 +597,7 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	checker checkList: { defAnCS0DoubleEq2DoubleEq1RefEq1 }.
 	self deny: checker isOkay.
 	self
-		assert: checker results first source
+		assert: checker results first source fullName
 		equals: defAnCS0DoubleEq2DoubleEq1RefEq1 fullName.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
@@ -597,11 +606,15 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: dup1 source equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self
+		assert: (dup1 source isKindOf: FileReference);
+		assert: dup1 source fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup1 anchorLabel equals: 'Eq2'.
 	
 	dup2 := (dict at: MicDuplicatedAnchorResult) second.
-	self assert: dup2 source equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self
+		assert: (dup2 source isKindOf: FileReference);
+		assert: dup2 source fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup2 anchorLabel equals: 'Eq1'.
 ]
 
@@ -630,11 +643,15 @@ MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	unk := (dict at: MicUndefinedAnchorResult) first.
-	self assert: unk source equals: '/myDirectory/sections/section2.md'.
+	self
+		assert: (unk source isKindOf: FileReference);
+		assert: unk source fullName equals: '/myDirectory/sections/section2.md'.
 	self assert: unk anchorLabel equals: 'ancUnkS2'.
 	
 	undefined := (dict at: MicUndefinedInputFileResult) first.
-	self assert: undefined source equals: '/myDirectory/sections/section2.md'.
+	self
+		assert: (undefined source isKindOf: FileReference);
+		assert: undefined source fullName equals: '/myDirectory/sections/section2.md'.
 
 
 ]
@@ -729,7 +746,9 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
-	self assert: visitor results first source equals: '/fileRefAncS1.md'
+	self
+		assert: (visitor results first source isKindOf: FileReference);
+		assert: visitor results first source fullName equals: '/fileRefAncS1.md'.
 ]
 
 { #category : 'tests - duplicated' }
@@ -740,7 +759,7 @@ MicReferenceCheckerTest >> testReportingSTONFormatDuplicatedAnchors [
 	checker := MicReferenceChecker new.
 	checker checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
 	
-	self assert: checker reportSTONFormat equals: '[''type'':''DuplicatedAnchor'',[''ancS1'':''/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'',''ancS1'':''/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'']]'
+	self assert: checker reportSTONFormat equals: '[''type'':''DuplicatedAnchor'',[''ancS1'':FileReference{#path:AbsolutePath[''myDirectory'',''defAncS0TripleAncS1RefAncS1AncS0.md''],#filesystem:FileSystem{#store:MemoryStore{#root:MemoryFileSystemDirectory{#creationTime:DateAndTime[''2024-09-21T22:11:14.937+02:00''],#modificationTime:DateAndTime[''2024-09-21T22:11:14.937+02:00''],#entries:{''myDirectory'':MemoryFileSystemDirectory{#creationTime:DateAndTime[''2024-09-21T22:11:14.937+02:00''],#modificationTime:DateAndTime[''2024-09-21T22:11:14.937+02:00''],#basename:''myDirectory'',#entries:{''defAncS0TripleAncS1RefAncS1AncS0.md'':MemoryFileSystemFile{#creationTime:DateAndTime[''2024-09-21T22:11:14.937+02:00''],#modificationTime:DateAndTime[''2024-09-21T22:11:14.939+02:00''],#basename:''defAncS0TripleAncS1RefAncS1AncS0.md'',#bytes:ByteArray[''232053656374696f6e200d40616e6353300d0d232053656374696f6e20310d40616e6353310d0d232053656374696f6e20320d40616e6353310d0d232053656374696f6e20330d40616e6353310d0d536565202a40616e635331402a20616e64202a40616e635330402a0d0d''],#size:108,#closed:false}}}}}}}},''ancS1'':@3]]'
 	
 	
 ]

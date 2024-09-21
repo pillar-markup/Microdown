@@ -160,7 +160,7 @@ MicFileResourceReferenceTest >> testContentsOfDirectory [
 MicFileResourceReferenceTest >> testContentsSet [ 
 	|ref header |
 	ref := (MicResourceReference fromUri: 'file:/example.md')
-		filesystem: filesystem.
+		fileSystem: filesystem.
 	ref contents: '### Super cool header'.
 	header := ref loadMicrodown children first.
 	self assert: header level equals: 3.
@@ -216,7 +216,7 @@ MicFileResourceReferenceTest >> testLoadImage [
 
 	| ref image |
 	ref := (MicResourceReference fromUri: 'file:/toplevel.png')
-		filesystem: filesystem.
+		fileSystem: filesystem.
 	image := ref loadImage.
 	self assert: image isNotNil.
 	self assert: image height equals: 90.
@@ -227,7 +227,7 @@ MicFileResourceReferenceTest >> testLoadImage [
 MicFileResourceReferenceTest >> testLoadMicrodown [
 	| ref doc |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
-		filesystem: filesystem.
+		fileSystem: filesystem.
 	doc := ref loadMicrodown.
 	self assert: doc children first class equals: MicHeaderBlock.
 	self assert: doc children first text equals: 'Test documents' 
@@ -238,7 +238,7 @@ MicFileResourceReferenceTest >> testLoadMicrodown [
 MicFileResourceReferenceTest >> testLoadNotCorrectImage [
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:/readme.md')
-		filesystem: filesystem .
+		fileSystem: filesystem .
 	self
 		should: [ref loadImage]
 		raise: UnrecognizedImageFormatError
@@ -249,7 +249,7 @@ MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 
 	| ref |
 	ref := (MicResourceReference fromUri: 'file:///toplevel.png')
-		filesystem: filesystem.
+		fileSystem: filesystem.
 	self
 		should: [ ref loadMicrodown ]
 		raise: ZnInvalidUTF8
@@ -259,7 +259,7 @@ MicFileResourceReferenceTest >> testLoadNotCorrectMicrodown [
 MicFileResourceReferenceTest >> testLoadNotFoundImage [
 
 	| ref  |
-	ref := (MicResourceReference fromUri: 'file:///readme.md') filesystem: emptyFilesystem.
+	ref := (MicResourceReference fromUri: 'file:///readme.md') fileSystem: emptyFilesystem.
 	[
 		ref loadImage.
 		self fail
@@ -271,7 +271,7 @@ MicFileResourceReferenceTest >> testLoadNotFoundImage [
 MicFileResourceReferenceTest >> testLoadNotFoundMicrodown [
 	| uri ref |
 	uri := 'file:///readme.md'.
-	ref := (MicResourceReference  fromUri: uri) filesystem: emptyFilesystem.
+	ref := (MicResourceReference  fromUri: uri) fileSystem: emptyFilesystem.
 	
 	[
 		ref loadMicrodown.

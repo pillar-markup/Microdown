@@ -17,13 +17,13 @@ MicZincPathResolverTest >> testVisitFileImage [
 	self assert: imageNode reference isRelative.
 	self assert:  imageNode reference relativePath equals: 'images/pharo.png'.
 	absoluteFile := (MicResourceReference fromUri: 'file:/my/deep/directory/sourceFile.md') 
-		filesystem: #Bogus;
+		fileSystem: #Bogus;
 		yourself.
 	
 	MicZincPathResolver resolve: doc withBase: absoluteFile.
 	self assert: imageNode reference isRelative not.
 	self assert: imageNode reference uriString equals: 'file:///my/deep/directory/images/pharo.png'.
-	self assert: imageNode reference filesystem equals: #Bogus
+	self assert: imageNode reference fileSystem equals: #Bogus
 ]
 
 { #category : 'tests' }

@@ -20,7 +20,7 @@ Class {
 	#name : 'MicFileResourceReference',
 	#superclass : 'MicAbsoluteResourceReference',
 	#instVars : [
-		'filesystem'
+		'fileSystem'
 	],
 	#category : 'Microdown-Core',
 	#package : 'Microdown',
@@ -36,7 +36,7 @@ MicFileResourceReference class >> fromFileRef: aFileReference [
 		ifTrue: [ znUrl addPathSegment: $/ "Yes, a Character not a string" ].
 	^ self new
 		uri: znUrl;
-		filesystem: aFileReference fileSystem 
+		fileSystem: aFileReference fileSystem 
 ]
 
 { #category : 'instance creation' }
@@ -77,18 +77,18 @@ MicFileResourceReference >> contents: aString [
 
 { #category : 'accessing' }
 MicFileResourceReference >> fileReference [ 
-	^ self filesystem referenceTo: self path
+	^ self fileSystem referenceTo: self path
 ]
 
 { #category : 'accessing' }
-MicFileResourceReference >> filesystem [
-	^ filesystem
+MicFileResourceReference >> fileSystem [
+	^ fileSystem
 ]
 
 { #category : 'accessing' }
-MicFileResourceReference >> filesystem: anObject [
+MicFileResourceReference >> fileSystem: anObject [
 
-	filesystem := anObject
+	fileSystem := anObject
 ]
 
 { #category : 'accessing' }
@@ -99,7 +99,7 @@ MicFileResourceReference >> fullName [
 { #category : 'initialization' }
 MicFileResourceReference >> initialize [
 	super initialize.
-	filesystem := FileSystem disk.
+	fileSystem := FileSystem disk.
 ]
 
 { #category : 'accessing' }
