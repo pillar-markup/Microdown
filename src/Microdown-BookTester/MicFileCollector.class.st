@@ -68,7 +68,7 @@ MicFileCollector >> visitRoot: micDocument [
 	[ worklist isEmpty ] whileFalse: [
 		| currentDocument |
 		currentDocument := worklist removeFirst.
-		visitedFileStrings add: currentDocument fromFile.
+		visitedFileStrings add: currentDocument fromFile fullName.
 		currentDocument resolveYourself.
 		visitedFiles add: currentDocument.
 		

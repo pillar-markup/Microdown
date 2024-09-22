@@ -271,7 +271,7 @@ MicSingleSummarizerTest >> testWithoutFromFile [
 
 	micSingleSummarizer verifyFromFile: root.
 
-	self assert: root fromFile equals: 'fakedFile'
+	self assert: root fromFile basename equals: 'fakedFile'
 ]
 
 { #category : 'tests' }

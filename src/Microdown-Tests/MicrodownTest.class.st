@@ -76,7 +76,7 @@ MicrodownTest >> testFromFileInAnyElement [
 
 	| root |
 	root := Microdown parseFile: filesystem workingDirectory / 'anExample1.md'.
-	self assert: root children first children first fromFile equals: (filesystem workingDirectory / 'anExample1.md') fullName .
+	self assert: root children first children first fromFile fullName equals: (filesystem workingDirectory / 'anExample1.md') fullName .
 
 ]
 
@@ -85,7 +85,7 @@ MicrodownTest >> testFromFileInRootDocument [
 
 	| root |
 	root := Microdown parseFile: filesystem workingDirectory / 'anExample1.md'.
-	self assert: root fromFile equals: (filesystem workingDirectory / 'anExample1.md') fullName
+	self assert: root fromFile fullName equals: (filesystem workingDirectory / 'anExample1.md') fullName
 
 	
 ]
