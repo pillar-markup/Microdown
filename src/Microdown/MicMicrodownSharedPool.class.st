@@ -27,6 +27,7 @@ Class {
 		'FixiousTextDelimiter',
 		'HeaderMarkup',
 		'HorizontalLineMarkup',
+		'InlineParagraphDelimiter',
 		'ItalicMarkup',
 		'LinkNameCloserMarkup',
 		'LinkNameOpenerMarkup',
@@ -69,6 +70,10 @@ MicMicrodownSharedPool class >> initialize [
 	EnvironmentOpeningBlockMarkup := '<!'.
 	HeaderMarkup := '#'.
 	HorizontalLineMarkup	:= '***'.
+	"InlineParagraphDelimiter is used by macrodown to split paragraph in two using double spaces.
+	I'm afraid that this is not a nice feature and can break existing material.
+	InlineParagraphDelimiter := '  '.
+	"
 	MathClosingBlockMarkup := '$$'.
 	MathOpeningBlockMarkup := '$$'.	
 	MetaDataClosingBlockMarkup := '}'.

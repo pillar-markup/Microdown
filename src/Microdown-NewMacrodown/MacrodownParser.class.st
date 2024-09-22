@@ -4,8 +4,8 @@ This is a variation of the MicrodownParser that tries to be as close as possible
 Class {
 	#name : 'MacrodownParser',
 	#superclass : 'MicrodownParser',
-	#category : 'Microdown-Macrodown',
-	#package : 'Microdown-Macrodown'
+	#category : 'Microdown-NewMacrodown',
+	#package : 'Microdown-NewMacrodown'
 }
 
 { #category : 'public' }
