@@ -9,7 +9,7 @@ Class {
 	#name : 'MicInlineAlternativesDelimiter',
 	#superclass : 'MicInlineStandardDelimiter',
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',

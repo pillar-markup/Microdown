@@ -2,7 +2,7 @@
 I define all the constants for parsing Microdown blocks.
 "
 Class {
-	#name : 'MicMicrodownSharedPool',
+	#name : 'MicSharedPool',
 	#superclass : 'SharedPool',
 	#classVars : [
 		'AnchorMarkup',
@@ -55,7 +55,7 @@ Class {
 }
 
 { #category : 'class initialization' }
-MicMicrodownSharedPool class >> initialize [
+MicSharedPool class >> initialize [
 	"self initialize"
 	
 	AnchorMarkup := '@'.
