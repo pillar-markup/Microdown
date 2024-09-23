@@ -73,9 +73,9 @@ MicEnvironmentBlock class >> addDocumentDefinedEnvironments: aBuilder [
 { #category : 'public' }
 MicEnvironmentBlock class >> alternateBlockClassFor: line [
 
-	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
+	"If there is one subclass with the corresponding tag, returns it, else return the current class."
 	"line is of the form <!slide|title=Schedule"
-	"We know that the two first characters are <? else we would be invoked"
+	"We know that the two first characters are <! else we would not be invoked"
 
 	| tag |
 	tag := ((line allButFirst: EnvironmentOpeningBlockMarkup size) 
