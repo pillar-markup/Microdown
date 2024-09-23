@@ -83,7 +83,7 @@ MicBookTestResult >> explanation [
 	 self text  , 
 	 String cr ,
 	'from the source file:  ' ,
-   	 self source asString 
+   	 self sourceFileReference fullName 
 
 	
 ]
@@ -116,7 +116,8 @@ MicBookTestResult >> initialize [
 	status := true.
 	isExpectedFailure := false.
 	message := 'Test failed without raising an exception'.
-	text := 'here we should get an expression'
+	text := 'here we should get an expression'.
+	source := '' asFileReference.
 ]
 
 { #category : 'accessing' }
@@ -159,7 +160,7 @@ MicBookTestResult >> stonFormatExplanation [
 	 self text  , '",',
 	 String cr ,
 	'"sourceFile" : "' ,
-	self source asString , '"',
+	self sourceFileReference fullname , '"',
 	String cr , '}'
    	  
 

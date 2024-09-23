@@ -44,7 +44,7 @@ MicReferenceChecker >> addBadReferenceAnchor: anAnchorReference [
 	micResultInstance := MicUndefinedAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchorReference anchorLabel;
-		source: anAnchorReference fromFile fullName.
+		sourceFileReference: anAnchorReference fromFile.
 	results add: micResultInstance
 ]
 
@@ -55,7 +55,7 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchor anchorLabel;
-		source: anAnchor fromFile fullName.
+		sourceFileReference: anAnchor fromFile.
 	results add: micResultInstance
 ]
 
@@ -133,7 +133,10 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 MicReferenceChecker >> handleUndefinedFilesFrom: collector [
 
 	collector unexistingFiles do: [ :each |
-		results add: (MicUndefinedInputFileResult new inputFileBlock: each ; source: each fromFile fullName; yourself )
+		results add: (MicUndefinedInputFileResult new 
+			inputFileBlock: each ; 
+			sourceFileReference: each fromFile; 
+			yourself )
 		
 		]
 ]

@@ -30,7 +30,7 @@ MicAnchorResult >> anchorLabel: anObject [
 { #category : 'accessing' }
 MicAnchorResult >> explanation [
 
-	^ 'Anchor ', anchorLabel, ' is ', self isWhat, ' in file: ', source
+	^ 'Anchor ', anchorLabel, ' is ', self isWhat, ' in file: ', source fullName
 	
 ]
 

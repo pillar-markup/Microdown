@@ -55,13 +55,13 @@ MicResult >> message: anObject [
 ]
 
 { #category : 'accessing' }
-MicResult >> source [
+MicResult >> sourceFileReference [
 
 	^ source
 ]
 
 { #category : 'accessing' }
-MicResult >> source: anObject [
+MicResult >> sourceFileReference: anObject [
 
 	source := anObject
 ]

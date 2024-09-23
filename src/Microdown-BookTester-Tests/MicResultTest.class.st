@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicResultTest',
-	#superclass : 'TestCase',
+	#superclass : 'MicFileTest',
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
 }
@@ -11,9 +11,7 @@ MicResultTest >> testExplanationDuplicatedAnchor [
 	| res |
 	res := MicDuplicatedAnchorResult new. 
 	res anchorLabel: 'ancS0'.
-	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
-	this later"
-	res source: '/myDir/chapter1.md'.
+	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
 	
 	self 
 		assert: res explanation 
@@ -29,7 +27,7 @@ MicResultTest >> testExplanationUndefinedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res source: '/myDir/chapter1.md'.
+	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
 	
 	self 
 		assert: res explanation 
@@ -40,15 +38,14 @@ MicResultTest >> testExplanationUndefinedAnchor [
 { #category : 'tests - basic result creation' }
 MicResultTest >> testMicBookTestResultExplanationWorksWithEmptyInstance [
 	
-	self flag: #improve. 
-	"I do not like these tests that test string."
+
 	self 
 		assert: MicBookTestResult new explanation 
 		equals: 'test status: Passed
 isExpectedFailure?  false
 Description of the test result : Test failed without raising an exception
 the concerned code Block  :  here we should get an expression
-from the source file:  nil'
+from the source file:  /'
 ]
 
 { #category : 'tests - basic result creation' }
@@ -81,14 +78,14 @@ MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res source: '/myDir/chapter1.md'.
+	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
 	
 	association := res stonFormatExplanation.
 	
 	self 
 		assert: (association isKindOf: Association );
 		assert:  association key equals: 'ancS0';
-		assert: association value equals: '/myDir/chapter1.md'
+		assert: association value fullName equals: '/myDir/chapter1.md'
 	
 ]
 
@@ -100,14 +97,14 @@ MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res source: '/myDir/chapter1.md'.
+	res sourceFileReference: '/myDir/chapter1.md' asFileReference .
 	
 	association := res stonFormatExplanation.
 	
 	self 
 		assert: (association isKindOf: Association );
 		assert:  association key equals: 'ancS0';
-		assert: association value equals: '/myDir/chapter1.md'
+		assert: association value fullName equals: '/myDir/chapter1.md'
 	
 ]
 
@@ -115,17 +112,13 @@ MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 MicResultTest >> testUndefinedFigureFile [
 
 	| res |
-	self skip. 
 	res := MicUndefinedFigureFileResult new. 
-	res inputFileBlock: (MicInputfileBlock new  path: 'myDir/foo.md').
-	res source: '/myDir/chapter2.md'.
-	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
-	this later"
-	res source: '/myDir/chapter2.md'.
+	res figureFileString: 'myDir/foo.png'.
+	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
 	
 	self 
 		assert: res explanation 
-		equals: 'File input myDir/foo.md (in file /myDir/chapter2.md) does not exist'
+		equals: 'File input myDir/foo.png (in file /myDir/chapter2.md) does not exist'
 	
 ]
 
@@ -135,10 +128,8 @@ MicResultTest >> testUndefinedInputFile [
 	| res |
 	res := MicUndefinedInputFileResult new. 
 	res inputFileBlock: (MicInputfileBlock new  path: 'myDir/foo.md').
-	res source: '/myDir/chapter2.md'.
-	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
-	this later"
-	res source: '/myDir/chapter2.md'.
+	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
+	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
 	
 	self 
 		assert: res explanation 

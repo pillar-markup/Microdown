@@ -13,21 +13,21 @@ MicSyncTesterStrategy class >> handleKey [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'main API' }
 MicSyncTesterStrategy >> handleBrokenOrigin: aString of: aMicCodeBlock [ 
 	
 	results add: ( MicBrokenSyncOriginDefinition new 
 							originString: aString;
-							source: aMicCodeBlock;
+							sourceFileReference: aMicCodeBlock fromFile;
 							yourself )
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'main API' }
 MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [ 
 
 	results add: (MicBrokenSyncDefinition new
 							syncValue: aString;
-							source: aMicCodeBlock;
+							sourceFileReference: aMicCodeBlock fromFile;
 							yourself)
 ]
 
@@ -79,7 +79,7 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 		aCodeBlock body = method sourceCode ifFalse: [
 			results add: (MicDesynchronizedCodeResult new
 					 originString: originString;
-					 source: aCodeBlock;
+					 sourceFileReference: aCodeBlock fromFile;
 					 bookContents: aCodeBlock body;
 					 imageContent: method sourceCode;
 					 pharoVersion: Smalltalk image lastUpdateString) ] ]
