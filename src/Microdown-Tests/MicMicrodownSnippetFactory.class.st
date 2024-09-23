@@ -26,7 +26,7 @@ Class {
 		'parserClass'
 	],
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-Tests-Snippets',
 	#package : 'Microdown-Tests',

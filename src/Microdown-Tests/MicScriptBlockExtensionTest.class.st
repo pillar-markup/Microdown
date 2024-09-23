@@ -2,7 +2,7 @@ Class {
 	#name : 'MicScriptBlockExtensionTest',
 	#superclass : 'TestCase',
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-Tests-Extensions',
 	#package : 'Microdown-Tests',

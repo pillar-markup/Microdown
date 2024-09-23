@@ -2,7 +2,7 @@ Class {
 	#name : 'MicInlineBlockTest',
 	#superclass : 'TestCase',
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-Tests-InlineParser',
 	#package : 'Microdown-Tests',
