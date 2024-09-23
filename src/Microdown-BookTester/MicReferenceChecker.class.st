@@ -99,8 +99,7 @@ MicReferenceChecker >> collectBadReferences [
 	| badReference existingAnchorNames |
 	existingAnchorNames := (anchors collect: [ :each | each anchorLabel ]).
 	badReference := references reject: [ :anchorReference |
-		                existingAnchorNames includes:
-			                anchorReference anchorLabel ].
+		                existingAnchorNames includes: anchorReference anchorLabel ].
 	badReference do: [ :each | self addBadReferenceAnchor: each ]
 ]
 
@@ -122,9 +121,8 @@ MicReferenceChecker >> handleAnchorOf: anElement [
 	anElement hasAnchor ifFalse: [ ^ self ].
 	(self hasAlreadyDefinedAs: anElement)
 		ifTrue: [
-				 duplicatedAnchors add: anElement .
-				 self addDuplicatedAnchor: anElement .
-		 ].
+				 duplicatedAnchors add: anElement.
+				 self addDuplicatedAnchor: anElement ].
 	 anchors add: anElement
 	
 ]
@@ -229,10 +227,10 @@ MicReferenceChecker >> unknownAnchors [
 	| unknown ref |
 	unknown := OrderedCollection new. 
 	ref := references copy.
-	ref do: [ :ref |
+	ref do: [ :reference |
 		(anchors noneSatisfy: [ :each | 
 			ref anchorLabel = each anchorLabel ])
-				ifTrue: [ unknown add: ref ]  ].
+				ifTrue: [ unknown add: reference ]  ].
 	^ unknown 
 ]
 
@@ -243,8 +241,7 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
 	isAlready ifTrue: [
 		duplicatedAnchors add: anAnchor.
-		self addDuplicatedAnchor: anAnchor
-		].
+		self addDuplicatedAnchor: anAnchor ].
 	anchors add: anAnchor
 ]
 
