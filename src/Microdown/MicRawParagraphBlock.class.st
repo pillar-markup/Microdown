@@ -12,20 +12,15 @@ Class {
 { #category : 'handle' }
 MicRawParagraphBlock >> bodyFromLine: line [
 
-	(line beginsWith: '<\', label)	
+	(self doesLineStartWithStopMarkup: line)
 		ifTrue: [ isClosed := true ]
 		ifFalse: [ body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ] ]
 ]
 
 { #category : 'handle' }
-MicRawParagraphBlock >> doesLineStartWithStopMarkup: line [
-
-	"return if the line starts with a stop markup"
-	^ line beginsWith: '</', label, '>'
-]
-
-{ #category : 'handle' }
 MicRawParagraphBlock >> extractFirstLineFrom: line [
+	"we cannot know in advance the markup so we have to guess and store it for closing."
+
 	label := line allButFirst copyUpToSubstring: '>'
 	
 ]
@@ -33,4 +28,10 @@ MicRawParagraphBlock >> extractFirstLineFrom: line [
 { #category : 'accessing' }
 MicRawParagraphBlock >> label [
 	^ label
+]
+
+{ #category : 'markups' }
+MicRawParagraphBlock >> lineStopMarkup [
+
+	^ '</', label, '>'
 ]
