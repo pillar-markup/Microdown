@@ -346,9 +346,7 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	visitor checkProject: defFig1AndRefToAnsC0.
 	self deny: visitor isOkay.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
-	self
-		assert: visitor results first source
-		equals: '/defFig1AndRefToAncS0.md'
+	self assert: visitor results first source equals: '/defFig1AndRefToAncS0.md'
 ]
 
 { #category : 'tests - single file ok references' }
@@ -398,9 +396,8 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS0'.
-	self
-		assert: visitor results first source
-		equals: '/fileDefAncS1UndAncS0.md'
+	self assert: visitor results first source equals: '/fileDefAncS1UndAncS0.md'
+	
 ]
 
 { #category : 'tests - directory api' }
@@ -503,7 +500,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 		equals: 'ancS1'.
 	dict := visitor results groupedBy: [ :each | each class ].
 	duplicated := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: duplicated source equals: '/myDirectory/file2.md'.
+	self assert: visitor results first source equals: '/myDirectory/file2.md'.
 	self assert: duplicated anchorLabel equals: 'ancS1'
 		
 	
@@ -729,7 +726,7 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
-	self assert: visitor results first source equals: '/fileRefAncS1.md'
+	self assert: visitor results first source equals: '/fileRefAncS1.md'.
 ]
 
 { #category : 'tests - duplicated' }

@@ -40,7 +40,7 @@ MicExampleTesterStrategy >> verify: aCodeBlock [
 		| result |
 		result := MicBookTestResult new.
 		result text: aCodeBlock code.
-		[ result source: aCodeBlock fromFile ]
+		[ result source: aCodeBlock fromFile fullName]
 			on: Error
 			do: [ result source: nil ].
 		results add: result.

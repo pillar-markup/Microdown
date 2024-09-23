@@ -38,10 +38,10 @@ MicRootBlock >> fromFile [
 ]
 
 { #category : 'accessing' }
-MicRootBlock >> fromFile: aFile [ 
+MicRootBlock >> fromFile: aFileReference [ 
 	"Store the file from which the document was built"
 	
-	self propertyAt: #file put: aFile
+	self propertyAt: #file put: (aFileReference ifNotNil: [aFileReference asFileReference])
 ]
 
 { #category : 'accessing' }

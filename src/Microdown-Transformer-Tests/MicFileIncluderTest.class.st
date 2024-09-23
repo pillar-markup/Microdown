@@ -54,7 +54,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 		 	setStream: stream;
 			inputFile: 'anExample1.md' ].
 	
-	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem .
+	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem .
 	root := reference loadMicrodown.
 	
 	self assert: root children first class equals: MicInputfileBlock.
@@ -111,7 +111,7 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 			header: [ builder text: 'Example2' ] withLevel: 1 ].
 
 	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit.md') filesystem: filesystem.
+		              'file:///Chapters/SUnit.md') fileSystem: filesystem.
 
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
@@ -158,7 +158,7 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 			header: [ builder text: 'Example2' ] withLevel: 1 ].
 
 	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit.md') filesystem: filesystem.
+		              'file:///Chapters/SUnit.md') fileSystem: filesystem.
 
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
@@ -198,7 +198,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 			inputfile: 'anExample1.md' ].
 
 	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit/SUnit.md') filesystem:
+		              'file:///Chapters/SUnit/SUnit.md') fileSystem:
 		             filesystem.
 	root := reference loadMicrodown.
 
@@ -228,7 +228,7 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 			inputfile: 'anExample1.md';
 			inputfile: 'anExample2.md' ].
 	reference := (MicResourceReference fromUri: 'file:///test.md')
-		             filesystem: filesystem.
+		             fileSystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
 
@@ -259,7 +259,7 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 		 	setStream: stream;
 			inputfile: 'anExample3.md'].
 	
-	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
+	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem.
 	root := reference loadMicrodown.
 	
 	includer beRelaxed.
@@ -279,7 +279,7 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 			inputfile: 'anExample1.md';
 			paragraph: '';
 			inputfile: 'anExample2.md' ].
-	reference := (MicResourceReference fromUri: 'file:///test.md') filesystem: filesystem.
+	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
 
