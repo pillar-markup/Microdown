@@ -43,12 +43,6 @@ MicInlineStandardDelimiter class >> initializeDelimiters [
 	self new markup: RawOpenerMarkup; blockClass: MicRawBlock; closer: RawCloserMarkup; addMe.
 	self new markup: RawCloserMarkup; blockClass: nil; closer: nil; addMe.
 
-	"Line breaks"
-	"Double space are used in macrodown to split paragraphs in two paragraphs. Now 
-	this is feature will break existing texts so disable it for now 
-	self new markup: InlineParagraphDelimiter ; blockClass: MicLineBreakBlock ; closer: nil; addMe.
-	"
-	
 	"Containing URLs"
 	self new markup: LinkNameOpenerMarkup; blockClass: MicLinkBlock; closer: NameCloserUrlOpener; addMe.
 	self new markup: FigureNameOpenerMarkup; blockClass: MicFigureBlock; closer: NameCloserUrlOpener; addMe.

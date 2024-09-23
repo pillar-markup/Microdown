@@ -1,8 +1,5 @@
 "
-This class is copied as it was from Macrodown package.
-
 Paragraph extension to process the extended inlines.
-
 "
 Class {
 	#name : 'MacParagraphBlock',
@@ -11,10 +8,10 @@ Class {
 		'textWithoutBreak'
 	],
 	#pools : [
-		'MacMicrodownSharedPool'
+		'MacConstants'
 	],
-	#category : 'Microdown-NewMacrodown',
-	#package : 'Microdown-NewMacrodown'
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
 { #category : 'parising' }
@@ -26,7 +23,7 @@ MacParagraphBlock >> addLineAndReturnNextNode: line [
 	(line endsWith: InlineParagraphDelimiter) ifFalse: [ ^ self ].
 	"add nodes up to now, then insert break and continue"
 	children addAll: (self inlineParse: textWithoutBreak).
-	children add: MicLineBreakBlock new.
+	children add: (MacLineBreakBlock new).
 	textWithoutBreak := nil
 ]
 
