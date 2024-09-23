@@ -2,20 +2,19 @@
 Definition of ""mailto"" scheme (to let the links recognise it).
 "
 Class {
-	#name : 'MicMailtoResourceReference',
+	#name : 'MacMailtoResourceReference',
 	#superclass : 'MicAbsoluteResourceReference',
-	#category : 'Microdown-Macro',
-	#package : 'Microdown',
-	#tag : 'Macro'
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
 { #category : 'instance creation' }
-MicMailtoResourceReference class >> handlesUriScheme: scheme [
+MacMailtoResourceReference class >> handlesUriScheme: scheme [
 	^ scheme beginsWith: 'mailto'
 ]
 
 { #category : 'accessing' }
-MicMailtoResourceReference >> contents [
+MacMailtoResourceReference >> contents [
 
 	^ self error: 'Should not arrive here?'
 ]

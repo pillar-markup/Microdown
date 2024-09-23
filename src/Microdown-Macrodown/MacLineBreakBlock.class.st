@@ -2,32 +2,32 @@
 Block to process line breaks. 
 "
 Class {
-	#name : 'MicLineBreakBlock',
+	#name : 'MacLineBreakBlock',
 	#superclass : 'MicInlineElement',
-	#category : 'Microdown-NewMacrodown',
-	#package : 'Microdown-NewMacrodown'
+	#category : 'Microdown-Macrodown',
+	#package : 'Microdown-Macrodown'
 }
 
 { #category : 'visiting' }
-MicLineBreakBlock >> accept: aVisitor [
+MacLineBreakBlock >> accept: aVisitor [
 
  	^ aVisitor visitLineBreak: self
 ]
 
 { #category : 'accessing' }
-MicLineBreakBlock >> kind [
+MacLineBreakBlock >> kind [
 
 	^ #lineBreak
 ]
 
 { #category : 'accessing' }
-MicLineBreakBlock >> openingDelimiter [
+MacLineBreakBlock >> openingDelimiter [
 
 	^ nil
 ]
 
 { #category : 'accessing' }
-MicLineBreakBlock >> openingDelimiterSize [ 
+MacLineBreakBlock >> openingDelimiterSize [ 
 
 	^ 0
 ]
