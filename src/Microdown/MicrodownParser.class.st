@@ -212,7 +212,7 @@ MicrodownParser >> blockStarterClassFrom: line [
 			and this conflict with <!-- obviously. Too bad!
 			we will be able to make this huge hack goes away."
 			(line first = $< and: [ 
-					(MicSharedPool threeLetterhtmlTags includes: (line allButFirst truncateTo: 3)) ])
+					(ThreeLettersHTMLTags includes: (line allButFirst truncateTo: 3)) ])
 				ifTrue: [ 
 					"we have a rawparagraph block" 
 					^ MicRawParagraphBlock 

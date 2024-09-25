@@ -45,6 +45,7 @@ Class {
 		'RawOpenerMarkup',
 		'StrikeMarkup',
 		'TableCellMarkup',
+		'ThreeLettersHTMLTags',
 		'URLCloserMarkup',
 		'URLOpenerMarkup',
 		'UnorderedListMarkup',
@@ -158,7 +159,8 @@ MicSharedPool class >> initialize [
 MicSharedPool class >> initializeRawParagraph [
 	"self initializeRawParagraph"
 	
-	HTMLTags := self htmlTags
+	HTMLTags := self htmlTags.
+	ThreeLettersHTMLTags := self threeLetterhtmlTags 
 ]
 
 { #category : 'class initialization' }
