@@ -52,8 +52,12 @@ MicMicrodownTextualBuilderTest >> testAnchorReference [
 { #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testAnnotated [
 
-	self assert: (builder annotated: 'anAnnotation' paragraph:  [ builder text: 'anAnnotatedParagraph' ]) contents equals: '>[!anAnnotation]
-> anAnnotatedParagraph', String cr, String cr
+	self
+		assert: (builder
+				 annotated: 'anAnnotation'
+				 paragraph: [ builder textWithBracket: 'anAnnotatedParagraph' ]) contents
+		equals: '>[!anAnnotation]
+> anAnnotatedParagraph' , String cr , String cr
 ]
 
 { #category : 'tests - anchor' }
