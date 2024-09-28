@@ -122,9 +122,15 @@ MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
-	builder 
-		annotated: anAnnotated label 
-		paragraph:  [ super visitAnnotated: anAnnotated  ] 
+	| string textualExporter |
+	string := ''.
+	textualExporter := MicTextualMicrodownExporter new.
+	anAnnotated children do: [ :each |
+		each accept: textualExporter ].
+
+	builder
+		annotated: anAnnotated label
+		paragraph: [ builder textWithBracket: textualExporter contents ]
 ]
 
 { #category : 'visit - format' }
