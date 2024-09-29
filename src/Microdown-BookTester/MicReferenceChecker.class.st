@@ -59,6 +59,16 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	results add: micResultInstance
 ]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> addDuplicatedFirstAnchor: anAnchor [
+
+	anchors do: [ :each |
+		each anchorLabel = anAnchor anchorLabel ifTrue: [
+			(duplicatedAnchors includes: each) ifFalse: [
+				duplicatedAnchors add: each.
+				self addDuplicatedAnchor: each ] ] ]
+]
+
 { #category : 'main API' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
@@ -97,9 +107,10 @@ MicReferenceChecker >> collectBadReferences [
 	" should be called just after all the docs are visited otherwise the result can be wrong"
 
 	| badReference existingAnchorNames |
-	existingAnchorNames := (anchors collect: [ :each | each anchorLabel ]).
+	existingAnchorNames := anchors collect: [ :each | each anchorLabel ].
 	badReference := references reject: [ :anchorReference |
-		                existingAnchorNames includes: anchorReference anchorLabel ].
+		                existingAnchorNames includes:
+			                anchorReference anchorLabel ].
 	badReference do: [ :each | self addBadReferenceAnchor: each ]
 ]
 
@@ -119,12 +130,11 @@ MicReferenceChecker >> fileSystem: aFileSystem [
 MicReferenceChecker >> handleAnchorOf: anElement [
 
 	anElement hasAnchor ifFalse: [ ^ self ].
-	(self hasAlreadyDefinedAs: anElement)
-		ifTrue: [
-				 duplicatedAnchors add: anElement.
-				 self addDuplicatedAnchor: anElement ].
-	 anchors add: anElement
-	
+	(self hasAlreadyDefinedAs: anElement) ifTrue: [
+		duplicatedAnchors add: anElement.
+		self addDuplicatedAnchor: anElement.
+		self addDuplicatedFirstAnchor: anElement. ].
+	anchors add: anElement
 ]
 
 { #category : 'internal' }
@@ -241,7 +251,8 @@ MicReferenceChecker >> visitAnchor: anAnchor [
 	isAlready := self hasAlreadyDefinedAs: anAnchor.
 	isAlready ifTrue: [
 		duplicatedAnchors add: anAnchor.
-		self addDuplicatedAnchor: anAnchor ].
+		self addDuplicatedAnchor: anAnchor.
+		self addDuplicatedFirstAnchor: anAnchor. ].
 	anchors add: anAnchor
 ]
 
