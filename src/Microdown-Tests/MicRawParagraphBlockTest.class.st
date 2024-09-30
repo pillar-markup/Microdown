@@ -22,7 +22,8 @@ No idea what it is :)
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testNotASimpleRawParagraph [
+MicRawParagraphBlockTest >> testNotASimpleRawParagraphBecauseNotDeclaredTag [
+
 	| mic |
 	mic := (parser parse: '<toto> 
 No idea what it is :)
@@ -33,6 +34,7 @@ No idea what it is :)
 
 { #category : 'tests' }
 MicRawParagraphBlockTest >> testNotASimpleRawParagraphNoSpaceInFrontToClose [
+
 	| children |
 	children := (parser parse: '<title> 
 No idea what it is :)
@@ -60,11 +62,13 @@ hkhkjhkj
 	self assert: children size equals: 1. 
 	self assert: children first class equals: MicRawParagraphBlock. 
 	self assert: children first label equals: 'title'.
-
+	self assertEmpty: children first children
 ]
 
 { #category : 'tests' }
 MicRawParagraphBlockTest >> testThereIsNoValidationIfThetagStartWithAKnowHtml [
+	"for the moment we only check the first couple of characters to start with.
+	So it may happens that we match the beginning of a tag."
 	| mic |
 	mic := (parser parse: '<titleunkniw> 
 No idea what it is :)
