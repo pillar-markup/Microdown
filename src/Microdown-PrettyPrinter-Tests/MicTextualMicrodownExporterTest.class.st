@@ -8,7 +8,7 @@ Class {
 		'parser'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-PrettyPrinter-Tests',
 	#package : 'Microdown-PrettyPrinter-Tests'
