@@ -494,38 +494,38 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	visitor checkDirectory: dir.
 	self deny: visitor isOkay.
 
-	self assert: visitor duplicatedAnchors size equals: 1.
+	self assert: visitor duplicatedAnchors size equals: 2.
 	self
 		assert: visitor duplicatedAnchors first anchorLabel
 		equals: 'ancS1'.
 	dict := visitor results groupedBy: [ :each | each class ].
 	duplicated := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: visitor results first sourceFileReference fullName  equals: '/myDirectory/file2.md'.
+	self
+		assert: visitor results first sourceFileReference fullName
+		equals: '/myDirectory/file2.md'.
 	self assert: duplicated anchorLabel equals: 'ancS1'
-		
-	
-
 ]
 
 { #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testDuplicatedAnchors [
 
 	| defAncS0TripleAncS1RefAncS1AncS0 checker dict dup1 |
-	defAncS0TripleAncS1RefAncS1AncS0 := self defAncS0TripleAncS1RefAncS1AncS0.
+	defAncS0TripleAncS1RefAncS1AncS0 := self
+		                                    defAncS0TripleAncS1RefAncS1AncS0.
 	checker := MicReferenceChecker new.
 	checker checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
 	self deny: checker isOkay.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS1' 'ancS1' ).
-		
+		equals: OrderedCollection <- #( 'ancS1' 'ancS1' 'ancS1' ).
+
 	dict := checker results groupedBy: [ :each | each class ].
-	
+
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: dup1 sourceFileReference fullName equals: '/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'.
-	self assert: dup1 anchorLabel equals: 'ancS1'.
-	
-	
+	self
+		assert: dup1 sourceFileReference fullName
+		equals: '/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'.
+	self assert: dup1 anchorLabel equals: 'ancS1'
 ]
 
 { #category : 'tests - duplicated' }
@@ -538,7 +538,7 @@ MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEq [
 	self deny: visitor isOkay.
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
+		equals: OrderedCollection <- #( 'ancS1' 'ancS1' 'ancS0' 'ancS0' 'fig2' 'fig2' )
 ]
 
 { #category : 'tests - duplicated' }
@@ -552,7 +552,7 @@ MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEqInDifferentFile [
 	self deny: visitor isOkay.
 	self
 		assert: (visitor results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'ancS1' 'ancS0' 'fig2' )
+		equals: OrderedCollection <- #( 'ancS1' 'ancS1' 'ancS0' 'ancS0' 'fig2' 'fig2')
 ]
 
 { #category : 'tests - duplicated' }
@@ -565,7 +565,7 @@ MicReferenceCheckerTest >> testDuplicatedFigures [
 	self deny: checker isOkay.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'ancS1' ).
+		equals: OrderedCollection <- #( 'fig1' 'fig1' 'fig1' 'fig1' 'ancS1' ).
 		
 	dict := checker results groupedBy: [ :each | each class ].
 	
@@ -589,7 +589,7 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 		equals: defAnCS0DoubleEq2DoubleEq1RefEq1 fullName.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
-		equals: OrderedCollection <- #( 'Eq2' 'Eq1' ).
+		equals: OrderedCollection <- #( 'Eq2' 'Eq2' 'Eq1' 'Eq1' ).
 		
 	dict := checker results groupedBy: [ :each | each class ].
 	
@@ -597,7 +597,7 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	self assert: dup1 sourceFileReference fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup1 anchorLabel equals: 'Eq2'.
 	
-	dup2 := (dict at: MicDuplicatedAnchorResult) second.
+	dup2 := (dict at: MicDuplicatedAnchorResult) third.
 	self assert: dup2 sourceFileReference fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup2 anchorLabel equals: 'Eq1'.
 ]
