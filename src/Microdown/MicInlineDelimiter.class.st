@@ -23,13 +23,16 @@ Class {
 
 { #category : 'accessing' }
 MicInlineDelimiter class >> all [
+	"self all"
+	
 	DelimiterDictionary ifNil: [ self initializeDelimiters ].
 	^ DelimiterDictionary values
 ]
 
 { #category : 'private utilities' }
 MicInlineDelimiter class >> allRegex [
-
+	"self allRegex"
+	
 	Regex ifNil: [ self initializeRegex ].
 	^ Regex
 ]
@@ -71,6 +74,7 @@ MicInlineDelimiter class >> noteCompilationOf: aSelector meta: isMeta [
 { #category : 'private utilities' }
 MicInlineDelimiter class >> regexNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
+	
 	| str prefix|
 	str := WriteStream on: ''.
 	str nextPut: $(.

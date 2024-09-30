@@ -69,31 +69,45 @@ MicSharedPool class >> initialize [
 	"self initialize"
 	
 	AnchorMarkup := '@'.
+	
 	AnnotatedParagraphBackwardCompatibleMarkup := '!!'.
 	"we keep it to avoid breaking existing text but we should favor one that is compatible with github eg the next one"
 	AnnotatedParagraphOpeningMarkup := '>[!'.
 	AnnotatedParagraphClosingMarkup := ']'.
+	PreformattedMarkup := '> '.
+
 	CodeblockMarkup := '```'.
+	
 	CommentedLineMarkup := '%'.
+	
 	EnvironmentClosingBlockMarkup := '!>'.
 	EnvironmentOpeningBlockMarkup := '<!'.
+	
 	HeaderMarkup := '#'.
+	
 	HorizontalLineMarkup	:= '***'.
+	
 	MathClosingBlockMarkup := '$$'.
 	MathOpeningBlockMarkup := '$$'.	
+	
 	MetaDataClosingBlockMarkup := '}'.
 	MetaDataOpeningBlockMarkup := '{'.
+	
 	OrderedListSemiMarkup := '. '.
-	PreformattedMarkup := '> '.
+	
 	TableCellMarkup	:= '|'.
 	UnorderedListMarkup := '- '.
    UnorderedListPlusMarkup := '+ '.
 	UnorderedListStarMarkup := '* '.
 
+"Argument list"
+
 	ArgumentListDelimiter := '&'.
 	ArgumentListEqualsDelimiter := '='.
 	ArgumentListOfFigureStartDelimiter := '?'.
 	ArgumentListStartDelimiter := '|'.
+
+"In paragraph!"
 		
 	AnchorReferenceCloserMarkup := '@*'.
 	AnchorReferenceOpenerMarkup := '*@'. 
@@ -127,6 +141,7 @@ MicSharedPool class >> initialize [
 	BoldMarkup .
 	FigureNameOpenerMarkup .  
 	ItalicMarkup .
+	InlineSpace .
 	LinkNameCloserMarkup .  
 	LinkNameOpenerMarkup .  
 	MathMarkup .
