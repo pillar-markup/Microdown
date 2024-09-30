@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicRawParagraphBlockTest',
 	#superclass : 'MicBlockTest',
-	#category : 'Microdown-Tests',
-	#package : 'Microdown-Tests'
+	#category : 'Microdown-Tests-Extensions',
+	#package : 'Microdown-Tests',
+	#tag : 'Extensions'
 }
 
 { #category : 'tests' }
