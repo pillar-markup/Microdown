@@ -525,10 +525,7 @@ MicMicrodownTextualBuilder >> rawAnnotated: annotation paragraph:  aBlock [
 		raw: annotation;
 		raw: AnnotatedParagraphClosingMarkup ;
 		raw: Character cr;
-		raw: $>;
-		raw: String space;
-		rawParagraph: aBlock;
-		raw: Character cr
+		rawParagraph: aBlock
 	
 
 ]
@@ -626,6 +623,19 @@ MicMicrodownTextualBuilder >> strike: aBlock [
 	self raw: StrikeMarkup.
 	aBlock value.
 	self raw: StrikeMarkup.
+]
+
+{ #category : 'writing during' }
+MicMicrodownTextualBuilder >> textWithBracket: aString [
+
+	| lines |
+	lines := aString substrings: String crlf.
+	lines do: [ :each |
+		self
+			raw: $>;
+			raw: String space;
+			raw: each;
+			raw: Character cr ]
 ]
 
 { #category : 'element - list' }
