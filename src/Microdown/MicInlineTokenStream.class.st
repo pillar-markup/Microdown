@@ -9,7 +9,7 @@ Class {
 		'tokens'
 	],
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',

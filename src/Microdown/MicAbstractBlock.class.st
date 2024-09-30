@@ -21,7 +21,8 @@ Class {
 { #category : 'public' }
 MicAbstractBlock class >> alternateBlockClassFor: line [
 	"This hook supports extensions of environments. 
-	we get <?slide ... and we do not create an environment but a slideBlock"
+	we get <!slide ... and we do not create an environment but a slideBlock"
+	
 	^ self
 ]
 
@@ -53,7 +54,12 @@ MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 
 { #category : 'public' }
 MicAbstractBlock >> blockStarterClassFrom: line [
-	"return the class of a block which can start with line, or nil if none"
+	"Return the class of a block which can start with line, or nil if none.
+	The principle is the following 
+		- first we get a class 
+		- then such class as environment are asked since they can act as factory 
+		and return other classes. 
+		For example <!citation does not return an environment but a MicCitationBlock"
 
 	^ (self parser blockStarterClassFrom: line) ifNotNil: [ :c | c alternateBlockClassFor: line ]
 ]

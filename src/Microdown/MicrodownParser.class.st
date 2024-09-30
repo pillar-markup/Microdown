@@ -175,7 +175,7 @@ Class {
 		'dispatchTable'
 	],
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-Parser',
 	#package : 'Microdown',
@@ -202,20 +202,32 @@ MicrodownParser class >> parse: aString [
 { #category : 'node creation' }
 MicrodownParser >> blockStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
-
+	
 	line ifEmpty: [ ^ nil ].
 	(self matchOrdered: line)
 		ifTrue: [ ^ self orderedListBlockClass ]
 		ifFalse: [
+			"right now this is super ugly and slow 
+			but this is to try. Once we understand and probably change the environment syntax for now it is <!
+			and this conflict with <!-- obviously. Too bad!
+			we will be able to make this huge hack goes away."
+			(line first = $< and: [ 
+					(ThreeLettersHTMLTags includes: (line allButFirst truncateTo: 3)) ])
+				ifTrue: [ 
+					"we have a rawparagraph block" 
+					^ MicRawParagraphBlock 
+					]
+				ifFalse: [ 
+								
 			"the max significant length of a markup is 3"
-			(3 to: 1 by: -1) do: [:i | | prefix |
+			(3 to: 1 by: -1) do: [:i | | prefix |			
 				prefix := (line truncateTo: i).
 				"If we have a inline starter, it takes precedence"
 				(Delimiters includes: prefix) 
 					ifTrue: [ ^ self delimiterBlockClassFor: prefix ].
   				dispatchTable
     		 		at: prefix
-      				ifPresent: [ :blockClass | ^ blockClass ] ] ].
+      				ifPresent: [ :blockClass | ^ blockClass ] ] ] ].
 	
 	^ self nonMatchedBlockClassFor: line
 ]

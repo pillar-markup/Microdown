@@ -7,7 +7,7 @@ Class {
 	#name : 'MicInlineParser',
 	#superclass : 'Object',
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',

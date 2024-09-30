@@ -13,7 +13,7 @@ Class {
 		'string'
 	],
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',

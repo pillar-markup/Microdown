@@ -21,9 +21,9 @@ Class {
 	#instVars : [
 		'bogusParsing'
 	],
-	#category : 'Microdown-BookRelated',
+	#category : 'Microdown-Extensions',
 	#package : 'Microdown',
-	#tag : 'BookRelated'
+	#tag : 'Extensions'
 }
 
 { #category : 'markups' }

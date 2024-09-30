@@ -8,7 +8,7 @@ Class {
 	#name : 'MicInlineHttpDelimiter',
 	#superclass : 'MicInlineDelimiter',
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-InlineParser',
 	#package : 'Microdown',

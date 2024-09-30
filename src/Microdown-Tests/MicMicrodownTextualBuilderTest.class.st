@@ -9,7 +9,7 @@ Class {
 		'builder'
 	],
 	#pools : [
-		'MicMicrodownSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-Tests-Builder',
 	#package : 'Microdown-Tests',

@@ -74,14 +74,6 @@ MicStartStopMarkupBlock >> canConsumeLine: line [
 ]
 
 { #category : 'testing' }
-MicStartStopMarkupBlock >> doesLineStartWithMarkup: line [
-	"return if the line starts with a markup"
-
-	^ line beginsWith: self lineStartMarkup
-	
-]
-
-{ #category : 'testing' }
 MicStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
 
 	"return if the line starts with a stop markup"
