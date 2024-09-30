@@ -7,7 +7,7 @@ Class {
 		'inList'
 	],
 	#pools : [
-		'MicroSharedPool'
+		'MicSharedPool'
 	],
 	#category : 'Microdown-PrettyPrinter',
 	#package : 'Microdown-PrettyPrinter'
