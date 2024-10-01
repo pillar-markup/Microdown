@@ -49,9 +49,6 @@ MicInlineStandardDelimiter class >> initializeDelimiters [
 	self new markup: NameCloserUrlOpener; blockClass: MicRawBlock ; closer: URLCloserMarkup; addMe.
 	self new markup: URLCloserMarkup; blockClass: nil ; closer: nil; addMe.
 	
-	"line break"
-	self new markup: InlineSpace; blockClass: MicInlineSpaceBlock; closer: nil; addMe
-	
 	
 		
 ]
@@ -104,9 +101,4 @@ MicInlineStandardDelimiter >> markupAsRegex [
 				closer do: [ :char| str nextPut: $\; nextPut: char ] ]
 		ifFalse: [ markup do: [ :char| str nextPut: $\; nextPut: char ] ].
 	^ str contents
-]
-
-{ #category : 'printing' }
-MicInlineStandardDelimiter >> printOn: stream [
-	stream << $« << markup << $»
 ]

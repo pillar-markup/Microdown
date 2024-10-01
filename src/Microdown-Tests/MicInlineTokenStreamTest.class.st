@@ -92,7 +92,16 @@ MicInlineTokenStreamTest >> testTokenize_InlineSpace [
 
 	| tokens | 
 	tokens := (MicInlineTokenStream on: 'aa', InlineSpace ,'bbb') contents.
-	self assert: tokens second string equals: (InlineSpace ,'bbb').
+	self assert: tokens second string equals: InlineSpace.
+	self assert: tokens second delimiter equals: (MicInlineDelimiter at: InlineSpace)
+]
+
+{ #category : 'tests' }
+MicInlineTokenStreamTest >> testTokenize_InlineSpaceWithSpaceAround [
+
+	| tokens | 
+	tokens := (MicInlineTokenStream on: 'aa ', InlineSpace ,' bbb') contents.
+	self assert: tokens second string equals: InlineSpace.
 	self assert: tokens second delimiter equals: (MicInlineDelimiter at: InlineSpace)
 ]
 

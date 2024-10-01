@@ -100,6 +100,8 @@ MicSharedPool class >> initialize [
    UnorderedListPlusMarkup := '+ '.
 	UnorderedListStarMarkup := '* '.
 
+	self initializeRawParagraph.
+
 "Argument list"
 
 	ArgumentListDelimiter := '&'.
@@ -131,7 +133,7 @@ MicSharedPool class >> initialize [
 	NameCloserUrlOpener := ']('.
 	FixiousTextDelimiter := 0 asCharacter asString.
 
-	self initializeRawParagraph.
+
 
 
 	Delimiters := { AnchorReferenceCloserMarkup . 

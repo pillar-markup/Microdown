@@ -131,6 +131,11 @@ MicInlineDelimiter >> markupAsRegex [
 	self subclassResponsibility
 ]
 
+{ #category : 'printing' }
+MicInlineDelimiter >> printOn: stream [
+	stream << $« << self markup << $»
+]
+
 { #category : 'adding' }
 MicInlineDelimiter >> storeRegex [
 

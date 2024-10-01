@@ -62,7 +62,8 @@ MicInlineParser >> joinTextNodesOf: children [
 
 { #category : 'parsing' }
 MicInlineParser >> parse: aString [
-	"I return an array of inline blocks"
+	"Returns an array of inline blocks"
+	
 	| tokenStream |
 	tokenStream := MicInlineTokenStream on: aString.
 	^ (self parseChildrenIn: tokenStream) asArray 

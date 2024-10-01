@@ -6,6 +6,12 @@ Class {
 	#tag : 'InlineParser'
 }
 
+{ #category : 'parsing' }
+MicInlineSpaceBlock class >> parse: delimiter stream: aTokenStream for: aParser [
+
+	^ self new
+]
+
 { #category : 'visiting' }
 MicInlineSpaceBlock >> accept: aVisitor [
 

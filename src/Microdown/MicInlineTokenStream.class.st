@@ -110,6 +110,8 @@ MicInlineTokenStream >> addText: matchedString [
 
 { #category : 'initialization' }
 MicInlineTokenStream >> initialize [
+
+	super initialize.
 	tokens := OrderedCollection new
 ]
 

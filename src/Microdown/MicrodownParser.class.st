@@ -190,6 +190,7 @@ MicrodownParser class >> builder [
 { #category : 'examples' }
 MicrodownParser class >> example [
 	<sampleInstance>
+	
 	^ self parse: self comment
 ]
 
