@@ -424,11 +424,9 @@ Just a reference See *@ancS1@*  ' ].
 	file2 ensureCreateFile.
 
 	visitor := MicReferenceChecker new.
+	visitor rootDirectory: dir.
 	visitor checkDirectory: dir.
 	self assert: visitor isOkay
-	
-
-
 ]
 
 { #category : 'skipped for now' }
@@ -491,6 +489,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	file2 ensureCreateFile.
 
 	visitor := MicReferenceChecker new.
+	visitor rootDirectory: dir.
 	visitor checkDirectory: dir.
 	self deny: visitor isOkay.
 

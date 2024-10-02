@@ -68,6 +68,7 @@ MicFileCollector >> visitRoot: micDocument [
 	[ worklist isEmpty ] whileFalse: [
 		| currentDocument |
 		currentDocument := worklist removeFirst.
+		(visitedFiles includes: currentDocument) ifFalse: [ 
 		visitedFileStrings add: currentDocument fromFile fullName.
 		currentDocument resolveYourself.
 		visitedFiles add: currentDocument.
@@ -90,7 +91,7 @@ MicFileCollector >> visitRoot: micDocument [
 				doc := Microdown parseFile: fr.
 				worklist addFirst: doc ]
 					on: FileDoesNotExistException
-					do: [ unexistingFiles add: inputFile ] ] ] ]
+					do: [ unexistingFiles add: inputFile ] ] ] ]]
 ]
 
 { #category : 'accessing' }
