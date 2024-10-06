@@ -468,7 +468,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 { #category : 'tests - directory api' }
 MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
-	| file1 file2 visitor dict duplicated |
+	| file1 file2 visitor dict original duplicated |
 	file1 := dir / 'file1.md'.
 	file1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
@@ -498,9 +498,16 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 		assert: visitor duplicatedAnchors first anchorLabel
 		equals: 'ancS1'.
 	dict := visitor results groupedBy: [ :each | each class ].
-	duplicated := (dict at: MicDuplicatedAnchorResult) first.
+	
+	original := (dict at: MicDuplicatedAnchorResult) first.
 	self
 		assert: visitor results first sourceFileReference fullName
+		equals: '/myDirectory/file1.md'.
+	self assert: original anchorLabel equals: 'ancS1'.
+	
+	duplicated := (dict at: MicDuplicatedAnchorResult) second.
+	self
+		assert: visitor results second sourceFileReference fullName
 		equals: '/myDirectory/file2.md'.
 	self assert: duplicated anchorLabel equals: 'ancS1'
 ]
@@ -530,19 +537,30 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 { #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testDuplicatedAnchorsWithCheckListAndCheckDirectory [
 
-	| defAncS0TripleAncS1RefAncS1AncS0 checker1 checker2 |
+	| defAncS0TripleAncS1RefAncS1AncS0 checker1 checker2 dict1 dict2 |
 	defAncS0TripleAncS1RefAncS1AncS0 := self
 		                                    defAncS0TripleAncS1RefAncS1AncS0.
 	checker1 := MicReferenceChecker new.
-	checker1 checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
+	checker1 rootDirectory: dir.
+	checker1 checkProject: defAncS0TripleAncS1RefAncS1AncS0.
+
 	checker2 := MicReferenceChecker new.
+	checker2 rootDirectory: dir.
 	checker2 checkDirectory: dir.
+
 	self deny: checker1 isOkay.
 	self deny: checker2 isOkay.
 
 	self
-		assert: checker1 results
-		equals: checker2 results.
+		assert: (checker1 results collect: [ :each | each anchorLabel ])
+		equals: (checker2 results collect: [ :each | each anchorLabel ]).
+		
+	dict1 := checker1 results groupedBy: [ :each | each class ].
+	dict2 := checker2 results groupedBy: [ :each | each class ].
+	
+	self
+		assert: (dict1 at: MicDuplicatedAnchorResult) first sourceFileReference fullName
+		equals: (dict2 at: MicDuplicatedAnchorResult) first sourceFileReference fullName.
 ]
 
 { #category : 'tests - duplicated' }
