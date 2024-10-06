@@ -528,6 +528,24 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 ]
 
 { #category : 'tests - duplicated' }
+MicReferenceCheckerTest >> testDuplicatedAnchorsWithCheckListAndCheckDirectory [
+
+	| defAncS0TripleAncS1RefAncS1AncS0 checker1 checker2 |
+	defAncS0TripleAncS1RefAncS1AncS0 := self
+		                                    defAncS0TripleAncS1RefAncS1AncS0.
+	checker1 := MicReferenceChecker new.
+	checker1 checkList: { defAncS0TripleAncS1RefAncS1AncS0 }.
+	checker2 := MicReferenceChecker new.
+	checker2 checkDirectory: dir.
+	self deny: checker1 isOkay.
+	self deny: checker2 isOkay.
+
+	self
+		assert: checker1 results
+		equals: checker2 results.
+]
+
+{ #category : 'tests - duplicated' }
 MicReferenceCheckerTest >> testDuplicatedBetweenSectionFigureEq [
 
 	| conflictBetweenFigSecEq visitor |
