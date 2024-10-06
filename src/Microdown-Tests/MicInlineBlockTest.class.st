@@ -11,6 +11,7 @@ Class {
 
 { #category : 'tests' }
 MicInlineBlockTest >> testAllTerminalNodesImplementsAccept [
+
 	(MicInlineElement allSubclasses select: [ :cl | cl allSubclasses isEmpty ])
 		do: [ :class |  self assert: (class includesSelector: #accept:) ]
 	

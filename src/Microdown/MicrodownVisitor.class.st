@@ -120,6 +120,10 @@ MicrodownVisitor >> visitHeader: aHeader [
 MicrodownVisitor >> visitHorizontalLine: anHorizontalLineBlock [
 ]
 
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitInlineSpace: anInlineSpace [
+]
+
 { #category : 'visiting' }
 MicrodownVisitor >> visitInputFile: anInputfile [
 	"subclassResponsibility"
@@ -208,6 +212,12 @@ MicrodownVisitor >> visitQuote: aQuote [
 MicrodownVisitor >> visitRaw: aRawFormat [
 
 	
+]
+
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitRawParagraph: aRawParagraph [
+
+
 ]
 
 { #category : 'visiting' }

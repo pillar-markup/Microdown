@@ -9,6 +9,12 @@ Class {
 	#tag : 'Extensions'
 }
 
+{ #category : 'visiting' }
+MicRawParagraphBlock >> accept: aVisitor [
+
+	aVisitor visitRawParagraph: self
+]
+
 { #category : 'handle' }
 MicRawParagraphBlock >> bodyFromLine: line [
 
