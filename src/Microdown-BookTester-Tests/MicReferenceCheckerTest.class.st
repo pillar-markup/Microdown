@@ -468,7 +468,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorDir [
 { #category : 'tests - directory api' }
 MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 
-	| file1 file2 visitor dict original duplicated |
+	| file1 file2 visitor dict original duplicated resultFullName |
 	file1 := dir / 'file1.md'.
 	file1 writeStreamDo: [ :stream |
 		stream nextPutAll: '# Section 
@@ -498,18 +498,16 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 		assert: visitor duplicatedAnchors first anchorLabel
 		equals: 'ancS1'.
 	dict := visitor results groupedBy: [ :each | each class ].
-	
+
 	original := (dict at: MicDuplicatedAnchorResult) first.
-	self
-		assert: visitor results first sourceFileReference fullName
-		equals: '/myDirectory/file1.md'.
 	self assert: original anchorLabel equals: 'ancS1'.
-	
+
 	duplicated := (dict at: MicDuplicatedAnchorResult) second.
-	self
-		assert: visitor results second sourceFileReference fullName
-		equals: '/myDirectory/file2.md'.
-	self assert: duplicated anchorLabel equals: 'ancS1'
+	self assert: duplicated anchorLabel equals: 'ancS1'.
+	
+resultFullName := visitor results collect: [ :each | each sourceFileReference fullName ].
+self
+		assert: (resultFullName includesAll: #('/myDirectory/file1.md' '/myDirectory/file2.md' ))
 ]
 
 { #category : 'tests - duplicated' }
