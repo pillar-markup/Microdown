@@ -639,7 +639,9 @@ MicRichTextComposer >> visitPharoEvaluator: aScriptBlock [
 	canvas := oldCanvas.	
 
 	codeText addAttribute: (MicRichTextDoIt new 
-		actOnClickBlock: [ self class evaluate: script ];
+		actOnClickBlock: [ OpalCompiler new
+			source: script;
+			evaluate ];
 		yourself).
 
 	"this is a hack, because the align of the icon is attached to some top-left of the 
