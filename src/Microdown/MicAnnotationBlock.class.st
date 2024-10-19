@@ -1,14 +1,28 @@
 "
 I represent an annotation, a tag with parameters, delimited by `{!` and `!}`.
+I'm composed of a tag and a list of valued keys following the syntax `tag|key1=value1&key2=value2`
 
 The following example is a citation annotation with the name variable bound to the string 'Duca99a' as a parameter.
 
 ```text
-{!citation|name=Duca99a!}
+{!citation|ref=Duca99a!}
 ```
 
 ```
-MicrodownParser parse: '{!citation|name=Duca99a!}'
+MicrodownParser parse: '{!citation|ref=Duca99a!}'
+```
+
+Note that the first key (that should be defined on the class side via the key method) can be omitted.
+So 
+
+```text
+{!citation|ref=Duca99a!}
+```
+
+is equivalent to 
+
+```text
+{!citation|Duca99a!}
 ```
 "
 Class {
@@ -62,6 +76,13 @@ MicAnnotationBlock class >> parse: delimiter stream: aTokenStream for: aParser [
 	^ extensionClass new
 		  bodyString: bodystring;
 		  arguments: arguments
+]
+
+{ #category : 'parsing' }
+MicAnnotationBlock class >> tag [
+	"Return the identifier of annotation e.g. tag in tag|key=value"
+	
+	^ self subclassResponsibility 
 ]
 
 { #category : 'visiting' }

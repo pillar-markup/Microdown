@@ -16,6 +16,8 @@ Class {
 
 { #category : 'accessing' }
 MicCitationBlock class >> key [
+	"The key for citation|ref=Value is ref"
+	
 	^ 'ref'
 ]
 
