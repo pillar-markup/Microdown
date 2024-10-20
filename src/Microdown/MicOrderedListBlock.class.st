@@ -69,5 +69,6 @@ MicOrderedListBlock >> startIndex [
 { #category : 'accessing' }
 MicOrderedListBlock >> startIndexFrom: line [
 	startIndex ifNotNil: [ ^self ].
-	startIndex := line asInteger
+	"an ordered list line starts with the index and after a dot '.' "
+	startIndex := line extractIntegerPart
 ]
