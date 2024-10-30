@@ -7,10 +7,10 @@ I was created with `!!label` with no space `!! label` (such as `@@note` `@@impor
 !!note This is important so I used exclamation marks.
 ```
 
-Now since Pillar 10.3 we used `>![` since it is closer to what Github uses. 
+Now since Pillar 10.3 we used `>[!` since it is closer to what Github uses. 
 
 ```
->![ note ] 
+>[! note ] 
 > This is important so I used exclamation marks.
 ```
 
