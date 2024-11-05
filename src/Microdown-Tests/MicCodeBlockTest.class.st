@@ -71,7 +71,7 @@ MicCodeBlockTest >> testCaption [
 MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	"This test shows that we can write a code block inside a code block but that the later is not interpreter."
 	
-	| source root code textBody |
+	| source root code |
 	source := '```
 This is a first level code
 	```
