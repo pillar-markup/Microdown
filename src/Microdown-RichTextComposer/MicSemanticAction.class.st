@@ -59,7 +59,7 @@ MicSemanticAction >> computeEntity [
 	"either 'Point' for a class or #'''System-Caching''' for a package"
 	size = 1 
 		ifTrue: [ self getClassOrNil
-						ifNil: [self getPackageOrNil ].
+						ifNil: [self getPackageOrNil ifNil: [ self getTagOrNil ] ].
 					^ self  ].
 	
 	"only 'Point class'"
@@ -137,6 +137,21 @@ MicSemanticAction >> getPackageOrNil [
 	entity := self class packageOrganizer packageNamed: tokens first asString ifAbsent: [ nil ].
 	^ entity
 				
+]
+
+{ #category : 'instance creation' }
+MicSemanticAction >> getTagOrNil [
+
+	| tagName |
+	tagName := tokens first asSymbol.
+	self class packageOrganizer packages do: [ :package |
+		(tagName beginsWith: package name) ifTrue: [
+			package tags do: [ :tag |
+				package name , '-' , tag name = tagName ifTrue: [
+					entity := tag.
+					^ entity ] ] ] ].
+	entity := nil.
+	^ entity
 ]
 
 { #category : 'testing' }
