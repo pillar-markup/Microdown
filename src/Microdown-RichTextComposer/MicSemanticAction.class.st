@@ -134,6 +134,7 @@ MicSemanticAction >> getMetaClassOrNil [
 
 { #category : 'instance creation' }
 MicSemanticAction >> getPackageOrNil [
+
 	entity := self class packageOrganizer packageNamed: tokens first asString ifAbsent: [ nil ].
 	^ entity
 				
@@ -141,6 +142,7 @@ MicSemanticAction >> getPackageOrNil [
 
 { #category : 'testing' }
 MicSemanticAction >> hasEntity [
+
 	^ entity isNotNil
 ]
 

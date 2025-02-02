@@ -27,7 +27,8 @@ Class {
 
 { #category : 'opening' }
 MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [ 
-	|kind|
+
+	| kind |
 	kind := aMicAbsoluteResourceReference path copyAfterLast: $. .
 	kind ifNotEmpty: [ ^ kind].
 	((aMicAbsoluteResourceReference contents) asLowercase includesSubstring: '<!doctype')
@@ -38,7 +39,8 @@ MicRichTextLinkPresenter >> guessKindOf: aMicAbsoluteResourceReference [
 ]
 
 { #category : 'opening' }
-MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [ 
+MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [
+
 	|image window |
 	image := aMicResourceReference loadImage.
 	window := SpImagePresenter new 
@@ -52,6 +54,7 @@ MicRichTextLinkPresenter >> openFormOn: aMicResourceReference [
 
 { #category : 'opening' }
 MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
+
 	| kind |
 	anAbsoluteResourceReference isRelative 
 		ifTrue: [ MicResourceReferenceError 
@@ -69,12 +72,14 @@ MicRichTextLinkPresenter >> openLink: anAbsoluteResourceReference [
 
 { #category : 'opening' }
 MicRichTextLinkPresenter >> openWebLink: aHtmlResource [
+
 	WebBrowser openOn: aHtmlResource uri
 ]
 
 { #category : 'opening' }
 MicRichTextLinkPresenter >> pragmaForKind: kind [
-		| implementation |
+
+	| implementation |
 	implementation := (Pragma allNamed: #richtextlinkpresenter:)
 		select: [ :pragma | pragma arguments first = kind ].
 	^ implementation
@@ -84,6 +89,7 @@ MicRichTextLinkPresenter >> pragmaForKind: kind [
 MicRichTextLinkPresenter >> resolveKind: kind andOpen: aMicHTTPResourceReference [
 	"I will check if there is an implementation which would like to handle this kind.
 	If so, handle it, if not return false"
+	
 	| implementation implementerClass |
 	implementation := self pragmaForKind: kind.
 	implementation

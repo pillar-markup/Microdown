@@ -33,12 +33,10 @@ Class {
 { #category : 'private' }
 MicDocumentHierarchyBuilder >> addLevel: level from: aClass [
 	"'├ ─ ╰ │'"
+	
 	| path |
-
 	path := (aClass allSuperclasses copyUpTo: self topClass) reversed.
-	
 	builder monospace: '  '.
-	
 	path do: [ :each |
 		builder monospace: ((self isPassingThrough: aClass topLevel: each)
 			ifTrue: [  '│ ' ]
@@ -65,10 +63,9 @@ MicDocumentHierarchyBuilder >> addLevel: level from: aClass [
 { #category : 'private' }
 MicDocumentHierarchyBuilder >> addLevel: level from: aClass to: stream [
 	"'├ ─ ╰ │'"
-	| path |
-
-	path := (aClass allSuperclasses copyUpTo: self topClass) reversed.
 	
+	| path |
+	path := (aClass allSuperclasses copyUpTo: self topClass) reversed.
 	path do: [ :each |
 		stream << ((self isPassingThrough: aClass topLevel: each)
 			ifTrue: [  '│ ' ]
@@ -145,8 +142,8 @@ MicDocumentHierarchyBuilder >> fillTreeWithSubclassesOf: aClass [
 
 { #category : 'private' }
 MicDocumentHierarchyBuilder >> fillTreeWithSuperclassesOf: aClass [
-	| superclasses |
 
+	| superclasses |
 	superclasses := (aClass allSuperclasses copyUpTo: self topClass) reversed.
 	superclasses do: [ :each | 
 		flattenTree 
@@ -166,7 +163,7 @@ MicDocumentHierarchyBuilder >> filter: aBlock [
 { #category : 'accessing' }
 MicDocumentHierarchyBuilder >> fromClass [
 
-	 ^  fromClass ifNil: [ SpAbstractPresenter ]
+	 ^ fromClass ifNil: [ SpAbstractPresenter ]
 ]
 
 { #category : 'accessing' }
@@ -177,8 +174,8 @@ MicDocumentHierarchyBuilder >> fromClass: aClass [
 
 { #category : 'testing' }
 MicDocumentHierarchyBuilder >> isPassingThrough: aClass topLevel: aTopClass [
-	| superclasses |
-	
+
+	| superclasses |	
 	superclasses := flattenTree at: aTopClass superclass ifAbsent: [ #() ].
 	superclasses size <= 1 ifFalse: [ 
 		^ (superclasses indexOf: aTopClass) < superclasses size ].

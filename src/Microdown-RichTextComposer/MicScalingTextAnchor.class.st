@@ -50,6 +50,7 @@ MicScalingTextAnchor >> original: aForm [
 
 { #category : 'accessing' }
 MicScalingTextAnchor >> scale: percentOrNil [
+
 	scale := percentOrNil 
 ]
 

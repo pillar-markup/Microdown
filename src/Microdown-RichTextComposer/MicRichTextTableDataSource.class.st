@@ -21,6 +21,7 @@ MicRichTextTableDataSource class >> headers: headers rows: theRows [
 
 { #category : 'accessing' }
 MicRichTextTableDataSource >> basicHeaderCellFor: column [
+
 	| cell |
 	column id ifNil: [ ^ nil ].
 	cell := FTHeaderColumnCellMorph new
@@ -35,6 +36,7 @@ MicRichTextTableDataSource >> basicHeaderCellFor: column [
 { #category : 'accessing' }
 MicRichTextTableDataSource >> cellColumn: column row: rowIndex [
 	"Answer a morph with the cell view. I will probably return a FTCellMorph."
+	
 	| cell |
 	cell  := ((rows at: rowIndex )at: (colNames at: column id )).
 	^ FTCellMorph new
@@ -46,11 +48,13 @@ MicRichTextTableDataSource >> cellColumn: column row: rowIndex [
 MicRichTextTableDataSource >> elementAt: rowIndex [
 	"I am a really important method for a DataSource. I take an index and I return an object 
 	 that should be displayed in the table for the index."
+	
 	rows at: rowIndex 
 ]
 
 { #category : 'initialization' }
 MicRichTextTableDataSource >> headers: headers rows: theRows [
+
 	rows := theRows.
 	colNames := Dictionary new.
 	1 to: headers size do: [ :index | colNames at: (headers at: index) put: index ]
@@ -65,6 +69,7 @@ MicRichTextTableDataSource >> numberOfRows [
 
 { #category : 'accessing' }
 MicRichTextTableDataSource >> rowHeight: rowIndex [
+
 	^ (rows at: rowIndex ) max: [ :cell | cell asTextMorph height ]
 ]
 
@@ -84,13 +89,14 @@ MicRichTextTableDataSource >> unsortElements [
 
 { #category : 'private' }
 MicRichTextTableDataSource >> widthOfText: txt [
-	|width|
+
+	| width |
 	width := ((txt fontAt: 1) widthOfStringOrText: txt).
 	1 to: txt size do: [ :index | 
 		(txt at: index) = (Character value: 1)
 			ifTrue: [ width := width + 
-				((txt attributesAt: index) detect: [:att| att class = TextAnchor]) anchoredMorph width.
+				((txt attributesAt: index) detect: [:att| att class = TextAnchor ]) anchoredMorph width.
 					 ]
 		 ].
-	^width
+	^ width
 ]

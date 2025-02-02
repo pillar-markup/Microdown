@@ -81,6 +81,7 @@ MicDynamicTextStyler >> bodyFont: fontSpec [
 { #category : 'initialization' }
 MicDynamicTextStyler >> bulletForLevel: level [
 	"outer level is 1, second level is 2, "
+	
 	^ ( bullets at: ( (level - 1) % bullets size ) +1 ) asText.
 ]
 
@@ -92,6 +93,7 @@ MicDynamicTextStyler >> bullets: anObject [
 
 { #category : 'composer styles' }
 MicDynamicTextStyler >> counterFor: counter atLevel: level [
+
 	| kind |
 	"outer level is 1, second level is 2, "
 	kind := counters at: (level-1 % counters size)+1.
@@ -106,6 +108,7 @@ MicDynamicTextStyler >> counterFor: counter atLevel: level [
 { #category : 'accessing' }
 MicDynamicTextStyler >> counters: counterTypes [
 	"counter types are 1 (number), a (small letters), A (capital letters)"
+	
 	counters := counterTypes
 ]
 
@@ -113,7 +116,8 @@ MicDynamicTextStyler >> counters: counterTypes [
 MicDynamicTextStyler >> crAfterHeader: spacingSpec [
 	"spacingSpec is a series of numbers 2;2;1;1 - which is the number of new lines to be added 
 	after headers of level1, level2 etc. 1's at the end can be omitted (2;2;1;1 is the same as 2;2)"
-	|spacings|
+	
+	| spacings |
 	crAfterHeader := #(1 1 1 1 1 1) copy. "copy to get non-literal"
 	spacings := ((spacingSpec splitOn: ';') truncateTo: 6) collect: [ :spec |spec asNumber ].
 	spacings doWithIndex: [ :elem :index |crAfterHeader at: index put: elem ]
@@ -121,37 +125,42 @@ MicDynamicTextStyler >> crAfterHeader: spacingSpec [
 
 { #category : 'initialization' }
 MicDynamicTextStyler >> crAfterHeaderLevel: level [
+
 	^ String cr repeat: (crAfterHeader at: level)
 ]
 
 { #category : 'initialization' }
 MicDynamicTextStyler >> crAfterHeaders [
+
 	^ crAfterHeader 
 ]
 
 { #category : 'accessing' }
 MicDynamicTextStyler >> errors [
+
 	^ errors 
 ]
 
 { #category : 'composer styles' }
 MicDynamicTextStyler >> headerFont: fontString forLevel: level [
-	|list font|
+
+	| list font |
 	(level between: 1 and: 6) 
 		ifFalse: [ ^ self addError: 'Header levels are 1 to 6 - got: ', level printString ].
 	list := (fontString splitOn: $;).
 	list size = 2 
-		ifFalse: [ ^ self addError: 'Font specs should be name;size - was: ',fontString  ].
+		ifFalse: [ ^ self addError: 'Font specs should be name;size - was: ', fontString ].
 	font := LogicalFont 
 			familyName: list first 
 			pointSize: list second asNumber.
 	headerFonts 
 		at: level 
-		put: (TextFontReference toFont:font)
+		put: (TextFontReference toFont: font)
 ]
 
 { #category : 'initialization' }
 MicDynamicTextStyler >> initialize [
+
 	self computeHeaderFonts. "super rely on lazy initilization"
 	errors := OrderedCollection new.
 	bullets := '•-'.
@@ -166,13 +175,15 @@ MicDynamicTextStyler >> initialize [
 
 { #category : 'composer styles' }
 MicDynamicTextStyler >> interBlockSpacing [
+
 	^ interBlockSpacing 
 ]
 
 { #category : 'accessing' }
 MicDynamicTextStyler >> interBlockSpacing: spacingSpec [
 	"I can put a number of cr between blocks. "
-	interBlockSpacing := ((String cr) repeat: (spacingSpec asNumber)) asText
+	
+	interBlockSpacing := (String cr repeat: (spacingSpec asNumber)) asText
 ]
 
 { #category : 'accessing' }
@@ -183,6 +194,7 @@ MicDynamicTextStyler >> keepCRFromInput: aBooleanText [
 
 { #category : 'composer styles' }
 MicDynamicTextStyler >> monospaceBackgroundColor [
+
 	^ monospaceBackgroundColor 
 ]
 
@@ -193,7 +205,8 @@ MicDynamicTextStyler >> monospaceBackgroundColor: colorString [
 ]
 
 { #category : 'composer styles' }
-MicDynamicTextStyler >> newLineIfNotAlready [ 
+MicDynamicTextStyler >> newLineIfNotAlready [
+
 	^ newLineIfNotAlready 
 ]
 
@@ -201,7 +214,8 @@ MicDynamicTextStyler >> newLineIfNotAlready [
 MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 	"add extra newline or tab indentation of the following line"
 	"spacingSpec is (cr|tab|space)* with ; as seperator - for example 'cr;tab'"
-	| commands spacing|
+	
+	| commands spacing |
 	commands := { ''-> ''. 'cr'->String cr. 'tab'->String tab. 'space'->String space } asDictionary.
 	spacing := ((spacingSpec splitOn: ';') 
 		collect: [ :spec | 
@@ -215,6 +229,7 @@ MicDynamicTextStyler >> newLineIfNotAlready: spacingSpec [
 { #category : 'composer styles' }
 MicDynamicTextStyler >> postTextTreatment: aText [
 	"my primary purpose is to replace newLines with space in some styles"
+	
 	keepCRFromInput ifTrue: [ ^ aText ].
 	((1 to: aText size) 
 		select: [ :i | (aText at: i) = Character cr  ]) 
