@@ -35,7 +35,7 @@ Class {
 MicSemanticAction class >> from: aString [
 
 	| contents |
-	contents := (RBScanner on: (ReadStream on: aString)) contents.
+	contents := (OCScanner on: (ReadStream on: aString)) contents.
 	^ self fromTokens: (contents collect: [ :e | e value ])
 ]
 
