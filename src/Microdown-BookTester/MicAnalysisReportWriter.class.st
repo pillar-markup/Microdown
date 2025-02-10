@@ -1,5 +1,5 @@
 "
-I'm a little util classes that encapsulates writing reports about analyses.
+I'm a little util class that encapsulates writing reports about analyses.
 "
 Class {
 	#name : 'MicAnalysisReportWriter',
@@ -25,7 +25,7 @@ MicAnalysisReportWriter >> buildReportOn: str [
 	dict := results groupedBy: [ :each | each class ].
 	dict keysAndValuesDo: [ :k :v | 
 		str cr; nextPutAll: '## ' ;nextPutAll: k headerString; cr; cr.
-		self reportElementsOn: str.
+		self reportElements: v on: str.
 		str cr; cr.
 		]
 ]
@@ -66,6 +66,15 @@ MicAnalysisReportWriter >> report [
 	^ String streamContents: [ :str |
 		self buildReportOn: str
 		]
+]
+
+{ #category : 'reporting' }
+MicAnalysisReportWriter >> reportElements: partialResults on: aStream [
+
+	partialResults 
+		do: [ :each | aStream tab; nextPutAll: each explanation ] 
+		separatedBy: [ aStream cr ]
+	
 ]
 
 { #category : 'reporting' }

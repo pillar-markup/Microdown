@@ -1,3 +1,6 @@
+"
+I'm the superclass of problem related to anchors.
+"
 Class {
 	#name : 'MicAnchorResult',
 	#superclass : 'MicResult',
@@ -12,7 +15,7 @@ Class {
 { #category : 'kinds' }
 MicAnchorResult class >> errorType [
 
-	^ 'UndefinedAnchor'
+	^ 'Anchor problem'
 ]
 
 { #category : 'accessing' }
@@ -36,7 +39,7 @@ MicAnchorResult >> explanation [
 
 { #category : 'accessing' }
 MicAnchorResult >> isWhat [
-	^  'undefined'
+	^  'anchor problem'
 ]
 
 { #category : 'accessing' }

@@ -330,11 +330,20 @@ MicLaTeXWriter >> visitParagraph: aParagraph [
 
 { #category : 'blocks' }
 MicLaTeXWriter >> visitQuote: aQuote [
-	canvas environment
+	"canvas environment
 		name: 'verbatim';
 		with: [ aQuote children do: [ :child | 
 						self visit: child.
-						canvas newLine ] ]
+						canvas newLine ] ]"
+				
+			
+	canvas newLine.
+	canvas environment
+		name: 'quote';
+		with: [ 
+			aQuote children do: [ :each | each accept: self ].
+			canvas newLine.].
+
 ]
 
 { #category : 'blocks - inline' }

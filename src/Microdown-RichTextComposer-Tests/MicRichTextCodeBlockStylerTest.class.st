@@ -40,7 +40,7 @@ styledTextFor: aString asFest'.
 	"Check that the unknown variable 'blue' is not colored red"
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 0.
+	self assert: textColor color red equals: 1.0.
 ]
 
 { #category : 'tests' }
@@ -59,7 +59,7 @@ green isColored: yellow
 	"Check that the unknown variable 'blue' is not colored red"
 	blueLocation := richText asString findString: 'blue'.
 	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 0.
+	self assert: textColor color red equals: 1.0.
 ]
 
 { #category : 'tests' }

@@ -1,5 +1,8 @@
+"
+I represent the fact that a reference refers to an undefined anchor.
+"
 Class {
-	#name : 'MicUndefinedAnchorResult',
+	#name : 'MicReferenceToUnexistingAnchorResult',
 	#superclass : 'MicAnchorResult',
 	#category : 'Microdown-BookTester-Results',
 	#package : 'Microdown-BookTester',
@@ -7,18 +10,18 @@ Class {
 }
 
 { #category : 'kinds' }
-MicUndefinedAnchorResult class >> errorType [
+MicReferenceToUnexistingAnchorResult class >> errorType [
 
 	^ 'UndefinedAnchor'
 ]
 
 { #category : 'kinds' }
-MicUndefinedAnchorResult class >> headerString [
+MicReferenceToUnexistingAnchorResult class >> headerString [
 
 	^ 'Undefined Anchors:'
 ]
 
 { #category : 'accessing' }
-MicUndefinedAnchorResult >> isWhat [
+MicReferenceToUnexistingAnchorResult >> isWhat [
 	^  'undefined'
 ]

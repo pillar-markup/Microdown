@@ -93,6 +93,7 @@ MicCodeBlockValidator >> validTests [
 MicCodeBlockValidator >> visitCode: aCodeBlock [
 	"Creates an instance of PRBookTestResult with parameters depending of the type of the codeblock."
 
+	
 	(strategies keys includes: aCodeBlock mainExtensionTag)
 		ifFalse: [ ^ self ].
 

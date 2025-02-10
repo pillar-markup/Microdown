@@ -1,3 +1,6 @@
+"
+I represent the fact that an achor is defined more than one.
+"
 Class {
 	#name : 'MicDuplicatedAnchorResult',
 	#superclass : 'MicAnchorResult',

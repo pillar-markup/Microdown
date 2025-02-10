@@ -15,8 +15,10 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 
-		self xmlParserHtml: spec.
-		self mustache: spec.
+		self
+			xmlParserHtml: spec;
+			mustache: spec;
+			gitBridge: spec.
 		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
 		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
 			
@@ -29,7 +31,7 @@ BaselineOfMicrodown >> baseline: spec [
 		spec postLoadDoIt: #'postload:package:'.
 		
 		spec
-			package: #Microdown;
+			package: #Microdown with: [ spec requires: #( #GitBridge ) ];
 			package: #'Microdown-Tests'
 				with: [ spec requires: #( #Microdown ) ];
 				
@@ -136,6 +138,12 @@ BaselineOfMicrodown >> baseline: spec [
 ]
 
 { #category : 'baselines' }
+BaselineOfMicrodown >> gitBridge: spec [
+
+	spec baseline: 'GitBridge' with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
+]
+
+{ #category : 'baselines' }
 BaselineOfMicrodown >> mustache: spec [
 
 	spec baseline: 'Mustache' with: [
@@ -147,19 +155,13 @@ BaselineOfMicrodown >> mustache: spec [
 { #category : 'baselines' }
 BaselineOfMicrodown >> postload: loader package: packageSpec [
 
-	| p |
-	self class name, ' postload ' traceCr. 
-
-	p := (IceRepository repositoryNamed: 'microdown').
-	p ifNil: [ p :=  (IceRepository repositoryNamed: 'Microdown') ].
-	[ 
-	(p ifNotNil: [ :p2 | (p2 packageNamed: 'BaselineOfMicrodown') reload ]) 
-	] 
-		on: MCMergeOrLoadWarning 
-		do: [ :ex | ex load ]
-
-
-
+	"If it is absent it's because we are in the Pharo bootstrap"
+	self class environment at: #IceRepository ifPresent: [ :class |
+		| repository |
+		repository := (class repositoryNamed: 'microdown') ifNil: [ class repositoryNamed: 'Microdown' ].
+		[ repository ifNotNil: [ (repository packageNamed: 'BaselineOfMicrodown') reload ] ]
+			on: MCMergeOrLoadWarning
+			do: [ :ex | ex load ] ]
 ]
 
 { #category : 'baselines' }
@@ -175,21 +177,27 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 				found
 					unload;
 					forget ] ]"
-			
+
 	| packagesToUnload |
-	self class name, ' preload ' traceCr. 
-	packagesToUnload := ((PackageOrganizer default packages 
-		select: [ :each | each name beginsWith: 'Microdown' ])  collect: [ :each | each name ]) 
-		reject: [ :each |  
- #('Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests') includes: each ].
-	"these two are not managed by the microdown repo but the documentation.
-	I should rename them in the future to avoid confusion"
+	"If it is absent it's because we are in the Pharo bootstrap"
+	self class environment
+		at: #IceRepository
+		ifPresent: [ :iceRepositoryClass |
+			
+			packagesToUnload := ((PackageOrganizer default packages select: [
+				                      :each | each name beginsWith: 'Microdown' ])
+				                     collect: [ :each | each name ]) reject: [
+				                    :each |
+				                    #( 'Microdown-RichTextPresenter'
+				                       'Microdown-RichTextPresenter-Tests' )
+					                    includes: each ].
+				
+			"these two are not managed by the microdown repo but the documentation.
+			I should rename them in the future to avoid confusion"
 
-	packagesToUnload do: 
-		[ :each | 
-			((IceRepository repositoryNamed: 'Microdown') packageNamed: each) unload ].
-
-
+			packagesToUnload do: [ :each |
+				((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed:
+					 each) unload ] ]
 ]
 
 { #category : 'external projects' }

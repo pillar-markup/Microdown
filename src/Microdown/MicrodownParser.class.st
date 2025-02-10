@@ -259,7 +259,7 @@ MicrodownParser >> handleLine: line [
 		-if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
 
-	(current canConsumeLine: (line withoutPreTabs))
+	(current canConsumeLine: (current massageLine: line))
 		ifTrue: [ 
 			current := current addLineAndReturnNextNode: line.
 			^ current ]

@@ -26,8 +26,8 @@ MicFigureBlock class >> closingDelimiter [
 
 { #category : 'accessing' }
 MicFigureBlock class >> openingDelimiter [
-
- 	^ FigureNameOpenerMarkup
+  
+    ^ FigureNameOpenerMarkup
 ]
 
 { #category : 'visiting' }
@@ -45,6 +45,12 @@ MicFigureBlock >> closeMe [
 
 	super closeMe.
 	self children do: [ :each | each basicParent: self ].
+]
+
+{ #category : 'testing' }
+MicFigureBlock >> hasCaption [
+	
+	^ children isNotNil 
 ]
 
 { #category : 'printing' }

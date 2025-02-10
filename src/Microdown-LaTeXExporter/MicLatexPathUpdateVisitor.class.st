@@ -17,11 +17,6 @@ Class {
 }
 
 { #category : 'visiting' }
-MicLatexPathUpdateVisitor class >> isAbstract [
-	^ false
-]
-
-{ #category : 'visiting' }
 MicLatexPathUpdateVisitor class >> key [
 
 	^ #latexPathUpdate

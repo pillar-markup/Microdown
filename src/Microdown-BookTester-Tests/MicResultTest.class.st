@@ -23,7 +23,7 @@ MicResultTest >> testExplanationDuplicatedAnchor [
 MicResultTest >> testExplanationUndefinedAnchor [
 
 	| res |
-	res := MicUndefinedAnchorResult new. 
+	res := MicReferenceToUnexistingAnchorResult new. 
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
@@ -61,13 +61,13 @@ MicResultTest >> testMicBrokenSyncDefinitionResultExplanationWorksWithEmptyInsta
 { #category : 'tests - basic result creation' }
 MicResultTest >> testResultCreation [
 
-	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicUndefinedAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
 ]
 
 { #category : 'tests - basic result creation' }
 MicResultTest >> testResultCreationSmokeTest [
 
-	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicUndefinedAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
 ]
 
 { #category : 'tests' }
@@ -93,7 +93,7 @@ MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 
 	| res association |
-	res := MicUndefinedAnchorResult new. 
+	res := MicReferenceToUnexistingAnchorResult new. 
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
@@ -118,7 +118,7 @@ MicResultTest >> testUndefinedFigureFile [
 	
 	self 
 		assert: res explanation 
-		equals: 'File input myDir/foo.png (in file /myDir/chapter2.md) does not exist'
+		equals: 'Figure not found: myDir/foo.png (in file /myDir/chapter2.md) was not found.'
 	
 ]
 
@@ -133,6 +133,7 @@ MicResultTest >> testUndefinedInputFile [
 	
 	self 
 		assert: res explanation 
-		equals: 'File input myDir/foo.md (in file /myDir/chapter2.md) does not exist'
+		equals: 'Undefined file input: myDir/foo.md (in file /myDir/chapter2.md) refer to file that does not exist.'
+	
 	
 ]

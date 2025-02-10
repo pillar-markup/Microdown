@@ -43,7 +43,7 @@ MicInlineDelimiter class >> at: markup [
 	^ DelimiterDictionary at: markup ifAbsent: [ nil ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'class initialization' }
 MicInlineDelimiter class >> initialize [
 
 	<script>
@@ -51,7 +51,7 @@ MicInlineDelimiter class >> initialize [
 	Regex := nil
 ]
 
-{ #category : 'initialization' }
+{ #category : 'class initialization' }
 MicInlineDelimiter class >> initializeDelimiters [
 
 	self = MicInlineDelimiter ifFalse: [ ^ self ].
@@ -59,7 +59,7 @@ MicInlineDelimiter class >> initializeDelimiters [
 	self allSubclasses do: [ :class | class initializeDelimiters ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'class initialization' }
 MicInlineDelimiter class >> initializeRegex [
 
 	Regex := ((self all collect: [ :each | each markupAsRegex]) joinUsing: '|') asRegex

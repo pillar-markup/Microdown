@@ -17,7 +17,8 @@ MicRichTextTable class >> headers: headers rows: rows [
 
 { #category : 'adding' }
 MicRichTextTable >> addHeaders: headers with: renderedRows [
-	|totalWidth totalHeight  |
+
+	| totalWidth totalHeight |
 	totalWidth := 0.
 	totalHeight := 0.
 	1 to: headers size do:[ :colIndex | |header colRows colWidth colHeight|
@@ -36,6 +37,7 @@ MicRichTextTable >> addHeaders: headers with: renderedRows [
 
 { #category : 'initialization' }
 MicRichTextTable >> headers: headers rows: rows [
+
 	self
 		addHeaders: headers with: rows ;
 		dataSource: (MicRichTextTableDataSource headers: headers rows: rows);
@@ -47,6 +49,7 @@ MicRichTextTable >> headers: headers rows: rows [
 { #category : 'rendering' }
 MicRichTextTable >> renderCell: aCell [
 	"a cell is an array of nodes. Each element should be rendered and concatenated"
+	
 	^ aCell inject: Text new into: [ :txt :part | 
 		txt, (MicRichTextComposer new visit: part)
 		 ]
@@ -55,6 +58,7 @@ MicRichTextTable >> renderCell: aCell [
 { #category : 'private' }
 MicRichTextTable >> resizeAllSubviews [
 	"This method is just like its super, except it prevents the vertical scroll bar to appear"
+	
 	self resizeContainer.
 	self container setNeedsRefreshExposedRows.
 	self container updateExposedRows.

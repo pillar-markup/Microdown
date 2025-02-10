@@ -36,17 +36,18 @@ MicRichTextFormatConfiguration >> accept: visitor [
 
 { #category : 'visiting' }
 MicRichTextFormatConfiguration >> adjustStyler: styler [
+
 	| setters |
 	setters := self setterDictionaryFor: styler.
 	arguments justTheArguments  keysAndValuesDo: [ :key :value |
 		setters at: key 
 			ifPresent: [ :block | block value: value]
-			ifAbsent: [ styler addError: 'richtext annotation - unknown argument: ', key ]
-		 ].
+			ifAbsent: [ styler addError: 'richtext annotation - unknown argument: ', key ] ]
 ]
 
 { #category : 'private' }
 MicRichTextFormatConfiguration >> setterDictionaryFor: styler [
+
 	^ {	
 	'bullets' -> [ :a | styler bullets: a].
 	'counters' -> [ :a | styler counters: a].

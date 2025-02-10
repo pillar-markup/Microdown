@@ -100,10 +100,13 @@ MicEnvironmentBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
+	
+	
 	| withoutPreTabs |
 	isClosed
 		ifTrue: [ ^ self ].
 	withoutPreTabs := line withoutPreTabs.
+	"Here the withoutPreTabs is probably not necessary because handlingPrefixTabOfLine: should do its job."
 	(self doesLineStartWithStopMarkup: withoutPreTabs)
 		ifTrue: [ ^ self ].
 	firstLine
@@ -119,19 +122,19 @@ MicEnvironmentBlock >> arguments [
 	^ arguments
 ]
 
-{ #category : 'parse support' }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> body [
 
 	^ String streamContents: [:s |  self bodyElements do: [ :each | s nextPutAll: each substring ] ]
 ]
 
-{ #category : 'parse support' }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> bodyElements [
 
 	^ children
 ]
 
-{ #category : 'parse support' }
+{ #category : 'accessing' }
 MicEnvironmentBlock >> bodyFromLine: line [
 	
 	| newBlock |
@@ -176,7 +179,7 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 		ifFalse: [ firstLine ]
 ]
 
-{ #category : 'parse support' }
+{ #category : 'initialization' }
 MicEnvironmentBlock >> initialize [
 
 	super initialize.
@@ -194,4 +197,10 @@ MicEnvironmentBlock >> lineStartMarkup [
 MicEnvironmentBlock >> lineStopMarkup [
 	
 	^ EnvironmentClosingBlockMarkup 
+]
+
+{ #category : 'handle' }
+MicEnvironmentBlock >> massageLine: aLine [
+
+	^ aLine withoutPreTabs
 ]

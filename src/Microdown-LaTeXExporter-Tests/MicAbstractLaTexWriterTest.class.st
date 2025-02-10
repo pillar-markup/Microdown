@@ -12,7 +12,8 @@ Class {
 }
 
 { #category : 'asserting' }
-MicAbstractLaTexWriterTest class >> shouldInheritSelectors [
+MicAbstractLaTexWriterTest class >> isAbstract [ 
+
 	^ true
 ]
 
@@ -65,9 +66,10 @@ MicAbstractLaTexWriterTest >> factory: aFactory [
 
 { #category : 'accessing' }
 MicAbstractLaTexWriterTest >> newLine: aNewLine [
-	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
-	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
-	(aNewLine = String crlf) ifTrue:[ writer crlfAsNewLine ].
+
+	aNewLine = String cr ifTrue: [ writer crAsNewLine ].
+	aNewLine = String lf ifTrue: [ writer lfAsNewLine ].
+	aNewLine = String crlf ifTrue: [ writer crlfAsNewLine ].
 	newLine := aNewLine
 ]
 
@@ -122,7 +124,7 @@ MicAbstractLaTexWriterTest >> testAnnotatedParagraph [
 	self writeFor: factory annotatedSample.
 	self assert: writer contents equals: newLine ,
 					'\begin{note}', newLine ,
-					'label Foo \textit{bar}', newLine ,
+					'Foo \textit{bar}', newLine ,
 					'\end{note}'
 ]
 
@@ -449,9 +451,9 @@ MicAbstractLaTexWriterTest >> testParagraphWithNested [
 { #category : 'tests' }
 MicAbstractLaTexWriterTest >> testQuote [
 
-	self parse: factory quoteSample andCheckWeGet:  '\begin{verbatim}', newLine ,
+	self parse: factory quoteSample andCheckWeGet:  newLine, '\begin{quote}', newLine ,
 																	'Foo', newLine ,
-																	'\end{verbatim}', newLine
+																	'\end{quote}', newLine
 ]
 
 { #category : 'tests - figure/link' }
@@ -688,9 +690,4 @@ MicAbstractLaTexWriterTest >> writeForElement: aNode [
 
 	writer visit: aNode.
 
-]
-
-{ #category : 'accessing' }
-MicAbstractLaTexWriterTest >> writer: aWriter [
-	writer := aWriter new
 ]

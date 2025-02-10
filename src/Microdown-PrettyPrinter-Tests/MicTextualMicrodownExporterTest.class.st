@@ -72,7 +72,7 @@ MicTextualMicrodownExporterTest >> testAnnotated [
 	| mic |
 	mic := parser parse: factory annotatedSample.
 	self assert: (mic accept: visitor) contents equals: '>[!note]
-> label Foo _bar_
+> Foo _bar_
 
 '
 ]

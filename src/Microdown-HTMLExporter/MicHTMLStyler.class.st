@@ -129,7 +129,7 @@ MicHTMLStyler >> frameworks [
 { #category : 'testing' }
 MicHTMLStyler >> hasCssSelection [
 
-	^ self cssListPresenter isNotNil and: [ self cssListPresenter selection isEmpty not ]
+	^ self cssListPresenter isNotNil and: [ self cssListPresenter selection isNotEmpty ]
 ]
 
 { #category : 'testing' }

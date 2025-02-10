@@ -15,11 +15,6 @@ MicCompilationContext class >> configuration: aConfiguration [
 ]
 
 { #category : 'instance creation' }
-MicCompilationContext class >> isAbstract [
-	^ false
-]
-
-{ #category : 'instance creation' }
 MicCompilationContext class >> withDocument: aDocument [
 	^ self new
 		input: aDocument;

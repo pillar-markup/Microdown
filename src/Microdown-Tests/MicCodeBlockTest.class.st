@@ -72,11 +72,17 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 	"This test shows that we can write a code block inside a code block but that the later is not interpreter."
 	
 	| source root code textBody |
-	textBody := ' ``` 
- my fancy code
- is really cool
- ```'.
-	source := CodeblockMarkup,  String cr, textBody, String cr, CodeblockMarkup. 
+	source := '```
+This is a first level code
+	```
+	this is one with tabs 
+	```
+	
+ ```
+ this is one with space
+ ```	
+```	'.
+	
 	root := parser parse: source.
 	
 	self 
@@ -84,9 +90,7 @@ MicCodeBlockTest >> testCodeBlockWithNestedCodeBlock [
 		equals: 1.
 	code := root children first.
 	self assert: code children isEmpty.
-	self
-		assert: code code
-		equals: textBody.
+	self assert: code class equals: MicCodeBlock
 	
 ]
 
@@ -355,6 +359,30 @@ Color >> asMorph
 	self assert: code mainExtensionTag equals: #caption
 ]
 
+{ #category : 'tests' }
+MicCodeBlockTest >> testMainExtensionTag2 [
+	"
+	```example=true
+	3 + 7 
+	>> 10
+	```
+	"
+
+	| source root code textBody argument |
+	textBody := '3 + 7 
+>>> 10'.
+	argument := 'example=true'.
+	source := CodeblockMarkup , argument , String cr , textBody
+	          , String cr , CodeblockMarkup.
+	root := self parser parse: source.
+	self assert: root children size equals: 1.
+	code := root children first.
+	self assert: code code equals: textBody.
+	self assert: (code arguments at: #language) equals: 'Pharo'.
+	self assert: code mainExtensionTag equals: #example.
+
+]
+
 { #category : 'tests - arguments' }
 MicCodeBlockTest >> testMainExtensionTagForSync [
 
@@ -434,6 +462,22 @@ Color >> asMorph
 
 	code := (self parser parse: source) children first.
 	self assert: code mainExtensionTag equals: #caption
+]
+
+{ #category : 'tests - code' }
+MicCodeBlockTest >> testNestedCodeBlockOnlyProducesOneCodeBlock [
+
+	| doc |
+	doc := Microdown parse: '```
+	```example=true&expectedFailure=true
+	3 + 4 
+	>>> 12		
+	```	
+```'.
+
+	self assert: doc children size equals: 1. 
+	self assert: doc children first class equals: MicCodeBlock. 
+	
 ]
 
 { #category : 'tests' }

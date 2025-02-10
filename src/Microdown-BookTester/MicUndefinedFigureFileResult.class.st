@@ -1,3 +1,6 @@
+"
+I represent a figure referencing an image file that does not exist.
+"
 Class {
 	#name : 'MicUndefinedFigureFileResult',
 	#superclass : 'MicFileResult',
@@ -19,6 +22,19 @@ MicUndefinedFigureFileResult class >> errorType [
 MicUndefinedFigureFileResult class >> headerString [
 
 	^ 'Undefined figure files:'
+]
+
+{ #category : 'accessing' }
+MicUndefinedFigureFileResult >> explanation [
+
+	^ 'Figure not found: ', self what,' (in file ', source fullName , ') was not found.'
+	
+]
+
+{ #category : 'accessing' }
+MicUndefinedFigureFileResult >> figureFileString [
+
+	^ figureFileString
 ]
 
 { #category : 'accessing' }

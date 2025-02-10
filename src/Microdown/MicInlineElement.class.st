@@ -52,12 +52,6 @@ MicInlineElement >> closingDelimiter [
 	^ self class closingDelimiter
 ]
 
-{ #category : 'private' }
-MicInlineElement >> inlineParserClass [
-
-	^ MicInlineParser
-]
-
 { #category : 'accessing' }
 MicInlineElement >> kind [
 	"Should only be used for tests"

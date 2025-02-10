@@ -33,7 +33,7 @@ MicResult class >> errorType [
 { #category : 'kinds' }
 MicResult class >> headerString [
 
-	^ self subclassResponsibility 
+	^ 'Unreferenced Figures'
 ]
 
 { #category : 'accessing' }

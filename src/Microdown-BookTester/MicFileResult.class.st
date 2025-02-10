@@ -9,7 +9,7 @@ Class {
 { #category : 'accessing' }
 MicFileResult >> explanation [
 
-	^ 'File input ', self what,' (in file ', source fullName , ') does not exist'
+	^ 'File input ', self what,' (in file ', source fullName , ') does not exist.'
 	
 ]
 

@@ -20,36 +20,41 @@ Class {
 
 { #category : 'public' }
 MicRichTextCanvas >> << aText [
-	|text|
+
+	| text |
 	aText ifEmpty: [ ^ self ].
 	text := aText asText.
 	brushes do: [ :brush | brush paint: text ].
 	"If no font is already put, and a body font is defined, apply it"
-	((self hasFontDefinitions: text) not and: [ self textStyler bodyFont isNotNil])
+	((self hasFontDefinitions: text) not and: [ self textStyler bodyFont isNotNil ])
 		ifTrue: [
 			text addAttribute: (TextFontReference toFont: self textStyler bodyFont)].
 	out << text.
-	text ifNotEmpty: [crAtEnd := text last = Character cr].
+	text ifNotEmpty: [ crAtEnd := text last = Character cr ].
 ]
 
 { #category : 'public' }
 MicRichTextCanvas >> contents [
+
 	^ out contents
 ]
 
 { #category : 'public' }
 MicRichTextCanvas >> cr [
+
 	self newLine
 ]
 
 { #category : 'testing' }
 MicRichTextCanvas >> hasFontDefinitions: aText [
 	"Answer the fontfor characters in the run beginning at characterIndex."
+	
 	^ (aText runs flattened asSet select: [ :attr | attr isKindOf: TextFontReference  ]) isNotEmpty.
 ]
 
 { #category : 'public' }
 MicRichTextCanvas >> includeAttribute: attr in: aBlock [
+
 	brushes addLast: (MicRichTextBrush on: self attribute: attr).
 	aBlock value.
 	brushes removeLast
@@ -58,22 +63,25 @@ MicRichTextCanvas >> includeAttribute: attr in: aBlock [
 { #category : 'public' }
 MicRichTextCanvas >> includeBrush: aBrush in: aBlock [
 	"Add for the course of aBlock, a brush (aBrush) to the currently used brushes."
+	
 	brushes addLast: aBrush.
 	aBlock value.
 	brushes removeLast
 ]
 
 { #category : 'public' }
-MicRichTextCanvas >> indentIn: aBlock [ 
+MicRichTextCanvas >> indentIn: aBlock [
+
 	nesting := nesting + 1.
 	aBlock value.
-	nesting := nesting - 1.
+	nesting := nesting - 1
 	
 		
 ]
 
 { #category : 'initialization' }
 MicRichTextCanvas >> initialize [
+
 	super initialize.
 	out := WriteStream on: '' asText.
 	brushes := OrderedCollection with: (MicRichTextIndentBrush on: self).
@@ -83,22 +91,26 @@ MicRichTextCanvas >> initialize [
 
 { #category : 'accessing' }
 MicRichTextCanvas >> nesting [
+
 	^ nesting
 ]
 
 { #category : 'public' }
 MicRichTextCanvas >> newLine [
+
 	self newLineBody.
 	crAtEnd := true
 ]
 
 { #category : 'private' }
 MicRichTextCanvas >> newLineBody [
+
 	self << self textStyler newLineBody 
 ]
 
 { #category : 'public' }
 MicRichTextCanvas >> newLineIfNotAlready [
+
 	crAtEnd
 		ifFalse: [ self << self textStyler newLineIfNotAlready  ].
 	crAtEnd := true
@@ -106,6 +118,7 @@ MicRichTextCanvas >> newLineIfNotAlready [
 
 { #category : 'private' }
 MicRichTextCanvas >> tab [
+
 	self << String tab asText
 ]
 
