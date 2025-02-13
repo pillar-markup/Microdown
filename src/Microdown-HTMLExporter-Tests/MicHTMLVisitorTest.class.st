@@ -74,7 +74,7 @@ MicHTMLVisitorTest >> testCanvasClass [
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
-{ #category : 'test' }
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testConfiguration [
 
 	self assert: (writer configuration isKindOf: MicHTMLConfiguration). 

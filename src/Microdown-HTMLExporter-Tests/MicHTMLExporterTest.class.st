@@ -25,6 +25,8 @@ MicHTMLExporterTest class >> testParameters [
 
 { #category : 'accessing' }
 MicHTMLExporterTest >> factory: aFactory [
+	self flag: #todo.
+	"This is horrible either factory: should be renamed factoryClass or we should remove the new."
 	factory := aFactory new
 ]
 
@@ -198,6 +200,19 @@ MicHTMLExporterTest >> testHeaderLevel2 [
 	self
 		parse: factory headerLevel2Sample
 		andCheckWeGet: newLine , '<h2>Foo</h2>'
+]
+
+{ #category : 'tests - metadata' }
+MicHTMLExporterTest >> testMetaDataIsIgnored [
+
+	self parse: factory metaDataSample andCheckWeGet: ''
+]
+
+{ #category : 'tests - metadata' }
+MicHTMLExporterTest >> testMetaDataIsNotIgnored [
+
+	writer doNotIgnoreMetaData.
+	self parse: factory metaDataSample andCheckWeGet: ''
 ]
 
 { #category : 'tests - paragraph' }
