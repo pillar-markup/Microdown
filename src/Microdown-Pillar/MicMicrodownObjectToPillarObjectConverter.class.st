@@ -13,9 +13,7 @@ Class {
 { #category : 'formatting' }
 MicMicrodownObjectToPillarObjectConverter >> formatBlock: aMicFormatBlock [
 	| childrenAsPillar |
-	childrenAsPillar := aMicFormatBlock isOnlyChild 
-		ifTrue: [ {(PRText new text: aMicFormatBlock substring )} ] 
-		ifFalse: [ aMicFormatBlock children collect: [:e | e accept: self ] ].
+	childrenAsPillar := aMicFormatBlock children collect: [:e | e accept: self ].
 	 ^ aMicFormatBlock associatedPillarClass new
 				setChildren: childrenAsPillar;
 				yourself
@@ -127,9 +125,9 @@ MicMicrodownObjectToPillarObjectConverter >> visitEnvironment: aMicEnvironmentBl
 MicMicrodownObjectToPillarObjectConverter >> visitFigure: aMicFigureBlock [
 
 	| aPRFigure |
-	aPRFigure := self urlBlock: aMicFigureBlock.
+	aPRFigure := aMicFigureBlock associatedPillarClass new.
 	^ aPRFigure
-		  label: aMicFigureBlock substring;
+		  label: aMicFigureBlock altText;
 		  parameters: aMicFigureBlock arguments;
 		  yourself
 ]
@@ -169,8 +167,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitLink: aMicLink [
 
 	^ aMicLink associatedPillarClass new
 		  setChildren:
-			  ((aMicLink inlineParse: aMicLink substring) collect: [ :n | 
-					   n accept: self ]);
+			  (aMicLink children collect: [ :n | n accept: self ]);
 		  reference: aMicLink url asString;
 		  yourself
 ]
@@ -276,8 +273,10 @@ MicMicrodownObjectToPillarObjectConverter >> visitTable: aTable [
 
 { #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitText: aMicTextBlock [
-	
- 	^ PRText new text: aMicTextBlock substring ; yourself
+
+	^ PRText new
+		  text: aMicTextBlock bodyString;
+		  yourself
 ]
 
 { #category : 'visiting' }

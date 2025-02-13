@@ -121,7 +121,8 @@ MicLinkBlockTest >> testLinkCreatesInnerText [
 
 	link := self parseLink: '[ab](https://ab.com)'.
 	self assert: link class equals: MicLinkBlock.
-	self assert: link url equals: 'https://ab.com'
+	self assert: link url equals: 'https://ab.com'.
+	self assert: link children first parent equals: link
 ]
 
 { #category : 'tests - link' }
