@@ -1,7 +1,7 @@
 Class {
 	#name : 'MicPropertyError',
 	#superclass : 'Error',
-	#category : 'Microdown-Tests-Parser',
-	#package : 'Microdown-Tests',
+	#category : 'Microdown-Parser',
+	#package : 'Microdown',
 	#tag : 'Parser'
 }

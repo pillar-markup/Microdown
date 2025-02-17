@@ -49,16 +49,6 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-MathFlaky-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
 
-			"package: #'Microdown-RichTextPresenter'
-				with: [ spec requires: #( #Microdown ) ];
-			package: #'Microdown-RichTextPresenter-Tests'
-				with: [ spec requires: #( #'Microdown-RichTextPresenter' ) ];
-				
-			package: #'Microdown-DocumentBrowser'
-				with: [ spec requires: #( #Microdown #'Microdown-RichTextPresenter') ];
-			package: #'Microdown-DocumentBrowser-Tests'
-				with: [ spec requires: #( #'Microdown-DocumentBrowser' ) ];"
-
 			package: #'Microdown-Transformer'
 				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-Transformer-Tests'
@@ -110,13 +100,6 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
 			group: 'Extensions' with: #(
-				"
-				#'Microdown-RichTextPresenter'
-				#'Microdown-RichTextPresenter-Tests'
-				#'Microdown-DocumentBrowser'
-				#'Microdown-DocumentBrowser-Tests'
-				"
-				
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
 				#'Microdown-PrettyPrinter'
@@ -179,25 +162,18 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 
 	| packagesToUnload |
+	"If we are building the Pharo image, we do not want to unload packages."
+	SystemBuildInfo current isBuildFinished ifFalse: [ ^ self ].
+
 	"If it is absent it's because we are in the Pharo bootstrap"
-	self class environment
-		at: #IceRepository
-		ifPresent: [ :iceRepositoryClass |
-			
-			packagesToUnload := ((PackageOrganizer default packages select: [
-				                      :each | each name beginsWith: 'Microdown' ])
-				                     collect: [ :each | each name ]) reject: [
-				                    :each |
-				                    #( 'Microdown-RichTextPresenter'
-				                       'Microdown-RichTextPresenter-Tests' )
-					                    includes: each ].
-				
-			"these two are not managed by the microdown repo but the documentation.
+	self class environment at: #IceRepository ifPresent: [ :iceRepositoryClass |
+		packagesToUnload := ((PackageOrganizer default packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
+			                    #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
+
+		"these two are not managed by the microdown repo but the documentation.
 			I should rename them in the future to avoid confusion"
 
-			packagesToUnload do: [ :each |
-				((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed:
-					 each) unload ] ]
+		packagesToUnload do: [ :each | ((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed: each) unload ] ]
 ]
 
 { #category : 'external projects' }
