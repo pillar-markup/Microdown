@@ -35,7 +35,7 @@ Class {
 MicSemanticAction class >> from: aString [
 
 	| contents |
-	contents := (RBScanner on: (ReadStream on: aString)) contents.
+	contents := (OCScanner on: (ReadStream on: aString)) contents.
 	^ self fromTokens: (contents collect: [ :e | e value ])
 ]
 
@@ -134,6 +134,7 @@ MicSemanticAction >> getMetaClassOrNil [
 
 { #category : 'instance creation' }
 MicSemanticAction >> getPackageOrNil [
+
 	entity := self class packageOrganizer packageNamed: tokens first asString ifAbsent: [ nil ].
 	^ entity
 				
@@ -141,6 +142,7 @@ MicSemanticAction >> getPackageOrNil [
 
 { #category : 'testing' }
 MicSemanticAction >> hasEntity [
+
 	^ entity isNotNil
 ]
 

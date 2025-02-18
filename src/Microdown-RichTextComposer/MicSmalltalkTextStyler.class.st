@@ -44,6 +44,7 @@ MicSmalltalkTextStyler >> attributesFor: aSymbol [
 { #category : 'private' }
 MicSmalltalkTextStyler >> resolveStyleFor: aVariableNode [
 	"This circumvent an error in my super"
+	
 	aVariableNode isUndeclaredVariable ifTrue: [ ^#undefinedIdentifier ].
 	^ super resolveStyleFor: aVariableNode
 ]

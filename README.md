@@ -197,6 +197,10 @@ The following script loads all groups in the Baseline:
                     unload;
                     forget ] ].
 
+Smalltalk globals
+	at: #BaselineOfMicrodown 
+	ifPresent: [ :c | c removeFromSystem ].
+
 Metacello new
 	baseline: 'Microdown';
 	repository: 'github://pillar-markup/Microdown:dev/src';

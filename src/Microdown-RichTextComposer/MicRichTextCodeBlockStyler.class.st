@@ -47,6 +47,7 @@ MicRichTextCodeBlockStyler class >> stylerFor: languageName [
 ]
 
 { #category : 'accessing' }
-MicRichTextCodeBlockStyler >> style: sourceString [ 
+MicRichTextCodeBlockStyler >> style: sourceString [
+
 	^ self subclassResponsibility
 ]

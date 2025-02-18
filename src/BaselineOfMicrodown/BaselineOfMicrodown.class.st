@@ -15,8 +15,10 @@ BaselineOfMicrodown >> baseline: spec [
 	<baseline>
 	spec for: #common do: [
 
-		self xmlParserHtml: spec.
-		self mustache: spec.
+		self
+			xmlParserHtml: spec;
+			mustache: spec;
+			gitBridge: spec.
 		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
 		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
 			
@@ -29,7 +31,7 @@ BaselineOfMicrodown >> baseline: spec [
 		spec postLoadDoIt: #'postload:package:'.
 		
 		spec
-			package: #Microdown;
+			package: #Microdown with: [ spec requires: #( #GitBridge ) ];
 			package: #'Microdown-Tests'
 				with: [ spec requires: #( #Microdown ) ];
 				
@@ -116,6 +118,12 @@ BaselineOfMicrodown >> baseline: spec [
 				
 				);
 			group: 'All' with: #('Core' #'Microdown-BrowserExtensions' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> gitBridge: spec [
+
+	spec baseline: 'GitBridge' with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
 ]
 
 { #category : 'baselines' }

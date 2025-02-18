@@ -22,6 +22,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
+        with:
+         fetch-depth: '0'
       - uses: hpi-swa/setup-smalltalkCI@v1
         id: smalltalkci
         with:

@@ -45,14 +45,14 @@ MicAnnotatedParagraphBlock >> closeMe [
 { #category : 'accessing' }
 MicAnnotatedParagraphBlock >> defaultLabel [ 
 	
-	^ #note
+	^ 'note'
 ]
 
 { #category : 'initialization' }
 MicAnnotatedParagraphBlock >> initialize [
 
 	super initialize.
-	validLabels := { #note. #important. #todo }
+	validLabels := { 'note' . 'important' . 'todo' }
 ]
 
 { #category : 'accessing' }
@@ -81,7 +81,5 @@ MicAnnotatedParagraphBlock >> verifyLabel [
 	isValid := validLabels includes: label asLowercase.
 	isValid
 		ifTrue: [ label := label asLowercase ]
-		ifFalse: [
-			body := label , String space , body.
-			label := self defaultLabel ]
+		ifFalse: [ label := self defaultLabel ]
 ]

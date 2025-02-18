@@ -24,6 +24,7 @@ MicTextStyler >> bodyFont [
 { #category : 'composer styles' }
 MicTextStyler >> bulletForLevel: level [
 	"first level is 1, then 2, then 3..."
+	
 	^ ('•-' at: (level-1 % 2)+1) asText
 ]
 
@@ -43,6 +44,7 @@ MicTextStyler >> computeHeaderFonts [
 
 { #category : 'composer styles' }
 MicTextStyler >> counterFor: counter atLevel: level [
+
 	| kind |
 	"first level is 1"
 	kind := level % 3.
@@ -57,24 +59,28 @@ MicTextStyler >> counterFor: counter atLevel: level [
 { #category : 'composer styles' }
 MicTextStyler >> crAfterHeaderLevel: level [
 	"I return Text to make space after a header"
+	
 	^ String cr asText
 ]
 
 { #category : 'public' }
 MicTextStyler >> headerFontSizes [
+
 	^ #(28 24 18 14 12 10)
 ]
 
 { #category : 'private' }
 MicTextStyler >> headerLevelFont: level [
 	"I return a font annotation to be used with Attributes"
-	headerFonts ifNil: [ self computeHeaderFonts  ].
+	
+	headerFonts ifNil: [ self computeHeaderFonts ].
 	^ headerFonts at: (level min: 6)
 ]
 
 { #category : 'composer styles' }
 MicTextStyler >> interBlockSpacing [
 	"I return the space to be put between blocks, first cr to end block, second to make empty line"
+	
 	^ (String cr, String cr) asText
 ]
 
@@ -87,6 +93,7 @@ MicTextStyler >> monospaceBackgroundColor [
 { #category : 'canvas styles' }
 MicTextStyler >> newLineBody [ 
 	"return a newline"
+	
 	^ String cr asText
 ]
 
@@ -94,6 +101,7 @@ MicTextStyler >> newLineBody [
 MicTextStyler >> newLineIfNotAlready [ 
 	"return a newline if there is not already one"
 	"Intended to be overridden to add extra newline or tab indentation of the following line"
+	
 	^ String cr asText
 ]
 
@@ -103,6 +111,7 @@ MicTextStyler >> postTextTreatment: aText [
 	"((1 to: aText size) 
 		select: [ :i | (aText at: i) = Character cr  ]) 
 		do: [ :i | aText at: i put: Character space ]."
+		
 	^ aText
 	 
 ]

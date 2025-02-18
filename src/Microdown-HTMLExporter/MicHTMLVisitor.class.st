@@ -7,7 +7,8 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'canvas',
-		'configuration'
+		'configuration',
+		'ignoresMetaData'
 	],
 	#category : 'Microdown-HTMLExporter-Visitor',
 	#package : 'Microdown-HTMLExporter',
@@ -158,13 +159,25 @@ MicHTMLVisitor >> crlfAsNewLine [
 	canvas crlfAsNewLine
 ]
 
+{ #category : 'as yet unclassified' }
+MicHTMLVisitor >> doNotIgnoreMetaData [
+	ignoresMetaData := false
+]
+
+{ #category : 'accessing' }
+MicHTMLVisitor >> ignoreMetaData [
+	ignoresMetaData := true
+]
+
 { #category : 'initialization' }
-MicHTMLVisitor >> initialize [ 
+MicHTMLVisitor >> initialize [
+
 	| stream |
 	super initialize.
-	stream := MicOutputStream new setStream: (WriteStream on: String empty).
+	stream := MicOutputStream new setStream:
+		          (WriteStream on: String empty).
 	canvas := self canvasClass on: stream.
-	
+	ignoresMetaData := true.
 ]
 
 { #category : 'initialization' }
@@ -186,6 +199,14 @@ MicHTMLVisitor >> minQuoteThreshold [
 	"Answer a <Number> which is the number of characters used as the limit between short and long quotations"
 	
 	^ 50
+]
+
+{ #category : 'initialization' }
+MicHTMLVisitor >> stream: aStream [
+
+	| stream |
+	stream := MicOutputStream new setStream: aStream.
+	canvas := self canvasClass on: stream
 ]
 
 { #category : 'initialization' }
@@ -396,8 +417,9 @@ MicHTMLVisitor >> visitMath: anObject [
 { #category : 'visiting' }
 MicHTMLVisitor >> visitMetaData: aMetaData [
 
+	ignoresMetaData ifTrue: [ 
 	self metaDataFromAssociations: aMetaData body.
-	super visitMetaData: aMetaData.
+	super visitMetaData: aMetaData ]
 ]
 
 { #category : 'visiting - inline elements' }
