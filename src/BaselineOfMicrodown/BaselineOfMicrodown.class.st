@@ -31,7 +31,7 @@ BaselineOfMicrodown >> baseline: spec [
 		spec postLoadDoIt: #'postload:package:'.
 		
 		spec
-			package: #Microdown with: [ spec requires: #( #GitBridge ) ];
+			package: #Microdown;
 			package: #'Microdown-Tests'
 				with: [ spec requires: #( #Microdown ) ];
 				
@@ -91,7 +91,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Blog' with: [
 				spec requires: #( #'Microdown' #'Mustache') ];
 			package: #'Microdown-Blog-Tests' with: [
-				spec requires: #( #'Microdown-Blog' ) ].
+				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
 		
 		"I do not want group without tests for now"
 		spec
