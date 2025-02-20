@@ -163,23 +163,24 @@ The markup is not interpreted.
 Codeblock does not support more than four backticks.
 
 
-## Development in Pharo 12!
+## Development in Pharo 13!
 
 ### Loading specific version
 
-To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder.
-This script will remove the existing Microdown package and clear the system.
+To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder. This script will remove the existing Microdown package and clear the system.
+You can also execute the script provided below. 
+
 
 ```Smalltalk
 Metacello new
   baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:master/src';
+  repository: 'github://pillar-markup/Microdown:v2.7.2/src';
   load.
 ```
 
 The process is the following:
-- Development in dev
-- When stable dev -> in master
+- Development happens dev.
+- When stable dev -> in master.
 - When we can build books master is tagged.
 - Then there is the Pharo integration in dedicated branches.
 
@@ -213,8 +214,15 @@ Metacello new
 
 We have two sources: Pharo in one hand and Pillar and both are not totally synchronized. 
 
-Using Pharo 12: v2.5.x
 
+Using Pharo 13: v2.7.x
+-  v2.7.2 merge pharo 13 changes / added gitbridge / OCompiler migration / cleaning syntax description / Ready for Pillar and Foliage
+-  v2.7.1 LatexQuoteblock-should-not-use-verbatim
+-  v2.7.0 Fix some errors and API/clients of the textualbuilder
+
+
+Using Pharo 12: v2.5.x
+- v2.5.6 - Change html visitor and test for annotated paragraph
 - v2.5.5 - add support for top-level header as slide definition
 - v2.5.4 - add backward compatible anchor in caption + tonel V3 format
 - v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
