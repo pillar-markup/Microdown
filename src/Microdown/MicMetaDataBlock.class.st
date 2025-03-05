@@ -43,6 +43,11 @@ MicMetaDataBlock >> atKey: aString [
 ]
 
 { #category : 'accessing' }
+MicMetaDataBlock >> atKey: aString ifAbsent: aBlock [
+	^ self body at: aString ifAbsent: aBlock
+]
+
+{ #category : 'accessing' }
 MicMetaDataBlock >> atKey: aString put: aString2 [ 
 	self body at: aString put: aString2 
 ]
