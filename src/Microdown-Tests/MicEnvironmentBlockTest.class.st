@@ -294,6 +294,29 @@ environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
 ]
 
+{ #category : 'tests' }
+MicEnvironmentBlockTest >> testEnvironmentWithSameNestedElementAsParent [
+	"'<?slide
+<?slide 
+?>
+?>
+'"
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr
+	          , EnvironmentOpeningBlockMarkup , environmentName
+	          , String cr , EnvironmentClosingBlockMarkup , String cr
+	          , EnvironmentClosingBlockMarkup , String cr.
+	root := parser parse: source.
+
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: (env isKindOf: MicSlideBlock).
+
+	self assert: env children first class equals: MicSlideBlock
+]
+
 { #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 
