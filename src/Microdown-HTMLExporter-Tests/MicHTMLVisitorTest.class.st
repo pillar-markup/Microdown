@@ -199,6 +199,51 @@ MicHTMLVisitorTest >> testCreateItalic [
 ]
 
 { #category : 'tests' }
+MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
+
+	| result source |
+	self skip.
+	self assert: writer contents equals: String empty.
+	source := 
+'<div style="background-color:#8ebf42">', newLine, 
+'Tintin', newLine, newLine, '</div>'.
+
+	result := writer convertMicString: source.
+	self 
+		assert: result trimBoth 
+		equals: '<div style="background-color:#8ebf42">', newLine , '<p>Tintin</p>', newLine, newLine,
+ '</div>'.
+
+]
+
+{ #category : 'tests' }
+MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
+
+	| result source |
+	self skip.
+	self assert: writer contents equals: String empty.
+	source := 
+'<div style="background-color:#8ebf42">
+<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this
+<span style="color:#1c87c9">
+word
+</span>
+we place it within &lt;span&gt; tag.</p>
+<p> 
+Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.
+</p>
+</div>'.
+
+
+	result := writer convertMicString: source.
+	self 
+		assert: result trimBoth 
+		equals: '<div>', newLine , '<p>some text</p>', newLine, newLine,
+'<p>and</p>', newLine, '</div>'.
+
+]
+
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testRawParagraphIframe [
 
 	| result |
