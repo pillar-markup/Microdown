@@ -20,7 +20,8 @@ MicRawParagraphBlock >> bodyFromLine: line [
 
 	(self doesLineStartWithStopMarkup: line)
 		ifTrue: [ isClosed := true ]
-		ifFalse: [ body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ] ]
+		ifFalse: [ body := body ifNil: [ line ] ifNotNil: [ 
+				body , String cr , line ] ]
 ]
 
 { #category : 'handle' }

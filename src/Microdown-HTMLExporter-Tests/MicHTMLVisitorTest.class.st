@@ -215,11 +215,13 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 { #category : 'tests' }
 MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
 
-	| result |
+	| result source |
 	self assert: writer contents equals: String empty.
-	
-	result := writer convertMicString: MicMicrodownSnippetFactory new rawParagraphSimpleDiv.
-	self assert: result trimBoth equals: MicMicrodownSnippetFactory new rawParagraphSimpleDiv.	
+	source := '<div>', newLine , 'some text
+and
+more', newLine, '</div>'.
+	result := writer convertMicString: source.
+	self assert: result trimBoth equals: source.	
 
 ]
 
@@ -229,11 +231,10 @@ MicHTMLVisitorTest >> testRawParagraphSimpleEmptyDiv [
 	| result |
 	self assert: writer contents equals: String empty.
 	
-	result := writer convertMicString: '<div>
-</div>'.
-	self assert: result trimBoth equals: '<div>
-</div>'
-
+	result := writer convertMicString: '<div>', newLine,
+'</div>'.
+	self assert: result trimBoth equals:  '<div>', newLine,
+'</div>'.
 ]
 
 { #category : 'tests' }
