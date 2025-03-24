@@ -474,6 +474,19 @@ MicHTMLVisitor >> visitQuote: aQuote [
 		with: [ super visitQuote: aQuote ]
 ]
 
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitRawParagraph: aParagraph [
+
+	canvas
+		newLine;
+		raw: '<' , aParagraph label , '>';
+		raw: (aParagraph body
+				 ifNil: [ '' ]
+				 ifNotNil: [ canvas newLine. ^ aParagraph body ]);
+		newLine;
+		raw: aParagraph lineStopMarkup
+]
+
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitStrike: aStrike [
 
