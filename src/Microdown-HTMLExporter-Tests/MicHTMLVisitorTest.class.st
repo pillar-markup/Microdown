@@ -199,6 +199,44 @@ MicHTMLVisitorTest >> testCreateItalic [
 ]
 
 { #category : 'tests' }
+MicHTMLVisitorTest >> testRawParagraphIframe [
+
+	| result |
+	self skip.
+	self assert: writer contents equals: String empty.
+	
+	result := writer convertMicString: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
+</iframe>'.
+	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
+</iframe>'
+
+]
+
+{ #category : 'tests' }
+MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
+
+	| result |
+	self assert: writer contents equals: String empty.
+	
+	result := writer convertMicString: MicMicrodownSnippetFactory new rawParagraphSimpleDiv.
+	self assert: result trimBoth equals: MicMicrodownSnippetFactory new rawParagraphSimpleDiv.	
+
+]
+
+{ #category : 'tests' }
+MicHTMLVisitorTest >> testRawParagraphSimpleEmptyDiv [
+
+	| result |
+	self assert: writer contents equals: String empty.
+	
+	result := writer convertMicString: '<div>
+</div>'.
+	self assert: result trimBoth equals: '<div>
+</div>'
+
+]
+
+{ #category : 'tests' }
 MicHTMLVisitorTest >> testVisitAnchor [
 
 	self assert: writer contents equals: String empty.
