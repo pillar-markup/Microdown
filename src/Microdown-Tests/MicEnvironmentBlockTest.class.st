@@ -317,6 +317,34 @@ MicEnvironmentBlockTest >> testEnvironmentWithSameNestedElementAsParent [
 	self assert: env children first class equals: MicSlideBlock
 ]
 
+{ #category : 'tests' }
+MicEnvironmentBlockTest >> testEnvironmentWithSameNestedElementAsParentWithBody [
+	"'<?slide
+<?slide 
+?>
+?>
+'"
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr, 
+'- item 1
+- item 2
+
+' 
+	          , EnvironmentOpeningBlockMarkup , environmentName
+	          , String cr , '## Here is a slide', String cr, EnvironmentClosingBlockMarkup , String cr
+	          , EnvironmentClosingBlockMarkup , String cr.
+	root := parser parse: source.
+
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: (env isKindOf: MicSlideBlock).
+
+	self assert: env children first class equals: MicUnorderedListBlock.
+	self assert: env children second class equals: MicSlideBlock.
+]
+
 { #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 
