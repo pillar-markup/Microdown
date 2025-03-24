@@ -152,6 +152,9 @@ MicEnvironmentBlock >> closeMe [
 		body :=  self inlineParse: body ].
 	children := body"
 	
+	"Pay attention closeMe is invoked during parse time and some conversions are creating environment without going over the parser
+	For example the # Header to Slide is a typically case. "
+
 	arguments := MicArgumentList 
 		split: firstLine
 		defaultArg: #environmentName
@@ -179,12 +182,16 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 		ifFalse: [ firstLine ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'parse support' }
 MicEnvironmentBlock >> initialize [
 
 	super initialize.
-	arguments := MicArgumentList new 
-		
+	
+	"Pay attention closeMe is invoked during parse time and some conversions are creating environment without going over the parser
+	For example the # Header to Slide is a typically case. Therefore the following initialization is needed even if 
+	on parse time the arguments will get reset with another one."
+	
+	arguments := MicArgumentList new
 ]
 
 { #category : 'markups' }
