@@ -480,10 +480,8 @@ MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	canvas
 		newLine;
 		raw: '<' , aParagraph label , '>'.
-	(aParagraph body
-			 ifNil: [ canvas raw: '' ]
-				 ifNotNil: [ canvas newLine. 
-					canvas raw: aParagraph body ]).
+	(aParagraph children do: [ :each | each accept: self ]
+		separatedBy:	 [ canvas newLine ]).
 	canvas 
 		newLine;
 		raw: aParagraph lineStopMarkup

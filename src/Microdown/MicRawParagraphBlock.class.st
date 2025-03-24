@@ -1,9 +1,6 @@
 Class {
 	#name : 'MicRawParagraphBlock',
-	#superclass : 'MicStartStopMarkupBlock',
-	#instVars : [
-		'label'
-	],
+	#superclass : 'MicNestedMarkupBlock',
 	#category : 'Microdown-Extensions',
 	#package : 'Microdown',
 	#tag : 'Extensions'
@@ -16,29 +13,27 @@ MicRawParagraphBlock >> accept: aVisitor [
 ]
 
 { #category : 'handle' }
-MicRawParagraphBlock >> bodyFromLine: line [
-
-	(self doesLineStartWithStopMarkup: line)
-		ifTrue: [ isClosed := true ]
-		ifFalse: [ body := body ifNil: [ line ] ifNotNil: [ 
-				body , String cr , line ] ]
-]
-
-{ #category : 'handle' }
-MicRawParagraphBlock >> extractFirstLineFrom: line [
-	"we cannot know in advance the markup so we have to guess and store it for closing."
-
-	label := line allButFirst copyUpToSubstring: '>'
+MicRawParagraphBlock >> extractFirstLineFrom: aLine [
+	"we got < tag ...x > foo bar or < tag ...x and we return tag ...x "
 	
+	| extract |
+	firstLine := aLine copyFrom: self lineStartMarkup size to: aLine size.
+	firstLine := firstLine trimBoth.
+	extract := firstLine copyUpToSubstring: '>'.
+	"we can just trimboth and avoid this test"
+	^ extract size < firstLine size 
+		ifTrue: [ 
+			extract trimRight ]
+		ifFalse: [ firstLine ]
 ]
 
 { #category : 'accessing' }
 MicRawParagraphBlock >> label [
-	^ label
+	^ firstLine
 ]
 
 { #category : 'markups' }
 MicRawParagraphBlock >> lineStopMarkup [
 
-	^ '</', label, '>'
+	^ '</', self label, '>'
 ]

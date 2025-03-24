@@ -217,11 +217,14 @@ MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
 
 	| result source |
 	self assert: writer contents equals: String empty.
-	source := '<div>', newLine , 'some text
-and
-more', newLine, '</div>'.
+	source := '<div>', newLine , 'some text', newLine, newLine,  
+'and', newLine, newLine, '</div>'.
+
 	result := writer convertMicString: source.
-	self assert: result trimBoth equals: source.	
+	self 
+		assert: result trimBoth 
+		equals: '<div>', newLine , '<p>some text</p>', newLine, newLine,
+'<p>and</p>', newLine, '</div>'.
 
 ]
 

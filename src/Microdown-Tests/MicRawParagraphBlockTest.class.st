@@ -51,7 +51,7 @@ And after we get a paragraph') children.
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphCannotBeNested [
+MicRawParagraphBlockTest >> testRawParagraphCanBeNested [
 	| children |
 	children := (parser parse: '<title> 
 No idea what it is :)
@@ -63,7 +63,10 @@ hkhkjhkj
 	self assert: children size equals: 1. 
 	self assert: children first class equals: MicRawParagraphBlock. 
 	self assert: children first label equals: 'title'.
-	self assertEmpty: children first children
+	self assert: children first children size equals: 2. 
+	self assert: children first children first class equals: MicParagraphBlock.
+	self assert: children first children second label  equals: 'button'.
+	self assert: children first children second class  equals: MicRawParagraphBlock.
 ]
 
 { #category : 'tests' }
