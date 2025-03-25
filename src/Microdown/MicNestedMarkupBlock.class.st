@@ -57,24 +57,6 @@ MicNestedMarkupBlock >> bodyFromLine: line [
 	^ newBlock
 ]
 
-{ #category : 'parse support' }
-MicNestedMarkupBlock >> closeMe [
-
-	"this is a temporary solution because normally the parser should populate body with MicBlocks.
-	Right now just make sure that we have structured text = inline elements. "
-	"body ifNotNil: [ 
-		body :=  self inlineParse: body ].
-	children := body"
-	
-	"Pay attention closeMe is invoked during parse time and some conversions are creating environment without going over the parser
-	For example the # Header to Slide is a typically case. "
-	
-	arguments := MicArgumentList 
-		split: firstLine
-		defaultArg: #environmentName
-		defaultValue: ''.
-]
-
 { #category : 'accessing' }
 MicNestedMarkupBlock >> environmentName [
 	^ arguments at: #environmentName

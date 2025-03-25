@@ -202,7 +202,6 @@ MicHTMLVisitorTest >> testCreateItalic [
 MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 
 	| result source |
-	self skip.
 	self assert: writer contents equals: String empty.
 	source := 
 '<div style="background-color:#8ebf42">', newLine, 
@@ -211,7 +210,7 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div style="background-color:#8ebf42">', newLine , '<p>Tintin</p>', newLine, newLine,
+		equals: '<div style="background-color:#8ebf42">', newLine , '<p>Tintin</p>', newLine,
  '</div>'.
 
 ]
@@ -238,8 +237,18 @@ Pay attention, that the &lt;div&gt; tag is a block-level element, so a line brea
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div>', newLine , '<p>some text</p>', newLine, newLine,
-'<p>and</p>', newLine, '</div>'.
+		equals: '<div style="background-color:#8ebf42">
+<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this
+<span style="color:#1c87c9">
+<p>
+word
+</p>
+</span>
+we place it within &lt;span&gt; tag.</p>
+<p> 
+Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.
+</p>
+</div>'
 
 ]
 
@@ -247,13 +256,18 @@ Pay attention, that the &lt;div&gt; tag is a block-level element, so a line brea
 MicHTMLVisitorTest >> testRawParagraphIframe [
 
 	| result |
-	self skip.
 	self assert: writer contents equals: String empty.
 	
 	result := writer convertMicString: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
-</iframe>'.
+</iframe>
+
+Tintin
+
+'.
 	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
-</iframe>'
+</iframe>
+
+<p>Tintin</p>'
 
 ]
 

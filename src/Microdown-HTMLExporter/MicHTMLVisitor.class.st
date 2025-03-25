@@ -476,16 +476,20 @@ MicHTMLVisitor >> visitQuote: aQuote [
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
-
+	
 	canvas
 		newLine;
-		raw: '<' , aParagraph label , '>'.
+		raw: '<' , aParagraph label.
+	aParagraph hasArguments
+		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
+	canvas raw: '>' .
+
 	(aParagraph children do: [ :each | each accept: self ]
 		separatedBy:	 [ canvas newLine ]).
-	self halt.
 	canvas 
 		newLine;
-		raw: aParagraph lineStopMarkup
+		raw: aParagraph lineStopMarkup;
+		newLine
 ]
 
 { #category : 'visiting - inline elements' }
