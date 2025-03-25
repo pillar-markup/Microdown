@@ -10,6 +10,13 @@ Class {
 	#tag : 'Extensions'
 }
 
+{ #category : 'public' }
+MicRawParagraphBlock class >> alternateBlockClassFor: aLine [
+	"We do not want to have extention for MicRawParaphTag"
+	
+	^ self 
+]
+
 { #category : 'visiting' }
 MicRawParagraphBlock >> accept: aVisitor [
 
@@ -52,4 +59,13 @@ MicRawParagraphBlock >> label [
 MicRawParagraphBlock >> lineStopMarkup [
 
 	^ '</', label, '>'
+]
+
+{ #category : 'printing' }
+MicRawParagraphBlock >> printOn: aStream [ 
+
+	super printOn: aStream.
+	aStream << '(' ;
+		<< label ;
+		<< ')'
 ]

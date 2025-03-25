@@ -70,6 +70,42 @@ hkhkjhkj
 ]
 
 { #category : 'tests' }
+MicRawParagraphBlockTest >> testRawParagraphForP [
+	| children |
+	children := (parser parse: '<p> 
+No idea what it is :)
+</p>') children.
+	self assert: children size equals: 1. 
+	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first label equals: 'p'.
+	
+]
+
+{ #category : 'tests' }
+MicRawParagraphBlockTest >> testRawParagraphForPNoSpace [
+	| children |
+	children := (parser parse: '<p>WeDoNotLikeSpace
+No idea what it is :)
+</p>') children.
+	self assert: children size equals: 1. 
+	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first label equals: 'p'.
+	
+]
+
+{ #category : 'tests' }
+MicRawParagraphBlockTest >> testRawParagraphForPNoSpaceAndAttributes [
+	| children |
+	children := (parser parse: '<p src=78>WeDoNotLikeSpace
+No idea what it is :)
+</p>') children.
+	self assert: children size equals: 1. 
+	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first label equals: 'p'.
+	
+]
+
+{ #category : 'tests' }
 MicRawParagraphBlockTest >> testThereIsNoValidationIfThetagStartWithAKnowHtml [
 	"for the moment we only check the first couple of characters to start with.
 	So it may happens that we match the beginning of a tag."
@@ -77,6 +113,6 @@ MicRawParagraphBlockTest >> testThereIsNoValidationIfThetagStartWithAKnowHtml [
 	mic := (parser parse: '<titleunkniw> 
 No idea what it is :)
 </titleunkniw>') children first.
-	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic class equals: MicParagraphBlock. 
 	
 ]

@@ -219,37 +219,36 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 
 	| result source |
-	self skip.
+
 	self assert: writer contents equals: String empty.
 	source := 
-'<div style="background-color:#8ebf42">
-<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this
-<span style="color:#1c87c9">
-word
-</span>
-we place it within &lt;span&gt; tag.</p>
-<p> 
-Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.
-</p>
-</div>'.
+'<div style="background-color:#8ebf42">', newLine, 
+'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<span style="color:#1c87c9">', newLine, 
+'word', newLine, 
+'</span>', newLine,
+'we place it within &lt;span&gt; tag.', 
+'</p>', newLine, 
+'<p>', newLine,  
+'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, 
+'</p>', newLine, 
+'</div>'.
 
 
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div style="background-color:#8ebf42">
-<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this
-<span style="color:#1c87c9">
-<p>
-word
-</p>
-</span>
-we place it within &lt;span&gt; tag.</p>
-<p> 
-Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.
-</p>
-</div>'
-
+		equals: '<div style="background-color:#8ebf42">', newLine, 
+'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<span style="color:#1c87c9">', newLine, 
+'word', newLine, 
+'</span>', newLine,
+'we place it within &lt;span&gt; tag.', 
+'</p>', newLine, 
+'<p>', newLine,  
+'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, 
+'</p>', newLine, 
+'</div>'.
 ]
 
 { #category : 'tests' }
@@ -258,16 +257,11 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 	| result |
 	self assert: writer contents equals: String empty.
 	
-	result := writer convertMicString: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
-</iframe>
+	result := writer convertMicString: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">', newLine,
+'</iframe>', newLine, 'Tintin'.
 
-Tintin
-
-'.
-	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">
-</iframe>
-
-<p>Tintin</p>'
+	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">', newLine, 
+'</iframe>', newLine, newLine, '<p>Tintin</p>'
 
 ]
 
