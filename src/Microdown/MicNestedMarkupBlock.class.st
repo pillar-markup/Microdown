@@ -68,7 +68,7 @@ MicNestedMarkupBlock >> closeMe [
 	
 	"Pay attention closeMe is invoked during parse time and some conversions are creating environment without going over the parser
 	For example the # Header to Slide is a typically case. "
-
+	
 	arguments := MicArgumentList 
 		split: firstLine
 		defaultArg: #environmentName

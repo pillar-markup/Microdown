@@ -476,12 +476,13 @@ MicHTMLVisitor >> visitQuote: aQuote [
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
-	
+
 	canvas
 		newLine;
 		raw: '<' , aParagraph label , '>'.
 	(aParagraph children do: [ :each | each accept: self ]
 		separatedBy:	 [ canvas newLine ]).
+	self halt.
 	canvas 
 		newLine;
 		raw: aParagraph lineStopMarkup
