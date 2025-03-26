@@ -98,7 +98,7 @@ MicHTMLVisitorTest >> testConvertMicFile [
 	self
 		assert: (fileSystem / 'anExample1.html') asFileReference contents
 		equals: newLine , '<h1>Foo</h1><a id="sec1"></a>' , newLine
-			, '<p>Pharo is cool</p>' , newLine
+			, 'Pharo is cool' , newLine
 			, '<pre><code>this is a code blu blu</code></pre>' , newLine
 ]
 
@@ -140,7 +140,7 @@ MicHTMLVisitorTest >> testCreateAnchorWithLink [
 	| result |
 	self assert: writer contents equals: String empty.
 	result := writer convertMicString: '[Pharo Website](http://pharo.org target=blank&rel=bookmark)'.
-	self assert: result trimBoth equals: '<p><a target="_blank" href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a></p>'.
+	self assert: result trimBoth equals: '<a target="_blank" href="http://pharo.org/" rel="bookmark" target="blank">Pharo Website</a>'.
 ]
 
 { #category : 'tests' }
@@ -158,7 +158,7 @@ this is another string'.
 		equals: '<h1>This is a title</h1>' , newLine
 			,
 			'<q id="note">Body of annotated block</q>'
-			, newLine , '<p>this is another string</p>'
+			, newLine , 'this is another string'
 ]
 
 { #category : 'tests' }
@@ -183,7 +183,7 @@ MicHTMLVisitorTest >> testCreateCitation [
 	self assert: writer contents equals: String empty.
 	
 	result := writer convertMicString: '{!citation|ref=Duca99a!}'.
-	self assert: result trimBoth equals: '<p><cite>Duca99a</cite></p>'.	
+	self assert: result trimBoth equals: '<cite>Duca99a</cite>'.	
 
 ]
 
@@ -194,7 +194,7 @@ MicHTMLVisitorTest >> testCreateItalic [
 	self assert: writer contents equals: String empty.
 	
 	result := writer convertMicString: '_Text with italic_'.
-	self assert: result trimBoth equals: '<p><i>Text with italic</i></p>'.	
+	self assert: result trimBoth equals: '<i>Text with italic</i>'.	
 
 ]
 
@@ -210,7 +210,7 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div style="background-color:#8ebf42">', newLine , '<p>Tintin</p>', newLine,
+		equals: '<div style="background-color:#8ebf42">', newLine , 'Tintin', newLine,
  '</div>'.
 
 ]
@@ -219,11 +219,13 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 
 	| result source |
-
+	self flag: #tofix.
+	
 	self assert: writer contents equals: String empty.
 	source := 
 '<div style="background-color:#8ebf42">', newLine, 
-'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<p>', newLine, 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
 '<span style="color:#1c87c9">', newLine, 
 'word', newLine, 
 '</span>', newLine,
@@ -239,7 +241,8 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 	self 
 		assert: result trimBoth 
 		equals: '<div style="background-color:#8ebf42">', newLine, 
-'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<p>', 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
 '<span style="color:#1c87c9">', newLine, 
 'word', newLine, 
 '</span>', newLine,
@@ -261,7 +264,7 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 '</iframe>', newLine, 'Tintin'.
 
 	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">', newLine, 
-'</iframe>', newLine, newLine, '<p>Tintin</p>'
+'</iframe>', newLine, newLine, 'Tintin'
 
 ]
 
@@ -269,15 +272,16 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
 
 	| result source |
+	self flag: #tofix.
 	self assert: writer contents equals: String empty.
-	source := '<div>', newLine , 'some text', newLine, newLine,  
+	source := '<div>', newLine , '<p>', newLine, 'some text', newLine, '<\p>', newLine,  
 'and', newLine, newLine, '</div>'.
 
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div>', newLine , '<p>some text</p>', newLine, newLine,
-'<p>and</p>', newLine, '</div>'.
+		equals: '<div>', newLine , '<p>', newLine,'some text', newLine, '<\p>', newLine, newLine,
+'and', newLine, '</div>'.
 
 ]
 

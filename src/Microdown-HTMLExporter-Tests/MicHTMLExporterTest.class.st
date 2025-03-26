@@ -62,7 +62,7 @@ MicHTMLExporterTest >> parser: aParser [
 MicHTMLExporterTest >> testAccents [
 
 	self parse: 'éà' andCheckWeGet: newLine,
-'<p>éà</p>'
+'éà'
 ]
 
 { #category : 'utilities' }
@@ -101,7 +101,7 @@ MicHTMLExporterTest >> testFigure [
 	self 
 		parse: factory figureSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure>'
 ]
 
 { #category : 'tests - formats' }
@@ -110,7 +110,7 @@ MicHTMLExporterTest >> testFigureBold [
 	self 
 		parse: factory figureBoldSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -119,7 +119,7 @@ MicHTMLExporterTest >> testFigureItalic [
 	self 
 		parse: factory figureItalicSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -128,7 +128,7 @@ MicHTMLExporterTest >> testFigureNested [
 	self 
 		parse: factory figureNestedSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -137,7 +137,7 @@ MicHTMLExporterTest >> testFigureReal [
 	self 
 		parse: factory figureRealSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure></p>'
+'<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -146,7 +146,7 @@ MicHTMLExporterTest >> testFigureStrike [
 	self 
 		parse: factory figureStrikeSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -155,7 +155,7 @@ MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 	self 
 		parse: factory figureWithLabelWithoutSizeSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -164,7 +164,7 @@ MicHTMLExporterTest >> testFigureWithoutCaption [
 	self 
 		parse: factory figureWithoutCaptionSample 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -173,7 +173,7 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 	self 
 		parse: factory figureSampleWithoutSizeAndLabel 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure></p>'
+'<figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -182,7 +182,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 	self 
 		parse: factory figureGoutDeFraise 
 		andCheckWeGet: newLine ,
-'<p><figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure></p>'
+'<figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure>'
 ]
 
 { #category : 'tests' }
@@ -218,21 +218,21 @@ MicHTMLExporterTest >> testMetaDataIsNotIgnored [
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
-	self parse: factory paragraphSample andCheckWeGet: newLine ,'<p>Foo</p>'
+	self parse: factory paragraphSample andCheckWeGet: newLine ,'Foo'
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphLongWithAccents [
 
 	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: newLine ,
-'<p>Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.</p>'
+'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphNestedSample [
 
 	self parse: factory paragraphNestedSample andCheckWeGet:  newLine ,
-'<p>this is a <strong><i>paragraph</i></strong></p>'
+'this is a <strong><i>paragraph</i></strong>'
 ]
 
 { #category : 'tests - formats' }
@@ -241,21 +241,21 @@ MicHTMLExporterTest >> testParagraphWithBold [
 	self 
 		parse: factory paragraphBoldSample 
 		andCheckWeGet:  newLine ,
-'<p>this is a <strong>paragraph</strong></p>'
+'this is a <strong>paragraph</strong>'
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphWithItalic [
 
 	self parse: factory paragraphItalicSample andCheckWeGet: newLine ,
-'<p>this is a <i>paragraph</i></p>'
+'this is a <i>paragraph</i>'
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithMonospace [
 
 	self parse: factory paragraphMonospaceSample andCheckWeGet:  newLine ,
-'<p>this is a <code>paragraph</code></p>'
+'this is a <code>paragraph</code>'
 ]
 
 { #category : 'tests - formats' }
@@ -269,7 +269,7 @@ MicHTMLExporterTest >> testQuote [
 MicHTMLExporterTest >> testStrike [
 
 	self parse: factory strikethroughFormatSample andCheckWeGet: newLine ,
-'<p><strike>Foo</strike></p>'
+'<strike>Foo</strike>'
 ]
 
 { #category : 'tests' }

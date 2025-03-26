@@ -456,9 +456,10 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
-	canvas tag
+	super visitParagraph: aParagraph
+	"canvas tag
 		name: 'p';
-		with: [ super visitParagraph: aParagraph ]
+		with: [  ]"
 ]
 
 { #category : 'visiting' }
