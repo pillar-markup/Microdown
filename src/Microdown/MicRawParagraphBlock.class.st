@@ -36,18 +36,30 @@ MicRawParagraphBlock >> extractFirstLineFrom: aLine [
 	firstLine := aLine copyFrom: self lineStartMarkup size to: aLine size.
 	firstLine := firstLine trimBoth.
 	firstLine := firstLine copyFrom: 1 to: firstLine size -1.
-	splits := firstLine splitOnFirst: Character space.
+	
+	splits := firstLine splitOnFirst: $>.
+	splits second isNotEmpty
+		ifTrue: [ "here we p>Blo and we discard Blo"
+					label := splits first ].
+	
+	"now we may have <p src='whatever' so we split again"
+	splits := splits first splitOnFirst: Character space.
 	label := splits first.
-	splits size = 2 
+	splits second isNotEmpty 
 		ifTrue: [ argumentsString := splits second ].
 	^ firstLine
-	
-	
 ]
 
 { #category : 'testing' }
 MicRawParagraphBlock >> hasArguments [
 	^ argumentsString isNotEmpty
+]
+
+{ #category : 'parse support' }
+MicRawParagraphBlock >> initialize [
+
+	super initialize.
+	argumentsString := ''
 ]
 
 { #category : 'accessing' }
