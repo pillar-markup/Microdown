@@ -98,7 +98,8 @@ MicRawParagraphBlockTest >> testRawParagraphForPNoSpace2 [
 	| children newLine |
 	newLine := Character cr asString. 
 	children := (MicrodownParser new parse: '<div style="background-color:#8ebf42">', newLine, 
-'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<p>', newLine, 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
 '<span style="color:#1c87c9">', newLine, 
 'word', newLine, 
 '</span>', newLine,
