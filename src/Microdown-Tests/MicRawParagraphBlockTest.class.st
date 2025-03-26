@@ -94,6 +94,30 @@ No idea what it is :)
 ]
 
 { #category : 'tests' }
+MicRawParagraphBlockTest >> testRawParagraphForPNoSpace2 [
+	| children newLine |
+	newLine := Character cr asString. 
+	children := (MicrodownParser new parse: '<div style="background-color:#8ebf42">', newLine, 
+'<p>We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'<span style="color:#1c87c9">', newLine, 
+'word', newLine, 
+'</span>', newLine,
+'we place it within &lt;span&gt; tag.', 
+'</p>', newLine, 
+'<p>', newLine,  
+'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, 
+'</p>', newLine, 
+'</div>') children.
+	self assert: children size equals: 1. 
+	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first label equals: 'div'.
+	self assert: children first children first class equals: MicRawParagraphBlock.
+	self assert: children first children first label equals: 'p'.
+	
+	
+]
+
+{ #category : 'tests' }
 MicRawParagraphBlockTest >> testRawParagraphForPNoSpaceAndAttributes [
 	| children |
 	children := (parser parse: '<p src=78>WeDoNotLikeSpace
