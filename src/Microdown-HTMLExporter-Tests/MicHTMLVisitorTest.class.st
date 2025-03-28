@@ -219,12 +219,11 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 
 	| result source |
-	self flag: #tofix.
 	
 	self assert: writer contents equals: String empty.
 	source := 
 '<div style="background-color:#8ebf42">', newLine, 
-'<p>', newLine, 
+'<p>', 
 'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
 '<span style="color:#1c87c9">', newLine, 
 'word', newLine, 
@@ -264,7 +263,7 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 '</iframe>', newLine, 'Tintin'.
 
 	self assert: result trimBoth equals: '<iframe src="https://calendar.google.com/calendar/embed?mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=021vq166ioejihr7nsat0pjqic%40group.calendar.google.com&amp;color=%231B887A&amp;ctz=Europe%2FParis" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no">', newLine, 
-'</iframe>', newLine, newLine, 'Tintin'
+'</iframe>', newLine, 'Tintin'
 
 ]
 
@@ -272,15 +271,14 @@ MicHTMLVisitorTest >> testRawParagraphIframe [
 MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
 
 	| result source |
-	self flag: #tofix.
 	self assert: writer contents equals: String empty.
-	source := '<div>', newLine , '<p>', newLine, 'some text', newLine, '<\p>', newLine,  
-'and', newLine, newLine, '</div>'.
+	source := '<div>', newLine , '<p>', newLine, 'some text', newLine, '</p>', newLine,  
+'and', newLine, '</div>'.
 
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div>', newLine , '<p>', newLine,'some text', newLine, '<\p>', newLine, newLine,
+		equals: '<div>', newLine , '<p>', newLine,'some text', newLine, '</p>', newLine,
 'and', newLine, '</div>'.
 
 ]

@@ -485,12 +485,10 @@ MicHTMLVisitor >> visitRawParagraph: aParagraph [
 		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
 	canvas raw: '>' .
 
-	(aParagraph children do: [ :each | each accept: self ]
-		separatedBy:	 [ canvas newLine ]).
+	aParagraph children do: [ :each | each accept: self ].
 	canvas 
 		newLine;
-		raw: aParagraph lineStopMarkup;
-		newLine
+		raw: aParagraph lineStopMarkup.
 ]
 
 { #category : 'visiting - inline elements' }
