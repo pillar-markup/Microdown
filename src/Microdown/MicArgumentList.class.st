@@ -145,7 +145,7 @@ MicArgumentList >> printOn: aStream [
 	self hasNonDefaultValue 
 		ifTrue:[
 			aStream nextPutAll: self defaultValue.
-			argKeys := self keys copyWithout: self defaultArg.
+			argKeys := self keys copyWithout: self defaultArg asSymbol.
 			argKeys ifNotEmpty: [aStream nextPut: $|]]
 		ifFalse: [argKeys := self keys].
 	aStream nextPutAll: ((argKeys collect: [:k| k,'=',(self at:k)]) joinUsing: '&')

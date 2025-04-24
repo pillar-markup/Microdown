@@ -38,7 +38,11 @@ MicElement class >> buildMicroDownUsing: aBuilder  withComment: aComment [
 { #category : 'utilities' }
 MicElement class >> extensionClassFor: tag [
 	"I am a utility method used in extension blocks to find the right subclass to instantiate"
-	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+
+	| tagSymbol |
+
+	tagSymbol := tag asSymbol.
+	^ self allSubclasses detect: [ :each | each tag = tagSymbol ] ifNone: [ self ]
 ]
 
 { #category : 'private' }

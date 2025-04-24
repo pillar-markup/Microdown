@@ -17,7 +17,7 @@ MicAbstractCodeBlock class >> alternateBlockClassFor: line [
 
 	| tag |
 	tag := ((line allButFirst: CodeblockMarkup size) 
-		        copyUpTo: $|) trimBoth.
+		        copyUpTo: $|) trimBoth asSymbol.
 	tag = #script ifTrue: [ ^ MicScriptBlock  ].
 	^ MicScriptBlock allSubclasses detect: [ :each | each tag = tag ] ifNone: [ MicCodeBlock ]
 ]
