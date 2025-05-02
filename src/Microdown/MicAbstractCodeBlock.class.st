@@ -11,8 +11,19 @@ Class {
 
 { #category : 'public' }
 MicAbstractCodeBlock class >> alternateBlockClassFor: line [
+	"This method is an extension point to be able to declare environment subclasses just specifying a tag.
+	
+	For example 
+	
+		<?Foo|title=Stef?>
 
+	and a subclass of MicEnvironment with the tag 'Foo' exists then the parser will automatically
+	create instances of such subclass.
+	
+	"
+	
 	"If there is one subclass with the corresponding tag, returns it, else resturn the current class."
+	
 	"line is of the form ```tag|title=Schedule - we should use MicArgumentList for parsing, but alas, we do not at the moment"
 
 	| tag |

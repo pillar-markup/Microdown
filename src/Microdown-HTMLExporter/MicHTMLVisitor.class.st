@@ -456,9 +456,10 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
-	canvas tag
+	super visitParagraph: aParagraph
+	"canvas tag
 		name: 'p';
-		with: [ super visitParagraph: aParagraph ]
+		with: [  ]"
 ]
 
 { #category : 'visiting' }
@@ -479,14 +480,15 @@ MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	
 	canvas
 		newLine;
-		raw: '<' , aParagraph label , '>'.
-	(aParagraph body
-			 ifNil: [ canvas raw: '' ]
-				 ifNotNil: [ canvas newLine. 
-					canvas raw: aParagraph body ]).
+		raw: '<' , aParagraph label.
+	aParagraph hasArguments
+		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
+	canvas raw: '>' .
+
+	aParagraph children do: [ :each | each accept: self ].
 	canvas 
 		newLine;
-		raw: aParagraph lineStopMarkup
+		raw: aParagraph lineStopMarkup.
 ]
 
 { #category : 'visiting - inline elements' }

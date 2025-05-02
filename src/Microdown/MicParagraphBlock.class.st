@@ -54,7 +54,8 @@ MicParagraphBlock >> canConsumeLine: line [
 	| unIndented |
 	
 	"if we are closing block that can contain other elements then do not consume their ends."
-	(line isEmpty or: [ line beginsWith: EnvironmentClosingBlockMarkup]) 
+	
+	(line isEmpty or: [ (line beginsWith: EnvironmentClosingBlockMarkup) or: [ EndHTMLTags includes: line ]]) 
 		ifTrue: [ ^ false ].
 	(self isRightlyIndented: line)
 		ifFalse: [ ^ false ].
