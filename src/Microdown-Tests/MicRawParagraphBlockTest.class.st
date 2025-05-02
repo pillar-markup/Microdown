@@ -12,6 +12,22 @@ MicRawParagraphBlockTest >> subjectClass [
 ]
 
 { #category : 'tests' }
+MicRawParagraphBlockTest >> testASimpleDivWithClass [
+	| mic |
+	mic := (parser parse: '<div class="teaser">
+
+# Contributing to Pharo
+
+In a giving mood? There are many ways to get involved!
+
+</div>
+') children first.
+	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic label equals: 'div'.
+
+]
+
+{ #category : 'tests' }
 MicRawParagraphBlockTest >> testASimpleRawParagraph [
 	| mic |
 	mic := (parser parse: '<title> 
