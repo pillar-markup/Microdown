@@ -162,8 +162,11 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 
 	| packagesToUnload |
-	"If we are building the Pharo image, we do not want to unload packages."
-	SystemBuildInfo current isBuildFinished ifFalse: [ ^ self ].
+
+	self flag: 'This is necessary to not break the bootstrapping. Microdown makes a cleaning of classes and as Microdown is loaded in the image it can cause conflits.'.
+	self flag: 'We do not access the class SystemBuildInfo directly because it is only present in Pharo 13 but Microdown works on different Pharo versions. We can simplifly this when Pharo 13 will be the minimal supported version.'.
+	self class environment at: #SystemBuildInfo ifPresent: [ :info | info 
+			current isBuildFinished ifFalse: [ ^ self ]. ].
 
 	"If it is absent it's because we are in the Pharo bootstrap"
 	self class environment at: #IceRepository ifPresent: [ :iceRepositoryClass |
