@@ -162,16 +162,21 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 
 	| packagesToUnload |
-	"If we are building the Pharo image, we do not want to unload packages."
-	SystemBuildInfo current isBuildFinished ifFalse: [ ^ self ].
+
+	self flag: 'This is necessary to not break the bootstrapping. Microdown makes a cleaning of classes and as Microdown is loaded in the image it can cause conflits.'.
+	self flag: 'We do not access the class SystemBuildInfo directly because it is only present in Pharo 13 but Microdown works on different Pharo versions. We can simplifly this when Pharo 13 will be the minimal supported version.'.
+	self class environment at: #SystemBuildInfo ifPresent: [ :info | info 
+			current isBuildFinished ifFalse: [ ^ self ]. ].
 
 	"If it is absent it's because we are in the Pharo bootstrap"
 	self class environment at: #IceRepository ifPresent: [ :iceRepositoryClass |
-		packagesToUnload := ((PackageOrganizer default packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
-			                    #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
+		| packages |
+		"The same here, not direct access to PackageOrganizer because it is only for Pharo 13."
+		packages := self class environment allClasses collect: #package as: Set.
+		packagesToUnload := ((packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
+			               #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
 
-		"these two are not managed by the microdown repo but the documentation.
-			I should rename them in the future to avoid confusion"
+		"these two are not managed by the microdown repo but the documentation. We should rename them in the future to avoid confusion"
 
 		packagesToUnload do: [ :each | ((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed: each) unload ] ]
 ]
