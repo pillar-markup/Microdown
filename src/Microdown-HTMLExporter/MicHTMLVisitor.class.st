@@ -159,7 +159,7 @@ MicHTMLVisitor >> crlfAsNewLine [
 	canvas crlfAsNewLine
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicHTMLVisitor >> doNotIgnoreMetaData [
 	ignoresMetaData := false
 ]
@@ -473,6 +473,13 @@ MicHTMLVisitor >> visitQuote: aQuote [
 	canvas tag
 		name: tagName;
 		with: [ super visitQuote: aQuote ]
+]
+
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitRaw: aParagraph [
+	
+	canvas raw: aParagraph bodyString.
+	canvas newLine
 ]
 
 { #category : 'visiting - html extensions' }
