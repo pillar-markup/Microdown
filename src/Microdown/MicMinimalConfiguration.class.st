@@ -40,7 +40,7 @@ MicMinimalConfiguration >> headingLevelOffset: anObject [
 { #category : 'initialization' }
 MicMinimalConfiguration >> initialize [ 
 	super initialize.
-	newLine := String crlf.
+	self crlfAsNewLine.
 	headingLevelOffset := 0
 ]
 
