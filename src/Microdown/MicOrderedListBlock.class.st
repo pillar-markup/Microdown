@@ -52,6 +52,12 @@ MicOrderedListBlock >> addLineAndReturnNextNode: line [
 	^ super addLineAndReturnNextNode: line
 ]
 
+{ #category : 'accessing' }
+MicOrderedListBlock >> bodyString [
+	
+	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each bodyString ] ]
+]
+
 { #category : 'testing' }
 MicOrderedListBlock >> canConsumeLine: line [
 	"to consume this line there must be a UnorderdListItem start at the right indentation"
