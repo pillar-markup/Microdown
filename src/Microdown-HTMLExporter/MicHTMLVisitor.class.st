@@ -93,6 +93,11 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 ]
 
+{ #category : 'accessing' }
+MicHTMLVisitor class >> writerName [
+	^ #html
+]
+
 { #category : 'initialization' }
 MicHTMLVisitor >> canvasClass [
 
@@ -165,6 +170,11 @@ MicHTMLVisitor >> doNotIgnoreMetaData [
 ]
 
 { #category : 'accessing' }
+MicHTMLVisitor >> folderName [
+	^ #html
+]
+
+{ #category : 'accessing' }
 MicHTMLVisitor >> ignoreMetaData [
 	ignoresMetaData := true
 ]
@@ -183,6 +193,12 @@ MicHTMLVisitor >> initialize [
 { #category : 'initialization' }
 MicHTMLVisitor >> lfAsNewLine [ 
 	canvas lfAsNewLine
+]
+
+{ #category : 'accessing' }
+MicHTMLVisitor >> mainDocumentTemplateName [
+	
+	^ 'template'
 ]
 
 { #category : 'visiting - list' }
@@ -207,6 +223,22 @@ MicHTMLVisitor >> stream: aStream [
 	| stream |
 	stream := MicOutputStream new setStream: aStream.
 	canvas := self canvasClass on: stream
+]
+
+{ #category : 'templating' }
+MicHTMLVisitor >> templateForConfiguration: aConfiguration [
+	| inputFile templateName |
+	configuration := aConfiguration.
+	inputFile := configuration inputFile.
+	
+	(configuration hasProperty: #mainDocument)
+		ifFalse: [ ^ configuration propertyAt: self mainDocumentTemplateName ifAbsent: [ 'main.mustache' ] ].
+	
+	templateName := inputFile fullName
+		= ((configuration baseDirectory resolve: configuration mainDocument) , 'pillar') fullName
+		ifTrue: [ self mainDocumentTemplateName ]
+		ifFalse: [ self chapterTemplateName ].
+	^ configuration propertyAt: templateName
 ]
 
 { #category : 'initialization' }
@@ -587,6 +619,13 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 		with: [ super visitUnorderedListItem: anUnorderedListItem ].
 	canvas newLine.
 
+]
+
+{ #category : 'writing' }
+MicHTMLVisitor >> write: aMicElement [
+	"for now for integration with Pillar."
+	self visit: aMicElement.
+	^ self contents
 ]
 
 { #category : 'visiting' }
