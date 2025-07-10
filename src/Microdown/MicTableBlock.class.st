@@ -83,12 +83,13 @@ MicTableBlock >> extractLine: line [
 		| something | something | 
 		or 
 		| something | something"
-	| unicodeReplacementCharacter |
+	| unicodeReplacementCharacter backslashLine rowColumn|
 		
 	"allow pipe symbols to be written as \|"
 	unicodeReplacementCharacter := 16rFFFD asCharacter asString. "By definition this do not appear in any input"
-	 
-	^ ((line copyReplaceAll: '\|' with: unicodeReplacementCharacter) findBetweenSubstrings: '|') 
+	backslashLine := ((line) copyReplaceAll: '\|' with: unicodeReplacementCharacter) trim. "remove spaces at the end"
+	rowColumn := backslashLine findBetweenSubstrings: '|'.
+	^ rowColumn 
 			collect: [ :each | (each copyReplaceAll: unicodeReplacementCharacter with: '|') trim]
 		
 				
