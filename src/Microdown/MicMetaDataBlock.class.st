@@ -56,6 +56,7 @@ MicMetaDataBlock >> bogusParsing [
 { #category : 'markups' }
 MicMetaDataBlock >> closeMe [ 
 	super closeMe.
+	body ifNil:[ body := ''].
 	body := [ STONJSON fromString: '{', body, '}' ] on: Error do: [ :ex |
 		| dict |
 		bogusParsing := true.
