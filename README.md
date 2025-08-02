@@ -212,16 +212,22 @@ Metacello new
 
 ## History
 
-We have two sources: Pharo in one hand and Pillar and both are not totally synchronized. 
+We have two sources: 
+- Pharo in one hand (a minimal version managed with the pharo* branches) and
+- Pillar (eg. all the tools and support for slides and books) and both are not totally synchronized. 
 
+Now we also maintain different versions between Pharo versions. Currently the situation is the following:
 
-Using Pharo 13: v2.7.x
+Working with Pharo 13: 
+- v2.9.2 a little release to support Foliage v2.1.0 and two new release of Pillar (probably one for P13 and one for P13 dropping pillar format).
+- v2.9.1 provides a better integration with Pillar (the Microdown visitors were not used before even if they worked)
+v2.7.x
 -  v2.7.2 merge pharo 13 changes / added gitbridge / OCompiler migration / cleaning syntax description / Ready for Pillar and Foliage
 -  v2.7.1 LatexQuoteblock-should-not-use-verbatim
 -  v2.7.0 Fix some errors and API/clients of the textualbuilder
 
 
-Using Pharo 12: v2.5.x
+Working with Pharo 12: v2.5.x
 - v2.5.6 - Change html visitor and test for annotated paragraph
 - v2.5.5 - add support for top-level header as slide definition
 - v2.5.4 - add backward compatible anchor in caption + tonel V3 format
@@ -231,7 +237,8 @@ Using Pharo 12: v2.5.x
 
 Watch out v2.6.0 is older than v.2.5.4
 
-### Pillar History
+### Extract of Pillar History
+
 For Pharo 12
 - v10.0.0 but with some links problems due to new inline parser using MD v2.5.0
 
@@ -243,7 +250,10 @@ For Pharo 10
 -v8.3.2 fixed baseline and updated readme
 
 
+
+
 ## Implementation
+
 The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in Appendix A.
 
 In short, the strategy is that at any point in time, we might have several children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of the current are open. 
