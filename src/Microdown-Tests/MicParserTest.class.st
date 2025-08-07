@@ -47,7 +47,6 @@ I''m really interested in any topics that evolve Pharo into a better Pharo.
 
 '.
 
-	self halt.
 	root := parser parse: source.
 	
 	self assert: root children size equals: 5.

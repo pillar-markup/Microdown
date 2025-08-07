@@ -488,7 +488,8 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
-	super visitParagraph: aParagraph
+	super visitParagraph: aParagraph.
+	canvas newLine.
 	"canvas tag
 		name: 'p';
 		with: [  ]"
