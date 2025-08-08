@@ -98,7 +98,7 @@ MicHTMLVisitorTest >> testConvertMicFile [
 	self
 		assert: (fileSystem / 'anExample1.html') asFileReference contents
 		equals: newLine , '<h1>Foo</h1><a id="sec1"></a>' , newLine
-			, 'Pharo is cool' , newLine
+			, 'Pharo is cool' , newLine, newLine
 			, '<pre><code>this is a code blu blu</code></pre>' , newLine
 ]
 
@@ -210,7 +210,7 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div style="background-color:#8ebf42">', newLine , 'Tintin', newLine,
+		equals: '<div style="background-color:#8ebf42">', newLine , 'Tintin', newLine, newLine,
  '</div>'.
 
 ]
@@ -224,7 +224,7 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 	source := 
 '<div style="background-color:#8ebf42">', newLine, 
 '<p>', 
-'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, newLine,
 '<span style="color:#1c87c9">', newLine, 
 'word', newLine, 
 '</span>', newLine,
@@ -241,14 +241,14 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 		assert: result trimBoth 
 		equals: '<div style="background-color:#8ebf42">', newLine, 
 '<p>', 
-'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, newLine,
 '<span style="color:#1c87c9">', newLine, 
-'word', newLine, 
+'word', newLine, newLine,
 '</span>', newLine,
 'we place it within &lt;span&gt; tag.', 
-'</p>', newLine, 
+'</p>', newLine, newLine, 
 '<p>', newLine,  
-'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, 
+'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, newLine, 
 '</p>', newLine, 
 '</div>'.
 ]
@@ -278,8 +278,8 @@ MicHTMLVisitorTest >> testRawParagraphSimpleDiv [
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
-		equals: '<div>', newLine , '<p>', newLine,'some text', newLine, '</p>', newLine,
-'and', newLine, '</div>'.
+		equals: '<div>', newLine , '<p>', newLine,'some text', newLine, newLine, '</p>', newLine,
+'and', newLine, newLine, '</div>'.
 
 ]
 

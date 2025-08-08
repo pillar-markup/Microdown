@@ -38,6 +38,12 @@ MicHTMLExporterTest >> newLine: aNewLine [
 	newLine := aNewLine
 ]
 
+{ #category : 'tests - paragraph' }
+MicHTMLExporterTest >> newLines: aString [
+
+	^ newLine, aString, newLine
+]
+
 { #category : 'utilities' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
@@ -88,8 +94,8 @@ I''m really interested in any topics that evolve Pharo into a better Pharo.
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testAccents [
 
-	self parse: 'éà' andCheckWeGet: newLine,
-'éà'
+	self parse: 'éà' andCheckWeGet: (self newLines:
+'éà')
 ]
 
 { #category : 'utilities' }
@@ -127,8 +133,8 @@ MicHTMLExporterTest >> testFigure [
 
 	self 
 		parse: factory figureSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure>')
 ]
 
 { #category : 'tests - formats' }
@@ -136,8 +142,8 @@ MicHTMLExporterTest >> testFigureBold [
 
 	self 
 		parse: factory figureBoldSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure>' )
 ]
 
 { #category : 'tests' }
@@ -145,8 +151,8 @@ MicHTMLExporterTest >> testFigureItalic [
 
 	self 
 		parse: factory figureItalicSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -154,8 +160,8 @@ MicHTMLExporterTest >> testFigureNested [
 
 	self 
 		parse: factory figureNestedSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure>'
+		andCheckWeGet: (self newLines: 
+'<figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -163,8 +169,8 @@ MicHTMLExporterTest >> testFigureReal [
 
 	self 
 		parse: factory figureRealSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -172,8 +178,8 @@ MicHTMLExporterTest >> testFigureStrike [
 
 	self 
 		parse: factory figureStrikeSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -181,8 +187,8 @@ MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 
 	self 
 		parse: factory figureWithLabelWithoutSizeSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -190,8 +196,8 @@ MicHTMLExporterTest >> testFigureWithoutCaption [
 
 	self 
 		parse: factory figureWithoutCaptionSample 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -199,8 +205,8 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 
 	self 
 		parse: factory figureSampleWithoutSizeAndLabel 
-		andCheckWeGet: newLine ,
-'<figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -208,8 +214,8 @@ MicHTMLExporterTest >> testGoutDeFraise [
 
 	self 
 		parse: factory figureGoutDeFraise 
-		andCheckWeGet: newLine ,
-'<figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure>'
+		andCheckWeGet: (self newLines:
+'<figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -245,21 +251,21 @@ MicHTMLExporterTest >> testMetaDataIsNotIgnored [
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
-	self parse: factory paragraphSample andCheckWeGet: newLine ,'Foo'
+	self parse: factory paragraphSample andCheckWeGet: (self newLines: 'Foo')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphLongWithAccents [
 
-	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: newLine ,
-'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.'
+	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: (self newLines:
+'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphNestedSample [
 
-	self parse: factory paragraphNestedSample andCheckWeGet:  newLine ,
-'this is a <strong><i>paragraph</i></strong>'
+	self parse: factory paragraphNestedSample andCheckWeGet:  (self newLines: 
+'this is a <strong><i>paragraph</i></strong>')
 ]
 
 { #category : 'tests - formats' }
@@ -267,28 +273,28 @@ MicHTMLExporterTest >> testParagraphWithBold [
 
 	self 
 		parse: factory paragraphBoldSample 
-		andCheckWeGet:  newLine ,
-'this is a <strong>paragraph</strong>'
+		andCheckWeGet:  (self newLines:
+'this is a <strong>paragraph</strong>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphWithItalic [
 
-	self parse: factory paragraphItalicSample andCheckWeGet: newLine ,
-'this is a <i>paragraph</i>'
+	self parse: factory paragraphItalicSample andCheckWeGet: (self newLines: 
+'this is a <i>paragraph</i>')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithMonospace [
 
-	self parse: factory paragraphMonospaceSample andCheckWeGet:  newLine ,
-'this is a <code>paragraph</code>'
+	self parse: factory paragraphMonospaceSample andCheckWeGet:  (self newLines: 
+'this is a <code>paragraph</code>')
 ]
 
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testPharoPage [
 
-	self halt.
+	self flag: #todo.
 	self parse: self pharoPage andCheckWeGet: ''
 ]
 
@@ -302,8 +308,8 @@ MicHTMLExporterTest >> testQuote [
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testStrike [
 
-	self parse: factory strikethroughFormatSample andCheckWeGet: newLine ,
-'<strike>Foo</strike>'
+	self parse: factory strikethroughFormatSample andCheckWeGet: (self newLines: 
+'<strike>Foo</strike>')
 ]
 
 { #category : 'tests' }
