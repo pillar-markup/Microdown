@@ -13,10 +13,12 @@ Class {
 { #category : 'tests - section' }
 MicDumperTest >> parse: aString andCheckWeGet: anExpectedString [
 
-	| mic |
+	| mic c |
 	mic := parser parse: aString.
 	visitor visit: mic children first.
-	self assert: visitor contents equals: anExpectedString
+	c := visitor contents. 
+	self assert: c equals: anExpectedString.
+	^ c
 ]
 
 { #category : 'running' }

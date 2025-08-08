@@ -41,11 +41,11 @@ MicHTMLExporterTest >> newLine: aNewLine [
 { #category : 'utilities' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
-	| mic |
-
+	| mic c |
 	mic := parser parse: 	aString.
 	writer visit: mic.
-	self assert: writer contents equals: aResultingString
+	c := writer contents. 
+	self assert: c equals: aResultingString
 ]
 
 { #category : 'utilities' }
