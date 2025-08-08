@@ -489,6 +489,14 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 
 	canvas newLine.
 	super visitParagraph: aParagraph.
+	"Introduce an extra new line to address problem of merged rendered paragraph. 
+	I did not reintroduce the <p> below because I do not remember why it was 
+	cancel. May be it was generating too many <p> 
+	Now it may happen that for intra block element tests <p> was generated
+	while in a normal setup (since the intrablock elements will be inside
+	a large paragraph) it will not be a problem. 
+	
+	So this issue should be further investigated."
 	canvas newLine.
 	"canvas tag
 		name: 'p';
