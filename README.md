@@ -174,7 +174,7 @@ You can also execute the script provided below.
 ```Smalltalk
 Metacello new
   baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:v2.7.2/src';
+  repository: 'github://pillar-markup/Microdown:v2.7.3/src';
   load.
 ```
 
