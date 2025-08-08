@@ -12,6 +12,16 @@ Microdown is a smaller markdown but it is more extensible. It contains a nice bu
 Microdown is now the default markup for the Pillar document compilation chain. 
 
 
+## Instal
+
+```Smalltalk
+Metacello new
+  baseline: 'Microdown';
+  repository: 'github://pillar-markup/Microdown:v2.9.3/src';
+  load.
+```
+
+
 ## Why should you use Microdown?
 
 Microdown is a smaller markdown but it is more extensible.
@@ -174,7 +184,7 @@ You can also execute the script provided below.
 ```Smalltalk
 Metacello new
   baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:v2.7.3/src';
+  repository: 'github://pillar-markup/Microdown:master/src';
   load.
 ```
 
