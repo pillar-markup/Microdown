@@ -24,6 +24,8 @@ In a giving mood? There are many ways to get involved!
 ') children first.
 	self assert: mic class equals: MicRawParagraphBlock. 
 	self assert: mic label equals: 'div'.
+	self assert: mic children first class equals: MicHeaderBlock.
+	self assert: mic children second class equals: MicParagraphBlock
 
 ]
 
@@ -35,6 +37,7 @@ No idea what it is :)
 </title>') children first.
 	self assert: mic class equals: MicRawParagraphBlock. 
 	self assert: mic label equals: 'title'.
+	self assert: mic children first class equals: MicParagraphBlock 
 
 ]
 
@@ -64,6 +67,20 @@ And after we get a paragraph') children.
 	
 	self assert: children first class equals: MicRawParagraphBlock. 
 	
+]
+
+{ #category : 'tests' }
+MicRawParagraphBlockTest >> testParagrapWithP [
+	| mic |
+	mic := (parser parse: '
+<p>
+This is a paragraph started normally with <p>
+</p>
+') children first.
+	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic label equals: 'p'.
+	self assert: mic children first class equals: MicParagraphBlock
+
 ]
 
 { #category : 'tests' }

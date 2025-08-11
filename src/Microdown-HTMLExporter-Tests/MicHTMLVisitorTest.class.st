@@ -234,20 +234,19 @@ MicHTMLVisitorTest >> testRawParagraphDivWithArgsAndNested [
 '</p>', newLine, 
 '</div>'.
 
-
 	result := writer convertMicString: source.
 	self 
 		assert: result trimBoth 
 		equals: '<div style="background-color:#8ebf42">', newLine, 
-'<p>', 
-'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this', newLine, newLine,
+'<p><p>', 
+'We use the &lt;div&gt; tag to group two paragraphs for applying a background to the text, and to add color to this</p>', newLine, newLine,
 '<span style="color:#1c87c9">', newLine, 
-'word', newLine, newLine,
+'<p>word</p>', newLine, newLine,
 '</span>', newLine,
-'we place it within &lt;span&gt; tag.', 
+'<p>we place it within &lt;span&gt; tag.</p>', 
 '</p>', newLine, newLine, 
 '<p>', newLine,  
-'Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.', newLine, newLine, 
+'<p>Pay attention, that the &lt;div&gt; tag is a block-level element, so a line break is placed before and after it.</p>', newLine, newLine, 
 '</p>', newLine, 
 '</div>'.
 ]

@@ -41,7 +41,7 @@ MicHTMLExporterTest >> newLine: aNewLine [
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> newLines: aString [
 
-	^ newLine, aString, newLine
+	^ newLine, '<p>', aString, '</p>', newLine
 ]
 
 { #category : 'utilities' }
@@ -294,14 +294,12 @@ MicHTMLExporterTest >> testParagraphWithMonospace [
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testPharoPage [
 
-	self parse: self pharoPage andCheckWeGet: '
-<h1>Pharo</h1>
-<a target="_blank" href="http://www.pharo.org/">Pharo</a> is a beautiful dynamically-typed reflective pure object-oriented language that we have been developing since 2008.<br>It is inspired by Smalltalk (I''m extremely grateful to Alan Kay and Dan Ingalls - they were so visionary and right). Now our vision for Pharo is to reinvent Smalltalk and produce a better system.<br>From that perspective, I''m used to say that Pharo is what we have and not what we want.<br>In essence, Pharo is the beginning of the journey and not the final goal. And you can change its future.
+	self parse: self pharoPage andCheckWeGet: newLine, '<h1>Pharo</h1>', newLine, 
+'<p><a target="_blank" href="http://www.pharo.org/">Pharo</a> is a beautiful dynamically-typed reflective pure object-oriented language that we have been developing since 2008.<br>It is inspired by Smalltalk (I''m extremely grateful to Alan Kay and Dan Ingalls - they were so visionary and right). Now our vision for Pharo is to reinvent Smalltalk and produce a better system.<br>From that perspective, I''m used to say that Pharo is what we have and not what we want.<br>In essence, Pharo is the beginning of the journey and not the final goal. And you can change its future.</p>', newLine, newLine, 
 
-You can check what companies are saying about it: <a target="_blank" href="https://youtu.be/6tdkKNX2g4s">Video</a>
+'<p>You can check what companies are saying about it: <a target="_blank" href="https://youtu.be/6tdkKNX2g4s">Video</a></p>', newLine, newLine,
 
-There are many aspects I would like to see being explored either by us or by others.<br>If you want to explore some of the following aspects, please go and let us know.<br>I''m really interested in any topics that evolve Pharo into a better Pharo.
-'
+'<p>There are many aspects I would like to see being explored either by us or by others.<br>If you want to explore some of the following aspects, please go and let us know.<br>I''m really interested in any topics that evolve Pharo into a better Pharo.</p>', newLine
 ]
 
 { #category : 'tests - formats' }
