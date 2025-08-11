@@ -45,3 +45,15 @@ visitParagraph: aParagraph
 	
 	'
 ]
+
+{ #category : 'as yet unclassified' }
+MyLog >> l2025_08_11 [
+
+	^ '
+## 2025 08 11 
+
+#### Fix the visit of the paragraph
+	Now it uses <p> as before. Foliage generation is working. 
+	
+	'
+]
