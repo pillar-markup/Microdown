@@ -1,12 +1,12 @@
 Class {
-	#name : 'MicBookTesterVisitorTest',
+	#name : 'MicCodeBlockValitorTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
 }
 
 { #category : 'utilities' }
-MicBookTesterVisitorTest >> parseAndTest: docText [
+MicCodeBlockValitorTest >> parseAndTest: docText [
 	| doc bTester |
 	doc := Microdown parse: docText.
 	bTester := MicCodeBlockValidator new.
@@ -15,7 +15,7 @@ MicBookTesterVisitorTest >> parseAndTest: docText [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExampleCodeblock [
+MicCodeBlockValitorTest >> testExampleCodeblock [
 	| docText bTester |
 	docText := '```example=true
 3 + 4 
@@ -27,7 +27,7 @@ MicBookTesterVisitorTest >> testExampleCodeblock [
 ]
 
 { #category : 'tests - failing book tests' }
-MicBookTesterVisitorTest >> testExampleCodeblockWithFailingTest [
+MicCodeBlockValitorTest >> testExampleCodeblockWithFailingTest [
 	| docText bTester |
 	docText := '```example=true
 3 + ''12''
@@ -40,7 +40,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithFailingTest [
 ]
 
 { #category : 'tests - failing book tests' }
-MicBookTesterVisitorTest >> testExampleCodeblockWithFalseTest [
+MicCodeBlockValitorTest >> testExampleCodeblockWithFalseTest [
 
 	| docText bTester |
 	docText := '```example=true
@@ -54,7 +54,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithFalseTest [
 ]
 
 { #category : 'tests - failing book tests' }
-MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
+MicCodeBlockValitorTest >> testExampleCodeblockWithNoBrakets [
 
 	| docText bTester |
 	docText := '```example=true
@@ -68,7 +68,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithNoBrakets [
 ]
 
 { #category : 'tests - strange codeblock' }
-MicBookTesterVisitorTest >> testExampleCodeblockWithTwoBrackets [
+MicCodeBlockValitorTest >> testExampleCodeblockWithTwoBrackets [
 	">> instead of > > > should not work so there is one failed test"
 	
 	| docText bTester |
@@ -83,7 +83,7 @@ MicBookTesterVisitorTest >> testExampleCodeblockWithTwoBrackets [
 ]
 
 { #category : 'tests - strange codeblock' }
-MicBookTesterVisitorTest >> testExampleEmptyCodeblockWithTwoBrackets [
+MicCodeBlockValitorTest >> testExampleEmptyCodeblockWithTwoBrackets [
 	
 	| docText bTester |
 	docText := '```example=true
@@ -99,7 +99,7 @@ MicBookTesterVisitorTest >> testExampleEmptyCodeblockWithTwoBrackets [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
+MicCodeBlockValitorTest >> testExpectedFailureForAFailure [
 	| docText bTester |
 	docText := '```example=true&expectedFailure=true
 3 + 4 
@@ -112,7 +112,7 @@ MicBookTesterVisitorTest >> testExpectedFailureForAFailure [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExpectedFailureForARaisedException [
+MicCodeBlockValitorTest >> testExpectedFailureForARaisedException [
 	| docText bTester |
 	docText := '```example=true&expectedFailure=true
 3 + ''a'' 
@@ -125,7 +125,7 @@ MicBookTesterVisitorTest >> testExpectedFailureForARaisedException [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExplanationIsExceptionCatchedInFailingTest [
+MicCodeBlockValitorTest >> testExplanationIsExceptionCatchedInFailingTest [
 	| docText bTester |
 	docText := '```example=true
 3 + ''12''
@@ -140,7 +140,7 @@ MicBookTesterVisitorTest >> testExplanationIsExceptionCatchedInFailingTest [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExplanationIsTestFailedWithoutException [
+MicCodeBlockValitorTest >> testExplanationIsTestFailedWithoutException [
 	
 	| docText bTester |
 	docText := '```example=true
@@ -155,7 +155,7 @@ MicBookTesterVisitorTest >> testExplanationIsTestFailedWithoutException [
 ]
 
 { #category : 'tests - valid book tests' }
-MicBookTesterVisitorTest >> testExplanationIsTestPassed [
+MicCodeBlockValitorTest >> testExplanationIsTestPassed [
 
 	| docText bTester |
 	docText := '```example=true
@@ -170,7 +170,7 @@ MicBookTesterVisitorTest >> testExplanationIsTestPassed [
 ]
 
 { #category : 'tests - no example' }
-MicBookTesterVisitorTest >> testNoExampleCodeblock [
+MicCodeBlockValitorTest >> testNoExampleCodeblock [
 	| docText bTester |
 	docText := '```
 3 + 4 
@@ -183,7 +183,7 @@ MicBookTesterVisitorTest >> testNoExampleCodeblock [
 ]
 
 { #category : 'tests - no example' }
-MicBookTesterVisitorTest >> testThreeCodeBlocksWithTwoExamples [
+MicCodeBlockValitorTest >> testThreeCodeBlocksWithTwoExamples [
 
 	| docText bTester |
 	docText := 
