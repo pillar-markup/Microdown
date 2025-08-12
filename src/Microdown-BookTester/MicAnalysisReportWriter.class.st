@@ -13,20 +13,20 @@ Class {
 }
 
 { #category : 'instance creation' }
-MicAnalysisReportWriter class >> reportForFolder: parent startingFrom: file [
+MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: fileReference [
 
 	| reporter checker validator |
 	reporter := self new.
 	
 	checker := MicReferenceChecker new.
-	checker fileSystem: parent.
-	checker checkProject: file.
+	checker fileSystem: folderReference.
+	checker checkProject: fileReference.
 
 	reporter addResults: checker results.
 
 	validator := MicCodeBlockValidator new.
-	checker fileSystem: parent.
-	checker checkProject: file.
+	checker fileSystem: folderReference.
+	checker checkProject: fileReference.
 	
 	reporter addResults: validator results
 ]
