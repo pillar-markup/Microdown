@@ -14,7 +14,8 @@ Class {
 	#instVars : [
 		'strategies',
 		'results',
-		'reportWriter'
+		'reportWriter',
+		'rootDirectory'
 	],
 	#category : 'Microdown-BookTester-Analysis',
 	#package : 'Microdown-BookTester',
@@ -25,6 +26,19 @@ Class {
 MicCodeBlockValidator class >> isAbstract [
 	<ignoreForCoverage "This method is ignored for test coverage because it is overriden in all subclasses and these subclasses don't need to do a super-send.">
 	^ false
+]
+
+{ #category : 'main API' }
+MicCodeBlockValidator >> checkProject: aFileReference [
+
+	| mainMic collector |
+	mainMic := Microdown parseFile: aFileReference.
+	collector := MicFileCollector new.
+	collector
+		rootDirectory: rootDirectory;
+		visit: mainMic.
+	collector visitedFiles do: [ :each | self start: each ].
+	
 ]
 
 { #category : 'initialization' }
@@ -41,6 +55,14 @@ MicCodeBlockValidator >> collectStrategies [
 MicCodeBlockValidator >> failedTests [
 
 	^ results select: [ :each | each isFailed ]
+]
+
+{ #category : 'accessing' }
+MicCodeBlockValidator >> fileSystem: aFileReference [
+	
+	self deprecated: 'use rootDirectory' 
+		transformWith: '`@receiver fileSystem: `@arg' -> '`@receiver rootDirectory: `@arg'.
+	self rootDirectory: aFileReference.
 ]
 
 { #category : 'initialization' }
@@ -82,6 +104,12 @@ MicCodeBlockValidator >> results [
 MicCodeBlockValidator >> results: anObject [
 
 	results := anObject
+]
+
+{ #category : 'accessing' }
+MicCodeBlockValidator >> rootDirectory: aFileReference [
+
+	rootDirectory := aFileReference
 ]
 
 { #category : 'accessing' }

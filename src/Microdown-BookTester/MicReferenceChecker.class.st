@@ -262,9 +262,9 @@ MicReferenceChecker >> results: anObject [
 ]
 
 { #category : 'accessing' }
-MicReferenceChecker >> rootDirectory: aFileReferemce [
+MicReferenceChecker >> rootDirectory: aFileReference [
 
-	rootDirectory := aFileReferemce
+	rootDirectory := aFileReference
 ]
 
 { #category : 'internal' }

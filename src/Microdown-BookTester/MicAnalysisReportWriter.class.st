@@ -12,6 +12,25 @@ Class {
 	#tag : 'Analysis'
 }
 
+{ #category : 'instance creation' }
+MicAnalysisReportWriter class >> reportForFolder: parent startingFrom: file [
+
+	| reporter checker validator |
+	reporter := self new.
+	
+	checker := MicReferenceChecker new.
+	checker fileSystem: parent.
+	checker checkProject: file.
+
+	reporter addResults: checker results.
+
+	validator := MicCodeBlockValidator new.
+	checker fileSystem: parent.
+	checker checkProject: file.
+	
+	reporter addResults: validator results
+]
+
 { #category : 'adding' }
 MicAnalysisReportWriter >> addResults: aCollection [
 
