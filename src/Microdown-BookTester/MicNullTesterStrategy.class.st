@@ -2,22 +2,22 @@
 When there is no tag other than none or language, does not verify the code block.
 "
 Class {
-	#name : 'MicBookTesterNullStrategy',
-	#superclass : 'MicBookTesterStrategy',
+	#name : 'MicNullTesterStrategy',
+	#superclass : 'MicCodeBlockTesterStrategy',
 	#category : 'Microdown-BookTester-Analysis',
 	#package : 'Microdown-BookTester',
 	#tag : 'Analysis'
 }
 
 { #category : 'hook' }
-MicBookTesterNullStrategy class >> handleKey [
+MicNullTesterStrategy class >> handleKey [
 
 	^ #language
 
 ]
 
 { #category : 'main API' }
-MicBookTesterNullStrategy >> verify: aMicCodeBlock [ 
+MicNullTesterStrategy >> verify: aMicCodeBlock [ 
 	
 
 	

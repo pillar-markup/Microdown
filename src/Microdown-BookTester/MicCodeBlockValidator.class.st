@@ -1,5 +1,12 @@
 "
-i visit code blocks and make sure that evaluation is correct 
+I visit code blocks and make sure that their 'evaluation' is correct.
+I generate a list of analysis results (subclasses of `MicResult`) that then will be consumed by the `MicAnalysisReportBuilder`. 
+This evaluation is specified by a tag. 
+
+- 'example' tag verifies that the code is returning the expected result.
+- 'sync' verifies if the code is in sync with the one in the image. 
+
+New code block validation can easily be added by adding subclasses to `MicCodeBlockTesterStrategy`.
 "
 Class {
 	#name : 'MicCodeBlockValidator',
@@ -23,7 +30,7 @@ MicCodeBlockValidator class >> isAbstract [
 { #category : 'initialization' }
 MicCodeBlockValidator >> collectStrategies [
 	
-	MicBookTesterStrategy allSubclasses do: [ :each |
+	MicCodeBlockTesterStrategy allSubclasses do: [ :each |
 		| strat |
 		strat := each new.
 		strat results: results. 
