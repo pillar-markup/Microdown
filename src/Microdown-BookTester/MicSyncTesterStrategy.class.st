@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicSyncTesterStrategy',
-	#superclass : 'MicBookTesterStrategy',
+	#superclass : 'MicCodeBlockTesterStrategy',
 	#category : 'Microdown-BookTester-Analysis',
 	#package : 'Microdown-BookTester',
 	#tag : 'Analysis'
