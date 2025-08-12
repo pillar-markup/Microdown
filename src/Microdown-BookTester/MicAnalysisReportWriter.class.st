@@ -28,7 +28,8 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	checker fileSystem: folderReference.
 	checker checkProject: fileReference.
 	
-	reporter addResults: validator results
+	reporter addResults: validator results.
+	^ reporter
 ]
 
 { #category : 'adding' }
