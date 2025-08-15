@@ -85,6 +85,17 @@ MicLaTeXWriter >> getStringForAll: aCollection [
 	^ visitor contents
 ]
 
+{ #category : 'public api' }
+MicLaTeXWriter >> includeFilesAndVisit: ast [
+	"Includes all the input file and convert to LaTeX the resulting document. 
+	Note that to be correctly included the file includer requires ast to know their fromFile.
+	Please use parseFile: to correctly set that information or set it manually."
+	
+	MicFileIncluder new expandAllInputOf: ast.
+	self visit: ast. 
+	^ self contents
+]
+
 { #category : 'visiting-document' }
 MicLaTeXWriter >> includeGraphicsFor: aFigure [
 
