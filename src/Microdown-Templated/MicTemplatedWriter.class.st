@@ -467,7 +467,7 @@ MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
 
 	self
 		writeRawText: ''
-		withTemplateFileName: self horizontalRuleTemplateFileName
+		withTemplateFileName: self horizontalLineTemplateFileName
 		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
 ]
 

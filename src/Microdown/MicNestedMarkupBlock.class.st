@@ -52,7 +52,7 @@ MicNestedMarkupBlock >> bodyElements [
 MicNestedMarkupBlock >> bodyFromLine: line [
 	
 	| newBlock |
-	newBlock := (self newBlockFor: line parent: self).
+	newBlock := self newBlockFor: line parent: self.
 	self parser setCurrent: newBlock.
 	^ newBlock
 ]

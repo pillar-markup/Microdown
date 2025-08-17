@@ -89,6 +89,7 @@ MicEnvironmentBlock class >> buildMicroDownUsing: aBuilder withComment: aString 
 
 { #category : 'visiting' }
 MicEnvironmentBlock >> accept: aVisitor [
+
  	^ aVisitor visitEnvironment: self
 ]
 
@@ -115,7 +116,6 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 	"we got <! env ...x !> foo bar or <! env ...x and we return env ...x "
 	
 	| extract |
-
 	firstLine := super extractFirstLineFrom: aLine.
 	firstLine := firstLine trimBoth.
 	extract := firstLine copyUpToSubstring: EnvironmentClosingBlockMarkup.

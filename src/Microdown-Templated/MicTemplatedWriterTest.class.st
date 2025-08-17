@@ -71,7 +71,7 @@ MicTemplatedWriterTest >> setUp [
 	self addTemplateFiles.
 ]
 
-{ #category : 'tests - setup' }
+{ #category : 'tests-setup' }
 MicTemplatedWriterTest >> testDirectory [
 	
 	self flag: #comeBack.
@@ -173,7 +173,7 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 	self
 		assertTemplate: MicTemplatedWriter figureTemplateFileName
 		writesValue: 'figure'
-		forNode: (PRFigure reference: 'bla.png')
+		forNode: (MicFigureBlock new reference: 'bla.png')
 ]
 
 { #category : 'tests-templatefiles' }
@@ -191,9 +191,9 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 
 	self
-		assertTemplate: MicTemplatedWriter horizontalRuleTemplateFileName
+		assertTemplate: MicTemplatedWriter horizontalLineTemplateFileName
 		writesValue: '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='
-		forNode: PRHorizontalRule new
+		forNode: MicHorizontalLineBlock new
 ]
 
 { #category : 'tests-templatefiles' }
@@ -214,15 +214,6 @@ MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 		forNode: (MicItalicFormatBlock new 
 						children: { (MicTextBlock new bodyString: 'Bar') };
 						yourself )
-]
-
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteLineBreakUsesLineBreakTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter lineBreakTemplateFileName
-		writesValue: 'line break'
-		forNode: PRLineBreak new
 ]
 
 { #category : 'tests-templatefiles' }
@@ -313,15 +304,6 @@ MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
 ]
 
 { #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteSectionUsesSectionTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter sectionTemplateFileName
-		writesValue: 'section'
-		forNode: PRSection new
-]
-
-{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironment [
 
 	self
@@ -340,9 +322,9 @@ MicTemplatedWriterTest >> testWriteTextInsideEnvironmentUsesTemplateInsideEnviro
 	self
 		assertTemplatePath: (Path * 'card' / 'paragraph.mustache')
 		writesValue: 'Paragraph in card'
-		forNode: ((PREnvironment named: 'card')
-			add: (PRParagraph new
-				add: (PRText content: 'Foo');
+		forNode: ((MicEnvironmentBlock named: 'card')
+			add: (MicParagraphBlock new
+				add: (MicTextBlock content: 'Foo');
 				yourself);
 			yourself)
 ]
