@@ -2,11 +2,18 @@ Class {
 	#name : 'MicTemplatedWriterTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'textDocument'
+		'textDocument',
+		'fileSystem'
 	],
 	#category : 'Microdown-Templated',
 	#package : 'Microdown-Templated'
 }
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> addTemplateFiles [
+
+	fileSystem / 'codeBlock.mustache' writeStreamDo: [ :s | s << self codeBlockContents ].
+]
 
 { #category : 'helpers' }
 MicTemplatedWriterTest >> assertTemplate: template writesValue: value forNode: node [
@@ -28,16 +35,26 @@ MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 	document := MicRootBlock new
 		addChild: node;
 		yourself.
-
 	result := textDocument writer write: document.
 
 	self assert: result equals: contents
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> codeBlockContents [
+
+	^ '
+<code>
+{{{contents}}}
+</code>	
+'
 ]
 
 { #category : 'helpers' }
 MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 
 	| templateFileReference |
+	
 	templateFileReference := textDocument templateDirectory resolve: aPath.
 	templateFileReference parent ensureCreateDirectory.
 	templateFileReference writeStreamDo: [ :stream | stream nextPutAll: contents ].
@@ -47,18 +64,22 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 MicTemplatedWriterTest >> setUp [
 
 	super setUp.
+	fileSystem := FileSystem memory.
 	textDocument := MicTextDocumentMaker new
-				baseDirectory: FileSystem memory;
+				baseDirectory: fileSystem;
 				yourself.
+	self addTemplateFiles.
 ]
 
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteAnchorUsesAnchorTemplate [
-
-	self
-		assertTemplate: 'todo.mustache'
-		writesValue: 'annotated paragraph'
-		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
+{ #category : 'tests - setup' }
+MicTemplatedWriterTest >> testDirectory [
+	
+	self flag: #comeBack.
+	"it sucks but I'm always lost in file API"
+	self 
+		assert: textDocument templateDirectory printString 
+		equals: 'memory:///mic'.
+	self assert: (fileSystem / 'codeBlock.mustache') exists
 ]
 
 { #category : 'tests-templatefiles' }
@@ -85,8 +106,11 @@ MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter codeBlockTemplateFileName
-		writesValue: 'codeBlockTemplate'
-		forNode: (PRCodeblock content: '^ self')
+		writesValue: '
+<code>
+^ self
+</code>'
+		forNode: (MicCodeBlock new body: '^ self'; yourself)
 ]
 
 { #category : 'tests-templatefiles' }
@@ -96,24 +120,6 @@ MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 		assertTemplate: MicTemplatedWriter commentedLineTemplateFileName
 		writesValue: 'commented line'
 		forNode: (PRCommentedLine content: 'some comment')
-]
-
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteDataItemUsesDataItemTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter dataItemTemplateFileName
-		writesValue: 'dataitem'
-		forNode: PRDataItem new
-]
-
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteDefinitionListUsesDefinitionListTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter definitionListTemplateFileName
-		writesValue: 'definitionList'
-		forNode: PRDefinitionList new
 ]
 
 { #category : 'tests-templatefiles' }
@@ -176,9 +182,9 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 	self
 		assertTemplate: MicTemplatedWriter headerTemplateFileName
 		writesValue: 'aHeader'
-		forNode: (PRHeader new
+		forNode: (MicHeaderBlock new
 			level: 2;
-			add: (PRText content: 'foo'))
+			add: (MicTextBlock new bodyString: 'foo'; yourself))
 ]
 
 { #category : 'tests-templatefiles' }
@@ -205,7 +211,9 @@ MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 	self
 		assertTemplate: MicTemplatedWriter italicTemplateFileName
 		writesValue: 'italicTemplate'
-		forNode: (PRItalicFormat with: (PRText content: 'Bar'))
+		forNode: (MicItalicFormatBlock new 
+						children: { (MicTextBlock new bodyString: 'Bar') };
+						yourself )
 ]
 
 { #category : 'tests-templatefiles' }
@@ -223,7 +231,7 @@ MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 	self
 		assertTemplate: MicTemplatedWriter listItemTemplateFileName
 		writesValue: 'list item'
-		forNode: PRListItem new
+		forNode: MicListItemBlock new
 ]
 
 { #category : 'tests-templatefiles' }
@@ -241,7 +249,7 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 	self
 		assertTemplate: MicTemplatedWriter monospaceTemplateFileName
 		writesValue: 'monospace'
-		forNode: (PRMonospaceFormat with: (PRText content: 'Bar'))
+		forNode: (MicMonospaceFormatBlock new bodyString: 'Bar')
 ]
 
 { #category : 'tests-templatefiles' }
@@ -283,7 +291,7 @@ MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 	self
 		assertTemplate: MicTemplatedWriter orderedListTemplateFileName
 		writesValue: 'ordered list'
-		forNode: PROrderedList new
+		forNode: MicOrderedListBlock new
 ]
 
 { #category : 'tests-templatefiles' }

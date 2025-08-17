@@ -5,9 +5,9 @@ Class {
 		'label',
 		'argumentsString'
 	],
-	#category : 'Microdown-Extensions',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'Extensions'
+	#tag : 'Model'
 }
 
 { #category : 'public' }
