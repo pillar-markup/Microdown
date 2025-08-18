@@ -637,7 +637,7 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 		ifNone: [ ^ aBlock value ].
 	
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
-		
+	self halt.
 	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
 	self visitText: (MicTextBlock new bodyString: result)
 ]

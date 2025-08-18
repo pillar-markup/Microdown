@@ -75,7 +75,8 @@ MyLog >> pt2025_08_16 [
 	elements are returned using xxxElements
 	- code:/body: is then expecting a string
 	- It means that bodyString: and bodyString are not good API.
-	
+	- horriblissime: look at the hack around children of MicMonospaceBlock
+	Terrible. It shows that there is a real problem.
 	
 '
 ]

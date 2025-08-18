@@ -184,7 +184,7 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 		writesValue: 'aHeader'
 		forNode: (MicHeaderBlock new
 			level: 2;
-			add: (MicTextBlock new bodyString: 'foo'; yourself))
+			headerElements: {(MicTextBlock new bodyString: 'foo'; yourself)})
 ]
 
 { #category : 'tests-templatefiles' }
@@ -240,7 +240,7 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 	self
 		assertTemplate: MicTemplatedWriter monospaceTemplateFileName
 		writesValue: 'monospace'
-		forNode: (MicMonospaceFormatBlock new bodyString: 'Bar')
+		forNode: (MicMonospaceFormatBlock new bodyString: 'Bar'; yourself)
 ]
 
 { #category : 'tests-templatefiles' }
