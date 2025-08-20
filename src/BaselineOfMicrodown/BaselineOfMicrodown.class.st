@@ -114,7 +114,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-Blog'
 				#'Microdown-Blog-Tests'
 				);
-			group: 'All' with: #('Core' #'Microdown-BrowserExtensions'  'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
+			group: 'All' with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
 			]
 
 
