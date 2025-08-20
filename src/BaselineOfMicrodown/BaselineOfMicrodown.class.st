@@ -89,13 +89,11 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-Blog-Tests' with: [
 				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
 		
-		"I do not want group without tests for now"
 		spec
 			group: 'Core' with: #('Microdown' 'Microdown-Tests');
 			group: 'ForPharo' with: #('Microdown' #'Microdown-BrowserExtensions');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
-			group: 'Editor' with: #('RichText' #'Microdown-PrettyPrinter'
-				#'Microdown-PrettyPrinter-Tests');
+			group: 'Editor' with: #('RichText' #'Microdown-PrettyPrinter' #'Microdown-PrettyPrinter-Tests');
 			group: 'LaTeX' with:  #('Core' #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests');
 			group: 'Extensions' with: #(
 				#'Microdown-Evaluator'
