@@ -200,13 +200,7 @@ The process is the following:
 The following script loads all groups in the Baseline:
 
 ```Smalltalk
-#( 'Microdown' 'BeautifulComments' 'DocumentBrowser' ) do: [ :name |
-        (IceRepository repositoryNamed: name)
-            ifNil: [ self inform: 'Project not found: ' , name ]
-            ifNotNil: [ :found |
-                found
-                    unload;
-                    forget ] ].
+
 
 Smalltalk globals
 	at: #BaselineOfMicrodown 
@@ -218,7 +212,18 @@ Metacello new
 	onConflict: [ :ex | ex useIncoming ];
 	onUpgrade: [ :ex | ex useIncoming ];
 	load: #('All').
- ```
+```
+
+In addition you may want to execute this before. 
+```
+#( 'Microdown' ) do: [ :name |
+        (IceRepository repositoryNamed: name)
+            ifNil: [ self inform: 'Project not found: ' , name ]
+            ifNotNil: [ :found |
+                found
+                    unload;
+                    forget ] ].
+```
 
 ## History
 
