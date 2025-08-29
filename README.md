@@ -18,7 +18,7 @@ Microdown is now the default markup for the Pillar document compilation chain.
 Metacello new
   baseline: 'Microdown';
   repository: 'github://pillar-markup/Microdown:v2.9.3/src';
-  load.
+  load
 ```
 
 
