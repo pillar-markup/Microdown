@@ -153,13 +153,12 @@ Microdown >> parse: aStreamOrString [
 
 { #category : 'facade' }
 Microdown >> parseFile: aFile [
-		"Parse and return a document from the argument marking it with the file it is contained in. This is important for path resolution."
-		
-		| root |
-		root := MicrodownParser parse: aFile contents. 
-		root fromFile: aFile.
-		^ root
-		
+    "Parse and return a document from the argument marking it with the file it is contained in. This is important for path resolution."
+
+    | root |
+    root := MicrodownParser parse: aFile contents.
+    root fromFile: aFile.
+    ^ root
 ]
 
 { #category : 'facade' }
