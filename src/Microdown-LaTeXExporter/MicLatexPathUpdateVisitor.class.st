@@ -38,10 +38,3 @@ MicLatexPathUpdateVisitor >> visitFigure: aFigure [
 	aFigure reference: (self newReferenceFor: aFigure).
 	super visitFigure: aFigure
 ]
-
-{ #category : 'unused' }
-MicLatexPathUpdateVisitor >> visitInternalLink: anInternalLink [
-	anInternalLink hasReference  
-		ifTrue: [ anInternalLink reference: (self newReferenceFor: anInternalLink) ].
-	super visitInternalLink: anInternalLink
-]
