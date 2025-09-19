@@ -6,7 +6,22 @@ Class {
 }
 
 { #category : 'tests' }
-MicRuleCheckerTest >> testCheckerFindOneMistake [
+MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
+
+	| ck doc |
+	ck := MicRuleChecker new. 
+	ck addRule: MicMisusedVocabularyRule sample.
+	ck prepareForChecking.
+	
+	
+	doc := Microdown parse: '# the sub presenter.'.
+	ck visit: doc.
+	self assert: ck errors size equals: 1
+
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindOneMistakeInParagraph [
 
 	| ck doc |
 	ck := MicRuleChecker new. 
