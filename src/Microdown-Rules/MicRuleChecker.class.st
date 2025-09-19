@@ -20,7 +20,7 @@ MicRuleChecker >> checkText: aText [
 
 	| foundProblems |
 	foundProblems := patterns select: [ :each | each match: aText ].
-	foundProblems do: [ :each | errors add: (MicUseofWrongVocabulary new
+	foundProblems do: [ :each | errors add: (MicUseofWrongVocabularyReport new
 											text: aText;
 											pattern: each) ]	
 ]

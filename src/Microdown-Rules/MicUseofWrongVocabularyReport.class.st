@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicUseofWrongVocabulary',
+	#name : 'MicUseofWrongVocabularyReport',
 	#superclass : 'Object',
 	#instVars : [
 		'text',
@@ -10,25 +10,25 @@ Class {
 }
 
 { #category : 'accessing' }
-MicUseofWrongVocabulary >> pattern [
+MicUseofWrongVocabularyReport >> pattern [
 
 	^ pattern
 ]
 
 { #category : 'accessing' }
-MicUseofWrongVocabulary >> pattern: anObject [
+MicUseofWrongVocabularyReport >> pattern: anObject [
 
 	pattern := anObject
 ]
 
 { #category : 'accessing' }
-MicUseofWrongVocabulary >> text [
+MicUseofWrongVocabularyReport >> text [
 
 	^ text
 ]
 
 { #category : 'accessing' }
-MicUseofWrongVocabulary >> text: anObject [
+MicUseofWrongVocabularyReport >> text: anObject [
 
 	text := anObject
 ]
