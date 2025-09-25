@@ -114,8 +114,6 @@ MicRuleCheckerTest >> testFile [
 
 { #category : 'tests' }
 MicRuleCheckerTest >> testGoodWord [
-
-	| r |
 	
 	self 
 		assert: (ck patterns collect: [ :p | p key ]) 
