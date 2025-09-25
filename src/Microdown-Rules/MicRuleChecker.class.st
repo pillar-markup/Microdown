@@ -16,13 +16,16 @@ MicRuleChecker >> addRule: aRule [
 ]
 
 { #category : 'as yet unclassified' }
-MicRuleChecker >> checkText: aText [
+MicRuleChecker >> checkText: aMicText [
 
 	| foundProblems |
-	foundProblems := patterns select: [ :each | each match: aText ].
-	foundProblems do: [ :each | errors add: (MicUseofWrongVocabularyReport new
-											text: aText;
-											pattern: each) ]	
+	foundProblems := patterns select: [ :each |
+		                 each match: aMicText bodyString ].
+	foundProblems do: [ :each |
+			errors add: (MicUseofWrongVocabularyReport new
+					 micElement: aMicText; 
+					 inFile: aMicText fromFile;
+					 pattern: each) ]
 ]
 
 { #category : 'accessing' }
@@ -52,5 +55,5 @@ MicRuleChecker >> prepareForChecking [
 { #category : 'visiting - inline elements' }
 MicRuleChecker >> visitText: aMicText [
 
-	self checkText: aMicText bodyString
+	self checkText: aMicText
 ]

@@ -1,9 +1,65 @@
 Class {
 	#name : 'MicRuleCheckerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'fileSystem'
+	],
 	#category : 'Microdown-Rules',
 	#package : 'Microdown-Rules'
 }
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> generateFilesystemExample [
+
+	| file |
+	file := fileSystem workingDirectory / 'example1WithMistake.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '# Foo
+Pharo is cool
+
+Spec uses a sub presenter
+```
+	this is a code
+```
+' ].
+
+	file := fileSystem workingDirectory / 'example2WithMistake.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '## Bar
+Pharo is **cool**
+
+sub-presenter is not correct.
+```
+	this is a code 2
+```
+' ]
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> setUp [ 
+	super setUp.
+	fileSystem := FileSystem memory.
+	self generateFilesystemExample.
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindOneMistakeInFile [
+
+	| ck doc |
+	ck := MicRuleChecker new. 
+	ck addRule: MicMisusedVocabularyRule sample.
+	ck prepareForChecking.
+	
+	
+	doc := Microdown parseFile: (fileSystem / 'example1WithMistake.md').
+	ck visit: doc.
+	self assert: ck errors size equals: 1.
+	self assert: ck errors first inFile equals: (fileSystem / 'example1WithMistake.md').
+
+	self 
+		assert: ck errors first explain
+		equals: 'Spec uses a sub presenter in file/example1WithMistake.md contains a mistake: *sub presenter*'
+ 
+
+]
 
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
@@ -16,7 +72,8 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
 	
 	doc := Microdown parse: '# the sub presenter.'.
 	ck visit: doc.
-	self assert: ck errors size equals: 1
+	self assert: ck errors size equals: 1.
+
 
 ]
 
@@ -43,4 +100,12 @@ MicRuleCheckerTest >> testCheckerPrepare [
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.
 	self assert: ck patterns equals: #('*sub-presenter*' '*sub presenter*' '*meta object*')
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testFile [
+	| filecontents |
+	filecontents := (fileSystem / 'example1WithMistake.md') readStream contents.
+	self assert: filecontents size equals: 71
+	
 ]
