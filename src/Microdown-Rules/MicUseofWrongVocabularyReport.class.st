@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'text',
 		'pattern',
-		'file'
+		'file',
+		'rule'
 	],
 	#category : 'Microdown-Rules',
 	#package : 'Microdown-Rules'
@@ -43,6 +44,12 @@ MicUseofWrongVocabularyReport >> pattern [
 MicUseofWrongVocabularyReport >> pattern: anObject [
 
 	pattern := anObject
+]
+
+{ #category : 'accessing' }
+MicUseofWrongVocabularyReport >> rule: aRule [ 
+	
+	rule := aRule
 ]
 
 { #category : 'accessing' }

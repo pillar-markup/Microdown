@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'rules',
 		'errors',
-		'patterns'
+		'patternPairs'
 	],
 	#category : 'Microdown-Rules',
 	#package : 'Microdown-Rules'
@@ -19,13 +19,16 @@ MicRuleChecker >> addRule: aRule [
 MicRuleChecker >> checkText: aMicText [
 
 	| foundProblems |
-	foundProblems := patterns select: [ :each |
-		                 each match: aMicText bodyString ].
+	"#( *xxx* -> r . *x x* -> r)"
+	
+	foundProblems := patternPairs select: [ :each |
+		                 each key match: aMicText bodyString ].
 	foundProblems do: [ :each |
 			errors add: (MicUseofWrongVocabularyReport new
 					 micElement: aMicText; 
 					 inFile: aMicText fromFile;
-					 pattern: each) ]
+					 rule: each value;
+					 pattern: each key) ]
 ]
 
 { #category : 'accessing' }
@@ -43,13 +46,16 @@ MicRuleChecker >> initialize [
 
 { #category : 'accessing' }
 MicRuleChecker >> patterns [
-	^ patterns
+	^ patternPairs
 ]
 
 { #category : 'visiting - inline elements' }
 MicRuleChecker >> prepareForChecking [
 	"in the future we should have multiple rules and managed this better"
-	patterns := rules first matchingPatterns 
+	
+	| r |
+	r := rules first.
+	patternPairs := r matchingPatterns collect: [ :each | each -> r ].
 ]
 
 { #category : 'visiting - inline elements' }

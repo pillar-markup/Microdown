@@ -95,11 +95,14 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInParagraph [
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerPrepare [
 
-	| ck |
+	| ck r |
 	ck := MicRuleChecker new. 
+	r := MicMisusedVocabularyRule sample.
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.
-	self assert: ck patterns equals: #('*sub-presenter*' '*sub presenter*' '*meta object*')
+	self 
+		assert: (ck patterns collect: [ :p | p key ]) 
+		equals: { '*sub-presenter*' . '*sub presenter*' . '*meta object*' }
 ]
 
 { #category : 'tests' }
