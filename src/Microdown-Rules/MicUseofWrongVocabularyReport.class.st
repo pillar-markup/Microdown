@@ -13,8 +13,10 @@ Class {
 
 { #category : 'as yet unclassified' }
 MicUseofWrongVocabularyReport >> explain [
-
-	^ text bodyString,  ' in file', file fullName, ' contains a mistake: ', pattern
+	| wrongWord goodWord |
+	wrongWord := pattern allButFirst allButLast.
+	goodWord := rule goodWordFor: wrongWord. 
+	^ 'Text: ', text bodyString,  ' in file', file fullName, ' contains a mistake: ', pattern , 'should not be used. We should use ', goodWord.
 ]
 
 { #category : 'as yet unclassified' }

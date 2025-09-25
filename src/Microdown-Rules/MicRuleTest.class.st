@@ -6,6 +6,23 @@ Class {
 }
 
 { #category : 'tests' }
+MicRuleTest >> testGoodWordFor [
+
+	| r |
+	r := MicMisusedVocabularyRule new.
+	r name: 'UseInstead'.
+	r pairs: { 'sub-presenter' -> 'subpresenter' .
+			'sub presenter' -> 'subpresenter' .
+			'meta object' -> 'metaobject'}.
+	self 
+		assert: (r goodWordFor: 'meta object') 
+		equals: 'metaobject'.
+	self 
+		assert: (r goodWordFor: 'sub presenter') 
+		equals: 'subpresenter'.
+]
+
+{ #category : 'tests' }
 MicRuleTest >> testMatchingSource [
 
 	| r |

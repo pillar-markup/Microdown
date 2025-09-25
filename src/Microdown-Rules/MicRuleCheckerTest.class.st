@@ -2,7 +2,8 @@ Class {
 	#name : 'MicRuleCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'fileSystem'
+		'fileSystem',
+		'ck'
 	],
 	#category : 'Microdown-Rules',
 	#package : 'Microdown-Rules'
@@ -38,38 +39,40 @@ MicRuleCheckerTest >> setUp [
 	super setUp.
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
+	
+	ck := MicRuleChecker new. 
+	ck addRule: MicMisusedVocabularyRule sample.
+	ck prepareForChecking.
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testCheckerExplain [
+
+	| doc |	
+	doc := Microdown parseFile: (fileSystem / 'example1WithMistake.md').
+	ck visit: doc.
+
+	self 
+		assert: ck errors first explain 
+		equals: 'Text: Spec uses a sub presenter in file/example1WithMistake.md contains a mistake: *sub presenter*should not be used. We should use subpresenter'
+
 ]
 
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInFile [
 
-	| ck doc |
-	ck := MicRuleChecker new. 
-	ck addRule: MicMisusedVocabularyRule sample.
-	ck prepareForChecking.
-	
+	| doc |
 	
 	doc := Microdown parseFile: (fileSystem / 'example1WithMistake.md').
 	ck visit: doc.
 	self assert: ck errors size equals: 1.
 	self assert: ck errors first inFile equals: (fileSystem / 'example1WithMistake.md').
-
-	self 
-		assert: ck errors first explain
-		equals: 'Spec uses a sub presenter in file/example1WithMistake.md contains a mistake: *sub presenter*'
- 
-
 ]
 
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
 
-	| ck doc |
-	ck := MicRuleChecker new. 
-	ck addRule: MicMisusedVocabularyRule sample.
-	ck prepareForChecking.
-	
-	
+	|  doc |
 	doc := Microdown parse: '# the sub presenter.'.
 	ck visit: doc.
 	self assert: ck errors size equals: 1.
@@ -80,11 +83,7 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInParagraph [
 
-	| ck doc |
-	ck := MicRuleChecker new. 
-	ck addRule: MicMisusedVocabularyRule sample.
-	ck prepareForChecking.
-	
+	| doc |
 	
 	doc := Microdown parse: 'this is text with a mistake: sub presenter should not be used.'.
 	ck visit: doc.
@@ -111,4 +110,14 @@ MicRuleCheckerTest >> testFile [
 	filecontents := (fileSystem / 'example1WithMistake.md') readStream contents.
 	self assert: filecontents size equals: 71
 	
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testGoodWord [
+
+	| r |
+	
+	self 
+		assert: (ck patterns collect: [ :p | p key ]) 
+		equals: { '*sub-presenter*' . '*sub presenter*' . '*meta object*' }
 ]

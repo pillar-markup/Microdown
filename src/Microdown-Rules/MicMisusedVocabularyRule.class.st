@@ -28,6 +28,14 @@ MicMisusedVocabularyRule >> computePatterns [
 	^ pairs collect: [ :each | '*', each key, '*'  ]
 ]
 
+{ #category : 'as yet unclassified' }
+MicMisusedVocabularyRule >> goodWordFor: aString [ 
+	
+	| pair |
+	pair := pairs detect: [ :each | each key = aString ].
+	^ pair value
+]
+
 { #category : 'accessing' }
 MicMisusedVocabularyRule >> matchingPatterns [
 	^ matchingPatterns ifNil: [ matchingPatterns := self computePatterns]
