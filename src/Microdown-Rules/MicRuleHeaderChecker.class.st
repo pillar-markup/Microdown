@@ -15,19 +15,21 @@ MicRuleHeaderChecker >> addRule: aRule [
 	rules add: aRule.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'visiting' }
 MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 	
-	aCollection first first isUppercase
+	aCollection first isCapitalized 
 		ifFalse: [ 
-			errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
+			
+		errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
 						micElement: anElement; 
-						inFile: anElement fromFile). 
+						concern: aCollection first;
+						inFile: anElement fromFile)
 						
 						]
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'visiting' }
 MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	
 	"words allButFirst allSatisfy: [ :each | each isCapitalized ]"
@@ -36,6 +38,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 			ifTrue: [  
 				errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
 								micElement: aMicHeader; 
+								concern: word;
 								inFile: aMicHeader fromFile) 
 						]
 		 ]
@@ -54,7 +57,7 @@ MicRuleHeaderChecker >> initialize [
 	errors := OrderedCollection new.
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'visiting' }
 MicRuleHeaderChecker >> visitHeader: aMicHeader [
 
 	| words |

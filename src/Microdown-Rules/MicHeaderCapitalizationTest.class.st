@@ -44,7 +44,11 @@ MicHeaderCapitalizationTest >> testHeaderFullIsNotCorrectlyCapitalized [
 	anError := checker errors first.	
 	self 
 		assert: anError micElement text
-		equals: 'About capitalisation of Headers'
+		equals: 'About capitalisation of Headers'.
+	
+	self 
+		assert: anError concern 
+		equals: 'Headers'
 		
 	
 ]
@@ -87,5 +91,8 @@ MicHeaderCapitalizationTest >> testHeaderStartWronglyStartWithLowercase [
 	error := checker errors first.
 	self 
 		assert: error micElement text 
-		equals: 'about capitalisation of headers'
+		equals: 'about capitalisation of headers'.
+	self 
+		assert: error concern  
+		equals: 'about'
 ]
