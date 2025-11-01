@@ -7,6 +7,25 @@ Class {
 }
 
 { #category : 'tests' }
+MicHeaderCapitalizationTest >> testHeaderCorrectlyStartWithUppercase [
+
+	| r text checker error |
+	r := MicHeaderCapitalizationRule new.
+	r name: 'Header Capitalization'.
+	r shouldVerifyHeadersAreNotCapitilized.
+	
+	text := Microdown parse: '
+# About capitalisation of headers		
+	'.
+	checker := MicRuleHeaderChecker new.
+	checker visit: text. 
+	self 
+		assert: checker errors size 
+		equals: 0.
+	
+]
+
+{ #category : 'tests' }
 MicHeaderCapitalizationTest >> testHeaderWronglyStartWithLowercase [
 
 	| r text checker error |
