@@ -3,12 +3,18 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'rules',
-		'errors'
+		'errors',
+		'strategy'
 	],
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
+
+{ #category : 'accessing' }
+MicRuleHeaderChecker >> addError: anError [
+	errors add: anError
+]
 
 { #category : 'adding' }
 MicRuleHeaderChecker >> addRule: aRule [ 
@@ -30,15 +36,12 @@ MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 { #category : 'visiting' }
 MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	
-	words allButFirst do: [ :word |
-		(rules first headersAreLowerCase and: [ word isCapitalized ])
-			ifTrue: [  
-				errors add: (MicElementOfHeaderIsWronglyCapitalizedReport new 
-								micElement: aMicHeader; 
-								concern: word;
-								inFile: aMicHeader fromFile) 
-						]
-		 ]
+	"In the future we should manage that if a word finishes by : the following one must be captitalized
+	e.g., 'Today and tomorrow: The days' and not 
+	'Today and tomorrow: the days' 
+	"
+	
+	strategy checkRest: words of: aMicHeader rule: rules first
 ]
 
 { #category : 'accessing' }
@@ -52,6 +55,21 @@ MicRuleHeaderChecker >> initialize [
 	super initialize.
 	rules := OrderedCollection new. 
 	errors := OrderedCollection new.
+	self verifyLowercase.
+]
+
+{ #category : 'initialization' }
+MicRuleHeaderChecker >> verifyLowercase [
+
+	strategy := MicRuleLowercaseHeaderStrategy new.
+	strategy checker: self
+]
+
+{ #category : 'initialization' }
+MicRuleHeaderChecker >> verifyUppercase [
+
+	strategy := MicRuleUppercaseHeaderStrategy new.
+	strategy checker: self
 ]
 
 { #category : 'visiting' }

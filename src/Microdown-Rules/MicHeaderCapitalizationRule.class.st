@@ -17,7 +17,7 @@ MicHeaderCapitalizationRule >> addDefaultTextThatShouldNotBeCapitalized [
 	
 	ifAddDefaultNotCapitalized 
 		ifTrue: [ 
-	uncapitalizableText addAll: #('to' 'as' 'in' 'of' 'a' 'an' 'one' 'both' 'the') ]
+			uncapitalizableText addAll: self defaultTextThatShouldNotBeCapitalized ]
 ]
 
 { #category : 'stop words' }
@@ -66,4 +66,11 @@ MicHeaderCapitalizationRule >> shouldVerifyHeadersAreCapitalized [
 MicHeaderCapitalizationRule >> shouldVerifyHeadersAreLowercase [
 
 	headersAreLowercase := true
+]
+
+{ #category : 'stop words' }
+MicHeaderCapitalizationRule >> uncapitalizableText [
+	
+	^ uncapitalizableText 
+	
 ]
