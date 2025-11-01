@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'tests' }
-MicHeaderCapitalizationTest >> testHeaderCorrectlyStartWithUppercase [
+MicHeaderCapitalizationTest >> testHeaderFullIsCorrectlyCapitalized [
 
 	| r text checker |
 	r := MicHeaderCapitalizationRule new.
@@ -26,7 +26,26 @@ MicHeaderCapitalizationTest >> testHeaderCorrectlyStartWithUppercase [
 ]
 
 { #category : 'tests' }
-MicHeaderCapitalizationTest >> testHeaderWronglyStartWithLowercase [
+MicHeaderCapitalizationTest >> testHeaderStartCorrectlyStartWithUppercase [
+
+	| r text checker |
+	r := MicHeaderCapitalizationRule new.
+	r name: 'Header Capitalization'.
+	r shouldVerifyHeadersAreNotCapitalized.
+	
+	text := Microdown parse: '
+# About capitalisation of headers		
+	'.
+	checker := MicRuleHeaderChecker new.
+	checker visit: text. 
+	self 
+		assert: checker errors size 
+		equals: 0.
+	
+]
+
+{ #category : 'tests' }
+MicHeaderCapitalizationTest >> testHeaderStartWronglyStartWithLowercase [
 
 	| r text checker error |
 	r := MicHeaderCapitalizationRule new.

@@ -27,6 +27,12 @@ MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 						]
 ]
 
+{ #category : 'visiting - inline elements' }
+MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
+	
+	words allButFirst allSatisfy: [ :each | each isCapitalized ]
+]
+
 { #category : 'accessing' }
 MicRuleHeaderChecker >> errors [
 	^ errors
@@ -46,6 +52,6 @@ MicRuleHeaderChecker >> visitHeader: aMicHeader [
 	| words |
 	words := aMicHeader text splitOn: Character space.
 	self checkFirstWord: words of: aMicHeader. 
-	"self checkRest: words."
+	self checkRest: words of: aMicHeader. 
 
 ]
