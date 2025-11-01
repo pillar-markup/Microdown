@@ -26,6 +26,30 @@ MicHeaderCapitalizationTest >> testHeaderFullIsCorrectlyCapitalized [
 ]
 
 { #category : 'tests' }
+MicHeaderCapitalizationTest >> testHeaderFullIsNotCorrectlyCapitalized [
+
+	| r text checker anError |
+	r := MicHeaderCapitalizationRule new.
+	r name: 'Header Capitalization'.
+	r shouldVerifyHeadersAreNotCapitalized.
+	
+	text := Microdown parse: '
+# About capitalisation of Headers		
+	'.
+	checker := MicRuleHeaderChecker new.
+	checker visit: text. 
+	self 
+		assert: checker errors size 
+		equals: 1.
+	anError := checker errors first.	
+	self 
+		assert: anError micElement text
+		equals: 'About capitalisation of Headers'
+		
+	
+]
+
+{ #category : 'tests' }
 MicHeaderCapitalizationTest >> testHeaderStartCorrectlyStartWithUppercase [
 
 	| r text checker |

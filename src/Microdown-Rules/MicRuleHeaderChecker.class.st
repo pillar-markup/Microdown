@@ -30,7 +30,15 @@ MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 { #category : 'visiting - inline elements' }
 MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	
-	words allButFirst allSatisfy: [ :each | each isCapitalized ]
+	"words allButFirst allSatisfy: [ :each | each isCapitalized ]"
+	words allButFirst do: [ :word |
+		word isCapitalized 
+			ifTrue: [  
+				errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
+								micElement: aMicHeader; 
+								inFile: aMicHeader fromFile) 
+						]
+		 ]
 ]
 
 { #category : 'accessing' }
