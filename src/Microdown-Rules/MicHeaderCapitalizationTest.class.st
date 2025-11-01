@@ -7,17 +7,38 @@ Class {
 }
 
 { #category : 'tests' }
+MicHeaderCapitalizationTest >> testCapitalizedHeaderFullIsCorrectlyCapitalized [
+
+	| r text checker |
+	r := MicHeaderCapitalizationRule new.
+	r name: 'Header Capitalization'.
+	r shouldVerifyHeadersAreCapitalized.
+	
+	text := Microdown parse: '
+# About Capitalisation of Headers		
+	'.
+	checker := MicRuleHeaderChecker new.
+	checker addRule: r.
+	checker visit: text. 
+	self 
+		assert: checker errors size 
+		equals: 0.
+	
+]
+
+{ #category : 'tests' }
 MicHeaderCapitalizationTest >> testHeaderFullIsCorrectlyCapitalized [
 
 	| r text checker |
 	r := MicHeaderCapitalizationRule new.
 	r name: 'Header Capitalization'.
-	r shouldVerifyHeadersAreNotCapitalized.
+	r shouldVerifyHeadersAreLowercase.
 	
 	text := Microdown parse: '
 # About capitalisation of headers		
 	'.
 	checker := MicRuleHeaderChecker new.
+	checker addRule: r.
 	checker visit: text. 
 	self 
 		assert: checker errors size 
@@ -31,13 +52,15 @@ MicHeaderCapitalizationTest >> testHeaderFullIsNotCorrectlyCapitalized [
 	| r text checker anError |
 	r := MicHeaderCapitalizationRule new.
 	r name: 'Header Capitalization'.
-	r shouldVerifyHeadersAreNotCapitalized.
+	r shouldVerifyHeadersAreLowercase.
 	
 	text := Microdown parse: '
 # About capitalisation of Headers		
 	'.
 	checker := MicRuleHeaderChecker new.
+	checker addRule: r.
 	checker visit: text. 
+	
 	self 
 		assert: checker errors size 
 		equals: 1.
@@ -59,12 +82,13 @@ MicHeaderCapitalizationTest >> testHeaderStartCorrectlyStartWithUppercase [
 	| r text checker |
 	r := MicHeaderCapitalizationRule new.
 	r name: 'Header Capitalization'.
-	r shouldVerifyHeadersAreNotCapitalized.
+	r shouldVerifyHeadersAreLowercase.
 	
 	text := Microdown parse: '
 # About capitalisation of headers		
 	'.
 	checker := MicRuleHeaderChecker new.
+	checker addRule: r.
 	checker visit: text. 
 	self 
 		assert: checker errors size 
@@ -78,12 +102,13 @@ MicHeaderCapitalizationTest >> testHeaderStartWronglyStartWithLowercase [
 	| r text checker error |
 	r := MicHeaderCapitalizationRule new.
 	r name: 'Header Capitalization'.
-	r shouldVerifyHeadersAreNotCapitalized.
+	r shouldVerifyHeadersAreLowercase.
 	
 	text := Microdown parse: '
 # about capitalisation of headers		
 	'.
 	checker := MicRuleHeaderChecker new.
+	checker addRule: r.
 	checker visit: text. 
 	self 
 		assert: checker errors size 

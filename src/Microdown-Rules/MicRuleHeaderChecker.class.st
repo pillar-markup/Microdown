@@ -20,21 +20,18 @@ MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 	
 	aCollection first isCapitalized 
 		ifFalse: [ 
-			
-		errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
+			errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
 						micElement: anElement; 
 						concern: aCollection first;
-						inFile: anElement fromFile)
-						
+						inFile: anElement fromFile)			
 						]
 ]
 
 { #category : 'visiting' }
 MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	
-	"words allButFirst allSatisfy: [ :each | each isCapitalized ]"
 	words allButFirst do: [ :word |
-		word isCapitalized 
+		(rules first headersAreLowerCase and: [ word isCapitalized ])
 			ifTrue: [  
 				errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
 								micElement: aMicHeader; 

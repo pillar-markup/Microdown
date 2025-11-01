@@ -2,7 +2,7 @@ Class {
 	#name : 'MicHeaderCapitalizationRule',
 	#superclass : 'MicRule',
 	#instVars : [
-		'shouldVerifyHeadersAreNotCapitalized'
+		'headersAreLowercase'
 	],
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
@@ -10,13 +10,19 @@ Class {
 }
 
 { #category : 'asserting' }
-MicHeaderCapitalizationRule >> shouldVerifyHeadersAreNotCapitalized [
+MicHeaderCapitalizationRule >> headersAreLowerCase [
 	
-	shouldVerifyHeadersAreNotCapitalized := true
+	^ headersAreLowercase 
 ]
 
 { #category : 'asserting' }
-MicHeaderCapitalizationRule >> shouldVerifyHeadersAreNotCapitilized [
-	
-	shouldVerifyHeadersAreNotCapitalized := true
+MicHeaderCapitalizationRule >> shouldVerifyHeadersAreCapitalized [
+
+	headersAreLowercase := false
+]
+
+{ #category : 'asserting' }
+MicHeaderCapitalizationRule >> shouldVerifyHeadersAreLowercase [
+
+	headersAreLowercase := true
 ]
