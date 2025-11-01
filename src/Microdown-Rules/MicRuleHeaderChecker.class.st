@@ -33,7 +33,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	words allButFirst do: [ :word |
 		(rules first headersAreLowerCase and: [ word isCapitalized ])
 			ifTrue: [  
-				errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
+				errors add: (MicElementOfHeaderIsWronglyCapitalizedReport new 
 								micElement: aMicHeader; 
 								concern: word;
 								inFile: aMicHeader fromFile) 

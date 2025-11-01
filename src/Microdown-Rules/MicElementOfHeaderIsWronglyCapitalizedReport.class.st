@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicFirstElementOfHeaderIsNotCapitalizedReport',
+	#name : 'MicElementOfHeaderIsWronglyCapitalizedReport',
 	#superclass : 'MicReport',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',

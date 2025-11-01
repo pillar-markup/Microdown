@@ -4,12 +4,23 @@ Class {
 	#instVars : [
 		'file',
 		'rule',
-		'text'
+		'text',
+		'concern'
 	],
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
+
+{ #category : 'accessing' }
+MicReport >> concern [
+	^ concern
+]
+
+{ #category : 'accessing' }
+MicReport >> concern: aString [ 
+	concern := aString
+]
 
 { #category : 'accessing' }
 MicReport >> inFile [
@@ -22,7 +33,7 @@ MicReport >> inFile: aFileReference [
 	file := aFileReference
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicReport >> micElement [
 	^ text
 ]
