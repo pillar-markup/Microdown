@@ -1,22 +1,23 @@
 Class {
-	#name : 'MicRuleChecker',
+	#name : 'MicRuleAllTextChecker',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'rules',
 		'errors',
 		'patternPairs'
 	],
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }
 
 { #category : 'adding' }
-MicRuleChecker >> addRule: aRule [ 
+MicRuleAllTextChecker >> addRule: aRule [ 
 	rules add: aRule.
 ]
 
 { #category : 'as yet unclassified' }
-MicRuleChecker >> checkText: aMicText [
+MicRuleAllTextChecker >> checkText: aMicText [
 
 	| foundProblems |
 	"#( *xxx* -> r . *x x* -> r)"
@@ -32,12 +33,12 @@ MicRuleChecker >> checkText: aMicText [
 ]
 
 { #category : 'accessing' }
-MicRuleChecker >> errors [
+MicRuleAllTextChecker >> errors [
 	^ errors
 ]
 
 { #category : 'initialization' }
-MicRuleChecker >> initialize [ 
+MicRuleAllTextChecker >> initialize [ 
 
 	super initialize.
 	rules := OrderedCollection new. 
@@ -45,12 +46,12 @@ MicRuleChecker >> initialize [
 ]
 
 { #category : 'accessing' }
-MicRuleChecker >> patterns [
+MicRuleAllTextChecker >> patterns [
 	^ patternPairs
 ]
 
 { #category : 'visiting - inline elements' }
-MicRuleChecker >> prepareForChecking [
+MicRuleAllTextChecker >> prepareForChecking [
 	"in the future we should have multiple rules and managed this better"
 	
 	| r |
@@ -59,7 +60,7 @@ MicRuleChecker >> prepareForChecking [
 ]
 
 { #category : 'visiting - inline elements' }
-MicRuleChecker >> visitText: aMicText [
+MicRuleAllTextChecker >> visitText: aMicText [
 
 	self checkText: aMicText
 ]

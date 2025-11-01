@@ -1,8 +1,9 @@
 Class {
 	#name : 'MicRuleTest',
 	#superclass : 'TestCase',
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }
 
 { #category : 'tests' }

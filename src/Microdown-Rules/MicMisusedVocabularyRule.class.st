@@ -2,12 +2,12 @@ Class {
 	#name : 'MicMisusedVocabularyRule',
 	#superclass : 'MicRule',
 	#instVars : [
-		'name',
 		'pairs',
 		'matchingPatterns'
 	],
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }
 
 { #category : 'examples' }
@@ -39,11 +39,6 @@ MicMisusedVocabularyRule >> goodWordFor: aString [
 { #category : 'accessing' }
 MicMisusedVocabularyRule >> matchingPatterns [
 	^ matchingPatterns ifNil: [ matchingPatterns := self computePatterns]
-]
-
-{ #category : 'accessing' }
-MicMisusedVocabularyRule >> name: aString [ 
-	name := aString
 ]
 
 { #category : 'accessing' }

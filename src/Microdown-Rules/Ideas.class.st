@@ -118,6 +118,7 @@ and not
 Class {
 	#name : 'Ideas',
 	#superclass : 'Object',
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }

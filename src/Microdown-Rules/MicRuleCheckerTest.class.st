@@ -5,8 +5,9 @@ Class {
 		'fileSystem',
 		'ck'
 	],
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }
 
 { #category : 'tests' }
@@ -40,7 +41,7 @@ MicRuleCheckerTest >> setUp [
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 	
-	ck := MicRuleChecker new. 
+	ck := MicRuleAllTextChecker new. 
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.
 ]
@@ -95,7 +96,7 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInParagraph [
 MicRuleCheckerTest >> testCheckerPrepare [
 
 	| ck r |
-	ck := MicRuleChecker new. 
+	ck := MicRuleAllTextChecker new. 
 	r := MicMisusedVocabularyRule sample.
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.

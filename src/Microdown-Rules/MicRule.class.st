@@ -1,6 +1,15 @@
 Class {
 	#name : 'MicRule',
 	#superclass : 'Object',
-	#category : 'Microdown-Rules',
-	#package : 'Microdown-Rules'
+	#instVars : [
+		'name'
+	],
+	#category : 'Microdown-Rules-Others',
+	#package : 'Microdown-Rules',
+	#tag : 'Others'
 }
+
+{ #category : 'accessing' }
+MicRule >> name: aString [ 
+	name := aString
+]
