@@ -12,13 +12,20 @@ Microdown is a smaller markdown but it is more extensible. It contains a nice bu
 Microdown is now the default markup for the Pillar document compilation chain. 
 
 
-## Instal
+## Install
 
 ```Smalltalk
+
+Smalltalk globals
+	at: #BaselineOfMicrodown 
+	ifPresent: [ :c | c removeFromSystem ].
+
 Metacello new
-  baseline: 'Microdown';
-  repository: 'github://pillar-markup/Microdown:v2.9.3/src';
-  load
+	baseline: 'Microdown';
+	repository: 'github://pillar-markup/Microdown:v2.9.3/src';
+	onConflict: [ :ex | ex useIncoming ];
+	onUpgrade: [ :ex | ex useIncoming ];
+	load: #('All').
 ```
 
 
