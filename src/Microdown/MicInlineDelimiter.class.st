@@ -47,8 +47,9 @@ MicInlineDelimiter class >> at: markup [
 MicInlineDelimiter class >> initialize [
 
 	<script>
-	DelimiterDictionary := nil.
-	Regex := nil
+	self resetDelimiters.
+	"If methods are changes we want to reset the caches"
+	self codeChangeAnnouncer weak when: MethodAnnouncement send: #resetDelimiters to: self
 ]
 
 { #category : 'class initialization' }
@@ -65,12 +66,6 @@ MicInlineDelimiter class >> initializeRegex [
 	Regex := ((self all collect: [ :each | each markupAsRegex]) joinUsing: '|') asRegex
 ]
 
-{ #category : 'compiling' }
-MicInlineDelimiter class >> noteCompilationOf: aSelector meta: isMeta [
-	"I reset when any method is recompiled"
-	self initialize
-]
-
 { #category : 'private utilities' }
 MicInlineDelimiter class >> regexNot: markup [
 	"return a regular expression (string), which is recognizing anything but markup"
@@ -85,6 +80,13 @@ MicInlineDelimiter class >> regexNot: markup [
 		 ].
 	str nextPut: $);nextPut: $*.
 	^ str contents
+]
+
+{ #category : 'class initialization' }
+MicInlineDelimiter class >> resetDelimiters [
+
+	DelimiterDictionary := nil.
+	Regex := nil
 ]
 
 { #category : 'adding' }
