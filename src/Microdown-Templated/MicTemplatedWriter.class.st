@@ -518,12 +518,12 @@ MicTemplatedWriter >> visitMailLink: aPRMailLink [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitMonospace: aPRMonospaceFormat [ 
+MicTemplatedWriter >> visitMonospace: aMicMonospaceFormat [ 
 	
 	self
-		write: aPRMonospaceFormat
+		write: aMicMonospaceFormat
 		withTemplateFileName: self monospaceTemplateFileName
-		ifAbsent: [ defaultWriter visitMonospace: aPRMonospaceFormat ]
+		ifAbsent: [ defaultWriter visitMonospace: aMicMonospaceFormat ]
 ]
 
 { #category : 'visiting' }

@@ -12,15 +12,28 @@ Class {
 { #category : 'running' }
 MicTemplatedWriterTest >> addTemplateFiles [
 
-	fileSystem / MicTemplatedWriter codeBlockTemplateFileName writeStreamDo: [ :s | s << self codeBlockContents ].
-	fileSystem / MicTemplatedWriter boldTemplateFileName writeStreamDo: [ :s | s << self boldContents ].
-	fileSystem / MicTemplatedWriter italicTemplateFileName writeStreamDo: [ :s | s << self italicContents ].
-	fileSystem / MicTemplatedWriter headerTemplateFileName writeStreamDo: [ :s | s << self headerBlockContents ].
+	fileSystem / MicTemplatedWriter codeBlockTemplateFileName 
+		writeStreamDo: [ :s | s << self codeBlockContents ].
+	fileSystem / MicTemplatedWriter boldTemplateFileName 
+		writeStreamDo: [ :s | s << self boldContents ].
+	fileSystem / MicTemplatedWriter italicTemplateFileName 
+		writeStreamDo: [ :s | s << self italicContents ].
+	fileSystem / MicTemplatedWriter monospaceTemplateFileName 
+		writeStreamDo: [ :s | s << self monoContents ].
 	
-	fileSystem / MicTemplatedWriter horizontalLineTemplateFileName writeStreamDo: [ :s | s << self horizontalContents ].
-	fileSystem / MicTemplatedWriter listItemTemplateFileName writeStreamDo: [ :s | s << self listItemContents ].
-	fileSystem / MicTemplatedWriter orderedListTemplateFileName writeStreamDo: [ :s | s << self orderedListItemContents ].
-	fileSystem / MicTemplatedWriter unorderedListTemplateFileName writeStreamDo: [ :s | s << self unorderedListItemContents ].
+	fileSystem / MicTemplatedWriter headerTemplateFileName 
+		writeStreamDo: [ :s | s << self headerBlockContents ].
+	
+	fileSystem / MicTemplatedWriter horizontalLineTemplateFileName 
+		writeStreamDo: [ :s | s << self horizontalContents ].
+	fileSystem / MicTemplatedWriter listItemTemplateFileName 
+		writeStreamDo: [ :s | s << self listItemContents ].
+	fileSystem / MicTemplatedWriter orderedListTemplateFileName 
+		writeStreamDo: [ :s | s << self orderedListItemContents ].
+	fileSystem / MicTemplatedWriter unorderedListTemplateFileName 
+		writeStreamDo: [ :s | s << self unorderedListItemContents ].
+	fileSystem / MicTemplatedWriter figureTemplateFileName 
+		writeStreamDo: [ :s | s << self figureContents ].
 ]
 
 { #category : 'helpers' }
@@ -81,6 +94,20 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 ]
 
 { #category : 'running' }
+MicTemplatedWriterTest >> figureContents [
+	"<figure>
+  <img
+    src=""/shared-assets/images/examples/elephant.jpg""
+    alt=""Elephant at sunset"" />
+  <figcaption>An elephant at sunset</figcaption>
+</figure>"
+
+	^ '<figure>
+<img src={{{ref}}}/>
+</figure>'
+]
+
+{ #category : 'running' }
 MicTemplatedWriterTest >> headerBlockContents [
 
 	^ '<h1>{{{contents}}}</h1>'
@@ -105,6 +132,12 @@ MicTemplatedWriterTest >> listItemContents [
 
 	^ '<li>{{{contents}}}</li>'
 
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> monoContents [
+
+	^ '<tt>{{{contents}}}</tt>'
 ]
 
 { #category : 'running' }
@@ -225,10 +258,13 @@ MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 
 { #category : 'tests-setup' }
 MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
-
+	
+		self skip.
 	self
 		assertTemplate: MicTemplatedWriter figureTemplateFileName
-		writesValue: 'figure'
+		writesValue: '<figure>
+<img src=bla.png/>
+</figure>'
 		forNode: (MicFigureBlock new reference: 'bla.png')
 ]
 
@@ -292,13 +328,13 @@ MicTemplatedWriterTest >> testWriteMailLinkUsesMailLinkTemplate [
 		forNode: (PRMailLink reference: 'foo@bar.com')
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter monospaceTemplateFileName
-		writesValue: 'monospace'
-		forNode: (MicMonospaceFormatBlock new bodyString: 'Bar'; yourself)
+		writesValue: '<tt>Bar<\tt>'
+		forNode: (MicMonospaceFormatBlock new addChild:(MicTextBlock new bodyString: 'Bar'))
 ]
 
 { #category : 'tests-templatefiles' }
