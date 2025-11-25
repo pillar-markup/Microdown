@@ -12,11 +12,15 @@ Class {
 { #category : 'running' }
 MicTemplatedWriterTest >> addTemplateFiles [
 
-	fileSystem / 'codeBlock.mustache' writeStreamDo: [ :s | s << self codeBlockContents ].
+	fileSystem / MicTemplatedWriter codeBlockTemplateFileName writeStreamDo: [ :s | s << self codeBlockContents ].
 	fileSystem / MicTemplatedWriter boldTemplateFileName writeStreamDo: [ :s | s << self boldContents ].
 	fileSystem / MicTemplatedWriter italicTemplateFileName writeStreamDo: [ :s | s << self italicContents ].
+	fileSystem / MicTemplatedWriter headerTemplateFileName writeStreamDo: [ :s | s << self headerBlockContents ].
 	
-	fileSystem / 'header.mustache' writeStreamDo: [ :s | s << self headerBlockContents ].
+	fileSystem / MicTemplatedWriter horizontalLineTemplateFileName writeStreamDo: [ :s | s << self horizontalContents ].
+	fileSystem / MicTemplatedWriter listItemTemplateFileName writeStreamDo: [ :s | s << self listItemContents ].
+	fileSystem / MicTemplatedWriter orderedListTemplateFileName writeStreamDo: [ :s | s << self orderedListItemContents ].
+	fileSystem / MicTemplatedWriter unorderedListTemplateFileName writeStreamDo: [ :s | s << self unorderedListItemContents ].
 ]
 
 { #category : 'helpers' }
@@ -79,9 +83,13 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 { #category : 'running' }
 MicTemplatedWriterTest >> headerBlockContents [
 
-	^ '<h1>
-{{{contents}}}
-</h1>'
+	^ '<h1>{{{contents}}}</h1>'
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> horizontalContents [
+
+	^  '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='
 ]
 
 { #category : 'running' }
@@ -90,6 +98,20 @@ MicTemplatedWriterTest >> italicContents [
 	^ '<em>
 {{{contents}}}
 </em>'
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> listItemContents [
+
+	^ '<li>{{{contents}}}</li>'
+
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> orderedListItemContents [
+
+	^ '<o>{{{contents}}}</o>'
+
 ]
 
 { #category : 'running' }
@@ -210,18 +232,18 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 		forNode: (MicFigureBlock new reference: 'bla.png')
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter headerTemplateFileName
-		writesValue: 'aHeader'
+		writesValue: '<h1>foo</h1>'
 		forNode: (MicHeaderBlock new
 			level: 2;
 			headerElements: {(MicTextBlock new bodyString: 'foo'; yourself)})
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 
 	self
@@ -252,12 +274,12 @@ Bar
 						yourself )
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter listItemTemplateFileName
-		writesValue: 'list item'
+		writesValue: '<li></li>'
 		forNode: MicListItemBlock new
 ]
 
@@ -312,12 +334,12 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
 					yourself)
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter orderedListTemplateFileName
-		writesValue: 'ordered list'
+		writesValue: '<o></o>'
 		forNode: MicOrderedListBlock new
 ]
 
@@ -363,4 +385,11 @@ MicTemplatedWriterTest >> testWriteTextInsideEnvironmentUsesTemplateInsideEnviro
 				add: (MicTextBlock content: 'Foo');
 				yourself);
 			yourself)
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> unorderedListItemContents [
+
+	^ '<u>{{{contents}}}</u>'
+
 ]
