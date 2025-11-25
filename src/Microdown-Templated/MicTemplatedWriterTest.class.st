@@ -13,7 +13,9 @@ Class {
 MicTemplatedWriterTest >> addTemplateFiles [
 
 	fileSystem / 'codeBlock.mustache' writeStreamDo: [ :s | s << self codeBlockContents ].
-	fileSystem / 'bold.mustache' writeStreamDo: [ :s | s << self boldContents ].
+	fileSystem / MicTemplatedWriter boldTemplateFileName writeStreamDo: [ :s | s << self boldContents ].
+	fileSystem / MicTemplatedWriter italicTemplateFileName writeStreamDo: [ :s | s << self italicContents ].
+	
 	fileSystem / 'header.mustache' writeStreamDo: [ :s | s << self headerBlockContents ].
 ]
 
@@ -80,6 +82,14 @@ MicTemplatedWriterTest >> headerBlockContents [
 	^ '<h1>
 {{{contents}}}
 </h1>'
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> italicContents [
+
+	^ '<em>
+{{{contents}}}
+</em>'
 ]
 
 { #category : 'running' }
@@ -229,12 +239,14 @@ MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
 		forNode: (PRInternalLink new reference: 'bla.pillar')
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter italicTemplateFileName
-		writesValue: 'italicTemplate'
+		writesValue: '<em>
+Bar
+</em>'
 		forNode: (MicItalicFormatBlock new 
 						children: { (MicTextBlock new bodyString: 'Bar') };
 						yourself )
