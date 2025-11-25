@@ -113,15 +113,13 @@ MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTempla
 		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
-	self skip.
-	"I do not get why this is producing boldTemplate and not <b>bar</b>"
-	self halt.
+
 	self
-		assertTemplate: (fileSystem / 'bold.mustache') 
+		assertTemplate: MicTemplatedWriter boldTemplateFileName 
 		writesValue: '<b>
-boldTemplate
+Bar
 </b>'
 		forNode: (MicBoldFormatBlock new children:
 				 { (MicTextBlock new bodyString: 'Bar') })
