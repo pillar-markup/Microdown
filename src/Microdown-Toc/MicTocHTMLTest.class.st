@@ -26,7 +26,7 @@ lkhkhk
 
 { #category : 'tests' }
 MicTocHTMLTest >> testHTMLRender [
-
+	"Please have a look at the MicAbstractLaTexWriterTest"
 
 	| builder htmlVisitor |
 	builder := self builder. 
@@ -34,6 +34,9 @@ MicTocHTMLTest >> testHTMLRender [
 	htmlVisitor visit: builder toc.
 	self 
 		assert: htmlVisitor contents 
-		equals: 'Header1Header2'
+		equals: String crlf, '<ol>', String crlf,
+'<li>Header1</li>', String crlf,
+'<li>Header2</li>', String crlf,
+'</ol>'
 
 ]

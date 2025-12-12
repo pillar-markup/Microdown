@@ -20,7 +20,10 @@ MicTocBuilder >> initialize [
 { #category : 'accessing' }
 MicTocBuilder >> toc [
 
-	^ MicRootBlock new children: tocItems; yourself 
+	^ MicRootBlock new children: { 
+			(MicOrderedListBlock new 
+				children: tocItems; yourself) } ; 
+			yourself  
 ]
 
 { #category : 'accessing' }

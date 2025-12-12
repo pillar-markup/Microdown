@@ -2,8 +2,8 @@ Class {
 	#name : 'MicTocEntry',
 	#superclass : 'MicElement',
 	#instVars : [
-		'children',
-		'header'
+		'header',
+		'children'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
