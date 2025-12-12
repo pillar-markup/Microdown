@@ -34,6 +34,11 @@ MicTemplatedWriterTest >> addTemplateFiles [
 		writeStreamDo: [ :s | s << self unorderedListItemContents ].
 	fileSystem / MicTemplatedWriter figureTemplateFileName 
 		writeStreamDo: [ :s | s << self figureContents ].
+	fileSystem / MicTemplatedWriter commentedLineTemplateFileName 
+		writeStreamDo: [ :s | s << self commentContents ].	
+
+
+
 ]
 
 { #category : 'helpers' }
@@ -82,6 +87,12 @@ MicTemplatedWriterTest >> codeBlockContents [
 {{{contents}}}
 {{{contents}}}
 </code>'
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> commentContents [
+
+	^ '%%% :- {{{contents}}}'
 ]
 
 { #category : 'helpers' }
@@ -202,13 +213,13 @@ MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 		forNode: (MicCodeBlock new body: '^ self'; yourself)
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter commentedLineTemplateFileName
-		writesValue: 'commented line'
-		forNode: (PRCommentedLine content: 'some comment')
+		writesValue: '%%% :- some comment'
+		forNode: (MicCommentBlock new text: 'some comment')
 ]
 
 { #category : 'tests-templatefiles' }
@@ -333,8 +344,8 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter monospaceTemplateFileName
-		writesValue: '<tt>Bar<\tt>'
-		forNode: (MicMonospaceFormatBlock new addChild:(MicTextBlock new bodyString: 'Bar'))
+		writesValue: '<tt>Bar</tt>'
+		forNode: (MicMonospaceFormatBlock new children:{(MicTextBlock new bodyString: 'Bar')})
 ]
 
 { #category : 'tests-templatefiles' }

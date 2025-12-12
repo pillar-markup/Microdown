@@ -401,6 +401,15 @@ MicTemplatedWriter >> visitCode: aCodeBlock [
 		ifAbsent: [ defaultWriter visitCode: aCodeBlock ]
 ]
 
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitComment: aCommentBlock [
+
+	self
+		writeRawText: aCommentBlock text
+		withTemplateFileName: self commentedLineTemplateFileName
+		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
+]
+
 { #category : 'old visiting' }
 MicTemplatedWriter >> visitCommentedLine: aPRText [ 
 
