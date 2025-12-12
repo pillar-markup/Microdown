@@ -148,7 +148,7 @@ MicCSSProvider >> findCssNamed: aString [
 	"Answer a <MicCSSFramework> matching aString"
 	
 	^ self frameworks 
-		detect: [ : framework | framework name = aString ]
+		detect: [ :framework | framework name = aString ]
 ]
 
 { #category : 'frameworks' }
@@ -372,7 +372,8 @@ MicCSSProvider >> hasFrameworksInstalled [
 	| destFileRef |
 	
 	destFileRef := self destinationPath asFileReference.
-	^ destFileRef exists and: [ destFileRef entries anySatisfy: [ : entry | entry reference extension = 'css' ] ]
+	^ destFileRef exists and: [ destFileRef entries 
+			anySatisfy: [ :entry | entry reference extension = 'css' ] ]
 ]
 
 { #category : 'accessing' }
@@ -386,6 +387,19 @@ MicCSSProvider >> installFrameworks [
 		ifTrue: [ self destinationPath asFileReference ensureDeleteAll ]."
 	
 	self cssDownloader downloadCSSFrameworks
+]
+
+{ #category : 'testing' }
+MicCSSProvider >> installedFrameworks [
+	"Returns the list of frameworks available locally on disc"
+	"self new installedFrameworks"
+	
+	| destFileRef |
+	destFileRef := self destinationPath asFileReference.
+	destFileRef exists 
+		ifFalse: [ ^ #() ].
+	^ destFileRef entries 
+		select: [ :entry | entry reference extension = 'css' ]
 ]
 
 { #category : 'frameworks' }
