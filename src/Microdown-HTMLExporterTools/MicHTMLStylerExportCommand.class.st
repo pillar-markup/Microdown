@@ -5,9 +5,8 @@ A command to write the Microdown input file as HTML.
 Class {
 	#name : 'MicHTMLStylerExportCommand',
 	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'default' }

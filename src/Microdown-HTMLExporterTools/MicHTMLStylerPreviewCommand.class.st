@@ -4,9 +4,8 @@ Command to export the Microdown document to HTML and open a web browser to previ
 Class {
 	#name : 'MicHTMLStylerPreviewCommand',
 	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'default' }

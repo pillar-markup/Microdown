@@ -9,9 +9,8 @@ Class {
 		'cssSourceCodePresenter',
 		'cssStatusbarPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'accessing' }
@@ -77,7 +76,7 @@ MicHTMLStylerCSSSourcePresenter >> updateSizeMessage: anInteger [
 
 	self cssStatusbarPresenter 
 		pushMessage: 
-			(String streamContents: [ : stream |
+			(String streamContents: [ :stream |
 				stream
 					<< 'File size: ';
 					<< anInteger humanReadableByteSizeString ])

@@ -4,9 +4,8 @@ Abstract command concerning Microdown HTML Styler.
 Class {
 	#name : 'MicHTMLStylerCommand',
 	#superclass : 'CmCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'initialization' }

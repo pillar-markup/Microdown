@@ -4,9 +4,8 @@ A simple command to request for open .mic files.
 Class {
 	#name : 'MicHTMLStylerOpenCommand',
 	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'default' }

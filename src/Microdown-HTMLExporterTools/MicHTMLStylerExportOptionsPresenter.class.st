@@ -16,9 +16,8 @@ Class {
 		'overwriteCheckboxPresenter',
 		'browseOutputButton'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'defaults' }
@@ -30,7 +29,7 @@ MicHTMLStylerExportOptionsPresenter >> defaultDestinationPath [
 { #category : 'layout' }
 MicHTMLStylerExportOptionsPresenter >> defaultLayout [ 
 
-	^ SpGridLayout build: [ : builder |
+	^ SpGridLayout build: [ :builder |
 		builder
 			beColumnNotHomogeneous;
 			rowSpacing: 15;
@@ -117,7 +116,7 @@ MicHTMLStylerExportOptionsPresenter >> selectOutputDirectory [
 	"Private - Callback for choose directory button"
 	
 	self requestDirectoryForOpen
-		ifNotNil: [ : dirRef | 
+		ifNotNil: [ :dirRef | 
 			self styler hasMicHtmlDocument 
 				ifTrue: [ self micHtmlDocument destinationPath: dirRef fullName ].
 			outputPathTextPresenter text: dirRef fullName ].

@@ -16,9 +16,8 @@ Class {
 		'useMinifiedButton',
 		'versionButtons'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'private' }
@@ -45,7 +44,7 @@ MicHTMLStylerCSSInfoPresenter >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight 
 		add: themesListPresenter expand: false fill: true padding: 10;	
-		add: (SpGridLayout build: [ : builder |
+		add: (SpGridLayout build: [ :builder |
 			builder
 				beColumnNotHomogeneous;		
 				add: 'Repository';
@@ -209,7 +208,7 @@ MicHTMLStylerCSSInfoPresenter >> updatePresenterLinks [
 		{ self minCssLinkPresenter . self cssFramework minCssUrl . 'Open a web browser to visit the minified CSS file' } .
 		{ self normalizeCssLinkPresenter . self cssFramework normalizeUrl . 'Open a web browser to visit the Normalize CSS file' } .
 		{ self resetCssLinkPresenter . self cssFramework resetUrl . 'Open a web browser to visit the Reset CSS file' } 
-	} do: [ : linkArray |
+	} do: [ :linkArray |
 		self 
 			setLink: linkArray first 
 			url: linkArray second 

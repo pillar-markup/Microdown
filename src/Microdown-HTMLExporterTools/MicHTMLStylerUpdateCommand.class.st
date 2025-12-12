@@ -4,9 +4,8 @@ Command to update the application source code and styles
 Class {
 	#name : 'MicHTMLStylerUpdateCommand',
 	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'default' }

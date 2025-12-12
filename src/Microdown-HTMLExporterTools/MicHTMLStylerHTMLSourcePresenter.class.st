@@ -9,10 +9,16 @@ Class {
 		'htmlSourceCodePresenter',
 		'htmlStatusbarPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
+
+{ #category : 'examples' }
+MicHTMLStylerHTMLSourcePresenter class >> example [
+	<script>
+	
+	self new open
+]
 
 { #category : 'layout' }
 MicHTMLStylerHTMLSourcePresenter >> defaultLayout [ 

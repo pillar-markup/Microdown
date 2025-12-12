@@ -6,9 +6,8 @@ See class side to open the UI.
 Class {
 	#name : 'MicHTMLStylerApp',
 	#superclass : 'SpApplication',
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'instance creation' }
@@ -30,7 +29,7 @@ MicHTMLStylerApp class >> open [
 
 { #category : 'running' }
 MicHTMLStylerApp >> start [
-	" Private - See superimplementor's comment "
+	"Private - See superimplementor's comment"
 
-	(MicHTMLStyler newApplication: self) open.
+	(MicHTMLStyler newApplication: self) open
 ]

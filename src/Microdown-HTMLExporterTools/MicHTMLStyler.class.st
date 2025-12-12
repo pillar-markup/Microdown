@@ -26,9 +26,8 @@ Class {
 		'micDocumentFileRef',
 		'stylerNotebookPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'instance creation' }
@@ -76,7 +75,7 @@ MicHTMLStyler >> cssDetailsPresenter [
 MicHTMLStyler >> cssFramework [ 
 	"Answer a <MicCSSFramework>"
 	
-	^ self cssListPresenter ifNotNil: [ : cssList |
+	^ self cssListPresenter ifNotNil: [ :cssList |
 		cssList selectedItem ]
 ]
 
@@ -111,7 +110,7 @@ MicHTMLStyler >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom 
 		add: toolbarPresenter height: self class toolbarHeight + 15;	
-		add:  (SpPanedLayout newLeftToRight
+		add: (SpPanedLayout newLeftToRight
 			positionOfSlider: 20 percent;
 			add: cssListPresenter;
 			add: stylerNotebookPresenter;
@@ -319,7 +318,7 @@ MicHTMLStyler >> optionalToolbarCommands [
 MicHTMLStyler >> selectedCssFramework [
 
 	^ self cssListPresenter
-		ifNotNil: [ : cssFrameworkList | cssFrameworkList selectedItem ]
+		ifNotNil: [ :cssFrameworkList | cssFrameworkList selectedItem ]
 ]
 
 { #category : 'initialization' }
@@ -409,12 +408,12 @@ MicHTMLStyler >> updateMicHtmlDocument [
 MicHTMLStyler >> updatePresenter [
 
 	super updatePresenter.
-	self cssDetailsPresenter updatePresenter	.
+	self cssDetailsPresenter updatePresenter.
 	self updateTitle.
 	self 
 		updateMicHtmlDocument;
 		updateHtmlSourcePresenter;
-		updateHtmlOptionsPresenter.
+		updateHtmlOptionsPresenter
 
 ]
 

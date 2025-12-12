@@ -4,9 +4,8 @@ Command to close the application
 Class {
 	#name : 'MicHTMLStylerQuitCommand',
 	#superclass : 'MicHTMLStylerCommand',
-	#category : 'Microdown-HTMLExporter-Spec-Commands',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec-Commands'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'default' }

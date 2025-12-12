@@ -17,10 +17,16 @@ Class {
 		'encodingOptionsListPresenter',
 		'languageOptionsPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
+
+{ #category : 'examples' }
+MicHTMLStylerHTMLOptionsPresenter class >> example [
+	<script>
+	
+	self new open
+]
 
 { #category : 'layout' }
 MicHTMLStylerHTMLOptionsPresenter >> charSet [
@@ -190,7 +196,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeLanguageOptionsListPresenter [
 		help: 'Select the document language';
 		items: self languageOptions;
 		selectItem: self defaultLanguageSelection;
-		whenSelectedItemChangedDo: [ : selection |
+		whenSelectedItemChangedDo: [ :selection |
 			self micHtmlDocument languageId: (selection first: 2).
 			self styler updateHtmlSourcePresenter ].
 
@@ -201,7 +207,7 @@ MicHTMLStylerHTMLOptionsPresenter >> initializeLinksOptionCheckPresenter [
 		
 	linksOpenNewPage := self newCheckBox 
 		state: true;
-		whenChangedDo: [ : state |
+		whenChangedDo: [ :state |
 			state 
 				ifFalse: [ self micHtmlDocumentConfiguration beTargetAttributeSelf ]
 				ifTrue: [ self micHtmlDocumentConfiguration beTargetAttributeBlank ].
@@ -224,13 +230,13 @@ MicHTMLStylerHTMLOptionsPresenter >> initializePresenters [
 MicHTMLStylerHTMLOptionsPresenter >> languageOptions [
 
 	^ (ISOLanguageDefinition iso2LanguageTable associations 
-		select: [ : assoc | assoc key size = 2 ] 
-		thenCollect: [ : assoc | assoc key , ' - ' , assoc value language ]) asSortedCollection
+		select: [ :assoc | assoc key size = 2 ] 
+		thenCollect: [ :assoc | assoc key , ' - ' , assoc value language ]) asSortedCollection
 ]
 
 { #category : 'accessing' }
 MicHTMLStylerHTMLOptionsPresenter >> micHtmlDocumentConfiguration [
 	"Answer a <MicHTMLConfiguration> for the receiver's document"
 
-	^ self micHtmlDocument configuration.
+	^ self micHtmlDocument configuration
 ]

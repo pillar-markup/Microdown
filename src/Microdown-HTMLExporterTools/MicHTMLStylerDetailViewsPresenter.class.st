@@ -18,9 +18,8 @@ Class {
 		'htmlOptionsPresenter',
 		'exportOptionsPresenter'
 	],
-	#category : 'Microdown-HTMLExporter-Spec',
-	#package : 'Microdown-HTMLExporter',
-	#tag : 'Spec'
+	#category : 'Microdown-HTMLExporterTools',
+	#package : 'Microdown-HTMLExporterTools'
 }
 
 { #category : 'accessing' }
