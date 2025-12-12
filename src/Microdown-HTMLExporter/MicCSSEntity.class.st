@@ -174,7 +174,7 @@ MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
 
 	^ frwSpec 
 		at: versionSymbol
-		ifPresent: [ : frwSpecCssUrl | self newCssFileFor: frwSpecCssUrl ]
+		ifPresent: [ :frwSpecCssUrl | self newCssFileFor: frwSpecCssUrl ]
 		ifAbsent: [ MicCSSNullFile new  ].
 
 ]

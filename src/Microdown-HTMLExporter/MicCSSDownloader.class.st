@@ -39,7 +39,7 @@ MicCSSDownloader >> downloadCSSFramework: cssFramework [
 	self downloadCSSFrameworkFrom: cssFramework minCssUrl.
 	self downloadCSSFrameworkFrom: cssFramework cssUrl.
 
-	cssFramework themes do: [ : cssFrwThemeUrl |
+	cssFramework themes do: [ :cssFrwThemeUrl |
 		self downloadCSSFrameworkFrom: cssFrwThemeUrl cssUrl.
 		self downloadCSSFrameworkFrom: cssFrwThemeUrl minCssUrl ].
 ]
@@ -55,7 +55,7 @@ MicCSSDownloader >> downloadCSSFrameworkFrom: anURLString [
 	dest := self destinationPath asFileReference.
 	dest ensureCreateDirectory.
 	dest := dest / cssReference pathSegments last.
-	dest ifExists: [dest delete].
+	dest ifExists: [ dest delete ].
 	
 	FileSystem disk copy: cssReference toReference: dest
 ]
@@ -65,7 +65,7 @@ MicCSSDownloader >> downloadCSSFrameworks [
 	"Download CSS frameworks specified in the receiver's CSS provider"
 
 	self frameworks
-		do: [ : cssFramework | self downloadCSSFramework: cssFramework ]
+		do: [ :cssFramework | self downloadCSSFramework: cssFramework ]
 		displayingProgress: 'Downloading CSS frameworks...'.
 
 ]

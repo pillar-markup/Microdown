@@ -163,6 +163,6 @@ MicCSSFramework >> themes: aDictionary [
 	"Set the receiver's normal themes according to aDictionary"
 
 	themes := OrderedCollection new.
-	aDictionary associationsDo: [ : themeInfoDict |
+	aDictionary associationsDo: [ :themeInfoDict |
 		themes add: (self newCssTheme: themeInfoDict) ]
 ]

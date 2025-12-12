@@ -1,7 +1,7 @@
 "
-Represents a Text/HTML file to be displayed in a web browser. It can be created with a CSS style **newWithStyle:**, and passing a `Microdown` content String through **fromMicrodown:** as parameter.
+Represents a Text/HTML file to be displayed in a web browser. It can be created with a CSS style using the message `newWithStyle:`, and passing a `Microdown` content String through `fromMicrodown:` as parameter.
 
-## Example
+#### Example
 
 The following generates a HTML String from Microdown contents:
 
