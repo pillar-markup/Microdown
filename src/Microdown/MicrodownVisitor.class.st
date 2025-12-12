@@ -93,6 +93,14 @@ MicrodownVisitor >> visitDay: aDay [
 	"subclassResponsibility"
 ]
 
+{ #category : 'visiting - inline elements' }
+MicrodownVisitor >> visitElement: anElement [
+	"I'm doing nothing when visiting a super generic element.
+	I'm here just to let the development of new functionality be smooth."
+
+	
+]
+
 { #category : 'visiting' }
 MicrodownVisitor >> visitEnvironment: anEnvironment [
 

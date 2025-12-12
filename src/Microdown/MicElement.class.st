@@ -41,6 +41,13 @@ MicElement class >> extensionClassFor: tag [
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
 ]
 
+{ #category : 'visiting' }
+MicElement >> accept: aVisitor [
+	"This could be a subclassResponsibility but we can think that we do not want to force a method definition"
+	
+	aVisitor visitElement: self
+]
+
 { #category : 'private' }
 MicElement >> basicParent: aMicBlock [
 
