@@ -18,11 +18,17 @@ MicTocBuilder >> initialize [
 ]
 
 { #category : 'accessing' }
+MicTocBuilder >> toc [
+
+	^ MicRootBlock new children: tocItems; yourself 
+]
+
+{ #category : 'accessing' }
 MicTocBuilder >> tocItems [
 	^ tocItems
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicTocBuilder >> tocitems [
 	self shouldBeImplemented.
 ]

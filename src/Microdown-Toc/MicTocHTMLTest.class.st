@@ -31,7 +31,7 @@ MicTocHTMLTest >> testHTMLRender [
 	| builder htmlVisitor |
 	builder := self builder. 
 	htmlVisitor := MicHTMLVisitor new.
-	htmlVisitor visit: (MicRootBlock new children: builder tocItems).
+	htmlVisitor visit: builder toc.
 	self 
 		assert: htmlVisitor contents 
 		equals: 'Header1Header2'
