@@ -470,7 +470,10 @@ MicHTMLVisitor >> visitOrderedList: anOrderedList [
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			super visitOrderedList: anOrderedList  ]
+			anOrderedList children 
+				do: [ :each | each accept: self ] ]
+			
+	
 ]
 
 { #category : 'visiting - list' }
