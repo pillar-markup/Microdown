@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'tests' }
-MicTocTest >> testSimpleEntry [
+MicTocTest >> testSimpleFlatEntries [
 
 
 	| doc builder |
@@ -21,7 +21,31 @@ lkhkhk
 '.
 	builder := MicTocBuilder new.
 	builder visit: doc.
-	self assert: builder tocItems size equals: 2
-	
+	self assert: builder tocItems size equals: 2.
+	self assert: builder tocItems first header text equals: 'Header1'.
+	self assert: builder tocItems second header text equals: 'Header2'.
+
+]
+
+{ #category : 'tests' }
+MicTocTest >> testSimpleNestedEntries [
+
+
+	| doc builder |
+	doc := Microdown parse: '
+# Header1
+
+lkjlkjkl
+
+## Header11
+
+
+lkhkhk
+'.
+	builder := MicTocBuilder new.
+	builder visit: doc.
+	self assert: builder tocItems size equals: 1.
+	self assert: builder tocItems first header text equals: 'Header1'.
+	self assert: builder tocItems first children first header text equals: 'Header11'.
 
 ]

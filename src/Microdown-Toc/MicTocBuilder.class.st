@@ -2,7 +2,8 @@ Class {
 	#name : 'MicTocBuilder',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'tocItems'
+		'tocItems',
+		'headerStack'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
@@ -12,7 +13,8 @@ Class {
 MicTocBuilder >> initialize [ 
 	
 	super initialize.
-	tocItems := OrderedCollection new
+	tocItems := OrderedCollection new.
+	headerStack := Stack new.
 ]
 
 { #category : 'accessing' }
@@ -28,6 +30,23 @@ MicTocBuilder >> tocitems [
 { #category : 'initialization' }
 MicTocBuilder >> visitHeader: aMicHeader [
 
-	tocItems add: (MicTocEntry new for: aMicHeader)
-	
+	headerStack isEmpty 
+		ifTrue: [ 
+			| newTopLevelTocEnty |
+			newTopLevelTocEnty := MicTocEntry new for: aMicHeader.
+			headerStack push: newTopLevelTocEnty.
+			tocItems add: newTopLevelTocEnty.
+			^ self ].
+	aMicHeader level = headerStack top level
+		ifTrue: [ 
+			| newTopLevelTocEnty |
+			headerStack pop.
+			newTopLevelTocEnty := MicTocEntry new for: aMicHeader.
+			headerStack push: newTopLevelTocEnty.
+			tocItems add: newTopLevelTocEnty.
+			]
+		ifFalse: [ 
+			aMicHeader level > headerStack top level
+				ifTrue: [ 
+					headerStack top addChild: (MicTocEntry new for: aMicHeader) ] ]
 ]
