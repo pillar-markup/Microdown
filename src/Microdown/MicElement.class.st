@@ -1,3 +1,9 @@
+"
+I'm the abstract root of all the microdown document tree elements.
+I have two kinds of subclasses: block level (codeBlock, paragraph, list...) and intra block level elements (text, formatted, bold, link...).
+
+I'm a nice superclass for entities that are not parsed such as table of content entries and the like.  
+"
 Class {
 	#name : 'MicElement',
 	#superclass : 'Object',

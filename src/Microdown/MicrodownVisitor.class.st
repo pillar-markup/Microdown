@@ -184,8 +184,8 @@ MicrodownVisitor >> visitNote: aNote [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
-
-	^ anOrderedList children collect: [ :each | self visitOrderedListItem: each ]
+	
+	^ anOrderedList children collect: [ :each | each accept: self ]
 ]
 
 { #category : 'visiting - list' }
