@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicTocEntry',
-	#superclass : 'Object',
+	#superclass : 'MicElement',
 	#instVars : [
 		'children',
 		'header'
@@ -8,6 +8,12 @@ Class {
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
+
+{ #category : 'visiting' }
+MicTocEntry >> accept: aVisitor [
+
+	aVisitor visitToCEntry: self
+]
 
 { #category : 'adding' }
 MicTocEntry >> addChild: aMicTocEntry [ 

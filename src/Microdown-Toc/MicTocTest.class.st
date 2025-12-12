@@ -6,6 +6,26 @@ Class {
 }
 
 { #category : 'tests' }
+MicTocTest >> testHMLT [
+
+
+	| doc builder |
+	doc := Microdown parse: '
+# Header1
+
+lkjlkjkl
+
+## Header11
+
+
+lkhkhk
+'.
+	builder := MicHTMLVisitor  new.
+	builder visit: doc.
+	
+]
+
+{ #category : 'tests' }
 MicTocTest >> testSimpleFlatEntries [
 
 
