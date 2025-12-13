@@ -54,14 +54,9 @@ MicTemplatedWriter class >> definitionListTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> emptyParagraphTemplateFileName [
-
-	^ 'emptyParagraph.mustache'
-]
-
-{ #category : 'templates' }
 MicTemplatedWriter class >> externalLinkTemplateFileName [
-	
+	"this is for [](https://....)"
+
 	^ 'externalLink.mustache'
 ]
 
@@ -457,7 +452,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		withTemplateFileName: self figureTemplateFileName
 		extraArguments: {
 			'ref' -> aFigure fileStringWithoutHostFile.
-			'caption' -> (aFigure hasChildren ifTrue: [ aFigure text ] ifFalse: [ '' ]) }
+			'caption' -> (aFigure hasChildren ifTrue: [ aFigure caption ] ifFalse: [ '' ]) }
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
 

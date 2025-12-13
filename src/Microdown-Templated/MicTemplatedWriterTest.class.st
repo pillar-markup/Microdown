@@ -36,7 +36,8 @@ MicTemplatedWriterTest >> addTemplateFiles [
 		writeStreamDo: [ :s | s << self figureContents ].
 	fileSystem / MicTemplatedWriter commentedLineTemplateFileName 
 		writeStreamDo: [ :s | s << self commentContents ].	
-
+	fileSystem / MicTemplatedWriter externalLinkTemplateFileName 
+		writeStreamDo: [ :s | s << self externalLinkContents ].	
 
 
 ]
@@ -105,6 +106,12 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 ]
 
 { #category : 'running' }
+MicTemplatedWriterTest >> externalLinkContents [
+
+	^ '<a href={{{contents}}}>{{{caption}}}</a>'
+]
+
+{ #category : 'running' }
 MicTemplatedWriterTest >> figureContents [
 	"<figure>
   <img
@@ -113,9 +120,7 @@ MicTemplatedWriterTest >> figureContents [
   <figcaption>An elephant at sunset</figcaption>
 </figure>"
 
-	^ '<figure>
-<img src={{{ref}}}/>
-</figure>'
+	^ '<figure><img src={{{ref}}}/><figcaption>{{{caption}}}</figcaption></figure>'
 ]
 
 { #category : 'running' }
@@ -223,15 +228,6 @@ MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 ]
 
 { #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteEmptyParagraphsUsesEmptyParagraphTemplate [
-
-	self
-		assertTemplate: MicTemplatedWriter emptyParagraphTemplateFileName
-		writesValue: 'emptyParagraph'
-		forNode: PREmptyParagraph new
-]
-
-{ #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteEnvironmentItselfUsesMainTemplate [
 
 	self
@@ -263,20 +259,17 @@ MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter externalLinkTemplateFileName
-		writesValue: 'external link'
-		forNode: (PRExternalLink new reference: 'http://pharo.org')
+		writesValue: 'http://pharo.org'
+		forNode: (Microdown parse: '[Pharo url](http://www.pharo.org)')
 ]
 
-{ #category : 'tests-setup' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
-	
-		self skip.
+
 	self
 		assertTemplate: MicTemplatedWriter figureTemplateFileName
-		writesValue: '<figure>
-<img src=bla.png/>
-</figure>'
-		forNode: (MicFigureBlock new reference: 'bla.png')
+		writesValue: '<figure><img src=files/pharologo.png/><figcaption>This is a caption</figcaption></figure>'
+		forNode: (Microdown parse: '![This is a caption](files/pharologo.png)') children first children first
 ]
 
 { #category : 'new tests' }
