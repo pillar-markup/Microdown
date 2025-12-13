@@ -333,21 +333,21 @@ MicTemplatedWriter >> visitAnchorReference: aReference [
 		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
 ]
 
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 
 	| arguments |
-	arguments := { 'annotation' -> anAnnotatedParagraph annotation }.
+	arguments := { 'label' -> anAnnotatedParagraph label }.
 	self
 		write: anAnnotatedParagraph
-		withTemplateFileName: anAnnotatedParagraph annotation , '.mustache'
+		withTemplateFileName: anAnnotatedParagraph label , '.mustache'
 		extraArguments: arguments 
 		ifAbsent: [
 			self
 				write: anAnnotatedParagraph
 				withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
 				extraArguments: arguments 
-				ifAbsent: [ defaultWriter visitAnnotatedParagraph: anAnnotatedParagraph ] ]
+				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
 ]
 
 { #category : 'visiting' }

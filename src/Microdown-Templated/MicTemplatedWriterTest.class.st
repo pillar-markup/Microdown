@@ -44,8 +44,19 @@ MicTemplatedWriterTest >> addTemplateFiles [
 		writeStreamDo: [ :s | s << self paragraphContents ].	
 	fileSystem / MicTemplatedWriter environmentTemplateFileName
 		writeStreamDo: [ :s | s << self environmentContents ].		
+	
+	"Pay attention here this is the note label that determines the template name"
+	fileSystem / 'important.mustache'
+		writeStreamDo: [ :s | s << self annotatedParagraphContents ].		
 
+	fileSystem / MicTemplatedWriter defaultAnnotatedParagraphTemplateFileName 
+		writeStreamDo: [ :s | s << self annotatedParagraphContents ].		
+]
 
+{ #category : 'running' }
+MicTemplatedWriterTest >> annotatedParagraphContents [
+
+	^ '<b>{{{label}}}</b>{{{contents}}}'
 ]
 
 { #category : 'helpers' }
@@ -109,6 +120,12 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 	templateFileReference := textDocument templateDirectory resolve: aPath.
 	templateFileReference parent ensureCreateDirectory.
 	templateFileReference writeStreamDo: [ :stream | stream nextPutAll: contents ].
+]
+
+{ #category : 'running' }
+MicTemplatedWriterTest >> defaultAnnotatedParagraph [
+
+	^ '<b>{{{label}}}</b>{{{contents}}}'
 ]
 
 { #category : 'running' }
@@ -203,6 +220,25 @@ MicTemplatedWriterTest >> setUp [
 	self addTemplateFiles.
 ]
 
+{ #category : 'new tests' }
+MicTemplatedWriterTest >> testAnnotatedParagraphImportant [
+
+	self
+		assertTemplate: 'important.mustache'
+		writesValue: '<b>important</b>this is important'
+		forNode: (Microdown parse: '!!important this is important') children first
+]
+
+{ #category : 'new tests' }
+MicTemplatedWriterTest >> testAnnotatedParagraphUnsupportedIsThenDefault [
+	
+	self skip. "To be investigated."
+	self
+		assertTemplate: 'important.mustache'
+		writesValue: '<b>Tintin</b>this is important'
+		forNode: (Microdown parse: '!!Tintin this is important') children first
+]
+
 { #category : 'tests-setup' }
 MicTemplatedWriterTest >> testDirectory [
 	
@@ -218,9 +254,9 @@ MicTemplatedWriterTest >> testDirectory [
 MicTemplatedWriterTest >> testWriteAnchorUsesDefaultIfNotSpecificIsDefinedTemplate [
 
 	self
-		assertTemplate: MicTemplatedWriter defaultAnnotatedParagraphTemplateFileName
-		writesValue: 'annotated paragraph'
-		forNode: (PRAnnotatedParagraph withAll: #() annotation: 'todo')
+		assertTemplate: 'important.mustache'
+		writesValue: '<b>important</b>this is important'
+		forNode: (Microdown parse: '!!important this is important') children first
 ]
 
 { #category : 'new tests' }
