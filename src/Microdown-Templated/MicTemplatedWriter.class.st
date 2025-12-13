@@ -48,9 +48,9 @@ MicTemplatedWriter class >> defaultAnnotatedParagraphTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> definitionListTemplateFileName [
-	
-	^ 'definitionList.mustache'
+MicTemplatedWriter class >> environmentTemplateFileName [
+	"ideally we would like to have the name of the environment as template."
+	^ 'environment.mustache'
 ]
 
 { #category : 'templates' }
@@ -103,12 +103,6 @@ MicTemplatedWriter class >> listItemTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> mailLinkTemplateFileName [
-	
-	^ 'mailLink.mustache'
-]
-
-{ #category : 'templates' }
 MicTemplatedWriter class >> monospaceTemplateFileName [
 
 	^ 'monospace.mustache'
@@ -130,12 +124,6 @@ MicTemplatedWriter class >> paragraphTemplateFileName [
 MicTemplatedWriter class >> preformattedTemplateFileName [
 	
 	^ 'preformatted.mustache'
-]
-
-{ #category : 'templates' }
-MicTemplatedWriter class >> sectionTemplateFileName [
-	
-	^ 'section.mustache'
 ]
 
 { #category : 'templates' }
@@ -200,18 +188,6 @@ MicTemplatedWriter >> defaultWriter [
 { #category : 'accessing' }
 MicTemplatedWriter >> defaultWriter: anObject [
 	defaultWriter := anObject
-]
-
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> definitionListTemplateFileName [
-
-	^ self class definitionListTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> emptyParagraphTemplateFileName [
-
-	^ self class emptyParagraphTemplateFileName
 ]
 
 { #category : 'accessing' }
@@ -281,12 +257,6 @@ MicTemplatedWriter >> listItemTemplateFileName [
 ]
 
 { #category : 'accessing - templates' }
-MicTemplatedWriter >> mailLinkTemplateFileName [
-
-	^ self class mailLinkTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
 MicTemplatedWriter >> monospaceTemplateFileName [
 
 	^ self class monospaceTemplateFileName
@@ -332,12 +302,6 @@ MicTemplatedWriter >> pushEnvironment: aPREnvironment [
 	environmentStack addFirst: aPREnvironment
 ]
 
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> sectionTemplateFileName [
-
-	^ self class sectionTemplateFileName
-]
-
 { #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
 
@@ -358,6 +322,15 @@ MicTemplatedWriter >> visitAnchor: aPRAnchor [
 		withTemplateFileName: self anchorTemplateFileName
 		extraArguments: { 'name' -> aPRAnchor name }
 		ifAbsent: [ defaultWriter visitAnchor: aPRAnchor ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitAnchorReference: aReference [
+
+	self
+		write: aReference
+		withTemplateFileName: self internalLinkTemplateFileName
+		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
 ]
 
 { #category : 'old visiting' }
@@ -415,32 +388,14 @@ MicTemplatedWriter >> visitCommentedLine: aPRText [
 ]
 
 { #category : 'old visiting' }
-MicTemplatedWriter >> visitDefinitionList: aPRList [
-
-	self
-		write: aPRList
-		withTemplateFileName: self definitionListTemplateFileName
-		ifAbsent: [ defaultWriter visitDefinitionList: aPRList ]
-]
-
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitEmptyParagraph: anEmptyParagraph [
-	
-	self
-		writeRawText: anEmptyParagraph text
-		withTemplateFileName: self emptyParagraphTemplateFileName
-		ifAbsent: [ defaultWriter visitEmptyParagraph: anEmptyParagraph ]
-]
-
-{ #category : 'old visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 	self pushEnvironment: anEnvironment.
 	self
 		write: anEnvironment
-		withTemplateFileName: 'main.mustache'
+		withTemplateFileName: 'environment.mustache'
 		extraArguments: anEnvironment properties associations
-		ifAbsent: [ self visitDocumentGroup: anEnvironment ].
+		ifAbsent: [ self halt. self visitDocumentGroup: anEnvironment ].
 	self popEnvironment.
 ]
 
@@ -523,16 +478,6 @@ MicTemplatedWriter >> visitListItem: aPRListItem [
 		ifAbsent: [ defaultWriter visitListItem: aPRListItem ]
 ]
 
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitMailLink: aPRMailLink [
-
-	self
-		write: aPRMailLink
-		withTemplateFileName: self mailLinkTemplateFileName
-		extraArguments: { 'reference' -> aPRMailLink reference }
-		ifAbsent: [ defaultWriter visitExternalLink: aPRMailLink ]
-]
-
 { #category : 'visiting' }
 MicTemplatedWriter >> visitMonospace: aMicMonospaceFormat [ 
 	
@@ -573,15 +518,6 @@ MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
 	defaultWriter visitRaw: aPRRaw
-]
-
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitSection: aPRSection [
-
-	self
-		write: aPRSection
-		withTemplateFileName: self sectionTemplateFileName
-		ifAbsent: [ defaultWriter visitSection: aPRSection ]
 ]
 
 { #category : 'delegating' }
