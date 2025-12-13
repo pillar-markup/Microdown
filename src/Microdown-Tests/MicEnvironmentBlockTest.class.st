@@ -406,6 +406,14 @@ This is a paragraph
 	self assert: env name equals: 'cards'
 ]
 
+{ #category : 'tests - accessing' }
+MicEnvironmentBlockTest >> testNameSetter [
+
+	| env |
+	env := MicEnvironmentBlock named: 'cards'.
+	self assert: env name equals: 'cards'
+]
+
 { #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |

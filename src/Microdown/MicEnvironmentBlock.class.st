@@ -87,6 +87,12 @@ MicEnvironmentBlock class >> buildMicroDownUsing: aBuilder withComment: aString 
 	self addDocumentDefinedEnvironments: aBuilder
 ]
 
+{ #category : 'public' }
+MicEnvironmentBlock class >> named: aString [
+
+	^ self new name: aString; yourself
+]
+
 { #category : 'visiting' }
 MicEnvironmentBlock >> accept: aVisitor [
 
@@ -130,4 +136,9 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 { #category : 'accessing' }
 MicEnvironmentBlock >> name [
 	^ arguments at: (arguments defaultArg)
+]
+
+{ #category : 'accessing' }
+MicEnvironmentBlock >> name: aString [
+	^ arguments at: (arguments defaultArg) put: aString
 ]
