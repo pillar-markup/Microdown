@@ -126,7 +126,7 @@ MicTemplatedWriterTest >> figureContents [
 { #category : 'running' }
 MicTemplatedWriterTest >> headerBlockContents [
 
-	^ '<h1>{{{contents}}}</h1>'
+	^ '<h{{{level}}}>{{{contents}}}</h{{{level}}}>'
 ]
 
 { #category : 'running' }
@@ -208,7 +208,9 @@ Bar
 
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
-
+	self flag: #enh.
+	"We could improve to make sure that the arguments are passed to the template too."
+	
 	self
 		assertTemplate: MicTemplatedWriter codeBlockTemplateFileName
 		writesValue: '<code>
@@ -275,9 +277,10 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
+	
 	self
 		assertTemplate: MicTemplatedWriter headerTemplateFileName
-		writesValue: '<h1>foo</h1>'
+		writesValue: '<h2>foo</h2>'
 		forNode: (MicHeaderBlock new
 			level: 2;
 			headerElements: {(MicTextBlock new bodyString: 'foo'; yourself)})
