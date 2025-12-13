@@ -108,7 +108,7 @@ MicTemplatedWriterTest >> createTemplateFileAt: aPath withContents: contents [
 { #category : 'running' }
 MicTemplatedWriterTest >> externalLinkContents [
 
-	^ '<a href={{{contents}}}>{{{caption}}}</a>'
+	^ '<a href={{{ref}}}>{{{caption}}}</a>'
 ]
 
 { #category : 'running' }
@@ -256,13 +256,13 @@ MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 		writes: 'before test after'
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 
 	self
 		assertTemplate: MicTemplatedWriter externalLinkTemplateFileName
-		writesValue: 'http://pharo.org'
-		forNode: (Microdown parse: '[Pharo url](http://www.pharo.org)')
+		writesValue: '<a href=https://www.pharo.org/>Pharo url</a>'
+		forNode: (Microdown parse: '[Pharo url](https://www.pharo.org)') children first children first
 ]
 
 { #category : 'new tests' }
@@ -324,6 +324,18 @@ MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 		assertTemplate: MicTemplatedWriter listItemTemplateFileName
 		writesValue: '<li></li>'
 		forNode: MicListItemBlock new
+]
+
+{ #category : 'new tests' }
+MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplateWithBody [
+
+	self
+		assertTemplate: MicTemplatedWriter listItemTemplateFileName
+		writesValue: '<li>this is an item</li>'
+		forNode: (MicListItemBlock new 
+			addChild: (MicTextBlock new 
+				bodyString: 'this is an item'; yourself) ; 
+			yourself)
 ]
 
 { #category : 'tests-templatefiles' }

@@ -503,6 +503,18 @@ MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 ]
 
 { #category : 'visiting' }
+MicTemplatedWriter >> visitLink: aLink [
+	
+	self
+		write: aLink
+		withTemplateFileName: self externalLinkTemplateFileName
+		extraArguments: {
+			'ref' -> aLink reference uri.
+			'caption' -> aLink caption }
+		ifAbsent: [ defaultWriter visitLink: aLink ]
+]
+
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitListItem: aPRListItem [
 
 	self
