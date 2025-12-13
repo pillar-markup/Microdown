@@ -126,3 +126,8 @@ MicEnvironmentBlock >> extractFirstLineFrom: aLine [
 			extract trimRight ]
 		ifFalse: [ firstLine ]
 ]
+
+{ #category : 'accessing' }
+MicEnvironmentBlock >> name [
+	^ arguments at: (arguments defaultArg)
+]

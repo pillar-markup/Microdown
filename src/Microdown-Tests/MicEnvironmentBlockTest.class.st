@@ -396,6 +396,16 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 	self assert: infileReference path equals: 'chapters/withStyle.md' 
 ]
 
+{ #category : 'tests - accessing' }
+MicEnvironmentBlockTest >> testName [
+
+	| env |
+	env := (Microdown parse: '<!cards|color=red
+This is a paragraph
+!>') children first.
+	self assert: env name equals: 'cards'
+]
+
 { #category : 'tests - default environment' }
 MicEnvironmentBlockTest >> testParagraphEnvironmentParagraph [
 	| root |
