@@ -217,5 +217,5 @@ MicCSSEntity >> writeTo: destDirFileRef [
 
 	| fullOutputDir |
 	fullOutputDir := (destDirFileRef ensureCreateDirectory / self basePath) ensureCreateDirectory.
-	self cssFile copyTo: fullOutputDir / self cssFile basename.
+	self cssFile copyTo: fullOutputDir
 ]

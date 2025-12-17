@@ -30,12 +30,12 @@ MicCSSFile >> contents [
 MicCSSFile >> copyTo: aFileReference [
 	"Copy the receiver into aFileReference, if the file already exists, notify, delete it and retry"
 
-	[ self fileReference copyTo: aFileReference ]
-	on: FileExists 
-	do: [ : ex | 
-		ex printString traceCr.
-		(aFileReference / self basename) ensureDelete.
-		ex retry. ]
+	[ self fileReference copyTo: aFileReference / self basename ]
+		on: FileExists
+		do: [ :ex |
+				ex printString traceCr.
+				(aFileReference / self basename) ensureDelete.
+				ex retry ]
 ]
 
 { #category : 'accessing' }
