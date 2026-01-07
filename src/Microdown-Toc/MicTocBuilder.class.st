@@ -31,7 +31,7 @@ MicTocBuilder >> tocItems [
 	^ tocItems
 ]
 
-{ #category : 'initialization' }
+{ #category : 'visiting' }
 MicTocBuilder >> visitHeader: aMicHeader [
 
 	headerStack isEmpty 
