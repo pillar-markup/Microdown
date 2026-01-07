@@ -113,6 +113,11 @@ MicAbstractBlock >> initialize [
 ]
 
 { #category : 'testing' }
+MicAbstractBlock >> isHeader [
+	^ false
+]
+
+{ #category : 'testing' }
 MicAbstractBlock >> listItemBlockClass [
 	^ MicListItemBlock
 ]
