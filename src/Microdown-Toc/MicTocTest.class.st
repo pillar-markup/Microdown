@@ -77,3 +77,27 @@ lkhkhk
 	self assert: builder tocItems first children first header text equals: 'Header11'.
 
 ]
+
+{ #category : 'tests' }
+MicTocTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
+
+	| doc builder topLevelTocItem |
+	doc := Microdown parse: '
+# Header1
+## Header11
+## Header12
+'.
+	builder := MicTocBuilder new.
+
+	builder visit: doc.
+
+	topLevelTocItem := builder tocItems first.
+	self assert: builder tocItems size equals: 1.
+	self assert: topLevelTocItem header text equals: 'Header1'.
+	self
+		assert: topLevelTocItem children first header text
+		equals: 'Header11'.
+	self
+		assert: topLevelTocItem children second header text
+		equals: 'Header12'
+]

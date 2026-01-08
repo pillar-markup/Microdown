@@ -42,11 +42,13 @@ MicTocBuilder >> visitHeader: aMicHeader [
 			^ self ].
 	aMicHeader level = headerStack top level
 		ifTrue: [
-				| newTopLevelTocEntry |
+				| newTocEntry |
 				headerStack pop.
-				newTopLevelTocEntry := MicTocEntry new for: aMicHeader.
-				headerStack push: newTopLevelTocEntry.
-				tocItems add: newTopLevelTocEntry ]
+				newTocEntry := MicTocEntry new for: aMicHeader.
+				headerStack isEmpty
+					ifTrue: [ tocItems add: newTocEntry ]
+					ifFalse: [ headerStack top addChild: newTocEntry ].
+				headerStack push: newTocEntry ]
 		ifFalse: [
 				aMicHeader level > headerStack top level ifTrue: [
 						| newTocEntry |
