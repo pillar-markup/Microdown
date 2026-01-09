@@ -65,6 +65,31 @@ MicTocTest >> testComplexDeeplyNestedEntries [
 ]
 
 { #category : 'tests' }
+MicTocTest >> testMalformedHeaderOrder [
+
+	| doc builder firstTocItem secondTocItem thirdTocItem |
+	doc := Microdown parse: '
+### Header001
+## Header01
+# Header1
+'.
+	builder := MicTocBuilder new.
+
+	builder visit: doc.
+
+	self assert: builder tocItems size equals: 3.
+	firstTocItem := builder tocItems first.
+	self assert: firstTocItem header text equals: 'Header001'.
+	self assertEmpty: firstTocItem children.
+	secondTocItem := builder tocItems second.
+	self assert: secondTocItem header text equals: 'Header01'.
+	self assertEmpty: secondTocItem children.
+	thirdTocItem := builder tocItems third.
+	self assert: thirdTocItem header text equals: 'Header1'.
+	self assertEmpty: thirdTocItem children
+]
+
+{ #category : 'tests' }
 MicTocTest >> testSimpleDeeplyNestedEntries [
 
 	| doc builder |
