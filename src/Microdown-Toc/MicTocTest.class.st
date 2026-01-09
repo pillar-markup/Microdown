@@ -88,6 +88,57 @@ MicTocTest >> testLimitDepthToLevelOne [
 ]
 
 { #category : 'tests' }
+MicTocTest >> testLimitDepthWithInvalidInput [
+
+	| builder should |
+	builder := MicTocBuilder new.
+	should := false.
+
+	[ builder limitUpTo: 0 ]
+		on: Error
+		do: [ :ex |
+				self
+					assert: ex description
+					equals: 'Error: Invalid input. Limit should be between 1 and 5'.
+				should := true ].
+	self assert: should
+]
+
+{ #category : 'tests' }
+MicTocTest >> testLimitDepthWithInvalidInput0 [
+
+	| builder should |
+	builder := MicTocBuilder new.
+	should := false.
+
+	[ builder limitUpTo: 0 ]
+		on: Error
+		do: [ :ex |
+				self
+					assert: ex description
+					equals: 'Error: Invalid input. Limit should be between 1 and 5'.
+				should := true ].
+	self assert: should
+]
+
+{ #category : 'tests' }
+MicTocTest >> testLimitDepthWithInvalidInput6 [
+
+	| builder should |
+	builder := MicTocBuilder new.
+	should := false.
+
+	[ builder limitUpTo: 6 ]
+		on: Error
+		do: [ :ex |
+				self
+					assert: ex description
+					equals: 'Error: Invalid input. Limit should be between 1 and 5'.
+				should := true ].
+	self assert: should
+]
+
+{ #category : 'tests' }
 MicTocTest >> testMalformedHeaderOrder [
 
 	| doc builder firstTocItem secondTocItem thirdTocItem |

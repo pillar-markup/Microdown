@@ -22,6 +22,8 @@ MicTocBuilder >> initialize [
 { #category : 'configure' }
 MicTocBuilder >> limitUpTo: anInteger [
 
+	(anInteger between: 1 and: 5) ifFalse: [
+		self error: 'Invalid input. Limit should be between 1 and 5' ].
 	limit := anInteger
 ]
 
