@@ -34,25 +34,28 @@ MicTocBuilder >> tocItems [
 { #category : 'visiting' }
 MicTocBuilder >> visitHeader: aMicHeader [
 
+	| newTocEntry |
+	newTocEntry := MicTocEntry new for: aMicHeader.
+
 	headerStack isEmpty ifTrue: [
-			| newTopLevelTocEntry |
-			newTopLevelTocEntry := MicTocEntry new for: aMicHeader.
-			headerStack push: newTopLevelTocEntry.
-			tocItems add: newTopLevelTocEntry.
+			headerStack push: newTocEntry.
+			tocItems add: newTocEntry.
 			^ self ].
+
 	aMicHeader level = headerStack top level
 		ifTrue: [
-				| newTocEntry |
 				headerStack pop.
-				newTocEntry := MicTocEntry new for: aMicHeader.
 				headerStack isEmpty
 					ifTrue: [ tocItems add: newTocEntry ]
-					ifFalse: [ headerStack top addChild: newTocEntry ].
-				headerStack push: newTocEntry ]
+					ifFalse: [ headerStack top addChild: newTocEntry ] ]
 		ifFalse: [
-				aMicHeader level > headerStack top level ifTrue: [
-						| newTocEntry |
-						newTocEntry := MicTocEntry new for: aMicHeader.
-						headerStack top addChild: newTocEntry.
-						headerStack push: newTocEntry ] ]
+				aMicHeader level > headerStack top level
+					ifTrue: [ headerStack top addChild: newTocEntry ]
+					ifFalse: [
+							[
+								headerStack isNotEmpty and: [
+									headerStack top level >= aMicHeader level ] ] whileTrue: [
+								headerStack pop ].
+							headerStack isEmpty ifTrue: [ tocItems add: newTocEntry ] ] ].
+	headerStack push: newTocEntry
 ]
