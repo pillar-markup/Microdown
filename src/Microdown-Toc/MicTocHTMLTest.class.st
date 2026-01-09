@@ -40,3 +40,26 @@ MicTocHTMLTest >> testHTMLRender [
 '</ol>'
 
 ]
+
+{ #category : 'tests' }
+MicTocHTMLTest >> testHTMLRenderSimpleNesting [
+
+	| doc builder htmlVisitor |
+	doc := Microdown parse: '
+# Header1
+## Header11
+'.
+	builder := MicTocBuilder new.
+	builder visit: doc.
+	self assert: builder toc children first children isNotEmpty.
+
+	htmlVisitor := MicHTMLVisitor new.
+	htmlVisitor visit: builder toc.
+
+	self
+		assert: htmlVisitor contents
+		equals:
+			String crlf , '<ol>' , String crlf , '<li>Header1' , String crlf
+			, '<ol>' , String crlf , '<li>Header11</li>' , String crlf
+			, '</ol>' , String crlf , '</li>' , String crlf , '</ol>'
+]
