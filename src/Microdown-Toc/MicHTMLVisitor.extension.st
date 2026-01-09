@@ -1,7 +1,7 @@
 Extension { #name : 'MicHTMLVisitor' }
 
 { #category : '*Microdown-Toc' }
-MicHTMLVisitor >> visitToCEntry: aMicTocEntry [
+MicHTMLVisitor >> visitTocEntry: aMicTocEntry [
 
 	aMicTocEntry isLeaf
 		ifTrue: [
