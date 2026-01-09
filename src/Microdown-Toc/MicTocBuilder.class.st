@@ -3,18 +3,26 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'tocItems',
-		'headerStack'
+		'headerStack',
+		'limit'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
 
 { #category : 'initialization' }
-MicTocBuilder >> initialize [ 
-	
+MicTocBuilder >> initialize [
+
 	super initialize.
 	tocItems := OrderedCollection new.
 	headerStack := Stack new.
+	limit := 6
+]
+
+{ #category : 'configure' }
+MicTocBuilder >> limitUpTo: anInteger [
+
+	limit := anInteger
 ]
 
 { #category : 'accessing' }
@@ -36,6 +44,8 @@ MicTocBuilder >> visitHeader: aMicHeader [
 
 	| newTocEntry |
 	newTocEntry := MicTocEntry new for: aMicHeader.
+
+	aMicHeader level > limit ifTrue: [ ^ self ].
 
 	headerStack isEmpty ifTrue: [
 			headerStack push: newTocEntry.

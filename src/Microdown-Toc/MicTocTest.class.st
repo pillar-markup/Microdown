@@ -65,6 +65,29 @@ MicTocTest >> testComplexDeeplyNestedEntries [
 ]
 
 { #category : 'tests' }
+MicTocTest >> testLimitDepthToLevelOne [
+
+	| doc builder topLevelTocItems |
+	doc := Microdown parse: '
+# Header1
+## Header11
+# Header2
+## Header21
+'.
+	builder := MicTocBuilder new.
+
+	builder limitUpTo: 1.
+	builder visit: doc.
+
+	topLevelTocItems := builder tocItems.
+	self assert: builder tocItems size equals: 2.
+	self assert: topLevelTocItems first header text equals: 'Header1'.
+	self assert: topLevelTocItems first isLeaf.
+	self assert: topLevelTocItems second header text equals: 'Header2'.
+	self assert: topLevelTocItems second isLeaf
+]
+
+{ #category : 'tests' }
 MicTocTest >> testMalformedHeaderOrder [
 
 	| doc builder firstTocItem secondTocItem thirdTocItem |
