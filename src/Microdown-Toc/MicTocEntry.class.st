@@ -43,6 +43,12 @@ MicTocEntry >> initialize [
 	children := OrderedCollection new
 ]
 
+{ #category : 'testing' }
+MicTocEntry >> isLeaf [
+
+	^ children isEmpty
+]
+
 { #category : 'accessing' }
 MicTocEntry >> level [
 	^ header level
