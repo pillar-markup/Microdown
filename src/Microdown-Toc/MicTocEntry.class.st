@@ -12,7 +12,7 @@ Class {
 { #category : 'visiting' }
 MicTocEntry >> accept: aVisitor [
 
-	aVisitor visitToCEntry: self
+	aVisitor visitTocEntry: self
 ]
 
 { #category : 'adding' }

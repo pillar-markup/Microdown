@@ -31,12 +31,7 @@ MicTocBuilder >> tocItems [
 	^ tocItems
 ]
 
-{ #category : 'accessing' }
-MicTocBuilder >> tocitems [
-	self shouldBeImplemented.
-]
-
-{ #category : 'initialization' }
+{ #category : 'visiting' }
 MicTocBuilder >> visitHeader: aMicHeader [
 
 	headerStack isEmpty 
