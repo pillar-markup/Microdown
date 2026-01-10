@@ -44,6 +44,16 @@ Pharo is **cool**
 
 sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern.
 
+' ].
+
+	file := fileSystem workingDirectory / 'mistakeInFigure.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: '## Bar
+Pharo is **cool**
+
+
+![sub-presenter is not correct even in caption](figures/f.png)
+
 ' ]
 ]
 
@@ -67,6 +77,19 @@ MicVocabularyCheckerTest >> setUp [
 ]
 
 { #category : 'running' }
+MicVocabularyCheckerTest >> testCheckerFindsMistakeInFigure [
+
+	checker checkProject: fileSystem / 'mistakeInFigure.md'.
+
+	self deny: checker isOkay.
+
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "sub-presenter is not correct even in caption" in file/mistakeInFigure.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+]
+
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsMistakeInHeader [
 
 	checker checkProject: fileSystem / 'mistakeInHeader.md'.
@@ -75,7 +98,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInHeader [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: sub-presenter is not correct. in file/mistakeInHeader.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+		'Text: "sub-presenter is not correct." in file/mistakeInHeader.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'running' }
@@ -87,7 +110,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInParagraph [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: Spec uses a sub presenter. And there is a mistake in the previous sentence. in file/mistakeInParagraph.md contains a mistake: [sub presenter] should not be used. We should use subpresenter'
+		'Text: "Spec uses a sub presenter. And there is a mistake in the previous sentence." in file/mistakeInParagraph.md contains a mistake: [sub presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'running' }
@@ -99,5 +122,5 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInUppercasedText [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern. in file/mistakeInUppercase.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+		'Text: "sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern." in file/mistakeInUppercase.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
