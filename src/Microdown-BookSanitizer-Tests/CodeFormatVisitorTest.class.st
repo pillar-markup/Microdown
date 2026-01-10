@@ -8,10 +8,9 @@ Class {
 { #category : 'tests' }
 CodeFormatVisitorTest >> testCodeBlockFormatFirstLine [
 
-	| aMicCodeBock aCodeFormatVisitor|
-	
+	| aMicCodeBock aCodeFormatVisitor |
 	aMicCodeBock := MicCodeBlock new.
-	
+
 	aMicCodeBock body: 'MyPlayer >> play
 	| pieces |
 	pieces := self king isInCheck
@@ -27,15 +26,14 @@ CodeFormatVisitorTest >> testCodeBlockFormatFirstLine [
 		legalMoves ifNotEmpty: [
 			game move: piece to: legalMoves atRandom.
 			^ self ] ].'.
-	
+
 	aCodeFormatVisitor := BookSanitizerVisitor new.
 	aCodeFormatVisitor addVisitor: FormatCodeTabsVisitor new.
-	aCodeFormatVisitor addVisitor: FormatPeriodCodeVisitor new.
 	aCodeFormatVisitor addVisitor: FormatSecondLineCodeVisitor new.
 
-	
+
 	aCodeFormatVisitor visitCode: aMicCodeBock.
-	
+
 	self assert: aMicCodeBock body equals: 'MyPlayer >> play
 
 	| pieces |
@@ -52,7 +50,4 @@ CodeFormatVisitorTest >> testCodeBlockFormatFirstLine [
 		legalMoves ifNotEmpty: [
 			game move: piece to: legalMoves atRandom.
 			^ self ] ]'
-	
-	
-	
 ]
