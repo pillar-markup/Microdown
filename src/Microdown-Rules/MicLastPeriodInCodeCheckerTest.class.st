@@ -95,6 +95,16 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriod [
 ]
 
 { #category : 'tests - missing period' }
+MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriodWithExtraEmptyLines [
+	"may be the author wants all the code to finish with an extra period.
+	so we configure the checker to do so."
+
+	checker identifyMissingLastPeriod.
+	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - missing period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriodWithExtraSpaces [
 	"may be the author wants all the code to finish with an extra period.
 	so we configure the checker to do so."
@@ -123,6 +133,18 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriod [
 
 	x := xInt.
 	y := yInt." in file/codeEndingWithPeriod.md contains a mistake: It should not be terminated with a period (.).'
+]
+
+{ #category : 'tests - extra period' }
+MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriodWithExtraEmptyLines [
+	checker identifyExtraLastPeriod.
+	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
+	self deny: checker isOkay.
+
+	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
+
+	x := xInt.
+	y := yInt.           " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - extra period' }
