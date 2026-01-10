@@ -9,14 +9,6 @@ Class {
 	#tag : 'Vocabulary'
 }
 
-{ #category : 'main API' }
-MicVocabularyChecker >> checkProject: aFileReference [
-
-	| collector |
-	collector := self fileCollectorForMainFileReference: aFileReference.
-	collector visitedFilesAsDOM do: [ :each | each accept: self ]
-]
-
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> checkText: aMicText [
 
@@ -27,11 +19,6 @@ MicVocabularyChecker >> checkText: aMicText [
 							 micElement: aMicText;
 							 inFile: aMicText fromFile;
 							 patternPair: patternPair) ] ]
-]
-
-{ #category : 'testing' }
-MicVocabularyChecker >> isOkay [
-	^ results isEmpty 
 ]
 
 { #category : 'visiting - inline elements' }

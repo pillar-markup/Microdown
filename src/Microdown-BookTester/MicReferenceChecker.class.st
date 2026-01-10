@@ -214,12 +214,6 @@ MicReferenceChecker >> isOk [
 		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
-{ #category : 'testing' }
-MicReferenceChecker >> isOkay [
-
-	^ results isEmpty
-]
-
 { #category : 'reporting' }
 MicReferenceChecker >> report [
 

@@ -1,7 +1,7 @@
 Class {
 	#name : 'MicElementOfHeaderIsNotCapitalizedReport',
 	#superclass : 'MicReport',
-	#category : 'Microdown-Rules-Capitalization',
+	#category : 'Microdown-Rules-CapitalizationUnderway',
 	#package : 'Microdown-Rules',
-	#tag : 'Capitalization'
+	#tag : 'CapitalizationUnderway'
 }

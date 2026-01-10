@@ -25,14 +25,6 @@ MicCodeBlockValidator class >> isAbstract [
 	^ false
 ]
 
-{ #category : 'main API' }
-MicCodeBlockValidator >> checkProject: aFileReference [
-
-	| collector |
-	collector := self fileCollectorForMainFileReference: aFileReference.
-	collector visitedFiles do: [ :each | self start: each ]
-]
-
 { #category : 'initialization' }
 MicCodeBlockValidator >> collectStrategies [
 	

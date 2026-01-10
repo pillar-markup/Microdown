@@ -19,6 +19,14 @@ Class {
 }
 
 { #category : 'accessing' }
+MicChecker >> checkProject: aFileReference [
+
+	| collector |
+	collector := self fileCollectorForMainFileReference: aFileReference.
+	collector visitedFilesAsDOM do: [ :each | each accept: self  ]
+]
+
+{ #category : 'accessing' }
 MicChecker >> fileCollectorForMainFileReference: aFileReference [
 
 	| mainMic collector |
@@ -35,6 +43,11 @@ MicChecker >> initialize [
 
 	super initialize.
 	results := OrderedCollection new. 
+]
+
+{ #category : 'testing' }
+MicChecker >> isOkay [
+	^ results isEmpty
 ]
 
 { #category : 'accessing' }

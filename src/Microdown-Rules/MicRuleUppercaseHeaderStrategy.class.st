@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicRuleUppercaseHeaderStrategy',
 	#superclass : 'MicRuleHeaderCheckerStrategy',
-	#category : 'Microdown-Rules-Capitalization',
+	#category : 'Microdown-Rules-CapitalizationUnderway',
 	#package : 'Microdown-Rules',
-	#tag : 'Capitalization'
+	#tag : 'CapitalizationUnderway'
 }
 
 { #category : 'visiting' }
