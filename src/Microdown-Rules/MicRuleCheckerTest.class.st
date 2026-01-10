@@ -132,15 +132,15 @@ MicRuleCheckerTest >> testCheckerFindSectionMistackeInTitle [
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerPrepare [
 
-	| ck r |
+	| r |
 	ck := MicRuleAllTextChecker new.
 	r := MicMisusedVocabularyRule sample.
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.
 	self
-		assert: (ck patterns collect: [ :p | p key ]) 
-		equals: #('*sub-presenter*' '*sub presenter*' '*meta object*' '*section*' '*figure*' '*back-end*' '*back end*' '*Pharo Image*')
-	
+		assert: (ck patterns collect: [ :p | p key ])
+		equals:
+		#( '*sub-presenter*' '*sub presenter*' '*meta object*' '*section*' '*figure*' '*back-end*' '*back end*' '*Pharo Image*' )
 ]
 
 { #category : 'tests' }
