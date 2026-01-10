@@ -25,13 +25,10 @@ When we use the checkDir or the checkFile: API, it should still do the full clos
 "
 Class {
 	#name : 'MicReferenceChecker',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicChecker',
 	#instVars : [
-		'reportWriter',
 		'references',
 		'duplicatedAnchors',
-		'results',
-		'rootDirectory',
 		'listOfFiles',
 		'figures',
 		'anchoringEntities'
@@ -120,13 +117,9 @@ MicReferenceChecker >> checkList: aCollection [
 { #category : 'main API' }
 MicReferenceChecker >> checkProject: aFileReference [
 	"Given the root of the document such as an index.md file, check the complete project."
-	
-	| mainMic collector |
-	mainMic := Microdown parseFile: aFileReference.
-	collector := MicFileCollector new.
-	collector
-		rootDirectory: rootDirectory;
-		visit: mainMic.
+
+	| collector |
+	collector := self fileCollectorForMainFileReference: aFileReference.
 	self handleUndefinedFilesFrom: collector.
 	listOfFiles := collector visitedFileStrings collect: [ :file | rootDirectory resolve: file ].
 	self checkList: listOfFiles
@@ -238,30 +231,6 @@ MicReferenceChecker >> report [
 { #category : 'reporting' }
 MicReferenceChecker >> reportSTONFormat [
 	^ reportWriter reportSTONFormat
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> reportWriter [
-
-	^ reportWriter
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> reportWriter: anObject [
-
-	reportWriter := anObject
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> results [
-
-	^ results
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> results: anObject [
-
-	results := anObject
 ]
 
 { #category : 'accessing' }

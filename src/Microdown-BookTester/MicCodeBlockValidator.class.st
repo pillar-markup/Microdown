@@ -10,12 +10,9 @@ New code block validation can easily be added by adding subclasses to `MicCodeBl
 "
 Class {
 	#name : 'MicCodeBlockValidator',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicChecker',
 	#instVars : [
-		'strategies',
-		'results',
-		'reportWriter',
-		'rootDirectory'
+		'strategies'
 	],
 	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
@@ -31,14 +28,9 @@ MicCodeBlockValidator class >> isAbstract [
 { #category : 'main API' }
 MicCodeBlockValidator >> checkProject: aFileReference [
 
-	| mainMic collector |
-	mainMic := Microdown parseFile: aFileReference.
-	collector := MicFileCollector new.
-	collector
-		rootDirectory: rootDirectory;
-		visit: mainMic.
-	collector visitedFiles do: [ :each | self start: each ].
-	
+	| collector |
+	collector := self fileCollectorForMainFileReference: aFileReference.
+	collector visitedFiles do: [ :each | self start: each ]
 ]
 
 { #category : 'initialization' }
@@ -80,30 +72,6 @@ MicCodeBlockValidator >> isOk [
 	checkingVariable := true.
 	results do: [ :each | checkingVariable := checkingVariable and: [ each isMicPaired ] ].
 	^ checkingVariable
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> reportWriter [
-
-	^ reportWriter
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> reportWriter: anObject [
-
-	reportWriter := anObject
-]
-
-{ #category : 'visiting' }
-MicCodeBlockValidator >> results [
-
-	^ results
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> results: anObject [
-
-	results := anObject
 ]
 
 { #category : 'accessing' }
