@@ -6,7 +6,7 @@ Class {
 	#tag : 'Capitalization'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicFirstLetterCapitalizeRule >> matchingPattern: aWord [
 
 	aWord ifEmpty: [ ^ false ].

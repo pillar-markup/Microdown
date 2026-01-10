@@ -17,9 +17,9 @@ Class {
 		'reportWriter',
 		'rootDirectory'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'testing' }

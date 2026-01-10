@@ -6,7 +6,7 @@ Class {
 	#tag : 'Others'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicParagraphMissingLabelPeriodRule >> detectIncorrectLabel: trimmed [
 
 	| labelRegex |
@@ -15,7 +15,7 @@ MicParagraphMissingLabelPeriodRule >> detectIncorrectLabel: trimmed [
 		  (trimmed beginsWith: trimmed substrings first , '.') not ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicParagraphMissingLabelPeriodRule >> detectIncorrectLabel: trimmed for: firstWord [
 
 	| labelRegex |

@@ -6,7 +6,7 @@ Class {
 	#tag : 'Others'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicPointAtEndOfSentenceRule >> sentenceEndByAPoint: aText [
 
 (aText isEmpty or: [ aText last = $. ])

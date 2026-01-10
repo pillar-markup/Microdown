@@ -14,10 +14,12 @@ Class {
 
 { #category : 'instance creation' }
 MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: fileReference [
+	"I perform several analyses starting from a root document file reference (e.g. index.md)"
 
+	"In the future we should have a better way to add analysis. "	
 	| reporter checker validator |
 	reporter := self new.
-	
+
 	checker := MicReferenceChecker new.
 	checker fileSystem: folderReference.
 	checker checkProject: fileReference.
@@ -27,7 +29,7 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	validator := MicCodeBlockValidator new.
 	checker fileSystem: folderReference.
 	checker checkProject: fileReference.
-	
+
 	reporter addResults: validator results.
 	^ reporter
 ]

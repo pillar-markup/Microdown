@@ -6,7 +6,7 @@ Class {
 	#tag : 'Code'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'actions' }
 MicCodeEndWithPeriodRule >> findLastLinePeriod: methodBody [
     "Retourne l'indice (1-based) de la dernière ligne non vide
     dont le trim se termine par un '.', ou 0 si aucune."

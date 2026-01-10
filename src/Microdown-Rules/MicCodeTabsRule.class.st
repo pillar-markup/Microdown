@@ -6,7 +6,7 @@ Class {
 	#tag : 'Code'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicCodeTabsRule >> findFirstUncorrectIndent: methodBody [
 
 	methodBody lines withIndexDo: [ :line :index |
@@ -17,7 +17,7 @@ MicCodeTabsRule >> findFirstUncorrectIndent: methodBody [
 	^ nil
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 MicCodeTabsRule >> indentCountOf: aLine [
     | firstCharIndex |
     firstCharIndex := aLine findFirst: [ :char | char ~= Character space ].

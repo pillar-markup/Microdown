@@ -8,17 +8,20 @@ I check
 - math equations
 - or plain references.
 
-I use the FileCollector to support all the file input relations.
+I use the `MicFileCollector` to support all the file input relations.
 This lets the user have for example unused, broken or underway files on the side.
 As soon as they are not used I do not analyse them.
 
+# API
+My main API to integrate with the ReportWriter is the method `checkProject:`
 I support the following API to be able to chained over a report writer:
 - result/results:
 - reportWriter:
 
-# todo
 
-when we use the checkDir or the checkFile: API, it should still do the full closure of used files (i.e. use the file collector). This is a lot simpler to understand for the user. Having a systematic approach is the way to go. 
+# Potential enhancements
+
+When we use the checkDir or the checkFile: API, it should still do the full closure of used files (i.e. use the file collector). This is a lot simpler to understand for the user. Having a systematic approach is the way to go. 
 "
 Class {
 	#name : 'MicReferenceChecker',
@@ -33,9 +36,9 @@ Class {
 		'figures',
 		'anchoringEntities'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'References'
 }
 
 { #category : 'accessing' }
@@ -116,16 +119,16 @@ MicReferenceChecker >> checkList: aCollection [
 
 { #category : 'main API' }
 MicReferenceChecker >> checkProject: aFileReference [
-
-	| mainMic collector  |
+	"Given the root of the document such as an index.md file, check the complete project."
+	
+	| mainMic collector |
 	mainMic := Microdown parseFile: aFileReference.
 	collector := MicFileCollector new.
 	collector
 		rootDirectory: rootDirectory;
 		visit: mainMic.
 	self handleUndefinedFilesFrom: collector.
-	listOfFiles := collector visitedFileStrings collect: [ :file |
-		               rootDirectory resolve: file ].
+	listOfFiles := collector visitedFileStrings collect: [ :file | rootDirectory resolve: file ].
 	self checkList: listOfFiles
 ]
 

@@ -19,9 +19,9 @@ Class {
 	#instVars : [
 		'results'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'hook' }

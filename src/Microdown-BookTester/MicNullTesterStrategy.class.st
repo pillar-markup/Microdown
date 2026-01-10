@@ -4,9 +4,9 @@ When there is no tag other than none or language, does not verify the code block
 Class {
 	#name : 'MicNullTesterStrategy',
 	#superclass : 'MicCodeBlockTesterStrategy',
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'hook' }
