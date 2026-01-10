@@ -60,6 +60,25 @@ MicRuleCheckerTest >> testCheckerExplain [
 ]
 
 { #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindFigureMistackeInParagraph [
+
+	| doc |
+	doc := Microdown parse:
+		       'In this manual, we will first explain the basic concepts before diving into the advanced mechanisms. As described in figure 1.1, it is important to understand how each component interacts with the others to ensure the proper functioning of the system.'.
+	ck visit: doc.
+	self assert: ck errors size equals: 1
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindFigureMistackeInTitle [
+
+	| doc |
+	doc := Microdown parse: '# figure 1.1'.
+	ck visit: doc.
+	self assert: ck errors size equals: 1
+]
+
+{ #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInFile [
 
 	| doc |
@@ -73,12 +92,11 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInFile [
 { #category : 'tests' }
 MicRuleCheckerTest >> testCheckerFindOneMistakeInHeader [
 
-	|  doc |
+	| doc |
 	doc := Microdown parse: '# the sub presenter.'.
 	ck visit: doc.
 	self assert: ck errors size equals: 1.
-
-
+	
 ]
 
 { #category : 'tests' }
@@ -93,16 +111,36 @@ MicRuleCheckerTest >> testCheckerFindOneMistakeInParagraph [
 ]
 
 { #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindSectionMistackeInParagraph [
+
+	| doc |
+	doc := Microdown parse:
+		       'In this manual, we will first explain the basic concepts before diving into the advanced mechanisms. As described in section 1.1, it is important to understand how each component interacts with the others to ensure the proper functioning of the system.'.
+	ck visit: doc.
+	self assert: ck errors size equals: 1
+]
+
+{ #category : 'tests' }
+MicRuleCheckerTest >> testCheckerFindSectionMistackeInTitle [
+
+	| doc |
+	doc := Microdown parse: '# section 1.1'.
+	ck visit: doc.
+	self assert: ck errors size equals: 1
+]
+
+{ #category : 'tests' }
 MicRuleCheckerTest >> testCheckerPrepare [
 
 	| ck r |
-	ck := MicRuleAllTextChecker new. 
+	ck := MicRuleAllTextChecker new.
 	r := MicMisusedVocabularyRule sample.
 	ck addRule: MicMisusedVocabularyRule sample.
 	ck prepareForChecking.
-	self 
+	self
 		assert: (ck patterns collect: [ :p | p key ]) 
-		equals: { '*sub-presenter*' . '*sub presenter*' . '*meta object*' }
+		equals: #('*sub-presenter*' '*sub presenter*' '*meta object*' '*section*' '*figure*' '*back-end*' '*back end*' '*Pharo Image*')
+	
 ]
 
 { #category : 'tests' }
@@ -115,8 +153,9 @@ MicRuleCheckerTest >> testFile [
 
 { #category : 'tests' }
 MicRuleCheckerTest >> testGoodWord [
-	
-	self 
+
+	self
 		assert: (ck patterns collect: [ :p | p key ]) 
-		equals: { '*sub-presenter*' . '*sub presenter*' . '*meta object*' }
+		equals: #('*sub-presenter*' '*sub presenter*' '*meta object*' '*section*' '*figure*' '*back-end*' '*back end*' '*Pharo Image*')
+	
 ]

@@ -12,14 +12,21 @@ Class {
 
 { #category : 'examples' }
 MicMisusedVocabularyRule class >> sample [
+
 	<sampleInstance>
 	| r |
 	r := MicMisusedVocabularyRule new.
 	r name: 'UseInstead'.
-	r pairs: { 'sub-presenter' -> 'subpresenter' .
-			'sub presenter' -> 'subpresenter' .
-			'meta object' -> 'metaobject'}.
-			
+	r pairs: {
+			('sub-presenter' -> 'subpresenter').
+			('sub presenter' -> 'subpresenter').
+			('meta object' -> 'metaobject').
+			('section' -> 'Section').
+			('figure' -> 'Figure'). 
+			('back-end' -> 'backend'). 
+			('back end' -> 'backend'). 
+			('Pharo Image' -> 'Pharo image')}.
+
 	^ r
 ]
 
@@ -28,7 +35,7 @@ MicMisusedVocabularyRule >> computePatterns [
 	^ pairs collect: [ :each | '*', each key, '*'  ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicMisusedVocabularyRule >> goodWordFor: aString [ 
 	
 	| pair |
