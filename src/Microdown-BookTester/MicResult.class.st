@@ -18,9 +18,9 @@ Class {
 		'source',
 		'explanation'
 	],
-	#category : 'Microdown-BookTester-Results',
+	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
-	#tag : 'Results'
+	#tag : 'Core'
 }
 
 { #category : 'kinds' }

@@ -1,3 +1,10 @@
+"
+I'm the root of the checker.
+Right now I'm a visitor but may be I will invoke visitors in the future. 
+Still my API and responsibility should be the same. 
+
+I should check a project and report results. 
+"
 Class {
 	#name : 'MicChecker',
 	#superclass : 'MicrodownVisitor',
@@ -6,9 +13,9 @@ Class {
 		'results',
 		'rootDirectory'
 	],
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Core'
 }
 
 { #category : 'accessing' }
@@ -21,6 +28,13 @@ MicChecker >> fileCollectorForMainFileReference: aFileReference [
 		rootDirectory: rootDirectory;
 		visit: mainMic.
 	^ collector
+]
+
+{ #category : 'visiting' }
+MicChecker >> initialize [ 
+
+	super initialize.
+	results := OrderedCollection new. 
 ]
 
 { #category : 'accessing' }
@@ -45,4 +59,10 @@ MicChecker >> results [
 MicChecker >> results: anObject [
 
 	results := anObject
+]
+
+{ #category : 'accessing' }
+MicChecker >> rootDirectory: aFileReference [
+
+	rootDirectory := aFileReference
 ]

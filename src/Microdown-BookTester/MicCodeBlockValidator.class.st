@@ -61,8 +61,7 @@ MicCodeBlockValidator >> fileSystem: aFileReference [
 MicCodeBlockValidator >> initialize [
 
 	super initialize.
-	results := OrderedCollection new.
-	strategies := Dictionary new. 
+	strategies := Dictionary new.
 	self collectStrategies
 ]
 
@@ -72,12 +71,6 @@ MicCodeBlockValidator >> isOk [
 	checkingVariable := true.
 	results do: [ :each | checkingVariable := checkingVariable and: [ each isMicPaired ] ].
 	^ checkingVariable
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> rootDirectory: aFileReference [
-
-	rootDirectory := aFileReference
 ]
 
 { #category : 'accessing' }

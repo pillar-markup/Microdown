@@ -195,16 +195,14 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
-	
+
 	rootDirectory := FileSystem workingDirectory.
-	results := OrderedCollection new.
 	references := OrderedCollection new.
 	figures := OrderedCollection new.
 	anchoringEntities := OrderedCollection new.
-	duplicatedAnchors := OrderedCollection new.
-	"by default if the reporter is not set from outside
+	duplicatedAnchors := OrderedCollection new. "by default if the reporter is not set from outside
 	then it shares the results of this current checker."
-	reportWriter := MicAnalysisReportWriter new results: results.
+	reportWriter := MicAnalysisReportWriter new results: results
 ]
 
 { #category : 'testing' }
@@ -231,12 +229,6 @@ MicReferenceChecker >> report [
 { #category : 'reporting' }
 MicReferenceChecker >> reportSTONFormat [
 	^ reportWriter reportSTONFormat
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> rootDirectory: aFileReference [
-
-	rootDirectory := aFileReference
 ]
 
 { #category : 'internal' }

@@ -105,3 +105,9 @@ MicFileCollector >> visitedFiles [
 
 	^ visitedFiles 
 ]
+
+{ #category : 'accessing' }
+MicFileCollector >> visitedFilesAsDOM [
+
+	^ visitedFiles
+]

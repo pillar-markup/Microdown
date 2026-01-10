@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicCodeSecondLineRule',
 	#superclass : 'MicRule',
-	#category : 'Microdown-Rules-Code',
+	#category : 'Microdown-Rules-Old',
 	#package : 'Microdown-Rules',
-	#tag : 'Code'
+	#tag : 'Old'
 }
 
 { #category : 'asserting' }

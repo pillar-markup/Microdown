@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'ck'
 	],
-	#category : 'Microdown-Rules-Others',
+	#category : 'Microdown-Rules-Old',
 	#package : 'Microdown-Rules',
-	#tag : 'Others'
+	#tag : 'Old'
 }
 
 { #category : 'tests' }

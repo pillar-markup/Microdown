@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicParagraphMissingLabelPeriodRule',
 	#superclass : 'MicRule',
-	#category : 'Microdown-Rules-Others',
+	#category : 'Microdown-Rules-Old',
 	#package : 'Microdown-Rules',
-	#tag : 'Others'
+	#tag : 'Old'
 }
 
 { #category : 'action' }

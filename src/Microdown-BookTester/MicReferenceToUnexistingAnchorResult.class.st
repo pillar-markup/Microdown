@@ -4,9 +4,9 @@ I represent the fact that a reference refers to an undefined anchor.
 Class {
 	#name : 'MicReferenceToUnexistingAnchorResult',
 	#superclass : 'MicAnchorResult',
-	#category : 'Microdown-BookTester-Results',
+	#category : 'Microdown-BookTester-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'Results'
+	#tag : 'References'
 }
 
 { #category : 'kinds' }

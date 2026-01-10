@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'results'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'Core'
 }
 
 { #category : 'instance creation' }
