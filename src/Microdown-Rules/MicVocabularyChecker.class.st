@@ -14,20 +14,19 @@ MicVocabularyChecker >> checkProject: aFileReference [
 
 	| collector |
 	collector := self fileCollectorForMainFileReference: aFileReference.
-
 	collector visitedFilesAsDOM do: [ :each | each accept: self ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> checkText: aMicText [
-	
-	patternPairs do: [ :patternPair | 
-		(patternPair key match: aMicText bodyString) 
-			ifTrue: [  
-				results add: (MicUseofWrongVocabularyResult new
-					 micElement: aMicText;
-					 inFile: aMicText fromFile;
-					 patternPair: patternPair) ] ]
+
+	patternPairs do: [ :patternPair |
+			"note that match: ignore upper/lower case differences."
+			(patternPair key match: aMicText bodyString ) ifTrue: [
+					results add: (MicUseofWrongVocabularyResult new
+							 micElement: aMicText;
+							 inFile: aMicText fromFile;
+							 patternPair: patternPair) ] ]
 ]
 
 { #category : 'testing' }
