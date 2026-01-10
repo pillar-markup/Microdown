@@ -1,8 +1,9 @@
 Class {
 	#name : 'FigureCaptionVisitor',
-	#superclass : 'BookSanitizerVisitor',
-	#category : 'Microdown-BookSanitizer',
-	#package : 'Microdown-BookSanitizer'
+	#superclass : 'MicrodownVisitor',
+	#category : 'Microdown-BookSanitizer-Checkers',
+	#package : 'Microdown-BookSanitizer',
+	#tag : 'Checkers'
 }
 
 { #category : 'visiting - inline elements' }

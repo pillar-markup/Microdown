@@ -1,8 +1,9 @@
 Class {
 	#name : 'FormatCodeTabsVisitor',
 	#superclass : 'BookSanitizerVisitor',
-	#category : 'Microdown-BookSanitizer',
-	#package : 'Microdown-BookSanitizer'
+	#category : 'Microdown-BookSanitizer-ToCure',
+	#package : 'Microdown-BookSanitizer',
+	#tag : 'ToCure'
 }
 
 { #category : 'visiting' }

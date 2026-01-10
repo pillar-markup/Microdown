@@ -13,6 +13,12 @@ AddParagraphLabelPeriodVisitorTest >> testVisitParagraph [
 
 	aParagraph := MicParagraphBlock new.
 
+	"Stef note: 
+	A paragraph should be more like 
+		#### A Label 
+		llkjlkjlkjlk
+		"
+
 	aTextBlock := MicTextBlock new.
 	aTextBlock bodyString: '2. Analyse
 
@@ -33,9 +39,7 @@ Bonjour tout le monde4
 
 	aAddParagraphLabelPeriodVisitor visitParagraph: aParagraph.
 
-	self
-		assert: aParagraph children first bodyString
-		equals: '2. Analyse
+	self assert: aParagraph children first bodyString equals: '2. Analyse
 
 Bonjour tout le monde1
 
@@ -49,5 +53,5 @@ Bonjour tout le monde3
 
 Bonjour tout le monde4
 
-5. fpzfpe'.
+5. fpzfpe'
 ]
