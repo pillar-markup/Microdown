@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicPointAtEndOfSentenceRule',
 	#superclass : 'MicRule',
-	#category : 'Microdown-Rules-Old',
+	#category : 'Microdown-Rules-BogusImplementation',
 	#package : 'Microdown-Rules',
-	#tag : 'Old'
+	#tag : 'BogusImplementation'
 }
 
 { #category : 'action' }

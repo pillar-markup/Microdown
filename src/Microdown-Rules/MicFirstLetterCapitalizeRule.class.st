@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicFirstLetterCapitalizeRule',
 	#superclass : 'MicRule',
-	#category : 'Microdown-Rules-Capitalization',
+	#category : 'Microdown-Rules-BogusImplementation',
 	#package : 'Microdown-Rules',
-	#tag : 'Capitalization'
+	#tag : 'BogusImplementation'
 }
 
 { #category : 'action' }

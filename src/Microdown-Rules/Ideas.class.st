@@ -118,7 +118,7 @@ and not
 Class {
 	#name : 'Ideas',
 	#superclass : 'Object',
-	#category : 'Microdown-Rules-Old',
+	#category : 'Microdown-Rules-BogusImplementation',
 	#package : 'Microdown-Rules',
-	#tag : 'Old'
+	#tag : 'BogusImplementation'
 }

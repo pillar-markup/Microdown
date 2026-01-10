@@ -1,9 +1,7 @@
 Class {
 	#name : 'MicRuleHeaderChecker',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicChecker',
 	#instVars : [
-		'rules',
-		'errors',
 		'strategy'
 	],
 	#category : 'Microdown-Rules-Capitalization',
@@ -11,26 +9,14 @@ Class {
 	#tag : 'Capitalization'
 }
 
-{ #category : 'accessing' }
-MicRuleHeaderChecker >> addError: anError [
-	errors add: anError
-]
-
-{ #category : 'adding' }
-MicRuleHeaderChecker >> addRule: aRule [ 
-	rules add: aRule.
-]
-
 { #category : 'visiting' }
 MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
-	
-	aCollection first isCapitalized 
-		ifFalse: [ 
-			errors add: (MicFirstElementOfHeaderIsNotCapitalizedReport new 
-						micElement: anElement; 
-						concern: aCollection first;
-						inFile: anElement fromFile)			
-						]
+
+	aCollection first isCapitalized ifFalse: [
+			results add: (MicFirstElementOfHeaderIsNotCapitalizedReport new
+					 micElement: anElement;
+					 concern: aCollection first;
+					 inFile: anElement fromFile) ]
 ]
 
 { #category : 'visiting' }
@@ -44,18 +30,11 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	strategy checkRest: words of: aMicHeader rule: rules first
 ]
 
-{ #category : 'accessing' }
-MicRuleHeaderChecker >> errors [
-	^ errors
-]
-
 { #category : 'initialization' }
-MicRuleHeaderChecker >> initialize [ 
+MicRuleHeaderChecker >> initialize [
 
 	super initialize.
-	rules := OrderedCollection new. 
-	errors := OrderedCollection new.
-	self verifyLowercase.
+	self verifyLowercase
 ]
 
 { #category : 'initialization' }

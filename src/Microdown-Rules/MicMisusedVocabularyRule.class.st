@@ -5,9 +5,9 @@ Class {
 		'pairs',
 		'matchingPatterns'
 	],
-	#category : 'Microdown-Rules-Old',
+	#category : 'Microdown-Rules-BogusImplementation',
 	#package : 'Microdown-Rules',
-	#tag : 'Old'
+	#tag : 'BogusImplementation'
 }
 
 { #category : 'examples' }
