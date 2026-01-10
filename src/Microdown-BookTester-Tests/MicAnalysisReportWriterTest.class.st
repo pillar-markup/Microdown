@@ -16,8 +16,8 @@ MicAnalysisReportWriterTest >> testWithResults [
 
 	| reporter |
 	reporter := MicAnalysisReportWriter new 
-					addResults: { MicBrokenSyncDefinition new };
-					addResults: { MicBrokenSyncOriginDefinition new }.
+					addResults: { MicBrokenSyncDefinitionResult new };
+					addResults: { MicBrokenSyncOriginDefinitionResult new }.
 	self assert: reporter results size equals: 2. 
 	self deny: reporter report isEmpty
 ]

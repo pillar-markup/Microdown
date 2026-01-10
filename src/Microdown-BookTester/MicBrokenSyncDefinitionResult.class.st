@@ -8,7 +8,7 @@ sync=what ever
 ```
 "
 Class {
-	#name : 'MicBrokenSyncDefinition',
+	#name : 'MicBrokenSyncDefinitionResult',
 	#superclass : 'MicResult',
 	#instVars : [
 		'syncValue',
@@ -20,35 +20,35 @@ Class {
 }
 
 { #category : 'kinds' }
-MicBrokenSyncDefinition class >> headerString [
+MicBrokenSyncDefinitionResult class >> headerString [
 
 	^ 'Broken sync definition [should be sync=''true|false'''
 ]
 
 { #category : 'building' }
-MicBrokenSyncDefinition >> codeBlock: aMicCodeBlock [ 
+MicBrokenSyncDefinitionResult >> codeBlock: aMicCodeBlock [ 
 	codeBlock := aMicCodeBlock 
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncDefinition >> explanation [
+MicBrokenSyncDefinitionResult >> explanation [
 
 	^ 'The sync definition has the following broken value: ', syncValue, ' .'
 ]
 
 { #category : 'initialization' }
-MicBrokenSyncDefinition >> initialize [ 
+MicBrokenSyncDefinitionResult >> initialize [ 
 	
 	super initialize. 
 	syncValue := 'empty'
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncDefinition >> syncValue [
+MicBrokenSyncDefinitionResult >> syncValue [
 	^ syncValue
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncDefinition >> syncValue: aString [ 
+MicBrokenSyncDefinitionResult >> syncValue: aString [ 
 	syncValue := aString
 ]

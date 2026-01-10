@@ -5,7 +5,7 @@ I represent a wrong or badly defined origin specification so I represent that th
  user specified something else than C [class]>>#selector 
 "
 Class {
-	#name : 'MicBrokenSyncOriginDefinition',
+	#name : 'MicBrokenSyncOriginDefinitionResult',
 	#superclass : 'MicResult',
 	#instVars : [
 		'origin',
@@ -17,24 +17,24 @@ Class {
 }
 
 { #category : 'kinds' }
-MicBrokenSyncOriginDefinition class >> headerString [
+MicBrokenSyncOriginDefinitionResult class >> headerString [
 
 	^ 'Broken sync origin specification [ should be C [class]>>#selector ]'
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncOriginDefinition >> explanation [
+MicBrokenSyncOriginDefinitionResult >> explanation [
 
 	^ 'The sync origin in the definition is bogus it should be C [class]>> #selector and we get: ', origin
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncOriginDefinition >> initialize [ 
+MicBrokenSyncOriginDefinitionResult >> initialize [ 
 	super initialize.
 	origin := 'C [class]>>#selector'
 ]
 
 { #category : 'accessing' }
-MicBrokenSyncOriginDefinition >> originString: aString [ 
+MicBrokenSyncOriginDefinitionResult >> originString: aString [ 
 	origin := aString
 ]

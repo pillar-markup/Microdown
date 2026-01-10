@@ -14,7 +14,8 @@ Class {
 
 { #category : 'kinds' }
 MicAnchorResult class >> errorType [
-
+	"The error type of a result is used by the report writer to group problems."
+	
 	^ 'Anchor problem'
 ]
 

@@ -1,13 +1,12 @@
 "
-I represent an error result raised by MicReferenceChecker.
+I represent an error result computed by a checker for example `MicReferenceChecker`.
 
 I am composed of:
 - an explanation (of my error)
 - a specification (the name of concerned file or reference)
 
-All recognized error explanation are in allResult dictionary.
+My error type allows a report writer to sort the results into meaning groups.
 
-Use my constructor to instantiate me.
 
 "
 Class {
