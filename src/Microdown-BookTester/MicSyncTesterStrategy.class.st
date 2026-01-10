@@ -82,6 +82,6 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 					 sourceFileReference: aCodeBlock fromFile;
 					 bookContents: aCodeBlock body;
 					 imageContent: method sourceCode;
-					 pharoVersion: Smalltalk image lastUpdateString) ] ]
+					 pharoVersion:SystemVersion current major) ] ]
 		]
 ]
