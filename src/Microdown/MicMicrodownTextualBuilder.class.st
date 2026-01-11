@@ -287,6 +287,7 @@ MicMicrodownTextualBuilder >> horizontalLine [
 { #category : 'initialization' }
 MicMicrodownTextualBuilder >> initialize [
 	super initialize.
+	lastIsNewLine := true.
 	prefixStack := OrderedCollection new.
 	currentLevel := -1.
 	
@@ -328,6 +329,13 @@ MicMicrodownTextualBuilder >> italic: aBlock [
 MicMicrodownTextualBuilder >> item: aBlock [
 
 	self raw: (self startOfUnorderedListForLevel: currentLevel).
+	aBlock value.
+	self potentialNewLine.
+]
+
+{ #category : 'element - list' }
+MicMicrodownTextualBuilder >> itemBody: aBlock [
+
 	aBlock value.
 	self potentialNewLine.
 ]
@@ -434,7 +442,6 @@ MicMicrodownTextualBuilder >> orderedItem: aBlock [
 	self raw: (self startOfOrderedListForLevel: currentLevel).
 	aBlock value.
 	self potentialNewLine.
-	
 ]
 
 { #category : 'element - list' }
@@ -645,9 +652,6 @@ MicMicrodownTextualBuilder >> unorderedListDuring: aBlockClosure [
 	
 	self potentialNewLine.
 	currentLevel := currentLevel + 1.
-	"self
-		writePrefix: (self startOfUnorderedListForLevel: currentLevel)
-		forEachLineDuring: aBlockClosure."
 	aBlockClosure value.
 	currentLevel := currentLevel - 1.
 ]

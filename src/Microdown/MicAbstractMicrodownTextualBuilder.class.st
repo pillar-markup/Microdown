@@ -93,6 +93,7 @@ MicAbstractMicrodownTextualBuilder >> nextPutAll: aString [
 
 { #category : 'writing low-level' }
 MicAbstractMicrodownTextualBuilder >> potentialNewLine [
+	
 	lastIsNewLine ifFalse: [ self newLine ]
 ]
 
