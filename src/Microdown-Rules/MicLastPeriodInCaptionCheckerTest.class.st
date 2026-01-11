@@ -100,7 +100,10 @@ MicLastPeriodInCaptionCheckerTest >> testFigureCheckerIdentifyCorrectlyExtraPeri
 	checker checkProject: fileSystem / 'figureCaptionEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: 'Text: "This is the famous correctly ending period." in file/figureCaptionEndingWithPeriod.md contains a mistake: It should not be terminated with a period (.).'
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "This is the famous correctly ending period." in file/figureCaptionEndingWithPeriod.md contains a mistake: Captions should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - missing period' }
@@ -113,5 +116,47 @@ MicLastPeriodInCaptionCheckerTest >> testFigureCheckerIdentifyCorrectlyMissingEx
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "This is the famous missing period" in file/figureCaptionMissingPeriod.md contains a mistake: It should be terminated with a period (.).'
+		'Text: "This is the famous missing period" in file/figureCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
+]
+
+{ #category : 'tests - missing period' }
+MicLastPeriodInCaptionCheckerTest >> testMathCheckerChecksCorrectlyMissingExtraPeriod [
+
+	checker identifyMissingLastPeriod.
+	checker checkProject: fileSystem / 'equationCaptionEndingWithPeriod.md'.
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - extra period' }
+MicLastPeriodInCaptionCheckerTest >> testMathCheckerChecksCorrectlyNoExtraPeriod [
+
+	checker identifyExtraLastPeriod.
+	checker checkProject: fileSystem / 'equationCaptionMissingPeriod.md'.
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - extra period' }
+MicLastPeriodInCaptionCheckerTest >> testMathCheckerIdentifyCorrectlyExtraPeriod [
+
+	checker identifyExtraLastPeriod.
+	checker checkProject: fileSystem / 'equationCaptionEndingWithPeriod.md'.
+	self deny: checker isOkay.
+
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "This is the famous correctly ending period." in file/equationCaptionEndingWithPeriod.md contains a mistake: Captions should not be terminated with a period (.).'
+]
+
+{ #category : 'tests - missing period' }
+MicLastPeriodInCaptionCheckerTest >> testMathCheckerIdentifyCorrectlyMissingExtraPeriod [
+
+	checker identifyMissingLastPeriod.
+	checker checkProject: fileSystem / 'equationCaptionMissingPeriod.md'.
+	self deny: checker isOkay.
+
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "This is the famous missing period" in file/equationCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
 ]

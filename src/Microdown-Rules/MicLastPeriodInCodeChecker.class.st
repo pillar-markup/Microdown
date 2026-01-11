@@ -30,6 +30,26 @@ Class {
 }
 
 { #category : 'visiting' }
+MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
+
+	aMicCodeBlock body trimRight last = $. ifTrue: [
+			results add: (MicPeriodInCodeResult new
+					 micElement: aMicCodeBlock;
+					 inFile: aMicCodeBlock fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting' }
+MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
+
+	aMicCodeBlock body trimRight last = $. ifFalse: [
+			results add: (MicPeriodInCodeResult new
+					 micElement: aMicCodeBlock;
+					 inFile: aMicCodeBlock fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting' }
 MicLastPeriodInCodeChecker >> visitCode: aCodeBlockElement [
 
 	codeShouldEndWithPeriod 

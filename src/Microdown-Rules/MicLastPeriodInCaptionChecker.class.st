@@ -29,9 +29,75 @@ Class {
 }
 
 { #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkExtraPeriodInFigure: aFigure [
+	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
+
+	aFigure caption trimRight last = $. ifTrue: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aFigure;
+					 inFile: aFigure fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkExtraPeriodInMath: aMath [
+	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
+
+	| captionText |
+	captionText := self computeMathCaptionOf: aMath.
+	captionText ifEmpty: [ ^ self ].
+	captionText trimRight last = $. ifTrue: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aMath;
+					 inFile: aMath fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkMissingPeriodInFigure: aFigure [
+
+	aFigure caption trimRight last = $. ifFalse: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aFigure;
+					 inFile: aFigure fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkMissingPeriodInMath: aMath [
+
+	
+	| captionText |
+	captionText := self computeMathCaptionOf: aMath.
+	captionText ifEmpty: [ ^ self ].
+
+	captionText trimRight last = $. ifFalse: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aMath;
+					 inFile: aMath fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'helpers' }
+MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
+
+	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
+]
+
+{ #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> visitFigure: aFigure [
 
 	codeShouldEndWithPeriod
-		ifTrue: [ self checkMissingPeriodIn: aFigure ]
-		ifFalse: [ self checkExtraPeriodIn: aFigure ]
+		ifTrue: [ self checkMissingPeriodInFigure: aFigure ]
+		ifFalse: [ self checkExtraPeriodInFigure: aFigure ]
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> visitMath: anEquation [
+	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
+	"this way we could share the same logic between all the elements."
+
+	codeShouldEndWithPeriod
+		ifTrue: [ self checkMissingPeriodInMath: anEquation ]
+		ifFalse: [ self checkExtraPeriodInMath: anEquation ]
 ]
