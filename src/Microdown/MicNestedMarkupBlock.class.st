@@ -62,7 +62,7 @@ MicNestedMarkupBlock >> environmentName [
 	^ arguments at: #environmentName
 ]
 
-{ #category : 'parse support' }
+{ #category : 'initialization' }
 MicNestedMarkupBlock >> initialize [
 
 	super initialize.

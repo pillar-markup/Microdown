@@ -10,9 +10,6 @@ Class {
 	#classVars : [
 		'DebugId'
 	],
-	#classInstVars : [
-		'debugId'
-	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
 	#tag : 'Model'

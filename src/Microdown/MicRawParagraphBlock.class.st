@@ -55,7 +55,7 @@ MicRawParagraphBlock >> hasArguments [
 	^ argumentsString isNotEmpty
 ]
 
-{ #category : 'parse support' }
+{ #category : 'initialization' }
 MicRawParagraphBlock >> initialize [
 
 	super initialize.
