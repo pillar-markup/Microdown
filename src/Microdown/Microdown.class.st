@@ -18,14 +18,6 @@ Class {
 }
 
 { #category : 'facade' }
-Microdown class >> asRichText: aStringOrDoc [
-	"Facade method to render a microdown document or string to Text"
-	^ MicRichTextComposer asRichText: aStringOrDoc.
-		
-	
-]
-
-{ #category : 'facade' }
 Microdown class >> builder [
 	^ MicrodownParser builder
 ]
