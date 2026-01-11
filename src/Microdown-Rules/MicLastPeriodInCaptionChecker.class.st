@@ -29,6 +29,21 @@ Class {
 }
 
 { #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkExtraPeriodInCode: aCode [
+	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
+
+	| captionText |
+	captionText := self computeMathCaptionOf: aCode.
+	captionText ifEmpty: [ ^ self ].
+
+	captionText trimRight last = $. ifTrue: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aCode;
+					 inFile: aCode fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> checkExtraPeriodInFigure: aFigure [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
 
@@ -50,6 +65,20 @@ MicLastPeriodInCaptionChecker >> checkExtraPeriodInMath: aMath [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aMath;
 					 inFile: aMath fromFile;
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> checkMissingPeriodInCode: aCode [
+
+	| captionText |
+	captionText := self computeMathCaptionOf: aCode.
+	captionText ifEmpty: [ ^ self ].
+
+	captionText trimRight last = $. ifFalse: [
+			results add: (MicPeriodInCaptionResult new
+					 micElement: aCode;
+					 inFile: aCode fromFile;
 					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
 ]
 
@@ -82,6 +111,17 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInMath: aMath [
 MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
 
 	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
+]
+
+{ #category : 'visiting - inline elements' }
+MicLastPeriodInCaptionChecker >> visitCode: anEquation [
+	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
+
+	"this way we could share the same logic between all the elements."
+
+	codeShouldEndWithPeriod
+		ifTrue: [ self checkMissingPeriodInCode: anEquation ]
+		ifFalse: [ self checkExtraPeriodInCode: anEquation ]
 ]
 
 { #category : 'visiting - inline elements' }
