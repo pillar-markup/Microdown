@@ -156,6 +156,8 @@ MicCSSFrameworkTest >> testThemes [
 MicCSSFrameworkTest >> testWriteTo [
 
 	| destination framework |
+	self skip.
+	self flag: #Cyril. "Should learn how to use gitBridge.".
 	destination := FileSystem memory root.
 	framework := MicCSSProvider forCSSNamed: MicCSSProvider defaultFramework.
 
