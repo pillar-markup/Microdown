@@ -79,13 +79,14 @@ BaselineOfMicrodown >> baseline: spec [
 				
 			package: #'Microdown-ParentChildrenChecker' with: [
 				spec requires: #( #'Microdown' ) ];
+			
 			package: #'Microdown-BookTester' with: [
 				spec requires: #( #'Microdown' ) ];
 			package: #'Microdown-BookTester-Tests' with: [
 				spec requires: #( #'Microdown-BookTester' ) ];	
 				
 			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' #'Mustache') ];
+				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
 			package: #'Microdown-Blog-Tests' with: [
 				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
 		
