@@ -14,11 +14,6 @@ MicLaTeXWriter class >> fileExtension [
 ]
 
 { #category : 'accessing' }
-MicLaTeXWriter class >> folderName [
-	^ #latex
-]
-
-{ #category : 'accessing' }
 MicLaTeXWriter class >> toLatexPath: aString [
 	"Replace all (windows style) back slashes in paths by (unix style) forward slashes.
 	This is required as path in latex only support unix style pathes like
@@ -73,6 +68,11 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 	canvas command
 		name: 'ref';
 		parameter: [ canvas raw: anInternalLink bodyString ]
+]
+
+{ #category : 'accessing' }
+MicLaTeXWriter >> folderName [
+	^ #latex
 ]
 
 { #category : 'helpers' }
@@ -131,6 +131,11 @@ MicLaTeXWriter >> tabList [
 { #category : 'protected' }
 MicLaTeXWriter >> tabularEnvironment [
 	^ 'tabular'
+]
+
+{ #category : 'accessing' }
+MicLaTeXWriter >> templateForConfiguration: aConfiguration [
+	^ 'main.mustache'
 ]
 
 { #category : 'visiting-document' }

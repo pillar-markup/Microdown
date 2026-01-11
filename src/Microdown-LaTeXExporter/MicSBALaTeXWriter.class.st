@@ -40,11 +40,6 @@ MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
 ]
 
-{ #category : 'accessing' }
-MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
-	^ 'main.mustache'
-]
-
 { #category : 'protected' }
 MicSBALaTeXWriter >> visitCode: aCodeBlock [
 
