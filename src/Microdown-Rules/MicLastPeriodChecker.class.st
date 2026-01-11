@@ -12,7 +12,7 @@ Class {
 { #category : 'visiting' }
 MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [ 
 	
-	(aMicCodeBlock body trimRight last = $.)
+	(aMicCodeBlock bodyString trimRight last = $.)
 		ifTrue: [ results add: (MicPeriodInCodeResult new
 											micElement: aMicCodeBlock;
 											inFile: aMicCodeBlock fromFile; 
