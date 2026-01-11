@@ -216,13 +216,6 @@ MicHTMLConfiguration >> defaultLanguageId [
 ]
 
 { #category : 'defaults' }
-MicHTMLConfiguration >> defaultScriptLanguage [
-	"Answer a <PRAbstractScriptLanguage>"
-
-	^ PRRealScriptLanguage for: 'pharo'
-]
-
-{ #category : 'defaults' }
 MicHTMLConfiguration >> defaultTargetAttribute [
 	"By default, opens the linked document in a new window or tab"
 
