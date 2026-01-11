@@ -50,6 +50,12 @@ MicLaTeXWriter >> chapterTemplateName [
 	^ 'latexChapterTemplate'
 ]
 
+{ #category : 'blocks - code' }
+MicLaTeXWriter >> commaConcatenate: aCollection [
+
+	^ ', ' join: aCollection 
+]
+
 { #category : 'helpers' }
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
@@ -205,7 +211,7 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	env := canvas environment
 		       name: 'listing';
 		       yourself.
-	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
+	parameters ifNotEmpty: [ env optParameter: (self commaConcatenate: parameters) ].
 	env with: [
 		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ].
