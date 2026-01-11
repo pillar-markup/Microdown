@@ -54,6 +54,12 @@ MicStartStopMarkupBlock >> bodyFromLine: line [
 	body := body ifNil: [ line ] ifNotNil: [ body , String cr , line ]
 ]
 
+{ #category : 'accessing' }
+MicStartStopMarkupBlock >> bodyString [
+	"clearly we will have to revisit the API"
+	^ body
+]
+
 { #category : 'testing' }
 MicStartStopMarkupBlock >> canConsumeLine: line [
 	"As soon as a line closes a code block, it does not accept anymore any line.
