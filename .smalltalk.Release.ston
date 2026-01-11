@@ -3,7 +3,7 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'Microdown',
-      #load : [ 'RichText', 'Tests' ],
+      #load : [ 'RichText' ],
       #onConflict : #useIncoming,
       #onUpgrade : #useIncoming,
       #ignoreImage : true,
