@@ -95,7 +95,7 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 { #category : 'accessing' }
 MicHTMLVisitor class >> writerName [
-	^ #html
+	^ #michtml
 ]
 
 { #category : 'initialization' }
