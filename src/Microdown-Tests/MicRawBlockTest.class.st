@@ -12,23 +12,34 @@ MicRawBlockTest >> subjectClass [
 ]
 
 { #category : 'tests' }
-MicRawBlockTest >> testASimpleRawParagaaph [
-	| mic |
-	mic := (parser parse: '<title> 
-No idea what it is :)
-</title>') children first.
-	self assert: mic class equals: MicRawParagraphBlock. 
-	self assert: mic label equals: 'title'.
+MicRawBlockTest >> testRawBeginningOfLine [
 
+	| root |
+	root := parser parse: '{{ 
+This is a raw paragraph
+On two lines
+}}'.
+	
+	self 
+		assert: root children first children first class 
+		equals: MicRawBlock.
+	self 
+		assert: root children first children first bodyString 
+		equals: '
+This is a raw paragraph
+On two lines
+'
 ]
 
 { #category : 'tests' }
-MicRawBlockTest >> testRaw [
+MicRawBlockTest >> testRawDoesNotInterpretContents [
 
 	| root |
 	root := parser parse: 'it should be in a paragraph {{_Foo_}}'.
 	self assert: root children first class equals: MicParagraphBlock.
 	self
 		assert: root children first children second class
-		equals: MicRawBlock
+		equals: MicRawBlock.
+	self assert: root children first children second bodyString 
+		equals: '_Foo_'
 ]

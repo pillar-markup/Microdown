@@ -12,7 +12,7 @@ MicListItemBlock >> hasNestedChildren [
 	"Answer <true> if the receiver's children are list items and they are nested"
 
 	^ (self children second isKindOf: MicListItemBlock) and: [
-		self children second nestedLevel > self nestedLevel  ]
+			self children second nestedLevel > self nestedLevel  ]
 ]
 
 { #category : '*Microdown-HTMLExporter' }

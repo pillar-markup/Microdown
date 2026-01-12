@@ -14,11 +14,6 @@ MicLaTeXWriter class >> fileExtension [
 ]
 
 { #category : 'accessing' }
-MicLaTeXWriter class >> folderName [
-	^ #latex
-]
-
-{ #category : 'accessing' }
 MicLaTeXWriter class >> toLatexPath: aString [
 	"Replace all (windows style) back slashes in paths by (unix style) forward slashes.
 	This is required as path in latex only support unix style pathes like
@@ -55,6 +50,12 @@ MicLaTeXWriter >> chapterTemplateName [
 	^ 'latexChapterTemplate'
 ]
 
+{ #category : 'blocks - code' }
+MicLaTeXWriter >> commaConcatenate: aCollection [
+
+	^ ', ' join: aCollection 
+]
+
 { #category : 'helpers' }
 MicLaTeXWriter >> createLinkToLabelWithAlias: anInternalLink [
 	canvas command
@@ -75,6 +76,11 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink bodyString ]
 ]
 
+{ #category : 'accessing' }
+MicLaTeXWriter >> folderName [
+	^ #latex
+]
+
 { #category : 'helpers' }
 MicLaTeXWriter >> getStringForAll: aCollection [
 	"Visit each element of aCollection and exports everything to a new stream. Answer the stream content."
@@ -83,6 +89,17 @@ MicLaTeXWriter >> getStringForAll: aCollection [
 	visitor := self class new.
 	aCollection do: [ :object | visitor visit: object ].
 	^ visitor contents
+]
+
+{ #category : 'public api' }
+MicLaTeXWriter >> includeFilesAndVisit: ast [
+	"Includes all the input file and convert to LaTeX the resulting document. 
+	Note that to be correctly included the file includer requires ast to know their fromFile.
+	Please use parseFile: to correctly set that information or set it manually."
+	
+	MicFileIncluder new expandAllInputOf: ast.
+	self visit: ast. 
+	^ self contents
 ]
 
 { #category : 'visiting-document' }
@@ -120,6 +137,11 @@ MicLaTeXWriter >> tabList [
 { #category : 'protected' }
 MicLaTeXWriter >> tabularEnvironment [
 	^ 'tabular'
+]
+
+{ #category : 'accessing' }
+MicLaTeXWriter >> templateForConfiguration: aConfiguration [
+	^ 'main.mustache'
 ]
 
 { #category : 'visiting-document' }
@@ -189,7 +211,7 @@ MicLaTeXWriter >> visitCode: aCodeBlock [
 	env := canvas environment
 		       name: 'listing';
 		       yourself.
-	parameters ifNotEmpty: [ env optParameter: parameters asCommaString ].
+	parameters ifNotEmpty: [ env optParameter: (self commaConcatenate: parameters) ].
 	env with: [
 		self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ].

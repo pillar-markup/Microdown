@@ -4,8 +4,9 @@ I am a bridge to access resources from Microdown clone
 Class {
 	#name : 'MicBridge',
 	#superclass : 'GitBridge',
-	#category : 'Microdown-Blog-Tests',
-	#package : 'Microdown-Blog-Tests'
+	#category : 'Microdown-Blog-Tests-Utils',
+	#package : 'Microdown-Blog-Tests',
+	#tag : 'Utils'
 }
 
 { #category : 'accessing' }

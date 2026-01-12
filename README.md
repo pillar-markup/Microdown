@@ -12,6 +12,23 @@ Microdown is a smaller markdown but it is more extensible. It contains a nice bu
 Microdown is now the default markup for the Pillar document compilation chain. 
 
 
+## Install
+
+```Smalltalk
+
+Smalltalk globals
+	at: #BaselineOfMicrodown 
+	ifPresent: [ :c | c removeFromSystem ].
+
+Metacello new
+	baseline: 'Microdown';
+	repository: 'github://pillar-markup/Microdown:v2.9.3/src';
+	onConflict: [ :ex | ex useIncoming ];
+	onUpgrade: [ :ex | ex useIncoming ];
+	load: #('All').
+```
+
+
 ## Why should you use Microdown?
 
 Microdown is a smaller markdown but it is more extensible.
@@ -163,12 +180,13 @@ The markup is not interpreted.
 Codeblock does not support more than four backticks.
 
 
-## Development in Pharo 12!
+## Development in Pharo 13!
 
 ### Loading specific version
 
-To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder.
-This script will remove the existing Microdown package and clear the system.
+To load the latest stable version load the master. If you have trouble loading in the latest Pharo just execute the preloading.st script in the .github folder. This script will remove the existing Microdown package and clear the system.
+You can also execute the script provided below. 
+
 
 ```Smalltalk
 Metacello new
@@ -178,8 +196,8 @@ Metacello new
 ```
 
 The process is the following:
-- Development in dev
-- When stable dev -> in master
+- Development happens dev.
+- When stable dev -> in master.
 - When we can build books master is tagged.
 - Then there is the Pharo integration in dedicated branches.
 
@@ -189,13 +207,7 @@ The process is the following:
 The following script loads all groups in the Baseline:
 
 ```Smalltalk
-#( 'Microdown' 'BeautifulComments' 'DocumentBrowser' ) do: [ :name |
-        (IceRepository repositoryNamed: name)
-            ifNil: [ self inform: 'Project not found: ' , name ]
-            ifNotNil: [ :found |
-                found
-                    unload;
-                    forget ] ].
+
 
 Smalltalk globals
 	at: #BaselineOfMicrodown 
@@ -207,14 +219,38 @@ Metacello new
 	onConflict: [ :ex | ex useIncoming ];
 	onUpgrade: [ :ex | ex useIncoming ];
 	load: #('All').
- ```
+```
+
+In addition you may want to execute this before. 
+```
+#( 'Microdown' ) do: [ :name |
+        (IceRepository repositoryNamed: name)
+            ifNil: [ self inform: 'Project not found: ' , name ]
+            ifNotNil: [ :found |
+                found
+                    unload;
+                    forget ] ].
+```
 
 ## History
 
-We have two sources: Pharo in one hand and Pillar and both are not totally synchronized. 
+We have two sources: 
+- Pharo in one hand (a minimal version managed with the pharo* branches) and
+- Pillar (eg. all the tools and support for slides and books) and both are not totally synchronized. 
 
-Using Pharo 12: v2.5.x
+Now we also maintain different versions between Pharo versions. Currently the situation is the following:
 
+Working with Pharo 13: 
+- v2.9.2 a little release to support Foliage v2.1.0 and two new release of Pillar (probably one for P13 and one for P13 dropping pillar format).
+- v2.9.1 provides a better integration with Pillar (the Microdown visitors were not used before even if they worked)
+v2.7.x
+-  v2.7.2 merge pharo 13 changes / added gitbridge / OCompiler migration / cleaning syntax description / Ready for Pillar and Foliage
+-  v2.7.1 LatexQuoteblock-should-not-use-verbatim
+-  v2.7.0 Fix some errors and API/clients of the textualbuilder
+
+
+Working with Pharo 12: v2.5.x
+- v2.5.6 - Change html visitor and test for annotated paragraph
 - v2.5.5 - add support for top-level header as slide definition
 - v2.5.4 - add backward compatible anchor in caption + tonel V3 format
 - v2.5.1 - add LaTeX math with reference support for Pharo 12 and Pillar development up to v10.0.0
@@ -223,7 +259,8 @@ Using Pharo 12: v2.5.x
 
 Watch out v2.6.0 is older than v.2.5.4
 
-### Pillar History
+### Extract of Pillar History
+
 For Pharo 12
 - v10.0.0 but with some links problems due to new inline parser using MD v2.5.0
 
@@ -235,7 +272,10 @@ For Pharo 10
 -v8.3.2 fixed baseline and updated readme
 
 
+
+
 ## Implementation
+
 The parser follows the design mentioned in [https://github.github.com/gfm](https://github.github.com/gfm), in particular the parsing strategy in Appendix A.
 
 In short, the strategy is that at any point in time, we might have several children of the root which are ""open"". The deepest in open in the tree is called ""current"". All the parents of the current are open. 

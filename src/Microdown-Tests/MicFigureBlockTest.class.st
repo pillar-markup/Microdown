@@ -146,6 +146,14 @@ MicFigureBlockTest >> testFigureCaptionIsReifiedWithNewFormat [
 ]
 
 { #category : 'tests' }
+MicFigureBlockTest >> testFigureNoCaption [
+
+	| figure |
+	figure := MicFigureBlock new reference: 'bla.png'.
+	self shouldnt: [ figure printString ] raise: Error
+]
+
+{ #category : 'tests' }
 MicFigureBlockTest >> testHasArguments [
 	| figure |
 	figure := (splitterClass new parse: '![caption with space and dot...](https://github.com/pillar-markup/Microdown/runs/4336482137?check_suite_focus=true  width=80&anchor=bla)') first.

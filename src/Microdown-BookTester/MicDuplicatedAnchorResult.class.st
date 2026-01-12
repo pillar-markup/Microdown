@@ -4,9 +4,9 @@ I represent the fact that an achor is defined more than one.
 Class {
 	#name : 'MicDuplicatedAnchorResult',
 	#superclass : 'MicAnchorResult',
-	#category : 'Microdown-BookTester-Results',
+	#category : 'Microdown-BookTester-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'Results'
+	#tag : 'References'
 }
 
 { #category : 'kinds' }

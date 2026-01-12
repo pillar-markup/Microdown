@@ -40,6 +40,21 @@ MicMetaDataBlockTest >> testAtKeyPut [
 	self assert: (metadata atKey: 'title') equals: 'Pilote'.
 ]
 
+{ #category : 'tests - parsing' }
+MicMetaDataBlockTest >> testAtNoKey [
+
+	| source root metadata |
+	source := '{   }'.
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: metadata body size equals: 0.
+	source := '{
+	}'.	
+	root := parser parse: source.
+	metadata := root children first.
+	self assert: metadata body size equals: 0.
+]
+
 { #category : 'tests' }
 MicMetaDataBlockTest >> testCorrectJSONMetaDataProducesDictionary [
 

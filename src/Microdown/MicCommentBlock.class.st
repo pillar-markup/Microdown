@@ -15,6 +15,7 @@ Class {
 
 { #category : 'visiting' }
 MicCommentBlock >> accept: aVisitor [
+
  	^ aVisitor visitComment: self
 ]
 

@@ -93,6 +93,11 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 ]
 
+{ #category : 'accessing' }
+MicHTMLVisitor class >> writerName [
+	^ #michtml
+]
+
 { #category : 'initialization' }
 MicHTMLVisitor >> canvasClass [
 
@@ -159,9 +164,14 @@ MicHTMLVisitor >> crlfAsNewLine [
 	canvas crlfAsNewLine
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MicHTMLVisitor >> doNotIgnoreMetaData [
 	ignoresMetaData := false
+]
+
+{ #category : 'accessing' }
+MicHTMLVisitor >> folderName [
+	^ #html
 ]
 
 { #category : 'accessing' }
@@ -183,6 +193,12 @@ MicHTMLVisitor >> initialize [
 { #category : 'initialization' }
 MicHTMLVisitor >> lfAsNewLine [ 
 	canvas lfAsNewLine
+]
+
+{ #category : 'accessing' }
+MicHTMLVisitor >> mainDocumentTemplateName [
+	
+	^ 'template'
 ]
 
 { #category : 'visiting - list' }
@@ -207,6 +223,22 @@ MicHTMLVisitor >> stream: aStream [
 	| stream |
 	stream := MicOutputStream new setStream: aStream.
 	canvas := self canvasClass on: stream
+]
+
+{ #category : 'templating' }
+MicHTMLVisitor >> templateForConfiguration: aConfiguration [
+	| inputFile templateName |
+	configuration := aConfiguration.
+	inputFile := configuration inputFile.
+	
+	(configuration hasProperty: #mainDocument)
+		ifFalse: [ ^ configuration propertyAt: self mainDocumentTemplateName ifAbsent: [ 'main.mustache' ] ].
+	
+	templateName := inputFile fullName
+		= ((configuration baseDirectory resolve: configuration mainDocument) , 'pillar') fullName
+		ifTrue: [ self mainDocumentTemplateName ]
+		ifFalse: [ self chapterTemplateName ].
+	^ configuration propertyAt: templateName
 ]
 
 { #category : 'initialization' }
@@ -438,7 +470,10 @@ MicHTMLVisitor >> visitOrderedList: anOrderedList [
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			super visitOrderedList: anOrderedList  ]
+			anOrderedList children 
+				do: [ :each | each accept: self ] ]
+			
+	
 ]
 
 { #category : 'visiting - list' }
@@ -458,7 +493,8 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 	canvas newLine.
 	canvas tag
 		name: 'p';
-		with: [ super visitParagraph: aParagraph ]
+		with: [ super visitParagraph: aParagraph. ].
+	canvas newLine.
 ]
 
 { #category : 'visiting' }
@@ -472,6 +508,29 @@ MicHTMLVisitor >> visitQuote: aQuote [
 	canvas tag
 		name: tagName;
 		with: [ super visitQuote: aQuote ]
+]
+
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitRaw: aParagraph [
+	
+	canvas raw: aParagraph bodyString.
+	canvas newLine
+]
+
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitRawParagraph: aParagraph [
+	
+	canvas
+		newLine;
+		raw: '<' , aParagraph label.
+	aParagraph hasArguments
+		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
+	canvas raw: '>' .
+
+	aParagraph children do: [ :each | each accept: self ].
+	canvas 
+		newLine;
+		raw: aParagraph lineStopMarkup.
 ]
 
 { #category : 'visiting - inline elements' }
@@ -563,6 +622,13 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 		with: [ super visitUnorderedListItem: anUnorderedListItem ].
 	canvas newLine.
 
+]
+
+{ #category : 'writing' }
+MicHTMLVisitor >> write: aMicElement [
+	"for now for integration with Pillar."
+	self visit: aMicElement.
+	^ self contents
 ]
 
 { #category : 'visiting' }

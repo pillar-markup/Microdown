@@ -20,6 +20,40 @@ MicParserTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicParserTest >> test [
+
+	| source root |
+	source := '
+{
+"title" : "About Pharo",
+"layout" : "index",
+"publishDate" : "2025-06-01"
+}
+
+# Pharo
+
+[Pharo](http://www.pharo.org) is a beautiful dynamically-typed reflective pure object-oriented language that we have been developing since 2008.
+It is inspired by Smalltalk (I''m extremely grateful to Alan Kay and Dan Ingalls - they were so visionary and right). Now our vision for Pharo is to reinvent Smalltalk and produce a better system. 
+From that perspective, I''m used to say that Pharo is what we have and not what we want. 
+In essence, Pharo is the beginning of the journey and not the final goal. And you can change its future.
+
+
+You can check what companies are saying about it: [Video](https://youtu.be/6tdkKNX2g4s)
+
+
+There are many aspects I would like to see being explored either by us or by others.
+If you want to explore some of the following aspects, please go and let us know. 
+I''m really interested in any topics that evolve Pharo into a better Pharo. 
+
+'.
+
+	root := parser parse: source.
+	
+	self assert: root children size equals: 5.
+
+]
+
+{ #category : 'tests' }
 MicParserTest >> testEmpty [
 	| source root |
 	source := ''.

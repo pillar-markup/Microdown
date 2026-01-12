@@ -13,6 +13,45 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'tests - replace' }
+MicrodownTest >> rawMicrodownSyntax [
+
+	^ '
+# Microdown is quite cool
+@anchor
+
+Here is some code 
+
+```language=Pharo&caption=Beautiful&anchor=Fig1
+   1000 factorial / 999 factorial
+```
+
+Here is a figure and a link: [http://pharo.org](http://pharo.org).
+
+![Pharologo](https://files.pharo.org/media/logo/logo.png size=80&anchor=figLogo)
+
+See *@figLogo@*
+
+## Lists
+
+Here is a list:
+- item 1
+  1. sub item 1 
+  3. sub item 2
+- item 2
+
+
+**Bold**, _italic_, `monospace`
+
+In Pharo, Microdown supports hyperlinks to: 
+- classes e.g., `Point`, 
+- methodes e.g., `Point class`, `Point>>#setX:setY:`, and 
+- packages e.g., `#''Microdown-Tests''` (for packages).
+
+You can edit this file clicking on `ClySyntaxHelpMorph>>#rawMicrodownSyntax`.
+'
+]
+
 { #category : 'running' }
 MicrodownTest >> setUp [
 	super setUp.
@@ -140,5 +179,14 @@ MicrodownTest >> testParentLinkIsKeptOnReplaceBy [
 	self assert: h children size equals: 1.
 	self assert: h children first equals: new.
 	self assert: new parent equals: h.
+	
+]
+
+{ #category : 'tests - replace' }
+MicrodownTest >> testText [
+
+	| doc |
+	doc := Microdown parse: self rawMicrodownSyntax.
+	self shouldnt: [ Character space join: (doc children allButFirst collect: [ :each | each text ]) ] raise: MessageNotUnderstood 
 	
 ]

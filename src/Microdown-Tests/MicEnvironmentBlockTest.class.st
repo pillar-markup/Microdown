@@ -294,6 +294,57 @@ environment, else we force writer to enter a new line to declare the end of
 the paragraph.'.
 ]
 
+{ #category : 'tests' }
+MicEnvironmentBlockTest >> testEnvironmentWithSameNestedElementAsParent [
+	"'<?slide
+<?slide 
+?>
+?>
+'"
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr
+	          , EnvironmentOpeningBlockMarkup , environmentName
+	          , String cr , EnvironmentClosingBlockMarkup , String cr
+	          , EnvironmentClosingBlockMarkup , String cr.
+	root := parser parse: source.
+
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: (env isKindOf: MicSlideBlock).
+
+	self assert: env children first class equals: MicSlideBlock
+]
+
+{ #category : 'tests' }
+MicEnvironmentBlockTest >> testEnvironmentWithSameNestedElementAsParentWithBody [
+	"'<?slide
+<?slide 
+?>
+?>
+'"
+
+	| source root env environmentName |
+	environmentName := 'slide'.
+	source := EnvironmentOpeningBlockMarkup , environmentName , String cr, 
+'- item 1
+- item 2
+
+' 
+	          , EnvironmentOpeningBlockMarkup , environmentName
+	          , String cr , '## Here is a slide', String cr, EnvironmentClosingBlockMarkup , String cr
+	          , EnvironmentClosingBlockMarkup , String cr.
+	root := parser parse: source.
+
+	self assert: root children size equals: 1.
+	env := root children first.
+	self assert: (env isKindOf: MicSlideBlock).
+
+	self assert: env children first class equals: MicUnorderedListBlock.
+	self assert: env children second class equals: MicSlideBlock.
+]
+
 { #category : 'tests - extensions' }
 MicEnvironmentBlockTest >> testExtensionClassWithSpaceAndArgIsCreated [
 
@@ -343,6 +394,24 @@ MicEnvironmentBlockTest >> testInputFileOnOneLineWithSpaceBeforeJunkAfter [
 	mic := parser parse: EnvironmentOpeningBlockMarkup, 'inputFile|path=chapters/withStyle.md  ', EnvironmentClosingBlockMarkup, String space, 'lkjkljklj'.
 	infileReference := mic children first path.
 	self assert: infileReference path equals: 'chapters/withStyle.md' 
+]
+
+{ #category : 'tests - accessing' }
+MicEnvironmentBlockTest >> testName [
+
+	| env |
+	env := (Microdown parse: '<!cards|color=red
+This is a paragraph
+!>') children first.
+	self assert: env name equals: 'cards'
+]
+
+{ #category : 'tests - accessing' }
+MicEnvironmentBlockTest >> testNameSetter [
+
+	| env |
+	env := MicEnvironmentBlock named: 'cards'.
+	self assert: env name equals: 'cards'
 ]
 
 { #category : 'tests - default environment' }

@@ -1,17 +1,22 @@
 "
-i visit code blocks and make sure that evaluation is correct 
+I visit code blocks and make sure that their 'evaluation' is correct.
+I generate a list of analysis results (subclasses of `MicResult`) that then will be consumed by the `MicAnalysisReportBuilder`. 
+This evaluation is specified by a tag. 
+
+- 'example' tag verifies that the code is returning the expected result.
+- 'sync' verifies if the code is in sync with the one in the image. 
+
+New code block validation can easily be added by adding subclasses to `MicCodeBlockTesterStrategy`.
 "
 Class {
 	#name : 'MicCodeBlockValidator',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicChecker',
 	#instVars : [
-		'strategies',
-		'results',
-		'reportWriter'
+		'strategies'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'testing' }
@@ -23,7 +28,7 @@ MicCodeBlockValidator class >> isAbstract [
 { #category : 'initialization' }
 MicCodeBlockValidator >> collectStrategies [
 	
-	MicBookTesterStrategy allSubclasses do: [ :each |
+	MicCodeBlockTesterStrategy allSubclasses do: [ :each |
 		| strat |
 		strat := each new.
 		strat results: results. 
@@ -36,12 +41,19 @@ MicCodeBlockValidator >> failedTests [
 	^ results select: [ :each | each isFailed ]
 ]
 
+{ #category : 'accessing' }
+MicCodeBlockValidator >> fileSystem: aFileReference [
+	
+	self deprecated: 'use rootDirectory' 
+		transformWith: '`@receiver fileSystem: `@arg' -> '`@receiver rootDirectory: `@arg'.
+	self rootDirectory: aFileReference.
+]
+
 { #category : 'initialization' }
 MicCodeBlockValidator >> initialize [
 
 	super initialize.
-	results := OrderedCollection new.
-	strategies := Dictionary new. 
+	strategies := Dictionary new.
 	self collectStrategies
 ]
 
@@ -51,30 +63,6 @@ MicCodeBlockValidator >> isOk [
 	checkingVariable := true.
 	results do: [ :each | checkingVariable := checkingVariable and: [ each isMicPaired ] ].
 	^ checkingVariable
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> reportWriter [
-
-	^ reportWriter
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> reportWriter: anObject [
-
-	reportWriter := anObject
-]
-
-{ #category : 'visiting' }
-MicCodeBlockValidator >> results [
-
-	^ results
-]
-
-{ #category : 'accessing' }
-MicCodeBlockValidator >> results: anObject [
-
-	results := anObject
 ]
 
 { #category : 'accessing' }

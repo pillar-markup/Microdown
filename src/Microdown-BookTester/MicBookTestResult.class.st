@@ -39,9 +39,9 @@ Class {
 	#classInstVars : [
 		'allMessages'
 	],
-	#category : 'Microdown-BookTester-Results',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Results'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'initialization' }

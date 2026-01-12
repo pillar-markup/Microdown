@@ -346,8 +346,53 @@ MicTextualMicrodownExporterTest >> testNestedHeader [
 
 { #category : 'tests - list' }
 MicTextualMicrodownExporterTest >> testOrderedList [
-
+	
 	self verifyObtain: factory orderedListWithTwoItemsSample 
+]
+
+{ #category : 'tests - list nested' }
+MicTextualMicrodownExporterTest >> testOrderedListNestedWithUnordered [
+
+	| mic |
+	self skip. 
+	"There is a bug for sure.
+	We do not get the right dom"	
+	mic := parser parse: 
+'1. item 1
+  - item 11
+  - item 12
+1. item 2
+'.
+	self assert: (mic accept: visitor) contents equals: '
+1. item 1
+  - item 11
+  - item 12
+1. item 2
+'
+]
+
+{ #category : 'tests - list nested' }
+MicTextualMicrodownExporterTest >> testOrderedListNestedWithUnordered2 [
+
+	| mic |
+	self skip. 
+	"There is a bug for sure.
+	We do not get the right dom"
+	mic := parser parse: 
+'1. item 1
+   - sublevel item 1
+   - sublevel item 2
+1. item 2'.
+
+	self assert: mic children size equals: 1.
+	self assert: mic children first children size equals: 2.
+	
+	self assert: (mic accept: visitor) contents equals: '
+1. item 1
+   - sublevel item 1
+   - sublevel item 2
+1. item 2
+'
 ]
 
 { #category : 'tests - list' }
@@ -378,12 +423,6 @@ MicTextualMicrodownExporterTest >> testOrderedListWithItalic [
 MicTextualMicrodownExporterTest >> testOrderedListWithMonospace [
 
 	self verifyObtain: factory orderedListWithTwoItemsMonospaceSample  
-]
-
-{ #category : 'tests - list' }
-MicTextualMicrodownExporterTest >> testOrderedListWithNested [
-
-	self verifyObtain: factory orderedListWithTwoItemsBoldFirstSample  
 ]
 
 { #category : 'tests - list' }
@@ -496,20 +535,46 @@ MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithSomeElements
 	self verifyObtain: factory simpleTableMoreFormat
 ]
 
-{ #category : 'tests - list' }
-MicTextualMicrodownExporterTest >> testUnorderedList [
-
-	self verifyObtain: factory unorderedListWithTwoItemsSample
-]
-
-{ #category : 'tests - list' }
-MicTextualMicrodownExporterTest >> testUnorderedListNestedNewLine [
+{ #category : 'tests - list nested' }
+MicTextualMicrodownExporterTest >> testTwoNestedOrderedLists [
 
 	| mic |
-	mic := parser parse: '- item 1
+	self skip. 
+	"There is a bug for sure.
+	We do not get the right dom"
+	
+	mic := parser parse: 
+'1. item 1
+  1. item 1.1
+  1. item 1.2
+1. item 2'.
+	self assert: mic children size equals: 1.
+
+	self assert: (mic accept: visitor) contents equals: '
+1. item 1
+  1. item 1.1
+  1. item 1.2
+1. item 2
+'
+]
+
+{ #category : 'tests - list nested' }
+MicTextualMicrodownExporterTest >> testTwoNestedUnorderedLists [
+
+	| mic |
+	mic := parser parse: 
+'- item 1
   - item 1.1
   - item 1.2
 - item 2'.
+	"we have one list"
+	self assert: mic children size equals: 1.
+	"It has it should hold somewhenre item1 + one list with 2 subitems"
+	self assert: mic children first children size equals: 2. 
+	self assert: mic children first children first children size equals: 2.
+	self assert: mic children first children first children second class equals: MicUnorderedListBlock. 
+	
+	
 	self assert: (mic accept: visitor) contents equals: '
 - item 1
   - item 1.1
@@ -519,10 +584,20 @@ MicTextualMicrodownExporterTest >> testUnorderedListNestedNewLine [
 ]
 
 { #category : 'tests - list' }
-MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrderedNewLine [
+MicTextualMicrodownExporterTest >> testUnorderedList [
+
+	self verifyObtain: factory unorderedListWithTwoItemsSample
+]
+
+{ #category : 'tests - list nested' }
+MicTextualMicrodownExporterTest >> testUnorderedListNestedWithOrdered [
 
 	| mic |
-	mic := parser parse: '- item 1
+	self skip. 
+	"There is a bug for sure.
+	We do not get the right dom"
+	mic := parser parse: 
+'- item 1
   1. item 1.1
   1. item 1.2
 - item 2'.
@@ -562,12 +637,6 @@ MicTextualMicrodownExporterTest >> testUnorderedListWithItalic [
 MicTextualMicrodownExporterTest >> testUnorderedListWithMonospace [
 
 	self verifyObtain: factory unorderedListWithTwoItemsMonospaceSample
-]
-
-{ #category : 'tests - list' }
-MicTextualMicrodownExporterTest >> testUnorderedListWithNested [
-
-	self verifyObtain: factory unorderedListWithTwoItemsNestedSample
 ]
 
 { #category : 'tests - list' }

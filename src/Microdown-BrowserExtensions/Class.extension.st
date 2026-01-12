@@ -53,10 +53,10 @@ Class >> documentExampleCode [
 			and: [ self documentExampleCodeSelector match: each selector match ] ]
 		ifNone: [ ^ nil ].
 			
-	^ (exampleMethod sourceCode lines 
+	^ ((exampleMethod sourceCode lines 
 		allButFirst 	"Remove method name"
 		reject: [ :each | each trimLeft beginsWith: '<' ]) "Remove pragmas"
-		asStringWithCr
+		joinUsing: Character cr)
 		trimmed
 ]
 

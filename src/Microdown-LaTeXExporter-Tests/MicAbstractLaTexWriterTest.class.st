@@ -76,10 +76,12 @@ MicAbstractLaTexWriterTest >> newLine: aNewLine [
 { #category : 'tests - formats' }
 MicAbstractLaTexWriterTest >> parse: aString andCheckWeGet: aResultingString [
 	
-	| mic |
+	| mic c |
 	mic := parser parse: 	aString.
 	writer visit: mic.
-	self assert: writer contents equals: aResultingString
+	c := writer contents.
+	self assert: c equals: aResultingString.
+	^ c
 ]
 
 { #category : 'tests - formats' }

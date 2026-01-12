@@ -174,7 +174,7 @@ MicCSSEntity >> newCssFile: frwSpec version: versionSymbol [
 
 	^ frwSpec 
 		at: versionSymbol
-		ifPresent: [ : frwSpecCssUrl | self newCssFileFor: frwSpecCssUrl ]
+		ifPresent: [ :frwSpecCssUrl | self newCssFileFor: frwSpecCssUrl ]
 		ifAbsent: [ MicCSSNullFile new  ].
 
 ]
@@ -217,5 +217,5 @@ MicCSSEntity >> writeTo: destDirFileRef [
 
 	| fullOutputDir |
 	fullOutputDir := (destDirFileRef ensureCreateDirectory / self basePath) ensureCreateDirectory.
-	self cssFile copyTo: fullOutputDir / self cssFile basename.
+	self cssFile copyTo: fullOutputDir
 ]

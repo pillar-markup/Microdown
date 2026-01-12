@@ -16,6 +16,19 @@ String >> escapeAll [
 ]
 
 { #category : '*Microdown' }
+String >> microdownExtractPartOfInteger [
+	"Do not use. This method should only be used by microdown."
+		 
+	| start stream |
+	start := self findFirst: [:char | char isDigit].
+	start isZero ifTrue: [^ nil].
+	stream := self readStream position: start - 1.
+	((stream position ~= 0) and: [stream peekBack = $-])
+		ifTrue: [stream back].
+	^ Integer readFrom: stream
+]
+
+{ #category : '*Microdown' }
 String >> resolveDocument: document [
 	^ self asMicResourceReference resolveDocument: document.
 ]

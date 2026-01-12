@@ -1,9 +1,9 @@
 "
-I am a pillar document writer that wraps a normal wrapper.
+I am document writer that wraps a default writer.
 When writing one element, I first check if there is a file in the current template that overrides the default writing. If so, I use that file to template the contents.
-Otherwise I simply delegate the writing to the wrapped one.
+Otherwise I simply delegate the writing to the default one.
 
-I am carefully designed so if an element X is delegated to the wrapped writer, it should delegate the writing of X's children back to myself.
+I am carefully designed so if an element X is delegated to the default writer, it should delegate the writing of X's children back to myself.
 "
 Class {
 	#name : 'MicTemplatedWriter',
@@ -31,7 +31,7 @@ MicTemplatedWriter class >> boldTemplateFileName [
 
 { #category : 'templates' }
 MicTemplatedWriter class >> codeBlockTemplateFileName [
-	
+
 	^ 'codeBlock.mustache'
 ]
 
@@ -42,32 +42,21 @@ MicTemplatedWriter class >> commentedLineTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> dataItemTemplateFileName [
-	
-	^ 'dataItem.mustache'
-]
-
-{ #category : 'templates' }
 MicTemplatedWriter class >> defaultAnnotatedParagraphTemplateFileName [
 	
 	^ 'defaultAnnotatedParagraph.mustache'
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> definitionListTemplateFileName [
-	
-	^ 'definitionList.mustache'
-]
-
-{ #category : 'templates' }
-MicTemplatedWriter class >> emptyParagraphTemplateFileName [
-
-	^ 'emptyParagraph.mustache'
+MicTemplatedWriter class >> environmentTemplateFileName [
+	"ideally we would like to have the name of the environment as template."
+	^ 'environment.mustache'
 ]
 
 { #category : 'templates' }
 MicTemplatedWriter class >> externalLinkTemplateFileName [
-	
+	"this is for [](https://....)"
+
 	^ 'externalLink.mustache'
 ]
 
@@ -84,9 +73,9 @@ MicTemplatedWriter class >> headerTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> horizontalRuleTemplateFileName [
+MicTemplatedWriter class >> horizontalLineTemplateFileName [
 	
-	^ 'horizontalRule.mustache'
+	^ 'horizontalLine.mustache'
 ]
 
 { #category : 'templates' }
@@ -114,12 +103,6 @@ MicTemplatedWriter class >> listItemTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> mailLinkTemplateFileName [
-	
-	^ 'mailLink.mustache'
-]
-
-{ #category : 'templates' }
 MicTemplatedWriter class >> monospaceTemplateFileName [
 
 	^ 'monospace.mustache'
@@ -141,12 +124,6 @@ MicTemplatedWriter class >> paragraphTemplateFileName [
 MicTemplatedWriter class >> preformattedTemplateFileName [
 	
 	^ 'preformatted.mustache'
-]
-
-{ #category : 'templates' }
-MicTemplatedWriter class >> sectionTemplateFileName [
-	
-	^ 'section.mustache'
 ]
 
 { #category : 'templates' }
@@ -198,12 +175,6 @@ MicTemplatedWriter >> currentEnvironmentPath [
 ]
 
 { #category : 'accessing - templates' }
-MicTemplatedWriter >> dataItemTemplateFileName [
-
-	^ self class dataItemTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
 MicTemplatedWriter >> defaultAnnotatedParagraphTemplateFileName [
 
 	^ self class defaultAnnotatedParagraphTemplateFileName
@@ -217,18 +188,6 @@ MicTemplatedWriter >> defaultWriter [
 { #category : 'accessing' }
 MicTemplatedWriter >> defaultWriter: anObject [
 	defaultWriter := anObject
-]
-
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> definitionListTemplateFileName [
-
-	^ self class definitionListTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> emptyParagraphTemplateFileName [
-
-	^ self class emptyParagraphTemplateFileName
 ]
 
 { #category : 'accessing' }
@@ -261,9 +220,9 @@ MicTemplatedWriter >> headerTemplateFileName [
 ]
 
 { #category : 'accessing - templates' }
-MicTemplatedWriter >> horizontalRuleTemplateFileName [
+MicTemplatedWriter >> horizontalLineTemplateFileName [
 
-	^ self class horizontalRuleTemplateFileName
+	^ self class horizontalLineTemplateFileName
 ]
 
 { #category : 'initialization' }
@@ -295,12 +254,6 @@ MicTemplatedWriter >> lineBreakTemplateFileName [
 MicTemplatedWriter >> listItemTemplateFileName [
 
 	^ self class listItemTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> mailLinkTemplateFileName [
-
-	^ self class mailLinkTemplateFileName
 ]
 
 { #category : 'accessing - templates' }
@@ -349,12 +302,6 @@ MicTemplatedWriter >> pushEnvironment: aPREnvironment [
 	environmentStack addFirst: aPREnvironment
 ]
 
-{ #category : 'accessing - templates' }
-MicTemplatedWriter >> sectionTemplateFileName [
-
-	^ self class sectionTemplateFileName
-]
-
 { #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
 
@@ -367,7 +314,7 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 	^ self class unorderedListTemplateFileName
 ]
 
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitAnchor: aPRAnchor [
 
 	self
@@ -378,42 +325,60 @@ MicTemplatedWriter >> visitAnchor: aPRAnchor [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitAnnotatedParagraph: anAnnotatedParagraph [
+MicTemplatedWriter >> visitAnchorReference: aReference [
+
+	self
+		write: aReference
+		withTemplateFileName: self internalLinkTemplateFileName
+		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 
 	| arguments |
-	arguments := { 'annotation' -> anAnnotatedParagraph annotation }.
+	arguments := { 'label' -> anAnnotatedParagraph label }.
 	self
 		write: anAnnotatedParagraph
-		withTemplateFileName: anAnnotatedParagraph annotation , '.mustache'
+		withTemplateFileName: anAnnotatedParagraph label , '.mustache'
 		extraArguments: arguments 
 		ifAbsent: [
 			self
 				write: anAnnotatedParagraph
 				withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
 				extraArguments: arguments 
-				ifAbsent: [ defaultWriter visitAnnotatedParagraph: anAnnotatedParagraph ] ]
+				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitBoldFormat: aPRBoldFormat [
-
+MicTemplatedWriter >> visitBold: aMicBold [
+	
 	self
-		write: aPRBoldFormat
+		write: aMicBold
 		withTemplateFileName: self boldTemplateFileName
-		ifAbsent: [ defaultWriter visitBoldFormat: aPRBoldFormat ]
+		ifAbsent: [ defaultWriter visitBold: aMicBold ]
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitCodeblock: aPRCodeblock [ 
+MicTemplatedWriter >> visitCode: aCodeBlock [  
+	
+	self
+		writeRawText: aCodeBlock body
+		withTemplateFileName: self codeBlockTemplateFileName
+		extraArguments: { 'language' -> defaultWriter class name }
+		ifAbsent: [ defaultWriter visitCode: aCodeBlock ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitComment: aCommentBlock [
 
 	self
-		writeRawText: aPRCodeblock text
-		withTemplateFileName: self codeBlockTemplateFileName
-		extraArguments: { 'language' -> (defaultWriter languageForScript: aPRCodeblock) }
-		ifAbsent: [ defaultWriter visitCodeblock: aPRCodeblock ]
+		writeRawText: aCommentBlock text
+		withTemplateFileName: self commentedLineTemplateFileName
+		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitCommentedLine: aPRText [ 
 
 	self
@@ -422,53 +387,16 @@ MicTemplatedWriter >> visitCommentedLine: aPRText [
 		ifAbsent: [ defaultWriter visitCommentedLine: aPRText  ]
 ]
 
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitDataItem: aPRListItem [
-
-	self
-		write: aPRListItem
-		withTemplateFileName: self dataItemTemplateFileName
-		ifAbsent: [ defaultWriter visitDataItem: aPRListItem ]
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitDefinitionList: aPRList [
-
-	self
-		write: aPRList
-		withTemplateFileName: self definitionListTemplateFileName
-		ifAbsent: [ defaultWriter visitDefinitionList: aPRList ]
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitEmptyParagraph: anEmptyParagraph [
-	
-	self
-		writeRawText: anEmptyParagraph text
-		withTemplateFileName: self emptyParagraphTemplateFileName
-		ifAbsent: [ defaultWriter visitEmptyParagraph: anEmptyParagraph ]
-]
-
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 	self pushEnvironment: anEnvironment.
 	self
 		write: anEnvironment
-		withTemplateFileName: 'main.mustache'
+		withTemplateFileName: 'environment.mustache'
 		extraArguments: anEnvironment properties associations
-		ifAbsent: [ self visitDocumentGroup: anEnvironment ].
+		ifAbsent: [ self halt. self visitDocumentGroup: anEnvironment ].
 	self popEnvironment.
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitExternalLink: aPRExternalLink [
-
-	self
-		write: aPRExternalLink
-		withTemplateFileName: self externalLinkTemplateFileName
-		extraArguments: { 'reference' -> aPRExternalLink reference }
-		ifAbsent: [ defaultWriter visitExternalLink: aPRExternalLink ]
 ]
 
 { #category : 'visiting' }
@@ -479,7 +407,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		withTemplateFileName: self figureTemplateFileName
 		extraArguments: {
 			'ref' -> aFigure fileStringWithoutHostFile.
-			'caption' -> (aFigure hasChildren ifTrue: [ aFigure text ] ifFalse: [ '' ]) }
+			'caption' -> (aFigure hasChildren ifTrue: [ aFigure caption ] ifFalse: [ '' ]) }
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
 
@@ -493,7 +421,16 @@ MicTemplatedWriter >> visitHeader: aHeader [
 		ifAbsent: [ defaultWriter visitHeader: aHeader ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
+MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
+
+	self
+		writeRawText: ''
+		withTemplateFileName: self horizontalLineTemplateFileName
+		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
+]
+
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 
 	self
@@ -503,31 +440,33 @@ MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitInternalLink: aPRInternalLink [
-
-	self
-		write: aPRInternalLink
-		withTemplateFileName: self internalLinkTemplateFileName
-		extraArguments: { 'reference' -> aPRInternalLink reference }
-		ifAbsent: [ defaultWriter visitInternalLink: aPRInternalLink ]
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitItalicFormat: aPRItalicFormat [ 
+MicTemplatedWriter >> visitItalic: aMicItalicFormat [ 
 	
 	self
-		write: aPRItalicFormat
+		write: aMicItalicFormat
 		withTemplateFileName: self italicTemplateFileName
-		ifAbsent: [ defaultWriter visitItalicFormat: aPRItalicFormat ]
+		ifAbsent: [ defaultWriter visitItalic: aMicItalicFormat ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
 
 	self
 		writeRawText: ''
 		withTemplateFileName: self lineBreakTemplateFileName
 		ifAbsent: [ defaultWriter visitLineBreak: aPRLineBreak ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitLink: aLink [
+	
+	self
+		write: aLink
+		withTemplateFileName: self externalLinkTemplateFileName
+		extraArguments: {
+			'ref' -> aLink reference uri.
+			'caption' -> aLink caption }
+		ifAbsent: [ defaultWriter visitLink: aLink ]
 ]
 
 { #category : 'visiting' }
@@ -540,22 +479,12 @@ MicTemplatedWriter >> visitListItem: aPRListItem [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitMailLink: aPRMailLink [
-
-	self
-		write: aPRMailLink
-		withTemplateFileName: self mailLinkTemplateFileName
-		extraArguments: { 'reference' -> aPRMailLink reference }
-		ifAbsent: [ defaultWriter visitExternalLink: aPRMailLink ]
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitMonospaceFormat: aPRMonospaceFormat [ 
+MicTemplatedWriter >> visitMonospace: aMicMonospaceFormat [ 
 	
 	self
-		write: aPRMonospaceFormat
+		write: aMicMonospaceFormat
 		withTemplateFileName: self monospaceTemplateFileName
-		ifAbsent: [ defaultWriter visitMonospaceFormat: aPRMonospaceFormat ]
+		ifAbsent: [ defaultWriter visitMonospace: aMicMonospaceFormat ]
 ]
 
 { #category : 'visiting' }
@@ -576,7 +505,7 @@ MicTemplatedWriter >> visitParagraph: aParagraph [
 		ifAbsent: [ defaultWriter visitParagraph: aParagraph ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'old visiting' }
 MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 
 	self
@@ -589,15 +518,6 @@ MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
 	defaultWriter visitRaw: aPRRaw
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitSection: aPRSection [
-
-	self
-		write: aPRSection
-		withTemplateFileName: self sectionTemplateFileName
-		ifAbsent: [ defaultWriter visitSection: aPRSection ]
 ]
 
 { #category : 'delegating' }
@@ -660,9 +580,8 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 		ifNone: [ ^ aBlock value ].
 	
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
-		
 	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
-	self visitRaw: (PRRaw content: result type: defaultWriter writerName)
+	self visitText: (MicTextBlock new bodyString: result)
 ]
 
 { #category : 'writing' }

@@ -1,6 +1,8 @@
 "
-I represent a reference in a text. For example, `[The pharo web site](http://pharo.org)` gives [The Pharo web site](http://pharo.org).
+I represent an url reference in a text. For example, `[The pharo web site](http://pharo.org)` gives [The Pharo web site](http://pharo.org).
 The `reference` method returns the `http://pharo.org` part.
+
+For anchor references such as See Figure, Equations or code block have a look at MicAnchorReferenceBlock.
 "
 Class {
 	#name : 'MicLinkBlock',

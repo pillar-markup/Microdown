@@ -19,15 +19,9 @@ BaselineOfMicrodown >> baseline: spec [
 			xmlParserHtml: spec;
 			mustache: spec;
 			gitBridge: spec.
-		" I disable this because against all my best effort, I cannot avoid the fucking pop up to raise 
-		even if I unload all the packages. I get the Microdown-RichTextComposer in conflict."
-			
+
 		spec preLoadDoIt: #'preload:package:'.
-		
-		
-		"I disable this because in a postload 
-			(IceRepository repositoryNamed: 'microdown') is nil and I do not get why"
-	
+
 		spec postLoadDoIt: #'postload:package:'.
 		
 		spec
@@ -43,6 +37,7 @@ BaselineOfMicrodown >> baseline: spec [
 				
 			package: #'Microdown-RichTextComposer'
 				with: [ spec requires: #( #Microdown ) ];
+				
 			package: #'Microdown-RichTextComposer-Tests'
 				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
 
@@ -65,12 +60,13 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
 			
 			package: #'Microdown-LaTeXExporter'
-				with: [ spec requires: #( #Microdown ) ];				
+				with: [ spec requires: #( #Microdown ) ];
 			package: #'Microdown-LaTeXExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
-
+	
 			package: #'Microdown-BeamerExporter'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];				
+	
 			package: #'Microdown-BeamerExporter-Tests'
 				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
 
@@ -83,22 +79,23 @@ BaselineOfMicrodown >> baseline: spec [
 				
 			package: #'Microdown-ParentChildrenChecker' with: [
 				spec requires: #( #'Microdown' ) ];
+			
 			package: #'Microdown-BookTester' with: [
 				spec requires: #( #'Microdown' ) ];
 			package: #'Microdown-BookTester-Tests' with: [
 				spec requires: #( #'Microdown-BookTester' ) ];	
 				
 			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' #'Mustache') ];
+				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
 			package: #'Microdown-Blog-Tests' with: [
 				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
 		
-		"I do not want group without tests for now"
 		spec
-			group: 'Core' with: #('Microdown');
+			group: 'Core' with: #('Microdown' 'Microdown-Tests');
 			group: 'ForPharo' with: #('Microdown' #'Microdown-BrowserExtensions');
-			group: 'Tests' with: #('Core' 'Microdown-Tests');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
+			group: 'Editor' with: #('RichText' #'Microdown-PrettyPrinter' #'Microdown-PrettyPrinter-Tests');
+			group: 'LaTeX' with:  #('Core' #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests');
 			group: 'Extensions' with: #(
 				#'Microdown-Evaluator'
 				#'Microdown-Evaluator-Tests'
@@ -115,9 +112,15 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-BookTester-Tests'
 				#'Microdown-Blog'
 				#'Microdown-Blog-Tests'
-				
 				);
-			group: 'All' with: #('Core' #'Microdown-BrowserExtensions' 'Tests' 'Extensions' 'Microdown-Pharo-Tools' 'RichText') ]
+			group: 'All' with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
+			]
+
+
+
+
+
+
 ]
 
 { #category : 'baselines' }
@@ -131,7 +134,7 @@ BaselineOfMicrodown >> mustache: spec [
 
 	spec baseline: 'Mustache' with: [
 		spec
-			repository: 'github://noha/mustache:v1.0/repository';
+			repository: 'github://noha/mustache:v1.3/repository';
 			loads: #( 'Core' 'Tests' ) ]
 ]
 
@@ -162,16 +165,21 @@ BaselineOfMicrodown >> preload: loader package: packageSpec [
 					forget ] ]"
 
 	| packagesToUnload |
-	"If we are building the Pharo image, we do not want to unload packages."
-	SystemBuildInfo current isBuildFinished ifFalse: [ ^ self ].
+
+	self flag: 'This is necessary to not break the bootstrapping. Microdown makes a cleaning of classes and as Microdown is loaded in the image it can cause conflits.'.
+	self flag: 'We do not access the class SystemBuildInfo directly because it is only present in Pharo 13 but Microdown works on different Pharo versions. We can simplifly this when Pharo 13 will be the minimal supported version.'.
+	self class environment at: #SystemBuildInfo ifPresent: [ :info | info 
+			current isBuildFinished ifFalse: [ ^ self ]. ].
 
 	"If it is absent it's because we are in the Pharo bootstrap"
 	self class environment at: #IceRepository ifPresent: [ :iceRepositoryClass |
-		packagesToUnload := ((PackageOrganizer default packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
-			                    #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
+		| packages |
+		"The same here, not direct access to PackageOrganizer because it is only for Pharo 13."
+		packages := self class environment allClasses collect: #package as: Set.
+		packagesToUnload := ((packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
+			               #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
 
-		"these two are not managed by the microdown repo but the documentation.
-			I should rename them in the future to avoid confusion"
+		"these two are not managed by the microdown repo but the documentation. We should rename them in the future to avoid confusion"
 
 		packagesToUnload do: [ :each | ((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed: each) unload ] ]
 ]

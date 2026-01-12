@@ -38,6 +38,7 @@ MicZincPathResolver class >> resolve: document withBase: aRef [
 
 { #category : 'accessing' }
 MicZincPathResolver >> absoluteReference: aReferenceOrString [
+
 	absoluteReference := aReferenceOrString isString
 		ifTrue: [ MicResourceReference fromUri: aReferenceOrString ]
 		ifFalse: [ aReferenceOrString ]
@@ -45,17 +46,20 @@ MicZincPathResolver >> absoluteReference: aReferenceOrString [
 
 { #category : 'visiting' }
 MicZincPathResolver >> resolveDocument: document [
+
 	self visit: document
 ]
 
 { #category : 'private' }
 MicZincPathResolver >> resolveReferenceIn: aNode [
 	"currently links, figures and input nodes need to be resolved"
+	
 	| resolvedUri resolvedReference |
 	aNode reference isRelative ifFalse: [ ^ self ].
 	resolvedUri := absoluteReference uri withRelativeReference: aNode reference relativePath.
 	resolvedReference := MicResourceReference fromUri: resolvedUri printString.
-	resolvedReference isMicrodownResourceFileReference ifTrue: [ resolvedReference fileSystem: absoluteReference fileSystem ].
+	resolvedReference isMicrodownResourceFileReference 
+		ifTrue: [ resolvedReference fileSystem: absoluteReference fileSystem ].
 	aNode reference: resolvedReference
 ]
 
@@ -68,11 +72,11 @@ MicZincPathResolver >> visitFigure: aFigure [
 { #category : 'visiting' }
 MicZincPathResolver >> visitInputFile: anInputFile [
 
-
 	self resolveReferenceIn: anInputFile 
 ]
 
 { #category : 'visiting' }
 MicZincPathResolver >> visitLink: aLink [
+
 	self resolveReferenceIn: aLink
 ]

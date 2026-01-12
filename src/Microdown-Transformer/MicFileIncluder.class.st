@@ -37,15 +37,45 @@ Class {
 	#package : 'Microdown-Transformer'
 }
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 MicFileIncluder >> beRelaxed [
 
 	isStrict := false
 ]
 
+{ #category : 'validation' }
+MicFileIncluder >> checkCyclicIncludeOfFile: aFileReference [ 
+	
+	aFileReference = topFile ifTrue: [ 
+		MicCyclicFileInclusionError new
+			files: { topFile };
+			signal
+	].
+
+	(inProcessFiles includes: aFileReference)
+		ifTrue: [ MicCyclicFileInclusionError new
+			files: (inProcessFiles copyWith: aFileReference);
+			signal  ]
+]
+
 { #category : 'configuration' }
 MicFileIncluder >> doNotTransform [
 	shouldTransform := false
+]
+
+{ #category : 'accessing' }
+MicFileIncluder >> expandAllInputOf: ast [
+	"The argument should know the file it comes from. Usually using fromFile:, or using the topFile: API.
+	This is important since we need to resolve the path using such an information."
+	
+	| path |
+	path := ast fromFile = 'fakedFile' 
+		ifTrue: [ path := topFile ] 
+		ifFalse: [path := ast fromFile].
+	path ifNil: [ self error: 'base is not set for resolution. Please use either parseFile: or topFile: to specificy a file reference' ].
+	path asMicResourceReference resolveDocument: ast. 
+	self visit: ast.
+	
 ]
 
 { #category : 'accessing' }
@@ -74,23 +104,9 @@ MicFileIncluder >> shouldTransform [
 
 { #category : 'accessing' }
 MicFileIncluder >> topFile: aFileReference [
-
-	topFile := aFileReference
-]
-
-{ #category : 'validation' }
-MicFileIncluder >> validateInclusionOfFile: aFileReference [ 
+	"You may use this API if the document was not created using parseFile: or that its fromFile is empty."
 	
-	aFileReference = topFile ifTrue: [ 
-		MicCyclicFileInclusionError new
-			files: { topFile };
-			signal
-	].
-
-	(inProcessFiles includes: aFileReference)
-		ifTrue: [ MicCyclicFileInclusionError new
-			files: (inProcessFiles copyWith: aFileReference);
-			signal  ]
+	topFile := aFileReference
 ]
 
 { #category : 'visiting-document' }
@@ -104,6 +120,7 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	do: [ :error | isStrict 
 			ifFalse: [ ^ self ]
 			ifTrue: [ error pass  ]].
+	
 	self replaceCurrentNodeBy: inputDoc children
 	
 ]

@@ -222,10 +222,11 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
-{ #category : 'visit - block' }
+{ #category : 'visit - list ' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
+	"here we do not handle the prefix - or a number"
 
-	builder item: [ super visitListItem: anItem ]
+	builder itemBody: [ super visitListItem: anItem ]
 ]
 
 { #category : 'visit - block' }
@@ -259,23 +260,30 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 ]
 
-{ #category : 'visit - block' }
+{ #category : 'visit - list ' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
 	| block |
 	block := [  ].
-	self inList ifFalse: 
-		[ builder newLine.
-		 self setTrueInList.
-		 block := [ self setFalseInList ] ].
-	builder unorderedListDuring: [ super visitOrderedList: anOrderedList ].
+	self inList 
+		ifFalse: [ 
+			builder newLine.
+		 	self setTrueInList.
+		 	block := [ self setFalseInList ] ].
+	"the problem if we use accept is that anitem is not an orderd or unordered. 
+	There is only one kind of item. So we cannot use the dispatch."
+	
+	builder orderedListDuring: [ 
+		anOrderedList children do: [ :orderedItem | 
+			builder orderedItem: [ builder itemBody: [ orderedItem accept: self ] ] ] ].
+		
 	block value
 ]
 
-{ #category : 'visit - block' }
-MicTextualMicrodownExporter >> visitOrderedListItem: anItem [
+{ #category : 'visit - list ' }
+MicTextualMicrodownExporter >> visitOrderedListItem2: anItem [
 
-	builder orderedItem: [ super visitListItem: anItem ]
+	builder orderedItem: [ super visitOrderedListItem: anItem ]
 ]
 
 { #category : 'visit - block' }
@@ -340,7 +348,7 @@ MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock bodyString
 ]
 
-{ #category : 'visit - block' }
+{ #category : 'visit - list ' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 	
 	| block |
@@ -349,6 +357,9 @@ MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 		[ builder newLine.
 		 self setTrueInList.
 		 block := [ self setFalseInList ] ].
-	builder unorderedListDuring: [ super visitUnorderedList: aUnorderedList ].
+	builder unorderedListDuring:  [ 
+		aUnorderedList children do: [ :unorderedItem | 
+			builder item: [ builder itemBody: [ unorderedItem accept: self ] ] ] ].
+	
 	block value
 ]

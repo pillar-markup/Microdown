@@ -7,14 +7,15 @@ Class {
 	#instVars : [
 		'anchorLabel'
 	],
-	#category : 'Microdown-BookTester-Results',
+	#category : 'Microdown-BookTester-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'Results'
+	#tag : 'References'
 }
 
 { #category : 'kinds' }
 MicAnchorResult class >> errorType [
-
+	"The error type of a result is used by the report writer to group problems."
+	
 	^ 'Anchor problem'
 ]
 

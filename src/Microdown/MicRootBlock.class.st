@@ -4,10 +4,30 @@ I am the root of the markup tree.
 Class {
 	#name : 'MicRootBlock',
 	#superclass : 'MicAbstractBlock',
+	#instVars : [
+		'debugId'
+	],
+	#classVars : [
+		'DebugId'
+	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
 	#tag : 'Model'
 }
+
+{ #category : 'accessing' }
+MicRootBlock class >> nextDebugId [
+
+	DebugId ifNil: [ DebugId := 0].
+	DebugId := DebugId + 1.
+	^ DebugId
+]
+
+{ #category : 'accessing' }
+MicRootBlock class >> resetDebugId [
+
+	DebugId := 0
+]
 
 { #category : 'visiting' }
 MicRootBlock >> accept: aVisitor [
@@ -30,6 +50,17 @@ MicRootBlock >> canConsumeLine: line [
 	"The root block can always consume everything no matter what it is."
 
 	^ true
+]
+
+{ #category : 'debugging' }
+MicRootBlock >> debugId [
+	^ debugId
+]
+
+{ #category : 'debugging' }
+MicRootBlock >> debugIdGenerator [
+
+	^ self class nextDebugId
 ]
 
 { #category : 'accessing' }
@@ -67,6 +98,13 @@ MicRootBlock >> indent [
 	^0
 ]
 
+{ #category : 'initialization' }
+MicRootBlock >> initialize [ 
+	
+	super initialize. 
+	debugId := self class nextDebugId.
+]
+
 { #category : 'hooks' }
 MicRootBlock >> massageLine: aLine [
 	"In some cases an element may want to massage the line such as removing leading tab. By default we delegate to the parent because environments may contain nodes such as code block and this is this nesting that will determine what should be done with the tab. In such a case the environment should remov the tabs. Here on the root we do nothing special."
@@ -79,6 +117,15 @@ MicRootBlock >> metaDataElement [
 	"if self hasMetaDataElement then metaDataElement returns it.
 	else it returns the first element."
 	^ children first
+]
+
+{ #category : 'printing' }
+MicRootBlock >> printOn: aStream [
+
+	super printOn: aStream.
+	debugId ifNotNil: [ 
+			aStream << '[ id:'; <<debugId asString ; << ']'  ]
+	
 ]
 
 { #category : 'accessing' }

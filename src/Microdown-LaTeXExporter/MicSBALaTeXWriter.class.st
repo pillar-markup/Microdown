@@ -32,17 +32,12 @@ MicSBALaTeXWriter >> optionalParametersForFloatingScript: aCodeBlock [
 	parameters add: 'float'.
 	aCodeBlock hasAnchor ifTrue: [
 		parameters add: 'label=' , aCodeBlock anchor ].
-	^ parameters asCommaString
+	^ self commaConcatenate: parameters
 ]
 
 { #category : 'protected' }
 MicSBALaTeXWriter >> tabularEnvironment [
 	^ 'fullwidthtabular'
-]
-
-{ #category : 'accessing' }
-MicSBALaTeXWriter >> templateForConfiguration: aConfiguration [
-	^ 'main.mustache'
 ]
 
 { #category : 'protected' }

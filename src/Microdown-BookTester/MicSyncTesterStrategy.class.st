@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicSyncTesterStrategy',
-	#superclass : 'MicBookTesterStrategy',
-	#category : 'Microdown-BookTester-Analysis',
+	#superclass : 'MicCodeBlockTesterStrategy',
+	#category : 'Microdown-BookTester-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'CodeBlockAnalysis'
 }
 
 { #category : 'hook' }
@@ -16,7 +16,7 @@ MicSyncTesterStrategy class >> handleKey [
 { #category : 'main API' }
 MicSyncTesterStrategy >> handleBrokenOrigin: aString of: aMicCodeBlock [ 
 	
-	results add: ( MicBrokenSyncOriginDefinition new 
+	results add: ( MicBrokenSyncOriginDefinitionResult new 
 							originString: aString;
 							sourceFileReference: aMicCodeBlock fromFile;
 							yourself )
@@ -25,7 +25,7 @@ MicSyncTesterStrategy >> handleBrokenOrigin: aString of: aMicCodeBlock [
 { #category : 'main API' }
 MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [ 
 
-	results add: (MicBrokenSyncDefinition new
+	results add: (MicBrokenSyncDefinitionResult new
 							syncValue: aString;
 							sourceFileReference: aMicCodeBlock fromFile;
 							yourself)
@@ -82,6 +82,6 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 					 sourceFileReference: aCodeBlock fromFile;
 					 bookContents: aCodeBlock body;
 					 imageContent: method sourceCode;
-					 pharoVersion: Smalltalk image lastUpdateString) ] ]
+					 pharoVersion:SystemVersion current major) ] ]
 		]
 ]

@@ -93,6 +93,14 @@ MicrodownVisitor >> visitDay: aDay [
 	"subclassResponsibility"
 ]
 
+{ #category : 'visiting - inline elements' }
+MicrodownVisitor >> visitElement: anElement [
+	"I'm doing nothing when visiting a super generic element.
+	I'm here just to let the development of new functionality be smooth."
+
+	
+]
+
 { #category : 'visiting' }
 MicrodownVisitor >> visitEnvironment: anEnvironment [
 
@@ -176,8 +184,8 @@ MicrodownVisitor >> visitNote: aNote [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
-
-	^ anOrderedList children collect: [ :each | self visitOrderedListItem: each ]
+	
+	^ anOrderedList children collect: [ :each | each accept: self ]
 ]
 
 { #category : 'visiting - list' }

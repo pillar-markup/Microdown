@@ -13,11 +13,11 @@ This class implements behavior to access each framework, and configure its locat
 
   - It contains a list of specifications for each CSS framework in #frameworkSpecs.
   - It uses a `MicCSSDownloader` as helper to download resources. 
-  - Try to download both minified and normal versions of the CSS, if possible. In any case, at leat one should be available
+  - Try to download both minified and normal versions of the CSS, if possible. In any case, at least one should be available.
 
-# Usage
+### Usage
 
-## Obtain CSS frameworks
+#### Obtain CSS frameworks
 
 To download a set of pre-defined CSS frameworks, evaluate:
 
@@ -37,12 +37,12 @@ MicCSSProvider new
 
 If not specified, a default destination folder is set automatically.
 
-## Querying CSS libraries
+#### Querying CSS libraries
 
 To inspect the currently available libraries:
 
 ```language=Pharo
-MicCSSProvider new frameworks.
+MicCSSProvider new frameworks
 ```
 
 To filter CSS Frameworks with themes:
@@ -148,7 +148,7 @@ MicCSSProvider >> findCssNamed: aString [
 	"Answer a <MicCSSFramework> matching aString"
 	
 	^ self frameworks 
-		detect: [ : framework | framework name = aString ]
+		detect: [ :framework | framework name = aString ]
 ]
 
 { #category : 'frameworks' }
@@ -372,16 +372,34 @@ MicCSSProvider >> hasFrameworksInstalled [
 	| destFileRef |
 	
 	destFileRef := self destinationPath asFileReference.
-	^ destFileRef exists and: [ destFileRef entries anySatisfy: [ : entry | entry reference extension = 'css' ] ]
+	^ destFileRef exists and: [ destFileRef entries 
+			anySatisfy: [ :entry | entry reference extension = 'css' ] ]
 ]
 
 { #category : 'accessing' }
 MicCSSProvider >> installFrameworks [
 	"Download CSS libraries to local system"
 
+	"if one is missing on the web but not locally we will lose it with this 
+	logic. no?
+	
 	self destinationPath asFileReference exists
-		ifTrue: [ self destinationPath asFileReference ensureDeleteAll ].
+		ifTrue: [ self destinationPath asFileReference ensureDeleteAll ]."
+	
 	self cssDownloader downloadCSSFrameworks
+]
+
+{ #category : 'testing' }
+MicCSSProvider >> installedFrameworks [
+	"Returns the list of frameworks available locally on disc"
+	"self new installedFrameworks"
+	
+	| destFileRef |
+	destFileRef := self destinationPath asFileReference.
+	destFileRef exists 
+		ifFalse: [ ^ #() ].
+	^ destFileRef entries 
+		select: [ :entry | entry reference extension = 'css' ]
 ]
 
 { #category : 'frameworks' }
@@ -392,7 +410,9 @@ MicCSSProvider >> localCSSNamed: aString [
 
 { #category : 'frameworks' }
 MicCSSProvider >> localRepositoryPath [ 
-
+	"this is also hardcode somewhere else in a string. 
+	Please check and make sure that there is only one place!"
+	
 	^ FileSystem workingDirectory / 'pharo-local' / 'iceberg' / 'pillar-markup' / 'Microdown' / 'ressource'
 ]
 

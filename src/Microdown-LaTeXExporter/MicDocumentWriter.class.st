@@ -70,7 +70,19 @@ MicDocumentWriter >> visit: aMicElement [
 
 { #category : 'writing' }
 MicDocumentWriter >> write: aMicElement [
-	"for now for integration with Pillar."
+	"Pillar API. 
+	Notice that Pillar is doing the resolution of paths before calling write: 
+	
+	So there is no need to define write: to call such explicit phase
+	as includeFilesAndVisit: does it 
+	
+	includeFilesAndVisit: ast
+		MicFileIncluder new expandAllInputOf: ast.
+		self visit: ast. 
+		^ self contents
+	
+	"
+	
 	self visit: aMicElement.
 	^ self contents
 ]

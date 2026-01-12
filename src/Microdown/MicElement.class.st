@@ -1,3 +1,9 @@
+"
+I'm the abstract root of all the microdown document tree elements.
+I have two kinds of subclasses: block level (codeBlock, paragraph, list...) and intra block level elements (text, formatted, bold, link...).
+
+I'm a nice superclass for entities that are not parsed such as table of content entries and the like.  
+"
 Class {
 	#name : 'MicElement',
 	#superclass : 'Object',
@@ -39,6 +45,13 @@ MicElement class >> buildMicroDownUsing: aBuilder  withComment: aComment [
 MicElement class >> extensionClassFor: tag [
 	"I am a utility method used in extension blocks to find the right subclass to instantiate"
 	^ self allSubclasses detect: [ :each | each tag = tag ] ifNone: [ self ]
+]
+
+{ #category : 'visiting' }
+MicElement >> accept: aVisitor [
+	"This could be a subclassResponsibility but we can think that we do not want to force a method definition"
+	
+	aVisitor visitElement: self
 ]
 
 { #category : 'private' }

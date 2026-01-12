@@ -12,13 +12,13 @@ Class {
 
 { #category : 'accessing' }
 MicMinimalConfiguration >> crAsNewLine [
-
+	"Use cr when we will be asked to output a newline"
 	self newLine: Character cr.
 ]
 
 { #category : 'accessing' }
 MicMinimalConfiguration >> crlfAsNewLine [
-
+	"Use crlf when we will be asked to output a newline"
 	self newLine: String crlf.
 ]
 
@@ -40,14 +40,14 @@ MicMinimalConfiguration >> headingLevelOffset: anObject [
 { #category : 'initialization' }
 MicMinimalConfiguration >> initialize [ 
 	super initialize.
-	newLine := String crlf.
+	self crlfAsNewLine.
 	headingLevelOffset := 0
 ]
 
 { #category : 'accessing' }
 MicMinimalConfiguration >> lfAsNewLine [
-
-	self newLine: Character lf.
+	"Use lf when we will be asked to output a newline"
+	self newLine: Character lf
 ]
 
 { #category : 'accessing' }

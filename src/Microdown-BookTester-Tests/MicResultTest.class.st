@@ -54,20 +54,20 @@ MicResultTest >> testMicBrokenSyncDefinitionResultExplanationWorksWithEmptyInsta
 	self flag: #improve. 
 	"I do not like these tests that test string."
 	self 
-		assert: MicBrokenSyncDefinition new explanation 
+		assert: MicBrokenSyncDefinitionResult new explanation 
 		equals: 'The sync definition has the following broken value: empty .'
 ]
 
 { #category : 'tests - basic result creation' }
 MicResultTest >> testResultCreation [
 
-	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+	{ MicBookTestResult . MicBrokenSyncDefinitionResult . MicBrokenSyncOriginDefinitionResult . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
 ]
 
 { #category : 'tests - basic result creation' }
 MicResultTest >> testResultCreationSmokeTest [
 
-	{ MicBookTestResult . MicBrokenSyncDefinition . MicBrokenSyncOriginDefinition . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
+	{ MicBookTestResult . MicBrokenSyncDefinitionResult . MicBrokenSyncOriginDefinitionResult . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
 ]
 
 { #category : 'tests' }

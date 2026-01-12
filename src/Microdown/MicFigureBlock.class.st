@@ -57,3 +57,8 @@ MicFigureBlock >> hasCaption [
 MicFigureBlock >> plainText [
 	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
 ]
+
+{ #category : 'accessing' }
+MicFigureBlock >> text [
+	^ children first text
+]

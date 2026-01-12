@@ -16,7 +16,7 @@ Class {
 	#package : 'Microdown-BookTester-Tests'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'helpers - anchors & references' }
 MicReferenceCheckerTest >> anchorNames: checker [
 
 	^ checker results

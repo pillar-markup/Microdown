@@ -162,7 +162,7 @@ MicMethodBodySyncTest >> testReportCodeblockWithBrokenSync [
 	
 	self assert: (self class >> #simpleCode) sourceCode equals: methodDef.
 	report := bTester results first.
-	self assert: report class equals: MicBrokenSyncDefinition.
+	self assert: report class equals: MicBrokenSyncDefinitionResult.
 	self assert: report syncValue equals: 'FooBar'
 	
 ]
@@ -215,7 +215,7 @@ simpleCode
 
 	bTester := self parseAndTest: docText.
 	result := bTester results first.
-	self assert: result class equals: MicBrokenSyncOriginDefinition 
+	self assert: result class equals: MicBrokenSyncOriginDefinitionResult 
 	
 ]
 
@@ -232,6 +232,6 @@ simpleCode
 
 	bTester := self parseAndTest: docText.
 	result := bTester results first.
-	self assert: result class equals: MicBrokenSyncOriginDefinition 
+	self assert: result class equals: MicBrokenSyncOriginDefinitionResult 
 	
 ]

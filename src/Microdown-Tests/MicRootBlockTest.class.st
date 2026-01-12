@@ -24,6 +24,18 @@ MicRootBlockTest >> testRootCanConsumeLine [
 	self assert: (rootNode canConsumeLine: '- ')
 ]
 
+{ #category : 'tests' }
+MicRootBlockTest >> testRootDebugInfo [
+	
+	| rootNode first | 
+	MicRootBlock resetDebugId.
+	first := MicRootBlock nextDebugId. 
+	rootNode := MicRootBlock new.
+	self assert: rootNode debugId equals: first + 1.
+	rootNode := MicRootBlock new.
+	self assert: rootNode debugId equals: first + 2.
+]
+
 { #category : 'tests - metadata' }
 MicRootBlockTest >> testRootDoesNotHaveMetaDataElement [
 

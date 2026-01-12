@@ -46,7 +46,10 @@ MicMicrodownObjectToPillarObjectConverter >> visitAnchor: aMicAnchorBlock [
 
 { #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitAnchorReference: aMicAnchorReference [
-	^ PRInternalLink new anchor: aMicAnchorReference substring; yourself
+
+	^ PRInternalLink new
+		  anchor: aMicAnchorReference bodyString;
+		  yourself
 ]
 
 { #category : 'visiting' }
@@ -234,8 +237,10 @@ MicMicrodownObjectToPillarObjectConverter >> visitQuote: aMicQuoteBlock [
 
 { #category : 'visiting inline' }
 MicMicrodownObjectToPillarObjectConverter >> visitRaw: aMicRaw [
-	^ PRRaw new text: aMicRaw substring ; yourself 
-	
+
+	^ PRRaw new
+		  text: aMicRaw bodyString;
+		  yourself
 ]
 
 { #category : 'visiting' }

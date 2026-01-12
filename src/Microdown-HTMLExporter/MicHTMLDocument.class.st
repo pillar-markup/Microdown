@@ -1,7 +1,7 @@
 "
-Represents a Text/HTML file to be displayed in a web browser. It can be created with a CSS style **newWithStyle:**, and passing a `Microdown` content String through **fromMicrodown:** as parameter.
+Represents a Text/HTML file to be displayed in a web browser. It can be created with a CSS style using the message `newWithStyle:`, and passing a `Microdown` content String through `fromMicrodown:` as parameter.
 
-## Example
+#### Example
 
 The following generates a HTML String from Microdown contents:
 
@@ -19,27 +19,27 @@ MicCSSProvider libraryNames.
 
 to see a list of available CSS libraries.
 
-## Description
+### Description
 
 A document has multiple primary properties which can be configured:
 
 - A **fileName** `String`.
-- A `Collection` of CSS files to define the look of the document, through **addCSSFile:**.
-- A destination directory (**destinationDir**) representing the output path of the document.
+- A `Collection` of CSS files to define the look of the document, through message `addCSSFile:`.
+- A destination directory (`destinationDir`) representing the output path of the document.
 
 Additional properties, for example those specified in a Microdown header, are translated into HTML meta tags and they are handled in its `MicHTMLConfiguration` object.
 
 A Microdown HTML document can receive as input a raw HTML String, without any surrounding header tags, and it builds a header and body tags around it.
 
-## Internals
+### Internals
 
 A HTML document uses a canvas which acts as a brush to render content.
 
 Internally, it uses a Configuration object (instance of `MicHTMLConfiguration`) to set important HTML properties, prividing widely used defaults:
 
-- The viewport, specified in **defaultViewport**, to control layout in mobile browsers.
+- The viewport, specified in `defaultViewport`, to control layout in mobile browsers.
 - The language identifier is set by default to 'en' (English).
-- A subdirectory where the linked CSS files are stored, specified in `MicHTMLDoc >> cssBasePath`.
+- A subdirectory where the linked CSS files are stored, specified in `MicHTMLDocument>>#cssBasePath`.
 
 "
 Class {
@@ -356,7 +356,7 @@ MicHTMLDocument >> tempFileName [
 
 { #category : 'accessing' }
 MicHTMLDocument >> title [
-	"Refer to comment in MicHTMLConfiguration>>title"
+	"Refer to comment in `MicHTMLConfiguration>>#title`"
 	
 	^ self configuration title
 ]
@@ -400,7 +400,6 @@ MicHTMLDocument >> writeToFileNamed: aFilename [
 	"Ensure a new file named aFilename and write the receiver's contents into it"
 
 	| destDirFileRef |
-	
 	destDirFileRef := self destinationPath asFileReference.
 	self serializeHtml: aFilename in: destDirFileRef.
 	self cssFrameworks do: [ : cssEntity | cssEntity writeTo: destDirFileRef ].

@@ -8,34 +8,34 @@ I check
 - math equations
 - or plain references.
 
-I use the FileCollector to support all the file input relations.
+I use the `MicFileCollector` to support all the file input relations.
 This lets the user have for example unused, broken or underway files on the side.
 As soon as they are not used I do not analyse them.
 
+# API
+My main API to integrate with the ReportWriter is the method `checkProject:`
 I support the following API to be able to chained over a report writer:
 - result/results:
 - reportWriter:
 
-# todo
 
-when we use the checkDir or the checkFile: API, it should still do the full closure of used files (i.e. use the file collector). This is a lot simpler to understand for the user. Having a systematic approach is the way to go. 
+# Potential enhancements
+
+When we use the checkDir or the checkFile: API, it should still do the full closure of used files (i.e. use the file collector). This is a lot simpler to understand for the user. Having a systematic approach is the way to go. 
 "
 Class {
 	#name : 'MicReferenceChecker',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicChecker',
 	#instVars : [
-		'reportWriter',
 		'references',
 		'duplicatedAnchors',
-		'results',
-		'rootDirectory',
 		'listOfFiles',
 		'figures',
 		'anchoringEntities'
 	],
-	#category : 'Microdown-BookTester-Analysis',
+	#category : 'Microdown-BookTester-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'Analysis'
+	#tag : 'References'
 }
 
 { #category : 'accessing' }
@@ -116,16 +116,12 @@ MicReferenceChecker >> checkList: aCollection [
 
 { #category : 'main API' }
 MicReferenceChecker >> checkProject: aFileReference [
+	"Given the root of the document such as an index.md file, check the complete project."
 
-	| mainMic collector  |
-	mainMic := Microdown parseFile: aFileReference.
-	collector := MicFileCollector new.
-	collector
-		rootDirectory: rootDirectory;
-		visit: mainMic.
+	| collector |
+	collector := self fileCollectorForMainFileReference: aFileReference.
 	self handleUndefinedFilesFrom: collector.
-	listOfFiles := collector visitedFileStrings collect: [ :file |
-		               rootDirectory resolve: file ].
+	listOfFiles := collector visitedFileStrings collect: [ :file | rootDirectory resolve: file ].
 	self checkList: listOfFiles
 ]
 
@@ -199,16 +195,14 @@ MicReferenceChecker >> hasAlreadyDefinedAs: anAnchor [
 MicReferenceChecker >> initialize [
 
 	super initialize.
-	
+
 	rootDirectory := FileSystem workingDirectory.
-	results := OrderedCollection new.
 	references := OrderedCollection new.
 	figures := OrderedCollection new.
 	anchoringEntities := OrderedCollection new.
-	duplicatedAnchors := OrderedCollection new.
-	"by default if the reporter is not set from outside
+	duplicatedAnchors := OrderedCollection new. "by default if the reporter is not set from outside
 	then it shares the results of this current checker."
-	reportWriter := MicAnalysisReportWriter new results: results.
+	reportWriter := MicAnalysisReportWriter new results: results
 ]
 
 { #category : 'testing' }
@@ -220,12 +214,6 @@ MicReferenceChecker >> isOk [
 		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
-{ #category : 'testing' }
-MicReferenceChecker >> isOkay [
-
-	^ results isEmpty
-]
-
 { #category : 'reporting' }
 MicReferenceChecker >> report [
 
@@ -235,36 +223,6 @@ MicReferenceChecker >> report [
 { #category : 'reporting' }
 MicReferenceChecker >> reportSTONFormat [
 	^ reportWriter reportSTONFormat
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> reportWriter [
-
-	^ reportWriter
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> reportWriter: anObject [
-
-	reportWriter := anObject
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> results [
-
-	^ results
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> results: anObject [
-
-	results := anObject
-]
-
-{ #category : 'accessing' }
-MicReferenceChecker >> rootDirectory: aFileReferemce [
-
-	rootDirectory := aFileReferemce
 ]
 
 { #category : 'internal' }
