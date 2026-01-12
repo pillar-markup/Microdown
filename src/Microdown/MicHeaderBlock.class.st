@@ -75,6 +75,11 @@ MicHeaderBlock >> headerElements: aCollection [
 	
 ]
 
+{ #category : 'testing' }
+MicHeaderBlock >> isHeader [
+	^ true
+]
+
 { #category : 'accessing' }
 MicHeaderBlock >> level [
 	^ level
