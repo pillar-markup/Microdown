@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'strategy'
 	],
-	#category : 'Microdown-Rules-CapitalizationUnderway',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'CapitalizationUnderway'
+	#tag : 'Capitalization'
 }
 
 { #category : 'visiting' }
@@ -27,7 +27,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	'Today and tomorrow: the days' 
 	"
 	
-	strategy checkRest: words of: aMicHeader rule: rules first
+	strategy checkRest: words of: aMicHeader
 ]
 
 { #category : 'initialization' }

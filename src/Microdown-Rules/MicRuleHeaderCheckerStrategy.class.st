@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'checker'
 	],
-	#category : 'Microdown-Rules-CapitalizationUnderway',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'CapitalizationUnderway'
+	#tag : 'Capitalization'
 }
 
 { #category : 'accessing' }

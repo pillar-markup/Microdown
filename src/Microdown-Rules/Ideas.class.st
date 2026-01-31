@@ -86,18 +86,19 @@ goodWordFor: aString
 ```
 
 
-## Case for header
+## Case for headers
 
 Rule states that level: x should be sentence case. 
 Rule states that level: x should be Uppercase case. 
 
 
-- Rule 1. Use sentence case for headers, e.g. ""Editable tables"", not ""Editable Tables"".
-- Rule 2. Use upper case for headers, e.g.  ""Editable Tables"", not ""Editable tables"".
+- Rule 1. Use sentence case only for first words of headers, e.g. ""Editable tables"", not ""Editable Tables"".
 
-## Stop word should not be Uppercased
+- Rule 2. Use upper case for all the words of headers, e.g.  ""Editable Tables"", not ""Editable tables"".
 
-of on for in should not be uppercase in title
+### Stop words should not be Uppercased
+
+'of' 'on' 'for' 'in' should not be uppercase in title
 
 ``` 
 ## Explanation of Rules in Pharo
@@ -117,12 +118,35 @@ and not
 - Always have a space after a comma
 - Never put a space before a ?!:;
 
+
+
+
+
+
 - Always put a space befor a ?!:;
 
 
 ## use note in microdown
 
  Stef should check Start a note with ""**Note.**"".
+
+
+## Period for labelled paragraphs
+
+Depending on the convention we should check that there is a period or not after Color in the example before.
+This can be true for hevel 4, 5, 6. 
+
+```
+### This is title
+
+
+#### Color. 
+lkjlkjlkjlkj
+```
+
+
+
+
 
 
 "

@@ -1,13 +1,13 @@
 Class {
 	#name : 'MicRuleLowercaseHeaderStrategy',
 	#superclass : 'MicRuleHeaderCheckerStrategy',
-	#category : 'Microdown-Rules-CapitalizationUnderway',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'CapitalizationUnderway'
+	#tag : 'Capitalization'
 }
 
 { #category : 'visiting' }
-MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader rule: rule [
+MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader [
 	"In the future we should manage that if a word finishes by : the following one must be captitalized
 	e.g., 'Today and tomorrow: The days' and not 
 	'Today and tomorrow: the days' 
@@ -19,9 +19,9 @@ MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader rule: rule [
 		do: [ :word |	
 			 word isCapitalized
 				ifTrue: [  
-				checker addError: (MicElementOfHeaderIsWronglyCapitalizedReport new 
+				checker addResult: (MicElementOfHeaderWronglyUppercasedResult new 
 								micElement: aMicHeader; 
-								concern: word;
+								detail: word;
 								inFile: aMicHeader fromFile) 
 						]
 		 ]
