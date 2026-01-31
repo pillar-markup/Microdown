@@ -3,17 +3,23 @@ Class {
 	#superclass : 'MicResult',
 	#instVars : [
 		'micElement',
-		'fileReference'
+		'fileReference',
+		'detail'
 	],
 	#category : 'Microdown-Rules-EnglishTypos',
 	#package : 'Microdown-Rules',
 	#tag : 'EnglishTypos'
 }
 
+{ #category : 'as yet unclassified' }
+MicSpaceBeforeDiacriticsResult >> detail: aString [ 
+	detail := aString
+]
+
 { #category : 'accessing' }
 MicSpaceBeforeDiacriticsResult >> explanation [
 
-	^ 'Text: "' , micElement bodyString , '" in file' , fileReference fullName , ' contains a mistake: It should have a space before a diacritic'
+	^ 'Text: "' , micElement bodyString , '" in file' , fileReference fullName , ' contains a mistake: ', detail
 ]
 
 { #category : 'accessing' }

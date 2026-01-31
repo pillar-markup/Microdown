@@ -54,7 +54,7 @@ MicEnglishTypoCheckerTest >> testCheckerIdentifyExtraSpace [
 	self deny: checker isOkay.
 
 	self 
-		assert: checker results first explanation 
-		equals:  'Text: "Authors may want to detect useless period as in the following code snippet ;" in file/paragraphWithSpaceBeforeSemiColon.md contains a mistake: It should have a space before a diacritic'
-		
+		assert: checker results first explanation  
+		equals: 'Text: "Authors may want to detect useless period as in the following code snippet ;" in file/paragraphWithSpaceBeforeSemiColon.md contains a mistake: There is a space before ;'
+	
 ]

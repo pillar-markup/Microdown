@@ -14,6 +14,7 @@ MicEnglishTypoChecker >> visitText: aText [
 			results add: (MicSpaceBeforeDiacriticsResult new
 											micElement: aText;
 											inFile: aText fromFile; 
+											detail: 'There is a space before ;';
 											yourself) ] 
 	 
 ]
