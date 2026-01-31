@@ -84,12 +84,17 @@ BaselineOfMicrodown >> baseline: spec [
 				spec requires: #( #'Microdown' ) ];
 			package: #'Microdown-BookTester-Tests' with: [
 				spec requires: #( #'Microdown-BookTester' ) ];	
-				
+			
+			package: #'Microdown-Rules' with: [
+				spec requires: #( #'Microdown-BookTester' ) ].
+			
+			"
 			package: #'Microdown-Blog' with: [
 				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
+			
 			package: #'Microdown-Blog-Tests' with: [
 				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
-		
+			"
 		spec
 			group: 'Core' with: #('Microdown' 'Microdown-Tests');
 			group: 'ForPharo' with: #('Microdown' #'Microdown-BrowserExtensions');
@@ -110,10 +115,10 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-ParentChildrenChecker'
 				#'Microdown-BookTester'
 				#'Microdown-BookTester-Tests'
-				#'Microdown-Blog'
-				#'Microdown-Blog-Tests'
+				#'Microdown-Rules'
 				);
-			group: 'All' with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
+			group: 'All' 
+			with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
 			]
 
 
