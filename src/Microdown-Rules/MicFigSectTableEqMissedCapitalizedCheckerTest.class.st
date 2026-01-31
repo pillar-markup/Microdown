@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'ck'
 	],
-	#category : 'Microdown-Rules-FutureWork',
+	#category : 'Microdown-Rules-BogusImplementation',
 	#package : 'Microdown-Rules',
-	#tag : 'FutureWork'
+	#tag : 'BogusImplementation'
 }
 
 { #category : 'tests' }
