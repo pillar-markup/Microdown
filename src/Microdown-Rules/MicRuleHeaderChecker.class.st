@@ -2,12 +2,21 @@ Class {
 	#name : 'MicRuleHeaderChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
-		'strategy'
+		'strategy',
+		'uncapitalizableText',
+		'unlowercasableText'
 	],
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
+
+{ #category : 'initialization' }
+MicRuleHeaderChecker >> addUncapitalized: aString [ 
+	"Make sure that aString will not be capitalized"
+	
+	uncapitalizableText add: aString
+]
 
 { #category : 'visiting' }
 MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
@@ -34,7 +43,19 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 MicRuleHeaderChecker >> initialize [
 
 	super initialize.
-	self verifyLowercase
+	self verifyLowercase.
+	uncapitalizableText := OrderedCollection new.
+	unlowercasableText := OrderedCollection new. 
+	#( 'a' 'an' 'both' 'the' 'and' 'as' 'at' 'but' 'by' 'down'
+	     'for' 'from' 'if' 'in' 'into' 'like' 'near' 'nor' 'of' 'off'
+	     'on' 'one' 'once' 'onto' 'or' 'over' 'past' 'so' 'than' 'that' 'to'
+	     'upon' 'when' 'with' 'yet' ) do: [ :each | self addUncapitalized: each ].
+]
+
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
+
+	^ (uncapitalizableText includes: aString) not
 ]
 
 { #category : 'initialization' }

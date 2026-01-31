@@ -49,7 +49,7 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - headers should be lowercased' }
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalized [
 
 	checker verifyLowercase.
@@ -62,7 +62,20 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapit
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalizedEvenInUppercase [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'FirstWordOfHeadderNotCapitalized.md'.
+	self deny: checker isOkay.
+	
+	self
+		assert: checker results first explanation 
+		equals: 'Header: "header with first word in lowercase" in file/FirstWordOfHeadderNotCapitalized.md contains a mistake: header as first word of the header should be uppercased.'
+	
+]
+
+{ #category : 'tests - headers should be lowercased' }
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 
 	checker verifyLowercase.
