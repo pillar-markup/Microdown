@@ -44,6 +44,12 @@ MicChecker >> fileCollectorForMainFileReference: aFileReference [
 	^ collector
 ]
 
+{ #category : 'accessing' }
+MicChecker >> fileSystem: aReference [
+
+	rootDirectory := aReference
+]
+
 { #category : 'visiting' }
 MicChecker >> initialize [ 
 

@@ -21,16 +21,25 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	reporter := self new.
 
 	checker := MicReferenceChecker new.
-	checker fileSystem: folderReference.
+	checker rootDirectory: folderReference.
 	checker checkProject: fileReference.
 
 	reporter addResults: checker results.
 
 	validator := MicCodeBlockValidator new.
-	checker fileSystem: folderReference.
+	checker rootDirectory: folderReference.
 	checker checkProject: fileReference.
 
 	reporter addResults: validator results.
+	
+	checker := MicEnglishTypoChecker new.
+	checker rootDirectory: folderReference.
+	checker checkProject: fileReference. 
+	
+	checker := MicLastPeriodInCaptionChecker new.
+	checker rootDirectory: folderReference.
+	checker checkProject: fileReference. 
+	
 	^ reporter
 ]
 
