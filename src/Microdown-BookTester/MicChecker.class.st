@@ -18,6 +18,12 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'visiting' }
+MicChecker >> addResult: aResult [
+
+	results add: aResult
+]
+
 { #category : 'accessing' }
 MicChecker >> checkProject: aFileReference [
 
