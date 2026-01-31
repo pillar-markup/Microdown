@@ -1,9 +1,7 @@
 Class {
 	#name : 'MicSpaceBeforeDiacriticsResult',
-	#superclass : 'MicResult',
+	#superclass : 'MicAbstractResult',
 	#instVars : [
-		'micElement',
-		'fileReference',
 		'detail'
 	],
 	#category : 'Microdown-Rules-EnglishTypos',
@@ -20,14 +18,4 @@ MicSpaceBeforeDiacriticsResult >> detail: aString [
 MicSpaceBeforeDiacriticsResult >> explanation [
 
 	^ 'Text: "' , micElement bodyString , '" in file' , fileReference fullName , ' contains a mistake: ', detail
-]
-
-{ #category : 'accessing' }
-MicSpaceBeforeDiacriticsResult >> inFile: aFileReference [ 
-	fileReference := aFileReference 
-]
-
-{ #category : 'accessing' }
-MicSpaceBeforeDiacriticsResult >> micElement: aMicElement [ 
-	micElement := aMicElement
 ]
