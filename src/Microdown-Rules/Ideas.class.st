@@ -75,6 +75,17 @@ goodWordFor: aString
 	^ pair value.
 ```
 
+=>
+
+```
+goodWordFor: aString 
+	
+	| pair |
+	pair := pairs detect: [ :each | each key = aString ].
+	^ pair value
+```
+
+
 ## Case for header
 
 Rule states that level: x should be sentence case. 

@@ -222,7 +222,7 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 	"here we do not handle the prefix - or a number"
 
@@ -260,7 +260,7 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
 	| block |
@@ -280,7 +280,7 @@ MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 	block value
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitOrderedListItem2: anItem [
 
 	builder orderedItem: [ super visitOrderedListItem: anItem ]
@@ -348,7 +348,7 @@ MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock bodyString
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 	
 	| block |
