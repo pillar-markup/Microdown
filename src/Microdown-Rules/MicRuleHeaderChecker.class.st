@@ -13,9 +13,9 @@ Class {
 MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 
 	aCollection first isCapitalized ifFalse: [
-			results add: (MicFirstElementOfHeaderIsNotCapitalizedReport new
+			results add: (MicFirstElementOfHeaderIsNotCapitalizedResult new
 					 micElement: anElement;
-					 concern: aCollection first;
+					 detail: aCollection first;
 					 inFile: anElement fromFile) ]
 ]
 

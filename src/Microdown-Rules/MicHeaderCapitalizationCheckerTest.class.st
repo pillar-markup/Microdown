@@ -21,7 +21,17 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 ## Header with Uppercases
 
 
+' ].
+
+	file := fileSystem workingDirectory / 'FirstWordOfHeadderNotCapitalized.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: '
+
+## header with first word in lowercase
+
+
 ' ]
+
 
 
 
@@ -40,7 +50,20 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 ]
 
 { #category : 'running' }
-MicHeaderCapitalizationCheckerTest >> testCodeCheckerIdentifyCorrectlyExtraPeriod [
+MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalized [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'FirstWordOfHeadderNotCapitalized.md'.
+	self deny: checker isOkay.
+	
+	self
+		assert: checker results first explanation 
+		equals: 'Header: "header with first word in lowercase" in file/FirstWordOfHeadderNotCapitalized.md contains a mistake: header as first word of the header should be uppercased.'
+	
+]
+
+{ #category : 'running' }
+MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 
 	checker verifyLowercase.
 	checker checkProject: fileSystem / 'HeadersAreNotLowerCased.md'.
