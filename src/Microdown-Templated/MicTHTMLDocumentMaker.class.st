@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'accessing' }
+MicTHTMLDocumentMaker class >> writerName [
+	^ #micTemplatedHtml
+]
+
+{ #category : 'accessing' }
 MicTHTMLDocumentMaker >> basicWriter [
 
 	^ MicHTMLVisitor new

@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'accessing' }
+MicTextDocumentMaker class >> writerName [
+	^ #micTemplatedText
+]
+
+{ #category : 'accessing' }
 MicTextDocumentMaker >> basicWriter [
 
 	^ MicTextualMicrodownExporter new
