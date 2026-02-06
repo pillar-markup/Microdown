@@ -42,3 +42,9 @@ MicLastPeriodChecker >> identifyMissingLastPeriod [
 
 	codeShouldEndWithPeriod := true
 ]
+
+{ #category : 'visiting' }
+MicLastPeriodChecker >> initialize [ 
+	super initialize. 
+	codeShouldEndWithPeriod := true
+]
