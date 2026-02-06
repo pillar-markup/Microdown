@@ -115,7 +115,7 @@ MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
-
+	
 	builder anchorReference: anAnchorReference bodyString
 ]
 

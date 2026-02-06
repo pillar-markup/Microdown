@@ -18,6 +18,12 @@ Class {
 }
 
 { #category : 'templates' }
+MicTemplatedWriter class >> anchorReferenceTemplateFileName [
+	
+	^ 'anchorReference.mustache'
+]
+
+{ #category : 'templates' }
 MicTemplatedWriter class >> anchorTemplateFileName [
 	
 	^ 'anchor.mustache'
@@ -139,9 +145,9 @@ MicTemplatedWriter class >> writerName [
 ]
 
 { #category : 'accessing - templates' }
-MicTemplatedWriter >> anchorTemplateFileName [
+MicTemplatedWriter >> anchorReferenceTemplateFileName [
 
-	^ self class anchorTemplateFileName
+	^ self class anchorReferenceTemplateFileName
 ]
 
 { #category : 'accessing - templates' }
@@ -315,22 +321,22 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 ]
 
 { #category : 'old visiting' }
-MicTemplatedWriter >> visitAnchor: aPRAnchor [
+MicTemplatedWriter >> visitAnchor: anAnchorReference [
 
 	self
 		writeRawText: ''
-		withTemplateFileName: self anchorTemplateFileName
-		extraArguments: { 'name' -> aPRAnchor name }
-		ifAbsent: [ defaultWriter visitAnchor: aPRAnchor ]
+		withTemplateFileName: self anchorReferenceTemplateFileName
+		extraArguments: { 'name' -> anAnchorReference name }
+		ifAbsent: [ defaultWriter visitAnchor: anAnchorReference ]
 ]
 
 { #category : 'visiting' }
 MicTemplatedWriter >> visitAnchorReference: aReference [
-
+	
 	self
 		write: aReference
-		withTemplateFileName: self internalLinkTemplateFileName
-		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
+		withTemplateFileName: self anchorReferenceTemplateFileName
+		ifAbsent: [ self halt.defaultWriter visitAnchorReference: aReference ]
 ]
 
 { #category : 'visiting' }
@@ -552,6 +558,7 @@ MicTemplatedWriter >> write: aMicElement
 		writeRawText: [ | subWriter |
 			subWriter := outputDocument writer.
 			subWriter environmentStack: environmentStack. 
+			self halt.
 			subWriter visitChildrenOf: aMicElement.
 			subWriter contents ]
 		withTemplateFileName: templateFileName
