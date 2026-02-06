@@ -132,6 +132,11 @@ MicTemplatedWriter class >> preformattedTemplateFileName [
 	^ 'preformatted.mustache'
 ]
 
+{ #category : 'accessing - templates' }
+MicTemplatedWriter class >> rootTemplateFileName [
+	^ self class rootTemplateFileName
+]
+
 { #category : 'templates' }
 MicTemplatedWriter class >> unorderedListTemplateFileName [
 
@@ -308,6 +313,12 @@ MicTemplatedWriter >> pushEnvironment: aPREnvironment [
 	environmentStack addFirst: aPREnvironment
 ]
 
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> rootTemplateFileName [
+
+	^ self class rootTemplateFileName
+]
+
 { #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
 
@@ -320,7 +331,7 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 	^ self class unorderedListTemplateFileName
 ]
 
-{ #category : 'old visiting' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitAnchor: anAnchorReference [
 
 	self
@@ -366,6 +377,12 @@ MicTemplatedWriter >> visitBold: aMicBold [
 ]
 
 { #category : 'visiting' }
+MicTemplatedWriter >> visitChildrenOf: anElement [
+
+	^ anElement children collect: [ :each | each accept: self ]
+]
+
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitCode: aCodeBlock [  
 	
 	self
@@ -384,16 +401,7 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
 ]
 
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitCommentedLine: aPRText [ 
-
-	self
-		writeRawText: aPRText text
-		withTemplateFileName: self commentedLineTemplateFileName
-		ifAbsent: [ defaultWriter visitCommentedLine: aPRText  ]
-]
-
-{ #category : 'old visiting' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 	self pushEnvironment: anEnvironment.
@@ -401,7 +409,7 @@ MicTemplatedWriter >> visitEnvironment: anEnvironment [
 		write: anEnvironment
 		withTemplateFileName: 'environment.mustache'
 		extraArguments: anEnvironment properties associations
-		ifAbsent: [ self halt. self visitDocumentGroup: anEnvironment ].
+		ifAbsent: [ self visitEnvironment: anEnvironment ].
 	self popEnvironment.
 ]
 
@@ -427,21 +435,12 @@ MicTemplatedWriter >> visitHeader: aHeader [
 		ifAbsent: [ defaultWriter visitHeader: aHeader ]
 ]
 
-{ #category : 'old visiting' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
 
 	self
 		writeRawText: ''
 		withTemplateFileName: self horizontalLineTemplateFileName
-		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
-]
-
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitHorizontalRule: aPRHorizontalRule [
-
-	self
-		writeRawText: ''
-		withTemplateFileName: self horizontalRuleTemplateFileName
 		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
 ]
 
@@ -452,15 +451,6 @@ MicTemplatedWriter >> visitItalic: aMicItalicFormat [
 		write: aMicItalicFormat
 		withTemplateFileName: self italicTemplateFileName
 		ifAbsent: [ defaultWriter visitItalic: aMicItalicFormat ]
-]
-
-{ #category : 'old visiting' }
-MicTemplatedWriter >> visitLineBreak: aPRLineBreak [
-
-	self
-		writeRawText: ''
-		withTemplateFileName: self lineBreakTemplateFileName
-		ifAbsent: [ defaultWriter visitLineBreak: aPRLineBreak ]
 ]
 
 { #category : 'visiting' }
@@ -511,7 +501,7 @@ MicTemplatedWriter >> visitParagraph: aParagraph [
 		ifAbsent: [ defaultWriter visitParagraph: aParagraph ]
 ]
 
-{ #category : 'old visiting' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 
 	self
@@ -524,6 +514,17 @@ MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
 	defaultWriter visitRaw: aPRRaw
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitRoot2: aRoot [
+
+	self
+		writeRawText: ''
+		withTemplateFileName: self rootTemplateFileName
+		extraArguments: {  }
+		ifAbsent: [ defaultWriter visitRoot: aRoot ].
+	aRoot accept: self
 ]
 
 { #category : 'delegating' }
@@ -577,7 +578,10 @@ MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileNam
 ]
 
 { #category : 'writing' }
-MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName extraArguments: arguments ifAbsent: aBlock [
+MicTemplatedWriter >> writeRawText: aText 
+	withTemplateFileName: templateFileName 
+	extraArguments: arguments 
+	ifAbsent: aBlock [
 
 	| templateFile result environmentPath foundPath |
 	environmentPath := self currentEnvironmentPath.

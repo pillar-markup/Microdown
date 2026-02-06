@@ -12,6 +12,9 @@ Class {
 { #category : 'running' }
 MicTemplatedWriterTest >> addTemplateFiles [
 
+	fileSystem / MicTemplatedWriter rootTemplateFileName 
+		writeStreamDo: [ :s | s << self rootContents ].
+	
 	fileSystem / MicTemplatedWriter anchorReferenceTemplateFileName 
 		writeStreamDo: [ :s | s << self anchorContents ].
 	
@@ -96,6 +99,7 @@ MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 	document := MicRootBlock new
 		addChild: node;
 		yourself.
+	self halt.
 	result := textDocument writer write: document.
 
 	self assert: result equals: contents
@@ -229,6 +233,14 @@ MicTemplatedWriterTest >> paragraphContents [
 
 ]
 
+{ #category : 'contents' }
+MicTemplatedWriterTest >> rootContents [
+
+	^ '<header>
+{{{contents}}}
+<header>'
+]
+
 { #category : 'running' }
 MicTemplatedWriterTest >> setUp [
 
@@ -291,8 +303,13 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 		writesValue: '<b>
 Bar
 </b>'
-		forNode: (MicBoldFormatBlock new children:
-				 { (MicTextBlock new bodyString: 'Bar') })
+		forNode: (MicBoldFormatBlock new children: { (MicTextBlock new bodyString: 'Bar') }).
+	self
+		assertTemplate: MicTemplatedWriter boldTemplateFileName 
+		writesValue: '<b>
+Bar
+</b>'
+		forNode: (Microdown parse: '**Bar**') children first children first
 ]
 
 { #category : 'new tests' }
@@ -504,6 +521,17 @@ MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
 		assertTemplate: MicTemplatedWriter preformattedTemplateFileName
 		writesValue: 'preformatted'
 		forNode: (PRPreformatted with: (PRText content: 'Bar'))
+]
+
+{ #category : 'tests-templatefiles' }
+MicTemplatedWriterTest >> testWriteRoot [
+	
+	self
+		assertTemplate: 'root.mustache'
+		writesValue: '<header>
+
+</header>'
+		forNode: (Microdown parse: 'This is a paragraph not a root') 
 ]
 
 { #category : 'tests-templatefiles' }
