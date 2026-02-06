@@ -558,7 +558,7 @@ MicTemplatedWriter >> write: aMicElement
 		writeRawText: [ | subWriter |
 			subWriter := outputDocument writer.
 			subWriter environmentStack: environmentStack. 
-			self halt.
+
 			subWriter visitChildrenOf: aMicElement.
 			subWriter contents ]
 		withTemplateFileName: templateFileName

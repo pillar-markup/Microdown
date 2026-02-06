@@ -96,7 +96,6 @@ MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 	document := MicRootBlock new
 		addChild: node;
 		yourself.
-	self halt.
 	result := textDocument writer write: document.
 
 	self assert: result equals: contents
