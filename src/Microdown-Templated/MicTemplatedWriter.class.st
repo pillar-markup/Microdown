@@ -529,7 +529,7 @@ MicTemplatedWriter >> visitRoot2: aRoot [
 
 { #category : 'delegating' }
 MicTemplatedWriter >> visitText: aPRText [ 
-	
+
 	defaultWriter visitText: aPRText
 ]
 
@@ -559,7 +559,6 @@ MicTemplatedWriter >> write: aMicElement
 		writeRawText: [ | subWriter |
 			subWriter := outputDocument writer.
 			subWriter environmentStack: environmentStack. 
-
 			subWriter visitChildrenOf: aMicElement.
 			subWriter contents ]
 		withTemplateFileName: templateFileName
@@ -586,10 +585,11 @@ MicTemplatedWriter >> writeRawText: aText
 	| templateFile result environmentPath foundPath |
 	environmentPath := self currentEnvironmentPath.
 	
-	foundPath := environmentPath
+	foundPath := environmentPath 
 		lookup: [ :path | ((outputDocument templateDirectory resolve: path) / templateFileName) exists ]
 		ifNone: [ ^ aBlock value ].
 	
+	"grab the text apply the template to it and call the defaultDriver with the text"
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
 	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
 	self visitText: (MicTextBlock new bodyString: result)
