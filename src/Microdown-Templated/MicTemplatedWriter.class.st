@@ -520,11 +520,22 @@ MicTemplatedWriter >> visitRaw: aPRRaw [
 MicTemplatedWriter >> visitRoot2: aRoot [
 
 	self
-		writeRawText: ''
+		writeRawText: aRoot children
 		withTemplateFileName: self rootTemplateFileName
 		extraArguments: {  }
 		ifAbsent: [ defaultWriter visitRoot: aRoot ].
-	aRoot accept: self
+
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitRoot: aRoot [
+
+	self
+		write: aRoot
+		withTemplateFileName: self rootTemplateFileName
+		extraArguments: {  }
+		ifAbsent: [ defaultWriter visitRoot: aRoot ].
+
 ]
 
 { #category : 'delegating' }
