@@ -27,9 +27,9 @@ MicTemplatedWriterTest >> addTemplateFiles [
 { #category : 'contents' }
 MicTemplatedWriterTest >> anchorReferenceContents [
 
-	^ '<b>*
+	^ '<a>*
 {{{contents}}}
-*</b>'
+*</a>'
 ]
 
 { #category : 'contents' }
@@ -61,15 +61,6 @@ MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents
 MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 
 	| document result |
-	
-	" I would remove all this and just pass the node."
-	"node class = MicRootBlock
-		ifTrue: [ document := node ]
-		ifFalse: [ 
-			document := MicRootBlock new
-				addChild: node;
-				yourself ]." 
-			
 	result := textDocument writer write: node.
 
 	self assert: result equals: contents
@@ -250,16 +241,16 @@ MicTemplatedWriterTest >> testDirectory [
 	self assert: (fileSystem / 'mic' / 'codeBlock.mustache') exists
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteAnchorReference [
-	self skip.
+	
 	"I do not see why this is not working"
 	
 	self
 		assertTemplate: 'anchorReference.mustache'
-		writesValue: '<b>
-*ThisIsAnchor*
-</b>'
+		writesValue: '<p><a>*
+ThisIsAnchor
+*</a></p>'
 		forNode: (Microdown parse: '*@ThisIsAnchor@*') children first
 ]
 
@@ -334,12 +325,13 @@ This is a paragraph
 { #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 	self skip.
+	"the code has not been fixed when porting from Pillar"
 	self
 		createTemplateFileAt: RelativePath * 'card' / 'main.mustache'
 		withContents: 'before {{{someArgument}}} after'.
 
 	self
-		assertWritingNode: ((PREnvironment named: 'card')
+		assertWritingNode: ((MicEnvironmentBlock named: 'card')
 			propertyAt: 'someArgument' put: 'test';
 			yourself)
 		writes: 'before test after'
@@ -446,12 +438,13 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 { #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
 	self skip.
+	"the code has not been fixed when porting from Pillar"
 	self
 		assertTemplatePath: RelativePath * 'cards' / 'card' / 'main.mustache'
 		writesValue: 'Template for the card itself'
-		forNode: ((PREnvironment named: 'cards')
-						add: ((PREnvironment named: 'card')
-									add: (PRParagraph new add: (PRText content: 'Foo');
+		forNode: ((MicEnvironmentBlock named: 'cards')
+						add: ((MicEnvironmentBlock named: 'card')
+									add: (MicParagraphBlock new add: (MicTextBlock content: 'Foo');
 							yourself));
 					yourself)
 ]
@@ -459,6 +452,7 @@ MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
 { #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
 	self skip.
+	"the code has not been fixed when porting from Pillar"
 	self
 		createTemplateFileAt: RelativePath * 'cards' / 'main.mustache'
 		withContents: '{{{contents}}}'.
@@ -494,15 +488,6 @@ MicTemplatedWriterTest >> testWriteParagraphUsesParagraphTemplate [
 		forNode: (Microdown parse: 'This is a paragraph') children first 
 ]
 
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWritePreformattedUsesPreformattedTemplate [
-	self skip.
-	self
-		assertTemplate: MicTemplatedWriter preformattedTemplateFileName
-		writesValue: 'preformatted'
-		forNode: (PRPreformatted with: (PRText content: 'Bar'))
-]
-
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteRoot [
 
@@ -517,12 +502,13 @@ MicTemplatedWriterTest >> testWriteRoot [
 { #category : 'tests-templatefiles' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironment [
 	self skip.
+	"the code has not been fixed when porting from Pillar"
 	self
 		assertTemplate: 'paragraph.mustache'
 		writesValue: 'Paragraph outside card'
-		forNode: ((PREnvironment named: 'card')
-			add: (PRParagraph new
-				add: (PRText content: 'Foo');
+		forNode: ((MicEnvironmentBlock named: 'card')
+			add: (MicParagraphBlock new
+				add: (MicTextBlock content: 'Foo');
 				yourself);
 			yourself)
 ]

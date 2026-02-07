@@ -335,7 +335,7 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 MicTemplatedWriter >> visitAnchor: anAnchorReference [
 
 	self
-		writeRawText: ''
+		writeRawText: anAnchorReference bodyString
 		withTemplateFileName: self anchorReferenceTemplateFileName
 		extraArguments: { 'name' -> anAnchorReference name }
 		ifAbsent: [ defaultWriter visitAnchor: anAnchorReference ]
@@ -345,12 +345,12 @@ MicTemplatedWriter >> visitAnchor: anAnchorReference [
 MicTemplatedWriter >> visitAnchorReference: aReference [
 	
 	self
-		write: aReference
+		writeRawText: aReference anchorLabel
 		withTemplateFileName: self anchorReferenceTemplateFileName
-		ifAbsent: [ self halt.defaultWriter visitAnchorReference: aReference ]
+		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting to revisit' }
 MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 
 	| arguments |
@@ -401,7 +401,7 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting to revisit' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 	self pushEnvironment: anEnvironment.
@@ -455,6 +455,12 @@ MicTemplatedWriter >> visitItalic: aMicItalicFormat [
 
 { #category : 'visiting' }
 MicTemplatedWriter >> visitLink: aLink [
+	"could be
+	 
+		externalLinkContents
+
+				^ '<a href={{{ref}}}>{{{caption}}}</a>'
+	"
 	
 	self
 		write: aLink
@@ -466,12 +472,12 @@ MicTemplatedWriter >> visitLink: aLink [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitListItem: aPRListItem [
+MicTemplatedWriter >> visitListItem: aListItem [
 
 	self
-		write: aPRListItem
+		write: aListItem
 		withTemplateFileName: self listItemTemplateFileName
-		ifAbsent: [ defaultWriter visitListItem: aPRListItem ]
+		ifAbsent: [ defaultWriter visitListItem: aListItem ]
 ]
 
 { #category : 'visiting' }
@@ -502,29 +508,18 @@ MicTemplatedWriter >> visitParagraph: aParagraph [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitPreformatted: aPRPreformatted [
+MicTemplatedWriter >> visitPreformatted: aPreformatted [
 
 	self
-		write: aPRPreformatted
+		write: aPreformatted
 		withTemplateFileName: self preformattedTemplateFileName
-		ifAbsent: [ defaultWriter visitPreformatted: aPRPreformatted ]
+		ifAbsent: [ defaultWriter visitPreformatted: aPreformatted ]
 ]
 
 { #category : 'delegating' }
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
 	defaultWriter visitRaw: aPRRaw
-]
-
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitRoot2: aRoot [
-
-	self
-		writeRawText: aRoot children
-		withTemplateFileName: self rootTemplateFileName
-		extraArguments: {  }
-		ifAbsent: [ defaultWriter visitRoot: aRoot ].
-
 ]
 
 { #category : 'visiting' }
@@ -545,12 +540,12 @@ MicTemplatedWriter >> visitText: aPRText [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitUnorderedList: aPRUnorderedList [ 
+MicTemplatedWriter >> visitUnorderedList: anUnorderedList [ 
 
 	self
-		write: aPRUnorderedList
+		write: anUnorderedList
 		withTemplateFileName: self unorderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitUnorderedList: aPRUnorderedList ]
+		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList ]
 ]
 
 { #category : 'writing' }
@@ -565,7 +560,9 @@ MicTemplatedWriter >> write: aMicElement
 	withTemplateFileName: templateFileName 
 	extraArguments: arguments 
 	ifAbsent: aBlock [
-
+	
+	"Get templated text of children of aMicElement and template it with its template"
+	
 	self
 		writeRawText: [ | subWriter |
 			subWriter := outputDocument writer.
