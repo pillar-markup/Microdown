@@ -134,7 +134,7 @@ MicTemplatedWriter class >> preformattedTemplateFileName [
 
 { #category : 'accessing - templates' }
 MicTemplatedWriter class >> rootTemplateFileName [
-	^ self class rootTemplateFileName
+	^ 'root.mustache'
 ]
 
 { #category : 'templates' }
