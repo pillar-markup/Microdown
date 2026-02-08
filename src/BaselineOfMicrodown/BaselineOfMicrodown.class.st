@@ -73,6 +73,9 @@ BaselineOfMicrodown >> baseline: spec [
 			package: #'Microdown-PrettyPrinter'
 				with: [ spec requires: #( #Microdown ) ];
 			
+			package: #'Microdown-Templated' with: [
+				spec requires: #( #'Microdown-HTMLExporter' #'Microdown-PrettyPrinter' #'Microdown' ) ];	
+			
 
 			package: #'Microdown-PrettyPrinter-Tests'
 				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
@@ -116,6 +119,7 @@ BaselineOfMicrodown >> baseline: spec [
 				#'Microdown-BookTester'
 				#'Microdown-BookTester-Tests'
 				#'Microdown-Rules'
+				#'Microdown-Templated'
 				);
 			group: 'All' 
 			with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')

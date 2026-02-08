@@ -1,23 +1,23 @@
 Class {
-	#name : 'MicTextDocumentMaker',
+	#name : 'MicTHTMLDocumentMaker',
 	#superclass : 'MicAbstractOutputDocumentMaker',
 	#category : 'Microdown-Templated',
 	#package : 'Microdown-Templated'
 }
 
 { #category : 'accessing' }
-MicTextDocumentMaker class >> writerName [
-	^ #micTemplatedText
+MicTHTMLDocumentMaker class >> writerName [
+	^ #micTemplatedHtml
 ]
 
 { #category : 'accessing' }
-MicTextDocumentMaker >> basicWriter [
+MicTHTMLDocumentMaker >> basicWriter [
 
-	^ MicTextualMicrodownExporter new
+	^ MicHTMLVisitor new
 ]
 
 { #category : 'accessing' }
-MicTextDocumentMaker >> extension [
+MicTHTMLDocumentMaker >> extension [
 
-	^ 'md'
+	^ 'html'
 ]
