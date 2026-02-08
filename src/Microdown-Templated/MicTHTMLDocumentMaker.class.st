@@ -21,3 +21,19 @@ MicTHTMLDocumentMaker >> extension [
 
 	^ 'html'
 ]
+
+{ #category : 'accessing' }
+MicTHTMLDocumentMaker >> folderName [
+	
+	^ 'html'
+]
+
+{ #category : 'writing' }
+MicTHTMLDocumentMaker >> write: aDocument [
+	"Pillar API Let talk to the templatedWriter"
+	
+	| templatedWriter |
+	templatedWriter := self writer.
+	templatedWriter write: aDocument.
+	^ templatedWriter contents
+]

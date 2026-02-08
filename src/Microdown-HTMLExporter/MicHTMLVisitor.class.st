@@ -232,12 +232,19 @@ MicHTMLVisitor >> templateForConfiguration: aConfiguration [
 	inputFile := configuration inputFile.
 	
 	(configuration hasProperty: #mainDocument)
-		ifFalse: [ ^ configuration propertyAt: self mainDocumentTemplateName ifAbsent: [ 'main.mustache' ] ].
+		ifFalse: [ ^ configuration 
+						propertyAt: self mainDocumentTemplateName 
+						ifAbsent: [ 'main.mustache' ] ].
+	
+	
+	self flag: #revisitThis.
+	"This logic looks a bit heavy at the minimum we should document it"
 	
 	templateName := inputFile fullName
 		= ((configuration baseDirectory resolve: configuration mainDocument) , 'pillar') fullName
 		ifTrue: [ self mainDocumentTemplateName ]
 		ifFalse: [ self chapterTemplateName ].
+		
 	^ configuration propertyAt: templateName
 ]
 

@@ -550,7 +550,7 @@ MicTemplatedWriter >> visitUnorderedList: anUnorderedList [
 
 { #category : 'writing' }
 MicTemplatedWriter >> write: aMicElement [ 
-	
+
 	aMicElement accept: self.
 	^ defaultWriter contents
 ]

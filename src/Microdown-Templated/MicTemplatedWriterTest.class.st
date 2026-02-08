@@ -50,9 +50,9 @@ MicTemplatedWriterTest >> assertTemplate: template writesValue: value forNode: n
 { #category : 'helpers' }
 MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents forNode: node [
 
-	self 
+	"self 
 		createTemplateFileAt: templatePath 
-		withContents: (fileSystem / 'mic' / templatePath basename) contents.
+		withContents: self templateDirectory (fileSystem / 'mic' / templatePath basename) contents."
 	
 	self assertWritingNode: node writes: contents.
 ]
@@ -60,7 +60,7 @@ MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents
 { #category : 'helpers' }
 MicTemplatedWriterTest >> assertWritingNode: node writes: contents [
 
-	| document result |
+	| result |
 	result := textDocument writer write: node.
 
 	self assert: result equals: contents
@@ -237,8 +237,8 @@ MicTemplatedWriterTest >> testDirectory [
 	
 	self 
 		assert: textDocument templateDirectory printString 
-		equals: 'memory:///mic'.
-	self assert: (fileSystem / 'mic' / 'codeBlock.mustache') exists
+		equals:  'memory:///_support/templates/mic'.
+	self assert: (textDocument templateDirectory / 'codeBlock.mustache') exists
 ]
 
 { #category : 'new tests' }
@@ -274,6 +274,12 @@ MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate [
 Bar
 </b>'
 		forNode: (MicBoldFormatBlock new children: { (MicTextBlock new bodyString: 'Bar') }).
+	
+]
+
+{ #category : 'new tests' }
+MicTemplatedWriterTest >> testWriteBoldUsesBoldTemplate2 [
+
 	self
 		assertTemplate: MicTemplatedWriter boldTemplateFileName 
 		writesValue: '<b>
