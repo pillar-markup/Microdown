@@ -294,6 +294,14 @@ MicHTMLVisitor >> visitBold: aBoldText [
 		with: [ super visitBold: aBoldText ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitBold: aBoldText from: templated [
+
+	canvas tag
+		name: 'strong';
+		with: [ templated visitChildrenOf:aBoldText ]
+]
+
 { #category : 'visiting - extensions' }
 MicHTMLVisitor >> visitCitation: aCitation [
 
@@ -504,6 +512,16 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 	canvas newLine.
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitParagraph: aParagraph from: templated [ 
+
+	canvas newLine.
+	canvas tag
+		name: 'p';
+		with: [ templated visitChildrenOf: aParagraph ].
+	canvas newLine.
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitQuote: aQuote [
 	"If the quote text size exceeds a minimum threshold, use blockquote which is appropriate for long quotations"
@@ -538,6 +556,12 @@ MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	canvas 
 		newLine;
 		raw: aParagraph lineStopMarkup.
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitRoot: aRoot from: templated [
+	
+	^ templated visitChildrenOf: aRoot
 ]
 
 { #category : 'visiting - inline elements' }

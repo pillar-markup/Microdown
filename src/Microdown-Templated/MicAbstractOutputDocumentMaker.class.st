@@ -64,7 +64,7 @@ MicAbstractOutputDocumentMaker >> pathString [
 { #category : 'accessing' }
 MicAbstractOutputDocumentMaker >> templateDirectory [
 	 
-	^ self baseDirectory / '_support' / 'templates' / self writer folderName
+	^ self baseDirectory / self writer folderName / '_support' / 'templates' / self writer folderName
 ]
 
 { #category : 'accessing' }

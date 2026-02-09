@@ -373,7 +373,7 @@ MicTemplatedWriter >> visitBold: aMicBold [
 	self
 		write: aMicBold
 		withTemplateFileName: self boldTemplateFileName
-		ifAbsent: [ defaultWriter visitBold: aMicBold ]
+		ifAbsent: [ defaultWriter visitBold: aMicBold from: self ]
 ]
 
 { #category : 'visiting' }
@@ -428,6 +428,7 @@ MicTemplatedWriter >> visitFigure: aFigure [
 { #category : 'visiting' }
 MicTemplatedWriter >> visitHeader: aHeader [
 
+	self halt. 
 	self
 		write: aHeader
 		withTemplateFileName: self headerTemplateFileName
@@ -499,12 +500,12 @@ MicTemplatedWriter >> visitOrderedList: aPROrderedList [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitParagraph: aParagraph [
+MicTemplatedWriter >> visitParagraph: aParagraph [ 
 
 	self
 		write: aParagraph
 		withTemplateFileName: self paragraphTemplateFileName
-		ifAbsent: [ defaultWriter visitParagraph: aParagraph ]
+		ifAbsent: [ defaultWriter visitParagraph: aParagraph from: self ]
 ]
 
 { #category : 'visiting' }
@@ -529,7 +530,7 @@ MicTemplatedWriter >> visitRoot: aRoot [
 		write: aRoot
 		withTemplateFileName: self rootTemplateFileName
 		extraArguments: {  }
-		ifAbsent: [ defaultWriter visitRoot: aRoot ].
+		ifAbsent: [ defaultWriter visitRoot: aRoot from: self  ].
 
 ]
 
