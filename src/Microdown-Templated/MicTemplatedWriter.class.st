@@ -428,7 +428,6 @@ MicTemplatedWriter >> visitFigure: aFigure [
 { #category : 'visiting' }
 MicTemplatedWriter >> visitHeader: aHeader [
 
-	self halt. 
 	self
 		write: aHeader
 		withTemplateFileName: self headerTemplateFileName
@@ -469,7 +468,7 @@ MicTemplatedWriter >> visitLink: aLink [
 		extraArguments: {
 			'ref' -> aLink reference uri.
 			'caption' -> aLink caption }
-		ifAbsent: [ defaultWriter visitLink: aLink ]
+		ifAbsent: [ defaultWriter visitLink: aLink from: self ]
 ]
 
 { #category : 'visiting' }

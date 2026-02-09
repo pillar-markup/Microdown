@@ -446,6 +446,19 @@ MicHTMLVisitor >> visitLink: aLink [
 
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitLink: aLink from: templated [ 
+	"Write markup hyperlink, which is used to link from one page to another"
+
+	canvas tag
+		name: 'a';
+		parameterAt: 'target' put: self configuration targetAttribute;
+		parameterAt: 'href' put: aLink referencePath;
+		addArguments: aLink;
+		with: [ templated visitChildrenOf: aLink ]
+
+]
+
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitListItem: anItem [
 
