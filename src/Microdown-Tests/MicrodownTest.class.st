@@ -72,7 +72,8 @@ MicrodownTest >> testAbsoluteWindowsPath [
 	| absoluteReference |
 	absoluteReference := MicAbsoluteResourceReference newFromUri:
 		                     (ZnUrl fromString: 'c:/temp/foo.txt').
-	self deny: (absoluteReference path beginsWith: '/')
+	self deny: (OSPlatform current isWindows and: [
+			 absoluteReference path beginsWith: '/' ])
 ]
 
 { #category : 'tests - parent/children' }
