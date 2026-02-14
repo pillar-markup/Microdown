@@ -4,6 +4,11 @@ When writing one element, I first check if there is a file in the current templa
 Otherwise I simply delegate the writing to the default one.
 
 I am carefully designed so if an element X is delegated to the default writer, it should delegate the writing of X's children back to myself.
+
+One of the key point of the design is that 
+when there is a no template for a container (e.g., Paragraph), if we default simply to the default writer
+then the elements of the container will not be templated so the default method passes the templater as well
+so that the container logic can call the templater back.
 "
 Class {
 	#name : 'MicTemplatedWriter',
