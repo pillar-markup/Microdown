@@ -143,7 +143,7 @@ BaselineOfMicrodown >> mustache: spec [
 
 	spec baseline: 'Mustache' with: [
 		spec
-			repository: 'github://noha/mustache:v1.3/repository';
+			repository: 'github://noha/mustache:v1.4/repository';
 			loads: #( 'Core' 'Tests' ) ]
 ]
 
