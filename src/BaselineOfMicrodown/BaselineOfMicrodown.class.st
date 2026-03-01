@@ -74,7 +74,7 @@ BaselineOfMicrodown >> baseline: spec [
 				with: [ spec requires: #( #Microdown ) ];
 			
 			package: #'Microdown-Templated' with: [
-				spec requires: #( #'Microdown-HTMLExporter' #'Microdown-PrettyPrinter' #'Microdown' ) ];	
+				spec requires: #( #'Microdown-HTMLExporter' #'Microdown-PrettyPrinter' #'Microdown' #'Mustache' ) ];	
 			
 
 			package: #'Microdown-PrettyPrinter-Tests'
