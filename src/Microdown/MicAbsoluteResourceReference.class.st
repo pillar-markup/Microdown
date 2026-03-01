@@ -68,7 +68,22 @@ MicAbsoluteResourceReference >> loadMicrodown [
 { #category : 'accessing' }
 MicAbsoluteResourceReference >> path [
 	"return the path part of my uri"
-	^ '/', uri path
+
+	^ OSPlatform current isWindows
+		  ifTrue: [ self pathOnWindows ]
+		  ifFalse: [ self uriPathWithSlashPrefix ]
+]
+
+{ #category : 'private' }
+MicAbsoluteResourceReference >> pathOnWindows [
+	"Answer the path part of the uri in case of Windows."
+
+	" If a drive letter X: leads, no slash should be prefixed."
+
+	^ (uri path size > 2 and: [
+		   (AsciiCharset isLetter: uri path first) and: uri path second = $: ])
+		  ifTrue: [ uri path ]
+		  ifFalse: [ self uriPathWithSlashPrefix ]
 ]
 
 { #category : 'printing' }
@@ -97,6 +112,13 @@ MicAbsoluteResourceReference >> uri [
 { #category : 'accessing' }
 MicAbsoluteResourceReference >> uri: aZnUrl [
 	uri := aZnUrl
+]
+
+{ #category : 'private' }
+MicAbsoluteResourceReference >> uriPathWithSlashPrefix [
+	"Answer the path part of my uri."
+
+	^ '/' , uri path
 ]
 
 { #category : 'accessing' }

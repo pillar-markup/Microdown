@@ -66,6 +66,16 @@ Pharo is cool
 ' ].
 ]
 
+{ #category : 'tests' }
+MicrodownTest >> testAbsoluteWindowsPath [
+
+	| absoluteReference |
+	absoluteReference := MicAbsoluteResourceReference newFromUri:
+		                     (ZnUrl fromString: 'c:/temp/foo.txt').
+	self deny: (OSPlatform current isWindows and: [
+			 absoluteReference path beginsWith: '/' ])
+]
+
 { #category : 'tests - parent/children' }
 MicrodownTest >> testAddedAsChildWhenUsingParent [
 
