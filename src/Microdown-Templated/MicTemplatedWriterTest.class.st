@@ -237,7 +237,7 @@ MicTemplatedWriterTest >> testDirectory [
 	
 	self 
 		assert: textDocument templateDirectory printString 
-		equals:  'memory:///_support/templates/mic'.
+		equals:  'memory:///mic/_support/templates/mic'.
 	self assert: (textDocument templateDirectory / 'codeBlock.mustache') exists
 ]
 

@@ -184,8 +184,10 @@ MicrodownVisitor >> visitNote: aNote [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
+	"Here we do not follow the normal accept: way to doing things for childre. This is 
+	because we want to propagate the context (ordered or not) during the handling of children."
 	
-	^ anOrderedList children collect: [ :each | each accept: self ]
+	^ anOrderedList children collect: [ :each | self visitOrderedListItem: each ]
 ]
 
 { #category : 'visiting - list' }
@@ -276,7 +278,9 @@ MicrodownVisitor >> visitText: aMicTextBlock [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitUnorderedList: anUnorderedList [
-
+	"Here we do not follow the normal accept: way to doing things for childre. This is 
+	because we want to propagate the context (ordered or not) during the handling of children."
+	
 	^ anUnorderedList children collect: [ :each | self visitUnorderedListItem: each ]
 ]
 

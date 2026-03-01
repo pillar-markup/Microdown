@@ -44,6 +44,17 @@ MicHTMLExporterTest >> newLines: aString [
 	^ newLine, '<p>', aString, '</p>', newLine
 ]
 
+{ #category : 'tests - list' }
+MicHTMLExporterTest >> orderedListString [
+
+^  '
+Here is a list:
+1. item 1
+2. item 2
+3. item 3
+'
+]
+
 { #category : 'utilities' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
 	
@@ -248,6 +259,24 @@ MicHTMLExporterTest >> testMetaDataIsNotIgnored [
 	self parse: factory metaDataSample andCheckWeGet: ''
 ]
 
+{ #category : 'tests - list' }
+MicHTMLExporterTest >> testOrderedList [
+
+	self 
+		parse: self orderedListString 
+		andCheckWeGet: 
+
+newLine , '<p>Here is a list:</p>' , newLine , newLine , '<ol>' , newLine , '<li>item 1</li>' , newLine , '<li>item 2</li>' , newLine , '<li>item 3</li>' , newLine , '</ol>'
+]
+
+{ #category : 'tests - list' }
+MicHTMLExporterTest >> testOrderedListIsRecognized [
+
+	| doc |
+	doc := Microdown parse: self orderedListString.
+	self assert: doc children second class equals: MicOrderedListBlock 
+]
+
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
@@ -331,8 +360,10 @@ MicHTMLExporterTest >> testTable [
 
 { #category : 'tests - list' }
 MicHTMLExporterTest >> testUnorderedList [
-
-	self parse: factory unorderedListWithTwoItemsSample andCheckWeGet: newLine ,
+	
+	self 
+		parse: factory unorderedListWithTwoItemsSample 
+		andCheckWeGet: newLine ,
 '<ul>', newLine ,
 '<li>Foo</li>', newLine ,
 '<li>Bar</li>', newLine ,

@@ -491,22 +491,18 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 ]
 
 { #category : 'visiting - list' }
-MicHTMLVisitor >> visitOrderedList: anOrderedList [
+MicHTMLVisitor >> visitOrderedList: anUnorderedList [
 
 	canvas newLine.
 	canvas tag
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			anOrderedList children 
-				do: [ :each | each accept: self ] ]
-			
-	
+			super visitOrderedList: anUnorderedList  ]
 ]
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
 
 	canvas tag
 		name: 'li';
@@ -659,8 +655,7 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
-
+	
 	canvas tag
 		name: 'li';
 		with: [ super visitUnorderedListItem: anUnorderedListItem ].
