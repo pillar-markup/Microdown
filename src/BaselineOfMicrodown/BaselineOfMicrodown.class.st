@@ -25,71 +25,71 @@ BaselineOfMicrodown >> baseline: spec [
 		spec postLoadDoIt: #'postload:package:'.
 		
 		spec
-			package: #Microdown;
-			package: #'Microdown-Tests'
-				with: [ spec requires: #( #Microdown ) ];
+			package: 'Microdown';
+			package: 'Microdown-Tests'
+				with: [ spec requires: #( 'Microdown' ) ];
 				
-			package: #'Microdown-BrowserExtensions'
-				with: [ spec requires: #( #Microdown ) ];	
+			package: 'Microdown-BrowserExtensions'
+				with: [ spec requires: #( 'Microdown' ) ];	
 		
-			package: #'Microdown-Pharo-Tools'
-				with: [ spec requires: #( #Microdown ) ];
+			package: 'Microdown-Pharo-Tools'
+				with: [ spec requires: #( 'Microdown' ) ];
 				
-			package: #'Microdown-RichTextComposer'
-				with: [ spec requires: #( #Microdown ) ];
+			package: 'Microdown-RichTextComposer'
+				with: [ spec requires: #( 'Microdown' ) ];
 				
-			package: #'Microdown-RichTextComposer-Tests'
-				with: [ spec requires: #( #'Microdown-RichTextComposer' ) ];
+			package: 'Microdown-RichTextComposer-Tests'
+				with: [ spec requires: #( 'Microdown-RichTextComposer' ) ];
 
-			package: #'Microdown-MathFlaky-Tests'
-				with: [ spec requires: #( #'Microdown-RichTextComposer-Tests' ) ];
+			package: 'Microdown-MathFlaky-Tests'
+				with: [ spec requires: #( 'Microdown-RichTextComposer-Tests' ) ];
 
-			package: #'Microdown-Transformer'
-				with: [ spec requires: #( #Microdown ) ];
-			package: #'Microdown-Transformer-Tests'
-				with: [ spec requires: #( #'Microdown-Transformer' ) ];
+			package: 'Microdown-Transformer'
+				with: [ spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-Transformer-Tests'
+				with: [ spec requires: #( 'Microdown-Transformer' ) ];
 
-			package: #'Microdown-Evaluator'
-				with: [ spec requires: #( #'Microdown-Transformer' ) ];
-			package: #'Microdown-Evaluator-Tests'
-				with: [ spec requires: #( #'Microdown-Evaluator') ];
+			package: 'Microdown-Evaluator'
+				with: [ spec requires: #( 'Microdown-Transformer' ) ];
+			package: 'Microdown-Evaluator-Tests'
+				with: [ spec requires: #( 'Microdown-Evaluator') ];
 			
-			package: #'Microdown-HTMLExporter'
-				with: [ spec requires: #( #Microdown #'Microdown-LaTeXExporter') ];
-			package: #'Microdown-HTMLExporter-Tests'
-				with: [ spec requires: #( #'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
+			package: 'Microdown-HTMLExporter'
+				with: [ spec requires: #( 'Microdown' 'Microdown-LaTeXExporter') ];
+			package: 'Microdown-HTMLExporter-Tests'
+				with: [ spec requires: #( 'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
 			
-			package: #'Microdown-LaTeXExporter'
-				with: [ spec requires: #( #Microdown ) ];
-			package: #'Microdown-LaTeXExporter-Tests'
-				with: [ spec requires: #( #'Microdown-LaTeXExporter' #'Microdown-Tests') ];
+			package: 'Microdown-LaTeXExporter'
+				with: [ spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-LaTeXExporter-Tests'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter' 'Microdown-Tests') ];
 	
-			package: #'Microdown-BeamerExporter'
-				with: [ spec requires: #( #'Microdown-LaTeXExporter' ) ];				
+			package: 'Microdown-BeamerExporter'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter' ) ];				
 	
-			package: #'Microdown-BeamerExporter-Tests'
-				with: [ spec requires: #( #'Microdown-LaTeXExporter-Tests') ];
+			package: 'Microdown-BeamerExporter-Tests'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter-Tests') ];
 
-			package: #'Microdown-PrettyPrinter'
-				with: [ spec requires: #( #Microdown ) ];
+			package: 'Microdown-PrettyPrinter'
+				with: [ spec requires: #( 'Microdown' ) ];
 			
-			package: #'Microdown-Templated' with: [
-				spec requires: #( #'Microdown-HTMLExporter' #'Microdown-PrettyPrinter' #'Microdown' #'Mustache' ) ];	
+			package: 'Microdown-Templated' with: [
+				spec requires: #( 'Microdown-HTMLExporter' 'Microdown-PrettyPrinter' 'Microdown' 'Mustache' ) ];	
 			
 
-			package: #'Microdown-PrettyPrinter-Tests'
-				with: [ spec requires: #( #'Microdown-PrettyPrinter' #'Microdown-Tests') ];
+			package: 'Microdown-PrettyPrinter-Tests'
+				with: [ spec requires: #( 'Microdown-PrettyPrinter' 'Microdown-Tests') ];
 				
-			package: #'Microdown-ParentChildrenChecker' with: [
-				spec requires: #( #'Microdown' ) ];
+			package: 'Microdown-ParentChildrenChecker' with: [
+				spec requires: #( 'Microdown' ) ];
 			
-			package: #'Microdown-BookTester' with: [
-				spec requires: #( #'Microdown' ) ];
-			package: #'Microdown-BookTester-Tests' with: [
-				spec requires: #( #'Microdown-BookTester' ) ];	
+			package: 'Microdown-BookTester' with: [
+				spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-BookTester-Tests' with: [
+				spec requires: #( 'Microdown-BookTester' ) ];	
 			
-			package: #'Microdown-Rules' with: [
-				spec requires: #( #'Microdown-BookTester' ) ].
+			package: 'Microdown-Rules' with: [
+				spec requires: #( 'Microdown-BookTester' ) ].
 			
 			"
 			package: #'Microdown-Blog' with: [
@@ -100,29 +100,29 @@ BaselineOfMicrodown >> baseline: spec [
 			"
 		spec
 			group: 'Core' with: #('Microdown' 'Microdown-Tests');
-			group: 'ForPharo' with: #('Microdown' #'Microdown-BrowserExtensions');
+			group: 'ForPharo' with: #('Microdown' 'Microdown-BrowserExtensions');
 			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
-			group: 'Editor' with: #('RichText' #'Microdown-PrettyPrinter' #'Microdown-PrettyPrinter-Tests');
-			group: 'LaTeX' with:  #('Core' #'Microdown-LaTeXExporter' #'Microdown-LaTeXExporter-Tests');
+			group: 'Editor' with: #('RichText' 'Microdown-PrettyPrinter' 'Microdown-PrettyPrinter-Tests');
+			group: 'LaTeX' with:  #('Core' 'Microdown-LaTeXExporter' 'Microdown-LaTeXExporter-Tests');
 			group: 'Extensions' with: #(
-				#'Microdown-Evaluator'
-				#'Microdown-Evaluator-Tests'
-				#'Microdown-PrettyPrinter'
-				#'Microdown-PrettyPrinter-Tests'
-				#'Microdown-HTMLExporter'
-				#'Microdown-HTMLExporter-Tests'				
-				#'Microdown-LaTeXExporter'
-				#'Microdown-LaTeXExporter-Tests'
-				#'Microdown-Transformer'
-				#'Microdown-Transformer-Tests'
-				#'Microdown-ParentChildrenChecker'
-				#'Microdown-BookTester'
-				#'Microdown-BookTester-Tests'
-				#'Microdown-Rules'
-				#'Microdown-Templated'
+				'Microdown-Evaluator'
+				'Microdown-Evaluator-Tests'
+				'Microdown-PrettyPrinter'
+				'Microdown-PrettyPrinter-Tests'
+				'Microdown-HTMLExporter'
+				'Microdown-HTMLExporter-Tests'				
+				'Microdown-LaTeXExporter'
+				'Microdown-LaTeXExporter-Tests'
+				'Microdown-Transformer'
+				'Microdown-Transformer-Tests'
+				'Microdown-ParentChildrenChecker'
+				'Microdown-BookTester'
+				'Microdown-BookTester-Tests'
+				'Microdown-Rules'
+				'Microdown-Templated'
 				);
 			group: 'All' 
-			with: #('Core' #'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
+			with: #('Core' 'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
 			]
 
 
