@@ -144,7 +144,7 @@ BaselineOfMicrodown >> mustache: spec [
 	spec baseline: 'Mustache' with: [
 		spec
 			repository: 'github://noha/mustache:v1.4/repository';
-			loads: #( 'Core' 'Tests' ) ]
+			loads: #( 'Core') ]
 ]
 
 { #category : 'baselines' }
