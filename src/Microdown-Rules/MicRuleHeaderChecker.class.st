@@ -52,10 +52,12 @@ MicRuleHeaderChecker >> initialize [
 	     'upon' 'when' 'with' 'yet' ) do: [ :each | self addUncapitalized: each ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'asserting' }
 MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
+	| normalized |
+	normalized := (aString select: [ :c | c isLetter ]) asLowercase.
 
-	^ (uncapitalizableText includes: aString) not
+	^ (uncapitalizableText includes: normalized) not
 ]
 
 { #category : 'initialization' }
@@ -72,11 +74,11 @@ MicRuleHeaderChecker >> verifyUppercase [
 	strategy checker: self
 ]
 
-{ #category : 'visiting' }
+{ #category : 'asserting' }
 MicRuleHeaderChecker >> visitHeader: aMicHeader [
 
 	| words |
-	words := aMicHeader text splitOn: Character space.
+	words := aMicHeader text substrings.
 	self checkFirstWord: words of: aMicHeader. 
 	self checkRest: words of: aMicHeader. 
 
