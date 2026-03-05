@@ -1,49 +1,65 @@
 Class {
 	#name : 'MicEnglishTypoChecker',
 	#superclass : 'MicChecker',
-	#category : 'Microdown-Rules-EnglishTypos',
+	#category : 'Microdown-Rules-AfterColon',
 	#package : 'Microdown-Rules',
-	#tag : 'EnglishTypos'
+	#tag : 'AfterColon'
 }
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
+MicEnglishTypoChecker >> addResultFor: anElement message: aMessage [
+	results add: (MicSpaceBeforeDiacriticsResult new 
+		micElement: anElement;
+		inFile: anElement fromFile;
+		detail: aMessage;
+		yourself
+		).
+]
+
+{ #category : 'adding' }
+MicEnglishTypoChecker >> checkString: aString for: anElement [
+	| checks |
+	aString ifNil: [ ^self ].
+checks := {
+		' \:' -> 'There is a space before :'.
+		' \,' -> 'There is a space before ,'.
+		'\:[^ ]' -> 'There is no space after :'.
+		',[^ ]' -> 'There is no space after ,'.
+		' \;' -> 'There is a space before ;'.
+		'\;[^ ]' -> 'There is no space after ;'.
+		' \?' -> 'There is a space before ?'.
+		'\?[^ ]' -> 'There is no space after ?'.
+		' \!' -> 'There is a space before !'.
+		'\![^ ]' -> 'There is no space after !'
+	}.
+
+	checks do: [ :pair |
+		| pattern message matcher |
+		pattern := pair key.
+		message := pair value.
+
+		matcher := RxMatcher forString: pattern.
+		(matcher matchesIn: aString) notEmpty ifTrue: [
+			self addResultFor: anElement message: message
+		]
+	].
+]
+
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitCode: aCodeBlock [
-	"for a code block we only check the caption"
-	self flag: #writeATest.
-	
-	('* ;*' match: aCodeBlock  caption)
-		ifTrue: [ 
-			results add: (MicSpaceBeforeDiacriticsResult new
-											micElement: aCodeBlock;
-											inFile: aCodeBlock fromFile; 
-											detail: 'There is a space before ;';
-											yourself) ].
-	
+
+	aCodeBlock caption ifNil: [ ^self ].
+	self checkString: aCodeBlock caption for: aCodeBlock.
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitMonospace: aCodeBlock [
-	"We do not check monospae code because `[ :each |` is not a problem"
-	
-	self flag: #writeATest
+	^ self
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitText: aText [
 
-	('* ;*' match: aText bodyString)
-		ifTrue: [ 
-			results add: (MicSpaceBeforeDiacriticsResult new
-											micElement: aText;
-											inFile: aText fromFile; 
-											detail: 'There is a space before ;';
-											yourself) ].
-	 ('* :*' match: aText bodyString)
-		ifTrue: [ 
-			results add: (MicSpaceBeforeDiacriticsResult new
-											micElement: aText;
-											inFile: aText fromFile; 
-											detail: 'There is a space before :';
-											yourself) ] 
-	 
+	self checkString: aText bodyString for: aText. 
+
 ]
