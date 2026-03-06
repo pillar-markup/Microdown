@@ -105,21 +105,19 @@ MicMicrodownTextualBuilderTest >> testCell [
 { #category : 'tests - codeblock' }
 MicMicrodownTextualBuilderTest >> testCodeBlock [
 
-	"```language2=Pharo&caption=`Color` is cool
+	"```
 	Hello
 	Pharo
 	```"
 
 	| mictext |
 	mictext := builder
-		           codeblock: self exampleTextMultipleLines
-		           firstLineAssociations: { 
-				           ('language2' -> 'Pharo') };
+		           codeblock: self exampleTextMultipleLines;
 		           contents.
 	self 
 		assert: mictext 
 		equals: 
-'```language2=Pharo
+'```
 ', self exampleTextMultipleLines, 
 
 '
@@ -148,6 +146,123 @@ MicMicrodownTextualBuilderTest >> testCodeBlockCaptionContainsMonospace [
 		assert: mictext 
 		equals: 
 '```language2=Pharo&caption=`Color` is cool
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
+]
+
+{ #category : 'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeBlockFirstLineAssociations [
+
+	"```language2=Pharo&caption=`Color` is cool
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           firstLineAssociations: { 
+				           ('language2' -> 'Pharo'). 'caption' -> '`Color` is cool' };
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo&caption=`Color` is cool
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
+]
+
+{ #category : 'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeblockFirstLineAssociationsWithCaption [
+	"This test verifies that code blocks with first-line associations and captions are correctly formatted."
+
+	self testCodeblockFirstLineAssociationsWithCaption01.
+	self setUp.
+	self testCodeblockFirstLineAssociationsWithCaption02.
+]
+
+{ #category : 'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeblockFirstLineAssociationsWithCaption01 [
+
+	"```language2=Pharo&aaa=bbb15
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           firstLineAssociations: { 
+				           'language2' -> 'Pharo'. 'aaa' -> 'bbb15' }
+					  withCaption: [ 'Killroy' ];
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo&aaa=bbb15
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
+]
+
+{ #category : 'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeblockFirstLineAssociationsWithCaption02 [
+
+	"```language2=Pharo&aaa=bbb15
+	Hello
+	Pharo
+	```"
+
+	| mictext |
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           firstLineAssociations: { 
+				           'language2' -> 'Pharo'. #caption -> 'bbb15' }
+					  withCaption: [ builder raw: 'Kilroy' ];
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo&caption=Kilroy
+', self exampleTextMultipleLines, 
+
+'
+```
+'
+
+]
+
+{ #category : 'tests - codeblock' }
+MicMicrodownTextualBuilderTest >> testCodeblockParameters [
+
+	"```language2=Pharo&aaa=bbb15
+	Hello
+	Pharo
+	```"
+
+	| mictext orderedDic |
+	orderedDic := OrderedDictionary new.
+	orderedDic at: 'language2' put: 'Pharo'.
+	orderedDic at: 'aaa' put: 'bbb15'.
+	mictext := builder
+		           codeblock: self exampleTextMultipleLines
+		           parameters: orderedDic;
+		           contents.
+	self 
+		assert: mictext 
+		equals: 
+'```language2=Pharo&aaa=bbb15
 ', self exampleTextMultipleLines, 
 
 '

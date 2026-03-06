@@ -121,6 +121,15 @@ MicMicrodownTextualBuilder >> codeblock: aString firstLineAssociations: aCol wit
 	self newLine.
 ]
 
+{ #category : 'as yet unclassified' }
+MicMicrodownTextualBuilder >> codeblock: aString parameters: anOrderedDictionary [
+	"Alternate API: Build first-line params from a dictionary (preserves order)."
+
+	| associations |
+	associations := anOrderedDictionary associations.
+	self codeblock: aString firstLineAssociations: associations
+]
+
 { #category : 'element - code block' }
 MicMicrodownTextualBuilder >> codeblockTag: aTag withBody: aString [
 	self flag: #fixme. 
