@@ -546,9 +546,9 @@ MicHTMLVisitor >> visitQuote: aQuote [
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRaw: aParagraph [
+	"Raw should be raw and it should NOT go the next line or whatever"
 	
-	canvas raw: aParagraph bodyString.
-	canvas newLine
+	canvas raw: aParagraph bodyString
 ]
 
 { #category : 'visiting - html extensions' }
