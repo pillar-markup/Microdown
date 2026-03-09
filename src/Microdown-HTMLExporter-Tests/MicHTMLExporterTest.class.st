@@ -345,6 +345,23 @@ MicHTMLExporterTest >> testQuote [
 ]
 
 { #category : 'tests - raw' }
+MicHTMLExporterTest >> testRawOnMultipleLinesIsNotRawButTwoPargraphs [
+
+	| mic |
+	mic := parser  
+		parse: 'some text here!{{  <a class="btn btn-block download" href="https://files.pharo.org/pharo-launcher/mac-arm64"> ', self newLine,'
+            <i class="fa fa-apple"></i> macOs arm64</a>  }}...and there'.
+	"notice that I did on purpose that I do not have space around"
+
+	self assert: mic children size equals: 2.
+	self assert: mic children first class equals: MicParagraphBlock .
+	self assert: mic children second class equals: MicParagraphBlock .
+	
+ 
+ 
+]
+
+{ #category : 'tests - raw' }
 MicHTMLExporterTest >> testRawOnSingleLineShouldNotGoToTheNextLine [
 
 	| mic |

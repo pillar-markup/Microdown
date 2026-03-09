@@ -88,6 +88,7 @@ MicStartStopMarkupBlock >> doesLineStartWithStopMarkup: line [
 
 { #category : 'handle' }
 MicStartStopMarkupBlock >> extractFirstLineFrom: line [
+
 	^ line copyFrom: self lineStartMarkup size + 1 to: line size
 ]
 

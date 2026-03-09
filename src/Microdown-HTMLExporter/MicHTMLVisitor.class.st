@@ -545,10 +545,12 @@ MicHTMLVisitor >> visitQuote: aQuote [
 ]
 
 { #category : 'visiting - html extensions' }
-MicHTMLVisitor >> visitRaw: aParagraph [
+MicHTMLVisitor >> visitRaw: aMicRaw [
 	"Raw should be raw and it should NOT go the next line or whatever"
+	"Pay attention aMicRaw is not a paragraph but an inline element."
+	self halt.
 	
-	canvas raw: aParagraph bodyString
+	canvas raw: aMicRaw bodyString
 ]
 
 { #category : 'visiting - html extensions' }
