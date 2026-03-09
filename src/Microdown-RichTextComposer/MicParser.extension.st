@@ -1,6 +1,6 @@
-Extension { #name : 'MicrodownParser' }
+Extension { #name : 'MicParser' }
 
 { #category : '*Microdown-RichTextComposer' }
-MicrodownParser class >> convertToRichText: aString [
+MicParser class >> convertToRichText: aString [
 	^ MicRichTextComposer new visit: (self new parse: aString)
 ]

@@ -11,9 +11,9 @@ that will never be changed
 Class {
 	#name : 'MicRawParagraphBlock',
 	#superclass : 'MicStartStopMarkupBlock',
-	#category : 'Microdown-Core',
+	#category : 'Microdown-Model',
 	#package : 'Microdown',
-	#tag : 'Core'
+	#tag : 'Model'
 }
 
 { #category : 'visiting' }

@@ -154,7 +154,7 @@ MicAbstractBlock >> parser [
 
 { #category : 'private' }
 MicAbstractBlock >> parserClass [ 
-	^ MicrodownParser
+	^ MicParser
 ]
 
 { #category : 'adding' }
