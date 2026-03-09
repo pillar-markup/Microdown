@@ -392,6 +392,22 @@ MicHTMLVisitor >> visitFigure: aFigure [
 
 ]
 
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
+	
+	canvas
+		newLine;
+		raw: '<' , anHTMLTagParagraph label.
+	anHTMLTagParagraph hasArguments
+		ifTrue: [ canvas space; raw: anHTMLTagParagraph argumentString ]. 
+	canvas raw: '>' .
+
+	anHTMLTagParagraph children do: [ :each | each accept: self ].
+	canvas 
+		newLine;
+		raw: anHTMLTagParagraph lineStopMarkup.
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitHeader: aHeader [
 
@@ -548,7 +564,6 @@ MicHTMLVisitor >> visitQuote: aQuote [
 MicHTMLVisitor >> visitRaw: aMicRaw [
 	"Raw should be raw and it should NOT go the next line or whatever"
 	"Pay attention aMicRaw is not a paragraph but an inline element."
-	self halt.
 	
 	canvas raw: aMicRaw bodyString
 ]
@@ -556,17 +571,7 @@ MicHTMLVisitor >> visitRaw: aMicRaw [
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	
-	canvas
-		newLine;
-		raw: '<' , aParagraph label.
-	aParagraph hasArguments
-		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
-	canvas raw: '>' .
-
-	aParagraph children do: [ :each | each accept: self ].
-	canvas 
-		newLine;
-		raw: aParagraph lineStopMarkup.
+	canvas raw: aParagraph body
 ]
 
 { #category : 'templating ping pong' }

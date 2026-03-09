@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicRawParagraphBlockTest',
+	#name : 'MicHTMLTagParagraphBlockTest',
 	#superclass : 'MicBlockTest',
 	#category : 'Microdown-Tests-Extensions',
 	#package : 'Microdown-Tests',
@@ -7,12 +7,12 @@ Class {
 }
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> subjectClass [ 
-	^ MicRawParagraphBlock 
+MicHTMLTagParagraphBlockTest >> subjectClass [ 
+	^ MicHTMLTagParagraphBlock 
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testASimpleDivWithClass [
+MicHTMLTagParagraphBlockTest >> testASimpleDivWithClass [
 	| mic |
 	mic := (parser parse: '<div class="teaser">
 
@@ -22,7 +22,7 @@ In a giving mood? There are many ways to get involved!
 
 </div>
 ') children first.
-	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic class equals: MicHTMLTagParagraphBlock. 
 	self assert: mic label equals: 'div'.
 	self assert: mic children first class equals: MicHeaderBlock.
 	self assert: mic children second class equals: MicParagraphBlock
@@ -30,19 +30,19 @@ In a giving mood? There are many ways to get involved!
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testASimpleRawParagraph [
+MicHTMLTagParagraphBlockTest >> testASimpleRawParagraph [
 	| mic |
 	mic := (parser parse: '<title> 
 No idea what it is :)
 </title>') children first.
-	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic class equals: MicHTMLTagParagraphBlock. 
 	self assert: mic label equals: 'title'.
 	self assert: mic children first class equals: MicParagraphBlock 
 
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testNotASimpleRawParagraphBecauseNotDeclaredTag [
+MicHTMLTagParagraphBlockTest >> testNotASimpleRawParagraphBecauseNotDeclaredTag [
 
 	| mic |
 	mic := (parser parse: '<toto> 
@@ -53,7 +53,7 @@ No idea what it is :)
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testNotASimpleRawParagraphNoSpaceInFrontToClose [
+MicHTMLTagParagraphBlockTest >> testNotASimpleRawParagraphNoSpaceInFrontToClose [
 
 	| children |
 	children := (parser parse: '<title> 
@@ -65,26 +65,26 @@ And after we get a paragraph') children.
 	"so far we eat as much as we can and put everything in the raw"
 	
 	
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testParagrapWithP [
+MicHTMLTagParagraphBlockTest >> testParagrapWithP [
 	| mic |
 	mic := (parser parse: '
 <p>
 This is a paragraph started normally with <p>
 </p>
 ') children first.
-	self assert: mic class equals: MicRawParagraphBlock. 
+	self assert: mic class equals: MicHTMLTagParagraphBlock. 
 	self assert: mic label equals: 'p'.
 	self assert: mic children first class equals: MicParagraphBlock
 
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphCanBeNested [
+MicHTMLTagParagraphBlockTest >> testRawParagraphCanBeNested [
 	| children |
 	children := (parser parse: '<title> 
 No idea what it is :)
@@ -94,40 +94,40 @@ hkhkjhkj
 </button>
 </title>') children.
 	self assert: children size equals: 1. 
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	self assert: children first label equals: 'title'.
 	self assert: children first children size equals: 2. 
 	self assert: children first children first class equals: MicParagraphBlock.
 	self assert: children first children second label  equals: 'button'.
-	self assert: children first children second class  equals: MicRawParagraphBlock.
+	self assert: children first children second class  equals: MicHTMLTagParagraphBlock.
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphForP [
+MicHTMLTagParagraphBlockTest >> testRawParagraphForP [
 	| children |
 	children := (parser parse: '<p> 
 No idea what it is :)
 </p>') children.
 	self assert: children size equals: 1. 
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	self assert: children first label equals: 'p'.
 	
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphForPNoSpace [
+MicHTMLTagParagraphBlockTest >> testRawParagraphForPNoSpace [
 	| children |
 	children := (parser parse: '<p>WeDoNotLikeSpace
 No idea what it is :)
 </p>') children.
 	self assert: children size equals: 1. 
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	self assert: children first label equals: 'p'.
 	
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphForPNoSpace2 [
+MicHTMLTagParagraphBlockTest >> testRawParagraphForPNoSpace2 [
 	| children newLine |
 	newLine := Character cr asString. 
 	children := (MicrodownParser new parse: '<div style="background-color:#8ebf42">', newLine, 
@@ -143,28 +143,28 @@ MicRawParagraphBlockTest >> testRawParagraphForPNoSpace2 [
 '</p>', newLine, 
 '</div>') children.
 	self assert: children size equals: 1. 
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	self assert: children first label equals: 'div'.
-	self assert: children first children first class equals: MicRawParagraphBlock.
+	self assert: children first children first class equals: MicHTMLTagParagraphBlock.
 	self assert: children first children first label equals: 'p'.
 	
 	
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testRawParagraphForPNoSpaceAndAttributes [
+MicHTMLTagParagraphBlockTest >> testRawParagraphForPNoSpaceAndAttributes [
 	| children |
 	children := (parser parse: '<p src=78>WeDoNotLikeSpace
 No idea what it is :)
 </p>') children.
 	self assert: children size equals: 1. 
-	self assert: children first class equals: MicRawParagraphBlock. 
+	self assert: children first class equals: MicHTMLTagParagraphBlock. 
 	self assert: children first label equals: 'p'.
 	
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testThereIsNoValidationIfThetagStartWithAKnowHtml [
+MicHTMLTagParagraphBlockTest >> testThereIsNoValidationIfThetagStartWithAKnowHtml [
 	"for the moment we only check the first couple of characters to start with.
 	So it may happens that we match the beginning of a tag."
 	| mic |

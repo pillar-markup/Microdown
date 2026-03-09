@@ -224,7 +224,7 @@ MicrodownParser >> blockStarterClassFrom: line [
 						])
 				ifTrue: [ 
 					"we have a rawparagraph block" 
-					^ MicRawParagraphBlock 
+					^ MicHTMLTagParagraphBlock 
 					]
 				ifFalse: [ 
 								
