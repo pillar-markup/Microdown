@@ -234,7 +234,6 @@ MicParser >> blockStarterClassFrom: line [
 				"If we have a inline starter, it takes precedence"
 				(Delimiters includes: prefix) 
 					ifTrue: [ ^ self delimiterBlockClassFor: prefix ].
-				self haltOnce.
   				dispatchTable
     		 		at: prefix
       				ifPresent: [ :blockClass | ^ blockClass ] ] ] ].
