@@ -12,7 +12,23 @@ MicRawParagraphBlockTest >> subjectClass [
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testContentsInContentsOut [
+MicRawParagraphBlockTest >> testFirstLineAfterMarkupShouldBeIgnored [
+	"contents starts on the following line of the {{{"
+	| root |
+	root := parser parse: '{{{ blabla
+**Hello is ... cut for real
+
+a paragraph on two lines**
+}}}'.
+
+	self assert: root children first bodyString equals: '**Hello is ... cut for real
+
+a paragraph on two lines**'.
+	
+]
+
+{ #category : 'tests' }
+MicRawParagraphBlockTest >> testSimpleParagraphWithMarkupShouldBeTakenAsIs [
 	"
 	{{{
 	Hello 
@@ -33,7 +49,7 @@ a paragraph on two lines**'.
 ]
 
 { #category : 'tests' }
-MicRawParagraphBlockTest >> testContentsInContentsOutWithEmptyLine [
+MicRawParagraphBlockTest >> testWithEmptyLine [
 	"
 	{{{
 	Hello 
@@ -51,5 +67,22 @@ a paragraph on two lines**
 	self assert: root children first bodyString equals: '**Hello is ... cut for real
 
 a paragraph on two lines**'.
+	
+]
+
+{ #category : 'tests' }
+MicRawParagraphBlockTest >> testWithHTMLTag [
+
+	| root |
+	root := parser parse: '{{{ 
+**Hello is ... cut for real
+<a href="https://pharo.org">https://pharo.org</a>
+a paragraph on two lines**
+}}}'.
+
+	self assert: root children size equals: 1.
+	self assert: root children first bodyString equals: '**Hello is ... cut for real
+<a href="https://pharo.org">https://pharo.org</a>
+a paragraph on two lines**'
 	
 ]

@@ -1,12 +1,24 @@
 "
 I'm a block level element that represent contents that will never be interpreted.
+- Contents on the first line is ignored.
+- Contents starts from the following line after the `{{{`
+
+Here is a test illustrating such behavior.
 
 ```
-{{{
-here is some contents
-that will never be changed
-}}}
-```
+testFirstLineAfterMarkupShouldBeIgnored
+	""contents starts on the following line of the {{{""
+	| root |
+	root := parser parse: '{{{ blabla
+**Hello is ... cut for real
+
+a paragraph on two lines**
+}}}'.
+
+	self assert: root children first bodyString equals: '**Hello is ... cut for real
+
+a paragraph on two lines**'.
+```	
 "
 Class {
 	#name : 'MicRawParagraphBlock',
