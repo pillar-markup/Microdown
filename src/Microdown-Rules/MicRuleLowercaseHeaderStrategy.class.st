@@ -15,6 +15,7 @@ MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader [
 	"
 	In lowercase mode there is no need to handle stop words since they should always be lowercase (except after : - not managed right now.)
 		"
+	self checkColonCapitalizationIn: words of: aMicHeader. 
 	words allButFirst
 		do: [ :word |	
 			 word isCapitalized

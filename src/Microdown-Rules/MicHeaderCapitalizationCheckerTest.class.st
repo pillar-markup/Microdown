@@ -30,8 +30,39 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 ## header with first word in lowercase
 
 
-' ]
+' ].
 
+	file := fileSystem workingDirectory / 'AfterColonLowercase.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '
+## Today and tomorrow: the days
+## Today: "the days"
+' ].
+
+	file := fileSystem workingDirectory / 'AfterColonCorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '
+## Today and tomorrow: The days
+## Today: "The days"
+	 ' ].
+	
+	file := fileSystem workingDirectory / 'WritingBooksCorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '
+## Writing Books
+	 ' ].
+
+	file := fileSystem workingDirectory / 'WritingBooksInPharo.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '
+## Writing Books in Pharo
+	 ' ].
+
+	file := fileSystem workingDirectory / 'WritingBooksIncorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '
+## Writing books in Pharo
+	 ' ].
 
 
 
@@ -47,6 +78,51 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 
 	checker := MicRuleHeaderChecker new.
 	
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'AfterColonCorrect.md'.
+	self deny: checker isOkay.
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'AfterColonCorrect.md'.
+	self deny: checker isOkay.
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
+| colonResult |
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'AfterColonLowercase.md'.
+	self deny: checker isOkay.
+	"trouver le result spécifique au mot après ':' "
+	
+	colonResult := (checker results detect: [:r | r class = MicElementAfterColonIsNotCapitalizedResult]).
+	self assert: colonResult notNil. 
+	self
+		assert: colonResult explanation
+		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercase.md contains a mistake: the as first letter after a colon should be uppercased.'.
+
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testCheckAfterColonUppercase [
+| colonResult |
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'AfterColonLowercase.md'.
+	self deny: checker isOkay.
+	colonResult := (checker results detect: [:r | r class = MicElementAfterColonIsNotCapitalizedResult]).
+	self assert: colonResult notNil.
+	self
+		assert: colonResult explanation
+		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercase.md contains a mistake: the as first letter after a colon should be uppercased.'
 ]
 
 { #category : 'tests - headers should be lowercased' }
@@ -86,4 +162,30 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 		assert: checker results first explanation
 		equals:  'Header: "Header with Uppercases" in file/HeadersAreNotLowerCased.md contains a mistake: Uppercases should not be uppercased.'
 		
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testWritingBooksCorrect [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'WritingBooksCorrect.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testWritingBooksInPharoCorrect [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'WritingBooksInPharo.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testWritingBooksIncorrect [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'WritingBooksIncorrect.md'.
+	self deny: checker isOkay.
+	self assert: checker results size equals: 1.
+	self assert: checker results first detail equals: 'books'.
 ]

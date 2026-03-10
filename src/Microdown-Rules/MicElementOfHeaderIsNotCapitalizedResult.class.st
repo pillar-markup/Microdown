@@ -4,10 +4,15 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-Capitalization',
+	#category : 'Microdown-Rules-AfterColon',
 	#package : 'Microdown-Rules',
-	#tag : 'Capitalization'
+	#tag : 'AfterColon'
 }
+
+{ #category : 'accessing' }
+MicElementOfHeaderIsNotCapitalizedResult >> detail [
+	^ detail 
+]
 
 { #category : 'accessing' }
 MicElementOfHeaderIsNotCapitalizedResult >> detail: aString [ 
