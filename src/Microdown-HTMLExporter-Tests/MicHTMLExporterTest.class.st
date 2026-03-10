@@ -31,6 +31,12 @@ MicHTMLExporterTest >> factory: aFactory [
 ]
 
 { #category : 'accessing' }
+MicHTMLExporterTest >> newLine [
+
+	^ newLine
+]
+
+{ #category : 'accessing' }
 MicHTMLExporterTest >> newLine: aNewLine [
 	(aNewLine = String cr) ifTrue:[ writer crAsNewLine ].
 	(aNewLine = String lf) ifTrue:[ writer lfAsNewLine ].
@@ -39,7 +45,7 @@ MicHTMLExporterTest >> newLine: aNewLine [
 ]
 
 { #category : 'tests - paragraph' }
-MicHTMLExporterTest >> newLines: aString [
+MicHTMLExporterTest >> newLineParagraphAround: aString [
 
 	^ newLine, '<p>', aString, '</p>', newLine
 ]
@@ -105,7 +111,7 @@ I''m really interested in any topics that evolve Pharo into a better Pharo.
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testAccents [
 
-	self parse: 'éà' andCheckWeGet: (self newLines:
+	self parse: 'éà' andCheckWeGet: (self newLineParagraphAround:
 'éà')
 ]
 
@@ -144,7 +150,7 @@ MicHTMLExporterTest >> testFigure [
 
 	self 
 		parse: factory figureSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure>')
 ]
 
@@ -153,7 +159,7 @@ MicHTMLExporterTest >> testFigureBold [
 
 	self 
 		parse: factory figureBoldSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure>' )
 ]
 
@@ -162,7 +168,7 @@ MicHTMLExporterTest >> testFigureItalic [
 
 	self 
 		parse: factory figureItalicSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure>')
 ]
 
@@ -171,7 +177,7 @@ MicHTMLExporterTest >> testFigureNested [
 
 	self 
 		parse: factory figureNestedSample 
-		andCheckWeGet: (self newLines: 
+		andCheckWeGet: (self newLineParagraphAround: 
 '<figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
 ]
 
@@ -180,7 +186,7 @@ MicHTMLExporterTest >> testFigureReal [
 
 	self 
 		parse: factory figureRealSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure>')
 ]
 
@@ -189,7 +195,7 @@ MicHTMLExporterTest >> testFigureStrike [
 
 	self 
 		parse: factory figureStrikeSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure>')
 ]
 
@@ -198,7 +204,7 @@ MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 
 	self 
 		parse: factory figureWithLabelWithoutSizeSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>')
 ]
 
@@ -207,7 +213,7 @@ MicHTMLExporterTest >> testFigureWithoutCaption [
 
 	self 
 		parse: factory figureWithoutCaptionSample 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure>')
 ]
 
@@ -216,7 +222,7 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 
 	self 
 		parse: factory figureSampleWithoutSizeAndLabel 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure>')
 ]
 
@@ -225,7 +231,7 @@ MicHTMLExporterTest >> testGoutDeFraise [
 
 	self 
 		parse: factory figureGoutDeFraise 
-		andCheckWeGet: (self newLines:
+		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="un-gout-de-fraise.jpg" alt="Proposition pour le thème :  Un goût de fraise"><figcaption>Proposition pour le thème : <i>Un goût de fraise</i></figcaption></img></figure>')
 ]
 
@@ -280,20 +286,20 @@ MicHTMLExporterTest >> testOrderedListIsRecognized [
 { #category : 'tests - paragraph' }
 MicHTMLExporterTest >> testParagraph [
 	
-	self parse: factory paragraphSample andCheckWeGet: (self newLines: 'Foo')
+	self parse: factory paragraphSample andCheckWeGet: (self newLineParagraphAround: 'Foo')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphLongWithAccents [
 
-	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: (self newLines:
+	self parse: factory paragraphOnMultipleLinesSample andCheckWeGet: (self newLineParagraphAround:
 'Je ne connais pas la peur, car la peur tue l''esprit. La peur est la petite mort qui conduit à l''oblitération totale. J''affonterai ma peur. Je lui permettrais de passer sur moi, au travers de moi. Et lorsqu''elle sera passée, je tournerai mon oeil interieur sur son chemin. Et là où elle sera passée, il n''y aura plus rien, rien que moi.')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphNestedSample [
 
-	self parse: factory paragraphNestedSample andCheckWeGet:  (self newLines: 
+	self parse: factory paragraphNestedSample andCheckWeGet:  (self newLineParagraphAround: 
 'this is a <strong><i>paragraph</i></strong>')
 ]
 
@@ -302,21 +308,21 @@ MicHTMLExporterTest >> testParagraphWithBold [
 
 	self 
 		parse: factory paragraphBoldSample 
-		andCheckWeGet:  (self newLines:
+		andCheckWeGet:  (self newLineParagraphAround:
 'this is a <strong>paragraph</strong>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testParagraphWithItalic [
 
-	self parse: factory paragraphItalicSample andCheckWeGet: (self newLines: 
+	self parse: factory paragraphItalicSample andCheckWeGet: (self newLineParagraphAround: 
 'this is a <i>paragraph</i>')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testParagraphWithMonospace [
 
-	self parse: factory paragraphMonospaceSample andCheckWeGet:  (self newLines: 
+	self parse: factory paragraphMonospaceSample andCheckWeGet:  (self newLineParagraphAround: 
 'this is a <code>paragraph</code>')
 ]
 
@@ -338,10 +344,47 @@ MicHTMLExporterTest >> testQuote [
 	'<q>Foo</q>'
 ]
 
+{ #category : 'tests - raw' }
+MicHTMLExporterTest >> testRawOnMultipleLinesIsNotRawButTwoPargraphs [
+
+	| mic |
+	mic := parser  
+		parse: 'some text here!{{  <a class="btn btn-block download" href="https://files.pharo.org/pharo-launcher/mac-arm64"> ', self newLine,'
+            <i class="fa fa-apple"></i> macOs arm64</a>  }}...and there'.
+	"notice that I did on purpose that I do not have space around"
+
+	self assert: mic children size equals: 2.
+	self assert: mic children first class equals: MicParagraphBlock .
+	self assert: mic children second class equals: MicParagraphBlock .
+	
+ 
+ 
+]
+
+{ #category : 'tests - raw' }
+MicHTMLExporterTest >> testRawOnSingleLineShouldNotGoToTheNextLine [
+
+	| mic |
+	mic := parser  
+		parse: 'some text here!{{  <a class="btn btn-block download" href="https://files.pharo.org/pharo-launcher/mac-arm64">   <i class="fa fa-apple"></i> macOs arm64</a>  }}...and there'.
+	"notice that I did on purpose that I do not have space around"
+	
+	writer visit: mic children first.
+ 	self 
+		assert: writer contents 
+		equals: 
+		(
+self newLine, '<p>some text here!  <a class="btn btn-block download" href="https://files.pharo.org/pharo-launcher/mac-arm64">   <i class="fa fa-apple"></i> macOs arm64</a>  ...and there</p>', self newLine
+
+ )
+	
+	
+]
+
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testStrike [
 
-	self parse: factory strikethroughFormatSample andCheckWeGet: (self newLines: 
+	self parse: factory strikethroughFormatSample andCheckWeGet: (self newLineParagraphAround: 
 '<strike>Foo</strike>')
 ]
 

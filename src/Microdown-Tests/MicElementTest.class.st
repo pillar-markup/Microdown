@@ -28,7 +28,7 @@ MicElementTest >> parserClass [
 	"This references to MicrodownParser is needed for the test.
 	Replacing it by Microdown does not work."
 	
-	^ MicrodownParser
+	^ MicParser
 ]
 
 { #category : 'running' }
