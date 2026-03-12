@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-EnglishTypos',
+	#category : 'Microdown-Rules-EnglishTypographic',
 	#package : 'Microdown-Rules',
-	#tag : 'EnglishTypos'
+	#tag : 'EnglishTypographic'
 }
 
 { #category : 'as yet unclassified' }

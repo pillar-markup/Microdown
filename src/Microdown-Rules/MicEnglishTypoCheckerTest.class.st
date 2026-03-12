@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'checker'
 	],
-	#category : 'Microdown-Rules-AfterColon',
+	#category : 'Microdown-Rules-EnglishTypographic',
 	#package : 'Microdown-Rules',
-	#tag : 'AfterColon'
+	#tag : 'EnglishTypographic'
 }
 
 { #category : 'running' }

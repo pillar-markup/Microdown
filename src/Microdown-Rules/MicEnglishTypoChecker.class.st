@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicEnglishTypoChecker',
 	#superclass : 'MicChecker',
-	#category : 'Microdown-Rules-AfterColon',
+	#category : 'Microdown-Rules-EnglishTypographic',
 	#package : 'Microdown-Rules',
-	#tag : 'AfterColon'
+	#tag : 'EnglishTypographic'
 }
 
 { #category : 'adding' }
