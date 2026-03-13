@@ -102,8 +102,9 @@ MicTextualMicrodownExporter >> setTrueInList [
 
 { #category : 'API' }
 MicTextualMicrodownExporter >> visit: aMicElement [
-
-	aMicElement accept: self.
+	"Entry point to launch the traversal."
+	
+	super visit: aMicElement. 
 	^ stream contents
 ]
 

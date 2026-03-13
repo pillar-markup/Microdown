@@ -367,7 +367,8 @@ This also because people will not want to to not let a newline between the heade
 
 { #category : 'visiting' }
 MicRichTextComposer >> visit: aDocument [
-
+	"Entry point to launch the traversal."
+	
 	canvas := MicRichTextCanvas new
 		          textStyler: self textStyler;
 		          yourself.

@@ -86,6 +86,8 @@ MicNodeTransformer >> replaceCurrentNodeBy: newNodes [
 
 { #category : 'execution' }
 MicNodeTransformer >> visit: anObject [
+	"Entry point to launch the traversal."
+	
 	super visit: anObject.
 	^ anObject
 ]

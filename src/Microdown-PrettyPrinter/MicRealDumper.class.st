@@ -82,9 +82,10 @@ MicRealDumper >> parametersPrint: aDictionnary [
 
 { #category : 'visit - format' }
 MicRealDumper >> visit: aMicElement [
-
-	aMicElement accept: self.
-	stream contents
+	"Entry point to launch the traversal."
+	
+	super visit: aMicElement.
+	^ stream contents
 ]
 
 { #category : 'visit - section' }
