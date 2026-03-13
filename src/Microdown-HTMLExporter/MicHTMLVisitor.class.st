@@ -338,33 +338,6 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 ]
 
 { #category : 'visiting' }
-MicHTMLVisitor >> visitCodeblock: aCodeBlock [
-
-	canvas tag
-		name: 'figure';
-		with: [
-			canvas tag
-				name: 'pre';
-				with: [
-					| code |
-					code := canvas tag
-						        name: 'code';
-						        yourself.
-					"(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
-						ifTrue: [ code parameterAt: 'class' put: language printString ]."
-					code with: [ canvas lines: aCodeBlock text ] ].
-			canvas tag
-				name: 'figcaption';
-				with: [
-					aCodeBlock hasAnchor ifTrue: [
-							self visitAnchor: aCodeBlock.
-							self writeCounterForScript: aCodeBlock ].
-					aCodeBlock hasCaption ifTrue: [
-							self visitAll: aCodeBlock caption children ] ] ].
-	canvas newLine
-]
-
-{ #category : 'visiting' }
 MicHTMLVisitor >> visitColumn: aMicColumnsBlock [ 
 	"??"
 ]
@@ -379,7 +352,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
 		name: 'figcaption';
-		with: [ self visitAll: aFigCaptionBlock children ]
+		with: [ self visitChildrenOf: aFigCaptionBlock ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -402,7 +375,7 @@ MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
 		ifTrue: [ canvas space; raw: anHTMLTagParagraph argumentString ]. 
 	canvas raw: '>' .
 
-	anHTMLTagParagraph children do: [ :each | each accept: self ].
+	self visitChildrenOf: anHTMLTagParagraph.
 	canvas 
 		newLine;
 		raw: anHTMLTagParagraph lineStopMarkup.
@@ -414,7 +387,7 @@ MicHTMLVisitor >> visitHeader: aHeader [
 	canvas newLine.	
 	canvas tag 
 		name: 'h',  aHeader level asString;
-		with: [ self visitAll: aHeader children]
+		with: [ self visitChildrenOf: aHeader ]
 	
 ]
 
@@ -458,7 +431,7 @@ MicHTMLVisitor >> visitLink: aLink [
 		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
-		with: [self visitAll: aLink children]
+		with: [ self visitChildrenOf: aLink ]
 
 ]
 
@@ -673,6 +646,7 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 { #category : 'writing' }
 MicHTMLVisitor >> write: aMicElement [
 	"for now for integration with Pillar."
+	
 	self visit: aMicElement.
 	^ self contents
 ]

@@ -109,7 +109,9 @@ MicRealDumper >> visitAttributedText: aMicBold [
 		during: [
 			stream nextPutAll: 'textElements: '.
 			stream nextPutAll: '{'.
-			aMicBold children do: [ :each | each accept: self ] separatedBy: [ stream nextPutAll: ' . '].
+			aMicBold children 
+				do: [ :each | self visitEach: each ] 
+				separatedBy: [ stream nextPutAll: ' . '].
 			stream nextPutAll: '}' ]
 ]
 
@@ -158,7 +160,7 @@ MicRealDumper >> visitFigure: aMicFigure [
 			nextPutAll: ';'.
 		stream nextPutAll: ' caption: { '.
 		aMicFigure children
-			do: [ :each | self visit: each ]
+			do: [ :each | self visitEach: each ]
 			separatedBy: [ stream nextPutAll: ' . ' ].
 		stream nextPutAll: '}; yourself' ]
 ]
@@ -191,7 +193,7 @@ MicRealDumper >> visitLink: aMicLink [
 		stream nextPutAll: 'captionElements: '.
 		stream nextPutAll: '{'.
 		aMicLink children
-			do: [ :each | self visit: each ]
+			do: [ :each | self visitEach: each ]
 			separatedBy: [ stream nextPutAll: ' . ' ].
 		stream nextPutAll: '} ; url: '.
 		stream print: aMicLink url.
@@ -206,7 +208,7 @@ MicRealDumper >> visitListItem: anItem [
 		element: anItem 
 		during: [
 			anItem children 
-				do: [ :each | each accept: self ]
+				do: [ :each | self visitEach: each ]
 				separatedBy: [ ''.	'' ] ]
 
 ]
@@ -218,7 +220,7 @@ MicRealDumper >> visitMonospace: aMonospace [
 		element: aMonospace 
 		during: [
 			stream nextPutAll: 'textElement: '.
-			aMonospace children first accept: self ]
+			self visitEach: aMonospace children first ]
 	
 ]
 
@@ -255,7 +257,7 @@ MicRealDumper >> visitQuote: aQuote [
 		nextPutAll: 'new';
 		space.
 	stream nextPutAll: 'textElement: '.
-	aQuote children first accept: self.
+	self visitEach: aQuote children first.
 	stream nextPut: $)
 ]
 
@@ -276,12 +278,13 @@ MicRealDumper >> visitStrike: aMicItalic [
 
 { #category : 'visit - section' }
 MicRealDumper >> visitTable: aTable [
+
 	self flag: #arg.
 	self 
 		element: aTable 
 		during: [
 				stream nextPutAll: 'string: '.
-	aTable children first accept: self ]
+	self visitEach: aTable children first ]
 ]
 
 { #category : 'visit - section' }

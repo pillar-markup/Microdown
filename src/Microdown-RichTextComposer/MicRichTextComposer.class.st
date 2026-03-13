@@ -468,7 +468,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	anchor := self anchorFor: image of: aFigure.
 	canvas << (self textWithImage: image usingAnchor: anchor) ]
 		on: MicResourceReferenceError , UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure children ] ]
+		do: [ self visitChildrenOf: aFigure ] ]
 		on: Error
 		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]

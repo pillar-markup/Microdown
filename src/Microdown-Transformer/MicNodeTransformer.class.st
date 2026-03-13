@@ -95,7 +95,7 @@ MicNodeTransformer >> visit: anObject [
 { #category : 'execution' }
 MicNodeTransformer >> visitAll: aGroup [
 	self replaceChildrenOf: aGroup.
-	aGroup accept: self.
+	self visitEach: aGroup.
 ]
 
 { #category : 'execution' }

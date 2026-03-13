@@ -382,12 +382,6 @@ MicTemplatedWriter >> visitBold: aMicBold [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitChildrenOf: anElement [
-
-	^ anElement children collect: [ :each | each accept: self ]
-]
-
-{ #category : 'visiting' }
 MicTemplatedWriter >> visitCode: aCodeBlock [  
 	
 	self
@@ -403,7 +397,7 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 	self
 		writeRawText: aCommentBlock text
 		withTemplateFileName: self commentedLineTemplateFileName
-		ifAbsent: [ defaultWriter visitCommentedLine: aCommentBlock  ]
+		ifAbsent: [ defaultWriter visitComment: aCommentBlock  ]
 ]
 
 { #category : 'visiting to revisit' }
@@ -446,7 +440,7 @@ MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
 	self
 		writeRawText: ''
 		withTemplateFileName: self horizontalLineTemplateFileName
-		ifAbsent: [ defaultWriter visitHorizontalRule: aPRHorizontalRule ]
+		ifAbsent: [ defaultWriter visitHorizontalLine: aPRHorizontalRule ]
 ]
 
 { #category : 'visiting' }

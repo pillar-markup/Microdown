@@ -125,7 +125,7 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
 	| textualExporter |
 	textualExporter := MicTextualMicrodownExporter new.
-	anAnnotated children do: [ :each | each accept: textualExporter ].
+	textualExporter visitChildrenOf: anAnnotated.
 
 	builder
 		annotated: anAnnotated label
@@ -193,7 +193,7 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
 	builder newLine.
 	builder 
-		header: [ aHeader headerElements do: [ :each | each accept: self ] ] 
+		header: [ self visitAll: aHeader headerElements ] 
 		withLevel: aHeader level
 ]
 
@@ -276,7 +276,7 @@ MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 	
 	builder orderedListDuring: [ 
 		anOrderedList children do: [ :orderedItem | 
-			builder orderedItem: [ builder itemBody: [ orderedItem accept: self ] ] ] ].
+			builder orderedItem: [ builder itemBody: [ self visitEach: orderedItem ] ] ] ].
 		
 	block value
 ]
@@ -360,7 +360,7 @@ MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 		 block := [ self setFalseInList ] ].
 	builder unorderedListDuring:  [ 
 		aUnorderedList children do: [ :unorderedItem | 
-			builder item: [ builder itemBody: [ unorderedItem accept: self ] ] ] ].
+			builder item: [ builder itemBody: [ self visitEach: unorderedItem ] ] ] ].
 	
 	block value
 ]

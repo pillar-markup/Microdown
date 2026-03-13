@@ -175,7 +175,7 @@ MicLaTeXWriter >> visitAnnotated: aAnnotatedParagraph [
 		name: 'begin';
 		parameter: aAnnotatedParagraph label.
 	canvas newLine.
-	aAnnotatedParagraph textElements do: [ :each | each accept: self ].
+	aAnnotatedParagraph textElements do: [ :each | self visitEach: each ].
 	canvas newLine.
 	canvas command
 		name: 'end';
@@ -244,11 +244,13 @@ MicLaTeXWriter >> visitFigure: aFigure [
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitFootnote: aFootnote [
-	canvas command name: 'footnote'; parameter: (aFootnote note)
+
+	canvas command name: 'footnote'; parameter: aFootnote note
 ]
 
 { #category : 'blocks' }
 MicLaTeXWriter >> visitHeader: aHeader [
+
 	| section |
 	canvas newLine.
 	section := self typeOfSectionFor: aHeader.
@@ -267,7 +269,10 @@ MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitItalic: anItalic [
-	canvas command name: 'textit'; parameter: [ super visitItalic: anItalic ]
+	
+	canvas command 
+		name: 'textit'; 
+		parameter: [ super visitItalic: anItalic ]
 ]
 
 { #category : 'blocks - inline' }
@@ -284,6 +289,7 @@ MicLaTeXWriter >> visitLink: aLink [
 
 { #category : 'blocks - list' }
 MicLaTeXWriter >> visitListItem: anItem [
+
 	self tabList.
 	canvas command name: 'item'.
 	canvas space.
@@ -352,29 +358,27 @@ MicLaTeXWriter >> visitParagraph: aParagraph [
 
 { #category : 'blocks' }
 MicLaTeXWriter >> visitQuote: aQuote [
-	"canvas environment
-		name: 'verbatim';
-		with: [ aQuote children do: [ :child | 
-						self visit: child.
-						canvas newLine ] ]"
-				
 			
 	canvas newLine.
 	canvas environment
 		name: 'quote';
 		with: [ 
-			aQuote children do: [ :each | each accept: self ].
-			canvas newLine.].
+			self visitChildrenOf: aQuote.
+			canvas newLine ].
 
 ]
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitStrike: aStrike [
-	canvas command name: 'sout'; parameter: [ super visitStrike: aStrike ]
+
+	canvas command 
+		name: 'sout'; 
+		parameter: [ super visitStrike: aStrike ]
 ]
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
+
 	| environment |
 	canvas newLine.
 	environment := canvas environment name: self tabularEnvironment.
@@ -392,6 +396,7 @@ MicLaTeXWriter >> visitTable: aTable [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell [
+
 	aCell isAligned
 		ifFalse: [ self writeTableCellContent: aCell ]
 		ifTrue: [ 
@@ -421,7 +426,10 @@ MicLaTeXWriter >> visitTableRow: aRow [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
-	aRow do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] separatedBy: [ canvas raw: ' & ' ].
+
+	aRow 
+		do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] 
+		separatedBy: [ canvas raw: ' & ' ].
 	canvas
 		raw: ' \\';
 		newLine.
@@ -456,7 +464,7 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 { #category : 'helpers' }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
 
-	self visitAll: anExternalLink children
+	self visitChildrenOf: anExternalLink
 ]
 
 { #category : 'helpers' }
@@ -495,6 +503,7 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> writeTableCellContent: aCell with: aBool [
+
 	^ aBool
 		ifTrue: [ 
 			canvas command
