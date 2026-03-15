@@ -30,7 +30,7 @@ Class {
 
 { #category : 'visiting' }
 MicRawParagraphBlock >> accept: aVisitor [
-	^ aVisitor visitBlockLevelRawParagraph: self
+	^ aVisitor visitRawParagraph: self
 ]
 
 { #category : 'markups' }
