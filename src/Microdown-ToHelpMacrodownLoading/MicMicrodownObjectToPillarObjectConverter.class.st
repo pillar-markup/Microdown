@@ -1,8 +1,13 @@
+"
+This visitor is about to disappeared. It was created just to make sure that we can have asPillar expressed as a visitor. 
+Now this visitor is working on non expanded code blocks.
+"
 Class {
 	#name : 'MicMicrodownObjectToPillarObjectConverter',
-	#superclass : 'Object',
-	#category : 'Microdown-ToHelpMacrodownLoading',
-	#package : 'Microdown-ToHelpMacrodownLoading'
+	#superclass : 'MicrodownVisitor',
+	#category : 'Microdown-Pillar-Visitor',
+	#package : 'Microdown-Pillar',
+	#tag : 'Visitor'
 }
 
 { #category : 'formatting' }
@@ -28,16 +33,10 @@ MicMicrodownObjectToPillarObjectConverter >> urlBlock: aMicUrlBlock [
 	aMicUrlBlock reference uri query: queries.
 	^ aMicUrlBlock associatedPillarClass new
 		  setChildren:
-			  (aMicUrlBlock children collect: [ :n | 
+			  ((aMicUrlBlock inlineParse: aMicUrlBlock substring) collect: [ :n | 
 					   n accept: self ]);
 		  reference: urlString;
 		  yourself
-]
-
-{ #category : 'visiting' }
-MicMicrodownObjectToPillarObjectConverter >> visit: aNode [
-
-	aNode accept: self
 ]
 
 { #category : 'visiting' }
@@ -129,9 +128,9 @@ MicMicrodownObjectToPillarObjectConverter >> visitEnvironment: aMicEnvironmentBl
 MicMicrodownObjectToPillarObjectConverter >> visitFigure: aMicFigureBlock [
 
 	| aPRFigure |
-	aPRFigure := self urlBlock: aMicFigureBlock.
+	aPRFigure := aMicFigureBlock associatedPillarClass new.
 	^ aPRFigure
-		  label: (aMicFigureBlock children collect: [:each | self visit: each ]);
+		  label: aMicFigureBlock altText;
 		  parameters: aMicFigureBlock arguments;
 		  yourself
 ]
@@ -171,8 +170,7 @@ MicMicrodownObjectToPillarObjectConverter >> visitLink: aMicLink [
 
 	^ aMicLink associatedPillarClass new
 		  setChildren:
-			  (aMicLink children collect: [ :n | 
-					   n accept: self ]);
+			  (aMicLink children collect: [ :n | n accept: self ]);
 		  reference: aMicLink url asString;
 		  yourself
 ]
@@ -243,13 +241,6 @@ MicMicrodownObjectToPillarObjectConverter >> visitRaw: aMicRaw [
 	^ PRRaw new
 		  text: aMicRaw bodyString;
 		  yourself
-]
-
-{ #category : 'visiting' }
-MicMicrodownObjectToPillarObjectConverter >> visitRawParagraph: aMicParagraphBlock [
- 	^ PRParagraph  new
-		setChildren: (aMicParagraphBlock pillarFromString: aMicParagraphBlock text);
-		yourself
 ]
 
 { #category : 'visiting' }

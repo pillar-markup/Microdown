@@ -66,41 +66,41 @@ MicEnglishTypoCheckerTest >> setUp [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testCorrectFile [
 
 	checker checkProject: fileSystem / 'correct.md'.
 	self assert: checker isOkay.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testMonospaceIgnored [
 
 	checker checkProject: fileSystem / 'mono.md'.
 	self assert: checker isOkay.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testNoSpaceAfterColon [
 
 	checker checkProject: fileSystem / 'noSpaceAfterColon.md'.
 	self deny: checker isOkay.
 	self 
-		assert: checker results first explanation
-		equals: 'Text: "Wrong:example." in file/noSpaceAfterColon.md contains a mistake: There is no space after :'
+	assert: checker results first explanation
+	equals: 'Text: "Wrong:example." in file/noSpaceAfterColon.md contains a mistake: There is no space after :'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testNoSpaceAfterComma [
 
 	checker checkProject: fileSystem / 'noSpaceAfterComma.md'.
 	self deny: checker isOkay.
 	self 
-		assert: checker results first explanation
-		equals: 'Text: "Wrong,example." in file/noSpaceAfterComma.md contains a mistake: There is no space after ,'
+	assert: checker results first explanation
+	equals: 'Text: "Wrong,example." in file/noSpaceAfterComma.md contains a mistake: There is no space after ,'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testSpaceBeforeColon [
 
 	checker checkProject: fileSystem / 'spaceBeforeColon.md'.
@@ -110,12 +110,12 @@ MicEnglishTypoCheckerTest >> testSpaceBeforeColon [
 	equals: 'Text: "This is wrong : example." in file/spaceBeforeColon.md contains a mistake: There is a space before :'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - english typos' }
 MicEnglishTypoCheckerTest >> testSpaceBeforeComma [
 
 	checker checkProject: fileSystem / 'spaceBeforeComma.md'.
 	self deny: checker isOkay.
 	self 
-		assert: checker results first explanation
-		equals: 'Text: "Wrong ,example." in file/spaceBeforeComma.md contains a mistake: There is a space before ,'
+	assert: checker results first explanation
+	equals: 'Text: "Wrong ,example." in file/spaceBeforeComma.md contains a mistake: There is a space before ,'
 ]

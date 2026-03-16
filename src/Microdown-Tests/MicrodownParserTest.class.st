@@ -15,7 +15,7 @@ Class {
 { #category : 'running' }
 MicrodownParserTest >> parser [ 
 	"for now this reference is needed and cannot be changed into Microdown"
-	^ MicParser new
+	^ MicrodownParser new
 ]
 
 { #category : 'running' }

@@ -17,7 +17,7 @@ Class {
 MicUseofWrongVocabularyResult >> explanation [
 
 	| wrongWord goodWord |
-	wrongWord := patternPair key allButFirst allButLast.
+	wrongWord := patternPair key.
 	goodWord := patternPair value.
 	^ 'Text: "' , micElement bodyString , '" in file' , fileReference fullName , ' contains a mistake: [' , wrongWord
 	  , '] should not be used. We should use ' , goodWord

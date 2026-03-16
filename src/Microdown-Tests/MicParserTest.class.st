@@ -16,7 +16,7 @@ Class {
 MicParserTest >> setUp [
 
 	super setUp.
-	parser := MicParser new. 
+	parser := MicrodownParser new. 
 ]
 
 { #category : 'tests' }

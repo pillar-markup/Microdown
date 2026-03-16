@@ -19,7 +19,7 @@ Class {
 
 { #category : 'facade' }
 Microdown class >> builder [
-	^ MicParser builder
+	^ MicrodownParser builder
 ]
 
 { #category : 'facade' }
@@ -140,7 +140,7 @@ Microdown >> builder [
 { #category : 'facade' }
 Microdown >> parse: aStreamOrString [
 
-	^ MicParser parse: aStreamOrString
+	^ MicrodownParser parse: aStreamOrString
 ]
 
 { #category : 'facade' }
@@ -148,7 +148,7 @@ Microdown >> parseFile: aFile [
 		"Parse and return a document from the argument marking it with the file it is contained in. This is important for path resolution."
 		
 		| root |
-		root := MicParser parse: aFile contents. 
+		root := MicrodownParser parse: aFile contents. 
 		root fromFile: aFile.
 		^ root
 		

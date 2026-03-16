@@ -10,7 +10,7 @@ Class {
 MicAnchorLinkerTest >> testAnchorIsAttachedToItsTarget [
 	| linker doc |
 	linker := MicAnchorLinker new.
-	doc := MicParser parse: '
+	doc := MicrodownParser parse: '
 this is a sentence
 
 #Header1
@@ -26,7 +26,7 @@ this is a sentence
 MicAnchorLinkerTest >> testAnchorIsAttachedToItsTarget2 [
 	| linker doc |
 	linker := MicAnchorLinker new.
-	doc := MicParser parse: '
+	doc := MicrodownParser parse: '
 this is a sentence
 
 #Header1
@@ -44,7 +44,7 @@ this is a sentence
 MicAnchorLinkerTest >> testHeaderLast [
 	| linker doc |
 	linker := MicAnchorLinker new.
-	doc := MicParser parse: '
+	doc := MicrodownParser parse: '
 this is a sentence
 
 #Header1'.

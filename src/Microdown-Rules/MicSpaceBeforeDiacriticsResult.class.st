@@ -16,9 +16,9 @@ MicSpaceBeforeDiacriticsResult >> detail: aString [
 
 { #category : 'accessing' }
 MicSpaceBeforeDiacriticsResult >> explanation [
+| text |
 
-	| text |
-	text := micElement bodyString ifNil: [''].
+text := micElement bodyString ifNil: [''].
 
 	^ 'Text: "' , text , '" in file' , fileReference fullName , ' contains a mistake: ', detail
 ]

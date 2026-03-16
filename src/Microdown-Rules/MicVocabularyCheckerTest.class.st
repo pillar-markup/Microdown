@@ -117,7 +117,7 @@ MicVocabularyCheckerTest >> setUp [
 			('allows to' -> 'allows one to')}.
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsAllowToMistake [
 
 	checker checkProject: fileSystem / 'mistakeAllowTo.md'.
@@ -129,7 +129,7 @@ MicVocabularyCheckerTest >> testCheckerFindsAllowToMistake [
 		'Text: "We allow to edit the file." in file/mistakeAllowTo.md contains a mistake: [allow to] should not be used. We should use allow one to'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsAllowedToMistake [
 checker checkProject: fileSystem / 'mistakeAllowedTo.md'.
 	self deny: checker isOkay.
@@ -140,10 +140,9 @@ checker checkProject: fileSystem / 'mistakeAllowedTo.md'.
 		'Text: "You are allowed to enter." in file/mistakeAllowedTo.md contains a mistake: [allowed to] should not be used. We should use allowed one to'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsAllowsToMistake [
-
-	checker checkProject: fileSystem / 'mistakeAllowsTo.md'.
+checker checkProject: fileSystem / 'mistakeAllowsTo.md'.
 	self deny: checker isOkay.
 
 	self
@@ -152,7 +151,7 @@ MicVocabularyCheckerTest >> testCheckerFindsAllowsToMistake [
 		'Text: "The system allows to change settings." in file/mistakeAllowsTo.md contains a mistake: [allows to] should not be used. We should use allows one to'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsBehaviourMistake [
 
 	checker checkProject: fileSystem / 'mistakeBehaviour.md'.
@@ -164,7 +163,7 @@ MicVocabularyCheckerTest >> testCheckerFindsBehaviourMistake [
 		'Text: "Pharo has interesting behaviour." in file/mistakeBehaviour.md contains a mistake: [behaviour] should not be used. We should use behavior'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsCentreMistake [
 
 	checker checkProject: fileSystem / 'mistakeCentre.md'.
@@ -176,7 +175,7 @@ MicVocabularyCheckerTest >> testCheckerFindsCentreMistake [
 		'Text: "The centre of the universe." in file/mistakeCentre.md contains a mistake: [centre] should not be used. We should use center'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsColourMistake [
 
 	checker checkProject: fileSystem / 'mistakeColour.md'.
@@ -188,19 +187,19 @@ MicVocabularyCheckerTest >> testCheckerFindsColourMistake [
 		'Text: "The colour of the sky is blue." in file/mistakeColour.md contains a mistake: [colour] should not be used. We should use color'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsColoursMistake [
 
 	checker checkProject: fileSystem / 'mistakeColours.md'.
 	self deny: checker isOkay.
 
 	self
-		assert: checker results first explanation 
-		equals:'Text: "Colours are beautiful." in file/mistakeColours.md contains a mistake: [colour] should not be used. We should use color'
-		
+		assert: checker results first explanation
+		equals:
+		'Text: "Colours are beautiful." in file/mistakeColours.md contains a mistake: [colours] should not be used. We should use colors'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsMistakeInFigure [
 
 	checker checkProject: fileSystem / 'mistakeInFigure.md'.
@@ -213,7 +212,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInFigure [
 		'Text: "sub-presenter is not correct even in caption" in file/mistakeInFigure.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsMistakeInHeader [
 
 	checker checkProject: fileSystem / 'mistakeInHeader.md'.
@@ -225,7 +224,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInHeader [
 		'Text: "sub-presenter is not correct." in file/mistakeInHeader.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsMistakeInParagraph [
 
 	checker checkProject: fileSystem / 'mistakeInParagraph.md'.
@@ -237,7 +236,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInParagraph [
 		'Text: "Spec uses a sub presenter. And there is a mistake in the previous sentence." in file/mistakeInParagraph.md contains a mistake: [sub presenter] should not be used. We should use subpresenter'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsMistakeInUppercasedText [
 
 	checker checkProject: fileSystem / 'mistakeInUppercase.md'.
@@ -249,7 +248,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInUppercasedText [
 		'Text: "sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern." in file/mistakeInUppercase.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MicVocabularyCheckerTest >> testCheckerFindsVisualiseMistake [
 
 	checker checkProject: fileSystem / 'mistakeVisualise.md'.

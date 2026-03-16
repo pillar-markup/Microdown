@@ -11,20 +11,30 @@ Class {
 
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> checkText: aMicText [
-
-	patternPairs do: [ :patternPair |
-			"note that match: ignore upper/lower case differences."
-			(patternPair key match: aMicText bodyString ) ifTrue: [
-					results add: (MicUseofWrongVocabularyResult new
-							 micElement: aMicText;
-							 inFile: aMicText fromFile;
-							 patternPair: patternPair) ] ]
+	| text sortedPairs |
+	
+	text := aMicText bodyString asLowercase.
+	sortedPairs := patternPairs asSortedCollection: [ :a :b | a key size > b key size ].
+	sortedPairs do: [  :patternPair |
+		| pattern |
+		pattern := patternPair key asLowercase.
+		(text includesSubstring: pattern ) ifTrue: [ 
+			results add: (
+				MicUseofWrongVocabularyResult new
+					micElement: aMicText;
+					inFile: aMicText fromFile;
+					patternPair: patternPair;
+					yourself 
+			).
+			text := text copyReplaceAll: pattern with: '' 
+			 ].
+		 ].
 ]
 
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> pairs: aCollectionOfPairs [
 
-	patternPairs := aCollectionOfPairs collect: [ :each | ('*' , each key , '*') -> each value  ] 
+	patternPairs := aCollectionOfPairs
 	
 ]
 
