@@ -35,6 +35,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	e.g., 'Today and tomorrow: The days' and not 
 	'Today and tomorrow: the days' 
 	"
+	
 	strategy checkRest: words of: aMicHeader
 ]
 
@@ -51,7 +52,7 @@ MicRuleHeaderChecker >> initialize [
 	     'upon' 'when' 'with' 'yet' ) do: [ :each | self addUncapitalized: each ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'asserting' }
 MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
 	| normalized |
 	normalized := (aString select: [ :c | c isLetter ]) asLowercase.
@@ -73,7 +74,7 @@ MicRuleHeaderChecker >> verifyUppercase [
 	strategy checker: self
 ]
 
-{ #category : 'visiting' }
+{ #category : 'asserting' }
 MicRuleHeaderChecker >> visitHeader: aMicHeader [
 
 	| words |

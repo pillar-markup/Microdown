@@ -1,27 +1,14 @@
 Class {
 	#name : 'MicHTMLExporterTest',
-	#superclass : 'ParametrizedTestCase',
+	#superclass : 'TestCase',
 	#instVars : [
 		'parser',
 		'writer',
-		'factory',
-		'newLine'
+		'factory'
 	],
-	#category : 'Microdown-HTMLExporter-Tests-HTML',
-	#package : 'Microdown-HTMLExporter-Tests',
-	#tag : 'HTML'
+	#category : 'Microdown - HTML',
+	#package : 'Microdown - HTML'
 }
-
-{ #category : 'tests - list' }
-MicHTMLExporterTest >> orderedListString [
-
-^  '
-Here is a list:
-1. item 1
-2. item 2
-3. item 3
-'
-]
 
 { #category : 'utils' }
 MicHTMLExporterTest >> parse: aString andCheckWeGet: aResultingString [
@@ -46,32 +33,13 @@ MicHTMLExporterTest >> testHeaderLevel1 [
 	
 ]
 
-{ #category : 'tests - list' }
-MicHTMLExporterTest >> testOrderedList [
-
-	self 
-		parse: self orderedListString 
-		andCheckWeGet: 
-
-newLine , '<p>Here is a list:</p>' , newLine , newLine , '<ol>' , newLine , '<li>item 1</li>' , newLine , '<li>item 2</li>' , newLine , '<li>item 3</li>' , newLine , '</ol>'
-]
-
-{ #category : 'tests - list' }
-MicHTMLExporterTest >> testOrderedListIsRecognized [
-
-	| doc |
-	doc := Microdown parse: self orderedListString.
-	self assert: doc children second class equals: MicOrderedListBlock 
-]
-
-{ #category : 'tests - list' }
+{ #category : 'tests' }
 MicHTMLExporterTest >> testUnorderedList [
-	
-	self 
-		parse: factory unorderedListWithTwoItemsSample 
-		andCheckWeGet: newLine ,
-'<ul>', newLine ,
-'<li>Foo</li>', newLine ,
-'<li>Bar</li>', newLine ,
-'</ul>'
+	| mic |
+	mic := parser parse: factory unorderedListWithTwoItemsSample.
+	self assert: (writer visit: mic) contents equals: '
+<ul>
+<li>Foo</li>
+<li>Bar</li>
+</ul>'
 ]

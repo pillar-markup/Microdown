@@ -16,7 +16,7 @@ MicEnglishTypoChecker >> addResultFor: anElement message: aMessage [
 		).
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> checkString: aString for: anElement [
 	| checks |
 	aString ifNil: [ ^self ].
@@ -45,19 +45,21 @@ checks := {
 	].
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitCode: aCodeBlock [
+
 	aCodeBlock caption ifNil: [ ^self ].
 	self checkString: aCodeBlock caption for: aCodeBlock.
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitMonospace: aCodeBlock [
 	^ self
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'adding' }
 MicEnglishTypoChecker >> visitText: aText [
+
 	self checkString: aText bodyString for: aText. 
 
 ]

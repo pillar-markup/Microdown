@@ -46,6 +46,12 @@ MicrodownVisitor >> visitAnnotated: anAnnotated [
 MicrodownVisitor >> visitAnnotation: anAnnotation [
 ]
 
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitBlockLevelRawParagraph: aRawParagraph [
+
+
+]
+
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitBold: aFormat [
 
@@ -125,6 +131,12 @@ MicrodownVisitor >> visitFigure: aFigure [
 { #category : 'visiting' }
 MicrodownVisitor >> visitFootnote: aFootnote [
 	"subclassResponsibility"
+]
+
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
+
+
 ]
 
 { #category : 'visiting' }
@@ -231,6 +243,13 @@ MicrodownVisitor >> visitQuote: aQuote [
 MicrodownVisitor >> visitRaw: aRawFormat [
 
 	
+]
+
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitRawParagraph: aRawParagraph [
+	"a raw paragraph is a paragraph whose contents is never changed."
+
+
 ]
 
 { #category : 'visiting' }

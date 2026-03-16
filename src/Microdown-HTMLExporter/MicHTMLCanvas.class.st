@@ -1,31 +1,37 @@
+"
+A specialized canvas to emit HTML tags.
+"
 Class {
 	#name : 'MicHTMLCanvas',
 	#superclass : 'MicExportCanvas',
-	#instVars : [
-		'name'
-	],
-	#classVars : [
-		'HTMLCharacters'
-	],
-	#category : 'Microdown - HTML',
-	#package : 'Microdown - HTML'
+	#category : 'Microdown-HTMLExporter-Core',
+	#package : 'Microdown-HTMLExporter',
+	#tag : 'Core'
 }
 
-{ #category : 'initialization' }
-MicHTMLCanvas class >> initialize [
-	HTMLCharacters := Dictionary new.
-	HTMLCharacters
-		at: $" put: '&quot;';
-		at: $& put: '&amp;';
-		at: $< put: '&lt;';
-		at: $> put: '&gt;'
+{ #category : 'writing text' }
+MicHTMLCanvas >> initialize [
+	"Private - Initialize the receiver's stream"
+
+	super initialize.
+	self initializeWith: String empty.
 ]
 
-{ #category : 'accessing' }
-MicHTMLCanvas >> nextPut: aCharacter [
-	(HTMLCharacters at: aCharacter ifAbsent: nil)
-		ifNil: [ super nextPut: aCharacter ]
-		ifNotNil: [ :string | self raw: string ]
+{ #category : 'initialization' }
+MicHTMLCanvas >> initializeWith: aString [
+	"Private - Set the receiver's stream to store the HTML contents"
+
+	self setStream: (self newMicStreamOn: aString)
+]
+
+{ #category : 'initialization' }
+MicHTMLCanvas >> newMicStreamOn: aString [
+	"Answer a new wrapper over aString to help not hardcoding line ending everywhere."
+
+	^ MicOutputStream new 
+		setStream: (WriteStream on: aString);
+		"nextPutAll: aString;"
+		yourself
 ]
 
 { #category : 'accessing' }

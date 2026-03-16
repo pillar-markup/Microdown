@@ -93,7 +93,7 @@ MicrodownTest >> testAddedAsChildWhenUsingParent [
 MicrodownTest >> testExtensionArgumentsAreNotReified [
 
 	| doc slide |
-	doc := MicrodownParser parse: '<!slide|title=A title!>'.
+	doc := MicParser parse: '<!slide|title=A title!>'.
 	slide := doc children first. 
 	self assert: slide class  equals: MicSlideBlock.
 	self assert: slide title equals: 'A title'.
@@ -105,7 +105,7 @@ MicrodownTest >> testFigureLabelAreNotReified [
 	"but they should"
 
 	| doc fig |
-	doc := MicrodownParser new  parse: '![A caption.](figures/f.png width=120&label=fig)'.
+	doc := MicParser new  parse: '![A caption.](figures/f.png width=120&label=fig)'.
 	fig := doc children first children first. 
 	self assert: fig class  equals: MicFigureBlock.
 	self assert: fig anchor equals: 'fig'.

@@ -534,26 +534,17 @@ MicHTMLVisitor >> visitQuote: aQuote [
 ]
 
 { #category : 'visiting - html extensions' }
-MicHTMLVisitor >> visitRaw: aParagraph [
+MicHTMLVisitor >> visitRaw: aMicRaw [
+	"Raw should be raw and it should NOT go the next line or whatever"
+	"Pay attention aMicRaw is not a paragraph but an inline element."
 	
-	canvas raw: aParagraph bodyString.
-	canvas newLine
+	canvas raw: aMicRaw bodyString
 ]
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	
-	canvas
-		newLine;
-		raw: '<' , aParagraph label.
-	aParagraph hasArguments
-		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
-	canvas raw: '>' .
-
-	aParagraph children do: [ :each | each accept: self ].
-	canvas 
-		newLine;
-		raw: aParagraph lineStopMarkup.
+	canvas raw: aParagraph body
 ]
 
 { #category : 'templating ping pong' }
