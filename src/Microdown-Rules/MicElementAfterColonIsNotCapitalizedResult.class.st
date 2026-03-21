@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-EnglishTypographic',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'EnglishTypographic'
+	#tag : 'Capitalization'
 }
 
 { #category : 'accessing' }

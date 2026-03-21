@@ -39,6 +39,19 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	strategy checkRest: words of: aMicHeader
 ]
 
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker >> checkerName [ 
+	^ 'HeaderCapitalization'
+]
+
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker >> configureFrom: aConfiguration [
+	aConfiguration isNil ifTrue: [ ^ self ].
+	aConfiguration = 'uppercase'
+		ifTrue: [ self verifyUppercase ]
+		ifFalse: [ self verifyLowercase ]
+]
+
 { #category : 'initialization' }
 MicRuleHeaderChecker >> initialize [
 

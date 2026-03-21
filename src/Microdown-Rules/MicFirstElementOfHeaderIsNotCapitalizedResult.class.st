@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MicFirstElementOfHeaderIsNotCapitalizedResult >> detail [
+
+	^ detail
+]
+
+{ #category : 'accessing' }
 MicFirstElementOfHeaderIsNotCapitalizedResult >> detail: aString [
 
 	detail := aString

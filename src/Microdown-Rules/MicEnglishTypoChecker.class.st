@@ -45,6 +45,16 @@ checks := {
 	].
 ]
 
+{ #category : 'as yet unclassified' }
+MicEnglishTypoChecker >> checkerName [ 
+	^ 'EnglishTypographic'
+]
+
+{ #category : 'as yet unclassified' }
+MicEnglishTypoChecker >> configureFrom: aConfiguration [
+	^ self
+]
+
 { #category : 'adding' }
 MicEnglishTypoChecker >> visitCode: aCodeBlock [
 

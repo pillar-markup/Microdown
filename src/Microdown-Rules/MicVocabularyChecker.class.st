@@ -21,6 +21,21 @@ MicVocabularyChecker >> checkText: aMicText [
 							 patternPair: patternPair) ] ]
 ]
 
+{ #category : 'as yet unclassified' }
+MicVocabularyChecker >> checkerName [
+	^ 'Vocabulary'
+]
+
+{ #category : 'as yet unclassified' }
+MicVocabularyChecker >> configureFrom: aConfiguration [
+	self pairs: aConfiguration 
+]
+
+{ #category : 'visiting - inline elements' }
+MicVocabularyChecker >> pairs [ 
+	^ patternPairs 
+]
+
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> pairs: aCollectionOfPairs [
 
