@@ -15,27 +15,19 @@ MicCodeIndentationCheckerTest >> generateFilesystemExample [
 	| file |
 	"incorrect cases - space instead of tabs"
 	file := fileSystem workingDirectory / 'indentationWrong.md'.
-	file writeStreamDo: [ :steam |
-		steam nextPutAll: '```
-		foo
-		  self
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '```
+foo
+   self
 		`````'
 		 ].
 	"correct cases - tabs"
 	file := fileSystem workingDirectory / 'indentationCorrect.md'.
 	file writeStreamDo: [  :stream |
 		stream nextPutAll: '```
-		foo
-			self
+foo
+	self
 		````' ].
-	"correct cases - exception nextPut: ' '"
-	file := fileSystem workingDirectory / 'indentationException.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '```
-		foo
-			self nextPut: " "
-		````'
-		 ]
 ]
 
 { #category : 'running' }
@@ -50,12 +42,6 @@ MicCodeIndentationCheckerTest >> setUp [
 { #category : 'tests' }
 MicCodeIndentationCheckerTest >> testIndentationCorrect [
 	checker checkProject: fileSystem / 'indentationCorrect.md'.
-	self assert: checker isOkay.
-]
-
-{ #category : 'tests' }
-MicCodeIndentationCheckerTest >> testIndentationExceptionNotFlagged [
-	checker checkProject: fileSystem / 'indentationException.md'.
 	self assert: checker isOkay.
 ]
 

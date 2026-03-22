@@ -1,3 +1,7 @@
+"
+I check that code blocks use tabs for indentation instead of spaces.
+A line that starts with a space character is considered incorrectly indented.
+"
 Class {
 	#name : 'MicCodeIndentationChecker',
 	#superclass : 'MicChecker',
@@ -14,15 +18,12 @@ MicCodeIndentationChecker >> visitCode: aMicCode [
 		line isEmpty ifFalse: [ 
 			"verify if the line begin with space"
 			(line first = Character space) ifTrue: [ 
-				"except the space in the code like nextPut: ' '"
-				(line trimLeft includesSubstring: 'nextPut: '' ''') ifFalse: [ 
 					results add: (MicCodeIndentationResult new 
 						micElement: aMicCode;
 						inFile: aMicCode fromFile;
 						detail: line;
 						yourself
 					)
-					 ]
 				 ]
 			 ]
 		 ]
