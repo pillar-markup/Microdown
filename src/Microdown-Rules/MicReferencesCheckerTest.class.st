@@ -61,7 +61,7 @@ MicReferencesCheckerTest >> setUp [
 
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
-	checker := MicReferencesChecker new.
+	checker := MicAnchoredSectionTableFigureChecker new.
 ]
 
 { #category : 'running' }

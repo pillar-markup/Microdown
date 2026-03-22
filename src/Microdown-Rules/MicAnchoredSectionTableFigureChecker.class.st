@@ -11,7 +11,7 @@ The following are incorrect and will be flagged:
 	section *@sectionExample@* (lowercase)
 "
 Class {
-	#name : 'MicReferencesChecker',
+	#name : 'MicAnchoredSectionTableFigureChecker',
 	#superclass : 'MicChecker',
 	#category : 'Microdown-Rules-References',
 	#package : 'Microdown-Rules',
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : 'visiting' }
-MicReferencesChecker >> visitParagraph: aMicParagraph [
+MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 	| children |
 	children := aMicParagraph children.
 	1 to: children size - 1 do: [  :index |

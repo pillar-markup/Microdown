@@ -1,3 +1,10 @@
+"
+I check that punctuation follows French typography: in French there is a space before diacritics (:;?!) and there is space after diacrittics and (.,).
+
+```
+N'est pas superbe que Microdown puisse trouver de telles erreurrs ? Si bien sur.
+```
+"
 Class {
 	#name : 'MicFrenchTypoChecker',
 	#superclass : 'MicChecker',
@@ -5,6 +12,12 @@ Class {
 	#package : 'Microdown-Rules',
 	#tag : 'FrenchTypo'
 }
+
+{ #category : 'public - name' }
+MicFrenchTypoChecker class >> checkerName [ 
+	
+	^ 'FrenchTypography'
+]
 
 { #category : 'adding' }
 MicFrenchTypoChecker >> addResultFor: anElement message: aMessage [

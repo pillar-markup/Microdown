@@ -11,7 +11,7 @@ Class {
 	#tag : 'Capitalization'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'public name' }
 MicRuleHeaderChecker class >> checkerName [ 
 	^ 'HeaderCapitalization'
 ]

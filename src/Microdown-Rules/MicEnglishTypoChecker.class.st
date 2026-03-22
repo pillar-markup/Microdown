@@ -1,3 +1,10 @@
+"
+I check that punctuation follows English typography: in English there is no space before diacritics (:;?!) and there is space after diacrittics and (.,).
+
+```
+Is it not great that Microdown rule checkers can spot such mistakes? Indeed, this is great.
+```
+"
 Class {
 	#name : 'MicEnglishTypoChecker',
 	#superclass : 'MicChecker',
@@ -6,9 +13,10 @@ Class {
 	#tag : 'EnglishTypographic'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'public - name' }
 MicEnglishTypoChecker class >> checkerName [ 
-	^ 'EnglishTypographic'
+	
+	^ 'EnglishTypography'
 ]
 
 { #category : 'adding' }

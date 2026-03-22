@@ -10,6 +10,12 @@ Class {
 	#tag : 'CodeIndetation'
 }
 
+{ #category : 'public - name' }
+MicCodeIndentationChecker class >> checkerName [
+
+	^ 'CodeIndentation'
+]
+
 { #category : 'visiting' }
 MicCodeIndentationChecker >> visitCode: aMicCode [
 	| lines |
