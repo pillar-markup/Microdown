@@ -1,3 +1,15 @@
+"
+I check that references to figures, sections and tables are correctly capitalized before an anchor.
+In Microdown, references should be written as:
+	Figure *@figureExample@*
+	Section *@sectionExample@*
+	Table *@tableExample*
+	
+The following are incorrect and will be flagged:
+	figure *@figureExample@* (lowercase)
+	the figure *@figureExample@* (proceded by 'the')
+	section *@sectionExample@* (lowercase)
+"
 Class {
 	#name : 'MicReferencesChecker',
 	#superclass : 'MicChecker',
