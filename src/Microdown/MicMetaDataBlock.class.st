@@ -97,8 +97,7 @@ MicMetaDataBlock >> includesKey: aString [
 MicMetaDataBlock >> initialize [
 
 	super initialize.
-	bogusParsing := false.
-	"body := SmallDictionary new"
+	bogusParsing := false
 ]
 
 { #category : 'testing' }
