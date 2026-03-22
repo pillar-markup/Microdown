@@ -18,6 +18,11 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'as yet unclassified' }
+MicChecker class >> checkerName [ 
+	^ 'UnnamedChecker'
+]
+
 { #category : 'visiting' }
 MicChecker >> addResult: aResult [
 
