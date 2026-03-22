@@ -63,8 +63,9 @@ MicDocumentWriter >> usedNewLine [
 
 { #category : 'writing' }
 MicDocumentWriter >> visit: aMicElement [
-
-	aMicElement accept: self.
+	"Entry point to launch the traversal."
+	
+	super visit: aMicElement.
 	^ self contents
 ]
 

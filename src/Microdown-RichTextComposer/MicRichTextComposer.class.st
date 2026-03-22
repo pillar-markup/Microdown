@@ -367,7 +367,8 @@ This also because people will not want to to not let a newline between the heade
 
 { #category : 'visiting' }
 MicRichTextComposer >> visit: aDocument [
-
+	"Entry point to launch the traversal."
+	
 	canvas := MicRichTextCanvas new
 		          textStyler: self textStyler;
 		          yourself.
@@ -467,7 +468,7 @@ MicRichTextComposer >> visitFigure: aFigure [
 	anchor := self anchorFor: image of: aFigure.
 	canvas << (self textWithImage: image usingAnchor: anchor) ]
 		on: MicResourceReferenceError , UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure children ] ]
+		do: [ self visitChildrenOf: aFigure ] ]
 		on: Error
 		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]

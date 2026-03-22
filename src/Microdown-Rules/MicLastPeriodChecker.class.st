@@ -9,6 +9,11 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
+{ #category : 'as yet unclassified' }
+MicLastPeriodChecker class >> checkerName [ 
+	^ 'CodeLastPeriod'
+]
+
 { #category : 'visiting' }
 MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [ 
 	
@@ -40,5 +45,11 @@ MicLastPeriodChecker >> identifyExtraLastPeriod [
 { #category : 'visiting' }
 MicLastPeriodChecker >> identifyMissingLastPeriod [
 
+	codeShouldEndWithPeriod := true
+]
+
+{ #category : 'visiting' }
+MicLastPeriodChecker >> initialize [ 
+	super initialize. 
 	codeShouldEndWithPeriod := true
 ]

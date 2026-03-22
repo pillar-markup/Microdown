@@ -232,12 +232,19 @@ MicHTMLVisitor >> templateForConfiguration: aConfiguration [
 	inputFile := configuration inputFile.
 	
 	(configuration hasProperty: #mainDocument)
-		ifFalse: [ ^ configuration propertyAt: self mainDocumentTemplateName ifAbsent: [ 'main.mustache' ] ].
+		ifFalse: [ ^ configuration 
+						propertyAt: self mainDocumentTemplateName 
+						ifAbsent: [ 'main.mustache' ] ].
+	
+	
+	self flag: #revisitThis.
+	"This logic looks a bit heavy at the minimum we should document it"
 	
 	templateName := inputFile fullName
 		= ((configuration baseDirectory resolve: configuration mainDocument) , 'pillar') fullName
 		ifTrue: [ self mainDocumentTemplateName ]
 		ifFalse: [ self chapterTemplateName ].
+		
 	^ configuration propertyAt: templateName
 ]
 
@@ -287,6 +294,14 @@ MicHTMLVisitor >> visitBold: aBoldText [
 		with: [ super visitBold: aBoldText ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitBold: aBoldText from: templated [
+
+	canvas tag
+		name: 'strong';
+		with: [ templated visitChildrenOf:aBoldText ]
+]
+
 { #category : 'visiting - extensions' }
 MicHTMLVisitor >> visitCitation: aCitation [
 
@@ -323,33 +338,6 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 ]
 
 { #category : 'visiting' }
-MicHTMLVisitor >> visitCodeblock: aCodeBlock [
-
-	canvas tag
-		name: 'figure';
-		with: [
-			canvas tag
-				name: 'pre';
-				with: [
-					| code |
-					code := canvas tag
-						        name: 'code';
-						        yourself.
-					"(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
-						ifTrue: [ code parameterAt: 'class' put: language printString ]."
-					code with: [ canvas lines: aCodeBlock text ] ].
-			canvas tag
-				name: 'figcaption';
-				with: [
-					aCodeBlock hasAnchor ifTrue: [
-							self visitAnchor: aCodeBlock.
-							self writeCounterForScript: aCodeBlock ].
-					aCodeBlock hasCaption ifTrue: [
-							self visitAll: aCodeBlock caption children ] ] ].
-	canvas newLine
-]
-
-{ #category : 'visiting' }
 MicHTMLVisitor >> visitColumn: aMicColumnsBlock [ 
 	"??"
 ]
@@ -364,7 +352,7 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
 	canvas tag
 		name: 'figcaption';
-		with: [ self visitAll: aFigCaptionBlock children ]
+		with: [ self visitChildrenOf: aFigCaptionBlock ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -377,13 +365,29 @@ MicHTMLVisitor >> visitFigure: aFigure [
 
 ]
 
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
+	
+	canvas
+		newLine;
+		raw: '<' , anHTMLTagParagraph label.
+	anHTMLTagParagraph hasArguments
+		ifTrue: [ canvas space; raw: anHTMLTagParagraph argumentString ]. 
+	canvas raw: '>' .
+
+	self visitChildrenOf: anHTMLTagParagraph.
+	canvas 
+		newLine;
+		raw: anHTMLTagParagraph lineStopMarkup.
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitHeader: aHeader [
 
 	canvas newLine.	
 	canvas tag 
 		name: 'h',  aHeader level asString;
-		with: [ self visitAll: aHeader children]
+		with: [ self visitChildrenOf: aHeader ]
 	
 ]
 
@@ -427,7 +431,20 @@ MicHTMLVisitor >> visitLink: aLink [
 		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
-		with: [self visitAll: aLink children]
+		with: [ self visitChildrenOf: aLink ]
+
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitLink: aLink from: templated [ 
+	"Write markup hyperlink, which is used to link from one page to another"
+
+	canvas tag
+		name: 'a';
+		parameterAt: 'target' put: self configuration targetAttribute;
+		parameterAt: 'href' put: aLink referencePath;
+		addArguments: aLink;
+		with: [ templated visitChildrenOf: aLink ]
 
 ]
 
@@ -463,22 +480,18 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 ]
 
 { #category : 'visiting - list' }
-MicHTMLVisitor >> visitOrderedList: anOrderedList [
+MicHTMLVisitor >> visitOrderedList: anUnorderedList [
 
 	canvas newLine.
 	canvas tag
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			anOrderedList children 
-				do: [ :each | each accept: self ] ]
-			
-	
+			super visitOrderedList: anUnorderedList  ]
 ]
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
 
 	canvas tag
 		name: 'li';
@@ -497,6 +510,16 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 	canvas newLine.
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitParagraph: aParagraph from: templated [ 
+
+	canvas newLine.
+	canvas tag
+		name: 'p';
+		with: [ templated visitChildrenOf: aParagraph ].
+	canvas newLine.
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitQuote: aQuote [
 	"If the quote text size exceeds a minimum threshold, use blockquote which is appropriate for long quotations"
@@ -511,26 +534,23 @@ MicHTMLVisitor >> visitQuote: aQuote [
 ]
 
 { #category : 'visiting - html extensions' }
-MicHTMLVisitor >> visitRaw: aParagraph [
+MicHTMLVisitor >> visitRaw: aMicRaw [
+	"Raw should be raw and it should NOT go the next line or whatever"
+	"Pay attention aMicRaw is not a paragraph but an inline element."
 	
-	canvas raw: aParagraph bodyString.
-	canvas newLine
+	canvas raw: aMicRaw bodyString
 ]
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	
-	canvas
-		newLine;
-		raw: '<' , aParagraph label.
-	aParagraph hasArguments
-		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
-	canvas raw: '>' .
+	canvas raw: aParagraph body
+]
 
-	aParagraph children do: [ :each | each accept: self ].
-	canvas 
-		newLine;
-		raw: aParagraph lineStopMarkup.
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitRoot: aRoot from: templated [
+	
+	^ templated visitChildrenOf: aRoot
 ]
 
 { #category : 'visiting - inline elements' }
@@ -615,8 +635,7 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
-
+	
 	canvas tag
 		name: 'li';
 		with: [ super visitUnorderedListItem: anUnorderedListItem ].
@@ -627,6 +646,7 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 { #category : 'writing' }
 MicHTMLVisitor >> write: aMicElement [
 	"for now for integration with Pillar."
+	
 	self visit: aMicElement.
 	^ self contents
 ]

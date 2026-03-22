@@ -2,20 +2,34 @@ Class {
 	#name : 'MicRuleHeaderChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
-		'strategy'
+		'strategy',
+		'uncapitalizableText',
+		'unlowercasableText'
 	],
-	#category : 'Microdown-Rules-CapitalizationUnderway',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'CapitalizationUnderway'
+	#tag : 'Capitalization'
 }
+
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker class >> checkerName [ 
+	^ 'HeaderCapitalization'
+]
+
+{ #category : 'initialization' }
+MicRuleHeaderChecker >> addUncapitalized: aString [ 
+	"Make sure that aString will not be capitalized"
+	
+	uncapitalizableText add: aString
+]
 
 { #category : 'visiting' }
 MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 
 	aCollection first isCapitalized ifFalse: [
-			results add: (MicFirstElementOfHeaderIsNotCapitalizedReport new
+			results add: (MicFirstElementOfHeaderIsNotCapitalizedResult new
 					 micElement: anElement;
-					 concern: aCollection first;
+					 detail: aCollection first;
 					 inFile: anElement fromFile) ]
 ]
 
@@ -27,14 +41,36 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	'Today and tomorrow: the days' 
 	"
 	
-	strategy checkRest: words of: aMicHeader rule: rules first
+	strategy checkRest: words of: aMicHeader
+]
+
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker >> configureFrom: aConfiguration [
+	aConfiguration isNil ifTrue: [ ^ self ].
+	aConfiguration = 'uppercase'
+		ifTrue: [ self verifyUppercase ]
+		ifFalse: [ self verifyLowercase ]
 ]
 
 { #category : 'initialization' }
 MicRuleHeaderChecker >> initialize [
 
 	super initialize.
-	self verifyLowercase
+	self verifyLowercase.
+	uncapitalizableText := OrderedCollection new.
+	unlowercasableText := OrderedCollection new. 
+	#( 'a' 'an' 'both' 'the' 'and' 'as' 'at' 'but' 'by' 'down'
+	     'for' 'from' 'if' 'in' 'into' 'like' 'near' 'nor' 'of' 'off'
+	     'on' 'one' 'once' 'onto' 'or' 'over' 'past' 'so' 'than' 'that' 'to'
+	     'upon' 'when' 'with' 'yet' ) do: [ :each | self addUncapitalized: each ].
+]
+
+{ #category : 'asserting' }
+MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
+	| normalized |
+	normalized := (aString select: [ :c | c isLetter ]) asLowercase.
+
+	^ (uncapitalizableText includes: normalized) not
 ]
 
 { #category : 'initialization' }
@@ -51,11 +87,11 @@ MicRuleHeaderChecker >> verifyUppercase [
 	strategy checker: self
 ]
 
-{ #category : 'visiting' }
+{ #category : 'asserting' }
 MicRuleHeaderChecker >> visitHeader: aMicHeader [
 
 	| words |
-	words := aMicHeader text splitOn: Character space.
+	words := aMicHeader text substrings.
 	self checkFirstWord: words of: aMicHeader. 
 	self checkRest: words of: aMicHeader. 
 

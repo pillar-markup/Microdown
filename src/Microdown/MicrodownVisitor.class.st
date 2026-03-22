@@ -10,10 +10,11 @@ Class {
 	#tag : 'Visitor'
 }
 
-{ #category : 'visiting main API' }
+{ #category : 'visiting' }
 MicrodownVisitor >> visit: aMicElement [
-
-	^ aMicElement accept: self
+	"Entry point to launch the traversal."
+	
+	^ self visitEach: aMicElement
 ]
 
 { #category : 'visiting' }
@@ -24,7 +25,7 @@ MicrodownVisitor >> visitAgenda: anAgenda [
 { #category : 'visiting main API' }
 MicrodownVisitor >> visitAll: aCollection [
 
-	^ aCollection collect: [ :each | each accept: self ]
+	^ aCollection collect: [ :each | self visitEach: each ]
 ]
 
 { #category : 'visiting' }
@@ -38,11 +39,17 @@ MicrodownVisitor >> visitAnchorReference: anAnchorReference [
 { #category : 'visiting' }
 MicrodownVisitor >> visitAnnotated: anAnnotated [
 
-	^ anAnnotated body do: [ :each | each accept: self ]
+	^ anAnnotated body do: [ :each | self visitEach: each  ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitAnnotation: anAnnotation [
+]
+
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitBlockLevelRawParagraph: aRawParagraph [
+
+
 ]
 
 { #category : 'visiting - inline elements' }
@@ -60,7 +67,7 @@ MicrodownVisitor >> visitBreak: aBreak [
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitChildrenOf: anElement [
 
-	^ anElement children collect: [ :each | each accept: self ]
+	^ anElement children collect: [ :each | self visitEach: each  ]
 ]
 
 { #category : 'visiting - extensions' }
@@ -70,7 +77,7 @@ MicrodownVisitor >> visitCitation: aVisitor [
 { #category : 'visiting' }
 MicrodownVisitor >> visitCode: aCodeBlock [ 
 	 
-	^ aCodeBlock captionElements collect: [ :each |each accept: self ]
+	^ aCodeBlock captionElements collect: [ :each | self visitEach: each  ]
 
 ]
 
@@ -93,6 +100,14 @@ MicrodownVisitor >> visitDay: aDay [
 	"subclassResponsibility"
 ]
 
+{ #category : 'visiting main API' }
+MicrodownVisitor >> visitEach: aMicElement [
+	"By default this method is invoked by all the other ones and send the accept: message. 
+	It is useful when one needs to stop recursion under a given condition."
+	
+	^ aMicElement accept: self
+]
+
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitElement: anElement [
 	"I'm doing nothing when visiting a super generic element.
@@ -104,13 +119,13 @@ MicrodownVisitor >> visitElement: anElement [
 { #category : 'visiting' }
 MicrodownVisitor >> visitEnvironment: anEnvironment [
 
-	^ anEnvironment bodyElements do: [ :each | each accept: self ]
+	^ anEnvironment bodyElements do: [ :each | self visitEach: each  ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitFigure: aFigure [
 
-	^ aFigure children do: [ :each | each accept: self ]
+	^ aFigure children do: [ :each | self visitEach: each  ]
 ]
 
 { #category : 'visiting' }
@@ -118,10 +133,16 @@ MicrodownVisitor >> visitFootnote: aFootnote [
 	"subclassResponsibility"
 ]
 
+{ #category : 'visiting - html extensions' }
+MicrodownVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
+
+
+]
+
 { #category : 'visiting' }
 MicrodownVisitor >> visitHeader: aHeader [
 
-	^  aHeader headerElements do: [ :each | each accept: self ]
+	^  aHeader headerElements do: [ :each | self visitEach: each  ]
 ]
 
 { #category : 'visiting' }
@@ -140,14 +161,14 @@ MicrodownVisitor >> visitInputFile: anInputfile [
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitItalic: aFormat [
 
-	^ self visitChildrenOf: aFormat.
+	^ self visitChildrenOf: aFormat
 
 ]
 
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitLink: aLink [
 
-	^ aLink children do: [ :each | each accept: self ]
+	^ self visitChildrenOf: aLink
 ]
 
 { #category : 'visiting - list' }
@@ -159,7 +180,7 @@ MicrodownVisitor >> visitListItem: anItem [
 { #category : 'visiting' }
 MicrodownVisitor >> visitMath: aMicMath [
 
-	^ aMicMath captionElements collect: [ :each | each accept: self ]
+	^ aMicMath captionElements collect: [ :each | self visitEach: each  ]
 
 ]
 
@@ -174,7 +195,7 @@ MicrodownVisitor >> visitMetaData: aMetaData [
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitMonospace: aFormat [
 
-	^ self visitChildrenOf: aFormat.
+	^ self visitChildrenOf: aFormat
 
 ]
 
@@ -184,8 +205,10 @@ MicrodownVisitor >> visitNote: aNote [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedList: anOrderedList [
+	"Here we do not follow the normal accept: way to doing things for childre. This is 
+	because we want to propagate the context (ordered or not) during the handling of children."
 	
-	^ anOrderedList children collect: [ :each | each accept: self ]
+	^ anOrderedList children collect: [ :each | self visitOrderedListItem: each ]
 ]
 
 { #category : 'visiting - list' }
@@ -224,6 +247,7 @@ MicrodownVisitor >> visitRaw: aRawFormat [
 
 { #category : 'visiting - html extensions' }
 MicrodownVisitor >> visitRawParagraph: aRawParagraph [
+	"a raw paragraph is a paragraph whose contents is never changed."
 
 
 ]
@@ -237,7 +261,7 @@ MicrodownVisitor >> visitRoot: aRoot [
 { #category : 'visiting - extensions' }
 MicrodownVisitor >> visitScript: aSlide [
 
-	^ aSlide children collect: [ :each | self visit: each ]
+	^ self visitChildrenOf: aSlide
 ]
 
 { #category : 'visiting' }
@@ -248,13 +272,13 @@ MicrodownVisitor >> visitSegment: aSegment [
 { #category : 'visiting - extensions' }
 MicrodownVisitor >> visitSlide: aSlide [
 
-	^ aSlide children collect: [ :each | self visit: each ]
+	^ self visitChildrenOf: aSlide
 ]
 
 { #category : 'visiting - inline elements' }
 MicrodownVisitor >> visitStrike: aFormat [
 
-	^ self visitChildrenOf: aFormat.
+	^ self visitChildrenOf: aFormat
 
 ]
 
@@ -276,7 +300,9 @@ MicrodownVisitor >> visitText: aMicTextBlock [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitUnorderedList: anUnorderedList [
-
+	"Here we do not follow the normal accept: way to doing things for childre. This is 
+	because we want to propagate the context (ordered or not) during the handling of children."
+	
 	^ anUnorderedList children collect: [ :each | self visitUnorderedListItem: each ]
 ]
 

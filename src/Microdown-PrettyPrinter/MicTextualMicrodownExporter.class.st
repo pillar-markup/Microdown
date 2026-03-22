@@ -102,8 +102,9 @@ MicTextualMicrodownExporter >> setTrueInList [
 
 { #category : 'API' }
 MicTextualMicrodownExporter >> visit: aMicElement [
-
-	aMicElement accept: self.
+	"Entry point to launch the traversal."
+	
+	super visit: aMicElement. 
 	^ stream contents
 ]
 
@@ -115,7 +116,7 @@ MicTextualMicrodownExporter >> visitAnchor: anAnchor [
 
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
-
+	
 	builder anchorReference: anAnchorReference bodyString
 ]
 
@@ -124,7 +125,7 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 
 	| textualExporter |
 	textualExporter := MicTextualMicrodownExporter new.
-	anAnnotated children do: [ :each | each accept: textualExporter ].
+	textualExporter visitChildrenOf: anAnnotated.
 
 	builder
 		annotated: anAnnotated label
@@ -192,7 +193,7 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
 	builder newLine.
 	builder 
-		header: [ aHeader headerElements do: [ :each | each accept: self ] ] 
+		header: [ self visitAll: aHeader headerElements ] 
 		withLevel: aHeader level
 ]
 
@@ -222,7 +223,7 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 	"here we do not handle the prefix - or a number"
 
@@ -260,7 +261,7 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
 	| block |
@@ -275,12 +276,12 @@ MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 	
 	builder orderedListDuring: [ 
 		anOrderedList children do: [ :orderedItem | 
-			builder orderedItem: [ builder itemBody: [ orderedItem accept: self ] ] ] ].
+			builder orderedItem: [ builder itemBody: [ self visitEach: orderedItem ] ] ] ].
 		
 	block value
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitOrderedListItem2: anItem [
 
 	builder orderedItem: [ super visitOrderedListItem: anItem ]
@@ -348,7 +349,7 @@ MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock bodyString
 ]
 
-{ #category : 'visit - list ' }
+{ #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 	
 	| block |
@@ -359,7 +360,7 @@ MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 		 block := [ self setFalseInList ] ].
 	builder unorderedListDuring:  [ 
 		aUnorderedList children do: [ :unorderedItem | 
-			builder item: [ builder itemBody: [ unorderedItem accept: self ] ] ] ].
+			builder item: [ builder itemBody: [ self visitEach: unorderedItem ] ] ] ].
 	
 	block value
 ]

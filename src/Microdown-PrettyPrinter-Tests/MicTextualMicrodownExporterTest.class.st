@@ -124,9 +124,6 @@ MicTextualMicrodownExporterTest >> testEnvironment [
 { #category : 'tests - environment' }
 MicTextualMicrodownExporterTest >> testEnvironmentWithInnerBlock [
 
-	self skip.
-	"The parsing of environment is plain wrong. It should recursively parse subelements"
-	
 	self verifyObtain: factory environmentWithInnerBlockSample
 ]
 

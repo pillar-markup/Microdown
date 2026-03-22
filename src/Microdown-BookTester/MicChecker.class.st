@@ -18,6 +18,17 @@ Class {
 	#tag : 'Core'
 }
 
+{ #category : 'as yet unclassified' }
+MicChecker class >> checkerName [ 
+	^ 'UnnamedChecker'
+]
+
+{ #category : 'visiting' }
+MicChecker >> addResult: aResult [
+
+	results add: aResult
+]
+
 { #category : 'accessing' }
 MicChecker >> checkProject: aFileReference [
 
@@ -36,6 +47,12 @@ MicChecker >> fileCollectorForMainFileReference: aFileReference [
 		rootDirectory: rootDirectory;
 		visit: mainMic.
 	^ collector
+]
+
+{ #category : 'accessing' }
+MicChecker >> fileSystem: aReference [
+
+	rootDirectory := aReference
 ]
 
 { #category : 'visiting' }

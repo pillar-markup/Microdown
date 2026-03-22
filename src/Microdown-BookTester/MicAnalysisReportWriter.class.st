@@ -17,20 +17,17 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	"I perform several analyses starting from a root document file reference (e.g. index.md)"
 
 	"In the future we should have a better way to add analysis. "	
-	| reporter checker validator |
+	| reporter checkers |
 	reporter := self new.
 
-	checker := MicReferenceChecker new.
-	checker fileSystem: folderReference.
-	checker checkProject: fileReference.
+	checkers := { MicReferenceChecker . MicCodeBlockValidator . MicEnglishTypoChecker . MicLastPeriodInCaptionChecker}.
+	checkers do: [ :checkerClass |
+		| checker |
+		checker := checkerClass new.
+		checker rootDirectory: folderReference.
+		checker checkProject: fileReference.
+		reporter addResults: checker results ].
 
-	reporter addResults: checker results.
-
-	validator := MicCodeBlockValidator new.
-	checker fileSystem: folderReference.
-	checker checkProject: fileReference.
-
-	reporter addResults: validator results.
 	^ reporter
 ]
 

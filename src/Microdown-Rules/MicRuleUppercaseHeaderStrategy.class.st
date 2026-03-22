@@ -1,10 +1,41 @@
 Class {
 	#name : 'MicRuleUppercaseHeaderStrategy',
 	#superclass : 'MicRuleHeaderCheckerStrategy',
-	#category : 'Microdown-Rules-CapitalizationUnderway',
+	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
-	#tag : 'CapitalizationUnderway'
+	#tag : 'Capitalization'
 }
+
+{ #category : 'visiting' }
+MicRuleUppercaseHeaderStrategy >> checkRest: words of: aMicHeader [
+	
+	"In the future we should manage that if a word finishes by : the following one must be captitalized
+	e.g., 'Today and tomorrow: The days' and not 
+	'Today and tomorrow: the days' 
+	" 
+	| realWords |
+	self checkColonCapitalizationIn: words of: aMicHeader.
+	realWords := words allButFirst select: [ :each | 
+		| normalized |
+		normalized := (each select: [:c | c isLetter]) asLowercase.
+		checker shouldCapitalizedWord: normalized ]. 
+	"note that we should verify two points not yet done 
+		Point 1 'To' in input should be reported as an error in both uppercase and lowercase
+		
+		Point 2 'to' should not be generate an error in uppercase setup. 
+		"
+	realWords
+		do: [ :word |
+			| cleaned |
+			cleaned := (word select: [ :c | c isLetter ]).
+			cleaned isCapitalized not
+						ifTrue: [  
+						checker addResult: (MicElementOfHeaderIsNotCapitalizedResult new 
+									micElement: aMicHeader; 
+									detail: word;
+									inFile: aMicHeader fromFile) 
+						] ].
+]
 
 { #category : 'visiting' }
 MicRuleUppercaseHeaderStrategy >> checkRest: words of: aMicHeader rule: rule [
@@ -14,7 +45,11 @@ MicRuleUppercaseHeaderStrategy >> checkRest: words of: aMicHeader rule: rule [
 	'Today and tomorrow: the days' 
 	"
 	| realWords |
-	realWords := words allButFirst reject: [ :each | rule uncapitalizableText includes: each ]. 
+	self checkColonCapitalizationIn: words of: aMicHeader.
+	realWords := words allButFirst select: [ :each |
+		| normalized |
+		normalized := (each select: [:c | c isLetter]) asLowercase.
+		checker shouldCapitalizedWord:normalized]. 
 	"note that we should verify two points not yet done 
 		Point 1 'To' in input should be reported as an error in both uppercase and lowercase
 		
@@ -22,9 +57,11 @@ MicRuleUppercaseHeaderStrategy >> checkRest: words of: aMicHeader rule: rule [
 		"
 	realWords
 		do: [ :word |	
-			 		word isCapitalized not
+				| cleaned |
+				cleaned := (word select: [:c | c isLetter ]).
+				cleaned isCapitalized not
 						ifTrue: [  
-						checker addError: (MicElementOfHeaderIsNotCapitalizedReport new 
+						checker addError: (MicElementOfHeaderIsNotCapitalizedResult new 
 									micElement: aMicHeader; 
 									concern: word;
 									inFile: aMicHeader fromFile) 

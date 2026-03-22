@@ -19,7 +19,7 @@ Class {
 
 { #category : 'facade' }
 Microdown class >> builder [
-	^ MicrodownParser builder
+	^ MicParser builder
 ]
 
 { #category : 'facade' }
@@ -140,7 +140,7 @@ Microdown >> builder [
 { #category : 'facade' }
 Microdown >> parse: aStreamOrString [
 
-	^ MicrodownParser parse: aStreamOrString
+	^ MicParser parse: aStreamOrString
 ]
 
 { #category : 'facade' }

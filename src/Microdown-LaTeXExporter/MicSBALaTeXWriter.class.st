@@ -56,7 +56,7 @@ MicSBALaTeXWriter >> writeFloatingCodeSnippet: aCodeBlock [
 		optParameter: (self optionalParametersForFloatingScript: aCodeBlock);
 		parameter: 'smalltalk';
 		parameter: [
-			aCodeBlock captionElements collect: [ :each | each accept: self ] ];
+			aCodeBlock captionElements collect: [ :each | self visitEach: each ] ];
 		with: [
 			self writeRawDuring: [ canvas nextPutAllLines: aCodeBlock body ].
 			canvas newLine ]

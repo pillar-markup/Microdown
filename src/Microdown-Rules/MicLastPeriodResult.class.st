@@ -1,9 +1,7 @@
 Class {
 	#name : 'MicLastPeriodResult',
-	#superclass : 'MicResult',
+	#superclass : 'MicAbstractResult',
 	#instVars : [
-		'micElement',
-		'fileReference',
 		'codeShouldEndWithPeriod'
 	],
 	#category : 'Microdown-Rules-CodeLastPeriod',
@@ -14,21 +12,4 @@ Class {
 { #category : 'accessing' }
 MicLastPeriodResult >> codeShouldEndWithPeriod: aBoolean [ 
 	codeShouldEndWithPeriod := aBoolean 
-]
-
-{ #category : 'accessing' }
-MicLastPeriodResult >> inFile: aFileReference [ 
-	fileReference := aFileReference 
-]
-
-{ #category : 'accessing' }
-MicLastPeriodResult >> micElement [
-
-	^ micElement
-]
-
-{ #category : 'accessing' }
-MicLastPeriodResult >> micElement: anObject [
-
-	micElement := anObject
 ]
