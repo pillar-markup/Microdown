@@ -1,5 +1,13 @@
+"
+I am the test suite for MicParagraphLabelChecker.
+
+I verify that:
+- Labels at levels 4, 5 and 6 are correctly flagged when they do not end with a period (identifyMissingPeriod mode).
+- Labels at levels 4, 5 and 6 are correctly flagged when they end with a period (identifyExtraPeriod mode).
+- Labels at levels 1, 2 and 3 are never flagged regardless of the mode.
+"
 Class {
-	#name : 'MicParagrapheLabelCheckerTest',
+	#name : 'MicParagraphLabelCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
@@ -11,7 +19,7 @@ Class {
 }
 
 { #category : 'running' }
-MicParagrapheLabelCheckerTest >> generateFilesystemExample [
+MicParagraphLabelCheckerTest >> generateFilesystemExample [
 	| file |
 	"incorrect cases - no period"
 	file := fileSystem workingDirectory / 'level4Wrong.md'.
@@ -56,10 +64,18 @@ MicParagrapheLabelCheckerTest >> generateFilesystemExample [
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '### Title without period'
 		 ].
+	file := fileSystem workingDirectory / 'level4DoublePeriod.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '#### Paragraph Label..'
+		 ].
+	file := fileSystem workingDirectory / 'level4PeriodSpacePeriod.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '#### Paragraph Label. .'
+		 ].
 ]
 
 { #category : 'running' }
-MicParagrapheLabelCheckerTest >> setUp [
+MicParagraphLabelCheckerTest >> setUp [
 	super setUp.
 
 	fileSystem := FileSystem memory.
@@ -68,28 +84,28 @@ MicParagrapheLabelCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel1NotChecked [
+MicParagraphLabelCheckerTest >> testLevel1NotChecked [
 	checker checkProject: fileSystem / 'level1.md'.
 	self assert: checker isOkay.
 
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel2NotChecked [
+MicParagraphLabelCheckerTest >> testLevel2NotChecked [
 	checker checkProject: fileSystem / 'level2.md'.
 	self assert: checker isOkay.
 
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel3NotChecked [
+MicParagraphLabelCheckerTest >> testLevel3NotChecked [
 	checker checkProject: fileSystem / 'level3.md'.
 	self assert: checker isOkay.
 
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel4Correct [
+MicParagraphLabelCheckerTest >> testLevel4Correct [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level4Correct.md'.
 	self assert: checker isOkay.
@@ -97,7 +113,7 @@ MicParagrapheLabelCheckerTest >> testLevel4Correct [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel4CorrectNoExtraPeriod [
+MicParagraphLabelCheckerTest >> testLevel4CorrectNoExtraPeriod [
 	checker identifyExtraPeriod.
 	checker checkProject: fileSystem / 'level4Wrong.md'.
 	self assert: checker isOkay.
@@ -105,7 +121,15 @@ MicParagrapheLabelCheckerTest >> testLevel4CorrectNoExtraPeriod [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel4ExtraPeriodDetected [
+MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4DoublePeriod.md'.
+	self deny: checker isOkay.
+
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel4ExtraPeriodDetected [
 	checker identifyExtraPeriod.
 	checker checkProject: fileSystem / 'level4ExtraPeriod.md'.
 	self deny: checker isOkay.
@@ -114,7 +138,7 @@ MicParagrapheLabelCheckerTest >> testLevel4ExtraPeriodDetected [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel4MissingPeriodDetected [
+MicParagraphLabelCheckerTest >> testLevel4MissingPeriodDetected [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level4Wrong.md'.
 	self deny: checker isOkay.
@@ -123,7 +147,15 @@ MicParagrapheLabelCheckerTest >> testLevel4MissingPeriodDetected [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel5Correct [
+MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
+	self deny: checker isOkay.
+
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel5Correct [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level5Correct.md'.
 	self assert: checker isOkay.
@@ -131,7 +163,7 @@ MicParagrapheLabelCheckerTest >> testLevel5Correct [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel5MissingPeriodDetected [
+MicParagraphLabelCheckerTest >> testLevel5MissingPeriodDetected [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level5Wrong.md'.
 	self deny: checker isOkay.
@@ -140,7 +172,7 @@ MicParagrapheLabelCheckerTest >> testLevel5MissingPeriodDetected [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel6Correct [
+MicParagraphLabelCheckerTest >> testLevel6Correct [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level6Correct.md'.
 	self assert: checker isOkay.
@@ -148,7 +180,7 @@ MicParagrapheLabelCheckerTest >> testLevel6Correct [
 ]
 
 { #category : 'tests' }
-MicParagrapheLabelCheckerTest >> testLevel6MissingPeriodDetected [
+MicParagraphLabelCheckerTest >> testLevel6MissingPeriodDetected [
 	checker identifyMissingPeriod.
 	checker checkProject: fileSystem / 'level6Wrong.md'.
 	self deny: checker isOkay.

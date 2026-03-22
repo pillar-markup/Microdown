@@ -1,3 +1,19 @@
+"
+I check that paragraph labels at heading levels 4, 5 and 6 end with a period.
+In Microdown, labels at these levels serve as paragraph introducers rather than real titles.
+Depending on the convention, they should either end with a period or not.
+
+Example of correct label (identifyMissingPeriod mode):
+#### Color.
+
+Example of incorrect label (identifyMissingPeriod mode):
+#### Color
+
+I can be configured in two modes:
+
+identifyMissingPeriod: flags labels that do Not end with a period.
+identifyExtraPeriod: flags labels that Do end with a period.
+"
 Class {
 	#name : 'MicParagraphLabelChecker',
 	#superclass : 'MicChecker',
@@ -37,11 +53,13 @@ MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> identifyExtraPeriod [
+	"Report a problem when paragrah label should not end with a period"
 	labelShouldEndWithPeriod := false
 ]
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> identifyMissingPeriod [
+	"Report a problem when paragraph label should end with a period"
 	labelShouldEndWithPeriod := true
 ]
 
