@@ -55,6 +55,14 @@ MicCodeSemanticActionTest >> testEmptyString [
 ]
 
 { #category : 'test - bogus entry' }
+MicCodeSemanticActionTest >> testFirst [
+	
+	
+	self shouldnt: [ self semanticActionClass from: 'first'] raise: MessageNotUnderstood.
+	self deny: (self semanticActionClass from: 'first') hasEntity
+]
+
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testGlobalAccess [
 
 	self assert: (self semanticActionClass fromTokens: #( Transcript )) hasEntity
@@ -73,6 +81,14 @@ MicCodeSemanticActionTest >> testNil [
 
 	self shouldnt: [ self semanticActionClass from: 'nil'] raise: MessageNotUnderstood.
 	self deny: (self semanticActionClass from: 'nil') hasEntity
+]
+
+{ #category : 'test - bogus entry' }
+MicCodeSemanticActionTest >> testOne [
+	
+	
+	self shouldnt: [ self semanticActionClass from: '1'] raise: MessageNotUnderstood.
+	self deny: (self semanticActionClass from: '1') hasEntity
 ]
 
 { #category : 'test - bogus entry' }
