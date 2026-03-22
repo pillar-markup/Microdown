@@ -586,7 +586,9 @@ MicRichTextComposer >> visitMonospace: anObject [
 				ifTrue: [ canvas 
 								includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) 
 								in: [ super visitMonospace: anObject ] ]
-				ifFalse: [ super visitMonospace: anObject]].  
+				ifFalse: [ 
+					"when we have `nil` we may not display it in blue"
+					super visitMonospace: anObject]].  
 ]
 
 { #category : 'visiting - list' }

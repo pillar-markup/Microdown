@@ -144,7 +144,9 @@ MicSemanticAction >> getPackageOrNil [
 MicSemanticAction >> getTagOrNil [
 
 	| tagName |
-	tagName := tokens first asSymbol.
+	tagName := tokens first 
+		ifNil: [ ^ nil ]
+	 	ifNotNil: [:tn | tn asString].
 	self class packageOrganizer packages do: [ :package |
 		(tagName beginsWith: package name) ifTrue: [
 			package tags do: [ :tag |
