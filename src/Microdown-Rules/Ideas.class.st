@@ -201,7 +201,7 @@ goodWordFor: aString
 Class {
 	#name : 'Ideas',
 	#superclass : 'Object',
-	#category : 'Microdown-Rules-BogusImplementation',
+	#category : 'Microdown-Rules-Ideas',
 	#package : 'Microdown-Rules',
-	#tag : 'BogusImplementation'
+	#tag : 'Ideas'
 }
