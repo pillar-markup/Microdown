@@ -45,7 +45,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	strategy checkRest: words of: aMicHeader
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'configuration' }
 MicRuleHeaderChecker >> configureFrom: aConfiguration [
 	aConfiguration isNil ifTrue: [ ^ self ].
 	aConfiguration = 'uppercase'

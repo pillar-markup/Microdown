@@ -70,7 +70,8 @@ MicParagraphLabelChecker >> identifyMissingPeriod [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> initialize [ 
+MicParagraphLabelChecker >> initialize [
+
 	super initialize.
 	labelShouldEndWithPeriod := true
 ]

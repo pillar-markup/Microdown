@@ -69,6 +69,8 @@ MicVocabularyChecker >> checkText: aMicText [
 
 { #category : 'as yet unclassified' }
 MicVocabularyChecker >> configureFrom: aConfiguration [
+	""
+
 	aConfiguration isCollection ifTrue: [ self pairs: aConfiguration ]
 ]
 
