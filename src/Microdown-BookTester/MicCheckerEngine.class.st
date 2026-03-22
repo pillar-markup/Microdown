@@ -25,20 +25,15 @@ MicCheckerEngine >> checkersFromConfiguration: aConfiguration [
 	| availableCheckers activeCheckers |
 	availableCheckers := Dictionary new.
 	MicChecker allSubclasses do: [ :aClass |
-		| instance |
-		instance := aClass new.
-		(instance respondsTo: #checkerName) ifTrue: [ 
-			availableCheckers at: instance checkerName put: aClass 
-			 ]
-		 ].
-	activeCheckers := OrderedCollection new.
-	aConfiguration keysAndValuesDo: [ :key :value |
-		| checkerClass checker |
-		checkerClass := availableCheckers at: key ifAbsent: [ nil ].
-		checkerClass ifNotNil: [ 
-			checker := checkerClass new.
-			checker configureFrom: value.
-			activeCheckers add: checker
+		availableCheckers at: aClass checkerName put: aClass ].
+		activeCheckers := OrderedCollection new.
+		aConfiguration keysAndValuesDo: [ :key :value |
+			| checkerClass checker |
+			checkerClass := availableCheckers at: key ifAbsent: [ nil ].
+			checkerClass ifNotNil: [ 
+				checker := checkerClass new.
+				checker configureFrom: value.
+				activeCheckers add: checker
 			 ]
 		 ].
 	^ activeCheckers 

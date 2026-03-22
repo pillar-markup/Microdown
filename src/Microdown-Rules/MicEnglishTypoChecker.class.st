@@ -6,6 +6,11 @@ Class {
 	#tag : 'EnglishTypographic'
 }
 
+{ #category : 'as yet unclassified' }
+MicEnglishTypoChecker class >> checkerName [ 
+	^ 'EnglishTypographic'
+]
+
 { #category : 'adding' }
 MicEnglishTypoChecker >> addResultFor: anElement message: aMessage [
 	results add: (MicSpaceBeforeDiacriticsResult new 
@@ -43,11 +48,6 @@ checks := {
 			self addResultFor: anElement message: message
 		]
 	].
-]
-
-{ #category : 'as yet unclassified' }
-MicEnglishTypoChecker >> checkerName [ 
-	^ 'EnglishTypographic'
 ]
 
 { #category : 'as yet unclassified' }

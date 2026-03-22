@@ -9,6 +9,11 @@ Class {
 	#tag : 'Vocabulary'
 }
 
+{ #category : 'as yet unclassified' }
+MicVocabularyChecker class >> checkerName [
+	^ 'Vocabulary'
+]
+
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> checkText: aMicText [
 
@@ -22,13 +27,8 @@ MicVocabularyChecker >> checkText: aMicText [
 ]
 
 { #category : 'as yet unclassified' }
-MicVocabularyChecker >> checkerName [
-	^ 'Vocabulary'
-]
-
-{ #category : 'as yet unclassified' }
 MicVocabularyChecker >> configureFrom: aConfiguration [
-	self pairs: aConfiguration 
+	aConfiguration isCollection ifTrue: [ self pairs: aConfiguration ]
 ]
 
 { #category : 'visiting - inline elements' }

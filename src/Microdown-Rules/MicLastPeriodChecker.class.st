@@ -9,6 +9,11 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
+{ #category : 'as yet unclassified' }
+MicLastPeriodChecker class >> checkerName [ 
+	^ 'CodeLastPeriod'
+]
+
 { #category : 'visiting' }
 MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [ 
 	

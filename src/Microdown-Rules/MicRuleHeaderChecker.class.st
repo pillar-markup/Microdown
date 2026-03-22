@@ -11,6 +11,11 @@ Class {
 	#tag : 'Capitalization'
 }
 
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker class >> checkerName [ 
+	^ 'HeaderCapitalization'
+]
+
 { #category : 'initialization' }
 MicRuleHeaderChecker >> addUncapitalized: aString [ 
 	"Make sure that aString will not be capitalized"
@@ -37,11 +42,6 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 	"
 	
 	strategy checkRest: words of: aMicHeader
-]
-
-{ #category : 'as yet unclassified' }
-MicRuleHeaderChecker >> checkerName [ 
-	^ 'HeaderCapitalization'
 ]
 
 { #category : 'as yet unclassified' }
