@@ -1,3 +1,26 @@
+"
+I check that methods in code blocks have an empty line after the selector when there is no comment.
+
+Example of incorrect method (no comment, no empty line):
+   goodWordFor: aString 
+      | pair |
+      pair := pairs detect: [ :each | each key = aString ].
+      ^ pair value
+
+Example of correct method (no comment, empty line after selector):
+   goodWordFor: aString 
+	
+      | pair |
+      pair := pairs detect: [ :each | each key = aString ].
+      ^ pair value
+
+Example of correct method (with comment, no empty line needed):
+   goodWordFor: aString 
+      ""there is a comment""
+      | pair |
+      pair := pairs detect: [ :each | each key = aString ].
+      ^ pair value
+"
 Class {
 	#name : 'MicMethodStructureChecker',
 	#superclass : 'MicChecker',
