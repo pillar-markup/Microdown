@@ -1,14 +1,15 @@
 "
-I check that references to figures, sections and tables are correctly capitalized before an anchor.
+I check that references to figures, sections and tables are correctly capitalized before an anchor and that there is no 'the' before. 
+
 In Microdown, references should be written as:
-	Figure *@figureExample@*
-	Section *@sectionExample@*
-	Table *@tableExample*
+- Figure *@figureExample@*
+- Section *@sectionExample@*
+- Table *@tableExample*
 	
 The following are incorrect and will be flagged:
-	figure *@figureExample@* (lowercase)
-	the figure *@figureExample@* (proceded by 'the')
-	section *@sectionExample@* (lowercase)
+- figure *@figureExample@* (lowercase)
+- the figure *@figureExample@* (preceeded by 'the')
+- section *@sectionExample@* (lowercase)
 "
 Class {
 	#name : 'MicAnchoredSectionTableFigureChecker',
@@ -17,6 +18,12 @@ Class {
 	#package : 'Microdown-Rules',
 	#tag : 'References'
 }
+
+{ #category : 'public - name' }
+MicAnchoredSectionTableFigureChecker class >> checkerName [ 
+
+	^ 'NotTheFigureX'
+]
 
 { #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [

@@ -25,6 +25,12 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
+{ #category : 'public - name' }
+MicParagraphLabelChecker class >> checkerName [
+
+	^ 'ParagraphLabelEndPeriod'
+]
+
 { #category : 'visiting' }
 MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 	(aMicHeader text trimRight endsWith: '.') ifTrue: [ 

@@ -28,6 +28,11 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
+{ #category : 'public - name' }
+MicLastPeriodInCaptionChecker class >> checkerName [ 
+	^ 'CodeLastPeriodInCaption'
+]
+
 { #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> checkExtraPeriodInCode: aCode [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."

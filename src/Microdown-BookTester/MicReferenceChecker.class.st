@@ -38,6 +38,12 @@ Class {
 	#tag : 'References'
 }
 
+{ #category : 'public - name' }
+MicReferenceChecker class >> checkerName [
+
+	^ 'ReferenceChecks'
+]
+
 { #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 

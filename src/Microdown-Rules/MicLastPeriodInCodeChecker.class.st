@@ -29,6 +29,11 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
+{ #category : 'public - name' }
+MicLastPeriodInCodeChecker class >> checkerName [ 
+	^ 'LastPeriodInCode'
+]
+
 { #category : 'visiting' }
 MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
 

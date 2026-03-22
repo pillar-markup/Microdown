@@ -9,7 +9,7 @@ Class {
 	#tag : 'CodeLastPeriod'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'public - name' }
 MicLastPeriodChecker class >> checkerName [ 
 	^ 'CodeLastPeriod'
 ]

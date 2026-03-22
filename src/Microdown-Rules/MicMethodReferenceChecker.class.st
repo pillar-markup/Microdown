@@ -22,6 +22,11 @@ Class {
 	#tag : 'MethodeReference'
 }
 
+{ #category : 'public - name' }
+MicMethodReferenceChecker class >> checkerName [ 
+	^ 'MethodReferenceUsingHash'
+]
+
 { #category : 'visiting - inline elements' }
 MicMethodReferenceChecker >> visitText: aMicText [
 	| text withHash withhoutHash |

@@ -11,8 +11,9 @@ Class {
 	#tag : 'Capitalization'
 }
 
-{ #category : 'public name' }
-MicRuleHeaderChecker class >> checkerName [ 
+{ #category : 'public - name' }
+MicRuleHeaderChecker class >> checkerName [
+
 	^ 'HeaderCapitalization'
 ]
 

@@ -29,6 +29,12 @@ Class {
 	#tag : 'MethodStructure'
 }
 
+{ #category : 'public - name' }
+MicMethodStructureChecker class >> checkerName [
+
+	^ 'MethodStructure'
+]
+
 { #category : 'visiting' }
 MicMethodStructureChecker >> visitCode: aMicCode [
 	| lines firstLine secondLine |
