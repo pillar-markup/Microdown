@@ -69,6 +69,13 @@ MicCodeSemanticActionTest >> testMoreSpaces [
 ]
 
 { #category : 'test - bogus entry' }
+MicCodeSemanticActionTest >> testNil [
+
+	self shouldnt: [ self semanticActionClass from: 'nil'] raise: MessageNotUnderstood.
+	self deny: (self semanticActionClass from: 'nil') hasEntity
+]
+
+{ #category : 'test - bogus entry' }
 MicCodeSemanticActionTest >> testOneSpace [
 
 	self deny: (self semanticActionClass from: ' ') hasEntity

@@ -26,8 +26,9 @@ Class {
 		'class',
 		'fromClass'
 	],
-	#category : 'Microdown-RichTextComposer',
-	#package : 'Microdown-RichTextComposer'
+	#category : 'Microdown-RichTextComposer-Builder',
+	#package : 'Microdown-RichTextComposer',
+	#tag : 'Builder'
 }
 
 { #category : 'private' }
