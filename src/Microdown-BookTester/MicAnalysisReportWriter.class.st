@@ -26,6 +26,8 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 	
 	"Remove the checker the user does not want
 	We will have to see the ones that are exclusive: FrenchTypo and EnglishTypo"	
+
+	
 	aConfiguration ignoredCheckers   
 		do: [ :each | availableCheckers removeKey: each ifAbsent: [ ] ].
 
@@ -37,7 +39,7 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 	"now we should configure the ones that should be."
 
 	aConfiguration checkerConfigurations do: [ :each |
-		 
+		 	"each key = 'Vocabulary' ifTrue: [ self halt ]."
 			configuredCheckers 
 				at: each key
 				ifPresent: [ :checker | 

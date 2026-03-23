@@ -37,6 +37,14 @@ MicLastPeriodChecker >> checkMissingPeriodIn: aMicCodeBlock [
 ]
 
 { #category : 'visiting' }
+MicLastPeriodChecker >> configureFrom: aBoolean [
+
+	aBoolean = 'true'
+		ifTrue: [ codeShouldEndWithPeriod := true ]
+		ifFalse: [ codeShouldEndWithPeriod := false ]
+]
+
+{ #category : 'visiting' }
 MicLastPeriodChecker >> identifyExtraLastPeriod [
 
 	codeShouldEndWithPeriod := false
