@@ -260,3 +260,22 @@ MicVocabularyCheckerTest >> testCheckerFindsVisualiseMistake [
 		equals:
 		'Text: "We will visualise the results." in file/mistakeVisualise.md contains a mistake: [visualise] should not be used. We should use visualize'
 ]
+
+{ #category : 'tests - configuration' }
+MicVocabularyCheckerTest >> testConfigureFrom [
+	
+	| voca |
+	voca := MicVocabularyChecker new.
+	voca configureFrom:  
+		#(
+			#('sub-presenter' 'subpresenter') 
+			#('sub presenter' 'subpresenter') 
+			#('meta object' 'metaobject')).
+	self 
+		assert: voca pairs 
+		equals: {
+			'*sub-presenter*'->'subpresenter'. 
+			'*sub presenter*'->'subpresenter'. 
+			'*meta object*'->'metaobject'
+			}
+]

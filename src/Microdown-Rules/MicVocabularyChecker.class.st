@@ -67,11 +67,12 @@ MicVocabularyChecker >> checkText: aMicText [
 							 patternPair: patternPair) ] ]
 ]
 
-{ #category : 'as yet unclassified' }
-MicVocabularyChecker >> configureFrom: aConfiguration [
-	""
+{ #category : 'configuration' }
+MicVocabularyChecker >> configureFrom: aCollectionOfArrays [
+	"aCollectionOfArrays is #( #(str1 str2) ... )"
 
-	aConfiguration isCollection ifTrue: [ self pairs: aConfiguration ]
+	aCollectionOfArrays isCollection 
+		ifTrue: [ self pairs: (aCollectionOfArrays collect: [:each | each first -> each second]) ]
 ]
 
 { #category : 'visiting - inline elements' }

@@ -13,6 +13,40 @@ Class {
 }
 
 { #category : 'instance creation' }
+MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
+	"Return all the checkers taking into account the configuration information."
+	
+	| availableCheckers configuredCheckers |
+	
+	availableCheckers := Dictionary new.	
+	"for now I remove the french checker"
+	(MicChecker allSubclasses copyWithoutFirst: MicFrenchTypoChecker) 
+		do: [ :aClass |
+		availableCheckers at: aClass checkerName put: aClass ].
+	
+	"Remove the checker the user does not want
+	We will have to see the ones that are exclusive: FrenchTypo and EnglishTypo"	
+	aConfiguration ignoredCheckers   
+		do: [ :each | availableCheckers removeKey: each ifAbsent: [ ] ].
+
+	
+	configuredCheckers := Dictionary new. 
+	availableCheckers keysAndValuesDo: [ :k :v | 
+		[ configuredCheckers at: k put: v new] on: Error do: [ "we should report to the user" ] ].
+	
+	"now we should configure the ones that should be."
+
+	aConfiguration checkerConfigurations do: [ :each |
+		 
+			configuredCheckers 
+				at: each key
+				ifPresent: [ :checker | 
+					checker configureFrom: each value ] ].
+			
+	^ configuredCheckers values
+]
+
+{ #category : 'instance creation' }
 MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: fileReference [
 	"I perform several analyses starting from a root document file reference (e.g. index.md)"
 
@@ -24,6 +58,25 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	checkers do: [ :checkerClass |
 		| checker |
 		checker := checkerClass new.
+		checker rootDirectory: folderReference.
+		checker checkProject: fileReference.
+		reporter addResults: checker results ].
+
+	^ reporter
+]
+
+{ #category : 'instance creation' }
+MicAnalysisReportWriter class >> reportForFolder: folderReference 
+	startingFrom: fileReference
+	configuration: aConfiguration [
+	"I perform several analyses starting from a root document file reference (e.g. index.md)"
+		
+	| reporter checkers |
+	reporter := self new.
+
+	checkers := self checkersFromConfiguration: aConfiguration.
+	
+	checkers do: [ :checker|
 		checker rootDirectory: folderReference.
 		checker checkProject: fileReference.
 		reporter addResults: checker results ].
