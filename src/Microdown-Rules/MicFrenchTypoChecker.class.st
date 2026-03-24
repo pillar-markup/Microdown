@@ -8,9 +8,9 @@ N'est pas superbe que Microdown puisse trouver de telles erreurrs ? Si bien sur.
 Class {
 	#name : 'MicFrenchTypoChecker',
 	#superclass : 'MicChecker',
-	#category : 'Microdown-Rules-FrenchTypo',
+	#category : 'Microdown-Rules-FrenchTypography',
 	#package : 'Microdown-Rules',
-	#tag : 'FrenchTypo'
+	#tag : 'FrenchTypography'
 }
 
 { #category : 'public - name' }

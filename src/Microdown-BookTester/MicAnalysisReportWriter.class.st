@@ -56,7 +56,7 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: 
 	| reporter checkers |
 	reporter := self new.
 
-	checkers := { MicReferenceChecker . MicCodeBlockValidator . MicEnglishTypoChecker . MicLastPeriodInCaptionChecker}.
+	checkers := { MicReferenceChecker . MicCodeBlockValidator . MicEnglishTypographyChecker . MicLastPeriodInCaptionChecker}.
 	checkers do: [ :checkerClass |
 		| checker |
 		checker := checkerClass new.
@@ -146,7 +146,7 @@ MicAnalysisReportWriter >> report [
 MicAnalysisReportWriter >> reportElements: partialResults on: aStream [
 
 	partialResults 
-		do: [ :each | aStream tab; nextPutAll: each explanation ] 
+		do: [ :each | aStream nextPutAll: '- '; nextPutAll: each explanation ] 
 		separatedBy: [ aStream cr ]
 	
 ]

@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'checker'
 	],
-	#category : 'Microdown-Rules-FrenchTypo',
+	#category : 'Microdown-Rules-FrenchTypography',
 	#package : 'Microdown-Rules',
-	#tag : 'FrenchTypo'
+	#tag : 'FrenchTypography'
 }
 
 { #category : 'running' }

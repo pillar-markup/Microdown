@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-FrenchTypo',
+	#category : 'Microdown-Rules-FrenchTypography',
 	#package : 'Microdown-Rules',
-	#tag : 'FrenchTypo'
+	#tag : 'FrenchTypography'
 }
 
 { #category : 'accessing' }

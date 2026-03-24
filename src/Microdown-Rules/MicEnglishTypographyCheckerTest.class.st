@@ -1,17 +1,17 @@
 Class {
-	#name : 'MicEnglishTypoCheckerTest',
+	#name : 'MicEnglishTypographyCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
 		'checker'
 	],
-	#category : 'Microdown-Rules-EnglishTypographic',
+	#category : 'Microdown-Rules-EnglishTypography',
 	#package : 'Microdown-Rules',
-	#tag : 'EnglishTypographic'
+	#tag : 'EnglishTypography'
 }
 
 { #category : 'running' }
-MicEnglishTypoCheckerTest >> generateFilesystemExample [
+MicEnglishTypographyCheckerTest >> generateFilesystemExample [
 
 	| file |
 	file := fileSystem workingDirectory / 'spaceBeforeColon.md'.
@@ -56,32 +56,32 @@ collection do: [:each | each printString' ].
 ]
 
 { #category : 'running' }
-MicEnglishTypoCheckerTest >> setUp [
+MicEnglishTypographyCheckerTest >> setUp [
 
 	super setUp.
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 
-	checker := MicEnglishTypoChecker new.
+	checker := MicEnglishTypographyChecker new.
 	
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testCorrectFile [
+MicEnglishTypographyCheckerTest >> testCorrectFile [
 
 	checker checkProject: fileSystem / 'correct.md'.
 	self assert: checker isOkay.
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testMonospaceIgnored [
+MicEnglishTypographyCheckerTest >> testMonospaceIgnored [
 
 	checker checkProject: fileSystem / 'mono.md'.
 	self assert: checker isOkay.
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testNoSpaceAfterColon [
+MicEnglishTypographyCheckerTest >> testNoSpaceAfterColon [
 
 	checker checkProject: fileSystem / 'noSpaceAfterColon.md'.
 	self deny: checker isOkay.
@@ -91,7 +91,7 @@ MicEnglishTypoCheckerTest >> testNoSpaceAfterColon [
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testNoSpaceAfterComma [
+MicEnglishTypographyCheckerTest >> testNoSpaceAfterComma [
 
 	checker checkProject: fileSystem / 'noSpaceAfterComma.md'.
 	self deny: checker isOkay.
@@ -101,7 +101,7 @@ MicEnglishTypoCheckerTest >> testNoSpaceAfterComma [
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testSpaceBeforeColon [
+MicEnglishTypographyCheckerTest >> testSpaceBeforeColon [
 
 	checker checkProject: fileSystem / 'spaceBeforeColon.md'.
 	self deny: checker isOkay.
@@ -111,7 +111,7 @@ MicEnglishTypoCheckerTest >> testSpaceBeforeColon [
 ]
 
 { #category : 'tests' }
-MicEnglishTypoCheckerTest >> testSpaceBeforeComma [
+MicEnglishTypographyCheckerTest >> testSpaceBeforeComma [
 
 	checker checkProject: fileSystem / 'spaceBeforeComma.md'.
 	self deny: checker isOkay.
