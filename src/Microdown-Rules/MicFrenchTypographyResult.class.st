@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicFrenchTypoResult',
+	#name : 'MicFrenchTypographyResult',
 	#superclass : 'MicAbstractResult',
 	#instVars : [
 		'detail'
@@ -10,19 +10,19 @@ Class {
 }
 
 { #category : 'accessing' }
-MicFrenchTypoResult >> detail [
+MicFrenchTypographyResult >> detail [
 
 	^ detail
 ]
 
 { #category : 'accessing' }
-MicFrenchTypoResult >> detail: aString [
+MicFrenchTypographyResult >> detail: aString [
 
 	detail := aString 
 ]
 
 { #category : 'accessing' }
-MicFrenchTypoResult >> explanation [ 
+MicFrenchTypographyResult >> explanation [ 
 	| text |
 	text := micElement bodyString ifNil: [ '' ].
 	^ 'Text: "' , text 

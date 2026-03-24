@@ -21,7 +21,7 @@ MicFrenchTypoChecker class >> checkerName [
 
 { #category : 'adding' }
 MicFrenchTypoChecker >> addResultFor: anElement message: aMessage [
-	results add: (MicFrenchTypoResult new 
+	results add: (MicFrenchTypographyResult new 
 		micElement: anElement;
 		inFile: anElement fromFile;
 		detail: aMessage;
