@@ -76,6 +76,13 @@ MicVocabularyChecker >> configureFrom: aCollectionOfArrays [
 ]
 
 { #category : 'visiting - inline elements' }
+MicVocabularyChecker >> initialize [ 
+
+	super initialize. 
+	patternPairs := OrderedCollection new.
+]
+
+{ #category : 'visiting - inline elements' }
 MicVocabularyChecker >> pairs [ 
 	^ patternPairs 
 ]

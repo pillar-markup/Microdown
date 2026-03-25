@@ -17,17 +17,31 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 	"Return all the checkers taking into account the configuration information."
 	
 	| availableCheckers configuredCheckers onlyCheckers |
-	configuredCheckers := Dictionary new. 
-	onlyCheckers := aConfiguration onlyCheckers.
-	(onlyCheckers isNil or: [ onlyCheckers isEmpty ]) 
-		ifTrue: [ 
-				self configureCheckers: configuredCheckers from: aConfiguration.
-				^ configuredCheckers values ].
-		
+	
 	availableCheckers := Dictionary new.
 	(MicChecker allSubclasses copyWithoutFirst: MicFrenchTypoChecker) 
 		do: [ :aClass |
-		availableCheckers at: aClass checkerName put: aClass ].
+			availableCheckers 
+				at: aClass checkerName 
+				put: aClass ].
+	
+	configuredCheckers := Dictionary new. 
+	aConfiguration isOnlyCheckersDefined ifTrue: [ onlyCheckers := aConfiguration onlyCheckers].
+	(onlyCheckers isNil or: [ onlyCheckers isEmpty ]) 
+		ifFalse: [ 
+			onlyCheckers do: [ :aCheck |
+				availableCheckers 
+					at: aCheck 
+					ifAbsent: [ Stdio stdout nextPutAll: 'The checker ', aCheck asString , ' is not available'].
+				configuredCheckers 
+					at: aCheck 
+					put: (availableCheckers at: aCheck) new.
+				self 
+					configureCheckers: configuredCheckers 
+					from: aConfiguration.
+				^ configuredCheckers values ]].
+		
+	
 	"Remove the checker the user does not want
 	We will have to see the ones that are exclusive: FrenchTypo and EnglishTypo"	
 
@@ -36,10 +50,14 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 
 	
 	availableCheckers keysAndValuesDo: [ :k :v | 
-		[ configuredCheckers at: k put: v new] on: Error do: [ "we should report to the user" ] ].
-	"now we should configure the ones that should be."
+		[ configuredCheckers at: k put: v new] 
+			on: Error 
+			do: [  ] ].
 	
-	self configureCheckers: configuredCheckers from: aConfiguration.		
+	
+	self 
+		configureCheckers: configuredCheckers 
+		from: aConfiguration.		
 	^ configuredCheckers values
 ]
 
@@ -83,7 +101,7 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference
 
 	checkers := self checkersFromConfiguration: aConfiguration.
 	
-	checkers do: [ :checker|
+	checkers do: [ :checker |
 		checker rootDirectory: folderReference.
 		checker checkProject: fileReference.
 		reporter addResults: checker results ].
