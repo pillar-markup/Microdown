@@ -75,6 +75,12 @@ MicVocabularyChecker >> configureFrom: aCollectionOfArrays [
 		ifTrue: [ self pairs: (aCollectionOfArrays collect: [:each | each first -> each second]) ]
 ]
 
+{ #category : 'visiting' }
+MicVocabularyChecker >> initialize [ 
+	super initialize.
+	patternPairs := OrderedCollection new
+]
+
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> pairs [ 
 	^ patternPairs 
