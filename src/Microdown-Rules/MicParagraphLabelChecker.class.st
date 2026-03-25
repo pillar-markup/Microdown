@@ -81,7 +81,7 @@ MicParagraphLabelChecker >> initialize [
 
 	super initialize.
 	labelShouldEndWithPeriod := true.
-	levelForParagraph := 5.
+	levelForParagraph := 4.
 ]
 
 { #category : 'accessing' }

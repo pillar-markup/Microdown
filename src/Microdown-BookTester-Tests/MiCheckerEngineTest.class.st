@@ -42,7 +42,7 @@ MiCheckerEngineTest >> testEngineDetectsHeaderMistake [
 MiCheckerEngineTest >> testEngineDetectsVocabularyMistake [
 	| config results |
 	config := OrderedDictionary new.
-	config at: 'Vocabulary' put: { ('colour' -> 'color') }.
+	config at: 'Vocabulary' put: { #('colour' . 'color') }.
 	results := engine runOn: file withConfiguration: config.
 	self deny: results isEmpty.
 	self assert: results size equals: 1.
@@ -53,7 +53,7 @@ MiCheckerEngineTest >> testEngineDetectsVocabularyMistake [
 MiCheckerEngineTest >> testEngineRunsMultipleCheckers [
 	| config results |
 	config := OrderedDictionary new.
-	config at: 'Vocabulary' put: { ('colour' -> 'color') }.
+	config at: 'Vocabulary' put: { #('colour' 'color') }.
 	config at: 'HeaderCapitalization' put: 'uppercase'.
 	results := engine runOn: file withConfiguration: config.
 	self deny: results isEmpty.
