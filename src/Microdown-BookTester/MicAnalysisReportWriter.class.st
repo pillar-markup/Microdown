@@ -24,9 +24,9 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 			availableCheckers 
 				at: aClass checkerName 
 				put: aClass ].
-	
+
 	configuredCheckers := Dictionary new. 
-	aConfiguration isOnlyCheckersDefined ifTrue: [ onlyCheckers := aConfiguration onlyCheckers].
+	onlyCheckers := aConfiguration onlyCheckers.
 	(onlyCheckers isNil or: [ onlyCheckers isEmpty ]) 
 		ifFalse: [ 
 			onlyCheckers do: [ :aCheck |
@@ -69,25 +69,6 @@ MicAnalysisReportWriter class >> configureCheckers: configuredCheckers from: aCo
 				at: each key
 				ifPresent: [ :checker | 
 					checker configureFrom: each value ] ].
-]
-
-{ #category : 'instance creation' }
-MicAnalysisReportWriter class >> reportForFolder: folderReference startingFrom: fileReference [
-	"I perform several analyses starting from a root document file reference (e.g. index.md)"
-
-	"In the future we should have a better way to add analysis. "	
-	| reporter checkers |
-	reporter := self new.
-
-	checkers := { MicReferenceChecker . MicCodeBlockValidator . MicEnglishTypographyChecker . MicLastPeriodInCaptionChecker}.
-	checkers do: [ :checkerClass |
-		| checker |
-		checker := checkerClass new.
-		checker rootDirectory: folderReference.
-		checker checkProject: fileReference.
-		reporter addResults: checker results ].
-
-	^ reporter
 ]
 
 { #category : 'instance creation' }
