@@ -54,7 +54,7 @@ checks := {
 		message := pair value.
 
 		matcher := RxMatcher forString: pattern.
-		(matcher matchesIn: aString) notEmpty ifTrue: [
+		(matcher matchesIn: cleanString) notEmpty ifTrue: [
 			self addResultFor: anElement message: message
 		]
 	].
