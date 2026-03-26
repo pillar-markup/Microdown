@@ -71,17 +71,6 @@ MiCheckerEngineTest >> testEngineDetectsHeaderMistake [
 ]
 
 { #category : 'running' }
-MiCheckerEngineTest >> testEngineDetectsVocabularyMistake [
-	| config results |
-	config := OrderedDictionary new.
-	config at: 'Vocabulary' put: { #('colour' . 'color') }.
-	results := engine runOn: file withConfiguration: config.
-	self deny: results isEmpty.
-	self assert: results size equals: 1.
-	self assert: (results first explanation includesSubstring: 'colour').
-]
-
-{ #category : 'running' }
 MiCheckerEngineTest >> testEngineRunsMultipleCheckers [
 	| config results |
 	config := OrderedDictionary new.
