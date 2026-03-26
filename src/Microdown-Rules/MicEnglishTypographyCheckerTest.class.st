@@ -50,7 +50,13 @@ This is correct: example, test.' ].
 ```smalltalk
 collection do: [:each | each printString' ].
 
+	file := fileSystem workingDirectory / 'urlHTTPS.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'See https://books.pharo.org for more.' ].
 
+	file := fileSystem workingDirectory / 'urlHTTP.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'Visit http://pharo.org for details.' ].
 
 	
 ]
@@ -77,6 +83,20 @@ MicEnglishTypographyCheckerTest >> testCorrectFile [
 MicEnglishTypographyCheckerTest >> testMonospaceIgnored [
 
 	checker checkProject: fileSystem / 'mono.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForHTTPSURL [
+
+	checker checkProject: fileSystem / 'urlHTTPS.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForHTTPURL [
+
+	checker checkProject: fileSystem / 'urlHTTP.md'.
 	self assert: checker isOkay.
 ]
 
