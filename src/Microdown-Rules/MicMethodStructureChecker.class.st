@@ -44,6 +44,11 @@ MicMethodStructureChecker class >> checkerName [
 	^ 'MethodStructure'
 ]
 
+{ #category : 'configuration' }
+MicMethodStructureChecker >> configureFrom: aConfiguration [
+	^ self
+]
+
 { #category : 'visiting' }
 MicMethodStructureChecker >> visitCode: aMicCode [
 	| lines firstLine secondLine |

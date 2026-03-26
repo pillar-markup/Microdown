@@ -40,6 +40,18 @@ MicCodeIndentationCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicCodeIndentationCheckerTest >> testConfigureFromAnyValue [ 
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicCodeIndentationCheckerTest >> testConfigureFromNil [
+	checker configureFrom: nil.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicCodeIndentationCheckerTest >> testIndentationCorrect [
 	checker checkProject: fileSystem / 'indentationCorrect.md'.
 	self assert: checker isOkay.

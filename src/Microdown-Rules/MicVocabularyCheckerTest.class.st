@@ -279,3 +279,30 @@ MicVocabularyCheckerTest >> testConfigureFrom [
 			'*meta object*'->'metaobject'
 			}
 ]
+
+{ #category : 'tests' }
+MicVocabularyCheckerTest >> testConfigureFromWithAllPairs [
+	| localChecker |
+	localChecker := MicVocabularyChecker new.
+	localChecker configureFrom: #(
+		#('sub-presenter' 'subpresenter')
+			('sub presenter' 'subpresenter')
+			('meta object' 'metaobject')
+			('section' 'Section')
+			('figure' 'Figure')
+			('back-end' 'backend')
+			('back end' 'backend')
+			('Pharo Image' 'Pharo image')
+			('colour' 'color')
+			('colours' 'colors')
+			('behaviour' 'behavior')
+			('centre' 'center')
+			('visualise' 'visualize')
+			"Expressions"
+			('allow to' 'allow one to')
+			('allowed to' 'allowed one to')
+			('allows to' 'allows one to')).
+	self assert: localChecker pairs size equals: 16.
+	localChecker checkProject: fileSystem / 'mistakeColour.md'.
+	self deny: localChecker isOkay.
+]

@@ -60,8 +60,10 @@ MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> configureFrom: aConfiguration [
-
-	self halt.
+	aConfiguration isNil ifTrue: [ ^ self ].
+	aConfiguration = 'true'
+		ifTrue: [ labelShouldEndWithPeriod := true ]
+		ifFalse: [ labelShouldEndWithPeriod := false ]
 ]
 
 { #category : 'visiting' }
@@ -82,6 +84,12 @@ MicParagraphLabelChecker >> initialize [
 	super initialize.
 	labelShouldEndWithPeriod := true.
 	levelForParagraph := 4.
+]
+
+{ #category : 'accessing' }
+MicParagraphLabelChecker >> labelShouldEndWithPeriod [
+
+	^ labelShouldEndWithPeriod
 ]
 
 { #category : 'accessing' }

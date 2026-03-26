@@ -55,6 +55,18 @@ MicFrenchTypoCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicFrenchTypoCheckerTest >> testConfigureFromAnyValue [
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicFrenchTypoCheckerTest >> testConfigureFromNil [ 
+	checker configureFrom: nil.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicFrenchTypoCheckerTest >> testCorrect [
 	checker checkProject: fileSystem / 'correct.md'.
 	self assert: checker isOkay.

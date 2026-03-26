@@ -37,6 +37,18 @@ MicMethodReferenceCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicMethodReferenceCheckerTest >> testConfigureFromAnyValue [ 
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicMethodReferenceCheckerTest >> testConfigureFromNil [ 
+	checker configureFrom: nil.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicMethodReferenceCheckerTest >> testMixedReferenceDetected [
 	checker checkProject: fileSystem / 'mixedReference.md'.
 	self deny: checker isOkay.

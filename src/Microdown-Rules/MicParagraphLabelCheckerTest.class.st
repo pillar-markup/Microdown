@@ -84,6 +84,24 @@ MicParagraphLabelCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicParagraphLabelCheckerTest >> testConfigureFromFalse [ 
+	checker configureFrom: 'false'.
+	self assert: checker labelShouldEndWithPeriod equals: false.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testConfigureFromNil [
+	checker configureFrom: nil.
+	self assert: checker labelShouldEndWithPeriod equals: true.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testConfigureFromTrue [ 
+	checker configureFrom: 'true'.
+	self assert: checker labelShouldEndWithPeriod equals: true.
+]
+
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel1NotChecked [
 	checker checkProject: fileSystem / 'level1.md'.
 	self assert: checker isOkay.
