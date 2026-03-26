@@ -50,8 +50,25 @@ This is correct: example, test.' ].
 ```smalltalk
 collection do: [:each | each printString' ].
 
+	file := fileSystem workingDirectory / 'urlHTTPS.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'See https://books.pharo.org for more.' ].
 
+	file := fileSystem workingDirectory / 'urlHTTP.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'Visit http://pharo.org for details.' ].
 
+	file := fileSystem workingDirectory / 'colonNewline.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'Here is a list: - item one' ].
+		
+	file := fileSystem workingDirectory / 'commaNewline.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'First, second.' ].
+		
+	file := fileSystem workingDirectory / 'semicolonNewline.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: 'First; second.' ].
 	
 ]
 
@@ -84,6 +101,41 @@ MicEnglishTypographyCheckerTest >> testCorrectFile [
 MicEnglishTypographyCheckerTest >> testMonospaceIgnored [
 
 	checker checkProject: fileSystem / 'mono.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForColonNewline [
+
+	checker checkProject: fileSystem / 'colonNewline.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForCommaline [
+
+	checker checkProject: fileSystem / 'commaNewline.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForHTTPSURL [
+
+	checker checkProject: fileSystem / 'urlHTTPS.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForHTTPURL [
+
+	checker checkProject: fileSystem / 'urlHTTP.md'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoFalsePositiveForSemicolonNewline [
+
+	checker checkProject: fileSystem / 'semicolonNewline.md'.
 	self assert: checker isOkay.
 ]
 
