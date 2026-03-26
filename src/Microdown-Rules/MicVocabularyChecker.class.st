@@ -31,28 +31,14 @@ MicVocabularyChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicVocabularyChecker class >> configurationPart [
+MicVocabularyChecker class >> configurationJSONPart [
 	"self configurationPart"
-	
-	^ STON toJsonStringPretty: { self checkerName . 
-		{
+		^ {
 			{'sub-presenter' . 'subpresenter'} .
 			{'sub presenter' . 'subpresenter'} .
 			{'meta object' . 'metaobject'} .
 			{'back-end' . 'backend'} .
-			{'back end' . 'backend'} } }
-]
-
-{ #category : 'configuration help' }
-MicVocabularyChecker class >> explanationForConfiguration [
-	"self explanationForConfiguration"
-	
-	^ String streamContents: [:str | 
-		str << self comment. 
-		str cr.
-		str << 'In the pillar.conf file you add the following key values:'. 
-		str cr.
-		str << self configurationPart ]
+			{'back end' . 'backend'} } 
 ]
 
 { #category : 'visiting - inline elements' }

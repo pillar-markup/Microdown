@@ -1,9 +1,10 @@
 "
-I check that punctuation follows English typography: in English there is no space before diacritics (:;?!) and there is space after diacrittics and (.,).
+I check that punctuation follows English typography: in English there is no space before diacritics (:;?!) and there is space after diacrittics and (.,). I pay attention that a diacritics can be the last character of a line: in this case I do not report errors.
 
-```
+The following paragraph does not contain mistakes.
+
 Is it not great that Microdown rule checkers can spot such mistakes? Indeed, this is great.
-```
+
 "
 Class {
 	#name : 'MicEnglishTypographyChecker',

@@ -67,6 +67,13 @@ MicEnglishTypographyCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testConfigureFrom [ 
+
+	checker configureFrom: #(#('sub-presenter' 'subpresenter') #('sub presenter' 'subpresenter') #('meta
+object' 'metaobject'))
+]
+
+{ #category : 'tests' }
 MicEnglishTypographyCheckerTest >> testCorrectFile [
 
 	checker checkProject: fileSystem / 'correct.md'.

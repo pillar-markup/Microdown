@@ -24,15 +24,29 @@ MicChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
+MicChecker class >> configurationJSONPart [
+
+	^ #()
+]
+
+{ #category : 'configuration help' }
+MicChecker class >> configurationPart [
+	"self configurationPart"
+	
+	^ STON toJsonStringPretty: { self checkerName } , self configurationJSONPart 
+]
+
+{ #category : 'configuration help' }
 MicChecker class >> explanationForConfiguration [
 	"self explanationForConfiguration"
 	
-	^ String streamContents: [:str | 
+	^ String streamContents: [ :str | 
 		str << self comment. 
 		str cr.
-		str << 'In the pillar.conf file you add the following key values:'. 
-		str cr.
-		str << self configurationPart ]
+		self configurationJSONPart ifNotEmpty: [ 
+			str << 'In the pillar.conf file you add the following key values:'. 
+			str cr.
+			str << self configurationPart ]] 
 ]
 
 { #category : 'visiting' }
@@ -47,6 +61,13 @@ MicChecker >> checkProject: aFileReference [
 	| collector |
 	collector := self fileCollectorForMainFileReference: aFileReference.
 	collector visitedFilesAsDOM do: [ :each | each accept: self  ]
+]
+
+{ #category : 'configuration' }
+MicChecker >> configureFrom: aConfiguration [
+	"By default a checker does not need to be configured"
+	
+	^ self 
 ]
 
 { #category : 'accessing' }
