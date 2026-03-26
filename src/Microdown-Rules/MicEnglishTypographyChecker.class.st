@@ -31,12 +31,14 @@ MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 
 { #category : 'adding' }
 MicEnglishTypographyChecker >> checkString: aString for: anElement [
-	| checks |
+	| checks cleanString |
 	aString ifNil: [ ^self ].
+	cleanString := aString copyReplaceAll: (String with: Character lf) with: ' '.
+	cleanString := cleanString copyReplaceAll: (String with: Character cr) with: ' '. 
 checks := {
 		' \:' -> 'There is a space before :'.
 		' \,' -> 'There is a space before ,'.
-		'\:[^ ]' -> 'There is no space after :'.
+		'\:[^ /]' -> 'There is no space after :'.
 		',[^ ]' -> 'There is no space after ,'.
 		' \;' -> 'There is a space before ;'.
 		'\;[^ ]' -> 'There is no space after ;'.
@@ -52,7 +54,7 @@ checks := {
 		message := pair value.
 
 		matcher := RxMatcher forString: pattern.
-		(matcher matchesIn: aString) notEmpty ifTrue: [
+		(matcher matchesIn: cleanString) notEmpty ifTrue: [
 			self addResultFor: anElement message: message
 		]
 	].
