@@ -60,8 +60,7 @@ MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> configureFrom: aConfiguration [
-
-	self halt.
+	
 ]
 
 { #category : 'visiting' }

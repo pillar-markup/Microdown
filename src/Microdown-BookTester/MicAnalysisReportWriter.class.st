@@ -65,7 +65,6 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 MicAnalysisReportWriter class >> configureCheckers: configuredCheckers from: aConfiguration [
 
 	aConfiguration checkerConfigurations do: [ :each |
-			self halt.
 			configuredCheckers 
 				at: each key
 				ifPresent: [ :checker | 
@@ -82,9 +81,8 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference
 	reporter := self new.
 
 	checkers := self checkersFromConfiguration: aConfiguration.
-	self halt. 
 	checkers do: [ :checker|
-		Stdio stdout nextPutAll: 'Checker :', checker class name, ' is checking.';cr.
+		Stdio stdout nextPutAll: 'Checker: ', checker class name, ' is checking.';cr.
 		checker rootDirectory: folderReference.
 		checker checkProject: fileReference.
 		reporter addResults: checker results ].
