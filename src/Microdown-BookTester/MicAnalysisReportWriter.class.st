@@ -81,8 +81,8 @@ MicAnalysisReportWriter class >> reportForFolder: folderReference
 	reporter := self new.
 
 	checkers := self checkersFromConfiguration: aConfiguration.
-	
 	checkers do: [ :checker|
+		Stdio stdout nextPutAll: 'Checker: ', checker class name, ' is checking.';cr.
 		checker rootDirectory: folderReference.
 		checker checkProject: fileReference.
 		reporter addResults: checker results ].

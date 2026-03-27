@@ -1,9 +1,10 @@
 "
-I check that punctuation follows English typography: in English there is no space before diacritics (:;?!) and there is space after diacrittics and (.,).
+I check that punctuation follows English typography: in English there is no space before diacritics (:;?!) and there is space after diacrittics and (.,). I pay attention that a diacritics can be the last character of a line: in this case I do not report errors.
 
-```
+The following paragraph does not contain mistakes.
+
 Is it not great that Microdown rule checkers can spot such mistakes? Indeed, this is great.
-```
+
 "
 Class {
 	#name : 'MicEnglishTypographyChecker',
@@ -31,12 +32,14 @@ MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 
 { #category : 'adding' }
 MicEnglishTypographyChecker >> checkString: aString for: anElement [
-	| checks |
+	| checks cleanString |
 	aString ifNil: [ ^self ].
+	cleanString := aString copyReplaceAll: (String with: Character lf) with: ' '.
+	cleanString := cleanString copyReplaceAll: (String with: Character cr) with: ' '. 
 checks := {
 		' \:' -> 'There is a space before :'.
 		' \,' -> 'There is a space before ,'.
-		'\:[^ ]' -> 'There is no space after :'.
+		'\:[^ /]' -> 'There is no space after :'.
 		',[^ ]' -> 'There is no space after ,'.
 		' \;' -> 'There is a space before ;'.
 		'\;[^ ]' -> 'There is no space after ;'.
@@ -52,7 +55,7 @@ checks := {
 		message := pair value.
 
 		matcher := RxMatcher forString: pattern.
-		(matcher matchesIn: aString) notEmpty ifTrue: [
+		(matcher matchesIn: cleanString) notEmpty ifTrue: [
 			self addResultFor: anElement message: message
 		]
 	].
