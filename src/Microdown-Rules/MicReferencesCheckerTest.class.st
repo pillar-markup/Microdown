@@ -10,6 +10,11 @@ Class {
 	#tag : 'References'
 }
 
+{ #category : 'public - name' }
+MicReferencesCheckerTest class >> checkerName [ 
+	^ 'ReferenceChecks'
+]
+
 { #category : 'running' }
 MicReferencesCheckerTest >> generateFilesystemExample [
 	| file |
@@ -62,6 +67,18 @@ MicReferencesCheckerTest >> setUp [
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 	checker := MicAnchoredSectionTableFigureChecker new.
+]
+
+{ #category : 'running' }
+MicReferencesCheckerTest >> testConfigureFromAnyValue [ 
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'running' }
+MicReferencesCheckerTest >> testConfigureFromNil [
+	checker configureFrom: nil.
+	self assert: checker isOkay.
 ]
 
 { #category : 'running' }

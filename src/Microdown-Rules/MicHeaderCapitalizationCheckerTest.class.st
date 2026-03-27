@@ -165,6 +165,27 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 ]
 
 { #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testConfigureFromLowercase [
+
+	checker configureFrom: 'lowercase'.
+	self assert: (checker strategy isKindOf: MicRuleLowercaseHeaderStrategy).
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testConfigureFromNil [
+
+	checker configureFrom: nil.
+	self assert: (checker strategy isKindOf: MicRuleLowercaseHeaderStrategy).
+]
+
+{ #category : 'tests - headers should be lowercased' }
+MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
+
+	checker configureFrom: 'uppercase'.
+	self assert: (checker strategy isKindOf: MicRuleUppercaseHeaderStrategy).
+]
+
+{ #category : 'tests - headers should be lowercased' }
 MicHeaderCapitalizationCheckerTest >> testWritingBooksCorrect [
 
 	checker verifyUppercase.

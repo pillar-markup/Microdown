@@ -57,6 +57,18 @@ MicMethodStructureCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
+MicMethodStructureCheckerTest >> testConfigureFromAnyValue [ 
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicMethodStructureCheckerTest >> testConfigureFromNil [ 
+	checker configureFrom: nil.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicMethodStructureCheckerTest >> testMethodCorrect [
 	checker checkProject: fileSystem / 'methodCorrect.md'.
 	self assert: checker isOkay.

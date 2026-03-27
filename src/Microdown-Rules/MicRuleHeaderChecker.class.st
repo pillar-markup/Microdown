@@ -74,6 +74,12 @@ MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
 	^ (uncapitalizableText includes: normalized) not
 ]
 
+{ #category : 'accessing' }
+MicRuleHeaderChecker >> strategy [
+
+	^ strategy
+]
+
 { #category : 'initialization' }
 MicRuleHeaderChecker >> verifyLowercase [
 

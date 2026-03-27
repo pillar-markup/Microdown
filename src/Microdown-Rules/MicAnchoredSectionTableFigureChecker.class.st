@@ -25,6 +25,11 @@ MicAnchoredSectionTableFigureChecker class >> checkerName [
 	^ 'NotTheFigureX'
 ]
 
+{ #category : 'configuration' }
+MicAnchoredSectionTableFigureChecker >> configureFrom: aConfiguration [
+	^ self
+]
+
 { #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 	| children |

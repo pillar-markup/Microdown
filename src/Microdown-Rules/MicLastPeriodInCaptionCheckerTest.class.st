@@ -119,6 +119,24 @@ MicLastPeriodInCaptionCheckerTest >> testCodeCheckerIdentifyCorrectlyMissingExtr
 		'Text: "This is the famous missing period" in file/codeCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
 ]
 
+{ #category : 'tests' }
+MicLastPeriodInCaptionCheckerTest >> testConfigureFromFalse [
+	checker configureFrom: 'false'.
+	self assert: checker codeShouldEndWithPeriod equals: false.
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCaptionCheckerTest >> testConfigureFromNil [
+	checker configureFrom: nil.
+	self assert: checker codeShouldEndWithPeriod equals: true.
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCaptionCheckerTest >> testConfigureFromTrue [
+	checker configureFrom: 'true'.
+	self assert: checker codeShouldEndWithPeriod equals: true.
+]
+
 { #category : 'tests - missing period' }
 MicLastPeriodInCaptionCheckerTest >> testFigureCheckerChecksCorrectlyMissingExtraPeriod [
 

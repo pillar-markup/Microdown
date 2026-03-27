@@ -16,6 +16,11 @@ MicCodeIndentationChecker class >> checkerName [
 	^ 'CodeIndentation'
 ]
 
+{ #category : 'configuration' }
+MicCodeIndentationChecker >> configureFrom: aConfiguration [
+	^ self
+]
+
 { #category : 'visiting' }
 MicCodeIndentationChecker >> visitCode: aMicCode [
 	| lines |

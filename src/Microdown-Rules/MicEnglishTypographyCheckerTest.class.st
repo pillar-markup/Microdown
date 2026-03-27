@@ -91,6 +91,20 @@ object' 'metaobject'))
 ]
 
 { #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testConfigureFromAnyValue [
+
+	checker configureFrom: 'anything'.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testConfigureFromNil [
+
+	checker configureFrom: nil.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicEnglishTypographyCheckerTest >> testCorrectFile [
 
 	checker checkProject: fileSystem / 'correct.md'.
