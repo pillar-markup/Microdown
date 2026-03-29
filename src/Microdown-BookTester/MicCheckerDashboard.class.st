@@ -7,7 +7,12 @@ Class {
 		'filePathInput',
 		'runButton',
 		'results',
-		'browseButton'
+		'browseButton',
+		'exportButton',
+		'reporter',
+		'file',
+		'currentFile',
+		'currentReporter'
 	],
 	#category : 'Microdown-BookTester-CheckerDashboard',
 	#package : 'Microdown-BookTester',
@@ -37,16 +42,16 @@ MicCheckerDashboard >> connectPresenters [
 					 ].
 	
 	runButton action: [ 
-		| config file reporter output selectedCheckers |
+		| config output selectedCheckers |
 		
 		filePathInput text isEmpty
 			ifTrue: [ 
 				results text: 'Please enter a file path.'.
 			 ]
 			ifFalse: [ 
-				file := filePathInput text asFileReference.
-				file exists ifFalse: [ 
-					results text: 'File not found: ' , file fullName.
+				currentFile := filePathInput text asFileReference.
+				currentFile exists ifFalse: [ 
+					results text: 'File not found: ' , currentFile fullName.
 				]
 			ifTrue: [ 	
 				selectedCheckers := (checkerList presenters
@@ -61,15 +66,16 @@ MicCheckerDashboard >> connectPresenters [
 			(Dictionary new
 				at: 'onlyCheckers' put: selectedCheckers;
 				yourself).
-		reporter := MicAnalysisReportWriter 
-			reportForFolder: file parent
-			startingFrom: file 
+		currentReporter := MicAnalysisReportWriter 
+			reportForFolder: currentFile parent
+			startingFrom: currentFile 
 			configuration: config.
-		reporter isOkay 
+		currentReporter isOkay 
 			ifTrue: [ results text: 'No problems found!' ]
 			ifFalse: [ 			
-				output := String streamContents: [ :str | reporter buildReportOn: str].
-				results text: output 
+				output := String streamContents: [ :str | currentReporter buildReportOn: str].
+				results text: output.
+				exportButton enabled: true.
 				]
 	]]
 	]
@@ -81,7 +87,17 @@ MicCheckerDashboard >> connectPresenters [
 		chooseExistingFileReference:'Select index.md'
 		 extensions: #('md')
 		 path: FileSystem workingDirectory.
-		chosen ifNotNil: [ filePathInput text: chosen fullName ] . ]
+		chosen ifNotNil: [ filePathInput text: chosen fullName ] . ].
+	
+	exportButton action: [ 
+		| htmlReporter outputFile |
+		htmlReporter := MicCheckerHTMLReporter new.
+		htmlReporter reporter: currentReporter.
+		htmlReporter fileReference: currentFile.
+		outputFile := htmlReporter generateReport.
+		WebBrowser openOn: outputFile fullName.
+		results text: results text, String cr, 'HTML report exported to: ', outputFile fullName.
+		 ].
 ]
 
 { #category : 'initialization' }
@@ -97,6 +113,11 @@ MicCheckerDashboard >> defaultLayout [
 			yourself) expand: false;
 		add: runButton expand: false;
 		add: results;
+		addLast: (SpBoxLayout newLeftToRight 
+			add: runButton;
+			add: exportButton;
+			yourself 
+		) expand: false;
 		
 		yourself
 ]
@@ -126,6 +147,10 @@ MicCheckerDashboard >> initializePresenters [
 
 	browseButton := self newButton.
 	browseButton label: 'Browse'.
+	
+	exportButton := self newButton.
+	exportButton label: 'Export HTML Report'.
+	exportButton enabled: false.
 ]
 
 { #category : 'initialization' }
