@@ -19,7 +19,7 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 	| availableCheckers configuredCheckers onlyCheckers |
 	
 	availableCheckers := Dictionary new.
-	(MicChecker allSubclasses copyWithoutFirst: MicFrenchTypoChecker) 
+	MicChecker allSubclasses
 		do: [ :aClass |
 			availableCheckers 
 				at: aClass checkerName 

@@ -20,6 +20,15 @@ MicEnglishTypographyChecker class >> checkerName [
 	^ 'EnglishTypography'
 ]
 
+{ #category : 'configuration help' }
+MicEnglishTypographyChecker class >> explanationForConfiguration [ 
+	^ 'I check that punctuation follows English typography rules. No space before : ; ? ! and space after : , ; ? !
+	URLs (http:// and https://) are ignored.
+	No configuration needed.
+	In pillar.conf add:
+		"onlyCheckers" : [ "EnglishTypography" ]'
+]
+
 { #category : 'adding' }
 MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 	results add: (MicEnglishTypographyResult new 

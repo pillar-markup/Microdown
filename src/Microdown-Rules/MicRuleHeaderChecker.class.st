@@ -1,3 +1,13 @@
+"
+I check that headers follow a consistent capitalization strategy (uppercase or lowercase).
+
+The first word of a header is always capitalized.
+Common words like 'a', 'an', 'the', 'and', etc. are not capitalized.
+
+I can be configured in two modes:
+- uppercase: all significiant words should be capitalized
+- lowercase: only the first word should be capitalized
+"
 Class {
 	#name : 'MicRuleHeaderChecker',
 	#superclass : 'MicChecker',

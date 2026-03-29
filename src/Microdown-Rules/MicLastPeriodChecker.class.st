@@ -1,3 +1,15 @@
+"
+I check that code blocks end with a period or not, depending on the configuration.
+
+I can be configured in two modes:
+- identifyMissingPeriod (true): flags code blocks that do NOT end with a period.
+- identifyExtraPeriod (false): flags code blocks that DO end with a period.
+
+In pillar.conf add:
+	""checkerConfigurations"" : [
+		""CodeLastPeriod"" : ""true""
+		]
+"
 Class {
 	#name : 'MicLastPeriodChecker',
 	#superclass : 'MicChecker',
