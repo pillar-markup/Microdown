@@ -40,27 +40,44 @@ h2 { color: #c0392b; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; marg
 
 { #category : 'accessing' }
 MicCheckerHTMLReporter >> buildResultsOn: aStream [
-	| grouped |
-	grouped := reporter results groupedBy: [ :r | r headerString].
-	grouped keysAndValuesDo: [ :header :results |
-		aStream nextPutAll: '<h2>' , header , '</h2>'.
-		results do: [ :r |
-			| lineNum srcFile searchText |
-			srcFile := r sourceFileReference ifNil: [ fileReference ].
-			searchText := (r micElement isNil or: [r micElement bodyString isNil])
-			ifTrue: [ r detail ifNil: [ '' ]]
-			ifFalse: [ r micElement bodyString].
-			lineNum := (srcFile notNil and: [searchText notEmpty])
-				ifTrue: [ self lineNumberOf: searchText inFile: srcFile ]
-				ifFalse: [ 0 ].
-			aStream nextPutAll: '<div class="error">'.
-			lineNum > 0 ifTrue: [ 
-				aStream nextPutAll: '<span class="line-num">Line ', lineNum printString , ': </span>'
-				 ].
-			aStream nextPutAll: r explanation.
-			aStream nextPutAll: '</div>'
-			 ]
-		 ]
+    | grouped |
+    grouped := reporter results groupedBy: [:r | r headerString].
+    grouped keysAndValuesDo: [:header :results |
+        aStream nextPutAll: '<h2>' , header , '</h2>'.
+        results do: [:r |
+            | lineNum srcFile searchText |
+            srcFile := r sourceFileReference ifNil: [ fileReference ].
+            searchText := (r micElement isNil or: [r micElement bodyString isNil])
+                ifTrue: [ r detail ifNil: [''] ]
+                ifFalse: [ r micElement bodyString ].
+            lineNum := (srcFile notNil and: [searchText notEmpty])
+                ifTrue: [ self lineNumberOf: searchText inFile: srcFile ]
+                ifFalse: [ 0 ].
+            aStream nextPutAll: '<div class="error">'.
+            lineNum > 0 ifTrue: [
+                aStream nextPutAll: '<span class="line-num">Line ' , lineNum printString , ': </span>' ].
+            aStream nextPutAll: r explanation.
+            lineNum > 0 ifTrue: [
+                | context |
+                context := self contextAround: lineNum inFile: srcFile.
+                aStream nextPutAll: '<pre class="context">' , context , '</pre>' ].
+            aStream nextPutAll: '</div>' ] ]
+]
+
+{ #category : 'accessing' }
+MicCheckerHTMLReporter >> contextAround: lineNum inFile: aFileRef [
+    | lines start end |
+    lines := aFileRef contents lines.
+    start := (lineNum - 2) max: 1.
+    end := (lineNum + 2) min: lines size.
+    ^ String streamContents: [:s |
+        start to: end do: [:i |
+            i = lineNum
+                ifTrue: [ s nextPutAll: '<span class="error-line">' ]
+                ifFalse: [ s nextPutAll: '<span>' ].
+            s nextPutAll: i printString , ' | ' , (lines at: i).
+            s nextPutAll: '</span>'.
+            s nextPut: Character lf]]
 ]
 
 { #category : 'accessing' }
