@@ -37,3 +37,8 @@ MicAbstractResult >> micElement [
 MicAbstractResult >> micElement: aMicElement [ 
 	micElement := aMicElement
 ]
+
+{ #category : 'accessing' }
+MicAbstractResult >> sourceFileReference [
+	^ fileReference 
+]

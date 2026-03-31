@@ -41,6 +41,11 @@ MicResult >> explanation [
 	^ self subclassResponsibility
 ]
 
+{ #category : 'kinds' }
+MicResult >> headerString [ 
+	^ self class name
+]
+
 { #category : 'accessing' }
 MicResult >> message [
 

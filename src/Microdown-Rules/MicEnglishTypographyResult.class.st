@@ -16,6 +16,12 @@ MicEnglishTypographyResult class >> headerString [
 ]
 
 { #category : 'accessing' }
+MicEnglishTypographyResult >> detail [
+
+	^ detail
+]
+
+{ #category : 'accessing' }
 MicEnglishTypographyResult >> detail: aString [ 
 	detail := aString
 ]
@@ -29,4 +35,9 @@ MicEnglishTypographyResult >> explanation [
 	"this looks like a bug or hidden a bug!"
 	
 	^ 'Text: "' , text , '" in file' , fileReference fullName , ' contains a mistake: ', detail
+]
+
+{ #category : 'kinds' }
+MicEnglishTypographyResult >> headerString [ 
+	^ 'English Typography violations'
 ]
