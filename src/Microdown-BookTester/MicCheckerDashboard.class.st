@@ -1,3 +1,6 @@
+"
+I'm a first version of a little UI to interactively select and see the results of running checkers.
+"
 Class {
 	#name : 'MicCheckerDashboard',
 	#superclass : 'SpPresenter',
@@ -15,9 +18,9 @@ Class {
 		'currentReporter',
 		'fileContent'
 	],
-	#category : 'Microdown-BookTester-CheckerDashboard',
+	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
-	#tag : 'CheckerDashboard'
+	#tag : 'UI'
 }
 
 { #category : 'initialization' }

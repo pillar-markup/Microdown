@@ -1,3 +1,9 @@
+"
+I'm a wrapper of the reporter that generates results in HTML format. 
+A possible future for me is 
+- to be a subclass or sibling of MicAnalysisReporter
+- that checker results produce HTML (may be via a simple double dispatch).
+"
 Class {
 	#name : 'MicCheckerHTMLReporter',
 	#superclass : 'Object',
@@ -5,9 +11,9 @@ Class {
 		'reporter',
 		'fileReference'
 	],
-	#category : 'Microdown-BookTester-CheckerDashboard',
+	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
-	#tag : 'CheckerDashboard'
+	#tag : 'UI'
 }
 
 { #category : 'accessing' }
