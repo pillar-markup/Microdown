@@ -90,16 +90,14 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
             lineNum := lineNum ifNil: [ 0 ].
             fileName := srcFile notNil ifTrue: [ srcFile basename ] ifFalse: [ '' ].
             fullPath := srcFile notNil ifTrue: [ srcFile fullName ] ifFalse: [ '' ].
-
-            "Extraire uniquement Text: '...' depuis r explanation"
             shortMsg := r explanation.
-            (shortMsg includesSubstring: 'Text: "') ifTrue: [
+            "(shortMsg includesSubstring: 'Text: ""') ifTrue: [
                 | startIdx endIdx |
-                startIdx := shortMsg indexOfSubCollection: 'Text: "' startingAt: 1.
-                endIdx := shortMsg indexOf: $" startingAt: startIdx + 7.
+                startIdx := shortMsg indexOfSubCollection: 'Text: ""' startingAt: 1.
+                endIdx := shortMsg indexOf: $"" startingAt: startIdx + 7.
                 endIdx > 0
                     ifTrue: [ shortMsg := shortMsg copyFrom: startIdx to: endIdx ]
-                    ifFalse: [ shortMsg := shortMsg copyFrom: startIdx to: shortMsg size ] ].
+                    ifFalse: [ shortMsg := shortMsg copyFrom: startIdx to: shortMsg size ] ]."
 
             aStream nextPutAll: '<div class="error-row">
 <div class="error-meta">'.
