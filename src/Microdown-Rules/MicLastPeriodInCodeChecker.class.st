@@ -54,6 +54,11 @@ MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
 ]
 
+{ #category : 'as yet unclassified' }
+MicLastPeriodInCodeChecker >> resultHeaderStrings [
+    ^ #('Missing Period In Code')
+]
+
 { #category : 'visiting' }
 MicLastPeriodInCodeChecker >> visitCode: aCodeBlockElement [
 

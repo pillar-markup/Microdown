@@ -22,6 +22,11 @@ MicAbstractResult >> fileReference: anObject [
 	fileReference := anObject
 ]
 
+{ #category : 'kinds' }
+MicAbstractResult >> headerString [
+    ^ 'Abstract'
+]
+
 { #category : 'accessing' }
 MicAbstractResult >> inFile: aFileReference [ 
 	fileReference := aFileReference 

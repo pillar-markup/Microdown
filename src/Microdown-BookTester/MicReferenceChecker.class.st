@@ -231,6 +231,12 @@ MicReferenceChecker >> reportSTONFormat [
 	^ reportWriter reportSTONFormat
 ]
 
+{ #category : 'as yet unclassified' }
+MicReferenceChecker >> resultHeaderStrings [
+    ^ #('Undefined Figure File' 'Unreferenced Figure' 'Reference To Unexisting Anchor' 'Duplicated Anchor')
+
+]
+
 { #category : 'internal' }
 MicReferenceChecker >> unknownAnchors [
 	

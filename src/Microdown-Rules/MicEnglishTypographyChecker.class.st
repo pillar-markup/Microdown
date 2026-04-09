@@ -29,6 +29,11 @@ MicEnglishTypographyChecker class >> explanationForConfiguration [
 		"onlyCheckers" : [ "EnglishTypography" ]'
 ]
 
+{ #category : 'configuration' }
+MicEnglishTypographyChecker class >> mutuallyExclusiveWith [ 
+	^ #('FrenchTypography')
+]
+
 { #category : 'adding' }
 MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 	results add: (MicEnglishTypographyResult new 
@@ -73,6 +78,11 @@ checks := {
 { #category : 'as yet unclassified' }
 MicEnglishTypographyChecker >> configureFrom: aConfiguration [
 	^ self
+]
+
+{ #category : 'as yet unclassified' }
+MicEnglishTypographyChecker >> resultHeaderStrings [
+    ^ #('English Typography violations')
 ]
 
 { #category : 'adding' }

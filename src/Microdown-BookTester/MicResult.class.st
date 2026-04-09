@@ -36,6 +36,11 @@ MicResult class >> headerString [
 ]
 
 { #category : 'accessing' }
+MicResult >> detail [
+	^ nil
+]
+
+{ #category : 'accessing' }
 MicResult >> explanation [
 
 	^ self subclassResponsibility
@@ -44,6 +49,11 @@ MicResult >> explanation [
 { #category : 'kinds' }
 MicResult >> headerString [ 
 	^ self class name
+]
+
+{ #category : 'accessing' }
+MicResult >> inFile: aFileReference [
+    source := aFileReference
 ]
 
 { #category : 'accessing' }
@@ -86,4 +96,9 @@ MicResult >> status: anObject [
 MicResult >> stonFormatExplanation [
 
 	^ self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+MicResult >> what [
+	^ nil
 ]

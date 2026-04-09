@@ -43,6 +43,11 @@ MicUndefinedFigureFileResult >> figureFileString: aString [
 	figureFileString := aString
 ]
 
+{ #category : 'kinds' }
+MicUndefinedFigureFileResult >> headerString [
+    ^ 'Undefined Figure File'
+]
+
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> what [ 
 

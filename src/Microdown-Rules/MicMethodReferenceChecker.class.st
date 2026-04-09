@@ -41,6 +41,11 @@ MicMethodReferenceChecker >> configureFrom: aConfiguration [
 	^ self
 ]
 
+{ #category : 'as yet unclassified' }
+MicMethodReferenceChecker >> resultHeaderStrings [
+    ^ #('Method Reference')
+]
+
 { #category : 'visiting - inline elements' }
 MicMethodReferenceChecker >> visitText: aMicText [
 	| text withHash withhoutHash |

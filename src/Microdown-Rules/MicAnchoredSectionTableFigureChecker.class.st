@@ -30,6 +30,11 @@ MicAnchoredSectionTableFigureChecker >> configureFrom: aConfiguration [
 	^ self
 ]
 
+{ #category : 'as yet unclassified' }
+MicAnchoredSectionTableFigureChecker >> resultHeaderStrings [
+    ^ #('Figure/Section/Table Reference')
+]
+
 { #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 	| children |

@@ -79,3 +79,8 @@ MicLastPeriodChecker >> initialize [
 	super initialize. 
 	codeShouldEndWithPeriod := true
 ]
+
+{ #category : 'as yet unclassified' }
+MicLastPeriodChecker >> resultHeaderStrings [
+    ^ #('Code Last Period')
+]

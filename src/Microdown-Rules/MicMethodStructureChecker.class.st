@@ -49,6 +49,11 @@ MicMethodStructureChecker >> configureFrom: aConfiguration [
 	^ self
 ]
 
+{ #category : 'as yet unclassified' }
+MicMethodStructureChecker >> resultHeaderStrings [
+    ^ #('Method Structure')
+]
+
 { #category : 'visiting' }
 MicMethodStructureChecker >> visitCode: aMicCode [
 	| lines firstLine secondLine |
@@ -63,7 +68,7 @@ MicMethodStructureChecker >> visitCode: aMicCode [
 	"ifelse, theres's a blank line missing after the selector"
 	results  add: (MicMethodStructureResult new 
 		micElement: aMicCode;
-		inFile: aMicCode;
+		inFile: aMicCode fromFile;
 		detail: firstLine;
 		yourself 
 	)

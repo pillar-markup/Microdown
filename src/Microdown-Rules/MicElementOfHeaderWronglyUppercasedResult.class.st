@@ -22,3 +22,8 @@ MicElementOfHeaderWronglyUppercasedResult >> explanation [
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' should not be uppercased.'
 	 
 ]
+
+{ #category : 'kinds' }
+MicElementOfHeaderWronglyUppercasedResult >> headerString [
+    ^ 'Header Capitalization'
+]

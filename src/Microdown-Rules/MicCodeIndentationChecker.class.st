@@ -21,6 +21,11 @@ MicCodeIndentationChecker >> configureFrom: aConfiguration [
 	^ self
 ]
 
+{ #category : 'as yet unclassified' }
+MicCodeIndentationChecker >> resultHeaderStrings [
+    ^ #('Code Indentation')
+]
+
 { #category : 'visiting' }
 MicCodeIndentationChecker >> visitCode: aMicCode [
 	| lines |

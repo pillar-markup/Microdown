@@ -24,8 +24,18 @@ MicMethodStructureResult >> detail: aString [
 { #category : 'accessing' }
 MicMethodStructureResult >> explanation [ 
 	^ 'Text: "' , micElement body 
-	, '" in file' , fileReference fromFile fullName 
+	, '" in file' , fileReference fullName 
 	, ' contains a mistake: method ['
 	, detail 
 	, '] should have an empty line after the selector when is no comment.'
+]
+
+{ #category : 'kinds' }
+MicMethodStructureResult >> headerString [
+    ^ 'Method Structure'
+]
+
+{ #category : 'accessing' }
+MicMethodStructureResult >> what [
+    ^ detail copyReplaceAll: '"' with: ''
 ]

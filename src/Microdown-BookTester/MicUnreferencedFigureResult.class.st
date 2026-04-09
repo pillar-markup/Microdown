@@ -51,8 +51,13 @@ MicUnreferencedFigureResult >> figurePath: aString [
 	figurePath := aString
 ]
 
+{ #category : 'kinds' }
+MicUnreferencedFigureResult >> headerString [
+    ^ 'Unreferenced Figure'
+]
+
 { #category : 'accessing' }
 MicUnreferencedFigureResult >> what [ 
 
-	^ figurePath printString
+	^ figurePath
 ]

@@ -63,6 +63,9 @@ MicFileCollector >> visitInputFile: anInputFile [
 MicFileCollector >> visitRoot: micDocument [
 
 	| worklist |
+	visitedFiles := OrderedCollection new.
+	visitedFileStrings := Set new.
+	unexistingFiles := Set new.
 	worklist := OrderedCollection new.
 	worklist add: micDocument.
 

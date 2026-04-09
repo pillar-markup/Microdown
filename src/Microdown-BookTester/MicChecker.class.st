@@ -49,6 +49,11 @@ MicChecker class >> explanationForConfiguration [
 			str << self configurationPart ]] 
 ]
 
+{ #category : 'configuration' }
+MicChecker class >> mutuallyExclusiveWith [
+	^ #()
+]
+
 { #category : 'visiting' }
 MicChecker >> addResult: aResult [
 
@@ -59,6 +64,7 @@ MicChecker >> addResult: aResult [
 MicChecker >> checkProject: aFileReference [
 
 	| collector |
+	results := OrderedCollection new.
 	collector := self fileCollectorForMainFileReference: aFileReference.
 	collector visitedFilesAsDOM do: [ :each | each accept: self  ]
 ]
@@ -83,6 +89,11 @@ MicChecker >> fileCollectorForMainFileReference: aFileReference [
 ]
 
 { #category : 'accessing' }
+MicChecker >> fileReference [
+	^ nil
+]
+
+{ #category : 'accessing' }
 MicChecker >> fileSystem: aReference [
 
 	rootDirectory := aReference
@@ -101,6 +112,11 @@ MicChecker >> isOkay [
 ]
 
 { #category : 'accessing' }
+MicChecker >> micElement [
+	^ nil
+]
+
+{ #category : 'accessing' }
 MicChecker >> reportWriter [
 
 	^ reportWriter
@@ -110,6 +126,11 @@ MicChecker >> reportWriter [
 MicChecker >> reportWriter: anObject [
 
 	reportWriter := anObject
+]
+
+{ #category : 'as yet unclassified' }
+MicChecker >> resultHeaderStrings [
+    ^ #()
 ]
 
 { #category : 'visiting' }

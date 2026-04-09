@@ -19,6 +19,11 @@ MicFrenchTypoChecker class >> checkerName [
 	^ 'FrenchTypography'
 ]
 
+{ #category : 'configuration' }
+MicFrenchTypoChecker class >> mutuallyExclusiveWith [ 
+	^ #('EnglishTypography')
+]
+
 { #category : 'adding' }
 MicFrenchTypoChecker >> addResultFor: anElement message: aMessage [
 	results add: (MicFrenchTypographyResult new 
@@ -34,13 +39,13 @@ MicFrenchTypoChecker >> checkString: aString for: anElement [
 	| checks |
 	aString ifNil: [ ^ self ].
 	checks := { 
-		'[^ ]\:' -> 'There should be a space before :'.
-		'[^ ]\;' -> 'There should be a space before ;'.
-		'[^ ]\?' -> 'There should be a space before ?'.
-		'[^ ]\!' -> 'There should be a space before !'.
-		' \,' -> 'There should be no space before ,'.
-		',[^ ]' -> 'There should be a space after ,'.
-		'\.[^ ]' -> 'There should be no space after .'.
+		'[^ ]\:' -> 'Il devrait y avoir un espace avant :'.
+		'[^ ]\;' -> 'Il devrait y avoir un espace avant ;'.
+		'[^ ]\?' -> 'Il devrait y avoir un espace avant ?'.
+		'[^ ]\!' -> 'Il devrait y avoir un espace avant !'.
+		' \,' -> 'Il ne devrait pas y avoir d''espace avant la virgule'.
+		',[^ ]' -> 'Il devrait y avoir un espace après la virgule'.
+		'\.[^ ]' -> 'Il ne devrait pas y avoir d''espace après le point'.
 	 }.
 	checks do: [ :pair |
 		| matcher |
@@ -54,6 +59,11 @@ MicFrenchTypoChecker >> checkString: aString for: anElement [
 { #category : 'configuration' }
 MicFrenchTypoChecker >> configureFrom: aConfiguration [
 	^ self
+]
+
+{ #category : 'as yet unclassified' }
+MicFrenchTypoChecker >> resultHeaderStrings [
+    ^ #('French Typography')
 ]
 
 { #category : 'adding' }

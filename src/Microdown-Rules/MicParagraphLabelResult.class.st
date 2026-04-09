@@ -33,6 +33,11 @@ MicParagraphLabelResult >> explanation [
 	), 'be terminated with a period (.).'
 ]
 
+{ #category : 'kinds' }
+MicParagraphLabelResult >> headerString [
+    ^ 'Paragraph Label'
+]
+
 { #category : 'accessing' }
 MicParagraphLabelResult >> labelShouldEndWithPeriod: aBoolean [
 

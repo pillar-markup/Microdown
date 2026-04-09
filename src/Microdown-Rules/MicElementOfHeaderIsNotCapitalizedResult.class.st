@@ -23,3 +23,8 @@ MicElementOfHeaderIsNotCapitalizedResult >> detail: aString [
 MicElementOfHeaderIsNotCapitalizedResult >> explanation [ 
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ' , detail , ' should be capitalized.'
 ]
+
+{ #category : 'kinds' }
+MicElementOfHeaderIsNotCapitalizedResult >> headerString [
+    ^ 'Header Element Not Capitalized'
+]

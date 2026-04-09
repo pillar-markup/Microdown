@@ -19,3 +19,8 @@ MicElementAfterColonIsNotCapitalizedResult >> detail: aString [
 MicElementAfterColonIsNotCapitalizedResult >> explanation [ 
 			^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail , ' as first letter after a colon should be uppercased.'
 ]
+
+{ #category : 'kinds' }
+MicElementAfterColonIsNotCapitalizedResult >> headerString [
+    ^ 'Element After Colon Not Capitalized'
+]

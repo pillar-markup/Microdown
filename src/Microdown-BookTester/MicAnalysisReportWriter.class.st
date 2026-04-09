@@ -24,7 +24,6 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 			availableCheckers 
 				at: aClass checkerName 
 				put: aClass ].
-
 	configuredCheckers := Dictionary new. 
 	onlyCheckers := aConfiguration onlyCheckers.
 	(onlyCheckers isNil or: [ onlyCheckers isEmpty ]) 
@@ -35,30 +34,24 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 					ifAbsent: [ Stdio stdout nextPutAll: 'The checker ', aCheck asString , ' is not available'].
 				configuredCheckers 
 					at: aCheck 
-					put: (availableCheckers at: aCheck) new.
-				self 
-					configureCheckers: configuredCheckers 
-					from: aConfiguration.
-				^ configuredCheckers values ]].
-		
+					put: (availableCheckers at: aCheck) new ].
+			self 
+				configureCheckers: configuredCheckers 
+				from: aConfiguration.
+			^ configuredCheckers values ].
 	
-	"Remove the checker the user does not want
-	We will have to see the ones that are exclusive: FrenchTypo and EnglishTypo"	
-
 	aConfiguration ignoredCheckers   
 		do: [ :each | availableCheckers removeKey: each ifAbsent: [ ] ].
-
-	
 	availableCheckers keysAndValuesDo: [ :k :v | 
 		[ configuredCheckers at: k put: v new] 
 			on: Error 
 			do: [  ] ].
 	
-	
 	self 
 		configureCheckers: configuredCheckers 
 		from: aConfiguration.		
 	^ configuredCheckers values
+
 ]
 
 { #category : 'instance creation' }
@@ -129,7 +122,8 @@ MicAnalysisReportWriter >> buildReportSTONFormatOn: str [
 MicAnalysisReportWriter >> initialize [
 
 	super initialize. 
-	results := OrderedCollection new
+	results := OrderedCollection new.
+	Transcript show: 'Reporter initialized'; cr.
 ]
 
 { #category : 'testing' }

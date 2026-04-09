@@ -104,6 +104,11 @@ MicParagraphLabelChecker >> levelForParagraph: anObject [
 	levelForParagraph := anObject
 ]
 
+{ #category : 'as yet unclassified' }
+MicParagraphLabelChecker >> resultHeaderStrings [
+    ^ #('Paragraph Label')
+]
+
 { #category : 'visiting' }
 MicParagraphLabelChecker >> visitHeader: aMicHeader [
 	aMicHeader level >= levelForParagraph ifTrue: [ 

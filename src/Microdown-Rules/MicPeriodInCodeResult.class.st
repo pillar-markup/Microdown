@@ -14,3 +14,8 @@ MicPeriodInCodeResult >> explanation [
 			   ifFalse: [ ' not ' ]
 			   ifTrue: [ ' ' ]) , 'be terminated with a period (.).'
 ]
+
+{ #category : 'kinds' }
+MicPeriodInCodeResult >> headerString [
+    ^ 'Code Last Period'
+]

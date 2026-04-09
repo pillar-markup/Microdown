@@ -79,6 +79,11 @@ MicVocabularyChecker >> pairs: aCollectionOfPairs [
 	
 ]
 
+{ #category : 'as yet unclassified' }
+MicVocabularyChecker >> resultHeaderStrings [
+    ^ #('Wrong Vocabulary')
+]
+
 { #category : 'visiting - inline elements' }
 MicVocabularyChecker >> visitText: aMicText [
 

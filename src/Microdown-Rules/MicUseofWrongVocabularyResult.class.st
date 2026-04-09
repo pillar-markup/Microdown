@@ -23,6 +23,11 @@ MicUseofWrongVocabularyResult >> explanation [
 	  , '] should not be used. We should use ' , goodWord
 ]
 
+{ #category : 'kinds' }
+MicUseofWrongVocabularyResult >> headerString [
+    ^ 'Wrong Vocabulary'
+]
+
 { #category : 'accessing' }
 MicUseofWrongVocabularyResult >> inFile: aFileReference [ 
 	fileReference := aFileReference

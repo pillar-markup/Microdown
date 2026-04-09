@@ -29,3 +29,13 @@ MicCodeIndentationResult >> explanation [
 	, detail 
 	, '] should use tabs instead of spaces for indentation.'
 ]
+
+{ #category : 'kinds' }
+MicCodeIndentationResult >> headerString [
+    ^ 'Code Indentation'
+]
+
+{ #category : 'accessing' }
+MicCodeIndentationResult >> what [
+    ^ (detail copyFrom: 2 to: detail size - 1) trim
+]

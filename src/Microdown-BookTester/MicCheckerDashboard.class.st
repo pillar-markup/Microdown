@@ -13,7 +13,10 @@ Class {
 		'file',
 		'currentFile',
 		'currentReporter',
-		'fileContent'
+		'fileContent',
+		'progressBar',
+		'filterDropDown',
+		'selectedCheckers'
 	],
 	#category : 'Microdown-BookTester-CheckerDashboard',
 	#package : 'Microdown-BookTester',
@@ -32,46 +35,65 @@ MicCheckerDashboard >> connectPresenters [
                     ifNone: [ nil ].
                 checker ifNotNil: [
                     explanation text: checker explanationForConfiguration.
-                    name = 'FrenchTypography' ifTrue: [
+						(checker mutuallyExclusiveWith) do:
+                     [ :excluded |
                         checkerList presenters
-                            detect: [ :c | c label = 'EnglishTypography' ]
+                            detect: [ :c | c label = excluded ]
                             ifFound: [ :c | c state: false ] ].
-                    name = 'EnglishTypography' ifTrue: [
-                        checkerList presenters
-                            detect: [ :c | c label = 'FrenchTypography' ]
-                            ifFound: [ :c | c state: false ] ] ] ] ] ].
+                     ] ] ] ].
 
     runButton action: [
-        | config output selectedCheckers |
+	[ 
+        | config output |
+			progressBar show.
+			runButton label: 'Checking...'.
+			runButton enabled: false.
+			exportButton enabled: false.
+			currentReporter := nil.
+			results text: ''.
         filePathInput text isEmpty
-            ifTrue: [ results text: 'Please enter a file path.' ]
+            ifTrue: [ 
+				progressBar hide.
+				runButton label: 'Run Checkers'.
+				runButton enabled: true.
+				results text: 'Please enter a file path.' ]
             ifFalse: [
                 currentFile := filePathInput text asFileReference.
                 currentFile exists
                     ifFalse: [ results text: 'File not found: ' , currentFile fullName ]
                     ifTrue: [
-                        selectedCheckers := (checkerList presenters
+                        self selectedCheckers: ((checkerList presenters
                             select: [ :cb | cb state ])
-                            collect: [ :cb | cb label ].
-                        selectedCheckers isEmpty
-                            ifTrue: [ results text: 'Please select at least one checker.' ]
+                            collect: [ :cb | cb label ]).
+                        self selectedCheckers isEmpty
+                            ifTrue: [ 
+									progressBar hide.
+									runButton label: 'Run Checkers'.
+									runButton enabled: true.
+									results text: 'Please select at least one checker.' ]
                             ifFalse: [
                                 results text: 'Checking... please wait.'.
                                 config := ConfigurationForPillar newFromDictionary:
-                                    (Dictionary new
-                                        at: 'onlyCheckers' put: selectedCheckers;
-                                        yourself).
+                                    {'onlyCheckers' -> self selectedCheckers } asDictionary.
                                 currentReporter := MicAnalysisReportWriter
                                     reportForFolder: currentFile parent
                                     startingFrom: currentFile
                                     configuration: config.
                                 currentReporter isOkay
-                                    ifTrue: [ results text: 'No problems found!' ]
+                                    ifTrue: [ 
+												progressBar hide.
+												runButton label: 'Run Checkers'.
+												runButton enabled: true.
+												exportButton enabled: true.
+												results text: self selectedCheckers asCommaString , ' - No problems found!' ]
                                     ifFalse: [
 												| numberedContent lines |
                                         output := String streamContents: [ :str |
                                             currentReporter buildReportOn: str ].
                                         results text: output.
+													self selectedCheckers do: [ :checkerName |
+    												(currentReporter results noneSatisfy: [ :r | r class name includesSubstring: checkerName ])
+        											ifTrue: [ results text: results text, String cr, checkerName, ' - No problems found!' ] ].
                                         exportButton enabled: true.
                                         
                                         lines := currentFile contents lines.
@@ -81,8 +103,20 @@ MicCheckerDashboard >> connectPresenters [
                                                 s nextPutAll: '  | '.
                                                 s nextPutAll: line.
                                                 s nextPut: Character lf ] ].
-                                        fileContent text: numberedContent ] ] ] ] ].
-
+                                        fileContent text: numberedContent .
+													runButton label: 'Run Checkers'.
+													progressBar hide.
+													runButton enabled: true.
+													filterDropDown enabled: true.
+													] ] ] ]
+													] on: FileDoesNotExistException do: [ :ex |
+													 progressBar hide.
+													 results text: 'Error: File not found - ' , ex messageText ];
+													 on: Error do: 	[ :ex |
+														progressBar hide.
+														results text: 'Error: ' , ex printString
+														 ]
+													]. 
     browseButton action: [
         | chosen |
         chosen := UIManager default
@@ -96,9 +130,10 @@ MicCheckerDashboard >> connectPresenters [
         htmlReporter := MicCheckerHTMLReporter new.
         htmlReporter reporter: currentReporter.
         htmlReporter fileReference: currentFile.
+		  htmlReporter selectedCheckers: self selectedCheckers.
         outputFile := htmlReporter generateReport.
         WebBrowser openOn: outputFile fullName.
-        results text: results text , String cr , 'HTML report exported to: ' , outputFile fullName ].
+        results text: results text , String cr , 'HTML report exported to: ' , outputFile fullName ]
 ]
 
 { #category : 'initialization' }
@@ -115,8 +150,7 @@ MicCheckerDashboard >> defaultLayout [
         yourself).
     topSection := SpBoxLayout newTopToBottom
         add: (SpPanedLayout newLeftToRight
-            add: checkerList;
-            add: explanation;
+            add: checkerList;            add: explanation;
             yourself);
         addLast: (SpBoxLayout newLeftToRight
             add: filePathInput;
@@ -126,10 +160,12 @@ MicCheckerDashboard >> defaultLayout [
             add: runButton;
             add: exportButton;
             yourself) expand: false;
+		 addLast: progressBar expand: false;
         yourself.
     ^ SpPanedLayout newTopToBottom
         add: topSection;
         add: notebook;
+ 		  positionOfSlider: 400; 
         yourself
 ]
 
@@ -157,6 +193,13 @@ MicCheckerDashboard >> initializePresenters [
     exportButton enabled: false.
     browseButton := self newButton.
     browseButton label: 'Browse'.
+	 progressBar := self newProgressBar.
+	 progressBar indeterminate.
+	 progressBar hide.
+	 filterDropDown := self newDropList.
+	 filterDropDown items: { 'All' } , (MicResult allSubclasses collect: #name).
+	 filterDropDown selectIndex: 1.
+	 filterDropDown enabled: false.
 ]
 
 { #category : 'initialization' }
@@ -169,4 +212,16 @@ MicCheckerDashboard >> initializeWindow: aWindowPresenter [
 MicCheckerDashboard >> runButton [
 
 	^ runButton
+]
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> selectedCheckers [
+
+	^ selectedCheckers
+]
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> selectedCheckers: anObject [
+
+	selectedCheckers := anObject
 ]

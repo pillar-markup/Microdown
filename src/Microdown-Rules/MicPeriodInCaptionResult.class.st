@@ -16,3 +16,8 @@ MicPeriodInCaptionResult >> explanation [
 			   ifFalse: [ ' not ' ]
 			   ifTrue: [ ' ' ]) , 'be terminated with a period (.).'
 ]
+
+{ #category : 'kinds' }
+MicPeriodInCaptionResult >> headerString [
+    ^ 'Missing Period In Caption'
+]

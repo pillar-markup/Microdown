@@ -29,3 +29,8 @@ MicFrenchTypographyResult >> explanation [
 	, '" in file' , fileReference fullName
 	, ' contains a mistake: ' , detail
 ]
+
+{ #category : 'kinds' }
+MicFrenchTypographyResult >> headerString [
+    ^ 'French Typography'
+]

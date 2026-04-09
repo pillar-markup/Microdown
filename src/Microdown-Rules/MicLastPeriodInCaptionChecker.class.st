@@ -118,6 +118,11 @@ MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
 	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
 ]
 
+{ #category : 'as yet unclassified' }
+MicLastPeriodInCaptionChecker >> resultHeaderStrings [
+    ^ #('Missing Period In Caption')
+]
+
 { #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> visitCode: anEquation [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."

@@ -76,6 +76,11 @@ MicRuleHeaderChecker >> initialize [
 	     'upon' 'when' 'with' 'yet' ) do: [ :each | self addUncapitalized: each ].
 ]
 
+{ #category : 'as yet unclassified' }
+MicRuleHeaderChecker >> resultHeaderStrings [
+    ^ #('Header Capitalization')
+]
+
 { #category : 'asserting' }
 MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
 	| normalized |

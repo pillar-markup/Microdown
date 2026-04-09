@@ -13,3 +13,8 @@ Class {
 MicLastPeriodResult >> codeShouldEndWithPeriod: aBoolean [ 
 	codeShouldEndWithPeriod := aBoolean 
 ]
+
+{ #category : 'kinds' }
+MicLastPeriodResult >> headerString [
+    ^ 'Missing Last Period'
+]
