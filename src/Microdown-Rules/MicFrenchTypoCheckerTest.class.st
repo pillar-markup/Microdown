@@ -77,7 +77,7 @@ MicFrenchTypoCheckerTest >> testNoSpaceAfterCommaDetected [
 	checker checkProject: fileSystem / 'noSpaceAfterComma.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be a space after ,'. 
+	 equals: 'Il devrait y avoir un espace après la virgule'. 
 ]
 
 { #category : 'tests' }
@@ -85,7 +85,7 @@ MicFrenchTypoCheckerTest >> testNoSpaceBeforeColonDetected [
 	checker checkProject: fileSystem / 'noSpaceBeforeColon.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be a space before :'. 
+	 equals: 'Il devrait y avoir un espace avant :'. 
 ]
 
 { #category : 'tests' }
@@ -93,7 +93,7 @@ MicFrenchTypoCheckerTest >> testNoSpaceBeforeExclamationDetected [
 	checker checkProject: fileSystem / 'noSpaceBeforeExlamation.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be a space before !'. 
+	 equals: 'Il devrait y avoir un espace avant !'. 
 ]
 
 { #category : 'tests' }
@@ -101,7 +101,7 @@ MicFrenchTypoCheckerTest >> testNoSpaceBeforeQuestionDetected [
 	checker checkProject: fileSystem / 'noSpaceBeforeQuestion.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be a space before ?'. 
+	 equals: 'Il devrait y avoir un espace avant ?'. 
 ]
 
 { #category : 'tests' }
@@ -109,7 +109,7 @@ MicFrenchTypoCheckerTest >> testNoSpaceBeforeSemiColonDetected [
 	checker checkProject: fileSystem / 'noSpaceBeforeSemiColon.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be a space before ;'. 
+	 equals: 'Il devrait y avoir un espace avant ;'. 
 ]
 
 { #category : 'tests' }
@@ -117,5 +117,5 @@ MicFrenchTypoCheckerTest >> testSpaceBeforeCommaDetected [
 	checker checkProject: fileSystem / 'SpaceBeforeComma.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail
-	 equals: 'There should be no space before ,'. 
+	 equals: 'Il ne devrait pas y avoir d''espace avant la virgule'. 
 ]
