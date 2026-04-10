@@ -1,0 +1,205 @@
+"
+Microdown is a minimal but extensible markup language. It is kind of compatible with githubmarkdown for a core set of feature. 
+Read comment of MicroDownParser. 
+"
+Class {
+	#name : 'BaselineOfMicrodown',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodown',
+	#package : 'BaselineOfMicrodown'
+}
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> baseline: spec [
+
+	<baseline>
+	spec for: #common do: [
+
+		self
+			xmlParserHtml: spec;
+			mustache: spec;
+			gitBridge: spec.
+
+		spec preLoadDoIt: #'preload:package:'.
+
+		spec postLoadDoIt: #'postload:package:'.
+		
+		spec
+			package: 'Microdown';
+			package: 'Microdown-Tests'
+				with: [ spec requires: #( 'Microdown' ) ];
+				
+			package: 'Microdown-BrowserExtensions'
+				with: [ spec requires: #( 'Microdown' ) ];	
+		
+			package: 'Microdown-Pharo-Tools'
+				with: [ spec requires: #( 'Microdown' ) ];
+				
+			package: 'Microdown-RichTextComposer'
+				with: [ spec requires: #( 'Microdown' ) ];
+				
+			package: 'Microdown-RichTextComposer-Tests'
+				with: [ spec requires: #( 'Microdown-RichTextComposer' ) ];
+
+			package: 'Microdown-MathFlaky-Tests'
+				with: [ spec requires: #( 'Microdown-RichTextComposer-Tests' ) ];
+
+			package: 'Microdown-Transformer'
+				with: [ spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-Transformer-Tests'
+				with: [ spec requires: #( 'Microdown-Transformer' ) ];
+
+			package: 'Microdown-Evaluator'
+				with: [ spec requires: #( 'Microdown-Transformer' ) ];
+			package: 'Microdown-Evaluator-Tests'
+				with: [ spec requires: #( 'Microdown-Evaluator') ];
+			
+			package: 'Microdown-HTMLExporter'
+				with: [ spec requires: #( 'Microdown' 'Microdown-LaTeXExporter') ];
+			package: 'Microdown-HTMLExporter-Tests'
+				with: [ spec requires: #( 'Microdown-HTMLExporter' 'Microdown-Tests' 'XMLParserHTML') ];			
+			
+			package: 'Microdown-LaTeXExporter'
+				with: [ spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-LaTeXExporter-Tests'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter' 'Microdown-Tests') ];
+	
+			package: 'Microdown-BeamerExporter'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter' ) ];				
+	
+			package: 'Microdown-BeamerExporter-Tests'
+				with: [ spec requires: #( 'Microdown-LaTeXExporter-Tests') ];
+
+			package: 'Microdown-PrettyPrinter'
+				with: [ spec requires: #( 'Microdown' ) ];
+			
+			package: 'Microdown-Templated' with: [
+				spec requires: #( 'Microdown-HTMLExporter' 'Microdown-PrettyPrinter' 'Microdown' 'Mustache' ) ];	
+			
+
+			package: 'Microdown-PrettyPrinter-Tests'
+				with: [ spec requires: #( 'Microdown-PrettyPrinter' 'Microdown-Tests') ];
+				
+			package: 'Microdown-ParentChildrenChecker' with: [
+				spec requires: #( 'Microdown' ) ];
+			
+			package: 'Microdown-BookTester' with: [
+				spec requires: #( 'Microdown' ) ];
+			package: 'Microdown-BookTester-Tests' with: [
+				spec requires: #( 'Microdown-BookTester' ) ];	
+			
+			package: 'Microdown-Rules' with: [
+				spec requires: #( 'Microdown-BookTester' ) ].
+			
+			"
+			package: #'Microdown-Blog' with: [
+				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
+			
+			package: #'Microdown-Blog-Tests' with: [
+				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
+			"
+		spec
+			group: 'Core' with: #('Microdown' 'Microdown-Tests');
+			group: 'ForPharo' with: #('Microdown' 'Microdown-BrowserExtensions');
+			group: 'RichText' with: #('Core' 'Microdown-RichTextComposer' );
+			group: 'Editor' with: #('RichText' 'Microdown-PrettyPrinter' 'Microdown-PrettyPrinter-Tests');
+			group: 'LaTeX' with:  #('Core' 'Microdown-LaTeXExporter' 'Microdown-LaTeXExporter-Tests');
+			group: 'Extensions' with: #(
+				'Microdown-Evaluator'
+				'Microdown-Evaluator-Tests'
+				'Microdown-PrettyPrinter'
+				'Microdown-PrettyPrinter-Tests'
+				'Microdown-HTMLExporter'
+				'Microdown-HTMLExporter-Tests'				
+				'Microdown-LaTeXExporter'
+				'Microdown-LaTeXExporter-Tests'
+				'Microdown-Transformer'
+				'Microdown-Transformer-Tests'
+				'Microdown-ParentChildrenChecker'
+				'Microdown-BookTester'
+				'Microdown-BookTester-Tests'
+				'Microdown-Rules'
+				'Microdown-Templated'
+				);
+			group: 'All' 
+			with: #('Core' 'Microdown-BrowserExtensions'  'Editor' 'LaTeX' 'Extensions' 'Microdown-Pharo-Tools' 'RichText')
+			]
+
+
+
+
+
+
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> gitBridge: spec [
+
+	spec baseline: 'GitBridge' with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> mustache: spec [
+
+	spec baseline: 'Mustache' with: [
+		spec
+			repository: 'github://noha/mustache:v1.4/repository';
+			loads: #( 'Core' 'Tests' ) ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> postload: loader package: packageSpec [
+
+	"If it is absent it's because we are in the Pharo bootstrap"
+	self class environment at: #IceRepository ifPresent: [ :class |
+		| repository |
+		repository := (class repositoryNamed: 'microdown') ifNil: [ class repositoryNamed: 'Microdown' ].
+		[ repository ifNotNil: [ (repository packageNamed: 'BaselineOfMicrodown') reload ] ]
+			on: MCMergeOrLoadWarning
+			do: [ :ex | ex load ] ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodown >> preload: loader package: packageSpec [
+	"Ignore pre and post loads if already executed"
+
+	" the prelosing GH script cannot work because 
+	it will remove the baseline and repository itself :)
+	#( 'Microdown' ) do: [ :name |
+		(IceRepository repositoryNamed: name)
+			ifNil: [ self inform: 'Project not found: ' , name ]
+			ifNotNil: [ :found |
+				found
+					unload;
+					forget ] ]"
+
+	| packagesToUnload |
+
+	self flag: 'This is necessary to not break the bootstrapping. Microdown makes a cleaning of classes and as Microdown is loaded in the image it can cause conflits.'.
+	self flag: 'We do not access the class SystemBuildInfo directly because it is only present in Pharo 13 but Microdown works on different Pharo versions. We can simplifly this when Pharo 13 will be the minimal supported version.'.
+	self class environment at: #SystemBuildInfo ifPresent: [ :info | info 
+			current isBuildFinished ifFalse: [ ^ self ]. ].
+
+	"If it is absent it's because we are in the Pharo bootstrap"
+	self class environment at: #IceRepository ifPresent: [ :iceRepositoryClass |
+		| packages |
+		"The same here, not direct access to PackageOrganizer because it is only for Pharo 13."
+		packages := self class environment allClasses collect: #package as: Set.
+		packagesToUnload := ((packages select: [ :each | each name beginsWith: 'Microdown' ]) collect: [ :each | each name ]) reject: [ :each |
+			               #( 'Microdown-RichTextPresenter' 'Microdown-RichTextPresenter-Tests' ) includes: each ].
+
+		"these two are not managed by the microdown repo but the documentation. We should rename them in the future to avoid confusion"
+
+		packagesToUnload do: [ :each | ((iceRepositoryClass repositoryNamed: 'Microdown') packageNamed: each) unload ] ]
+]
+
+{ #category : 'external projects' }
+BaselineOfMicrodown >> xmlParserHtml: spec [
+
+	spec
+		baseline: 'XMLParserHTML'
+		with: [ 
+			spec
+				loads: #('Core');
+				repository: 'github://pharo-contributions/XML-XMLParserHTML/src' ]
+]

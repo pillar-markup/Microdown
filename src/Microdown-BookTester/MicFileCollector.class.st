@@ -1,0 +1,113 @@
+"
+I'm a simple visitor that collects files from a document taking into account inputFile:.
+
+
+### Open question: should we collect also figure files?
+Since figures are leaves in the sense that they do not include another list of expressions but just a reference to a file. We could in addition check for the figures and report the unexisting ones. 
+I do not think that adding blindly the figures to the visited set is good because the visited (which should be renamed into visitedDocumentFiles ) is about document and not figures.
+
+We could have a MicFigureFileCollector if necessary.
+
+
+"
+Class {
+	#name : 'MicFileCollector',
+	#superclass : 'MicrodownVisitor',
+	#instVars : [
+		'rootDirectory',
+		'unexistingFiles',
+		'inputFiles',
+		'visitedFileStrings',
+		'visitedFiles'
+	],
+	#category : 'Microdown-BookTester-Infrastructure',
+	#package : 'Microdown-BookTester',
+	#tag : 'Infrastructure'
+}
+
+{ #category : 'initialization' }
+MicFileCollector >> initialize [ 
+
+	super initialize.
+	rootDirectory := FileSystem workingDirectory.
+	visitedFileStrings := Set new.
+	unexistingFiles := Set new.
+	visitedFiles := OrderedCollection new. 
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> rootDirectory [
+
+	^ rootDirectory
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> rootDirectory: aFileReference [
+	
+	rootDirectory := aFileReference
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> unexistingFiles [
+
+	^ unexistingFiles
+]
+
+{ #category : 'visiting' }
+MicFileCollector >> visitInputFile: anInputFile [
+
+	inputFiles add: anInputFile
+]
+
+{ #category : 'visiting' }
+MicFileCollector >> visitRoot: micDocument [
+
+	| worklist |
+	worklist := OrderedCollection new.
+	worklist add: micDocument.
+
+	[ worklist isEmpty ] whileFalse: [
+		| currentDocument |
+		currentDocument := worklist removeFirst.
+		visitedFileStrings add: currentDocument fromFile fullName.
+		currentDocument resolveYourself.
+		visitedFiles add: currentDocument.
+		
+		inputFiles := OrderedCollection new.
+		"treat all the inputFile from the current document"
+		self visitChildrenOf: currentDocument.
+
+		inputFiles do: [ :inputFile |
+			| fr doc |
+			"later we will have to fix this ugly expression"
+			fr := self rootDirectory resolve:
+				      (inputFile arguments at: 'path') uri asFileReference
+					      pathString.
+			
+			"Since we are just checking that a file exist it does not matter when we check.
+			We do not have to wait until we walk through all the files."
+			(visitedFileStrings includes: fr path pathString) ifFalse: [
+				[
+				doc := Microdown parseFile: fr.
+				worklist addFirst: doc ]
+					on: FileDoesNotExistException
+					do: [ unexistingFiles add: inputFile ] ] ] ]
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> visitedFileStrings [
+
+	^ visitedFileStrings
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> visitedFiles [ 
+
+	^ visitedFiles 
+]
+
+{ #category : 'accessing' }
+MicFileCollector >> visitedFilesAsDOM [
+
+	^ visitedFiles
+]

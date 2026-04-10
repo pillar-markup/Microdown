@@ -1,0 +1,366 @@
+Class {
+	#name : 'MicTextualMicrodownExporter',
+	#superclass : 'MicrodownVisitor',
+	#instVars : [
+		'stream',
+		'builder',
+		'inList'
+	],
+	#pools : [
+		'MicSharedPool'
+	],
+	#category : 'Microdown-PrettyPrinter',
+	#package : 'Microdown-PrettyPrinter'
+}
+
+{ #category : 'helpers' }
+MicTextualMicrodownExporter >> backSlashString: aString [
+
+	^ String streamContents: [ :st | 
+		aString doWithIndex: [ :each :i | 
+			((Delimiters includes: each asString) or:
+				 (Delimiters includes:
+					  each asString , (aString at: (i + 1 min: aString size)) asString)) 
+			ifTrue: [ st nextPutAll: '\' ].
+		st nextPutAll: each asString ]]
+]
+
+{ #category : 'build' }
+MicTextualMicrodownExporter >> blockPrint: aMicText [
+
+	| text |
+	text := self classPrint: aMicText.
+	text := text , ' "' , aMicText substring , '"'.
+	^ text
+]
+
+{ #category : 'API' }
+MicTextualMicrodownExporter >> buildRowHeader: row [
+
+	builder newLine.
+	row do: [ :cell | builder headCell ].
+	^ builder raw: '|'
+]
+
+{ #category : 'build' }
+MicTextualMicrodownExporter >> classPrint: aMicFigure [
+
+	^ aMicFigure class asString
+]
+
+{ #category : 'accessing' }
+MicTextualMicrodownExporter >> contents [ 
+	^ stream contents
+]
+
+{ #category : 'io' }
+MicTextualMicrodownExporter >> folderName [
+	^ 'mic'
+]
+
+{ #category : 'accessing' }
+MicTextualMicrodownExporter >> inList [
+	^ inList
+
+]
+
+{ #category : 'initialization' }
+MicTextualMicrodownExporter >> initialize [ 
+	super initialize.
+	stream := (String new: 10000) writeStream.
+	builder := Microdown builder.
+	builder setStream: stream.
+	builder setNewLineCharacterString: String cr.
+	inList := false
+]
+
+{ #category : 'build' }
+MicTextualMicrodownExporter >> parametersPrint: aDictionnary [
+
+	| text lastKey |
+	lastKey := aDictionnary keys last.
+	text := 'parameters:'.
+	aDictionnary keysAndValuesDo: [ :k :v |
+		text := text , k ,'=', v.
+		k = lastKey 
+			ifFalse: [ 
+				text := text , '&' ]].
+	^ text
+]
+
+{ #category : 'setting' }
+MicTextualMicrodownExporter >> setFalseInList [
+	inList := false
+
+]
+
+{ #category : 'setting' }
+MicTextualMicrodownExporter >> setTrueInList [
+	inList := true
+
+]
+
+{ #category : 'API' }
+MicTextualMicrodownExporter >> visit: aMicElement [
+	"Entry point to launch the traversal."
+	
+	super visit: aMicElement. 
+	^ stream contents
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitAnchor: anAnchor [
+	
+	builder anchor: anAnchor label
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitAnchorReference: anAnchorReference [
+	
+	builder anchorReference: anAnchorReference bodyString
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
+
+	| textualExporter |
+	textualExporter := MicTextualMicrodownExporter new.
+	textualExporter visitChildrenOf: anAnnotated.
+
+	builder
+		annotated: anAnnotated label
+		paragraph: [ builder textWithBracket: textualExporter contents ]
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
+
+	builder raw: anAnnotation openingDelimiter.
+	builder raw: anAnnotation bodyString.
+	builder raw: anAnnotation closingDelimiter
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitBold: aBoldFormat [
+
+	builder bold: [ super visitBold: aBoldFormat ]
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
+	aChildren do: [ :each | self visitTextWithoutBackslash: each ]
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitCode: aMicCodeBlock [ 
+
+	builder newLine.
+	builder
+		  codeblock: aMicCodeBlock body
+		  firstLineAssociations: aMicCodeBlock arguments withoutDefaultValue associations
+		  withCaption: [ super visitCode: aMicCodeBlock ]
+
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitComment: aComment [
+
+	builder comment: aComment text
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
+	builder newLine.
+	builder
+		environment: anEnvironment environmentName 
+		body: [ super visitEnvironment: anEnvironment ]
+		arguments: anEnvironment arguments justTheArguments .
+	
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitFigure: aFigure [
+	
+	builder newLine.
+	builder
+		figureURL: aFigure url
+		withCaption: [ super visitFigure: aFigure ]
+		
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitHeader: aHeader [
+	
+	builder newLine.
+	builder 
+		header: [ self visitAll: aHeader headerElements ] 
+		withLevel: aHeader level
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
+
+	builder horizontalLine
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitInputFile: anInputfile [
+
+	builder inputFile: anInputfile fullNameString
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitItalic: anItalicFormatBlock [
+
+	builder italic: [ super visitItalic: anItalicFormatBlock ]
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitLink: aLink [
+
+	builder 
+		externalLink: aLink url 
+		withDescription: [ super visitLink: aLink ]
+]
+
+{ #category : 'visit - list' }
+MicTextualMicrodownExporter >> visitListItem: anItem [
+	"here we do not handle the prefix - or a number"
+
+	builder itemBody: [ super visitListItem: anItem ]
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitMath: aMicMath [
+
+	 builder
+		  mathblock: aMicMath body
+		  firstLineAssociations: aMicMath arguments associations
+		  withCaption: [ super visitMath: aMicMath ]
+
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitMathInline: aMicMathInline [
+
+	builder mathInline: aMicMathInline bodyString
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitMetaData: aMetaData [
+
+	builder metaDataFromAssociations: aMetaData body associations
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
+
+	builder 
+		writeDuring: [ self visitChildrenWithoutBackslash: aMonospaceFormat children ] 
+		surroundBy: aMonospaceFormat openingDelimiter and: aMonospaceFormat closingDelimiter
+
+]
+
+{ #category : 'visit - list' }
+MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
+
+	| block |
+	block := [  ].
+	self inList 
+		ifFalse: [ 
+			builder newLine.
+		 	self setTrueInList.
+		 	block := [ self setFalseInList ] ].
+	"the problem if we use accept is that anitem is not an orderd or unordered. 
+	There is only one kind of item. So we cannot use the dispatch."
+	
+	builder orderedListDuring: [ 
+		anOrderedList children do: [ :orderedItem | 
+			builder orderedItem: [ builder itemBody: [ self visitEach: orderedItem ] ] ] ].
+		
+	block value
+]
+
+{ #category : 'visit - list' }
+MicTextualMicrodownExporter >> visitOrderedListItem2: anItem [
+
+	builder orderedItem: [ super visitOrderedListItem: anItem ]
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitParagraph: aParagraph [
+
+	builder newLine.
+	builder 
+		paragraph: [ super visitParagraph: aParagraph ]
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitQuote: aQuote [
+
+	builder quoteBlock: aQuote text
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitRaw: aRawFormat [
+
+	builder rawFormat: aRawFormat bodyString
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitRoot: aRoot [
+
+	builder 
+		root: [ super visitRoot: aRoot ] 
+]
+
+{ #category : 'API' }
+MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
+
+	row do: [ :cell | 
+		builder cell: [ cell do: [ :child | child accept: self ] ] ].
+	builder raw: '|'.
+	^ (aTable hasHeader and: i = 1) ifTrue: [ self buildRowHeader: row ]
+]
+
+{ #category : 'visit - format' }
+MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
+
+	builder strike: [ super visitStrike: aStrikeFormat ]
+]
+
+{ #category : 'API' }
+MicTextualMicrodownExporter >> visitTable: aTable [
+
+	aTable rows doWithIndex: [ :row :i | 
+		builder newLine.
+		self visitRow: row in: aTable at: i ]
+]
+
+{ #category : 'visit - block' }
+MicTextualMicrodownExporter >> visitText: aMicTextBlock [
+
+	builder text: (self backSlashString: aMicTextBlock bodyString)
+]
+
+{ #category : 'visiting' }
+MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
+
+	builder text: aMicTextBlock bodyString
+]
+
+{ #category : 'visit - list' }
+MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
+	
+	| block |
+	block := [  ].
+	self inList ifFalse: 
+		[ builder newLine.
+		 self setTrueInList.
+		 block := [ self setFalseInList ] ].
+	builder unorderedListDuring:  [ 
+		aUnorderedList children do: [ :unorderedItem | 
+			builder item: [ builder itemBody: [ self visitEach: unorderedItem ] ] ] ].
+	
+	block value
+]

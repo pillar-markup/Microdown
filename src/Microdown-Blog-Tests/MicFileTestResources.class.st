@@ -1,0 +1,324 @@
+Class {
+	#name : 'MicFileTestResources',
+	#superclass : 'Object',
+	#category : 'Microdown-Blog-Tests',
+	#package : 'Microdown-Blog-Tests'
+}
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput1 [
+
+	| root |
+	root := Microdown parse:
+		        '### [A Cool Story](' , '' , '/anExample1.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/09') children first.
+	root children add: (Microdown parse:
+			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput1WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '### [A Cool Story](' , '' , self genericNonEmptyRootPath
+		        , '/anExample1.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/09') children first.
+	root children add: (Microdown parse:
+			 'Pharo is cool but this is a superlong paragraph Simple powerful language: No constructors, no...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput2 [
+
+	| root |
+	root := Microdown parse:
+		        '### [Pharo is cool](' , '' , '/anExample2.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/22') children first.
+	root children add: (Microdown parse:
+			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput2WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '### [Pharo is cool](' , '' , self genericNonEmptyRootPath
+		        , '/anExample2.html' , '' , ')'.
+	root children add: (Microdown parse: '2019/01/22') children first.
+	root children add: (Microdown parse:
+			 'If you are either a beginner or an expert in object-oriented programming, this MOOC will...')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput3 [
+
+	| root |
+	root := Microdown parse:
+		        '### [Mooc Pharo](' , '' , '/anExample3.html' , '' , ')'.
+	root children add: (Microdown parse: '2018/01/29') children first.
+	root children add: (Microdown parse:
+			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> dumperInput3WithRootPath [
+
+	| root |
+	root := Microdown parse:
+		        '### [Mooc Pharo](' , '' , self genericNonEmptyRootPath
+		        , '/anExample3.html' , '' , ')'.
+	root children add: (Microdown parse: '2018/01/29') children first.
+	root children add: (Microdown parse:
+			 'Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects).')
+			children first.
+
+	^ root
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> fileSystem [
+
+	^ FileSystem memory
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExample1 [
+
+	| file |
+	file := self workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "date" : "2019/01/09"
+}
+# A Cool Story
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExample2 [
+
+	| file |
+	file := self workingDirectory / 'anExample2.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "date" : "2019/01/22"
+}
+# Pharo is cool
+
+If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will change the way you program with objects: come and learn or rediscover _object-oriented programming_ with Pharo!
+
+Pharo is a pure _object-oriented programming language_ in the tradition of Smalltalk. It offers a unique developing experience in constant interaction with live objects. Pharo is elegant, fun to use and very powerful. It is very easy to learn and enables to understand advanced concept in a natural way. When programming in Pharo, you are immersed in a world of live objects. You have immediate feedback at any moment of your development on objects representing web applications, code itself, graphics, network. More…
+' ].
+
+	^ file
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExample3 [
+
+	| file |
+	file := self workingDirectory / 'anExample3.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "date" : "2018/01/29"
+}
+# Mooc Pharo
+
+Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
+
+The Pharo Mooc is fully dubbed in french and english. It comes with subtitles in Japanese, english, french and spanish. This web site contains all the material of this Mooc in free access.
+
+In addition, in average every 18 months the Mooc is proposed and run on the France Université Numérique platform (Even if the platform is french the mooc is run in both languages). 
+
+When you participate to the mooc you get access to the quizz and the credit validation. 
+' ].
+
+	^ file
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleEmpty [
+
+	| file |
+	file := self workingDirectory / 'empty.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithBrokenDateInMetadata [
+
+	| file |
+	file := FileSystem memory workingDirectory / 'example1WithInvalidDate.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "title" : "Cool",
+    "date" : "45654765876876876876876786@@hkjhjk"
+}
+# A Cool Story
+@sec1
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+
+Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
+
+
+```
+this is a code blu blu
+```
+' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithoutDateInMetadata [
+
+	| file |
+	file := self workingDirectory / 'exampleWithoutDateInMetadata.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{
+    "title" : "Cool"
+}
+# A Cool Story
+@sec1
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+
+Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
+
+
+```
+this is a code blu blu
+```
+' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithoutMetadata [
+
+	| file |
+	file := self workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# A Cool Story
+@sec1
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+
+Pharo is yours: Pharo is made by an incredible community, with more than 100 contributors for the last revision of the platform and hundreds of people contributing constantly with frameworks and libraries. Fully open-source: Pharo full stack is released under MIT License and available on GitHub
+
+
+```
+this is a code blu blu
+```
+' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithoutMetadata1 [
+
+	| file |
+	file := self workingDirectory / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# A Cool Story
+
+Pharo is cool but _this is_ a superlong _paragraph_ Simple powerful language: No constructors, no types declaration, no interfaces, no primitive types. Yet a powerful and elegant language with a full syntax fitting in one postcard! Pharo is objects and messages all the way down. _Live_, immersive environment: Immediate feedback at any moment of your development: _Developing_, testing, debugging. Even in production environments, you will never be stuck in compiling and deploying steps again!
+    
+
+Amazing debugging experience: The Pharo environment includes a debugger unlike anything you''ve seen before. It allows you to step through code, restart the execution of methods, create methods on the fly, and much more!
+' ].
+
+	^ file asFileReference
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithoutMetadata2 [
+
+	| file |
+	file := self workingDirectory / 'anExample2.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '{# Pharo is cool
+
+If you are either a beginner or an expert in object-oriented programming, _this MOOC_ will change the way you program with objects: come and learn or rediscover _object-oriented programming_ with Pharo!
+
+Pharo is a pure _object-oriented programming language_ in the tradition of Smalltalk. It offers a unique developing experience in constant interaction with live objects. Pharo is elegant, fun to use and very powerful. It is very easy to learn and enables to understand advanced concept in a natural way. When programming in Pharo, you are immersed in a world of live objects. You have immediate feedback at any moment of your development on objects representing web applications, code itself, graphics, network. More…
+' ].
+
+	^ file
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> generateFilesystemExampleWithoutMetadata3 [
+
+	| file |
+	file := self workingDirectory / 'anExample3.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: '# Mooc Pharo
+
+Welcome to the Pharo Mooc (a set of videos, exercises, challenges, and miniprojects). 
+
+The Pharo Mooc is fully dubbed in french and english. It comes with subtitles in Japanese, english, french and spanish. This web site contains all the material of this Mooc in free access.
+
+In addition, in average every 18 months the Mooc is proposed and run on the France Université Numérique platform (Even if the platform is french the mooc is run in both languages). 
+
+When you participate to the mooc you get access to the quizz and the credit validation. 
+' ].
+
+	^ file
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> genericEmptyRootPath [
+
+	^ ''
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> genericNonEmptyRootPath [
+
+	^ 'https://test/'
+]
+
+{ #category : 'fixture' }
+MicFileTestResources >> workingDirectory [
+
+	^ self fileSystem workingDirectory
+]

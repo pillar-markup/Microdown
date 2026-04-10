@@ -1,0 +1,613 @@
+"
+I am document writer that wraps a default writer.
+When writing one element, I first check if there is a file in the current template that overrides the default writing. If so, I use that file to template the contents.
+Otherwise I simply delegate the writing to the default one.
+
+I am carefully designed so if an element X is delegated to the default writer, it should delegate the writing of X's children back to myself.
+
+One of the key point of the design is that 
+when there is a no template for a container (e.g., Paragraph), if we default simply to the default writer
+then the elements of the container will not be templated so the default method passes the templater as well
+so that the container logic can call the templater back.
+"
+Class {
+	#name : 'MicTemplatedWriter',
+	#superclass : 'MicrodownVisitor',
+	#instVars : [
+		'outputDocument',
+		'defaultWriter',
+		'environmentStack'
+	],
+	#category : 'Microdown-Templated',
+	#package : 'Microdown-Templated'
+}
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> anchorReferenceTemplateFileName [
+	
+	^ 'anchorReference.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> anchorTemplateFileName [
+	
+	^ 'anchor.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> boldTemplateFileName [
+	
+	^ 'bold.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> codeBlockTemplateFileName [
+
+	^ 'codeBlock.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> commentedLineTemplateFileName [
+	
+	^ 'commentedLine.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> defaultAnnotatedParagraphTemplateFileName [
+	
+	^ 'defaultAnnotatedParagraph.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> environmentTemplateFileName [
+	"ideally we would like to have the name of the environment as template."
+	^ 'environment.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> externalLinkTemplateFileName [
+	"this is for [](https://....)"
+
+	^ 'externalLink.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> figureTemplateFileName [
+
+	^ 'figure.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> headerTemplateFileName [
+	
+	^ 'header.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> horizontalLineTemplateFileName [
+	
+	^ 'horizontalLine.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> internalLinkTemplateFileName [
+	
+	^ 'internalLink.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> italicTemplateFileName [
+	
+	^ 'italic.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> lineBreakTemplateFileName [
+	
+	^ 'lineBreak.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> listItemTemplateFileName [
+
+	^ 'listItem.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> monospaceTemplateFileName [
+
+	^ 'monospace.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> orderedListTemplateFileName [
+	
+	^ 'orderedList.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> paragraphTemplateFileName [
+	
+	^ 'paragraph.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> preformattedTemplateFileName [
+	
+	^ 'preformatted.mustache'
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter class >> rootTemplateFileName [
+	^ 'root.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> unorderedListTemplateFileName [
+
+	^ 'unorderedList.mustache'
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter class >> writerName [
+
+	^ #templatedWriter
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> anchorReferenceTemplateFileName [
+
+	^ self class anchorReferenceTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> boldTemplateFileName [
+
+	^ self class boldTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> codeBlockTemplateFileName [
+
+	^ self class codeBlockTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> commentedLineTemplateFileName [
+
+	^ self class commentedLineTemplateFileName
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> contents [
+	
+	^ defaultWriter contents
+]
+
+{ #category : 'environment' }
+MicTemplatedWriter >> currentEnvironmentPath [
+	
+	^ RelativePath withAll: (environmentStack collect: [:each | each name]) reversed
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> defaultAnnotatedParagraphTemplateFileName [
+
+	^ self class defaultAnnotatedParagraphTemplateFileName
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> defaultWriter [
+	^ defaultWriter
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> defaultWriter: anObject [
+	defaultWriter := anObject
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> environmentStack: aCollection [ 
+	environmentStack := aCollection
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> externalLinkTemplateFileName [
+
+	^ self class externalLinkTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> figureTemplateFileName [
+
+	^ self class figureTemplateFileName
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> folderName [
+
+	^ defaultWriter folderName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> headerTemplateFileName [
+
+	^ self class headerTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> horizontalLineTemplateFileName [
+
+	^ self class horizontalLineTemplateFileName
+]
+
+{ #category : 'initialization' }
+MicTemplatedWriter >> initialize [
+
+	super initialize.
+	environmentStack := OrderedCollection new.
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> internalLinkTemplateFileName [
+
+	^ self class internalLinkTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> italicTemplateFileName [
+		
+	^ self class italicTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> lineBreakTemplateFileName [
+
+	^ self class lineBreakTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> listItemTemplateFileName [
+
+	^ self class listItemTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> monospaceTemplateFileName [
+
+	^ self class monospaceTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> orderedListTemplateFileName [
+
+	^ self class orderedListTemplateFileName
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> outputDocument [
+	^ outputDocument
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> outputDocument: anObject [
+	outputDocument := anObject
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> paragraphTemplateFileName [
+
+	^ self class paragraphTemplateFileName
+]
+
+{ #category : 'environment' }
+MicTemplatedWriter >> popEnvironment [
+	
+	environmentStack removeFirst
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> preformattedTemplateFileName [
+
+	^ self class preformattedTemplateFileName
+]
+
+{ #category : 'environment' }
+MicTemplatedWriter >> pushEnvironment: aPREnvironment [ 
+	
+	environmentStack addFirst: aPREnvironment
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> rootTemplateFileName [
+
+	^ self class rootTemplateFileName
+]
+
+{ #category : 'accessing' }
+MicTemplatedWriter >> templateForConfiguration: aConfiguration [
+
+	^ defaultWriter templateForConfiguration: aConfiguration
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> unorderedListTemplateFileName [
+
+	^ self class unorderedListTemplateFileName
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitAnchor: anAnchorReference [
+
+	self
+		writeRawText: anAnchorReference bodyString
+		withTemplateFileName: self anchorReferenceTemplateFileName
+		extraArguments: { 'name' -> anAnchorReference name }
+		ifAbsent: [ defaultWriter visitAnchor: anAnchorReference ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitAnchorReference: aReference [
+	
+	self
+		writeRawText: aReference anchorLabel
+		withTemplateFileName: self anchorReferenceTemplateFileName
+		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
+]
+
+{ #category : 'visiting to revisit' }
+MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
+
+	| arguments |
+	arguments := { 'label' -> anAnnotatedParagraph label }.
+	self
+		write: anAnnotatedParagraph
+		withTemplateFileName: anAnnotatedParagraph label , '.mustache'
+		extraArguments: arguments 
+		ifAbsent: [
+			self
+				write: anAnnotatedParagraph
+				withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
+				extraArguments: arguments 
+				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitBold: aMicBold [
+	
+	self
+		write: aMicBold
+		withTemplateFileName: self boldTemplateFileName
+		ifAbsent: [ defaultWriter visitBold: aMicBold from: self ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitCode: aCodeBlock [  
+	
+	self
+		writeRawText: aCodeBlock body
+		withTemplateFileName: self codeBlockTemplateFileName
+		extraArguments: { 'language' -> defaultWriter class name }
+		ifAbsent: [ defaultWriter visitCode: aCodeBlock ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitComment: aCommentBlock [
+
+	self
+		writeRawText: aCommentBlock text
+		withTemplateFileName: self commentedLineTemplateFileName
+		ifAbsent: [ defaultWriter visitComment: aCommentBlock  ]
+]
+
+{ #category : 'visiting to revisit' }
+MicTemplatedWriter >> visitEnvironment: anEnvironment [
+
+	self pushEnvironment: anEnvironment.
+	self
+		write: anEnvironment
+		withTemplateFileName: 'environment.mustache'
+		extraArguments: anEnvironment properties associations
+		ifAbsent: [ self visitEnvironment: anEnvironment ].
+	self popEnvironment.
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitFigure: aFigure [
+
+	self
+		write: aFigure
+		withTemplateFileName: self figureTemplateFileName
+		extraArguments: {
+			'ref' -> aFigure fileStringWithoutHostFile.
+			'caption' -> (aFigure hasChildren ifTrue: [ aFigure caption ] ifFalse: [ '' ]) }
+		ifAbsent: [ defaultWriter visitFigure: aFigure ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitHeader: aHeader [
+
+	self
+		write: aHeader
+		withTemplateFileName: self headerTemplateFileName
+		extraArguments: { 'level' -> (aHeader level min: 7 max: 1) }
+		ifAbsent: [ defaultWriter visitHeader: aHeader ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
+
+	self
+		writeRawText: ''
+		withTemplateFileName: self horizontalLineTemplateFileName
+		ifAbsent: [ defaultWriter visitHorizontalLine: aPRHorizontalRule ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitItalic: aMicItalicFormat [ 
+	
+	self
+		write: aMicItalicFormat
+		withTemplateFileName: self italicTemplateFileName
+		ifAbsent: [ defaultWriter visitItalic: aMicItalicFormat ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitLink: aLink [
+	"could be
+	 
+		externalLinkContents
+
+				^ '<a href={{{ref}}}>{{{caption}}}</a>'
+	"
+	
+	self
+		write: aLink
+		withTemplateFileName: self externalLinkTemplateFileName
+		extraArguments: {
+			'ref' -> aLink reference uri.
+			'caption' -> aLink caption }
+		ifAbsent: [ defaultWriter visitLink: aLink from: self ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitListItem: aListItem [
+
+	self
+		write: aListItem
+		withTemplateFileName: self listItemTemplateFileName
+		ifAbsent: [ defaultWriter visitListItem: aListItem ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitMonospace: aMicMonospaceFormat [ 
+	
+	self
+		write: aMicMonospaceFormat
+		withTemplateFileName: self monospaceTemplateFileName
+		ifAbsent: [ defaultWriter visitMonospace: aMicMonospaceFormat ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitOrderedList: aPROrderedList [
+
+	self
+		write: aPROrderedList
+		withTemplateFileName: self orderedListTemplateFileName
+		ifAbsent: [ defaultWriter visitOrderedList: aPROrderedList ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitParagraph: aParagraph [ 
+
+	self
+		write: aParagraph
+		withTemplateFileName: self paragraphTemplateFileName
+		ifAbsent: [ defaultWriter visitParagraph: aParagraph from: self ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitPreformatted: aPreformatted [
+
+	self
+		write: aPreformatted
+		withTemplateFileName: self preformattedTemplateFileName
+		ifAbsent: [ defaultWriter visitPreformatted: aPreformatted ]
+]
+
+{ #category : 'delegating' }
+MicTemplatedWriter >> visitRaw: aPRRaw [ 
+	
+	defaultWriter visitRaw: aPRRaw
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitRoot: aRoot [
+
+	self
+		write: aRoot
+		withTemplateFileName: self rootTemplateFileName
+		extraArguments: {  }
+		ifAbsent: [ defaultWriter visitRoot: aRoot from: self  ].
+
+]
+
+{ #category : 'delegating' }
+MicTemplatedWriter >> visitText: aPRText [ 
+
+	defaultWriter visitText: aPRText
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitUnorderedList: anUnorderedList [ 
+
+	self
+		write: anUnorderedList
+		withTemplateFileName: self unorderedListTemplateFileName
+		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList ]
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> write: aMicElement [ 
+
+	aMicElement accept: self.
+	^ defaultWriter contents
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> write: aMicElement 
+	withTemplateFileName: templateFileName 
+	extraArguments: arguments 
+	ifAbsent: aBlock [
+	
+	"Get templated text of children of aMicElement and template it with its template"
+	
+	self
+		writeRawText: [ | subWriter |
+			subWriter := outputDocument writer.
+			subWriter environmentStack: environmentStack. 
+			subWriter visitChildrenOf: aMicElement.
+			subWriter contents ]
+		withTemplateFileName: templateFileName
+		extraArguments: arguments
+		ifAbsent: aBlock
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileName ifAbsent: aBlock [
+
+	self
+		write: aDocumentItem
+		withTemplateFileName: templateFileName
+		extraArguments: #()
+		ifAbsent: aBlock
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> writeRawText: aText 
+	withTemplateFileName: templateFileName 
+	extraArguments: arguments 
+	ifAbsent: aBlock [
+
+	| templateFile result environmentPath foundPath |
+	environmentPath := self currentEnvironmentPath.
+	
+	foundPath := environmentPath 
+		lookup: [ :path | ((outputDocument templateDirectory resolve: path) / templateFileName) exists ]
+		ifNone: [ ^ aBlock value ].
+	
+	"grab the text apply the template to it and call the defaultDriver with the text"
+	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
+	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
+	self visitText: (MicTextBlock new bodyString: result)
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName ifAbsent: aBlock [
+
+	^ self
+		writeRawText: aText
+		withTemplateFileName: templateFileName
+		extraArguments: #()
+		ifAbsent: aBlock
+]
