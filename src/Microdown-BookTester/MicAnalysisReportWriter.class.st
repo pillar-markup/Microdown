@@ -35,11 +35,11 @@ MicAnalysisReportWriter class >> checkersFromConfiguration: aConfiguration [
 					ifAbsent: [ Stdio stdout nextPutAll: 'The checker ', aCheck asString , ' is not available'].
 				configuredCheckers 
 					at: aCheck 
-					put: (availableCheckers at: aCheck) new.
+					put: (availableCheckers at: aCheck) new].
 				self 
 					configureCheckers: configuredCheckers 
 					from: aConfiguration.
-				^ configuredCheckers values ]].
+				^ configuredCheckers values ].
 		
 	
 	"Remove the checker the user does not want
