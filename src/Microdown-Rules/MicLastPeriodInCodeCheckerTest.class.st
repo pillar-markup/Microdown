@@ -65,10 +65,11 @@ Authors may want to detect useless period as in the following code snippet
 setX: xInt setY: yInt
 
 	x := xInt.
-	y := yInt.           
+	y := yInt.        
+	   
 ```
 ' ].
-	
+
 
 ]
 
@@ -122,14 +123,14 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyNoExtraPeriod [
 	self assert: checker isOkay
 ]
 
-{ #category : 'tests - extra period' }
+{ #category : 'tests - missing period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriod [
 
 	checker identifyExtraLastPeriod.
 	checker checkProject: fileSystem / 'codeEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt." in file/codeEndingWithPeriod.md contains a mistake: It should not be terminated with a period (.).'
@@ -141,10 +142,12 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriodWithExt
 	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
-	y := yInt.           " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).'
+	y := yInt.        
+	   " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).'
+
 ]
 
 { #category : 'tests - extra period' }
@@ -154,10 +157,11 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriodWithExt
 	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
-	y := yInt.           " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).'
+	y := yInt.        
+	   " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - missing period' }
@@ -169,8 +173,27 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyMissingExtraPeriod
 	checker checkProject: fileSystem / 'codeNotEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt" in file/codeNotEndingWithPeriod.md contains a mistake: It should be terminated with a period (.).'
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromGarbage [
+
+    checker configureFrom: 'uneChaineAuHasard'.
+    self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromNo [
+    checker configureFrom: 'no'.
+	 self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
+    checker configureFrom: 'yes'.
+	 self deny: checker codeShouldEndWithPeriod
 ]
