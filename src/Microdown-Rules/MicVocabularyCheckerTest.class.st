@@ -262,6 +262,39 @@ MicVocabularyCheckerTest >> testCheckerFindsVisualiseMistake [
 ]
 
 { #category : 'tests - configuration' }
+MicVocabularyCheckerTest >> testConfigurationPart [
+
+	self 
+		assert: 
+		(MicVocabularyChecker configurationPart: (Character cr asString)) 
+		equals: '{
+	"Vocabulary" : [
+		[
+			"sub-presenter",
+			"subpresenter"
+		],
+		[
+			"sub presenter",
+			"subpresenter"
+		],
+		[
+			"meta object",
+			"metaobject"
+		],
+		[
+			"back-end",
+			"backend"
+		],
+		[
+			"back end",
+			"backend"
+		]
+	]
+}'
+		
+]
+
+{ #category : 'tests - configuration' }
 MicVocabularyCheckerTest >> testConfigureFrom [
 	
 	| voca |

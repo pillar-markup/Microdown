@@ -30,10 +30,19 @@ MicChecker class >> configurationJSONPart [
 ]
 
 { #category : 'configuration help' }
-MicChecker class >> configurationPart [
+MicChecker class >> configurationPart: newline [
 	"self configurationPart"
 	
-	^ STON toJsonStringPretty: { self checkerName } , self configurationJSONPart 
+	"^ STON toJsonStringPretty: { self checkerName -> self configurationJSONPart } asDictionary"
+	
+	^ String streamContents: [ :s | 
+		| writer |
+		writer := STONWriter new.
+		writer on: s.
+		writer	jsonMode: true.
+		writer prettyPrint: true;
+		newLine: newline;
+		nextPut: { self checkerName -> self configurationJSONPart } asDictionary ]
 ]
 
 { #category : 'configuration help' }
@@ -44,9 +53,10 @@ MicChecker class >> explanationForConfiguration [
 		str << self comment. 
 		str cr.
 		self configurationJSONPart ifNotEmpty: [ 
-			str << 'In the pillar.conf file you add the following key values:'. 
 			str cr.
-			str << self configurationPart ]] 
+			str << 'In the pillar.conf file you can add the following key values:'. 
+			str cr.
+			str << (self configurationPart: Character lf asString) ]] 
 ]
 
 { #category : 'visiting' }

@@ -34,6 +34,12 @@ MicLastPeriodInCodeChecker class >> checkerName [
 	^ 'LastPeriodInCode'
 ]
 
+{ #category : 'public - name' }
+MicLastPeriodInCodeChecker class >> configurationJSONPart [
+
+	^ 'true'
+]
+
 { #category : 'visiting' }
 MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
 
