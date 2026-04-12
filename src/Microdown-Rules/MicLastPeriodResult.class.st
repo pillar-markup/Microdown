@@ -10,6 +10,7 @@ Class {
 }
 
 { #category : 'accessing' }
-MicLastPeriodResult >> codeShouldEndWithPeriod: aBoolean [ 
+MicLastPeriodResult >> codeShouldEndWithPeriod: aBoolean [
+
 	codeShouldEndWithPeriod := aBoolean 
 ]

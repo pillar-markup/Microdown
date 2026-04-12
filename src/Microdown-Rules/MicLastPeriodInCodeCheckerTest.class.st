@@ -51,11 +51,12 @@ Authors may want to detect useless period as in the following code snippet
 setX: xInt setY: yInt
 
 	x := xInt.
-	y := yInt.           
+	y := yInt.             
 ```
 ' ].
 
-	file := fileSystem workingDirectory / 'codeEndingWithPeriodAndEmptyLines.md'.
+
+	file := fileSystem workingDirectory / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	file writeStreamDo: [ :stream |
 			stream nextPutAll: '
 
@@ -67,7 +68,8 @@ setX: xInt setY: yInt
 	x := xInt.
 	y := yInt.
 
-  
+		
+            
 ```
 ' ].
 	
@@ -87,10 +89,8 @@ MicLastPeriodInCodeCheckerTest >> setUp [
 
 { #category : 'tests - missing period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriod [
-	"may be the author wants all the code to finish with an extra period.
-	so we configure the checker to do so."
 
-	checker identifyMissingLastPeriod.
+	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'codeEndingWithPeriod.md'.
 	self assert: checker isOkay.
 
@@ -98,11 +98,9 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriod [
 
 { #category : 'tests - missing period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriodWithExtraEmptyLines [
-	"may be the author wants all the code to finish with an extra period.
-	so we configure the checker to do so."
 
-	checker identifyMissingLastPeriod.
-	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
+	checker shouldEndWithPeriod.
+	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	self assert: checker isOkay
 ]
 
@@ -111,7 +109,7 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriodWi
 	"may be the author wants all the code to finish with an extra period.
 	so we configure the checker to do so."
 
-	checker identifyMissingLastPeriod.
+	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'codeEndingWithPeriodAndExtraSpaces.md'.
 	self assert: checker isOkay
 ]
@@ -119,7 +117,7 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyMissingExtraPeriodWi
 { #category : 'tests - extra period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyNoExtraPeriod [
 
-	checker identifyExtraLastPeriod.
+	checker shouldNotEndWithPeriod.
 	checker checkProject: fileSystem / 'codeNotEndingWithPeriod.md'.
 	self assert: checker isOkay
 ]
@@ -127,7 +125,7 @@ MicLastPeriodInCodeCheckerTest >> testCheckerChecksCorrectlyNoExtraPeriod [
 { #category : 'tests - extra period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriod [
 
-	checker identifyExtraLastPeriod.
+	checker shouldNotEndWithPeriod.
 	checker checkProject: fileSystem / 'codeEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
@@ -139,29 +137,34 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriod [
 
 { #category : 'tests - extra period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriodWithExtraEmptyLines [
-	checker identifyExtraLastPeriod.
-	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
+
+	checker shouldNotEndWithPeriod.
+	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	self deny: checker isOkay.
 
 	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt.
-     " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).' 
+
+		
+            " in file/codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md contains a mistake: It should not be terminated with a period (.).'  
 ]
 
 { #category : 'tests - extra period' }
 MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyExtraPeriodWithExtraSpaces [
 
-	checker identifyExtraLastPeriod.
-	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLines.md'.
+	checker shouldNotEndWithPeriod.
+	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	self deny: checker isOkay.
 
 	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt.
-     " in file/codeEndingWithPeriodAndEmptyLines.md contains a mistake: It should not be terminated with a period (.).' 
+
+		
+            " in file/codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md contains a mistake: It should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - missing period' }
@@ -169,7 +172,7 @@ MicLastPeriodInCodeCheckerTest >> testCheckerIdentifyCorrectlyMissingExtraPeriod
 	"may be the author wants all the code to finish with an extra period.
 	so we configure the checker to do so."
 
-	checker identifyMissingLastPeriod.
+	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'codeNotEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
@@ -200,33 +203,33 @@ MicLastPeriodInCodeCheckerTest >> testConfigurationPart [
 MicLastPeriodInCodeCheckerTest >> testConfigureFromEmptyString [
 
 	checker configureFrom: ''.
-	self deny: checker codeShouldEndWithPeriod
+	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromGarbage [
 
 	checker configureFrom: 234.
-	self deny: checker codeShouldEndWithPeriod
+	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromNil [
 
 	checker configureFrom: nil.
-	self deny: checker codeShouldEndWithPeriod
+	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromNo [
 
 	checker configureFrom: 'no'.
-	self deny: checker codeShouldEndWithPeriod
+	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
 	
 	checker configureFrom: 'yes'.
-	self deny: checker codeShouldEndWithPeriod
+	self deny: checker isEndingWithPeriod
 ]
