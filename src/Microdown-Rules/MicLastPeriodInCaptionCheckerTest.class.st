@@ -121,20 +121,23 @@ MicLastPeriodInCaptionCheckerTest >> testCodeCheckerIdentifyCorrectlyMissingExtr
 
 { #category : 'tests' }
 MicLastPeriodInCaptionCheckerTest >> testConfigureFromFalse [
+
 	checker configureFrom: 'false'.
-	self assert: checker isEndingWithPeriod equals: false.
+	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests' }
 MicLastPeriodInCaptionCheckerTest >> testConfigureFromNil [
+
 	checker configureFrom: nil.
 	self deny: checker isEndingWithPeriod.
 ]
 
 { #category : 'tests' }
 MicLastPeriodInCaptionCheckerTest >> testConfigureFromTrue [
+
 	checker configureFrom: 'true'.
-	self assert: checker isEndingWithPeriod equals: true.
+	self assert: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - missing period' }
