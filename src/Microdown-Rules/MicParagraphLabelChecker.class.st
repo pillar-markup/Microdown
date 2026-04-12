@@ -47,35 +47,38 @@ MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
-	(aMicHeader text trimRight endsWith: '.') ifFalse: [ 
+
+	
+	| text |
+	text := aMicHeader text trimRight.
+	
+	(text occurrencesOf: $.) > 1 ifTrue: [ 
+		results add: (MicDoublePeriodResult new 
+			micElement: aMicHeader;
+			inFile: aMicHeader fromFile;
+			yourself) ].
+		
+	 
+	(text endsWith: '.') ifFalse: [ 
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
 			inFile: aMicHeader fromFile;
 			labelShouldEndWithPeriod: isEndingWithPeriod;
 			detail: aMicHeader text;
 			yourself
-		)
-		 ]
+		) ]
 ]
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> configureFrom: aConfiguration [
+
+	"The configuration should handle the level too."
+	
+
 	aConfiguration isNil ifTrue: [ ^ self ].
 	aConfiguration = 'true'
 		ifTrue: [ isEndingWithPeriod := true ]
 		ifFalse: [ isEndingWithPeriod := false ]
-]
-
-{ #category : 'visiting' }
-MicParagraphLabelChecker >> identifyExtraPeriod [
-	"Report a problem when paragrah label should not end with a period"
-	isEndingWithPeriod := false
-]
-
-{ #category : 'visiting' }
-MicParagraphLabelChecker >> identifyMissingPeriod [
-	"Report a problem when paragraph label should end with a period"
-	isEndingWithPeriod := true
 ]
 
 { #category : 'visiting' }

@@ -152,6 +152,7 @@ MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level4DoublePeriods.md'.
 	self deny: checker isOkay.
+	self assert: checker results first explanation equals: '- Text: "Paragraph Label.." in file/level4DoublePeriods.md contains two periods.'
 
 ]
 
@@ -175,7 +176,8 @@ MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
 	self deny: checker isOkay.
-
+	
+	self assert: checker results first explanation equals: '- Text: "Paragraph Label. ." in file/level4PeriodSpacePeriod.md contains two periods.' 
 ]
 
 { #category : 'tests - should end with period' }
