@@ -194,3 +194,22 @@ MicLastPeriodInCodeCheckerTest >> testConfigurationPart [
 }'
 	
 ]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromGarbage [
+
+    checker configureFrom: 'uneChaineAuHasard'.
+    self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromNo [
+    checker configureFrom: 'no'.
+	 self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
+    checker configureFrom: 'yes'.
+	 self deny: checker codeShouldEndWithPeriod
+]
