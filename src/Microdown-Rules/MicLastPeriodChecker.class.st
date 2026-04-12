@@ -56,7 +56,7 @@ MicLastPeriodChecker >> codeShouldEndWithPeriod [
 
 { #category : 'visiting' }
 MicLastPeriodChecker >> configureFrom: aConfigurationValue [
-	aConfigurationValue isNil ifTrue: [ ^ self ]. 
+	aConfigurationValue isNil ifTrue: [ codeShouldEndWithPeriod := false. ^ self ]. 
 	aConfigurationValue = 'true'
 		ifTrue: [ codeShouldEndWithPeriod := true ]
 		ifFalse: [ codeShouldEndWithPeriod := false ]

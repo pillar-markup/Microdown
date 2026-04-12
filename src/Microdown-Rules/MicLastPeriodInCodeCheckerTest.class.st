@@ -66,7 +66,8 @@ setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt.
-     
+
+  
 ```
 ' ].
 	
@@ -195,21 +196,37 @@ MicLastPeriodInCodeCheckerTest >> testConfigurationPart [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - configure' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromEmptyString [
+
+	checker configureFrom: ''.
+	self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromGarbage [
 
-    checker configureFrom: 'uneChaineAuHasard'.
-    self deny: checker codeShouldEndWithPeriod
+	checker configureFrom: 234.
+	self deny: checker codeShouldEndWithPeriod
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - configure' }
+MicLastPeriodInCodeCheckerTest >> testConfigureFromNil [
+
+	checker configureFrom: nil.
+	self deny: checker codeShouldEndWithPeriod
+]
+
+{ #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromNo [
-    checker configureFrom: 'no'.
-	 self deny: checker codeShouldEndWithPeriod
+
+	checker configureFrom: 'no'.
+	self deny: checker codeShouldEndWithPeriod
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - configure' }
 MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
-    checker configureFrom: 'yes'.
-	 self deny: checker codeShouldEndWithPeriod
+	
+	checker configureFrom: 'yes'.
+	self deny: checker codeShouldEndWithPeriod
 ]
