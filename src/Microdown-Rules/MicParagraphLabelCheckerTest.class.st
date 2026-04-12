@@ -147,6 +147,8 @@ MicParagraphLabelCheckerTest >> testLevel3 [
 { #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
 
+	"#### Paragraph Label.. is bad and should be detected as faulty"
+	
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level4DoublePeriods.md'.
 	self deny: checker isOkay.
@@ -168,7 +170,9 @@ MicParagraphLabelCheckerTest >> testLevel4NoPeriod [
 
 { #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
-	checker identifyExtraPeriod.
+	"#### Paragraph Label. . is bad and should be detected as faulty"
+	
+	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
 	self deny: checker isOkay.
 
