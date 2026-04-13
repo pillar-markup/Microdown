@@ -102,6 +102,44 @@ MicParagraphLabelCheckerTest >> testConfigureFromTrue [
 ]
 
 { #category : 'tests' }
+MicParagraphLabelCheckerTest >> testHeaderWithExtraPeriodRaisesError [
+	| checker document |
+	checker := MicParagraphLabelChecker new.
+	checker levelForParagraph: 1.
+	checker configureFrom: 'false'.
+	document := Microdown parse: '# Titre avec une faute.'.
+	
+	checker visit: document children first.
+	
+	self assert: checker results size equals: 1.
+	self assert: checker results first class name equals: 'MicParagraphLabelResult'.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testHeaderWithoutPeridoIsOkay [
+	| checker document |
+	checker := MicParagraphLabelChecker new.
+	document := Microdown parse: '# Titre'.
+	
+	checker visit: document.
+	self assert: checker results isEmpty.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testHeaderWithoutPeriodIsOkay [
+	| checker document |
+	checker := MicParagraphLabelChecker new.
+	checker levelForParagraph: 1.
+	checker configureFrom: 'false'.
+	
+	document := Microdown parse: '# Titre propre'.
+	
+	checker visit: document children first.
+	
+	self assert: checker results isEmpty.
+]
+
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel1NotChecked [
 	checker checkProject: fileSystem / 'level1.md'.
 	self assert: checker isOkay.
