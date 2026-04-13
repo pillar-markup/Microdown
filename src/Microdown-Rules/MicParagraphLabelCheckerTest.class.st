@@ -116,6 +116,19 @@ MicParagraphLabelCheckerTest >> testHeaderWithExtraPeriodRaisesError [
 ]
 
 { #category : 'tests' }
+MicParagraphLabelCheckerTest >> testHeaderWithFormattingAndPeriod [
+    | checker document |
+    checker := MicParagraphLabelChecker new.
+    checker levelForParagraph: 4.
+    checker configureFrom: 'false'. 
+    document := Microdown parse: '##### Titre avec *italique* et point.'.
+    
+    checker visit: document children first.
+    
+    self assert: checker results size equals: 1.
+]
+
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testHeaderWithoutPeridoIsOkay [
 	| checker document |
 	checker := MicParagraphLabelChecker new.
@@ -242,4 +255,51 @@ MicParagraphLabelCheckerTest >> testLevel6MissingPeriodDetected [
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'Shape'.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevelConfiguration [
+	| checker |
+	checker := MicParagraphLabelChecker new.
+	checker levelForParagraph: 5.
+	self assert: checker levelForParagraph equals: 5.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testParagraphLevel4IsIgnoredWhenConfiguredForLevel5 [
+    | checker document |
+    checker := MicParagraphLabelChecker new.
+    checker levelForParagraph: 5.
+    checker configureFrom: 'false'. 
+    document := Microdown parse: '#### Titre de niveau 4 avec point.'.
+    
+    checker visit: document children first.
+    
+    self assert: checker results isEmpty.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testParagraphLevel5IsChecked [
+    | checker document |
+    checker := MicParagraphLabelChecker new.
+    checker levelForParagraph: 5.
+    checker configureFrom: 'false'. 
+    document := Microdown parse: '##### Titre de niveau 5 avec point.'.
+    
+    checker visit: document children first.
+    
+    self assert: checker results size equals: 1.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testParagraphLevel6IsCheckedWhenConfiguredForLevel5 [
+    | checker document |
+    checker := MicParagraphLabelChecker new.
+    checker levelForParagraph: 5.
+    checker configureFrom: 'false'. 
+    document := Microdown parse: '###### Titre de niveau 4 avec point.'.
+    
+    checker visit: document children first.
+    
+    self assert: checker results size equals: 1.
 ]
