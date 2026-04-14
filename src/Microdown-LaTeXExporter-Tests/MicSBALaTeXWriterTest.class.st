@@ -12,13 +12,37 @@ MicSBALaTeXWriterTest class >> testParameters [
 		  forSelector: #writer addOptions: { MicSBALaTeXWriter };
 		  forSelector: #factory addOptions: { MicMicrodownSnippetFactory };
 		  forSelector: #parser addOptions: { Microdown };
-		  forSelector: #newLine addOptions: { String cr . String lf };
+		  forSelector: #newLine addOptions: { String cr . String lf . String crlf };
 		  yourself
 ]
 
 { #category : 'private' }
 MicSBALaTeXWriterTest >> actualClass [
 	^ MicSBALaTeXWriter
+]
+
+{ #category : 'tests' }
+MicSBALaTeXWriterTest >> testCodeBlock [
+	| document result expected microdownText tab |
+	
+	tab := Character tab asString.
+	
+	microdownText := '```', newLine,
+	tab, 'x := 1.', newLine,
+	tab, 'y := 2.', newLine,
+	'```'.
+	
+	document := Microdown parse: microdownText.
+	
+	writer visit: document.
+	result := writer contents. 
+	
+	expected := '\begin{displaycode}{smalltalk}', newLine,
+	'x := 1.', newLine,
+	'y := 2.', newLine,
+	'\end{displaycode}'.
+	
+	self assert: result trimBoth equals: expected trimBoth.
 ]
 
 { #category : 'tests' }

@@ -7,27 +7,25 @@ Class {
 }
 
 { #category : 'tests' }
+MicBeamerWriterTest class >> isAbstract [ 
+
+	^ false
+]
+
+{ #category : 'tests' }
 MicBeamerWriterTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
 		  forSelector: #writer addOptions: { MicBeamerWriter };
 		  forSelector: #factory addOptions: { MicMicrodownSnippetFactory };
 		  forSelector: #parser addOptions: { Microdown };
-		  forSelector: #newLine addOptions: { String cr . String lf };
+		  forSelector: #newLine addOptions: { String cr . String lf . String crlf };
 		  yourself
 ]
 
 { #category : 'running' }
 MicBeamerWriterTest >> actualClass [ 
 	^ MicBeamerWriter 
-]
-
-{ #category : 'running' }
-MicBeamerWriterTest >> setUp [
-
-	super setUp.
-	self parser: Microdown. 
-	self 
 ]
 
 { #category : 'tests' }

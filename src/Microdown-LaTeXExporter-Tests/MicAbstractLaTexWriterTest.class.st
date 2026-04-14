@@ -650,10 +650,10 @@ car il a etait fait pour cela'.
 MicAbstractLaTexWriterTest >> testWriteAParagraphWithLf [
 	writer lfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
-cela ne fonctionnerais pas
+cela ne fonctionnerait pas
 car il a etait fait pour cela'.
 	self assert: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
-'cela ne fonctionnerais pas', String lf,
+'cela ne fonctionnerait pas', String lf,
 'car il a etait fait pour cela'
 ]
 
@@ -661,10 +661,10 @@ car il a etait fait pour cela'.
 MicAbstractLaTexWriterTest >> testWriteAParagraphWithLfButNewLineIsCr [
 	writer crAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
-cela ne fonctionnerais pas
+cela ne fonctionnerait pas
 car il a etait fait pour cela'.
 	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
-'cela ne fonctionnerais pas', String lf,
+'cela ne fonctionnerait pas', String lf,
 'car il a etait fait pour cela'
 ]
 
@@ -672,10 +672,10 @@ car il a etait fait pour cela'.
 MicAbstractLaTexWriterTest >> testWriteAParagraphWithLfButNewLineIsCrlf [
 	writer crlfAsNewLine.
 	writer canvas nextPutAllLines: 'Je ne vois pas pourquoi
-cela ne fonctionnerais pas
+cela ne fonctionnerait pas
 car il a etait fait pour cela'.
 	self deny: writer canvas stream contents equals: 'Je ne vois pas pourquoi', String lf ,
-'cela ne fonctionnerais pas', String lf,
+'cela ne fonctionnerait pas', String lf,
 'car il a etait fait pour cela'
 ]
 
@@ -692,4 +692,10 @@ MicAbstractLaTexWriterTest >> writeForElement: aNode [
 
 	writer visit: aNode.
 
+]
+
+{ #category : 'accessing' }
+MicAbstractLaTexWriterTest >> writer: aWriterClass [
+
+	writer := aWriterClass new.
 ]
