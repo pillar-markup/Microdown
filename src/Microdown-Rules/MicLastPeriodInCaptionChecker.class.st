@@ -45,7 +45,7 @@ MicLastPeriodInCaptionChecker >> checkExtraPeriodInCode: aCode [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aCode;
 					 inFile: aCode fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -56,7 +56,7 @@ MicLastPeriodInCaptionChecker >> checkExtraPeriodInFigure: aFigure [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aFigure;
 					 inFile: aFigure fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -70,7 +70,7 @@ MicLastPeriodInCaptionChecker >> checkExtraPeriodInMath: aMath [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aMath;
 					 inFile: aMath fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -84,7 +84,7 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInCode: aCode [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aCode;
 					 inFile: aCode fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -94,7 +94,7 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInFigure: aFigure [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aFigure;
 					 inFile: aFigure fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -109,7 +109,7 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInMath: aMath [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aMath;
 					 inFile: aMath fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'helpers' }
@@ -124,7 +124,7 @@ MicLastPeriodInCaptionChecker >> visitCode: anEquation [
 
 	"this way we could share the same logic between all the elements."
 
-	codeShouldEndWithPeriod
+	isEndingWithPeriod
 		ifTrue: [ self checkMissingPeriodInCode: anEquation ]
 		ifFalse: [ self checkExtraPeriodInCode: anEquation ]
 ]
@@ -132,7 +132,7 @@ MicLastPeriodInCaptionChecker >> visitCode: anEquation [
 { #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> visitFigure: aFigure [
 
-	codeShouldEndWithPeriod
+	isEndingWithPeriod
 		ifTrue: [ self checkMissingPeriodInFigure: aFigure ]
 		ifFalse: [ self checkExtraPeriodInFigure: aFigure ]
 ]
@@ -142,7 +142,7 @@ MicLastPeriodInCaptionChecker >> visitMath: anEquation [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
 	"this way we could share the same logic between all the elements."
 
-	codeShouldEndWithPeriod
+	isEndingWithPeriod
 		ifTrue: [ self checkMissingPeriodInMath: anEquation ]
 		ifFalse: [ self checkExtraPeriodInMath: anEquation ]
 ]
