@@ -47,7 +47,7 @@ MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
 			results add: (MicPeriodInCodeResult new
 					 micElement: aMicCodeBlock;
 					 inFile: aMicCodeBlock fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting' }
@@ -57,13 +57,13 @@ MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 			results add: (MicPeriodInCodeResult new
 					 micElement: aMicCodeBlock;
 					 inFile: aMicCodeBlock fromFile;
-					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
 { #category : 'visiting' }
 MicLastPeriodInCodeChecker >> visitCode: aCodeBlockElement [
 
-	codeShouldEndWithPeriod 
+	isEndingWithPeriod 
 		ifTrue: [ self checkMissingPeriodIn: aCodeBlockElement ]
 		ifFalse: [ self checkExtraPeriodIn: aCodeBlockElement ]
 ]

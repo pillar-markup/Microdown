@@ -1,16 +1,13 @@
 Class {
-	#name : 'MicLastPeriodResult',
+	#name : 'MicDoublePeriodResult',
 	#superclass : 'MicAbstractResult',
-	#instVars : [
-		'codeShouldEndWithPeriod'
-	],
 	#category : 'Microdown-Rules-CodeLastPeriod',
 	#package : 'Microdown-Rules',
 	#tag : 'CodeLastPeriod'
 }
 
 { #category : 'accessing' }
-MicLastPeriodResult >> codeShouldEndWithPeriod: aBoolean [
+MicDoublePeriodResult >> explanation [
 
-	codeShouldEndWithPeriod := aBoolean 
+	^  '- Text: "' , micElement text , '" in file' , fileReference fullName , ' contains two periods.'
 ]
