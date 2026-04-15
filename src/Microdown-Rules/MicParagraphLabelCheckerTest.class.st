@@ -21,71 +21,57 @@ Class {
 { #category : 'running' }
 MicParagraphLabelCheckerTest >> generateFilesystemExample [
 	| file |
-	
 	"incorrect cases - no period"
-	file := fileSystem workingDirectory / 'level4NoPeriod.md'.
+	file := fileSystem workingDirectory / 'level4Wrong.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#### Color' ].
-	
-	file := fileSystem workingDirectory / 'level5NoPeriod.md'.
+		stream nextPutAll: '#### Color'
+		 ].
+	file := fileSystem workingDirectory / 'level5Wrong.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '##### Size' ].
-	
-	file := fileSystem workingDirectory / 'level6NoPeriod.md'.
+		stream nextPutAll: '##### Size'
+		 ].
+	file := fileSystem workingDirectory / 'level6Wrong.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '###### Shape' ].
-	
-	file := fileSystem workingDirectory / 'level4WithPeriod.md'.
+		stream nextPutAll: '###### Shape'
+		 ].
+	"incorrects cases - extra period"
+	file := fileSystem workingDirectory / 'level4ExtraPeriod.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#### Color.' ].
-	
-	file := fileSystem workingDirectory / 'level4WithPeriod.md'.
+		stream nextPutAll: '#### Color.'
+		 ].
+	"correct cases with period"
+	file := fileSystem workingDirectory / 'level4Correct.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#### Color.' ].
-	
-	file := fileSystem workingDirectory / 'level5WithPeriod.md'.
+		stream nextPutAll: '#### Color.'
+		 ].	file := fileSystem workingDirectory / 'level5Correct.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '##### Size.'].
-		file := fileSystem workingDirectory / 'level6WithPeriod.md'.
+		stream nextPutAll: '##### Size.'
+		 ].
+		file := fileSystem workingDirectory / 'level6Correct.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '###### Shape.' ].
-	
-
-
-
-
-
-	file := fileSystem workingDirectory / 'level1NoPeriod.md'.
+		stream nextPutAll: '###### Shape.'
+		 ].
+	"level 1 2 3 no verify"
+		file := fileSystem workingDirectory / 'level1.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#Title without period' ].
-		
-	file := fileSystem workingDirectory / 'level2NoPeriod.md'.
+		stream nextPutAll: '#Title without period'
+		 ].
+		file := fileSystem workingDirectory / 'level2.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '## Title without period' ].
-	file := fileSystem workingDirectory / 'level3NoPeriod.md'.
+		stream nextPutAll: '## Title without period'
+		 ].
+		file := fileSystem workingDirectory / 'level3.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '### Title without period' ].
-
-	file := fileSystem workingDirectory / 'level1WithPeriod.md'.
+		stream nextPutAll: '### Title without period'
+		 ].
+	file := fileSystem workingDirectory / 'level4DoublePeriod.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#Title without period.' ].
-	file := fileSystem workingDirectory / 'level2WithPeriod.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '## Title without period.' ].
-
-	file := fileSystem workingDirectory / 'level3WithPeriod.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '### Title without period.' ].
-
-	
-	file := fileSystem workingDirectory / 'level4DoublePeriods.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#### Paragraph Label..' ].
-	
+		stream nextPutAll: '#### Paragraph Label..'
+		 ].
 	file := fileSystem workingDirectory / 'level4PeriodSpacePeriod.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '#### Paragraph Label. .' ].
-	
+		stream nextPutAll: '#### Paragraph Label. .'
+		 ].
 ]
 
 { #category : 'running' }
@@ -97,24 +83,22 @@ MicParagraphLabelCheckerTest >> setUp [
 	checker := MicParagraphLabelChecker new.
 ]
 
-{ #category : 'tests - configure' }
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testConfigureFromFalse [ 
 	checker configureFrom: 'false'.
-	self deny: checker isEndingWithPeriod
+	self assert: checker labelShouldEndWithPeriod equals: false.
 ]
 
-{ #category : 'tests - configure' }
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testConfigureFromNil [
-
 	checker configureFrom: nil.
-	self assert: checker isEndingWithPeriod
+	self assert: checker labelShouldEndWithPeriod equals: true.
 ]
 
-{ #category : 'tests - configure' }
+{ #category : 'tests' }
 MicParagraphLabelCheckerTest >> testConfigureFromTrue [ 
 	checker configureFrom: 'true'.
-
-self assert: checker isEndingWithPeriod
+	self assert: checker labelShouldEndWithPeriod equals: true.
 ]
 
 { #category : 'tests' }
@@ -142,6 +126,7 @@ MicParagraphLabelCheckerTest >> testHeaderWithFormattingAndPeriod [
     checker visit: document children first.
     
     self assert: checker results size equals: 1.
+
 ]
 
 { #category : 'tests' }
@@ -170,124 +155,109 @@ MicParagraphLabelCheckerTest >> testHeaderWithoutPeriodIsOkay [
 
 { #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel1NotChecked [
-	checker checkProject: fileSystem / 'level1.md'.
-	self assert: checker isOkay.
+	| document |
+	checker := MicParagraphLabelChecker new.
+	checker configureFrom: 'false'.
+	
+	document := Microdown parse: '# Titre de niveau 1 avec point.'.	
+	checker visit: document children first.
+	
+	self assert: checker results isEmpty.
 ]
 
-{ #category : 'tests - section part' }
-MicParagraphLabelCheckerTest >> testLevel2 [
-	checker checkProject: fileSystem / 'level2NoPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel2NotChecked [
+	checker checkProject: fileSystem / 'level2.md'.
 	self assert: checker isOkay.
 
-	checker checkProject: fileSystem / 'level2WithPeriod.md'.
-	self deny: checker isOkay.
 ]
 
-{ #category : 'tests - section part' }
-MicParagraphLabelCheckerTest >> testLevel3 [
-	checker checkProject: fileSystem / 'level3NoPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel3NotChecked [
+	checker checkProject: fileSystem / 'level3.md'.
 	self assert: checker isOkay.
 
-	checker checkProject: fileSystem / 'level3WithPeriod.md'.
-	self deny: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel4Correct [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level4Correct.md'.
+	self assert: checker isOkay.
+
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel4CorrectNoExtraPeriod [
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4Wrong.md'.
+	self assert: checker isOkay.
+
 ]
 
 { #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
-
-	"#### Paragraph Label.. is bad and should be detected as faulty"
-	
-	checker shouldEndWithPeriod.
-	checker checkProject: fileSystem / 'level4DoublePeriods.md'.
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4DoublePeriod.md'.
 	self deny: checker isOkay.
-	self assert: checker results first explanation equals: '- Text: "Paragraph Label.." in file/level4DoublePeriods.md contains two periods.'
 
 ]
 
-{ #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel4NoPeriod [
-
-	checker shouldNotEndWithPeriod.
-	checker checkProject: fileSystem / 'level4NoPeriod.md'.
-	self assert: checker isOkay.
-
-	checker checkProject: fileSystem / 'level4WithPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel4ExtraPeriodDetected [
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4ExtraPeriod.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'Color.'.
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
-	"#### Paragraph Label. . is bad and should be detected as faulty"
-	
-	checker shouldEndWithPeriod.
-	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
-	self deny: checker isOkay.
-	
-	self assert: checker results first explanation equals: '- Text: "Paragraph Label. ." in file/level4PeriodSpacePeriod.md contains two periods.' 
-]
-
-{ #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel4ShouldEndWithPeriod [
-
-	checker shouldEndWithPeriod.
-	checker checkProject: fileSystem / 'level4WithPeriod.md'.
-	self assert: checker isOkay.
-
-	checker checkProject: fileSystem / 'level4NoPeriod.md'.
+MicParagraphLabelCheckerTest >> testLevel4MissingPeriodDetected [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level4Wrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'Color'.
 ]
 
-{ #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel5NoPeriod [
-
-	checker shouldNotEndWithPeriod.
-	checker checkProject: fileSystem / 'level5NoPeriod.md'.
-	self assert: checker isOkay.
-
-	checker checkProject: fileSystem / 'level5WithPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
+	checker identifyExtraPeriod.
+	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
 	self deny: checker isOkay.
-	self assert: checker results size equals: 1.
-	self assert: checker results first detail equals: 'Size.'.
+
 ]
 
-{ #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel5ShouldEndWithPeriod [
-
-	checker shouldEndWithPeriod.
-	checker checkProject: fileSystem / 'level5WithPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel5Correct [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level5Correct.md'.
 	self assert: checker isOkay.
 
-	checker checkProject: fileSystem / 'level5NoPeriod.md'.
+]
+
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel5MissingPeriodDetected [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level5Wrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'Size'.
 ]
 
-{ #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel6NoPeriod [
-
-	checker shouldNotEndWithPeriod.
-	checker checkProject: fileSystem / 'level6NoPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel6Correct [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level6Correct.md'.
 	self assert: checker isOkay.
 
-	checker checkProject: fileSystem / 'level6WithPeriod.md'.
-	self deny: checker isOkay.
-	self assert: checker results size equals: 1.
-	self assert: checker results first detail equals: 'Shape.'.
 ]
 
-{ #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel6ShouldEndWithPeriod [
-
-	checker shouldEndWithPeriod.
-	checker checkProject: fileSystem / 'level6WithPeriod.md'.
-	self assert: checker isOkay.
-
-	checker checkProject: fileSystem / 'level6NoPeriod.md'.
+{ #category : 'tests' }
+MicParagraphLabelCheckerTest >> testLevel6MissingPeriodDetected [
+	checker identifyMissingPeriod.
+	checker checkProject: fileSystem / 'level6Wrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'Shape'.

@@ -18,8 +18,8 @@ Class {
 	#name : 'MicParagraphLabelChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
-		'levelForParagraph',
-		'isEndingWithPeriod'
+		'labelShouldEndWithPeriod',
+		'levelForParagraph'
 	],
 	#category : 'Microdown-Rules-CodeLastPeriod',
 	#package : 'Microdown-Rules',
@@ -38,7 +38,7 @@ MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
 			inFile: aMicHeader fromFile;
-			labelShouldEndWithPeriod: isEndingWithPeriod;
+			labelShouldEndWithPeriod: labelShouldEndWithPeriod;
 			detail: aMicHeader text;
 			yourself
 		)
@@ -47,52 +47,49 @@ MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
-
-	
-	| text |
-	text := aMicHeader text trimRight.
-	
-	(text occurrencesOf: $.) > 1 ifTrue: [ 
-		results add: (MicDoublePeriodResult new 
-			micElement: aMicHeader;
-			inFile: aMicHeader fromFile;
-			yourself) ].
-		
-	 
-	(text endsWith: '.') ifFalse: [ 
+	(aMicHeader text trimRight endsWith: '.') ifFalse: [ 
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
 			inFile: aMicHeader fromFile;
-			labelShouldEndWithPeriod: isEndingWithPeriod;
+			labelShouldEndWithPeriod: labelShouldEndWithPeriod;
 			detail: aMicHeader text;
 			yourself
-		) ]
+		)
+		 ]
 ]
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> configureFrom: aConfiguration [
-
-	"The configuration should handle the level too."
-	
-
 	aConfiguration isNil ifTrue: [ ^ self ].
 	aConfiguration = 'true'
-		ifTrue: [ isEndingWithPeriod := true ]
-		ifFalse: [ isEndingWithPeriod := false ]
+		ifTrue: [ labelShouldEndWithPeriod := true ]
+		ifFalse: [ labelShouldEndWithPeriod := false ]
+]
+
+{ #category : 'visiting' }
+MicParagraphLabelChecker >> identifyExtraPeriod [
+	"Report a problem when paragrah label should not end with a period"
+	labelShouldEndWithPeriod := false
+]
+
+{ #category : 'visiting' }
+MicParagraphLabelChecker >> identifyMissingPeriod [
+	"Report a problem when paragraph label should end with a period"
+	labelShouldEndWithPeriod := true
 ]
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> initialize [
 
 	super initialize.
-	isEndingWithPeriod := true.
+	labelShouldEndWithPeriod := true.
 	levelForParagraph := 4.
 ]
 
 { #category : 'accessing' }
-MicParagraphLabelChecker >> isEndingWithPeriod [
+MicParagraphLabelChecker >> labelShouldEndWithPeriod [
 
-	^ isEndingWithPeriod
+	^ labelShouldEndWithPeriod
 ]
 
 { #category : 'accessing' }
@@ -108,27 +105,11 @@ MicParagraphLabelChecker >> levelForParagraph: anObject [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> shouldEndWithPeriod [
-	
-	isEndingWithPeriod := true
-]
-
-{ #category : 'visiting' }
-MicParagraphLabelChecker >> shouldNotEndWithPeriod [
-
-	isEndingWithPeriod := false
-]
-
-{ #category : 'visiting' }
 MicParagraphLabelChecker >> visitHeader: aMicHeader [
-
-	aMicHeader level >= levelForParagraph 
-		ifTrue: [ 
-			isEndingWithPeriod 
-				ifTrue: [ self checkMissingPeriodIn: aMicHeader ]
-				ifFalse: [ self checkExtraPeriodIn: aMicHeader ] 
-		 	]
-		
-		ifFalse: [ "level 1 2 3 should not terminate with period" 
-			self checkExtraPeriodIn: aMicHeader ]
+	aMicHeader level < self levelForParagraph ifTrue: [ ^ self ].
+	aMicHeader level >= levelForParagraph ifTrue: [ 
+		labelShouldEndWithPeriod 
+			ifTrue: [ self checkMissingPeriodIn: aMicHeader ]
+			ifFalse: [ self checkExtraPeriodIn: aMicHeader ] 
+		 ]
 ]

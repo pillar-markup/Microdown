@@ -14,7 +14,7 @@ Class {
 	#name : 'MicLastPeriodChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
-		'isEndingWithPeriod'
+		'codeShouldEndWithPeriod'
 	],
 	#category : 'Microdown-Rules-CodeLastPeriod',
 	#package : 'Microdown-Rules',
@@ -33,7 +33,7 @@ MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [
 		ifTrue: [ results add: (MicPeriodInCodeResult new
 											micElement: aMicCodeBlock;
 											inFile: aMicCodeBlock fromFile; 
-											codeShouldEndWithPeriod: isEndingWithPeriod
+											codeShouldEndWithPeriod: codeShouldEndWithPeriod
 											) ]
 	
 ]
@@ -45,38 +45,37 @@ MicLastPeriodChecker >> checkMissingPeriodIn: aMicCodeBlock [
 			results add: (MicPeriodInCodeResult new
 					 micElement: aMicCodeBlock;
 					 inFile: aMicCodeBlock fromFile;
-					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
+					 codeShouldEndWithPeriod: codeShouldEndWithPeriod) ]
+]
+
+{ #category : 'accessing' }
+MicLastPeriodChecker >> codeShouldEndWithPeriod [
+
+	^ codeShouldEndWithPeriod
 ]
 
 { #category : 'visiting' }
 MicLastPeriodChecker >> configureFrom: aConfigurationValue [
-
-	aConfigurationValue isNil ifTrue: [ isEndingWithPeriod := false. ^ self ]. 
+	aConfigurationValue isNil ifTrue: [ ^ self ]. 
 	aConfigurationValue = 'true'
-		ifTrue: [ isEndingWithPeriod := true ]
-		ifFalse: [ isEndingWithPeriod := false ]
+		ifTrue: [ codeShouldEndWithPeriod := true ]
+		ifFalse: [ codeShouldEndWithPeriod := false ]
+]
+
+{ #category : 'visiting' }
+MicLastPeriodChecker >> identifyExtraLastPeriod [
+
+	codeShouldEndWithPeriod := false
+]
+
+{ #category : 'visiting' }
+MicLastPeriodChecker >> identifyMissingLastPeriod [
+
+	codeShouldEndWithPeriod := true
 ]
 
 { #category : 'visiting' }
 MicLastPeriodChecker >> initialize [ 
 	super initialize. 
-	isEndingWithPeriod := true
-]
-
-{ #category : 'visiting' }
-MicLastPeriodChecker >> isEndingWithPeriod [
-
-	^ isEndingWithPeriod
-]
-
-{ #category : 'visiting' }
-MicLastPeriodChecker >> shouldEndWithPeriod [
-
-	isEndingWithPeriod := true 
-]
-
-{ #category : 'visiting' }
-MicLastPeriodChecker >> shouldNotEndWithPeriod [
-
-	isEndingWithPeriod := false
+	codeShouldEndWithPeriod := true
 ]
