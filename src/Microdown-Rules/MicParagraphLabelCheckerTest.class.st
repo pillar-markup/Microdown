@@ -155,9 +155,14 @@ MicParagraphLabelCheckerTest >> testHeaderWithoutPeriodIsOkay [
 
 { #category : 'tests' }
 MicParagraphLabelCheckerTest >> testLevel1NotChecked [
-	checker checkProject: fileSystem / 'level1.md'.
-	self assert: checker isOkay.
-
+	| document |
+	checker := MicParagraphLabelChecker new.
+	checker configureFrom: 'false'.
+	
+	document := Microdown parse: '# Titre de niveau 1 avec point.'.	
+	checker visit: document children first.
+	
+	self assert: checker results isEmpty.
 ]
 
 { #category : 'tests' }

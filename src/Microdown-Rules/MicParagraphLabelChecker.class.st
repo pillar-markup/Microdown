@@ -106,6 +106,7 @@ MicParagraphLabelChecker >> levelForParagraph: anObject [
 
 { #category : 'visiting' }
 MicParagraphLabelChecker >> visitHeader: aMicHeader [
+	aMicHeader level < self levelForParagraph ifTrue: [ ^ self ].
 	aMicHeader level >= levelForParagraph ifTrue: [ 
 		labelShouldEndWithPeriod 
 			ifTrue: [ self checkMissingPeriodIn: aMicHeader ]
