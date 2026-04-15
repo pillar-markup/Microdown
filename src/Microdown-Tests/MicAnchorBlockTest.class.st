@@ -45,10 +45,27 @@ MicAnchorBlockTest >> testAnchorWithDashesAndUnderscores [
 ]
 
 { #category : 'tests' }
+MicAnchorBlockTest >> testInvalidAnchor [
+	| doc |
+	doc := Microdown parse: '@'.
+	self assert: doc children first class name equals: #MicAnchorBlock
+]
+
+{ #category : 'tests' }
 MicAnchorBlockTest >> testModifyLabel [
 	| mic |
 	mic := (parser parse: '@label') children first.
 	self assert: mic label equals: 'label'.
 	mic label: 'label2'.
 	self assert: mic label equals: 'label2'.
+]
+
+{ #category : 'tests' }
+MicAnchorBlockTest >> testMultipleAnchors [
+	| doc |
+	doc := Microdown parse: '@ancre1
+@ancre2'.
+	self assert: doc children size equals: 2.
+	self assert: doc children first label equals: 'ancre1'.
+	self assert: doc children second label equals: 'ancre2'
 ]
