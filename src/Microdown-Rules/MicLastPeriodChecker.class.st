@@ -60,7 +60,7 @@ MicLastPeriodChecker >> configureFrom: aConfigurationValue [
 { #category : 'visiting' }
 MicLastPeriodChecker >> initialize [ 
 	super initialize. 
-	isEndingWithPeriod := true
+	isEndingWithPeriod := false
 ]
 
 { #category : 'visiting' }
