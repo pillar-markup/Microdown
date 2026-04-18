@@ -168,7 +168,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 MicHeaderCapitalizationCheckerTest >> testConfigurationPart [
 
 	self 
-		assert: (MicHeaderCapitalizationChecker configurationPartWithNewLine: (Character cr asString))
+		assert: (MicHeaderCapitalizationChecker configurationPartWithNewLine: Character cr asString)
 		equals:  '{
 	"HeaderCapitalization" : {
 		"keepAs" : [
