@@ -173,7 +173,7 @@ MicHeaderCapitalizationCheckerTest >> testConfigurationPart [
 	"HeaderCapitalization" : {
 		"keepAs" : [
 			"mini",
-			"uMicro"
+			"uDown"
 		],
 		"uppercase" : true
 	}
@@ -184,8 +184,12 @@ MicHeaderCapitalizationCheckerTest >> testConfigurationPart [
 { #category : 'tests - configuration' }
 MicHeaderCapitalizationCheckerTest >> testConfigureFromLowercase [
 
-	checker configureFrom: 'lowercase'.
+	checker configureFrom: 
+		{ ('uppercase' -> false) . 
+			('keepAs' -> { 'mini' . 'uDown'  }) } asDictionary.
 	self assert: (checker strategy isKindOf: MicRuleLowercaseHeaderStrategy).
+	self assert: (checker keepAsIs includes: 'mini').
+	self assert: (checker keepAsIs includes: 'uDown').
 ]
 
 { #category : 'tests - configuration' }
@@ -198,8 +202,12 @@ MicHeaderCapitalizationCheckerTest >> testConfigureFromNil [
 { #category : 'tests - configuration' }
 MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
 
-	checker configureFrom: 'uppercase'.
+	checker configureFrom: 
+		{ ('uppercase' -> true) . 
+			('keepAs' -> { 'mini' . 'uDown'  }) } asDictionary.
 	self assert: (checker strategy isKindOf: MicRuleUppercaseHeaderStrategy).
+	self assert: (checker keepAsIs includes: 'mini').
+	self assert: (checker keepAsIs includes: 'uDown').
 ]
 
 { #category : 'tests - headers should be lowercased' }
