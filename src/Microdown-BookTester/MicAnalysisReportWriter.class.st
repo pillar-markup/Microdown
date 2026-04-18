@@ -65,22 +65,18 @@ MicAnalysisReportWriter class >> configureCheckers: configuredCheckers from: aCo
 ]
 
 { #category : 'instance creation' }
-MicAnalysisReportWriter class >> reportForFolder: folderReference 
-	startingFrom: fileReference
-	configuration: aConfiguration [
-	"I perform several analyses starting from a root document file reference (e.g. index.md)"
-		
-	| reporter checkers |
-	reporter := self new.
+MicAnalysisReportWriter class >> reportForFolder: folderReference
+    startingFrom: fileReference
+    configuration: aConfiguration [
 
-	checkers := self checkersFromConfiguration: aConfiguration.
-	checkers do: [ :checker|
-		Stdio stdout nextPutAll: 'Checker: ', checker class name, ' is checking.';cr.
-		checker rootDirectory: folderReference.
-		checker checkProject: fileReference.
-		reporter addResults: checker results ].
-
-	^ reporter
+    | reporter checkers |
+    reporter := self new.
+    checkers := self checkersFromConfiguration: aConfiguration.
+    checkers do: [ :checker |
+        checker rootDirectory: folderReference.
+        checker checkProject: fileReference.
+        reporter addResults: checker results ].
+    ^ reporter
 ]
 
 { #category : 'adding' }
