@@ -19,6 +19,6 @@ MicElementOfHeaderWronglyUppercasedResult >> detail: aString [
 MicElementOfHeaderWronglyUppercasedResult >> explanation [ 
 
 
-	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' should not be uppercased.'
+	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' should be uppercased.'
 	 
 ]

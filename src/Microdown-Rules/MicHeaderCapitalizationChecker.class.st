@@ -95,6 +95,11 @@ MicHeaderCapitalizationChecker >> keepAsIs [
 	^ keepAsIs
 ]
 
+{ #category : 'accessing' }
+MicHeaderCapitalizationChecker >> keepAsIs: aCollection [ 
+	keepAsIs := aCollection
+]
+
 { #category : 'asserting' }
 MicHeaderCapitalizationChecker >> shouldCapitalizedWord: aString [
 	| normalized |

@@ -14,7 +14,7 @@ Class {
 MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 
 	| file |
-	file := fileSystem workingDirectory / 'HeadersAreNotLowerCased.md'.
+	file := fileSystem workingDirectory / 'HeaderCorrectlyUppercased.md'.
 	file writeStreamDo: [ :stream |
 			stream nextPutAll: '
 
@@ -23,7 +23,7 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 
 ' ].
 
-	file := fileSystem workingDirectory / 'FirstWordOfHeadderNotCapitalized.md'.
+	file := fileSystem workingDirectory / 'HeaderAllLowercase.md'.
 	file writeStreamDo: [ :stream |
 			stream nextPutAll: '
 
@@ -32,7 +32,7 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 
 ' ].
 
-	file := fileSystem workingDirectory / 'AfterColonLowercase.md'.
+	file := fileSystem workingDirectory / 'AfterColonLowercaseUncorrect.md'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: '
 ## Today and tomorrow: the days
@@ -80,12 +80,15 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 	
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - uppercase' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
 
-	checker verifyLowercase.
-	checker checkProject: fileSystem / 'AfterColonCorrect.md'.
+	checker verifyUppercase.
+	checker keepAsIs: (Set new add: 'days'; add: 'tomorrow'; yourself).
+	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
+	self halt.
+	checker results 
 ]
 
 { #category : 'tests - headers should be lowercased' }
@@ -100,7 +103,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
 | colonResult |
 	checker verifyLowercase.
-	checker checkProject: fileSystem / 'AfterColonLowercase.md'.
+	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
 	"trouver le result spécifique au mot après ':' "
 	
@@ -108,7 +111,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
 	self assert: colonResult notNil. 
 	self
 		assert: colonResult explanation
-		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercase.md contains a mistake: the as first letter after a colon should be uppercased.'.
+		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercaseUncorrect.md contains a mistake: the as first letter after a colon should be uppercased.'.
 
 ]
 
@@ -116,25 +119,25 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonUppercase [
 | colonResult |
 	checker verifyUppercase.
-	checker checkProject: fileSystem / 'AfterColonLowercase.md'.
+	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
 	colonResult := (checker results detect: [:r | r class = MicElementAfterColonIsNotCapitalizedResult]).
 	self assert: colonResult notNil.
 	self
 		assert: colonResult explanation
-		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercase.md contains a mistake: the as first letter after a colon should be uppercased.'
+		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercaseUncorrect.md contains a mistake: the as first letter after a colon should be uppercased.'
 ]
 
 { #category : 'tests - headers should be lowercased' }
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalized [
 
 	checker verifyLowercase.
-	checker checkProject: fileSystem / 'FirstWordOfHeadderNotCapitalized.md'.
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
 	self deny: checker isOkay.
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Header: "header with first word in lowercase" in file/FirstWordOfHeadderNotCapitalized.md contains a mistake: header as first word of the header should be uppercased.'
+		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
 	
 ]
 
@@ -142,12 +145,12 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapit
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalizedEvenInUppercase [
 
 	checker verifyUppercase.
-	checker checkProject: fileSystem / 'FirstWordOfHeadderNotCapitalized.md'.
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
 	self deny: checker isOkay.
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Header: "header with first word in lowercase" in file/FirstWordOfHeadderNotCapitalized.md contains a mistake: header as first word of the header should be uppercased.'
+		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
 	
 ]
 
@@ -155,12 +158,11 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapit
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 
 	checker verifyLowercase.
-	checker checkProject: fileSystem / 'HeadersAreNotLowerCased.md'.
+	checker checkProject: fileSystem / 'HeaderCorrectlyUppercased.md'.
 	self deny: checker isOkay.
-	
 	self
 		assert: checker results first explanation
-		equals:  'Header: "Header with Uppercases" in file/HeadersAreNotLowerCased.md contains a mistake: Uppercases should not be uppercased.'
+		equals:  'Header: "Header with Uppercases" in file/HeaderCorrectlyUppercased.md contains a mistake: Uppercases should be uppercased.'
 		
 ]
 
