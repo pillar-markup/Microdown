@@ -192,7 +192,7 @@ MicLastPeriodInCodeCheckerTest >> testConfigurationJSONPart [
 MicLastPeriodInCodeCheckerTest >> testConfigurationPart [
 
 	self 
-		assert: (MicLastPeriodInCodeChecker configurationPart: (Character cr asString)) 
+		assert: (MicLastPeriodInCodeChecker configurationPartWithNewLine: (Character cr asString)) 
 		equals: '{
 	"LastPeriodInCode" : "true"
 }'

@@ -9,7 +9,7 @@ I can be configured in two modes:
 - lowercase: only the first word should be capitalized
 "
 Class {
-	#name : 'MicRuleHeaderChecker',
+	#name : 'MicHeaderCapitalizationChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
 		'strategy',
@@ -22,20 +22,26 @@ Class {
 }
 
 { #category : 'public - name' }
-MicRuleHeaderChecker class >> checkerName [
+MicHeaderCapitalizationChecker class >> checkerName [
 
 	^ 'HeaderCapitalization'
 ]
 
+{ #category : 'configuration help' }
+MicHeaderCapitalizationChecker class >> configurationJSONPart [
+	
+	^ { ('uppercase' -> true) . ('keepAs' -> { 'mini' . 'uMicro'  }) } asDictionary
+]
+
 { #category : 'initialization' }
-MicRuleHeaderChecker >> addUncapitalized: aString [ 
+MicHeaderCapitalizationChecker >> addUncapitalized: aString [ 
 	"Make sure that aString will not be capitalized"
 	
 	uncapitalizableText add: aString
 ]
 
 { #category : 'visiting' }
-MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
+MicHeaderCapitalizationChecker >> checkFirstWord: aCollection of: anElement [
 
 	aCollection first isCapitalized ifFalse: [
 			results add: (MicFirstElementOfHeaderIsNotCapitalizedResult new
@@ -45,7 +51,7 @@ MicRuleHeaderChecker >> checkFirstWord: aCollection of: anElement [
 ]
 
 { #category : 'visiting' }
-MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
+MicHeaderCapitalizationChecker >> checkRest: words of: aMicHeader [
 	
 	"In the future we should manage that if a word finishes by : the following one must be captitalized
 	e.g., 'Today and tomorrow: The days' and not 
@@ -56,7 +62,7 @@ MicRuleHeaderChecker >> checkRest: words of: aMicHeader [
 ]
 
 { #category : 'configuration' }
-MicRuleHeaderChecker >> configureFrom: aConfiguration [
+MicHeaderCapitalizationChecker >> configureFrom: aConfiguration [
 	aConfiguration isNil ifTrue: [ ^ self ].
 	aConfiguration = 'uppercase'
 		ifTrue: [ self verifyUppercase ]
@@ -64,7 +70,7 @@ MicRuleHeaderChecker >> configureFrom: aConfiguration [
 ]
 
 { #category : 'initialization' }
-MicRuleHeaderChecker >> initialize [
+MicHeaderCapitalizationChecker >> initialize [
 
 	super initialize.
 	self verifyLowercase.
@@ -77,7 +83,7 @@ MicRuleHeaderChecker >> initialize [
 ]
 
 { #category : 'asserting' }
-MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
+MicHeaderCapitalizationChecker >> shouldCapitalizedWord: aString [
 	| normalized |
 	normalized := (aString select: [ :c | c isLetter ]) asLowercase.
 
@@ -85,27 +91,27 @@ MicRuleHeaderChecker >> shouldCapitalizedWord: aString [
 ]
 
 { #category : 'accessing' }
-MicRuleHeaderChecker >> strategy [
+MicHeaderCapitalizationChecker >> strategy [
 
 	^ strategy
 ]
 
 { #category : 'initialization' }
-MicRuleHeaderChecker >> verifyLowercase [
+MicHeaderCapitalizationChecker >> verifyLowercase [
 
 	strategy := MicRuleLowercaseHeaderStrategy new.
 	strategy checker: self
 ]
 
 { #category : 'initialization' }
-MicRuleHeaderChecker >> verifyUppercase [
+MicHeaderCapitalizationChecker >> verifyUppercase [
 
 	strategy := MicRuleUppercaseHeaderStrategy new.
 	strategy checker: self
 ]
 
 { #category : 'asserting' }
-MicRuleHeaderChecker >> visitHeader: aMicHeader [
+MicHeaderCapitalizationChecker >> visitHeader: aMicHeader [
 
 	| words |
 	words := aMicHeader text substrings.

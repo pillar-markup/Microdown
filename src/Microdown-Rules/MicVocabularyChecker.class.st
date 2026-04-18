@@ -33,6 +33,7 @@ MicVocabularyChecker class >> checkerName [
 { #category : 'configuration help' }
 MicVocabularyChecker class >> configurationJSONPart [
 	"self configurationPart"
+
 		^ {
 			{'sub-presenter' . 'subpresenter'} .
 			{'sub presenter' . 'subpresenter'} .

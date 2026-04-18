@@ -266,7 +266,7 @@ MicVocabularyCheckerTest >> testConfigurationPart [
 
 	self 
 		assert: 
-		(MicVocabularyChecker configurationPart: (Character cr asString)) 
+		(MicVocabularyChecker configurationPartWithNewLine: (Character cr asString)) 
 		equals: '{
 	"Vocabulary" : [
 		[

@@ -76,7 +76,7 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 
-	checker := MicRuleHeaderChecker new.
+	checker := MicHeaderCapitalizationChecker new.
 	
 ]
 
@@ -164,21 +164,38 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 		
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - configuration' }
+MicHeaderCapitalizationCheckerTest >> testConfigurationPart [
+
+	self 
+		assert: (MicHeaderCapitalizationChecker configurationPartWithNewLine: (Character cr asString))
+		equals:  '{
+	"HeaderCapitalization" : {
+		"keepAs" : [
+			"mini",
+			"uMicro"
+		],
+		"uppercase" : true
+	}
+}'
+		
+]
+
+{ #category : 'tests - configuration' }
 MicHeaderCapitalizationCheckerTest >> testConfigureFromLowercase [
 
 	checker configureFrom: 'lowercase'.
 	self assert: (checker strategy isKindOf: MicRuleLowercaseHeaderStrategy).
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - configuration' }
 MicHeaderCapitalizationCheckerTest >> testConfigureFromNil [
 
 	checker configureFrom: nil.
 	self assert: (checker strategy isKindOf: MicRuleLowercaseHeaderStrategy).
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - configuration' }
 MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
 
 	checker configureFrom: 'uppercase'.

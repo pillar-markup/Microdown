@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicRuleLowercaseHeaderStrategy',
-	#superclass : 'MicRuleHeaderCheckerStrategy',
+	#superclass : 'MicHeaderCapitalizationCheckerStrategy',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'

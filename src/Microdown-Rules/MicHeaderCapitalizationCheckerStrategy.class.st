@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicRuleHeaderCheckerStrategy',
+	#name : 'MicHeaderCapitalizationCheckerStrategy',
 	#superclass : 'Object',
 	#instVars : [
 		'checker'
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-MicRuleHeaderCheckerStrategy >> checkColonCapitalizationIn: words of: aMicHeader [
+MicHeaderCapitalizationCheckerStrategy >> checkColonCapitalizationIn: words of: aMicHeader [
  | size current next firstLetter firstWord |
  size := words size.
 1 to: size - 1 do: [ :i |
@@ -33,13 +33,13 @@ MicRuleHeaderCheckerStrategy >> checkColonCapitalizationIn: words of: aMicHeader
 ]
 
 { #category : 'accessing' }
-MicRuleHeaderCheckerStrategy >> checker [
+MicHeaderCapitalizationCheckerStrategy >> checker [
 
 	^ checker
 ]
 
 { #category : 'accessing' }
-MicRuleHeaderCheckerStrategy >> checker: anObject [
+MicHeaderCapitalizationCheckerStrategy >> checker: anObject [
 
 	checker := anObject
 ]
