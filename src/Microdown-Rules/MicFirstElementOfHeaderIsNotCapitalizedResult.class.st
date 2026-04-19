@@ -1,25 +1,10 @@
 Class {
 	#name : 'MicFirstElementOfHeaderIsNotCapitalizedResult',
-	#superclass : 'MicAbstractResult',
-	#instVars : [
-		'detail'
-	],
+	#superclass : 'MicWithDetailResult',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
-
-{ #category : 'accessing' }
-MicFirstElementOfHeaderIsNotCapitalizedResult >> detail [
-
-	^ detail
-]
-
-{ #category : 'accessing' }
-MicFirstElementOfHeaderIsNotCapitalizedResult >> detail: aString [
-
-	detail := aString
-]
 
 { #category : 'accessing' }
 MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [ 
@@ -27,11 +12,4 @@ MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [
 
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' as first word of the header should be uppercased.'
 	 
-]
-
-{ #category : 'printing' }
-MicFirstElementOfHeaderIsNotCapitalizedResult >> printOn: aStream [
-
-	super printOn: aStream. 
-	aStream nextPutAll: ' (', detail, ')'
 ]

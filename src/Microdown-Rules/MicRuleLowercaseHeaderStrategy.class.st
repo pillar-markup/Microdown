@@ -20,7 +20,7 @@ MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader [
 		do: [ :word |	
 			 word isCapitalized
 				ifTrue: [  
-				checker addResult: (MicElementOfHeaderWronglyUppercasedResult new 
+				checker addResult: (MicHeaderWronglyUppercasedResult new 
 								micElement: aMicHeader; 
 								detail: word;
 								inFile: aMicHeader fromFile) 
