@@ -31,6 +31,13 @@ MicChecker class >> configurationJSONPart [
 
 { #category : 'configuration help' }
 MicChecker class >> configurationPart: newline [
+	"To be removed... you should use configurationPartWithNewLine:"
+	
+	^ self configurationPartWithNewLine: newline
+]
+
+{ #category : 'configuration help' }
+MicChecker class >> configurationPartWithNewLine: newline [
 	"self configurationPart"
 	
 	"^ STON toJsonStringPretty: { self checkerName -> self configurationJSONPart } asDictionary"
@@ -42,7 +49,9 @@ MicChecker class >> configurationPart: newline [
 		writer	jsonMode: true.
 		writer prettyPrint: true;
 		newLine: newline;
-		nextPut: { self checkerName -> self configurationJSONPart } asDictionary ]
+		nextPut: (Dictionary new 
+						at: self checkerName put: self configurationJSONPart;
+						yourself ) ]
 ]
 
 { #category : 'configuration help' }
@@ -56,7 +65,7 @@ MicChecker class >> explanationForConfiguration [
 			str cr.
 			str << 'In the pillar.conf file you can add the following key values:'. 
 			str cr.
-			str << (self configurationPart: Character lf asString) ]] 
+			str << (self configurationPartWithNewLine: Character lf asString) ]] 
 ]
 
 { #category : 'visiting' }

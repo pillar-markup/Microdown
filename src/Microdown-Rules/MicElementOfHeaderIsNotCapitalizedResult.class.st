@@ -1,23 +1,10 @@
 Class {
 	#name : 'MicElementOfHeaderIsNotCapitalizedResult',
-	#superclass : 'MicAbstractResult',
-	#instVars : [
-		'detail'
-	],
+	#superclass : 'MicWithDetailResult',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
-
-{ #category : 'accessing' }
-MicElementOfHeaderIsNotCapitalizedResult >> detail [
-	^ detail 
-]
-
-{ #category : 'accessing' }
-MicElementOfHeaderIsNotCapitalizedResult >> detail: aString [ 
-	detail := aString
-]
 
 { #category : 'accessing' }
 MicElementOfHeaderIsNotCapitalizedResult >> explanation [ 

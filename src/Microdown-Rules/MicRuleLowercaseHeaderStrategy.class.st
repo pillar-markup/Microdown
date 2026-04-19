@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicRuleLowercaseHeaderStrategy',
-	#superclass : 'MicRuleHeaderCheckerStrategy',
+	#superclass : 'MicHeaderCapitalizationCheckerStrategy',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
@@ -8,22 +8,35 @@ Class {
 
 { #category : 'visiting' }
 MicRuleLowercaseHeaderStrategy >> checkRest: words of: aMicHeader [
-	"In the future we should manage that if a word finishes by : the following one must be captitalized
-	e.g., 'Today and tomorrow: The days' and not 
-	'Today and tomorrow: the days' 
-	"
-	"
-	In lowercase mode there is no need to handle stop words since they should always be lowercase (except after : - not managed right now.)
-		"
-	self checkColonCapitalizationIn: words of: aMicHeader. 
-	words allButFirst
-		do: [ :word |	
-			 word isCapitalized
-				ifTrue: [  
-				checker addResult: (MicElementOfHeaderWronglyUppercasedResult new 
-								micElement: aMicHeader; 
-								detail: word;
-								inFile: aMicHeader fromFile) 
-						]
-		 ]
+	"Stop words could be in uppercase and should not."
+	
+	| i previousIsTerminatedByColon currentWord |
+	previousIsTerminatedByColon := self endWithACapitalizer: words first.
+	i := 2.
+	[  i <=  words size ] whileTrue: [ 
+		currentWord := (words at: i).
+		previousIsTerminatedByColon  
+			ifTrue: [  currentWord first isLowercase 
+							ifTrue: [ checker addResult: (MicHeaderWronglyLowercasedResult new 
+											micElement: aMicHeader; 
+											detail: currentWord;
+											inFile: aMicHeader fromFile) ]	]
+			ifFalse: [ currentWord first isUppercase
+								ifTrue: [ checker addResult: (MicHeaderWronglyUppercasedResult new 
+												micElement: aMicHeader; 
+												detail: currentWord;
+												inFile: aMicHeader fromFile) ]
+				 ].
+		previousIsTerminatedByColon :=  self endWithACapitalizer: currentWord.	
+		i := i + 1.
+		]
+		
+		
+	
+]
+
+{ #category : 'visiting' }
+MicRuleLowercaseHeaderStrategy >> endWithACapitalizer: aWord [
+
+	^ #($. $: $; $? $!) includes: aWord last
 ]

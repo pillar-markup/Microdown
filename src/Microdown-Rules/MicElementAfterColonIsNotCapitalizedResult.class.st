@@ -1,19 +1,10 @@
 Class {
 	#name : 'MicElementAfterColonIsNotCapitalizedResult',
-	#superclass : 'MicAbstractResult',
-	#instVars : [
-		'detail'
-	],
+	#superclass : 'MicWithDetailResult',
 	#category : 'Microdown-Rules-Capitalization',
 	#package : 'Microdown-Rules',
 	#tag : 'Capitalization'
 }
-
-{ #category : 'accessing' }
-MicElementAfterColonIsNotCapitalizedResult >> detail: aString [
-
-	detail := aString
-]
 
 { #category : 'accessing' }
 MicElementAfterColonIsNotCapitalizedResult >> explanation [ 
