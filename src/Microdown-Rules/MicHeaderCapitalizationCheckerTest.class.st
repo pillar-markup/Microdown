@@ -67,7 +67,7 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 	
 ]
 
-{ #category : 'tests - uppercase' }
+{ #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
 	
 	self skip.
@@ -78,7 +78,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
 	checker results 
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
 	
 	self skip.
@@ -90,7 +90,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
 	self assert: checker results first 
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
 | colonResult |
 	checker verifyLowercase.
@@ -106,7 +106,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
 
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonUppercase [
 | colonResult |
 	checker verifyUppercase.
@@ -117,19 +117,6 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonUppercase [
 	self
 		assert: colonResult explanation
 		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercaseUncorrect.md contains a mistake: the as first letter after a colon should be uppercased.'
-]
-
-{ #category : 'tests - lowercase' }
-MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapitalized [
-
-	checker verifyLowercase.
-	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
-	self deny: checker isOkay.
-	
-	self
-		assert: checker results first explanation 
-		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
-	
 ]
 
 { #category : 'tests - uppercase' }
@@ -191,7 +178,7 @@ MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
 	self assert: (checker keepAsIs includes: 'uDown').
 ]
 
-{ #category : 'tests - headers should be lowercased' }
+{ #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testInLowercaseStyleWordsAfterColonShouldBeUppercased [
 
 	self skip.
@@ -211,6 +198,37 @@ MicHeaderCapitalizationCheckerTest >> testKeepAsIsWhenLowercaseUppercasedSecondW
 	checker keepAsIs: #( 'Books' ).
 	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
 	self assert: checker isOkay
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testLowercaseHeaderFirstLetterNotCapitalized [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
+	self deny: checker isOkay.
+	
+	self
+		assert: checker results first explanation 
+		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
+	
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testLowercaseHeaderFirstLetterNotCapitalizedWithKeepAsIs [
+	"here the problem is that it is not enough to remove the keepAsIs from the list of word.
+	they should play their role such as first word of sentence. 
+	
+	for example 
+		header with all lower
+		when we say that header should not be touched, with should not be uppercased 
+		as a first element of the phrase.
+		
+	"
+	checker verifyLowercase.
+	checker keepAsIs: #('header').
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
+	self assert: checker isOkay.
+	
 ]
 
 { #category : 'tests - lowercase' }

@@ -45,11 +45,16 @@ MicHeaderCapitalizationChecker >> addUncapitalized: aString [
 
 { #category : 'visiting' }
 MicHeaderCapitalizationChecker >> checkFirstWord: aCollection of: anElement [
-
-	aCollection first isCapitalized ifFalse: [
+	"Treat the first element of a sentence by uppercase except if the word
+	is in the keep as is list"
+	
+	| first |
+	first := aCollection first.
+	(keepAsIs includes: first) ifTrue: [ ^ self ].
+	first isCapitalized ifFalse: [
 			results add: (MicFirstElementOfHeaderIsNotCapitalizedResult new
 					 micElement: anElement;
-					 detail: aCollection first;
+					 detail: first;
 					 inFile: anElement fromFile) ]
 ]
 
@@ -133,7 +138,8 @@ MicHeaderCapitalizationChecker >> visitHeader: aMicHeader [
 
 	| words |
 	words := aMicHeader text substrings.
-	words := words reject: [ :e | keepAsIs includes: e ].
 	self checkFirstWord: words of: aMicHeader.
+	
+	words := words reject: [ :e | keepAsIs includes: e ].
 	self checkRest: words of: aMicHeader
 ]
