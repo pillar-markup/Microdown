@@ -25,6 +25,18 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 ## Header with Uppercases
 ' ].
 
+	file := fileSystem workingDirectory / 'UppercaseWithUppercasedStopWords.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
+
+## Header With Uppercases And An Elephant
+' ].
+
+file := fileSystem workingDirectory / 'LowercaseWithUppercasedStopWords.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
+
+## Header With uppercases And An elephant
+' ].
+
 	file := fileSystem workingDirectory / 'HeaderAllLowercase.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '
 
@@ -40,12 +52,9 @@ file := fileSystem workingDirectory / 'LowercaseWithStopWordAsFirstWord.md'.
 ' ].
 
 
-
-
 	file := fileSystem workingDirectory / 'AfterColonLowercaseUncorrect.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '
 ## Today and tomorrow: the days
-## Today: "the days"
 ## Tomorrow: shouldBeUppercased
 ' ].
 
@@ -53,7 +62,27 @@ file := fileSystem workingDirectory / 'LowercaseWithStopWordAsFirstWord.md'.
 	file writeStreamDo: [ :stream | stream nextPutAll: '
 ## Today and tomorrow: The days
 ## Sun and moon: CorrectlyUppercased
-	 ' ]
+	 ' ].
+
+	file := fileSystem workingDirectory / 'UppercasedStyleAfterColonCorrect.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
+## Today and Tomorrow: The Days
+## Sun and Moon: CorrectlyUppercased
+	 ' ].
+
+	file := fileSystem workingDirectory / 'UppercasedStyleAfterStrangeColonCorrect.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
+## Today and Tomorrow! The Days
+## Sun and Moon? CorrectlyUppercased
+	 ' ].
+
+	file := fileSystem workingDirectory / 'LowercasedStyleAfterStrangeColonCorrect.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
+## Today and tomorrow! The days
+## Sun and moon? Correctly uppercased indeed
+	 ' ]	
+
+
 ]
 
 { #category : 'running' }
@@ -70,40 +99,11 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 { #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
 	
-	self skip.
 	checker verifyUppercase.
 	checker keepAsIs: (Set new add: 'days'; add: 'tomorrow'; yourself).
 	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
 	checker results 
-]
-
-{ #category : 'tests - colon' }
-MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
-	
-	self skip.
-	checker verifyLowercase.
-	checker checkProject: fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
-	self deny: checker isOkay.
-	
-	self assert: checker results size equals: 1.
-	self assert: checker results first 
-]
-
-{ #category : 'tests - colon' }
-MicHeaderCapitalizationCheckerTest >> testCheckAfterColonLowercase [
-| colonResult |
-	checker verifyLowercase.
-	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
-	self deny: checker isOkay.
-	"trouver le result spécifique au mot après ':' "
-	
-	colonResult := (checker results detect: [:r | r class = MicElementAfterColonIsNotCapitalizedResult]).
-	self assert: colonResult notNil. 
-	self
-		assert: colonResult explanation
-		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercaseUncorrect.md contains a mistake: the as first letter after a colon should be uppercased.'.
-
 ]
 
 { #category : 'tests - colon' }
@@ -181,14 +181,34 @@ MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
 { #category : 'tests - colon' }
 MicHeaderCapitalizationCheckerTest >> testInLowercaseStyleWordsAfterColonShouldBeUppercased [
 
-	self skip.
 	checker verifyLowercase.
-	checker checkProject:
-		fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
+	checker checkProject: fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
 	self assert: checker isOkay.
 
-	' ## Today and tomorrow: The days
-## Sun and moon: CorrectlyUppercased'
+	" ## Today and tomorrow: The days
+## Sun and moon: CorrectlyUppercased"
+]
+
+{ #category : 'tests - colon' }
+MicHeaderCapitalizationCheckerTest >> testInLowercaseStyleWordsAfterStrangeColonShouldBeUppercased [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'LowercasedStyleAfterStrangeColonCorrect.md'.
+	self assert: checker isOkay.
+
+	"## Today and tomorrow! The days
+## Sun and moon? Correctly uppercased indeed"
+]
+
+{ #category : 'tests - colon' }
+MicHeaderCapitalizationCheckerTest >> testInUpppercaseStyleWordsAfterColonShouldBeUppercased [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'UppercasedStyleAfterColonCorrect.md'.
+	self assert: checker isOkay.
+
+	' ## Today and Tomorrow: The Days
+	## Sun and Moon: CorrectlyUppercased'
 ]
 
 { #category : 'tests - lowercase' }
@@ -200,47 +220,17 @@ MicHeaderCapitalizationCheckerTest >> testKeepAsIsWhenLowercaseUppercasedSecondW
 	self assert: checker isOkay
 ]
 
-{ #category : 'tests - lowercase' }
-MicHeaderCapitalizationCheckerTest >> testLowercaseHeaderFirstLetterNotCapitalized [
-
+{ #category : 'tests - colon' }
+MicHeaderCapitalizationCheckerTest >> testLowercaseLowercasedWordAfterColonShouldBeUppercased [
+	
 	checker verifyLowercase.
-	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
-	self deny: checker isOkay.
-	
-	self
-		assert: checker results first explanation 
-		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
-	
-]
-
-{ #category : 'tests - lowercase' }
-MicHeaderCapitalizationCheckerTest >> testLowercaseHeaderFirstLetterNotCapitalizedWithKeepAsIs [
-	"here the problem is that it is not enough to remove the keepAsIs from the list of word.
-	they should play their role such as first word of sentence. 
-	
-	for example 
-		header with all lower
-		when we say that header should not be touched, with should not be uppercased 
-		as a first element of the phrase.
-		
-	"
-	checker verifyLowercase.
-	checker keepAsIs: #('header').
-	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
+	checker checkProject: fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
 	self assert: checker isOkay.
 	
-]
-
-{ #category : 'tests - lowercase' }
-MicHeaderCapitalizationCheckerTest >> testLowercaseUppercasedFirstWordShouldBeUppercased [
-
-	checker verifyLowercase.
-	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
-	self deny: checker isOkay.
-	self
-		assert: checker results first explanation
-		equals:
-		'Header: "Header with Uppercases" in file/UppercaseWithStopWords.md contains a mistake: Uppercases should not be uppercased.'
+	"## Today and tomorrow: The days
+	## Sun and moon: CorrectlyUppercased"
+	
+	
 ]
 
 { #category : 'tests - lowercase' }
@@ -265,6 +255,37 @@ MicHeaderCapitalizationCheckerTest >> testWhenLowercaseFirstWordShouldBeUppercas
 ]
 
 { #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseHeaderFirstLetterNotCapitalizedIsFlagged [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
+	self deny: checker isOkay.
+	
+	self
+		assert: checker results first explanation 
+		equals: 'Header: "header with first word in lowercase" in file/HeaderAllLowercase.md contains a mistake: header as first word of the header should be uppercased.'
+	
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseHeaderFirstLetterNotCapitalizedWithKeepAsIs [
+	"here the problem is that it is not enough to remove the keepAsIs from the list of word.
+	they should play their role such as first word of sentence. 
+	
+	for example 
+		header with all lower
+		when we say that header should not be touched, with should not be uppercased 
+		as a first element of the phrase.
+		
+	"
+	checker verifyLowercase.
+	checker keepAsIs: #('header').
+	checker checkProject: fileSystem / 'HeaderAllLowercase.md'.
+	self assert: checker isOkay.
+	
+]
+
+{ #category : 'tests - lowercase' }
 MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedAreFlagged [
 
 	checker verifyLowercase.
@@ -276,12 +297,38 @@ MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedAreFlagged [
 ]
 
 { #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedFirstWordShouldBeUppercased [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
+	"## Header with Uppercases"
+	self deny: checker isOkay.
+	self
+		assert: checker results first explanation
+		equals:
+		'Header: "Header with Uppercases" in file/UppercaseWithStopWords.md contains a mistake: Uppercases should not be uppercased.'
+]
+
+{ #category : 'tests - lowercase' }
 MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedSecondWordIsFlagged [
 
 	checker verifyLowercase.
 	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail equals: 'Books'
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedStopWordsAreFlagged [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'LowercaseWithUppercasedStopWords.md'.
+	"## Header With uppercases And An elephant"
+	self deny: checker isOkay.
+	self assert: checker results size equals: 3.
+	self assert: checker results first detail equals: 'With'.
+	self assert: checker results second detail equals: 'And'.
+	self assert: checker results third detail equals: 'An'.
 ]
 
 { #category : 'tests - lowercase' }
@@ -311,6 +358,8 @@ MicHeaderCapitalizationCheckerTest >> testWhenUppercaseUppercasedNoStopWordPasse
 MicHeaderCapitalizationCheckerTest >> testWhenUppercaseUppercasedWithStopWordPasses [
 
 	checker verifyUppercase.
-	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
+	checker checkProject: fileSystem / 'UppercasedStyleAfterStrangeColonCorrect.md'.
+	"## Today and Tomorrow! The Days
+	## Sun and Moon? CorrectlyUppercased"
 	self assert: checker isOkay
 ]

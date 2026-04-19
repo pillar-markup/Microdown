@@ -12,20 +12,19 @@ Class {
 { #category : 'checking' }
 MicHeaderCapitalizationCheckerStrategy >> checkColonCapitalizationIn: words of: aMicHeader [
 
-	| size current next firstLetter firstWord |
+	| size current next |
 	size := words size.
 	1 to: size - 1 do: [ :i |
 			current := words at: i.
 			(current endsWith: ':') ifTrue: [
 					next := words at: i + 1.
 					next notEmpty ifTrue: [
-							firstLetter := next detect: [ :c | c isLetter ] ifNone: [ nil ].
-							(firstLetter notNil and: [ firstLetter isLowercase ]) ifTrue: [
-									firstWord := next substrings first.
+						next first isLowercase
+								ifTrue: [
 									checker addResult:
 										(MicElementAfterColonIsNotCapitalizedResult new
 											 micElement: aMicHeader;
-											 detail: firstWord;
+											 detail: next ;
 											 inFile: aMicHeader fromFile) ] ] ] ]
 ]
 

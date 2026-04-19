@@ -107,9 +107,9 @@ MicHeaderCapitalizationChecker >> keepAsIs: aCollection [
 
 { #category : 'asserting' }
 MicHeaderCapitalizationChecker >> shouldCapitalizedWord: aString [
+
 	| normalized |
 	normalized := (aString select: [ :c | c isLetter ]) asLowercase.
-
 	^ (uncapitalizableText includes: normalized) not
 ]
 
