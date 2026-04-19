@@ -133,7 +133,7 @@ MicHeaderCapitalizationChecker >> visitHeader: aMicHeader [
 
 	| words |
 	words := aMicHeader text substrings.
-	self checkFirstWord: words of: aMicHeader. 
-	self checkRest: words of: aMicHeader. 
-
+	words := words reject: [ :e | keepAsIs includes: e ].
+	self checkFirstWord: words of: aMicHeader.
+	self checkRest: words of: aMicHeader
 ]

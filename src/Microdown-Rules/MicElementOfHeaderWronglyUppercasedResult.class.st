@@ -10,6 +10,11 @@ Class {
 }
 
 { #category : 'accessing' }
+MicElementOfHeaderWronglyUppercasedResult >> detail [
+	^ detail
+]
+
+{ #category : 'accessing' }
 MicElementOfHeaderWronglyUppercasedResult >> detail: aString [ 
 	
 	detail := aString
@@ -21,4 +26,11 @@ MicElementOfHeaderWronglyUppercasedResult >> explanation [
 
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' should be uppercased.'
 	 
+]
+
+{ #category : 'printing' }
+MicElementOfHeaderWronglyUppercasedResult >> printOn: aStream [
+
+	super printOn: aStream. 
+	aStream nextPutAll: ' (', detail, ')'
 ]

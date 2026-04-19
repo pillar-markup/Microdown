@@ -28,3 +28,10 @@ MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' as first word of the header should be uppercased.'
 	 
 ]
+
+{ #category : 'printing' }
+MicFirstElementOfHeaderIsNotCapitalizedResult >> printOn: aStream [
+
+	super printOn: aStream. 
+	aStream nextPutAll: ' (', detail, ')'
+]

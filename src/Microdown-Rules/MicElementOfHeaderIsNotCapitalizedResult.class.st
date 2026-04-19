@@ -23,3 +23,10 @@ MicElementOfHeaderIsNotCapitalizedResult >> detail: aString [
 MicElementOfHeaderIsNotCapitalizedResult >> explanation [ 
 	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ' , detail , ' should be capitalized.'
 ]
+
+{ #category : 'printing' }
+MicElementOfHeaderIsNotCapitalizedResult >> printOn: aStream [
+
+	super printOn: aStream. 
+	aStream nextPutAll: ' (', detail, ')'
+]

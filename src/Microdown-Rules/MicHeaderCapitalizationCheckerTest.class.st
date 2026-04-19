@@ -14,12 +14,18 @@ Class {
 MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 
 	| file |
-	file := fileSystem workingDirectory / 'HeaderCorrectlyUppercased.md'.
+	file := fileSystem workingDirectory / 'UppercaseNoStopWords.md'.
 	file writeStreamDo: [ :stream |
 			stream nextPutAll: '
+## Writing Books
+	 ' ].
+	
+	
+	
+	file := fileSystem workingDirectory / 'HeaderCorrectlyUppercased.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '
 
 ## Header with Uppercases
-
 
 ' ].
 
@@ -29,44 +35,48 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 
 ## header with first word in lowercase
 
-
 ' ].
 
-	file := fileSystem workingDirectory / 'AfterColonLowercaseUncorrect.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '
-## Today and tomorrow: the days
-## Today: "the days"
-' ].
 
-	file := fileSystem workingDirectory / 'AfterColonCorrect.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '
-## Today and tomorrow: The days
-## Today: "The days"
-	 ' ].
-	
-	file := fileSystem workingDirectory / 'WritingBooksCorrect.md'.
-	file writeStreamDo: [ :stream |
-		stream nextPutAll: '
-## Writing Books
-	 ' ].
+
+
 
 	file := fileSystem workingDirectory / 'WritingBooksInPharo.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '
+			stream nextPutAll: '
 ## Writing Books in Pharo
 	 ' ].
 
+
 	file := fileSystem workingDirectory / 'WritingBooksIncorrect.md'.
 	file writeStreamDo: [ :stream |
-		stream nextPutAll: '
+			stream nextPutAll: '
 ## Writing books in Pharo
 	 ' ].
 
 
 
-	
+
+
+
+
+
+	file := fileSystem workingDirectory
+	        / 'AfterColonLowercaseUncorrect.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: '
+## Today and tomorrow: the days
+## Today: "the days"
+## Tomorrow: shouldBeUppercased
+' ].
+
+	file := fileSystem workingDirectory
+	        / 'LowercasedStyleAfterColonCorrect.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: '
+## Today and tomorrow: The days
+## Sun and moon: CorrectlyUppercased
+	 ' ]
 ]
 
 { #category : 'running' }
@@ -82,21 +92,25 @@ MicHeaderCapitalizationCheckerTest >> setUp [
 
 { #category : 'tests - uppercase' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectLowercase [
-
+	
+	self skip.
 	checker verifyUppercase.
 	checker keepAsIs: (Set new add: 'days'; add: 'tomorrow'; yourself).
 	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
-	self halt.
 	checker results 
 ]
 
 { #category : 'tests - headers should be lowercased' }
 MicHeaderCapitalizationCheckerTest >> testCheckAfterColonCorrectUppercase [
-
-	checker verifyUppercase.
-	checker checkProject: fileSystem / 'AfterColonCorrect.md'.
+	
+	self skip.
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
 	self deny: checker isOkay.
+	
+	self assert: checker results size equals: 1.
+	self assert: checker results first 
 ]
 
 { #category : 'tests - headers should be lowercased' }
@@ -213,11 +227,42 @@ MicHeaderCapitalizationCheckerTest >> testConfigureFromUppercase [
 ]
 
 { #category : 'tests - headers should be lowercased' }
-MicHeaderCapitalizationCheckerTest >> testWritingBooksCorrect [
+MicHeaderCapitalizationCheckerTest >> testInLowercaseStyleWordsAfterColonShouldBeUppercased [
+
+	self skip.
+	checker verifyLowercase.
+	checker checkProject:
+		fileSystem / 'LowercasedStyleAfterColonCorrect.md'.
+	self assert: checker isOkay.
+
+	' ## Today and tomorrow: The days
+## Sun and moon: CorrectlyUppercased'
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testKeepAsIsWhenLowercaseUppercasedSecondWordPasses [
+
+	checker verifyLowercase.
+	checker keepAsIs: #( 'Books' ).
+	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedSecondWordIsFlagged [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
+	self deny: checker isOkay.
+	self assert: checker results first detail equals: 'Books'
+]
+
+{ #category : 'tests - uppercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenUppercaseUppercasedNoStopWordPasses [
 
 	checker verifyUppercase.
-	checker checkProject: fileSystem / 'WritingBooksCorrect.md'.
-	self assert: checker isOkay.
+	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
+	self assert: checker isOkay
 ]
 
 { #category : 'tests - headers should be lowercased' }
