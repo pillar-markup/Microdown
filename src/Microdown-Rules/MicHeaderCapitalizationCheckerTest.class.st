@@ -19,11 +19,10 @@ MicHeaderCapitalizationCheckerTest >> generateFilesystemExample [
 			stream nextPutAll: '
 ## Writing Books
 	 ' ].
-	
-	
-	
-	file := fileSystem workingDirectory / 'HeaderCorrectlyUppercased.md'.
-	file writeStreamDo: [ :stream | stream nextPutAll: '
+
+	file := fileSystem workingDirectory / 'UppercaseWithStopWords.md'.
+	file writeStreamDo: [ :stream |
+			stream nextPutAll: '
 
 ## Header with Uppercases
 
@@ -172,12 +171,12 @@ MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderFirstLetterNotCapit
 MicHeaderCapitalizationCheckerTest >> testCheckIdentifyHeaderNotLowercased [
 
 	checker verifyLowercase.
-	checker checkProject: fileSystem / 'HeaderCorrectlyUppercased.md'.
+	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
 	self deny: checker isOkay.
 	self
 		assert: checker results first explanation
-		equals:  'Header: "Header with Uppercases" in file/HeaderCorrectlyUppercased.md contains a mistake: Uppercases should be uppercased.'
-		
+		equals:
+		'Header: "Header with Uppercases" in file/UppercaseWithStopWords.md contains a mistake: Uppercases should be uppercased.'
 ]
 
 { #category : 'tests - configuration' }
@@ -249,6 +248,17 @@ MicHeaderCapitalizationCheckerTest >> testKeepAsIsWhenLowercaseUppercasedSecondW
 ]
 
 { #category : 'tests - lowercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedAreFlagged [
+
+	checker verifyLowercase.
+	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
+	"## Header with Uppercases"
+	self deny: checker isOkay.
+	self assert: checker results size equals: 1.
+	self assert: checker results first detail equals: 'Uppercases'
+]
+
+{ #category : 'tests - lowercase' }
 MicHeaderCapitalizationCheckerTest >> testWhenLowercaseUppercasedSecondWordIsFlagged [
 
 	checker verifyLowercase.
@@ -262,6 +272,14 @@ MicHeaderCapitalizationCheckerTest >> testWhenUppercaseUppercasedNoStopWordPasse
 
 	checker verifyUppercase.
 	checker checkProject: fileSystem / 'UppercaseNoStopWords.md'.
+	self assert: checker isOkay
+]
+
+{ #category : 'tests - uppercase' }
+MicHeaderCapitalizationCheckerTest >> testWhenUppercaseUppercasedWithStopWordPasses [
+
+	checker verifyUppercase.
+	checker checkProject: fileSystem / 'UppercaseWithStopWords.md'.
 	self assert: checker isOkay
 ]
 
