@@ -37,7 +37,7 @@ MicLastPeriodInCodeChecker class >> checkerName [
 { #category : 'public - name' }
 MicLastPeriodInCodeChecker class >> configurationJSONPart [
 
-	^ 'true'
+	^ true
 ]
 
 { #category : 'visiting' }

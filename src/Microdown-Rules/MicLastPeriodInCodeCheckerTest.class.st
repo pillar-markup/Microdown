@@ -132,7 +132,7 @@ MicLastPeriodInCodeCheckerTest >> testChecksMissingPeriod [
 { #category : 'tests - explanation' }
 MicLastPeriodInCodeCheckerTest >> testConfigurationJSONPart [
 
-	self assert: MicLastPeriodInCodeChecker configurationJSONPart equals: 'true' 
+	self assert: MicLastPeriodInCodeChecker configurationJSONPart
 ]
 
 { #category : 'tests - explanation' }
@@ -141,13 +141,12 @@ MicLastPeriodInCodeCheckerTest >> testConfigurationPart [
 	self 
 		assert: (MicLastPeriodInCodeChecker configurationPartWithNewLine: (Character cr asString)) 
 		equals: '{
-	"LastPeriodInCode" : "true"
+	"LastPeriodInCode" : true
 }'
-	
 ]
 
 { #category : 'tests - configure' }
-MicLastPeriodInCodeCheckerTest >> testConfigureFromEmptyString [
+MicLastPeriodInCodeCheckerTest >> testConfigureFromEmptyStringUsesDefault [
 
 	checker configureFrom: ''.
 	self deny: checker isEndingWithPeriod
@@ -161,23 +160,23 @@ MicLastPeriodInCodeCheckerTest >> testConfigureFromGarbage [
 ]
 
 { #category : 'tests - configure' }
-MicLastPeriodInCodeCheckerTest >> testConfigureFromNil [
+MicLastPeriodInCodeCheckerTest >> testConfigureFromNilUsesDefault [
 
 	checker configureFrom: nil.
 	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
-MicLastPeriodInCodeCheckerTest >> testConfigureFromNo [
-
-	checker configureFrom: 'no'.
-	self deny: checker isEndingWithPeriod
+MicLastPeriodInCodeCheckerTest >> testConfigureWithBoolean [
+	
+	checker configureFrom: true.
+	self assert: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
-MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
+MicLastPeriodInCodeCheckerTest >> testConfigureWithBooleanStringUsesDefault [
 	
-	checker configureFrom: 'yes'.
+	checker configureFrom: 'true'.
 	self deny: checker isEndingWithPeriod
 ]
 

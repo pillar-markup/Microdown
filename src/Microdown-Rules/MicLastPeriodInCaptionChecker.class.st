@@ -30,7 +30,13 @@ Class {
 
 { #category : 'public - name' }
 MicLastPeriodInCaptionChecker class >> checkerName [ 
-	^ 'CodeLastPeriodInCaption'
+	^ 'LastPeriodInCaption'
+]
+
+{ #category : 'public - name' }
+MicLastPeriodInCaptionChecker class >> configurationJSONPart [
+
+	^ true
 ]
 
 { #category : 'visiting - inline elements' }
