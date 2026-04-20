@@ -51,8 +51,12 @@ MicLastPeriodChecker >> checkMissingPeriodIn: aMicCodeBlock [
 { #category : 'visiting' }
 MicLastPeriodChecker >> configureFrom: aConfigurationValue [
 
-	aConfigurationValue isNil ifTrue: [ isEndingWithPeriod := false. ^ self ]. 
-	aConfigurationValue = 'true'
+	aConfigurationValue ifNil: [
+			isEndingWithPeriod := false.
+			^ self ].
+	"We use this explicit boolean comparison to filter other possible values
+	expressed with string or others."
+	aConfigurationValue = true
 		ifTrue: [ isEndingWithPeriod := true ]
 		ifFalse: [ isEndingWithPeriod := false ]
 ]
