@@ -37,7 +37,7 @@ MicLastPeriodInCodeChecker class >> checkerName [
 { #category : 'public - name' }
 MicLastPeriodInCodeChecker class >> configurationJSONPart [
 
-	^ 'true'
+	^ true
 ]
 
 { #category : 'visiting' }
@@ -58,6 +58,12 @@ MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 					 micElement: aMicCodeBlock;
 					 inFile: aMicCodeBlock fromFile;
 					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
+]
+
+{ #category : 'visiting' }
+MicLastPeriodInCodeChecker >> initialize [ 
+	super initialize. 
+	isEndingWithPeriod := false
 ]
 
 { #category : 'visiting' }

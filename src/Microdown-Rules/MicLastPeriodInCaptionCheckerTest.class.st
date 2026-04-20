@@ -119,24 +119,40 @@ MicLastPeriodInCaptionCheckerTest >> testCodeCheckerIdentifyCorrectlyMissingExtr
 		'- Text: "This is the famous missing period" in file/codeCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
 ]
 
-{ #category : 'tests' }
-MicLastPeriodInCaptionCheckerTest >> testConfigureFromFalse [
+{ #category : 'tests - explanation' }
+MicLastPeriodInCaptionCheckerTest >> testConfigurationJSONPart [
+
+	self assert: MicLastPeriodInCaptionChecker configurationJSONPart
+]
+
+{ #category : 'tests - explanation' }
+MicLastPeriodInCaptionCheckerTest >> testConfigurationPart [
+
+	self 
+		assert: (MicLastPeriodInCaptionChecker configurationPartWithNewLine: (Character cr asString)) 
+		equals: '{
+	"LastPeriodInCaption" : true
+}'
+]
+
+{ #category : 'tests - configure' }
+MicLastPeriodInCaptionCheckerTest >> testConfigureFromFalseUsesDefault [
 
 	checker configureFrom: 'false'.
 	self deny: checker isEndingWithPeriod
 ]
 
-{ #category : 'tests' }
-MicLastPeriodInCaptionCheckerTest >> testConfigureFromNil [
+{ #category : 'tests - configure' }
+MicLastPeriodInCaptionCheckerTest >> testConfigureFromNilUsesDefault [
 
 	checker configureFrom: nil.
 	self deny: checker isEndingWithPeriod.
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - configure' }
 MicLastPeriodInCaptionCheckerTest >> testConfigureFromTrue [
 
-	checker configureFrom: 'true'.
+	checker configureFrom: true.
 	self assert: checker isEndingWithPeriod
 ]
 
