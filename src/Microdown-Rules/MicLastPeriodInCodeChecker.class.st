@@ -61,6 +61,12 @@ MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 ]
 
 { #category : 'visiting' }
+MicLastPeriodInCodeChecker >> initialize [ 
+	super initialize. 
+	isEndingWithPeriod := false
+]
+
+{ #category : 'visiting' }
 MicLastPeriodInCodeChecker >> visitCode: aCodeBlockElement [
 
 	isEndingWithPeriod 

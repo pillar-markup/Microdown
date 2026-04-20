@@ -233,3 +233,11 @@ MicLastPeriodInCodeCheckerTest >> testConfigureFromYes [
 	checker configureFrom: 'yes'.
 	self deny: checker isEndingWithPeriod
 ]
+
+{ #category : 'tests - missing period' }
+MicLastPeriodInCodeCheckerTest >> testDefaultIsToDetectEndingPeriod [
+
+	checker checkProject: fileSystem / 'codeEndingWithPeriod.md'.
+	self deny: checker isOkay
+
+]
