@@ -74,9 +74,8 @@ MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 
 	"The configuration should handle the level too."
 	
-
 	aConfiguration isNil ifTrue: [ ^ self ].
-	aConfiguration = 'true'
+	aConfiguration = true
 		ifTrue: [ isEndingWithPeriod := true ]
 		ifFalse: [ isEndingWithPeriod := false ]
 ]
