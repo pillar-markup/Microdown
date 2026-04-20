@@ -180,6 +180,13 @@ MicLastPeriodInCodeCheckerTest >> testConfigureWithBooleanStringUsesDefault [
 	self deny: checker isEndingWithPeriod
 ]
 
+{ #category : 'tests' }
+MicLastPeriodInCodeCheckerTest >> testDefault [
+	| checker |
+	checker := MicLastPeriodChecker new.
+	self deny: checker isEndingWithPeriod.
+]
+
 { #category : 'tests - missing period' }
 MicLastPeriodInCodeCheckerTest >> testDefaultIsToDetectEndingPeriod [
 
