@@ -108,6 +108,14 @@ MicParagraphLabelChecker >> levelForParagraph: anObject [
 ]
 
 { #category : 'visiting' }
+MicParagraphLabelChecker >> requiresPeriodFor: anElement [
+
+	levelForParagraph ifNil: [ ^ false ].
+	anElement level ifNil: [ ^ false ].
+	^ anElement level >= levelForParagraph
+]
+
+{ #category : 'visiting' }
 MicParagraphLabelChecker >> shouldEndWithPeriod [
 	
 	isEndingWithPeriod := true

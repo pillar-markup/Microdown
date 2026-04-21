@@ -127,13 +127,6 @@ MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
 	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
 ]
 
-{ #category : 'testing' }
-MicLastPeriodInCaptionChecker >> requiresPeriodFor: anElement [
-	levelThreshold ifNil: [ ^ false ].
-	anElement level ifNil: [ ^ false ].
-	^ anElement level >= levelThreshold
-]
-
 { #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> visitCode: anEquation [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
