@@ -315,13 +315,17 @@ MicParagraphLabelCheckerTest >> testParagraphLevel6IsCheckedWhenConfiguredForLev
 ]
 ]
 
-{ #category : 'tests' }
-MicParagraphLabelCheckerTest >> testRequiresPeriodForCaption [
+{ #category : 'tests - level control' }
+MicParagraphLabelCheckerTest >> testRequiresPeriodBasedOnThreshold [
 
-	| caption |
-	checker := MicParagraphLabelChecker new.
-	checker configureFrom: (Dictionary new at: 'labelLevel' put: 3; yourself).
-	caption := MicFigureBlock new.
-	self deny: (checker requiresPeriodFor: caption).
+	checker shouldEndWithPeriod.
+	checker levelForParagraph: 4.
+	checker checkProject: fileSystem / 'level4WithPeriod.md'.
+	self assert: checker isOkay.
+	
+	
+	checker levelForParagraph: 5.
+	checker checkProject: fileSystem / 'level4WithPeriod.md'.
+	self deny: checker isOkay.
 
 ]
