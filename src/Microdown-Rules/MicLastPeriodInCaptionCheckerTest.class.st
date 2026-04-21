@@ -156,6 +156,18 @@ MicLastPeriodInCaptionCheckerTest >> testConfigureFromTrue [
 	self assert: checker isEndingWithPeriod
 ]
 
+{ #category : 'tests' }
+MicLastPeriodInCaptionCheckerTest >> testDoublePeriod [
+	| checker document caption |
+	
+	checker := MicLastPeriodInCaptionChecker new.
+	document := Microdown parse: '![figure..](http://pharo.org)'.
+	caption := document children first children first. 
+	
+	checker checkExtraPeriodInFigure: caption.
+	self deny: checker results isEmpty.
+]
+
 { #category : 'tests - missing period' }
 MicLastPeriodInCaptionCheckerTest >> testFigureCheckerChecksCorrectlyMissingExtraPeriod [
 
