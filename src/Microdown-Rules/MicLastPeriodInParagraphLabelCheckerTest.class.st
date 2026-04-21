@@ -95,6 +95,21 @@ MicLastPeriodInParagraphLabelCheckerTest >> setUp [
 	checker := MicLastPeriodInParagraphLabelChecker new.
 ]
 
+{ #category : 'tests - explanation' }
+MicLastPeriodInParagraphLabelCheckerTest >> testConfigurationPart [
+
+	self
+		assert:
+			(MicLastPeriodInParagraphLabelChecker configurationPartWithNewLine:
+				 Character cr asString)
+		equals: '{
+	"LastPeriodInParagraphLabel" : {
+		"isEndingWithPeriod" : true,
+		"levelForPagraph" : 4
+	}
+}'
+]
+
 { #category : 'tests - configure' }
 MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromFalse [ 
 
