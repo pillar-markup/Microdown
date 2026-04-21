@@ -24,12 +24,6 @@ MicChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicChecker class >> configurationJSONPart [
-	"return either a boolean for non composite configurations or a dictionary."
-	^ #()
-]
-
-{ #category : 'configuration help' }
 MicChecker class >> configurationPart: newline [
 	"To be removed... you should use configurationPartWithNewLine:"
 	
@@ -50,7 +44,7 @@ MicChecker class >> configurationPartWithNewLine: newline [
 		writer prettyPrint: true;
 		newLine: newline;
 		nextPut: (Dictionary new 
-						at: self checkerName put: self configurationJSONPart;
+						at: self checkerName put: self objectsForJSONConfigurationPart;
 						yourself ) ]
 ]
 
@@ -65,6 +59,12 @@ MicChecker class >> explanationForConfiguration [
 			str << 'In the pillar.conf file you can add the following key values:'. 
 			str cr.
 			str << (self configurationPartWithNewLine: Character lf asString) ] 
+]
+
+{ #category : 'configuration help' }
+MicChecker class >> objectsForJSONConfigurationPart [
+	"return either a boolean for non composite configurations or a dictionary."
+	^ #()
 ]
 
 { #category : 'visiting' }

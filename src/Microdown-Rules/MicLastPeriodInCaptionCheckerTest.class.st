@@ -122,7 +122,7 @@ MicLastPeriodInCaptionCheckerTest >> testCodeCheckerIdentifyCorrectlyMissingExtr
 { #category : 'tests - explanation' }
 MicLastPeriodInCaptionCheckerTest >> testConfigurationJSONPart [
 
-	self assert: MicLastPeriodInCaptionChecker configurationJSONPart
+	self assert: MicLastPeriodInCaptionChecker objectsForJSONConfigurationPart
 ]
 
 { #category : 'tests - explanation' }

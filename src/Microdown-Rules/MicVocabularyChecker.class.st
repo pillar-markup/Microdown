@@ -31,7 +31,7 @@ MicVocabularyChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicVocabularyChecker class >> configurationJSONPart [
+MicVocabularyChecker class >> objectsForJSONConfigurationPart [
 	"self configurationPart"
 	
 	^ {

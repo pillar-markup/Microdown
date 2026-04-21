@@ -35,7 +35,7 @@ MicLastPeriodInCodeChecker class >> checkerName [
 ]
 
 { #category : 'public - name' }
-MicLastPeriodInCodeChecker class >> configurationJSONPart [
+MicLastPeriodInCodeChecker class >> objectsForJSONConfigurationPart [
 
 	^ true
 ]

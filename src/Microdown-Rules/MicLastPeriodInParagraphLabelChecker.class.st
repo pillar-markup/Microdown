@@ -34,7 +34,7 @@ MicLastPeriodInParagraphLabelChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicLastPeriodInParagraphLabelChecker class >> configurationJSONPart [
+MicLastPeriodInParagraphLabelChecker class >> objectsForJSONConfigurationPart [
 
 	^ { (#isEndingWithPeriod -> true) . (#levelForPagraph -> 4) } asDictionary
 ]

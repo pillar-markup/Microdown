@@ -37,7 +37,7 @@ MicLastPeriodInCaptionChecker class >> checkerName [
 ]
 
 { #category : 'public - name' }
-MicLastPeriodInCaptionChecker class >> configurationJSONPart [
+MicLastPeriodInCaptionChecker class >> objectsForJSONConfigurationPart [
 
 	^ true
 ]

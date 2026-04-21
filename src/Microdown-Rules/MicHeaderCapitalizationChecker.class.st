@@ -31,7 +31,7 @@ MicHeaderCapitalizationChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicHeaderCapitalizationChecker class >> configurationJSONPart [
+MicHeaderCapitalizationChecker class >> objectsForJSONConfigurationPart [
 	
 	^ { ('uppercase' -> true) . ('keepAs' -> { 'mini' . 'uDown'  }) } asDictionary
 ]

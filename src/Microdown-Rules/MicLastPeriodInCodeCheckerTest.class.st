@@ -132,7 +132,7 @@ MicLastPeriodInCodeCheckerTest >> testChecksMissingPeriod [
 { #category : 'tests - explanation' }
 MicLastPeriodInCodeCheckerTest >> testConfigurationJSONPart [
 
-	self assert: MicLastPeriodInCodeChecker configurationJSONPart
+	self assert: MicLastPeriodInCodeChecker objectsForJSONConfigurationPart
 ]
 
 { #category : 'tests - explanation' }
