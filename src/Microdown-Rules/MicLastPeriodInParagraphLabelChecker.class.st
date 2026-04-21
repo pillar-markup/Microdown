@@ -1,18 +1,20 @@
 "
-I check that paragraph labels at heading levels 4, 5 and 6 end with a period.
-In Microdown, labels at these levels serve as paragraph introducers rather than real titles.
+In Microdown, labels of headers at certain levels (4 and above) serve as paragraph introducers (labels).
 Depending on the convention, they should either end with a period or not.
 
-Example of correct label (identifyMissingPeriod mode):
+I check that titles smaller than a given value do not terminate with a period and that titles below (4 and more for example) follow a given convention: always or never end with a period. 
+
+```
+Example of correct label (isEndingWithPeriod mode):
 #### Color.
+```
 
-Example of incorrect label (identifyMissingPeriod mode):
+```
+Example of incorrect label (isEndingWithPeriod mode):
 #### Color
+```
 
-I can be configured in two modes:
 
-identifyMissingPeriod: flags labels that do Not end with a period.
-identifyExtraPeriod: flags labels that Do end with a period.
 "
 Class {
 	#name : 'MicLastPeriodInParagraphLabelChecker',
@@ -28,26 +30,42 @@ Class {
 { #category : 'public - name' }
 MicLastPeriodInParagraphLabelChecker class >> checkerName [
 
-	^ 'ParagraphLabelEndPeriod'
+	^ 'LastPeriodInParagraphLabel'
+]
+
+{ #category : 'configuration help' }
+MicLastPeriodInParagraphLabelChecker class >> configurationJSONPart [
+
+	^ { (#isEndingWithPeriod -> true) . (#levelForPagraph -> 4) } asDictionary
 ]
 
 { #category : 'visiting' }
 MicLastPeriodInParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
-	(aMicHeader text trimRight endsWith: '.') ifTrue: [ 
+
+	(aMicHeader text trimRight endsWith: '.') ifTrue: [
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
 			inFile: aMicHeader fromFile;
 			labelShouldEndWithPeriod: isEndingWithPeriod;
 			detail: aMicHeader text;
-			yourself
-		)
-		 ]
+			yourself) ]
+]
+
+{ #category : 'visiting' }
+MicLastPeriodInParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader for: shouldEndWithPeriod [
+
+	(aMicHeader text trimRight endsWith: '.') ifTrue: [
+			results add: (MicParagraphLabelResult new
+					 micElement: aMicHeader;
+					 inFile: aMicHeader fromFile;
+					 labelShouldEndWithPeriod: shouldEndWithPeriod;
+					 detail: aMicHeader text;
+					 yourself) ]
 ]
 
 { #category : 'visiting' }
 MicLastPeriodInParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 
-	
 	| text |
 	text := aMicHeader text trimRight.
 	
@@ -56,8 +74,7 @@ MicLastPeriodInParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 			micElement: aMicHeader;
 			inFile: aMicHeader fromFile;
 			yourself) ].
-		
-	 
+	
 	(text endsWith: '.') ifFalse: [ 
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
@@ -71,13 +88,15 @@ MicLastPeriodInParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 { #category : 'visiting' }
 MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 
-	"The configuration should handle the level too."
+	aConfiguration class == Dictionary 
+		ifFalse: [ ^ self ].
 	
-
-	aConfiguration isNil ifTrue: [ ^ self ].
-	aConfiguration = 'true'
-		ifTrue: [ isEndingWithPeriod := true ]
-		ifFalse: [ isEndingWithPeriod := false ]
+	aConfiguration 
+		at: #levelForParagraph 
+		ifPresent: [ :l | levelForParagraph := l asInteger clampBetween: 1 and: 6].
+	aConfiguration 
+		at: #isEndingWithPeriod 
+		ifPresent: [ :b | isEndingWithPeriod := b ] 
 ]
 
 { #category : 'visiting' }
@@ -101,23 +120,16 @@ MicLastPeriodInParagraphLabelChecker >> levelForParagraph: anObject [
 ]
 
 { #category : 'visiting' }
-MicLastPeriodInParagraphLabelChecker >> requiresPeriodFor: anElement [
-
-	levelForParagraph ifNil: [ ^ false ].
-	anElement level ifNil: [ ^ false ].
-	^ anElement level >= levelForParagraph
-]
-
-{ #category : 'visiting' }
 MicLastPeriodInParagraphLabelChecker >> visitHeader: aMicHeader [
 
 	aMicHeader level >= levelForParagraph 
 		ifTrue: [ 
 			isEndingWithPeriod 
 				ifTrue: [ self checkMissingPeriodIn: aMicHeader ]
-				ifFalse: [ self checkExtraPeriodIn: aMicHeader ] 
-		 	]
-		
-		ifFalse: [ "level 1 2 3 should not terminate with period" 
-			self checkExtraPeriodIn: aMicHeader ]
+				ifFalse: [ self checkExtraPeriodIn: aMicHeader for: isEndingWithPeriod ] ]
+		ifFalse: [ 
+			"level 1 2 3 basically lower than levelForParagraph 
+			should not terminate with period. The result should not use the state
+			of the checker for reporting, it is always false. " 
+			self checkExtraPeriodIn: aMicHeader for: false ]
 ]

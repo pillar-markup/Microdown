@@ -33,13 +33,13 @@ MicVocabularyChecker class >> checkerName [
 { #category : 'configuration help' }
 MicVocabularyChecker class >> configurationJSONPart [
 	"self configurationPart"
-
-		^ {
-			{'sub-presenter' . 'subpresenter'} .
-			{'sub presenter' . 'subpresenter'} .
-			{'meta object' . 'metaobject'} .
-			{'back-end' . 'backend'} .
-			{'back end' . 'backend'} } 
+	
+	^ {
+		{'sub-presenter' . 'subpresenter'} .
+		{'sub presenter' . 'subpresenter'} .
+		{'meta object' . 'metaobject'} .
+		{'back-end' . 'backend'} .
+		{'back end' . 'backend'} } 
 ]
 
 { #category : 'visiting - inline elements' }

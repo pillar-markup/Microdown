@@ -25,7 +25,7 @@ MicChecker class >> checkerName [
 
 { #category : 'configuration help' }
 MicChecker class >> configurationJSONPart [
-
+	"return either a boolean for non composite configurations or a dictionary."
 	^ #()
 ]
 
@@ -61,11 +61,10 @@ MicChecker class >> explanationForConfiguration [
 	^ String streamContents: [ :str | 
 		str << self comment. 
 		str cr.
-		self configurationJSONPart ifNotEmpty: [ 
 			str cr.
 			str << 'In the pillar.conf file you can add the following key values:'. 
 			str cr.
-			str << (self configurationPartWithNewLine: Character lf asString) ]] 
+			str << (self configurationPartWithNewLine: Character lf asString) ] 
 ]
 
 { #category : 'visiting' }
