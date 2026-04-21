@@ -23,6 +23,9 @@ $$
 Class {
 	#name : 'MicLastPeriodInCaptionChecker',
 	#superclass : 'MicLastPeriodChecker',
+	#instVars : [
+		'levelThreshold'
+	],
 	#category : 'Microdown-Rules-CodeLastPeriod',
 	#package : 'Microdown-Rules',
 	#tag : 'CodeLastPeriod'
@@ -122,6 +125,13 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInMath: aMath [
 MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
 
 	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
+]
+
+{ #category : 'testing' }
+MicLastPeriodInCaptionChecker >> requiresPeriodFor: anElement [
+	levelThreshold ifNil: [ ^ false ].
+	anElement level ifNil: [ ^ false ].
+	^ anElement level >= levelThreshold
 ]
 
 { #category : 'visiting - inline elements' }

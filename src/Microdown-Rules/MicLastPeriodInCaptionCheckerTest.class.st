@@ -251,3 +251,13 @@ MicLastPeriodInCaptionCheckerTest >> testMathCheckerIdentifyCorrectlyMissingExtr
 		equals:
 		'- Text: "This is the famous missing period" in file/equationCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
 ]
+
+{ #category : 'tests' }
+MicLastPeriodInCaptionCheckerTest >> testRequiresPeriodForCaption [
+	| checker caption |
+	checker := MicLastPeriodInCaptionChecker new.
+	checker configureFrom: (Dictionary new at: 'labelLevel' put: 3; yourself).
+	caption := MicFigureBlock new.
+	self deny: (checker requiresPeriodFor: caption).
+
+]
