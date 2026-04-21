@@ -21,9 +21,9 @@ Class {
 		'levelForParagraph',
 		'isEndingWithPeriod'
 	],
-	#category : 'Microdown-Rules-CodeLastPeriod',
+	#category : 'Microdown-Rules-LastPeriod',
 	#package : 'Microdown-Rules',
-	#tag : 'CodeLastPeriod'
+	#tag : 'LastPeriod'
 }
 
 { #category : 'public - name' }

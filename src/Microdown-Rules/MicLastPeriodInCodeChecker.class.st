@@ -24,9 +24,9 @@ setX: xInt setY: yInt
 Class {
 	#name : 'MicLastPeriodInCodeChecker',
 	#superclass : 'MicLastPeriodChecker',
-	#category : 'Microdown-Rules-CodeLastPeriod',
+	#category : 'Microdown-Rules-LastPeriod',
 	#package : 'Microdown-Rules',
-	#tag : 'CodeLastPeriod'
+	#tag : 'LastPeriod'
 }
 
 { #category : 'public - name' }

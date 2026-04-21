@@ -1,9 +1,9 @@
 Class {
 	#name : 'MicPeriodInCaptionResult',
 	#superclass : 'MicLastPeriodResult',
-	#category : 'Microdown-Rules-CodeLastPeriod',
+	#category : 'Microdown-Rules-LastPeriod',
 	#package : 'Microdown-Rules',
-	#tag : 'CodeLastPeriod'
+	#tag : 'LastPeriod'
 }
 
 { #category : 'accessing' }
