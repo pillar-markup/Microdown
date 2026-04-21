@@ -16,10 +16,9 @@ identifyExtraPeriod: flags labels that Do end with a period.
 "
 Class {
 	#name : 'MicLastPeriodInParagraphLabelChecker',
-	#superclass : 'MicChecker',
+	#superclass : 'MicLastPeriodChecker',
 	#instVars : [
-		'levelForParagraph',
-		'isEndingWithPeriod'
+		'levelForParagraph'
 	],
 	#category : 'Microdown-Rules-LastPeriod',
 	#package : 'Microdown-Rules',
@@ -90,12 +89,6 @@ MicLastPeriodInParagraphLabelChecker >> initialize [
 ]
 
 { #category : 'accessing' }
-MicLastPeriodInParagraphLabelChecker >> isEndingWithPeriod [
-
-	^ isEndingWithPeriod
-]
-
-{ #category : 'accessing' }
 MicLastPeriodInParagraphLabelChecker >> levelForParagraph [
 
 	^ levelForParagraph
@@ -113,18 +106,6 @@ MicLastPeriodInParagraphLabelChecker >> requiresPeriodFor: anElement [
 	levelForParagraph ifNil: [ ^ false ].
 	anElement level ifNil: [ ^ false ].
 	^ anElement level >= levelForParagraph
-]
-
-{ #category : 'visiting' }
-MicLastPeriodInParagraphLabelChecker >> shouldEndWithPeriod [
-	
-	isEndingWithPeriod := true
-]
-
-{ #category : 'visiting' }
-MicLastPeriodInParagraphLabelChecker >> shouldNotEndWithPeriod [
-
-	isEndingWithPeriod := false
 ]
 
 { #category : 'visiting' }
