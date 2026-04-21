@@ -15,7 +15,7 @@ identifyMissingPeriod: flags labels that do Not end with a period.
 identifyExtraPeriod: flags labels that Do end with a period.
 "
 Class {
-	#name : 'MicParagraphLabelChecker',
+	#name : 'MicLastPeriodInParagraphLabelChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
 		'levelForParagraph',
@@ -27,13 +27,13 @@ Class {
 }
 
 { #category : 'public - name' }
-MicParagraphLabelChecker class >> checkerName [
+MicLastPeriodInParagraphLabelChecker class >> checkerName [
 
 	^ 'ParagraphLabelEndPeriod'
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
+MicLastPeriodInParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 	(aMicHeader text trimRight endsWith: '.') ifTrue: [ 
 		results add: (MicParagraphLabelResult new 
 			micElement: aMicHeader;
@@ -46,7 +46,7 @@ MicParagraphLabelChecker >> checkExtraPeriodIn: aMicHeader [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
+MicLastPeriodInParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 
 	
 	| text |
@@ -70,7 +70,7 @@ MicParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> configureFrom: aConfiguration [
+MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 
 	"The configuration should handle the level too."
 	
@@ -82,7 +82,7 @@ MicParagraphLabelChecker >> configureFrom: aConfiguration [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> initialize [
+MicLastPeriodInParagraphLabelChecker >> initialize [
 
 	super initialize.
 	isEndingWithPeriod := true.
@@ -90,25 +90,25 @@ MicParagraphLabelChecker >> initialize [
 ]
 
 { #category : 'accessing' }
-MicParagraphLabelChecker >> isEndingWithPeriod [
+MicLastPeriodInParagraphLabelChecker >> isEndingWithPeriod [
 
 	^ isEndingWithPeriod
 ]
 
 { #category : 'accessing' }
-MicParagraphLabelChecker >> levelForParagraph [
+MicLastPeriodInParagraphLabelChecker >> levelForParagraph [
 
 	^ levelForParagraph
 ]
 
 { #category : 'accessing' }
-MicParagraphLabelChecker >> levelForParagraph: anObject [
+MicLastPeriodInParagraphLabelChecker >> levelForParagraph: anObject [
 
 	levelForParagraph := anObject
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> requiresPeriodFor: anElement [
+MicLastPeriodInParagraphLabelChecker >> requiresPeriodFor: anElement [
 
 	levelForParagraph ifNil: [ ^ false ].
 	anElement level ifNil: [ ^ false ].
@@ -116,19 +116,19 @@ MicParagraphLabelChecker >> requiresPeriodFor: anElement [
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> shouldEndWithPeriod [
+MicLastPeriodInParagraphLabelChecker >> shouldEndWithPeriod [
 	
 	isEndingWithPeriod := true
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> shouldNotEndWithPeriod [
+MicLastPeriodInParagraphLabelChecker >> shouldNotEndWithPeriod [
 
 	isEndingWithPeriod := false
 ]
 
 { #category : 'visiting' }
-MicParagraphLabelChecker >> visitHeader: aMicHeader [
+MicLastPeriodInParagraphLabelChecker >> visitHeader: aMicHeader [
 
 	aMicHeader level >= levelForParagraph 
 		ifTrue: [ 

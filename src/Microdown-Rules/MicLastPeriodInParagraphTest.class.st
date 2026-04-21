@@ -7,7 +7,7 @@ I verify that:
 - Labels at levels 1, 2 and 3 are never flagged regardless of the mode.
 "
 Class {
-	#name : 'MicParagraphLabelCheckerTest',
+	#name : 'MicLastPeriodInParagraphTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : 'running' }
-MicParagraphLabelCheckerTest >> generateFilesystemExample [
+MicLastPeriodInParagraphTest >> generateFilesystemExample [
 	| file |
 	
 	"incorrect cases - no period"
@@ -89,37 +89,37 @@ MicParagraphLabelCheckerTest >> generateFilesystemExample [
 ]
 
 { #category : 'running' }
-MicParagraphLabelCheckerTest >> setUp [
+MicLastPeriodInParagraphTest >> setUp [
 	super setUp.
 
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
-	checker := MicParagraphLabelChecker new.
+	checker := MicLastPeriodInParagraphLabelChecker new.
 ]
 
 { #category : 'tests - configure' }
-MicParagraphLabelCheckerTest >> testConfigureFromFalse [ 
+MicLastPeriodInParagraphTest >> testConfigureFromFalse [ 
 	checker configureFrom: 'false'.
 	self deny: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
-MicParagraphLabelCheckerTest >> testConfigureFromNil [
+MicLastPeriodInParagraphTest >> testConfigureFromNil [
 
 	checker configureFrom: nil.
 	self assert: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - configure' }
-MicParagraphLabelCheckerTest >> testConfigureFromTrue [ 
+MicLastPeriodInParagraphTest >> testConfigureFromTrue [ 
 	checker configureFrom: 'true'.
 	self assert: checker isEndingWithPeriod
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testHeaderWithFormattingAndPeriod [ [
+MicLastPeriodInParagraphTest >> testHeaderWithFormattingAndPeriod [ [
     | checker document |
-    checker := MicParagraphLabelChecker new.
+    checker := MicLastPeriodInParagraphLabelChecker new.
     checker levelForParagraph: 4.
     checker configureFrom: 'false'. 
     document := Microdown parse: '##### Titre avec *italique* et point.'.
@@ -132,7 +132,7 @@ MicParagraphLabelCheckerTest >> testHeaderWithFormattingAndPeriod [ [
 ]
 
 { #category : 'tests - section part' }
-MicParagraphLabelCheckerTest >> testLevel1 [
+MicLastPeriodInParagraphTest >> testLevel1 [
 	checker checkProject: fileSystem / 'level1NoPeriod.md'.
 	self assert: checker isOkay.
 
@@ -142,7 +142,7 @@ MicParagraphLabelCheckerTest >> testLevel1 [
 ]
 
 { #category : 'tests - section part' }
-MicParagraphLabelCheckerTest >> testLevel2 [
+MicLastPeriodInParagraphTest >> testLevel2 [
 	checker checkProject: fileSystem / 'level2NoPeriod.md'.
 	self assert: checker isOkay.
 
@@ -151,7 +151,7 @@ MicParagraphLabelCheckerTest >> testLevel2 [
 ]
 
 { #category : 'tests - section part' }
-MicParagraphLabelCheckerTest >> testLevel3 [
+MicLastPeriodInParagraphTest >> testLevel3 [
 	checker checkProject: fileSystem / 'level3NoPeriod.md'.
 	self assert: checker isOkay.
 
@@ -160,7 +160,7 @@ MicParagraphLabelCheckerTest >> testLevel3 [
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
+MicLastPeriodInParagraphTest >> testLevel4DoublePeriodDetected [
 
 	"#### Paragraph Label.. is bad and should be detected as faulty"
 	
@@ -172,7 +172,7 @@ MicParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
 ]
 
 { #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel4NoPeriod [
+MicLastPeriodInParagraphTest >> testLevel4NoPeriod [
 
 	checker shouldNotEndWithPeriod.
 	checker checkProject: fileSystem / 'level4NoPeriod.md'.
@@ -185,7 +185,7 @@ MicParagraphLabelCheckerTest >> testLevel4NoPeriod [
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
+MicLastPeriodInParagraphTest >> testLevel4PeriodSpacePeriodDetected [
 	"#### Paragraph Label. . is bad and should be detected as faulty"
 	
 	checker shouldEndWithPeriod.
@@ -196,7 +196,7 @@ MicParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected [
 ]
 
 { #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel4ShouldEndWithPeriod [
+MicLastPeriodInParagraphTest >> testLevel4ShouldEndWithPeriod [
 
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level4WithPeriod.md'.
@@ -209,7 +209,7 @@ MicParagraphLabelCheckerTest >> testLevel4ShouldEndWithPeriod [
 ]
 
 { #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel5NoPeriod [
+MicLastPeriodInParagraphTest >> testLevel5NoPeriod [
 
 	checker shouldNotEndWithPeriod.
 	checker checkProject: fileSystem / 'level5NoPeriod.md'.
@@ -222,7 +222,7 @@ MicParagraphLabelCheckerTest >> testLevel5NoPeriod [
 ]
 
 { #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel5ShouldEndWithPeriod [
+MicLastPeriodInParagraphTest >> testLevel5ShouldEndWithPeriod [
 
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level5WithPeriod.md'.
@@ -235,7 +235,7 @@ MicParagraphLabelCheckerTest >> testLevel5ShouldEndWithPeriod [
 ]
 
 { #category : 'tests - should not end with period' }
-MicParagraphLabelCheckerTest >> testLevel6NoPeriod [
+MicLastPeriodInParagraphTest >> testLevel6NoPeriod [
 
 	checker shouldNotEndWithPeriod.
 	checker checkProject: fileSystem / 'level6NoPeriod.md'.
@@ -248,7 +248,7 @@ MicParagraphLabelCheckerTest >> testLevel6NoPeriod [
 ]
 
 { #category : 'tests - should end with period' }
-MicParagraphLabelCheckerTest >> testLevel6ShouldEndWithPeriod [
+MicLastPeriodInParagraphTest >> testLevel6ShouldEndWithPeriod [
 
 	checker shouldEndWithPeriod.
 	checker checkProject: fileSystem / 'level6WithPeriod.md'.
@@ -261,9 +261,9 @@ MicParagraphLabelCheckerTest >> testLevel6ShouldEndWithPeriod [
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testLevelConfiguration [ [
+MicLastPeriodInParagraphTest >> testLevelConfiguration [ [
 	| checker |
-	checker := MicParagraphLabelChecker new.
+	checker := MicLastPeriodInParagraphLabelChecker new.
 	checker levelForParagraph: 5.
 	self assert: checker levelForParagraph equals: 5.
 
@@ -271,9 +271,9 @@ MicParagraphLabelCheckerTest >> testLevelConfiguration [ [
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testParagraphLevel4IsIgnoredWhenConfiguredForLevel5 [ [
+MicLastPeriodInParagraphTest >> testParagraphLevel4IsIgnoredWhenConfiguredForLevel5 [ [
     | checker document |
-    checker := MicParagraphLabelChecker new.
+    checker := MicLastPeriodInParagraphLabelChecker new.
     checker levelForParagraph: 5.
     checker configureFrom: 'false'. 
     document := Microdown parse: '#### Titre de niveau 4 avec point.'.
@@ -286,9 +286,9 @@ MicParagraphLabelCheckerTest >> testParagraphLevel4IsIgnoredWhenConfiguredForLev
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testParagraphLevel5IsChecked [ [
+MicLastPeriodInParagraphTest >> testParagraphLevel5IsChecked [ [
     | checker document |
-    checker := MicParagraphLabelChecker new.
+    checker := MicLastPeriodInParagraphLabelChecker new.
     checker levelForParagraph: 5.
     checker configureFrom: 'false'. 
     document := Microdown parse: '##### Titre de niveau 5 avec point.'.
@@ -301,9 +301,9 @@ MicParagraphLabelCheckerTest >> testParagraphLevel5IsChecked [ [
 ]
 
 { #category : 'tests' }
-MicParagraphLabelCheckerTest >> testParagraphLevel6IsCheckedWhenConfiguredForLevel5 [ [
+MicLastPeriodInParagraphTest >> testParagraphLevel6IsCheckedWhenConfiguredForLevel5 [ [
     | checker document |
-    checker := MicParagraphLabelChecker new.
+    checker := MicLastPeriodInParagraphLabelChecker new.
     checker levelForParagraph: 5.
     checker configureFrom: 'false'. 
     document := Microdown parse: '###### Titre de niveau 4 avec point.'.
@@ -316,7 +316,7 @@ MicParagraphLabelCheckerTest >> testParagraphLevel6IsCheckedWhenConfiguredForLev
 ]
 
 { #category : 'tests - level control' }
-MicParagraphLabelCheckerTest >> testRequiresPeriodBasedOnThreshold [
+MicLastPeriodInParagraphTest >> testRequiresPeriodBasedOnThreshold [
 
 	checker shouldEndWithPeriod.
 	checker levelForParagraph: 4.
