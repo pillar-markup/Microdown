@@ -136,6 +136,17 @@ MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromTrue [
 ]
 
 { #category : 'tests - configure' }
+MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromWithBogusLevelUsesDefaultValue [
+
+	checker configureFrom: (Dictionary new
+			 at: #levelForPar put: 3;
+			 at: #isEndingWithPeriod put: true;
+			 yourself).
+	self assert: checker isEndingWithPeriod.
+	self assert: checker levelForParagraph equals: checker defaultLevelForParagraph
+]
+
+{ #category : 'tests - configure' }
 MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromWithLevel [
 
 	checker configureFrom: (Dictionary new 

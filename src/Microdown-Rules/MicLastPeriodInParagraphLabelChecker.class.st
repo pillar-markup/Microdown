@@ -100,11 +100,17 @@ MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 ]
 
 { #category : 'visiting' }
+MicLastPeriodInParagraphLabelChecker >> defaultLevelForParagraph [
+
+	^ 4
+]
+
+{ #category : 'visiting' }
 MicLastPeriodInParagraphLabelChecker >> initialize [
 
 	super initialize.
 	isEndingWithPeriod := true.
-	levelForParagraph := 4.
+	levelForParagraph := self defaultLevelForParagraph
 ]
 
 { #category : 'accessing' }
