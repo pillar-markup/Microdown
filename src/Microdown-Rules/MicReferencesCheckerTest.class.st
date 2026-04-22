@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'checker'
 	],
-	#category : 'Microdown-Rules-References',
+	#category : 'Microdown-Rules-AnchoredReferences',
 	#package : 'Microdown-Rules',
-	#tag : 'References'
+	#tag : 'AnchoredReferences'
 }
 
 { #category : 'public - name' }
@@ -17,47 +17,54 @@ MicReferencesCheckerTest class >> checkerName [
 
 { #category : 'running' }
 MicReferencesCheckerTest >> generateFilesystemExample [
+
 	| file |
-	file := fileSystem  workingDirectory / 'figureWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'figure *@figbla@*'
-		 ].
-		file := fileSystem  workingDirectory / 'tableWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'table *@tablab@*'
-		 ].
-		file := fileSystem  workingDirectory / 'sectionWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'section *@secbla@*'
-		 ].
-		file := fileSystem  workingDirectory / 'theFigureWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'the figure *@figbla@*'
-		 ].
-			file := fileSystem  workingDirectory / 'theSectionWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'the section *@seclab@*'
-		 ].
-			file := fileSystem  workingDirectory / 'theTableWrong.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'the table *@tabbla@*'
-		 ].
-			file := fileSystem  workingDirectory / 'figureCorrect.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'Figure *@figbla@*'
-		 ].
-				file := fileSystem  workingDirectory / 'sectionCorrect.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'Section *@secbla@*'
-		 ].
-				file := fileSystem  workingDirectory / 'tableCorrect.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'Table *@tabbla@*'
-		 ].
-				file := fileSystem  workingDirectory / 'noAnchor.md'.
-	file writeStreamDo: [  :stream |
-		stream nextPutAll: 'figure without anchor'
-		 ].
+	file := fileSystem workingDirectory / 'figureWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'figure *@figbla@*' ].
+	file := fileSystem workingDirectory / 'tableWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'table *@tablab@*' ].
+	file := fileSystem workingDirectory / 'sectionWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'section *@secbla@*' ].
+	file := fileSystem workingDirectory / 'theFigureWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'the figure *@figbla@*' ].
+	file := fileSystem workingDirectory / 'theSectionWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'the section *@seclab@*' ].
+
+	file := fileSystem workingDirectory / 'theTableWrong.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'the table *@tabbla@*' ].
+
+	file := fileSystem workingDirectory / 'theTableWrongNoTheButIn.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'in table *@tabbla@*' ].
+	file := fileSystem workingDirectory / 'theTableWrongWithThe.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'The table *@tabbla@*' ].
+
+
+	file := fileSystem workingDirectory / 'figureCorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'See Figure *@figbla@*' ].
+	file := fileSystem workingDirectory / 'sectionCorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'Section *@secbla@*' ].
+	file := fileSystem workingDirectory / 'tableCorrect.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'Table *@tabbla@*' ].
+
+
+	file := fileSystem workingDirectory / 'noAnchor.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'figure without anchor' ].
+	file := fileSystem workingDirectory / 'noAnchorUppercase.md'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: 'in Figure without anchor' ]
+
 ]
 
 { #category : 'running' }
@@ -69,27 +76,28 @@ MicReferencesCheckerTest >> setUp [
 	checker := MicAnchoredSectionTableFigureChecker new.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - configure' }
 MicReferencesCheckerTest >> testConfigureFromAnyValue [ 
 	checker configureFrom: 'anything'.
 	self assert: checker isOkay.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - configure' }
 MicReferencesCheckerTest >> testConfigureFromNil [
 	checker configureFrom: nil.
 	self assert: checker isOkay.
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - correct' }
 MicReferencesCheckerTest >> testFigureCorrect [
+
 	checker checkProject: fileSystem / 'figureCorrect.md'.
-	self assert: checker isOkay.
+	"See Figure @hkj@"
 	
-	
+	self assert: checker isOkay
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testFigureExplanation [
 	checker checkProject: fileSystem / 'figureWrong.md'.
 	self assert: checker results first explanation
@@ -97,7 +105,7 @@ MicReferencesCheckerTest >> testFigureExplanation [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testFigureLowercaseDetected [
 	checker checkProject: fileSystem / 'figureWrong.md'.
 	self deny: checker isOkay.
@@ -106,15 +114,15 @@ MicReferencesCheckerTest >> testFigureLowercaseDetected [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - correct' }
 MicReferencesCheckerTest >> testSectionCorrect [
+
 	checker checkProject: fileSystem / 'sectionCorrect.md'.
-	self assert: checker isOkay.
-	
-	
+	"Section *@secbla@*"
+	self assert: checker isOkay
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testSectionLowercaseDetected [
 	checker checkProject: fileSystem / 'sectionWrong.md'.
 	self deny: checker isOkay.
@@ -123,7 +131,7 @@ MicReferencesCheckerTest >> testSectionLowercaseDetected [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - correct' }
 MicReferencesCheckerTest >> testTableCorrect [
 	checker checkProject: fileSystem / 'tableCorrect.md'.
 	self assert: checker isOkay.
@@ -131,7 +139,7 @@ MicReferencesCheckerTest >> testTableCorrect [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTableLowercaseDetected [
 	checker checkProject: fileSystem / 'tableWrong.md'.
 	self deny: checker isOkay.
@@ -140,14 +148,58 @@ MicReferencesCheckerTest >> testTableLowercaseDetected [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
+MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
+
+	self skip.
+	checker checkProject: fileSystem / 'theTableWrongNoTheButIn.md'.
+	"'in table *@tabbla@*' is false because it should be in Table *@tabbla@*"
+	self deny: checker isOkay.
+	self assert: checker results size equals: 1.
+	self assert: checker results first detail equals: 'table'.
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "in table " in file/theTableWrongNoTheButIn.md contains a mistake: [table] should be capitalized as [Table].'
+]
+
+{ #category : 'tests - flagged violations' }
+MicReferencesCheckerTest >> testTableLowercaseDetectedWithThe [
+
+	checker checkProject: fileSystem / 'theTableWrongWithThe.md'.
+	" 'The table *@tabbla@*'
+	This is not correct because we should have The in front so the explanation and probably the result is false.
+	"
+	self flag: #forAntoine.
+	
+	self deny: checker isOkay.
+	self assert: checker results size equals: 1.
+	self assert: checker results first detail equals: 'the table'.
+	self
+		assert: checker results first explanation
+		equals:
+		'Text: "The table " in file/theTableWrongWithThe.md contains a mistake: [the table] should be capitalized as [The table].'
+]
+
+{ #category : 'tests - configure' }
 MicReferencesCheckerTest >> testTextWithoutAnchor [
 	checker checkProject: fileSystem / 'noAnchor.md'.
 	self assert: checker isOkay.
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - configure' }
+MicReferencesCheckerTest >> testTextWithoutAnchorWituppercase [
+
+	self skip.
+	checker checkProject: fileSystem / 'noAnchorUppercase.md'.
+	"in Figure without anchor reference - here we are probably missing the reference
+	"
+	self flag: #ForAntoine.
+	self deny: checker isOkay.
+]
+
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTheFigureDetected [
 	checker checkProject: fileSystem / 'theFigureWrong.md'.
 	self deny: checker isOkay.
@@ -155,7 +207,7 @@ MicReferencesCheckerTest >> testTheFigureDetected [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTheSectionDetected [
 	checker checkProject: fileSystem / 'theSectionWrong.md'.
 	self deny: checker isOkay.
@@ -163,7 +215,7 @@ MicReferencesCheckerTest >> testTheSectionDetected [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTheTableDetected [
 	checker checkProject: fileSystem / 'theTableWrong.md'.
 	self deny: checker isOkay.
