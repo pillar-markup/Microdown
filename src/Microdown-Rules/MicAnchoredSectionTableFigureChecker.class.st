@@ -1,15 +1,22 @@
 "
 I check that references to figures, sections and tables are correctly capitalized before an anchor and that there is no 'the' before. 
+When there is a number (given by an anchor) the section/figure... must be uppercased and not preceeded by the or an.
 
-In Microdown, references should be written as:
-- Figure *@figureExample@*
-- Section *@sectionExample@*
-- Table *@tableExample*
-	
+In Microdown, references should be written as and the following texts are correct
+
+```
+- in Figure *@figureExample@*
+- in Section *@sectionExample@*
+- in Table *@tableExample*
+```
+
 The following are incorrect and will be flagged:
+
+```
 - figure *@figureExample@* (lowercase)
 - the figure *@figureExample@* (preceeded by 'the')
 - section *@sectionExample@* (lowercase)
+```
 "
 Class {
 	#name : 'MicAnchoredSectionTableFigureChecker',
