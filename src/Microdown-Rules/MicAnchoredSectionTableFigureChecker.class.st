@@ -35,9 +35,14 @@ MicAnchoredSectionTableFigureChecker class >> checkerName [
 	^ 'NotTheFigureX'
 ]
 
-{ #category : 'configuration' }
-MicAnchoredSectionTableFigureChecker >> configureFrom: aConfiguration [
-	^ self
+{ #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> initialize [
+
+	super initialize.
+	"in the future we may expose an API to change such element list"
+	
+	namedElements := #( 'figure' 'table' 'section' 'equation' 'lemma'
+	                    'listing' )
 ]
 
 { #category : 'visiting' }
