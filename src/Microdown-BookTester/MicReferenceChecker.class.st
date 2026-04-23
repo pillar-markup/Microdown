@@ -220,17 +220,6 @@ MicReferenceChecker >> isOk [
 		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
 ]
 
-{ #category : 'reporting' }
-MicReferenceChecker >> report [
-
-	^ reportWriter report
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> reportSTONFormat [
-	^ reportWriter reportSTONFormat
-]
-
 { #category : 'internal' }
 MicReferenceChecker >> unknownAnchors [
 	
