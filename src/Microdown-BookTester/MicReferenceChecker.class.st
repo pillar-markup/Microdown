@@ -208,7 +208,6 @@ MicReferenceChecker >> initialize [
 	anchoringEntities := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new. "by default if the reporter is not set from outside
 	then it shares the results of this current checker."
-	reportWriter := MicAnalysisReportWriter new results: results
 ]
 
 { #category : 'testing' }
