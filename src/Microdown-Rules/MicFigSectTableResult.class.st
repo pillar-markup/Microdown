@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-References',
+	#category : 'Microdown-Rules-AnchoredReferences',
 	#package : 'Microdown-Rules',
-	#tag : 'References'
+	#tag : 'AnchoredReferences'
 }
 
 { #category : 'accessing' }

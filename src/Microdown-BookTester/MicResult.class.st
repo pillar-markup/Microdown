@@ -81,9 +81,3 @@ MicResult >> status: anObject [
 
 	status := anObject
 ]
-
-{ #category : 'accessing' }
-MicResult >> stonFormatExplanation [
-
-	^ self subclassResponsibility
-]

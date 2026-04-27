@@ -45,17 +45,18 @@ MicEnglishTypographyChecker >> checkString: aString for: anElement [
 	aString ifNil: [ ^self ].
 	cleanString := aString copyReplaceAll: (String with: Character lf) with: ' '.
 	cleanString := cleanString copyReplaceAll: (String with: Character cr) with: ' '. 
-checks := {
+	
+	checks := {
 		' \:' -> 'There is a space before :'.
 		' \,' -> 'There is a space before ,'.
-		'\:[^ /]' -> 'There is no space after :'.
-		',[^ ]' -> 'There is no space after ,'.
+		'\:[^ /)]' -> 'There is no space after :'.
+		',[^ )]' -> 'There is no space after ,'.
 		' \;' -> 'There is a space before ;'.
-		'\;[^ ]' -> 'There is no space after ;'.
+		'\;[^ )]' -> 'There is no space after ;'.
 		' \?' -> 'There is a space before ?'.
-		'\?[^ ]' -> 'There is no space after ?'.
+		'\?[^ )]' -> 'There is no space after ?'.
 		' \!' -> 'There is a space before !'.
-		'\![^ ]' -> 'There is no space after !'
+		'\![^ )]' -> 'There is no space after !'
 	}.
 
 	checks do: [ :pair |

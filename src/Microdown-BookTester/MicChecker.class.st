@@ -9,7 +9,6 @@ Class {
 	#name : 'MicChecker',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'reportWriter',
 		'results',
 		'rootDirectory'
 	],
@@ -116,18 +115,6 @@ MicChecker >> initialize [
 { #category : 'testing' }
 MicChecker >> isOkay [
 	^ results isEmpty
-]
-
-{ #category : 'accessing' }
-MicChecker >> reportWriter [
-
-	^ reportWriter
-]
-
-{ #category : 'accessing' }
-MicChecker >> reportWriter: anObject [
-
-	reportWriter := anObject
 ]
 
 { #category : 'visiting' }

@@ -208,7 +208,6 @@ MicReferenceChecker >> initialize [
 	anchoringEntities := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new. "by default if the reporter is not set from outside
 	then it shares the results of this current checker."
-	reportWriter := MicAnalysisReportWriter new results: results
 ]
 
 { #category : 'testing' }
@@ -218,17 +217,6 @@ MicReferenceChecker >> isOk [
 	
 	^ duplicatedAnchors isEmpty and: [
 		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> report [
-
-	^ reportWriter report
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> reportSTONFormat [
-	^ reportWriter reportSTONFormat
 ]
 
 { #category : 'internal' }
