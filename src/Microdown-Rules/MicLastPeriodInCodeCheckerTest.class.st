@@ -123,7 +123,7 @@ MicLastPeriodInCodeCheckerTest >> testChecksMissingPeriod [
 	checker checkProject: fileSystem / 'codeNotEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt" in file/codeNotEndingWithPeriod.md contains a mistake: It should be terminated with a period (.).'
@@ -210,7 +210,7 @@ MicLastPeriodInCodeCheckerTest >> testTerminatedByPeriodPass [
 	checker checkProject: fileSystem / 'codeEndingWithPeriod.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt." in file/codeEndingWithPeriod.md contains a mistake: It should not be terminated with a period (.).'
@@ -223,7 +223,7 @@ MicLastPeriodInCodeCheckerTest >> testTerminatedByPeriodWithExtraEmptyLinesPass 
 	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt.
@@ -239,7 +239,7 @@ MicLastPeriodInCodeCheckerTest >> testTerminatedByPeriodWithExtraSpacesPass [
 	checker checkProject: fileSystem / 'codeEndingWithPeriodAndEmptyLinesWithTabSpaces.md'.
 	self deny: checker isOkay.
 
-	self assert: checker results first explanation equals: '- Text: "setX: xInt setY: yInt
+	self assert: checker results first explanation equals: 'Text: "setX: xInt setY: yInt
 
 	x := xInt.
 	y := yInt.

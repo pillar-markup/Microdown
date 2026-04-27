@@ -195,7 +195,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel1ShouldNeverHavePeriod1 [
 	self
 		assert: checker results first explanation
 		equals:
-		'- Paragraph: "Title with period." in file /level1WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
+		'Paragraph: "Title with period." in file /level1WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - section part' }
@@ -213,7 +213,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel1ShouldNeverHavePeriod2 [
 	self
 		assert: checker results first explanation
 		equals:
-		'- Paragraph: "Title with period." in file /level1WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
+		'Paragraph: "Title with period." in file /level1WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - section part' }
@@ -236,7 +236,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel3ShouldNotHaveAPeriod [
 	
 	self 
 		assert: checker results first explanation 
-		equals: '- Paragraph: "Title with period." in file /level3WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
+		equals: 'Paragraph: "Title with period." in file /level3WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
 
 
 ]
@@ -250,7 +250,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4DoublePeriodDetected [
 	self deny: checker isOkay.
 	self 
 		assert: checker results first explanation 
-		equals: '- Text: "Paragraph Label.." in file/level4DoublePeriods.md contains two periods.'
+		equals: 'Text: "Paragraph Label.." in file/level4DoublePeriods.md contains two periods.'
 
 ]
 
@@ -268,7 +268,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4NoPeriod [
 	self
 		assert: checker results first explanation
 		equals:
-		'- Paragraph: "Color." in file /level4WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
+		'Paragraph: "Color." in file /level4WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - controlling levels' }
@@ -284,7 +284,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4ParagraphWithPeriodShouldB
 	self
 		assert: checker results first explanation
 		equals:
-		'- Paragraph: "Color." in file /level4WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
+		'Paragraph: "Color." in file /level4WithPeriod.md contains a mistake: label should not be terminated with a period (.).'
 ]
 
 { #category : 'tests - two periods' }
@@ -295,7 +295,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4PeriodSpacePeriodDetected 
 	checker checkProject: fileSystem / 'level4PeriodSpacePeriod.md'.
 	self deny: checker isOkay.
 	
-	self assert: checker results first explanation equals: '- Text: "Paragraph Label. ." in file/level4PeriodSpacePeriod.md contains two periods.' 
+	self assert: checker results first explanation equals: 'Text: "Paragraph Label. ." in file/level4PeriodSpacePeriod.md contains two periods.' 
 ]
 
 { #category : 'tests - should end with period' }
@@ -311,7 +311,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4ShouldEndWithPeriod [
 	self assert: checker results first detail equals: 'Color'.
 	self 
 		assert: checker results first explanation 
-		equals:  '- Paragraph: "Color" in file /level4NoPeriod.md contains a mistake: label should be terminated with a period (.).'
+		equals:  'Paragraph: "Color" in file /level4NoPeriod.md contains a mistake: label should be terminated with a period (.).'
 	
 ]
 
@@ -341,7 +341,7 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel5ShouldEndWithPeriod [
 	self assert: checker results first detail equals: 'Size'.
 	self 
 		assert: checker results first explanation 
-		equals: '- Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
+		equals: 'Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
 ]
 
 { #category : 'tests - should not end with period' }
@@ -399,6 +399,6 @@ MicLastPeriodInParagraphLabelCheckerTest >> testParagraphWithExactLevelShouldBeF
 	self assert: checker results size equals: 1. 
 	self 
 		assert: checker results first explanation 
-		equals:  '- Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
+		equals:  'Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
 
 ]
