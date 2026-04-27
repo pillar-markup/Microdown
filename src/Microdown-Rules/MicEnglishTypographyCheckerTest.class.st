@@ -174,6 +174,25 @@ MicEnglishTypographyCheckerTest >> testNoSpaceAfterComma [
 ]
 
 { #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoSpaceBetweenEllipsisAndClosingParenthesis [
+	| file |
+	file := fileSystem workingDirectory / 'testEllipsis.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: 'This is a text...)' ].
+	
+	checker checkProject: file.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
+MicEnglishTypographyCheckerTest >> testNoSpaceBetweenExclamationAndClosingParenthesis [
+	| file |
+	file := fileSystem workingDirectory / 'testExclamation.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: 'Please fill it in!)' ].
+	checker checkProject: file.
+	self assert: checker isOkay.
+]
+
+{ #category : 'tests' }
 MicEnglishTypographyCheckerTest >> testSpaceBeforeColon [
 
 	checker checkProject: fileSystem / 'spaceBeforeColon.md'.
