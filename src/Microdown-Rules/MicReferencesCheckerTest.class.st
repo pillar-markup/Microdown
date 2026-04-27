@@ -152,6 +152,7 @@ MicReferencesCheckerTest >> testTableLowercaseDetected [
 MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
 
 	self skip.
+	self flag: #forAntoine.
 	checker checkProject: fileSystem / 'theTableWrongNoTheButIn.md'.
 	"'in table *@tabbla@*' is false because it should be in Table *@tabbla@*"
 	self deny: checker isOkay.
@@ -189,11 +190,11 @@ MicReferencesCheckerTest >> testTextWithoutAnchor [
 ]
 
 { #category : 'tests - configure' }
-MicReferencesCheckerTest >> testTextWithoutAnchorWituppercase [
+MicReferencesCheckerTest >> testTextWithoutAnchorWithUppercase [
 
 	self skip.
 	checker checkProject: fileSystem / 'noAnchorUppercase.md'.
-	"in Figure without anchor reference - here we are probably missing the reference
+	"'in Figure without anchor reference' - here we are probably missing the reference
 	"
 	self flag: #ForAntoine.
 	self deny: checker isOkay.
