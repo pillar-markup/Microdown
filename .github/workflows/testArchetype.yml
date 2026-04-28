@@ -1,0 +1,37 @@
+name: Test archetype
+
+# Use the pillar script to install pillar and build the test archetype.
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TEXLIVE_RELEASE: 2021
+
+# Controls when the action will run. 
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        archetype: [book, presentation, welcome, basic-latex]
+        output: [html, pdf]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:  
+          fetch-depth: 0
+      - name: prepare PATH
+        shell: bash
+        run: |
+          echo "$HOME/texlive/bin/x86_64-linux" >> $GITHUB_PATH
+          echo "$HOME/texlive/bin/x86_64-darwin" >> $GITHUB_PATH
+      - name: install latex
+        shell: bash
+        run: |
+          ./scripts/ci/install-texlive
+          ./archetypes/book/support/latex/ensure-deps.sh
+      - shell: bash
+        timeout-minutes: 15
+        run: |
+          scripts/system-tests/testarchetype.sh  ${{ matrix.archetype }} ${{ matrix.output }}
+        

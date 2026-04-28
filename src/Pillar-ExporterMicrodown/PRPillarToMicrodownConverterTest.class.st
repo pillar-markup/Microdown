@@ -1,0 +1,330 @@
+Class {
+	#name : 'PRPillarToMicrodownConverterTest',
+	#superclass : 'TestCase',
+	#instVars : [
+		'pillarParser',
+		'writer'
+	],
+	#category : 'Pillar-ExporterMicrodown',
+	#package : 'Pillar-ExporterMicrodown'
+}
+
+{ #category : 'running' }
+PRPillarToMicrodownConverterTest >> setUp [ 
+	super setUp.
+	pillarParser := PRPillarParser new.
+	writer := PRMicrodownWriter new.
+	
+	
+]
+
+{ #category : 'tests - code blocks' }
+PRPillarToMicrodownConverterTest >> testCodeBlock [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: 
+'[[[language=pharo|caption=Pointclass
+Point class >> new
+	self foo	
+]]] 	
+'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 
+'
+```language=pharo&caption=Pointclass
+Point class >> new
+	self foo	
+```
+'
+]
+
+{ #category : 'tests - code blocks' }
+PRPillarToMicrodownConverterTest >> testCodeBlockWithTags [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '[[[language=smalltalk
+Point class >> new
+	self foo	
+]]]'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 
+'
+```language=smalltalk
+Point class >> new
+	self foo	
+```
+'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testFigure [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'+this is a caption>file://Chapters/Preface/Preface.pillar+'.
+
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'![this is a caption](Chapters/Preface/Preface.pillar)'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testFigureWithArguments [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'+this is a caption>file://Chapters/Preface/Preface.pillar|label=MyLabel&width=80+'.
+
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'![this is a caption](Chapters/Preface/Preface.pillar label=MyLabel&width=80)'
+
+"not sure that we have size in microdow. may be this is width"
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testInputFile [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'${inputFile:path=Chapters/Preface/Preface.pillar}$'.
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'<!inputFile|path=Chapters/Preface/Preface.md
+!>'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testInputFileWithFileColumnColumn [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'${inputFile:path=file://Chapters/Preface/Preface}$'.
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'<!inputFile|path=Chapters/Preface/Preface.md
+!>'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testInputFileWithoutExtension [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'${inputFile:path=Chapters/Preface/Preface}$'.
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'<!inputFile|path=Chapters/Preface/Preface.md
+!>'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testLink [
+
+    | pillarobject result |
+    pillarobject := pillarParser parse: 
+'*this is a caption>file://Chapters/Preface/Preface.pillar*'.
+
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'[this is a caption](Chapters/Preface/Preface.pillar)'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testMathEnvironment [ 
+
+| pillarobject result |
+    pillarobject := pillarParser parse: 
+'{{{
+[ X = Y + 2 ]
+}}}
+'.
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'$$
+
+[ X = Y + 2 ]
+
+$$
+
+'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testMathInline [
+
+| pillarobject result |
+    pillarobject := pillarParser parse: 
+'{{{$X$}}}'.
+    result := writer start: pillarobject ; contents.
+    self assert: result equals: 
+'$X$'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testNestedLists [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: 'This is a list
+- item 1 ""this is bold again my friend"" and not
+-- item 11
+-- item 12
+- item 2
+-- item 21
+- item 3
+'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 'This is a list
+- item 1 **this is bold again my friend** and not
+  - item 11
+  - item 12
+- item 2
+  - item 21
+- item 3
+'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testParagraphList [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: 'This is not bold 
+
+This is a list
+- item 1 ""this is bold again my friend""
+- item 2
+'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 'This is not bold 
+
+This is a list
+- item 1 **this is bold again my friend**
+- item 2
+'.
+]
+
+{ #category : 'tests - sections' }
+PRPillarToMicrodownConverterTest >> testSectionParagraphWithBold [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '!!Heading Twoo 
+
+""this is bold""
+
+This is not bold '.
+	result := writer start: pillarobject ; contents.
+	"we get extra lines because the pillar parser generates empty paragraphs the structure holds an empty paragraph and by default there is a new line emitted after any children."
+	self assert: result equals: '## Heading Twoo 
+
+
+**this is bold**
+
+This is not bold '.
+]
+
+{ #category : 'tests - code blocks' }
+PRPillarToMicrodownConverterTest >> testSimpleCodeBlock [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '[[[
+Point class >> new
+	self foo	
+]]]'.
+
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 
+'
+```
+Point class >> new
+	self foo	
+```
+'
+]
+
+{ #category : 'tests - sections' }
+PRPillarToMicrodownConverterTest >> testThreeSectionsNoExtraLines [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '! Section 1
+!Section 2
+!Section 3'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: '# Section 1
+
+# Section 2
+
+# Section 3
+'
+]
+
+{ #category : 'tests - paragraph list' }
+PRPillarToMicrodownConverterTest >> testTwoLists [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: 'This is list 1
+- item 11 ""this is bold again my friend""
+- item 12
+
+This is list 2
+- item 21 ""this is bold again my friend""
+- item 22 and not bold
+'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: 'This is list 1
+- item 11 **this is bold again my friend**
+- item 12
+
+
+This is list 2
+- item 21 **this is bold again my friend**
+- item 22 and not bold
+'
+]
+
+{ #category : 'tests - sections' }
+PRPillarToMicrodownConverterTest >> testTwoSections [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '! Section 1
+
+!Section 2'.
+	result := writer start: pillarobject ; contents.
+	"we get an extra line because the structure holds an empty paragraph and by default there is a new line emitted after any children."
+	self assert: result equals: '# Section 1
+
+
+# Section 2
+'.
+]
+
+{ #category : 'tests - sections' }
+PRPillarToMicrodownConverterTest >> testTwoSectionsNoExtraLines [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '! Section 1
+!Section 2'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: '# Section 1
+
+# Section 2
+'.
+]
+
+{ #category : 'tests - sections' }
+PRPillarToMicrodownConverterTest >> testTwoSectionsWithParagraph [
+
+	| pillarobject result |
+	pillarobject := pillarParser parse: '! Section 1
+This is a paragraph.
+On two lines.
+
+!Section 2'.
+	result := writer start: pillarobject ; contents.
+	self assert: result equals: '# Section 1
+
+This is a paragraph.
+On two lines.
+
+# Section 2
+'.
+]

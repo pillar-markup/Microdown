@@ -1,0 +1,65 @@
+name: Integration tests
+
+#This workflow will install Pillar and Latex and launch only the integration tests. Those tests are running archetypes and requiring Latex.
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# Controls when the action will run. 
+on: [ push, pull_request ]
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hpi-swa/setup-smalltalkCI@v1
+        id: smalltalkci
+        with:
+          smalltalk-image: Pharo64-12
+      - name: Setup TeX Live
+        uses: teatimeguest/setup-texlive-action@v2
+        with:
+          version: 2021
+          packages: >-
+            scheme-small
+            latexmk
+            luatex85
+            ctablestack
+            environ
+            filehook
+            fira
+            fontaxes
+            fontspec
+            footmisc
+            gentium-tug
+            graphics
+            hyphen-english
+            import
+            listings
+            luatexbase
+            memoir
+            multirow
+            opensans
+            pgf
+            polyglossia
+            ragged2e
+            tcolorbox
+            tools
+            trimspaces
+            ulem
+            varwidth
+            xcolor
+            xtab
+            slantsc
+      - name: go
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          echo "SMALLTALKCIBUILD: " ${SMALLTALK_CI_BUILD}
+          mkdir -p ${SMALLTALK_CI_BUILD}
+          cp -R archetypes ${SMALLTALK_CI_BUILD}/
+          smalltalkci -s  ${{ steps.smalltalkci.outputs.smalltalk-image }} .smalltalk.Integration.ston

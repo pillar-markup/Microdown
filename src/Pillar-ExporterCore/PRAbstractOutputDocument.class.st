@@ -1,0 +1,224 @@
+Class {
+	#name : 'PRAbstractOutputDocument',
+	#superclass : 'Object',
+	#instVars : [
+		'project',
+		'file',
+		'target',
+		'outputDirectory'
+	],
+	#category : 'Pillar-ExporterCore-Base',
+	#package : 'Pillar-ExporterCore',
+	#tag : 'Base'
+}
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> baseDirectory [
+	
+	^ project baseDirectory
+]
+
+{ #category : 'writing' }
+PRAbstractOutputDocument >> basicWriter [
+	
+	self subclassResponsibility
+]
+
+{ #category : 'building' }
+PRAbstractOutputDocument >> buildOn: aPRProject [ 
+	"This is a key method. It is the heart of the flow:
+		Parser, Transform, Write, Post Write"
+		
+	| parsedDocument transformedDocument writtenFile |
+	parsedDocument := self parseInputFile: file.
+	parsedDocument properties: (self metadataConfigurationForDocument: parsedDocument).
+	transformedDocument := parsedDocument transformDocumentFor: self.
+	writtenFile := self writeDocument: transformedDocument.
+	self postWriteTransform: writtenFile.
+	^ PRSuccess new.
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> configuration [
+	
+	^ project configuration
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> extension [
+	self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> file [
+
+	^ file
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> file: aFile [
+	
+	file := aFile
+]
+
+{ #category : 'metadata' }
+PRAbstractOutputDocument >> getMustacheTemplateValuesFromDocument: aDocument [
+	"aDocument already has a conifguration holding potential metadata. 
+	We add the text contents to it. This dictionarylike structure will be used by the mustache."
+
+	| templates content |
+	content := self writer write: aDocument.
+	templates := aDocument properties.
+	templates at: #content put: content.
+	^ templates
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> inputFile [
+	
+	^ file file
+]
+
+{ #category : 'metadata' }
+PRAbstractOutputDocument >> metadataConfigurationForDocument: aDocument [ 
+	"create an environment with the local document properties as children of the document properties."
+	
+	| subConfiguration |
+	subConfiguration := project configuration class newFromDictionary: aDocument properties.
+	subConfiguration parent: project configuration.
+	^ subConfiguration
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> outputDirectory [
+		"pay attention the output directory of an output document is more precise than the one of a project. 
+	Indeed it will take into account the kind of document and add 'pdf', 'html'.... as subfolder.
+	See PRPdfOutput >> #documentFor: to see the logic."
+	
+	^ outputDirectory ifNil: [ project outputDirectory ]
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> outputDirectory: aFileReference [
+	"pay attention the output directory of a output document is more precise than the one of a project. 
+	Indeed it will take into account the kind of document and add 'pdf', 'html'.... as subfolder.
+	See PRPdfOutput >> #documentFor: to see the logic."
+	
+	outputDirectory := aFileReference 
+]
+
+{ #category : 'building' }
+PRAbstractOutputDocument >> parseInputFile: anInputFile [
+	
+	^ anInputFile parsedDocument
+]
+
+{ #category : 'building' }
+PRAbstractOutputDocument >> postWriteTransform: aFile [
+
+	"Nothing. Hook for subclasses"
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> project [
+	
+	^ project
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> project: aPRProject [ 
+	
+	project := aPRProject
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> tableOfContents [
+	
+	^ project tableOfContents
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> target: aTarget [ 
+	target := aTarget
+]
+
+{ #category : 'templating' }
+PRAbstractOutputDocument >> templateDirectory [
+
+	^ project baseDirectory / '_support' / 'templates' / self writer folderName
+]
+
+{ #category : 'templating' }
+PRAbstractOutputDocument >> templateFile [
+	
+	^ project baseDirectory / (self writer templateForConfiguration: project configuration)
+]
+
+{ #category : 'templating' }
+PRAbstractOutputDocument >> templateFile: aDocument [
+
+	^ self templateDirectory
+		/ (aDocument propertyAt: 'template' ifAbsent: [ self writer templateForConfiguration: project configuration ])
+]
+
+{ #category : 'building' }
+PRAbstractOutputDocument >> transformDocument: aDocument [
+	"Double dispatch hook invoked by document. In addition let the document control the inclusion process and the transformations."
+	
+	| withInclusions |
+	withInclusions := aDocument includeFor: file.
+	
+	^ (self transformationsFor: aDocument)
+		inject: withInclusions
+		into: [ :accum :each | each start: accum ]
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> transformations [
+	
+	^ target transformations
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> transformationsFor: aDocument [
+	
+	^ target transformations
+]
+
+{ #category : 'building' }
+PRAbstractOutputDocument >> writeDocument: aDocument [
+
+	| environment templatedOutput outputFile |
+	environment := self getMustacheTemplateValuesFromDocument: aDocument.
+	templatedOutput := (MustacheTemplate on: (self templateFile: aDocument) readStream contents) value: environment.
+	
+	
+	self flag: #DuplicatedInSubclass.
+	outputFile := (self outputDirectory resolve: (file file asAbsolute relativeTo: project baseDirectory asAbsolute)) withoutExtension , self extension.
+	outputFile ensureDelete.
+	outputFile parent ensureCreateDirectory.
+	outputFile writeStreamDo: [ :stream | stream nextPutAll: templatedOutput ].
+	^ outputFile
+]
+
+{ #category : 'accessing' }
+PRAbstractOutputDocument >> writer [
+	
+	"If templating is active in the command, use the templated writer"
+	| writer |
+	writer := self basicWriter.
+
+	" We will come back later to this point "
+	writer class = MicTHTMLDocumentMaker
+		ifTrue: [ 
+			writer baseDirectory: outputDirectory parent  ].
+	
+	"project isTemplatable ifTrue: [ 
+		writer := PRTemplatedWriter new
+			outputDocument: self;
+			defaultWriter: writer;
+			yourself ]."
+		
+		
+	^ writer
+]
