@@ -72,7 +72,7 @@ MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 																	results add: (MicFigSectTableResult new
 																			 micElement: child;
 																			 inFile: aMicParagraph fromFile;
-																			 detail: 'the ' , lastWord;
+																			 detail: prevWord , ' ' , lastWord;
 																			 yourself) ] ] ] ].
 									"check figure/section/table"
 									foundThe ifFalse: [
@@ -83,5 +83,32 @@ MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 																		 micElement: child;
 																		 inFile: aMicParagraph fromFile;
 																		 detail: lastWord;
-																		 yourself) ] ] ] ] ] ] ]
+																		 yourself) ] ] ] ] ] ] ].
+	children do: [ :child |
+		(child isKindOf: MicTextBlock) ifTrue: [
+			| words |
+			words := child bodyString substrings.
+			words do: [ :word |
+				namedElements do: [ :ref |
+				
+					word = ref capitalized ifTrue: [
+						| isLastWord followedByAnchor childIndex |
+						isLastWord := word = words last.
+						childIndex := children indexOf: child.
+						followedByAnchor := (childIndex < children size) and: [ 
+							(children at: childIndex + 1) isKindOf: MicAnchorReferenceBlock 
+						].
+
+						(isLastWord and: [ followedByAnchor ]) ifFalse: [
+							results add: (MicFigSectTableResult new
+								micElement: child;
+								inFile: aMicParagraph fromFile;
+								detail: 'missing anchor for ' , word;
+								yourself)
+						]
+					]
+				]
+			]
+		]
+	].
 ]
