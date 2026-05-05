@@ -64,3 +64,37 @@ MicFigureCaptionCheckerTest >> testCaptionIsValid [
 	
 	self assert: visitor results isEmpty.
 ]
+
+{ #category : 'tests' }
+MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
+	| visitor mdFile mem |
+	mem := FileSystem memory root.
+	mdFile := mem / 'test.md'.
+	mdFile writeStreamDo: [ :stream | 
+		stream nextPutAll: '```smalltalk&caption=   '; cr.
+		stream nextPutAll: '1 + 1'; cr.
+		stream nextPutAll: '```' ].
+	
+	visitor := MicFigureCaptionChecker new.
+	visitor rootDirectory: mem.
+	visitor checkProject: mdFile.
+	
+	self assert: visitor results size equals: 1.
+]
+
+{ #category : 'tests' }
+MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
+	| visitor mdFile mem |
+	mem := FileSystem memory root.
+	mdFile := mem / 'test.md'.
+	mdFile writeStreamDo: [ :stream | 
+		stream nextPutAll: '$$&caption='; cr.
+		stream nextPutAll: 'V = \frac{4}{3}\pi r^3'; cr.
+		stream nextPutAll: '$$' ].
+	
+	visitor := MicFigureCaptionChecker new.
+	visitor rootDirectory: mem.
+	visitor checkProject: mdFile.
+	
+	self assert: visitor results size equals: 1.
+]
