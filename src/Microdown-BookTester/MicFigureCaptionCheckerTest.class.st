@@ -69,7 +69,7 @@ MicFigureCaptionCheckerTest >> testCaptionIsValid [
 MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
-	mdFile := mem / 'test.md'.
+	mdFile := mem / 'bogusCaption.md'.
 	mdFile writeStreamDo: [ :stream | 
 		stream nextPutAll: '```smalltalk&caption=   '; cr.
 		stream nextPutAll: '1 + 1'; cr.
@@ -86,7 +86,7 @@ MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
-	mdFile := mem / 'test.md'.
+	mdFile := mem / 'emptyCaption.md'.
 	mdFile writeStreamDo: [ :stream | 
 		stream nextPutAll: '$$&caption='; cr.
 		stream nextPutAll: 'V = \frac{4}{3}\pi r^3'; cr.

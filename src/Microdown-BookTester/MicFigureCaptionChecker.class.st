@@ -64,34 +64,21 @@ MicFigureCaptionChecker >> initialize [
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitCode: aCode [
-	| captionText |
-	
-	self checkCode ifTrue: [ 
-		captionText := ' ' join: (aCode captionElements collect: [ :each | each text ]).
-		self checkMissingCaptionIn: aCode text: captionText ].
-		
-	^ super visitCode: aCode
+	self checkCode ifTrue: [
+		(self hasCorrectCaption: aCode caption) ifFalse: [ 
+			self results add: MicMissingFigureCaptionResult new ] ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitFigure: aFigure [
-	| captionText |
-	
-	self checkFigure ifTrue: [ 
-		captionText := String streamContents: [ :stream | 
-			aFigure children do: [ :child | stream nextPutAll: child plainText ] ].
-		self checkMissingCaptionIn: aFigure text: captionText ].
-		
-	^ super visitFigure: aFigure
+	self checkFigure ifTrue: [
+		(self hasCorrectCaption: aFigure caption) ifFalse: [ 
+			self results add: MicMissingFigureCaptionResult new ] ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitMath: aMath [
-	| captionText |
-	
-	self checkMath ifTrue: [ 
-		captionText := ' ' join: (aMath captionElements collect: [ :each | each text ]).
-		self checkMissingCaptionIn: aMath text: captionText ].
-		
-	^ super visitMath: aMath
+	self checkMath ifTrue: [
+		(self hasCorrectCaption: aMath caption) ifFalse: [ 
+			self results add: MicMissingFigureCaptionResult new ] ]
 ]
