@@ -55,6 +55,24 @@ MicFigureCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText [
 ]
 
 { #category : 'visiting - inline elements' }
+MicFigureCaptionChecker >> configureFrom: aConfiguration [
+	super configureFrom: aConfiguration.
+	checkFigure := aConfiguration propertyAt: #checkFigure ifAbsent: [ true ].
+	checkCode := aConfiguration propertyAt: #checkCode ifAbsent: [ true ].
+	checkMath := aConfiguration propertyAt: #checkMath ifAbsent: [ true ].
+]
+
+{ #category : 'visiting - inline elements' }
+MicFigureCaptionChecker >> explanationForConfiguration [
+	^ 'I check that figures, math environments and code blocks have a valid and non-empty caption.'
+]
+
+{ #category : 'visiting - inline elements' }
+MicFigureCaptionChecker >> hasCorrectCaption: aCaptionText [
+    ^ aCaptionText isNotEmpty and: [ aCaptionText anySatisfy: #isAlphaNumeric ]
+]
+
+{ #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> initialize [
 	super initialize.
 	checkFigure := true.

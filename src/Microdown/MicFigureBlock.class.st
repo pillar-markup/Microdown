@@ -40,6 +40,11 @@ MicFigureBlock >> altText [
 	^ (self children collect: #plainText) joinUsing: ' '
 ]
 
+{ #category : 'accessing' }
+MicFigureBlock >> caption [
+	^ ' ' join: (self captionElements collect: [ :each | each text ])
+]
+
 { #category : 'visiting' }
 MicFigureBlock >> closeMe [
 
