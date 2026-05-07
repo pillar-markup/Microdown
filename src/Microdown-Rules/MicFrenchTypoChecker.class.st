@@ -51,11 +51,6 @@ MicFrenchTypoChecker >> checkString: aString for: anElement [
 		 ]
 ]
 
-{ #category : 'configuration' }
-MicFrenchTypoChecker >> configureFrom: aConfiguration [
-	^ self
-]
-
 { #category : 'adding' }
 MicFrenchTypoChecker >> visitCode: aMicCode [
 	aMicCode caption ifNil: [ ^ self ].

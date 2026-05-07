@@ -71,11 +71,6 @@ MicEnglishTypographyChecker >> checkString: aString for: anElement [
 	].
 ]
 
-{ #category : 'as yet unclassified' }
-MicEnglishTypographyChecker >> configureFrom: aConfiguration [
-	^ self
-]
-
 { #category : 'adding' }
 MicEnglishTypographyChecker >> visitCode: aCodeBlock [
 
