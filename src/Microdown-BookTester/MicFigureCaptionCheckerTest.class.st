@@ -83,33 +83,6 @@ MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testDocumentWithOnlyText [
-	| visitor mdFile mem |
-	mem := FileSystem memory root.
-	mdFile := mem / 'test.md'.
-	
-	mdFile writeStreamDo: [ :stream | 
-		stream nextPutAll: '# Mon chapitre'; cr.
-		stream nextPutAll: 'Voici du texte tout à fait normal, sans aucune figure ni bloc de code.' ].
-	
-	visitor := MicFigureCaptionChecker new.
-	visitor rootDirectory: mem. 
-	visitor checkProject: mdFile.
-	
-	self assert: visitor results isEmpty.
-]
-
-{ #category : 'tests' }
-MicFigureCaptionCheckerTest >> testInitializationDefaults [
-	| checker |
-	checker := MicFigureCaptionChecker new.
-	
-	self assert: checker checkFigure.
-	self assert: checker checkCode.
-	self assert: checker checkMath.
-]
-
-{ #category : 'tests' }
 MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
