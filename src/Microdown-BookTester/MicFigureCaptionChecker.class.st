@@ -61,11 +61,15 @@ MicFigureCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText [
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureCaptionChecker >> configureFrom: aConfiguration [
-	super configureFrom: aConfiguration.
-	checkFigure := aConfiguration propertyAt: #checkFigure ifAbsent: [ true ].
-	checkCode := aConfiguration propertyAt: #checkCode ifAbsent: [ true ].
-	checkMath := aConfiguration propertyAt: #checkMath ifAbsent: [ true ].
+MicFigureCaptionChecker >> configureFrom: aDictionary [
+	super configureFrom: aDictionary.
+	aDictionary at: 'checkOnly' ifPresent: [ :list | 
+		self checkCode: false.
+		self checkFigure: false.
+		self checkMath: false.
+		(list includes: 'code') ifTrue: [ self checkCode: true ].
+		(list includes: 'figure') ifTrue: [ self checkFigure: true ].
+		(list includes: 'math') ifTrue: [ self checkMath: true ] ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -81,9 +85,9 @@ MicFigureCaptionChecker >> hasCorrectCaption: aCaptionText [
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> initialize [
 	super initialize.
-	checkFigure := true.
-	checkCode := true.
-	checkMath := true.
+	self checkCode: true.
+	self checkFigure: true.
+	self checkMath: true.
 ]
 
 { #category : 'visiting - inline elements' }

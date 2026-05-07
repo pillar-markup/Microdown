@@ -83,6 +83,25 @@ MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
+MicFigureCaptionCheckerTest >> testConfigureFromCheckOnly [
+	| checker config |
+	checker := MicFigureCaptionChecker new.
+	
+	self assert: checker checkCode.
+	self assert: checker checkFigure.
+	self assert: checker checkMath.
+	
+	config := Dictionary new.
+	config at: 'checkOnly' put: #('code' 'math').
+	
+	checker configureFrom: config.
+	
+	self assert: checker checkCode.
+	self assert: checker checkMath.
+	self deny: checker checkFigure.
+]
+
+{ #category : 'tests' }
 MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
