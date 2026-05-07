@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MicFigureCaptionChecker >> checkCaptionOf: aBlock [
+	(self hasCorrectCaption: aBlock caption) ifFalse: [ 
+		self results add: MicMissingFigureCaptionResult new ]
+]
+
+{ #category : 'accessing' }
 MicFigureCaptionChecker >> checkCode [
 
 	^ checkCode
@@ -82,21 +88,18 @@ MicFigureCaptionChecker >> initialize [
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitCode: aCode [
-	self checkCode ifTrue: [
-		(self hasCorrectCaption: aCode caption) ifFalse: [ 
-			self results add: MicMissingFigureCaptionResult new ] ]
+	self checkCode ifTrue: [ self checkCaptionOf: aCode ].
+	^ super visitCode: aCode
 ]
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitFigure: aFigure [
-	self checkFigure ifTrue: [
-		(self hasCorrectCaption: aFigure caption) ifFalse: [ 
-			self results add: MicMissingFigureCaptionResult new ] ]
+	self checkFigure ifTrue: [ self checkCaptionOf: aFigure ].
+	^ super visitFigure: aFigure
 ]
 
 { #category : 'visiting - inline elements' }
 MicFigureCaptionChecker >> visitMath: aMath [
-	self checkMath ifTrue: [
-		(self hasCorrectCaption: aMath caption) ifFalse: [ 
-			self results add: MicMissingFigureCaptionResult new ] ]
+	self checkMath ifTrue: [ self checkCaptionOf: aMath ].
+	^ super visitMath: aMath
 ]
