@@ -29,7 +29,10 @@ MicExampleTesterStrategy >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
 
 	| association |
-	association := self class compiler evaluate: aCodeBlockObject text.
+	SystemVersion current major < 14  ifTrue: [ 
+		association := self class compiler evaluate: aCodeBlockObject text.
+	^ association key = association value ].
+	association := OpalEvaluator new  evaluate: aCodeBlockObject text.
 	^ association key = association value
 ]
 
