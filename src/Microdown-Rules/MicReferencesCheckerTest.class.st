@@ -151,35 +151,27 @@ MicReferencesCheckerTest >> testTableLowercaseDetected [
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
 
-	self skip.
-	self flag: #forAntoine.
 	checker checkProject: fileSystem / 'theTableWrongNoTheButIn.md'.
-	"'in table *@tabbla@*' is false because it should be in Table *@tabbla@*"
+	
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'table'.
 	self
 		assert: checker results first explanation
-		equals:
-		'Text: "in table " in file/theTableWrongNoTheButIn.md contains a mistake: [table] should be capitalized as [Table].'
+		equals: 'Text: "in table " in file/theTableWrongNoTheButIn.md contains a mistake: [table] should be capitalized as [Table].'
 ]
 
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTableLowercaseDetectedWithThe [
 
 	checker checkProject: fileSystem / 'theTableWrongWithThe.md'.
-	" 'The table *@tabbla@*'
-	This is not correct because we should have The in front so the explanation and probably the result is false.
-	"
-	self flag: #forAntoine.
 	
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
-	self assert: checker results first detail equals: 'the table'.
+	self assert: checker results first detail equals: 'The table'.
 	self
 		assert: checker results first explanation
-		equals:
-		'Text: "The table " in file/theTableWrongWithThe.md contains a mistake: [the table] should be capitalized as [The table].'
+		equals: 'Text: "The table " in file/theTableWrongWithThe.md contains a mistake: [The table] should be capitalized as [The Table].'
 ]
 
 { #category : 'tests - configure' }
@@ -192,12 +184,11 @@ MicReferencesCheckerTest >> testTextWithoutAnchor [
 { #category : 'tests - configure' }
 MicReferencesCheckerTest >> testTextWithoutAnchorWithUppercase [
 
-	self skip.
 	checker checkProject: fileSystem / 'noAnchorUppercase.md'.
-	"'in Figure without anchor reference' - here we are probably missing the reference
-	"
-	self flag: #ForAntoine.
+	
 	self deny: checker isOkay.
+	self assert: checker results size equals: 1.
+	self assert: checker results first explanation equals: 'Text: "in Figure without anchor" in file/noAnchorUppercase.md contains a mistake: [missing anchor for Figure] should be capitalized as [missing Figure].'.
 ]
 
 { #category : 'tests - flagged violations' }
