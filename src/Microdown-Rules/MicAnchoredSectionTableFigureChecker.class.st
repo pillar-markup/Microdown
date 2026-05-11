@@ -36,6 +36,44 @@ MicAnchoredSectionTableFigureChecker class >> checkerName [
 ]
 
 { #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> addResultFor: aTextBlock in: aParagraph detail: aString [
+	results add: (MicFigSectTableResult new
+		micElement: aTextBlock;
+		inFile: aParagraph fromFile;
+		detail: aString;
+		yourself)
+]
+
+{ #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> analyzeWords: words of: aTextBlock hasAnchor: hasAnchor in: aParagraph [
+	namedElements do: [ :ref |
+		self checkNamingIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph.
+		self checkMissingAnchorsIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph ]
+]
+
+{ #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph [
+	| lastWord |
+	lastWord := words last.
+	
+	words do: [ :word |
+		(word = ref capitalized and: [ word ~= lastWord or: [ hasAnchor not ] ]) ifTrue: [
+			self addResultFor: aTextBlock in: aParagraph detail: 'missing anchor for ' , word ] ]
+]
+
+{ #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> checkNamingIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph [
+	| lastWord |
+	hasAnchor ifFalse: [ ^ self ].
+	lastWord := words last.
+	lastWord asLowercase = ref ifFalse: [ ^ self ].
+	
+	(words size > 1 and: [ (words at: words size - 1) asLowercase = 'the' ])
+		ifTrue: [ self addResultFor: aTextBlock in: aParagraph detail: (words at: words size - 1) , ' ' , lastWord ]
+		ifFalse: [ lastWord = ref ifTrue: [ self addResultFor: aTextBlock in: aParagraph detail: lastWord ] ]
+]
+
+{ #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> initialize [
 
 	super initialize.
@@ -46,69 +84,21 @@ MicAnchoredSectionTableFigureChecker >> initialize [
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
+MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock at: index in: aParagraph children: children [
+	| words hasAnchor |
+	words := aTextBlock bodyString substrings.
+	words isEmpty ifTrue: [ ^ self ].
+	hasAnchor := index < children size and: [ (children at: index + 1) isKindOf: MicAnchorReferenceBlock ].
+	
+	self analyzeWords: words of: aTextBlock hasAnchor: hasAnchor in: aParagraph
+]
 
+{ #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 	| children |
 	children := aMicParagraph children.
-	1 to: children size - 1 do: [ :index |
-			| child nextChild |
-			child := children at: index.
-			nextChild := children at: index + 1.
-			(nextChild isKindOf: MicAnchorReferenceBlock) ifTrue: [
-					(child isKindOf: MicTextBlock) ifTrue: [
-							| words lastWord foundThe |
-							words := child bodyString substrings.
-							words isEmpty ifFalse: [
-									lastWord := words last.
-									foundThe := false.
-									"verify the figure/section/table"
-									namedElements do: [ :ref |
-											lastWord asLowercase = ref ifTrue: [
-													words size > 1 ifTrue: [
-															| prevWord |
-															prevWord := words at: words size - 1.
-															prevWord asLowercase = 'the' ifTrue: [
-																	foundThe := true.
-																	results add: (MicFigSectTableResult new
-																			 micElement: child;
-																			 inFile: aMicParagraph fromFile;
-																			 detail: prevWord , ' ' , lastWord;
-																			 yourself) ] ] ] ].
-									"check figure/section/table"
-									foundThe ifFalse: [
-											namedElements
-												do: [ :ref |
-														lastWord = ref ifTrue: [
-																results add: (MicFigSectTableResult new
-																		 micElement: child;
-																		 inFile: aMicParagraph fromFile;
-																		 detail: lastWord;
-																		 yourself) ] ] ] ] ] ] ].
-	children do: [ :child |
+	
+	children doWithIndex: [ :child :index |
 		(child isKindOf: MicTextBlock) ifTrue: [
-			| words |
-			words := child bodyString substrings.
-			words do: [ :word |
-				namedElements do: [ :ref |
-				
-					word = ref capitalized ifTrue: [
-						| isLastWord followedByAnchor childIndex |
-						isLastWord := word = words last.
-						childIndex := children indexOf: child.
-						followedByAnchor := (childIndex < children size) and: [ 
-							(children at: childIndex + 1) isKindOf: MicAnchorReferenceBlock 
-						].
-
-						(isLastWord and: [ followedByAnchor ]) ifFalse: [
-							results add: (MicFigSectTableResult new
-								micElement: child;
-								inFile: aMicParagraph fromFile;
-								detail: 'missing anchor for ' , word;
-								yourself)
-						]
-					]
-				]
-			]
-		]
-	].
+			self processTextBlock: child at: index in: aMicParagraph children: children ] ]
 ]
