@@ -153,30 +153,26 @@ MicReferencesCheckerTest >> testTableLowercaseDetected [
 
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
-
 	checker checkProject: fileSystem / 'theTableWrongNoTheButIn.md'.
 	
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
 	self assert: checker results first detail equals: 'table'.
 	self
-		assert: checker results first explanation
-		equals: 'Text: "table *@tabbla@*" in file/theTableWrongNoTheButIn.md contains a mistake: [table *@tabbla@*] should be capitalized as [Table *@tabbla@*].'
+		assert: checker results first explanation 
+		equals: 'Text: "in table " in file/theTableWrongNoTheButIn.md contains a mistake: [table] should be capitalized as [Table].'
 ]
 
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTableLowercaseDetectedWithThe [
-
 	checker checkProject: fileSystem / 'theTableWrongWithThe.md'.
-	"'The table *@tabbla@*' -> 'Table *@tabbla@*' "
-	self flag: #Antoine.
 	
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
-	self assert: checker results first detail equals: 'The table *@tabbla@*'.
+	self assert: checker results first detail equals: 'The table'.
 	self
-		assert: checker results first explanation
-		equals: 'Text: "The table *@tabbla@*" in file/theTableWrongWithThe.md contains a mistake: [The table *@tabbla@*] should be capitalized as [Table *@tabbla@*].'
+		assert: checker results first explanation 
+		equals: 'Text: "The table " in file/theTableWrongWithThe.md contains a mistake: [The table] should be capitalized as [The Table].'
 ]
 
 { #category : 'tests - configure' }
@@ -201,7 +197,6 @@ MicReferencesCheckerTest >> testTextWithoutAnchorWithUppercase [
 
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTheFigureDetected [
-		self flag: #Antoine.
 	
 	checker checkProject: fileSystem / 'theFigureWrong.md'.
 	self deny: checker isOkay.
@@ -209,21 +204,19 @@ MicReferencesCheckerTest >> testTheFigureDetected [
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the figure *@figbla@*" in file/theFigureWrong.md contains a mistake: [the figure *@figbla@*] should be capitalized as [Figure *@figbla@*].'
+		equals: 'Text: "the figure " in file/theFigureWrong.md contains a mistake: [the figure] should be capitalized as [the Figure].'
 	
 ]
 
 { #category : 'tests - flagged violations' }
 MicReferencesCheckerTest >> testTheSectionDetected [
-	self flag: #Antoine.
-	
 	checker checkProject: fileSystem / 'theSectionWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail equals: 'the section'.
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the section *@seclab@*" in file/theSectionWrong.md contains a mistake: [the section *@seclab@*] should be capitalized as [Section *@seclab@*].'
+		equals: 'Text: "the section " in file/theSectionWrong.md contains a mistake: [the section] should be capitalized as [the Section].'
 	
 ]
 
@@ -236,6 +229,6 @@ MicReferencesCheckerTest >> testTheTableDetected [
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the table *@tabbla@*" in file/theTableWrong.md contains a mistake: [the table *@tabbla@*] should be capitalized as [Table *@tabbla@*].'
+		equals: 'Text: "the table " in file/theTableWrong.md contains a mistake: [the table] should be capitalized as [the Table].'
 	
 ]
