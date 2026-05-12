@@ -36,41 +36,55 @@ MicAnchoredSectionTableFigureChecker class >> checkerName [
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> addResultFor: aTextBlock in: aParagraph detail: aString [
+MicAnchoredSectionTableFigureChecker >> addErrorDetail: detailString on: aTextBlock inParagraph: aParagraph [
 	results add: (MicFigSectTableResult new
 		micElement: aTextBlock;
 		inFile: aParagraph fromFile;
-		detail: aString;
+		detail: detailString;
 		yourself)
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> analyzeWords: words of: aTextBlock hasAnchor: hasAnchor in: aParagraph [
+MicAnchoredSectionTableFigureChecker >> analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock [
 	namedElements do: [ :ref |
-		self checkNamingIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph.
-		self checkMissingAnchorsIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph ]
+		self checkNamingFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph.
+		self checkMissingAnchorsFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph ]
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph [
+MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
 	| lastWord |
 	lastWord := words last.
-	
 	words do: [ :word |
-		(word = ref capitalized and: [ word ~= lastWord or: [ hasAnchor not ] ]) ifTrue: [
-			self addResultFor: aTextBlock in: aParagraph detail: 'missing anchor for ' , word ] ]
+		(word = ref capitalized and: [ word ~= lastWord or: [ anchorBlock isNil ] ]) ifTrue: [
+			self addErrorDetail: 'missing anchor for ' , word on: aTextBlock inParagraph: aParagraph ] ]
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> checkNamingIn: words of: aTextBlock reference: ref hasAnchor: hasAnchor in: aParagraph [
-	| lastWord |
-	hasAnchor ifFalse: [ ^ self ].
+MicAnchoredSectionTableFigureChecker >> checkNamingFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
+	| lastWord anchorString |
+	anchorBlock ifNil: [ ^ self ].
 	lastWord := words last.
 	lastWord asLowercase = ref ifFalse: [ ^ self ].
-	
-	(words size > 1 and: [ (words at: words size - 1) asLowercase = 'the' ])
-		ifTrue: [ self addResultFor: aTextBlock in: aParagraph detail: (words at: words size - 1) , ' ' , lastWord ]
-		ifFalse: [ lastWord = ref ifTrue: [ self addResultFor: aTextBlock in: aParagraph detail: lastWord ] ]
+
+	(words size > 1 and: [
+		 (words at: words size - 1) asLowercase = 'the' ])
+		ifTrue: [
+				anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ])
+				                , '@*'.
+				self
+					addErrorDetail:
+					(words at: words size - 1) , ' ' , lastWord , anchorString
+					on: aTextBlock
+					inParagraph: aParagraph ]
+		ifFalse: [
+				lastWord = ref ifTrue: [
+						anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ])
+						                , '@*'.
+						self
+							addErrorDetail: lastWord , anchorString
+							on: aTextBlock
+							inParagraph: aParagraph ] ]
 ]
 
 { #category : 'visiting' }
@@ -84,21 +98,22 @@ MicAnchoredSectionTableFigureChecker >> initialize [
 ]
 
 { #category : 'visiting' }
-MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock at: index in: aParagraph children: children [
-	| words hasAnchor |
+MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock atIndex: index withChildren: children inParagraph: aParagraph [
+	| words anchorBlock |
 	words := aTextBlock bodyString substrings.
 	words isEmpty ifTrue: [ ^ self ].
-	hasAnchor := index < children size and: [ (children at: index + 1) isKindOf: MicAnchorReferenceBlock ].
+	anchorBlock := (index < children size and: [ (children at: index + 1) isKindOf: MicAnchorReferenceBlock ])
+		ifTrue: [ children at: index + 1 ]
+		ifFalse: [ nil ].
 	
-	self analyzeWords: words of: aTextBlock hasAnchor: hasAnchor in: aParagraph
+	self analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock
 ]
 
 { #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> visitParagraph: aMicParagraph [
 	| children |
 	children := aMicParagraph children.
-	
 	children doWithIndex: [ :child :index |
 		(child isKindOf: MicTextBlock) ifTrue: [
-			self processTextBlock: child at: index in: aMicParagraph children: children ] ]
+			self processTextBlock: child atIndex: index withChildren: children inParagraph: aMicParagraph ] ]
 ]
