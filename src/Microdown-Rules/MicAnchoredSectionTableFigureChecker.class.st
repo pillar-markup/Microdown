@@ -88,6 +88,16 @@ MicAnchoredSectionTableFigureChecker >> checkNamingFor: words reference: ref anc
 ]
 
 { #category : 'visiting' }
+MicAnchoredSectionTableFigureChecker >> configureFrom: aDictionary [
+	super configureFrom: aDictionary.
+	
+	aDictionary isDictionary ifFalse: [ ^ self ].
+	
+	aDictionary at: 'numberedElements' ifPresent: [ :elements |
+		namedElements := (namedElements , elements) asSet asArray ]
+]
+
+{ #category : 'visiting' }
 MicAnchoredSectionTableFigureChecker >> initialize [
 
 	super initialize.
