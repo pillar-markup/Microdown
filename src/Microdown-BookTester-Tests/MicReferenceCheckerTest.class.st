@@ -10,8 +10,7 @@ Class {
 		'defFig1AndRefToAncUnkS0',
 		'refToUnkS1',
 		'defCode1AndReferToCode1',
-		'defFig1',
-		'checker'
+		'defFig1'
 	],
 	#category : 'Microdown-BookTester-Tests',
 	#package : 'Microdown-BookTester-Tests'
@@ -675,46 +674,6 @@ MicReferenceCheckerTest >> testFigureFilePathToUnkFile [
 	self
 		assert: refToUnexistingFiles first sourceFileReference fullName
 		equals: '/myDirectory/defAndRefFig1.md'
-]
-
-{ #category : 'tests - duplicated' }
-MicReferenceCheckerTest >> testFigureWithSpaceInUrlIsCorrectlyResolved [
-
-	| visitor mdFile imageFile undefinedErrors |
-	(dir / 'figures') ensureCreateDirectory.
-	imageFile := dir / 'figures' / 'Operators tab.png'.
-	imageFile writeStreamDo: [ :stream | stream nextPutAll: 'fake' ].
-	
-	mdFile := dir / 'spaceOk.md'.
-	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![Une figure](figures/Operators%20tab.png)' ].
-	
-	visitor := MicReferenceChecker new.
-	visitor rootDirectory: dir.
-	visitor checkProject: mdFile.
-	
-	"On isole uniquement les erreurs d'images introuvables"
-	undefinedErrors := visitor results select: [ :each | each class name = #MicUndefinedFigureFileResult ].
-	
-	"On affirme qu'il n'y a AUCUNE erreur d'image introuvable !"
-	self assert: undefinedErrors isEmpty.
-]
-
-{ #category : 'tests - duplicated' }
-MicReferenceCheckerTest >> testFigureWithSpaceInUrlIsNotFoundIfMissing [
-
-	| visitor mdFile undefinedErrors |
-	mdFile := dir / 'spaceMissing.md'.
-	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![Une figure](figures/Operators%20tab.png)' ].
-	
-	visitor := MicReferenceChecker new.
-	visitor rootDirectory: dir.
-	visitor checkProject: mdFile.
-	
-	undefinedErrors := visitor results select: [ :each | each class name = #MicUndefinedFigureFileResult ].
-	
-	"Ici l'image manque vraiment sur le disque, donc on doit avoir 1 erreur"
-	self assert: undefinedErrors size equals: 1.
-	self assert: undefinedErrors first figureFileString equals: 'figures/Operators%20tab.png'.
 ]
 
 { #category : 'tests - full project' }
