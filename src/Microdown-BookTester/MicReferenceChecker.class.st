@@ -265,8 +265,8 @@ MicReferenceChecker >> visitFigure: aFigure [
 	
 	figures add: aFigure. 
 	self handleAnchorOf: aFigure.
-	"check for unexisting file."
-	(aFigure fromFile parent / aFigure reference path) exists
+	"check for unexisting file. Décodage du %20 pour les noms avec espaces"
+	(aFigure fromFile parent / aFigure reference path asString urlDecoded) exists
 			ifFalse: [ self addUnexistingFigureFile: aFigure  ]
 ]
 
