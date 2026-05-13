@@ -923,3 +923,22 @@ MicReferenceCheckerTest >> testUnreferencedFigure [
 	self assert: unref anchorLabel equals: 'Fig1'.
 	self assert: unref sourceFileReference fullName equals: '/defFig1.md'
 ]
+
+{ #category : 'tests - single file' }
+MicReferenceCheckerTest >> testWrongCaseFigure [
+	| visitor wrongCaseResults file |
+	visitor := MicReferenceChecker new.
+	visitor rootDirectory: dir.
+	
+	(dir / 'figures') ensureCreateDirectory.
+	(dir / 'figures' / 'MonImage.png') ensureCreateFile.
+	
+	file := dir / 'testWrongCase.md'.
+	file writeStreamDo: [ :stream | stream nextPutAll: '![Test image](figures/monimage.png)' ].
+	
+	visitor checkProject: file.
+	
+	self deny: visitor isOkay.
+	wrongCaseResults := (visitor results groupedBy: [ :each | each class name ]) at: #MicWrongCaseFileResult.
+	self assert: wrongCaseResults size equals: 1
+]
