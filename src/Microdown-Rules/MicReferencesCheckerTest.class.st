@@ -79,6 +79,18 @@ MicReferencesCheckerTest >> setUp [
 	checker := MicAnchoredSectionTableFigureChecker new.
 ]
 
+{ #category : 'tests - flagged violations' }
+MicReferencesCheckerTest >> testConfigureFrom [
+	| config |
+	config := Dictionary new.
+	config at: 'numberedElements' put: #('note' 'anecdote').
+	
+	checker configureFrom: config.
+	
+	self assert: ((checker instVarNamed: 'namedElements') includes: 'note').
+	self assert: ((checker instVarNamed: 'namedElements') includes: 'anecdote')
+]
+
 { #category : 'tests - configure' }
 MicReferencesCheckerTest >> testConfigureFromAnyValue [ 
 	checker configureFrom: 'anything'.
