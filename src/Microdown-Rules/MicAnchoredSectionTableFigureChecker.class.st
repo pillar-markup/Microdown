@@ -22,7 +22,7 @@ Class {
 	#name : 'MicAnchoredSectionTableFigureChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
-		'namedElements'
+		'anchoredElements'
 	],
 	#category : 'Microdown-Rules-AnchoredReferences',
 	#package : 'Microdown-Rules',
@@ -35,8 +35,15 @@ MicAnchoredSectionTableFigureChecker class >> checkerName [
 	^ 'NotTheFigureX'
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration help' }
+MicAnchoredSectionTableFigureChecker class >> objectsForJSONConfigurationPart [
+
+	^ { #extraAnchoredElements -> {'note' }} asDictionary 
+]
+
+{ #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> addErrorDetail: detailString on: aTextBlock inParagraph: aParagraph [
+
 	results add: (MicFigSectTableResult new
 		micElement: aTextBlock;
 		inFile: aParagraph fromFile;
@@ -44,15 +51,31 @@ MicAnchoredSectionTableFigureChecker >> addErrorDetail: detailString on: aTextBl
 		yourself)
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock [
-	namedElements do: [ :ref |
-		self checkNamingFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph.
-		self checkMissingAnchorsFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph ]
+
+	anchoredElements do: [ :ref |
+		self checkNamingFor: words 
+			reference: ref 
+			anchorBlock: anchorBlock 
+			inTextBlock: aTextBlock 
+			inParagraph: aParagraph.
+		self checkMissingAnchorsFor: words 
+			reference: ref 
+			anchorBlock: anchorBlock 
+			inTextBlock: aTextBlock 
+			inParagraph: aParagraph ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'accessing' }
+MicAnchoredSectionTableFigureChecker >> anchoredElements [
+
+	^ anchoredElements 
+]
+
+{ #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
+
 	| lastWord |
 	lastWord := words last.
 	words do: [ :word |
@@ -60,8 +83,9 @@ MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsFor: words reference:
 			self addErrorDetail: 'missing anchor for ' , word on: aTextBlock inParagraph: aParagraph ] ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> checkNamingFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
+
 	| lastWord anchorString |
 	anchorBlock ifNil: [ ^ self ].
 	lastWord := words last.
@@ -87,27 +111,25 @@ MicAnchoredSectionTableFigureChecker >> checkNamingFor: words reference: ref anc
 							inParagraph: aParagraph ] ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration' }
 MicAnchoredSectionTableFigureChecker >> configureFrom: aDictionary [
 	super configureFrom: aDictionary.
 	
 	aDictionary isDictionary ifFalse: [ ^ self ].
 	
-	aDictionary at: 'numberedElements' ifPresent: [ :elements |
-		namedElements := (namedElements , elements) asSet asArray ]
+	aDictionary at: 'extraAnchoredElements' ifPresent: [ :elements |
+		anchoredElements := (anchoredElements , elements) asSet asArray ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicAnchoredSectionTableFigureChecker >> initialize [
 
 	super initialize.
-	"in the future we may expose an API to change such element list"
-	
-	namedElements := #( 'figure' 'table' 'section' 'equation' 'lemma'
+	anchoredElements := #( 'figure' 'table' 'section' 'equation' 'lemma'
 	                    'listing' )
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock atIndex: index withChildren: children inParagraph: aParagraph [
 	| words anchorBlock |
 	words := aTextBlock bodyString substrings.

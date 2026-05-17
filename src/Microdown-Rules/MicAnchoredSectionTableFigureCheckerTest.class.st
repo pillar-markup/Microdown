@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicReferencesCheckerTest',
+	#name : 'MicAnchoredSectionTableFigureCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
@@ -11,12 +11,12 @@ Class {
 }
 
 { #category : 'public - name' }
-MicReferencesCheckerTest class >> checkerName [ 
+MicAnchoredSectionTableFigureCheckerTest class >> checkerName [ 
 	^ 'ReferenceChecks'
 ]
 
 { #category : 'running' }
-MicReferencesCheckerTest >> generateFilesystemExample [
+MicAnchoredSectionTableFigureCheckerTest >> generateFilesystemExample [
 
 	| file |
 	file := fileSystem workingDirectory / 'figureWrong.md'.
@@ -71,7 +71,7 @@ MicReferencesCheckerTest >> generateFilesystemExample [
 ]
 
 { #category : 'running' }
-MicReferencesCheckerTest >> setUp [
+MicAnchoredSectionTableFigureCheckerTest >> setUp [
 	super setUp.
 
 	fileSystem := FileSystem memory.
@@ -80,31 +80,50 @@ MicReferencesCheckerTest >> setUp [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testConfigureFrom [
+MicAnchoredSectionTableFigureCheckerTest >> testConfigurationPart [
+
+	self 
+		assert:
+		(MicAnchoredSectionTableFigureChecker configurationPartWithNewLine: (Character cr asString)) 
+		equals:  '{
+	"NotTheFigureX" : {
+		"extraAnchoredElements" : [
+			"note"
+		]
+	}
+}'
+]
+
+{ #category : 'tests - flagged violations' }
+MicAnchoredSectionTableFigureCheckerTest >> testConfigureFrom [
 	| config |
 	config := Dictionary new.
-	config at: 'numberedElements' put: #('note' 'anecdote').
-	
+	config 
+		at: 'extraAnchoredElements' 
+		put: #('note' 'anecdote').
+
 	checker configureFrom: config.
 	
-	self assert: ((checker instVarNamed: 'namedElements') includes: 'note').
-	self assert: ((checker instVarNamed: 'namedElements') includes: 'anecdote')
+	self assert: (checker anchoredElements includes: 'note').
+	self assert: (checker anchoredElements includes: 'anecdote')
 ]
 
 { #category : 'tests - configure' }
-MicReferencesCheckerTest >> testConfigureFromAnyValue [ 
+MicAnchoredSectionTableFigureCheckerTest >> testConfigureFromAnyValue [
+
 	checker configureFrom: 'anything'.
 	self assert: checker isOkay.
 ]
 
 { #category : 'tests - configure' }
-MicReferencesCheckerTest >> testConfigureFromNil [
+MicAnchoredSectionTableFigureCheckerTest >> testConfigureFromNil [
+
 	checker configureFrom: nil.
 	self assert: checker isOkay.
 ]
 
 { #category : 'tests - correct' }
-MicReferencesCheckerTest >> testFigureCorrect [
+MicAnchoredSectionTableFigureCheckerTest >> testFigureCorrect [
 
 	checker checkProject: fileSystem / 'figureCorrect.md'.
 	"See Figure @hkj@"
@@ -113,14 +132,14 @@ MicReferencesCheckerTest >> testFigureCorrect [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testFigureExplanation [
+MicAnchoredSectionTableFigureCheckerTest >> testFigureExplanation [
 	checker checkProject: fileSystem / 'figureWrong.md'.
 	self assert: checker results first explanation 
 	equals: 'Text: "figure " in file/figureWrong.md contains a mistake: [figure *@figbla@*] should be capitalized as [figure *@figbla@*].'
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testFigureLowercaseDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testFigureLowercaseDetected [
 	checker checkProject: fileSystem / 'figureWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
@@ -129,7 +148,7 @@ MicReferencesCheckerTest >> testFigureLowercaseDetected [
 ]
 
 { #category : 'tests - correct' }
-MicReferencesCheckerTest >> testSectionCorrect [
+MicAnchoredSectionTableFigureCheckerTest >> testSectionCorrect [
 
 	checker checkProject: fileSystem / 'sectionCorrect.md'.
 	"Section *@secbla@*"
@@ -137,7 +156,7 @@ MicReferencesCheckerTest >> testSectionCorrect [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testSectionLowercaseDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testSectionLowercaseDetected [
 	checker checkProject: fileSystem / 'sectionWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
@@ -146,7 +165,7 @@ MicReferencesCheckerTest >> testSectionLowercaseDetected [
 ]
 
 { #category : 'tests - correct' }
-MicReferencesCheckerTest >> testTableCorrect [
+MicAnchoredSectionTableFigureCheckerTest >> testTableCorrect [
 	checker checkProject: fileSystem / 'tableCorrect.md'.
 	self assert: checker isOkay.
 	
@@ -154,7 +173,7 @@ MicReferencesCheckerTest >> testTableCorrect [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTableLowercaseDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testTableLowercaseDetected [
 	checker checkProject: fileSystem / 'tableWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
@@ -163,7 +182,7 @@ MicReferencesCheckerTest >> testTableLowercaseDetected [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
+MicAnchoredSectionTableFigureCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
 	checker checkProject: fileSystem / 'theTableWrongNoTheButIn.md'.
 	
 	self deny: checker isOkay.
@@ -175,7 +194,7 @@ MicReferencesCheckerTest >> testTableLowercaseDetectedWithSomethingElseThanthe [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTableLowercaseDetectedWithThe [
+MicAnchoredSectionTableFigureCheckerTest >> testTableLowercaseDetectedWithThe [
 	checker checkProject: fileSystem / 'theTableWrongWithThe.md'.
 	
 	self deny: checker isOkay.
@@ -187,7 +206,7 @@ MicReferencesCheckerTest >> testTableLowercaseDetectedWithThe [
 ]
 
 { #category : 'tests - configure' }
-MicReferencesCheckerTest >> testTextWithoutAnchor [
+MicAnchoredSectionTableFigureCheckerTest >> testTextWithoutAnchor [
 	"in the following the term figure should not be flagged
 	there is not much that we can do"
 	
@@ -197,7 +216,7 @@ MicReferencesCheckerTest >> testTextWithoutAnchor [
 ]
 
 { #category : 'tests - configure' }
-MicReferencesCheckerTest >> testTextWithoutAnchorWithUppercase [
+MicAnchoredSectionTableFigureCheckerTest >> testTextWithoutAnchorWithUppercase [
 
 	checker checkProject: fileSystem / 'noAnchorUppercase.md'.
 	
@@ -207,7 +226,7 @@ MicReferencesCheckerTest >> testTextWithoutAnchorWithUppercase [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTheFigureDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testTheFigureDetected [
 	
 	checker checkProject: fileSystem / 'theFigureWrong.md'.
 	self deny: checker isOkay.
@@ -220,7 +239,7 @@ MicReferencesCheckerTest >> testTheFigureDetected [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTheSectionDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testTheSectionDetected [
 	checker checkProject: fileSystem / 'theSectionWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail equals: 'the section *@seclab@*'.
@@ -232,7 +251,7 @@ MicReferencesCheckerTest >> testTheSectionDetected [
 ]
 
 { #category : 'tests - flagged violations' }
-MicReferencesCheckerTest >> testTheTableDetected [
+MicAnchoredSectionTableFigureCheckerTest >> testTheTableDetected [
 	checker checkProject: fileSystem / 'theTableWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results first detail equals: 'the table *@tabbla@*'.
