@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicFigureCaptionCheckerTest',
+	#name : 'MicFigureEmptyCaptionTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'results'
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testCaptionIsEmpty [
+MicFigureEmptyCaptionTest >> testCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![](/fig.png)' ].
 	
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile. 
 	
@@ -24,13 +24,13 @@ MicFigureCaptionCheckerTest >> testCaptionIsEmpty [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testCaptionIsOnlyPunctuationAndSpaces [
+MicFigureEmptyCaptionTest >> testCaptionIsOnlyPunctuationAndSpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![ , ; ](/fig.png)' ].
 	
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -39,12 +39,12 @@ MicFigureCaptionCheckerTest >> testCaptionIsOnlyPunctuationAndSpaces [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testCaptionIsOnlySpaces [
+MicFigureEmptyCaptionTest >> testCaptionIsOnlySpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![   	 ](/fig.png)' ].
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -52,13 +52,13 @@ MicFigureCaptionCheckerTest >> testCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testCaptionIsValid [
+MicFigureEmptyCaptionTest >> testCaptionIsValid [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![Une vraie légende](fig.png)' ].
 	
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -66,7 +66,7 @@ MicFigureCaptionCheckerTest >> testCaptionIsValid [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
+MicFigureEmptyCaptionTest >> testCodeBlockCaptionIsOnlySpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'bogusCaption.md'.
@@ -75,7 +75,7 @@ MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 		stream nextPutAll: '1 + 1'; cr.
 		stream nextPutAll: '```' ].
 	
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -83,9 +83,9 @@ MicFigureCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testConfigureFromCheckOnly [
+MicFigureEmptyCaptionTest >> testConfigureFromCheckOnly [
 	| checker config |
-	checker := MicFigureCaptionChecker new.
+	checker := MicFigureEmptyCaption new.
 	
 	self assert: checker checkCode.
 	self assert: checker checkFigure.
@@ -102,7 +102,7 @@ MicFigureCaptionCheckerTest >> testConfigureFromCheckOnly [
 ]
 
 { #category : 'tests' }
-MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
+MicFigureEmptyCaptionTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'emptyCaption.md'.
@@ -111,7 +111,7 @@ MicFigureCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 		stream nextPutAll: 'V = \frac{4}{3}\pi r^3'; cr.
 		stream nextPutAll: '$$' ].
 	
-	visitor := MicFigureCaptionChecker new.
+	visitor := MicFigureEmptyCaption new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
