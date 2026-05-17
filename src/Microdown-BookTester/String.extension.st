@@ -1,6 +1,6 @@
 Extension { #name : 'String' }
 
-{ #category : '*Microdown-Rules' }
+{ #category : '*Microdown-BookTester' }
 String >> isCapitalized [
 	"Return true if the first letter is capitalized"
 	
