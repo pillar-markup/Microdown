@@ -85,7 +85,7 @@ MicLastPeriodInParagraphLabelChecker >> checkMissingPeriodIn: aMicHeader [
 		) ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration' }
 MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 
 	aConfiguration class == Dictionary 
@@ -99,13 +99,13 @@ MicLastPeriodInParagraphLabelChecker >> configureFrom: aConfiguration [
 		ifPresent: [ :b | isEndingWithPeriod := b ] 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicLastPeriodInParagraphLabelChecker >> defaultLevelForParagraph [
 
 	^ 4
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicLastPeriodInParagraphLabelChecker >> initialize [
 
 	super initialize.

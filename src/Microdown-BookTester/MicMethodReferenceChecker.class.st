@@ -36,11 +36,6 @@ MicMethodReferenceChecker class >> checkerName [
 	^ 'MethodReferenceUsingHash'
 ]
 
-{ #category : 'configuration' }
-MicMethodReferenceChecker >> configureFrom: aConfiguration [
-	^ self
-]
-
 { #category : 'visiting - inline elements' }
 MicMethodReferenceChecker >> visitText: aMicText [
 	| text withHash withhoutHash |

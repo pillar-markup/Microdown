@@ -182,7 +182,7 @@ MicLastPeriodInCodeCheckerTest >> testConfigureWithBooleanStringUsesDefault [
 
 { #category : 'tests' }
 MicLastPeriodInCodeCheckerTest >> testDefault [
-	| checker |
+
 	checker := MicLastPeriodChecker new.
 	self deny: checker isEndingWithPeriod.
 ]

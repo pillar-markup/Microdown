@@ -158,7 +158,7 @@ MicLastPeriodInCaptionCheckerTest >> testConfigureFromTrue [
 
 { #category : 'tests' }
 MicLastPeriodInCaptionCheckerTest >> testDoublePeriod [
-	| checker document caption |
+	| document caption |
 	
 	checker := MicLastPeriodInCaptionChecker new.
 	document := Microdown parse: '![figure..](http://pharo.org)'.

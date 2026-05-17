@@ -72,7 +72,7 @@ MicChecker >> addResult: aResult [
 	results add: aResult
 ]
 
-{ #category : 'accessing' }
+{ #category : 'visiting' }
 MicChecker >> checkProject: aFileReference [
 
 	| collector |
@@ -87,7 +87,7 @@ MicChecker >> configureFrom: aConfiguration [
 	^ self 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'visiting' }
 MicChecker >> fileCollectorForMainFileReference: aFileReference [
 
 	| mainMic collector |
@@ -105,7 +105,7 @@ MicChecker >> fileSystem: aReference [
 	rootDirectory := aReference
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicChecker >> initialize [ 
 
 	super initialize.
@@ -117,7 +117,7 @@ MicChecker >> isOkay [
 	^ results isEmpty
 ]
 
-{ #category : 'visiting' }
+{ #category : 'accessing' }
 MicChecker >> results [
 
 	^ results

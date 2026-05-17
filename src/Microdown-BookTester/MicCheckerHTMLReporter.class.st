@@ -22,7 +22,7 @@ MicCheckerHTMLReporter >> buildHTML [
 
         "Stats"
         passedCount := self selectedCheckers count: [ :checkerName |
-            | checker headers |
+            | checker |
             checker := MicChecker allSubclasses
                 detect: [ :c | c checkerName = checkerName ]
                 ifNone: [ nil ].

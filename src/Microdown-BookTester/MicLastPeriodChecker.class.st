@@ -21,7 +21,7 @@ Class {
 	#tag : 'Checker-LastPeriod'
 }
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [ 
 	
 	(aMicCodeBlock bodyString trimRight last = $.)
@@ -33,7 +33,7 @@ MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [
 	
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicLastPeriodChecker >> checkMissingPeriodIn: aMicCodeBlock [
 
 	aMicCodeBlock bodyString trimRight last = $. ifFalse: [
@@ -43,37 +43,37 @@ MicLastPeriodChecker >> checkMissingPeriodIn: aMicCodeBlock [
 					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration' }
 MicLastPeriodChecker >> configureFrom: aConfigurationValue [
 
 	aConfigurationValue ifNil: [
 			isEndingWithPeriod := false.
-			^ self ].
-	"We use this explicit boolean comparison to filter other possible values
-	expressed with string or others."
-	aConfigurationValue = true
-		ifTrue: [ isEndingWithPeriod := true ]
-		ifFalse: [ isEndingWithPeriod := false ]
+			^ self ]. 
+		
+	"We use this explicit boolean comparison to filter other possible values expressed with string or others."
+	isEndingWithPeriod := aConfigurationValue = true
+		                      ifTrue: [ true ]
+		                      ifFalse: [ false ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicLastPeriodChecker >> initialize [ 
 	super initialize. 
 	isEndingWithPeriod := false
 ]
 
-{ #category : 'visiting' }
+{ #category : 'testing' }
 MicLastPeriodChecker >> isEndingWithPeriod [
 	^ isEndingWithPeriod
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration' }
 MicLastPeriodChecker >> shouldEndWithPeriod [
 
 	isEndingWithPeriod := true 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'configuration' }
 MicLastPeriodChecker >> shouldNotEndWithPeriod [
 
 	isEndingWithPeriod := false

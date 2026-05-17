@@ -35,3 +35,10 @@ MicCodeBlockTesterStrategy class >> handleKey [
 MicCodeBlockTesterStrategy >> results: aCollection [ 
 	results := aCollection
 ]
+
+{ #category : 'main API' }
+MicCodeBlockTesterStrategy >> verify: aMicCodeBlock [ 
+	
+
+	
+]

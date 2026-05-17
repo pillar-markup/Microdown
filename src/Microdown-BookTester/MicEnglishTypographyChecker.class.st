@@ -29,7 +29,7 @@ MicEnglishTypographyChecker class >> explanationForConfiguration [
 		"onlyCheckers" : [ "EnglishTypography" ]'
 ]
 
-{ #category : 'adding' }
+{ #category : 'helpers' }
 MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 	results add: (MicEnglishTypographyResult new 
 		micElement: anElement;
@@ -39,7 +39,7 @@ MicEnglishTypographyChecker >> addResultFor: anElement message: aMessage [
 		).
 ]
 
-{ #category : 'adding' }
+{ #category : 'helpers' }
 MicEnglishTypographyChecker >> checkString: aString for: anElement [
 	| checks cleanString |
 	aString ifNil: [ ^self ].
@@ -71,19 +71,19 @@ MicEnglishTypographyChecker >> checkString: aString for: anElement [
 	].
 ]
 
-{ #category : 'adding' }
+{ #category : 'visiting' }
 MicEnglishTypographyChecker >> visitCode: aCodeBlock [
 
 	aCodeBlock caption ifNil: [ ^self ].
 	self checkString: aCodeBlock caption for: aCodeBlock.
 ]
 
-{ #category : 'adding' }
+{ #category : 'visiting - inline elements' }
 MicEnglishTypographyChecker >> visitMonospace: aCodeBlock [
 	^ self
 ]
 
-{ #category : 'adding' }
+{ #category : 'visiting - inline elements' }
 MicEnglishTypographyChecker >> visitText: aText [
 
 	self checkString: aText bodyString for: aText. 

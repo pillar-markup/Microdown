@@ -36,7 +36,7 @@ MicHeaderCapitalizationChecker class >> objectsForJSONConfigurationPart [
 	^ { ('uppercase' -> true) . ('keepAs' -> { 'mini' . 'uDown'  }) } asDictionary
 ]
 
-{ #category : 'initialization' }
+{ #category : 'configuration' }
 MicHeaderCapitalizationChecker >> addUncapitalized: aString [ 
 	"Make sure that aString will not be capitalized"
 	
@@ -105,7 +105,7 @@ MicHeaderCapitalizationChecker >> keepAsIs: aCollection [
 	keepAsIs := aCollection
 ]
 
-{ #category : 'asserting' }
+{ #category : 'helper' }
 MicHeaderCapitalizationChecker >> shouldCapitalizedWord: aString [
 
 	| normalized |
@@ -119,21 +119,21 @@ MicHeaderCapitalizationChecker >> strategy [
 	^ strategy
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 MicHeaderCapitalizationChecker >> verifyLowercase [
 
 	strategy := MicRuleLowercaseHeaderStrategy new.
 	strategy checker: self
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 MicHeaderCapitalizationChecker >> verifyUppercase [
 
 	strategy := MicRuleUppercaseHeaderStrategy new.
 	strategy checker: self
 ]
 
-{ #category : 'asserting' }
+{ #category : 'visiting' }
 MicHeaderCapitalizationChecker >> visitHeader: aMicHeader [
 
 	| words |

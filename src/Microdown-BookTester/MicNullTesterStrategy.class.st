@@ -15,10 +15,3 @@ MicNullTesterStrategy class >> handleKey [
 	^ #language
 
 ]
-
-{ #category : 'main API' }
-MicNullTesterStrategy >> verify: aMicCodeBlock [ 
-	
-
-	
-]

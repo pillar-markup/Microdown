@@ -17,43 +17,43 @@ MicFigureEmptyCaptionChecker class >> checkerName [
 	^ 'EmptyCaption'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkCaptionOf: aBlock [
 	(self hasCorrectCaption: aBlock caption) ifFalse: [ 
 		self results add: MicMissingFigureCaptionResult new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkCode [
 
 	^ checkCode
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkCode: anObject [
 
 	checkCode := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkFigure [
 
 	^ checkFigure
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkFigure: anObject [
 
 	checkFigure := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkMath [
 
 	^ checkMath
 ]
 
-{ #category : 'accessing' }
+{ #category : 'checking' }
 MicFigureEmptyCaptionChecker >> checkMath: anObject [
 
 	checkMath := anObject
@@ -67,7 +67,7 @@ MicFigureEmptyCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText 
 			yourself) ]
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'configuration' }
 MicFigureEmptyCaptionChecker >> configureFrom: aDictionary [
 	super configureFrom: aDictionary.
 	aDictionary at: 'checkOnly' ifPresent: [ :list | 
@@ -79,7 +79,7 @@ MicFigureEmptyCaptionChecker >> configureFrom: aDictionary [
 		(list includes: 'math') ifTrue: [ self checkMath: true ] ]
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'configuration' }
 MicFigureEmptyCaptionChecker >> explanationForConfiguration [
 	^ 'I check that figures, math environments and code blocks have a valid and non-empty caption.'
 ]
@@ -89,7 +89,7 @@ MicFigureEmptyCaptionChecker >> hasCorrectCaption: aCaptionText [
     ^ aCaptionText isNotEmpty and: [ aCaptionText anySatisfy: #isAlphaNumeric ]
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'initialization' }
 MicFigureEmptyCaptionChecker >> initialize [
 	super initialize.
 	self checkCode: true.

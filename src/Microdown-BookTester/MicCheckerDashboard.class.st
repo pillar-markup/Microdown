@@ -164,6 +164,8 @@ MicCheckerDashboard >> initializePresenters [
 
 { #category : 'initialization' }
 MicCheckerDashboard >> initializeWindow: aWindowPresenter [
+
+	super initializeWindow: aWindowPresenter.
 	aWindowPresenter title: 'Microdown Checker Dashboard';
 	initialExtent: 900 @ 700.
 ]

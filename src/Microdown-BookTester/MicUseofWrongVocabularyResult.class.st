@@ -2,8 +2,6 @@ Class {
 	#name : 'MicUseofWrongVocabularyResult',
 	#superclass : 'MicResult',
 	#instVars : [
-		'pattern',
-		'text',
 		'micElement',
 		'fileReference',
 		'patternPair'

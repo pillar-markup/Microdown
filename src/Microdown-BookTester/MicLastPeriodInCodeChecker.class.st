@@ -40,7 +40,7 @@ MicLastPeriodInCodeChecker class >> objectsForJSONConfigurationPart [
 	^ true
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
 
 	aMicCodeBlock body trimRight last = $. ifTrue: [
@@ -50,7 +50,7 @@ MicLastPeriodInCodeChecker >> checkExtraPeriodIn: aMicCodeBlock [
 					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'checking' }
 MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 
 	aMicCodeBlock body trimRight last = $. ifFalse: [
@@ -60,7 +60,7 @@ MicLastPeriodInCodeChecker >> checkMissingPeriodIn: aMicCodeBlock [
 					 codeShouldEndWithPeriod: isEndingWithPeriod) ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicLastPeriodInCodeChecker >> initialize [ 
 	super initialize. 
 	isEndingWithPeriod := false

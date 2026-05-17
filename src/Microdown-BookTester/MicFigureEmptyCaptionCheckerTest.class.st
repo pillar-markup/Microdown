@@ -1,9 +1,6 @@
 Class {
 	#name : 'MicFigureEmptyCaptionCheckerTest',
 	#superclass : 'TestCase',
-	#instVars : [
-		'results'
-	],
 	#category : 'Microdown-BookTester-Checker-EmptyCaption',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-EmptyCaption'

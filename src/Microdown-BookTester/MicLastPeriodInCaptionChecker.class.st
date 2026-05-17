@@ -23,9 +23,6 @@ $$
 Class {
 	#name : 'MicLastPeriodInCaptionChecker',
 	#superclass : 'MicLastPeriodChecker',
-	#instVars : [
-		'levelThreshold'
-	],
 	#category : 'Microdown-BookTester-Checker-LastPeriod',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-LastPeriod'
@@ -127,7 +124,7 @@ MicLastPeriodInCaptionChecker >> computeMathCaptionOf: aMath [
 	^ ' ' join: (aMath captionElements collect: [ :each | each text ])
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'visiting' }
 MicLastPeriodInCaptionChecker >> visitCode: anEquation [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
 
@@ -146,7 +143,7 @@ MicLastPeriodInCaptionChecker >> visitFigure: aFigure [
 		ifFalse: [ self checkExtraPeriodInFigure: aFigure ]
 ]
 
-{ #category : 'visiting - inline elements' }
+{ #category : 'visiting' }
 MicLastPeriodInCaptionChecker >> visitMath: anEquation [
 	"we should revise the API of elements to be able to identify adorment for Equation, Figure and code block."
 	"this way we could share the same logic between all the elements."
