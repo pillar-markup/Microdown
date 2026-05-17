@@ -99,6 +99,16 @@ MicReferenceChecker >> addUnreferencedFigure: aFigure [
 	results add: micResultInstance
 ]
 
+{ #category : 'visiting' }
+MicReferenceChecker >> addWrongCaseFile: aFigure [
+	| micResultInstance |
+	micResultInstance := MicWrongCaseFileResult new.
+	micResultInstance
+		figureFileString: aFigure reference path;
+		sourceFileReference: aFigure fromFile.
+	results add: micResultInstance
+]
+
 { #category : 'main API' }
 MicReferenceChecker >> checkDirectory: aDir [
 	"Take the directory, parse all its children with microdown file parser and let the visitor visit each time then return visitor is ok which should be true if every thing is okay, the visitor turned out to treat the many documents that it visits as one, so if anchor is duplicated in another file it will detect that . "
@@ -262,12 +272,24 @@ MicReferenceChecker >> visitCode: aCodeBlock [
 
 { #category : 'visiting' }
 MicReferenceChecker >> visitFigure: aFigure [
-	
-	figures add: aFigure. 
+	| expectedFile expectedName parentDir hasCaseError |
+	figures add: aFigure.
 	self handleAnchorOf: aFigure.
-	"check for unexisting file."
-	(aFigure fromFile parent / aFigure reference path) exists
-			ifFalse: [ self addUnexistingFigureFile: aFigure  ]
+	
+	expectedFile := aFigure fromFile parent / aFigure reference path.
+	expectedName := expectedFile basename.
+	parentDir := expectedFile parent.
+	hasCaseError := false.
+	
+	parentDir exists ifTrue: [ 
+		parentDir children do: [ :child |
+			(child basename asLowercase = expectedName asLowercase and: [ child basename ~= expectedName ])
+				ifTrue: [ 
+					hasCaseError := true.
+					self addWrongCaseFile: aFigure ] ] ].
+			
+	(hasCaseError not and: [ expectedFile exists not ])
+		ifTrue: [ self addUnexistingFigureFile: aFigure ]
 ]
 
 { #category : 'visiting' }
