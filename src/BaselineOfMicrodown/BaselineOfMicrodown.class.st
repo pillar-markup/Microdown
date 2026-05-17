@@ -83,6 +83,9 @@ BaselineOfMicrodown >> baseline: spec [
 			package: 'Microdown-ParentChildrenChecker' with: [
 				spec requires: #( 'Microdown' ) ];
 			
+			package: 'Microdown-Toc' with: [
+				spec requires: #( 'Microdown' ) ];
+			
 			package: 'Microdown-BookTester' with: [
 				spec requires: #( 'Microdown' ) ];
 			package: 'Microdown-BookTester-Tests' with: [
@@ -106,6 +109,7 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'LaTeX' with:  #('Core' 'Microdown-LaTeXExporter' 'Microdown-LaTeXExporter-Tests');
 			group: 'Extensions' with: #(
 				'Microdown-Evaluator'
+				'Microdown-Toc'
 				'Microdown-Evaluator-Tests'
 				'Microdown-PrettyPrinter'
 				'Microdown-PrettyPrinter-Tests'
