@@ -1,21 +1,22 @@
 Class {
-	#name : 'MicFigureEmptyCaptionTest',
+	#name : 'MicFigureEmptyCaptionCheckerTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'results'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Checker-EmptyCaption',
+	#package : 'Microdown-BookTester',
+	#tag : 'Checker-EmptyCaption'
 }
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testCaptionIsEmpty [
+MicFigureEmptyCaptionCheckerTest >> testCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![](/fig.png)' ].
 	
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile. 
 	
@@ -24,13 +25,13 @@ MicFigureEmptyCaptionTest >> testCaptionIsEmpty [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testCaptionIsOnlyPunctuationAndSpaces [
+MicFigureEmptyCaptionCheckerTest >> testCaptionIsOnlyPunctuationAndSpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![ , ; ](/fig.png)' ].
 	
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -39,12 +40,12 @@ MicFigureEmptyCaptionTest >> testCaptionIsOnlyPunctuationAndSpaces [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testCaptionIsOnlySpaces [
+MicFigureEmptyCaptionCheckerTest >> testCaptionIsOnlySpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![   	 ](/fig.png)' ].
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -52,13 +53,13 @@ MicFigureEmptyCaptionTest >> testCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testCaptionIsValid [
+MicFigureEmptyCaptionCheckerTest >> testCaptionIsValid [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![Une vraie légende](fig.png)' ].
 	
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -66,7 +67,7 @@ MicFigureEmptyCaptionTest >> testCaptionIsValid [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testCodeBlockCaptionIsOnlySpaces [
+MicFigureEmptyCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'bogusCaption.md'.
@@ -75,7 +76,7 @@ MicFigureEmptyCaptionTest >> testCodeBlockCaptionIsOnlySpaces [
 		stream nextPutAll: '1 + 1'; cr.
 		stream nextPutAll: '```' ].
 	
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -83,9 +84,9 @@ MicFigureEmptyCaptionTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testConfigureFromCheckOnly [
+MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 	| checker config |
-	checker := MicFigureEmptyCaption new.
+	checker := MicFigureEmptyCaptionChecker new.
 	
 	self assert: checker checkCode.
 	self assert: checker checkFigure.
@@ -102,7 +103,7 @@ MicFigureEmptyCaptionTest >> testConfigureFromCheckOnly [
 ]
 
 { #category : 'tests' }
-MicFigureEmptyCaptionTest >> testMathBlockCaptionIsEmpty [
+MicFigureEmptyCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
 	mdFile := mem / 'emptyCaption.md'.
@@ -111,7 +112,7 @@ MicFigureEmptyCaptionTest >> testMathBlockCaptionIsEmpty [
 		stream nextPutAll: 'V = \frac{4}{3}\pi r^3'; cr.
 		stream nextPutAll: '$$' ].
 	
-	visitor := MicFigureEmptyCaption new.
+	visitor := MicFigureEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	

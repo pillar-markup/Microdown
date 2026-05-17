@@ -5,9 +5,9 @@ Class {
 		'fileSystem',
 		'checker'
 	],
-	#category : 'Microdown-Rules-CodeIndetation',
+	#category : 'Microdown-Rules-CodeIndentation',
 	#package : 'Microdown-Rules',
-	#tag : 'CodeIndetation'
+	#tag : 'CodeIndentation'
 }
 
 { #category : 'running' }

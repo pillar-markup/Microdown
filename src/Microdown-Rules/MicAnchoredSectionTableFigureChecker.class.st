@@ -44,7 +44,7 @@ MicAnchoredSectionTableFigureChecker class >> objectsForJSONConfigurationPart [
 { #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> addErrorDetail: detailString on: aTextBlock inParagraph: aParagraph [
 
-	results add: (MicFigSectTableResult new
+	results add: (MicWrongReferenceToFigSectTableAnchorResult new
 		micElement: aTextBlock;
 		inFile: aParagraph fromFile;
 		detail: detailString;

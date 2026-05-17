@@ -1,5 +1,5 @@
 Class {
-	#name : 'MicFigSectTableResult',
+	#name : 'MicWrongReferenceToFigSectTableAnchorResult',
 	#superclass : 'MicAbstractResult',
 	#instVars : [
 		'detail'
@@ -10,19 +10,19 @@ Class {
 }
 
 { #category : 'accessing' }
-MicFigSectTableResult >> detail [
+MicWrongReferenceToFigSectTableAnchorResult >> detail [
 
 	^ detail
 ]
 
 { #category : 'accessing' }
-MicFigSectTableResult >> detail: anObject [
+MicWrongReferenceToFigSectTableAnchorResult >> detail: anObject [
 
 	detail := anObject
 ]
 
 { #category : 'accessing' }
-MicFigSectTableResult >> explanation [ 
+MicWrongReferenceToFigSectTableAnchorResult >> explanation [ 
 	| words expected |
 	words := detail substrings.
 	

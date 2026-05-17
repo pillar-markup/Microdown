@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'figure'
 	],
-	#category : 'Microdown-BookTester',
-	#package : 'Microdown-BookTester'
+	#category : 'Microdown-BookTester-Checker-EmptyCaption',
+	#package : 'Microdown-BookTester',
+	#tag : 'Checker-EmptyCaption'
 }
 
 { #category : 'accessing' }

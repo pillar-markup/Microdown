@@ -6,9 +6,9 @@ Class {
 		'fileReference',
 		'selectedCheckers'
 	],
-	#category : 'Microdown-BookTester-CheckerDashboard',
+	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
-	#tag : 'CheckerDashboard'
+	#tag : 'UI'
 }
 
 { #category : 'accessing' }

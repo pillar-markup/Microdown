@@ -12,9 +12,9 @@ See [PDF explaining book tester](https://github.com/pillar-markup/BookTester/tre
 Class {
 	#name : 'MicExampleTesterStrategy',
 	#superclass : 'MicCodeBlockTesterStrategy',
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Checker-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Checker-CodeBlockAnalysis'
 }
 
 { #category : 'hook' }

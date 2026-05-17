@@ -5,9 +5,9 @@ A line that starts with a space character is considered incorrectly indented.
 Class {
 	#name : 'MicCodeIndentationChecker',
 	#superclass : 'MicChecker',
-	#category : 'Microdown-Rules-CodeIndetation',
+	#category : 'Microdown-Rules-CodeIndentation',
 	#package : 'Microdown-Rules',
-	#tag : 'CodeIndetation'
+	#tag : 'CodeIndentation'
 }
 
 { #category : 'public - name' }
