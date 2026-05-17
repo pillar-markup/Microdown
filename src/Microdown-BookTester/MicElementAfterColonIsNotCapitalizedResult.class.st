@@ -1,0 +1,12 @@
+Class {
+	#name : 'MicElementAfterColonIsNotCapitalizedResult',
+	#superclass : 'MicWithDetailResult',
+	#category : 'Microdown-BookTester-Checker-Capitalization',
+	#package : 'Microdown-BookTester',
+	#tag : 'Checker-Capitalization'
+}
+
+{ #category : 'accessing' }
+MicElementAfterColonIsNotCapitalizedResult >> explanation [ 
+			^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail , ' as first letter after a colon should be uppercased.'
+]
