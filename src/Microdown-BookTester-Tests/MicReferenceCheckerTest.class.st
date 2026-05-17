@@ -940,5 +940,7 @@ MicReferenceCheckerTest >> testWrongCaseFigure [
 	
 	self deny: visitor isOkay.
 	wrongCaseResults := (visitor results groupedBy: [ :each | each class name ]) at: #MicWrongCaseFileResult.
+	"We have also unreferenced file"
+	
 	self assert: wrongCaseResults size equals: 1
 ]
