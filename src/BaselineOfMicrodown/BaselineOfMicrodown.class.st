@@ -89,9 +89,6 @@ BaselineOfMicrodown >> baseline: spec [
 			package: 'Microdown-BookTester' with: [
 				spec requires: #( 'Microdown' ) ];
 			package: 'Microdown-BookTester-Tests' with: [
-				spec requires: #( 'Microdown-BookTester' ) ];	
-			
-			package: 'Microdown-Rules' with: [
 				spec requires: #( 'Microdown-BookTester' ) ].
 			
 			"
@@ -122,7 +119,6 @@ BaselineOfMicrodown >> baseline: spec [
 				'Microdown-ParentChildrenChecker'
 				'Microdown-BookTester'
 				'Microdown-BookTester-Tests'
-				'Microdown-Rules'
 				'Microdown-Templated'
 				);
 			group: 'All' 
