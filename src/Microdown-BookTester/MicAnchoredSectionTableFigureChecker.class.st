@@ -24,9 +24,9 @@ Class {
 	#instVars : [
 		'anchoredElements'
 	],
-	#category : 'Microdown-Rules-AnchoredReferences',
-	#package : 'Microdown-Rules',
-	#tag : 'AnchoredReferences'
+	#category : 'Microdown-BookTester-Checker-BookTester',
+	#package : 'Microdown-BookTester',
+	#tag : 'Checker-BookTester'
 }
 
 { #category : 'public - name' }

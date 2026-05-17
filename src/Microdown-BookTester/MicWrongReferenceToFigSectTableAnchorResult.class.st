@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'detail'
 	],
-	#category : 'Microdown-Rules-AnchoredReferences',
-	#package : 'Microdown-Rules',
-	#tag : 'AnchoredReferences'
+	#category : 'Microdown-BookTester-Checker-BookTester',
+	#package : 'Microdown-BookTester',
+	#tag : 'Checker-BookTester'
 }
 
 { #category : 'accessing' }
