@@ -23,6 +23,11 @@ MicAbstractResult >> fileReference: anObject [
 ]
 
 { #category : 'accessing' }
+MicAbstractResult >> inFile [
+	^ fileReference 
+]
+
+{ #category : 'accessing' }
 MicAbstractResult >> inFile: aFileReference [ 
 	fileReference := aFileReference 
 ]
@@ -36,9 +41,4 @@ MicAbstractResult >> micElement [
 { #category : 'accessing' }
 MicAbstractResult >> micElement: aMicElement [ 
 	micElement := aMicElement
-]
-
-{ #category : 'accessing' }
-MicAbstractResult >> sourceFileReference [
-	^ fileReference 
 ]

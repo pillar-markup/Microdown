@@ -83,7 +83,7 @@ MicBookTestResult >> explanation [
 	 self text  , 
 	 String cr ,
 	'from the source file:  ' ,
-   	 self sourceFileReference fullName 
+   	 self inFile fullName 
 
 	
 ]
@@ -160,7 +160,7 @@ MicBookTestResult >> stonFormatExplanation [
 	 self text  , '",',
 	 String cr ,
 	'"sourceFile" : "' ,
-	self sourceFileReference fullname , '"',
+	self inFile fullname , '"',
 	String cr , '}'
    	  
 

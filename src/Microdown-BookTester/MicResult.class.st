@@ -47,6 +47,18 @@ MicResult >> headerString [
 ]
 
 { #category : 'accessing' }
+MicResult >> inFile [
+
+	^ source
+]
+
+{ #category : 'accessing' }
+MicResult >> inFile: anObject [
+
+	source := anObject
+]
+
+{ #category : 'accessing' }
 MicResult >> message [
 
 	^ message
@@ -56,18 +68,6 @@ MicResult >> message [
 MicResult >> message: anObject [
 
 	message := anObject
-]
-
-{ #category : 'accessing' }
-MicResult >> sourceFileReference [
-
-	^ source
-]
-
-{ #category : 'accessing' }
-MicResult >> sourceFileReference: anObject [
-
-	source := anObject
 ]
 
 { #category : 'accessing' }
