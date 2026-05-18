@@ -134,9 +134,9 @@ MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock atIndex: in
 	| words anchorBlock |
 	words := aTextBlock bodyString substrings.
 	words isEmpty ifTrue: [ ^ self ].
+	
 	anchorBlock := (index < children size and: [ (children at: index + 1) isKindOf: MicAnchorReferenceBlock ])
-		ifTrue: [ children at: index + 1 ]
-		ifFalse: [ nil ].
+		ifTrue: [ children at: index + 1 ].
 	
 	self analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock
 ]
