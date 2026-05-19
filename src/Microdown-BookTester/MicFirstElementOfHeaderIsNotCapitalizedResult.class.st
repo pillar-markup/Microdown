@@ -10,6 +10,6 @@ Class {
 MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [ 
 
 
-	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' as first word of the header should be uppercased.'
+	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail, ' as first word of the header should be uppercased.'
 	 
 ]

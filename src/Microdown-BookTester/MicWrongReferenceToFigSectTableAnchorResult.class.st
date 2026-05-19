@@ -31,7 +31,7 @@ MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 		ifFalse: [ words first , ' ' , words last capitalized ].
 		
 	^ 'Text: "' , micElement bodyString
-	, '" in file' , fileReference fullName 
+	, '" in file' , self inFile fullName 
 	, ' contains a mistake: ['
 	, detail 
 	, '] should be capitalized as ['

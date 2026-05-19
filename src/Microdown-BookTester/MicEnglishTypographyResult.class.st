@@ -34,7 +34,7 @@ MicEnglishTypographyResult >> explanation [
 	self flag: #todo.
 	"this looks like a bug or hidden a bug!"
 	
-	^ 'Text: "' , text , '" in file' , fileReference fullName , ' contains a mistake: ', detail
+	^ 'Text: "' , text , '" in file' , self inFile fullName , ' contains a mistake: ', detail
 ]
 
 { #category : 'kinds' }

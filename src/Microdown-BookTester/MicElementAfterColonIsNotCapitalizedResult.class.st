@@ -8,5 +8,5 @@ Class {
 
 { #category : 'accessing' }
 MicElementAfterColonIsNotCapitalizedResult >> explanation [ 
-			^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail , ' as first letter after a colon should be uppercased.'
+			^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail , ' as first letter after a colon should be uppercased.'
 ]

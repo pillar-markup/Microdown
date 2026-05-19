@@ -16,7 +16,8 @@ Class {
 		'message',
 		'status',
 		'source',
-		'explanation'
+		'explanation',
+		'micElement'
 	],
 	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
@@ -68,6 +69,17 @@ MicResult >> message [
 MicResult >> message: anObject [
 
 	message := anObject
+]
+
+{ #category : 'accessing' }
+MicResult >> micElement [
+
+	^ micElement
+]
+
+{ #category : 'accessing' }
+MicResult >> micElement: aMicElement [ 
+	micElement := aMicElement
 ]
 
 { #category : 'accessing' }

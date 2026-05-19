@@ -2,7 +2,6 @@ Class {
 	#name : 'MicUseofWrongVocabularyResult',
 	#superclass : 'MicResult',
 	#instVars : [
-		'micElement',
 		'fileReference',
 		'patternPair'
 	],
@@ -24,11 +23,6 @@ MicUseofWrongVocabularyResult >> explanation [
 { #category : 'accessing' }
 MicUseofWrongVocabularyResult >> inFile: aFileReference [ 
 	fileReference := aFileReference
-]
-
-{ #category : 'accessing' }
-MicUseofWrongVocabularyResult >> micElement: aMicElement [ 
-	micElement := aMicElement 
 ]
 
 { #category : 'accessing' }
