@@ -66,7 +66,7 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
             nextPutAll: '<div class="section err-section"><div class="section-header" onclick="toggle(this)"><span class="section-badge badge-error">' , count printString , ' error' , (count = 1 ifTrue: [''] ifFalse: ['s']) , '</span><span class="section-title">' , (self htmlEscape: header) , '</span><span class="chevron open">&#9660;</span></div><div class="section-body">'.
         errorList do: [ :r |
             | lineNum srcFile searchText fullPath shortMsg context |
-            srcFile := r sourceFileReference ifNil: [ fileReference ].
+            srcFile := r inFile ifNil: [ fileReference ].
             searchText := ((r class methodDict includesKey: #what) and: [ r what notNil and: [ r what notEmpty ] ])
                 ifTrue: [ r what ]
                 ifFalse: [

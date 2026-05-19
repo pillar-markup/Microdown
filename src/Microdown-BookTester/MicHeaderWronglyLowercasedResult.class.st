@@ -10,6 +10,6 @@ Class {
 MicHeaderWronglyLowercasedResult >> explanation [ 
 
 
-	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ', detail, ' should not be lowercased.'
+	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail, ' should not be lowercased.'
 	 
 ]

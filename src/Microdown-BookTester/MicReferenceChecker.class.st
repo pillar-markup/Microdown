@@ -51,7 +51,7 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchor anchorLabel;
-		sourceFileReference: anAnchor fromFile.
+		inFile: anAnchor fromFile.
 	results add: micResultInstance
 ]
 
@@ -72,7 +72,7 @@ MicReferenceChecker >> addReferenceToUnexistingAnchor: anAnchorReference [
 	micResultInstance := MicReferenceToUnexistingAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchorReference anchorLabel;
-		sourceFileReference: anAnchorReference fromFile.
+		inFile: anAnchorReference fromFile.
 	results add: micResultInstance
 ]
 
@@ -83,7 +83,7 @@ MicReferenceChecker >> addUnexistingFigureFile: aFigure [
 	micResultInstance := MicUndefinedFigureFileResult new.
 	micResultInstance
 		figureFileString: aFigure reference path;
-		sourceFileReference: aFigure fromFile.
+		inFile: aFigure fromFile.
 	results add: micResultInstance
 ]
 
@@ -95,7 +95,7 @@ MicReferenceChecker >> addUnreferencedFigure: aFigure [
 	micResultInstance
 		figurePath: aFigure reference relativePath;
 		anchorLabel: aFigure anchorLabel;
-		sourceFileReference: aFigure fromFile.
+		inFile: aFigure fromFile.
 	results add: micResultInstance
 ]
 
@@ -105,7 +105,7 @@ MicReferenceChecker >> addWrongCaseFile: aFigure [
 	micResultInstance := MicWrongCaseFileResult new.
 	micResultInstance
 		figureFileString: aFigure reference path;
-		sourceFileReference: aFigure fromFile.
+		inFile: aFigure fromFile.
 	results add: micResultInstance
 ]
 
@@ -190,7 +190,7 @@ MicReferenceChecker >> handleUndefinedFilesFrom: collector [
 	collector unexistingFiles do: [ :each |
 		results add: (MicUndefinedInputFileResult new 
 			inputFileBlock: each ; 
-			sourceFileReference: each fromFile; 
+			inFile: each fromFile; 
 			yourself )
 		
 		]

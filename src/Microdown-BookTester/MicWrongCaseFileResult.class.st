@@ -2,8 +2,7 @@ Class {
 	#name : 'MicWrongCaseFileResult',
 	#superclass : 'MicFileResult',
 	#instVars : [
-		'figureFileString',
-		'sourceFileReference'
+		'figureFileString'
 	],
 	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
@@ -18,11 +17,6 @@ MicWrongCaseFileResult >> explanation [
 { #category : 'accessing' }
 MicWrongCaseFileResult >> figureFileString: aString [
 	figureFileString := aString
-]
-
-{ #category : 'accessing' }
-MicWrongCaseFileResult >> sourceFileReference: aFileReference [
-	sourceFileReference := aFileReference
 ]
 
 { #category : 'accessing' }

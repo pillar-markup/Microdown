@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicMethodStructureResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],
@@ -24,7 +24,7 @@ MicMethodStructureResult >> detail: aString [
 { #category : 'accessing' }
 MicMethodStructureResult >> explanation [ 
 	^ 'Text: "' , micElement body 
-	, '" in file' , fileReference fromFile fullName 
+	, '" in file' , self inFile fromFile fullName 
 	, ' contains a mistake: method ['
 	, detail 
 	, '] should have an empty line after the selector when is no comment.'

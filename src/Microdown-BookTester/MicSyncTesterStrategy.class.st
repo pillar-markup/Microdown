@@ -18,7 +18,7 @@ MicSyncTesterStrategy >> handleBrokenOrigin: aString of: aMicCodeBlock [
 	
 	results add: ( MicBrokenSyncOriginDefinitionResult new 
 							originString: aString;
-							sourceFileReference: aMicCodeBlock fromFile;
+							inFile: aMicCodeBlock fromFile;
 							yourself )
 ]
 
@@ -27,7 +27,7 @@ MicSyncTesterStrategy >> handleBrokenSyncValue: aString of: aMicCodeBlock [
 
 	results add: (MicBrokenSyncDefinitionResult new
 							syncValue: aString;
-							sourceFileReference: aMicCodeBlock fromFile;
+							inFile: aMicCodeBlock fromFile;
 							yourself)
 ]
 
@@ -79,7 +79,7 @@ MicSyncTesterStrategy >> verify: aCodeBlock [
 		aCodeBlock body = method sourceCode ifFalse: [
 			results add: (MicDesynchronizedCodeResult new
 					 originString: originString;
-					 sourceFileReference: aCodeBlock fromFile;
+					 inFile: aCodeBlock fromFile;
 					 bookContents: aCodeBlock body;
 					 imageContent: method sourceCode;
 					 pharoVersion:SystemVersion current major) ] ]

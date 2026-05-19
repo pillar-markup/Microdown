@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicCodeIndentationResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],
@@ -24,7 +24,7 @@ MicCodeIndentationResult >> detail: anObject [
 { #category : 'accessing' }
 MicCodeIndentationResult >> explanation [ 
 	^ 'Text: "' , micElement body
-	, '" in file' , fileReference fullName
+	, '" in file' , self inFile fullName
 	, ' contains a mistake: line ['
 	, detail 
 	, '] should use tabs instead of spaces for indentation.'

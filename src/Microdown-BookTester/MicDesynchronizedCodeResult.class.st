@@ -34,7 +34,7 @@ MicDesynchronizedCodeResult >> bookContents: aString [
 { #category : 'accessing' }
 MicDesynchronizedCodeResult >> explanation [
 
-	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', source  fullName
+	^ 'The code block body of ', originString , ' is not in sync with the version in Pharo ', pharoVersion, 'in file: ', self inFile fullName
 ]
 
 { #category : 'accessing' }

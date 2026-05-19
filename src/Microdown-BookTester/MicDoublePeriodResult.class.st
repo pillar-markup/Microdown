@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicDoublePeriodResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#category : 'Microdown-BookTester-Checker-LastPeriod',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-LastPeriod'
@@ -9,5 +9,5 @@ Class {
 { #category : 'accessing' }
 MicDoublePeriodResult >> explanation [
 
-	^  'Text: "' , micElement text , '" in file' , fileReference fullName , ' contains two periods.'
+	^  'Text: "' , micElement text , '" in file' , self inFile fullName , ' contains two periods.'
 ]

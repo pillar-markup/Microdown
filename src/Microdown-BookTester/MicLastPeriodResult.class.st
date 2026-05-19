@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicLastPeriodResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'codeShouldEndWithPeriod'
 	],
