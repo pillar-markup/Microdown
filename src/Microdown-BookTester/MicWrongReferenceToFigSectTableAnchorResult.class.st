@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicWrongReferenceToFigSectTableAnchorResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],

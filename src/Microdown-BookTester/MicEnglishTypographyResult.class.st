@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicEnglishTypographyResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],

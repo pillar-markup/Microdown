@@ -17,7 +17,8 @@ Class {
 		'status',
 		'source',
 		'explanation',
-		'micElement'
+		'micElement',
+		'fileReference'
 	],
 	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',

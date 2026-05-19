@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicDoublePeriodResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#category : 'Microdown-BookTester-Checker-LastPeriod',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-LastPeriod'

@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicParagraphLabelResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail',
 		'labelShouldEndWithPeriod'

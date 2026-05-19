@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicMethodStructureResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],

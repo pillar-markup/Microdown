@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicCodeIndentationResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],

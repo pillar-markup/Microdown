@@ -2,7 +2,6 @@ Class {
 	#name : 'MicUseofWrongVocabularyResult',
 	#superclass : 'MicResult',
 	#instVars : [
-		'fileReference',
 		'patternPair'
 	],
 	#category : 'Microdown-BookTester-Checker-Vocabulary',
