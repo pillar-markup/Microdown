@@ -15,7 +15,6 @@ Class {
 	#instVars : [
 		'message',
 		'status',
-		'source',
 		'explanation',
 		'micElement',
 		'fileReference'
@@ -51,13 +50,13 @@ MicResult >> headerString [
 { #category : 'accessing' }
 MicResult >> inFile [
 
-	^ source
+	^ fileReference
 ]
 
 { #category : 'accessing' }
 MicResult >> inFile: anObject [
 
-	source := anObject
+	fileReference := anObject
 ]
 
 { #category : 'accessing' }

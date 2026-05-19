@@ -8,5 +8,5 @@ Class {
 
 { #category : 'accessing' }
 MicElementOfHeaderIsNotCapitalizedResult >> explanation [ 
-	^ 'Header: "' , micElement text , '" in file' , fileReference fullName , ' contains a mistake: ' , detail , ' should be capitalized.'
+	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ' , detail , ' should be capitalized.'
 ]

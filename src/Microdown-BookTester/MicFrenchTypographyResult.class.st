@@ -26,6 +26,6 @@ MicFrenchTypographyResult >> explanation [
 	| text |
 	text := micElement bodyString ifNil: [ '' ].
 	^ 'Text: "' , text 
-	, '" in file' , fileReference fullName
+	, '" in file' , self inFile fullName
 	, ' contains a mistake: ' , detail
 ]

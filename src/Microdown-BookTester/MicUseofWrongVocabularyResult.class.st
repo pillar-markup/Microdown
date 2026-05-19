@@ -15,13 +15,8 @@ MicUseofWrongVocabularyResult >> explanation [
 	| wrongWord goodWord |
 	wrongWord := patternPair key allButFirst allButLast.
 	goodWord := patternPair value.
-	^ 'Text: "' , micElement bodyString , '" in file' , fileReference fullName , ' contains a mistake: [' , wrongWord
+	^ 'Text: "' , micElement bodyString , '" in file' , self inFile fullName , ' contains a mistake: [' , wrongWord
 	  , '] should not be used. We should use ' , goodWord
-]
-
-{ #category : 'accessing' }
-MicUseofWrongVocabularyResult >> inFile: aFileReference [ 
-	fileReference := aFileReference
 ]
 
 { #category : 'accessing' }

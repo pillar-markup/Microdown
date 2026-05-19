@@ -24,6 +24,6 @@ MicMethodReferenceResult >> detail: aString [
 { #category : 'accessing' }
 MicMethodReferenceResult >> explanation [ 
 	^ 'Text: "' , micElement bodyString
-	, '" in file' , fileReference fullName 
+	, '" in file' , self inFile fullName 
 	, ' contains a mistake: method references must be consistent, either always with # or always without #.'
 ]
