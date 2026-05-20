@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicWithDetailResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail'
 	],

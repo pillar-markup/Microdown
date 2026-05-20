@@ -391,7 +391,7 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncS0UnknowAnchor [
 	self deny: visitor isOkay.
 	badRefs := visitor results  select: [ :each | each isKindOf: MicAnchorResult ].
 	self assert: badRefs first anchorLabel equals: 'ancS0'.
-	self assert: badRefs first sourceFileReference fullName equals: '/defFig1AndRefToAncS0.md'
+	self assert: badRefs first inFile fullName equals: '/defFig1AndRefToAncS0.md'
 ]
 
 { #category : 'tests - single file ok references' }
@@ -406,7 +406,7 @@ MicReferenceCheckerTest >> testDefFig1AndRefToAncUnkS0 [
 	self assert: visitor results size equals: 3.
 	self assert: visitor results second anchorLabel equals: 'ancUnkS0'.
 	self
-		assert: visitor results second sourceFileReference fullName
+		assert: visitor results second inFile fullName
 		equals: '/defFig1AndRefToAncUnkS0.md'
 ]
 
@@ -444,7 +444,7 @@ MicReferenceCheckerTest >> testDefS1ButRefersToS0UnknownAnchor [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 3.
 	self assert: visitor results second anchorLabel equals: 'ancS0'.
-	self assert: visitor results second sourceFileReference fullName equals: '/fileDefAncS1UndAncS0.md'
+	self assert: visitor results second inFile fullName equals: '/fileDefAncS1UndAncS0.md'
 	
 ]
 
@@ -549,7 +549,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchorInDifferentFilesOfTheSameDir [
 	dict := visitor results groupedBy: [ :each | each class ].
 	duplicated := (dict at: MicDuplicatedAnchorResult) first.
 	self
-		assert: visitor results first sourceFileReference fullName
+		assert: visitor results first inFile fullName
 		equals: '/myDirectory/file2.md'.
 	self assert: duplicated anchorLabel equals: 'ancS1'
 ]
@@ -570,7 +570,7 @@ MicReferenceCheckerTest >> testDuplicatedAnchors [
 
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
 	self
-		assert: dup1 sourceFileReference fullName
+		assert: dup1 inFile fullName
 		equals: '/myDirectory/defAncS0TripleAncS1RefAncS1AncS0.md'.
 	self assert: dup1 anchorLabel equals: 'ancS1'
 ]
@@ -626,7 +626,7 @@ MicReferenceCheckerTest >> testDuplicatedFigures [
 
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
 	self
-		assert: dup1 sourceFileReference fullName
+		assert: dup1 inFile fullName
 		equals: '/myDirectory/defAncS0DoubleFig1Fig2RefAncS1.md'.
 	self assert: dup1 anchorLabel equals: 'fig1'
 ]
@@ -640,7 +640,7 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	checker checkList: { defAnCS0DoubleEq2DoubleEq1RefEq1 }.
 	self deny: checker isOkay.
 	self
-		assert: checker results first sourceFileReference fullName
+		assert: checker results first inFile fullName
 		equals: defAnCS0DoubleEq2DoubleEq1RefEq1 fullName.
 	self
 		assert: (checker results collect: [ :each | each anchorLabel ])
@@ -649,11 +649,11 @@ MicReferenceCheckerTest >> testDuplicatedMaths [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	dup1 := (dict at: MicDuplicatedAnchorResult) first.
-	self assert: dup1 sourceFileReference fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self assert: dup1 inFile fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup1 anchorLabel equals: 'Eq2'.
 	
 	dup2 := (dict at: MicDuplicatedAnchorResult) third.
-	self assert: dup2 sourceFileReference fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
+	self assert: dup2 inFile fullName equals: '/myDirectory/defAnCS0DoubleEq2DoubleEq1RefEq1.md'.
 	self assert: dup2 anchorLabel equals: 'Eq1'.
 ]
 
@@ -672,7 +672,7 @@ MicReferenceCheckerTest >> testFigureFilePathToUnkFile [
 	self assert: refToUnexistingFiles first figureFileString equals: 'figures/f.png'.
 	
 	self
-		assert: refToUnexistingFiles first sourceFileReference fullName
+		assert: refToUnexistingFiles first inFile fullName
 		equals: '/myDirectory/defAndRefFig1.md'
 ]
 
@@ -701,11 +701,11 @@ MicReferenceCheckerTest >> testFullProjectWithReferencesToUnknowAnchor [
 	dict := checker results groupedBy: [ :each | each class ].
 	
 	unk := (dict at: MicReferenceToUnexistingAnchorResult) first.
-	self assert: unk sourceFileReference fullName equals: '/myDirectory/sections/section2.md'.
+	self assert: unk inFile fullName equals: '/myDirectory/sections/section2.md'.
 	self assert: unk anchorLabel equals: 'ancUnkS2'.
 	
 	undefined := (dict at: MicUndefinedInputFileResult) first.
-	self assert: undefined sourceFileReference fullName equals: '/myDirectory/sections/section2.md'.
+	self assert: undefined inFile fullName equals: '/myDirectory/sections/section2.md'.
 
 
 ]
@@ -802,7 +802,7 @@ MicReferenceCheckerTest >> testRefersToUnkAncS1 [
 	self deny: visitor isOkay.
 	self assert: visitor results size equals: 1.
 	self assert: visitor results first anchorLabel equals: 'ancS1'.
-	self assert: visitor results first sourceFileReference fullName equals: '/fileRefAncS1.md'.
+	self assert: visitor results first inFile fullName equals: '/fileRefAncS1.md'.
 ]
 
 { #category : 'tests - duplicated' }
@@ -921,7 +921,7 @@ MicReferenceCheckerTest >> testUnreferencedFigure [
 	self assert: badRefs size equals: 1.
 	self assert: unref figurePath equals: 'figures/f.png'.
 	self assert: unref anchorLabel equals: 'Fig1'.
-	self assert: unref sourceFileReference fullName equals: '/defFig1.md'
+	self assert: unref inFile fullName equals: '/defFig1.md'
 ]
 
 { #category : 'tests - single file' }

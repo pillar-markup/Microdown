@@ -1,6 +1,6 @@
 Class {
 	#name : 'MicParagraphLabelResult',
-	#superclass : 'MicAbstractResult',
+	#superclass : 'MicResult',
 	#instVars : [
 		'detail',
 		'labelShouldEndWithPeriod'
@@ -25,7 +25,7 @@ MicParagraphLabelResult >> detail: aString [
 { #category : 'accessing' }
 MicParagraphLabelResult >> explanation [ 
  	^ 'Paragraph: "' , micElement text
-	, '" in file ' , fileReference fullName 
+	, '" in file ' , self inFile fullName 
 	, ' contains a mistake: label should'
 	, (labelShouldEndWithPeriod 
 		ifTrue: [ ' ' ]

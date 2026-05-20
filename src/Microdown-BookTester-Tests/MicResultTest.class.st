@@ -11,7 +11,7 @@ MicResultTest >> testExplanationDuplicatedAnchor [
 	| res |
 	res := MicDuplicatedAnchorResult new. 
 	res anchorLabel: 'ancS0'.
-	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
+	res inFile: '/myDir/chapter1.md' asFileReference.
 	
 	self 
 		assert: res explanation 
@@ -27,7 +27,7 @@ MicResultTest >> testExplanationUndefinedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
+	res inFile: '/myDir/chapter1.md' asFileReference.
 	
 	self 
 		assert: res explanation 
@@ -78,7 +78,7 @@ MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res sourceFileReference: '/myDir/chapter1.md' asFileReference.
+	res inFile: '/myDir/chapter1.md' asFileReference.
 	
 	association := res stonFormatExplanation.
 	
@@ -97,7 +97,7 @@ MicResultTest >> testSTONFormatExplanationUndefinedAnchor [
 	res anchorLabel: 'ancS0'.
 	"pay attention since in this package fromFile is pass a fullName and not a file we will have to change 
 	this later"
-	res sourceFileReference: '/myDir/chapter1.md' asFileReference .
+	res inFile: '/myDir/chapter1.md' asFileReference .
 	
 	association := res stonFormatExplanation.
 	
@@ -114,7 +114,7 @@ MicResultTest >> testUndefinedFigureFile [
 	| res |
 	res := MicUndefinedFigureFileResult new. 
 	res figureFileString: 'myDir/foo.png'.
-	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
+	res inFile: '/myDir/chapter2.md' asFileReference.
 	
 	self 
 		assert: res explanation 
@@ -128,8 +128,8 @@ MicResultTest >> testUndefinedInputFile [
 	| res |
 	res := MicUndefinedInputFileResult new. 
 	res inputFileBlock: (MicInputfileBlock new  path: 'myDir/foo.md').
-	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
-	res sourceFileReference: '/myDir/chapter2.md' asFileReference.
+	res inFile: '/myDir/chapter2.md' asFileReference.
+	res inFile: '/myDir/chapter2.md' asFileReference.
 	
 	self 
 		assert: res explanation 

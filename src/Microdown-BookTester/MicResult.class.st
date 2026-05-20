@@ -15,8 +15,9 @@ Class {
 	#instVars : [
 		'message',
 		'status',
-		'source',
-		'explanation'
+		'explanation',
+		'micElement',
+		'fileReference'
 	],
 	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
@@ -47,6 +48,18 @@ MicResult >> headerString [
 ]
 
 { #category : 'accessing' }
+MicResult >> inFile [
+
+	^ fileReference
+]
+
+{ #category : 'accessing' }
+MicResult >> inFile: anObject [
+
+	fileReference := anObject
+]
+
+{ #category : 'accessing' }
 MicResult >> message [
 
 	^ message
@@ -59,15 +72,14 @@ MicResult >> message: anObject [
 ]
 
 { #category : 'accessing' }
-MicResult >> sourceFileReference [
+MicResult >> micElement [
 
-	^ source
+	^ micElement
 ]
 
 { #category : 'accessing' }
-MicResult >> sourceFileReference: anObject [
-
-	source := anObject
+MicResult >> micElement: aMicElement [ 
+	micElement := aMicElement
 ]
 
 { #category : 'accessing' }
