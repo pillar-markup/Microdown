@@ -29,7 +29,7 @@ MicUnreferencedFigureResult >> anchorLabel: aString [
 { #category : 'accessing' }
 MicUnreferencedFigureResult >> explanation [
 
-	^ 'Figure ', self what,' with anchor ', anchorLabel printString, ' (in file ', fileReference fullName , ') is not referenced.'
+	^ 'Figure ', self what,' with anchor ', anchorLabel printString, ' (in file ', source fullName , ') is not referenced.'
 	
 ]
 

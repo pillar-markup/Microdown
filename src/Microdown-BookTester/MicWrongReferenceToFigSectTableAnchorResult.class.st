@@ -2,7 +2,9 @@ Class {
 	#name : 'MicWrongReferenceToFigSectTableAnchorResult',
 	#superclass : 'MicResult',
 	#instVars : [
-		'detail'
+		'detail',
+		'micElement',
+		'inFile'
 	],
 	#category : 'Microdown-BookTester-Checker-BookTester',
 	#package : 'Microdown-BookTester',
@@ -31,9 +33,19 @@ MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 		ifFalse: [ words first , ' ' , words last capitalized ].
 		
 	^ 'Text: "' , micElement bodyString
-	, '" in file' , self inFile fullName 
+	, '" in file' , inFile fullName 
 	, ' contains a mistake: ['
 	, detail 
 	, '] should be capitalized as ['
 	, expected , '].'
+]
+
+{ #category : 'accessing' }
+MicWrongReferenceToFigSectTableAnchorResult >> inFile: anObject [
+    inFile := anObject
+]
+
+{ #category : 'accessing' }
+MicWrongReferenceToFigSectTableAnchorResult >> micElement: anObject [
+    micElement := anObject
 ]

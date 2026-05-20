@@ -9,14 +9,14 @@ Class {
 { #category : 'accessing' }
 MicFileResult >> explanation [
 
-	^ 'File input ', self what,' (in file ', fileReference fullName , ') does not exist.'
+	^ 'File input ', self what,' (in file ', source fullName , ') does not exist.'
 	
 ]
 
 { #category : 'accessing' }
 MicFileResult >> stonFormatExplanation [
 
-	^ '"', self what,'" : "', fileReference , '"'
+	^ '"', self what,'" : "', source , '"'
 	
 ]
 

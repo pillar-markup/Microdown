@@ -20,6 +20,11 @@ MicWrongCaseFileResult >> figureFileString: aString [
 ]
 
 { #category : 'accessing' }
+MicWrongCaseFileResult >> sourceFileReference: aFileReference [
+	sourceFileReference := aFileReference
+]
+
+{ #category : 'accessing' }
 MicWrongCaseFileResult >> what [
 	^ figureFileString
 ]

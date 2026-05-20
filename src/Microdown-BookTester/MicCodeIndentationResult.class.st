@@ -24,7 +24,7 @@ MicCodeIndentationResult >> detail: anObject [
 { #category : 'accessing' }
 MicCodeIndentationResult >> explanation [ 
 	^ 'Text: "' , micElement body
-	, '" in file' , self inFile fullName
+	, '" in file' , fileReference fullName
 	, ' contains a mistake: line ['
 	, detail 
 	, '] should use tabs instead of spaces for indentation.'

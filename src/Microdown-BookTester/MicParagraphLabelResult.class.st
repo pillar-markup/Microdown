@@ -25,7 +25,7 @@ MicParagraphLabelResult >> detail: aString [
 { #category : 'accessing' }
 MicParagraphLabelResult >> explanation [ 
  	^ 'Paragraph: "' , micElement text
-	, '" in file ' , self inFile fullName 
+	, '" in file ' , fileReference fullName 
 	, ' contains a mistake: label should'
 	, (labelShouldEndWithPeriod 
 		ifTrue: [ ' ' ]
