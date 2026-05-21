@@ -480,14 +480,14 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 ]
 
 { #category : 'visiting - list' }
-MicHTMLVisitor >> visitOrderedList: anUnorderedList [
+MicHTMLVisitor >> visitOrderedList: anOrderedList [
 
 	canvas newLine.
 	canvas tag
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			super visitOrderedList: anUnorderedList  ]
+			anOrderedList children do: [ :each | each accept: self ] ]
 ]
 
 { #category : 'visiting - list' }
@@ -495,9 +495,8 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 
 	canvas tag
 		name: 'li';
-		with: [ super visitOrderedListItem: anOrderedListItem ].
-	canvas newLine.
-
+		with: [ anOrderedListItem children do: [ :each | each accept: self ] ].
+	canvas newLine
 ]
 
 { #category : 'visiting' }
@@ -630,7 +629,7 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 		name: 'ul';
 		with: [ 
 			canvas newLine. 
-			super visitUnorderedList: anUnorderedList  ]
+			anUnorderedList children do: [ :each | each accept: self ] ]
 ]
 
 { #category : 'visiting - list' }
@@ -638,9 +637,8 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	
 	canvas tag
 		name: 'li';
-		with: [ super visitUnorderedListItem: anUnorderedListItem ].
-	canvas newLine.
-
+		with: [ anUnorderedListItem children do: [ :each | each accept: self ] ].
+	canvas newLine
 ]
 
 { #category : 'writing' }

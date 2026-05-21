@@ -10,6 +10,11 @@ Class {
 	#package : 'Microdown-Toc'
 }
 
+{ #category : 'visiting' }
+MicTocBuilder >> accept: aVisitor [
+	^ aVisitor visitTocEntry: self
+]
+
 { #category : 'initialization' }
 MicTocBuilder >> initialize [
 
