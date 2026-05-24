@@ -23,6 +23,13 @@ Class {
 	#tag : 'UI'
 }
 
+{ #category : 'examples' }
+MicCheckerDashboard class >> example [
+
+	<script>
+	self new open
+]
+
 { #category : 'initialization' }
 MicCheckerDashboard >> connectPresenters [
     checkerList presenters do: [ :cb |

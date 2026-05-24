@@ -13,7 +13,7 @@ MicFigureEmptyCaptionCheckerTest >> testCaptionIsEmpty [
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![](/fig.png)' ].
 	
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile. 
 	
@@ -28,7 +28,7 @@ MicFigureEmptyCaptionCheckerTest >> testCaptionIsOnlyPunctuationAndSpaces [
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![ , ; ](/fig.png)' ].
 	
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -42,7 +42,7 @@ MicFigureEmptyCaptionCheckerTest >> testCaptionIsOnlySpaces [
 	mem := FileSystem memory root.
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![   	 ](/fig.png)' ].
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -56,7 +56,7 @@ MicFigureEmptyCaptionCheckerTest >> testCaptionIsValid [
 	mdFile := mem / 'test.md'.
 	mdFile writeStreamDo: [ :stream | stream nextPutAll: '![Une vraie légende](fig.png)' ].
 	
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -73,7 +73,7 @@ MicFigureEmptyCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 		stream nextPutAll: '1 + 1'; cr.
 		stream nextPutAll: '```' ].
 	
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
@@ -83,7 +83,7 @@ MicFigureEmptyCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 { #category : 'tests' }
 MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 	| checker config |
-	checker := MicFigureEmptyCaptionChecker new.
+	checker := MicEmptyCaptionChecker new.
 	
 	self assert: checker checkCode.
 	self assert: checker checkFigure.
@@ -109,7 +109,7 @@ MicFigureEmptyCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 		stream nextPutAll: 'V = \frac{4}{3}\pi r^3'; cr.
 		stream nextPutAll: '$$' ].
 	
-	visitor := MicFigureEmptyCaptionChecker new.
+	visitor := MicEmptyCaptionChecker new.
 	visitor rootDirectory: mem.
 	visitor checkProject: mdFile.
 	
