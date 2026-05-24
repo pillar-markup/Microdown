@@ -9,6 +9,12 @@ Class {
 	#tag : 'FilesWithSpace'
 }
 
+{ #category : 'public - name' }
+MicFileNameWithSpaceChecker class >> checkerName [ 
+
+	^ 'NoSpaceInFilename'
+]
+
 { #category : 'accessing' }
 MicFileNameWithSpaceChecker >> errors [
 	^ errors ifNil: [ errors := OrderedCollection new ]

@@ -60,6 +60,12 @@ MicChecker class >> explanationForConfiguration [
 			str << (self configurationPartWithNewLine: Character lf asString) ] 
 ]
 
+{ #category : 'testing' }
+MicChecker class >> isAbstract [ 
+	
+	^ self = MicChecker
+]
+
 { #category : 'configuration help' }
 MicChecker class >> objectsForJSONConfigurationPart [
 	"return either a boolean for non composite configurations or a dictionary."
