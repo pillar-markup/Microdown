@@ -55,7 +55,7 @@ MicBlockQuoteBlockTest >> testBlockquoteBlockInterpretInlineELementsOnMultipleLi
     text := root children first.
     self assert: text children first class equals: MicTextBlock. 
     self assert: text children second class equals: MicBoldFormatBlock. 
-    self assert: text children second plainText equals: 'Bold
+    self assert: text children second text equals: 'Bold
 bold'. 
     self assert: text children third class equals: MicTextBlock.  
 ]

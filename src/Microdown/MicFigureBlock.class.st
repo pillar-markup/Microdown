@@ -37,7 +37,7 @@ MicFigureBlock >> accept: aVisitor [
 
 { #category : 'accessing' }
 MicFigureBlock >> altText [
-	^ (self children collect: #plainText) joinUsing: ' '
+	^ (self children collect: [:each | each text]) joinUsing: ' '
 ]
 
 { #category : 'accessing' }

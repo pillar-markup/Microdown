@@ -25,7 +25,7 @@ MicEvaluatedBlock class >> parse: token stream: aTokenStream for: aParser [
 { #category : 'printing' }
 MicEvaluatedBlock >> bodyString [ 
 
-	^ self plainText
+	^ self text
 ]
 
 { #category : 'accessing' }
