@@ -66,6 +66,11 @@ MicEvaluatedBlock >> replace: aBlock by: anotherBlock [
 	self children replaceAll: aBlock with: anotherBlock 
 ]
 
+{ #category : 'printing' }
+MicEvaluatedBlock >> text [
+	^ ( self children collect: [:each | each text ] ) joinUsing: ' '
+]
+
 { #category : 'accessing' }
 MicEvaluatedBlock >> textElement [
 	"Should only be used for tests"

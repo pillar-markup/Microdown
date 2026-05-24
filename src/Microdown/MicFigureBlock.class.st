@@ -60,10 +60,10 @@ MicFigureBlock >> hasCaption [
 
 { #category : 'printing' }
 MicFigureBlock >> plainText [
-	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
+	^ '![', ((self children collect: [:each | each text]) joinUsing: ' '), '](', url ,')'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'printing' }
 MicFigureBlock >> text [
-	^ children first text
+	^ '![', ((self children collect: [:each | each text]) joinUsing: ' '), '](', url ,')'
 ]
