@@ -31,13 +31,19 @@ MicCheckerDashboard class >> example [
 ]
 
 { #category : 'initialization' }
+MicCheckerDashboard >> checkerClasses [
+
+	^ MicChecker allSubclasses reject: [ :cls | cls isAbstract ] 
+]
+
+{ #category : 'initialization' }
 MicCheckerDashboard >> connectPresenters [
     checkerList presenters do: [ :cb |
         cb whenChangedDo: [
             cb state ifTrue: [
                 | name checker |
                 name := cb label.
-                checker := MicChecker allSubclasses
+                checker := self checkerClasses 
                     detect: [ :c | c checkerName = name ]
                     ifNone: [ nil ].
                 checker ifNotNil: [
