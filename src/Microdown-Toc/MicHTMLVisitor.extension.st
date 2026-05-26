@@ -8,12 +8,12 @@ MicHTMLVisitor >> visitTocEntry: aMicTocEntry [
 			canvas tag
 				name: 'li';
 				with: [
-					aMicTocEntry header children do: [ :each | each accept: self ] ] ]
+					aMicTocEntry header headerElements do: [ :each | each accept: self ] ] ]
 		ifFalse: [
 			canvas tag
 				name: 'li';
 				with: [
-					aMicTocEntry header children do: [ :each | each accept: self ].
+					aMicTocEntry header headerElements do: [ :each | each accept: self ].
 					canvas newLine.
 					canvas tag
 						name: 'ol';

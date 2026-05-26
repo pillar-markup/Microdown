@@ -487,7 +487,7 @@ MicHTMLVisitor >> visitOrderedList: anOrderedList [
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			anOrderedList children do: [ :each | each accept: self ] ]
+			self visitChildrenOf: anOrderedList ]
 ]
 
 { #category : 'visiting - list' }
@@ -495,7 +495,7 @@ MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
 
 	canvas tag
 		name: 'li';
-		with: [ anOrderedListItem children do: [ :each | each accept: self ] ].
+		with: [ self visitChildrenOf: anOrderedListItem ].
 	canvas newLine
 ]
 
@@ -629,7 +629,7 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 		name: 'ul';
 		with: [ 
 			canvas newLine. 
-			anUnorderedList children do: [ :each | each accept: self ] ]
+			self visitChildrenOf: anUnorderedList ]
 ]
 
 { #category : 'visiting - list' }
@@ -637,7 +637,7 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	
 	canvas tag
 		name: 'li';
-		with: [ anUnorderedListItem children do: [ :each | each accept: self ] ].
+		with: [ self visitChildrenOf: anUnorderedListItem ].
 	canvas newLine
 ]
 
