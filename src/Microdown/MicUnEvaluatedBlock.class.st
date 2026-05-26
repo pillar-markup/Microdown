@@ -76,3 +76,8 @@ MicUnEvaluatedBlock >> substring [
 	self deprecated: 'Just use bodystring' transformWith: '`@rec substring' -> '`@rec bodystring'.
 	^ bodyString 
 ]
+
+{ #category : 'printing' }
+MicUnEvaluatedBlock >> text [
+	^ bodyString 
+]

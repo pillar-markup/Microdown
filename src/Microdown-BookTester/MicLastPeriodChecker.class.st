@@ -21,6 +21,12 @@ Class {
 	#tag : 'Checker-LastPeriod'
 }
 
+{ #category : 'testing' }
+MicLastPeriodChecker class >> isAbstract [ 
+	
+	^ self = MicLastPeriodChecker
+]
+
 { #category : 'checking' }
 MicLastPeriodChecker >> checkExtraPeriodIn: aMicCodeBlock [ 
 	

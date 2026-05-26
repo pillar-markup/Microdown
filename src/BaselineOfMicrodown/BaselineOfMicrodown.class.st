@@ -17,8 +17,7 @@ BaselineOfMicrodown >> baseline: spec [
 
 		self
 			xmlParserHtml: spec;
-			mustache: spec;
-			gitBridge: spec.
+			mustache: spec.
 
 		spec preLoadDoIt: #'preload:package:'.
 
@@ -91,13 +90,7 @@ BaselineOfMicrodown >> baseline: spec [
 			package: 'Microdown-BookTester-Tests' with: [
 				spec requires: #( 'Microdown-BookTester' ) ].
 			
-			"
-			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
 			
-			package: #'Microdown-Blog-Tests' with: [
-				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
-			"
 		spec
 			group: 'Core' with: #('Microdown' 'Microdown-Tests');
 			group: 'ForPharo' with: #('Microdown' 'Microdown-BrowserExtensions');
@@ -130,12 +123,6 @@ BaselineOfMicrodown >> baseline: spec [
 
 
 
-]
-
-{ #category : 'baselines' }
-BaselineOfMicrodown >> gitBridge: spec [
-
-	spec baseline: 'GitBridge' with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
 ]
 
 { #category : 'baselines' }

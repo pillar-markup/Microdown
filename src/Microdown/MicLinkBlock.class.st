@@ -46,3 +46,8 @@ MicLinkBlock >> referencePath [
 
 	^ self reference fullName
 ]
+
+{ #category : 'printing' }
+MicLinkBlock >> text [
+	^ '[', ((self children collect: [:each | each text]) joinUsing: ' '), '](', url ,')'
+]

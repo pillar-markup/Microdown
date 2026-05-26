@@ -193,8 +193,8 @@ MicLastPeriodInCaptionCheckerTest >> testFigureCheckerIdentifyCorrectlyExtraPeri
 
 	self
 		assert: checker results first explanation
-		equals:
-		'Text: "This is the famous correctly ending period." in file/figureCaptionEndingWithPeriod.md contains a mistake: Captions should not be terminated with a period (.).'
+		equals: 'Text: "![This is the famous correctly ending period.](figures/f.png)" in file/figureCaptionEndingWithPeriod.md contains a mistake: Captions should not be terminated with a period (.).'
+		
 ]
 
 { #category : 'tests - missing period' }
@@ -205,9 +205,9 @@ MicLastPeriodInCaptionCheckerTest >> testFigureCheckerIdentifyCorrectlyMissingEx
 	self deny: checker isOkay.
 
 	self
-		assert: checker results first explanation
-		equals:
-		'Text: "This is the famous missing period" in file/figureCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
+		assert: checker results first explanation 
+		equals: 'Text: "![This is the famous missing period](figures/f.png)" in file/figureCaptionMissingPeriod.md contains a mistake: Captions should be terminated with a period (.).'
+		
 ]
 
 { #category : 'tests - missing period' }

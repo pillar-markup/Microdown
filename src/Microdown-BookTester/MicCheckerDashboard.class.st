@@ -23,6 +23,19 @@ Class {
 	#tag : 'UI'
 }
 
+{ #category : 'examples' }
+MicCheckerDashboard class >> example [
+
+	<script>
+	self new open
+]
+
+{ #category : 'initialization' }
+MicCheckerDashboard >> checkerClasses [
+
+	^ MicChecker allSubclasses reject: [ :cls | cls isAbstract ] 
+]
+
 { #category : 'initialization' }
 MicCheckerDashboard >> connectPresenters [
     checkerList presenters do: [ :cb |
@@ -30,7 +43,7 @@ MicCheckerDashboard >> connectPresenters [
             cb state ifTrue: [
                 | name checker |
                 name := cb label.
-                checker := MicChecker allSubclasses
+                checker := self checkerClasses 
                     detect: [ :c | c checkerName = name ]
                     ifNone: [ nil ].
                 checker ifNotNil: [

@@ -1,5 +1,9 @@
+"
+I verify that captions are not left empty. 
+I check figures, tables, and math caption by default: the user can ignore of a kind if needed. 
+"
 Class {
-	#name : 'MicFigureEmptyCaptionChecker',
+	#name : 'MicEmptyCaptionChecker',
 	#superclass : 'MicChecker',
 	#instVars : [
 		'checkFigure',
@@ -12,55 +16,55 @@ Class {
 }
 
 { #category : 'public - name' }
-MicFigureEmptyCaptionChecker class >> checkerName [ 
+MicEmptyCaptionChecker class >> checkerName [ 
 
 	^ 'EmptyCaption'
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkCaptionOf: aBlock [
+MicEmptyCaptionChecker >> checkCaptionOf: aBlock [
 	(self hasCorrectCaption: aBlock caption) ifFalse: [ 
 		self results add: MicMissingFigureCaptionResult new ]
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkCode [
+MicEmptyCaptionChecker >> checkCode [
 
 	^ checkCode
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkCode: anObject [
+MicEmptyCaptionChecker >> checkCode: anObject [
 
 	checkCode := anObject
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkFigure [
+MicEmptyCaptionChecker >> checkFigure [
 
 	^ checkFigure
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkFigure: anObject [
+MicEmptyCaptionChecker >> checkFigure: anObject [
 
 	checkFigure := anObject
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkMath [
+MicEmptyCaptionChecker >> checkMath [
 
 	^ checkMath
 ]
 
 { #category : 'checking' }
-MicFigureEmptyCaptionChecker >> checkMath: anObject [
+MicEmptyCaptionChecker >> checkMath: anObject [
 
 	checkMath := anObject
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureEmptyCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText [
+MicEmptyCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText [
 	(captionText isEmpty or: [ (captionText anySatisfy: #isAlphaNumeric) not ]) ifTrue: [ 
 		self results add: (MicMissingFigureCaptionResult new
 			figure: aBlock; 
@@ -68,7 +72,7 @@ MicFigureEmptyCaptionChecker >> checkMissingCaptionIn: aBlock text: captionText 
 ]
 
 { #category : 'configuration' }
-MicFigureEmptyCaptionChecker >> configureFrom: aDictionary [
+MicEmptyCaptionChecker >> configureFrom: aDictionary [
 	super configureFrom: aDictionary.
 	aDictionary at: 'checkOnly' ifPresent: [ :list | 
 		self checkCode: false.
@@ -80,17 +84,17 @@ MicFigureEmptyCaptionChecker >> configureFrom: aDictionary [
 ]
 
 { #category : 'configuration' }
-MicFigureEmptyCaptionChecker >> explanationForConfiguration [
+MicEmptyCaptionChecker >> explanationForConfiguration [
 	^ 'I check that figures, math environments and code blocks have a valid and non-empty caption.'
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureEmptyCaptionChecker >> hasCorrectCaption: aCaptionText [
+MicEmptyCaptionChecker >> hasCorrectCaption: aCaptionText [
     ^ aCaptionText isNotEmpty and: [ aCaptionText anySatisfy: #isAlphaNumeric ]
 ]
 
 { #category : 'initialization' }
-MicFigureEmptyCaptionChecker >> initialize [
+MicEmptyCaptionChecker >> initialize [
 	super initialize.
 	self checkCode: true.
 	self checkFigure: true.
@@ -98,19 +102,19 @@ MicFigureEmptyCaptionChecker >> initialize [
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureEmptyCaptionChecker >> visitCode: aCode [
+MicEmptyCaptionChecker >> visitCode: aCode [
 	self checkCode ifTrue: [ self checkCaptionOf: aCode ].
 	^ super visitCode: aCode
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureEmptyCaptionChecker >> visitFigure: aFigure [
+MicEmptyCaptionChecker >> visitFigure: aFigure [
 	self checkFigure ifTrue: [ self checkCaptionOf: aFigure ].
 	^ super visitFigure: aFigure
 ]
 
 { #category : 'visiting - inline elements' }
-MicFigureEmptyCaptionChecker >> visitMath: aMath [
+MicEmptyCaptionChecker >> visitMath: aMath [
 	self checkMath ifTrue: [ self checkCaptionOf: aMath ].
 	^ super visitMath: aMath
 ]
