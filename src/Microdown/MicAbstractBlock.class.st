@@ -11,7 +11,8 @@ Class {
 	#superclass : 'MicElement',
 	#instVars : [
 		'children',
-		'parser'
+		'parser',
+		'startLine'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -187,6 +188,18 @@ MicAbstractBlock >> replaceByAll: aCollection [
 { #category : 'private' }
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine [
+
+	^ startLine
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine: anObject [
+
+	startLine := anObject
 ]
 
 { #category : 'accessing' }

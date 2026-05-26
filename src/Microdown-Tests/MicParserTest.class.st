@@ -153,3 +153,41 @@ is really cool'.
 	
 	
 ]
+
+{ #category : 'tests' }
+MicParserTest >> testStartLineIsCorrectlyAssigned [
+
+	| doc children |
+	doc := Microdown parse: 'a paragraph
+
+# Header
+
+another paragraph'.
+
+	children := doc children.
+	
+	self assert: children first startLine equals: 1.
+	self assert: children second startLine equals: 3.
+	self assert: children third startLine equals: 5.
+]
+
+{ #category : 'tests' }
+MicParserTest >> testStartLineWithNestedAndMultilineElements [
+
+	| doc list paragraph |
+	doc := Microdown parse: '# Title
+
+- Item A
+- Item B
+
+A long
+paragraph'.
+
+	self assert: doc children first startLine equals: 1.
+	list := doc children second.
+	self assert: list startLine equals: 3.
+	self assert: list children first startLine equals: 3.
+	self assert: list children second startLine equals: 4.
+	paragraph := doc children third.
+	self assert: paragraph startLine equals: 6.
+]
