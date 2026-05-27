@@ -122,6 +122,11 @@ MicChecker >> reportWriter: anObject [
 	reportWriter := anObject
 ]
 
+{ #category : 'as yet unclassified' }
+MicChecker >> resultHeaderStrings [
+    ^ #()
+]
+
 { #category : 'visiting' }
 MicChecker >> results [
 

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'reporter',
 		'fileReference',
-		'selectedCheckers'
+		'selectedCheckers',
+		'checkerResults'
 	],
 	#category : 'Microdown-BookTester-CheckerDashboard',
 	#package : 'Microdown-BookTester',
@@ -20,33 +21,20 @@ MicCheckerHTMLReporter >> buildHTML [
         "Header"
         s nextPutAll: '<div class="report-header"><div class="report-logo">&#128196;</div><div class="report-header-text"><div class="report-title">Microdown Checker Report</div><div class="report-subtitle">' , (self htmlEscape: fileReference fullName) , '</div></div></div>'.
 
-        "Stats"
+    "Stats"
         passedCount := self selectedCheckers count: [ :checkerName |
-            | checker headers |
-            checker := MicChecker allSubclasses
-                detect: [ :c | c checkerName = checkerName ]
-                ifNone: [ nil ].
-            checker isNil or: [
-                (checker new resultHeaderStrings) isEmpty or: [
-                    (checker new resultHeaderStrings) noneSatisfy: [ :h |
-                        reporter results anySatisfy: [ :r | r headerString = h ] ] ] ] ].
+            | results |
+            results := checkerResults at: checkerName ifAbsent: [ #() ].
+            results isEmpty ].
         errorCount := self selectedCheckers size - passedCount.
-
         s nextPutAll: '<div class="stats-grid"><div class="stat-card danger"><div class="stat-label">Total errors</div><div class="stat-value danger">' , reporter results size printString , '</div><div class="stat-desc">issues detected</div></div><div class="stat-card success"><div class="stat-label">Checkers passed</div><div class="stat-value success">' , passedCount printString , '</div><div class="stat-desc">no problems found</div></div><div class="stat-card warning"><div class="stat-label">Checkers with errors</div><div class="stat-value warning">' , errorCount printString , '</div><div class="stat-desc">need attention</div></div></div>'.
-
         "OK section"
         s nextPutAll: '<div class="section ok-section"><div class="section-header" onclick="toggle(this)"><span class="section-badge badge-ok">&#10003; Passed</span><span class="section-title">Checkers with no problems</span><span class="section-count">' , passedCount printString , ' checkers</span><span class="chevron open">&#9660;</span></div><div class="section-body">'.
         self selectedCheckers do: [ :checkerName |
-            | checker headers hasErrors |
-            checker := MicChecker allSubclasses
-                detect: [ :c | c checkerName = checkerName ]
-                ifNone: [ nil ].
-            checker ifNotNil: [
-                headers := checker new resultHeaderStrings.
-                hasErrors := headers anySatisfy: [ :h |
-                    reporter results anySatisfy: [ :r | r headerString = h ] ].
-                hasErrors ifFalse: [
-                    s nextPutAll: '<div class="ok-row"><div class="ok-dot">&#10003;</div><span class="ok-text"><span class="ok-checker">' , (self htmlEscape: checkerName) , '</span> &#8212; no problems found</span></div>' ] ] ].
+            | results |
+            results := checkerResults at: checkerName ifAbsent: [ #() ].
+            results isEmpty ifTrue: [
+                s nextPutAll: '<div class="ok-row"><div class="ok-dot">&#10003;</div><span class="ok-text"><span class="ok-checker">' , (self htmlEscape: checkerName) , '</span> &#8212; no problems found</span></div>' ] ].
         s nextPutAll: '</div></div>'.
 
         "Error sections"
@@ -106,6 +94,12 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
                 aStream nextPutAll: '<div class="error-context">' , (self htmlEscape: context) , '</div>' ].
             aStream nextPutAll: '</div>' ].
         aStream nextPutAll: '</div></div>' ]
+]
+
+{ #category : 'accessing' }
+MicCheckerHTMLReporter >> checkerResults: aDict [
+
+	checkerResults := aDict
 ]
 
 { #category : 'accessing' }
