@@ -24,7 +24,9 @@ MicEmptyCaptionChecker class >> checkerName [
 { #category : 'checking' }
 MicEmptyCaptionChecker >> checkCaptionOf: aBlock [
 	(self hasCorrectCaption: aBlock caption) ifFalse: [ 
-		self results add: MicMissingFigureCaptionResult new ]
+		self results add: (MicMissingFigureCaptionResult new 
+			figure: aBlock; 
+			yourself) ]
 ]
 
 { #category : 'checking' }
