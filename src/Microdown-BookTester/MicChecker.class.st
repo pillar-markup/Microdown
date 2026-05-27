@@ -124,6 +124,25 @@ MicChecker >> isOkay [
 ]
 
 { #category : 'accessing' }
+
+MicChecker >> reportWriter [
+
+	^ reportWriter
+]
+
+{ #category : 'accessing' }
+MicChecker >> reportWriter: anObject [
+
+	reportWriter := anObject
+]
+
+{ #category : 'as yet unclassified' }
+MicChecker >> resultHeaderStrings [
+    ^ #()
+]
+
+{ #category : 'visiting' }
+
 MicChecker >> results [
 
 	^ results

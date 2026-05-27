@@ -16,12 +16,30 @@ Class {
 		'file',
 		'currentFile',
 		'currentReporter',
-		'fileContent'
+		'fileContent',
+		'currentCheckerResutls',
+		'checkerResults'
 	],
 	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
 	#tag : 'UI'
 }
+
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> checkerList [
+
+	^ checkerList
+]
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> checkerResults [
+	^ checkerResults
+]
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> checkerResults: aDict [
+	checkerResults:= aDict 
 
 { #category : 'examples' }
 MicCheckerDashboard class >> example [
@@ -34,6 +52,7 @@ MicCheckerDashboard class >> example [
 MicCheckerDashboard >> checkerClasses [
 
 	^ MicChecker allSubclasses reject: [ :cls | cls isAbstract ] 
+
 ]
 
 { #category : 'initialization' }
@@ -58,7 +77,7 @@ MicCheckerDashboard >> connectPresenters [
                             ifFound: [ :c | c state: false ] ] ] ] ] ].
 
     runButton action: [
-        | config output selectedCheckers |
+        | output selectedCheckers |
         filePathInput text isEmpty
             ifTrue: [ results text: 'Please enter a file path.' ]
             ifFalse: [
@@ -73,14 +92,19 @@ MicCheckerDashboard >> connectPresenters [
                             ifTrue: [ results text: 'Please select at least one checker.' ]
                             ifFalse: [
                                 results text: 'Checking... please wait.'.
-                                config := ConfigurationForPillar newFromDictionary:
-                                    (Dictionary new
-                                        at: 'onlyCheckers' put: selectedCheckers;
-                                        yourself).
-                                currentReporter := MicAnalysisReportWriter
-                                    reportForFolder: currentFile parent
-                                    startingFrom: currentFile
-                                    configuration: config.
+                                currentReporter := MicAnalysisReportWriter new.
+										 currentCheckerResutls := Dictionary new.
+										 selectedCheckers do: [ :name |
+											| checkerClass checker |
+											checkerClass := MicChecker allSubclasses 
+												detect: [ :c | c checkerName = name ]
+												ifNone: [ nil ].
+											checkerClass ifNotNil: [ 
+												checker := checkerClass new.
+												checker rootDirectory: currentFile parent.
+												checker checkProject: currentFile.
+												currentCheckerResutls at: name put: checker results.
+												currentReporter addResults: checker results ]].
                                 currentReporter isOkay
                                     ifTrue: [ results text: 'No problems found!' ]
                                     ifFalse: [
@@ -112,9 +136,24 @@ MicCheckerDashboard >> connectPresenters [
         htmlReporter := MicCheckerHTMLReporter new.
         htmlReporter reporter: currentReporter.
         htmlReporter fileReference: currentFile.
+		  htmlReporter checkerResults: currentCheckerResutls.
+		  htmlReporter selectedCheckers: (checkerList presenters
+				select: [ :cb | cb state ]
+				thenCollect: [ :cb | cb label]).
         outputFile := htmlReporter generateReport.
         WebBrowser openOn: outputFile fullName.
         results text: results text , String cr , 'HTML report exported to: ' , outputFile fullName ].
+]
+
+{ #category : 'accessing' }
+MicCheckerDashboard >> currentFile [
+
+	^ currentFile
+]
+
+{ #category : 'as yet unclassified' }
+MicCheckerDashboard >> currentReporter [
+	 ^ currentReporter
 ]
 
 { #category : 'initialization' }
@@ -131,6 +170,7 @@ MicCheckerDashboard >> defaultLayout [
         yourself).
     topSection := SpBoxLayout newTopToBottom
         add: (SpPanedLayout newLeftToRight
+			   positionOfSlider: 45 percent;
             add: checkerList;
             add: explanation;
             yourself);
@@ -144,6 +184,7 @@ MicCheckerDashboard >> defaultLayout [
             yourself) expand: false;
         yourself.
     ^ SpPanedLayout newTopToBottom
+		  positionOfSlider: 55 percent;
         add: topSection;
         add: notebook;
         yourself

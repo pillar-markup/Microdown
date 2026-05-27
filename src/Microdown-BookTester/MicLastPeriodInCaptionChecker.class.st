@@ -95,8 +95,9 @@ MicLastPeriodInCaptionChecker >> checkMissingPeriodInCode: aCode [
 
 { #category : 'visiting - inline elements' }
 MicLastPeriodInCaptionChecker >> checkMissingPeriodInFigure: aFigure [
-
-	aFigure caption trimRight last = $. ifFalse: [
+	| caption |
+	caption := aFigure caption trimRight.
+	(caption isEmpty or: [ caption last = $. ]) ifFalse: [
 			results add: (MicPeriodInCaptionResult new
 					 micElement: aFigure;
 					 inFile: aFigure fromFile;
