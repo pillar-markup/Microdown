@@ -26,6 +26,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MicCheckerDashboard >> checkerList [
+
+	^ checkerList
+]
+
+{ #category : 'accessing' }
 MicCheckerDashboard >> checkerResults [
 	^ checkerResults
 ]
@@ -125,6 +131,12 @@ MicCheckerDashboard >> connectPresenters [
         results text: results text , String cr , 'HTML report exported to: ' , outputFile fullName ].
 ]
 
+{ #category : 'accessing' }
+MicCheckerDashboard >> currentFile [
+
+	^ currentFile
+]
+
 { #category : 'as yet unclassified' }
 MicCheckerDashboard >> currentReporter [
 	 ^ currentReporter
@@ -144,6 +156,7 @@ MicCheckerDashboard >> defaultLayout [
         yourself).
     topSection := SpBoxLayout newTopToBottom
         add: (SpPanedLayout newLeftToRight
+			   positionOfSlider: 45 percent;
             add: checkerList;
             add: explanation;
             yourself);
@@ -157,6 +170,7 @@ MicCheckerDashboard >> defaultLayout [
             yourself) expand: false;
         yourself.
     ^ SpPanedLayout newTopToBottom
+		  positionOfSlider: 55 percent;
         add: topSection;
         add: notebook;
         yourself
