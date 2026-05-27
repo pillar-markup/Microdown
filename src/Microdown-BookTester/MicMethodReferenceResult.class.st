@@ -27,3 +27,9 @@ MicMethodReferenceResult >> explanation [
 	, '" in file' , self inFile fullName 
 	, ' contains a mistake: method references must be consistent, either always with # or always without #.'
 ]
+
+{ #category : 'kinds' }
+MicMethodReferenceResult >> headerString [
+
+	^ 'Method Reference'
+]

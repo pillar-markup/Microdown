@@ -22,6 +22,12 @@ MicReferenceToUnexistingAnchorResult class >> headerString [
 ]
 
 { #category : 'accessing' }
+MicReferenceToUnexistingAnchorResult >> headerString [
+
+	^ 'Reference To Unexisting Anchor'
+]
+
+{ #category : 'accessing' }
 MicReferenceToUnexistingAnchorResult >> isWhat [
 	^  'undefined'
 ]

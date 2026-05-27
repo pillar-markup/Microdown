@@ -37,3 +37,9 @@ MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 	, '] should be capitalized as ['
 	, expected , '].'
 ]
+
+{ #category : 'kinds' }
+MicWrongReferenceToFigSectTableAnchorResult >> headerString [
+
+	^ 'Wrong Reference To Fig Sect Table Anchor'
+]

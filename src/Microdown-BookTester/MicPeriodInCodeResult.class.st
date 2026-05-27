@@ -14,3 +14,9 @@ MicPeriodInCodeResult >> explanation [
 			   ifFalse: [ ' not ' ]
 			   ifTrue: [ ' ' ]) , 'be terminated with a period (.).'
 ]
+
+{ #category : 'explanation' }
+MicPeriodInCodeResult >> headerString [
+
+	^ 'Period Code'
+]

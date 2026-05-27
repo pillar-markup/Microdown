@@ -109,6 +109,12 @@ MicBookTestResult >> fragmentedText: aText [
 	fragmentedText := aText
 ]
 
+{ #category : 'accessing' }
+MicBookTestResult >> headerString [
+
+	^ 'Book Test'
+]
+
 { #category : 'initialization' }
 MicBookTestResult >> initialize [
 
