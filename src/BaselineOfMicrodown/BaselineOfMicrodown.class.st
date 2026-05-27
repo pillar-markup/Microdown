@@ -17,8 +17,7 @@ BaselineOfMicrodown >> baseline: spec [
 
 		self
 			xmlParserHtml: spec;
-			mustache: spec;
-			gitBridge: spec.
+			mustache: spec.
 
 		spec preLoadDoIt: #'preload:package:'.
 
@@ -83,21 +82,15 @@ BaselineOfMicrodown >> baseline: spec [
 			package: 'Microdown-ParentChildrenChecker' with: [
 				spec requires: #( 'Microdown' ) ];
 			
+			package: 'Microdown-Toc' with: [
+				spec requires: #( 'Microdown' ) ];
+			
 			package: 'Microdown-BookTester' with: [
 				spec requires: #( 'Microdown' ) ];
 			package: 'Microdown-BookTester-Tests' with: [
-				spec requires: #( 'Microdown-BookTester' ) ];	
-			
-			package: 'Microdown-Rules' with: [
 				spec requires: #( 'Microdown-BookTester' ) ].
 			
-			"
-			package: #'Microdown-Blog' with: [
-				spec requires: #( #'Microdown' #'Mustache' #'Microdown-HTMLExporter') ];
 			
-			package: #'Microdown-Blog-Tests' with: [
-				spec requires: #( #'Microdown-Blog' 'GitBridge') ].
-			"
 		spec
 			group: 'Core' with: #('Microdown' 'Microdown-Tests');
 			group: 'ForPharo' with: #('Microdown' 'Microdown-BrowserExtensions');
@@ -106,6 +99,7 @@ BaselineOfMicrodown >> baseline: spec [
 			group: 'LaTeX' with:  #('Core' 'Microdown-LaTeXExporter' 'Microdown-LaTeXExporter-Tests');
 			group: 'Extensions' with: #(
 				'Microdown-Evaluator'
+				'Microdown-Toc'
 				'Microdown-Evaluator-Tests'
 				'Microdown-PrettyPrinter'
 				'Microdown-PrettyPrinter-Tests'
@@ -118,7 +112,6 @@ BaselineOfMicrodown >> baseline: spec [
 				'Microdown-ParentChildrenChecker'
 				'Microdown-BookTester'
 				'Microdown-BookTester-Tests'
-				'Microdown-Rules'
 				'Microdown-Templated'
 				);
 			group: 'All' 
@@ -130,12 +123,6 @@ BaselineOfMicrodown >> baseline: spec [
 
 
 
-]
-
-{ #category : 'baselines' }
-BaselineOfMicrodown >> gitBridge: spec [
-
-	spec baseline: 'GitBridge' with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
 ]
 
 { #category : 'baselines' }

@@ -9,7 +9,6 @@ Class {
 	#name : 'MicChecker',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'reportWriter',
 		'results',
 		'rootDirectory'
 	],
@@ -24,13 +23,14 @@ MicChecker class >> checkerName [
 ]
 
 { #category : 'configuration help' }
-MicChecker class >> configurationJSONPart [
-
-	^ #()
+MicChecker class >> configurationPart: newline [
+	"To be removed... you should use configurationPartWithNewLine:"
+	
+	^ self configurationPartWithNewLine: newline
 ]
 
 { #category : 'configuration help' }
-MicChecker class >> configurationPart: newline [
+MicChecker class >> configurationPartWithNewLine: newline [
 	"self configurationPart"
 	
 	"^ STON toJsonStringPretty: { self checkerName -> self configurationJSONPart } asDictionary"
@@ -42,7 +42,9 @@ MicChecker class >> configurationPart: newline [
 		writer	jsonMode: true.
 		writer prettyPrint: true;
 		newLine: newline;
-		nextPut: { self checkerName -> self configurationJSONPart } asDictionary ]
+		nextPut: (Dictionary new 
+						at: self checkerName put: self objectsForJSONConfigurationPart;
+						yourself ) ]
 ]
 
 { #category : 'configuration help' }
@@ -52,11 +54,22 @@ MicChecker class >> explanationForConfiguration [
 	^ String streamContents: [ :str | 
 		str << self comment. 
 		str cr.
-		self configurationJSONPart ifNotEmpty: [ 
 			str cr.
 			str << 'In the pillar.conf file you can add the following key values:'. 
 			str cr.
-			str << (self configurationPart: Character lf asString) ]] 
+			str << (self configurationPartWithNewLine: Character lf asString) ] 
+]
+
+{ #category : 'testing' }
+MicChecker class >> isAbstract [ 
+	
+	^ self = MicChecker
+]
+
+{ #category : 'configuration help' }
+MicChecker class >> objectsForJSONConfigurationPart [
+	"return either a boolean for non composite configurations or a dictionary."
+	^ #()
 ]
 
 { #category : 'visiting' }
@@ -65,7 +78,7 @@ MicChecker >> addResult: aResult [
 	results add: aResult
 ]
 
-{ #category : 'accessing' }
+{ #category : 'visiting' }
 MicChecker >> checkProject: aFileReference [
 
 	| collector |
@@ -80,7 +93,7 @@ MicChecker >> configureFrom: aConfiguration [
 	^ self 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'visiting' }
 MicChecker >> fileCollectorForMainFileReference: aFileReference [
 
 	| mainMic collector |
@@ -98,7 +111,7 @@ MicChecker >> fileSystem: aReference [
 	rootDirectory := aReference
 ]
 
-{ #category : 'visiting' }
+{ #category : 'initialization' }
 MicChecker >> initialize [ 
 
 	super initialize.
@@ -111,6 +124,7 @@ MicChecker >> isOkay [
 ]
 
 { #category : 'accessing' }
+
 MicChecker >> reportWriter [
 
 	^ reportWriter
@@ -128,6 +142,7 @@ MicChecker >> resultHeaderStrings [
 ]
 
 { #category : 'visiting' }
+
 MicChecker >> results [
 
 	^ results

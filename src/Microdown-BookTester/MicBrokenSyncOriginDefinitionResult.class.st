@@ -8,12 +8,11 @@ Class {
 	#name : 'MicBrokenSyncOriginDefinitionResult',
 	#superclass : 'MicResult',
 	#instVars : [
-		'origin',
-		'codeBlock'
+		'origin'
 	],
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Checker-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Checker-CodeBlockAnalysis'
 }
 
 { #category : 'kinds' }
@@ -28,7 +27,7 @@ MicBrokenSyncOriginDefinitionResult >> explanation [
 	^ 'The sync origin in the definition is bogus it should be C [class]>> #selector and we get: ', origin
 ]
 
-{ #category : 'accessing' }
+{ #category : 'initialization' }
 MicBrokenSyncOriginDefinitionResult >> initialize [ 
 	super initialize.
 	origin := 'C [class]>>#selector'

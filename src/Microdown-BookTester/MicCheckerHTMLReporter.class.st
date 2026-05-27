@@ -7,9 +7,9 @@ Class {
 		'selectedCheckers',
 		'checkerResults'
 	],
-	#category : 'Microdown-BookTester-CheckerDashboard',
+	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
-	#tag : 'CheckerDashboard'
+	#tag : 'UI'
 }
 
 { #category : 'accessing' }
@@ -23,9 +23,11 @@ MicCheckerHTMLReporter >> buildHTML [
 
     "Stats"
         passedCount := self selectedCheckers count: [ :checkerName |
+
             | results |
             results := checkerResults at: checkerName ifAbsent: [ #() ].
             results isEmpty ].
+
         errorCount := self selectedCheckers size - passedCount.
         s nextPutAll: '<div class="stats-grid"><div class="stat-card danger"><div class="stat-label">Total errors</div><div class="stat-value danger">' , reporter results size printString , '</div><div class="stat-desc">issues detected</div></div><div class="stat-card success"><div class="stat-label">Checkers passed</div><div class="stat-value success">' , passedCount printString , '</div><div class="stat-desc">no problems found</div></div><div class="stat-card warning"><div class="stat-label">Checkers with errors</div><div class="stat-value warning">' , errorCount printString , '</div><div class="stat-desc">need attention</div></div></div>'.
         "OK section"
@@ -54,6 +56,7 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
             nextPutAll: '<div class="section err-section"><div class="section-header" onclick="toggle(this)"><span class="section-badge badge-error">' , count printString , ' error' , (count = 1 ifTrue: [''] ifFalse: ['s']) , '</span><span class="section-title">' , (self htmlEscape: header) , '</span><span class="chevron open">&#9660;</span></div><div class="section-body">'.
         errorList do: [ :r |
             | lineNum srcFile searchText fullPath shortMsg context |
+
             srcFile := r sourceFileReference.
 			   (srcFile isNil or: [ (srcFile respondsTo: #fullName) not ])
 					ifTrue: [ 
@@ -62,6 +65,7 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
 						ifTrue: [ r micElement fromFile ]
 						ifFalse: [ nil ].
 					srcFile := micFile ifNil: [ fileReference ]].
+
             searchText := ((r class methodDict includesKey: #what) and: [ r what notNil and: [ r what notEmpty ] ])
                 ifTrue: [ r what ]
                 ifFalse: [

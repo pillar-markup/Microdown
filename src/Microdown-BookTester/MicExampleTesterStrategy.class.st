@@ -12,9 +12,9 @@ See [PDF explaining book tester](https://github.com/pillar-markup/BookTester/tre
 Class {
 	#name : 'MicExampleTesterStrategy',
 	#superclass : 'MicCodeBlockTesterStrategy',
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Checker-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Checker-CodeBlockAnalysis'
 }
 
 { #category : 'hook' }
@@ -29,7 +29,10 @@ MicExampleTesterStrategy >> checkAssociation: aCodeBlockObject [
 	"Asserts  the association created in any codeBlock "
 
 	| association |
-	association := self class compiler evaluate: aCodeBlockObject text.
+	SystemVersion current major < 14  ifTrue: [ 
+		association := self class compiler evaluate: aCodeBlockObject text.
+	^ association key = association value ].
+	association := OpalEvaluator new  evaluate: aCodeBlockObject text.
 	^ association key = association value
 ]
 
@@ -51,7 +54,7 @@ MicExampleTesterStrategy >> verify: aCodeBlock [
 		| result |
 		result := MicBookTestResult new.
 		result text: aCodeBlock code.
-		result sourceFileReference: aCodeBlock fromFile.
+		result inFile: aCodeBlock fromFile.
 		results add: result.
 		self executeAndReportIn: result.
 		aCodeBlock isExpectedFailure 

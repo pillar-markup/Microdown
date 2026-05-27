@@ -118,6 +118,13 @@ MicListItemBlock >> nestedLevel [
 ]
 
 { #category : 'accessing' }
+MicListItemBlock >> printOn: str [
+	"to replace testText but this should be done consistently"
+	
+	children do: [ :each | str nextPutAll: each printString ]
+]
+
+{ #category : 'accessing' }
 MicListItemBlock >> testText [
 	"I am used to make it easier to write tests"
 	^ String streamContents: [ :str | children do: [ :each | str nextPutAll: each printString ] ]

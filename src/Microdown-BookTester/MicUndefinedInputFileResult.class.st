@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'inputFileBlock'
 	],
-	#category : 'Microdown-BookTester-References',
+	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'References'
+	#tag : 'Checker-References'
 }
 
 { #category : 'kinds' }
@@ -27,7 +27,7 @@ MicUndefinedInputFileResult class >> headerString [
 { #category : 'accessing' }
 MicUndefinedInputFileResult >> explanation [
 
-	^ 'Undefined file input: ', self what,' (in file ', source fullName , ') refer to file that does not exist.'
+	^ 'Undefined file input: ', self what,' (in file ', fileReference fullName , ') refer to file that does not exist.'
 	
 ]
 
