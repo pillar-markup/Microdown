@@ -268,18 +268,19 @@ MicParser >> handleLine: line [
 		-if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
 
-	| nextNode tempNode |
+	| nextNode |
 	(current canConsumeLine: (current massageLine: line))
 		ifTrue: [ 
 			nextNode := current addLineAndReturnNextNode: line.
 			current == nextNode ifFalse: [ 
-				tempNode := nextNode.
-				[ tempNode notNil and: [ tempNode startLine isNil ] ] whileTrue: [ 
-					tempNode startLine: currentLineNumber.
-					tempNode := tempNode parent ] ].
+				nextNode startLine: currentLineNumber ].
+				
 			current := nextNode.
 			^ current ]
-		ifFalse: [ current closeMe ].
+		ifFalse: [ 
+			current endLine: currentLineNumber.
+			current closeMe ].
+			
 	current := current parent.
 	self handleLine: line
 ]
