@@ -37,6 +37,7 @@ MicCodeIndentationCheckerTest >> setUp [
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 	checker := MicCodeIndentationChecker new.
+	checker leadingCharacters: '  '.
 ]
 
 { #category : 'tests' }
@@ -62,4 +63,27 @@ MicCodeIndentationCheckerTest >> testIndentationWrongDetected [
 	checker checkProject: fileSystem / 'indentationWrong.md'.
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
+]
+
+{ #category : 'tests' }
+MicCodeIndentationCheckerTest >> testMultipleIndentationInvalid [
+
+	| document codeBlock |
+	checker leadingCharacters: '  '.
+	document := Microdown parse: '```', String cr, '     foo', String cr, '```'.
+	codeBlock := document children first.
+	
+	checker visitCode: codeBlock.
+	self assert: checker results size equals: 1
+]
+
+{ #category : 'tests' }
+MicCodeIndentationCheckerTest >> testMultipleIndentationValid [
+
+	| codeBlock |
+	checker leadingCharacters: '  '.
+	codeBlock := MicCodeBlock new body: '    foo'.
+	
+	checker visitCode: codeBlock.
+	self assert: checker results isEmpty
 ]
