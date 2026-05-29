@@ -40,6 +40,7 @@ MicCheckerDashboard >> checkerResults [
 { #category : 'accessing' }
 MicCheckerDashboard >> checkerResults: aDict [
 	checkerResults:= aDict 
+]
 
 { #category : 'examples' }
 MicCheckerDashboard class >> example [
