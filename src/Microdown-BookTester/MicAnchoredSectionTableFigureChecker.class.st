@@ -51,22 +51,6 @@ MicAnchoredSectionTableFigureChecker >> addErrorDetail: detailString on: aTextBl
 		yourself)
 ]
 
-{ #category : 'checking' }
-MicAnchoredSectionTableFigureChecker >> analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock [
-
-	anchoredElements do: [ :ref |
-		self checkNamingFor: words 
-			reference: ref 
-			anchorBlock: anchorBlock 
-			inTextBlock: aTextBlock 
-			inParagraph: aParagraph.
-		self checkMissingAnchorsFor: words 
-			reference: ref 
-			anchorBlock: anchorBlock 
-			inTextBlock: aTextBlock 
-			inParagraph: aParagraph ]
-]
-
 { #category : 'accessing' }
 MicAnchoredSectionTableFigureChecker >> anchoredElements [
 
@@ -75,7 +59,6 @@ MicAnchoredSectionTableFigureChecker >> anchoredElements [
 
 { #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
-
 	| lastWord |
 	lastWord := words last.
 	words do: [ :word |
@@ -85,30 +68,25 @@ MicAnchoredSectionTableFigureChecker >> checkMissingAnchorsFor: words reference:
 
 { #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> checkNamingFor: words reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph [
-
 	| lastWord anchorString |
 	anchorBlock ifNil: [ ^ self ].
 	lastWord := words last.
 	lastWord asLowercase = ref ifFalse: [ ^ self ].
 
-	(words size > 1 and: [
-		 (words at: words size - 1) asLowercase = 'the' ])
+	(words size > 1 and: [ (words at: words size - 1) asLowercase = 'the' ])
 		ifTrue: [
-				anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ])
-				                , '@*'.
-				self
-					addErrorDetail:
-					(words at: words size - 1) , ' ' , lastWord , anchorString
-					on: aTextBlock
-					inParagraph: aParagraph ]
+			anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ]) , '@*'.
+			self
+				addErrorDetail: (words at: words size - 1) , ' ' , lastWord , anchorString
+				on: aTextBlock
+				inParagraph: aParagraph ]
 		ifFalse: [
-				lastWord = ref ifTrue: [
-						anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ])
-						                , '@*'.
-						self
-							addErrorDetail: lastWord , anchorString
-							on: aTextBlock
-							inParagraph: aParagraph ] ]
+			lastWord = ref ifTrue: [
+				anchorString := ' *@' , (anchorBlock bodyString ifNil: [ '' ]) , '@*'.
+				self
+					addErrorDetail: lastWord , anchorString
+					on: aTextBlock
+					inParagraph: aParagraph ] ]
 ]
 
 { #category : 'configuration' }
@@ -131,14 +109,16 @@ MicAnchoredSectionTableFigureChecker >> initialize [
 
 { #category : 'checking' }
 MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock atIndex: index withChildren: children inParagraph: aParagraph [
-	| words anchorBlock |
-	words := aTextBlock bodyString substrings.
-	words isEmpty ifTrue: [ ^ self ].
-	anchorBlock := (index < children size and: [ (children at: index + 1) isKindOf: MicAnchorReferenceBlock ])
+	| anchorBlock |
+	aTextBlock bodyString substrings isEmpty ifTrue: [ ^ self ].
+	
+	anchorBlock := (index < children size and: [ (children at: index + 1) isAnchorReferenceBlock ])
 		ifTrue: [ children at: index + 1 ]
 		ifFalse: [ nil ].
 	
-	self analyzeWords: words inTextBlock: aTextBlock inParagraph: aParagraph anchorBlock: anchorBlock
+	anchoredElements do: [ :ref |
+		self checkNamingFor: aTextBlock bodyString substrings reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph.
+		self checkMissingAnchorsFor: aTextBlock bodyString substrings reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph ]
 ]
 
 { #category : 'visiting' }

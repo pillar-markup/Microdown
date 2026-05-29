@@ -3,7 +3,8 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'fileSystem',
-		'checker'
+		'checker',
+		'inFile'
 	],
 	#category : 'Microdown-BookTester-Checker-BookTester',
 	#package : 'Microdown-BookTester',
