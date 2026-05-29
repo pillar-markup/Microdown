@@ -26,6 +26,9 @@ SpPresenter>>methodTwo
 Class {
 	#name : 'MicMethodReferenceChecker',
 	#superclass : 'MicChecker',
+	#instVars : [
+		'requireHash'
+	],
 	#category : 'Microdown-BookTester-Checker-MethodReferences',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-MethodReferences'
@@ -37,18 +40,40 @@ MicMethodReferenceChecker class >> checkerName [
 ]
 
 { #category : 'visiting - inline elements' }
+MicMethodReferenceChecker >> initialize [
+	super initialize.
+	requireHash := true
+]
+
+{ #category : 'visiting - inline elements' }
+MicMethodReferenceChecker >> requireHash [
+	^ requireHash
+]
+
+{ #category : 'visiting - inline elements' }
+MicMethodReferenceChecker >> requireHash: aBoolean [
+	requireHash := aBoolean
+]
+
+{ #category : 'visiting - inline elements' }
 MicMethodReferenceChecker >> visitText: aMicText [
-	| text withHash withhoutHash |
+	| text hasHash hasNoHash hasError |
 	text := aMicText bodyString.
 	text ifNil: [ ^ self ].
-	withHash := text includesSubstring: '>>#'.
-	withhoutHash := (RxMatcher forString: '>>[^#]') matchesIn: text.
-	(withHash and: [ withhoutHash notEmpty ]) ifTrue: [ 
+	
+	hasHash := text includesSubstring: '>>#'.
+	hasNoHash := (RxMatcher forString: '>>[^#]') matchesIn: text.
+	
+	hasError := self requireHash 
+		ifTrue: [ hasNoHash notEmpty ] 
+		ifFalse: [ hasHash ].
+		
+	hasError ifTrue: [ 
 		results add: (MicMethodReferenceResult new 
 			micElement: aMicText;
 			inFile: aMicText;
 			detail: text;
-			yourself 
+			yourself
 		)
-		 ]
+	]
 ]
