@@ -39,6 +39,12 @@ MicAnchorResult >> explanation [
 ]
 
 { #category : 'accessing' }
+MicAnchorResult >> headerString [
+
+	^ 'Anchor'
+]
+
+{ #category : 'accessing' }
 MicAnchorResult >> isWhat [
 	^  'anchor problem'
 ]

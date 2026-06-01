@@ -124,7 +124,6 @@ MicChecker >> isOkay [
 ]
 
 { #category : 'accessing' }
-
 MicChecker >> reportWriter [
 
 	^ reportWriter
@@ -142,7 +141,6 @@ MicChecker >> resultHeaderStrings [
 ]
 
 { #category : 'visiting' }
-
 MicChecker >> results [
 
 	^ results

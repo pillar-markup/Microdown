@@ -25,6 +25,19 @@ Class {
 	#tag : 'UI'
 }
 
+{ #category : 'examples' }
+MicCheckerDashboard class >> example [
+
+	<script>
+	self new open
+]
+
+{ #category : 'initialization' }
+MicCheckerDashboard >> checkerClasses [
+
+	^ MicChecker allSubclasses reject: [ :cls | cls isAbstract ] 
+
+]
 
 { #category : 'accessing' }
 MicCheckerDashboard >> checkerList [
@@ -40,20 +53,6 @@ MicCheckerDashboard >> checkerResults [
 { #category : 'accessing' }
 MicCheckerDashboard >> checkerResults: aDict [
 	checkerResults:= aDict 
-]
-
-{ #category : 'examples' }
-MicCheckerDashboard class >> example [
-
-	<script>
-	self new open
-]
-
-{ #category : 'initialization' }
-MicCheckerDashboard >> checkerClasses [
-
-	^ MicChecker allSubclasses reject: [ :cls | cls isAbstract ] 
-
 ]
 
 { #category : 'initialization' }

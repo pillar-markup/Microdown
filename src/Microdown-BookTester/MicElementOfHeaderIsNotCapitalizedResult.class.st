@@ -10,3 +10,9 @@ Class {
 MicElementOfHeaderIsNotCapitalizedResult >> explanation [ 
 	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ' , detail , ' should be capitalized.'
 ]
+
+{ #category : 'kinds' }
+MicElementOfHeaderIsNotCapitalizedResult >> headerString [
+
+	^ 'Element Of Header Is Not Capitalized'
+]

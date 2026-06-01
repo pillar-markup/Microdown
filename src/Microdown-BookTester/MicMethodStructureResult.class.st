@@ -29,3 +29,9 @@ MicMethodStructureResult >> explanation [
 	, detail 
 	, '] should have an empty line after the selector when is no comment.'
 ]
+
+{ #category : 'kinds' }
+MicMethodStructureResult >> headerString [
+
+	^ 'Method Structure'
+]

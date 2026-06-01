@@ -10,3 +10,9 @@ Class {
 MicElementAfterColonIsNotCapitalizedResult >> explanation [ 
 			^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail , ' as first letter after a colon should be uppercased.'
 ]
+
+{ #category : 'kinds' }
+MicElementAfterColonIsNotCapitalizedResult >> headerString [
+
+	^ 'Element After Conolis Not Capitalized'
+]

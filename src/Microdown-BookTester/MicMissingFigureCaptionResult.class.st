@@ -18,3 +18,9 @@ MicMissingFigureCaptionResult >> figure [
 MicMissingFigureCaptionResult >> figure: aFigure [
 	figure := aFigure
 ]
+
+{ #category : 'kinds' }
+MicMissingFigureCaptionResult >> headerString [
+
+	^ 'Missing Figure Caption'
+]
