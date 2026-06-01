@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicFigureEmptyCaptionCheckerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'checker'
+	],
 	#category : 'Microdown-BookTester-Checker-EmptyCaption',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-EmptyCaption'
@@ -114,4 +117,16 @@ MicFigureEmptyCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	visitor checkProject: mdFile.
 	
 	self assert: visitor results size equals: 1.
+]
+
+{ #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testResultContainsMicElement [
+
+	| block checker |
+	checker := MicEmptyCaptionChecker new.
+	block := MicFigureBlock new.
+	checker checkCaptionOf: block.
+
+	self assert: checker results size equals: 1.
+	self assert: checker results first micElement equals: block
 ]
