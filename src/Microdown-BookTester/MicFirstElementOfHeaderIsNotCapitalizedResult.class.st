@@ -13,3 +13,9 @@ MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [
 	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail, ' as first word of the header should be uppercased.'
 	 
 ]
+
+{ #category : 'kinds' }
+MicFirstElementOfHeaderIsNotCapitalizedResult >> headerString [
+
+	^ 'First Element Of Header Is Not Capitalized'
+]

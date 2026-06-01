@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'reporter',
 		'fileReference',
-		'selectedCheckers'
+		'selectedCheckers',
+		'checkerResults'
 	],
 	#category : 'Microdown-BookTester-UI',
 	#package : 'Microdown-BookTester',
@@ -20,33 +21,22 @@ MicCheckerHTMLReporter >> buildHTML [
         "Header"
         s nextPutAll: '<div class="report-header"><div class="report-logo">&#128196;</div><div class="report-header-text"><div class="report-title">Microdown Checker Report</div><div class="report-subtitle">' , (self htmlEscape: fileReference fullName) , '</div></div></div>'.
 
-        "Stats"
+    "Stats"
         passedCount := self selectedCheckers count: [ :checkerName |
-            | checker |
-            checker := MicChecker allSubclasses
-                detect: [ :c | c checkerName = checkerName ]
-                ifNone: [ nil ].
-            checker isNil or: [
-                (checker new resultHeaderStrings) isEmpty or: [
-                    (checker new resultHeaderStrings) noneSatisfy: [ :h |
-                        reporter results anySatisfy: [ :r | r headerString = h ] ] ] ] ].
+
+            | results |
+            results := checkerResults at: checkerName ifAbsent: [ #() ].
+            results isEmpty ].
+
         errorCount := self selectedCheckers size - passedCount.
-
         s nextPutAll: '<div class="stats-grid"><div class="stat-card danger"><div class="stat-label">Total errors</div><div class="stat-value danger">' , reporter results size printString , '</div><div class="stat-desc">issues detected</div></div><div class="stat-card success"><div class="stat-label">Checkers passed</div><div class="stat-value success">' , passedCount printString , '</div><div class="stat-desc">no problems found</div></div><div class="stat-card warning"><div class="stat-label">Checkers with errors</div><div class="stat-value warning">' , errorCount printString , '</div><div class="stat-desc">need attention</div></div></div>'.
-
         "OK section"
         s nextPutAll: '<div class="section ok-section"><div class="section-header" onclick="toggle(this)"><span class="section-badge badge-ok">&#10003; Passed</span><span class="section-title">Checkers with no problems</span><span class="section-count">' , passedCount printString , ' checkers</span><span class="chevron open">&#9660;</span></div><div class="section-body">'.
         self selectedCheckers do: [ :checkerName |
-            | checker headers hasErrors |
-            checker := MicChecker allSubclasses
-                detect: [ :c | c checkerName = checkerName ]
-                ifNone: [ nil ].
-            checker ifNotNil: [
-                headers := checker new resultHeaderStrings.
-                hasErrors := headers anySatisfy: [ :h |
-                    reporter results anySatisfy: [ :r | r headerString = h ] ].
-                hasErrors ifFalse: [
-                    s nextPutAll: '<div class="ok-row"><div class="ok-dot">&#10003;</div><span class="ok-text"><span class="ok-checker">' , (self htmlEscape: checkerName) , '</span> &#8212; no problems found</span></div>' ] ] ].
+            | results |
+            results := checkerResults at: checkerName ifAbsent: [ #() ].
+            results isEmpty ifTrue: [
+                s nextPutAll: '<div class="ok-row"><div class="ok-dot">&#10003;</div><span class="ok-text"><span class="ok-checker">' , (self htmlEscape: checkerName) , '</span> &#8212; no problems found</span></div>' ] ].
         s nextPutAll: '</div></div>'.
 
         "Error sections"
@@ -66,7 +56,16 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
             nextPutAll: '<div class="section err-section"><div class="section-header" onclick="toggle(this)"><span class="section-badge badge-error">' , count printString , ' error' , (count = 1 ifTrue: [''] ifFalse: ['s']) , '</span><span class="section-title">' , (self htmlEscape: header) , '</span><span class="chevron open">&#9660;</span></div><div class="section-body">'.
         errorList do: [ :r |
             | lineNum srcFile searchText fullPath shortMsg context |
-            srcFile := r inFile ifNil: [ fileReference ].
+
+            srcFile := r sourceFileReference.
+			   (srcFile isNil or: [ (srcFile respondsTo: #fullName) not ])
+					ifTrue: [ 
+						| micFile |
+						micFile := ((r respondsTo: #micElement) and: [ r micElement notNil ] )
+						ifTrue: [ r micElement fromFile ]
+						ifFalse: [ nil ].
+					srcFile := micFile ifNil: [ fileReference ]].
+
             searchText := ((r class methodDict includesKey: #what) and: [ r what notNil and: [ r what notEmpty ] ])
                 ifTrue: [ r what ]
                 ifFalse: [
@@ -79,33 +78,68 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
                                         ifTrue: [ r micElement text ]
                                         ifFalse: [ '' ] ] ]
                         ifFalse: [ '' ] ].
-            lineNum := (srcFile notNil and: [ searchText notEmpty ])
+            lineNum := (srcFile notNil and: [ (srcFile respondsTo: #fullName) and: [ searchText notEmpty ]])
                 ifTrue: [ self lineNumberOf: searchText inFile: srcFile ]
                 ifFalse: [ 0 ].
             lineNum := lineNum ifNil: [ 0 ].
-            fullPath := srcFile notNil ifTrue: [ srcFile fullName ] ifFalse: [ '' ].
+            fullPath := (srcFile notNil and: [ srcFile respondsTo:#fullName ]) ifTrue: [ srcFile fullName ] ifFalse: [ '' ].
 
             "Extraire uniquement Text: ... depuis r explanation"
             shortMsg := r explanation isString
                 ifTrue: [ r explanation ]
                 ifFalse: [ r explanation displayString ].
-            (shortMsg includesSubstring: 'Text: "') ifTrue: [
-                | startIdx endIdx |
-                startIdx := shortMsg indexOfSubCollection: 'Text: "' startingAt: 1.
-                endIdx := shortMsg indexOf: $" startingAt: startIdx + 7.
-                endIdx > 0
-                    ifTrue: [ shortMsg := shortMsg copyFrom: startIdx to: endIdx ]
-                    ifFalse: [ shortMsg := shortMsg copyFrom: startIdx to: shortMsg size ] ].
+(shortMsg includesSubstring: ' in file') ifTrue: [
+    | inFileIdx |
+    inFileIdx := shortMsg indexOfSubCollection: ' in file' startingAt: 1.
+    inFileIdx > 0 ifTrue: [
+        | afterFile |
+        afterFile := shortMsg indexOfSubCollection: 'contains a mistake' startingAt: inFileIdx.
+        afterFile > 0
+            ifTrue: [ shortMsg := shortMsg copyFrom: afterFile to: shortMsg size ]
+            ifFalse: [ shortMsg := shortMsg copyFrom: 1 to: inFileIdx - 1 ] ] ].
+aStream nextPutAll: '<div class="error-row"><div class="error-meta">'.
+lineNum > 0 ifTrue: [
+    aStream nextPutAll: '<span class="line-badge">Line ' , lineNum printString , '</span>' ].
+aStream nextPutAll: '<span class="file-path">' , (self htmlEscape: fullPath) , '</span></div><div class="error-msg">' , (self htmlEscape: shortMsg) , '</div>'.
+lineNum > 0 ifTrue: [
+    | problemText highlightedContext |
+    problemText := ''.
+    (r explanation includesSubstring: 'Text: "') ifTrue: [
+        | start end |
+        start := r explanation indexOfSubCollection: 'Text: "' startingAt: 1.
+        start := start + 7.
+        end := r explanation indexOf: $" startingAt: start.
+        end > 0 ifTrue: [
+            problemText := r explanation copyFrom: start to: end - 1 ] ].
+    context := self contextAround: lineNum inFile: srcFile.
+    highlightedContext := problemText isEmpty
+    ifTrue: [ self htmlEscape: context ]
+    ifFalse: [
+        | escaped marker replacement |
+        escaped := self htmlEscape: context.
+        marker := 'class="error-line">'.
+        replacement := '<mark style="background:#ff6b6b;color:#fff;border-radius:3px;padding:0 3px;">' , (self htmlEscape: problemText) , '</mark>'.
+        (escaped includesSubstring: marker) ifTrue: [
+            | markerIdx lineEnd beforeMark inLine afterLine |
+            markerIdx := escaped indexOfSubCollection: marker startingAt: 1.
+            markerIdx := markerIdx + marker size.
+            lineEnd := escaped indexOfSubCollection: '</span>' startingAt: markerIdx.
+            beforeMark := escaped copyFrom: 1 to: markerIdx - 1.
+            inLine := (escaped copyFrom: markerIdx to: lineEnd - 1)
+                copyReplaceAll: (self htmlEscape: problemText)
+                with: replacement.
+            afterLine := escaped copyFrom: lineEnd to: escaped size.
+            escaped := beforeMark , inLine , afterLine ].
+        escaped ].
+    aStream nextPutAll: '<div class="error-context">' , highlightedContext , '</div>' ].
+aStream nextPutAll: '</div>' ].
+aStream nextPutAll: '</div></div>' ]
+]
 
-            aStream nextPutAll: '<div class="error-row"><div class="error-meta">'.
-            lineNum > 0 ifTrue: [
-                aStream nextPutAll: '<span class="line-badge">Line ' , lineNum printString , '</span>' ].
-            aStream nextPutAll: '<span class="file-path">' , (self htmlEscape: fullPath) , '</span></div><div class="error-msg">' , (self htmlEscape: shortMsg) , '</div>'.
-            lineNum > 0 ifTrue: [
-                context := self contextAround: lineNum inFile: srcFile.
-                aStream nextPutAll: '<div class="error-context">' , (self htmlEscape: context) , '</div>' ].
-            aStream nextPutAll: '</div>' ].
-        aStream nextPutAll: '</div></div>' ]
+{ #category : 'accessing' }
+MicCheckerHTMLReporter >> checkerResults: aDict [
+
+	checkerResults := aDict
 ]
 
 { #category : 'accessing' }

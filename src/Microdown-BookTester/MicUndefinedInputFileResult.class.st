@@ -31,6 +31,12 @@ MicUndefinedInputFileResult >> explanation [
 	
 ]
 
+{ #category : 'kinds' }
+MicUndefinedInputFileResult >> headerString [
+
+	^ 'Undefined Input File'
+]
+
 { #category : 'inputFileBlock:' }
 MicUndefinedInputFileResult >> inputFile [ 
 	

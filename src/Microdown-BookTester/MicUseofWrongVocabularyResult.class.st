@@ -19,6 +19,12 @@ MicUseofWrongVocabularyResult >> explanation [
 	  , '] should not be used. We should use ' , goodWord
 ]
 
+{ #category : 'kinds' }
+MicUseofWrongVocabularyResult >> headerString [
+
+	^ 'USe of Wrong Vocabulary'
+]
+
 { #category : 'accessing' }
 MicUseofWrongVocabularyResult >> patternPair: anAssociation [ 
 	patternPair := anAssociation 

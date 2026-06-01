@@ -22,7 +22,7 @@ MicWrongReferenceToFigSectTableAnchorResult >> detail: anObject [
 ]
 
 { #category : 'accessing' }
-MicWrongReferenceToFigSectTableAnchorResult >> explanation [ 
+MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 	| words expected |
 	words := detail substrings.
 	
@@ -36,4 +36,15 @@ MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 	, detail 
 	, '] should be capitalized as ['
 	, expected , '].'
+]
+
+{ #category : 'kinds' }
+MicWrongReferenceToFigSectTableAnchorResult >> headerString [
+
+	^ 'Wrong Reference To Fig Sect Table Anchor'
+]
+
+{ #category : 'accessing' }
+MicWrongReferenceToFigSectTableAnchorResult >> micElement: anObject [
+    micElement := anObject
 ]

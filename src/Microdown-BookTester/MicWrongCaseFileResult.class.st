@@ -19,6 +19,12 @@ MicWrongCaseFileResult >> figureFileString: aString [
 	figureFileString := aString
 ]
 
+{ #category : 'kinds' }
+MicWrongCaseFileResult >> headerString [
+
+	^ 'Wrong Case File'
+]
+
 { #category : 'accessing' }
 MicWrongCaseFileResult >> what [
 	^ figureFileString

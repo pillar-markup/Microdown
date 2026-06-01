@@ -124,6 +124,11 @@ MicAbstractBlock >> initialize [
 	children := OrderedCollection new.
 ]
 
+{ #category : 'initialization' }
+MicAbstractBlock >> isAnchorReferenceBlock [
+	^ false
+]
+
 { #category : 'testing' }
 MicAbstractBlock >> isHeader [
 	^ false

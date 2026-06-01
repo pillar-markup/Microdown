@@ -20,6 +20,12 @@ MicWithDetailResult >> detail: aString [
 	detail := aString
 ]
 
+{ #category : 'kinds' }
+MicWithDetailResult >> headerString [
+
+	^ 'With detail'
+]
+
 { #category : 'printing' }
 MicWithDetailResult >> printOn: aStream [
 

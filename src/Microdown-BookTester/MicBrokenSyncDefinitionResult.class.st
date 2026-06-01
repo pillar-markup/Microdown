@@ -37,6 +37,12 @@ MicBrokenSyncDefinitionResult >> explanation [
 ]
 
 { #category : 'initialization' }
+MicBrokenSyncDefinitionResult >> headerString [
+
+	^ 'Broken Sync Definition'
+]
+
+{ #category : 'initialization' }
 MicBrokenSyncDefinitionResult >> initialize [ 
 	
 	super initialize. 
