@@ -12,7 +12,8 @@ Class {
 	#instVars : [
 		'children',
 		'parser',
-		'startLine'
+		'startLine',
+		'endLine'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -93,6 +94,16 @@ MicAbstractBlock >> closeMe [
 MicAbstractBlock >> computeNestedLevel [ 
 
 	^ 0
+]
+
+{ #category : 'testing' }
+MicAbstractBlock >> endLine [
+	^ endLine
+]
+
+{ #category : 'testing' }
+MicAbstractBlock >> endLine: anObject [
+	endLine := anObject
 ]
 
 { #category : 'properties' }
