@@ -22,6 +22,12 @@ MicDuplicatedAnchorResult class >> headerString [
 ]
 
 { #category : 'accessing' }
+MicDuplicatedAnchorResult >> headerString [
+
+	^ 'Duplicated Anchor'
+]
+
+{ #category : 'accessing' }
 MicDuplicatedAnchorResult >> isWhat [
 	^  'duplicated'
 ]

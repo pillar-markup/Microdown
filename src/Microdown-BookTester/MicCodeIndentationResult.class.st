@@ -29,3 +29,9 @@ MicCodeIndentationResult >> explanation [
 	, detail 
 	, '] should use tabs instead of spaces for indentation.'
 ]
+
+{ #category : 'kinds' }
+MicCodeIndentationResult >> headerString [
+
+	^ 'Code Indentation'
+]

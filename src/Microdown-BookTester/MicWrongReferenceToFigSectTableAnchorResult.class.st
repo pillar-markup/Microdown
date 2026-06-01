@@ -38,6 +38,12 @@ MicWrongReferenceToFigSectTableAnchorResult >> explanation [
 	, expected , '].'
 ]
 
+{ #category : 'kinds' }
+MicWrongReferenceToFigSectTableAnchorResult >> headerString [
+
+	^ 'Wrong Reference To Fig Sect Table Anchor'
+]
+
 { #category : 'accessing' }
 MicWrongReferenceToFigSectTableAnchorResult >> micElement: anObject [
     micElement := anObject

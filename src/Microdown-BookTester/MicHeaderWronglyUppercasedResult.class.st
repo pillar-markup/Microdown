@@ -13,3 +13,9 @@ MicHeaderWronglyUppercasedResult >> explanation [
 	^ 'Header: "' , micElement text , '" in file' , self inFile fullName , ' contains a mistake: ', detail, ' should not be uppercased.'
 	 
 ]
+
+{ #category : 'kinds' }
+MicHeaderWronglyUppercasedResult >> headerString [
+
+	^ 'Header Wrongly Uppercased'
+]

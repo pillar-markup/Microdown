@@ -27,6 +27,12 @@ MicBrokenSyncOriginDefinitionResult >> explanation [
 	^ 'The sync origin in the definition is bogus it should be C [class]>> #selector and we get: ', origin
 ]
 
+{ #category : 'kinds' }
+MicBrokenSyncOriginDefinitionResult >> headerString [
+
+	^ 'Broken Sync Origin Definition'
+]
+
 { #category : 'initialization' }
 MicBrokenSyncOriginDefinitionResult >> initialize [ 
 	super initialize.

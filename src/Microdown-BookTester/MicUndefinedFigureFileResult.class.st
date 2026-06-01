@@ -44,6 +44,12 @@ MicUndefinedFigureFileResult >> figureFileString: aString [
 ]
 
 { #category : 'accessing' }
+MicUndefinedFigureFileResult >> headerString [
+
+	^ 'Underfined Figure File'
+]
+
+{ #category : 'accessing' }
 MicUndefinedFigureFileResult >> what [ 
 
 	^ figureFileString
