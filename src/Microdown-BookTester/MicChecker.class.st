@@ -157,3 +157,9 @@ MicChecker >> rootDirectory: aFileReference [
 
 	rootDirectory := aFileReference
 ]
+
+{ #category : 'testing' }
+MicChecker >> visitSecondaryRootBlock: aSecondaryRootBlock [
+
+	^ self visitChildrenOf: aSecondaryRootBlock
+]

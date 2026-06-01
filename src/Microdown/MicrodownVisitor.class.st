@@ -265,6 +265,12 @@ MicrodownVisitor >> visitScript: aSlide [
 ]
 
 { #category : 'visiting' }
+MicrodownVisitor >> visitSecondaryRootBlock: aSecondaryRootBlock [
+
+	^ self visitRoot: aSecondaryRootBlock
+]
+
+{ #category : 'visiting' }
 MicrodownVisitor >> visitSegment: aSegment [
 	"subclassResponsibility"
 ]
