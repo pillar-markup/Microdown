@@ -1,3 +1,7 @@
+"
+I represent an entry in the table of contents. 
+I'm contained in an toc entry list.
+"
 Class {
 	#name : 'MicTocEntry',
 	#superclass : 'MicElement',

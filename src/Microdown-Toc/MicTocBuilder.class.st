@@ -31,7 +31,7 @@ MicTocBuilder >> limitUpTo: anInteger [
 MicTocBuilder >> toc [
 
 	^ MicRootBlock new children: { 
-			(MicOrderedListBlock new 
+			(MicTocEntryList new 
 				children: tocItems; yourself) } ; 
 			yourself  
 ]
