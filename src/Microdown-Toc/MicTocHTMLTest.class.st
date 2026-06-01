@@ -32,6 +32,7 @@ MicTocHTMLTest >> testHTMLRender [
 	builder := self builder. 
 	htmlVisitor := MicHTMLVisitor new.
 	htmlVisitor visit: builder toc.
+
 	self 
 		assert: htmlVisitor contents 
 		equals: String crlf, '<ol>', String crlf,
@@ -55,11 +56,10 @@ MicTocHTMLTest >> testHTMLRenderSimpleNesting [
 
 	htmlVisitor := MicHTMLVisitor new.
 	htmlVisitor visit: builder toc.
-
 	self
 		assert: htmlVisitor contents
 		equals:
 			String crlf , '<ol>' , String crlf , '<li>Header1' , String crlf
 			, '<ol>' , String crlf , '<li>Header11</li>' , String crlf
-			, '</ol>' , String crlf , '</li>' , String crlf , '</ol>'
+			, '</ol>' , '</li>' , String crlf , '</ol>'
 ]

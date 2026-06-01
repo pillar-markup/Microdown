@@ -492,7 +492,8 @@ MicHTMLVisitor >> visitOrderedList: anUnorderedList [
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
-
+	"This is not really nice because we cannot have some other entities in the list. But when we are going over an item this is important to know its parent to support for example contextual generation."
+	
 	canvas tag
 		name: 'li';
 		with: [ super visitOrderedListItem: anOrderedListItem ].
