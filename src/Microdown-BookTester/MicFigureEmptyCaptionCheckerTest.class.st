@@ -84,6 +84,21 @@ MicFigureEmptyCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testConfigureFrom [
+
+	| checker configuration |
+	checker := MicEmptyCaptionChecker new.
+	configuration := Dictionary new.
+
+	configuration at: 'checkOnly' put: #('code' 'math').
+	checker configureFrom: configuration.
+
+	self assert: checker checkCode.
+	self assert: checker checkMath.
+	self deny: checker checkFigure
+]
+
+{ #category : 'tests' }
 MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 	| checker config |
 	checker := MicEmptyCaptionChecker new.
@@ -100,6 +115,16 @@ MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 	self assert: checker checkCode.
 	self assert: checker checkMath.
 	self deny: checker checkFigure.
+]
+
+{ #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testExplanationForConfiguration [
+
+	| checker |
+	checker := MicEmptyCaptionChecker new.
+	
+	self assert: checker explanationForConfiguration isString.
+	self deny: checker explanationForConfiguration isEmpty
 ]
 
 { #category : 'tests' }
