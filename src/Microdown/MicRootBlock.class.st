@@ -107,7 +107,8 @@ MicRootBlock >> initialize [
 
 { #category : 'debugging' }
 MicRootBlock >> isSecondaryRoot [
-	^ false
+
+	^ parent notNil
 ]
 
 { #category : 'hooks' }

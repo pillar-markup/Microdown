@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicSecondaryRootBlock',
 	#superclass : 'MicRootBlock',
+	#instVars : [
+		'file'
+	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
 	#tag : 'Model'
@@ -13,6 +16,13 @@ MicSecondaryRootBlock >> accept: aVisitor [
 ]
 
 { #category : 'testing' }
-MicSecondaryRootBlock >> isSecondaryRoot [
-	^true 
+MicSecondaryRootBlock >> file [
+
+	^ file
+]
+
+{ #category : 'testing' }
+MicSecondaryRootBlock >> file: aFileReference [
+
+	file := aFileReference
 ]
