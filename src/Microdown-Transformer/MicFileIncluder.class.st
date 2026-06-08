@@ -122,9 +122,8 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 			ifTrue: [ error pass  ]].
 	
 	newRoot := MicSecondaryRootBlock new.
-	newRoot file: inputRef.
+	newRoot fromFile: inputRef.
 	newRoot children: inputDoc children.
 	
 	self replaceCurrentNodeBy: { newRoot }
-	
 ]

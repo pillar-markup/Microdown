@@ -30,26 +30,21 @@ MicSecondaryRootBlockTest >> testCanHoldChildren [
 
 { #category : 'tests' }
 MicSecondaryRootBlockTest >> testFileProperty [
-
 	| root fileRef |
 	root := MicSecondaryRootBlock new.
-	fileRef := 'fichierInclus.md'.
+	fileRef := 'fichierInclus.md' asFileReference.
 	
-	root file: fileRef.
+	root fromFile: fileRef.
 	
-	self assert: root file equals: fileRef
+	self assert: root fromFile equals: fileRef
 ]
 
 { #category : 'tests' }
 MicSecondaryRootBlockTest >> testIsSecondaryRoot [
-
 	| mainRoot secondaryRoot |
 	mainRoot := MicRootBlock new.
 	secondaryRoot := MicSecondaryRootBlock new.
 	
 	self deny: mainRoot isSecondaryRoot.
-	
-	secondaryRoot parent: mainRoot.
-	
 	self assert: secondaryRoot isSecondaryRoot
 ]
