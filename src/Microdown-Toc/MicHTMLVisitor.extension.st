@@ -1,6 +1,17 @@
 Extension { #name : 'MicHTMLVisitor' }
 
 { #category : '*Microdown-Toc' }
+MicHTMLVisitor >> visitToEntryList: aList [
+
+	canvas newLine.
+	canvas tag
+		name: 'ol';
+		with: [ 
+			canvas newLine. 
+			self visitChildrenOf: aList ]
+]
+
+{ #category : '*Microdown-Toc' }
 MicHTMLVisitor >> visitTocEntry: aMicTocEntry [
 
 	aMicTocEntry isLeaf

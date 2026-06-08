@@ -213,7 +213,8 @@ MicrodownVisitor >> visitOrderedList: anOrderedList [
 
 { #category : 'visiting - list' }
 MicrodownVisitor >> visitOrderedListItem: anItem [
-
+	"This is not really nice because we cannot have some other entities in the list. But when we are going over an item this is important to know its parent to support for example contextual generation."
+	
 	^ self visitListItem: anItem
 ]
 

@@ -693,7 +693,7 @@ MicMicrodownSnippetFactory >> newlineLFSample [
 { #category : 'document' }
 MicMicrodownSnippetFactory >> newlineSample [
 
-	^ Smalltalk os lineEnding
+	^ OSPlatform current lineEnding
 ]
 
 { #category : 'inputFile' }
