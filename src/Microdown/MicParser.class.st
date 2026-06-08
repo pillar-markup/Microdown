@@ -263,7 +263,6 @@ MicParser >> delimiterBlockClassFor: prefix [
 
 { #category : 'parsing' }
 MicParser >> handleLine: line [
-
 	"The logic is the following: 
 		-if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
@@ -273,7 +272,11 @@ MicParser >> handleLine: line [
 		ifTrue: [ 
 			nextNode := current addLineAndReturnNextNode: line.
 			current == nextNode ifFalse: [ 
-				nextNode startLine: currentLineNumber ].
+				| nodeToInit |
+				nodeToInit := nextNode.
+				[ nodeToInit notNil and: [ nodeToInit startLine isNil ] ] whileTrue: [
+					nodeToInit startLine: currentLineNumber.
+					nodeToInit := nodeToInit parent ] ].
 				
 			current := nextNode.
 			^ current ]

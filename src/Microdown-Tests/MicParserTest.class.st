@@ -173,7 +173,6 @@ another paragraph'.
 
 { #category : 'tests' }
 MicParserTest >> testStartLineWithNestedAndMultilineElements [
-
 	| doc list paragraph |
 	doc := Microdown parse: '# Title
 
@@ -182,7 +181,6 @@ MicParserTest >> testStartLineWithNestedAndMultilineElements [
 
 A long
 paragraph'.
-
 	self assert: doc children first startLine equals: 1.
 	list := doc children second.
 	self assert: list startLine equals: 3.
