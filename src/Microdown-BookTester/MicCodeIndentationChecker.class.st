@@ -21,12 +21,11 @@ MicCodeIndentationChecker class >> checkerName [
 
 { #category : 'visiting' }
 MicCodeIndentationChecker >> leadingCharacters [
-	^ leadingCharacters ifNil: [ ' ' ]
+	^ leadingCharacters
 ]
 
 { #category : 'visiting' }
 MicCodeIndentationChecker >> leadingCharacters: aString [
-
 	leadingCharacters := aString
 ]
 
