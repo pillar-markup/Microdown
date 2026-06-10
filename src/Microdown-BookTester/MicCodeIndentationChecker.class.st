@@ -31,18 +31,33 @@ MicCodeIndentationChecker >> leadingCharacters: aString [
 
 { #category : 'visiting' }
 MicCodeIndentationChecker >> visitCode: aMicCode [
-	| expectedStart hasError |
-	expectedStart := self leadingCharacters.
+	| lines addError |
+	lines := aMicCode body lines reject: #isEmpty.
 	
-	(aMicCode body lines reject: #isEmpty) do: [ :line |
-		hasError := expectedStart 
-			ifNil: [ line first = Character space ]
-			ifNotNil: [ (line beginsWith: expectedStart) not ].
-			
-		hasError ifTrue: [ 
-			results add: (MicCodeIndentationResult new 
-				micElement: aMicCode;
-				inFile: aMicCode fromFile;
-				detail: line;
-				yourself) ] ]
+	addError := [ :line | 
+		results add: (MicCodeIndentationResult new 
+			micElement: aMicCode;
+			inFile: aMicCode fromFile;
+			detail: line;
+			yourself) ].
+
+	self leadingCharacters
+		ifNil: [ 
+			lines do: [ :line | 
+				line first = Character space ifTrue: [ addError value: line ] ] ]
+		ifNotNil: [ :leading | 
+			leading isEmpty ifFalse: [ 
+				| expectedChar expectedSize |
+				expectedChar := leading first.
+				expectedSize := leading size.
+				
+				lines do: [ :line | 
+					line first = Character space ifTrue: [ 
+						| count |
+						count := line findFirst: [ :c | c ~= expectedChar ].
+						count := count = 0 
+							ifTrue: [ line size ] 
+							ifFalse: [ count - 1 ].
+							
+						(count \\ expectedSize = 0) ifFalse: [ addError value: line ] ] ] ] ]
 ]
