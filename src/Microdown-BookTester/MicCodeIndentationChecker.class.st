@@ -33,17 +33,36 @@ MicCodeIndentationChecker >> leadingCharacters: aString [
 MicCodeIndentationChecker >> visitCode: aMicCode [
 	| lines |
 	lines := aMicCode body lines.
+	self leadingCharacters ifNotNil: [
+		| expectedChar expectedSize |
+		self leadingCharacters isEmpty ifTrue: [ ^ self ].
+		expectedChar := self leadingCharacters first.
+		expectedSize := self leadingCharacters size.
+		
+		lines do: [ :line |
+			line isEmpty ifFalse: [ 
+				(line first = Character space) ifTrue: [ 
+					| count |
+					count := line findFirst: [ :c | c ~= expectedChar ].
+					count := count = 0 
+						ifTrue: [ line size ] 
+						ifFalse: [ count - 1 ].
+					
+					(count \\ expectedSize = 0) ifFalse: [ 
+						results add: (MicCodeIndentationResult new 
+							micElement: aMicCode;
+							inFile: aMicCode fromFile;
+							detail: line;
+							yourself) ] ] ] ].
+		^ self
+	].
+
 	lines do: [ :line |
 		line isEmpty ifFalse: [ 
-			"verify if the line begins with the configured leading characters"
-			(line beginsWith: self leadingCharacters) ifTrue: [ 
-					results add: (MicCodeIndentationResult new 
-						micElement: aMicCode;
-						inFile: aMicCode fromFile;
-						detail: line;
-						yourself
-					)
-				 ]
-			 ]
-		 ]
+			(line first = Character space) ifTrue: [ 
+				results add: (MicCodeIndentationResult new 
+					micElement: aMicCode;
+					inFile: aMicCode fromFile;
+					detail: line;
+					yourself) ] ] ]
 ]
