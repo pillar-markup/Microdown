@@ -5,6 +5,9 @@ A line that starts with a space character is considered incorrectly indented.
 Class {
 	#name : 'MicCodeIndentationChecker',
 	#superclass : 'MicChecker',
+	#instVars : [
+		'leadingCharacters'
+	],
 	#category : 'Microdown-BookTester-Checker-CodeIndentation',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-CodeIndentation'
@@ -17,20 +20,29 @@ MicCodeIndentationChecker class >> checkerName [
 ]
 
 { #category : 'visiting' }
+MicCodeIndentationChecker >> leadingCharacters [
+	^ leadingCharacters
+]
+
+{ #category : 'visiting' }
+MicCodeIndentationChecker >> leadingCharacters: aString [
+	leadingCharacters := aString
+]
+
+{ #category : 'visiting' }
 MicCodeIndentationChecker >> visitCode: aMicCode [
-	| lines |
-	lines := aMicCode body lines.
-	lines do: [ :line |
-		line isEmpty ifFalse: [ 
-			"verify if the line begin with space"
-			(line first = Character space) ifTrue: [ 
-					results add: (MicCodeIndentationResult new 
-						micElement: aMicCode;
-						inFile: aMicCode fromFile;
-						detail: line;
-						yourself
-					)
-				 ]
-			 ]
-		 ]
+	| expectedStart hasError |
+	expectedStart := self leadingCharacters.
+	
+	(aMicCode body lines reject: #isEmpty) do: [ :line |
+		hasError := expectedStart 
+			ifNil: [ line first = Character space ]
+			ifNotNil: [ (line beginsWith: expectedStart) not ].
+			
+		hasError ifTrue: [ 
+			results add: (MicCodeIndentationResult new 
+				micElement: aMicCode;
+				inFile: aMicCode fromFile;
+				detail: line;
+				yourself) ] ]
 ]
