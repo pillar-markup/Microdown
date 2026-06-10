@@ -172,7 +172,8 @@ Class {
 	#instVars : [
 		'current',
 		'root',
-		'dispatchTable'
+		'dispatchTable',
+		'currentLineNumber'
 	],
 	#pools : [
 		'MicSharedPool'
@@ -262,16 +263,27 @@ MicParser >> delimiterBlockClassFor: prefix [
 
 { #category : 'parsing' }
 MicParser >> handleLine: line [
-
 	"The logic is the following: 
 		-if the current block can consume the line, it manages it and this potentially creates a new block that becomes the current one.
 		When the line is not consumed, the current block is closed and its parent becomes the current one and the process is called back to treat the line."
 
+	| nextNode |
 	(current canConsumeLine: (current massageLine: line))
 		ifTrue: [ 
-			current := current addLineAndReturnNextNode: line.
+			nextNode := current addLineAndReturnNextNode: line.
+			current == nextNode ifFalse: [ 
+				| nodeToInit |
+				nodeToInit := nextNode.
+				[ nodeToInit notNil and: [ nodeToInit startLine isNil ] ] whileTrue: [
+					nodeToInit startLine: currentLineNumber.
+					nodeToInit := nodeToInit parent ] ].
+				
+			current := nextNode.
 			^ current ]
-		ifFalse: [ current closeMe ].
+		ifFalse: [ 
+			current endLine: currentLineNumber.
+			current closeMe ].
+			
 	current := current parent.
 	self handleLine: line
 ]
@@ -280,6 +292,7 @@ MicParser >> handleLine: line [
 MicParser >> initialize [
 
 	super initialize.
+	currentLineNumber := 1.
 	dispatchTable := Dictionary new.
 	dispatchTable at: AnchorMarkup put: MicAnchorBlock.
 	dispatchTable at: HeaderMarkup put: MicHeaderBlock.
@@ -355,7 +368,8 @@ MicParser >> parse: aStreamOrString [
 		line := inStream nextLine.
 		line isNil ] 
 	whileFalse: [ 
-		self handleLine: line ].
+		self handleLine: line.
+		currentLineNumber := currentLineNumber + 1 ].
 	[ current = root ]
 		whileFalse: [ 
 			current closeMe.
