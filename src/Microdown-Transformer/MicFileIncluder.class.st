@@ -113,7 +113,7 @@ MicFileIncluder >> topFile: aFileReference [
 MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	"I load the file and if the file exist I replace the node of the annotation by the content of the file."
 	
-	| inputRef inputDoc |
+	| inputRef inputDoc newRoot |
 	inputRef := anInputFileAnnotation path.
 	[ inputDoc := inputRef loadMicrodown inlineInputFiles]
 	on: MicResourceReferenceError 
@@ -121,6 +121,10 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 			ifFalse: [ ^ self ]
 			ifTrue: [ error pass  ]].
 	
-	self replaceCurrentNodeBy: inputDoc children
+	newRoot := MicSecondaryRootBlock new.
+	newRoot fromFile: inputRef.
+	newRoot children: inputDoc children.
+	newRoot children do: [ :each | each parent: newRoot ].
 	
+	self replaceCurrentNodeBy: { newRoot }
 ]

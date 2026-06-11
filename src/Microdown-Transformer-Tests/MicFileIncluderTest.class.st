@@ -84,7 +84,6 @@ Pharo is **cool**
 
 { #category : 'tests' }
 MicFileIncluderTest >> testHandleNestedFileResolution [
-
 	| root file reference |
 	(filesystem workingDirectory / 'Chapters') createDirectory.
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
@@ -95,46 +94,39 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 			setStream: stream;
 			inputfile: 'SUnit/anExample1.md' ].
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit'
-	        / 'anExample1.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
 			header: [ builder text: 'Foo' ] withLevel: 1;
 			inputfile: 'anExample2.md' ].
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit'
-	        / 'anExample2.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample2.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
 			header: [ builder text: 'Example2' ] withLevel: 1 ].
 
-	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit.md') fileSystem: filesystem.
+	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') fileSystem: filesystem.
 
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
 
-	self assert: root children first class equals: MicHeaderBlock.
-	self
-		assert: root children first children first bodyString
-		equals: 'Foo'.
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first children first bodyString equals: 'Foo'.
 
-	self assert: root children second class equals: MicHeaderBlock.
-	self
-		assert: root children second children first bodyString
-		equals: 'Example2'
+	self assert: root children first children second class equals: MicSecondaryRootBlock.
+	self assert: root children first children second children first class equals: MicHeaderBlock.
+	self assert: root children first children second children first children first bodyString equals: 'Example2'
 ]
 
 { #category : 'tests' }
 MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
-
 	| root file reference |
 	(filesystem workingDirectory / 'Chapters') createDirectory.
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
-	(filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub')
-		createDirectory.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub') createDirectory.
 
 	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
 	file writeStreamDo: [ :stream |
@@ -142,47 +134,40 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 			setStream: stream;
 			inputfile: 'SUnit/anExample1.md' ].
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit'
-	        / 'anExample1.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
 			header: [ builder text: 'Foo' ] withLevel: 1;
 			inputfile: 'Sub/anExample2.md' ].
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub'
-	        / 'anExample2.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'Sub' / 'anExample2.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
 			header: [ builder text: 'Example2' ] withLevel: 1 ].
 
-	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit.md') fileSystem: filesystem.
+	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') fileSystem: filesystem.
 
 	includer topFile: reference fileReference parent.
 	includer visit: (root := reference loadMicrodown).
 
-	self assert: root children first class equals: MicHeaderBlock.
-	self
-		assert: root children first children first bodyString
-		equals: 'Foo'.
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first children first bodyString equals: 'Foo'.
 
-	self assert: root children second class equals: MicHeaderBlock.
-	self
-		assert: root children second children first bodyString
-		equals: 'Example2'
+	self assert: root children first children second class equals: MicSecondaryRootBlock.
+	self assert: root children first children second children first class equals: MicHeaderBlock.
+	self assert: root children first children second children first children first bodyString equals: 'Example2'
 ]
 
 { #category : 'tests' }
 MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
-
 	| root file reference |
 	(filesystem workingDirectory / 'Chapters') createDirectory.
 	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit'
-	        / 'anExample1.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
@@ -190,30 +175,25 @@ MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 			text: 'Pharo is cool';
 			codeblock: 'This is a code' ].
 
-	file := filesystem workingDirectory / 'Chapters' / 'SUnit'
-	        / 'SUnit.md'.
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'SUnit.md'.
 	file writeStreamDo: [ :stream |
 		builder
 			setStream: stream;
 			inputfile: 'anExample1.md' ].
 
-	reference := (MicResourceReference fromUri:
-		              'file:///Chapters/SUnit/SUnit.md') fileSystem:
-		             filesystem.
+	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit/SUnit.md') fileSystem: filesystem.
 	root := reference loadMicrodown.
 
 	self assert: root children first class equals: MicInputfileBlock.
-	self assert:
-		(root children first path isKindOf: MicResourceReference).
+	self assert: (root children first path isKindOf: MicResourceReference).
 
 	includer visit: root.
 
-	self assert: root children first class equals: MicHeaderBlock.
-	self
-		assert: root children first children first bodyString
-		equals: 'Foo'.
-	self assert: root children second class equals: MicParagraphBlock.
-	self assert: root children third class equals: MicCodeBlock
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first children first bodyString equals: 'Foo'.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock
 ]
 
 { #category : 'tests' }
@@ -227,26 +207,23 @@ MicFileIncluderTest >> testIncluderIncludesInputFilesWithinTheSameParagraph [
 			setStream: stream;
 			inputfile: 'anExample1.md';
 			inputfile: 'anExample2.md' ].
-	reference := (MicResourceReference fromUri: 'file:///test.md')
-		             fileSystem: filesystem.
+	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem.
 	root := reference loadMicrodown.
 	includer visit: root.
 
-	self assert: root children first class equals: MicHeaderBlock.
-	self
-		assert: root children first children first bodyString
-		equals: 'Foo'.
-	self assert: root children first level equals: 1.
-	self assert: root children second class equals: MicParagraphBlock.
-	self assert: root children third class equals: MicCodeBlock.
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children first children first bodyString equals: 'Foo'.
+	self assert: root children first children first level equals: 1.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock.
 
-	self assert: root children fourth class equals: MicHeaderBlock.
-	self
-		assert: root children fourth children first bodyString
-		equals: 'Bar'.
-	self assert: root children fourth level equals: 2.
-	self assert: root children fifth class equals: MicParagraphBlock.
-	self assert: root children sixth class equals: MicCodeBlock
+	self assert: root children second class equals: MicSecondaryRootBlock.
+	self assert: root children second children first class equals: MicHeaderBlock.
+	self assert: root children second children first children first bodyString equals: 'Bar'.
+	self assert: root children second children first level equals: 2.
+	self assert: root children second children second class equals: MicParagraphBlock.
+	self assert: root children second children third class equals: MicCodeBlock
 ]
 
 { #category : 'tests' }
@@ -270,12 +247,11 @@ MicFileIncluderTest >> testIncluderJustReturnInputFileBlockWhenIncludedFileDoesN
 
 { #category : 'tests' }
 MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
-
 	| root file reference |
 	file := filesystem workingDirectory / 'test.md'.
 	file writeStreamDo: [ :stream |  
 		builder
-		 	setStream: stream;
+			setStream: stream;
 			inputfile: 'anExample1.md';
 			paragraph: '';
 			inputfile: 'anExample2.md' ].
@@ -283,13 +259,14 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	root := reference loadMicrodown.
 	includer visit: root.
 
-	self assert: root children first class equals: MicHeaderBlock.
-	self assert: root children second class equals: MicParagraphBlock.
-	self assert: root children third class equals: MicCodeBlock.
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self assert: root children first children first class equals: MicHeaderBlock.
+	self assert: root children first children second class equals: MicParagraphBlock.
+	self assert: root children first children third class equals: MicCodeBlock.
 	
-	self assert: root children fourth class equals: MicHeaderBlock.
-	self assert: root children fifth class equals: MicParagraphBlock.
-	
-	self assert: root children fifth children size equals: 2.
-	self assert: root children sixth class equals: MicCodeBlock
+	self assert: root children second class equals: MicSecondaryRootBlock.
+	self assert: root children second children first class equals: MicHeaderBlock.
+	self assert: root children second children second class equals: MicParagraphBlock.
+	self assert: root children second children second children size equals: 2.
+	self assert: root children second children third class equals: MicCodeBlock
 ]
