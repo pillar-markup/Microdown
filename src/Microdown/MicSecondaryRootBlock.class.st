@@ -13,6 +13,11 @@ MicSecondaryRootBlock >> accept: aVisitor [
 ]
 
 { #category : 'testing' }
+MicSecondaryRootBlock >> fromFile: aFileOrResource [
+	self propertyAt: #file put: aFileOrResource
+]
+
+{ #category : 'testing' }
 MicSecondaryRootBlock >> isSecondaryRoot [
 	^ true
 ]

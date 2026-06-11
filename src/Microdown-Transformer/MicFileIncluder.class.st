@@ -124,6 +124,7 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	newRoot := MicSecondaryRootBlock new.
 	newRoot fromFile: inputRef.
 	newRoot children: inputDoc children.
+	newRoot children do: [ :each | each parent: newRoot ].
 	
 	self replaceCurrentNodeBy: { newRoot }
 ]
