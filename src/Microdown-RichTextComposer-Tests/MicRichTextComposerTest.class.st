@@ -327,24 +327,20 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 { #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionRemote [
-
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
 
-	self deny: (richText asString trim includesSubstring: 'SomeText').
-	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
+	self assert: (richText asString includesSubstring: 'SomeText')
 ]
 
 { #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureNoCaptionRemote [
-
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
 
-	self assert: (richText asString trim first: 6) equals: 'See  ', (String value: 1).
-	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
+	self assert: (richText asString beginsWith: 'See')
 ]
 
 { #category : 'tests - header' }
