@@ -11,7 +11,9 @@ Class {
 	#superclass : 'MicElement',
 	#instVars : [
 		'children',
-		'parser'
+		'parser',
+		'startLine',
+		'endLine'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -92,6 +94,16 @@ MicAbstractBlock >> closeMe [
 MicAbstractBlock >> computeNestedLevel [ 
 
 	^ 0
+]
+
+{ #category : 'testing' }
+MicAbstractBlock >> endLine [
+	^ endLine
+]
+
+{ #category : 'testing' }
+MicAbstractBlock >> endLine: anObject [
+	endLine := anObject
 ]
 
 { #category : 'properties' }
@@ -192,6 +204,18 @@ MicAbstractBlock >> replaceByAll: aCollection [
 { #category : 'private' }
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine [
+
+	^ startLine
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine: anObject [
+
+	startLine := anObject
 ]
 
 { #category : 'accessing' }
