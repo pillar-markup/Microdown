@@ -40,6 +40,11 @@ MicMethodReferenceChecker class >> checkerName [
 ]
 
 { #category : 'visiting - inline elements' }
+MicMethodReferenceChecker >> explanationForConfiguration [
+	^ 'I check that method references in the document are valid and well-formed.'
+]
+
+{ #category : 'visiting - inline elements' }
 MicMethodReferenceChecker >> initialize [
 	super initialize.
 	requireHash := true

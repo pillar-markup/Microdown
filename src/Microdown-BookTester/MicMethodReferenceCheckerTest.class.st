@@ -49,6 +49,15 @@ MicMethodReferenceCheckerTest >> testConfigureFromNil [
 ]
 
 { #category : 'tests' }
+MicMethodReferenceCheckerTest >> testExplanationForConfiguration [
+	| checker expectedExplanation |
+	checker := MicMethodReferenceChecker new.
+	expectedExplanation := 'I check that method references in the document are valid and well-formed.'.
+	
+	self assert: checker explanationForConfiguration equals: expectedExplanation
+]
+
+{ #category : 'tests' }
 MicMethodReferenceCheckerTest >> testMixedReferenceDetected [
 	checker checkProject: fileSystem / 'mixedReference.md'.
 	self deny: checker isOkay.
