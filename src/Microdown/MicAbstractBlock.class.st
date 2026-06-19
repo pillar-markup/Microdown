@@ -134,6 +134,11 @@ MicAbstractBlock >> isHeader [
 	^ false
 ]
 
+{ #category : 'accessing' }
+MicAbstractBlock >> isSecondaryRoot [
+	^ false
+]
+
 { #category : 'testing' }
 MicAbstractBlock >> listItemBlockClass [
 	^ MicListItemBlock

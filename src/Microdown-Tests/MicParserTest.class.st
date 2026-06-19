@@ -155,6 +155,30 @@ is really cool'.
 ]
 
 { #category : 'tests' }
+MicParserTest >> testSetCurrentDoesNotResetLineNumberForNormalBlock [
+	| parser paragraph |
+	parser := MicParser new.
+	paragraph := MicParagraphBlock new.
+	
+	parser instVarNamed: 'currentLineNumber' put: 15.
+	parser setCurrent: paragraph.
+	
+	self assert: (parser instVarNamed: 'currentLineNumber') equals: 15.
+]
+
+{ #category : 'tests' }
+MicParserTest >> testSetCurrentResetsLineNumberForSecondaryRoot [
+	| parser secondaryRoot |
+	parser := MicParser new.
+	secondaryRoot := MicSecondaryRootBlock new.
+	
+	parser instVarNamed: 'currentLineNumber' put: 15.
+	parser setCurrent: secondaryRoot.
+	
+	self assert: (parser instVarNamed: 'currentLineNumber') equals: 1.
+]
+
+{ #category : 'tests' }
 MicParserTest >> testStartLineIsCorrectlyAssigned [
 
 	| doc children |
