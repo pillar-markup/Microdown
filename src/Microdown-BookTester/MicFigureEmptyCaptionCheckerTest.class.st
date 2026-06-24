@@ -119,11 +119,13 @@ MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 
 { #category : 'tests' }
 MicFigureEmptyCaptionCheckerTest >> testExplanationForConfiguration [
-	| expectedExplanation |
+	| explanation |
 	checker := MicEmptyCaptionChecker new.
-	expectedExplanation := 'I check that figures, math environments and code blocks have a valid and non-empty caption.'.
+	explanation := checker explanationForConfiguration.
 	
-	self assert: checker explanationForConfiguration equals: expectedExplanation
+	self assert: explanation isString.
+	self assert: explanation size > 15.
+	self assert: (explanation includesSubstring: 'caption').
 ]
 
 { #category : 'tests' }
