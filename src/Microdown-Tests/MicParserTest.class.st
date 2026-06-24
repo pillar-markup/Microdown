@@ -160,10 +160,10 @@ MicParserTest >> testSetCurrentDoesNotResetLineNumberForNormalBlock [
 	parser := MicParser new.
 	paragraph := MicParagraphBlock new.
 	
-	parser instVarNamed: 'currentLineNumber' put: 15.
+	parser currentLineNumber: 15.
 	parser setCurrent: paragraph.
 	
-	self assert: (parser instVarNamed: 'currentLineNumber') equals: 15.
+	self assert: parser currentLineNumber equals: 15.
 ]
 
 { #category : 'tests' }
@@ -172,10 +172,10 @@ MicParserTest >> testSetCurrentResetsLineNumberForSecondaryRoot [
 	parser := MicParser new.
 	secondaryRoot := MicSecondaryRootBlock new.
 	
-	parser instVarNamed: 'currentLineNumber' put: 15.
+	parser currentLineNumber: 15.
 	parser setCurrent: secondaryRoot.
 	
-	self assert: (parser instVarNamed: 'currentLineNumber') equals: 1.
+	self assert: parser currentLineNumber equals: 1.
 ]
 
 { #category : 'tests' }
