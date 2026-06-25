@@ -256,6 +256,16 @@ MicParser >> current [
 ]
 
 { #category : 'node creation' }
+MicParser >> currentLineNumber [
+	^ currentLineNumber
+]
+
+{ #category : 'node creation' }
+MicParser >> currentLineNumber: anInteger [
+	currentLineNumber := anInteger
+]
+
+{ #category : 'node creation' }
 MicParser >> delimiterBlockClassFor: prefix [
 
 	^ self paragraphBlockClass
@@ -388,5 +398,6 @@ MicParser >> setCurrent: aBlock [
 	note for me: we could just inforce this. aBlock parent: current.
 	No this is not correct since 
 	the parent of an item list is the list and this is the list that is parent of environment."	
-	current := aBlock
+	current := aBlock.
+	aBlock updateLineNumberIn: self.
 ]

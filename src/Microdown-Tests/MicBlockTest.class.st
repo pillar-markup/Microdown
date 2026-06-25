@@ -16,6 +16,16 @@ MicBlockTest class >> isAbstract [
 ]
 
 { #category : 'tests' }
+MicBlockTest >> checkString: aString for: anElement [
+    | checks |
+    checks := { 
+        ' \:' -> 'Space before :'.
+        '\:[^ /)]' -> 'No space after :' 
+    }.
+    checks do: [ :pair | "..." ]
+]
+
+{ #category : 'tests' }
 MicBlockTest >> subject [
 
 	^ subject ifNil: [ subject := self subjectClass new ]

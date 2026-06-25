@@ -134,6 +134,11 @@ MicAbstractBlock >> isHeader [
 	^ false
 ]
 
+{ #category : 'accessing' }
+MicAbstractBlock >> isSecondaryRoot [
+	^ false
+]
+
 { #category : 'testing' }
 MicAbstractBlock >> listItemBlockClass [
 	^ MicListItemBlock
@@ -229,4 +234,9 @@ MicAbstractBlock >> text [
 	text := ''.
 	children do: [ :each | text := text , each bodyString ].
 	^ text
+]
+
+{ #category : 'adding' }
+MicAbstractBlock >> updateLineNumberIn: aParser [
+	^ self
 ]
