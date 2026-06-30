@@ -11,11 +11,6 @@ Class {
 	#tag : 'Checker-BookTester'
 }
 
-{ #category : 'public - name' }
-MicAnchoredSectionTableFigureCheckerTest class >> checkerName [ 
-	^ 'ReferenceChecks'
-]
-
 { #category : 'running' }
 MicAnchoredSectionTableFigureCheckerTest >> generateFilesystemExample [
 
