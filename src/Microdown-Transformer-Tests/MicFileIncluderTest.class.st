@@ -54,7 +54,7 @@ MicFileIncluderTest >> testBeforeIncludingTheInputFile [
 		 	setStream: stream;
 			inputFile: 'anExample1.md' ].
 	
-	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem .
+	reference := (MicResourceReference fromUri: 'file:///test.md') fileSystem: filesystem.
 	root := reference loadMicrodown.
 	
 	self assert: root children first class equals: MicInputfileBlock.
@@ -117,8 +117,14 @@ MicFileIncluderTest >> testHandleNestedFileResolution [
 	self assert: root children first children first children first bodyString equals: 'Foo'.
 
 	self assert: root children first children second class equals: MicSecondaryRootBlock.
-	self assert: root children first children second children first class equals: MicHeaderBlock.
-	self assert: root children first children second children first children first bodyString equals: 'Example2'
+	self 
+		assert: root children first children second children first class 
+		equals: MicHeaderBlock.
+	self 
+		assert: root children first children second children first children first bodyString 
+		equals: 'Example2'.
+	"make sure that we do not duplicate children"
+	self assert: root children first children size equals: 2
 ]
 
 { #category : 'tests' }
@@ -269,4 +275,49 @@ MicFileIncluderTest >> testMicFileInclusionTransformMicInputFiles [
 	self assert: root children second children second class equals: MicParagraphBlock.
 	self assert: root children second children second children size equals: 2.
 	self assert: root children second children third class equals: MicCodeBlock
+]
+
+{ #category : 'tests' }
+MicFileIncluderTest >> testNestedFileResolutionDoesNotAddChildren [
+	"this is to cover a bug and get a regression test"
+
+	| root file reference |
+	(filesystem workingDirectory / 'Chapters') createDirectory.
+	(filesystem workingDirectory / 'Chapters' / 'SUnit') createDirectory.
+
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit.md'.
+	file writeStreamDo: [ :stream |
+		builder
+			setStream: stream;
+			inputfile: 'SUnit/anExample1.md' ].
+
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample1.md'.
+	file writeStreamDo: [ :stream |
+		builder
+			setStream: stream;
+			header: [ builder text: 'Foo' ] withLevel: 1;
+			inputfile: 'anExample2.md' ].
+
+	file := filesystem workingDirectory / 'Chapters' / 'SUnit' / 'anExample2.md'.
+	file writeStreamDo: [ :stream |
+		builder
+			setStream: stream;
+			header: [ builder text: 'Example2' ] withLevel: 1 ].
+
+	reference := (MicResourceReference fromUri: 'file:///Chapters/SUnit.md') fileSystem: filesystem.
+
+	includer topFile: reference fileReference parent.
+	includer visit: (root := reference loadMicrodown).
+
+	self assert: root children first class equals: MicSecondaryRootBlock.
+	self 
+		assert: root children first children first class 
+		equals: MicHeaderBlock.
+	self 
+		assert: root children first children first children first bodyString 
+		equals: 'Foo'.
+
+	self 
+		assert: root children first children size 
+		equals: 2
 ]
