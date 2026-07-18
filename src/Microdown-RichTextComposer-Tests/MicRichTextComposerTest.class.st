@@ -330,7 +330,6 @@ MicRichTextComposerTest >> testFigureCaptionRemote [
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
-
 	self assert: (richText asString includesSubstring: 'SomeText')
 ]
 
