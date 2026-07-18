@@ -9,12 +9,6 @@ Class {
 	#tag : 'Checker-EnglishTypography'
 }
 
-{ #category : 'kinds' }
-MicEnglishTypographyResult class >> headerString [
-
-	^ 'English Typography Violations:'
-]
-
 { #category : 'accessing' }
 MicEnglishTypographyResult >> detail [
 

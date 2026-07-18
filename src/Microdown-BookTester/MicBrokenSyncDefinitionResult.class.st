@@ -19,12 +19,6 @@ Class {
 	#tag : 'Checker-CodeBlockAnalysis'
 }
 
-{ #category : 'kinds' }
-MicBrokenSyncDefinitionResult class >> headerString [
-
-	^ 'Broken sync definition [should be sync=''true|false'''
-]
-
 { #category : 'building' }
 MicBrokenSyncDefinitionResult >> codeBlock: aMicCodeBlock [ 
 	codeBlock := aMicCodeBlock 

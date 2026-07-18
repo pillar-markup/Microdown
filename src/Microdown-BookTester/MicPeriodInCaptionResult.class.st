@@ -6,12 +6,6 @@ Class {
 	#tag : 'Checker-LastPeriod'
 }
 
-{ #category : 'kinds' }
-MicPeriodInCaptionResult class >> headerString [
-
-	^ 'Last Period in Caption'
-]
-
 { #category : 'accessing' }
 MicPeriodInCaptionResult >> explanation [
 	"not sure that text is ok

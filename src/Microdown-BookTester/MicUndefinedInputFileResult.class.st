@@ -18,12 +18,6 @@ MicUndefinedInputFileResult class >> errorType [
 	^ 'UndefinedInputFiles'
 ]
 
-{ #category : 'kinds' }
-MicUndefinedInputFileResult class >> headerString [
-
-	^ 'Undefined Input Files:'
-]
-
 { #category : 'accessing' }
 MicUndefinedInputFileResult >> explanation [
 

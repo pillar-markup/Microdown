@@ -30,12 +30,6 @@ MicResult class >> errorType [
 	^ self subclassResponsibility 
 ]
 
-{ #category : 'kinds' }
-MicResult class >> headerString [
-
-	^ 'Missing headerString method definition in ', self name asString
-]
-
 { #category : 'accessing' }
 MicResult >> explanation [
 
@@ -44,7 +38,7 @@ MicResult >> explanation [
 
 { #category : 'kinds' }
 MicResult >> headerString [ 
-	^ self class name
+	^  'Missing headerString method definition in ', self class name asString
 ]
 
 { #category : 'accessing' }

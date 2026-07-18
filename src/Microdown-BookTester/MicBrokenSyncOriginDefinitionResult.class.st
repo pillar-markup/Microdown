@@ -15,12 +15,6 @@ Class {
 	#tag : 'Checker-CodeBlockAnalysis'
 }
 
-{ #category : 'kinds' }
-MicBrokenSyncOriginDefinitionResult class >> headerString [
-
-	^ 'Broken sync origin specification [ should be C [class]>>#selector ]'
-]
-
 { #category : 'accessing' }
 MicBrokenSyncOriginDefinitionResult >> explanation [
 

@@ -18,12 +18,6 @@ MicUndefinedFigureFileResult class >> errorType [
 	^ 'UndefinedFigureFiles:'
 ]
 
-{ #category : 'kinds' }
-MicUndefinedFigureFileResult class >> headerString [
-
-	^ 'Undefined Figure Files:'
-]
-
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> explanation [
 
