@@ -463,14 +463,16 @@ MicRichTextComposer >> visitFigure: aFigure [
 
 	| image anchor |
 	[
-	[
-	image := aFigure reference loadImage.
+	[ image := aFigure reference loadImage.
 	anchor := self anchorFor: image of: aFigure.
-	canvas << (self textWithImage: image usingAnchor: anchor) ]
+	canvas << (self textWithImage: image usingAnchor: anchor).
+	"for the caption"
+	canvas tab.
+	self visitChildrenOf: aFigure ]
 		on: MicResourceReferenceError , UnrecognizedImageFormatError
-		do: [ self visitChildrenOf: aFigure ] ]
-		on: Error
-		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
+			do: [ self visitChildrenOf: aFigure ] ]
+				on: Error
+				do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
 { #category : 'visiting' }

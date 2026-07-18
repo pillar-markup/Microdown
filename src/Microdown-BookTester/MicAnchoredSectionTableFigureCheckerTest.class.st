@@ -131,7 +131,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testFigureCorrect [
 MicAnchoredSectionTableFigureCheckerTest >> testFigureExplanation [
 	checker checkProject: fileSystem / 'figureWrong.md'.
 	self assert: checker results first explanation 
-	equals: 'Text: "figure " in file/figureWrong.md contains a mistake: [figure *@figbla@*] should be capitalized as [figure *@figbla@*].'
+	equals: 'Text: "figure " in file /figureWrong.md contains a mistake: [figure *@figbla@*] should be capitalized as [figure *@figbla@*].'
 ]
 
 { #category : 'tests - flagged violations' }
@@ -186,7 +186,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testTableLowercaseDetectedWithSometh
 	self assert: checker results first detail equals: 'table *@tabbla@*'.
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "in table " in file/theTableWrongNoTheButIn.md contains a mistake: [table *@tabbla@*] should be capitalized as [table *@tabbla@*].'
+		equals: 'Text: "in table " in file /theTableWrongNoTheButIn.md contains a mistake: [table *@tabbla@*] should be capitalized as [table *@tabbla@*].'
 ]
 
 { #category : 'tests - flagged violations' }
@@ -198,7 +198,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testTableLowercaseDetectedWithThe [
 	self assert: checker results first detail equals: 'The table *@tabbla@*'.
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "The table " in file/theTableWrongWithThe.md contains a mistake: [The table *@tabbla@*] should be capitalized as [The *@tabbla@*].'
+		equals: 'Text: "The table " in file /theTableWrongWithThe.md contains a mistake: [The table *@tabbla@*] should be capitalized as [The *@tabbla@*].'
 ]
 
 { #category : 'tests - configure' }
@@ -218,7 +218,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testTextWithoutAnchorWithUppercase [
 	
 	self deny: checker isOkay.
 	self assert: checker results size equals: 1.
-	self assert: checker results first explanation equals: 'Text: "in Figure without anchor" in file/noAnchorUppercase.md contains a mistake: [missing anchor for Figure] should be capitalized as [missing Figure].'.
+	self assert: checker results first explanation equals: 'Text: "in Figure without anchor" in file /noAnchorUppercase.md contains a mistake: [missing anchor for Figure] should be capitalized as [missing Figure].'.
 ]
 
 { #category : 'tests - flagged violations' }
@@ -230,7 +230,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testTheFigureDetected [
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the figure " in file/theFigureWrong.md contains a mistake: [the figure *@figbla@*] should be capitalized as [the *@figbla@*].'
+		equals: 'Text: "the figure " in file /theFigureWrong.md contains a mistake: [the figure *@figbla@*] should be capitalized as [the *@figbla@*].'
 	
 ]
 
@@ -242,7 +242,7 @@ MicAnchoredSectionTableFigureCheckerTest >> testTheSectionDetected [
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the section " in file/theSectionWrong.md contains a mistake: [the section *@seclab@*] should be capitalized as [the *@seclab@*].'
+		equals: 'Text: "the section " in file /theSectionWrong.md contains a mistake: [the section *@seclab@*] should be capitalized as [the *@seclab@*].'
 	
 ]
 
@@ -254,6 +254,6 @@ MicAnchoredSectionTableFigureCheckerTest >> testTheTableDetected [
 	
 	self
 		assert: checker results first explanation 
-		equals: 'Text: "the table " in file/theTableWrong.md contains a mistake: [the table *@tabbla@*] should be capitalized as [the *@tabbla@*].'
+		equals: 'Text: "the table " in file /theTableWrong.md contains a mistake: [the table *@tabbla@*] should be capitalized as [the *@tabbla@*].'
 	
 ]
