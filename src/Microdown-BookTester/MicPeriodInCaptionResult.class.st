@@ -6,6 +6,12 @@ Class {
 	#tag : 'Checker-LastPeriod'
 }
 
+{ #category : 'kinds' }
+MicPeriodInCaptionResult class >> headerString [
+
+	^ 'Last Period in Caption'
+]
+
 { #category : 'accessing' }
 MicPeriodInCaptionResult >> explanation [
 	"not sure that text is ok
@@ -15,4 +21,10 @@ MicPeriodInCaptionResult >> explanation [
 	  , (codeShouldEndWithPeriod
 			   ifFalse: [ ' not ' ]
 			   ifTrue: [ ' ' ]) , 'be terminated with a period (.).'
+]
+
+{ #category : 'accessing' }
+MicPeriodInCaptionResult >> headerString [
+
+	^ 'Last Period in Caption'
 ]

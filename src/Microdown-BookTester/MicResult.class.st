@@ -33,7 +33,7 @@ MicResult class >> errorType [
 { #category : 'kinds' }
 MicResult class >> headerString [
 
-	^ 'Unreferenced Figures'
+	^ 'Missing headerString method definition in ', self name asString
 ]
 
 { #category : 'accessing' }

@@ -21,7 +21,7 @@ MicUndefinedFigureFileResult class >> errorType [
 { #category : 'kinds' }
 MicUndefinedFigureFileResult class >> headerString [
 
-	^ 'Undefined figure files:'
+	^ 'Undefined Figure Files:'
 ]
 
 { #category : 'accessing' }
@@ -46,7 +46,7 @@ MicUndefinedFigureFileResult >> figureFileString: aString [
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> headerString [
 
-	^ 'Underfined Figure File'
+	^ 'Undefined Figure File'
 ]
 
 { #category : 'accessing' }

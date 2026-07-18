@@ -12,7 +12,7 @@ Class {
 { #category : 'kinds' }
 MicEnglishTypographyResult class >> headerString [
 
-	^ 'English Typography Violations'
+	^ 'English Typography Violations:'
 ]
 
 { #category : 'accessing' }
@@ -39,5 +39,5 @@ MicEnglishTypographyResult >> explanation [
 
 { #category : 'kinds' }
 MicEnglishTypographyResult >> headerString [ 
-	^ 'English Typography violations'
+	^ 'English Typography Violations'
 ]
