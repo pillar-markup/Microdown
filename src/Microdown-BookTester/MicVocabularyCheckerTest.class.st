@@ -126,7 +126,7 @@ MicVocabularyCheckerTest >> testCheckerFindsAllowToMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "We allow to edit the file." in file/mistakeAllowTo.md contains a mistake: [allow to] should not be used. We should use allow one to'
+		'Text: "We allow to edit the file." in file /mistakeAllowTo.md contains a mistake: [allow to] should not be used. We should use allow one to'
 ]
 
 { #category : 'tests' }
@@ -137,7 +137,7 @@ checker checkProject: fileSystem / 'mistakeAllowedTo.md'.
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "You are allowed to enter." in file/mistakeAllowedTo.md contains a mistake: [allowed to] should not be used. We should use allowed one to'
+		'Text: "You are allowed to enter." in file /mistakeAllowedTo.md contains a mistake: [allowed to] should not be used. We should use allowed one to'
 ]
 
 { #category : 'tests' }
@@ -149,7 +149,7 @@ MicVocabularyCheckerTest >> testCheckerFindsAllowsToMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "The system allows to change settings." in file/mistakeAllowsTo.md contains a mistake: [allows to] should not be used. We should use allows one to'
+		'Text: "The system allows to change settings." in file /mistakeAllowsTo.md contains a mistake: [allows to] should not be used. We should use allows one to'
 ]
 
 { #category : 'tests' }
@@ -161,7 +161,7 @@ MicVocabularyCheckerTest >> testCheckerFindsBehaviourMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "Pharo has interesting behaviour." in file/mistakeBehaviour.md contains a mistake: [behaviour] should not be used. We should use behavior'
+		'Text: "Pharo has interesting behaviour." in file /mistakeBehaviour.md contains a mistake: [behaviour] should not be used. We should use behavior'
 ]
 
 { #category : 'tests' }
@@ -173,7 +173,7 @@ MicVocabularyCheckerTest >> testCheckerFindsCentreMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "The centre of the universe." in file/mistakeCentre.md contains a mistake: [centre] should not be used. We should use center'
+		'Text: "The centre of the universe." in file /mistakeCentre.md contains a mistake: [centre] should not be used. We should use center'
 ]
 
 { #category : 'tests' }
@@ -185,7 +185,7 @@ MicVocabularyCheckerTest >> testCheckerFindsColourMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "The colour of the sky is blue." in file/mistakeColour.md contains a mistake: [colour] should not be used. We should use color'
+		'Text: "The colour of the sky is blue." in file /mistakeColour.md contains a mistake: [colour] should not be used. We should use color'
 ]
 
 { #category : 'tests' }
@@ -196,7 +196,7 @@ MicVocabularyCheckerTest >> testCheckerFindsColoursMistake [
 
 	self
 		assert: checker results first explanation 
-		equals:'Text: "Colours are beautiful." in file/mistakeColours.md contains a mistake: [colour] should not be used. We should use color'
+		equals:'Text: "Colours are beautiful." in file /mistakeColours.md contains a mistake: [colour] should not be used. We should use color'
 		
 ]
 
@@ -210,7 +210,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInFigure [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "sub-presenter is not correct even in caption" in file/mistakeInFigure.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+		'Text: "sub-presenter is not correct even in caption" in file /mistakeInFigure.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'tests' }
@@ -222,7 +222,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInHeader [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "sub-presenter is not correct." in file/mistakeInHeader.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+		'Text: "sub-presenter is not correct." in file /mistakeInHeader.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'tests' }
@@ -234,7 +234,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInParagraph [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "Spec uses a sub presenter. And there is a mistake in the previous sentence." in file/mistakeInParagraph.md contains a mistake: [sub presenter] should not be used. We should use subpresenter'
+		'Text: "Spec uses a sub presenter. And there is a mistake in the previous sentence." in file /mistakeInParagraph.md contains a mistake: [sub presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'tests' }
@@ -246,7 +246,7 @@ MicVocabularyCheckerTest >> testCheckerFindsMistakeInUppercasedText [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern." in file/mistakeInUppercase.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
+		'Text: "sub-Presenter is not correct. The checker should pay attention that the text may use a different case than the pattern." in file /mistakeInUppercase.md contains a mistake: [sub-presenter] should not be used. We should use subpresenter'
 ]
 
 { #category : 'tests' }
@@ -258,7 +258,7 @@ MicVocabularyCheckerTest >> testCheckerFindsVisualiseMistake [
 	self
 		assert: checker results first explanation
 		equals:
-		'Text: "We will visualise the results." in file/mistakeVisualise.md contains a mistake: [visualise] should not be used. We should use visualize'
+		'Text: "We will visualise the results." in file /mistakeVisualise.md contains a mistake: [visualise] should not be used. We should use visualize'
 ]
 
 { #category : 'tests - configuration' }
