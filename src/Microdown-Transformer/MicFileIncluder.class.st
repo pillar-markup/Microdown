@@ -116,15 +116,14 @@ MicFileIncluder >> visitInputFile: anInputFileAnnotation [
 	| inputRef inputDoc newRoot |
 	inputRef := anInputFileAnnotation path.
 	[ inputDoc := inputRef loadMicrodown inlineInputFiles]
-	on: MicResourceReferenceError 
-	do: [ :error | isStrict 
+		on: MicResourceReferenceError 
+		do: [ :error | isStrict 
 			ifFalse: [ ^ self ]
 			ifTrue: [ error pass  ]].
 	
 	newRoot := MicSecondaryRootBlock new.
 	newRoot fromFile: inputRef.
-	newRoot children: inputDoc children.
-	newRoot children do: [ :each | each parent: newRoot ].
+	inputDoc children do: [ :each | each parent: newRoot ].
 	
 	self replaceCurrentNodeBy: { newRoot }
 ]

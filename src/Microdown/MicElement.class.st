@@ -103,6 +103,11 @@ MicElement >> inlineParserClass [
 ]
 
 { #category : 'testing' }
+MicElement >> isAnchorReferenceBlock [
+	^ false
+]
+
+{ #category : 'testing' }
 MicElement >> isMetaData [
 	^ false
 ]

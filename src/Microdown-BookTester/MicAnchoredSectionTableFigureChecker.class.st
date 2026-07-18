@@ -117,8 +117,16 @@ MicAnchoredSectionTableFigureChecker >> processTextBlock: aTextBlock atIndex: in
 		ifFalse: [ nil ].
 	
 	anchoredElements do: [ :ref |
-		self checkNamingFor: aTextBlock bodyString substrings reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph.
-		self checkMissingAnchorsFor: aTextBlock bodyString substrings reference: ref anchorBlock: anchorBlock inTextBlock: aTextBlock inParagraph: aParagraph ]
+		self checkNamingFor: aTextBlock bodyString substrings 
+			reference: ref 
+			anchorBlock: anchorBlock 
+			inTextBlock: aTextBlock 
+			inParagraph: aParagraph.
+		self checkMissingAnchorsFor: aTextBlock bodyString substrings 
+			reference: ref 
+			anchorBlock: anchorBlock 
+			inTextBlock: aTextBlock 
+			inParagraph: aParagraph ]
 ]
 
 { #category : 'visiting' }

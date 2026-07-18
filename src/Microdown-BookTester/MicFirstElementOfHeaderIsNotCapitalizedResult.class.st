@@ -17,5 +17,5 @@ MicFirstElementOfHeaderIsNotCapitalizedResult >> explanation [
 { #category : 'kinds' }
 MicFirstElementOfHeaderIsNotCapitalizedResult >> headerString [
 
-	^ 'First Element Of Header Is Not Capitalized'
+	^ 'First Element of Header is not Capitalized'
 ]

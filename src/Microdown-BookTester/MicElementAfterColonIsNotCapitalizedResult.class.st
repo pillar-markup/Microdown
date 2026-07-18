@@ -14,5 +14,5 @@ MicElementAfterColonIsNotCapitalizedResult >> explanation [
 { #category : 'kinds' }
 MicElementAfterColonIsNotCapitalizedResult >> headerString [
 
-	^ 'Element After Conolis Not Capitalized'
+	^ 'Element After Conolis not Capitalized'
 ]

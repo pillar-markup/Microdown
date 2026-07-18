@@ -15,12 +15,6 @@ MicReferenceToUnexistingAnchorResult class >> errorType [
 	^ 'UndefinedAnchor'
 ]
 
-{ #category : 'kinds' }
-MicReferenceToUnexistingAnchorResult class >> headerString [
-
-	^ 'Undefined Anchors:'
-]
-
 { #category : 'accessing' }
 MicReferenceToUnexistingAnchorResult >> headerString [
 

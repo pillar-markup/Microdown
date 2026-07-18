@@ -16,3 +16,9 @@ MicPeriodInCaptionResult >> explanation [
 			   ifFalse: [ ' not ' ]
 			   ifTrue: [ ' ' ]) , 'be terminated with a period (.).'
 ]
+
+{ #category : 'accessing' }
+MicPeriodInCaptionResult >> headerString [
+
+	^ 'Last Period in Caption'
+]

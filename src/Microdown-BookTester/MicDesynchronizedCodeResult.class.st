@@ -15,12 +15,6 @@ Class {
 	#tag : 'Checker-CodeBlockAnalysis'
 }
 
-{ #category : 'kinds' }
-MicDesynchronizedCodeResult class >> headerString [
-
-	^ 'Desynchronized method body'
-]
-
 { #category : 'accessing' }
 MicDesynchronizedCodeResult >> bookContents [
 	^ bookContents

@@ -22,7 +22,7 @@ MicUseofWrongVocabularyResult >> explanation [
 { #category : 'kinds' }
 MicUseofWrongVocabularyResult >> headerString [
 
-	^ 'USe of Wrong Vocabulary'
+	^ 'Use of Wrong Vocabulary'
 ]
 
 { #category : 'accessing' }

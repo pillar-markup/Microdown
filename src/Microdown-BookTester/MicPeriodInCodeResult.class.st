@@ -18,5 +18,5 @@ MicPeriodInCodeResult >> explanation [
 { #category : 'explanation' }
 MicPeriodInCodeResult >> headerString [
 
-	^ 'Period Code'
+	^ 'Last Period in Code'
 ]
