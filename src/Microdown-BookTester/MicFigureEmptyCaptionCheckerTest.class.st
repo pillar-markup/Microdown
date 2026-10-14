@@ -1,6 +1,9 @@
 Class {
 	#name : 'MicFigureEmptyCaptionCheckerTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'checker'
+	],
 	#category : 'Microdown-BookTester-Checker-EmptyCaption',
 	#package : 'Microdown-BookTester',
 	#tag : 'Checker-EmptyCaption'
@@ -81,6 +84,21 @@ MicFigureEmptyCaptionCheckerTest >> testCodeBlockCaptionIsOnlySpaces [
 ]
 
 { #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testConfigureFrom [
+
+	| checker configuration |
+	checker := MicEmptyCaptionChecker new.
+	configuration := Dictionary new.
+
+	configuration at: 'checkOnly' put: #('code' 'math').
+	checker configureFrom: configuration.
+
+	self assert: checker checkCode.
+	self assert: checker checkMath.
+	self deny: checker checkFigure
+]
+
+{ #category : 'tests' }
 MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 	| checker config |
 	checker := MicEmptyCaptionChecker new.
@@ -100,6 +118,17 @@ MicFigureEmptyCaptionCheckerTest >> testConfigureFromCheckOnly [
 ]
 
 { #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testExplanationForConfiguration [
+	| explanation |
+	checker := MicEmptyCaptionChecker new.
+	explanation := checker explanationForConfiguration.
+	
+	self assert: explanation isString.
+	self assert: explanation size > 15.
+	self assert: (explanation includesSubstring: 'caption').
+]
+
+{ #category : 'tests' }
 MicFigureEmptyCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	| visitor mdFile mem |
 	mem := FileSystem memory root.
@@ -114,4 +143,16 @@ MicFigureEmptyCaptionCheckerTest >> testMathBlockCaptionIsEmpty [
 	visitor checkProject: mdFile.
 	
 	self assert: visitor results size equals: 1.
+]
+
+{ #category : 'tests' }
+MicFigureEmptyCaptionCheckerTest >> testResultContainsMicElement [
+
+	| block checker |
+	checker := MicEmptyCaptionChecker new.
+	block := MicFigureBlock new.
+	checker checkCaptionOf: block.
+
+	self assert: checker results size equals: 1.
+	self assert: checker results first micElement equals: block
 ]
