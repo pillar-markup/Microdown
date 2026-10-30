@@ -65,17 +65,17 @@ Microdown class >> microdownPreferenceSettingsOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #microdownAndcomments)
 		label: 'Microdown and Comment rendering';  
-		parent: #appearance;
+		parentName: #appearance;
 		description: 'All settings concerned Microdown and Class/Package comment rendering';
 		with: [
 		(aBuilder setting: #offline)
 			label: 'Enable offline mode';
 			target: self;
-			default: false;
+			defaultValue: false;
 			description: self offlineDocForSetting.
 			(aBuilder setting: #isCachingResources)
 				label: 'Cache HTTP resources';
-				default: true;
+				defaultValue: true;
 				target: self;
 				description: self isCachingResourcesDocForSetting .
 			]
