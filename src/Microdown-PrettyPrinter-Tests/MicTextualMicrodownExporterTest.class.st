@@ -21,6 +21,19 @@ MicTextualMicrodownExporterTest class >> testParameters [
 		yourself.
 ]
 
+{ #category : 'utilities' }
+MicTextualMicrodownExporterTest >> exportedMetaDataValue: anObject [
+	"Export, with a new exporter, a metadata block holding anObject under the key 'key', parse the result again, and answer the value read back"
+
+	| meta exporter |
+	meta := MicMetaDataBlock new.
+	meta body: Dictionary new.
+	meta atKey: 'key' put: anObject.
+	exporter := self visitorClass new.
+	exporter visit: meta.
+	^ (parser parse: exporter contents) metaDataElement at: 'key' ifAbsent: [ nil ]
+]
+
 { #category : 'accessing' }
 MicTextualMicrodownExporterTest >> factory [ 
 	^ factory
@@ -329,6 +342,39 @@ MicTextualMicrodownExporterTest >> testMetaData [
 "author" : "G. Foo",
 "title" : "The title"
 }'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataNumberAndListSurviveExport [
+
+	self assert: (self exportedMetaDataValue: 3) equals: 3.
+	self assert: (self exportedMetaDataValue: #( 'a' 'b' )) asArray equals: #( 'a' 'b' )
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataPlainValueSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'spec,pharo') equals: 'spec,pharo'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithBackslashSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'back\slash') equals: 'back\slash'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithLineBreakSurvivesExport [
+
+	| twoLines |
+	twoLines := String cr join: #( 'two' 'lines' ).
+	self assert: (self exportedMetaDataValue: twoLines) equals: twoLines
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithQuotesSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'say "hi"') equals: 'say "hi"'
 ]
 
 { #category : 'tests - header' }

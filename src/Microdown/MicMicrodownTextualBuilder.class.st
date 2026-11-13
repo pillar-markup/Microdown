@@ -415,17 +415,20 @@ MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [
 ]
 
 { #category : 'element - metadata' }
-MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [ 
+MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
+	"Write each key and value as a JSON string (or JSON value), escaped as MicMetaDataBlock reads them back with STONJSON"
+
 	self raw: '{'; newLine.
-	aCollection do: [ :each | 
-		self raw: '"';
-		raw: each key; 
-		raw: '" : "';
-		raw: each value;
-		raw: '"'
-		]
-		separatedBy: [ self raw: ','. self newLine].
-	self newLine; raw: '}'.
+	aCollection
+		do: [ :each |
+			self
+				raw: (STONJSON toString: each key asString);
+				raw: ' : ';
+				raw: (STONJSON toString: each value) ]
+		separatedBy: [
+			self raw: ',';
+			newLine ].
+	self newLine; raw: '}'
 ]
 
 { #category : 'ugly line handling' }
