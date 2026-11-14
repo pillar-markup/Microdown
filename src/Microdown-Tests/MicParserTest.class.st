@@ -75,6 +75,14 @@ MicParserTest >> testEmptyOnMultipleLines [
 ]
 
 { #category : 'tests' }
+MicParserTest >> testFreshParserStartsAtLineOne [
+
+	| root |
+	root := MicParser new parse: '# B'.
+	self assert: root children first startLine equals: 1
+]
+
+{ #category : 'tests' }
 MicParserTest >> testIsAListDash [
 
 	self assert: (parser isAList: '- one')
@@ -155,27 +163,27 @@ is really cool'.
 ]
 
 { #category : 'tests' }
-MicParserTest >> testSetCurrentDoesNotResetLineNumberForNormalBlock [
-	| parser paragraph |
-	parser := MicParser new.
-	paragraph := MicParagraphBlock new.
-	
-	parser currentLineNumber: 15.
-	parser setCurrent: paragraph.
-	
-	self assert: parser currentLineNumber equals: 15.
+MicParserTest >> testReusedParserRestartsLineNumbers [
+
+	| reusedParser root |
+	reusedParser := MicParser new.
+	reusedParser parse: '# A
+para'.
+	root := reusedParser parse: '# B'.
+	self assert: root children first startLine equals: 1
 ]
 
 { #category : 'tests' }
-MicParserTest >> testSetCurrentResetsLineNumberForSecondaryRoot [
-	| parser secondaryRoot |
-	parser := MicParser new.
-	secondaryRoot := MicSecondaryRootBlock new.
-	
-	parser currentLineNumber: 15.
-	parser setCurrent: secondaryRoot.
-	
-	self assert: parser currentLineNumber equals: 1.
+MicParserTest >> testSetCurrentDoesNotResetLineNumberForNormalBlock [
+
+	| lineParser paragraph |
+	lineParser := MicParser new.
+	paragraph := MicParagraphBlock new.
+
+	lineParser currentLineNumber: 15.
+	lineParser setCurrent: paragraph.
+
+	self assert: lineParser currentLineNumber equals: 15
 ]
 
 { #category : 'tests' }

@@ -21,8 +21,3 @@ MicSecondaryRootBlock >> fromFile: aFileOrResource [
 MicSecondaryRootBlock >> isSecondaryRoot [
 	^ true
 ]
-
-{ #category : 'testing' }
-MicSecondaryRootBlock >> updateLineNumberIn: aParser [
-	aParser currentLineNumber: 1.
-]

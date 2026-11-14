@@ -113,7 +113,7 @@ MicHeaderCapitalizationCheckerTest >> testCheckAfterColonUppercase [
 	checker checkProject: fileSystem / 'AfterColonLowercaseUncorrect.md'.
 	self deny: checker isOkay.
 	colonResult := (checker results detect: [:r | r class = MicElementAfterColonIsNotCapitalizedResult]).
-	self assert: colonResult notNil.
+	self assert: colonResult isNotNil.
 	self
 		assert: colonResult explanation
 		equals: 'Header: "Today and tomorrow: the days" in file/AfterColonLowercaseUncorrect.md contains a mistake: the as first letter after a colon should be uppercased.'

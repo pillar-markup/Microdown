@@ -61,15 +61,15 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
 			   (srcFile isNil or: [ (srcFile respondsTo: #fullName) not ])
 					ifTrue: [ 
 						| micFile |
-						micFile := ((r respondsTo: #micElement) and: [ r micElement notNil ] )
+						micFile := ((r respondsTo: #micElement) and: [ r micElement isNotNil ] )
 						ifTrue: [ r micElement fromFile ]
 						ifFalse: [ nil ].
 					srcFile := micFile ifNil: [ fileReference ]].
 
-            searchText := ((r class methodDict includesKey: #what) and: [ r what notNil and: [ r what notEmpty ] ])
+            searchText := ((r class methodDict includesKey: #what) and: [ r what isNotNil and: [ r what notEmpty ] ])
                 ifTrue: [ r what ]
                 ifFalse: [
-                    ((r respondsTo: #micElement) and: [ r micElement notNil ])
+                    ((r respondsTo: #micElement) and: [ r micElement isNotNil ])
                         ifTrue: [
                             (r micElement respondsTo: #bodyString)
                                 ifTrue: [ r micElement bodyString lines first trim ]
@@ -78,11 +78,11 @@ MicCheckerHTMLReporter >> buildResultsOn: aStream [
                                         ifTrue: [ r micElement text ]
                                         ifFalse: [ '' ] ] ]
                         ifFalse: [ '' ] ].
-            lineNum := (srcFile notNil and: [ (srcFile respondsTo: #fullName) and: [ searchText notEmpty ]])
+            lineNum := (srcFile isNotNil and: [ (srcFile respondsTo: #fullName) and: [ searchText notEmpty ]])
                 ifTrue: [ self lineNumberOf: searchText inFile: srcFile ]
                 ifFalse: [ 0 ].
             lineNum := lineNum ifNil: [ 0 ].
-            fullPath := (srcFile notNil and: [ srcFile respondsTo:#fullName ]) ifTrue: [ srcFile fullName ] ifFalse: [ '' ].
+            fullPath := (srcFile isNotNil and: [ srcFile respondsTo:#fullName ]) ifTrue: [ srcFile fullName ] ifFalse: [ '' ].
 
             "Extraire uniquement Text: ... depuis r explanation"
             shortMsg := r explanation isString

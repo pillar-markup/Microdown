@@ -167,6 +167,56 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 	self assert: root children first children second children first children first bodyString equals: 'Example2'
 ]
 
+{ #category : 'tests - line numbers' }
+MicFileIncluderTest >> testIncludedBlockFileIsFoundFromItsSecondaryRoot [
+	"A line number is only meaningful with its file: the nearest secondary root above an included block names the file the number refers to."
+
+	| root header |
+	filesystem workingDirectory / 'main.md' writeStreamDo: [ :stream |
+			stream nextPutAll: '# Main
+
+<!inputFile|path=sub.md!>' ].
+	filesystem workingDirectory / 'sub.md' writeStreamDo: [ :stream |
+			stream nextPutAll: 'first
+
+# Sub header at 3' ].
+	root := ((MicResourceReference fromUri: 'file:///main.md') fileSystem: filesystem) loadMicrodown.
+
+	includer visit: root.
+
+	header := root children second children second.
+	self assert: header startLine equals: 3.
+	self assert: header parent isSecondaryRoot.
+	self assert: header parent fromFile fileReference basename equals: 'sub.md'
+]
+
+{ #category : 'tests - line numbers' }
+MicFileIncluderTest >> testIncludedBlocksHaveLineNumbersOfTheirOwnFile [
+	"Blocks coming from an included file are numbered from the first line of that file, and the blocks of the including file after the inputFile keep the numbering of the including file."
+
+	| root secondary |
+	filesystem workingDirectory / 'main.md' writeStreamDo: [ :stream |
+			stream nextPutAll: '# Main
+line 2
+
+<!inputFile|path=sub.md!>
+
+# After include' ].
+	filesystem workingDirectory / 'sub.md' writeStreamDo: [ :stream |
+			stream nextPutAll: 'first
+
+# Sub header at 3' ].
+	root := ((MicResourceReference fromUri: 'file:///main.md') fileSystem: filesystem) loadMicrodown.
+
+	includer visit: root.
+
+	secondary := root children third.
+	self assert: secondary isSecondaryRoot.
+	self assert: (root children collect: [ :each | each startLine ] as: Array) equals: #( 1 2 nil 6 ).
+	self assert: (secondary children collect: [ :each | each startLine ] as: Array) equals: #( 1 3 ).
+	self assert: secondary children second class equals: MicHeaderBlock
+]
+
 { #category : 'tests - parent' }
 MicFileIncluderTest >> testIncludedSecondaryRootKnowsItsParent [
 
@@ -339,6 +389,40 @@ MicFileIncluderTest >> testNestedFileResolutionDoesNotAddChildren [
 	self 
 		assert: root children first children size 
 		equals: 2
+]
+
+{ #category : 'tests - line numbers' }
+MicFileIncluderTest >> testNestedIncludedBlocksHaveLineNumbersOfTheirOwnFile [
+	"Each level of inclusion is numbered from the first line of its own file."
+
+	| root outer inner |
+	filesystem workingDirectory / 'main.md' writeStreamDo: [ :stream |
+			stream nextPutAll: '# Main
+
+<!inputFile|path=middle.md!>
+
+# After middle' ].
+	filesystem workingDirectory / 'middle.md' writeStreamDo: [ :stream |
+			stream nextPutAll: 'middle line 1
+
+<!inputFile|path=deep.md!>
+
+# Middle at 5' ].
+	filesystem workingDirectory / 'deep.md' writeStreamDo: [ :stream |
+			stream nextPutAll: '
+
+# Deep at 3' ].
+	root := ((MicResourceReference fromUri: 'file:///main.md') fileSystem: filesystem) loadMicrodown.
+
+	includer visit: root.
+
+	outer := root children second.
+	inner := outer children second.
+	self assert: outer isSecondaryRoot.
+	self assert: inner isSecondaryRoot.
+	self assert: (root children collect: [ :each | each startLine ] as: Array) equals: #( 1 nil 5 ).
+	self assert: (outer children collect: [ :each | each startLine ] as: Array) equals: #( 1 nil 5 ).
+	self assert: (inner children collect: [ :each | each startLine ] as: Array) equals: #( 3 )
 ]
 
 { #category : 'tests - parent' }

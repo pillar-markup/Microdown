@@ -230,8 +230,3 @@ MicAbstractBlock >> text [
 	children do: [ :each | text := text , each bodyString ].
 	^ text
 ]
-
-{ #category : 'adding' }
-MicAbstractBlock >> updateLineNumberIn: aParser [
-	^ self
-]

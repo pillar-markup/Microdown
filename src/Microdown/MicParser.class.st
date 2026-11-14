@@ -284,7 +284,7 @@ MicParser >> handleLine: line [
 			current == nextNode ifFalse: [ 
 				| nodeToInit |
 				nodeToInit := nextNode.
-				[ nodeToInit notNil and: [ nodeToInit startLine isNil ] ] whileTrue: [
+				[ nodeToInit isNotNil and: [ nodeToInit startLine isNil ] ] whileTrue: [
 					nodeToInit startLine: currentLineNumber.
 					nodeToInit := nodeToInit parent ] ].
 				
@@ -368,26 +368,24 @@ MicParser >> parse: aStreamOrString [
 	"returns the root node of aStreamOrText"
 
 	| inStream line |
+	currentLineNumber := 1.
 	current := root := self newRootBlock
-		setParser: self;
-		yourself.
-	inStream := aStreamOrString isStream 
-		ifTrue:  [ aStreamOrString readStream ]
-		ifFalse: [  aStreamOrString asString readStream ].
-	[ 
+		                   setParser: self;
+		                   yourself.
+	inStream := aStreamOrString isStream
+		            ifTrue: [ aStreamOrString readStream ]
+		            ifFalse: [ aStreamOrString asString readStream ].
+	[
 		line := inStream nextLine.
-		line isNil ] 
-	whileFalse: [ 
-		self handleLine: line.
-		currentLineNumber := currentLineNumber + 1 ].
-	[ current = root ]
-		whileFalse: [ 
+		line isNil ] whileFalse: [
+			self handleLine: line.
+			currentLineNumber := currentLineNumber + 1 ].
+	[ current = root ] whileFalse: [
 			current closeMe.
 			current := current parent ].
-	root hasMetaDataElement 
-		ifTrue: [ root properties: root metaDataElement body ].
-			
-		
+	root hasMetaDataElement ifTrue: [ root properties: root metaDataElement body ].
+
+
 	^ root
 ]
 
@@ -397,7 +395,7 @@ MicParser >> setCurrent: aBlock [
 		ifFalse: [ self error: 'When changing current, the current block should be the parent of the new one' ].
 	note for me: we could just inforce this. aBlock parent: current.
 	No this is not correct since 
-	the parent of an item list is the list and this is the list that is parent of environment."	
-	current := aBlock.
-	aBlock updateLineNumberIn: self.
+	the parent of an item list is the list and this is the list that is parent of environment."
+
+	current := aBlock
 ]
