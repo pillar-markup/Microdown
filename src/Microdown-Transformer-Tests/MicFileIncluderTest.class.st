@@ -167,6 +167,25 @@ MicFileIncluderTest >> testHandleNestedFileResolutionOnDifferentLevel [
 	self assert: root children first children second children first children first bodyString equals: 'Example2'
 ]
 
+{ #category : 'tests - parent' }
+MicFileIncluderTest >> testIncludedSecondaryRootKnowsItsParent [
+
+	| root secondary |
+	filesystem workingDirectory / 'main.md' writeStreamDo: [ :stream |
+			builder
+				setStream: stream;
+				header: [ builder text: 'Main' ] withLevel: 1;
+				inputfile: 'anExample1.md' ].
+	root := ((MicResourceReference fromUri: 'file:///main.md') fileSystem: filesystem) loadMicrodown.
+
+	includer visit: root.
+
+	secondary := root children second.
+	self assert: secondary isSecondaryRoot.
+	self assert: secondary parent identicalTo: root.
+	self assert: secondary children first parent identicalTo: secondary
+]
+
 { #category : 'tests' }
 MicFileIncluderTest >> testIncluderIncludesInputFileFromTheSameLevel [
 	| root file reference |
@@ -320,4 +339,30 @@ MicFileIncluderTest >> testNestedFileResolutionDoesNotAddChildren [
 	self 
 		assert: root children first children size 
 		equals: 2
+]
+
+{ #category : 'tests - parent' }
+MicFileIncluderTest >> testNestedSecondaryRootsKnowTheirParents [
+
+	| root outer inner |
+	filesystem workingDirectory / 'main.md' writeStreamDo: [ :stream |
+			builder
+				setStream: stream;
+				inputfile: 'middle.md' ].
+	filesystem workingDirectory / 'middle.md' writeStreamDo: [ :stream |
+			builder
+				setStream: stream;
+				header: [ builder text: 'Middle' ] withLevel: 1;
+				inputfile: 'anExample1.md' ].
+	root := ((MicResourceReference fromUri: 'file:///main.md') fileSystem: filesystem) loadMicrodown.
+
+	includer visit: root.
+
+	outer := root children first.
+	inner := outer children second.
+	self assert: outer isSecondaryRoot.
+	self assert: inner isSecondaryRoot.
+	self assert: outer parent identicalTo: root.
+	self assert: inner parent identicalTo: outer.
+	self assert: inner children first parent identicalTo: inner
 ]
