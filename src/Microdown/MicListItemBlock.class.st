@@ -42,7 +42,8 @@ Class {
 	#name : 'MicListItemBlock',
 	#superclass : 'MicAbstractBlock',
 	#instVars : [
-		'text'
+		'text',
+		'checked'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -54,28 +55,25 @@ MicListItemBlock >> accept: aVisitor [
  	^ aVisitor visitListItem: self
 ]
 
-{ #category : 'testing' }
+{ #category : 'public' }
 MicListItemBlock >> addLineAndReturnNextNode: line [
 	"add line to this node. 
 	Notice, the action is allowed to create new nodes in the block tree.
 	Returns the node to handle next line - typically self."
-	
-	
+
 	| normalized |
-	text
-		ifNil: [ text := line trim.
+	text ifNil: [
+			text := self extractTaskMarkerFrom: line trim.
 			^ self ].
-	normalized := line copyFrom: parent indent + 1 to: line size.	"drop indent"
+	normalized := line copyFrom: parent indent + 1 to: line size. "drop indent"
 	"SD: I thought that a list item was holding a paragraph but it holds directly text."
-		
+
 	(self isAList: normalized)
-		ifTrue: [ 
-			self inlineParse: text.
-			text := ''.
-			^ self newBlockFor: normalized parent: self ]
-		ifFalse: [ 
-			"here we manage multiple lines list item."
-			text := text , String cr , normalized ]
+		ifTrue: [
+				self inlineParse: text.
+				text := ''.
+				^ self newBlockFor: normalized parent: self ]
+		ifFalse: [ "here we manage multiple lines list item." text := text , String cr , normalized ]
 ]
 
 { #category : 'accessing' }
@@ -104,10 +102,36 @@ MicListItemBlock >> computeNestedLevel [
 	^ self parent computeNestedLevel
 ]
 
+{ #category : 'parsing' }
+MicListItemBlock >> extractTaskMarkerFrom: aString [
+	"Recognise a GitHub-style task marker '[ ]', '[x]' or '[X]' at the start of the item text, followed by a separator or nothing.
+	When present, remember whether it is checked and answer the text without the marker; otherwise answer aString unchanged."
+
+	(aString size >= 3 and: [ aString first = $[ and: [ (aString at: 3) = $] ] ]) ifFalse: [ ^ aString ].
+	(aString size = 3 or: [ (aString at: 4) isSeparator ]) ifFalse: [ ^ aString ].
+	(' xX' includes: (aString at: 2)) ifFalse: [ ^ aString ].
+	checked := (aString at: 2) ~= Character space.
+	^ (aString allButFirst: 3) trimLeft
+]
+
 { #category : 'testing' }
 MicListItemBlock >> isAList: normalized [
 
 	^ parser isAList: normalized
+]
+
+{ #category : 'testing' }
+MicListItemBlock >> isChecked [
+	"Answer whether I am a task item whose box is ticked ('[x]' or '[X]')."
+
+	^ checked ifNil: [ false ]
+]
+
+{ #category : 'testing' }
+MicListItemBlock >> isTask [
+	"Answer whether I was written as a task item, i.e. '- [ ] text' or '- [x] text'."
+
+	^ checked isNotNil
 ]
 
 { #category : 'accessing' }
