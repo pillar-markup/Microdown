@@ -42,6 +42,16 @@ MicTaskListItemTest >> subjectClass [
 	^ MicListItemBlock
 ]
 
+{ #category : 'tests - not a task' }
+MicTaskListItemTest >> testCheckedMarkerWithoutSpaceAfterBulletIsAParagraph [
+	"As in GFM, a bullet must be followed by a space to start a list."
+
+	| block |
+	block := (parser parse: '-[x] done') children first.
+	self assert: block class equals: MicParagraphBlock.
+	self assert: block children first bodyString equals: '-[x] done'
+]
+
 { #category : 'tests' }
 MicTaskListItemTest >> testCheckedTaskLowercase [
 
@@ -60,6 +70,16 @@ MicTaskListItemTest >> testCheckedTaskUppercase [
 	self assert: item isTask.
 	self assert: item isChecked.
 	self assert: item testText equals: 'Text(done)'
+]
+
+{ #category : 'tests - not a task' }
+MicTaskListItemTest >> testEmptyBracketsAreNotATask [
+	"As in GFM, the box needs a space or an x inside: '[]' stays text."
+
+	| item |
+	item := (self itemsOf: '- [] todo') first.
+	self deny: item isTask.
+	self assert: item testText equals: 'Text([] todo)'
 ]
 
 { #category : 'tests' }
@@ -184,6 +204,16 @@ MicTaskListItemTest >> testTaskWithOtherBullets [
 	self assert: (items collect: [ :each | each isChecked ] as: Array) equals: #( false true ).
 	items := self itemsOf: '+ [x] plus'.
 	self assert: items first isChecked
+]
+
+{ #category : 'tests - not a task' }
+MicTaskListItemTest >> testUncheckedMarkerWithoutSpaceAfterBulletIsAParagraph [
+	"As in GFM, a bullet must be followed by a space to start a list."
+
+	| block |
+	block := (parser parse: '-[ ] todo') children first.
+	self assert: block class equals: MicParagraphBlock.
+	self assert: block children first bodyString equals: '-[ ] todo'
 ]
 
 { #category : 'tests' }
