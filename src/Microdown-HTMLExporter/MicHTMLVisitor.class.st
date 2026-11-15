@@ -376,6 +376,13 @@ MicHTMLVisitor >> visitColumns: aMicColumnsBlock [
 	"??"
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitEnvironment: anEnvironment from: templated [
+	"Write anEnvironment for a templated writer that has no template for it: HTML has no markup for it, so only its children are written, by the templated writer."
+
+	templated visitChildrenOf: anEnvironment
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
@@ -563,6 +570,19 @@ MicHTMLVisitor >> visitQuote: aQuote [
 		with: [ super visitQuote: aQuote ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitQuote: aQuote from: templated [
+	"Write aQuote for a templated writer that has no template for it: its children go back to the templated writer."
+
+	| tagName |
+	tagName := aQuote text size > self minQuoteThreshold
+		           ifTrue: [ 'blockquote' ]
+		           ifFalse: [ 'q' ].
+	canvas tag
+		name: tagName;
+		with: [ templated visitChildrenOf: aQuote ]
+]
+
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRaw: aMicRaw [
 	"Raw should be raw and it should NOT go the next line or whatever"
@@ -589,6 +609,15 @@ MicHTMLVisitor >> visitStrike: aStrike [
 	canvas tag
 		name: 'strike';
 		with: [ super visitStrike: aStrike ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitStrike: aStrike from: templated [
+	"Write aStrike for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas tag
+		name: 'strike';
+		with: [ templated visitChildrenOf: aStrike ]
 ]
 
 { #category : 'visiting' }

@@ -337,13 +337,13 @@ MicTemplatedWriter >> unorderedListTemplateFileName [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitAnchor: anAnchorReference [
+MicTemplatedWriter >> visitAnchor: anAnchor [
 
 	self
-		writeRawText: anAnchorReference bodyString
-		withTemplateFileName: self anchorReferenceTemplateFileName
-		extraArguments: { 'name' -> anAnchorReference name }
-		ifAbsent: [ defaultWriter visitAnchor: anAnchorReference ]
+		writeRawText: anAnchor label
+		withTemplateFileName: self class anchorTemplateFileName
+		extraArguments: { ('label' -> anAnchor label) }
+		ifAbsent: [ defaultWriter visitAnchor: anAnchor ]
 ]
 
 { #category : 'visiting' }
@@ -402,14 +402,13 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 
 { #category : 'visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
-	"Without an environment template, the children are still written through me so their own templates apply."
 
 	self pushEnvironment: anEnvironment.
 	self
 		write: anEnvironment
 		withTemplateFileName: self class environmentTemplateFileName
 		extraArguments: anEnvironment properties associations
-		ifAbsent: [ super visitEnvironment: anEnvironment ].
+		ifAbsent: [ defaultWriter visitEnvironment: anEnvironment from: self ].
 	self popEnvironment
 ]
 
@@ -516,6 +515,12 @@ MicTemplatedWriter >> visitPreformatted: aPreformatted [
 		ifAbsent: [ defaultWriter visitPreformatted: aPreformatted ]
 ]
 
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitQuote: aQuote [
+
+	defaultWriter visitQuote: aQuote from: self
+]
+
 { #category : 'delegating' }
 MicTemplatedWriter >> visitRaw: aPRRaw [ 
 	
@@ -531,6 +536,12 @@ MicTemplatedWriter >> visitRoot: aRoot [
 		extraArguments: {  }
 		ifAbsent: [ defaultWriter visitRoot: aRoot from: self  ].
 
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitStrike: aStrike [
+
+	defaultWriter visitStrike: aStrike from: self
 ]
 
 { #category : 'delegating' }

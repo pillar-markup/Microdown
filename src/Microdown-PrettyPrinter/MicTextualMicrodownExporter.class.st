@@ -248,6 +248,17 @@ MicTextualMicrodownExporter >> visitEnvironment: anEnvironment [
 	
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitEnvironment: anEnvironment from: templated [
+	"Write anEnvironment for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder newLine.
+	builder
+		environment: anEnvironment environmentName
+		body: [ templated visitChildrenOf: anEnvironment ]
+		arguments: anEnvironment arguments justTheArguments
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitFigure: aFigure [
 	
@@ -386,6 +397,13 @@ MicTextualMicrodownExporter >> visitQuote: aQuote [
 	builder quoteBlock: aQuote text
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitQuote: aQuote from: templated [
+	"Write aQuote for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder writeQuoteCodeBlockDuring: [ templated visitChildrenOf: aQuote ]
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitRaw: aRawFormat [
 
@@ -419,6 +437,13 @@ MicTextualMicrodownExporter >> visitRow: row in: aTable at: i [
 MicTextualMicrodownExporter >> visitStrike: aStrikeFormat [
 
 	builder strike: [ super visitStrike: aStrikeFormat ]
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitStrike: aStrike from: templated [
+	"Write aStrike for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder strike: [ templated visitChildrenOf: aStrike ]
 ]
 
 { #category : 'API' }
