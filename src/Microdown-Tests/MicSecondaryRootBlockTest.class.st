@@ -8,11 +8,16 @@ Class {
 
 { #category : 'tests' }
 MicSecondaryRootBlockTest >> testAcceptDoubleDispatch [
+	"A visitor visits a secondary root like a root: its children are visited."
 
-	| block visitor |
+	| block |
 	block := MicSecondaryRootBlock new.
-	visitor := MicrodownVisitor new.
-	self shouldnt: [ block accept: visitor ] raise: Error
+	(Microdown parse: 'hello **world**') children do: [ :each | block addChild: each ].
+	self
+		assert: (MicTextualMicrodownExporter new
+				 visit: block;
+				 contents) trimBoth
+		equals: 'hello **world**'
 ]
 
 { #category : 'tests' }

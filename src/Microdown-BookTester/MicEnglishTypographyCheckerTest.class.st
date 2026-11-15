@@ -84,10 +84,13 @@ MicEnglishTypographyCheckerTest >> setUp [
 ]
 
 { #category : 'tests' }
-MicEnglishTypographyCheckerTest >> testConfigureFrom [ 
+MicEnglishTypographyCheckerTest >> testConfigureFrom [
+	"The checker needs no configuration: a configuration does not change what it finds."
 
-	checker configureFrom: #(#('sub-presenter' 'subpresenter') #('sub presenter' 'subpresenter') #('meta
-object' 'metaobject'))
+	checker configureFrom:
+		#( #( 'sub-presenter' 'subpresenter' ) #( 'sub presenter' 'subpresenter' ) #( 'metaobject' 'metaobject' ) ).
+	checker checkProject: fileSystem / 'spaceBeforeComma.md'.
+	self deny: checker isOkay
 ]
 
 { #category : 'tests' }

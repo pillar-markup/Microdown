@@ -197,6 +197,5 @@ MicrodownTest >> testText [
 
 	| doc |
 	doc := Microdown parse: self rawMicrodownSyntax.
-	self shouldnt: [ Character space join: (doc children allButFirst collect: [ :each | each text ]) ] raise: MessageNotUnderstood 
-	
+	self assert: (doc children allButFirst allSatisfy: [ :each | each text isString ])
 ]

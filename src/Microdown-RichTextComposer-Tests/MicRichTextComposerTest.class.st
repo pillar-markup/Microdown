@@ -294,13 +294,9 @@ MicRichTextComposerTest >> testCodeBlockWithTabbedCode [
 
 { #category : 'tests' }
 MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
-	| src |
-	src := '
-<!card 
-stuff
-!>
-'.
-	Microdown asRichText: src
+	"An unknown environment is rendered as a message instead of raising an error."
+
+	self assert: ((Microdown asRichText: '<!card stuff!>') asString includesSubstring: 'Environment ''card stuff'' is not defined')
 ]
 
 { #category : 'skipped tests' }

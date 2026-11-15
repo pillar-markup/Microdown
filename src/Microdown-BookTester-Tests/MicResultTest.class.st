@@ -64,12 +64,6 @@ MicResultTest >> testResultCreation [
 	{ MicBookTestResult . MicBrokenSyncDefinitionResult . MicBrokenSyncOriginDefinitionResult . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
 ]
 
-{ #category : 'tests - basic result creation' }
-MicResultTest >> testResultCreationSmokeTest [
-
-	{ MicBookTestResult . MicBrokenSyncDefinitionResult . MicBrokenSyncOriginDefinitionResult . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]
-]
-
 { #category : 'tests' }
 MicResultTest >> testSTONFormatExplanationDuplicatedAnchor [
 

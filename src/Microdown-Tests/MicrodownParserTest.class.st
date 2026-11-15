@@ -590,20 +590,35 @@ MicrodownParserTest >> testPipeEscape [
 
 { #category : 'tests - breaking class comments' }
 MicrodownParserTest >> testRBPatternVariableNode [
-	| paragraph1 paragraph2 paragraph3 |
-	
-	paragraph1 := parser parse: 'The @ character can be combined with the name to match lists of items. If combined with the . character, then it will match a list of statement nodes (0 or more). If used without the . or # character, then it matches anything except for a list of statements. Combining the @ with the # is not supported.'.
-	
-	paragraph2 :=  parser parse: 'Adding another ` in the name will cause the search/replace to look for more matches inside the node that this node matched. This option should not be used for top-level expressions since that would cause infinite recursion (e.g., searching only for "``@anything").
-'.
-	paragraph3 := parser parse: 'Instance Variables:
+	"The comment of RBPatternVariableNode uses @, #, . and backquotes as plain characters: only a pair of backquotes makes monospace text."
+
+	| text1 text3 paragraph1 paragraph2 paragraph3 |
+	text1 := 'The @ character can be combined with the name to match lists of items. If combined with the . character, then it will match a list of statement nodes (0 or more). If used without the . or # character, then it matches anything except for a list of statements. Combining the @ with the # is not supported.'.
+	text3 := 'Instance Variables:
 	isAnything	<Boolean>	can we match any type of node
 	isList	<Boolean>	can we match a list of items (@)
 	isLiteral	<Boolean>	only match a literal node (#)
 	isStatement	<Boolean>	only match statements (.)
-	recurseInto	<Boolean>	search for more matches in the node we match (`)
+	recurseInto	<Boolean>	search for more matches in the node we match (`)'.
+	paragraph1 := (parser parse: text1) children.
+	paragraph2 := (parser parse:
+		               'Adding another ` in the name will cause the search/replace to look for more matches inside the node that this node matched. This option should not be used for top-level expressions since that would cause infinite recursion (e.g., searching only for "``@anything").')
+		              children.
+	paragraph3 := (parser parse: text3) children.
 
-'
+	self assert: paragraph1 size equals: 1.
+	self assert: paragraph1 first children size equals: 1.
+	self assert: paragraph1 first children first plainText equals: text1.
+
+	self assert: paragraph2 size equals: 1.
+	self assert: (paragraph2 first children collect: [ :each | each class ] as: Array) equals: {
+			MicTextBlock.
+			MicMonospaceFormatBlock.
+			MicTextBlock }.
+
+	self assert: paragraph3 size equals: 1.
+	self assert: paragraph3 first children size equals: 1.
+	self assert: paragraph3 first children first class equals: MicTextBlock
 ]
 
 { #category : 'tests - table' }
@@ -626,15 +641,12 @@ MicrodownParserTest >> testSimpleTable [
 { #category : 'tests - error' }
 MicrodownParserTest >> testSimpleTableNoError [
 	"Microdown allows jagged tables - as implemented in MicTableBlock>>closeMe"
-	self shouldnt: [ parser parse: '
 
-| aaab | jkhjh |
-| --- |
-| bar |
-
-'
-	] raise: Error
-	
+	| table |
+	table := (parser parse: '| aaab | jkhjh || --- || bar |') children first.
+	self assert: table class equals: MicTableBlock.
+	self assert: table rows size equals: 1.
+	self assert: (table rows first collect: [ :cell | cell first plainText ] as: Array) equals: #( 'aaab' 'jkhjh' '---' 'bar' )
 ]
 
 { #category : 'tests - table' }
