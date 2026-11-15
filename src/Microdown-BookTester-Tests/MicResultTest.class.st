@@ -59,6 +59,32 @@ MicResultTest >> testMicBrokenSyncDefinitionResultExplanationWorksWithEmptyInsta
 ]
 
 { #category : 'tests - basic result creation' }
+MicResultTest >> testMicDuplicatedAnchorResultExplanationWorksWithEmptyInstance [
+
+	self assert: MicDuplicatedAnchorResult new explanation equals: 'Anchor empty is duplicated in file: /'
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testMicReferenceToUnexistingAnchorResultExplanationWorksWithEmptyInstance [
+
+	self assert: MicReferenceToUnexistingAnchorResult new explanation equals: 'Anchor empty is undefined in file: /'
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testMicUndefinedFigureFileResultExplanationWorksWithEmptyInstance [
+
+	self assert: MicUndefinedFigureFileResult new explanation equals: 'Figure not found: empty (in file /) was not found.'
+]
+
+{ #category : 'tests - basic result creation' }
+MicResultTest >> testMicUndefinedInputFileResultExplanationWorksWithEmptyInstance [
+
+	self
+		assert: MicUndefinedInputFileResult new explanation
+		equals: 'Undefined file input: empty (in file /) refer to file that does not exist.'
+]
+
+{ #category : 'tests - basic result creation' }
 MicResultTest >> testResultCreation [
 
 	{ MicBookTestResult . MicBrokenSyncDefinitionResult . MicBrokenSyncOriginDefinitionResult . MicDesynchronizedCodeResult .  MicDuplicatedAnchorResult . MicReferenceToUnexistingAnchorResult . MicUndefinedFigureFileResult . MicUndefinedInputFileResult} do: [ :each | each new printString ]

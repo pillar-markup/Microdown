@@ -44,6 +44,13 @@ MicAnchorResult >> headerString [
 	^ 'Anchor'
 ]
 
+{ #category : 'initialization' }
+MicAnchorResult >> initialize [
+
+	super initialize.
+	anchorLabel := 'empty'
+]
+
 { #category : 'accessing' }
 MicAnchorResult >> isWhat [
 	^  'anchor problem'

@@ -43,6 +43,13 @@ MicUndefinedFigureFileResult >> headerString [
 	^ 'Undefined Figure File'
 ]
 
+{ #category : 'initialization' }
+MicUndefinedFigureFileResult >> initialize [
+
+	super initialize.
+	figureFileString := 'empty'
+]
+
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> what [ 
 

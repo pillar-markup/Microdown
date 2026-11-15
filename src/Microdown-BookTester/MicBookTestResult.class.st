@@ -122,8 +122,7 @@ MicBookTestResult >> initialize [
 	status := true.
 	isExpectedFailure := false.
 	message := 'Test failed without raising an exception'.
-	text := 'here we should get an expression'.
-	fileReference := '' asFileReference.
+	text := 'here we should get an expression'
 ]
 
 { #category : 'accessing' }

@@ -53,6 +53,13 @@ MicResult >> inFile: anObject [
 	fileReference := anObject
 ]
 
+{ #category : 'initialization' }
+MicResult >> initialize [
+
+	super initialize.
+	fileReference := '' asFileReference
+]
+
 { #category : 'accessing' }
 MicResult >> message [
 
