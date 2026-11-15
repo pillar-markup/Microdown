@@ -184,6 +184,17 @@ MicTemplatedWriter >> contents [
 	^ defaultWriter contents
 ]
 
+{ #category : 'writing' }
+MicTemplatedWriter >> contentsOfChildrenOf: aMicElement [
+	"Answer the text of the children of aMicElement, each written with its own template."
+
+	| subWriter |
+	subWriter := outputDocument writer.
+	subWriter environmentStack: environmentStack.
+	subWriter visitChildrenOf: aMicElement.
+	^ subWriter contents
+]
+
 { #category : 'environment' }
 MicTemplatedWriter >> currentEnvironmentPath [
 	
@@ -355,21 +366,21 @@ MicTemplatedWriter >> visitAnchorReference: aReference [
 		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
 ]
 
-{ #category : 'visiting to revisit' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 
 	| arguments |
-	arguments := { 'label' -> anAnnotatedParagraph label }.
+	arguments := { ('label' -> anAnnotatedParagraph label) }.
 	self
 		write: anAnnotatedParagraph
 		withTemplateFileName: anAnnotatedParagraph label , '.mustache'
-		extraArguments: arguments 
+		extraArguments: arguments
 		ifAbsent: [
-			self
-				write: anAnnotatedParagraph
-				withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
-				extraArguments: arguments 
-				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
+				self
+					write: anAnnotatedParagraph
+					withTemplateFileName: self defaultAnnotatedParagraphTemplateFileName
+					extraArguments: arguments
+					ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph from: self ] ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -424,16 +435,18 @@ MicTemplatedWriter >> visitEnvironment: anEnvironment [
 	self popEnvironment
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitFigure: aFigure [
 
 	self
 		write: aFigure
 		withTemplateFileName: self figureTemplateFileName
 		extraArguments: {
-			'ref' -> aFigure fileStringWithoutHostFile.
-			'caption' -> (aFigure hasChildren ifTrue: [ aFigure caption ] ifFalse: [ '' ]) }
-		ifAbsent: [ defaultWriter visitFigure: aFigure ]
+				('ref' -> aFigure fileStringWithoutHostFile).
+				('caption' -> (aFigure hasChildren
+					  ifTrue: [ aFigure caption ]
+					  ifFalse: [ '' ])) }
+		ifAbsent: [ defaultWriter visitFigure: aFigure from: self ]
 ]
 
 { #category : 'visiting - html extensions' }
@@ -448,8 +461,8 @@ MicTemplatedWriter >> visitHeader: aHeader [
 	self
 		write: aHeader
 		withTemplateFileName: self headerTemplateFileName
-		extraArguments: { 'level' -> (aHeader level min: 7 max: 1) }
-		ifAbsent: [ defaultWriter visitHeader: aHeader ]
+		extraArguments: { ('level' -> (aHeader level min: 7 max: 1)) }
+		ifAbsent: [ defaultWriter visitHeader: aHeader from: self ]
 ]
 
 { #category : 'visiting' }
@@ -617,19 +630,11 @@ MicTemplatedWriter >> write: aMicElement [
 ]
 
 { #category : 'writing' }
-MicTemplatedWriter >> write: aMicElement 
-	withTemplateFileName: templateFileName 
-	extraArguments: arguments 
-	ifAbsent: aBlock [
-	
+MicTemplatedWriter >> write: aMicElement withTemplateFileName: templateFileName extraArguments: arguments ifAbsent: aBlock [
 	"Get templated text of children of aMicElement and template it with its template"
-	
+
 	self
-		writeRawText: [ | subWriter |
-			subWriter := outputDocument writer.
-			subWriter environmentStack: environmentStack. 
-			subWriter visitChildrenOf: aMicElement.
-			subWriter contents ]
+		writeRawText: [ self contentsOfChildrenOf: aMicElement ]
 		withTemplateFileName: templateFileName
 		extraArguments: arguments
 		ifAbsent: aBlock

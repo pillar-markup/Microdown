@@ -195,6 +195,13 @@ MicTextualMicrodownExporter >> visitAnnotated: anAnnotated [
 		paragraph: [ builder textWithBracket: textualExporter contents ]
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitAnnotated: anAnnotated from: templated [
+	"Write anAnnotated for a templated writer that has no template for it: its children are written by the templated writer."
+
+	builder annotated: anAnnotated label paragraph: [ builder textWithBracket: (templated contentsOfChildrenOf: anAnnotated) ]
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitAnnotation: anAnnotation [
 
@@ -269,6 +276,14 @@ MicTextualMicrodownExporter >> visitFigure: aFigure [
 		
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitFigure: aFigure from: templated [
+	"Write aFigure for a templated writer that has no template for it: its caption goes back to the templated writer."
+
+	builder newLine.
+	builder figureURL: aFigure url withCaption: [ templated visitChildrenOf: aFigure ]
+]
+
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
@@ -276,6 +291,14 @@ MicTextualMicrodownExporter >> visitHeader: aHeader [
 	builder 
 		header: [ self visitAll: aHeader headerElements ] 
 		withLevel: aHeader level
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitHeader: aHeader from: templated [
+	"Write aHeader for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder newLine.
+	builder header: [ templated visitAll: aHeader headerElements ] withLevel: aHeader level
 ]
 
 { #category : 'visit - block' }

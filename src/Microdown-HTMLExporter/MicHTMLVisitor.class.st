@@ -315,6 +315,17 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 		with: [ super visitAnnotated: anAnnotatedParagraph ].
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph from: templated [
+	"Write anAnnotatedParagraph for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas newLine.
+	canvas tag
+		name: 'q';
+		parameterAt: 'id' put: anAnnotatedParagraph label;
+		with: [ templated visitChildrenOf: anAnnotatedParagraph ]
+]
+
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitBold: aBoldText [
 
@@ -386,9 +397,16 @@ MicHTMLVisitor >> visitEnvironment: anEnvironment from: templated [
 { #category : 'visiting' }
 MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
+	self visitFigCaption: aFigCaptionBlock from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock from: aVisitor [
+	"Write the caption tag of aFigCaptionBlock; aVisitor writes its children."
+
 	canvas tag
 		name: 'figcaption';
-		with: [ self visitChildrenOf: aFigCaptionBlock ]
+		with: [ aVisitor visitChildrenOf: aFigCaptionBlock ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -399,6 +417,15 @@ MicHTMLVisitor >> visitFigure: aFigure [
 		name: 'figure';
 		with: [ self visitImg: aFigure ]
 
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitFigure: aFigure from: templated [
+	"Write aFigure for a templated writer that has no template for it: the children of its caption go back to the templated writer."
+
+	canvas tag
+		name: 'figure';
+		with: [ self visitImg: aFigure from: templated ]
 ]
 
 { #category : 'visiting - html extensions' }
@@ -427,6 +454,16 @@ MicHTMLVisitor >> visitHeader: aHeader [
 	
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitHeader: aHeader from: templated [
+	"Write aHeader for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas newLine.
+	canvas tag
+		name: 'h' , aHeader level asString;
+		with: [ templated visitChildrenOf: aHeader ]
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitHorizontalLine: aHorizontalLine [
 
@@ -441,13 +478,20 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	Mandatory attributes:
 		src - Specifies the path to the image
 		alt - Specifies an alternate text for the image, if the image for some reason cannot be displayed"
-	
+
+	self visitImg: aMicFigureBlock from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitImg: aMicFigureBlock from: aVisitor [
+	"Write the image tag of aMicFigureBlock; aVisitor writes the children of its caption."
+
 	canvas tag
 		name: 'img';
 		parameterAt: 'src' put: aMicFigureBlock reference path;
 		parameterAt: 'alt' put: aMicFigureBlock altText;
 		addArguments: aMicFigureBlock;
-		with: [ self visitFigCaption: aMicFigureBlock ]
+		with: [ self visitFigCaption: aMicFigureBlock from: aVisitor ]
 ]
 
 { #category : 'visiting - inline elements' }

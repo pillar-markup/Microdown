@@ -267,6 +267,17 @@ MicTemplatedWriterTest >> testWriteAnchorWithoutTemplateIsWrittenByTheDefaultWri
 	self assertWritingNode: (Microdown parse: '@anchor') children first writes: '@anchor'
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteAnnotatedWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	self assertWritingNode: (Microdown parse: '!!note An **annotated** paragraph') children first writes: '>[!note]
+> An <b>
+> annotated
+> </b> paragraph
+
+'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteBoldInParagraphUsesBoldTemplate [
 
@@ -397,6 +408,16 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 		forNode: (Microdown parse: '![This is a caption](files/pharologo.png)') children first children first
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteFigureWithoutTemplateWritesCaptionWithItsTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter figureTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: '![c **b**](fig.png)') children first children first writes: '
+![c <b>
+b
+</b>](fig.png)'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
@@ -407,6 +428,17 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 		forNode: (MicHeaderBlock new
 			level: 2;
 			headerElements: {(MicTextBlock new bodyString: 'foo'; yourself)})
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteHeaderWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter headerTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: '# T **b**') children first writes: '
+# T <b>
+b
+</b>
+'
 ]
 
 { #category : 'new tests' }
