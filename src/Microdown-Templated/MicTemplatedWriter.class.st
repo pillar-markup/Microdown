@@ -544,6 +544,13 @@ MicTemplatedWriter >> visitStrike: aStrike [
 	defaultWriter visitStrike: aStrike from: self
 ]
 
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitTable: aTable [
+	"The cells of a table are texts, not elements, so there is nothing to template inside: the default writer writes it all."
+
+	defaultWriter visitTable: aTable
+]
+
 { #category : 'delegating' }
 MicTemplatedWriter >> visitText: aPRText [ 
 

@@ -254,6 +254,19 @@ ThisIsAnchor
 		forNode: (Microdown parse: '*@ThisIsAnchor@*') children first
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteAnchorUsesAnchorTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter anchorTemplateFileName withContents: '<a id="{{{label}}}"/>'.
+	self assertWritingNode: (Microdown parse: '@anchor') children first writes: '<a id="anchor"/>'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteAnchorWithoutTemplateIsWrittenByTheDefaultWriter [
+
+	self assertWritingNode: (Microdown parse: '@anchor') children first writes: '@anchor'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteBoldInParagraphUsesBoldTemplate [
 
@@ -352,7 +365,7 @@ MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 		writes: 'before test after'
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - without template' }
 MicTemplatedWriterTest >> testWriteEnvironmentWithoutTemplateWritesItsChildren [
 
 	(textDocument templateDirectory / MicTemplatedWriter environmentTemplateFileName) delete.
@@ -360,7 +373,10 @@ MicTemplatedWriterTest >> testWriteEnvironmentWithoutTemplateWritesItsChildren [
 		assertWritingNode: (Microdown parse: '<!card
 Inside
 !>') children first
-		writes: '<p>Inside</p>'
+		writes: '
+<!card|
+<p>Inside</p>
+!>'
 ]
 
 { #category : 'new tests' }
@@ -461,6 +477,24 @@ MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplateWithBody [
 			yourself)
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteMathInlineIsWrittenByTheDefaultWriter [
+
+	self assertWritingNode: (Microdown parse: 'a $x$ b') children first writes: '<p>a $x$ b</p>'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteMetaDataIsWrittenByTheDefaultWriter [
+
+	self
+		assertWritingNode: (Microdown parse: '{
+"title" : "T"
+}') children first
+		writes: '{
+"title" : "T"
+}'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 
@@ -534,6 +568,14 @@ bold
 '
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteQuoteWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	self assertWritingNode: (Microdown parse: '> a **quote**') children first writes: '>  a <b>
+quote
+</b>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteRoot [
 
@@ -550,6 +592,27 @@ MicTemplatedWriterTest >> testWriteRootWithoutTemplateWritesChildrenWithTheirTem
 
 	(textDocument templateDirectory / MicTemplatedWriter rootTemplateFileName) delete.
 	self assertWritingNode: (Microdown parse: 'Plain text') writes: '<p>Plain text</p>'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteStrikeWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	self assertWritingNode: (Microdown parse: '~a **b**~') children first writes: '<p>~a <b>
+b
+</b>~</p>'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteTableIsWrittenByTheDefaultWriter [
+
+	self
+		assertWritingNode: (Microdown parse: '| a | b |
+| --- | --- |
+| 1 | 2 |') children first
+		writes: '
+| a | b |
+| --- | --- |
+| 1 | 2 |'
 ]
 
 { #category : 'tests-templatefiles' }
