@@ -400,16 +400,17 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 		ifAbsent: [ defaultWriter visitComment: aCommentBlock  ]
 ]
 
-{ #category : 'visiting to revisit' }
+{ #category : 'visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
+	"Without an environment template, the children are still written through me so their own templates apply."
 
 	self pushEnvironment: anEnvironment.
 	self
 		write: anEnvironment
-		withTemplateFileName: 'environment.mustache'
+		withTemplateFileName: self class environmentTemplateFileName
 		extraArguments: anEnvironment properties associations
-		ifAbsent: [ self visitEnvironment: anEnvironment ].
-	self popEnvironment.
+		ifAbsent: [ super visitEnvironment: anEnvironment ].
+	self popEnvironment
 ]
 
 { #category : 'visiting' }

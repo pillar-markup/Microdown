@@ -343,6 +343,17 @@ MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 		writes: 'before test after'
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteEnvironmentWithoutTemplateWritesItsChildren [
+
+	(textDocument templateDirectory / MicTemplatedWriter environmentTemplateFileName) delete.
+	self
+		assertWritingNode: (Microdown parse: '<!card
+Inside
+!>') children first
+		writes: '<p>Inside</p>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 

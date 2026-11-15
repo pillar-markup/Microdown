@@ -65,6 +65,8 @@ MyLog >> pt2025_08_16 [
 	^ '
 ## 2025 08 16 
 
+- cleanTemplated
+- improve bookTester
 - Anchor Linker Use - Investigate why it is not used.
 - MicCodeBlock API does not support the setting of text
 
