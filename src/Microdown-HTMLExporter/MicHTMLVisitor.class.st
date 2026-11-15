@@ -716,3 +716,10 @@ MicHTMLVisitor >> writeCounterForScript: aScript [
 	self writeCounter: aScript counter.
 	self writeCounterDefinitionSeparator
 ]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> writeTemplatedText: aString [
+	"Write aString, the result of a template applied by a templated writer, as is: its line ends are not turned into breaks."
+
+	canvas raw: aString
+]

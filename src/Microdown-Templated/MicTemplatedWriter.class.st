@@ -585,22 +585,19 @@ MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileNam
 ]
 
 { #category : 'writing' }
-MicTemplatedWriter >> writeRawText: aText 
-	withTemplateFileName: templateFileName 
-	extraArguments: arguments 
-	ifAbsent: aBlock [
+MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName extraArguments: arguments ifAbsent: aBlock [
 
 	| templateFile result environmentPath foundPath |
 	environmentPath := self currentEnvironmentPath.
-	
-	foundPath := environmentPath 
-		lookup: [ :path | ((outputDocument templateDirectory resolve: path) / templateFileName) exists ]
-		ifNone: [ ^ aBlock value ].
-	
-	"grab the text apply the template to it and call the defaultDriver with the text"
+
+	foundPath := environmentPath
+		             lookup: [ :path | ((outputDocument templateDirectory resolve: path) / templateFileName) exists ]
+		             ifNone: [ ^ aBlock value ].
+
+	"grab the text, apply the template to it and let the default writer write the result as is"
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
-	result := templateFile asMustacheTemplate value: ({ 'contents' -> aText value }, arguments) asDictionary.
-	self visitText: (MicTextBlock new bodyString: result)
+	result := templateFile asMustacheTemplate value: ({ ('contents' -> aText value) } , arguments) asDictionary.
+	defaultWriter writeTemplatedText: result
 ]
 
 { #category : 'writing' }

@@ -288,6 +288,15 @@ Bar
 		forNode: (Microdown parse: '**Bar**') children first children first
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteBoldWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter boldTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: '**_it_**') children first writes: '<p>**<em>
+it
+</em>**</p>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 	self flag: #enh.
@@ -422,6 +431,15 @@ Bar
 						yourself )
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteLinkWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter externalLinkTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: '[**a**](http://pharo.org)') children first writes: '<p>[<b>
+a
+</b>](http://pharo.org)</p>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplate [
 
@@ -505,6 +523,17 @@ MicTemplatedWriterTest >> testWriteParagraphUsesParagraphTemplate [
 		forNode: (Microdown parse: 'This is a paragraph') children first 
 ]
 
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteParagraphWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter paragraphTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: 'some **bold**') children first writes: '
+some <b>
+bold
+</b>
+'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteRoot [
 
@@ -514,6 +543,13 @@ MicTemplatedWriterTest >> testWriteRoot [
 <p>This is a paragraph not a root</p>
 </header>'
 		forNode: (Microdown parse: 'This is a paragraph not a root') 
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteRootWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter rootTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: 'Plain text') writes: '<p>Plain text</p>'
 ]
 
 { #category : 'tests-templatefiles' }

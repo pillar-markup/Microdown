@@ -209,6 +209,13 @@ MicTextualMicrodownExporter >> visitBold: aBoldFormat [
 	builder bold: [ super visitBold: aBoldFormat ]
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitBold: aBold from: templated [
+	"Write aBold for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder bold: [ templated visitChildrenOf: aBold ]
+]
+
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitChildrenWithoutBackslash: aChildren [
 	aChildren do: [ :each | self visitTextWithoutBackslash: each ]
@@ -286,6 +293,13 @@ MicTextualMicrodownExporter >> visitLink: aLink [
 		withDescription: [ super visitLink: aLink ]
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitLink: aLink from: templated [
+	"Write aLink for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder externalLink: aLink url withDescription: [ templated visitChildrenOf: aLink ]
+]
+
 { #category : 'visit - list' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
 	"here we do not handle the prefix - or a number"
@@ -358,6 +372,14 @@ MicTextualMicrodownExporter >> visitParagraph: aParagraph [
 		paragraph: [ super visitParagraph: aParagraph ]
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitParagraph: aParagraph from: templated [
+	"Write aParagraph for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder newLine.
+	builder paragraph: [ templated visitChildrenOf: aParagraph ]
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitQuote: aQuote [
 
@@ -375,6 +397,13 @@ MicTextualMicrodownExporter >> visitRoot: aRoot [
 
 	builder 
 		root: [ super visitRoot: aRoot ] 
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitRoot: aRoot from: templated [
+	"Write aRoot for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder root: [ templated visitChildrenOf: aRoot ]
 ]
 
 { #category : 'API' }
@@ -426,4 +455,11 @@ MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
 			builder item: [ builder itemBody: [ self visitEach: unorderedItem ] ] ] ].
 	
 	block value
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> writeTemplatedText: aString [
+	"Write aString, the result of a template applied by a templated writer, as is: it must not be escaped."
+
+	builder raw: aString
 ]
