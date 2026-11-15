@@ -372,6 +372,12 @@ MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 				ifAbsent: [ defaultWriter visitAnnotated: anAnnotatedParagraph ] ]
 ]
 
+{ #category : 'visiting - inline elements' }
+MicTemplatedWriter >> visitAnnotation: anAnnotation [
+
+	defaultWriter visitAnnotation: anAnnotation
+]
+
 { #category : 'visiting' }
 MicTemplatedWriter >> visitBold: aMicBold [
 	
@@ -379,6 +385,12 @@ MicTemplatedWriter >> visitBold: aMicBold [
 		write: aMicBold
 		withTemplateFileName: self boldTemplateFileName
 		ifAbsent: [ defaultWriter visitBold: aMicBold from: self ]
+]
+
+{ #category : 'visiting - extensions' }
+MicTemplatedWriter >> visitCitation: aCitation [
+
+	defaultWriter visitCitation: aCitation
 ]
 
 { #category : 'visiting' }
@@ -424,6 +436,12 @@ MicTemplatedWriter >> visitFigure: aFigure [
 		ifAbsent: [ defaultWriter visitFigure: aFigure ]
 ]
 
+{ #category : 'visiting - html extensions' }
+MicTemplatedWriter >> visitHTMLTagParagraph: anHTMLTagParagraph [
+
+	defaultWriter visitHTMLTagParagraph: anHTMLTagParagraph
+]
+
 { #category : 'visiting' }
 MicTemplatedWriter >> visitHeader: aHeader [
 
@@ -441,6 +459,12 @@ MicTemplatedWriter >> visitHorizontalLine: aPRHorizontalRule [
 		writeRawText: ''
 		withTemplateFileName: self horizontalLineTemplateFileName
 		ifAbsent: [ defaultWriter visitHorizontalLine: aPRHorizontalRule ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitInputFile: anInputFile [
+
+	defaultWriter visitInputFile: anInputFile
 ]
 
 { #category : 'visiting' }
@@ -477,6 +501,25 @@ MicTemplatedWriter >> visitListItem: aListItem [
 		write: aListItem
 		withTemplateFileName: self listItemTemplateFileName
 		ifAbsent: [ defaultWriter visitListItem: aListItem ]
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitMath: aMath [
+
+	defaultWriter visitMath: aMath
+]
+
+{ #category : 'visiting - inline elements' }
+MicTemplatedWriter >> visitMathInline: aMathInline [
+
+	defaultWriter visitMathInline: aMathInline
+]
+
+{ #category : 'visiting' }
+MicTemplatedWriter >> visitMetaData: aMetaData [
+	"Metadata holds no elements, so there is nothing to template inside: the default writer writes it all."
+
+	defaultWriter visitMetaData: aMetaData
 ]
 
 { #category : 'visiting' }
@@ -538,7 +581,7 @@ MicTemplatedWriter >> visitRoot: aRoot [
 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitStrike: aStrike [
 
 	defaultWriter visitStrike: aStrike from: self
