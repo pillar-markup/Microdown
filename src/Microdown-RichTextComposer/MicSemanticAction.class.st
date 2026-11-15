@@ -48,33 +48,35 @@ MicSemanticAction class >> fromTokens: anArray [
 MicSemanticAction >> computeEntity [
 	"Try to guess what the text is:
 		Point
-		Point >> #setX:setY: 
-		Point class >> #setX:setY: 
+		Point class
+		Point >> #setX:setY:
+		Point class >> #setX:setY:
 		#'PackageNameWithDashes'
-		"
-	| size |
-	size := tokens size.
-	size > 4 ifTrue: [ ^ self ].
-	size = 0 ifTrue: [ ^ self ].
+		Literals such as nil, true or 10 refer to nothing."
+
+	(tokens isEmpty or: [ tokens size > 4 ]) ifTrue: [ ^ self ].
+	tokens first isString ifFalse: [ ^ self ].
 	"either 'Point' for a class or #'''System-Caching''' for a package"
-	size = 1 
-		ifTrue: [ self getClassOrNil
-						ifNil: [self getPackageOrNil ifNil: [ self getTagOrNil ] ].
-					^ self  ].
-	
+	tokens size = 1 ifTrue: [
+			self getClassOrNil ifNil: [ self getPackageOrNil ifNil: [ self getTagOrNil ] ].
+			^ self ].
 	"only 'Point class'"
-	size = 2
-		ifTrue: [ self getMetaClassOrNil. ^ self ].
-	
-	"Point >> #setX:setY:"
-	tokens second = '>>'
-		ifTrue: [ self getClassOrNil. 
-					 self getCompiledMethodFrom: 3  ]
-				"Point class >> #x:y:"
-		ifFalse: [ tokens second = 'class'
-							ifTrue: [ self getMetaClassOrNil.
-					 					self getCompiledMethodFrom: 4 ]
-							ifFalse: [ ^ self  ] ]
+	tokens size = 2 ifTrue: [
+			self getMetaClassOrNil.
+			^ self ].
+	self computeMethodEntity
+]
+
+{ #category : 'private' }
+MicSemanticAction >> computeMethodEntity [
+	"Find the method of a text such as Point >> #setX:setY: or Point class >> #x:y:"
+
+	tokens second = '>>' ifTrue: [
+			self getClassOrNil.
+			^ self getCompiledMethodFrom: 3 ].
+	tokens second = 'class' ifFalse: [ ^ self ].
+	self getMetaClassOrNil.
+	self getCompiledMethodFrom: 4
 ]
 
 { #category : 'accessing' }
@@ -142,19 +144,16 @@ MicSemanticAction >> getPackageOrNil [
 
 { #category : 'instance creation' }
 MicSemanticAction >> getTagOrNil [
+	"A tag is written with the name of its package, a dash and its own name, e.g. #'Microdown-Model'."
 
 	| tagName |
-	tagName := tokens first 
-		ifNil: [ ^ nil ]
-	 	ifNotNil: [:tn | tn asString].
+	tagName := tokens first asString.
 	self class packageOrganizer packages do: [ :package |
-		(tagName beginsWith: package name) ifTrue: [
-			package tags do: [ :tag |
-				package name , '-' , tag name = tagName ifTrue: [
-					entity := tag.
-					^ entity ] ] ] ].
-	entity := nil.
-	^ entity
+			| prefixSize |
+			prefixSize := package name size.
+			((tagName beginsWith: package name) and: [ (tagName at: prefixSize + 1 ifAbsent: [ nil ]) = $- ]) ifTrue: [
+				package tagNamed: (tagName allButFirst: prefixSize + 1) ifPresent: [ :tag | ^ entity := tag ] ] ].
+	^ entity := nil
 ]
 
 { #category : 'testing' }

@@ -165,6 +165,15 @@ MicCodeSemanticActionTest >> testReferenceToAPackage [
 		equals: 'Microdown'
 ]
 
+{ #category : 'tests - package' }
+MicCodeSemanticActionTest >> testReferenceToAPackageTag [
+
+	| entity |
+	entity := (self semanticActionClass from: '#''Microdown-Model''') entity.
+	self assert: entity name equals: #Model.
+	self assert: entity package name equals: 'Microdown'
+]
+
 { #category : 'tests - class' }
 MicCodeSemanticActionTest >> testReferenceToNonExistingClass [
 
@@ -178,6 +187,12 @@ MicCodeSemanticActionTest >> testScannerShouldNotFail [
 	self deny: (self semanticActionClass from: '') hasEntity.
 	self deny: (self semanticActionClass from: 'half"baked') hasEntity.
 	self deny: (self semanticActionClass from: 16rFFFD asCharacter asString) hasEntity.
+]
+
+{ #category : 'test - bogus entry' }
+MicCodeSemanticActionTest >> testTrue [
+
+	self deny: (self semanticActionClass from: 'true') hasEntity
 ]
 
 { #category : 'test - bogus entry' }
