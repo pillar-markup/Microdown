@@ -40,9 +40,9 @@ MicHTMLVisitor class >> asHTMLString: aMicrodownString configuration: aMicHTMLCo
 
 { #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLDocument [
+
 	<example>
-	
-	^ (Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument) inspect.
+	^ (Microdown asHTMLDocument: self sampleMicrodownText) inspect
 ]
 
 { #category : 'examples' }
@@ -61,9 +61,9 @@ MicHTMLVisitor class >> exampleHTMLDocumentWithLink [
 
 { #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLString [
+
 	<example>
-	
-	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
+	^ (Microdown asHTMLString: self sampleMicrodownText) inspect
 ]
 
 { #category : 'examples' }
@@ -71,6 +71,33 @@ MicHTMLVisitor class >> exampleHTMLStringWithLink [
 	<example>
 	
 	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
+]
+
+{ #category : 'private - demo' }
+MicHTMLVisitor class >> sampleMicrodownText [
+	"A short Microdown document with the main kinds of elements, used by the examples."
+
+	^ '# A sample document
+
+A paragraph with **bold**, _italic_, `monospace` and a [link](http://pharo.org).
+
+## Lists and code
+
+- one
+- two
+
+1. first
+2. second
+
+```language=Smalltalk
+3 + 4
+```
+
+| Name | Value |
+| --- | --- |
+| a | 1 |
+
+> A quote.'
 ]
 
 { #category : 'converting' }
@@ -227,6 +254,8 @@ MicHTMLVisitor >> stream: aStream [
 
 { #category : 'templating' }
 MicHTMLVisitor >> templateForConfiguration: aConfiguration [
+   "Probably used by pillar."
+
 	| inputFile templateName |
 	configuration := aConfiguration.
 	inputFile := configuration inputFile.

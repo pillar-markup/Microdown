@@ -8,16 +8,14 @@ Class {
 
 { #category : 'tests' }
 MicSecondaryRootBlockTest >> testAcceptDoubleDispatch [
-	"A visitor visits a secondary root like a root: its children are visited."
+	"A visitor visits a secondary root like a root: its children are visited, here a link gets resolved."
 
-	| block |
+	| block link |
 	block := MicSecondaryRootBlock new.
-	(Microdown parse: 'hello **world**') children do: [ :each | block addChild: each ].
-	self
-		assert: (MicTextualMicrodownExporter new
-				 visit: block;
-				 contents) trimBoth
-		equals: 'hello **world**'
+	(Microdown parse: '[a link](chapter.md)') children do: [ :each | block addChild: each ].
+	link := block children first children first.
+	MicZincPathResolver resolve: block withBase: 'file:///book/' asMicResourceReference.
+	self assert: link reference uri printString equals: 'file:///book/chapter.md'
 ]
 
 { #category : 'tests' }

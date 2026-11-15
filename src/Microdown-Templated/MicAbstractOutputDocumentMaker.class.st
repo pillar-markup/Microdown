@@ -69,7 +69,7 @@ MicAbstractOutputDocumentMaker >> templateDirectory [
 
 { #category : 'accessing' }
 MicAbstractOutputDocumentMaker >> templateForConfiguration: aConfiguration [
-
+   "Probably used by pillar."
 	^ self basicWriter templateForConfiguration: aConfiguration
 ]
 

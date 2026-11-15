@@ -1,3 +1,51 @@
+"
+I export a Microdown document back to Microdown text: I am the pretty printer of Microdown. I visit the tree produced by the parser (`Microdown parse:`) and write each element with its Microdown syntax.
+
+## Life cycle: who creates me and who uses me
+
+1. A client creates me with `new` and sends me `visit:` with a document or any element; I answer the Microdown text. For example `NTNote>>generateMetaDataElements` (TheNoteTaker) writes the metadata block of a note this way.
+2. `MicTextDocumentMaker>>basicWriter` creates me as the default writer of a `MicTemplatedWriter`, which asks me for `contents` and `folderName` and delegates to me the elements it has no template for.
+3. `MicTextualMicrodownExporter>>visitAnnotated:` creates a second instance of me to write the children of an annotated paragraph and puts its `contents` between brackets.
+4. I am used once: my stream keeps what I wrote, so a new document needs a new instance.
+
+## Responsibility:
+
+- I turn each kind of Microdown element (headers, paragraphs, lists, tables, code blocks, figures, links, formats, metadata, environments, ...) back into Microdown text.
+- I take care of the new lines between blocks and of the nesting of lists.
+- I escape the characters that Microdown would otherwise interpret (`backSlashString:`).
+
+## Collaborators: 
+
+- `MicrodownVisitor`: my superclass, it walks the tree and calls my `visit...:` methods.
+- `MicMicrodownTextualBuilder` (`Microdown builder`): I delegate the Microdown syntax to it (`paragraph:`, `bold:`, `unorderedListDuring:`, `metaDataFromAssociations:`, ...).
+- `MicTemplatedWriter`, through `MicTextDocumentMaker`: uses me as its default writer.
+
+## Why I am not a subclass of `MicDocumentWriter`
+
+`MicDocumentWriter` is the root of the LaTeX and Beamer writers. Moving me under it was considered and judged not worth it:
+
+- It writes through a `MicExportCanvas` on a `MicOutputStream`, created in its `initialize` from `canvasClass`. I write through a `MicMicrodownTextualBuilder`, which already knows the Microdown syntax; a canvas would sit unused next to it, or the builder would have to take over the canvas protocol (`on:`, `crAsNewLine`, `lfAsNewLine`, `crlfAsNewLine`, `writingRaw:`, `stream usedNewLine`).
+- What it adds is not needed for Microdown output: the choice of line ending (I always use `String cr`, set with `setNewLineCharacterString:`), and raw writing with the encoding of special characters (a raw format is written back as is between `{{` and `}}`, see `visitRaw:`).
+- The price is small: I do not understand `write:` nor the line ending messages. Clients send me `visit:`, which answers the text, or `contents`.
+
+## Public API and Key Messages
+
+- `new` creates me; there is nothing to configure.
+- `visit: aMicElement` writes the element and answers the Microdown text.
+- `contents` answers the text written so far.
+
+## Examples
+
+```
+MicTextualMicrodownExporter scriptRoundTrip
+```
+
+## Internal Representation
+
+- `stream`: the `WriteStream` holding the text I write.
+- `builder`: a `MicMicrodownTextualBuilder` writing on `stream`, with `String cr` as new line.
+- `inList`: true while I write the items of the outermost list, so that nested lists do not start with an empty line.
+"
 Class {
 	#name : 'MicTextualMicrodownExporter',
 	#superclass : 'MicrodownVisitor',
@@ -12,6 +60,21 @@ Class {
 	#category : 'Microdown-PrettyPrinter',
 	#package : 'Microdown-PrettyPrinter'
 }
+
+{ #category : 'script' }
+MicTextualMicrodownExporter class >> scriptRoundTrip [
+	"Parse a Microdown text and export the document back as Microdown text: the header, the bold and monospace text and the list come back in Microdown syntax."
+
+	<example>
+	| document |
+	document := Microdown parse: '# Title
+
+A **bold** and `code` paragraph.
+
+- one
+- two'.
+	^ (self new visit: document) inspect
+]
 
 { #category : 'helpers' }
 MicTextualMicrodownExporter >> backSlashString: aString [

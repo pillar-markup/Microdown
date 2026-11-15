@@ -326,7 +326,7 @@ MicTemplatedWriter >> rootTemplateFileName [
 
 { #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
-
+   "Probably used by pillar."
 	^ defaultWriter templateForConfiguration: aConfiguration
 ]
 

@@ -10,8 +10,9 @@ Class {
 		'nbListTab',
 		'writingRaw'
 	],
-	#category : 'Microdown-LaTeXExporter',
-	#package : 'Microdown-LaTeXExporter'
+	#category : 'Microdown-Visitor',
+	#package : 'Microdown',
+	#tag : 'Visitor'
 }
 
 { #category : 'accessing' }

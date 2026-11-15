@@ -9,8 +9,9 @@ Class {
 	#instVars : [
 		'stream'
 	],
-	#category : 'Microdown-LaTeXExporter',
-	#package : 'Microdown-LaTeXExporter'
+	#category : 'Microdown-Visitor',
+	#package : 'Microdown',
+	#tag : 'Visitor'
 }
 
 { #category : 'initialization' }

@@ -141,6 +141,7 @@ MicLaTeXWriter >> tabularEnvironment [
 
 { #category : 'accessing' }
 MicLaTeXWriter >> templateForConfiguration: aConfiguration [
+   "Probably used by pillar."
 	^ 'main.mustache'
 ]
 
