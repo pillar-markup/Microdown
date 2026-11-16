@@ -14,7 +14,8 @@ I am a Microdown writer that lets Mustache templates decide how elements are sty
 
 - I decide for each element whether a template overrides how it is written.
 - I find templates in the folder of the current environments (e.g. `cards/card/` inside `<!cards <!card ... !> !>`), then in its parent folders up to the template directory.
-- I apply a template with `contents` and the arguments of the element: `level` for a header, `ref` and `caption` for a link or a figure, `label` for an annotated paragraph or an anchor, the arguments of an environment (`<!card|someArgument=test`).
+- I apply a template with `contents` and the arguments of the element: `level` for a header, `ref` and `caption` for a link or a figure, `label` for an annotated paragraph or an anchor, `ref` for a citation, `name` for an annotation, `tag` and `arguments` for an HTML tag paragraph, the arguments of an environment (`<!card|someArgument=test`), of a math block or of an annotation. A table template gets `header` (the list of the header cells) and `rows` (the list of the rows, each with its list of `cells`), each cell written with its own templates, e.g. `{{#rows}}<tr>{{#cells}}<td>{{{.}}}</td>{{/cells}}</tr>{{/rows}}`.
+- Raw text, metadata and input files have no template: the default writer always writes them.
 
 ## Collaborators: 
 
@@ -33,7 +34,7 @@ I am a Microdown writer that lets Mustache templates decide how elements are sty
 
 A default writer is a `MicrodownVisitor` that also implements (see the `templating ping pong` protocol of `MicHTMLVisitor` and `MicTextualMicrodownExporter`):
 - `writeTemplatedText: aString`: write the result of a template as is, without escaping or turning line ends into breaks.
-- `visitX: anElement from: templated`, for each element that has elements inside: root, paragraph, header, bold, italic, strike, link, figure, quote, annotated paragraph, environment, ordered list, unordered list and list item. It writes the markup of the element itself and sends `templated visitChildrenOf: anElement` for its children.
+- `visitX: anElement from: templated`, for each element that has elements inside: root, paragraph, header, bold, italic, strike, link, figure, quote, annotated paragraph, environment, HTML tag paragraph, ordered list, unordered list and list item. It writes the markup of the element itself and sends `templated visitChildrenOf: anElement` for its children.
 
 The elements that have no element inside (code, table, math, metadata, anchor, ...) are written by its usual `visit…` methods.
 
@@ -75,9 +76,21 @@ MicTemplatedWriter class >> anchorTemplateFileName [
 ]
 
 { #category : 'templates' }
+MicTemplatedWriter class >> annotationTemplateFileName [
+
+	^ 'annotation.mustache'
+]
+
+{ #category : 'templates' }
 MicTemplatedWriter class >> boldTemplateFileName [
 	
 	^ 'bold.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> citationTemplateFileName [
+
+	^ 'citation.mustache'
 ]
 
 { #category : 'templates' }
@@ -130,6 +143,12 @@ MicTemplatedWriter class >> horizontalLineTemplateFileName [
 ]
 
 { #category : 'templates' }
+MicTemplatedWriter class >> htmlTagTemplateFileName [
+
+	^ 'htmlTag.mustache'
+]
+
+{ #category : 'templates' }
 MicTemplatedWriter class >> italicTemplateFileName [
 	
 	^ 'italic.mustache'
@@ -145,6 +164,18 @@ MicTemplatedWriter class >> lineBreakTemplateFileName [
 MicTemplatedWriter class >> listItemTemplateFileName [
 
 	^ 'listItem.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> mathInlineTemplateFileName [
+
+	^ 'mathInline.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> mathTemplateFileName [
+
+	^ 'math.mustache'
 ]
 
 { #category : 'templates' }
@@ -169,6 +200,12 @@ MicTemplatedWriter class >> paragraphTemplateFileName [
 MicTemplatedWriter class >> preformattedTemplateFileName [
 	
 	^ 'preformatted.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> quoteTemplateFileName [
+
+	^ 'quote.mustache'
 ]
 
 { #category : 'accessing - templates' }
@@ -196,6 +233,24 @@ Some **bold** text.').
 ]
 
 { #category : 'templates' }
+MicTemplatedWriter class >> strikeTemplateFileName [
+
+	^ 'strike.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> tableTemplateFileName [
+
+	^ 'table.mustache'
+]
+
+{ #category : 'templates' }
+MicTemplatedWriter class >> textTemplateFileName [
+
+	^ 'text.mustache'
+]
+
+{ #category : 'templates' }
 MicTemplatedWriter class >> unorderedListTemplateFileName [
 
 	^ 'unorderedList.mustache'
@@ -214,9 +269,21 @@ MicTemplatedWriter >> anchorReferenceTemplateFileName [
 ]
 
 { #category : 'accessing - templates' }
+MicTemplatedWriter >> annotationTemplateFileName [
+
+	^ self class annotationTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> boldTemplateFileName [
 
 	^ self class boldTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> citationTemplateFileName [
+
+	^ self class citationTemplateFileName
 ]
 
 { #category : 'accessing - templates' }
@@ -241,10 +308,17 @@ MicTemplatedWriter >> contents [
 MicTemplatedWriter >> contentsOfChildrenOf: aMicElement [
 	"Answer the text of the children of aMicElement, each written with its own template."
 
+	^ self contentsOfElements: aMicElement children
+]
+
+{ #category : 'writing' }
+MicTemplatedWriter >> contentsOfElements: aCollection [
+	"Answer the text of the elements of aCollection, each written with its own template."
+
 	| subWriter |
 	subWriter := outputDocument writer.
 	subWriter environmentStack: environmentStack.
-	subWriter visitChildrenOf: aMicElement.
+	subWriter visitAll: aCollection.
 	^ subWriter contents
 ]
 
@@ -305,6 +379,12 @@ MicTemplatedWriter >> horizontalLineTemplateFileName [
 	^ self class horizontalLineTemplateFileName
 ]
 
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> htmlTagTemplateFileName [
+
+	^ self class htmlTagTemplateFileName
+]
+
 { #category : 'initialization' }
 MicTemplatedWriter >> initialize [
 
@@ -328,6 +408,18 @@ MicTemplatedWriter >> lineBreakTemplateFileName [
 MicTemplatedWriter >> listItemTemplateFileName [
 
 	^ self class listItemTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> mathInlineTemplateFileName [
+
+	^ self class mathInlineTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> mathTemplateFileName [
+
+	^ self class mathTemplateFileName
 ]
 
 { #category : 'accessing - templates' }
@@ -377,15 +469,54 @@ MicTemplatedWriter >> pushEnvironment: aPREnvironment [
 ]
 
 { #category : 'accessing - templates' }
+MicTemplatedWriter >> quoteTemplateFileName [
+
+	^ self class quoteTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
 MicTemplatedWriter >> rootTemplateFileName [
 
 	^ self class rootTemplateFileName
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> strikeTemplateFileName [
+
+	^ self class strikeTemplateFileName
+]
+
+{ #category : 'private' }
+MicTemplatedWriter >> tableArgumentsOf: aTable [
+	"Answer the header and rows of aTable for its template, each cell written with its own templates."
+
+	| rows header |
+	rows := aTable rows collect: [ :row | row collect: [ :cell | self contentsOfElements: cell ] as: Array ].
+	header := #(  ).
+	aTable hasHeader ifTrue: [
+			header := rows first.
+			rows := rows allButFirst ].
+	^ {
+		  ('header' -> header).
+		  ('rows' -> (rows collect: [ :cells | { ('cells' -> cells) } asDictionary ] as: Array)) }
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> tableTemplateFileName [
+
+	^ self class tableTemplateFileName
 ]
 
 { #category : 'accessing' }
 MicTemplatedWriter >> templateForConfiguration: aConfiguration [
    "Probably used by pillar."
 	^ defaultWriter templateForConfiguration: aConfiguration
+]
+
+{ #category : 'accessing - templates' }
+MicTemplatedWriter >> textTemplateFileName [
+
+	^ self class textTemplateFileName
 ]
 
 { #category : 'accessing - templates' }
@@ -433,7 +564,11 @@ MicTemplatedWriter >> visitAnnotated: anAnnotatedParagraph [
 { #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitAnnotation: anAnnotation [
 
-	defaultWriter visitAnnotation: anAnnotation
+	self
+		writeRawText: anAnnotation bodyString
+		withTemplateFileName: self annotationTemplateFileName
+		extraArguments: { ('name' -> anAnnotation name) } , anAnnotation arguments associations
+		ifAbsent: [ defaultWriter visitAnnotation: anAnnotation ]
 ]
 
 { #category : 'visiting' }
@@ -448,7 +583,11 @@ MicTemplatedWriter >> visitBold: aMicBold [
 { #category : 'visiting - extensions' }
 MicTemplatedWriter >> visitCitation: aCitation [
 
-	defaultWriter visitCitation: aCitation
+	self
+		writeRawText: aCitation ref
+		withTemplateFileName: self citationTemplateFileName
+		extraArguments: { ('ref' -> aCitation ref) }
+		ifAbsent: [ defaultWriter visitCitation: aCitation ]
 ]
 
 { #category : 'visiting' }
@@ -500,7 +639,15 @@ MicTemplatedWriter >> visitFigure: aFigure [
 { #category : 'visiting - html extensions' }
 MicTemplatedWriter >> visitHTMLTagParagraph: anHTMLTagParagraph [
 
-	defaultWriter visitHTMLTagParagraph: anHTMLTagParagraph
+	self
+		write: anHTMLTagParagraph
+		withTemplateFileName: self htmlTagTemplateFileName
+		extraArguments: {
+				('tag' -> anHTMLTagParagraph label).
+				('arguments' -> (anHTMLTagParagraph hasArguments
+					  ifTrue: [ anHTMLTagParagraph argumentString ]
+					  ifFalse: [ '' ])) }
+		ifAbsent: [ defaultWriter visitHTMLTagParagraph: anHTMLTagParagraph from: self ]
 ]
 
 { #category : 'visiting' }
@@ -567,13 +714,20 @@ MicTemplatedWriter >> visitListItem: aListItem [
 { #category : 'visiting' }
 MicTemplatedWriter >> visitMath: aMath [
 
-	defaultWriter visitMath: aMath
+	self
+		writeRawText: aMath body
+		withTemplateFileName: self mathTemplateFileName
+		extraArguments: aMath arguments associations
+		ifAbsent: [ defaultWriter visitMath: aMath ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitMathInline: aMathInline [
 
-	defaultWriter visitMathInline: aMathInline
+	self
+		writeRawText: aMathInline bodyString
+		withTemplateFileName: self mathInlineTemplateFileName
+		ifAbsent: [ defaultWriter visitMathInline: aMathInline ]
 ]
 
 { #category : 'visiting' }
@@ -622,7 +776,7 @@ MicTemplatedWriter >> visitPreformatted: aPreformatted [
 { #category : 'visiting' }
 MicTemplatedWriter >> visitQuote: aQuote [
 
-	defaultWriter visitQuote: aQuote from: self
+	self write: aQuote withTemplateFileName: self quoteTemplateFileName ifAbsent: [ defaultWriter visitQuote: aQuote from: self ]
 ]
 
 { #category : 'delegating' }
@@ -645,20 +799,24 @@ MicTemplatedWriter >> visitRoot: aRoot [
 { #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitStrike: aStrike [
 
-	defaultWriter visitStrike: aStrike from: self
+	self write: aStrike withTemplateFileName: self strikeTemplateFileName ifAbsent: [ defaultWriter visitStrike: aStrike from: self ]
 ]
 
 { #category : 'visiting' }
 MicTemplatedWriter >> visitTable: aTable [
-	"The cells of a table are texts, not elements, so there is nothing to template inside: the default writer writes it all."
+	"The template gets the cells, each written with its own templates: header is the list of the header cells (empty without header), rows the list of the other rows, each with its list of cells."
 
-	defaultWriter visitTable: aTable
+	self
+		writeRawText: ''
+		withTemplateFileName: self tableTemplateFileName
+		extraArguments: [ self tableArgumentsOf: aTable ]
+		ifAbsent: [ defaultWriter visitTable: aTable ]
 ]
 
-{ #category : 'delegating' }
-MicTemplatedWriter >> visitText: aPRText [ 
+{ #category : 'visiting - inline elements' }
+MicTemplatedWriter >> visitText: aText [
 
-	defaultWriter visitText: aPRText
+	self writeRawText: aText bodyString withTemplateFileName: self textTemplateFileName ifAbsent: [ defaultWriter visitText: aText ]
 ]
 
 { #category : 'visiting - list' }
@@ -700,6 +858,7 @@ MicTemplatedWriter >> write: aDocumentItem withTemplateFileName: templateFileNam
 
 { #category : 'writing' }
 MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName extraArguments: arguments ifAbsent: aBlock [
+	"aText and arguments can be blocks: they are evaluated only when the template exists."
 
 	| templateFile result environmentPath foundPath |
 	environmentPath := self currentEnvironmentPath.
@@ -710,7 +869,7 @@ MicTemplatedWriter >> writeRawText: aText withTemplateFileName: templateFileName
 
 	"grab the text, apply the template to it and let the default writer write the result as is"
 	templateFile := outputDocument templateDirectory resolve: foundPath / templateFileName.
-	result := templateFile asMustacheTemplate value: ({ ('contents' -> aText value) } , arguments) asDictionary.
+	result := templateFile asMustacheTemplate value: ({ ('contents' -> aText value) } , arguments value) asDictionary.
 	defaultWriter writeTemplatedText: result
 ]
 

@@ -430,18 +430,26 @@ MicHTMLVisitor >> visitFigure: aFigure from: templated [
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
-	
+
+	self visitHTMLTagParagraph: anHTMLTagParagraph from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph from: aVisitor [
+	"Write the tag of anHTMLTagParagraph; aVisitor (myself or a templated writer without a template for it) writes its children."
+
 	canvas
 		newLine;
 		raw: '<' , anHTMLTagParagraph label.
-	anHTMLTagParagraph hasArguments
-		ifTrue: [ canvas space; raw: anHTMLTagParagraph argumentString ]. 
-	canvas raw: '>' .
-
-	self visitChildrenOf: anHTMLTagParagraph.
-	canvas 
+	anHTMLTagParagraph hasArguments ifTrue: [
+			canvas
+				space;
+				raw: anHTMLTagParagraph argumentString ].
+	canvas raw: '>'.
+	aVisitor visitChildrenOf: anHTMLTagParagraph.
+	canvas
 		newLine;
-		raw: anHTMLTagParagraph lineStopMarkup.
+		raw: anHTMLTagParagraph lineStopMarkup
 ]
 
 { #category : 'visiting' }

@@ -277,6 +277,13 @@ MicTemplatedWriterTest >> testWriteAnnotatedWithoutTemplateWritesChildrenWithThe
 '
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteAnnotationUsesAnnotationTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter annotationTemplateFileName withContents: '<{{{name}}} id="{{{id}}}">'.
+	self assertWritingNode: (Microdown parse: 'see {!anchor|id=bar!}') children first writes: '<p>see <anchor id="bar"></p>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteBoldInParagraphUsesBoldTemplate [
 
@@ -318,6 +325,13 @@ MicTemplatedWriterTest >> testWriteBoldWithoutTemplateWritesChildrenWithTheirTem
 	self assertWritingNode: (Microdown parse: '**_it_**') children first writes: '<p>**<em>
 it
 </em>**</p>'
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteCitationUsesCitationTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter citationTemplateFileName withContents: '<cite>{{{ref}}}</cite>'.
+	self assertWritingNode: (Microdown parse: 'see {!citation|ref=foo!}') children first writes: '<p>see <cite>foo</cite></p>'
 ]
 
 { #category : 'new tests' }
@@ -409,6 +423,33 @@ MicTemplatedWriterTest >> testWriteFigureWithoutTemplateWritesCaptionWithItsTemp
 ![c <b>
 b
 </b>](fig.png)'
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteHTMLTagParagraphUsesHTMLTagTemplate [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter htmlTagTemplateFileName
+		withContents: '<{{{tag}}} {{{arguments}}}>{{{contents}}}</{{{tag}}}>'.
+	self
+		assertWritingNode: (Microdown parse: '<div class="c">
+x
+</div>') children first
+		writes: '<div class="c"><p>x</p></div>'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteHTMLTagParagraphWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	self
+		assertWritingNode: (Microdown parse: '<div class="c">
+x **b**
+</div>') children first
+		writes: '
+<div class="c"><p>x <b>
+b
+</b></p>
+</div>'
 ]
 
 { #category : 'new tests' }
@@ -515,6 +556,26 @@ MicTemplatedWriterTest >> testWriteMathInlineIsWrittenByTheDefaultWriter [
 	self assertWritingNode: (Microdown parse: 'a $x$ b') children first writes: '<p>a $x$ b</p>'
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteMathInlineUsesMathInlineTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter mathInlineTemplateFileName withContents: '<m>{{{contents}}}</m>'.
+	self assertWritingNode: (Microdown parse: 'a $x^2$ b') children first writes: '<p>a <m>x^2</m> b</p>'
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteMathUsesMathTemplate [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter mathTemplateFileName
+		withContents: '<math label="{{{label}}}">{{{contents}}}</math>'.
+	self
+		assertWritingNode: (Microdown parse: '$$label=eq
+x^2
+$$') children first
+		writes: '<math label="eq">x^2</math>'
+]
+
 { #category : 'tests - without template' }
 MicTemplatedWriterTest >> testWriteMetaDataIsWrittenByTheDefaultWriter [
 
@@ -616,6 +677,17 @@ bold
 '
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteQuoteUsesQuoteTemplate [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter quoteTemplateFileName
+		withContents: '<blockquote>{{{contents}}}</blockquote>'.
+	self assertWritingNode: (Microdown parse: '> a **quote**') children first writes: '<blockquote>a <b>
+quote
+</b></blockquote>'
+]
+
 { #category : 'tests - without template' }
 MicTemplatedWriterTest >> testWriteQuoteWithoutTemplateWritesChildrenWithTheirTemplates [
 
@@ -642,6 +714,15 @@ MicTemplatedWriterTest >> testWriteRootWithoutTemplateWritesChildrenWithTheirTem
 	self assertWritingNode: (Microdown parse: 'Plain text') writes: '<p>Plain text</p>'
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteStrikeUsesStrikeTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter strikeTemplateFileName withContents: '<del>{{{contents}}}</del>'.
+	self assertWritingNode: (Microdown parse: '~a **b**~') children first writes: '<p><del>a <b>
+b
+</b></del></p>'
+]
+
 { #category : 'tests - without template' }
 MicTemplatedWriterTest >> testWriteStrikeWithoutTemplateWritesChildrenWithTheirTemplates [
 
@@ -661,6 +742,22 @@ MicTemplatedWriterTest >> testWriteTableIsWrittenByTheDefaultWriter [
 | a | b |
 | --- | --- |
 | 1 | 2 |'
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteTableUsesTableTemplateWithTemplatedCells [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter tableTemplateFileName
+		withContents:
+		'<table>{{#header}}<th>{{{.}}}</th>{{/header}}{{#rows}}<tr>{{#cells}}<td>{{{.}}}</td>{{/cells}}</tr>{{/rows}}</table>'.
+	self
+		assertWritingNode: (Microdown parse: '| a **b** | c |
+| --- | --- |
+| 1 | 2 |') children first
+		writes: '<table><th>a <b>
+b
+</b></th><th>c</th><tr><td>1</td><td>2</td></tr></table>'
 ]
 
 { #category : 'tests - environments' }
@@ -688,6 +785,13 @@ Foo
 		writes: '?
 [paragraph in card]
 ?'
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteTextUsesTextTemplate [
+
+	self createTemplateFileAt: Path * MicTemplatedWriter textTemplateFileName withContents: '[{{{contents}}}]'.
+	self assertWritingNode: (Microdown parse: 'Plain') children first writes: '<p>[Plain]</p>'
 ]
 
 { #category : 'tests - without template' }

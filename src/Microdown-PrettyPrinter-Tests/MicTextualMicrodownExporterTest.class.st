@@ -206,6 +206,35 @@ MicTextualMicrodownExporterTest >> testFileFigure [
 	self verifyObtain: factory fileFigureSample
 ]
 
+{ #category : 'tests - html' }
+MicTextualMicrodownExporterTest >> testHTMLTagParagraph [
+
+	| mic |
+	mic := parser parse: '<div class="c">
+x **b**
+</div>'.
+	self assert: (mic accept: visitor) contents equals: '
+<div class="c">
+x **b**
+
+</div>'
+]
+
+{ #category : 'tests - html' }
+MicTextualMicrodownExporterTest >> testHTMLTagParagraphIsParsedBack [
+
+	| mic tag |
+	mic := parser parse: '<div class="c">
+x **b**
+</div>'.
+	tag := (parser parse: (mic accept: visitor) contents) children first.
+	self assert: tag label equals: 'div'.
+	self assert: tag argumentString equals: 'class="c"'.
+	self assert: (tag children first children collect: [ :each | each class ] as: Array) equals: {
+			MicTextBlock.
+			MicBoldFormatBlock }
+]
+
 { #category : 'tests - header' }
 MicTextualMicrodownExporterTest >> testHeaderNewLine [
 

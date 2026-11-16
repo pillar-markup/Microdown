@@ -284,6 +284,25 @@ MicTextualMicrodownExporter >> visitFigure: aFigure from: templated [
 	builder figureURL: aFigure url withCaption: [ templated visitChildrenOf: aFigure ]
 ]
 
+{ #category : 'visiting - html extensions' }
+MicTextualMicrodownExporter >> visitHTMLTagParagraph: anHTMLTagParagraph [
+
+	self visitHTMLTagParagraph: anHTMLTagParagraph from: self
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitHTMLTagParagraph: anHTMLTagParagraph from: aVisitor [
+	"Write the tag lines of anHTMLTagParagraph; aVisitor (myself or a templated writer without a template for it) writes its children."
+
+	builder newLine.
+	builder raw: '<' , anHTMLTagParagraph label.
+	anHTMLTagParagraph hasArguments ifTrue: [ builder raw: ' ' , anHTMLTagParagraph argumentString ].
+	builder raw: '>'.
+	aVisitor visitChildrenOf: anHTMLTagParagraph.
+	builder newLine.
+	builder raw: anHTMLTagParagraph lineStopMarkup
+]
+
 { #category : 'visit - block' }
 MicTextualMicrodownExporter >> visitHeader: aHeader [
 	
