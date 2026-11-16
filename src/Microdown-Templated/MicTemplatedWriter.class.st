@@ -1,14 +1,54 @@
 "
-I am document writer that wraps a default writer.
-When writing one element, I first check if there is a file in the current template that overrides the default writing. If so, I use that file to template the contents.
-Otherwise I simply delegate the writing to the default one.
+I am a Microdown writer that lets Mustache templates decide how elements are styled. I wrap a default writer (`MicHTMLVisitor`, `MicTextualMicrodownExporter`). For each element I look for its template file (e.g. `bold.mustache`) in the template directory of my document maker:
+- if there is one, I write the children of the element through myself, put their text in the template as `{{{contents}}}` with arguments specific to the element, and let the default writer write the result as is;
+- if there is none, the default writer writes the element and gives its children back to me (ping pong), so the templates of nested elements still apply. This is why I'm passed as argument to the visitX:from: messages.
 
-I am carefully designed so if an element X is delegated to the default writer, it should delegate the writing of X's children back to myself.
+## Life cycle: who creates me and who uses me
 
-One of the key point of the design is that 
-when there is a no template for a container (e.g., Paragraph), if we default simply to the default writer
-then the elements of the container will not be templated so the default method passes the templater as well
-so that the container logic can call the templater back.
+1. A document maker (a subclass of `MicAbstractOutputDocumentMaker`, such as `MicTHTMLDocumentMaker` or `MicTextDocumentMaker`) creates me in `MicAbstractOutputDocumentMaker>>writer`, giving me itself as output document and a new default writer from its `basicWriter`.
+2. `MicTHTMLDocumentMaker>>write:` sends me `write:` with a document and answers my `contents`.
+3. To get the text of the children of an element before templating it, I ask my document maker for a new writer and share my environment stack with it (`contentsOfChildrenOf:`).
+4. When I write an environment (`<!card ... !>`), I push it on my environment stack while I write it, then pop it.
+
+## Responsibility:
+
+- I decide for each element whether a template overrides how it is written.
+- I find templates in the folder of the current environments (e.g. `cards/card/` inside `<!cards <!card ... !> !>`), then in its parent folders up to the template directory.
+- I apply a template with `contents` and the arguments of the element: `level` for a header, `ref` and `caption` for a link or a figure, `label` for an annotated paragraph or an anchor, the arguments of an environment (`<!card|someArgument=test`).
+
+## Collaborators: 
+
+- `MicAbstractOutputDocumentMaker` subclasses: create me, and give me the template directory (`templateDirectory`) and new writers.
+- The default writer: writes the elements without template, and the results of templates.
+- Mustache (`asMustacheTemplate`): applies the templates.
+- `MicEnvironmentBlock`: its name is the folder where templates are looked up first.
+
+## Public API and Key Messages
+
+- `write: aMicElement` writes aMicElement and answers the text.
+- `contents` answers the text written so far.
+- The template file names are on my class side, e.g. `MicTemplatedWriter boldTemplateFileName` (`bold.mustache`). An environment uses `environment.mustache`; an annotated paragraph uses `<label>.mustache`, then `defaultAnnotatedParagraph.mustache`.
+
+### What a default writer must understand
+
+A default writer is a `MicrodownVisitor` that also implements (see the `templating ping pong` protocol of `MicHTMLVisitor` and `MicTextualMicrodownExporter`):
+- `writeTemplatedText: aString`: write the result of a template as is, without escaping or turning line ends into breaks.
+- `visitX: anElement from: templated`, for each element that has elements inside: root, paragraph, header, bold, italic, strike, link, figure, quote, annotated paragraph, environment, ordered list, unordered list and list item. It writes the markup of the element itself and sends `templated visitChildrenOf: anElement` for its children.
+
+The elements that have no element inside (code, table, math, metadata, anchor, ...) are written by its usual `visit…` methods.
+
+## Examples
+
+```
+MicTemplatedWriter scriptHTMLWithABoldTemplate
+```
+
+## Internal Representation
+
+- `outputDocument`: the document maker that created me.
+- `defaultWriter`: the writer I delegate to.
+- `environmentStack`: the environments I am in, innermost first.
+
 "
 Class {
 	#name : 'MicTemplatedWriter',
@@ -134,6 +174,25 @@ MicTemplatedWriter class >> preformattedTemplateFileName [
 { #category : 'accessing - templates' }
 MicTemplatedWriter class >> rootTemplateFileName [
 	^ 'root.mustache'
+]
+
+{ #category : 'script' }
+MicTemplatedWriter class >> scriptHTMLWithABoldTemplate [
+	"Write a Microdown document to HTML where bold text goes through a bold.mustache template kept in a memory file system. The other elements have no template and are written by MicHTMLVisitor; the bold text inside the paragraph still gets its template."
+
+	<example>
+	| maker html |
+	maker := MicTHTMLDocumentMaker new
+		         baseDirectory: FileSystem memory root;
+		         yourself.
+	maker templateDirectory ensureCreateDirectory.
+	maker templateDirectory / self boldTemplateFileName writeStreamDo: [ :stream |
+		stream nextPutAll: '<span class="strong">{{{contents}}}</span>' ].
+	html := maker write: (Microdown parse: '# Title
+
+Some **bold** text.').
+	html inspect.
+	^ html
 ]
 
 { #category : 'templates' }
