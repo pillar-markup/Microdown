@@ -502,6 +502,15 @@ MicHTMLVisitor >> visitItalic: aItalicText [
 		with: [ super visitItalic: aItalicText ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitItalic: anItalic from: templated [
+	"Write anItalic for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas tag
+		name: 'i';
+		with: [ templated visitChildrenOf: anItalic ]
+]
+
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitLink: aLink [
 	"Write markup hyperlink, which is used to link from one page to another"
@@ -533,6 +542,13 @@ MicHTMLVisitor >> visitListItem: anItem [
 
 	canvas raw: [ super visitListItem: anItem ].
 
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitListItem: anItem from: templated [
+	"Write anItem for a templated writer that has no template for it: its children go back to the templated writer."
+
+	templated visitChildrenOf: anItem
 ]
 
 { #category : 'visiting' }
@@ -568,6 +584,18 @@ MicHTMLVisitor >> visitOrderedList: anUnorderedList [
 		with: [ 
 			canvas newLine. 
 			super visitOrderedList: anUnorderedList  ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitOrderedList: anOrderedList from: templated [
+	"Write anOrderedList for a templated writer that has no template for it: the templated writer writes the contents of its items."
+
+	canvas newLine.
+	canvas tag
+		name: 'ol';
+		with: [
+				canvas newLine.
+				anOrderedList children do: [ :each | self writeListItem: each from: templated ] ]
 ]
 
 { #category : 'visiting - list' }
@@ -736,6 +764,18 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 			super visitUnorderedList: anUnorderedList  ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitUnorderedList: anUnorderedList from: templated [
+	"Write anUnorderedList for a templated writer that has no template for it: the templated writer writes the contents of its items."
+
+	canvas newLine.
+	canvas tag
+		name: 'ul';
+		with: [
+				canvas newLine.
+				anUnorderedList children do: [ :each | self writeListItem: each from: templated ] ]
+]
+
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 	
@@ -788,6 +828,16 @@ MicHTMLVisitor >> writeCounterForScript: aScript [
 	aScript counter isValidCounter ifFalse: [ ^ self ].
 	self writeCounter: aScript counter.
 	self writeCounterDefinitionSeparator
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> writeListItem: anItem from: templated [
+	"Write the li tag of anItem; the templated writer writes its contents, with the list item template if there is one."
+
+	canvas tag
+		name: 'li';
+		with: [ templated visitEach: anItem ].
+	canvas newLine
 ]
 
 { #category : 'templating ping pong' }

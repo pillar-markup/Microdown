@@ -319,6 +319,13 @@ MicTextualMicrodownExporter >> visitItalic: anItalicFormatBlock [
 	builder italic: [ super visitItalic: anItalicFormatBlock ]
 ]
 
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitItalic: anItalic from: templated [
+	"Write anItalic for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder italic: [ templated visitChildrenOf: anItalic ]
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitLink: aLink [
 
@@ -339,6 +346,13 @@ MicTextualMicrodownExporter >> visitListItem: anItem [
 	"here we do not handle the prefix - or a number"
 
 	builder itemBody: [ super visitListItem: anItem ]
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitListItem: anItem from: templated [
+	"Write anItem for a templated writer that has no template for it: its children go back to the templated writer."
+
+	builder itemBody: [ templated visitChildrenOf: anItem ]
 ]
 
 { #category : 'visit - block' }
@@ -372,23 +386,28 @@ MicTextualMicrodownExporter >> visitMonospace: aMonospaceFormat [
 
 ]
 
-{ #category : 'visit - list' }
+{ #category : 'visiting - list' }
 MicTextualMicrodownExporter >> visitOrderedList: anOrderedList [
 
+	self visitOrderedList: anOrderedList from: self
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitOrderedList: anOrderedList from: aVisitor [
+	"Write anOrderedList; aVisitor (myself or a templated writer without a template for it) writes its items."
+
 	| block |
-	block := [  ].
-	self inList 
-		ifFalse: [ 
+	block := [ ].
+	self inList ifFalse: [
 			builder newLine.
-		 	self setTrueInList.
-		 	block := [ self setFalseInList ] ].
+			self setTrueInList.
+			block := [ self setFalseInList ] ].
 	"the problem if we use accept is that anitem is not an orderd or unordered. 
 	There is only one kind of item. So we cannot use the dispatch."
-	
-	builder orderedListDuring: [ 
-		anOrderedList children do: [ :orderedItem | 
-			builder orderedItem: [ builder itemBody: [ self visitEach: orderedItem ] ] ] ].
-		
+
+	builder orderedListDuring: [
+		anOrderedList children do: [ :orderedItem | builder orderedItem: [ builder itemBody: [ aVisitor visitEach: orderedItem ] ] ] ].
+
 	block value
 ]
 
@@ -489,19 +508,25 @@ MicTextualMicrodownExporter >> visitTextWithoutBackslash: aMicTextBlock [
 	builder text: aMicTextBlock bodyString
 ]
 
-{ #category : 'visit - list' }
+{ #category : 'visiting - list' }
 MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList [
-	
+
+	self visitUnorderedList: aUnorderedList from: self
+]
+
+{ #category : 'templating ping pong' }
+MicTextualMicrodownExporter >> visitUnorderedList: aUnorderedList from: aVisitor [
+	"Write aUnorderedList; aVisitor (myself or a templated writer without a template for it) writes its items."
+
 	| block |
-	block := [  ].
-	self inList ifFalse: 
-		[ builder newLine.
-		 self setTrueInList.
-		 block := [ self setFalseInList ] ].
-	builder unorderedListDuring:  [ 
-		aUnorderedList children do: [ :unorderedItem | 
-			builder item: [ builder itemBody: [ self visitEach: unorderedItem ] ] ] ].
-	
+	block := [ ].
+	self inList ifFalse: [
+			builder newLine.
+			self setTrueInList.
+			block := [ self setFalseInList ] ].
+	builder unorderedListDuring: [
+		aUnorderedList children do: [ :unorderedItem | builder item: [ builder itemBody: [ aVisitor visitEach: unorderedItem ] ] ] ].
+
 	block value
 ]
 

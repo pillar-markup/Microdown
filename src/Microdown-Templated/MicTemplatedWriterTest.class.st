@@ -13,15 +13,15 @@ Class {
 MicTemplatedWriterTest >> addTemplateFiles [
 
 	textDocument templateDirectory ensureCreateDirectory.
-	textDocument templateDirectory / MicTemplatedWriter rootTemplateFileName
-		writeStreamDo: [ :s | s << self rootContents ].
-	
-	{ #header. #bold . #italic . #figure . #externalLink . #environment . #paragraph . #internalLink . #commentedLine . #unorderedList. #orderedList . #listItem . #monospace . #codeBlock . #horizontalLine. #anchorReference } 
-		do: [ :each |		
-		textDocument templateDirectory / (MicTemplatedWriter perform: (each , 'TemplateFileName') asSymbol)
-		writeStreamDo: [ :s | s << (self perform: (each, 'Contents') asSymbol) ]. 
+	textDocument templateDirectory / MicTemplatedWriter rootTemplateFileName writeStreamDo: [ :s | s << self rootContents ].
 
-		].
+	#( #header #bold #italic #figure #externalLink #environment #paragraph #commentedLine #unorderedList #orderedList #listItem
+	   #monospace #codeBlock #horizontalLine #anchorReference ) do: [ :each |
+			| fileNameSelector contentsSelector |
+			fileNameSelector := (String streamContents: [ :s | s << each << 'TemplateFileName' ]) asSymbol.
+			contentsSelector := (String streamContents: [ :s | s << each << 'Contents' ]) asSymbol.
+			textDocument templateDirectory / (MicTemplatedWriter perform: fileNameSelector) writeStreamDo: [ :s |
+				s << (self perform: contentsSelector) ] ]
 ]
 
 { #category : 'contents' }
@@ -50,11 +50,8 @@ MicTemplatedWriterTest >> assertTemplate: template writesValue: value forNode: n
 { #category : 'helpers' }
 MicTemplatedWriterTest >> assertTemplatePath: templatePath writesValue: contents forNode: node [
 
-	"self 
-		createTemplateFileAt: templatePath 
-		withContents: self templateDirectory (fileSystem / 'mic' / templatePath basename) contents."
-	
-	self assertWritingNode: node writes: contents.
+	self assert: (textDocument templateDirectory resolve: templatePath) exists.
+	self assertWritingNode: node writes: contents
 ]
 
 { #category : 'helpers' }
@@ -152,12 +149,6 @@ MicTemplatedWriterTest >> importantContents [
 ]
 
 { #category : 'contents' }
-MicTemplatedWriterTest >> internalLinkContents [
-
-	^ 'See {{{contents}}}'
-]
-
-{ #category : 'contents' }
 MicTemplatedWriterTest >> italicContents [
 
 	^ '<em>
@@ -213,23 +204,23 @@ MicTemplatedWriterTest >> setUp [
 	self addTemplateFiles.
 ]
 
-{ #category : 'new tests' }
-MicTemplatedWriterTest >> testAnnotatedParagraphImportant [
-	self skip. 
+{ #category : 'tests - annotated' }
+MicTemplatedWriterTest >> testAnnotatedParagraphUsesTemplateNamedAfterItsLabel [
+
+	self createTemplateFileAt: Path * 'important.mustache' withContents: '<b>{{{label}}}</b>{{{contents}}}'.
 	self
-		assertTemplate: 'important.mustache'
-		writesValue: '<b>important</b>this is important'
-		forNode: (Microdown parse: '!!important this is important') children first
+		assertWritingNode: (Microdown parse: '!!important this is important') children first
+		writes: '<b>important</b>this is important'
 ]
 
-{ #category : 'new tests' }
-MicTemplatedWriterTest >> testAnnotatedParagraphUnsupportedIsThenDefault [
-	
-	self skip. "To be investigated."
+{ #category : 'tests - annotated' }
+MicTemplatedWriterTest >> testAnnotatedParagraphWithoutLabelTemplateUsesDefaultTemplate [
+	"An unknown label such as Tintin becomes note (see MicAnnotatedParagraphBlock>>verifyLabel), and there is no note template."
+
 	self
-		assertTemplate: 'important.mustache'
-		writesValue: '<b>Tintin</b>this is important'
-		forNode: (Microdown parse: '!!Tintin this is important') children first
+		createTemplateFileAt: Path * MicTemplatedWriter defaultAnnotatedParagraphTemplateFileName
+		withContents: '<i>{{{label}}}</i>{{{contents}}}'.
+	self assertWritingNode: (Microdown parse: '!!Tintin this is important') children first writes: '<i>note</i>this is important'
 ]
 
 { #category : 'tests-setup' }
@@ -252,6 +243,14 @@ MicTemplatedWriterTest >> testWriteAnchorReference [
 ThisIsAnchor
 *</a></p>'
 		forNode: (Microdown parse: '*@ThisIsAnchor@*') children first
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteAnchorReferenceUsesAnchorReferenceTemplate [
+
+	self assertWritingNode: (Microdown parse: '*@ThisReferenceAnchor@*') children first children first writes: '<a>*
+ThisReferenceAnchor
+*</a>'
 ]
 
 { #category : 'tests' }
@@ -344,36 +343,30 @@ MicTemplatedWriterTest >> testWriteCommentedLineUsesCommentedLineTemplate [
 		forNode: (MicCommentBlock new text: 'some comment')
 ]
 
-{ #category : 'new tests' }
-MicTemplatedWriterTest >> testWriteEnvironmentItselfUsesMainTemplate [
+{ #category : 'tests - environments' }
+MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
 
-	self skip.
-	"I do not get why we have extra newlines. But this will be for the next iteration."
 	self
-		assertTemplatePath: RelativePath * 'cards' / 'environment.mustache'
-		writesValue: '?
-
-This is a paragraph
-
-?'
-		forNode: (Microdown parse: '<!cards
-This is a paragraph
+		createTemplateFileAt: RelativePath * 'card' / MicTemplatedWriter environmentTemplateFileName
+		withContents: 'before {{{someArgument}}} after'.
+	self
+		assertWritingNode: (Microdown parse: '<!card|someArgument=test
+Foo
 !>') children first
+		writes: 'before test after'
 ]
 
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteEnvironmentUsesArguments [
-	self skip.
-	"the code has not been fixed when porting from Pillar"
-	self
-		createTemplateFileAt: RelativePath * 'card' / 'main.mustache'
-		withContents: 'before {{{someArgument}}} after'.
+{ #category : 'tests - environments' }
+MicTemplatedWriterTest >> testWriteEnvironmentUsesItsOwnTemplate [
 
 	self
-		assertWritingNode: ((MicEnvironmentBlock named: 'card')
-			propertyAt: 'someArgument' put: 'test';
-			yourself)
-		writes: 'before test after'
+		createTemplateFileAt: RelativePath * 'cards' / MicTemplatedWriter environmentTemplateFileName
+		withContents: '[cards]{{{contents}}}'.
+	self
+		assertWritingNode: (Microdown parse: '<!cards
+This is a paragraph
+!>') children first
+		writes: '[cards]<p>This is a paragraph</p>'
 ]
 
 { #category : 'tests - without template' }
@@ -451,22 +444,6 @@ MicTemplatedWriterTest >> testWriteHorizontalRuleUsesHorizontalRuleTemplate [
 ]
 
 { #category : 'new tests' }
-MicTemplatedWriterTest >> testWriteInternalLinkUsesInternalLinkTemplate [
-
-	self skip. 
-	"I do not get the difference with bold or other simple ones."
-	self 
-		assert: (Microdown parse: '*@ThisReferenceAnchor@*)') children first children first bodyString
-		equals: 'ThisReferenceAnchor'.
-	self
-		assertTemplate: MicTemplatedWriter internalLinkTemplateFileName
-		writesValue: 'See ThisReferenceAnchor'
-		forNode: (Microdown parse: '*@ThisReferenceAnchor@*)') children first children first.
-		
-	
-]
-
-{ #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteItalicUsesItalicTemplate [
 
 	self
@@ -477,6 +454,15 @@ Bar
 		forNode: (MicItalicFormatBlock new 
 						children: { (MicTextBlock new bodyString: 'Bar') };
 						yourself )
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteItalicWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter italicTemplateFileName) delete.
+	self assertWritingNode: (Microdown parse: '_a **b**_') children first children first writes: '_a <b>
+b
+</b>_'
 ]
 
 { #category : 'tests - without template' }
@@ -510,6 +496,20 @@ MicTemplatedWriterTest >> testWriteListItemUsesListItemTemplateWithBody [
 ]
 
 { #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteListItemWithoutTemplateWritesChildrenWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter listItemTemplateFileName) delete.
+	self
+		assertWritingNode: (Microdown parse: '- one
+- **two**') children first
+		writes: '<u>one
+<b>
+two
+</b>
+</u>'
+]
+
+{ #category : 'tests - without template' }
 MicTemplatedWriterTest >> testWriteMathInlineIsWrittenByTheDefaultWriter [
 
 	self assertWritingNode: (Microdown parse: 'a $x$ b') children first writes: '<p>a $x$ b</p>'
@@ -536,39 +536,21 @@ MicTemplatedWriterTest >> testWriteMonospaceUsesMonospaceTemplate [
 		forNode: (MicMonospaceFormatBlock new children:{(MicTextBlock new bodyString: 'Bar')})
 ]
 
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteNestedEnvironmentItselfUsesMainTemplate [
-	self skip.
-	"the code has not been fixed when porting from Pillar"
-	self
-		assertTemplatePath: RelativePath * 'cards' / 'card' / 'main.mustache'
-		writesValue: 'Template for the card itself'
-		forNode: ((MicEnvironmentBlock named: 'cards')
-						add: ((MicEnvironmentBlock named: 'card')
-									add: (MicParagraphBlock new add: (MicTextBlock content: 'Foo');
-							yourself));
-					yourself)
-]
-
-{ #category : 'tests-templatefiles' }
-MicTemplatedWriterTest >> testWriteNestedEnvironmentWithChilds [
-	self skip.
-	"the code has not been fixed when porting from Pillar"
-	self
-		createTemplateFileAt: RelativePath * 'cards' / 'main.mustache'
-		withContents: '{{{contents}}}'.
-	self
-		createTemplateFileAt: RelativePath * 'cards' / 'card' / 'main.mustache'
-		withContents: '{{{contents}}}'.
+{ #category : 'tests - environments' }
+MicTemplatedWriterTest >> testWriteNestedEnvironmentUsesItsOwnTemplate [
 
 	self
-		assertTemplatePath: RelativePath * 'cards' / 'card' / 'paragraph.mustache'
-		writesValue: 'Paragraph definition in cards/card'
-		forNode: (Microdown parse: '<!card
+		createTemplateFileAt: RelativePath * 'cards' / 'card' / MicTemplatedWriter environmentTemplateFileName
+		withContents: '[card in cards]'.
+	self
+		assertWritingNode: (Microdown parse: '<!cards
 <!card
-With a paragraph
+Foo
 !>
 !>') children first
+		writes: '?
+[card in cards]
+?'
 ]
 
 { #category : 'new tests' }
@@ -578,6 +560,40 @@ MicTemplatedWriterTest >> testWriteOrderedListUsesOrderedListTemplate [
 		assertTemplate: MicTemplatedWriter orderedListTemplateFileName
 		writesValue: '<o></o>'
 		forNode: MicOrderedListBlock new
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteOrderedListWithoutTemplateWritesItemsWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter orderedListTemplateFileName) delete.
+	self
+		assertWritingNode: (Microdown parse: '1. first
+2. **second**') children first
+		writes: '
+1. <li>first</li>
+1. <li><b>
+second
+</b></li>
+'
+]
+
+{ #category : 'tests - environments' }
+MicTemplatedWriterTest >> testWriteParagraphInsideNestedEnvironmentUsesTemplateOfNestedEnvironment [
+
+	self createTemplateFileAt: RelativePath * 'cards' / MicTemplatedWriter environmentTemplateFileName withContents: '{{{contents}}}'.
+	self
+		createTemplateFileAt: RelativePath * 'cards' / 'card' / MicTemplatedWriter environmentTemplateFileName
+		withContents: '{{{contents}}}'.
+	self
+		createTemplateFileAt: RelativePath * 'cards' / 'card' / MicTemplatedWriter paragraphTemplateFileName
+		withContents: '[paragraph in cards/card]'.
+	self
+		assertWritingNode: (Microdown parse: '<!cards
+<!card
+With a paragraph
+!>
+!>') children first
+		writes: '[paragraph in cards/card]'
 ]
 
 { #category : 'new tests' }
@@ -647,31 +663,46 @@ MicTemplatedWriterTest >> testWriteTableIsWrittenByTheDefaultWriter [
 | 1 | 2 |'
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'tests - environments' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentLooksUpOutsideEnvironment [
-	self skip.
-	"the code has not been fixed when porting from Pillar"
+
 	self
-		assertTemplate: 'paragraph.mustache'
-		writesValue: 'Paragraph outside card'
-		forNode: ((MicEnvironmentBlock named: 'card')
-			add: (MicParagraphBlock new
-				add: (MicTextBlock content: 'Foo');
-				yourself);
-			yourself)
+		assertWritingNode: (Microdown parse: '<!card
+Foo
+!>') children first
+		writes: '?
+<p>Foo</p>
+?'
 ]
 
-{ #category : 'tests-templatefiles' }
+{ #category : 'tests - environments' }
 MicTemplatedWriterTest >> testWriteTextInsideEnvironmentUsesTemplateInsideEnvironment [
-	self skip.
+
 	self
-		assertTemplatePath: (Path * 'card' / 'paragraph.mustache')
-		writesValue: 'Paragraph in card'
-		forNode: ((MicEnvironmentBlock named: 'card')
-			add: (MicParagraphBlock new
-				add: (MicTextBlock content: 'Foo');
-				yourself);
-			yourself)
+		createTemplateFileAt: RelativePath * 'card' / MicTemplatedWriter paragraphTemplateFileName
+		withContents: '[paragraph in card]'.
+	self
+		assertWritingNode: (Microdown parse: '<!card
+Foo
+!>') children first
+		writes: '?
+[paragraph in card]
+?'
+]
+
+{ #category : 'tests - without template' }
+MicTemplatedWriterTest >> testWriteUnorderedListWithoutTemplateWritesItemsWithTheirTemplates [
+
+	(textDocument templateDirectory / MicTemplatedWriter unorderedListTemplateFileName) delete.
+	self
+		assertWritingNode: (Microdown parse: '- one
+- **two**') children first
+		writes: '
+- <li>one</li>
+- <li><b>
+two
+</b></li>
+'
 ]
 
 { #category : 'contents' }

@@ -90,12 +90,6 @@ MicTemplatedWriter class >> horizontalLineTemplateFileName [
 ]
 
 { #category : 'templates' }
-MicTemplatedWriter class >> internalLinkTemplateFileName [
-	
-	^ 'internalLink.mustache'
-]
-
-{ #category : 'templates' }
 MicTemplatedWriter class >> italicTemplateFileName [
 	
 	^ 'italic.mustache'
@@ -260,12 +254,6 @@ MicTemplatedWriter >> initialize [
 ]
 
 { #category : 'accessing - templates' }
-MicTemplatedWriter >> internalLinkTemplateFileName [
-
-	^ self class internalLinkTemplateFileName
-]
-
-{ #category : 'accessing - templates' }
 MicTemplatedWriter >> italicTemplateFileName [
 		
 	^ self class italicTemplateFileName
@@ -425,12 +413,13 @@ MicTemplatedWriter >> visitComment: aCommentBlock [
 
 { #category : 'visiting' }
 MicTemplatedWriter >> visitEnvironment: anEnvironment [
+	"The template of an environment gets its arguments, e.g. someArgument in <!card|someArgument=test"
 
 	self pushEnvironment: anEnvironment.
 	self
 		write: anEnvironment
 		withTemplateFileName: self class environmentTemplateFileName
-		extraArguments: anEnvironment properties associations
+		extraArguments: anEnvironment arguments associations
 		ifAbsent: [ defaultWriter visitEnvironment: anEnvironment from: self ].
 	self popEnvironment
 ]
@@ -480,13 +469,13 @@ MicTemplatedWriter >> visitInputFile: anInputFile [
 	defaultWriter visitInputFile: anInputFile
 ]
 
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitItalic: aMicItalicFormat [ 
-	
+{ #category : 'visiting - inline elements' }
+MicTemplatedWriter >> visitItalic: aMicItalicFormat [
+
 	self
 		write: aMicItalicFormat
 		withTemplateFileName: self italicTemplateFileName
-		ifAbsent: [ defaultWriter visitItalic: aMicItalicFormat ]
+		ifAbsent: [ defaultWriter visitItalic: aMicItalicFormat from: self ]
 ]
 
 { #category : 'visiting' }
@@ -507,13 +496,13 @@ MicTemplatedWriter >> visitLink: aLink [
 		ifAbsent: [ defaultWriter visitLink: aLink from: self ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - list' }
 MicTemplatedWriter >> visitListItem: aListItem [
 
 	self
 		write: aListItem
 		withTemplateFileName: self listItemTemplateFileName
-		ifAbsent: [ defaultWriter visitListItem: aListItem ]
+		ifAbsent: [ defaultWriter visitListItem: aListItem from: self ]
 ]
 
 { #category : 'visiting' }
@@ -544,13 +533,13 @@ MicTemplatedWriter >> visitMonospace: aMicMonospaceFormat [
 		ifAbsent: [ defaultWriter visitMonospace: aMicMonospaceFormat ]
 ]
 
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitOrderedList: aPROrderedList [
+{ #category : 'visiting - list' }
+MicTemplatedWriter >> visitOrderedList: anOrderedList [
 
 	self
-		write: aPROrderedList
+		write: anOrderedList
 		withTemplateFileName: self orderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitOrderedList: aPROrderedList ]
+		ifAbsent: [ defaultWriter visitOrderedList: anOrderedList from: self ]
 ]
 
 { #category : 'visiting' }
@@ -613,13 +602,13 @@ MicTemplatedWriter >> visitText: aPRText [
 	defaultWriter visitText: aPRText
 ]
 
-{ #category : 'visiting' }
-MicTemplatedWriter >> visitUnorderedList: anUnorderedList [ 
+{ #category : 'visiting - list' }
+MicTemplatedWriter >> visitUnorderedList: anUnorderedList [
 
 	self
 		write: anUnorderedList
 		withTemplateFileName: self unorderedListTemplateFileName
-		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList ]
+		ifAbsent: [ defaultWriter visitUnorderedList: anUnorderedList from: self ]
 ]
 
 { #category : 'writing' }
