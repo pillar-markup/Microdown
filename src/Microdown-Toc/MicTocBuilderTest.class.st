@@ -2,14 +2,14 @@
 I check that `MicTocBuilder` nests the headers of a document by level, respects its limit, answers its table of contents as values for Mustache templates, and gives the headers unique ids that the entries link to.
 "
 Class {
-	#name : 'MicTocTest',
+	#name : 'MicTocBuilderTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
 
 { #category : 'helpers' }
-MicTocTest >> builderOn: aString [
+MicTocBuilderTest >> builderOn: aString [
 	"Answer a builder that collected the headers of the Microdown text aString."
 
 	^ MicTocBuilder new
@@ -18,7 +18,7 @@ MicTocTest >> builderOn: aString [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testAlternatingheaderLevels [
+MicTocBuilderTest >> testAlternatingheaderLevels [
 
 	| doc builder topLevelTocItems |
 	doc := Microdown parse: '
@@ -44,7 +44,7 @@ MicTocTest >> testAlternatingheaderLevels [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testComplexDeeplyNestedEntries [
+MicTocBuilderTest >> testComplexDeeplyNestedEntries [
 
 	| doc builder |
 	doc := Microdown parse: '
@@ -76,8 +76,43 @@ MicTocTest >> testComplexDeeplyNestedEntries [
 	self assert: builder tocItems second header text equals: 'Header2'
 ]
 
+{ #category : 'tests' }
+MicTocBuilderTest >> testHeaderBackFromADeeperLevelKeepsItsChildren [
+
+	| d |
+	d := (self builderOn: '# A
+
+## B
+
+### C
+
+## D
+
+### E') tocItems first children second.
+
+	self
+		assert: (d children collect: [ :each | each header text ] as: Array)
+		equals: #( 'E' )
+]
+
+{ #category : 'tests' }
+MicTocBuilderTest >> testHeaderBackFromADeeperLevelStaysInItsParent [
+
+	self
+		assert: ((self builderOn: '# A
+
+## B
+
+### C
+
+## D') tocItems first children
+				 collect: [ :each | each header text ]
+				 as: Array)
+		equals: #( 'B' 'D' )
+]
+
 { #category : 'tests - ids' }
-MicTocTest >> testHeadersWithTheSameTextGetDifferentIds [
+MicTocBuilderTest >> testHeadersWithTheSameTextGetDifferentIds [
 
 	| entries |
 	entries := (self builderOn: '## Intro
@@ -90,7 +125,7 @@ MicTocTest >> testHeadersWithTheSameTextGetDifferentIds [
 ]
 
 { #category : 'tests - ids' }
-MicTocTest >> testIdFromTextKeepsOnlyLowercaseWords [
+MicTocBuilderTest >> testIdFromTextKeepsOnlyLowercaseWords [
 
 	self
 		assert: (MicTocBuilder new idFromText: 'Text emphasis & `code`!')
@@ -98,13 +133,13 @@ MicTocTest >> testIdFromTextKeepsOnlyLowercaseWords [
 ]
 
 { #category : 'tests - ids' }
-MicTocTest >> testIdFromTextWithoutWordsIsSection [
+MicTocBuilderTest >> testIdFromTextWithoutWordsIsSection [
 
 	self assert: (MicTocBuilder new idFromText: '***') equals: 'section'
 ]
 
 { #category : 'tests' }
-MicTocTest >> testLimitDepthToLevelOne [
+MicTocBuilderTest >> testLimitDepthToLevelOne [
 
 	| doc builder topLevelTocItems |
 	doc := Microdown parse: '
@@ -127,7 +162,7 @@ MicTocTest >> testLimitDepthToLevelOne [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testLimitDepthWithInvalidInput [
+MicTocBuilderTest >> testLimitDepthWithInvalidInput [
 
 	| builder should |
 	builder := MicTocBuilder new.
@@ -144,7 +179,7 @@ MicTocTest >> testLimitDepthWithInvalidInput [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testLimitDepthWithInvalidInput0 [
+MicTocBuilderTest >> testLimitDepthWithInvalidInput0 [
 
 	| builder should |
 	builder := MicTocBuilder new.
@@ -161,7 +196,7 @@ MicTocTest >> testLimitDepthWithInvalidInput0 [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testLimitDepthWithInvalidInput6 [
+MicTocBuilderTest >> testLimitDepthWithInvalidInput6 [
 
 	| builder should |
 	builder := MicTocBuilder new.
@@ -178,7 +213,7 @@ MicTocTest >> testLimitDepthWithInvalidInput6 [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testMalformedHeaderOrder [
+MicTocBuilderTest >> testMalformedHeaderOrder [
 
 	| doc builder firstTocItem secondTocItem thirdTocItem |
 	doc := Microdown parse: '
@@ -203,7 +238,7 @@ MicTocTest >> testMalformedHeaderOrder [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testSimpleDeeplyNestedEntries [
+MicTocBuilderTest >> testSimpleDeeplyNestedEntries [
 
 	| doc builder |
 	doc := Microdown parse: '
@@ -231,7 +266,7 @@ MicTocTest >> testSimpleDeeplyNestedEntries [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testSimpleFlatEntries [
+MicTocBuilderTest >> testSimpleFlatEntries [
 
 
 	| doc builder |
@@ -253,7 +288,7 @@ lkhkhk
 ]
 
 { #category : 'tests' }
-MicTocTest >> testSimpleNestedEntries [
+MicTocBuilderTest >> testSimpleNestedEntries [
 
 
 	| doc builder |
@@ -276,7 +311,7 @@ lkhkhk
 ]
 
 { #category : 'tests - ids' }
-MicTocTest >> testTemplateValuesGiveTheHeadersTheirIds [
+MicTocBuilderTest >> testTemplateValuesGiveTheHeadersTheirIds [
 
 	| document builder |
 	document := Microdown parse: '# One
@@ -296,7 +331,7 @@ MicTocTest >> testTemplateValuesGiveTheHeadersTheirIds [
 ]
 
 { #category : 'tests - template values' }
-MicTocTest >> testTemplateValuesLinkEachEntryToItsHeaderId [
+MicTocBuilderTest >> testTemplateValuesLinkEachEntryToItsHeaderId [
 
 	| values |
 	values := (self builderOn: '# One
@@ -313,7 +348,7 @@ MicTocTest >> testTemplateValuesLinkEachEntryToItsHeaderId [
 ]
 
 { #category : 'tests - template values' }
-MicTocTest >> testTemplateValuesNestTheHeaders [
+MicTocBuilderTest >> testTemplateValuesNestTheHeaders [
 
 	| values |
 	values := (self builderOn: '# One
@@ -334,7 +369,7 @@ MicTocTest >> testTemplateValuesNestTheHeaders [
 ]
 
 { #category : 'tests - template values' }
-MicTocTest >> testTemplateValuesOfATextWithoutHeaderHaveNoEntry [
+MicTocBuilderTest >> testTemplateValuesOfATextWithoutHeaderHaveNoEntry [
 
 	self assert:
 		((self builderOn: 'Just text') templateValues at: 'children')
@@ -342,7 +377,7 @@ MicTocTest >> testTemplateValuesOfATextWithoutHeaderHaveNoEntry [
 ]
 
 { #category : 'tests - template values' }
-MicTocTest >> testTemplateValuesSayWhetherAnEntryHasChildren [
+MicTocBuilderTest >> testTemplateValuesSayWhetherAnEntryHasChildren [
 
 	| entries |
 	entries := (self builderOn: '# One
@@ -356,7 +391,7 @@ MicTocTest >> testTemplateValuesSayWhetherAnEntryHasChildren [
 ]
 
 { #category : 'tests - template values' }
-MicTocTest >> testTemplateValuesStopAtTheLimit [
+MicTocBuilderTest >> testTemplateValuesStopAtTheLimit [
 
 	| builder entry |
 	builder := MicTocBuilder new.
@@ -372,7 +407,7 @@ MicTocTest >> testTemplateValuesStopAtTheLimit [
 ]
 
 { #category : 'tests' }
-MicTocTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
+MicTocBuilderTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
 
 	| doc builder topLevelTocItem |
 	doc := Microdown parse: '
@@ -396,7 +431,7 @@ MicTocTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
 ]
 
 { #category : 'tests - ids' }
-MicTocTest >> testUniqueIdKeepsAFreeId [
+MicTocBuilderTest >> testUniqueIdKeepsAFreeId [
 
 	self
 		assert: (MicTocBuilder new uniqueId: 'intro' in: Set new)
@@ -404,7 +439,7 @@ MicTocTest >> testUniqueIdKeepsAFreeId [
 ]
 
 { #category : 'tests - ids' }
-MicTocTest >> testUniqueIdNumbersAnIdAlreadyTaken [
+MicTocBuilderTest >> testUniqueIdNumbersAnIdAlreadyTaken [
 
 	| ids |
 	ids := Set with: 'intro' with: 'intro-2'.

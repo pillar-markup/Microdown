@@ -168,31 +168,17 @@ MicTocBuilder >> uniqueId: anId in: aSet [
 
 { #category : 'visiting' }
 MicTocBuilder >> visitHeader: aMicHeader [
+	"Add aMicHeader to the table of contents, in the last entry less deep than it, or as a top entry when there is none. Ignore it when it is deeper than my limit."
 
 	| newTocEntry |
-	newTocEntry := MicTocEntry new for: aMicHeader.
-
 	aMicHeader level > limit ifTrue: [ ^ self ].
-
-	headerStack isEmpty ifTrue: [
-			headerStack push: newTocEntry.
-			tocItems add: newTocEntry.
-			^ self ].
-
-	aMicHeader level = headerStack top level
-		ifTrue: [
-				headerStack pop.
-				headerStack isEmpty
-					ifTrue: [ tocItems add: newTocEntry ]
-					ifFalse: [ headerStack top addChild: newTocEntry ] ]
-		ifFalse: [
-				aMicHeader level > headerStack top level
-					ifTrue: [ headerStack top addChild: newTocEntry ]
-					ifFalse: [
-							[
-								headerStack isNotEmpty and: [
-									headerStack top level >= aMicHeader level ] ] whileTrue: [
-								headerStack pop ].
-							headerStack isEmpty ifTrue: [ tocItems add: newTocEntry ] ] ].
+	newTocEntry := MicTocEntry new for: aMicHeader.
+	[
+		headerStack isNotEmpty and: [
+			headerStack top level >= aMicHeader level ] ] whileTrue: [
+		headerStack pop ].
+	headerStack
+		ifEmpty: [ tocItems add: newTocEntry ]
+		ifNotEmpty: [ headerStack top addChild: newTocEntry ].
 	headerStack push: newTocEntry
 ]
