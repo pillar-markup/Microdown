@@ -286,6 +286,18 @@ MicTemplatedWriter >> citationTemplateFileName [
 	^ self class citationTemplateFileName
 ]
 
+{ #category : 'private' }
+MicTemplatedWriter >> codeArgumentsOf: aCodeBlock [
+	"Answer the arguments of aCodeBlock for its template; an absent language, caption or anchor is left out, so that a template section such as {{#anchor}} is skipped."
+
+	| arguments |
+	arguments := OrderedCollection new.
+	aCodeBlock arguments at: #language ifPresent: [ :language | arguments add: 'language' -> language ].
+	aCodeBlock hasCaption ifTrue: [ arguments add: 'caption' -> (self contentsOfElements: aCodeBlock captionElements) ].
+	aCodeBlock hasAnchor ifTrue: [ arguments add: 'anchor' -> aCodeBlock anchor ].
+	^ arguments asArray
+]
+
 { #category : 'accessing - templates' }
 MicTemplatedWriter >> codeBlockTemplateFileName [
 
@@ -353,6 +365,21 @@ MicTemplatedWriter >> environmentStack: aCollection [
 MicTemplatedWriter >> externalLinkTemplateFileName [
 
 	^ self class externalLinkTemplateFileName
+]
+
+{ #category : 'private' }
+MicTemplatedWriter >> figureArgumentsOf: aFigure [
+	"Answer the arguments of aFigure for its template; an absent width or anchor is left out, so that a template section such as {{#width}} is skipped."
+
+	| arguments |
+	arguments := OrderedCollection new.
+	arguments add: 'ref' -> aFigure fileStringWithoutHostFile.
+	arguments add: 'caption' -> (aFigure hasChildren
+			 ifTrue: [ aFigure caption ]
+			 ifFalse: [ '' ]).
+	aFigure arguments at: #width ifPresent: [ :width | arguments add: 'width' -> width ].
+	aFigure anchor ifNotNil: [ :anchor | arguments add: 'anchor' -> anchor ].
+	^ arguments asArray
 ]
 
 { #category : 'accessing - templates' }
@@ -591,12 +618,13 @@ MicTemplatedWriter >> visitCitation: aCitation [
 ]
 
 { #category : 'visiting' }
-MicTemplatedWriter >> visitCode: aCodeBlock [  
-	
+MicTemplatedWriter >> visitCode: aCodeBlock [
+	"The template gets the body as contents, the language, and when present the caption (written with its own templates) and the anchor."
+
 	self
 		writeRawText: aCodeBlock body
 		withTemplateFileName: self codeBlockTemplateFileName
-		extraArguments: { 'language' -> defaultWriter class name }
+		extraArguments: [ self codeArgumentsOf: aCodeBlock ]
 		ifAbsent: [ defaultWriter visitCode: aCodeBlock ]
 ]
 
@@ -624,15 +652,12 @@ MicTemplatedWriter >> visitEnvironment: anEnvironment [
 
 { #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitFigure: aFigure [
+	"The template gets the caption written with its own templates as contents, the plain caption, the file and, when present, the width (a percentage of the text width) and the anchor."
 
 	self
 		write: aFigure
 		withTemplateFileName: self figureTemplateFileName
-		extraArguments: {
-				('ref' -> aFigure fileStringWithoutHostFile).
-				('caption' -> (aFigure hasChildren
-					  ifTrue: [ aFigure caption ]
-					  ifFalse: [ '' ])) }
+		extraArguments: (self figureArgumentsOf: aFigure)
 		ifAbsent: [ defaultWriter visitFigure: aFigure from: self ]
 ]
 

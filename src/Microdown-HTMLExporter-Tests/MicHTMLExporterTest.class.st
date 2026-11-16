@@ -30,6 +30,18 @@ MicHTMLExporterTest >> factory: aFactory [
 	factory := aFactory new
 ]
 
+{ #category : 'tests - figures' }
+MicHTMLExporterTest >> imgTagOf: aMicrodownString [
+	"Answer the img tag MicHTMLVisitor writes for aMicrodownString."
+
+	| html start |
+	html := MicHTMLVisitor new
+		        visit: (Microdown parse: aMicrodownString);
+		        contents.
+	start := html indexOfSubCollection: '<img'.
+	^ html copyFrom: start to: (html indexOf: $> startingAt: start)
+]
+
 { #category : 'accessing' }
 MicHTMLExporterTest >> newLine [
 
@@ -148,55 +160,50 @@ foo bar
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigure [
 
-	self 
-		parse: factory figureSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption>Foo</figcaption></img></figure>')
+	self parse: factory figureSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption>Foo</figcaption></img></figure>')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testFigureBold [
 
-	self 
-		parse: factory figureBoldSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strong>Foo</strong></figcaption></img></figure>' )
+	self parse: factory figureBoldSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strong>Foo</strong></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureItalic [
 
-	self 
-		parse: factory figureItalicSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><i>Foo</i></figcaption></img></figure>')
+	self parse: factory figureItalicSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><i>Foo</i></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureNested [
 
-	self 
-		parse: factory figureNestedSample 
-		andCheckWeGet: (self newLineParagraphAround: 
-'<figure><img src="/anUrl" alt="Foo_" class="figureTest" width="80"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
+	self parse: factory figureNestedSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="Foo_" class="figureTest" style="width: 80%"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureReal [
 
-	self 
-		parse: factory figureRealSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" width="80"><figcaption>A logo png under figures folder</figcaption></img></figure>')
+	self parse: factory figureRealSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" style="width: 80%"><figcaption>A logo png under figures folder</figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureStrike [
 
-	self 
-		parse: factory figureStrikeSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="Foo" class="figureTest" width="80"><figcaption><strike>Foo</strike></figcaption></img></figure>')
+	self parse: factory figureStrikeSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strike>Foo</strike></figcaption></img></figure>')
+]
+
+{ #category : 'tests - figures' }
+MicHTMLExporterTest >> testFigureWidthIsAPercentageOfTheTextWidth [
+	"In Microdown the width of a figure is a percentage of the text width (see MicLaTeXWriter>>writeGraphicsParametersOfExternalLink:); the HTML width attribute would mean pixels."
+
+	self assert: (self imgTagOf: '![cap %width=50](f.png)') equals: '<img src="f.png" alt="cap " style="width: 50%">'
 ]
 
 { #category : 'tests' }
@@ -211,10 +218,8 @@ MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithoutCaption [
 
-	self 
-		parse: factory figureWithoutCaptionSample 
-		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="" class="figureTest" width="80"><figcaption></figcaption></img></figure>')
+	self parse: factory figureWithoutCaptionSample andCheckWeGet: (self newLineParagraphAround:
+			 '<figure><img src="/anUrl" alt="" class="figureTest" style="width: 80%"><figcaption></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
@@ -224,6 +229,12 @@ MicHTMLExporterTest >> testFigureWithoutSizeAndLabel [
 		parse: factory figureSampleWithoutSizeAndLabel 
 		andCheckWeGet: (self newLineParagraphAround:
 '<figure><img src="/anUrl" alt="Foo"><figcaption>Foo</figcaption></img></figure>')
+]
+
+{ #category : 'tests - figures' }
+MicHTMLExporterTest >> testFigureWithoutWidth [
+
+	self assert: (self imgTagOf: '![cap](f.png)') equals: '<img src="f.png" alt="cap">'
 ]
 
 { #category : 'tests' }

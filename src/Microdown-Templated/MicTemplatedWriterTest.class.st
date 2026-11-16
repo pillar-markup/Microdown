@@ -334,6 +334,21 @@ MicTemplatedWriterTest >> testWriteCitationUsesCitationTemplate [
 	self assertWritingNode: (Microdown parse: 'see {!citation|ref=foo!}') children first writes: '<p>see <cite>foo</cite></p>'
 ]
 
+{ #category : 'tests - arguments' }
+MicTemplatedWriterTest >> testWriteCodeBlockGivesLanguageCaptionAndAnchorToTemplate [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter codeBlockTemplateFileName
+		withContents: '<pre id="{{anchor}}" lang="{{language}}">{{contents}}</pre><p>{{{caption}}}</p>'.
+	self
+		assertWritingNode: (Microdown parse: '```language=smalltalk&caption=A **nice** one&anchor=m1
+1 < 2
+```') children first
+		writes: '<pre id="m1" lang="smalltalk">1 &lt; 2</pre><p>A <b>
+nice
+</b> one</p>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 	self flag: #enh.
@@ -346,6 +361,19 @@ MicTemplatedWriterTest >> testWriteCodeBlockUsesCodeBlockTemplate [
 ^ self
 </code>'
 		forNode: (MicCodeBlock new body: '^ self'; yourself)
+]
+
+{ #category : 'tests - arguments' }
+MicTemplatedWriterTest >> testWriteCodeBlockWithoutCaptionNorAnchorSkipsTheirSections [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter codeBlockTemplateFileName
+		withContents: '<pre{{#anchor}} id="{{anchor}}"{{/anchor}}>{{contents}}</pre>{{#caption}}<p>{{{caption}}}</p>{{/caption}}'.
+	self
+		assertWritingNode: (Microdown parse: '```
+x
+```') children first
+		writes: '<pre>x</pre>'
 ]
 
 { #category : 'new tests' }
@@ -406,6 +434,17 @@ MicTemplatedWriterTest >> testWriteExternalLinkUsesExternalLinkTemplate [
 		forNode: (Microdown parse: '[Pharo url](https://www.pharo.org)') children first children first
 ]
 
+{ #category : 'tests - arguments' }
+MicTemplatedWriterTest >> testWriteFigureGivesWidthAndAnchorToTemplate [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter figureTemplateFileName
+		withContents: '<figure id="{{anchor}}"><img src="{{ref}}" style="width: {{width}}%"></figure>'.
+	self
+		assertWritingNode: (Microdown parse: '![cap %width=50&anchor=fig1](f.png)') children first children first
+		writes: '<figure id="fig1"><img src="f.png" style="width: 50%"></figure>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 
@@ -413,6 +452,18 @@ MicTemplatedWriterTest >> testWriteFigureUsesFigureTemplate [
 		assertTemplate: MicTemplatedWriter figureTemplateFileName
 		writesValue: '<figure><img src=files/pharologo.png/><figcaption>This is a caption</figcaption></figure>'
 		forNode: (Microdown parse: '![This is a caption](files/pharologo.png)') children first children first
+]
+
+{ #category : 'tests - arguments' }
+MicTemplatedWriterTest >> testWriteFigureWithWidthAndAnchorFillsTheirSections [
+	"Inside a section over a string, Pharo's Mustache only finds the value as {{.}}: {{width}} there is empty."
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter figureTemplateFileName
+		withContents: '<figure{{#anchor}} id="{{.}}"{{/anchor}}><img src="{{ref}}"{{#width}} style="width: {{.}}%"{{/width}}></figure>'.
+	self
+		assertWritingNode: (Microdown parse: '![cap %width=50&anchor=fig1](f.png)') children first children first
+		writes: '<figure id="fig1"><img src="f.png" style="width: 50%"></figure>'
 ]
 
 { #category : 'tests - without template' }
@@ -423,6 +474,18 @@ MicTemplatedWriterTest >> testWriteFigureWithoutTemplateWritesCaptionWithItsTemp
 ![c <b>
 b
 </b>](fig.png)'
+]
+
+{ #category : 'tests - arguments' }
+MicTemplatedWriterTest >> testWriteFigureWithoutWidthNorAnchorSkipsTheirSections [
+
+	self
+		createTemplateFileAt: Path * MicTemplatedWriter figureTemplateFileName
+		withContents:
+		'<figure{{#anchor}} id="{{anchor}}"{{/anchor}}><img src="{{ref}}"{{#width}} style="width: {{width}}%"{{/width}}></figure>'.
+	self
+		assertWritingNode: (Microdown parse: '![cap](f.png)') children first children first
+		writes: '<figure><img src="f.png"></figure>'
 ]
 
 { #category : 'tests' }
