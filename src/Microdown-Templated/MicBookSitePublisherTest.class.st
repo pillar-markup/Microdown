@@ -56,20 +56,6 @@ MicBookSitePublisherTest >> testDefaultOutputDirectory [
 ]
 
 { #category : 'tests' }
-MicBookSitePublisherTest >> testIdFromTextKeepsOnlyLowercaseWords [
-
-	self
-		assert: (publisher idFromText: 'Text emphasis & `code`!')
-		equals: 'text-emphasis-code'
-]
-
-{ #category : 'tests' }
-MicBookSitePublisherTest >> testIdFromTextWithoutWordsIsSection [
-
-	self assert: (publisher idFromText: '***') equals: 'section'
-]
-
-{ #category : 'tests' }
 MicBookSitePublisherTest >> testPublishCopiesTheSupportFiles [
 
 	publisher publish.
@@ -142,56 +128,6 @@ MicBookSitePublisherTest >> testPublishedPageWithoutHeaderHasNoTableOfContents [
 	self
 		assert: (publisher outputDirectory / 'one.html') contents
 		equals: '<title>one</title>'
-]
-
-{ #category : 'tests' }
-MicBookSitePublisherTest >> testTableOfContentsGivesUniqueIdsToHeadersWithTheSameText [
-
-	| toc |
-	toc := publisher tableOfContentsOf: (Microdown parse: '## Intro
-
-## Intro').
-
-	self
-		assert: ((toc at: 'children') collect: [ :each | each at: 'href' ])
-		equals: #( '#intro' '#intro-2' )
-]
-
-{ #category : 'tests' }
-MicBookSitePublisherTest >> testTableOfContentsNestsTheHeaders [
-
-	| toc |
-	toc := publisher tableOfContentsOf: (Microdown parse: '# One
-
-## A
-
-## B').
-
-	self
-		assert: ((toc at: 'children') collect: [ :each | each at: 'name' ])
-		equals: #( 'One' ).
-	self
-		assert:
-			(((toc at: 'children') first at: 'children') collect: [ :each |
-				 each at: 'href' ])
-		equals: #( '#a' '#b' )
-]
-
-{ #category : 'tests' }
-MicBookSitePublisherTest >> testTableOfContentsStopsAtLevelThree [
-
-	| toc |
-	toc := publisher tableOfContentsOf: (Microdown parse: '# One
-
-## Two
-
-### Three
-
-#### Four').
-
-	self assert:
-		((((toc at: 'children') first at: 'children') first at: 'children')
-			 first at: 'children') isEmpty
 ]
 
 { #category : 'running' }

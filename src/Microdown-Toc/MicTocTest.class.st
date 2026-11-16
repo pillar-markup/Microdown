@@ -1,9 +1,21 @@
+"
+I check that `MicTocBuilder` nests the headers of a document by level, respects its limit, answers its table of contents as values for Mustache templates, and gives the headers unique ids that the entries link to.
+"
 Class {
 	#name : 'MicTocTest',
 	#superclass : 'TestCase',
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
+
+{ #category : 'helpers' }
+MicTocTest >> builderOn: aString [
+	"Answer a builder that collected the headers of the Microdown text aString."
+
+	^ MicTocBuilder new
+		  visit: (Microdown parse: aString);
+		  yourself
+]
 
 { #category : 'tests' }
 MicTocTest >> testAlternatingheaderLevels [
@@ -62,6 +74,33 @@ MicTocTest >> testComplexDeeplyNestedEntries [
 		builder tocItems first children first children second header text
 		equals: 'Header112'.
 	self assert: builder tocItems second header text equals: 'Header2'
+]
+
+{ #category : 'tests - ids' }
+MicTocTest >> testHeadersWithTheSameTextGetDifferentIds [
+
+	| entries |
+	entries := (self builderOn: '## Intro
+
+## Intro') templateValues at: 'children'.
+
+	self
+		assert: (entries collect: [ :each | each at: 'href' ])
+		equals: #( '#intro' '#intro-2' )
+]
+
+{ #category : 'tests - ids' }
+MicTocTest >> testIdFromTextKeepsOnlyLowercaseWords [
+
+	self
+		assert: (MicTocBuilder new idFromText: 'Text emphasis & `code`!')
+		equals: 'text-emphasis-code'
+]
+
+{ #category : 'tests - ids' }
+MicTocTest >> testIdFromTextWithoutWordsIsSection [
+
+	self assert: (MicTocBuilder new idFromText: '***') equals: 'section'
 ]
 
 { #category : 'tests' }
@@ -236,6 +275,102 @@ lkhkhk
 
 ]
 
+{ #category : 'tests - ids' }
+MicTocTest >> testTemplateValuesGiveTheHeadersTheirIds [
+
+	| document builder |
+	document := Microdown parse: '# One
+
+## A'.
+	builder := MicTocBuilder new.
+	builder visit: document.
+
+	builder templateValues.
+
+	self
+		assert:
+		(document children
+			 collect: [ :each | each propertyAt: #id ]
+			 as: Array)
+		equals: #( 'one' 'a' )
+]
+
+{ #category : 'tests - template values' }
+MicTocTest >> testTemplateValuesLinkEachEntryToItsHeaderId [
+
+	| values |
+	values := (self builderOn: '# One
+
+## A') templateValues.
+
+	self
+		assert: ((values at: 'children') first at: 'href')
+		equals: '#one'.
+	self
+		assert:
+		(((values at: 'children') first at: 'children') first at: 'href')
+		equals: '#a'
+]
+
+{ #category : 'tests - template values' }
+MicTocTest >> testTemplateValuesNestTheHeaders [
+
+	| values |
+	values := (self builderOn: '# One
+
+## A
+
+## B') templateValues.
+
+	self
+		assert:
+		((values at: 'children') collect: [ :each | each at: 'name' ])
+		equals: #( 'One' ).
+	self
+		assert:
+			(((values at: 'children') first at: 'children') collect: [ :each |
+				 each at: 'name' ])
+		equals: #( 'A' 'B' )
+]
+
+{ #category : 'tests - template values' }
+MicTocTest >> testTemplateValuesOfATextWithoutHeaderHaveNoEntry [
+
+	self assert:
+		((self builderOn: 'Just text') templateValues at: 'children')
+			isEmpty
+]
+
+{ #category : 'tests - template values' }
+MicTocTest >> testTemplateValuesSayWhetherAnEntryHasChildren [
+
+	| entries |
+	entries := (self builderOn: '# One
+
+## A
+
+# Two') templateValues at: 'children'.
+
+	self assert: (entries first at: 'hasChildren').
+	self deny: (entries second at: 'hasChildren')
+]
+
+{ #category : 'tests - template values' }
+MicTocTest >> testTemplateValuesStopAtTheLimit [
+
+	| builder entry |
+	builder := MicTocBuilder new.
+	builder limitUpTo: 2.
+	builder visit: (Microdown parse: '# One
+
+## Two
+
+### Three').
+
+	entry := (builder templateValues at: 'children') first.
+	self assert: ((entry at: 'children') first at: 'children') isEmpty
+]
+
 { #category : 'tests' }
 MicTocTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
 
@@ -258,4 +393,24 @@ MicTocTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
 	self
 		assert: topLevelTocItem children second header text
 		equals: 'Header12'
+]
+
+{ #category : 'tests - ids' }
+MicTocTest >> testUniqueIdKeepsAFreeId [
+
+	self
+		assert: (MicTocBuilder new uniqueId: 'intro' in: Set new)
+		equals: 'intro'
+]
+
+{ #category : 'tests - ids' }
+MicTocTest >> testUniqueIdNumbersAnIdAlreadyTaken [
+
+	| ids |
+	ids := Set with: 'intro' with: 'intro-2'.
+
+	self
+		assert: (MicTocBuilder new uniqueId: 'intro' in: ids)
+		equals: 'intro-3'.
+	self assert: (ids includes: 'intro-3')
 ]
