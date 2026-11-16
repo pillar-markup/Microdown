@@ -1,5 +1,5 @@
 "
-I check that `MicTocBuilder` nests the headers of a document by level, respects its limit, answers its table of contents as values for Mustache templates, and gives the headers unique ids that the entries link to.
+I check that `MicTocBuilder` nests the headers of a document by level, respects its limit, and answers its table of contents as values for Mustache templates, linked to the targets that `MicHeaderIdentifier` gave the headers.
 "
 Class {
 	#name : 'MicTocBuilderTest',
@@ -10,10 +10,13 @@ Class {
 
 { #category : 'helpers' }
 MicTocBuilderTest >> builderOn: aString [
-	"Answer a builder that collected the headers of the Microdown text aString."
+	"Answer a builder that collected the headers of the Microdown text aString, once identified."
 
+	| document |
+	document := Microdown parse: aString.
+	MicHeaderIdentifier new identify: document.
 	^ MicTocBuilder new
-		  visit: (Microdown parse: aString);
+		  visit: document;
 		  yourself
 ]
 
@@ -109,33 +112,6 @@ MicTocBuilderTest >> testHeaderBackFromADeeperLevelStaysInItsParent [
 				 collect: [ :each | each header text ]
 				 as: Array)
 		equals: #( 'B' 'D' )
-]
-
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testHeadersWithTheSameTextGetDifferentIds [
-
-	| entries |
-	entries := (self builderOn: '## Intro
-
-## Intro') templateValues at: 'children'.
-
-	self
-		assert: (entries collect: [ :each | each at: 'href' ])
-		equals: #( '#intro' '#intro-2' )
-]
-
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testIdFromTextKeepsOnlyLowercaseWords [
-
-	self
-		assert: (MicTocBuilder new idFromText: 'Text emphasis & `code`!')
-		equals: 'text-emphasis-code'
-]
-
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testIdFromTextWithoutWordsIsSection [
-
-	self assert: (MicTocBuilder new idFromText: '***') equals: 'section'
 ]
 
 { #category : 'tests' }
@@ -310,24 +286,16 @@ lkhkhk
 
 ]
 
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testTemplateValuesGiveTheHeadersTheirIds [
+{ #category : 'tests - template values' }
+MicTocBuilderTest >> testTemplateValuesLinkAnAnchoredHeaderToItsAnchor [
 
-	| document builder |
-	document := Microdown parse: '# One
-
-## A'.
-	builder := MicTocBuilder new.
-	builder visit: document.
-
-	builder templateValues.
+	| values |
+	values := (self builderOn: '# One
+@chatoto') templateValues.
 
 	self
-		assert:
-		(document children
-			 collect: [ :each | each propertyAt: #id ]
-			 as: Array)
-		equals: #( 'one' 'a' )
+		assert: ((values at: 'children') first at: 'href')
+		equals: '#chatoto'
 ]
 
 { #category : 'tests - template values' }
@@ -374,6 +342,17 @@ MicTocBuilderTest >> testTemplateValuesOfATextWithoutHeaderHaveNoEntry [
 	self assert:
 		((self builderOn: 'Just text') templateValues at: 'children')
 			isEmpty
+]
+
+{ #category : 'tests - template values' }
+MicTocBuilderTest >> testTemplateValuesOfUnidentifiedHeadersHaveNoHref [
+
+	| builder |
+	builder := MicTocBuilder new.
+	builder visit: (Microdown parse: '# One').
+
+	self assert:
+		((builder templateValues at: 'children') first at: 'href') isNil
 ]
 
 { #category : 'tests - template values' }
@@ -428,24 +407,4 @@ MicTocBuilderTest >> testTopLevelHeaderWithTwoSecondLevelHeaders [
 	self
 		assert: topLevelTocItem children second header text
 		equals: 'Header12'
-]
-
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testUniqueIdKeepsAFreeId [
-
-	self
-		assert: (MicTocBuilder new uniqueId: 'intro' in: Set new)
-		equals: 'intro'
-]
-
-{ #category : 'tests - ids' }
-MicTocBuilderTest >> testUniqueIdNumbersAnIdAlreadyTaken [
-
-	| ids |
-	ids := Set with: 'intro' with: 'intro-2'.
-
-	self
-		assert: (MicTocBuilder new uniqueId: 'intro' in: ids)
-		equals: 'intro-3'.
-	self assert: (ids includes: 'intro-3')
 ]

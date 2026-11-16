@@ -13,14 +13,15 @@ A book folder follows the Pillar layout: `index.md` lists the chapters with inpu
 
 - I find the chapters of a book from its index.
 - I write each chapter with a `MicTHTMLDocumentMaker` that uses the templates of the book.
-- I give the root template of each page its `title` and its `toc` (table of contents), built by `MicTocBuilder` (`templateValues`), which also gives the headers the ids its links point to.
+- I give the root template of each page its `title` and its `toc` (table of contents), built by `MicTocBuilder` (`templateValues`) once `MicHeaderIdentifier` gave the headers the targets its links point to.
 - I lay out the site in my output directory (`_result/site` in the book by default).
 
 ## Collaborators: 
 
 - `MicTHTMLDocumentMaker`: turns a chapter document into templated HTML (through `MicTemplatedWriter`).
 - `MicInputfileBlock`: the blocks of the index that name the chapter files.
-- `MicTocBuilder`: builds the table of contents of a chapter (headers up to level 3) as template values, and gives the headers their ids.
+- `MicHeaderIdentifier`: gives the headers of a chapter their link targets.
+- `MicTocBuilder`: builds the table of contents of a chapter (headers up to level 3) as template values.
 - `MicResourceReference` (`loadMicrodown`): parses the index and the chapters, resolving their relative paths.
 
 ## Public API and Key Messages
@@ -191,9 +192,10 @@ MicBookSitePublisher >> supportDirectory [
 
 { #category : 'table of contents' }
 MicBookSitePublisher >> tableOfContentsOf: aDocument [
-	"Answer the table of contents of aDocument for the templates (see MicTocBuilder>>#templateValues): its headers up to level 3, which get the ids its links point to."
+	"Answer the table of contents of aDocument for the templates (see MicTocBuilder>>#templateValues): its headers up to level 3, identified first so that its links reach them."
 
 	| builder |
+	MicHeaderIdentifier new identify: aDocument.
 	builder := MicTocBuilder new.
 	builder limitUpTo: 3.
 	builder visit: aDocument.

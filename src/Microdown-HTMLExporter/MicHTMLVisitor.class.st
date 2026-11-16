@@ -201,6 +201,17 @@ MicHTMLVisitor >> folderName [
 	^ #html
 ]
 
+{ #category : 'visiting' }
+MicHTMLVisitor >> headerTagOf: aHeader [
+	"Answer the tag of aHeader (h1, h2...), with the id of aHeader when it has one (its #id property, given by MicHeaderIdentifier>>#identify:)."
+
+	| tag |
+	tag := canvas tag name: 'h' , aHeader level asString.
+	(aHeader propertyAt: #id ifAbsent: [ nil ]) ifNotNil: [ :id |
+		tag parameterAt: 'id' put: id ].
+	^ tag
+]
+
 { #category : 'accessing' }
 MicHTMLVisitor >> ignoreMetaData [
 	ignoresMetaData := true
@@ -455,11 +466,8 @@ MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph from: aVisitor [
 { #category : 'visiting' }
 MicHTMLVisitor >> visitHeader: aHeader [
 
-	canvas newLine.	
-	canvas tag 
-		name: 'h',  aHeader level asString;
-		with: [ self visitChildrenOf: aHeader ]
-	
+	canvas newLine.
+	(self headerTagOf: aHeader) with: [ self visitChildrenOf: aHeader ]
 ]
 
 { #category : 'templating ping pong' }
@@ -467,9 +475,8 @@ MicHTMLVisitor >> visitHeader: aHeader from: templated [
 	"Write aHeader for a templated writer that has no template for it: its children go back to the templated writer."
 
 	canvas newLine.
-	canvas tag
-		name: 'h' , aHeader level asString;
-		with: [ templated visitChildrenOf: aHeader ]
+	(self headerTagOf: aHeader) with: [
+		templated visitChildrenOf: aHeader ]
 ]
 
 { #category : 'visiting' }

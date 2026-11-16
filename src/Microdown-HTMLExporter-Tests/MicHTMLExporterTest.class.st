@@ -30,6 +30,17 @@ MicHTMLExporterTest >> factory: aFactory [
 	factory := aFactory new
 ]
 
+{ #category : 'helpers' }
+MicHTMLExporterTest >> headerFoo: anIdOrNil [
+	"Answer a document with the header Foo of level 2, with anIdOrNil as #id property when it is not nil."
+
+	| document |
+	document := Microdown parse: '## Foo'.
+	anIdOrNil ifNotNil: [
+		document children first propertyAt: #id put: anIdOrNil ].
+	^ document
+]
+
 { #category : 'tests - figures' }
 MicHTMLExporterTest >> imgTagOf: aMicrodownString [
 	"Answer the img tag MicHTMLVisitor writes for aMicrodownString."
@@ -261,6 +272,37 @@ MicHTMLExporterTest >> testHeaderLevel2 [
 	self
 		parse: factory headerLevel2Sample
 		andCheckWeGet: newLine , '<h2>Foo</h2>'
+]
+
+{ #category : 'tests - header ids' }
+MicHTMLExporterTest >> testHeaderWithIdWritesItsId [
+
+	writer visit: (self headerFoo: 'foo').
+
+	self
+		assert: writer contents
+		equals: newLine , '<h2 id="foo">Foo</h2>'
+]
+
+{ #category : 'tests - header ids' }
+MicHTMLExporterTest >> testHeaderWithIdWrittenForATemplatedWriterWithoutHeaderTemplateWritesItsId [
+
+	| maker |
+	maker := MicTHTMLDocumentMaker new
+		         templateDirectory: FileSystem memory / 'noTemplates';
+		         yourself.
+
+	self assert:
+		((maker write: (self headerFoo: 'foo')) includesSubstring:
+			 '<h2 id="foo">Foo</h2>')
+]
+
+{ #category : 'tests - header ids' }
+MicHTMLExporterTest >> testHeaderWithoutIdWritesNoId [
+
+	writer visit: (self headerFoo: nil).
+
+	self assert: writer contents equals: newLine , '<h2>Foo</h2>'
 ]
 
 { #category : 'tests - metadata' }

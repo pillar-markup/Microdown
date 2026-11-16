@@ -6,26 +6,26 @@ I build the table of contents of a Microdown document: I visit its headers and n
 1. A client creates me with `new`, optionally sets the deepest header level to keep with `limitUpTo:` (6 by default), and sends me `visit:` with a document.
 2. It then asks for the result: `tocItems` (the top entries), `toc` (a `MicRootBlock` holding a `MicTocEntryList`, that `MicHTMLVisitor` writes as nested lists), or `templateValues`.
 3. `MicBookSitePublisher>>tableOfContentsOf:` uses `templateValues` to give the root template of each page its table of contents.
+4. For the links of `templateValues` to work, the headers must be identified first by `MicHeaderIdentifier` (a separate pass).
 
 ## Responsibility:
 
 - I nest the headers of a document by level, ignoring the ones deeper than my limit.
 - I answer the table of contents for Mustache templates: dictionaries with `name`, `href`, `hasChildren` and `children`, as in `{{#children}}<a href=""{{href}}"">{{name}}</a>{{/children}}`.
-- I give each header of the table of contents a unique id, stored as its `#id` property, so that the `href` of its entry reaches it; `MicTemplatedWriter` gives it to `header.mustache` as `id`.
+- I link each entry to the target its header got from `MicHeaderIdentifier` (`MicHeaderIdentifier targetOf: aHeader`); I do not give ids myself.
 
 ## Collaborators: 
 
-- `MicHeaderBlock`: the headers I collect, and the holders of the ids I give.
+- `MicHeaderBlock`: the headers I collect.
 - `MicTocEntry` and `MicTocEntryList`: the tree I build.
-- `MicTemplatedWriter`: writes the ids of the headers, so the links of the table of contents work.
+- `MicHeaderIdentifier`: gives the headers the targets my entries link to.
 
 ## Public API and Key Messages
 
 - `limitUpTo: anInteger` keep the headers up to level anInteger (1 to 5).
 - `visit: aDocument` collect its headers.
 - `tocItems` the top entries; `toc` the table of contents as a document.
-- `templateValues` the table of contents for templates, giving ids to the headers.
-- `idFromText: aString` the id of a header text: its lowercase words joined by dashes (`Text emphasis` gives `text-emphasis`).
+- `templateValues` the table of contents for templates.
 
 ## Examples
 
@@ -38,11 +38,6 @@ MicTocBuilder exampleOfAChapter templateValues
 - `tocItems`: the top entries, an `OrderedCollection` of `MicTocEntry`.
 - `headerStack`: the entries of the current branch while visiting, innermost on top.
 - `limit`: the deepest header level kept.
-
-### Implementation Points
-
-- Two headers with the same text get numbered ids (`intro`, `intro-2`); a text without words gives `section`.
-- `templateValues` changes the headers (their `#id` property): ask for it before writing the document.
 "
 Class {
 	#name : 'MicTocBuilder',
@@ -74,18 +69,6 @@ More text.');
 		  yourself
 ]
 
-{ #category : 'ids' }
-MicTocBuilder >> idFromText: aString [
-	"Answer an HTML id made of the lowercase words of aString separated by dashes."
-
-	| words |
-	words := (aString asLowercase collect: [ :each |
-			          each isAlphaNumeric
-				          ifTrue: [ each ]
-				          ifFalse: [ Character space ] ]) substrings.
-	^ words ifEmpty: [ 'section' ] ifNotEmpty: [ '-' join: words ]
-]
-
 { #category : 'initialization' }
 MicTocBuilder >> initialize [
 
@@ -105,33 +88,31 @@ MicTocBuilder >> limitUpTo: anInteger [
 
 { #category : 'template values' }
 MicTocBuilder >> templateValues [
-	"Answer the table of contents for Mustache templates: a dictionary whose children are its entries, each a dictionary with name, href, hasChildren and children. Give each header of the table of contents a unique id (its #id property) so that the href of its entry reaches it."
+	"Answer the table of contents for Mustache templates: a dictionary whose children are its entries, each a dictionary with name, href, hasChildren and children. The href of an entry is the link target of its header (see MicHeaderIdentifier>>#identify:), nil when the header was not identified."
 
-	| ids |
-	ids := Set new.
 	^ Dictionary new
-		  at: 'children' put: (tocItems
-				   collect: [ :each | self templateValuesOf: each ids: ids ]
+		  at: 'children'
+		  put:
+			  (tocItems
+				   collect: [ :each | self templateValuesOf: each ]
 				   as: Array);
 		  yourself
 ]
 
 { #category : 'template values' }
-MicTocBuilder >> templateValuesOf: aTocEntry ids: aSet [
-	"Answer the template values of aTocEntry and of its children, giving their headers an id not in aSet."
+MicTocBuilder >> templateValuesOf: aTocEntry [
+	"Answer the template values of aTocEntry and of its children."
 
-	| id children |
-	id := self
-		      uniqueId: (self idFromText: aTocEntry header text)
-		      in: aSet.
-	aTocEntry header propertyAt: #id put: id.
+	| children |
 	children := aTocEntry children
-		            collect: [ :each |
-		            self templateValuesOf: each ids: aSet ]
+		            collect: [ :each | self templateValuesOf: each ]
 		            as: Array.
 	^ Dictionary new
 		  at: 'name' put: aTocEntry header text;
-		  at: 'href' put: '#' , id;
+		  at: 'href'
+		  put:
+			  ((MicHeaderIdentifier targetOf: aTocEntry header) ifNotNil: [
+					   :target | '#' , target ]);
 		  at: 'hasChildren' put: children isNotEmpty;
 		  at: 'children' put: children;
 		  yourself
@@ -149,21 +130,6 @@ MicTocBuilder >> toc [
 { #category : 'accessing' }
 MicTocBuilder >> tocItems [
 	^ tocItems
-]
-
-{ #category : 'ids' }
-MicTocBuilder >> uniqueId: anId in: aSet [
-	"Answer anId, or anId followed by a number when aSet already has it, and add the answer to aSet."
-
-	| id count |
-	id := anId.
-	count := 1.
-	[ aSet includes: id ] whileTrue: [
-			count := count + 1.
-			id := String streamContents: [ :stream |
-				      stream << anId << '-' << count printString ] ].
-	aSet add: id.
-	^ id
 ]
 
 { #category : 'visiting' }
