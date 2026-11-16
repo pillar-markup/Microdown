@@ -681,7 +681,9 @@ MicTemplatedWriter >> visitHeader: aHeader [
 	self
 		write: aHeader
 		withTemplateFileName: self headerTemplateFileName
-		extraArguments: { ('level' -> (aHeader level min: 7 max: 1)) }
+		extraArguments: {
+				('level' -> (aHeader level min: 7 max: 1)).
+				('id' -> (aHeader propertyAt: #id ifAbsent: [ nil ])) }
 		ifAbsent: [ defaultWriter visitHeader: aHeader from: self ]
 ]
 
@@ -816,9 +818,8 @@ MicTemplatedWriter >> visitRoot: aRoot [
 	self
 		write: aRoot
 		withTemplateFileName: self rootTemplateFileName
-		extraArguments: {  }
-		ifAbsent: [ defaultWriter visitRoot: aRoot from: self  ].
-
+		extraArguments: [ outputDocument pageArguments associations ]
+		ifAbsent: [ defaultWriter visitRoot: aRoot from: self ]
 ]
 
 { #category : 'visiting - inline elements' }

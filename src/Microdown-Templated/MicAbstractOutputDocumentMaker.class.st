@@ -30,7 +30,9 @@ Class {
 	#name : 'MicAbstractOutputDocumentMaker',
 	#superclass : 'Object',
 	#instVars : [
-		'baseDirectory'
+		'baseDirectory',
+		'templateDirectory',
+		'pageArguments'
 	],
 	#category : 'Microdown-Templated',
 	#package : 'Microdown-Templated'
@@ -54,6 +56,19 @@ MicAbstractOutputDocumentMaker >> basicWriter [
 ]
 
 { #category : 'accessing' }
+MicAbstractOutputDocumentMaker >> pageArguments [
+	"The values the root template gets in addition to contents, e.g. the title or the table of contents of the page."
+
+	^ pageArguments ifNil: [ pageArguments := Dictionary new ]
+]
+
+{ #category : 'accessing' }
+MicAbstractOutputDocumentMaker >> pageArguments: aDictionary [
+
+	pageArguments := aDictionary
+]
+
+{ #category : 'accessing' }
 MicAbstractOutputDocumentMaker >> pathString [ 
 
 	self flag: #revisitThis. 
@@ -63,8 +78,17 @@ MicAbstractOutputDocumentMaker >> pathString [
 
 { #category : 'accessing' }
 MicAbstractOutputDocumentMaker >> templateDirectory [
-	 
-	^ self baseDirectory / self writer folderName / '_support' / 'templates' / self writer folderName
+	"Answer the folder of the Mustache templates: the one given with templateDirectory:, else the conventional one below my base directory."
+
+	^ templateDirectory ifNil: [
+			  self baseDirectory / self writer folderName / '_support'
+			  / 'templates' / self writer folderName ]
+]
+
+{ #category : 'accessing' }
+MicAbstractOutputDocumentMaker >> templateDirectory: aFileReference [
+
+	templateDirectory := aFileReference
 ]
 
 { #category : 'accessing' }

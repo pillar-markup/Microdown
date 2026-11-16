@@ -515,6 +515,25 @@ b
 </div>'
 ]
 
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteHeaderGivesItsIdToTheTemplate [
+
+	| header |
+	self
+		createTemplateFileAt: MicTemplatedWriter headerTemplateFileName
+		withContents:
+		'<h{{level}}{{#id}} id="{{.}}"{{/id}}>{{{contents}}}</h{{level}}>'.
+	header := MicHeaderBlock new
+		          level: 2;
+		          headerElements: { (MicTextBlock new
+				           bodyString: 'foo';
+				           yourself) };
+		          yourself.
+	header propertyAt: #id put: 'intro'.
+
+	self assertWritingNode: header writes: '<h2 id="intro">foo</h2>'
+]
+
 { #category : 'new tests' }
 MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 
@@ -525,6 +544,24 @@ MicTemplatedWriterTest >> testWriteHeaderUsesHeaderTemplate [
 		forNode: (MicHeaderBlock new
 			level: 2;
 			headerElements: {(MicTextBlock new bodyString: 'foo'; yourself)})
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteHeaderWithoutIdGivesNoIdToTheTemplate [
+
+	self
+		createTemplateFileAt: MicTemplatedWriter headerTemplateFileName
+		withContents:
+		'<h{{level}}{{#id}} id="{{.}}"{{/id}}>{{{contents}}}</h{{level}}>'.
+
+	self
+		assertWritingNode: (MicHeaderBlock new
+				 level: 2;
+				 headerElements: { (MicTextBlock new
+						  bodyString: 'foo';
+						  yourself) };
+				 yourself)
+		writes: '<h2>foo</h2>'
 ]
 
 { #category : 'tests - without template' }
@@ -768,6 +805,19 @@ MicTemplatedWriterTest >> testWriteRoot [
 <p>This is a paragraph not a root</p>
 </header>'
 		forNode: (Microdown parse: 'This is a paragraph not a root') 
+]
+
+{ #category : 'tests' }
+MicTemplatedWriterTest >> testWriteRootGivesThePageArgumentsToTheTemplate [
+
+	self
+		createTemplateFileAt: MicTemplatedWriter rootTemplateFileName
+		withContents: '<title>{{title}}</title>{{{contents}}}'.
+	textDocument pageArguments: { ('title' -> 'Intro') } asDictionary.
+
+	self
+		assertWritingNode: MicRootBlock new
+		writes: '<title>Intro</title>'
 ]
 
 { #category : 'tests - without template' }
