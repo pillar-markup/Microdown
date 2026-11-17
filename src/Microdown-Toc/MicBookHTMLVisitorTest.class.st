@@ -1,5 +1,5 @@
 "
-I check that `MicBookHTMLVisitor` shows the numbers of headers, figure captions and references, links numbered references to their page, writes elements without number as `MicHTMLVisitor` does, and that `MicHTMLVisitor` itself shows no number.
+I check that `MicBookHTMLVisitor` shows the numbers of headers, figure captions, listings and references, links numbered references to their page, writes elements without number as `MicHTMLVisitor` does, and that `MicHTMLVisitor` itself shows no number.
 "
 Class {
 	#name : 'MicBookHTMLVisitorTest',
@@ -31,6 +31,18 @@ MicBookHTMLVisitorTest >> htmlOf: aDocument [
 		  contents
 ]
 
+{ #category : 'tests - listings' }
+MicBookHTMLVisitorTest >> testCodeBlockWithoutCaptionOrNumberIsWrittenAsUsual [
+
+	| html |
+	html := self htmlOf: (Microdown parse: '```
+foo
+```').
+
+	self assert: (html includesSubstring: '<pre><code>foo').
+	self deny: (html includesSubstring: 'figure')
+]
+
 { #category : 'tests - example' }
 MicBookHTMLVisitorTest >> testExampleOfAChapterPage [
 
@@ -57,6 +69,14 @@ MicBookHTMLVisitorTest >> testHeaderWithoutNumberIsWrittenAsUsual [
 	self assert:
 		((self htmlOf: (Microdown parse: '## Foo')) includesSubstring:
 			 '<h2>Foo</h2>')
+]
+
+{ #category : 'tests - listings' }
+MicBookHTMLVisitorTest >> testListingWithACaptionAndNoNumberShowsItsCaption [
+
+	self assert: ((self htmlOf: (Microdown parse: '```caption=Hello
+foo
+```')) includesSubstring: '<figcaption>Hello</figcaption>')
 ]
 
 { #category : 'tests - plain writer' }
@@ -94,6 +114,37 @@ MicBookHTMLVisitorTest >> testNumberedHeaderShowsItsNumber [
 	self assert:
 		((self htmlOf: (self document: '### Foo' numbering: #( 1 2 )))
 			 includesSubstring: '<h3><span class="number">1.2</span> Foo</h3>')
+]
+
+{ #category : 'tests - listings' }
+MicBookHTMLVisitorTest >> testNumberedListingIsACodeFigureWithItsNumberAndCaption [
+
+	| document html |
+	document := Microdown parse: '```caption=Hello&anchor=l1
+foo
+```'.
+	document children first propertyAt: #number put: #( 1 1 ).
+
+	html := self htmlOf: document.
+
+	self assert:
+		(html includesSubstring:
+			 '<figure class="code" id="l1"><pre><code>foo').
+	self assert: (html includesSubstring:
+			 '<figcaption><span class="number">Listing 1.1</span> Hello</figcaption></figure>')
+]
+
+{ #category : 'tests - listings' }
+MicBookHTMLVisitorTest >> testNumberedListingWithoutCaptionShowsItsNumber [
+
+	| document |
+	document := Microdown parse: '```anchor=l1
+foo
+```'.
+	document children first propertyAt: #number put: #( 2 3 ).
+
+	self assert: ((self htmlOf: document) includesSubstring:
+			 '<figcaption><span class="number">Listing 2.3</span> </figcaption>')
 ]
 
 { #category : 'tests - references' }

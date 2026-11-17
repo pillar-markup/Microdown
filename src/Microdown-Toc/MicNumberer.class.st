@@ -25,6 +25,7 @@ I number the chapters, sections, figures, listings and equations of a book, the 
 - `number: aDocument`
 - `document` the document I numbered
 - `chapterLevel: anInteger` (2 by default: chapters are `##`)
+- `MicNumberer numberStringOf: anElement` the number of anElement as readers see it (`'3.2'`), nil when it has none; used by `MicBookHTMLVisitor` and `MicTocBuilder`.
 
 ## Examples
 
@@ -88,6 +89,18 @@ $$ % anchor=sum
 a + b
 $$');
 		  yourself
+]
+
+{ #category : 'printing' }
+MicNumberer class >> numberStringOf: anElement [
+	"Answer the number of anElement as readers see it, e.g. '3.2' for #(3 2), from the #number property I gave it; nil when it has none. The writers and the table of contents use it."
+
+	| number |
+	number := anElement propertyAt: #number ifAbsent: [ ^ nil ].
+	^ String streamContents: [ :stream |
+			  number
+				  do: [ :each | stream print: each ]
+				  separatedBy: [ stream nextPut: $. ] ]
 ]
 
 { #category : 'script' }

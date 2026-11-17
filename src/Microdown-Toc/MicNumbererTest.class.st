@@ -374,6 +374,23 @@ $$'.
 	self assert: (self numberOf: document children second) isNil
 ]
 
+{ #category : 'tests - number strings' }
+MicNumbererTest >> testNumberStringJoinsTheNumbersWithDots [
+
+	| header |
+	header := (Microdown parse: '### Foo') children first.
+	header propertyAt: #number put: #( 3 2 1 ).
+
+	self assert: (MicNumberer numberStringOf: header) equals: '3.2.1'
+]
+
+{ #category : 'tests - number strings' }
+MicNumbererTest >> testNumberStringOfAnUnnumberedElementIsNil [
+
+	self assert: (MicNumberer numberStringOf:
+			 (Microdown parse: '### Foo') children first) isNil
+]
+
 { #category : 'tests - sections' }
 MicNumbererTest >> testSectionsAreNumberedInTheirChapter [
 

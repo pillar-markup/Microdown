@@ -11,7 +11,7 @@ I build the table of contents of a Microdown document: I visit its headers and n
 ## Responsibility:
 
 - I nest the headers of a document by level, ignoring the ones deeper than my limit.
-- I answer the table of contents for Mustache templates: dictionaries with `name`, `href`, `hasChildren` and `children`, as in `{{#children}}<a href=""{{href}}"">{{name}}</a>{{/children}}`.
+- I answer the table of contents for Mustache templates: dictionaries with `name`, `number` (the number of the header as readers see it, from `MicNumberer numberStringOf:`; nil when the document was not numbered), `href`, `hasChildren` and `children`, as in `{{#children}}<a href=""{{href}}"">{{name}}</a>{{/children}}`.
 - I link each entry to the target its header got from `MicHeaderIdentifier` (`MicHeaderIdentifier targetOf: aHeader`); I do not give ids myself.
 
 ## Collaborators: 
@@ -101,7 +101,7 @@ MicTocBuilder >> templateValues [
 
 { #category : 'template values' }
 MicTocBuilder >> templateValuesOf: aTocEntry [
-	"Answer the template values of aTocEntry and of its children."
+	"Answer the template values of aTocEntry and of its children; number is the number of its header as readers see it (see MicNumberer), nil when the header was not numbered."
 
 	| children |
 	children := aTocEntry children
@@ -109,6 +109,7 @@ MicTocBuilder >> templateValuesOf: aTocEntry [
 		            as: Array.
 	^ Dictionary new
 		  at: 'name' put: aTocEntry header text;
+		  at: 'number' put: (MicNumberer numberStringOf: aTocEntry header);
 		  at: 'href'
 		  put:
 			  ((MicHeaderIdentifier targetOf: aTocEntry header) ifNotNil: [

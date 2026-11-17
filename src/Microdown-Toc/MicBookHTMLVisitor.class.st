@@ -9,13 +9,13 @@ I write a book as HTML for its web site: as `MicHTMLVisitor`, plus the numbers t
 ## Responsibility:
 
 - I write a numbered header with its number first: `<h3><span class=""number"">1.2</span> Foo</h3>`.
-- I write the caption of a numbered figure starting with `Figure` and its number.
+- I write the caption of a numbered figure starting with `Figure` and its number, and a listing (a code block with a number or a caption) as a code figure, as `codeBlock.mustache` does: `<figure class=""code"" id=""…""><pre><code>…</code></pre><figcaption><span class=""number"">Listing 1.1</span> …</figcaption></figure>`.
 - I write a reference to a numbered target with the number as the text of its link (`<a href=""chapter-2.html#fb"">2.1</a>`); the author writes the word before it (`See Figure *@fb@*`). Elements without number are written as `MicHTMLVisitor` does.
 
 ## Collaborators: 
 
 - `MicHTMLVisitor`: my superclass, writes everything else.
-- `MicNumberer`, `MicPageReferenceResolver`: the passes whose `#number` and `#page` properties I read.
+- `MicNumberer`, `MicPageReferenceResolver`: the passes whose `#number` and `#page` properties I read; `MicNumberer numberStringOf:` formats the numbers.
 
 ## Public API and Key Messages
 
@@ -32,7 +32,8 @@ MicBookHTMLVisitor scriptChapterPage
 ### Implementation Points
 
 - Numbers are written in a `span` of class `number`, so a stylesheet can style them.
-- Listings and equations are numbered by `MicNumberer` but not shown yet: `MicHTMLVisitor` writes no caption for code blocks and does not write math at all (Microdown backlog).
+- Equations are numbered by `MicNumberer` but not shown yet: `MicHTMLVisitor` does not write math at all (Microdown backlog).
+- A code block without number nor caption stays a plain `<pre>` with the anchor as id, as `MicHTMLVisitor` writes it.
 - The templated writer (`MicTemplatedWriter`) does not give numbers to its templates yet (phase 2 of the book site).
 "
 Class {
@@ -68,24 +69,12 @@ MicBookHTMLVisitor class >> writerName [
 	^ #michtml
 ]
 
-{ #category : 'numbers' }
-MicBookHTMLVisitor >> numberStringOf: anElement [
-	"Answer the number of anElement as readers see it, e.g. '3.2' for #(3 2), from its #number property (see MicNumberer); nil when it has none."
-
-	| number |
-	number := anElement propertyAt: #number ifAbsent: [ ^ nil ].
-	^ String streamContents: [ :stream |
-			  number
-				  do: [ :each | stream print: each ]
-				  separatedBy: [ stream nextPut: $. ] ]
-]
-
 { #category : 'visiting - inline elements' }
 MicBookHTMLVisitor >> visitAnchorReference: anAnchorReference [
 	"Link to the anchor as MicHTMLVisitor does; the text of the link is the number of its target when it has one (Figure *@fb@* reads Figure 2.1), else its label."
 
 	| number |
-	number := self numberStringOf: anAnchorReference.
+	number := MicNumberer numberStringOf: anAnchorReference.
 	number ifNil: [ ^ super visitAnchorReference: anAnchorReference ].
 	canvas tag
 		name: 'a';
@@ -96,6 +85,36 @@ MicBookHTMLVisitor >> visitAnchorReference: anAnchorReference [
 		with: number
 ]
 
+{ #category : 'visiting' }
+MicBookHTMLVisitor >> visitCode: aCodeBlock [
+	"A listing (a code block with a number or a caption) is a code figure, as codeBlock.mustache writes it: the anchor as id of the figure, the code, and a caption starting with Listing and its number when it has one. Other code blocks are written as MicHTMLVisitor does."
+
+	| number figure |
+	number := MicNumberer numberStringOf: aCodeBlock.
+	(number isNil and: [ aCodeBlock hasCaption not ]) ifTrue: [
+		^ super visitCode: aCodeBlock ].
+	canvas newLine.
+	figure := canvas tag
+		          name: 'figure';
+		          parameterAt: 'class' put: 'code';
+		          yourself.
+	aCodeBlock anchor ifNotNil: [ :anchor |
+		figure parameterAt: 'id' put: anchor ].
+	figure with: [
+			canvas tag
+				name: 'pre';
+				with: [
+						canvas tag
+							name: 'code';
+							with: [ canvas lines: aCodeBlock body ] ].
+			canvas tag
+				name: 'figcaption';
+				with: [
+						number ifNotNil: [ self writeNumber: 'Listing ' , number ].
+						self visitAll: aCodeBlock captionElements ] ].
+	canvas newLine
+]
+
 { #category : 'templating ping pong' }
 MicBookHTMLVisitor >> visitFigCaption: aFigure from: aVisitor [
 	"Write the caption of aFigure as MicHTMLVisitor does, starting with Figure and its number when it has one."
@@ -103,7 +122,7 @@ MicBookHTMLVisitor >> visitFigCaption: aFigure from: aVisitor [
 	canvas tag
 		name: 'figcaption';
 		with: [
-				(self numberStringOf: aFigure) ifNotNil: [ :number |
+				(MicNumberer numberStringOf: aFigure) ifNotNil: [ :number |
 						self writeNumber: 'Figure ' , number ].
 				aVisitor visitChildrenOf: aFigure ]
 ]
@@ -114,7 +133,7 @@ MicBookHTMLVisitor >> visitHeader: aHeader [
 
 	canvas newLine.
 	(self headerTagOf: aHeader) with: [
-			(self numberStringOf: aHeader) ifNotNil: [ :number |
+			(MicNumberer numberStringOf: aHeader) ifNotNil: [ :number |
 				self writeNumber: number ].
 			self visitChildrenOf: aHeader ]
 ]

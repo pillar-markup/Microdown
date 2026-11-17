@@ -303,6 +303,24 @@ lkhkhk
 ]
 
 { #category : 'tests - template values' }
+MicTocBuilderTest >> testTemplateValuesGiveTheNumbersOfNumberedHeaders [
+
+	| document builder entry |
+	document := Microdown parse: '## Foo
+
+### Bar'.
+	MicNumberer new number: document.
+	builder := MicTocBuilder new.
+	builder visit: document.
+
+	entry := (builder templateValues at: 'children') first.
+	self assert: (entry at: 'number') equals: '1'.
+	self
+		assert: ((entry at: 'children') first at: 'number')
+		equals: '1.1'
+]
+
+{ #category : 'tests - template values' }
 MicTocBuilderTest >> testTemplateValuesLinkAnAnchoredHeaderToItsAnchor [
 
 	| values |
@@ -369,6 +387,18 @@ MicTocBuilderTest >> testTemplateValuesOfUnidentifiedHeadersHaveNoHref [
 
 	self assert:
 		((builder templateValues at: 'children') first at: 'href') isNil
+]
+
+{ #category : 'tests - template values' }
+MicTocBuilderTest >> testTemplateValuesOfUnnumberedHeadersHaveNoNumber [
+
+	| builder |
+	builder := MicTocBuilder new.
+	builder visit: (Microdown parse: '## Foo').
+
+	self assert: ((builder templateValues at: 'children') first
+			 at: 'number'
+			 ifAbsent: [ nil ]) isNil
 ]
 
 { #category : 'tests - template values' }
