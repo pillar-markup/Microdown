@@ -197,6 +197,38 @@ MicHTMLVisitorTest >> testCreateItalic [
 
 ]
 
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testInlineLineBreakIsWrittenAsBr [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'One <br> two');
+			  contents) includesSubstring: 'One <br> two')
+]
+
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testNewLineBeforeAFormatKeepsTheWordsApart [
+
+	| html |
+	html := MicHTMLVisitor new
+		        visit: (Microdown parse: 'One
+**two**');
+		        contents.
+
+	self deny: (html includesSubstring: 'One<strong>')
+]
+
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testNewLineInAParagraphIsNotALineBreak [
+
+	| html |
+	html := MicHTMLVisitor new
+		        visit: (Microdown parse: 'One sentence.
+Another sentence.');
+		        contents.
+
+	self deny: (html includesSubstring: '<br')
+]
+
 { #category : 'tests' }
 MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 

@@ -326,6 +326,12 @@ MicTextualMicrodownExporter >> visitHorizontalLine: aHorizontalLine [
 	builder horizontalLine
 ]
 
+{ #category : 'visiting - html extensions' }
+MicTextualMicrodownExporter >> visitInlineSpace: anInlineSpace [
+
+	builder text: '<br>'
+]
+
 { #category : 'visit - format' }
 MicTextualMicrodownExporter >> visitInputFile: anInputfile [
 

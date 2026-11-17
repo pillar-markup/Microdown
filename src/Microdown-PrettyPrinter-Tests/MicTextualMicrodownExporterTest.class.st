@@ -278,6 +278,14 @@ MicTextualMicrodownExporterTest >> testHorizontalLine [
 	self verifyObtain: factory horizontalLineSample
 ]
 
+{ #category : 'tests - line breaks' }
+MicTextualMicrodownExporterTest >> testInlineLineBreakSurvivesExport [
+
+	self assert: ((MicTextualMicrodownExporter new
+			  visit: (Microdown parse: 'One <br> two');
+			  contents) includesSubstring: 'One <br> two')
+]
+
 { #category : 'tests - anchor' }
 MicTextualMicrodownExporterTest >> testInputfile [
 

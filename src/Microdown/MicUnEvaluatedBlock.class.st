@@ -66,8 +66,8 @@ MicUnEvaluatedBlock >> plainText [
 
 { #category : 'printing' }
 MicUnEvaluatedBlock >> printOn: stream [
-	stream << self blockName << '(' << bodyString << ')'
-	
+
+	stream << self blockName << '(' << (bodyString ifNil: [ '' ]) << ')'
 ]
 
 { #category : 'obsolete' }

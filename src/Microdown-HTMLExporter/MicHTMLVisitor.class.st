@@ -519,6 +519,13 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock from: aVisitor [
 		with: [ self visitFigCaption: aMicFigureBlock from: aVisitor ]
 ]
 
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitInlineSpace: anInlineSpace [
+	"<br> in Microdown is an explicit line break."
+
+	canvas nextPutAll: '<br>'
+]
+
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitItalic: aItalicText [
 
@@ -771,11 +778,14 @@ MicHTMLVisitor >> visitTableRows: aTable [
 
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitText: aText [
+	"Write the text of a paragraph. A new line inside a paragraph is a soft break, as in Markdown: it is written as a new line, which browsers show as a space. Only <br> (visitInlineSpace:) breaks a line."
 
-	canvas nextPutAll: (
-		(aText text copyReplaceAll: String cr with: '<br>') 
-			copyReplaceAll: String lf with: '<br />'). 
-
+	((aText text copyReplaceAll: String crlf with: String cr)
+		 copyReplaceAll: String lf
+		 with: String cr) do: [ :each |
+			each = Character cr
+				ifTrue: [ canvas newLine ]
+				ifFalse: [ canvas nextPut: each ] ]
 ]
 
 { #category : 'visiting - list' }

@@ -268,6 +268,14 @@ MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 	canvas newLine.
 ]
 
+{ #category : 'visiting - html extensions' }
+MicLaTeXWriter >> visitInlineSpace: anInlineSpace [
+	"<br> in Microdown is an explicit line break; LaTeX joins the lines of a paragraph otherwise."
+
+	canvas raw: '\\'.
+	canvas newLine
+]
+
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitItalic: anItalic [
 	

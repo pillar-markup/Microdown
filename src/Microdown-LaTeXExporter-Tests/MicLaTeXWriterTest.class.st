@@ -130,6 +130,13 @@ MicLaTeXWriterTest >> testHeaderLevel2 [ [
 ]
 ]
 
+{ #category : 'tests - line breaks' }
+MicLaTeXWriterTest >> testInlineLineBreakIsWrittenAsANewLine [
+
+	self writeFor: 'One <br> two'.
+	self assert: (writer contents includesSubstring: 'One \\')
+]
+
 { #category : 'tests - formats' }
 MicLaTeXWriterTest >> testItalic [ [ 
 	| document result |
