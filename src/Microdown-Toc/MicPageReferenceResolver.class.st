@@ -93,6 +93,7 @@ MicPageReferenceResolver >> resolve: aCollectionOfPages [
 
 { #category : 'visiting - inline elements' }
 MicPageReferenceResolver >> visitAnchorReference: anAnchorReference [
+	"Mark anAnchorReference with the page of its anchor when that page is not the current one; leave it alone when its anchor is in the current page or unknown."
 
 	pageOfLabels at: anAnchorReference anchorLabel ifPresent: [ :page |
 			page = currentPage ifFalse: [

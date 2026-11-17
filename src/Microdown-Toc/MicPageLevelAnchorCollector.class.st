@@ -78,24 +78,28 @@ MicPageLevelAnchorCollector >> labelsOf: aDocument [
 
 { #category : 'visiting' }
 MicPageLevelAnchorCollector >> visitAnchor: anAnchor [
+	"An anchor (@label) defines its label."
 
 	anchorLabels add: anAnchor label
 ]
 
 { #category : 'visiting' }
 MicPageLevelAnchorCollector >> visitCode: aCode [
+	"A code block defines a label when it has an anchor argument (anchor=code1)."
 
 	self addAnchorOf: aCode
 ]
 
 { #category : 'visiting - inline elements' }
 MicPageLevelAnchorCollector >> visitFigure: aFigure [
+	"A figure defines a label when it has an anchor argument (%anchor=fig1)."
 
 	self addAnchorOf: aFigure
 ]
 
 { #category : 'visiting' }
 MicPageLevelAnchorCollector >> visitMath: aMath [
+	"A math block defines a label when it has an anchor argument (%anchor=eq1)."
 
 	self addAnchorOf: aMath
 ]

@@ -130,6 +130,7 @@ MicChapterSplitter >> startChapter [
 
 { #category : 'visiting' }
 MicChapterSplitter >> visitHeader: aHeader [
+	"A header of my chapter level, or less deep, starts a new chapter; any header then goes into the current chapter (the new one, or the one it belongs to)."
 
 	aHeader level <= chapterLevel ifTrue: [ self startChapter ].
 	current addChild: aHeader
