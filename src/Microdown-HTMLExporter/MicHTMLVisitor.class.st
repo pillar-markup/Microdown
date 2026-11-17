@@ -263,6 +263,17 @@ MicHTMLVisitor >> stream: aStream [
 	canvas := self canvasClass on: stream
 ]
 
+{ #category : 'visiting' }
+MicHTMLVisitor >> tag: aTagName identifiedBy: anElement [
+	"Answer a new tag named aTagName, with the anchor of anElement (a figure or a code block) as id when it has one, so that references to this anchor reach it."
+
+	| tag |
+	tag := canvas tag name: aTagName.
+	anElement anchor ifNotNil: [ :anchor |
+		tag parameterAt: 'id' put: anchor ].
+	^ tag
+]
+
 { #category : 'templating' }
 MicHTMLVisitor >> templateForConfiguration: aConfiguration [
    "Probably used by pillar."
@@ -366,9 +377,7 @@ MicHTMLVisitor >> visitCitation: aCitation [
 MicHTMLVisitor >> visitCode: aCodeBlock [
 
 	canvas newLine.
-	canvas tag
-		name: 'pre';
-		with: [ 
+	(self tag: 'pre' identifiedBy: aCodeBlock) with: [
 			| code |
 			code := canvas tag
 				        name: 'code';
@@ -377,14 +386,14 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 			language isSyntaxHighlightingPossible ifTrue: [ 
 			code parameterAt: 'class' put: language printString ]."
 			code with: [ canvas lines: aCodeBlock body ] ].
-			"canvas tag
+	"canvas tag
 				name: 'figcaption';
 				with: [ 
 					aCodeBlock hasLabel ifTrue: [ 
 							self createAnchorWith: aCodeBlock label.
 							self writeCounterForScript: aCodeBlock ].
 					aCodeBlock hasCaption ifTrue: [ 
-							self visitAll: aCodeBlock caption children ] ]" .
+							self visitAll: aCodeBlock caption children ] ]"
 	canvas newLine
 ]
 
@@ -424,19 +433,16 @@ MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock from: aVisitor [
 MicHTMLVisitor >> visitFigure: aFigure [
 	"Write mark up elements related with photo in the receiver's canvas"
 
-	canvas tag
-		name: 'figure';
-		with: [ self visitImg: aFigure ]
-
+	(self tag: 'figure' identifiedBy: aFigure) with: [
+		self visitImg: aFigure ]
 ]
 
 { #category : 'templating ping pong' }
 MicHTMLVisitor >> visitFigure: aFigure from: templated [
 	"Write aFigure for a templated writer that has no template for it: the children of its caption go back to the templated writer."
 
-	canvas tag
-		name: 'figure';
-		with: [ self visitImg: aFigure from: templated ]
+	(self tag: 'figure' identifiedBy: aFigure) with: [
+		self visitImg: aFigure from: templated ]
 ]
 
 { #category : 'visiting - html extensions' }

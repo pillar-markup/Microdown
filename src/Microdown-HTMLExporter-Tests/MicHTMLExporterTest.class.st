@@ -154,6 +154,28 @@ MicHTMLExporterTest >> testCodeCreatesInnerText [
 	self assert: code language equals: 'a b```'
 ]
 
+{ #category : 'tests - anchor ids' }
+MicHTMLExporterTest >> testCodeWithAnchorWritesItsId [
+
+	writer visit: (Microdown parse: '```anchor=code1
+foo
+```').
+
+	self assert: (writer contents includesSubstring:
+			 '<pre id="code1"><code>foo</code></pre>')
+]
+
+{ #category : 'tests - anchor ids' }
+MicHTMLExporterTest >> testCodeWithoutAnchorWritesNoId [
+
+	writer visit: (Microdown parse: '```
+foo
+```').
+
+	self assert:
+		(writer contents includesSubstring: '<pre><code>foo</code></pre>')
+]
+
 { #category : 'tests' }
 MicHTMLExporterTest >> testCodeWithoutParam [
 
@@ -171,43 +193,55 @@ foo bar
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigure [
 
-	self parse: factory figureSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption>Foo</figcaption></img></figure>')
+	self
+		parse: factory figureSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption>Foo</figcaption></img></figure>')
 ]
 
 { #category : 'tests - formats' }
 MicHTMLExporterTest >> testFigureBold [
 
-	self parse: factory figureBoldSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strong>Foo</strong></figcaption></img></figure>')
+	self
+		parse: factory figureBoldSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strong>Foo</strong></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureItalic [
 
-	self parse: factory figureItalicSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><i>Foo</i></figcaption></img></figure>')
+	self
+		parse: factory figureItalicSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><i>Foo</i></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureNested [
 
-	self parse: factory figureNestedSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="Foo_" class="figureTest" style="width: 80%"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
+	self
+		parse: factory figureNestedSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo_" class="figureTest" style="width: 80%"><figcaption><strong>Foo_</strong></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureReal [
 
-	self parse: factory figureRealSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" style="width: 80%"><figcaption>A logo png under figures folder</figcaption></img></figure>')
+	self
+		parse: factory figureRealSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="figures/logo.png" alt="A logo png under figures folder" class="figureTest" style="width: 80%"><figcaption>A logo png under figures folder</figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureStrike [
 
-	self parse: factory figureStrikeSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strike>Foo</strike></figcaption></img></figure>')
+	self
+		parse: factory figureStrikeSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo" class="figureTest" style="width: 80%"><figcaption><strike>Foo</strike></figcaption></img></figure>')
 ]
 
 { #category : 'tests - figures' }
@@ -217,20 +251,53 @@ MicHTMLExporterTest >> testFigureWidthIsAPercentageOfTheTextWidth [
 	self assert: (self imgTagOf: '![cap %width=50](f.png)') equals: '<img src="f.png" alt="cap " style="width: 50%">'
 ]
 
+{ #category : 'tests - anchor ids' }
+MicHTMLExporterTest >> testFigureWithAnchorWritesItsId [
+
+	writer visit:
+		(Microdown parse: '![A caption.%anchor=fig1](figures/x.png)').
+
+	self assert:
+		(writer contents includesSubstring: '<figure id="fig1">')
+]
+
+{ #category : 'tests - anchor ids' }
+MicHTMLExporterTest >> testFigureWithAnchorWrittenForATemplatedWriterWithoutFigureTemplateWritesItsId [
+
+	| maker |
+	maker := MicTHTMLDocumentMaker new
+		         templateDirectory: FileSystem memory / 'noTemplates';
+		         yourself.
+
+	self assert: ((maker write:
+			  (Microdown parse: '![A caption.%anchor=fig1](figures/x.png)'))
+			 includesSubstring: '<figure id="fig1">')
+]
+
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithLabelWithoutSize [
 
-	self 
-		parse: factory figureWithLabelWithoutSizeSample 
+	self
+		parse: factory figureWithLabelWithoutSizeSample
 		andCheckWeGet: (self newLineParagraphAround:
-'<figure><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>')
+				 '<figure id="figureTest"><img src="/anUrl" alt="Foo" class="figureTest"><figcaption>Foo</figcaption></img></figure>')
+]
+
+{ #category : 'tests - anchor ids' }
+MicHTMLExporterTest >> testFigureWithoutAnchorWritesNoId [
+
+	writer visit: (Microdown parse: '![A caption.](figures/x.png)').
+
+	self assert: (writer contents includesSubstring: '<figure>')
 ]
 
 { #category : 'tests' }
 MicHTMLExporterTest >> testFigureWithoutCaption [
 
-	self parse: factory figureWithoutCaptionSample andCheckWeGet: (self newLineParagraphAround:
-			 '<figure><img src="/anUrl" alt="" class="figureTest" style="width: 80%"><figcaption></figcaption></img></figure>')
+	self
+		parse: factory figureWithoutCaptionSample
+		andCheckWeGet: (self newLineParagraphAround:
+				 '<figure id="figureTest"><img src="/anUrl" alt="" class="figureTest" style="width: 80%"><figcaption></figcaption></img></figure>')
 ]
 
 { #category : 'tests' }
