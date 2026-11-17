@@ -79,6 +79,22 @@ MicTocBuilderTest >> testComplexDeeplyNestedEntries [
 	self assert: builder tocItems second header text equals: 'Header2'
 ]
 
+{ #category : 'tests - example' }
+MicTocBuilderTest >> testExampleOfAChapter [
+
+	| entries |
+	entries := MicTocBuilder exampleOfAChapter tocItems.
+
+	self
+		assert: (entries collect: [ :each | each header text ] as: Array)
+		equals: #( 'Microdown syntax' ).
+	self
+		assert: (entries first children
+				 collect: [ :each | each header text ]
+				 as: Array)
+		equals: #( 'Text emphasis' 'Links and figures' )
+]
+
 { #category : 'tests' }
 MicTocBuilderTest >> testHeaderBackFromADeeperLevelKeepsItsChildren [
 

@@ -22,6 +22,7 @@ I give each header of a Microdown document its link target, so that a table of c
 ## Public API and Key Messages
 
 - `identify: aDocument` give the headers of aDocument their link targets.
+- `headers` the headers I identified, in order.
 - `MicHeaderIdentifier targetOf: aHeader` the link target of an identified header (nil when it was not identified).
 - `idFromText: aString` and `uniqueId: anId in: aSet` build the generated ids.
 
@@ -78,6 +79,12 @@ MicHeaderIdentifier class >> targetOf: aHeader [
 	^ aHeader
 		  propertyAt: #anchor
 		  ifAbsent: [ aHeader propertyAt: #id ifAbsent: [ nil ] ]
+]
+
+{ #category : 'accessing' }
+MicHeaderIdentifier >> headers [
+
+	^ headers
 ]
 
 { #category : 'ids' }

@@ -22,10 +22,12 @@ I resolve the references of a book split into pages: a reference (`*@toto@*`) to
 ## Public API and Key Messages
 
 - `resolve: aCollectionOfPages` mark the references of the pages.
+- `pages` the pages I resolved.
 
 ## Examples
 
 ```
+MicPageReferenceResolver exampleOfTwoChapters.
 MicPageReferenceResolver scriptReferenceAcrossChapters
 ```
 
@@ -33,6 +35,7 @@ MicPageReferenceResolver scriptReferenceAcrossChapters
 
 - `pageOfLabels`: a `Dictionary` from a label to the name of its page.
 - `currentPage`: the name of the page whose references I visit.
+- `pages`: the pages I resolved, pairs page name -> document.
 
 ### Implementation Points
 
@@ -44,18 +47,19 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'pageOfLabels',
-		'currentPage'
+		'currentPage',
+		'pages'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
 
-{ #category : 'script' }
-MicPageReferenceResolver class >> scriptReferenceAcrossChapters [
-	"A book split into two chapter pages: the reference of the first chapter to the anchor of the second one is written as a link to the page of the second chapter (chapter-2.html#second). Answer the HTML of the first chapter."
+{ #category : 'examples' }
+MicPageReferenceResolver class >> exampleOfTwoChapters [
+	"A resolver that resolved a book split into two chapter pages, chapter-1.html and chapter-2.html: the reference of the first chapter to the anchor of the second one is marked with the page chapter-2.html."
 
-	<example>
-	| splitter pages |
+	<sampleInstance>
+	| splitter |
 	splitter := MicChapterSplitter new
 		            split: (Microdown parse: '## First chapter
 
@@ -66,14 +70,28 @@ As said in *@second@*.
 
 The end.');
 		            yourself.
-	pages := splitter chapters withIndexCollect: [ :each :index |
-			         (String streamContents: [ :stream |
-				          stream << 'chapter-' << index printString << '.html' ])
-			         -> each ].
-	self new resolve: pages.
+	^ self new
+		  resolve: (splitter chapters withIndexCollect: [ :each :index |
+						   (String streamContents: [ :stream |
+								    stream << 'chapter-' << index printString << '.html' ])
+						   -> each ]);
+		  yourself
+]
+
+{ #category : 'script' }
+MicPageReferenceResolver class >> scriptReferenceAcrossChapters [
+	"Answer the HTML of the first chapter page of exampleOfTwoChapters: its reference to the anchor of the second chapter is written as a link to the page of the second chapter (chapter-2.html#second)."
+
+	<example>
 	^ MicHTMLVisitor new
-		  visit: splitter chapters first;
+		  visit: self exampleOfTwoChapters pages first value;
 		  contents
+]
+
+{ #category : 'accessing' }
+MicPageReferenceResolver >> pages [
+
+	^ pages
 ]
 
 { #category : 'resolving' }
@@ -81,6 +99,7 @@ MicPageReferenceResolver >> resolve: aCollectionOfPages [
 	"aCollectionOfPages holds pairs page name -> document (e.g. 'chapter-2.html' -> a chapter). Mark each anchor reference whose anchor is in another page with that page (its #page property), so the writers link to the right page. References to an anchor of their own page, or to an unknown anchor, stay unmarked."
 
 	| collector |
+	pages := aCollectionOfPages.
 	collector := MicPageLevelAnchorCollector new.
 	pageOfLabels := Dictionary new.
 	aCollectionOfPages do: [ :page |

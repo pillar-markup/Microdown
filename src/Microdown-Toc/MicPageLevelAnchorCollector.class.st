@@ -21,6 +21,7 @@ I collect the anchor labels of a Microdown document, one page at a time: its anc
 ## Public API and Key Messages
 
 - `labelsOf: aDocument` answer the anchor labels of aDocument.
+- `anchorLabels` the labels of the last document.
 
 ## Examples
 
@@ -65,6 +66,12 @@ MicPageLevelAnchorCollector >> addAnchorOf: anElement [
 
 	anElement hasAnchor ifTrue: [
 		anchorLabels add: anElement anchorLabel ]
+]
+
+{ #category : 'accessing' }
+MicPageLevelAnchorCollector >> anchorLabels [
+
+	^ anchorLabels
 ]
 
 { #category : 'collecting' }

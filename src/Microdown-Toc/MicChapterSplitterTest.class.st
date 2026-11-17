@@ -145,6 +145,18 @@ MicChapterSplitterTest >> testElementsBeforeTheFirstChapterAreTheFrontMatter [
 	self assert: (self titlesOf: splitter) equals: #( 'One' )
 ]
 
+{ #category : 'tests - example' }
+MicChapterSplitterTest >> testExampleOfABook [
+
+	| splitter |
+	splitter := MicChapterSplitter exampleOfABook.
+
+	self
+		assert: (self titlesOf: splitter)
+		equals: #( 'First chapter' 'Second chapter' ).
+	self assert: splitter frontMatter children size equals: 1
+]
+
 { #category : 'tests - chapters' }
 MicChapterSplitterTest >> testHeaderInsideAnEnvironmentDoesNotStartAChapter [
 

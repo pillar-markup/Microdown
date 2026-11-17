@@ -36,6 +36,20 @@ MicPageReferenceResolverTest >> resolve: aCollectionOfPages [
 	^ (pages collect: [ :each | each key -> each value ]) asDictionary
 ]
 
+{ #category : 'tests - example' }
+MicPageReferenceResolverTest >> testExampleOfTwoChapters [
+
+	| pages |
+	pages := MicPageReferenceResolver exampleOfTwoChapters pages.
+
+	self
+		assert: (pages collect: [ :each | each key ] as: Array)
+		equals: #( 'chapter-1.html' 'chapter-2.html' ).
+	self assert: ((MicHTMLVisitor new
+			  visit: pages first value;
+			  contents) includesSubstring: 'href="chapter-2.html#second"')
+]
+
 { #category : 'tests - references' }
 MicPageReferenceResolverTest >> testReferenceBetweenChaptersOfASplitBook [
 

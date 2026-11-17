@@ -22,16 +22,19 @@ I make the figure references of a document relative to a directory, usually the 
 ## Public API and Key Messages
 
 - `relativize: aDocument to: aDirectory`
+- `document` the document I relativized
 
 ## Examples
 
 ```
+MicPathRelativizer exampleOfABook.
 MicPathRelativizer scriptFigureOfAChapter
 ```
 
 ## Internal Representation
 
 - `baseDirectory`: the directory the references become relative to.
+- `document`: the last document I relativized.
 
 ### Implementation Points
 
@@ -42,36 +45,54 @@ Class {
 	#name : 'MicPathRelativizer',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'baseDirectory'
+		'baseDirectory',
+		'document'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
 
-{ #category : 'script' }
-MicPathRelativizer class >> scriptFigureOfAChapter [
-	"Load a book whose chapter file holds a figure, as Pillar does (its input files inlined, so the figure refers to its file with an absolute path), relativize it to the book folder, and answer its HTML: the figure source is Chapters/figures/x.png."
+{ #category : 'examples' }
+MicPathRelativizer class >> exampleOfABook [
+	"A relativizer that relativized a small book in a memory file system, loaded as Pillar does (input files inlined): the figure of its chapter file, absolute after loading, refers to Chapters/figures/x.png."
 
-	<example>
-	| book document |
+	<sampleInstance>
+	| book |
 	book := FileSystem memory / 'book'.
 	(book / 'Chapters') ensureCreateDirectory.
 	book / 'index.md' writeStreamDo: [ :stream |
 		stream nextPutAll: '<!inputFile|path=Chapters/one.md!>' ].
 	book / 'Chapters' / 'one.md' writeStreamDo: [ :stream |
 		stream nextPutAll: '![A caption.](figures/x.png)' ].
-	document := (book / 'index.md') asMicResourceReference loadMicrodown
-		            inlineInputFiles.
-	self new relativize: document to: book.
+	^ self new
+		  relativize:
+			  (book / 'index.md') asMicResourceReference loadMicrodown
+				  inlineInputFiles
+		  to: book;
+		  yourself
+]
+
+{ #category : 'script' }
+MicPathRelativizer class >> scriptFigureOfAChapter [
+	"Answer the HTML of the book of exampleOfABook: the figure source is Chapters/figures/x.png, relative to the book folder, instead of its absolute path."
+
+	<example>
 	^ MicHTMLVisitor new
-		  visit: document;
+		  visit: self exampleOfABook document;
 		  contents
+]
+
+{ #category : 'accessing' }
+MicPathRelativizer >> document [
+
+	^ document
 ]
 
 { #category : 'relativizing' }
 MicPathRelativizer >> relativize: aDocument to: aDirectory [
 	"Replace in aDocument the absolute references of the figures stored in aDirectory by references relative to aDirectory."
 
+	document := aDocument.
 	baseDirectory := aDirectory.
 	self visit: aDocument
 ]

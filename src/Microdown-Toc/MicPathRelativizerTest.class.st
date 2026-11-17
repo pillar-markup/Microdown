@@ -47,6 +47,16 @@ MicPathRelativizerTest >> setUp [
 	book ensureCreateDirectory
 ]
 
+{ #category : 'tests - example' }
+MicPathRelativizerTest >> testExampleOfABook [
+
+	self
+		assert:
+			MicPathRelativizer exampleOfABook document children first children
+				first children first reference path
+		equals: 'Chapters/figures/x.png'
+]
+
 { #category : 'tests - figures left alone' }
 MicPathRelativizerTest >> testFigureOfADocumentNotLoadedFromAFileIsLeftAlone [
 

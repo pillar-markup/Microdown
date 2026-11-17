@@ -8,6 +8,14 @@ Class {
 	#package : 'Microdown-Toc'
 }
 
+{ #category : 'tests - example' }
+MicPageLevelAnchorCollectorTest >> testExampleOfAChapter [
+
+	self
+		assert: MicPageLevelAnchorCollector exampleOfAChapter anchorLabels
+		equals: #( 'toto' 'fig1' 'code1' ) asSet
+]
+
 { #category : 'tests - labels' }
 MicPageLevelAnchorCollectorTest >> testLabelsIgnoreFiguresAndCodesWithoutAnchor [
 

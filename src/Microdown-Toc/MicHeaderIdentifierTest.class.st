@@ -40,6 +40,16 @@ Some text.
 	self assert: (header propertyAt: #id) equals: 'chatoto'
 ]
 
+{ #category : 'tests - example' }
+MicHeaderIdentifierTest >> testExampleOfAChapter [
+
+	self
+		assert: (MicHeaderIdentifier exampleOfAChapter headers
+				 collect: [ :each | MicHeaderIdentifier targetOf: each ]
+				 as: Array)
+		equals: #( 'syntax' 'figures-2' 'tables' )
+]
+
 { #category : 'tests - generated ids' }
 MicHeaderIdentifierTest >> testGeneratedIdAvoidsAnAnchorDefinedAfterTheHeader [
 
