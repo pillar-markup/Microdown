@@ -148,5 +148,6 @@ MicHeaderIdentifier >> visitAnchor: anAnchor [
 MicHeaderIdentifier >> visitHeader: aHeader [
 	"Keep aHeader, in document order: identify: gives it its target once the whole document is visited, when all the anchor labels are known."
 
+	super visitHeader: aHeader.
 	headers add: aHeader
 ]

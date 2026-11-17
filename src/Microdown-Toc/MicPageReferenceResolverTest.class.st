@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : 'helpers' }
+MicPageReferenceResolverTest >> numberOfReferenceIn: aDocument [
+
+	^ (self referenceIn: aDocument) propertyAt: #number ifAbsent: [ nil ]
+]
+
+{ #category : 'helpers' }
 MicPageReferenceResolverTest >> pageOfReferenceIn: aDocument [
 
 	^ (self referenceIn: aDocument) propertyAt: #page ifAbsent: [ nil ]
@@ -36,6 +42,22 @@ MicPageReferenceResolverTest >> resolve: aCollectionOfPages [
 	^ (pages collect: [ :each | each key -> each value ]) asDictionary
 ]
 
+{ #category : 'helpers' }
+MicPageReferenceResolverTest >> resolveBook: aString [
+	"Number the book of aString, split it into chapter pages (chapter-1.html, …) and resolve its references, as a book site does; answer the chapters."
+
+	| book splitter |
+	book := Microdown parse: aString.
+	MicNumberer new number: book.
+	splitter := MicChapterSplitter new.
+	splitter split: book.
+	MicPageReferenceResolver new resolve:
+		(splitter chapters withIndexCollect: [ :each :index |
+				 (String streamContents: [ :stream |
+					  stream << 'chapter-' << index printString << '.html' ]) -> each ]).
+	^ splitter chapters
+]
+
 { #category : 'tests - example' }
 MicPageReferenceResolverTest >> testExampleOfTwoChapters [
 
@@ -45,9 +67,12 @@ MicPageReferenceResolverTest >> testExampleOfTwoChapters [
 	self
 		assert: (pages collect: [ :each | each key ] as: Array)
 		equals: #( 'chapter-1.html' 'chapter-2.html' ).
-	self assert: ((MicHTMLVisitor new
-			  visit: pages first value;
-			  contents) includesSubstring: 'href="chapter-2.html#second"')
+	self
+		assert: (self pageOfReferenceIn: pages first value)
+		equals: 'chapter-2.html'.
+	self
+		assert: (self numberOfReferenceIn: pages first value)
+		equals: #( 2 )
 ]
 
 { #category : 'tests - references' }
@@ -71,6 +96,43 @@ See *@two@*.
 
 	self
 		assert: (self pageOfReferenceIn: splitter chapters first)
+		equals: 'chapter-2.html'
+]
+
+{ #category : 'tests - numbers' }
+MicPageReferenceResolverTest >> testReferenceInItsOwnPageGetsANumberButNoPage [
+
+	| chapters |
+	chapters := self resolveBook: '## One
+
+### Details
+@details
+
+See Section *@details@*.'.
+
+	self
+		assert: (self numberOfReferenceIn: chapters first)
+		equals: #( 1 1 ).
+	self assert: (self pageOfReferenceIn: chapters first) isNil
+]
+
+{ #category : 'tests - numbers' }
+MicPageReferenceResolverTest >> testReferenceToAFigureOfAnotherChapterGetsItsNumberAndPage [
+
+	| chapters |
+	chapters := self resolveBook: '## One
+
+See Figure *@fb@*.
+
+## Two
+
+![A caption.](b.png anchor=fb)'.
+
+	self
+		assert: (self numberOfReferenceIn: chapters first)
+		equals: #( 2 1 ).
+	self
+		assert: (self pageOfReferenceIn: chapters first)
 		equals: 'chapter-2.html'
 ]
 
@@ -128,4 +190,38 @@ MicPageReferenceResolverTest >> testReferenceToAnUnknownAnchorGetsNoPage [
 
 	self assert:
 		(self pageOfReferenceIn: (documents at: 'one.html')) isNil
+]
+
+{ #category : 'tests - numbers' }
+MicPageReferenceResolverTest >> testReferenceToAnUnknownLabelGetsNoNumber [
+
+	self assert: (self numberOfReferenceIn: (self resolveBook: '## One
+
+See *@unknown@*.') first) isNil
+]
+
+{ #category : 'tests - numbers' }
+MicPageReferenceResolverTest >> testReferenceToAnUnnumberedTargetGetsNoNumber [
+
+	| book splitter |
+	book := Microdown parse: '@intro
+
+Welcome.
+
+## One
+
+See *@intro@*.'.
+	MicNumberer new number: book.
+	splitter := MicChapterSplitter new.
+	splitter split: book.
+
+	MicPageReferenceResolver new resolve: {
+			('index.html' -> splitter frontMatter).
+			('chapter-1.html' -> splitter chapters first) }.
+
+	self
+		assert: (self pageOfReferenceIn: splitter chapters first)
+		equals: 'index.html'.
+	self assert:
+		(self numberOfReferenceIn: splitter chapters first) isNil
 ]
