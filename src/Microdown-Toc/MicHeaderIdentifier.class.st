@@ -15,7 +15,7 @@ I give each header of a Microdown document its link target, so that a table of c
 
 ## Collaborators: 
 
-- `MicrodownVisitor`: I visit the whole document to collect its headers and its anchor labels before giving any id.
+- `MicPageLevelAnchorCollector`, my superclass: collects the anchor labels of the document while I collect its headers, before I give any id.
 - `MicHeaderBlock`: receives its `#anchor` or `#id` property.
 - `MicAnchorBlock`, `MicFigureBlock`, `MicCodeBlock`, `MicMathBlock`: the labels I must not reuse.
 
@@ -34,7 +34,6 @@ MicHeaderIdentifier exampleOfAChapter
 ## Internal Representation
 
 - `headers`: the headers of the document, in order.
-- `labels`: the anchor labels of the document.
 - `headerLabels`: the anchored headers, an `IdentityDictionary` from a header to the label of its anchor.
 
 ### Implementation Points
@@ -44,10 +43,9 @@ MicHeaderIdentifier exampleOfAChapter
 "
 Class {
 	#name : 'MicHeaderIdentifier',
-	#superclass : 'MicrodownVisitor',
+	#superclass : 'MicPageLevelAnchorCollector',
 	#instVars : [
 		'headers',
-		'labels',
 		'headerLabels'
 	],
 	#category : 'Microdown-Toc',
@@ -82,13 +80,6 @@ MicHeaderIdentifier class >> targetOf: aHeader [
 		  ifAbsent: [ aHeader propertyAt: #id ifAbsent: [ nil ] ]
 ]
 
-{ #category : 'visiting' }
-MicHeaderIdentifier >> addAnchorOf: anElement [
-	"Collect the anchor argument of anElement (a figure, a code or a math block), when it has one."
-
-	anElement anchor ifNotNil: [ :label | labels add: label ]
-]
-
 { #category : 'ids' }
 MicHeaderIdentifier >> idFromText: aString [
 	"Answer an HTML id made of the lowercase words of aString separated by dashes."
@@ -107,10 +98,8 @@ MicHeaderIdentifier >> identify: aDocument [
 
 	| ids |
 	headers := OrderedCollection new.
-	labels := Set new.
 	headerLabels := IdentityDictionary new.
-	self visit: aDocument.
-	ids := labels copy.
+	ids := (self labelsOf: aDocument) copy.
 	headers do: [ :each |
 			headerLabels
 				at: each
@@ -141,7 +130,7 @@ MicHeaderIdentifier >> visitAnchor: anAnchor [
 	"Collect the label of anAnchor; when anAnchor comes right after a header, it is the anchor of that header."
 
 	| siblings index |
-	labels add: anAnchor label.
+	super visitAnchor: anAnchor.
 	siblings := anAnchor parent children.
 	index := siblings identityIndexOf: anAnchor.
 	(index > 1 and: [ (siblings at: index - 1) isHeader ]) ifTrue: [
@@ -149,25 +138,7 @@ MicHeaderIdentifier >> visitAnchor: anAnchor [
 ]
 
 { #category : 'visiting' }
-MicHeaderIdentifier >> visitCode: aCode [
-
-	self addAnchorOf: aCode
-]
-
-{ #category : 'visiting - inline elements' }
-MicHeaderIdentifier >> visitFigure: aFigure [
-
-	self addAnchorOf: aFigure
-]
-
-{ #category : 'visiting' }
 MicHeaderIdentifier >> visitHeader: aHeader [
 
 	headers add: aHeader
-]
-
-{ #category : 'visiting' }
-MicHeaderIdentifier >> visitMath: aMath [
-
-	self addAnchorOf: aMath
 ]

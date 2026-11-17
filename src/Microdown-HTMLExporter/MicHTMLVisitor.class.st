@@ -317,13 +317,15 @@ MicHTMLVisitor >> visitAnchor: anAnchor [
 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitAnchorReference: anAnchor [
-	"Linking to an element on the same page"
+	"Link to the anchor: in its page when anAnchor was given one (its #page property, see MicPageReferenceResolver), else in the current page."
 
 	canvas tag
 		name: 'a';
-		parameterAt: 'href' put: '#' , anAnchor bodyString;
+		parameterAt: 'href' put: (String streamContents: [ :stream |
+						 stream << (anAnchor propertyAt: #page ifAbsent: [ '' ]) << '#'
+						 << anAnchor bodyString ]);
 		with: anAnchor bodyString
 ]
 

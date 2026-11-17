@@ -246,6 +246,21 @@ ThisIsAnchor
 ]
 
 { #category : 'tests' }
+MicTemplatedWriterTest >> testWriteAnchorReferenceGivesItsPageToTheTemplate [
+
+	| reference |
+	self
+		createTemplateFileAt:
+		MicTemplatedWriter anchorReferenceTemplateFileName
+		withContents: '[{{page}}#{{{contents}}}]'.
+	reference := (Microdown parse: '*@toto@*') children first children
+		             first.
+	reference propertyAt: #page put: 'chapter-2.html'.
+
+	self assertWritingNode: reference writes: '[chapter-2.html#toto]'
+]
+
+{ #category : 'tests' }
 MicTemplatedWriterTest >> testWriteAnchorReferenceUsesAnchorReferenceTemplate [
 
 	self assertWritingNode: (Microdown parse: '*@ThisReferenceAnchor@*') children first children first writes: '<a>*

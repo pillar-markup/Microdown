@@ -145,6 +145,31 @@ MicHTMLExporterTest >> testAnchor [
 	
 ]
 
+{ #category : 'tests - anchor references' }
+MicHTMLExporterTest >> testAnchorReferenceWithAPageLinksToThatPage [
+
+	| document |
+	document := Microdown parse: 'See *@toto@*.'.
+	(document children first children detect: [ :each |
+		 each isAnchorReferenceBlock ])
+		propertyAt: #page
+		put: 'chapter-2.html'.
+
+	writer visit: document.
+
+	self assert: (writer contents includesSubstring:
+			 '<a href="chapter-2.html#toto">toto</a>')
+]
+
+{ #category : 'tests - anchor references' }
+MicHTMLExporterTest >> testAnchorReferenceWithoutPageLinksInsideItsPage [
+
+	writer visit: (Microdown parse: 'See *@toto@*.').
+
+	self assert:
+		(writer contents includesSubstring: '<a href="#toto">toto</a>')
+]
+
 { #category : 'utilities' }
 MicHTMLExporterTest >> testCodeCreatesInnerText [
 

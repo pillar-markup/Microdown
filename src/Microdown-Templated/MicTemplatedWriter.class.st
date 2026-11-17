@@ -14,7 +14,7 @@ I am a Microdown writer that lets Mustache templates decide how elements are sty
 
 - I decide for each element whether a template overrides how it is written.
 - I find templates in the folder of the current environments (e.g. `cards/card/` inside `<!cards <!card ... !> !>`), then in its parent folders up to the template directory.
-- I apply a template with `contents` and the arguments of the element: `level` for a header, `ref` and `caption` for a link or a figure, `label` for an annotated paragraph or an anchor, `ref` for a citation, `name` for an annotation, `tag` and `arguments` for an HTML tag paragraph, the arguments of an environment (`<!card|someArgument=test`), of a math block or of an annotation. A table template gets `header` (the list of the header cells) and `rows` (the list of the rows, each with its list of `cells`), each cell written with its own templates, e.g. `{{#rows}}<tr>{{#cells}}<td>{{{.}}}</td>{{/cells}}</tr>{{/rows}}`.
+- I apply a template with `contents` and the arguments of the element: `level` for a header, `ref` and `caption` for a link or a figure, `label` for an annotated paragraph or an anchor, `ref` for a citation, `page` for an anchor reference to another page (see `MicPageReferenceResolver`), `name` for an annotation, `tag` and `arguments` for an HTML tag paragraph, the arguments of an environment (`<!card|someArgument=test`), of a math block or of an annotation. A table template gets `header` (the list of the header cells) and `rows` (the list of the rows, each with its list of `cells`), each cell written with its own templates, e.g. `{{#rows}}<tr>{{#cells}}<td>{{{.}}}</td>{{/cells}}</tr>{{/rows}}`.
 - Raw text, metadata and input files have no template: the default writer always writes them.
 
 ## Collaborators: 
@@ -562,12 +562,14 @@ MicTemplatedWriter >> visitAnchor: anAnchor [
 		ifAbsent: [ defaultWriter visitAnchor: anAnchor ]
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - inline elements' }
 MicTemplatedWriter >> visitAnchorReference: aReference [
-	
+
 	self
 		writeRawText: aReference anchorLabel
 		withTemplateFileName: self anchorReferenceTemplateFileName
+		extraArguments:
+		{ ('page' -> (aReference propertyAt: #page ifAbsent: [ nil ])) }
 		ifAbsent: [ defaultWriter visitAnchorReference: aReference ]
 ]
 
