@@ -122,7 +122,9 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 { #category : 'accessing' }
 MicHTMLVisitor class >> writerName [
-	^ #michtml
+	"The name Pillar finds me by (htmlWriter in pillar.conf): the plain HTML writer. michtml is MicBookHTMLVisitor, which also shows the numbers of a book."
+
+	^ #micbasichtml
 ]
 
 { #category : 'initialization' }
