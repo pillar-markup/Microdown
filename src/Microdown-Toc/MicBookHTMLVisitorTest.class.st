@@ -72,6 +72,14 @@ MicBookHTMLVisitorTest >> testHeaderWithoutNumberIsWrittenAsUsual [
 ]
 
 { #category : 'tests - listings' }
+MicBookHTMLVisitorTest >> testListingIsEscaped [
+
+	self assert: ((self htmlOf: (Microdown parse: '```caption=Hello
+a < b
+```')) includesSubstring: '<code>a &lt; b</code>')
+]
+
+{ #category : 'tests - listings' }
 MicBookHTMLVisitorTest >> testListingWithACaptionAndNoNumberShowsItsCaption [
 
 	self assert: ((self htmlOf: (Microdown parse: '```caption=Hello

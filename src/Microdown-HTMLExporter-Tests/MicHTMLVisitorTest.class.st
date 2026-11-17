@@ -74,6 +74,17 @@ MicHTMLVisitorTest >> testCanvasClass [
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testCodeBlockIsEscaped [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '```
+a < b & <br>
+```');
+			  contents) includesSubstring:
+			 '<code>a &lt; b &amp; &lt;br&gt;</code>')
+]
+
 { #category : 'tests' }
 MicHTMLVisitorTest >> testConfiguration [
 
@@ -195,6 +206,23 @@ MicHTMLVisitorTest >> testCreateItalic [
 	result := writer convertMicString: '_Text with italic_'.
 	self assert: result trimBoth, newLine equals: (self wrapP: '<i>Text with italic</i>').	
 
+]
+
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testHTMLInTextIsKept [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'Some <b>bold</b> text.');
+			  contents) includesSubstring: '<b>bold</b>')
+]
+
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testInlineCodeIsEscaped [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'Write `<br>` and `a & b`.');
+			  contents) includesSubstring:
+			 '<code>&lt;br&gt;</code> and <code>a &amp; b</code>')
 ]
 
 { #category : 'tests - line breaks' }

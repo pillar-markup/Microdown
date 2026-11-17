@@ -198,6 +198,15 @@ MicHTMLVisitor >> doNotIgnoreMetaData [
 	ignoresMetaData := false
 ]
 
+{ #category : 'escaping' }
+MicHTMLVisitor >> escaped: aString [
+	"Answer aString with the characters that HTML reads as markup written as entities, so that code is shown as written. Text outside code is not escaped: as in GitHub Markdown, it may hold raw HTML."
+
+	^ ((aString copyReplaceAll: '&' with: '&amp;')
+		   copyReplaceAll: '<'
+		   with: '&lt;') copyReplaceAll: '>' with: '&gt;'
+]
+
 { #category : 'accessing' }
 MicHTMLVisitor >> folderName [
 	^ #html
@@ -389,7 +398,7 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 			"language := self languageForScript: aCodeBlock.
 			language isSyntaxHighlightingPossible ifTrue: [ 
 			code parameterAt: 'class' put: language printString ]."
-			code with: [ canvas lines: aCodeBlock body ] ].
+			code with: [ canvas lines: (self escaped: aCodeBlock body) ] ].
 	"canvas tag
 				name: 'figcaption';
 				with: [ 
@@ -604,7 +613,7 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 
 	canvas tag
 		name: 'code';
-		with: [ super visitMonospace: aMonospace ]
+		with: [ canvas nextPutAll: (self escaped: aMonospace bodyString) ]
 ]
 
 { #category : 'visiting - list' }

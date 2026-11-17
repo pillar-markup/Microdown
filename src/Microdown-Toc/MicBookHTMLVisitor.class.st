@@ -106,7 +106,7 @@ MicBookHTMLVisitor >> visitCode: aCodeBlock [
 				with: [
 						canvas tag
 							name: 'code';
-							with: [ canvas lines: aCodeBlock body ] ].
+							with: [ canvas lines: (self escaped: aCodeBlock body) ] ].
 			canvas tag
 				name: 'figcaption';
 				with: [
