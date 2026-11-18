@@ -52,6 +52,17 @@ MicCodeIndentationCheckerTest >> testConfigureFromNil [
 ]
 
 { #category : 'tests' }
+MicCodeIndentationCheckerTest >> testCustomLeadingCharactersChangesRule [
+
+	checker leadingCharacters: 'XX'.
+	self assert: checker leadingCharacters equals: 'XX'.
+	
+	checker checkProject: fileSystem / 'indentationWrong.md'.
+	self assert: checker isOkay.
+	self assert: checker results isEmpty.
+]
+
+{ #category : 'tests' }
 MicCodeIndentationCheckerTest >> testIndentationCorrect [
 	checker checkProject: fileSystem / 'indentationCorrect.md'.
 	self assert: checker isOkay.
