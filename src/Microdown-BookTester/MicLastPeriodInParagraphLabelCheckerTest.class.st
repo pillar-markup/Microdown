@@ -88,11 +88,25 @@ MicLastPeriodInParagraphLabelCheckerTest >> generateFilesystemExample [
 
 { #category : 'running' }
 MicLastPeriodInParagraphLabelCheckerTest >> setUp [
+
 	super setUp.
 
 	fileSystem := FileSystem memory.
 	self generateFilesystemExample.
 	checker := MicLastPeriodInParagraphLabelChecker new.
+	"Most tests use #### labels, as books that declare paragraphLevel 4."
+	checker bookStructure:
+		(MicBookStructure chapterLevel: 2 paragraphLevel: 4)
+]
+
+{ #category : 'tests - controlling levels' }
+MicLastPeriodInParagraphLabelCheckerTest >> testCheckerWithoutStructureUsesTheDefaultStructure [
+
+	self
+		assert:
+		MicLastPeriodInParagraphLabelChecker new bookStructure
+			paragraphLevel
+		equals: MicBookStructure new paragraphLevel
 ]
 
 { #category : 'tests - explanation' }
@@ -100,12 +114,11 @@ MicLastPeriodInParagraphLabelCheckerTest >> testConfigurationPart [
 
 	self
 		assert:
-			(MicLastPeriodInParagraphLabelChecker configurationPartWithNewLine:
-				 Character cr asString)
+			(MicLastPeriodInParagraphLabelChecker
+				 configurationPartWithNewLine: Character cr asString)
 		equals: '{
 	"LastPeriodInParagraphLabel" : {
-		"isEndingWithPeriod" : true,
-		"levelForPagraph" : 4
+		"isEndingWithPeriod" : true
 	}
 }'
 ]
@@ -136,48 +149,35 @@ MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromTrue [
 ]
 
 { #category : 'tests - configure' }
-MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromWithBogusLevelUsesDefaultValue [
-
-	checker configureFrom: (Dictionary new
-			 at: #levelForPar put: 3;
-			 at: #isEndingWithPeriod put: true;
-			 yourself).
-	self assert: checker isEndingWithPeriod.
-	self assert: checker levelForParagraph equals: checker defaultLevelForParagraph
-]
-
-{ #category : 'tests - configure' }
 MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromWithEmptyDictionary [
+
 	checker configureFrom: Dictionary new.
-	
-	self assert: checker isEndingWithPeriod.
-	self
-		assert: checker levelForParagraph
-		equals: checker defaultLevelForParagraph
-]
 
-{ #category : 'tests - configure' }
-MicLastPeriodInParagraphLabelCheckerTest >> testConfigureFromWithLevel [
-
-	checker configureFrom: (Dictionary new 
-		at: #levelForParagraph put: 3;
-		at: #isEndingWithPeriod put: true; 
-		yourself).
-	self assert: checker isEndingWithPeriod.
-	self assert: checker levelForParagraph equals: 3
+	self assert: checker isEndingWithPeriod
 ]
 
 { #category : 'tests - controlling levels' }
 MicLastPeriodInParagraphLabelCheckerTest >> testHeaderWithFormattingAndPeriod [
 
 	| document |
-	checker levelForParagraph: 4.
 	checker shouldNotEndWithPeriod.
 	document := Microdown parse: '##### Title with  *italic* and period.'.
 
 	checker visit: document children first.
 
-	self assert: checker results size equals: 1.
+	self assert: checker results size equals: 1
+]
+
+{ #category : 'tests - controlling levels' }
+MicLastPeriodInParagraphLabelCheckerTest >> testLabelsFollowTheChapterLevelOfTheBook [
+
+	checker shouldEndWithPeriod.
+	"a book written with # chapters: #### is a paragraph label"
+	checker bookStructure: (MicBookStructure chapterLevel: 1).
+	checker checkProject: fileSystem / 'level4NoPeriod.md'.
+
+	self deny: checker isOkay.
+	self assert: checker results first detail equals: 'Color'
 ]
 
 { #category : 'tests - section part' }
@@ -275,8 +275,8 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel4NoPeriod [
 MicLastPeriodInParagraphLabelCheckerTest >> testLevel4ParagraphWithPeriodShouldBeFlagged [
 
 	checker shouldEndWithPeriod.
-	"but level 5 and 6 not 4"
-	checker levelForParagraph: 5.
+	"with the default structure, labels are ##### and deeper, not ####"
+	checker bookStructure: MicBookStructure new.
 	checker checkProject: fileSystem / 'level4WithPeriod.md'.
 
 	self deny: checker isOkay.
@@ -371,18 +371,10 @@ MicLastPeriodInParagraphLabelCheckerTest >> testLevel6ShouldEndWithPeriod [
 ]
 
 { #category : 'tests - controlling levels' }
-MicLastPeriodInParagraphLabelCheckerTest >> testLevelForParagraph [
-
-	checker levelForParagraph: 5.
-	self assert: checker levelForParagraph equals: 5.
-
-]
-
-{ #category : 'tests - controlling levels' }
 MicLastPeriodInParagraphLabelCheckerTest >> testParagraphLevel5IsChecked [
 
 	checker shouldNotEndWithPeriod.
-	checker levelForParagraph: 5.
+	checker bookStructure: MicBookStructure new.
 	checker checkProject: fileSystem / 'level5NoPeriod.md'.
 
 	self assert: checker isOkay
@@ -392,13 +384,13 @@ MicLastPeriodInParagraphLabelCheckerTest >> testParagraphLevel5IsChecked [
 MicLastPeriodInParagraphLabelCheckerTest >> testParagraphWithExactLevelShouldBeFlagged [
 
 	checker shouldEndWithPeriod.
-	checker levelForParagraph: 5.
+	checker bookStructure: MicBookStructure new.
 	checker checkProject: fileSystem / 'level5NoPeriod.md'.
 
 	self deny: checker isOkay.
-	self assert: checker results size equals: 1. 
-	self 
-		assert: checker results first explanation 
-		equals:  'Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
-
+	self assert: checker results size equals: 1.
+	self
+		assert: checker results first explanation
+		equals:
+		'Paragraph: "Size" in file /level5NoPeriod.md contains a mistake: label should be terminated with a period (.).'
 ]

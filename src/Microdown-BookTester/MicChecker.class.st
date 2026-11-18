@@ -10,7 +10,8 @@ Class {
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
 		'results',
-		'rootDirectory'
+		'rootDirectory',
+		'bookStructure'
 	],
 	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
@@ -78,12 +79,28 @@ MicChecker >> addResult: aResult [
 	results add: aResult
 ]
 
+{ #category : 'accessing' }
+MicChecker >> bookStructure [
+	"Answer the structure of the book I check (see MicBookStructure): the one Pillar gives me from pillar.conf, else the default one."
+
+	^ bookStructure ifNil: [ MicBookStructure new ]
+]
+
+{ #category : 'accessing' }
+MicChecker >> bookStructure: aBookStructure [
+
+	bookStructure := aBookStructure
+]
+
 { #category : 'visiting' }
 MicChecker >> checkProject: aFileReference [
+	"Check the book whose main file is aFileReference, and each file it includes. Each file gets the structure of the book, so that its elements answer it (aHeader bookStructure)."
 
 	| collector |
 	collector := self fileCollectorForMainFileReference: aFileReference.
-	collector visitedFilesAsDOM do: [ :each | each accept: self  ]
+	collector visitedFilesAsDOM do: [ :each |
+			each bookStructure: self bookStructure.
+			each accept: self ]
 ]
 
 { #category : 'configuration' }
