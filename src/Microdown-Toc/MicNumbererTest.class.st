@@ -396,7 +396,7 @@ MicNumbererTest >> testParagraphsAreNotNumbered [
 	self
 		assert: (self numbersOf: (self number: '## A
 
-##### Important
+###### Important
 
 ### a1'))
 		equals: {

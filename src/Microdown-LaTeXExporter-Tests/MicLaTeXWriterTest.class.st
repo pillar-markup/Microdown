@@ -17,6 +17,25 @@ MicLaTeXWriterTest class >> shouldInheritSelectors [
 	^ true
 ]
 
+{ #category : 'helpers' }
+MicLaTeXWriterTest >> latexOf: aString structure: aBookStructure [
+	"Answer the LaTeX of aString, parsed as a book with aBookStructure."
+
+	| document |
+	document := Microdown parse: aString.
+	document bookStructure: aBookStructure.
+	writer visit: document.
+	^ writer contents
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testAttachedStructureDecidesTheParagraphs [
+
+	self assert:
+		((self latexOf: '##### E' structure: MicBookStructure new)
+			 includesSubstring: '\paragraph{E}')
+]
+
 { #category : 'tests - formats' }
 MicLaTeXWriterTest >> testBold [ [
 	| document result |
@@ -130,6 +149,27 @@ MicLaTeXWriterTest >> testHeaderLevel2 [ [
 ]
 ]
 
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testHeadersFollowTheBookStructure [
+
+	| latex |
+	latex := self
+		         latexOf: '# A
+
+## B
+
+### C
+
+#### D'
+		         structure:
+		         (MicBookStructure chapterLevel: 1 paragraphLevel: 4).
+
+	self assert: (latex includesSubstring: '\chapter{A}').
+	self assert: (latex includesSubstring: '\section{B}').
+	self assert: (latex includesSubstring: '\subsection{C}').
+	self assert: (latex includesSubstring: '\paragraph{D}')
+]
+
 { #category : 'tests - line breaks' }
 MicLaTeXWriterTest >> testInlineLineBreakIsWrittenAsANewLine [
 
@@ -185,6 +225,22 @@ MicLaTeXWriterTest >> testOrderedList [ [
 	
 	self assert: result trimBoth equals: expected trimBoth.
 ]
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testPartsStayParts [
+
+	self assert: ((self latexOf: '# A' structure: MicBookStructure new)
+			 includesSubstring: '\part{A}')
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testThirdSectionLevelIsASubsubsection [
+
+	self assert: ((self
+			  latexOf: '#### D'
+			  structure: (MicBookStructure chapterLevel: 1 paragraphLevel: 5))
+			 includesSubstring: '\subsubsection{D}')
 ]
 
 { #category : 'tests - formats' }

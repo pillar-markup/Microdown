@@ -76,6 +76,13 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink bodyString ]
 ]
 
+{ #category : 'visiting-document' }
+MicLaTeXWriter >> defaultBookStructure [
+	"The structure of a document that declares none, as LaTeX has always written headers: # \part, ## \chapter, ### \section, #### \subsection, ##### \subsubsection, ###### \paragraph."
+
+	^ MicBookStructure chapterLevel: 2 paragraphLevel: 6
+]
+
 { #category : 'accessing' }
 MicLaTeXWriter >> folderName [
 	^ #latex
@@ -123,9 +130,11 @@ MicLaTeXWriter >> protectUrl: aString [
 	^ ((aString copyReplaceAll: '\' with: '\\') copyReplaceAll: '#' with: '\#') copyReplaceAll: '%' with: '\%'
 ]
 
-{ #category : 'helpers' }
-MicLaTeXWriter >> sectioningCommands [
-	^ #('part' 'chapter' 'section' 'subsection' 'subsubsection' 'paragraph' 'subparagraph')
+{ #category : 'visiting-document' }
+MicLaTeXWriter >> sectionCommands [
+	"The commands of the sections below a chapter, by depth (see MicBookStructure>>sectionDepthOf:)."
+
+	^ #( 'section' 'subsection' 'subsubsection' )
 ]
 
 { #category : 'helpers' }
@@ -147,11 +156,14 @@ MicLaTeXWriter >> templateForConfiguration: aConfiguration [
 
 { #category : 'visiting-document' }
 MicLaTeXWriter >> typeOfSectionFor: aHeader [
-	| sections level section |
-	sections := self sectioningCommands.
-	level := aHeader level.
-	section := sections at: (level min: sections size max: 1).
-	^ section
+	"Answer the LaTeX sectioning command of aHeader, from its role in the structure of the book (see MicBookStructure): \part, \chapter, \section, \subsection or \subsubsection by depth below the chapter, and \paragraph for every header from the paragraph level on. A document without attached structure uses defaultBookStructure, so that the LaTeX of a plain Microdown document does not change."
+
+	| structure role |
+	structure := aHeader attachedBookStructure ifNil: [
+		             self defaultBookStructure ].
+	role := structure roleOf: aHeader.
+	role = #section ifFalse: [ ^ role asString ].
+	^ self sectionCommands at: (structure sectionDepthOf: aHeader)
 ]
 
 { #category : 'blocks' }

@@ -47,6 +47,13 @@ MicAbstractBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : 'accessing' }
+MicAbstractBlock >> attachedBookStructure [
+	"Answer the structure attached to the book I belong to (by Pillar, from pillar.conf), or nil when none was attached."
+
+	^ parent ifNotNil: [ :aParent | aParent attachedBookStructure ]
+]
+
 { #category : 'public' }
 MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
@@ -68,11 +75,9 @@ MicAbstractBlock >> blockStarterClassFrom: line [
 
 { #category : 'accessing' }
 MicAbstractBlock >> bookStructure [
-	"Answer the structure of the book I belong to (see MicBookStructure): the one of my enclosing root, else the default one."
+	"Answer the structure of the book I belong to (see MicBookStructure): the attached one, else the default one, so that every book has a structure."
 
-	^ parent
-		  ifNil: [ MicBookStructure new ]
-		  ifNotNil: [ :aParent | aParent bookStructure ]
+	^ self attachedBookStructure ifNil: [ MicBookStructure new ]
 ]
 
 { #category : 'public' }

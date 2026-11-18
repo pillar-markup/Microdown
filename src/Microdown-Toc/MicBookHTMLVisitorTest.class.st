@@ -55,6 +55,15 @@ MicBookHTMLVisitorTest >> testExampleOfAChapterPage [
 			 'As said in Chapter <a href="chapter-2.html#second">2</a>.')
 ]
 
+{ #category : 'tests - headers' }
+MicBookHTMLVisitorTest >> testFifthLevelIsAParagraphByDefault [
+
+	self assert: ((self htmlOf: (Microdown parse: '## Chapter
+
+##### Important')) includesSubstring:
+			 '<h5 class="paragraph">Important</h5>')
+]
+
 { #category : 'tests - figures' }
 MicBookHTMLVisitorTest >> testFigureWithoutNumberHasItsCaptionOnly [
 
@@ -174,8 +183,8 @@ MicBookHTMLVisitorTest >> testParagraphHeaderHasTheParagraphClass [
 
 	self assert: ((self htmlOf: (Microdown parse: '## Chapter
 
-##### Important')) includesSubstring:
-			 '<h5 class="paragraph">Important</h5>')
+###### Important')) includesSubstring:
+			 '<h6 class="paragraph">Important</h6>')
 ]
 
 { #category : 'tests - headers' }
@@ -185,7 +194,8 @@ MicBookHTMLVisitorTest >> testParagraphLevelComesFromTheBook [
 	document := Microdown parse: '# Chapter
 
 #### Important'.
-	document bookStructure: (MicBookStructure chapterLevel: 1).
+	document bookStructure:
+		(MicBookStructure chapterLevel: 1 paragraphLevel: 4).
 
 	self assert: ((self htmlOf: document) includesSubstring:
 			 '<h4 class="paragraph">Important</h4>')

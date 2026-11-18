@@ -43,6 +43,34 @@ MicBookStructureTest >> testDefaultLevels [
 ]
 
 { #category : 'tests - root' }
+MicBookStructureTest >> testDocumentWithoutStructureHasNoAttachedStructure [
+
+	| root |
+	root := Microdown parse: '## Chapter
+
+- An item'.
+
+	self assert: root attachedBookStructure isNil.
+	self assert:
+		root children second children first attachedBookStructure isNil
+]
+
+{ #category : 'tests - root' }
+MicBookStructureTest >> testElementsAnswerTheAttachedStructureOfTheirBook [
+
+	| root structure |
+	root := Microdown parse: '## Chapter
+
+- An item'.
+	structure := MicBookStructure new.
+	root bookStructure: structure.
+
+	self
+		assert: root children second children first attachedBookStructure
+		identicalTo: structure
+]
+
+{ #category : 'tests - root' }
 MicBookStructureTest >> testElementsAnswerTheStructureOfTheirBook [
 
 	| root structure |
@@ -140,7 +168,7 @@ MicBookStructureTest >> testPredicates [
 	self assert: (structure isPart: (self headerOfLevel: 1)).
 	self assert: (structure isChapter: (self headerOfLevel: 2)).
 	self assert: (structure isSection: (self headerOfLevel: 4)).
-	self assert: (structure isParagraph: (self headerOfLevel: 6)).
+	self assert: (structure isParagraph: (self headerOfLevel: 5)).
 	self deny: (structure isSection: (self headerOfLevel: 5))
 ]
 

@@ -1,9 +1,9 @@
 "
-I describe the structure of a book with two header levels: the level of its chapters and the level from which headers are paragraph labels. Everything else follows: a header less deep than the chapters is a part, the levels between are sections, subsections and subsubsections. The default (`##` chapters, `#####` paragraphs) suits most books; a book written with `#` chapters declares `""chapterLevel"" : 1, ""paragraphLevel"" : 4` in its `pillar.conf`.
+I describe the structure of a book with two header levels: the level of its chapters and the level from which headers are paragraph labels. Everything else follows: a header less deep than the chapters is a part, the levels between are sections, subsections and subsubsections. The default (`##` chapters, `#####` and deeper paragraphs) suits most books; a book written with `#` chapters declares `""chapterLevel"" : 1` in its `pillar.conf`. The Pillar PDF keeps its own default paragraph level (four levels below the chapters, `######`), so that existing PDFs do not change (`PRPDFDocument>>defaultParagraphLevelFor:`), and `MicLaTeXWriter` does the same for a document without attached structure (`defaultBookStructure`).
 
 ## Life cycle: who creates me and who uses me
 
-1. `MicRootBlock>>bookStructure` answers the structure attached to a document, else a new default one (`new`), so that every book has a structure, also a lone Microdown file opened in a checker.
+1. `MicAbstractBlock>>bookStructure` answers the structure attached to the book of a block (`attachedBookStructure`, kept by its `MicRootBlock`), else a new default one (`new`), so that every book has a structure, also a lone Microdown file opened in a checker.
 2. Pillar creates me from `pillar.conf` (`PRAbstractOutputDocument>>bookStructure`, with `chapterLevel:paragraphLevel:`) and attaches me to the parsed book (`PRAbstractOutputDocument>>parsedDocumentOf:`, with `MicRootBlock>>bookStructure:`) for every output: PDF, HTML and site. An invalid pair of levels stops the build with my error.
 3. The passes and writers of the site and the PDF, and the checkers, are meant to ask the book for me instead of keeping their own levels (steps 3 to 5 of the plan).
 
