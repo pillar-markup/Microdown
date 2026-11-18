@@ -9,7 +9,7 @@ I number the chapters, sections, figures, listings and equations of a book, the 
 
 ## Responsibility:
 
-- Headers of my chapter level, or less deep, are chapters: 1, 2, 3, in book order. Deeper headers are sections of the current chapter, numbered at their depth below it, the deeper counters restarting at each section; a skipped level counts 0 (`#(1 0 1)`).
+- Headers of my chapter level are chapters: 1, 2, 3, in book order. Less deep headers (a `#` part, or the title of the book, when chapters are `##`) get no number and change no counter, as in the PDF. Deeper headers are sections of the current chapter, numbered at their depth below it, the deeper counters restarting at each section; a skipped level counts 0 (`#(1 0 1)`).
 - Headers before the first chapter (the front matter) and headers inside another element (an environment) get no number, as `MicChapterSplitter` does not make them chapters.
 - Figures, listings (code blocks) and equations (math blocks) are numbered when they have a caption or an anchor, each kind with its own counter, restarting in each chapter: the first figure of chapter 3 is 3.1, and so is its first listing. Code snippets and math without caption or anchor are not numbered.
 - Numbers are not link targets: ids stay those of `MicHeaderIdentifier`, made from the text, so links survive when chapters move.
@@ -168,11 +168,12 @@ MicNumberer >> number: anElement in: aKind [
 
 { #category : 'numbering' }
 MicNumberer >> numberHeader: aHeader [
-	"A header of my chapter level, or less deep, starts the next chapter, where figures, listings and equations count from 1 again; a deeper one is a section of the current chapter, numbered at its depth below the chapter, with the deeper counters reset."
+	"A header of my chapter level starts the next chapter, where figures, listings and equations count from 1 again. A less deep header is a part (or the title of the book): as in the PDF, it gets no number and changes no counter. A deeper header is a section of the current chapter, numbered at its depth below the chapter, with the deeper counters reset."
 
 	| depth |
 	depth := aHeader level - chapterLevel.
-	depth <= 0 ifTrue: [
+	depth < 0 ifTrue: [ ^ self ].
+	depth = 0 ifTrue: [
 			chapter := chapter + 1.
 			sectionCounters := OrderedCollection new.
 			elementCounters := Dictionary new.

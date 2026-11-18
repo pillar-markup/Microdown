@@ -332,7 +332,7 @@ MicNumbererTest >> testHeadersOfInlinedFilesAreNumbered [
 ]
 
 { #category : 'tests - chapters' }
-MicNumbererTest >> testLessDeepHeaderIsAChapterToo [
+MicNumbererTest >> testLessDeepHeaderIsAPartWithoutNumber [
 
 	self
 		assert: (self numbersOf: (self number: '# Book
@@ -341,9 +341,9 @@ MicNumbererTest >> testLessDeepHeaderIsAChapterToo [
 
 ### a1'))
 		equals: {
-				('Book' -> #( 1 )).
-				('A' -> #( 2 )).
-				('a1' -> #( 2 1 )) }
+				('Book' -> nil).
+				('A' -> #( 1 )).
+				('a1' -> #( 1 1 )) }
 ]
 
 { #category : 'tests - figures, code and math' }
@@ -389,6 +389,41 @@ MicNumbererTest >> testNumberStringOfAnUnnumberedElementIsNil [
 
 	self assert: (MicNumberer numberStringOf:
 			 (Microdown parse: '### Foo') children first) isNil
+]
+
+{ #category : 'tests - chapters' }
+MicNumbererTest >> testPartDoesNotCountAsAChapter [
+
+	self
+		assert: (self numbersOf: (self number: '## First chapter
+
+# A part
+
+## Second chapter
+
+### A section'))
+		equals: {
+				('First chapter' -> #( 1 )).
+				('A part' -> nil).
+				('Second chapter' -> #( 2 )).
+				('A section' -> #( 2 1 )) }
+]
+
+{ #category : 'tests - figures, code and math' }
+MicNumbererTest >> testPartDoesNotRestartTheFigures [
+
+	| document |
+	document := self number: '## First chapter
+
+![First.%anchor=f1](a.png)
+
+# A part
+
+![Second.%anchor=f2](b.png)'.
+
+	self
+		assert: (self numberOf: (self figureAt: 4 of: document))
+		equals: #( 1 2 )
 ]
 
 { #category : 'tests - sections' }

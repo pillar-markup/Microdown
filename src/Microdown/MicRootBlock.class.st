@@ -45,6 +45,19 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 	^ newBlock 
 ]
 
+{ #category : 'accessing' }
+MicRootBlock >> bookStructure [
+	"Answer the structure of the book I hold (see MicBookStructure): the one attached to me (Pillar attaches the one of pillar.conf), else the default one, so that every book has a structure."
+
+	^ self propertyAt: #bookStructure ifAbsent: [ MicBookStructure new ]
+]
+
+{ #category : 'accessing' }
+MicRootBlock >> bookStructure: aBookStructure [
+
+	self propertyAt: #bookStructure put: aBookStructure
+]
+
 { #category : 'testing' }
 MicRootBlock >> canConsumeLine: line [
 	"The root block can always consume everything no matter what it is."
