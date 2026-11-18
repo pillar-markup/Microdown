@@ -4,7 +4,7 @@ I describe the structure of a book with two header levels: the level of its chap
 ## Life cycle: who creates me and who uses me
 
 1. `MicRootBlock>>bookStructure` answers the structure attached to a document, else a new default one (`new`), so that every book has a structure, also a lone Microdown file opened in a checker.
-2. Pillar is meant to create me from `pillar.conf` with `chapterLevel:paragraphLevel:` and attach me to the parsed book with `MicRootBlock>>bookStructure:` (step 2 of `BookStructure-plan.md`; not done yet).
+2. Pillar creates me from `pillar.conf` (`PRAbstractOutputDocument>>bookStructure`, with `chapterLevel:paragraphLevel:`) and attaches me to the parsed book (`PRAbstractOutputDocument>>parsedDocumentOf:`, with `MicRootBlock>>bookStructure:`) for every output: PDF, HTML and site. An invalid pair of levels stops the build with my error.
 3. The passes and writers of the site and the PDF, and the checkers, are meant to ask the book for me instead of keeping their own levels (steps 3 to 5 of the plan).
 
 ## Responsibility:
@@ -21,10 +21,10 @@ I describe the structure of a book with two header levels: the level of its chap
 
 ## Public API and Key Messages
 
-- `MicBookStructure new` (the default) and `MicBookStructure chapterLevel: 1 paragraphLevel: 4`
-- `roleOf: aHeader` answers `#part`, `#chapter`, `#section` or `#paragraph`; `isPart:`, `isChapter:`, `isSection:`, `isParagraph:`
-- `sectionDepthOf: aHeader` (1 for a section, 2 for a subsection)
-- `isNumbered: aHeader`, `isInToc: aHeader`
+- `MicBookStructure new` (the default), `MicBookStructure chapterLevel: 1` (paragraphs three levels below chapters) and `MicBookStructure chapterLevel: 1 paragraphLevel: 4`
+- `roleOfLevel: anInteger` answers `#part`, `#chapter`, `#section` or `#paragraph`; `roleOf: aHeader` and the predicates `isPart:`, `isChapter:`, `isSection:`, `isParagraph:` ask it for a header
+- `sectionDepthOfLevel: anInteger`, `sectionDepthOf: aHeader` (1 for a section, 2 for a subsection)
+- `isNumberedLevel:`, `isNumbered: aHeader`, `isInTocLevel:`, `isInToc: aHeader`
 - `chapterLevel`, `paragraphLevel`
 
 ## Examples
@@ -51,6 +51,13 @@ Class {
 	#package : 'Microdown',
 	#tag : 'Model'
 }
+
+{ #category : 'instance creation' }
+MicBookStructure class >> chapterLevel: aChapterLevel [
+	"Answer the structure of a book whose chapters are headers of aChapterLevel, with paragraph labels three levels below them, as in the default structure (## chapters, ##### paragraphs)."
+
+	^ self chapterLevel: aChapterLevel paragraphLevel: aChapterLevel + 3
+]
 
 { #category : 'instance creation' }
 MicBookStructure class >> chapterLevel: aChapterLevel paragraphLevel: aParagraphLevel [
@@ -119,18 +126,34 @@ MicBookStructure >> isChapter: aHeader [
 
 { #category : 'numbers and toc' }
 MicBookStructure >> isInToc: aHeader [
+	"See isInTocLevel:."
+
+	^ self isInTocLevel: aHeader level
+]
+
+{ #category : 'numbers and toc' }
+MicBookStructure >> isInTocLevel: anInteger [
 	"Parts, chapters and sections are listed in the table of contents, as in the PDF (sbabook lists down to sections)."
 
-	^ (self isPart: aHeader) or: [ self isNumbered: aHeader ]
+	^ (self roleOfLevel: anInteger) = #part or: [
+		  self isNumberedLevel: anInteger ]
 ]
 
 { #category : 'numbers and toc' }
 MicBookStructure >> isNumbered: aHeader [
+	"See isNumberedLevel:."
+
+	^ self isNumberedLevel: aHeader level
+]
+
+{ #category : 'numbers and toc' }
+MicBookStructure >> isNumberedLevel: anInteger [
 	"Chapters and sections get a number (2, 2.1), as in the PDF (sbabook numbers down to sections); parts, subsections and deeper do not."
 
-	^ (self isChapter: aHeader) or: [
-		  (self isSection: aHeader) and: [
-			  (self sectionDepthOf: aHeader) = 1 ] ]
+	| role |
+	role := self roleOfLevel: anInteger.
+	^ role = #chapter or: [
+		  role = #section and: [ (self sectionDepthOfLevel: anInteger) = 1 ] ]
 ]
 
 { #category : 'roles' }
@@ -159,19 +182,33 @@ MicBookStructure >> paragraphLevel [
 
 { #category : 'roles' }
 MicBookStructure >> roleOf: aHeader [
-	"Answer what aHeader is in the book: #part, #chapter, #section (sections, subsections and subsubsections) or #paragraph (a paragraph label, at my paragraph level or deeper)."
+	"Answer what aHeader is in the book (see roleOfLevel:)."
 
-	aHeader level < chapterLevel ifTrue: [ ^ #part ].
-	aHeader level = chapterLevel ifTrue: [ ^ #chapter ].
-	aHeader level < paragraphLevel ifTrue: [ ^ #section ].
+	^ self roleOfLevel: aHeader level
+]
+
+{ #category : 'roles' }
+MicBookStructure >> roleOfLevel: anInteger [
+	"Answer what a header of level anInteger is in the book: #part, #chapter, #section (sections, subsections and subsubsections) or #paragraph (a paragraph label, at my paragraph level or deeper)."
+
+	anInteger < chapterLevel ifTrue: [ ^ #part ].
+	anInteger = chapterLevel ifTrue: [ ^ #chapter ].
+	anInteger < paragraphLevel ifTrue: [ ^ #section ].
 	^ #paragraph
 ]
 
 { #category : 'roles' }
 MicBookStructure >> sectionDepthOf: aHeader [
-	"Answer how deep aHeader is below its chapter: 1 for a section, 2 for a subsection, 3 for a subsubsection."
+	"Answer how deep aHeader is below its chapter (see sectionDepthOfLevel:)."
 
-	^ aHeader level - chapterLevel
+	^ self sectionDepthOfLevel: aHeader level
+]
+
+{ #category : 'roles' }
+MicBookStructure >> sectionDepthOfLevel: anInteger [
+	"Answer how deep a section of level anInteger is below its chapter: 1 for a section, 2 for a subsection, 3 for a subsubsection."
+
+	^ anInteger - chapterLevel
 ]
 
 { #category : 'initialization' }

@@ -50,6 +50,22 @@ MicBookStructureTest >> testFourSectionLevelsRaiseError [
 		raise: MicInvalidBookStructure
 ]
 
+{ #category : 'tests - levels' }
+MicBookStructureTest >> testNumberedAndTocLevels [
+
+	| structure |
+	structure := MicBookStructure new.
+
+	self
+		assert:
+		((1 to: 6) collect: [ :each | structure isNumberedLevel: each ])
+		equals: #( false true true false false false ).
+	self
+		assert:
+		((1 to: 6) collect: [ :each | structure isInTocLevel: each ])
+		equals: #( true true true false false false )
+]
+
 { #category : 'tests - numbers and toc' }
 MicBookStructureTest >> testNumbersFollowTheChapterLevel [
 
@@ -91,6 +107,15 @@ MicBookStructureTest >> testParagraphLevelNotDeeperThanChaptersRaisesError [
 ]
 
 { #category : 'tests - roles' }
+MicBookStructureTest >> testParagraphsAreThreeLevelsBelowChaptersByDefault [
+
+	self
+		assert: (MicBookStructure chapterLevel: 1) paragraphLevel
+		equals: 4.
+	self assert: MicBookStructure new paragraphLevel equals: 5
+]
+
+{ #category : 'tests - roles' }
 MicBookStructureTest >> testPredicates [
 
 	| structure |
@@ -101,6 +126,18 @@ MicBookStructureTest >> testPredicates [
 	self assert: (structure isSection: (self headerOfLevel: 4)).
 	self assert: (structure isParagraph: (self headerOfLevel: 6)).
 	self deny: (structure isSection: (self headerOfLevel: 5))
+]
+
+{ #category : 'tests - levels' }
+MicBookStructureTest >> testRolesOfLevels [
+
+	| structure |
+	structure := MicBookStructure chapterLevel: 1 paragraphLevel: 4.
+
+	self
+		assert: ((1 to: 6) collect: [ :each | structure roleOfLevel: each ])
+		equals:
+		#( #chapter #section #section #paragraph #paragraph #paragraph )
 ]
 
 { #category : 'tests - roles' }
@@ -155,6 +192,12 @@ MicBookStructureTest >> testSectionDepth [
 	self
 		assert: (structure sectionDepthOf: (self headerOfLevel: 4))
 		equals: 2
+]
+
+{ #category : 'tests - levels' }
+MicBookStructureTest >> testSectionDepthOfLevel [
+
+	self assert: (MicBookStructure new sectionDepthOfLevel: 4) equals: 2
 ]
 
 { #category : 'tests - numbers and toc' }
