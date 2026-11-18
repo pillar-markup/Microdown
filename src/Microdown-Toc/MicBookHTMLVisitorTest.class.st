@@ -169,6 +169,28 @@ MicBookHTMLVisitorTest >> testNumberedReferenceToAnotherPageLinksToThatPage [
 			 '<a href="chapter-2.html#fb">2.1</a>')
 ]
 
+{ #category : 'tests - headers' }
+MicBookHTMLVisitorTest >> testParagraphHeaderHasTheParagraphClass [
+
+	self assert: ((self htmlOf: (Microdown parse: '## Chapter
+
+##### Important')) includesSubstring:
+			 '<h5 class="paragraph">Important</h5>')
+]
+
+{ #category : 'tests - headers' }
+MicBookHTMLVisitorTest >> testParagraphLevelComesFromTheBook [
+
+	| document |
+	document := Microdown parse: '# Chapter
+
+#### Important'.
+	document bookStructure: (MicBookStructure chapterLevel: 1).
+
+	self assert: ((self htmlOf: document) includesSubstring:
+			 '<h4 class="paragraph">Important</h4>')
+]
+
 { #category : 'tests - references' }
 MicBookHTMLVisitorTest >> testReferenceWithANumberShowsTheNumber [
 

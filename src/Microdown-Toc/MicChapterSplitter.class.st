@@ -1,11 +1,11 @@
 "
-I split a book written in Microdown into chapters: a chapter starts at each header of my chapter level (2, that is `##`, by default) or less deep, and goes up to the next one. What comes before the first chapter is the front matter. Each chapter and the front matter are documents of their own (`MicRootBlock`), ready to be written as pages of a web site.
+I split a book written in Microdown into chapters: a chapter starts at each chapter or part header of the book (see `MicBookStructure`: `##` and `#` by default), and goes up to the next one. What comes before the first chapter is the front matter. Each chapter and the front matter are documents of their own (`MicRootBlock`), ready to be written as pages of a web site.
 
 ## Life cycle: who creates me and who uses me
 
-1. A client creates me with `new`, optionally sets `chapterLevel:` (e.g. 1 when chapters are `#`), and sends me `split:` with the book, usually its `index.md` with the chapter files inlined (`inlineInputFiles`).
+1. A client creates me with `new` and sends me `split:` with the book, whose structure (`bookStructure`) says which headers are chapters, usually its `index.md` with the chapter files inlined (`inlineInputFiles`).
 2. It then reads `frontMatter` and `chapters`, for example to write the home page and one page per chapter.
-3. I'm meant to be used by the Pillar HTML book output; for now only my tests and examples use me.
+3. `PRHtmlBookDocument>>pagesOf:` (Pillar, `pillar build site`) uses me to make the pages of a site.
 
 ## Responsibility:
 
@@ -17,11 +17,10 @@ I split a book written in Microdown into chapters: a chapter starts at each head
 
 - `MicrodownVisitor`: I visit only the roots, the inlined files and the headers; I add the other elements whole, without visiting their contents.
 - `MicRootBlock`: the front matter and each chapter.
-- `MicHeaderBlock`: its level decides whether it starts a chapter.
+- `MicBookStructure`: the structure of the book decides which headers start a chapter; I give it to the front matter and to each chapter, so that the writers of their pages follow it.
 
 ## Public API and Key Messages
 
-- `chapterLevel: anInteger` the level of the chapter headers (2 by default).
 - `split: aDocument` split aDocument.
 - `chapters` the chapters, in order, each starting with its header.
 - `frontMatter` what comes before the first chapter.
@@ -34,7 +33,7 @@ MicChapterSplitter exampleOfABook chapters
 
 ## Internal Representation
 
-- `chapterLevel`: the level of the chapter headers.
+- `structure`: the structure of the book I split (a `MicBookStructure`).
 - `frontMatter`: a `MicRootBlock`.
 - `chapters`: an `OrderedCollection` of `MicRootBlock`.
 - `current`: the document receiving the elements while I split.
@@ -42,16 +41,16 @@ MicChapterSplitter exampleOfABook chapters
 ### Implementation Points
 
 - The elements move to the chapters (their parent becomes the chapter): split a document you will not write as a whole afterwards.
-- A header less deep than the chapter level (e.g. a `#` part title when chapters are `##`) also starts a chapter.
+- A part header (e.g. a `#` part title when chapters are `##`) also starts a chapter: its page holds its title and the text before its first chapter.
 "
 Class {
 	#name : 'MicChapterSplitter',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'chapterLevel',
 		'frontMatter',
 		'chapters',
-		'current'
+		'current',
+		'structure'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
@@ -80,18 +79,6 @@ The end.');
 ]
 
 { #category : 'accessing' }
-MicChapterSplitter >> chapterLevel [
-
-	^ chapterLevel
-]
-
-{ #category : 'accessing' }
-MicChapterSplitter >> chapterLevel: anInteger [
-
-	chapterLevel := anInteger
-]
-
-{ #category : 'accessing' }
 MicChapterSplitter >> chapters [
 
 	^ chapters
@@ -103,18 +90,21 @@ MicChapterSplitter >> frontMatter [
 	^ frontMatter
 ]
 
-{ #category : 'initialization' }
-MicChapterSplitter >> initialize [
+{ #category : 'splitting' }
+MicChapterSplitter >> newPart [
+	"Answer a new document for the front matter or a chapter, with the structure of the book."
 
-	super initialize.
-	chapterLevel := 2
+	^ MicRootBlock new
+		  bookStructure: structure;
+		  yourself
 ]
 
 { #category : 'splitting' }
 MicChapterSplitter >> split: aDocument [
-	"Split aDocument into its front matter and its chapters. A chapter starts at each header of my chapter level or less deep, and goes up to the next one. The files inlined in aDocument are split the same way."
+	"Split aDocument into its front matter and its chapters, following the structure of the book (see MicBookStructure): a chapter starts at each chapter or part header, and goes up to the next one. The files inlined in aDocument are split the same way. The front matter and the chapters keep the structure of the book."
 
-	frontMatter := MicRootBlock new.
+	structure := aDocument bookStructure.
+	frontMatter := self newPart.
 	chapters := OrderedCollection new.
 	current := frontMatter.
 	self visit: aDocument
@@ -124,15 +114,28 @@ MicChapterSplitter >> split: aDocument [
 MicChapterSplitter >> startChapter [
 	"The elements that follow go into a new chapter."
 
-	current := MicRootBlock new.
+	current := self newPart.
 	chapters add: current
+]
+
+{ #category : 'accessing' }
+MicChapterSplitter >> structure [
+
+^ structure
+]
+
+{ #category : 'accessing' }
+MicChapterSplitter >> structure: anObject [
+
+structure := anObject
 ]
 
 { #category : 'visiting' }
 MicChapterSplitter >> visitHeader: aHeader [
-	"A header of my chapter level, or less deep, starts a new chapter; any header then goes into the current chapter (the new one, or the one it belongs to)."
+	"A chapter header, or a part header, starts a new chapter; any header then goes into the current chapter (the new one, or the one it belongs to)."
 
-	aHeader level <= chapterLevel ifTrue: [ self startChapter ].
+	((structure isChapter: aHeader) or: [ structure isPart: aHeader ])
+		ifTrue: [ self startChapter ].
 	current addChild: aHeader
 ]
 

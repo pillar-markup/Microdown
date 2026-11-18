@@ -1,15 +1,15 @@
 "
-I number the chapters, sections, figures, listings and equations of a book, the way readers see them: the third chapter is 3, its second section 3.2, the first subsection of that section 3.2.1, its first figure 3.1. I am a pass of my own: I leave the number of each element in its `#number` property, as an Array of integers (`#(3 2)`), and the writers show it in the form they choose.
+I number the chapters, sections, figures, listings and equations of a book, the way readers see them: the third chapter is 3, its second section 3.2, its first figure 3.1. As in the PDF (sbabook), subsections and deeper headers have no number. I am a pass of my own: I leave the number of each element in its `#number` property, as an Array of integers (`#(3 2)`), and the writers show it in the form they choose.
 
 ## Life cycle: who creates me and who uses me
 
-1. The program that publishes a book creates me (`new`, or with `chapterLevel:` when chapters are not `##`), after `MicHeaderIdentifier` and before `MicChapterSplitter`, so that numbers run over the whole book.
+1. The program that publishes a book creates me (`new`), after `MicHeaderIdentifier` and before `MicChapterSplitter`, so that numbers run over the whole book.
 2. It sends me `number:` with the whole book (`index.md` with its input files inlined); I visit it once.
 3. The writers and the later passes read the `#number` of the elements.
 
 ## Responsibility:
 
-- Headers of my chapter level are chapters: 1, 2, 3, in book order. Less deep headers (a `#` part, or the title of the book, when chapters are `##`) get no number and change no counter, as in the PDF. Deeper headers are sections of the current chapter, numbered at their depth below it, the deeper counters restarting at each section; a skipped level counts 0 (`#(1 0 1)`).
+- I follow the structure of the book (`aDocument bookStructure`, see `MicBookStructure`): chapter headers are numbered 1, 2, 3, in book order, and the sections right below them 1.1, 1.2. Parts, subsections, subsubsections and paragraph labels get no number and change no counter (`MicBookStructure>>isNumbered:`).
 - Headers before the first chapter (the front matter) and headers inside another element (an environment) get no number, as `MicChapterSplitter` does not make them chapters.
 - Figures, listings (code blocks) and equations (math blocks) are numbered when they have a caption or an anchor, each kind with its own counter, restarting in each chapter: the first figure of chapter 3 is 3.1, and so is its first listing. Code snippets and math without caption or anchor are not numbered.
 - Numbers are not link targets: ids stay those of `MicHeaderIdentifier`, made from the text, so links survive when chapters move.
@@ -17,14 +17,14 @@ I number the chapters, sections, figures, listings and equations of a book, the 
 ## Collaborators: 
 
 - `MicHeaderBlock`, `MicFigureBlock`, `MicCodeBlock`, `MicMathBlock`: I set their `#number`.
-- `MicChapterSplitter`: we agree on what a chapter is (same `chapterLevel`, headers of the book or of its inlined files only).
+- `MicBookStructure`: tells me which headers are chapters and which are numbered.
+- `MicChapterSplitter`: we agree on what a chapter is (same structure, headers of the book or of its inlined files only).
 - `MicHeaderIdentifier`: runs before me; ids and numbers are kept apart.
 
 ## Public API and Key Messages
 
 - `number: aDocument`
 - `document` the document I numbered
-- `chapterLevel: anInteger` (2 by default: chapters are `##`)
 - `MicNumberer numberStringOf: anElement` the number of anElement as readers see it (`'3.2'`), nil when it has none; used by `MicBookHTMLVisitor` and `MicTocBuilder`.
 
 ## Examples
@@ -36,9 +36,9 @@ MicNumberer scriptNumbersOfABook
 
 ## Internal Representation
 
-- `chapterLevel`: the level of the chapter headers.
+- `structure`: the structure of the book I number (a `MicBookStructure`).
 - `chapter`: the number of the current chapter, 0 before the first one.
-- `sectionCounters`: the counters of the current section at each depth below the chapter.
+- `section`: the number of the current section in its chapter, 0 before the first one.
 - `elementCounters`: the counters of the figures, listings and equations of the current chapter, by kind (`#figure`, `#listing`, `#equation`).
 - `document`: the last document I numbered (see `document`).
 
@@ -51,11 +51,11 @@ Class {
 	#name : 'MicNumberer',
 	#superclass : 'MicrodownVisitor',
 	#instVars : [
-		'chapterLevel',
 		'chapter',
-		'sectionCounters',
 		'document',
-		'elementCounters'
+		'elementCounters',
+		'structure',
+		'section'
 	],
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
@@ -115,18 +115,6 @@ MicNumberer class >> scriptNumbersOfABook [
 ]
 
 { #category : 'accessing' }
-MicNumberer >> chapterLevel [
-
-	^ chapterLevel
-]
-
-{ #category : 'accessing' }
-MicNumberer >> chapterLevel: anInteger [
-
-	chapterLevel := anInteger
-]
-
-{ #category : 'accessing' }
 MicNumberer >> document [
 
 	^ document
@@ -136,19 +124,19 @@ MicNumberer >> document [
 MicNumberer >> initialize [
 
 	super initialize.
-	chapterLevel := 2.
 	chapter := 0.
-	sectionCounters := OrderedCollection new.
+	section := 0.
 	elementCounters := Dictionary new
 ]
 
 { #category : 'numbering' }
 MicNumberer >> number: aDocument [
-	"Give a #number to the chapters, sections, figures, listings (code blocks) and equations (math blocks) of aDocument, a whole book (its input files inlined): an Array such as #(3 2) for the second section of the third chapter, or for its second figure. Elements before the first chapter get none."
+	"Give a #number to the chapters, sections, figures, listings (code blocks) and equations (math blocks) of aDocument, a whole book (its input files inlined), following the structure of the book (see MicBookStructure): an Array such as #(3 2) for the second section of the third chapter, or for its second figure. Elements before the first chapter get none."
 
 	document := aDocument.
+	structure := aDocument bookStructure.
 	chapter := 0.
-	sectionCounters := OrderedCollection new.
+	section := 0.
 	elementCounters := Dictionary new.
 	self visit: aDocument
 ]
@@ -168,23 +156,31 @@ MicNumberer >> number: anElement in: aKind [
 
 { #category : 'numbering' }
 MicNumberer >> numberHeader: aHeader [
-	"A header of my chapter level starts the next chapter, where figures, listings and equations count from 1 again. A less deep header is a part (or the title of the book): as in the PDF, it gets no number and changes no counter. A deeper header is a section of the current chapter, numbered at its depth below the chapter, with the deeper counters reset."
+	"A chapter header starts the next chapter, where sections, figures, listings and equations count from 1 again. As in the PDF (sbabook), only chapters and sections get a number: parts, subsections, subsubsections and paragraph labels get none and change no counter (see MicBookStructure>>isNumbered:)."
 
-	| depth |
-	depth := aHeader level - chapterLevel.
-	depth < 0 ifTrue: [ ^ self ].
-	depth = 0 ifTrue: [
+	(structure isNumbered: aHeader) ifFalse: [ ^ self ].
+	(structure isChapter: aHeader) ifTrue: [
 			chapter := chapter + 1.
-			sectionCounters := OrderedCollection new.
+			section := 0.
 			elementCounters := Dictionary new.
 			^ aHeader propertyAt: #number put: { chapter } ].
 	chapter = 0 ifTrue: [ ^ self ].
-	[ sectionCounters size < depth ] whileTrue: [ sectionCounters add: 0 ].
-	sectionCounters removeLast: sectionCounters size - depth.
-	sectionCounters at: depth put: (sectionCounters at: depth) + 1.
-	aHeader
-		propertyAt: #number
-		put: { chapter } , sectionCounters asArray
+	section := section + 1.
+	aHeader propertyAt: #number put: {
+			chapter.
+			section }
+]
+
+{ #category : 'accessing' }
+MicNumberer >> structure [
+
+^ structure
+]
+
+{ #category : 'accessing' }
+MicNumberer >> structure: anObject [
+
+structure := anObject
 ]
 
 { #category : 'visiting' }

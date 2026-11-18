@@ -42,6 +42,22 @@ MicBookStructureTest >> testDefaultLevels [
 	self assert: structure paragraphLevel equals: 5
 ]
 
+{ #category : 'tests - root' }
+MicBookStructureTest >> testElementsAnswerTheStructureOfTheirBook [
+
+	| root structure |
+	root := Microdown parse: '## Chapter
+
+- An item'.
+	structure := MicBookStructure chapterLevel: 1.
+	root bookStructure: structure.
+
+	self assert: root children first bookStructure identicalTo: structure.
+	self
+		assert: root children second children first bookStructure
+		identicalTo: structure
+]
+
 { #category : 'tests - errors' }
 MicBookStructureTest >> testFourSectionLevelsRaiseError [
 

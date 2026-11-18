@@ -69,6 +69,19 @@ MicBookHTMLVisitor class >> writerName [
 	^ #michtml
 ]
 
+{ #category : 'visiting' }
+MicBookHTMLVisitor >> headerTagOf: aHeader [
+	"Answer the tag of aHeader as MicHTMLVisitor does, with the class paragraph when the book makes it a paragraph label (see MicBookStructure), so that the style sheet shows it as a label rather than as a section title."
+
+	| tag |
+	tag := canvas tag name: 'h' , aHeader level asString.
+	(aHeader bookStructure isParagraph: aHeader) ifTrue: [
+		tag parameterAt: 'class' put: 'paragraph' ].
+	(aHeader propertyAt: #id ifAbsent: [ nil ]) ifNotNil: [ :id |
+		tag parameterAt: 'id' put: id ].
+	^ tag
+]
+
 { #category : 'visiting - inline elements' }
 MicBookHTMLVisitor >> visitAnchorReference: anAnchorReference [
 	"Link to the anchor as MicHTMLVisitor does; the text of the link is the number of its target when it has one (Figure *@fb@* reads Figure 2.1), else its label."

@@ -47,9 +47,9 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 
 { #category : 'accessing' }
 MicRootBlock >> bookStructure [
-	"Answer the structure of the book I hold (see MicBookStructure): the one attached to me (Pillar attaches the one of pillar.conf), else the default one, so that every book has a structure."
+	"Answer the structure of the book I hold (see MicBookStructure): the one attached to me (Pillar attaches the one of pillar.conf), else the one of the book I am inlined in (an input file), else the default one, so that every book has a structure."
 
-	^ self propertyAt: #bookStructure ifAbsent: [ MicBookStructure new ]
+	^ self propertyAt: #bookStructure ifAbsent: [ super bookStructure ]
 ]
 
 { #category : 'accessing' }

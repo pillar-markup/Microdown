@@ -60,14 +60,16 @@ code
 { #category : 'tests - chapters' }
 MicChapterSplitterTest >> testChapterLevelOne [
 
-	| splitter |
-	splitter := MicChapterSplitter new
-		            chapterLevel: 1;
-		            split: (Microdown parse: '# Part
+	| document splitter |
+	document := Microdown parse: '# Part
 
 ## One
 
-# Other part');
+# Other part'.
+	document bookStructure: (MicBookStructure chapterLevel: 1).
+
+	splitter := MicChapterSplitter new
+		            split: document;
 		            yourself.
 
 	self
@@ -111,6 +113,33 @@ MicChapterSplitterTest >> testChaptersComeFromTheInlinedFiles [
 				 as: Array)
 		equals: #( 'One' 'A' ).
 	self assert: splitter frontMatter children size equals: 1
+]
+
+{ #category : 'tests - chapters' }
+MicChapterSplitterTest >> testChaptersHaveTheStructureOfTheBook [
+
+	| document structure splitter |
+	document := Microdown parse: 'Intro.
+
+# One
+
+# Two'.
+	structure := MicBookStructure chapterLevel: 1.
+	document bookStructure: structure.
+
+	splitter := MicChapterSplitter new
+		            split: document;
+		            yourself.
+
+	self
+		assert: splitter frontMatter bookStructure
+		identicalTo: structure.
+	self
+		assert:
+		(splitter chapters collect: [ :each | each bookStructure ] as: Array)
+		equals: {
+				structure.
+				structure }
 ]
 
 { #category : 'tests - chapters' }

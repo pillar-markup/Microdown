@@ -66,6 +66,15 @@ MicAbstractBlock >> blockStarterClassFrom: line [
 	^ (self parser blockStarterClassFrom: line) ifNotNil: [ :c | c alternateBlockClassFor: line ]
 ]
 
+{ #category : 'accessing' }
+MicAbstractBlock >> bookStructure [
+	"Answer the structure of the book I belong to (see MicBookStructure): the one of my enclosing root, else the default one."
+
+	^ parent
+		  ifNil: [ MicBookStructure new ]
+		  ifNotNil: [ :aParent | aParent bookStructure ]
+]
+
 { #category : 'public' }
 MicAbstractBlock >> canConsumeLine: line [
 	"return if this block can consume line"

@@ -52,10 +52,9 @@ MicNumbererTest >> testChapterLevelOne [
 # B
 
 ## b1'.
+	document bookStructure: (MicBookStructure chapterLevel: 1).
 
-	MicNumberer new
-		chapterLevel: 1;
-		number: document.
+	MicNumberer new number: document.
 
 	self assert: (self numbersOf: document) equals: {
 			('A' -> #( 1 )).
@@ -391,6 +390,21 @@ MicNumbererTest >> testNumberStringOfAnUnnumberedElementIsNil [
 			 (Microdown parse: '### Foo') children first) isNil
 ]
 
+{ #category : 'tests - sections' }
+MicNumbererTest >> testParagraphsAreNotNumbered [
+
+	self
+		assert: (self numbersOf: (self number: '## A
+
+##### Important
+
+### a1'))
+		equals: {
+				('A' -> #( 1 )).
+				('Important' -> nil).
+				('a1' -> #( 1 1 )) }
+]
+
 { #category : 'tests - chapters' }
 MicNumbererTest >> testPartDoesNotCountAsAChapter [
 
@@ -448,19 +462,7 @@ MicNumbererTest >> testSectionsAreNumberedInTheirChapter [
 ]
 
 { #category : 'tests - sections' }
-MicNumbererTest >> testSkippedLevelIsNumberedZero [
-
-	self
-		assert: (self numbersOf: (self number: '## A
-
-#### x'))
-		equals: {
-				('A' -> #( 1 )).
-				('x' -> #( 1 0 1 )) }
-]
-
-{ #category : 'tests - sections' }
-MicNumbererTest >> testSubsectionsRestartInEachSection [
+MicNumbererTest >> testSubsectionsAreNotNumbered [
 
 	self
 		assert: (self numbersOf: (self number: '## A
@@ -469,16 +471,13 @@ MicNumbererTest >> testSubsectionsRestartInEachSection [
 
 #### x
 
-#### y
-
 ### a2
 
 #### z'))
 		equals: {
 				('A' -> #( 1 )).
 				('a1' -> #( 1 1 )).
-				('x' -> #( 1 1 1 )).
-				('y' -> #( 1 1 2 )).
+				('x' -> nil).
 				('a2' -> #( 1 2 )).
-				('z' -> #( 1 2 1 )) }
+				('z' -> nil) }
 ]
