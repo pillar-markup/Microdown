@@ -366,11 +366,14 @@ MicTextualMicrodownExporter >> visitLink: aLink from: templated [
 	builder externalLink: aLink url withDescription: [ templated visitChildrenOf: aLink ]
 ]
 
-{ #category : 'visit - list' }
+{ #category : 'visiting - list' }
 MicTextualMicrodownExporter >> visitListItem: anItem [
-	"here we do not handle the prefix - or a number"
+	"here we do not handle the prefix - or a number, only the box of a task item"
 
-	builder itemBody: [ super visitListItem: anItem ]
+	builder itemBody: [
+			anItem isTask ifTrue: [
+				builder taskMarkerChecked: anItem isChecked ].
+			super visitListItem: anItem ]
 ]
 
 { #category : 'templating ping pong' }

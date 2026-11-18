@@ -580,9 +580,13 @@ MicHTMLVisitor >> visitLink: aLink from: templated [
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitListItem: anItem [
+	"A task item (- [ ] or - [x]) starts with a disabled checkbox, as GitHub Markdown writes it."
 
-	canvas raw: [ super visitListItem: anItem ].
-
+	anItem isTask ifTrue: [
+			canvas nextPutAll: (anItem isChecked
+					 ifTrue: [ '<input type="checkbox" disabled checked> ' ]
+					 ifFalse: [ '<input type="checkbox" disabled> ' ]) ].
+	canvas raw: [ super visitListItem: anItem ]
 ]
 
 { #category : 'templating ping pong' }

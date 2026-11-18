@@ -635,6 +635,24 @@ MicMicrodownTextualBuilder >> strike: aBlock [
 	self raw: StrikeMarkup.
 ]
 
+{ #category : 'element - list' }
+MicMicrodownTextualBuilder >> taskItem: aBlock checked: aBoolean [
+	"Write an unordered task item, as GitHub Markdown does: '- [x] ' when aBoolean is true (done), '- [ ] ' otherwise, then what aBlock writes."
+
+	self item: [
+			self taskMarkerChecked: aBoolean.
+			aBlock value ]
+]
+
+{ #category : 'element - list' }
+MicMicrodownTextualBuilder >> taskMarkerChecked: aBoolean [
+	"Write the box of a task item: '[x] ' when aBoolean is true, '[ ] ' otherwise. Use it at the start of an item, e.g. inside orderedItem: for an ordered task."
+
+	self raw: (aBoolean
+			 ifTrue: [ '[x] ' ]
+			 ifFalse: [ '[ ] ' ])
+]
+
 { #category : 'writing during' }
 MicMicrodownTextualBuilder >> textWithBracket: aString [
 

@@ -615,6 +615,19 @@ MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithSomeElements
 	self verifyObtain: factory simpleTableMoreFormat
 ]
 
+{ #category : 'tests - task lists' }
+MicTextualMicrodownExporterTest >> testTaskListSurvivesExport [
+
+	| source |
+	source := MicTextualMicrodownExporter new
+		          visit: (Microdown parse: '- [ ] to do
+- [x] done');
+		          contents.
+
+	self assert: (source includesSubstring: '- [ ] to do').
+	self assert: (source includesSubstring: '- [x] done')
+]
+
 { #category : 'tests - list nested' }
 MicTextualMicrodownExporterTest >> testTwoNestedOrderedLists [
 

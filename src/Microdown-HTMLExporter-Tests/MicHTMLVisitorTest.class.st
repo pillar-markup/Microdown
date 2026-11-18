@@ -74,6 +74,15 @@ MicHTMLVisitorTest >> testCanvasClass [
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testCheckedTaskShowsATickedBox [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- [x] done');
+			  contents) includesSubstring:
+			 '<li><input type="checkbox" disabled checked> done</li>')
+]
+
 { #category : 'tests - escaping' }
 MicHTMLVisitorTest >> testCodeBlockIsEscaped [
 
@@ -233,6 +242,14 @@ MicHTMLVisitorTest >> testInlineLineBreakIsWrittenAsBr [
 			  contents) includesSubstring: 'One <br> two')
 ]
 
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testItemThatIsNotATaskHasNoBox [
+
+	self deny: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- plain');
+			  contents) includesSubstring: 'checkbox')
+]
+
 { #category : 'tests - line breaks' }
 MicHTMLVisitorTest >> testNewLineBeforeAFormatKeepsTheWordsApart [
 
@@ -351,6 +368,15 @@ MicHTMLVisitorTest >> testRawParagraphSimpleEmptyDiv [
 '</div>'.
 	self assert: result trimBoth equals:  '<div>', newLine,
 '</div>'.
+]
+
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testUncheckedTaskShowsAnEmptyBox [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- [ ] to do');
+			  contents) includesSubstring:
+			 '<li><input type="checkbox" disabled> to do</li>')
 ]
 
 { #category : 'tests' }
