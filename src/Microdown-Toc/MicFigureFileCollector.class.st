@@ -61,3 +61,32 @@ MicFigureFileCollector class >> exampleOfADocument [
 ![On the web.](https://pharo.org/web.png)').
 	^ collector
 ]
+
+{ #category : 'visiting' }
+MicFigureFileCollector >> collect: aDocument [
+	"Visit aDocument and answer the paths of the local files its figures show, relative to the book folder."
+
+	self visit: aDocument.
+	^ paths
+]
+
+{ #category : 'initialization' }
+MicFigureFileCollector >> initialize [
+
+	super initialize.
+	paths := OrderedCollection new
+]
+
+{ #category : 'accessing' }
+MicFigureFileCollector >> paths [
+
+	^ paths
+]
+
+{ #category : 'visiting' }
+MicFigureFileCollector >> visitFigure: aFigure [
+	"Keep the path of aFigure, once, when it is a file of the book (a relative reference)."
+
+	aFigure reference isRelative ifTrue: [
+		paths addIfNotPresent: aFigure reference path ]
+]
