@@ -11,7 +11,9 @@ Class {
 	#superclass : 'MicElement',
 	#instVars : [
 		'children',
-		'parser'
+		'parser',
+		'startLine',
+		'endLine'
 	],
 	#category : 'Microdown-Model',
 	#package : 'Microdown',
@@ -45,6 +47,13 @@ MicAbstractBlock >> addLineAndReturnNextNode: line [
 	^ self
 ]
 
+{ #category : 'accessing' }
+MicAbstractBlock >> attachedBookStructure [
+	"Answer the structure attached to the book I belong to (by Pillar, from pillar.conf), or nil when none was attached."
+
+	^ parent ifNotNil: [ :aParent | aParent attachedBookStructure ]
+]
+
 { #category : 'public' }
 MicAbstractBlock >> blockExtensionStarterClassFrom: line [
 	"return the class of a block which can start with line, or nil if none"
@@ -62,6 +71,13 @@ MicAbstractBlock >> blockStarterClassFrom: line [
 		For example <!citation does not return an environment but a MicCitationBlock"
 
 	^ (self parser blockStarterClassFrom: line) ifNotNil: [ :c | c alternateBlockClassFor: line ]
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> bookStructure [
+	"Answer the structure of the book I belong to (see MicBookStructure): the attached one, else the default one, so that every book has a structure."
+
+	^ self attachedBookStructure ifNil: [ MicBookStructure new ]
 ]
 
 { #category : 'public' }
@@ -94,6 +110,16 @@ MicAbstractBlock >> computeNestedLevel [
 	^ 0
 ]
 
+{ #category : 'testing' }
+MicAbstractBlock >> endLine [
+	^ endLine
+]
+
+{ #category : 'testing' }
+MicAbstractBlock >> endLine: anObject [
+	endLine := anObject
+]
+
 { #category : 'properties' }
 MicAbstractBlock >> hasProperty: aKey [
 	"Test if the property aKey is present."
@@ -114,6 +140,11 @@ MicAbstractBlock >> initialize [
 
 { #category : 'testing' }
 MicAbstractBlock >> isHeader [
+	^ false
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> isSecondaryRoot [
 	^ false
 ]
 
@@ -154,7 +185,7 @@ MicAbstractBlock >> parser [
 
 { #category : 'private' }
 MicAbstractBlock >> parserClass [ 
-	^ MicrodownParser
+	^ MicParser
 ]
 
 { #category : 'adding' }
@@ -187,6 +218,18 @@ MicAbstractBlock >> replaceByAll: aCollection [
 { #category : 'private' }
 MicAbstractBlock >> setParser: aParser [
 	parser := aParser 
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine [
+
+	^ startLine
+]
+
+{ #category : 'accessing' }
+MicAbstractBlock >> startLine: anObject [
+
+	startLine := anObject
 ]
 
 { #category : 'accessing' }

@@ -29,7 +29,7 @@ MicCodeblockEvaluatorTest >> testCodeblockWithEvalExecuteBody [
 		assert: input children first children first children first class
 		equals: MicListItemBlock.
 	self
-		assert: input children first children first children first testText
+		assert: input children first children first children first printString
 		equals: 'Text(test)'
 ]
 

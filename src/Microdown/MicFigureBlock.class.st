@@ -37,7 +37,12 @@ MicFigureBlock >> accept: aVisitor [
 
 { #category : 'accessing' }
 MicFigureBlock >> altText [
-	^ (self children collect: #plainText) joinUsing: ' '
+	^ (self children collect: [:each | each text]) joinUsing: ' '
+]
+
+{ #category : 'accessing' }
+MicFigureBlock >> caption [
+	^ ' ' join: (self captionElements collect: [ :each | each text ])
 ]
 
 { #category : 'visiting' }
@@ -49,16 +54,16 @@ MicFigureBlock >> closeMe [
 
 { #category : 'testing' }
 MicFigureBlock >> hasCaption [
-	
-	^ children isNotNil 
+
+	^ children isNotNil
 ]
 
 { #category : 'printing' }
 MicFigureBlock >> plainText [
-	^ '![', ((self children collect: #plainText) joinUsing: ' '), '](', url ,')'
+	^ '![', ((self children collect: [:each | each text]) joinUsing: ' '), '](', url ,')'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'printing' }
 MicFigureBlock >> text [
-	^ children first text
+	^ '![', ((self children collect: [:each | each text]) joinUsing: ' '), '](', url ,')'
 ]

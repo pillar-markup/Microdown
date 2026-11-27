@@ -415,17 +415,20 @@ MicMicrodownTextualBuilder >> metaDataFrom: aDictionary [
 ]
 
 { #category : 'element - metadata' }
-MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [ 
+MicMicrodownTextualBuilder >> metaDataFromAssociations: aCollection [
+	"Write each key and value as a JSON string (or JSON value), escaped as MicMetaDataBlock reads them back with STONJSON"
+
 	self raw: '{'; newLine.
-	aCollection do: [ :each | 
-		self raw: '"';
-		raw: each key; 
-		raw: '" : "';
-		raw: each value;
-		raw: '"'
-		]
-		separatedBy: [ self raw: ','. self newLine].
-	self newLine; raw: '}'.
+	aCollection
+		do: [ :each |
+			self
+				raw: (STONJSON toString: each key asString);
+				raw: ' : ';
+				raw: (STONJSON toString: each value) ]
+		separatedBy: [
+			self raw: ',';
+			newLine ].
+	self newLine; raw: '}'
 ]
 
 { #category : 'ugly line handling' }
@@ -630,6 +633,24 @@ MicMicrodownTextualBuilder >> strike: aBlock [
 	self raw: StrikeMarkup.
 	aBlock value.
 	self raw: StrikeMarkup.
+]
+
+{ #category : 'element - list' }
+MicMicrodownTextualBuilder >> taskItem: aBlock checked: aBoolean [
+	"Write an unordered task item, as GitHub Markdown does: '- [x] ' when aBoolean is true (done), '- [ ] ' otherwise, then what aBlock writes."
+
+	self item: [
+			self taskMarkerChecked: aBoolean.
+			aBlock value ]
+]
+
+{ #category : 'element - list' }
+MicMicrodownTextualBuilder >> taskMarkerChecked: aBoolean [
+	"Write the box of a task item: '[x] ' when aBoolean is true, '[ ] ' otherwise. Use it at the start of an item, e.g. inside orderedItem: for an ordered task."
+
+	self raw: (aBoolean
+			 ifTrue: [ '[x] ' ]
+			 ifFalse: [ '[ ] ' ])
 ]
 
 { #category : 'writing during' }

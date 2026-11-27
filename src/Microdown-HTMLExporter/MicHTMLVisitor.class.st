@@ -40,9 +40,9 @@ MicHTMLVisitor class >> asHTMLString: aMicrodownString configuration: aMicHTMLCo
 
 { #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLDocument [
+
 	<example>
-	
-	^ (Microdown asHTMLDocument: MicMicrodownSnippetFactory buildDocument) inspect.
+	^ (Microdown asHTMLDocument: self sampleMicrodownText) inspect
 ]
 
 { #category : 'examples' }
@@ -61,9 +61,9 @@ MicHTMLVisitor class >> exampleHTMLDocumentWithLink [
 
 { #category : 'examples' }
 MicHTMLVisitor class >> exampleHTMLString [
+
 	<example>
-	
-	^ (Microdown asHTMLString: MicMicrodownSnippetFactory buildDocument) inspect.
+	^ (Microdown asHTMLString: self sampleMicrodownText) inspect
 ]
 
 { #category : 'examples' }
@@ -71,6 +71,33 @@ MicHTMLVisitor class >> exampleHTMLStringWithLink [
 	<example>
 	
 	^ (Microdown asHTMLString: '[Pharo Website](http://pharo.org target=_blank&rel=bookmark)') inspect.
+]
+
+{ #category : 'private - demo' }
+MicHTMLVisitor class >> sampleMicrodownText [
+	"A short Microdown document with the main kinds of elements, used by the examples."
+
+	^ '# A sample document
+
+A paragraph with **bold**, _italic_, `monospace` and a [link](http://pharo.org).
+
+## Lists and code
+
+- one
+- two
+
+1. first
+2. second
+
+```language=Smalltalk
+3 + 4
+```
+
+| Name | Value |
+| --- | --- |
+| a | 1 |
+
+> A quote.'
 ]
 
 { #category : 'converting' }
@@ -95,7 +122,9 @@ MicHTMLVisitor class >> serializeToHTMLDoc: aMicrodownString withStyle: aStyleNa
 
 { #category : 'accessing' }
 MicHTMLVisitor class >> writerName [
-	^ #michtml
+	"The name Pillar finds me by (htmlWriter in pillar.conf): the plain HTML writer. michtml is MicBookHTMLVisitor, which also shows the numbers of a book."
+
+	^ #micbasichtml
 ]
 
 { #category : 'initialization' }
@@ -169,9 +198,29 @@ MicHTMLVisitor >> doNotIgnoreMetaData [
 	ignoresMetaData := false
 ]
 
+{ #category : 'escaping' }
+MicHTMLVisitor >> escaped: aString [
+	"Answer aString with the characters that HTML reads as markup written as entities, so that code is shown as written. Text outside code is not escaped: as in GitHub Markdown, it may hold raw HTML."
+
+	^ ((aString copyReplaceAll: '&' with: '&amp;')
+		   copyReplaceAll: '<'
+		   with: '&lt;') copyReplaceAll: '>' with: '&gt;'
+]
+
 { #category : 'accessing' }
 MicHTMLVisitor >> folderName [
 	^ #html
+]
+
+{ #category : 'visiting' }
+MicHTMLVisitor >> headerTagOf: aHeader [
+	"Answer the tag of aHeader (h1, h2...), with the id of aHeader when it has one (its #id property, given by MicHeaderIdentifier>>#identify:)."
+
+	| tag |
+	tag := canvas tag name: 'h' , aHeader level asString.
+	(aHeader propertyAt: #id ifAbsent: [ nil ]) ifNotNil: [ :id |
+		tag parameterAt: 'id' put: id ].
+	^ tag
 ]
 
 { #category : 'accessing' }
@@ -225,19 +274,39 @@ MicHTMLVisitor >> stream: aStream [
 	canvas := self canvasClass on: stream
 ]
 
+{ #category : 'visiting' }
+MicHTMLVisitor >> tag: aTagName identifiedBy: anElement [
+	"Answer a new tag named aTagName, with the anchor of anElement (a figure or a code block) as id when it has one, so that references to this anchor reach it."
+
+	| tag |
+	tag := canvas tag name: aTagName.
+	anElement anchor ifNotNil: [ :anchor |
+		tag parameterAt: 'id' put: anchor ].
+	^ tag
+]
+
 { #category : 'templating' }
 MicHTMLVisitor >> templateForConfiguration: aConfiguration [
+   "Probably used by pillar."
+
 	| inputFile templateName |
 	configuration := aConfiguration.
 	inputFile := configuration inputFile.
 	
 	(configuration hasProperty: #mainDocument)
-		ifFalse: [ ^ configuration propertyAt: self mainDocumentTemplateName ifAbsent: [ 'main.mustache' ] ].
+		ifFalse: [ ^ configuration 
+						propertyAt: self mainDocumentTemplateName 
+						ifAbsent: [ 'main.mustache' ] ].
+	
+	
+	self flag: #revisitThis.
+	"This logic looks a bit heavy at the minimum we should document it"
 	
 	templateName := inputFile fullName
 		= ((configuration baseDirectory resolve: configuration mainDocument) , 'pillar') fullName
 		ifTrue: [ self mainDocumentTemplateName ]
 		ifFalse: [ self chapterTemplateName ].
+		
 	^ configuration propertyAt: templateName
 ]
 
@@ -259,13 +328,15 @@ MicHTMLVisitor >> visitAnchor: anAnchor [
 
 ]
 
-{ #category : 'visiting' }
+{ #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitAnchorReference: anAnchor [
-	"Linking to an element on the same page"
+	"Link to the anchor: in its page when anAnchor was given one (its #page property, see MicPageReferenceResolver), else in the current page."
 
 	canvas tag
 		name: 'a';
-		parameterAt: 'href' put: '#' , anAnchor bodyString;
+		parameterAt: 'href' put: (String streamContents: [ :stream |
+						 stream << (anAnchor propertyAt: #page ifAbsent: [ '' ]) << '#'
+						 << anAnchor bodyString ]);
 		with: anAnchor bodyString
 ]
 
@@ -279,12 +350,31 @@ MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph [
 		with: [ super visitAnnotated: anAnnotatedParagraph ].
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitAnnotated: anAnnotatedParagraph from: templated [
+	"Write anAnnotatedParagraph for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas newLine.
+	canvas tag
+		name: 'q';
+		parameterAt: 'id' put: anAnnotatedParagraph label;
+		with: [ templated visitChildrenOf: anAnnotatedParagraph ]
+]
+
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitBold: aBoldText [
 
 	canvas tag
 		name: 'strong';
 		with: [ super visitBold: aBoldText ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitBold: aBoldText from: templated [
+
+	canvas tag
+		name: 'strong';
+		with: [ templated visitChildrenOf:aBoldText ]
 ]
 
 { #category : 'visiting - extensions' }
@@ -300,9 +390,7 @@ MicHTMLVisitor >> visitCitation: aCitation [
 MicHTMLVisitor >> visitCode: aCodeBlock [
 
 	canvas newLine.
-	canvas tag
-		name: 'pre';
-		with: [ 
+	(self tag: 'pre' identifiedBy: aCodeBlock) with: [
 			| code |
 			code := canvas tag
 				        name: 'code';
@@ -310,42 +398,15 @@ MicHTMLVisitor >> visitCode: aCodeBlock [
 			"language := self languageForScript: aCodeBlock.
 			language isSyntaxHighlightingPossible ifTrue: [ 
 			code parameterAt: 'class' put: language printString ]."
-			code with: [ canvas lines: aCodeBlock body ] ].
-			"canvas tag
+			code with: [ canvas lines: (self escaped: aCodeBlock body) ] ].
+	"canvas tag
 				name: 'figcaption';
 				with: [ 
 					aCodeBlock hasLabel ifTrue: [ 
 							self createAnchorWith: aCodeBlock label.
 							self writeCounterForScript: aCodeBlock ].
 					aCodeBlock hasCaption ifTrue: [ 
-							self visitAll: aCodeBlock caption children ] ]" .
-	canvas newLine
-]
-
-{ #category : 'visiting' }
-MicHTMLVisitor >> visitCodeblock: aCodeBlock [
-
-	canvas tag
-		name: 'figure';
-		with: [
-			canvas tag
-				name: 'pre';
-				with: [
-					| code |
-					code := canvas tag
-						        name: 'code';
-						        yourself.
-					"(language := self languageForScript: aCodeBlock) isSyntaxHighlightingPossible 
-						ifTrue: [ code parameterAt: 'class' put: language printString ]."
-					code with: [ canvas lines: aCodeBlock text ] ].
-			canvas tag
-				name: 'figcaption';
-				with: [
-					aCodeBlock hasAnchor ifTrue: [
-							self visitAnchor: aCodeBlock.
-							self writeCounterForScript: aCodeBlock ].
-					aCodeBlock hasCaption ifTrue: [
-							self visitAll: aCodeBlock caption children ] ] ].
+							self visitAll: aCodeBlock caption children ] ]"
 	canvas newLine
 ]
 
@@ -359,32 +420,82 @@ MicHTMLVisitor >> visitColumns: aMicColumnsBlock [
 	"??"
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitEnvironment: anEnvironment from: templated [
+	"Write anEnvironment for a templated writer that has no template for it: HTML has no markup for it, so only its children are written, by the templated writer."
+
+	templated visitChildrenOf: anEnvironment
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock [
 
+	self visitFigCaption: aFigCaptionBlock from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitFigCaption: aFigCaptionBlock from: aVisitor [
+	"Write the caption tag of aFigCaptionBlock; aVisitor writes its children."
+
 	canvas tag
 		name: 'figcaption';
-		with: [ self visitAll: aFigCaptionBlock children ]
+		with: [ aVisitor visitChildrenOf: aFigCaptionBlock ]
 ]
 
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitFigure: aFigure [
 	"Write mark up elements related with photo in the receiver's canvas"
 
-	canvas tag
-		name: 'figure';
-		with: [ self visitImg: aFigure ]
+	(self tag: 'figure' identifiedBy: aFigure) with: [
+		self visitImg: aFigure ]
+]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitFigure: aFigure from: templated [
+	"Write aFigure for a templated writer that has no template for it: the children of its caption go back to the templated writer."
+
+	(self tag: 'figure' identifiedBy: aFigure) with: [
+		self visitImg: aFigure from: templated ]
+]
+
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph [
+
+	self visitHTMLTagParagraph: anHTMLTagParagraph from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitHTMLTagParagraph: anHTMLTagParagraph from: aVisitor [
+	"Write the tag of anHTMLTagParagraph; aVisitor (myself or a templated writer without a template for it) writes its children."
+
+	canvas
+		newLine;
+		raw: '<' , anHTMLTagParagraph label.
+	anHTMLTagParagraph hasArguments ifTrue: [
+			canvas
+				space;
+				raw: anHTMLTagParagraph argumentString ].
+	canvas raw: '>'.
+	aVisitor visitChildrenOf: anHTMLTagParagraph.
+	canvas
+		newLine;
+		raw: anHTMLTagParagraph lineStopMarkup
 ]
 
 { #category : 'visiting' }
 MicHTMLVisitor >> visitHeader: aHeader [
 
-	canvas newLine.	
-	canvas tag 
-		name: 'h',  aHeader level asString;
-		with: [ self visitAll: aHeader children]
-	
+	canvas newLine.
+	(self headerTagOf: aHeader) with: [ self visitChildrenOf: aHeader ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitHeader: aHeader from: templated [
+	"Write aHeader for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas newLine.
+	(self headerTagOf: aHeader) with: [
+		templated visitChildrenOf: aHeader ]
 ]
 
 { #category : 'visiting' }
@@ -401,13 +512,27 @@ MicHTMLVisitor >> visitImg: aMicFigureBlock [
 	Mandatory attributes:
 		src - Specifies the path to the image
 		alt - Specifies an alternate text for the image, if the image for some reason cannot be displayed"
-	
+
+	self visitImg: aMicFigureBlock from: self
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitImg: aMicFigureBlock from: aVisitor [
+	"Write the image tag of aMicFigureBlock; aVisitor writes the children of its caption."
+
 	canvas tag
 		name: 'img';
 		parameterAt: 'src' put: aMicFigureBlock reference path;
 		parameterAt: 'alt' put: aMicFigureBlock altText;
 		addArguments: aMicFigureBlock;
-		with: [ self visitFigCaption: aMicFigureBlock ]
+		with: [ self visitFigCaption: aMicFigureBlock from: aVisitor ]
+]
+
+{ #category : 'visiting - html extensions' }
+MicHTMLVisitor >> visitInlineSpace: anInlineSpace [
+	"<br> in Microdown is an explicit line break."
+
+	canvas nextPutAll: '<br>'
 ]
 
 { #category : 'visiting - inline elements' }
@@ -416,6 +541,15 @@ MicHTMLVisitor >> visitItalic: aItalicText [
 	canvas tag
 		name: 'i';
 		with: [ super visitItalic: aItalicText ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitItalic: anItalic from: templated [
+	"Write anItalic for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas tag
+		name: 'i';
+		with: [ templated visitChildrenOf: anItalic ]
 ]
 
 { #category : 'visiting - inline elements' }
@@ -427,15 +561,39 @@ MicHTMLVisitor >> visitLink: aLink [
 		parameterAt: 'target' put: self configuration targetAttribute;
 		parameterAt: 'href' put: aLink referencePath;
 		addArguments: aLink;
-		with: [self visitAll: aLink children]
+		with: [ self visitChildrenOf: aLink ]
+
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitLink: aLink from: templated [ 
+	"Write markup hyperlink, which is used to link from one page to another"
+
+	canvas tag
+		name: 'a';
+		parameterAt: 'target' put: self configuration targetAttribute;
+		parameterAt: 'href' put: aLink referencePath;
+		addArguments: aLink;
+		with: [ templated visitChildrenOf: aLink ]
 
 ]
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitListItem: anItem [
+	"A task item (- [ ] or - [x]) starts with a disabled checkbox, as GitHub Markdown writes it."
 
-	canvas raw: [ super visitListItem: anItem ].
+	anItem isTask ifTrue: [
+			canvas nextPutAll: (anItem isChecked
+					 ifTrue: [ '<input type="checkbox" disabled checked> ' ]
+					 ifFalse: [ '<input type="checkbox" disabled> ' ]) ].
+	canvas raw: [ super visitListItem: anItem ]
+]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitListItem: anItem from: templated [
+	"Write anItem for a templated writer that has no template for it: its children go back to the templated writer."
+
+	templated visitChildrenOf: anItem
 ]
 
 { #category : 'visiting' }
@@ -459,27 +617,36 @@ MicHTMLVisitor >> visitMonospace: aMonospace [
 
 	canvas tag
 		name: 'code';
-		with: [ super visitMonospace: aMonospace ]
+		with: [ canvas nextPutAll: (self escaped: aMonospace bodyString) ]
 ]
 
 { #category : 'visiting - list' }
-MicHTMLVisitor >> visitOrderedList: anOrderedList [
+MicHTMLVisitor >> visitOrderedList: anUnorderedList [
 
 	canvas newLine.
 	canvas tag
 		name: 'ol';
 		with: [ 
 			canvas newLine. 
-			anOrderedList children 
-				do: [ :each | each accept: self ] ]
-			
-	
+			super visitOrderedList: anUnorderedList  ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitOrderedList: anOrderedList from: templated [
+	"Write anOrderedList for a templated writer that has no template for it: the templated writer writes the contents of its items."
+
+	canvas newLine.
+	canvas tag
+		name: 'ol';
+		with: [
+				canvas newLine.
+				anOrderedList children do: [ :each | self writeListItem: each from: templated ] ]
 ]
 
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitOrderedListItem: anOrderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
-
+	"This is not really nice because we cannot have some other entities in the list. But when we are going over an item this is important to know its parent to support for example contextual generation."
+	
 	canvas tag
 		name: 'li';
 		with: [ super visitOrderedListItem: anOrderedListItem ].
@@ -497,6 +664,16 @@ MicHTMLVisitor >> visitParagraph: aParagraph [
 	canvas newLine.
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitParagraph: aParagraph from: templated [ 
+
+	canvas newLine.
+	canvas tag
+		name: 'p';
+		with: [ templated visitChildrenOf: aParagraph ].
+	canvas newLine.
+]
+
 { #category : 'visiting' }
 MicHTMLVisitor >> visitQuote: aQuote [
 	"If the quote text size exceeds a minimum threshold, use blockquote which is appropriate for long quotations"
@@ -510,27 +687,37 @@ MicHTMLVisitor >> visitQuote: aQuote [
 		with: [ super visitQuote: aQuote ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitQuote: aQuote from: templated [
+	"Write aQuote for a templated writer that has no template for it: its children go back to the templated writer."
+
+	| tagName |
+	tagName := aQuote text size > self minQuoteThreshold
+		           ifTrue: [ 'blockquote' ]
+		           ifFalse: [ 'q' ].
+	canvas tag
+		name: tagName;
+		with: [ templated visitChildrenOf: aQuote ]
+]
+
 { #category : 'visiting - html extensions' }
-MicHTMLVisitor >> visitRaw: aParagraph [
+MicHTMLVisitor >> visitRaw: aMicRaw [
+	"Raw should be raw and it should NOT go the next line or whatever"
+	"Pay attention aMicRaw is not a paragraph but an inline element."
 	
-	canvas raw: aParagraph bodyString.
-	canvas newLine
+	canvas raw: aMicRaw bodyString
 ]
 
 { #category : 'visiting - html extensions' }
 MicHTMLVisitor >> visitRawParagraph: aParagraph [
 	
-	canvas
-		newLine;
-		raw: '<' , aParagraph label.
-	aParagraph hasArguments
-		ifTrue: [ canvas space; raw: aParagraph argumentString ]. 
-	canvas raw: '>' .
+	canvas raw: aParagraph body
+]
 
-	aParagraph children do: [ :each | each accept: self ].
-	canvas 
-		newLine;
-		raw: aParagraph lineStopMarkup.
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitRoot: aRoot from: templated [
+	
+	^ templated visitChildrenOf: aRoot
 ]
 
 { #category : 'visiting - inline elements' }
@@ -539,6 +726,15 @@ MicHTMLVisitor >> visitStrike: aStrike [
 	canvas tag
 		name: 'strike';
 		with: [ super visitStrike: aStrike ]
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitStrike: aStrike from: templated [
+	"Write aStrike for a templated writer that has no template for it: its children go back to the templated writer."
+
+	canvas tag
+		name: 'strike';
+		with: [ templated visitChildrenOf: aStrike ]
 ]
 
 { #category : 'visiting' }
@@ -595,11 +791,14 @@ MicHTMLVisitor >> visitTableRows: aTable [
 
 { #category : 'visiting - inline elements' }
 MicHTMLVisitor >> visitText: aText [
+	"Write the text of a paragraph. A new line inside a paragraph is a soft break, as in Markdown: it is written as a new line, which browsers show as a space. Only <br> (visitInlineSpace:) breaks a line."
 
-	canvas nextPutAll: (
-		(aText text copyReplaceAll: String cr with: '<br>') 
-			copyReplaceAll: String lf with: '<br />'). 
-
+	((aText text copyReplaceAll: String crlf with: String cr)
+		 copyReplaceAll: String lf
+		 with: String cr) do: [ :each |
+			each = Character cr
+				ifTrue: [ canvas newLine ]
+				ifFalse: [ canvas nextPut: each ] ]
 ]
 
 { #category : 'visiting - list' }
@@ -613,10 +812,21 @@ MicHTMLVisitor >> visitUnorderedList: anUnorderedList [
 			super visitUnorderedList: anUnorderedList  ]
 ]
 
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> visitUnorderedList: anUnorderedList from: templated [
+	"Write anUnorderedList for a templated writer that has no template for it: the templated writer writes the contents of its items."
+
+	canvas newLine.
+	canvas tag
+		name: 'ul';
+		with: [
+				canvas newLine.
+				anUnorderedList children do: [ :each | self writeListItem: each from: templated ] ]
+]
+
 { #category : 'visiting - list' }
 MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
-	"will not work with we have text decorators such as bold, italic, monospace"
-
+	
 	canvas tag
 		name: 'li';
 		with: [ super visitUnorderedListItem: anUnorderedListItem ].
@@ -627,6 +837,7 @@ MicHTMLVisitor >> visitUnorderedListItem: anUnorderedListItem [
 { #category : 'writing' }
 MicHTMLVisitor >> write: aMicElement [
 	"for now for integration with Pillar."
+	
 	self visit: aMicElement.
 	^ self contents
 ]
@@ -665,4 +876,21 @@ MicHTMLVisitor >> writeCounterForScript: aScript [
 	aScript counter isValidCounter ifFalse: [ ^ self ].
 	self writeCounter: aScript counter.
 	self writeCounterDefinitionSeparator
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> writeListItem: anItem from: templated [
+	"Write the li tag of anItem; the templated writer writes its contents, with the list item template if there is one."
+
+	canvas tag
+		name: 'li';
+		with: [ templated visitEach: anItem ].
+	canvas newLine
+]
+
+{ #category : 'templating ping pong' }
+MicHTMLVisitor >> writeTemplatedText: aString [
+	"Write aString, the result of a template applied by a templated writer, as is: its line ends are not turned into breaks."
+
+	canvas raw: aString
 ]

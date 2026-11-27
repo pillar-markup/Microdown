@@ -89,15 +89,6 @@ MicMetaDataBlockTest >> testCorrectMetaDataWithEmptyLinesProduceJSON [
 ]
 
 { #category : 'tests - metadata properties' }
-MicMetaDataBlockTest >> testCreatingAnInstanceInitializeTheMetadatDictionary [
-
-	| metadata |
-	self skip.
-	metadata := MicMetaDataBlock new.
-	self assert: metadata body isNotNil
-]
-
-{ #category : 'tests - metadata properties' }
 MicMetaDataBlockTest >> testIncludesKey [
 
 	| source root metadata |

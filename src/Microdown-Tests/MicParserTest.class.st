@@ -16,7 +16,7 @@ Class {
 MicParserTest >> setUp [
 
 	super setUp.
-	parser := MicrodownParser new. 
+	parser := MicParser new. 
 ]
 
 { #category : 'tests' }
@@ -72,6 +72,14 @@ MicParserTest >> testEmptyOnMultipleLines [
 	root := parser parse: source.
 	self assert: root children size equals: 0
 
+]
+
+{ #category : 'tests' }
+MicParserTest >> testFreshParserStartsAtLineOne [
+
+	| root |
+	root := MicParser new parse: '# B'.
+	self assert: root children first startLine equals: 1
 ]
 
 { #category : 'tests' }
@@ -152,4 +160,64 @@ is really cool'.
 	
 	
 	
+]
+
+{ #category : 'tests' }
+MicParserTest >> testReusedParserRestartsLineNumbers [
+
+	| reusedParser root |
+	reusedParser := MicParser new.
+	reusedParser parse: '# A
+para'.
+	root := reusedParser parse: '# B'.
+	self assert: root children first startLine equals: 1
+]
+
+{ #category : 'tests' }
+MicParserTest >> testSetCurrentDoesNotResetLineNumberForNormalBlock [
+
+	| lineParser paragraph |
+	lineParser := MicParser new.
+	paragraph := MicParagraphBlock new.
+
+	lineParser currentLineNumber: 15.
+	lineParser setCurrent: paragraph.
+
+	self assert: lineParser currentLineNumber equals: 15
+]
+
+{ #category : 'tests' }
+MicParserTest >> testStartLineIsCorrectlyAssigned [
+
+	| doc children |
+	doc := Microdown parse: 'a paragraph
+
+# Header
+
+another paragraph'.
+
+	children := doc children.
+	
+	self assert: children first startLine equals: 1.
+	self assert: children second startLine equals: 3.
+	self assert: children third startLine equals: 5.
+]
+
+{ #category : 'tests' }
+MicParserTest >> testStartLineWithNestedAndMultilineElements [
+	| doc list paragraph |
+	doc := Microdown parse: '# Title
+
+- Item A
+- Item B
+
+A long
+paragraph'.
+	self assert: doc children first startLine equals: 1.
+	list := doc children second.
+	self assert: list startLine equals: 3.
+	self assert: list children first startLine equals: 3.
+	self assert: list children second startLine equals: 4.
+	paragraph := doc children third.
+	self assert: paragraph startLine equals: 6.
 ]

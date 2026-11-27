@@ -22,6 +22,12 @@ MicEvaluatedBlock class >> parse: token stream: aTokenStream for: aParser [
 	^ aParser parseEvaluatedBlock: self token: token stream: aTokenStream
 ]
 
+{ #category : 'printing' }
+MicEvaluatedBlock >> bodyString [ 
+
+	^ self text
+]
+
 { #category : 'accessing' }
 MicEvaluatedBlock >> children [
 
@@ -58,6 +64,11 @@ MicEvaluatedBlock >> printOn: stream [
 MicEvaluatedBlock >> replace: aBlock by: anotherBlock [ 
 	
 	self children replaceAll: aBlock with: anotherBlock 
+]
+
+{ #category : 'printing' }
+MicEvaluatedBlock >> text [
+	^ ( self children collect: [:each | each text ] ) joinUsing: ' '
 ]
 
 { #category : 'accessing' }

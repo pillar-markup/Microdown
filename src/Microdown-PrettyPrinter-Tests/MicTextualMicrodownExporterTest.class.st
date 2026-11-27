@@ -21,6 +21,19 @@ MicTextualMicrodownExporterTest class >> testParameters [
 		yourself.
 ]
 
+{ #category : 'utilities' }
+MicTextualMicrodownExporterTest >> exportedMetaDataValue: anObject [
+	"Export, with a new exporter, a metadata block holding anObject under the key 'key', parse the result again, and answer the value read back"
+
+	| meta exporter |
+	meta := MicMetaDataBlock new.
+	meta body: Dictionary new.
+	meta atKey: 'key' put: anObject.
+	exporter := self visitorClass new.
+	exporter visit: meta.
+	^ (parser parse: exporter contents) metaDataElement at: 'key' ifAbsent: [ nil ]
+]
+
 { #category : 'accessing' }
 MicTextualMicrodownExporterTest >> factory [ 
 	^ factory
@@ -124,9 +137,6 @@ MicTextualMicrodownExporterTest >> testEnvironment [
 { #category : 'tests - environment' }
 MicTextualMicrodownExporterTest >> testEnvironmentWithInnerBlock [
 
-	self skip.
-	"The parsing of environment is plain wrong. It should recursively parse subelements"
-	
 	self verifyObtain: factory environmentWithInnerBlockSample
 ]
 
@@ -196,6 +206,35 @@ MicTextualMicrodownExporterTest >> testFileFigure [
 	self verifyObtain: factory fileFigureSample
 ]
 
+{ #category : 'tests - html' }
+MicTextualMicrodownExporterTest >> testHTMLTagParagraph [
+
+	| mic |
+	mic := parser parse: '<div class="c">
+x **b**
+</div>'.
+	self assert: (mic accept: visitor) contents equals: '
+<div class="c">
+x **b**
+
+</div>'
+]
+
+{ #category : 'tests - html' }
+MicTextualMicrodownExporterTest >> testHTMLTagParagraphIsParsedBack [
+
+	| mic tag |
+	mic := parser parse: '<div class="c">
+x **b**
+</div>'.
+	tag := (parser parse: (mic accept: visitor) contents) children first.
+	self assert: tag label equals: 'div'.
+	self assert: tag argumentString equals: 'class="c"'.
+	self assert: (tag children first children collect: [ :each | each class ] as: Array) equals: {
+			MicTextBlock.
+			MicBoldFormatBlock }
+]
+
 { #category : 'tests - header' }
 MicTextualMicrodownExporterTest >> testHeaderNewLine [
 
@@ -237,6 +276,14 @@ MicTextualMicrodownExporterTest >> testHeaderWithNestedFormatSampleWithNewLine [
 MicTextualMicrodownExporterTest >> testHorizontalLine [
 
 	self verifyObtain: factory horizontalLineSample
+]
+
+{ #category : 'tests - line breaks' }
+MicTextualMicrodownExporterTest >> testInlineLineBreakSurvivesExport [
+
+	self assert: ((MicTextualMicrodownExporter new
+			  visit: (Microdown parse: 'One <br> two');
+			  contents) includesSubstring: 'One <br> two')
 ]
 
 { #category : 'tests - anchor' }
@@ -332,6 +379,39 @@ MicTextualMicrodownExporterTest >> testMetaData [
 "author" : "G. Foo",
 "title" : "The title"
 }'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataNumberAndListSurviveExport [
+
+	self assert: (self exportedMetaDataValue: 3) equals: 3.
+	self assert: (self exportedMetaDataValue: #( 'a' 'b' )) asArray equals: #( 'a' 'b' )
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataPlainValueSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'spec,pharo') equals: 'spec,pharo'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithBackslashSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'back\slash') equals: 'back\slash'
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithLineBreakSurvivesExport [
+
+	| twoLines |
+	twoLines := String cr join: #( 'two' 'lines' ).
+	self assert: (self exportedMetaDataValue: twoLines) equals: twoLines
+]
+
+{ #category : 'tests - metadata' }
+MicTextualMicrodownExporterTest >> testMetaDataValueWithQuotesSurvivesExport [
+
+	self assert: (self exportedMetaDataValue: 'say "hi"') equals: 'say "hi"'
 ]
 
 { #category : 'tests - header' }
@@ -533,6 +613,19 @@ MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithShortRow [
 MicTextualMicrodownExporterTest >> testSimpleTableWithFormattingWithSomeElements [
 
 	self verifyObtain: factory simpleTableMoreFormat
+]
+
+{ #category : 'tests - task lists' }
+MicTextualMicrodownExporterTest >> testTaskListSurvivesExport [
+
+	| source |
+	source := MicTextualMicrodownExporter new
+		          visit: (Microdown parse: '- [ ] to do
+- [x] done');
+		          contents.
+
+	self assert: (source includesSubstring: '- [ ] to do').
+	self assert: (source includesSubstring: '- [x] done')
 ]
 
 { #category : 'tests - list nested' }

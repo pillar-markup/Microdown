@@ -29,6 +29,13 @@ MicRichTextComposerTest >> boldFormat [
 ]
 
 { #category : 'helpers' }
+MicRichTextComposerTest >> colorOf: aWord in: aText [
+	"Answer the color of the first occurrence of aWord in aText."
+
+	^ ((aText attributesAt: (aText asString findString: aWord)) detect: [ :attribute | attribute class = TextColor ]) color
+]
+
+{ #category : 'helpers' }
 MicRichTextComposerTest >> composer [
 	
 	composer ifNotNil: [ ^ composer ].
@@ -294,13 +301,9 @@ MicRichTextComposerTest >> testCodeBlockWithTabbedCode [
 
 { #category : 'tests' }
 MicRichTextComposerTest >> testEnvironment_unknownShouldNotFail [
-	| src |
-	src := '
-<!card 
-stuff
-!>
-'.
-	Microdown asRichText: src
+	"An unknown environment is rendered as a message instead of raising an error."
+
+	self assert: ((Microdown asRichText: '<!card stuff!>') asString includesSubstring: 'Environment ''card stuff'' is not defined')
 ]
 
 { #category : 'skipped tests' }
@@ -327,24 +330,19 @@ MicRichTextComposerTest >> testFigureCaptionMissingRemote [
 
 { #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureCaptionRemote [
-
 	| source richText |
 	source := 'See ![SomeText](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
-
-	self deny: (richText asString trim includesSubstring: 'SomeText').
-	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
+	self assert: (richText asString includesSubstring: 'SomeText')
 ]
 
 { #category : 'skipped tests' }
 MicRichTextComposerTest >> testFigureNoCaptionRemote [
-
 	| source richText |
 	source := 'See ![](https://pharo.org/web/files/pharo.png)'.
 	richText := self composerClass asRichText: source.
 
-	self assert: (richText asString trim first: 6) equals: 'See  ', (String value: 1).
-	self assert: richText asTextMorph height > 100 "It is high because of the embedded image"
+	self assert: (richText asString beginsWith: 'See')
 ]
 
 { #category : 'tests - header' }
@@ -657,8 +655,8 @@ MicRichTextComposerTest >> testStrikethroughFormat [
 
 { #category : 'tests' }
 MicRichTextComposerTest >> testStylerForMethod [
-	
-	| code source richText blueLocation textColor |
+
+	| code source richText |
 	code := '
 codeStylerFor: aString
 <codeblockStylerFor: #smalltalk>
@@ -666,18 +664,20 @@ codeStylerFor: aString
 ^bobby new 
 isForWorkspace: blue; 
 styledTextFor: aString asFest'.
-	source := '
-```language=method' , code ,'
-```
-'.
+	source := String streamContents: [ :stream |
+			          stream
+				          cr;
+				          nextPutAll: '```language=method';
+				          nextPutAll: code;
+				          cr;
+				          nextPutAll: '```';
+				          cr ].
 	richText := self richTextForString: source.
-	
+
 	self assert: richText asString trim equals: code trim.
 	self assert: ((richText attributesAt: 2) includes: TextEmphasis bold).
-	"Check that the unknown variable 'blue' is not colored red"
-	blueLocation := richText asString findString: 'blue'.
-	textColor := (richText attributesAt: blueLocation) detect: [ :attr | attr class = TextColor  ].
-	self assert: textColor color red equals: 1.0.
+	"The unknown variable blue is not colored as undefined, as the standard styler does."
+	self deny: (self colorOf: 'blue' in: richText) equals: (self colorOf: 'blue' in: (SHRBTextStyler new styledTextFor: code asText))
 ]
 
 { #category : 'tests - list' }

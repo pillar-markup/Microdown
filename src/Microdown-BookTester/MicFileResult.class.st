@@ -1,22 +1,22 @@
 Class {
 	#name : 'MicFileResult',
 	#superclass : 'MicResult',
-	#category : 'Microdown-BookTester-References',
+	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'References'
+	#tag : 'Checker-References'
 }
 
 { #category : 'accessing' }
 MicFileResult >> explanation [
 
-	^ 'File input ', self what,' (in file ', source fullName , ') does not exist.'
+	^ 'File input ', self what,' (in file ', fileReference fullName , ') does not exist.'
 	
 ]
 
 { #category : 'accessing' }
 MicFileResult >> stonFormatExplanation [
 
-	^ '"', self what,'" : "', source , '"'
+	^ '"', self what,'" : "', fileReference , '"'
 	
 ]
 

@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'figureFileString'
 	],
-	#category : 'Microdown-BookTester-References',
+	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'References'
+	#tag : 'Checker-References'
 }
 
 { #category : 'kinds' }
@@ -18,16 +18,10 @@ MicUndefinedFigureFileResult class >> errorType [
 	^ 'UndefinedFigureFiles:'
 ]
 
-{ #category : 'kinds' }
-MicUndefinedFigureFileResult class >> headerString [
-
-	^ 'Undefined figure files:'
-]
-
 { #category : 'accessing' }
 MicUndefinedFigureFileResult >> explanation [
 
-	^ 'Figure not found: ', self what,' (in file ', source fullName , ') was not found.'
+	^ 'Figure not found: ', self what,' (in file ', fileReference fullName , ') was not found.'
 	
 ]
 
@@ -41,6 +35,19 @@ MicUndefinedFigureFileResult >> figureFileString [
 MicUndefinedFigureFileResult >> figureFileString: aString [
 	
 	figureFileString := aString
+]
+
+{ #category : 'accessing' }
+MicUndefinedFigureFileResult >> headerString [
+
+	^ 'Undefined Figure File'
+]
+
+{ #category : 'initialization' }
+MicUndefinedFigureFileResult >> initialize [
+
+	super initialize.
+	figureFileString := 'empty'
 ]
 
 { #category : 'accessing' }

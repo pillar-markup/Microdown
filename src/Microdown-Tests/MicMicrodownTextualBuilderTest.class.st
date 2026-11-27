@@ -418,6 +418,18 @@ MicMicrodownTextualBuilderTest >> testOrderedListDuring [
 '
 ]
 
+{ #category : 'tests - task list' }
+MicMicrodownTextualBuilderTest >> testOrderedTaskItem [
+
+	self
+		assert: (builder orderedListDuring: [
+					 builder orderedItem: [
+							 builder taskMarkerChecked: false.
+							 builder text: 'to do' ] ]) contents
+		equals: '1. [ ] to do
+'
+]
+
 { #category : 'tests - anchor' }
 MicMicrodownTextualBuilderTest >> testParagraph [
 
@@ -473,6 +485,32 @@ MicMicrodownTextualBuilderTest >> testStrikeInHeader [
 											text: ' is cool']  withLevel: 1;				
 							contents)
 			equals: '# Hello ~Pharo~ is cool
+'
+]
+
+{ #category : 'tests - task list' }
+MicMicrodownTextualBuilderTest >> testTaskItemIsParsedAsATask [
+
+	| item |
+	builder unorderedListDuring: [
+		builder taskItem: [ builder text: 'done' ] checked: true ].
+	item := (Microdown parse: builder contents) children first children
+		        first.
+
+	self assert: item isTask.
+	self assert: item isChecked
+]
+
+{ #category : 'tests - task list' }
+MicMicrodownTextualBuilderTest >> testTaskItems [
+
+	self
+		assert: (builder unorderedListDuring: [
+					 builder taskItem: [ builder text: 'done' ] checked: true.
+					 builder taskItem: [ builder text: 'to do' ] checked: false ])
+				contents
+		equals: '- [x] done
+- [ ] to do
 '
 ]
 

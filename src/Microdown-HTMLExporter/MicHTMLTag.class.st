@@ -30,12 +30,16 @@ Class {
 
 { #category : 'accessing' }
 MicHTMLTag >> addArguments: aMicInlineBlockWithUrl [
+	"The width is a percentage of the text width in Microdown, so it is written as a style: the HTML width attribute means pixels."
 
 	aMicInlineBlockWithUrl hasArguments ifFalse: [ ^ self ].
-	self htmlArgumentsMapDo: [ :argAssoc | 
-		aMicInlineBlockWithUrl arguments 
+	self htmlArgumentsMapDo: [ :argAssoc |
+		aMicInlineBlockWithUrl arguments
 			at: argAssoc key
-			ifPresent: [ :labelString | self parameterAt: argAssoc value put: labelString ] ]
+			ifPresent: [ :labelString | self parameterAt: argAssoc value put: labelString ] ].
+	aMicInlineBlockWithUrl arguments
+		at: 'width'
+		ifPresent: [ :width | self parameterAt: 'style' put: ('width: {1}%' format: { width }) ]
 ]
 
 { #category : 'accessing' }
@@ -70,12 +74,11 @@ MicHTMLTag >> htmlArgumentsMapDo: aFullBlockClosure [
 { #category : 'initialization' }
 MicHTMLTag >> initializeArgumentsMap [
 
-	^ Dictionary new
-		at: 'label' put: 'class';
-		at: 'width' put: 'width';
-		at: 'rel' put: 'rel';
-		at: 'target' put: 'target';
-		yourself
+	^ OrderedDictionary new
+		  at: 'label' put: 'class';
+		  at: 'rel' put: 'rel';
+		  at: 'target' put: 'target';
+		  yourself
 ]
 
 { #category : 'accessing' }

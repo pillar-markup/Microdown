@@ -7,9 +7,9 @@ Class {
 	#instVars : [
 		'inputFileBlock'
 	],
-	#category : 'Microdown-BookTester-References',
+	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'References'
+	#tag : 'Checker-References'
 }
 
 { #category : 'kinds' }
@@ -18,17 +18,17 @@ MicUndefinedInputFileResult class >> errorType [
 	^ 'UndefinedInputFiles'
 ]
 
-{ #category : 'kinds' }
-MicUndefinedInputFileResult class >> headerString [
-
-	^ 'Undefined input files:'
-]
-
 { #category : 'accessing' }
 MicUndefinedInputFileResult >> explanation [
 
-	^ 'Undefined file input: ', self what,' (in file ', source fullName , ') refer to file that does not exist.'
+	^ 'Undefined file input: ', self what,' (in file ', fileReference fullName , ') refer to file that does not exist.'
 	
+]
+
+{ #category : 'kinds' }
+MicUndefinedInputFileResult >> headerString [
+
+	^ 'Undefined Input File'
 ]
 
 { #category : 'inputFileBlock:' }
@@ -49,12 +49,13 @@ MicUndefinedInputFileResult >> inputFileBlock: anInputFileBlock [
 ]
 
 { #category : 'accessing' }
-MicUndefinedInputFileResult >> what [ 
+MicUndefinedInputFileResult >> what [
 
 	| path |
 	self flag: #fixItLatter.
-	path := self inputFileBlock path.
-	^ path isString 
-		ifTrue: [ path ]
-		ifFalse: [ path fullName ]
+	inputFileBlock ifNil: [ ^ 'empty' ].
+	path := inputFileBlock path.
+	^ path isString
+		  ifTrue: [ path ]
+		  ifFalse: [ path fullName ]
 ]

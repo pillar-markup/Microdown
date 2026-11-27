@@ -30,16 +30,6 @@ MicDynamicTextStylerTest >> testBulletForLevel [
 ]
 
 { #category : 'tests' }
-MicDynamicTextStylerTest >> testBullets [
-	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
-]
-
-{ #category : 'tests' }
-MicDynamicTextStylerTest >> testCodeBackgroundColor [
-	
-]
-
-{ #category : 'tests' }
 MicDynamicTextStylerTest >> testCounterForAtLevel [
 	| styler |
 	styler := MicDynamicTextStyler new.
@@ -48,11 +38,6 @@ MicDynamicTextStylerTest >> testCounterForAtLevel [
 	self assert: (styler counterFor: 2 atLevel: 2) equals: 'b)' asText.
 	self assert: (styler counterFor: 3 atLevel: 3) equals: '3.' asText.
 	self assert: (styler counterFor: 5 atLevel: 5) equals: 'e)' asText.
-]
-
-{ #category : 'tests' }
-MicDynamicTextStylerTest >> testCounters [
-	"I am not needed as I am tested by testCounterForAtLevel, but being here marks counters: as tested"
 ]
 
 { #category : 'tests' }
