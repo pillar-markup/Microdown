@@ -132,10 +132,11 @@ MicBookSitePublisherTest >> testPublishedPageWithoutHeaderHasNoTableOfContents [
 
 { #category : 'running' }
 MicBookSitePublisherTest >> writeFile: aPath contents: aString [
-	"Create the file at aPath in the book folder, with its parent folders."
+	"Create or replace the file at aPath in the book folder, with its parent folders. A write stream does not truncate an existing file, so the old file is deleted first."
 
 	| file |
 	file := book resolve: aPath.
 	file parent ensureCreateDirectory.
+	file ensureDelete.
 	file writeStreamDo: [ :stream | stream nextPutAll: aString ]
 ]
