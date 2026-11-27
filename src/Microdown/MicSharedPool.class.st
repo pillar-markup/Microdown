@@ -17,6 +17,8 @@ Class {
 		'ArgumentListEqualsDelimiter',
 		'ArgumentListOfFigureStartDelimiter',
 		'ArgumentListStartDelimiter',
+		'BlockLevelRawCloserMarkup',
+		'BlockLevelRawOpenerMarkup',
 		'BoldMarkup',
 		'CodeblockMarkup',
 		'CommentedLineMarkup',
@@ -107,6 +109,9 @@ MicSharedPool class >> initialize [
 	UnorderedListMarkup := '- '.
    UnorderedListPlusMarkup := '+ '.
 	UnorderedListStarMarkup := '* '.
+	
+	BlockLevelRawCloserMarkup := '}}}'. 
+	BlockLevelRawOpenerMarkup := '{{{'. 
 
 	self initializeRawParagraph.
 

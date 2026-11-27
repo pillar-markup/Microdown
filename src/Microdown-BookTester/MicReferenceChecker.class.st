@@ -33,10 +33,16 @@ Class {
 		'figures',
 		'anchoringEntities'
 	],
-	#category : 'Microdown-BookTester-References',
+	#category : 'Microdown-BookTester-Checker-References',
 	#package : 'Microdown-BookTester',
-	#tag : 'References'
+	#tag : 'Checker-References'
 }
+
+{ #category : 'public - name' }
+MicReferenceChecker class >> checkerName [
+
+	^ 'ReferenceChecks'
+]
 
 { #category : 'accessing' }
 MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
@@ -45,7 +51,7 @@ MicReferenceChecker >> addDuplicatedAnchor: anAnchor [
 	micResultInstance := MicDuplicatedAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchor anchorLabel;
-		sourceFileReference: anAnchor fromFile.
+		inFile: anAnchor fromFile.
 	results add: micResultInstance
 ]
 
@@ -66,7 +72,7 @@ MicReferenceChecker >> addReferenceToUnexistingAnchor: anAnchorReference [
 	micResultInstance := MicReferenceToUnexistingAnchorResult new.
 	micResultInstance
 		anchorLabel: anAnchorReference anchorLabel;
-		sourceFileReference: anAnchorReference fromFile.
+		inFile: anAnchorReference fromFile.
 	results add: micResultInstance
 ]
 
@@ -77,7 +83,7 @@ MicReferenceChecker >> addUnexistingFigureFile: aFigure [
 	micResultInstance := MicUndefinedFigureFileResult new.
 	micResultInstance
 		figureFileString: aFigure reference path;
-		sourceFileReference: aFigure fromFile.
+		inFile: aFigure fromFile.
 	results add: micResultInstance
 ]
 
@@ -89,7 +95,17 @@ MicReferenceChecker >> addUnreferencedFigure: aFigure [
 	micResultInstance
 		figurePath: aFigure reference relativePath;
 		anchorLabel: aFigure anchorLabel;
-		sourceFileReference: aFigure fromFile.
+		inFile: aFigure fromFile.
+	results add: micResultInstance
+]
+
+{ #category : 'visiting' }
+MicReferenceChecker >> addWrongCaseFile: aFigure [
+	| micResultInstance |
+	micResultInstance := MicWrongCaseFileResult new.
+	micResultInstance
+		figureFileString: aFigure reference path;
+		inFile: aFigure fromFile.
 	results add: micResultInstance
 ]
 
@@ -174,7 +190,7 @@ MicReferenceChecker >> handleUndefinedFilesFrom: collector [
 	collector unexistingFiles do: [ :each |
 		results add: (MicUndefinedInputFileResult new 
 			inputFileBlock: each ; 
-			sourceFileReference: each fromFile; 
+			inFile: each fromFile; 
 			yourself )
 		
 		]
@@ -202,7 +218,6 @@ MicReferenceChecker >> initialize [
 	anchoringEntities := OrderedCollection new.
 	duplicatedAnchors := OrderedCollection new. "by default if the reporter is not set from outside
 	then it shares the results of this current checker."
-	reportWriter := MicAnalysisReportWriter new results: results
 ]
 
 { #category : 'testing' }
@@ -212,17 +227,6 @@ MicReferenceChecker >> isOk [
 	
 	^ duplicatedAnchors isEmpty and: [
 		  references allSatisfy: [ :each | self hasAlreadyDefinedAs: each ] ]
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> report [
-
-	^ reportWriter report
-]
-
-{ #category : 'reporting' }
-MicReferenceChecker >> reportSTONFormat [
-	^ reportWriter reportSTONFormat
 ]
 
 { #category : 'internal' }
@@ -268,12 +272,24 @@ MicReferenceChecker >> visitCode: aCodeBlock [
 
 { #category : 'visiting' }
 MicReferenceChecker >> visitFigure: aFigure [
-	
-	figures add: aFigure. 
+	| expectedFile expectedName parentDir hasCaseError |
+	figures add: aFigure.
 	self handleAnchorOf: aFigure.
-	"check for unexisting file."
-	(aFigure fromFile parent / aFigure reference path) exists
-			ifFalse: [ self addUnexistingFigureFile: aFigure  ]
+	
+	expectedFile := aFigure fromFile parent / aFigure reference path.
+	expectedName := expectedFile basename.
+	parentDir := expectedFile parent.
+	hasCaseError := false.
+	
+	parentDir exists ifTrue: [ 
+		parentDir children do: [ :child |
+			(child basename asLowercase = expectedName asLowercase and: [ child basename ~= expectedName ])
+				ifTrue: [ 
+					hasCaseError := true.
+					self addWrongCaseFile: aFigure ] ] ].
+			
+	(hasCaseError not and: [ expectedFile exists not ])
+		ifTrue: [ self addUnexistingFigureFile: aFigure ]
 ]
 
 { #category : 'visiting' }

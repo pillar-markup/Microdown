@@ -11,23 +11,16 @@ Class {
 
 { #category : 'tests' }
 MicParsesAndRendersAllCommentsTest >> testAsRichTextDoesNotBreakOnEmptyCodeBlock [
-	"Test that we do not break on empty code blocks"
-	Microdown asRichText: '```
-```'
+
+	self assert: (Microdown asRichText: '``````') asString trimBoth isEmpty
 ]
 
 { #category : 'tests' }
 MicParsesAndRendersAllCommentsTest >> testCommentFromChunkReadStream [
-	"Test that we do not break on empty annotated blocks"
-	Microdown asRichText: ChunkReadStream comment.
-	Microdown asRichText: '!!'
-]
+	"The comment of ChunkReadStream has empty annotated blocks: they are rendered, and !! alone stays as text."
 
-{ #category : 'tests' }
-MicParsesAndRendersAllCommentsTest >> testCommentFromFluidBuilder [
-	"Test that we do not break on empty code blocks"
-	Microdown asRichText: '```
-```'
+	self denyEmpty: (Microdown asRichText: ChunkReadStream comment) asString.
+	self assert: (Microdown asRichText: '!!') asString trimBoth equals: '!!'
 ]
 
 { #category : 'tests' }

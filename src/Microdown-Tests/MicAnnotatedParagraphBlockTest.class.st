@@ -133,7 +133,7 @@ MicAnnotatedParagraphBlockTest >> testBasicAnnotetedParagraphWithBoldText [
 		assert:
 			(annotatedParagraph textElements second isKindOf:
 					 MicBoldFormatBlock);
-		assert: annotatedParagraph textElements second plainText
+		assert: annotatedParagraph textElements second text
 		equals: 'crucial'
 ]
 

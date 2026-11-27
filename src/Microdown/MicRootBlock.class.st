@@ -45,6 +45,21 @@ MicRootBlock >> addLineAndReturnNextNode: line [
 	^ newBlock 
 ]
 
+{ #category : 'accessing' }
+MicRootBlock >> attachedBookStructure [
+	"Answer the structure attached to me (Pillar attaches the one of pillar.conf), else the one of the book I am inlined in (an input file), else nil."
+
+	^ self
+		  propertyAt: #bookStructure
+		  ifAbsent: [ super attachedBookStructure ]
+]
+
+{ #category : 'accessing' }
+MicRootBlock >> bookStructure: aBookStructure [
+
+	self propertyAt: #bookStructure put: aBookStructure
+]
+
 { #category : 'testing' }
 MicRootBlock >> canConsumeLine: line [
 	"The root block can always consume everything no matter what it is."
@@ -103,6 +118,11 @@ MicRootBlock >> initialize [
 	
 	super initialize. 
 	debugId := self class nextDebugId.
+]
+
+{ #category : 'debugging' }
+MicRootBlock >> isSecondaryRoot [
+	^ false
 ]
 
 { #category : 'hooks' }

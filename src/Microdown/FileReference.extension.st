@@ -7,5 +7,6 @@ FileReference >> asMicResourceReference [
 
 { #category : '*Microdown' }
 FileReference >> resolveDocument: document [
-	^ self asMicResourceReference resolveDocument: document.
+
+	^ self asMicResourceReference resolveDocument: document
 ]

@@ -20,9 +20,9 @@ Class {
 		'visitedFileStrings',
 		'visitedFiles'
 	],
-	#category : 'Microdown-BookTester-Infrastructure',
+	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
-	#tag : 'Infrastructure'
+	#tag : 'Core'
 }
 
 { #category : 'initialization' }

@@ -15,8 +15,9 @@ Class {
 	#instVars : [
 		'message',
 		'status',
-		'source',
-		'explanation'
+		'explanation',
+		'micElement',
+		'fileReference'
 	],
 	#category : 'Microdown-BookTester-Core',
 	#package : 'Microdown-BookTester',
@@ -29,16 +30,34 @@ MicResult class >> errorType [
 	^ self subclassResponsibility 
 ]
 
-{ #category : 'kinds' }
-MicResult class >> headerString [
-
-	^ 'Unreferenced Figures'
-]
-
 { #category : 'accessing' }
 MicResult >> explanation [
 
 	^ self subclassResponsibility
+]
+
+{ #category : 'kinds' }
+MicResult >> headerString [ 
+	^  'Missing headerString method definition in ', self class name asString
+]
+
+{ #category : 'accessing' }
+MicResult >> inFile [
+
+	^ fileReference
+]
+
+{ #category : 'accessing' }
+MicResult >> inFile: anObject [
+
+	fileReference := anObject
+]
+
+{ #category : 'initialization' }
+MicResult >> initialize [
+
+	super initialize.
+	fileReference := '' asFileReference
 ]
 
 { #category : 'accessing' }
@@ -54,15 +73,14 @@ MicResult >> message: anObject [
 ]
 
 { #category : 'accessing' }
-MicResult >> sourceFileReference [
+MicResult >> micElement [
 
-	^ source
+	^ micElement
 ]
 
 { #category : 'accessing' }
-MicResult >> sourceFileReference: anObject [
-
-	source := anObject
+MicResult >> micElement: aMicElement [ 
+	micElement := aMicElement
 ]
 
 { #category : 'accessing' }
@@ -75,10 +93,4 @@ MicResult >> status [
 MicResult >> status: anObject [
 
 	status := anObject
-]
-
-{ #category : 'accessing' }
-MicResult >> stonFormatExplanation [
-
-	^ self subclassResponsibility
 ]

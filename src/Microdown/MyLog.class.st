@@ -65,11 +65,13 @@ MyLog >> pt2025_08_16 [
 	^ '
 ## 2025 08 16 
 
+- cleanTemplated
+- improve bookTester
 - Anchor Linker Use - Investigate why it is not used.
-- Check with HTML exporter does not inherit from `MicDocumentWriter`
-- Check with textualexport does not inherit from `MicDocumentWriter`
 - MicCodeBlock API does not support the setting of text
+
 - body: set does not set the lement as children in a parent children relation
+
 - we should revisit all the parent/children and named instance variables
 	- we have caption and captionElements. This would indicate that 
 	elements are returned using xxxElements

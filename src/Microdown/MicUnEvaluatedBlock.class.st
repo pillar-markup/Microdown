@@ -66,13 +66,18 @@ MicUnEvaluatedBlock >> plainText [
 
 { #category : 'printing' }
 MicUnEvaluatedBlock >> printOn: stream [
-	stream << self blockName << '(' << bodyString << ')'
-	
+
+	stream << self blockName << '(' << (bodyString ifNil: [ '' ]) << ')'
 ]
 
 { #category : 'obsolete' }
 MicUnEvaluatedBlock >> substring [
 	"Should only be used for tests"
 	self deprecated: 'Just use bodystring' transformWith: '`@rec substring' -> '`@rec bodystring'.
+	^ bodyString 
+]
+
+{ #category : 'printing' }
+MicUnEvaluatedBlock >> text [
 	^ bodyString 
 ]

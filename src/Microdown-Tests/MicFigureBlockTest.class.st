@@ -150,7 +150,7 @@ MicFigureBlockTest >> testFigureNoCaption [
 
 	| figure |
 	figure := MicFigureBlock new reference: 'bla.png'.
-	self shouldnt: [ figure printString ] raise: Error
+	self assert: (figure printString beginsWith: 'Figure[')
 ]
 
 { #category : 'tests' }

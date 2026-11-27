@@ -1,3 +1,44 @@
+"
+I build the table of contents of a Microdown document: I visit its headers and nest them as a tree of `MicTocEntry`, by level, up to a limit level. I answer this tree as a document to render (`toc`) or as values for Mustache templates (`templateValues`).
+
+## Life cycle: who creates me and who uses me
+
+1. A client creates me with `new`, optionally sets the deepest header level to keep with `limitUpTo:` (6 by default), and sends me `visit:` with a document.
+2. It then asks for the result: `tocItems` (the top entries), `toc` (a `MicRootBlock` holding a `MicTocEntryList`, that `MicHTMLVisitor` writes as nested lists), or `templateValues`.
+3. `MicBookSitePublisher>>tableOfContentsOf:` uses `templateValues` to give the root template of each page its table of contents.
+4. For the links of `templateValues` to work, the headers must be identified first by `MicHeaderIdentifier` (a separate pass).
+
+## Responsibility:
+
+- I nest the headers of a document by level, ignoring the ones deeper than my limit.
+- I answer the table of contents for Mustache templates: dictionaries with `name`, `number` (the number of the header as readers see it, from `MicNumberer numberStringOf:`; nil when the document was not numbered), `href`, `hasChildren` and `children`, as in `{{#children}}<a href=""{{href}}"">{{name}}</a>{{/children}}`.
+- I link each entry to the target its header got from `MicHeaderIdentifier` (`MicHeaderIdentifier targetOf: aHeader`); I do not give ids myself.
+
+## Collaborators: 
+
+- `MicHeaderBlock`: the headers I collect.
+- `MicTocEntry` and `MicTocEntryList`: the tree I build.
+- `MicHeaderIdentifier`: gives the headers the targets my entries link to.
+
+## Public API and Key Messages
+
+- `limitUpTo: anInteger` keep the headers up to level anInteger (1 to 5).
+- `visit: aDocument` collect its headers.
+- `tocItems` the top entries; `toc` the table of contents as a document.
+- `templateValues` the table of contents for templates.
+
+## Examples
+
+```
+MicTocBuilder exampleOfAChapter templateValues
+```
+
+## Internal Representation
+
+- `tocItems`: the top entries, an `OrderedCollection` of `MicTocEntry`.
+- `headerStack`: the entries of the current branch while visiting, innermost on top.
+- `limit`: the deepest header level kept.
+"
 Class {
 	#name : 'MicTocBuilder',
 	#superclass : 'MicrodownVisitor',
@@ -9,6 +50,24 @@ Class {
 	#category : 'Microdown-Toc',
 	#package : 'Microdown-Toc'
 }
+
+{ #category : 'examples' }
+MicTocBuilder class >> exampleOfAChapter [
+	"A builder that collected the headers of a small chapter: one top entry with two children."
+
+	<sampleInstance>
+	^ self new
+		  visit: (Microdown parse: '# Microdown syntax
+
+## Text emphasis
+
+Some text.
+
+## Links and figures
+
+More text.');
+		  yourself
+]
 
 { #category : 'initialization' }
 MicTocBuilder >> initialize [
@@ -27,11 +86,44 @@ MicTocBuilder >> limitUpTo: anInteger [
 	limit := anInteger
 ]
 
+{ #category : 'template values' }
+MicTocBuilder >> templateValues [
+	"Answer the table of contents for Mustache templates: a dictionary whose children are its entries, each a dictionary with name, href, hasChildren and children. The href of an entry is the link target of its header (see MicHeaderIdentifier>>#identify:), nil when the header was not identified."
+
+	^ Dictionary new
+		  at: 'children'
+		  put:
+			  (tocItems
+				   collect: [ :each | self templateValuesOf: each ]
+				   as: Array);
+		  yourself
+]
+
+{ #category : 'template values' }
+MicTocBuilder >> templateValuesOf: aTocEntry [
+	"Answer the template values of aTocEntry and of its children; number is the number of its header as readers see it (see MicNumberer), nil when the header was not numbered."
+
+	| children |
+	children := aTocEntry children
+		            collect: [ :each | self templateValuesOf: each ]
+		            as: Array.
+	^ Dictionary new
+		  at: 'name' put: aTocEntry header text;
+		  at: 'number' put: (MicNumberer numberStringOf: aTocEntry header);
+		  at: 'href'
+		  put:
+			  ((MicHeaderIdentifier targetOf: aTocEntry header) ifNotNil: [
+					   :target | '#' , target ]);
+		  at: 'hasChildren' put: children isNotEmpty;
+		  at: 'children' put: children;
+		  yourself
+]
+
 { #category : 'accessing' }
 MicTocBuilder >> toc [
 
 	^ MicRootBlock new children: { 
-			(MicOrderedListBlock new 
+			(MicTocEntryList new 
 				children: tocItems; yourself) } ; 
 			yourself  
 ]
@@ -43,31 +135,17 @@ MicTocBuilder >> tocItems [
 
 { #category : 'visiting' }
 MicTocBuilder >> visitHeader: aMicHeader [
+	"Add aMicHeader to the table of contents, in the last entry less deep than it, or as a top entry when there is none. Ignore it when it is deeper than my limit."
 
 	| newTocEntry |
-	newTocEntry := MicTocEntry new for: aMicHeader.
-
 	aMicHeader level > limit ifTrue: [ ^ self ].
-
-	headerStack isEmpty ifTrue: [
-			headerStack push: newTocEntry.
-			tocItems add: newTocEntry.
-			^ self ].
-
-	aMicHeader level = headerStack top level
-		ifTrue: [
-				headerStack pop.
-				headerStack isEmpty
-					ifTrue: [ tocItems add: newTocEntry ]
-					ifFalse: [ headerStack top addChild: newTocEntry ] ]
-		ifFalse: [
-				aMicHeader level > headerStack top level
-					ifTrue: [ headerStack top addChild: newTocEntry ]
-					ifFalse: [
-							[
-								headerStack isNotEmpty and: [
-									headerStack top level >= aMicHeader level ] ] whileTrue: [
-								headerStack pop ].
-							headerStack isEmpty ifTrue: [ tocItems add: newTocEntry ] ] ].
+	newTocEntry := MicTocEntry new for: aMicHeader.
+	[
+		headerStack isNotEmpty and: [
+			headerStack top level >= aMicHeader level ] ] whileTrue: [
+		headerStack pop ].
+	headerStack
+		ifEmpty: [ tocItems add: newTocEntry ]
+		ifNotEmpty: [ headerStack top addChild: newTocEntry ].
 	headerStack push: newTocEntry
 ]

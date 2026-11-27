@@ -35,6 +35,7 @@ MicLatexPathUpdateVisitor >> newReferenceFor: aReference [
 
 { #category : 'visiting' }
 MicLatexPathUpdateVisitor >> visitFigure: aFigure [
+
 	aFigure reference: (self newReferenceFor: aFigure).
 	super visitFigure: aFigure
 ]

@@ -28,5 +28,6 @@ MicRawBlock class >> openingDelimiter [
 
 { #category : 'visiting' }
 MicRawBlock >> accept: aVisitor [
+	"A raw element should not do any interpretation of its contents."
 	^ aVisitor visitRaw: self
 ]

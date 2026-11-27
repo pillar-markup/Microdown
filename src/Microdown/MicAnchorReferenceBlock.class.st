@@ -41,6 +41,11 @@ MicAnchorReferenceBlock >> anchorLabel [
 ]
 
 { #category : 'accessing' }
+MicAnchorReferenceBlock >> isAnchorReferenceBlock [
+	^ true
+]
+
+{ #category : 'accessing' }
 MicAnchorReferenceBlock >> reference [
 
 	^ reference

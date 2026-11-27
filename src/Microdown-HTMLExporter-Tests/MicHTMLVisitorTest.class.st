@@ -74,6 +74,26 @@ MicHTMLVisitorTest >> testCanvasClass [
 	self assert: writer canvasClass equals: MicHTMLCanvas
 ]
 
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testCheckedTaskShowsATickedBox [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- [x] done');
+			  contents) includesSubstring:
+			 '<li><input type="checkbox" disabled checked> done</li>')
+]
+
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testCodeBlockIsEscaped [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '```
+a < b & <br>
+```');
+			  contents) includesSubstring:
+			 '<code>a &lt; b &amp; &lt;br&gt;</code>')
+]
+
 { #category : 'tests' }
 MicHTMLVisitorTest >> testConfiguration [
 
@@ -197,6 +217,63 @@ MicHTMLVisitorTest >> testCreateItalic [
 
 ]
 
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testHTMLInTextIsKept [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'Some <b>bold</b> text.');
+			  contents) includesSubstring: '<b>bold</b>')
+]
+
+{ #category : 'tests - escaping' }
+MicHTMLVisitorTest >> testInlineCodeIsEscaped [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'Write `<br>` and `a & b`.');
+			  contents) includesSubstring:
+			 '<code>&lt;br&gt;</code> and <code>a &amp; b</code>')
+]
+
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testInlineLineBreakIsWrittenAsBr [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: 'One <br> two');
+			  contents) includesSubstring: 'One <br> two')
+]
+
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testItemThatIsNotATaskHasNoBox [
+
+	self deny: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- plain');
+			  contents) includesSubstring: 'checkbox')
+]
+
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testNewLineBeforeAFormatKeepsTheWordsApart [
+
+	| html |
+	html := MicHTMLVisitor new
+		        visit: (Microdown parse: 'One
+**two**');
+		        contents.
+
+	self deny: (html includesSubstring: 'One<strong>')
+]
+
+{ #category : 'tests - line breaks' }
+MicHTMLVisitorTest >> testNewLineInAParagraphIsNotALineBreak [
+
+	| html |
+	html := MicHTMLVisitor new
+		        visit: (Microdown parse: 'One sentence.
+Another sentence.');
+		        contents.
+
+	self deny: (html includesSubstring: '<br')
+]
+
 { #category : 'tests' }
 MicHTMLVisitorTest >> testRawParagraphDivWithArgs [
 
@@ -291,6 +368,15 @@ MicHTMLVisitorTest >> testRawParagraphSimpleEmptyDiv [
 '</div>'.
 	self assert: result trimBoth equals:  '<div>', newLine,
 '</div>'.
+]
+
+{ #category : 'tests - task lists' }
+MicHTMLVisitorTest >> testUncheckedTaskShowsAnEmptyBox [
+
+	self assert: ((MicHTMLVisitor new
+			  visit: (Microdown parse: '- [ ] to do');
+			  contents) includesSubstring:
+			 '<li><input type="checkbox" disabled> to do</li>')
 ]
 
 { #category : 'tests' }

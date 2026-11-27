@@ -84,7 +84,7 @@ MicInlineBlockWithUrl >> bodyString [
 { #category : 'testing' }
 MicInlineBlockWithUrl >> caption [
 
-	^ String streamContents: [ :s | children do: [ :each | s nextPutAll: each plainText ] ]
+	^ String streamContents: [ :s | children do: [ :each | s nextPutAll: each text ] ]
 ]
 
 { #category : 'visiting' }

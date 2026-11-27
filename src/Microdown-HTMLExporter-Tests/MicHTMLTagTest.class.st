@@ -22,10 +22,7 @@ MicHTMLTagTest >> sampleMicFigureBlock [
 MicHTMLTagTest >> testAddArguments [
 
 	self tag addArguments: self sampleMicFigureBlock.
-	self 
-		assertCollection: ((self tag contents findTokens: '=') collect: #trimBoth)
-		hasSameElements: #('class' '"sampleClass" width' '"30"').
-
+	self assert: self tag contents equals: ' class="sampleClass" style="width: 30%"'
 ]
 
 { #category : 'tests' }
@@ -47,10 +44,12 @@ MicHTMLTagTest >> testContents [
 
 { #category : 'tests' }
 MicHTMLTagTest >> testInitializeArgumentsMap [
+	"The order of the map is the order of the attributes in the HTML; width is not in the map, it becomes a style (see MicHTMLTag>>addArguments:)."
 
-	self 
-		assert: (tag initializeArgumentsMap isKindOf: Dictionary)
-		description: 'It test that the arguments map is of type Dictionary'.
+	self assert: tag initializeArgumentsMap associations asArray equals: {
+			('label' -> 'class').
+			('rel' -> 'rel').
+			('target' -> 'target') }
 ]
 
 { #category : 'tests' }

@@ -243,8 +243,11 @@ MicAbstractLaTexWriterTest >> testHeaderLevel4 [
 
 { #category : 'tests - header' }
 MicAbstractLaTexWriterTest >> testHeaderLevel5 [
+	"##### is a subsubsection in a book with the default structure (see MicBookStructure), as it has always been."
 
-	self parse: factory headerLevel5Sample andCheckWeGet: newLine , '\subsubsection{Foo}'
+	self
+		parse: factory headerLevel5Sample
+		andCheckWeGet: newLine , '\subsubsection{Foo}'
 ]
 
 { #category : 'tests - header' }

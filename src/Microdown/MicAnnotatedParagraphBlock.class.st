@@ -65,7 +65,7 @@ MicAnnotatedParagraphBlock >> lineMarkup [
 MicAnnotatedParagraphBlock >> text [
 
 	^ String streamContents: [ :s |
-		  self textElements do: [ :each | s nextPutAll: each plainText ] ]
+		  self textElements do: [ :each | s nextPutAll: each text ] ]
 ]
 
 { #category : 'accessing' }

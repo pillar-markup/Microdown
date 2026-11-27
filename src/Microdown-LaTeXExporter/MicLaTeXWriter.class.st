@@ -76,6 +76,13 @@ MicLaTeXWriter >> createLinkToLabelWithoutAlias: anInternalLink [
 		parameter: [ canvas raw: anInternalLink bodyString ]
 ]
 
+{ #category : 'visiting-document' }
+MicLaTeXWriter >> defaultBookStructure [
+	"The structure of a document that declares none, as LaTeX has always written headers: # \part, ## \chapter, ### \section, #### \subsection, ##### \subsubsection, ###### \paragraph."
+
+	^ MicBookStructure chapterLevel: 2 paragraphLevel: 6
+]
+
 { #category : 'accessing' }
 MicLaTeXWriter >> folderName [
 	^ #latex
@@ -123,9 +130,11 @@ MicLaTeXWriter >> protectUrl: aString [
 	^ ((aString copyReplaceAll: '\' with: '\\') copyReplaceAll: '#' with: '\#') copyReplaceAll: '%' with: '\%'
 ]
 
-{ #category : 'helpers' }
-MicLaTeXWriter >> sectioningCommands [
-	^ #('part' 'chapter' 'section' 'subsection' 'subsubsection' 'paragraph' 'subparagraph')
+{ #category : 'visiting-document' }
+MicLaTeXWriter >> sectionCommands [
+	"The commands of the sections below a chapter, by depth (see MicBookStructure>>sectionDepthOf:)."
+
+	^ #( 'section' 'subsection' 'subsubsection' )
 ]
 
 { #category : 'helpers' }
@@ -141,16 +150,20 @@ MicLaTeXWriter >> tabularEnvironment [
 
 { #category : 'accessing' }
 MicLaTeXWriter >> templateForConfiguration: aConfiguration [
+   "Probably used by pillar."
 	^ 'main.mustache'
 ]
 
 { #category : 'visiting-document' }
 MicLaTeXWriter >> typeOfSectionFor: aHeader [
-	| sections level section |
-	sections := self sectioningCommands.
-	level := aHeader level.
-	section := sections at: (level min: sections size max: 1).
-	^ section
+	"Answer the LaTeX sectioning command of aHeader, from its role in the structure of the book (see MicBookStructure): \part, \chapter, \section, \subsection or \subsubsection by depth below the chapter, and \paragraph for every header from the paragraph level on. A document without attached structure uses defaultBookStructure, so that the LaTeX of a plain Microdown document does not change."
+
+	| structure role |
+	structure := aHeader attachedBookStructure ifNil: [
+		             self defaultBookStructure ].
+	role := structure roleOf: aHeader.
+	role = #section ifFalse: [ ^ role asString ].
+	^ self sectionCommands at: (structure sectionDepthOf: aHeader)
 ]
 
 { #category : 'blocks' }
@@ -175,7 +188,7 @@ MicLaTeXWriter >> visitAnnotated: aAnnotatedParagraph [
 		name: 'begin';
 		parameter: aAnnotatedParagraph label.
 	canvas newLine.
-	aAnnotatedParagraph textElements do: [ :each | each accept: self ].
+	aAnnotatedParagraph textElements do: [ :each | self visitEach: each ].
 	canvas newLine.
 	canvas command
 		name: 'end';
@@ -244,11 +257,13 @@ MicLaTeXWriter >> visitFigure: aFigure [
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitFootnote: aFootnote [
-	canvas command name: 'footnote'; parameter: (aFootnote note)
+
+	canvas command name: 'footnote'; parameter: aFootnote note
 ]
 
 { #category : 'blocks' }
 MicLaTeXWriter >> visitHeader: aHeader [
+
 	| section |
 	canvas newLine.
 	section := self typeOfSectionFor: aHeader.
@@ -265,9 +280,20 @@ MicLaTeXWriter >> visitHorizontalLine: aHorizontalLine [
 	canvas newLine.
 ]
 
+{ #category : 'visiting - html extensions' }
+MicLaTeXWriter >> visitInlineSpace: anInlineSpace [
+	"<br> in Microdown is an explicit line break; LaTeX joins the lines of a paragraph otherwise."
+
+	canvas raw: '\\'.
+	canvas newLine
+]
+
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitItalic: anItalic [
-	canvas command name: 'textit'; parameter: [ super visitItalic: anItalic ]
+	
+	canvas command 
+		name: 'textit'; 
+		parameter: [ super visitItalic: anItalic ]
 ]
 
 { #category : 'blocks - inline' }
@@ -284,6 +310,7 @@ MicLaTeXWriter >> visitLink: aLink [
 
 { #category : 'blocks - list' }
 MicLaTeXWriter >> visitListItem: anItem [
+
 	self tabList.
 	canvas command name: 'item'.
 	canvas space.
@@ -352,29 +379,27 @@ MicLaTeXWriter >> visitParagraph: aParagraph [
 
 { #category : 'blocks' }
 MicLaTeXWriter >> visitQuote: aQuote [
-	"canvas environment
-		name: 'verbatim';
-		with: [ aQuote children do: [ :child | 
-						self visit: child.
-						canvas newLine ] ]"
-				
 			
 	canvas newLine.
 	canvas environment
 		name: 'quote';
 		with: [ 
-			aQuote children do: [ :each | each accept: self ].
-			canvas newLine.].
+			self visitChildrenOf: aQuote.
+			canvas newLine ].
 
 ]
 
 { #category : 'blocks - inline' }
 MicLaTeXWriter >> visitStrike: aStrike [
-	canvas command name: 'sout'; parameter: [ super visitStrike: aStrike ]
+
+	canvas command 
+		name: 'sout'; 
+		parameter: [ super visitStrike: aStrike ]
 ]
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTable: aTable [
+
 	| environment |
 	canvas newLine.
 	environment := canvas environment name: self tabularEnvironment.
@@ -392,6 +417,7 @@ MicLaTeXWriter >> visitTable: aTable [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTableCell: aCell [
+
 	aCell isAligned
 		ifFalse: [ self writeTableCellContent: aCell ]
 		ifTrue: [ 
@@ -421,7 +447,10 @@ MicLaTeXWriter >> visitTableRow: aRow [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> visitTableRow: aRow with: aBool at: anIndex [
-	aRow do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] separatedBy: [ canvas raw: ' & ' ].
+
+	aRow 
+		do: [ :cell | self visitTableCell: cell with: (aBool and: [ anIndex = 1 ]) ] 
+		separatedBy: [ canvas raw: ' & ' ].
 	canvas
 		raw: ' \\';
 		newLine.
@@ -456,7 +485,7 @@ MicLaTeXWriter >> visitUnorderedList: aList [
 { #category : 'helpers' }
 MicLaTeXWriter >> writeCaptionOfExternalLink: anExternalLink [
 
-	self visitAll: anExternalLink children
+	self visitChildrenOf: anExternalLink
 ]
 
 { #category : 'helpers' }
@@ -495,6 +524,7 @@ MicLaTeXWriter >> writeTableCellContent: aCell [
 
 { #category : 'blocks - table' }
 MicLaTeXWriter >> writeTableCellContent: aCell with: aBool [
+
 	^ aBool
 		ifTrue: [ 
 			canvas command

@@ -67,13 +67,15 @@ MicNodeTransformer >> initialize [
 
 { #category : 'execution' }
 MicNodeTransformer >> replaceChildrenOf: aGroup [
-	aGroup
-		children:
-			(aGroup children
-				flatCollect: [ :child | 
-					replacement push: {child}.
-					self visitAll: child.
-					replacement pop]). 
+	"Visit each child of aGroup and replace it by the nodes its visit produced, keeping each new child's parent back pointer on aGroup."
+
+	| newChildren |
+	newChildren := aGroup children flatCollect: [ :child |
+			               replacement push: { child }.
+			               self visitAll: child.
+			               replacement pop ].
+	newChildren do: [ :each | each basicParent: aGroup ].
+	aGroup children: newChildren
 ]
 
 { #category : 'enumerating' }
@@ -86,6 +88,8 @@ MicNodeTransformer >> replaceCurrentNodeBy: newNodes [
 
 { #category : 'execution' }
 MicNodeTransformer >> visit: anObject [
+	"Entry point to launch the traversal."
+	
 	super visit: anObject.
 	^ anObject
 ]
@@ -93,7 +97,7 @@ MicNodeTransformer >> visit: anObject [
 { #category : 'execution' }
 MicNodeTransformer >> visitAll: aGroup [
 	self replaceChildrenOf: aGroup.
-	aGroup accept: self.
+	self visitEach: aGroup.
 ]
 
 { #category : 'execution' }

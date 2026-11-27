@@ -163,6 +163,7 @@ MicBeamerWriter >> sectionOptionFrom: level To: depth On: parameters [
 
 { #category : 'accessing' }
 MicBeamerWriter >> templateForConfiguration: aConfiguration [
+   "Probably used by pillar."
 	^ 'presentation.template'
 ]
 

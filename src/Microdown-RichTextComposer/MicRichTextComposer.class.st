@@ -367,7 +367,8 @@ This also because people will not want to to not let a newline between the heade
 
 { #category : 'visiting' }
 MicRichTextComposer >> visit: aDocument [
-
+	"Entry point to launch the traversal."
+	
 	canvas := MicRichTextCanvas new
 		          textStyler: self textStyler;
 		          yourself.
@@ -462,14 +463,16 @@ MicRichTextComposer >> visitFigure: aFigure [
 
 	| image anchor |
 	[
-	[
-	image := aFigure reference loadImage.
+	[ image := aFigure reference loadImage.
 	anchor := self anchorFor: image of: aFigure.
-	canvas << (self textWithImage: image usingAnchor: anchor) ]
+	canvas << (self textWithImage: image usingAnchor: anchor).
+	"for the caption"
+	canvas tab.
+	self visitChildrenOf: aFigure ]
 		on: MicResourceReferenceError , UnrecognizedImageFormatError
-		do: [ self visitAll: aFigure children ] ]
-		on: Error
-		do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
+			do: [ self visitChildrenOf: aFigure ] ]
+				on: Error
+				do: [ :error | canvas << ('>>> ' , error printString , ' <<<') ]
 ]
 
 { #category : 'visiting' }
@@ -585,7 +588,9 @@ MicRichTextComposer >> visitMonospace: anObject [
 				ifTrue: [ canvas 
 								includeAttribute: (TextAction new actOnClickBlock: [ sem entity browse ]) 
 								in: [ super visitMonospace: anObject ] ]
-				ifFalse: [ super visitMonospace: anObject]].  
+				ifFalse: [ 
+					"when we have `nil` we may not display it in blue"
+					super visitMonospace: anObject]].  
 ]
 
 { #category : 'visiting - list' }

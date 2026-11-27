@@ -17,6 +17,62 @@ MicLaTeXWriterTest class >> shouldInheritSelectors [
 	^ true
 ]
 
+{ #category : 'helpers' }
+MicLaTeXWriterTest >> latexOf: aString structure: aBookStructure [
+	"Answer the LaTeX of aString, parsed as a book with aBookStructure."
+
+	| document |
+	document := Microdown parse: aString.
+	document bookStructure: aBookStructure.
+	writer visit: document.
+	^ writer contents
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testAttachedStructureDecidesTheParagraphs [
+
+	self assert:
+		((self latexOf: '##### E' structure: MicBookStructure new)
+			 includesSubstring: '\paragraph{E}')
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testBold [ [
+	| document result |
+
+	document := Microdown parse: 'Texte **gras**'.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: 'Texte \textbf{gras}'.
+]
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testCodeBlock [ [
+	| document result expected microdownText tab |
+	
+	tab := Character tab asString.
+	
+	microdownText := '```', newLine,
+	tab, 'x := 1.', newLine,
+	tab, 'y := 2.', newLine,
+	'```'.
+	
+	document := Microdown parse: microdownText.
+	writer visit: document.
+	result := writer contents. 
+	
+	expected := '\begin{listing}', newLine,
+	'x := 1.', newLine,
+	'y := 2.', newLine,
+	'\end{listing}'.
+	
+	self assert: result trimBoth equals: expected trimBoth.
+]
+]
+
 { #category : 'tests' }
 MicLaTeXWriterTest >> testCodeblock [
 
@@ -44,6 +100,18 @@ MicLaTeXWriterTest >> testCodeblockWithLabel [
 													'\end{listing}', newLine 
 ]
 
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testEscapeSpecialCharacters [ [ 
+	| document result |
+	document := Microdown parse: 'Texte avec % # $ & '.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: 'Texte avec \% \# \$ \&'.
+]
+]
+
 { #category : 'tests - figure/link' }
 MicLaTeXWriterTest >> testFigureWithEmptyCaption [
 
@@ -56,11 +124,142 @@ MicLaTeXWriterTest >> testFigureWithEmptyCaption [
 			
 ]
 
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testHeaderLevel1 [ [ 
+	| document result |
+
+	document := Microdown parse: '# Titre'.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: '\part{Titre}'.
+]
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testHeaderLevel2 [ [ 
+	| document result |
+	document := Microdown parse: '## Titre'.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: '\chapter{Titre}'.
+]
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testHeadersFollowTheBookStructure [
+
+	| latex |
+	latex := self
+		         latexOf: '# A
+
+## B
+
+### C
+
+#### D'
+		         structure:
+		         (MicBookStructure chapterLevel: 1 paragraphLevel: 4).
+
+	self assert: (latex includesSubstring: '\chapter{A}').
+	self assert: (latex includesSubstring: '\section{B}').
+	self assert: (latex includesSubstring: '\subsection{C}').
+	self assert: (latex includesSubstring: '\paragraph{D}')
+]
+
+{ #category : 'tests - line breaks' }
+MicLaTeXWriterTest >> testInlineLineBreakIsWrittenAsANewLine [
+
+	self writeFor: 'One <br> two'.
+	self assert: (writer contents includesSubstring: 'One \\')
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testItalic [ [ 
+	| document result |
+	document := Microdown parse: 'Texte *italic*'.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: 'Texte \textit{italic}'.
+]
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testMonospace [ [ 
+	| document result |
+	document := Microdown parse: 'Texte `monospace` inline '.
+	
+	writer visit: document.
+	result := writer contents.
+	
+	self assert: result trimBoth equals: 'Texte \code{monospace} inline'.
+]
+]
+
 { #category : 'tests' }
 MicLaTeXWriterTest >> testNote [
 
 	self parseInlined: '{!note|contents=Duca99a!}' andCheckWeGet: '\comment{Duca99a}'
 	
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testOrderedList [ [
+	| document result expected |
+	
+	document := Microdown parse: '1. Premier
+2. Second'.
+	
+	writer visit: document.
+	result := writer contents. 
+	
+	expected := newLine, '\begin{enumerate}', newLine,
+'    \item Premier', newLine,
+'    \item Second', newLine,
+'\end{enumerate}'.
+	
+	self assert: result trimBoth equals: expected trimBoth.
+]
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testPartsStayParts [
+
+	self assert: ((self latexOf: '# A' structure: MicBookStructure new)
+			 includesSubstring: '\part{A}')
+]
+
+{ #category : 'tests - book structure' }
+MicLaTeXWriterTest >> testThirdSectionLevelIsASubsubsection [
+
+	self assert: ((self
+			  latexOf: '#### D'
+			  structure: (MicBookStructure chapterLevel: 1 paragraphLevel: 5))
+			 includesSubstring: '\subsubsection{D}')
+]
+
+{ #category : 'tests - formats' }
+MicLaTeXWriterTest >> testUnorderedList [ [
+	| document result expected |
+	
+	document := Microdown parse: '- Premier
+- Second'.
+	
+	writer visit: document.
+	result := writer contents. 
+	
+	expected := '\begin{itemize}', newLine,
+'    \item Premier', newLine,
+'    \item Second', newLine,
+'\end{itemize}'.
+	
+	self assert: result trimBoth equals: expected trimBoth.
+]
 ]
 
 { #category : 'accessing' }

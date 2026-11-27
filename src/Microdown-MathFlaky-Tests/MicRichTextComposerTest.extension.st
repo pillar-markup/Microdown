@@ -2,12 +2,16 @@ Extension { #name : 'MicRichTextComposerTest' }
 
 { #category : '*Microdown-MathFlaky-Tests' }
 MicRichTextComposerTest >> testClassExamplesNotBroken [
+	"Each sample instance of the class side renders a non empty text."
 
-	"I merely test that the examples do not break"
 	| examples |
-	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class)
-		collect: [ :pragma | pragma method selector ].
-	examples do: [ :selector | MicRichTextComposer perform: selector ]
+	examples := (Pragma allNamed: #sampleInstance in: MicRichTextComposer class) collect: [ :pragma | pragma method selector ].
+	self denyEmpty: examples.
+	examples do: [ :selector |
+			| text |
+			text := MicRichTextComposer perform: selector.
+			self assert: (text isKindOf: Text).
+			self denyEmpty: text asString ]
 ]
 
 { #category : '*Microdown-MathFlaky-Tests' }

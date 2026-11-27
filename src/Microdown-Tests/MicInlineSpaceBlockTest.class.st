@@ -29,3 +29,12 @@ MicInlineSpaceBlockTest >> testParagraphWithInlineSpaceAndOthers [
 	self assert: root children size equals: 1.
 	self assert: root children first children size equals: 6
 ]
+
+{ #category : 'tests' }
+MicInlineSpaceBlockTest >> testPrintString [
+
+	self
+		assert:
+		(parser parse: 'a <br>b') children first children second printString
+		equals: 'InlineSpace()'
+]

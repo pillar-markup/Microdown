@@ -14,16 +14,10 @@ Class {
 		'syncValue',
 		'codeBlock'
 	],
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Checker-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Checker-CodeBlockAnalysis'
 }
-
-{ #category : 'kinds' }
-MicBrokenSyncDefinitionResult class >> headerString [
-
-	^ 'Broken sync definition [should be sync=''true|false'''
-]
 
 { #category : 'building' }
 MicBrokenSyncDefinitionResult >> codeBlock: aMicCodeBlock [ 
@@ -34,6 +28,12 @@ MicBrokenSyncDefinitionResult >> codeBlock: aMicCodeBlock [
 MicBrokenSyncDefinitionResult >> explanation [
 
 	^ 'The sync definition has the following broken value: ', syncValue, ' .'
+]
+
+{ #category : 'initialization' }
+MicBrokenSyncDefinitionResult >> headerString [
+
+	^ 'Broken Sync Definition'
 ]
 
 { #category : 'initialization' }

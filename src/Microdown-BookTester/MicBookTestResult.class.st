@@ -39,9 +39,9 @@ Class {
 	#classInstVars : [
 		'allMessages'
 	],
-	#category : 'Microdown-BookTester-CodeBlockAnalysis',
+	#category : 'Microdown-BookTester-Checker-CodeBlockAnalysis',
 	#package : 'Microdown-BookTester',
-	#tag : 'CodeBlockAnalysis'
+	#tag : 'Checker-CodeBlockAnalysis'
 }
 
 { #category : 'initialization' }
@@ -83,7 +83,7 @@ MicBookTestResult >> explanation [
 	 self text  , 
 	 String cr ,
 	'from the source file:  ' ,
-   	 self sourceFileReference fullName 
+   	 self inFile fullName 
 
 	
 ]
@@ -109,6 +109,12 @@ MicBookTestResult >> fragmentedText: aText [
 	fragmentedText := aText
 ]
 
+{ #category : 'accessing' }
+MicBookTestResult >> headerString [
+
+	^ 'Book Test'
+]
+
 { #category : 'initialization' }
 MicBookTestResult >> initialize [
 
@@ -116,8 +122,7 @@ MicBookTestResult >> initialize [
 	status := true.
 	isExpectedFailure := false.
 	message := 'Test failed without raising an exception'.
-	text := 'here we should get an expression'.
-	source := '' asFileReference.
+	text := 'here we should get an expression'
 ]
 
 { #category : 'accessing' }
@@ -160,7 +165,7 @@ MicBookTestResult >> stonFormatExplanation [
 	 self text  , '",',
 	 String cr ,
 	'"sourceFile" : "' ,
-	self sourceFileReference fullname , '"',
+	self inFile fullname , '"',
 	String cr , '}'
    	  
 
